@@ -54,11 +54,7 @@ class LogAdapter implements Adapter
     }
 
     /**
-     * Determine if an item exists in the cache.
-     *
-     * @param string $key
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function has(string $key): bool
     {
@@ -68,11 +64,7 @@ class LogAdapter implements Adapter
     }
 
     /**
-     * Retrieve an item from the cache by key.
-     *
-     * @param string $key
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function get(string $key): ?string
     {
@@ -82,15 +74,9 @@ class LogAdapter implements Adapter
     }
 
     /**
-     * Retrieve multiple items from the cache by key.
-     *
-     * Items not found in the cache will have a null value.
-     *
-     * @param string ...$keys
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return array
      */
     public function many(string ...$keys): array
     {
@@ -102,13 +88,7 @@ class LogAdapter implements Adapter
     }
 
     /**
-     * Store an item in the cache for a given number of minutes.
-     *
-     * @param string $key
-     * @param string $value
-     * @param int    $minutes
-     *
-     * @return void
+     * @inheritDoc
      */
     public function put(string $key, string $value, int $minutes): void
     {
@@ -116,24 +96,9 @@ class LogAdapter implements Adapter
     }
 
     /**
-     * Store multiple items in the cache for a given number of minutes.
-     *
-     * <code>
-     *      $store->putMany(
-     *          [
-     *              'key'  => 'value',
-     *              'key2' => 'value2',
-     *          ],
-     *          5
-     *      )
-     * </code>
-     *
-     * @param string[] $values
-     * @param int      $minutes
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return void
      */
     public function putMany(array $values, int $minutes): void
     {
@@ -143,12 +108,7 @@ class LogAdapter implements Adapter
     }
 
     /**
-     * Increment the value of an item in the cache.
-     *
-     * @param string $key
-     * @param int    $value
-     *
-     * @return int
+     * @inheritDoc
      */
     public function increment(string $key, int $value = 1): int
     {
@@ -158,12 +118,7 @@ class LogAdapter implements Adapter
     }
 
     /**
-     * Decrement the value of an item in the cache.
-     *
-     * @param string $key
-     * @param int    $value
-     *
-     * @return int
+     * @inheritDoc
      */
     public function decrement(string $key, int $value = 1): int
     {
@@ -173,12 +128,7 @@ class LogAdapter implements Adapter
     }
 
     /**
-     * Store an item in the cache indefinitely.
-     *
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return void
+     * @inheritDoc
      */
     public function forever(string $key, $value): void
     {
@@ -186,11 +136,7 @@ class LogAdapter implements Adapter
     }
 
     /**
-     * Remove an item from the cache.
-     *
-     * @param string $key
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function forget(string $key): bool
     {
@@ -200,9 +146,7 @@ class LogAdapter implements Adapter
     }
 
     /**
-     * Remove all items from the cache.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function flush(): bool
     {
@@ -212,9 +156,7 @@ class LogAdapter implements Adapter
     }
 
     /**
-     * Get the cache key prefix.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getPrefix(): string
     {
@@ -222,11 +164,7 @@ class LogAdapter implements Adapter
     }
 
     /**
-     * Get tagger.
-     *
-     * @param string ...$tags
-     *
-     * @return Tagger
+     * @inheritDoc
      */
     public function getTagger(string ...$tags): Tagger
     {

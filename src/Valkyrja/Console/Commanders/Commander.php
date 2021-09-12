@@ -47,9 +47,7 @@ abstract class Commander implements Contract
     protected const DOUBLE_TAB = self::TAB . self::TAB;
 
     /**
-     * Get the command.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getCommand(): string
     {
@@ -57,9 +55,7 @@ abstract class Commander implements Contract
     }
 
     /**
-     * Get the command path.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getPath(): string
     {
@@ -67,9 +63,7 @@ abstract class Commander implements Contract
     }
 
     /**
-     * Get the short description.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getShortDescription(): string
     {
@@ -77,9 +71,7 @@ abstract class Commander implements Contract
     }
 
     /**
-     * Get the description.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getDescription(): string
     {
@@ -87,9 +79,7 @@ abstract class Commander implements Contract
     }
 
     /**
-     * Help docs for this command.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function help(): int
     {
@@ -101,9 +91,7 @@ abstract class Commander implements Contract
     }
 
     /**
-     * The run handler.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function run(): int
     {
@@ -111,9 +99,7 @@ abstract class Commander implements Contract
     }
 
     /**
-     * Get the command version.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function version(): int
     {

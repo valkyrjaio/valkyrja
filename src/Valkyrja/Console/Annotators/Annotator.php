@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Annotators;
 
+use JsonException;
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Filter;
+use Valkyrja\Console\Annotations\Command;
 use Valkyrja\Console\Annotator as Contract;
 use Valkyrja\Console\Command as CommandContract;
-use Valkyrja\Console\Annotations\Command;
 use Valkyrja\Console\Models\Command as CommandModel;
 use Valkyrja\Reflection\Reflector;
 
@@ -56,13 +57,9 @@ class Annotator implements Contract
     }
 
     /**
-     * Get the commands.
+     * @inheritDoc
      *
-     * @param string ...$classes The classes
-     *
-     * @throws ReflectionException
-     *
-     * @return CommandContract[]
+     * @throws JsonException
      */
     public function getCommands(string ...$classes): array
     {
@@ -124,6 +121,8 @@ class Annotator implements Contract
      * Get a command from a command annotation.
      *
      * @param Command $command The command annotation
+     *
+     * @throws JsonException
      *
      * @return CommandContract
      */

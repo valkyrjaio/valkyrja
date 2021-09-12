@@ -89,9 +89,7 @@ abstract class Notification implements Contract
     protected static bool $shouldSendSms = true;
 
     /**
-     * Get the broadcast adapter's name to use for this notification.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getBroadcastAdapterName(): ?string
     {
@@ -99,9 +97,7 @@ abstract class Notification implements Contract
     }
 
     /**
-     * Get the broadcast message's name to use for this notification.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getBroadcastMessageName(): ?string
     {
@@ -109,9 +105,7 @@ abstract class Notification implements Contract
     }
 
     /**
-     * Whether an broadcast message should be sent for this notification.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function shouldSendBroadcastMessage(): bool
     {
@@ -119,9 +113,7 @@ abstract class Notification implements Contract
     }
 
     /**
-     * Get the mail adapter's name to use for this notification.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getMailAdapterName(): ?string
     {
@@ -129,9 +121,7 @@ abstract class Notification implements Contract
     }
 
     /**
-     * Get the mail message's name to use for this notification.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getMailMessageName(): ?string
     {
@@ -139,9 +129,7 @@ abstract class Notification implements Contract
     }
 
     /**
-     * Whether a mail message should be sent for this notification.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function shouldSendMailMessage(): bool
     {
@@ -149,9 +137,7 @@ abstract class Notification implements Contract
     }
 
     /**
-     * Get the SMS adapter's name to use for this notification.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getSmsAdapterName(): ?string
     {
@@ -159,9 +145,7 @@ abstract class Notification implements Contract
     }
 
     /**
-     * Get the SMS message's name to use for this notification.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getSmsMessageName(): ?string
     {
@@ -169,9 +153,7 @@ abstract class Notification implements Contract
     }
 
     /**
-     * Whether an SMS message should be sent for this notification.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function shouldSendSmsMessage(): bool
     {
@@ -179,11 +161,7 @@ abstract class Notification implements Contract
     }
 
     /**
-     * Notify by broadcast.
-     *
-     * @param BroadcastMessage $broadcastMessage The broadcast message
-     *
-     * @return BroadcastMessage
+     * @inheritDoc
      */
     public function broadcast(BroadcastMessage $broadcastMessage): BroadcastMessage
     {
@@ -191,11 +169,7 @@ abstract class Notification implements Contract
     }
 
     /**
-     * Notify by mail.
-     *
-     * @param MailMessage $mailMessage The mail message
-     *
-     * @return MailMessage
+     * @inheritDoc
      */
     public function mail(MailMessage $mailMessage): MailMessage
     {
@@ -203,11 +177,7 @@ abstract class Notification implements Contract
     }
 
     /**
-     * Notify by SMS.
-     *
-     * @param SMSMessage $message The SMS message
-     *
-     * @return SMSMessage
+     * @inheritDoc
      */
     public function sms(SMSMessage $message): SMSMessage
     {

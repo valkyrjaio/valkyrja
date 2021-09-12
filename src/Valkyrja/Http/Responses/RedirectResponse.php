@@ -59,9 +59,7 @@ class RedirectResponse extends Response implements Contract
     }
 
     /**
-     * Get the uri.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getUri(): string
     {
@@ -69,11 +67,7 @@ class RedirectResponse extends Response implements Contract
     }
 
     /**
-     * Set the uri.
-     *
-     * @param string $uri The uri
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setUri(string $uri): self
     {
@@ -85,12 +79,7 @@ class RedirectResponse extends Response implements Contract
     }
 
     /**
-     * Set the redirect uri to secure.
-     *
-     * @param string  $path    The path
-     * @param Request $request The request
-     *
-     * @return static
+     * @inheritDoc
      */
     public function secure(string $path, Request $request): self
     {
@@ -101,11 +90,7 @@ class RedirectResponse extends Response implements Contract
     }
 
     /**
-     * Redirect back to the referer.
-     *
-     * @param Request $request The request
-     *
-     * @return static
+     * @inheritDoc
      */
     public function back(Request $request): self
     {
@@ -117,11 +102,7 @@ class RedirectResponse extends Response implements Contract
     }
 
     /**
-     * Throw this redirect.
-     *
-     * @throws HttpRedirectException
-     *
-     * @return void
+     * @inheritDoc
      */
     public function throw(): void
     {

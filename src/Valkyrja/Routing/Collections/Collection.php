@@ -100,13 +100,9 @@ class Collection implements Contract
     }
 
     /**
-     * Add a route.
-     *
-     * @param Route $route The route
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return void
      */
     public function add(Route $route): void
     {
@@ -128,14 +124,7 @@ class Collection implements Contract
     }
 
     /**
-     * Get a route.
-     *
-     * @param string      $path   The path
-     * @param string|null $method [optional] The request method
-     *
-     * @return Route|null
-     *      The route if found or null when no route is
-     *      found for the path combination specified
+     * @inheritDoc
      */
     public function get(string $path, string $method = null): ?Route
     {
@@ -143,12 +132,7 @@ class Collection implements Contract
     }
 
     /**
-     * Determine if a route exists.
-     *
-     * @param string      $path   The path
-     * @param string|null $method [optional] The request method
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isset(string $path, string $method = null): bool
     {
@@ -156,9 +140,7 @@ class Collection implements Contract
     }
 
     /**
-     * Get all routes.
-     *
-     * @return Route[][]
+     * @inheritDoc
      */
     public function all(): array
     {
@@ -166,9 +148,7 @@ class Collection implements Contract
     }
 
     /**
-     * Get a flat array of routes.
-     *
-     * @return Route[]
+     * @inheritDoc
      */
     public function allFlattened(): array
     {
@@ -176,14 +156,7 @@ class Collection implements Contract
     }
 
     /**
-     * Get a static route.
-     *
-     * @param string      $path   The path
-     * @param string|null $method [optional] The request method
-     *
-     * @return Route|null
-     *      The route if found or null when no static route is
-     *      found for the path and method combination specified
+     * @inheritDoc
      */
     public function getStatic(string $path, string $method = null): ?Route
     {
@@ -191,12 +164,7 @@ class Collection implements Contract
     }
 
     /**
-     * Determine if a static route exists.
-     *
-     * @param string      $path   The path
-     * @param string|null $method [optional] The request method
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function hasStatic(string $path, string $method = null): bool
     {
@@ -204,11 +172,7 @@ class Collection implements Contract
     }
 
     /**
-     * Get static routes of a certain request method.
-     *
-     * @param string|null $method [optional] The request method
-     *
-     * @return string[]|string[][]
+     * @inheritDoc
      */
     public function allStatic(string $method = null): array
     {
@@ -216,14 +180,7 @@ class Collection implements Contract
     }
 
     /**
-     * Get a dynamic route.
-     *
-     * @param string      $regex  The regex
-     * @param string|null $method [optional] The request method
-     *
-     * @return Route|null
-     *      The route if found or null when no dynamic route is
-     *      found for the path and method combination specified
+     * @inheritDoc
      */
     public function getDynamic(string $regex, string $method = null): ?Route
     {
@@ -231,12 +188,7 @@ class Collection implements Contract
     }
 
     /**
-     * Determine if a dynamic route exists.
-     *
-     * @param string      $regex  The regex
-     * @param string|null $method [optional] The request method
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function hasDynamic(string $regex, string $method = null): bool
     {
@@ -244,11 +196,7 @@ class Collection implements Contract
     }
 
     /**
-     * Get the dynamic routes in this collection.
-     *
-     * @param string|null $method [optional] The request method
-     *
-     * @return string[]|string[][]
+     * @inheritDoc
      */
     public function allDynamic(string $method = null): array
     {
@@ -256,13 +204,7 @@ class Collection implements Contract
     }
 
     /**
-     * Get a named route.
-     *
-     * @param string $name The name
-     *
-     * @return Route|null
-     *      The route if found or null when no named route is
-     *      found for the path and method combination specified
+     * @inheritDoc
      */
     public function getNamed(string $name): ?Route
     {
@@ -270,11 +212,7 @@ class Collection implements Contract
     }
 
     /**
-     * Determine if a named route exists.
-     *
-     * @param string $name The name
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function hasNamed(string $name): bool
     {
@@ -282,9 +220,7 @@ class Collection implements Contract
     }
 
     /**
-     * Get the named routes in this collection.
-     *
-     * @return string[]
+     * @inheritDoc
      */
     public function allNamed(): array
     {

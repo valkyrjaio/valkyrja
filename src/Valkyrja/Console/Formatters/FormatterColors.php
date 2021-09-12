@@ -24,11 +24,7 @@ use Valkyrja\Console\Enums\FormatForeground;
 trait FormatterColors
 {
     /**
-     * Set foreground or background to black.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
+     * @inheritDoc
      */
     public function black(bool $background = null): void
     {
@@ -36,11 +32,7 @@ trait FormatterColors
     }
 
     /**
-     * Set foreground or background to red.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
+     * @inheritDoc
      */
     public function red(bool $background = null): void
     {
@@ -48,11 +40,7 @@ trait FormatterColors
     }
 
     /**
-     * Set foreground or background to green.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
+     * @inheritDoc
      */
     public function green(bool $background = null): void
     {
@@ -60,11 +48,7 @@ trait FormatterColors
     }
 
     /**
-     * Set foreground or background to yellow.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
+     * @inheritDoc
      */
     public function yellow(bool $background = null): void
     {
@@ -72,11 +56,7 @@ trait FormatterColors
     }
 
     /**
-     * Set foreground or background to blue.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
+     * @inheritDoc
      */
     public function blue(bool $background = null): void
     {
@@ -84,11 +64,7 @@ trait FormatterColors
     }
 
     /**
-     * Set foreground or background to magenta.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
+     * @inheritDoc
      */
     public function magenta(bool $background = null): void
     {
@@ -96,11 +72,7 @@ trait FormatterColors
     }
 
     /**
-     * Set foreground or background to cyan.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
+     * @inheritDoc
      */
     public function cyan(bool $background = null): void
     {
@@ -108,11 +80,7 @@ trait FormatterColors
     }
 
     /**
-     * Set foreground or background to white.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
+     * @inheritDoc
      */
     public function white(bool $background = null): void
     {

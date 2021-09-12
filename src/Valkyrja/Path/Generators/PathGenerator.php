@@ -30,13 +30,7 @@ use function strpos;
 class PathGenerator implements Contract
 {
     /**
-     * Parse segments, data, and params into a path.
-     *
-     * @param array      $segments The segments
-     * @param array|null $data     [optional] The data
-     * @param array|null $params   [optional] The params
-     *
-     * @return string
+     * @inheritDoc
      */
     public function parse(array $segments, array $data = null, array $params = null): string
     {

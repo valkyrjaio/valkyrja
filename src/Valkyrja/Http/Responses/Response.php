@@ -80,11 +80,7 @@ class Response implements Contract
     }
 
     /**
-     * Gets the response status code.
-     * The status code is a 3-digit integer result code of the server's attempt
-     * to understand and satisfy the request.
-     *
-     * @return int Status code.
+     * @inheritDoc
      */
     public function getStatusCode(): int
     {
@@ -92,25 +88,7 @@ class Response implements Contract
     }
 
     /**
-     * Return an instance with the specified status code and, optionally,
-     * reason phrase.
-     * If no reason phrase is specified, implementations MAY choose to default
-     * to the RFC 7231 or IANA recommended reason phrase for the response's
-     * status code.
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * updated status and reason phrase.
-     *
-     * @link http://tools.ietf.org/html/rfc7231#section-6
-     * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
-     *
-     * @param int         $code         The 3-digit integer result code to set.
-     * @param string|null $reasonPhrase The reason phrase to use with the
-     *                                  provided status code; if none is provided,
-     *                                  implementations MAY use the defaults as
-     *                                  suggested in the HTTP specification.
-     *
-     * @return static
+     * @inheritDoc
      */
     public function withStatus(int $code, string $reasonPhrase = null): self
     {
@@ -123,18 +101,7 @@ class Response implements Contract
     }
 
     /**
-     * Gets the response reason phrase associated with the status code.
-     * Because a reason phrase is not a required element in a response
-     * status line, the reason phrase value MAY be null. Implementations MAY
-     * choose to return the default RFC 7231 recommended reason phrase (or
-     * those listed in the IANA HTTP Status Code Registry) for the response's
-     * status code.
-     *
-     * @link http://tools.ietf.org/html/rfc7231#section-6
-     * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
-     *
-     * @return string Reason phrase; must return an empty string if none
-     *                present.
+     * @inheritDoc
      */
     public function getReasonPhrase(): string
     {
@@ -142,20 +109,7 @@ class Response implements Contract
     }
 
     /**
-     * Return an instance with the specified cookie appended with the given
-     * value.
-     * Existing values for the specified header will be maintained. The new
-     * value(s) will be appended to the existing list. If the cookie header
-     * did not exist previously, it will be added.
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * new cookie header and/or value.
-     *
-     * @param Cookie $cookie The cookie model
-     *
-     * @throws InvalidArgumentException for invalid header names or values.
-     *
-     * @return static
+     * @inheritDoc
      */
     public function withCookie(Cookie $cookie): self
     {
@@ -163,20 +117,7 @@ class Response implements Contract
     }
 
     /**
-     * Return an instance with the specified cookie appended to the
-     * Set-Cookie header as expired.
-     * Existing values for the specified header will be maintained. The new
-     * value(s) will be appended to the existing list. If the cookie header
-     * did not exist previously, it will be added.
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * new cookie header and/or value.
-     *
-     * @param Cookie $cookie The cookie model
-     *
-     * @throws InvalidArgumentException for invalid header names or values.
-     *
-     * @return static
+     * @inheritDoc
      */
     public function withoutCookie(Cookie $cookie): self
     {
@@ -187,9 +128,7 @@ class Response implements Contract
     }
 
     /**
-     * Send the response HTTP line header.
-     *
-     * @return static
+     * @inheritDoc
      */
     public function sendHttpLine(): self
     {
@@ -206,9 +145,7 @@ class Response implements Contract
     }
 
     /**
-     * Send the response headers.
-     *
-     * @return static
+     * @inheritDoc
      */
     public function sendHeaders(): self
     {
@@ -223,9 +160,7 @@ class Response implements Contract
     }
 
     /**
-     * Send the response body.
-     *
-     * @return static
+     * @inheritDoc
      */
     public function sendBody(): self
     {
@@ -244,9 +179,7 @@ class Response implements Contract
     }
 
     /**
-     * Send the response.
-     *
-     * @return static
+     * @inheritDoc
      */
     public function send(): self
     {

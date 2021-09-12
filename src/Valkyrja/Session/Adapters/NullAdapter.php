@@ -94,20 +94,14 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Start the session.
-     *
-     * @throws SessionStartFailure
-     *
-     * @return void
+     * @inheritDoc
      */
     public function start(): void
     {
     }
 
     /**
-     * Get the session id.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getId(): string
     {
@@ -115,13 +109,7 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Set the session id.
-     *
-     * @param string $id The session id
-     *
-     * @throws InvalidSessionId
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setId(string $id): void
     {
@@ -137,9 +125,7 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Get the session name.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getName(): string
     {
@@ -147,11 +133,7 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Set the session name.
-     *
-     * @param string $name The session name
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setName(string $name): void
     {
@@ -159,9 +141,7 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Is a session active?
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isActive(): bool
     {
@@ -169,11 +149,7 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Determine whether the session has an item.
-     *
-     * @param string $id The item id
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function has(string $id): bool
     {
@@ -181,12 +157,7 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Get an item from the session.
-     *
-     * @param string     $id      The item id
-     * @param mixed|null $default The default value
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function get(string $id, $default = null)
     {
@@ -194,12 +165,7 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Set an item into the session.
-     *
-     * @param string $id    The id
-     * @param mixed  $value The value
-     *
-     * @return void
+     * @inheritDoc
      */
     public function set(string $id, $value): void
     {
@@ -207,11 +173,7 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Remove a session item.
-     *
-     * @param string $id The item id
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function remove(string $id): bool
     {
@@ -225,9 +187,7 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Get all items in the session.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function all(): array
     {
@@ -235,13 +195,9 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Generate a csrf token for a unique token id.
-     *
-     * @param string $id The csrf unique token id
+     * @inheritDoc
      *
      * @throws Exception
-     *
-     * @return string
      */
     public function generateCsrfToken(string $id): string
     {
@@ -253,14 +209,7 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Validate a csrf token.
-     *
-     * @param string $id    The csrf unique token id
-     * @param string $token The token to validate
-     *
-     * @throws InvalidCsrfToken
-     *
-     * @return void
+     * @inheritDoc
      */
     public function validateCsrfToken(string $id, string $token): void
     {
@@ -270,12 +219,7 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Determine if a csrf token is valid.
-     *
-     * @param string $id    The csrf unique token id
-     * @param string $token The token to validate
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isCsrfTokenValid(string $id, string $token): bool
     {
@@ -295,9 +239,7 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Clear the local session.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function clear(): void
     {
@@ -305,9 +247,7 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Destroy the session.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function destroy(): void
     {

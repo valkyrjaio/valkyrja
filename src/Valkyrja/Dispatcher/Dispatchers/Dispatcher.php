@@ -50,16 +50,7 @@ class Dispatcher implements Contract
     }
 
     /**
-     * Verify the dispatch's dispatch capabilities.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     *
-     * @return void
+     * @inheritDoc
      */
     public function verifyDispatch(Dispatch $dispatch): void
     {
@@ -70,12 +61,7 @@ class Dispatcher implements Contract
     }
 
     /**
-     * Dispatch a callable.
-     *
-     * @param Dispatch   $dispatch  The dispatch
-     * @param array|null $arguments [optional] The arguments
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function dispatch(Dispatch $dispatch, array $arguments = null)
     {
@@ -96,12 +82,7 @@ class Dispatcher implements Contract
     }
 
     /**
-     * Dispatch a class method.
-     *
-     * @param Dispatch   $dispatch  The dispatch
-     * @param array|null $arguments [optional] The arguments
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function dispatchClassMethod(Dispatch $dispatch, array $arguments = null)
     {
@@ -119,11 +100,7 @@ class Dispatcher implements Contract
     }
 
     /**
-     * Dispatch a class property.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function dispatchClassProperty(Dispatch $dispatch)
     {
@@ -140,12 +117,7 @@ class Dispatcher implements Contract
     }
 
     /**
-     * Dispatch a class.
-     *
-     * @param Dispatch   $dispatch  The dispatch
-     * @param array|null $arguments [optional] The arguments
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function dispatchClass(Dispatch $dispatch, array $arguments = null)
     {
@@ -170,12 +142,7 @@ class Dispatcher implements Contract
     }
 
     /**
-     * Dispatch a function.
-     *
-     * @param Dispatch   $dispatch  The dispatch
-     * @param array|null $arguments [optional] The arguments
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function dispatchFunction(Dispatch $dispatch, array $arguments = null)
     {
@@ -192,12 +159,7 @@ class Dispatcher implements Contract
     }
 
     /**
-     * Dispatch a closure.
-     *
-     * @param Dispatch   $dispatch  The dispatch
-     * @param array|null $arguments [optional] The arguments
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function dispatchClosure(Dispatch $dispatch, array $arguments = null)
     {
@@ -214,13 +176,7 @@ class Dispatcher implements Contract
     }
 
     /**
-     * Verify the class and method of a dispatch.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @throws InvalidMethodException
-     *
-     * @return void
+     * @inheritDoc
      */
     public function verifyClassMethod(Dispatch $dispatch): void
     {
@@ -236,13 +192,7 @@ class Dispatcher implements Contract
     }
 
     /**
-     * Verify the class and property of a dispatch.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @throws InvalidPropertyException
-     *
-     * @return void
+     * @inheritDoc
      */
     public function verifyClassProperty(Dispatch $dispatch): void
     {
@@ -258,13 +208,7 @@ class Dispatcher implements Contract
     }
 
     /**
-     * Verify the function of a dispatch.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @throws InvalidFunctionException
-     *
-     * @return void
+     * @inheritDoc
      */
     public function verifyFunction(Dispatch $dispatch): void
     {

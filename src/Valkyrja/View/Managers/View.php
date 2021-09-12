@@ -88,13 +88,7 @@ class View implements Contract
     }
 
     /**
-     * Make a new View.
-     *
-     * @param string|null $name      [optional] The template name
-     * @param array       $variables [optional] The variables
-     * @param string|null $engine    [optional] The engine to use
-     *
-     * @return Template
+     * @inheritDoc
      */
     public function createTemplate(string $name = null, array $variables = [], string $engine = null): Template
     {
@@ -110,11 +104,7 @@ class View implements Contract
     }
 
     /**
-     * Get a render engine.
-     *
-     * @param string|null $name The name of the engine
-     *
-     * @return Engine
+     * @inheritDoc
      */
     public function getEngine(string $name = null): Engine
     {
@@ -127,12 +117,7 @@ class View implements Contract
     }
 
     /**
-     * Render a template.
-     *
-     * @param string $name      The name of the template to render
-     * @param array  $variables [optional] The variables to set
-     *
-     * @return string
+     * @inheritDoc
      */
     public function render(string $name, array $variables = []): string
     {

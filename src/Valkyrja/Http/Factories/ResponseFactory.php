@@ -50,13 +50,7 @@ class ResponseFactory implements Contract
     }
 
     /**
-     * Create a response.
-     *
-     * @param string|null $content    [optional] The response content
-     * @param int|null    $statusCode [optional] The response status code
-     * @param array|null  $headers    [optional] An array of response headers
-     *
-     * @return Response
+     * @inheritDoc
      */
     public function createResponse(string $content = null, int $statusCode = null, array $headers = null): Response
     {
@@ -68,15 +62,9 @@ class ResponseFactory implements Contract
     }
 
     /**
-     * Create a JSON response.
-     *
-     * @param array|null $data       [optional] The data to set
-     * @param int|null   $statusCode [optional] The response status code
-     * @param array|null $headers    [optional] An array of response headers
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return JsonResponse
      */
     public function createJsonResponse(array $data = null, int $statusCode = null, array $headers = null): JsonResponse
     {
@@ -84,17 +72,10 @@ class ResponseFactory implements Contract
     }
 
     /**
-     * Create a JSONP response.
-     *
-     * @param string     $callback   The jsonp callback
-     * @param array|null $data       [optional] The data to set
-     * @param int|null   $statusCode [optional] The response status code
-     * @param array|null $headers    [optional] An array of response headers
+     * @inheritDoc
      *
      * @throws InvalidArgumentException
      * @throws JsonException
-     *
-     * @return JsonResponse
      */
     public function createJsonpResponse(string $callback, array $data = null, int $statusCode = null, array $headers = null): JsonResponse
     {
@@ -102,13 +83,7 @@ class ResponseFactory implements Contract
     }
 
     /**
-     * Create a redirect response.
-     *
-     * @param string|null $uri        [optional] The uri to redirect to
-     * @param int|null    $statusCode [optional] The response status code
-     * @param array|null  $headers    [optional] An array of response headers
-     *
-     * @return RedirectResponse
+     * @inheritDoc
      */
     public function createRedirectResponse(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse
     {
@@ -116,14 +91,7 @@ class ResponseFactory implements Contract
     }
 
     /**
-     * Redirect to a named route response builder.
-     *
-     * @param string     $name       The name of the route
-     * @param array|null $data       [optional] The data for dynamic routes
-     * @param int|null   $statusCode [optional] The response status code
-     * @param array|null $headers    [optional] An array of response headers
-     *
-     * @return RedirectResponse
+     * @inheritDoc
      */
     public function route(string $name, array $data = null, int $statusCode = null, array $headers = null): RedirectResponse
     {
@@ -137,14 +105,7 @@ class ResponseFactory implements Contract
     }
 
     /**
-     * View response builder.
-     *
-     * @param string     $template   The view template to use
-     * @param array|null $data       [optional] The view data
-     * @param int|null   $statusCode [optional] The response status code
-     * @param array|null $headers    [optional] An array of response headers
-     *
-     * @return Response
+     * @inheritDoc
      */
     public function view(string $template, array $data = null, int $statusCode = null, array $headers = null): Response
     {

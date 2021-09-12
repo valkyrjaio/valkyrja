@@ -44,9 +44,7 @@ class ContainerCache extends Commander
     public const SHORT_DESCRIPTION = 'Generate the container cache';
 
     /**
-     * Run the command.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function run(): int
     {

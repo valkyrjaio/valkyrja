@@ -31,9 +31,7 @@ class Listener extends Dispatch implements ListenerContract
     public ?string $event;
 
     /**
-     * Get the event.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getEvent(): ?string
     {
@@ -41,11 +39,7 @@ class Listener extends Dispatch implements ListenerContract
     }
 
     /**
-     * Set the event.
-     *
-     * @param string|null $event The event
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setEvent(string $event = null): self
     {

@@ -82,9 +82,7 @@ class Annotator implements Contract
     }
 
     /**
-     * Get the parser.
-     *
-     * @return Parser
+     * @inheritDoc
      */
     public function getParser(): Parser
     {
@@ -92,11 +90,7 @@ class Annotator implements Contract
     }
 
     /**
-     * Set the parser.
-     *
-     * @param Parser $parser The parser
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setParser(Parser $parser): void
     {
@@ -104,13 +98,9 @@ class Annotator implements Contract
     }
 
     /**
-     * Get a class's annotations.
-     *
-     * @param string $class The class
+     * @inheritDoc
      *
      * @throws ReflectionException
-     *
-     * @return Annotation[]
      */
     public function classAnnotations(string $class): array
     {
@@ -118,21 +108,17 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::CLASS_NAME => $class,
-                ],
-                ...$this->parser->getAnnotations((string) $this->reflector->getClassReflection($class)->getDocComment())
-            );
+            [
+                Property::CLASS_NAME => $class,
+            ],
+            ...$this->parser->getAnnotations((string) $this->reflector->getClassReflection($class)->getDocComment())
+        );
     }
 
     /**
-     * Get a class's members' annotations.
-     *
-     * @param string $class The class
+     * @inheritDoc
      *
      * @throws ReflectionException
-     *
-     * @return Annotation[]
      */
     public function classMembersAnnotations(string $class): array
     {
@@ -140,19 +126,15 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= array_merge(
-                $this->propertiesAnnotations($class),
-                $this->methodsAnnotations($class)
-            );
+            $this->propertiesAnnotations($class),
+            $this->methodsAnnotations($class)
+        );
     }
 
     /**
-     * Get a class's and class's members' annotations.
-     *
-     * @param string $class The class
+     * @inheritDoc
      *
      * @throws ReflectionException
-     *
-     * @return Annotation[]
      */
     public function classAndMembersAnnotations(string $class): array
     {
@@ -160,20 +142,15 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= array_merge(
-                $this->classAnnotations($class),
-                $this->classMembersAnnotations($class)
-            );
+            $this->classAnnotations($class),
+            $this->classMembersAnnotations($class)
+        );
     }
 
     /**
-     * Get a property's annotations.
-     *
-     * @param string $class    The class
-     * @param string $property The property
+     * @inheritDoc
      *
      * @throws ReflectionException
-     *
-     * @return Annotation[]
      */
     public function propertyAnnotations(string $class, string $property): array
     {
@@ -182,23 +159,19 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::CLASS_NAME => $class,
-                    Property::PROPERTY   => $property,
-                    Property::STATIC     => $reflection->isStatic(),
-                ],
-                ...$this->parser->getAnnotations((string) $reflection->getDocComment())
-            );
+            [
+                Property::CLASS_NAME => $class,
+                Property::PROPERTY   => $property,
+                Property::STATIC     => $reflection->isStatic(),
+            ],
+            ...$this->parser->getAnnotations((string) $reflection->getDocComment())
+        );
     }
 
     /**
-     * Get a class's properties' annotations.
-     *
-     * @param string $class The class
+     * @inheritDoc
      *
      * @throws ReflectionException
-     *
-     * @return Annotation[]
      */
     public function propertiesAnnotations(string $class): array
     {
@@ -228,14 +201,9 @@ class Annotator implements Contract
     }
 
     /**
-     * Get a method's annotations.
-     *
-     * @param string $class  The class
-     * @param string $method The method
+     * @inheritDoc
      *
      * @throws ReflectionException
-     *
-     * @return Annotation[]
      */
     public function methodAnnotations(string $class, string $method): array
     {
@@ -244,23 +212,19 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::CLASS_NAME => $class,
-                    Property::METHOD     => $method,
-                    Property::STATIC     => $reflection->isStatic(),
-                ],
-                ...$this->parser->getAnnotations((string) $reflection->getDocComment())
-            );
+            [
+                Property::CLASS_NAME => $class,
+                Property::METHOD     => $method,
+                Property::STATIC     => $reflection->isStatic(),
+            ],
+            ...$this->parser->getAnnotations((string) $reflection->getDocComment())
+        );
     }
 
     /**
-     * Get a class's methods' annotations.
-     *
-     * @param string $class The class
+     * @inheritDoc
      *
      * @throws ReflectionException
-     *
-     * @return Annotation[]
      */
     public function methodsAnnotations(string $class): array
     {
@@ -290,13 +254,9 @@ class Annotator implements Contract
     }
 
     /**
-     * Get a function's annotations.
-     *
-     * @param string $function The function
+     * @inheritDoc
      *
      * @throws ReflectionException
-     *
-     * @return Annotation[]
      */
     public function functionAnnotations(string $function): array
     {
@@ -304,13 +264,13 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::FUNCTION => $function,
-                ],
-                ...$this->parser->getAnnotations(
-                    (string) $this->reflector->getFunctionReflection($function)->getDocComment()
-                )
-            );
+            [
+                Property::FUNCTION => $function,
+            ],
+            ...$this->parser->getAnnotations(
+            (string) $this->reflector->getFunctionReflection($function)->getDocComment()
+        )
+        );
     }
 
     /**

@@ -51,11 +51,7 @@ class LogAdapter implements Adapter
     }
 
     /**
-     * Send a message.
-     *
-     * @param Message $message The message to send
-     *
-     * @return void
+     * @inheritDoc
      */
     public function send(Message $message): void
     {

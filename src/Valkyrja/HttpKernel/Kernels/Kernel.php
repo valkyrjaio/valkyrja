@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\HttpKernel\Kernels;
 
-use RuntimeException;
 use Throwable;
 use Valkyrja\Container\Container;
 use Valkyrja\Event\Events;
@@ -124,13 +123,9 @@ class Kernel implements Contract
     }
 
     /**
-     * Handle a request.
-     *
-     * @param Request $request The request
+     * @inheritDoc
      *
      * @throws Throwable
-     *
-     * @return Response
      */
     public function handle(Request $request): Response
     {
@@ -157,13 +152,7 @@ class Kernel implements Contract
     }
 
     /**
-     * Send the response.
-     *
-     * @param Response $response
-     *
-     * @throws RuntimeException
-     *
-     * @return static
+     * @inheritDoc
      */
     public function send(Response $response): self
     {
@@ -176,12 +165,7 @@ class Kernel implements Contract
     }
 
     /**
-     * Terminate the request.
-     *
-     * @param Request  $request  The request
-     * @param Response $response The response
-     *
-     * @return void
+     * @inheritDoc
      */
     public function terminate(Request $request, Response $response): void
     {
@@ -207,13 +191,9 @@ class Kernel implements Contract
     }
 
     /**
-     * Run the kernel.
-     *
-     * @param Request $request The request
+     * @inheritDoc
      *
      * @throws Throwable
-     *
-     * @return void
      */
     public function run(Request $request): void
     {

@@ -89,12 +89,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Setup the application.
-     *
-     * @param string|null $config [optional] The config to use
-     * @param bool        $force  [optional] Whether to force a setup
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setup(string $config = null, bool $force = false): void
     {
@@ -116,11 +111,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Add to the global config array.
-     *
-     * @param Config $config The config to add
-     *
-     * @return static
+     * @inheritDoc
      */
     public function withConfig(Config $config): self
     {
@@ -134,9 +125,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get the application instance.
-     *
-     * @return Application
+     * @inheritDoc
      */
     public static function app(): Application
     {
@@ -144,12 +133,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get an environment variable.
-     *
-     * @param string|null $key     [optional] The variable to get
-     * @param mixed       $default [optional] The default value to return
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public static function env(string $key = null, $default = null)
     {
@@ -176,9 +160,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get the environment variables class.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public static function getEnv(): ?string
     {
@@ -186,11 +168,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Set the environment variables class.
-     *
-     * @param string|null $env [optional] The env file to use
-     *
-     * @return void
+     * @inheritDoc
      */
     public static function setEnv(string $env = null): void
     {
@@ -199,12 +177,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get the config.
-     *
-     * @param string|null $key     [optional] The key to get
-     * @param mixed       $default [optional] The default value if the key is not found
-     *
-     * @return mixed|Config|null
+     * @inheritDoc
      */
     public function config(string $key = null, $default = null)
     {
@@ -218,12 +191,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Add to the global config array.
-     *
-     * @param ConfigModel $newConfig The new config to add
-     * @param string      $key       The key to use
-     *
-     * @return void
+     * @inheritDoc
      */
     public function addConfig(ConfigModel $newConfig, string $key): void
     {
@@ -232,9 +200,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get the container instance.
-     *
-     * @return Container
+     * @inheritDoc
      */
     public function container(): Container
     {
@@ -242,11 +208,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Set the container instance.
-     *
-     * @param Container $container The container instance
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setContainer(Container $container): self
     {
@@ -256,9 +218,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get the dispatcher instance.
-     *
-     * @return Dispatcher
+     * @inheritDoc
      */
     public function dispatcher(): Dispatcher
     {
@@ -266,9 +226,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get the events instance.
-     *
-     * @return Events
+     * @inheritDoc
      */
     public function events(): Events
     {
@@ -276,9 +234,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get the console kernel instance from the container.
-     *
-     * @return ConsoleKernel
+     * @inheritDoc
      */
     public function consoleKernel(): ConsoleKernel
     {
@@ -286,9 +242,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get the kernel instance from the container.
-     *
-     * @return Kernel
+     * @inheritDoc
      */
     public function kernel(): Kernel
     {
@@ -296,9 +250,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Whether the application is running in debug mode or not.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function debug(): bool
     {
@@ -306,9 +258,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get the environment with which the application is running in.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function environment(): string
     {
@@ -316,9 +266,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get the application version.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function version(): string
     {
@@ -326,12 +274,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Offset set.
-     *
-     * @param string|null $serviceId The service id
-     * @param mixed       $service   The service
-     *
-     * @return void
+     * @inheritDoc
      */
     public function offsetSet($serviceId, $service): void
     {
@@ -339,11 +282,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Offset exists.
-     *
-     * @param string $serviceId The service id
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function offsetExists($serviceId): bool
     {
@@ -351,11 +290,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Offset unset.
-     *
-     * @param string $serviceId The service id
-     *
-     * @return void
+     * @inheritDoc
      */
     public function offsetUnset($serviceId): void
     {
@@ -363,11 +298,7 @@ class Valkyrja implements Application
     }
 
     /**
-     * Offset get.
-     *
-     * @param string $serviceId The service id
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function offsetGet($serviceId)
     {

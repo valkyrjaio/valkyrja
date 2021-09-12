@@ -161,11 +161,7 @@ class Console implements Contract
     }
 
     /**
-     * Get a command by name.
-     *
-     * @param string $name The command name
-     *
-     * @return Command|null
+     * @inheritDoc
      */
     public function getCommand(string $name): ?Command
     {
@@ -175,11 +171,7 @@ class Console implements Contract
     }
 
     /**
-     * Determine whether a command exists by name.
-     *
-     * @param string $name The command name
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function hasCommand(string $name): bool
     {
@@ -187,11 +179,7 @@ class Console implements Contract
     }
 
     /**
-     * Remove a command.
-     *
-     * @param string $name The command name
-     *
-     * @return void
+     * @inheritDoc
      */
     public function removeCommand(string $name): void
     {
@@ -201,13 +189,7 @@ class Console implements Contract
     }
 
     /**
-     * Get a command from an input.
-     *
-     * @param Input $input The input
-     *
-     * @throws CommandNotFound
-     *
-     * @return Command
+     * @inheritDoc
      */
     public function inputCommand(Input $input): Command
     {
@@ -215,13 +197,7 @@ class Console implements Contract
     }
 
     /**
-     * Match a command by path.
-     *
-     * @param string $path The path
-     *
-     * @throws CommandNotFound
-     *
-     * @return Command
+     * @inheritDoc
      */
     public function matchCommand(string $path): Command
     {
@@ -265,14 +241,7 @@ class Console implements Contract
     }
 
     /**
-     * Dispatch a command.
-     *
-     * @param Input  $input  The input
-     * @param Output $output The output
-     *
-     * @throws CommandNotFound
-     *
-     * @return int
+     * @inheritDoc
      */
     public function dispatch(Input $input, Output $output): int
     {
@@ -293,11 +262,7 @@ class Console implements Contract
     }
 
     /**
-     * Dispatch a command.
-     *
-     * @param Command $command The command
-     *
-     * @return int
+     * @inheritDoc
      */
     public function dispatchCommand(Command $command): int
     {
@@ -314,9 +279,7 @@ class Console implements Contract
     }
 
     /**
-     * Get all commands.
-     *
-     * @return Command[]
+     * @inheritDoc
      */
     public function all(): array
     {
@@ -330,11 +293,7 @@ class Console implements Contract
     }
 
     /**
-     * Set the commands.
-     *
-     * @param Command ...$commands The commands
-     *
-     * @return void
+     * @inheritDoc
      */
     public function set(Command ...$commands): void
     {
@@ -342,9 +301,7 @@ class Console implements Contract
     }
 
     /**
-     * Get the named commands list.
-     *
-     * @return string[]
+     * @inheritDoc
      */
     public function getNamedCommands(): array
     {
@@ -352,13 +309,7 @@ class Console implements Contract
     }
 
     /**
-     * Register a provider.
-     *
-     * @param string $provider The provider
-     * @param bool   $force    [optional] Whether to force regardless of
-     *                         deferred status
-     *
-     * @return void
+     * @inheritDoc
      */
     public function register(string $provider, bool $force = false): void
     {

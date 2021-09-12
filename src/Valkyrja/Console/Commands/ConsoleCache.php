@@ -44,9 +44,7 @@ class ConsoleCache extends Commander
     public const SHORT_DESCRIPTION = 'Generate the console cache';
 
     /**
-     * Run the command.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function run(): int
     {

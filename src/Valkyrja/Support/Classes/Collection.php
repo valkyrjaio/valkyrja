@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Classes;
 
-use JsonException;
+use Valkyrja\Support\Collection as Contract;
 use Valkyrja\Support\Type\Arr;
 
 use function array_keys;
@@ -26,7 +26,7 @@ use function in_array;
  * @author   Melech Mizrachi
  * @template T
  */
-class Collection
+class Collection implements Contract
 {
     /**
      * The collection of items.
@@ -46,11 +46,7 @@ class Collection
     }
 
     /**
-     * Set the collection.
-     *
-     * @param array $collection The collection
-     *
-     * @return self
+     * @inheritDoc
      */
     public function setAll(array $collection): self
     {
@@ -60,11 +56,7 @@ class Collection
     }
 
     /**
-     * Determine if a value exists in the collection.
-     *
-     * @param mixed $value The value
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function exists($value): bool
     {
@@ -72,9 +64,7 @@ class Collection
     }
 
     /**
-     * Get all the items in the collection.
-     *
-     * @return array<int, T>
+     * @inheritDoc
      */
     public function all(): array
     {
@@ -82,9 +72,7 @@ class Collection
     }
 
     /**
-     * Get all the keys in the collection.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function keys(): array
     {
@@ -92,9 +80,7 @@ class Collection
     }
 
     /**
-     * Get the total count of items in the collection.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function count(): int
     {
@@ -102,9 +88,7 @@ class Collection
     }
 
     /**
-     * Determine if the collection is empty.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isEmpty(): bool
     {
@@ -112,11 +96,7 @@ class Collection
     }
 
     /**
-     * Get a single item from the collection.
-     *
-     * @param string $key The key
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function __get(string $key) // : mixed
     {
@@ -124,12 +104,7 @@ class Collection
     }
 
     /**
-     * Set a new item into the collection.
-     *
-     * @param string $key   The key
-     * @param mixed  $value The value
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function __set(string $key, $value)
     {
@@ -137,12 +112,7 @@ class Collection
     }
 
     /**
-     * Get a single item from the collection.
-     *
-     * @param string $key     The key to get
-     * @param mixed  $default [optional] The default value
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function get(string $key, $default = null) // : mixed
     {
@@ -150,11 +120,7 @@ class Collection
     }
 
     /**
-     * Determine if an item is in the collection.
-     *
-     * @param string $key The key
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function has(string $key): bool
     {
@@ -162,12 +128,7 @@ class Collection
     }
 
     /**
-     * Set a new item into the collection.
-     *
-     * @param string $key   The key
-     * @param mixed  $value The value
-     *
-     * @return self
+     * @inheritDoc
      */
     public function set(string $key, $value): self
     {
@@ -177,11 +138,7 @@ class Collection
     }
 
     /**
-     * Determine if an item is in the collection.
-     *
-     * @param string $key The key
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function __isset(string $key): bool
     {
@@ -189,11 +146,7 @@ class Collection
     }
 
     /**
-     * Remove an item from the collection.
-     *
-     * @param string $key The key
-     *
-     * @return void
+     * @inheritDoc
      */
     public function __unset(string $key): void
     {
@@ -201,11 +154,7 @@ class Collection
     }
 
     /**
-     * Remove an item from the collection.
-     *
-     * @param string $key The key
-     *
-     * @return self
+     * @inheritDoc
      */
     public function remove(string $key): self
     {
@@ -219,11 +168,7 @@ class Collection
     }
 
     /**
-     * Convert the collection to a string.
-     *
-     * @throws JsonException
-     *
-     * @return string
+     * @inheritDoc
      */
     public function __toString(): string
     {

@@ -57,9 +57,7 @@ class Output implements Contract
     }
 
     /**
-     * Get the formatter.
-     *
-     * @return Formatter
+     * @inheritDoc
      */
     public function getFormatter(): Formatter
     {
@@ -67,11 +65,7 @@ class Output implements Contract
     }
 
     /**
-     * Set the formatter.
-     *
-     * @param Formatter $formatter
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setFormatter(Formatter $formatter): void
     {
@@ -79,13 +73,7 @@ class Output implements Contract
     }
 
     /**
-     * Write messages to the console.
-     *
-     * @param array            $messages    The messages
-     * @param bool             $newLine     [optional] Whether to use new lines between each message
-     * @param OutputStyle|null $outputStyle [optional] The output style to use
-     *
-     * @return void
+     * @inheritDoc
      */
     public function write(array $messages, bool $newLine = null, OutputStyle $outputStyle = null): void
     {
@@ -95,13 +83,7 @@ class Output implements Contract
     }
 
     /**
-     * Write a message to the console.
-     *
-     * @param string           $message     The message
-     * @param bool             $newLine     [optional] Whether to use new lines between each message
-     * @param OutputStyle|null $outputStyle [optional] The output style to use
-     *
-     * @return void
+     * @inheritDoc
      */
     public function writeMessage(string $message, bool $newLine = null, OutputStyle $outputStyle = null): void
     {

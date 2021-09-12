@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing;
 
+use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
+use Valkyrja\Routing\Exceptions\InvalidRouteName;
 
 /**
  * Interface Router.
@@ -72,6 +74,8 @@ interface Router extends MiddlewareAware
      *
      * @param string $name The name of the route to get
      *
+     * @throws InvalidRouteName
+     *
      * @return Route
      */
     public function getRoute(string $name): Route;
@@ -89,6 +93,8 @@ interface Router extends MiddlewareAware
      * Get a route from a request.
      *
      * @param Request $request The request
+     *
+     * @throws HttpException
      *
      * @return Route
      */

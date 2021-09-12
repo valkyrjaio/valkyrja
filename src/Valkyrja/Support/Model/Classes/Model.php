@@ -92,13 +92,9 @@ abstract class Model implements Contract
     protected array $__originalProperties = [];
 
     /**
-     * Set properties from an array of properties.
-     *
-     * @param array $properties
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return static
      */
     public static function fromArray(array $properties): self
     {
@@ -110,11 +106,7 @@ abstract class Model implements Contract
     }
 
     /**
-     * Get a property.
-     *
-     * @param string $name The property to get
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function __get(string $name)
     {
@@ -128,12 +120,7 @@ abstract class Model implements Contract
     }
 
     /**
-     * Set a property.
-     *
-     * @param string $name  The property to set
-     * @param mixed  $value The value to set
-     *
-     * @return void
+     * @inheritDoc
      */
     public function __set(string $name, $value): void
     {
@@ -149,11 +136,7 @@ abstract class Model implements Contract
     }
 
     /**
-     * Check if a property is set.
-     *
-     * @param string $name The property to check
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function __isset(string $name): bool
     {
@@ -167,13 +150,9 @@ abstract class Model implements Contract
     }
 
     /**
-     * Set properties from an array of properties.
-     *
-     * @param array $properties
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return void
      */
     public function updateProperties(array $properties): void
     {
@@ -181,13 +160,9 @@ abstract class Model implements Contract
     }
 
     /**
-     * Get a new model with new properties.
-     *
-     * @param array $properties The properties to modify
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return static
      */
     public function withProperties(array $properties): self
     {
@@ -199,11 +174,7 @@ abstract class Model implements Contract
     }
 
     /**
-     * Get model as an array.
-     *
-     * @param string ...$properties [optional] An array of properties to return
-     *
-     * @return array
+     * @inheritDoc
      */
     public function asArray(string ...$properties): array
     {
@@ -225,9 +196,7 @@ abstract class Model implements Contract
     }
 
     /**
-     * Get model as an array including only changed properties.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function asChangedArray(): array
     {
@@ -250,11 +219,7 @@ abstract class Model implements Contract
     }
 
     /**
-     * Get an original property value by name.
-     *
-     * @param string $name The original property to get
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function getOriginalPropertyValue(string $name)
     {
@@ -262,9 +227,7 @@ abstract class Model implements Contract
     }
 
     /**
-     * Get all original properties.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function asOriginalArray(): array
     {
@@ -272,9 +235,7 @@ abstract class Model implements Contract
     }
 
     /**
-     * Serialize properties for json_encode.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function jsonSerialize(): array
     {
@@ -282,11 +243,9 @@ abstract class Model implements Contract
     }
 
     /**
-     * To string.
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return string
      */
     public function __toString(): string
     {
@@ -294,11 +253,7 @@ abstract class Model implements Contract
     }
 
     /**
-     * Expose hidden fields or all fields.
-     *
-     * @param string ...$properties The properties to expose
-     *
-     * @return void
+     * @inheritDoc
      */
     public function expose(string ...$properties): void
     {
@@ -308,11 +263,7 @@ abstract class Model implements Contract
     }
 
     /**
-     * Un-expose hidden fields or all fields.
-     *
-     * @param string ...$properties [optional] The properties to unexpose
-     *
-     * @return void
+     * @inheritDoc
      */
     public function unexpose(string ...$properties): void
     {

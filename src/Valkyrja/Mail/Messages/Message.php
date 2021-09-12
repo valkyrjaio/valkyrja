@@ -100,9 +100,7 @@ class Message implements Contract
     protected ?string $plainBody = null;
 
     /**
-     * Get the from email.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getFromEmail(): string
     {
@@ -110,9 +108,7 @@ class Message implements Contract
     }
 
     /**
-     * Get the from name.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getFromName(): string
     {
@@ -120,12 +116,7 @@ class Message implements Contract
     }
 
     /**
-     * Set the mail's sender information.
-     *
-     * @param string $email The email
-     * @param string $name  [optional] The name
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setFrom(string $email, string $name = ''): self
     {
@@ -136,9 +127,7 @@ class Message implements Contract
     }
 
     /**
-     * Get the recipients.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getRecipients(): array
     {
@@ -146,12 +135,7 @@ class Message implements Contract
     }
 
     /**
-     * Add a recipient.
-     *
-     * @param string $email The email
-     * @param string $name  [optional] The name
-     *
-     * @return static
+     * @inheritDoc
      */
     public function addRecipient(string $email, string $name = ''): self
     {
@@ -164,9 +148,7 @@ class Message implements Contract
     }
 
     /**
-     * Get the reply to recipients.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getReplyToRecipients(): array
     {
@@ -174,12 +156,7 @@ class Message implements Contract
     }
 
     /**
-     * Add a Reply-To recipient.
-     *
-     * @param string $email The email
-     * @param string $name  [optional] The name
-     *
-     * @return static
+     * @inheritDoc
      */
     public function addReplyTo(string $email, string $name = ''): self
     {
@@ -192,9 +169,7 @@ class Message implements Contract
     }
 
     /**
-     * Get the copy recipients.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getCopyRecipients(): array
     {
@@ -202,12 +177,7 @@ class Message implements Contract
     }
 
     /**
-     * Add a copy (CC) recipient.
-     *
-     * @param string $email The email
-     * @param string $name  [optional] The name
-     *
-     * @return static
+     * @inheritDoc
      */
     public function addCopyRecipient(string $email, string $name = ''): self
     {
@@ -220,9 +190,7 @@ class Message implements Contract
     }
 
     /**
-     * Get the blind copy recipients.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getBlindCopyRecipients(): array
     {
@@ -230,12 +198,7 @@ class Message implements Contract
     }
 
     /**
-     * Add a blind copy (BCC) recipient.
-     *
-     * @param string $email The email
-     * @param string $name  [optional] The name
-     *
-     * @return static
+     * @inheritDoc
      */
     public function addBlindCopyRecipient(string $email, string $name = ''): self
     {
@@ -248,9 +211,7 @@ class Message implements Contract
     }
 
     /**
-     * Get the attachments.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getAttachments(): array
     {
@@ -258,12 +219,7 @@ class Message implements Contract
     }
 
     /**
-     * Add an attachment from the filesystem.
-     *
-     * @param string $path The path
-     * @param string $name [optional] The name
-     *
-     * @return static
+     * @inheritDoc
      */
     public function addAttachment(string $path, string $name = ''): self
     {
@@ -276,9 +232,7 @@ class Message implements Contract
     }
 
     /**
-     * Get the subject.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getSubject(): string
     {
@@ -286,11 +240,7 @@ class Message implements Contract
     }
 
     /**
-     * Set the subject.
-     *
-     * @param string $subject The subject
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setSubject(string $subject): self
     {
@@ -300,9 +250,7 @@ class Message implements Contract
     }
 
     /**
-     * Get the body.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getBody(): string
     {
@@ -310,11 +258,7 @@ class Message implements Contract
     }
 
     /**
-     * Set the body of the mail.
-     *
-     * @param string $body The body
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setBody(string $body): self
     {
@@ -324,9 +268,7 @@ class Message implements Contract
     }
 
     /**
-     * Get whether the message body is html.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isHtml(): bool
     {
@@ -334,11 +276,7 @@ class Message implements Contract
     }
 
     /**
-     * Set whether the message body is html.
-     *
-     * @param bool $isHtml [optional] Whether the message body is html
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setIsHtml(bool $isHtml = true): self
     {
@@ -348,9 +286,7 @@ class Message implements Contract
     }
 
     /**
-     * Get the plain body.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getPlainBody(): ?string
     {
@@ -358,11 +294,7 @@ class Message implements Contract
     }
 
     /**
-     * If sending html, add an alternative plain message body for clients without html support.
-     *
-     * @param string|null $plainBody The plain body message
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setPlainBody(string $plainBody = null): self
     {

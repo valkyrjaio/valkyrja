@@ -16,8 +16,8 @@ namespace Valkyrja\Event\Annotators;
 use InvalidArgumentException;
 use ReflectionException;
 use Valkyrja\Annotation\Filter;
-use Valkyrja\Event\Annotator as Contract;
 use Valkyrja\Event\Annotations\Listener;
+use Valkyrja\Event\Annotator as Contract;
 use Valkyrja\Event\Listener as ListenerContract;
 use Valkyrja\Event\Models\Listener as ListenerModel;
 use Valkyrja\Reflection\Reflector;
@@ -56,13 +56,9 @@ class Annotator implements Contract
     }
 
     /**
-     * Get the events.
-     *
-     * @param string ...$classes The classes
+     * @inheritDoc
      *
      * @throws ReflectionException
-     *
-     * @return Listener[]
      */
     public function getListeners(string ...$classes): array
     {

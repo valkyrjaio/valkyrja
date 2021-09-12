@@ -44,9 +44,7 @@ class EventsCache extends Commander
     public const SHORT_DESCRIPTION = 'Generate the events cache';
 
     /**
-     * Run the command.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function run(): int
     {

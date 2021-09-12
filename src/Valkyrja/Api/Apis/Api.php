@@ -72,11 +72,7 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON model from an exception.
-     *
-     * @param Exception $exception
-     *
-     * @return Json
+     * @inheritDoc
      */
     public function jsonFromException(Exception $exception): Json
     {
@@ -106,11 +102,7 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON response from an exception
-     *
-     * @param Exception $exception
-     *
-     * @return JsonResponse
+     * @inheritDoc
      */
     public function jsonResponseFromException(Exception $exception): JsonResponse
     {
@@ -118,11 +110,7 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON model from an object.
-     *
-     * @param object $object
-     *
-     * @return Json
+     * @inheritDoc
      */
     public function jsonFromObject(object $object): Json
     {
@@ -137,11 +125,7 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON model from an object.
-     *
-     * @param object $object
-     *
-     * @return JsonResponse
+     * @inheritDoc
      */
     public function jsonResponseFromObject(object $object): JsonResponse
     {
@@ -149,11 +133,7 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON model from an array of objects.
-     *
-     * @param object ...$objects
-     *
-     * @return Json
+     * @inheritDoc
      */
     public function jsonFromObjects(object ...$objects): Json
     {
@@ -172,11 +152,7 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON response from an array of objects.
-     *
-     * @param object ...$objects
-     *
-     * @return JsonResponse
+     * @inheritDoc
      */
     public function jsonResponseFromObjects(object ...$objects): JsonResponse
     {
@@ -184,11 +160,7 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON model from an array.
-     *
-     * @param array $array
-     *
-     * @return Json
+     * @inheritDoc
      */
     public function jsonFromArray(array $array): Json
     {
@@ -203,11 +175,7 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON model from an array.
-     *
-     * @param array $array
-     *
-     * @return JsonResponse
+     * @inheritDoc
      */
     public function jsonResponseFromArray(array $array): JsonResponse
     {
@@ -215,11 +183,7 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON model from an entity.
-     *
-     * @param Entity $entity
-     *
-     * @return Json
+     * @inheritDoc
      */
     public function jsonFromEntity(Entity $entity): Json
     {
@@ -227,11 +191,7 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON response from an entity.
-     *
-     * @param Entity $entity
-     *
-     * @return JsonResponse
+     * @inheritDoc
      */
     public function jsonResponseFromEntity(Entity $entity): JsonResponse
     {
@@ -239,11 +199,7 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON model from an array of entities.
-     *
-     * @param Entity ...$entities
-     *
-     * @return Json
+     * @inheritDoc
      */
     public function jsonFromEntities(Entity ...$entities): Json
     {
@@ -251,11 +207,7 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON response from an array of entities.
-     *
-     * @param Entity ...$entities
-     *
-     * @return JsonResponse
+     * @inheritDoc
      */
     public function jsonResponseFromEntities(Entity ...$entities): JsonResponse
     {

@@ -23,9 +23,7 @@ use Valkyrja\Notification\Constants\UserField;
 trait NotifiableUserTrait
 {
     /**
-     * Whether this user entity has a name field.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public static function hasNameField(): bool
     {
@@ -33,9 +31,7 @@ trait NotifiableUserTrait
     }
 
     /**
-     * Get the name field.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getNameField(): string
     {
@@ -43,9 +39,7 @@ trait NotifiableUserTrait
     }
 
     /**
-     * Whether this user entity has a phone number field.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public static function hasPhoneNumberField(): bool
     {
@@ -53,9 +47,7 @@ trait NotifiableUserTrait
     }
 
     /**
-     * Get the phone number field.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getPhoneNumberField(): string
     {
@@ -63,9 +55,7 @@ trait NotifiableUserTrait
     }
 
     /**
-     * Whether this user entity has a secret id field.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public static function hasSecretIdField(): bool
     {
@@ -73,9 +63,7 @@ trait NotifiableUserTrait
     }
 
     /**
-     * Get the secret id field.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getSecretIdField(): string
     {

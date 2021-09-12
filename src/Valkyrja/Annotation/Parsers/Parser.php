@@ -60,14 +60,10 @@ class Parser implements Contract
     }
 
     /**
-     * Get annotations from a given string.
-     *
-     * @param string $docString The doc string
+     * @inheritDoc
      *
      * @throws InvalidAnnotationKeyArgument
      * @throws JsonException
-     *
-     * @return Annotation[]
      */
     public function getAnnotations(string $docString): array
     {
@@ -88,13 +84,9 @@ class Parser implements Contract
     }
 
     /**
-     * Filter a string of properties into an key => value array.
-     *
-     * @param string|null $arguments The arguments
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return array
      */
     public function getPropertiesAsArray(string $arguments = null): ?array
     {
@@ -118,9 +110,7 @@ class Parser implements Contract
     }
 
     /**
-     * Get the annotations regex.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getRegex(): string
     {
@@ -149,9 +139,7 @@ class Parser implements Contract
     }
 
     /**
-     * Get the annotations map.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getAnnotationsMap(): array
     {
@@ -159,11 +147,7 @@ class Parser implements Contract
     }
 
     /**
-     * Get an annotation model from the annotations map.
-     *
-     * @param string $annotationType The annotation type
-     *
-     * @return Annotation
+     * @inheritDoc
      */
     public function getAnnotationFromMap(string $annotationType): Annotation
     {

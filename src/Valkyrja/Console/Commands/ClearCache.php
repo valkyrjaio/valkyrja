@@ -39,9 +39,7 @@ class ClearCache extends Commander
     public const SHORT_DESCRIPTION = 'Clear the optimized application';
 
     /**
-     * Clear the application cache.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function run(): int
     {

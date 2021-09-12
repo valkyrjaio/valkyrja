@@ -18,7 +18,6 @@ use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
@@ -140,9 +139,7 @@ class Router implements Contract
     }
 
     /**
-     * Get the config.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getConfig(): array
     {
@@ -150,9 +147,7 @@ class Router implements Contract
     }
 
     /**
-     * Whether to run in debug.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function debug(): bool
     {
@@ -160,9 +155,7 @@ class Router implements Contract
     }
 
     /**
-     * Get the route collection.
-     *
-     * @return Collection
+     * @inheritDoc
      */
     public function getCollection(): Collection
     {
@@ -170,9 +163,7 @@ class Router implements Contract
     }
 
     /**
-     * Get the route matcher.
-     *
-     * @return Matcher
+     * @inheritDoc
      */
     public function getMatcher(): Matcher
     {
@@ -180,11 +171,7 @@ class Router implements Contract
     }
 
     /**
-     * Set a single route.
-     *
-     * @param Route $route The route
-     *
-     * @return void
+     * @inheritDoc
      */
     public function addRoute(Route $route): void
     {
@@ -193,9 +180,7 @@ class Router implements Contract
     }
 
     /**
-     * Get all routes set by the application.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getRoutes(): array
     {
@@ -203,13 +188,7 @@ class Router implements Contract
     }
 
     /**
-     * Get a route by name.
-     *
-     * @param string $name The name of the route to get
-     *
-     * @throws InvalidRouteName
-     *
-     * @return Route
+     * @inheritDoc
      */
     public function getRoute(string $name): Route
     {
@@ -222,11 +201,7 @@ class Router implements Contract
     }
 
     /**
-     * Determine whether a route name exists.
-     *
-     * @param string $name The name of the route
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function hasRoute(string $name): bool
     {
@@ -234,14 +209,9 @@ class Router implements Contract
     }
 
     /**
-     * Get a route from a request.
-     *
-     * @param Request $request The request
+     * @inheritDoc
      *
      * @throws InvalidArgumentException
-     * @throws HttpException
-     *
-     * @return Route
      */
     public function getRouteFromRequest(Request $request): Route
     {
@@ -260,13 +230,9 @@ class Router implements Contract
     }
 
     /**
-     * Dispatch the route and find a match.
-     *
-     * @param Request $request The request
+     * @inheritDoc
      *
      * @throws InvalidArgumentException
-     *
-     * @return Response
      */
     public function dispatch(Request $request): Response
     {

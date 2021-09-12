@@ -54,11 +54,7 @@ class Formatter implements Contract
     protected array $options = [];
 
     /**
-     * Set the foreground.
-     *
-     * @param FormatForeground|null $foreground The foreground color
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setForeground(FormatForeground $foreground = null): void
     {
@@ -66,11 +62,7 @@ class Formatter implements Contract
     }
 
     /**
-     * Set the background.
-     *
-     * @param FormatBackground|null $background The background
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setBackground(FormatBackground $background = null): void
     {
@@ -78,11 +70,7 @@ class Formatter implements Contract
     }
 
     /**
-     * Set foreground or background to default.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
+     * @inheritDoc
      */
     public function resetColor(bool $background = null): void
     {
@@ -90,11 +78,7 @@ class Formatter implements Contract
     }
 
     /**
-     * Set an option.
-     *
-     * @param FormatOption $option The option
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setOption(FormatOption $option): void
     {
@@ -102,11 +86,7 @@ class Formatter implements Contract
     }
 
     /**
-     * Determine whether an option has been set.
-     *
-     * @param FormatOption $option The option
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function hasOption(FormatOption $option): bool
     {
@@ -114,11 +94,7 @@ class Formatter implements Contract
     }
 
     /**
-     * Remove an option.
-     *
-     * @param FormatOption $option The option
-     *
-     * @return void
+     * @inheritDoc
      */
     public function removeOption(FormatOption $option): void
     {
@@ -128,11 +104,7 @@ class Formatter implements Contract
     }
 
     /**
-     * Set options.
-     *
-     * @param FormatOption ...$options The options
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setOptions(FormatOption ...$options): void
     {
@@ -142,9 +114,7 @@ class Formatter implements Contract
     }
 
     /**
-     * Reset the options.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function resetOptions(): void
     {
@@ -152,11 +122,7 @@ class Formatter implements Contract
     }
 
     /**
-     * Format a message.
-     *
-     * @param string $message The message
-     *
-     * @return string
+     * @inheritDoc
      */
     public function format(string $message): string
     {

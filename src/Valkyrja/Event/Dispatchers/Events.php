@@ -14,11 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Dispatchers;
 
 use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
-use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
-use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
-use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
-use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Event\Event;
 use Valkyrja\Event\Events as Contract;
 use Valkyrja\Event\Listener;
@@ -68,18 +63,7 @@ class Events implements Contract
     }
 
     /**
-     * Add an event listener.
-     *
-     * @param string   $event    The event
-     * @param Listener $listener The event listener
-     *
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidClosureException
-     *
-     * @return void
+     * @inheritDoc
      */
     public function listen(string $event, Listener $listener): void
     {
@@ -99,18 +83,7 @@ class Events implements Contract
     }
 
     /**
-     * Add a listener to many events.
-     *
-     * @param Listener $listener  The listener
-     * @param string   ...$events The events
-     *
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidClosureException
-     *
-     * @return void
+     * @inheritDoc
      */
     public function listenMany(Listener $listener, string ...$events): void
     {
@@ -122,12 +95,7 @@ class Events implements Contract
     }
 
     /**
-     * Determine whether an event has a specified listener.
-     *
-     * @param string $event      The event
-     * @param string $listenerId The event listener
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function hasListener(string $event, string $listenerId): bool
     {
@@ -135,12 +103,7 @@ class Events implements Contract
     }
 
     /**
-     * Remove an event listener.
-     *
-     * @param string $event      The event
-     * @param string $listenerId The event listener
-     *
-     * @return void
+     * @inheritDoc
      */
     public function removeListener(string $event, string $listenerId): void
     {
@@ -152,11 +115,7 @@ class Events implements Contract
     }
 
     /**
-     * Get the event's listeners.
-     *
-     * @param string $event The event
-     *
-     * @return Listener[]
+     * @inheritDoc
      */
     public function getListeners(string $event): array
     {
@@ -166,11 +125,7 @@ class Events implements Contract
     }
 
     /**
-     * Determine whether an event has listeners.
-     *
-     * @param string $event The event
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function hasListeners(string $event): bool
     {
@@ -178,11 +133,7 @@ class Events implements Contract
     }
 
     /**
-     * Add a new event.
-     *
-     * @param string $event The event
-     *
-     * @return void
+     * @inheritDoc
      */
     public function add(string $event): void
     {
@@ -192,11 +143,7 @@ class Events implements Contract
     }
 
     /**
-     * Determine whether an event exists.
-     *
-     * @param string $event The event
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function has(string $event): bool
     {
@@ -204,11 +151,7 @@ class Events implements Contract
     }
 
     /**
-     * Remove an event.
-     *
-     * @param string $event The event
-     *
-     * @return void
+     * @inheritDoc
      */
     public function remove(string $event): void
     {
@@ -218,12 +161,7 @@ class Events implements Contract
     }
 
     /**
-     * Trigger an event.
-     *
-     * @param string     $event     The event
-     * @param array|null $arguments [optional] The arguments
-     *
-     * @return mixed[]
+     * @inheritDoc
      */
     public function trigger(string $event, array $arguments = null): array
     {
@@ -254,11 +192,7 @@ class Events implements Contract
     }
 
     /**
-     * Trigger an event.
-     *
-     * @param Event $event The event
-     *
-     * @return mixed[]
+     * @inheritDoc
      */
     public function event(Event $event): array
     {
@@ -266,9 +200,7 @@ class Events implements Contract
     }
 
     /**
-     * Get all events.
-     *
-     * @return Listener[][]
+     * @inheritDoc
      */
     public function all(): array
     {
@@ -276,11 +208,7 @@ class Events implements Contract
     }
 
     /**
-     * Set the events.
-     *
-     * @param Listener[][] $events The events
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setEvents(array $events): void
     {

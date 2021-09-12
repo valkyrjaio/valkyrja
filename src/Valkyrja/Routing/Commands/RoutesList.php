@@ -52,11 +52,9 @@ class RoutesList extends Commander
     protected const END_FORMAT        = "\e[0m";
 
     /**
-     * Run the command.
+     * @inheritDoc
      *
      * @throws InvalidArgumentException
-     *
-     * @return int
      */
     public function run(): int
     {
@@ -78,7 +76,7 @@ class RoutesList extends Commander
         ];
 
         // Sort routes by path
-        usort($routerRoutes, fn (Route $a, Route $b) => $a->getPath() <=> $b->getPath());
+        usort($routerRoutes, fn(Route $a, Route $b) => $a->getPath() <=> $b->getPath());
 
         foreach ($routerRoutes as $route) {
             $this->setRoute($route, $routes, $lengths);

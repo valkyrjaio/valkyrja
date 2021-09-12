@@ -103,12 +103,7 @@ class Notifier implements Contract
     }
 
     /**
-     * Create a new notification
-     *
-     * @param string $name The notification name
-     * @param array  $data [optional] The data to add to the notification
-     *
-     * @return Notification
+     * @inheritDoc
      */
     public function createNotification(string $name, array $data = []): Notification
     {
@@ -116,12 +111,7 @@ class Notifier implements Contract
     }
 
     /**
-     * Add a mail recipient to send a notification to.
-     *
-     * @param string $email The email
-     * @param string $name  [optional] The name
-     *
-     * @return static
+     * @inheritDoc
      */
     public function addMailRecipient(string $email, string $name = ''): self
     {
@@ -134,11 +124,7 @@ class Notifier implements Contract
     }
 
     /**
-     * Add an SMS recipient to send a notification to.
-     *
-     * @param string $phoneNumber The phone number
-     *
-     * @return static
+     * @inheritDoc
      */
     public function addSmsRecipient(string $phoneNumber): self
     {
@@ -150,11 +136,7 @@ class Notifier implements Contract
     }
 
     /**
-     * Add a broadcast event to send a notification to.
-     *
-     * @param string $event The event
-     *
-     * @return static
+     * @inheritDoc
      */
     public function addBroadcastEvent(string $event): self
     {
@@ -166,11 +148,7 @@ class Notifier implements Contract
     }
 
     /**
-     * Add a User recipient to send a notification to.
-     *
-     * @param NotifiableUser $user
-     *
-     * @return static
+     * @inheritDoc
      */
     public function addUserRecipient(NotifiableUser $user): self
     {
@@ -182,11 +160,7 @@ class Notifier implements Contract
     }
 
     /**
-     * Send a notification.
-     *
-     * @param Notification $notification The notification to send
-     *
-     * @return void
+     * @inheritDoc
      */
     public function notify(Notification $notification): void
         // public function notify(string $notificationName, array $data = []): void
@@ -209,12 +183,7 @@ class Notifier implements Contract
     }
 
     /**
-     * Send a notification to a user.
-     *
-     * @param Notification   $notification The notification to send
-     * @param NotifiableUser $user         The user to notify
-     *
-     * @return void
+     * @inheritDoc
      */
     public function notifyUser(Notification $notification, NotifiableUser $user): void
     {
@@ -223,12 +192,7 @@ class Notifier implements Contract
     }
 
     /**
-     * Send a notification to users.
-     *
-     * @param Notification     $notification The notification to send
-     * @param NotifiableUser[] $users        The users to notify
-     *
-     * @return void
+     * @inheritDoc
      */
     public function notifyUsers(Notification $notification, NotifiableUser ...$users): void
     {

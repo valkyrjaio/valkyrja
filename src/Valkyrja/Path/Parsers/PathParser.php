@@ -64,13 +64,7 @@ REGEX;
     }
 
     /**
-     * Parse a path and get its parts.
-     *
-     * @param string $path The path
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return array
+     * @inheritDoc
      */
     public function parse(string $path): array
     {

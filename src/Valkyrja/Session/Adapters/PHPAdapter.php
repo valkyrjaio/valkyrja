@@ -34,11 +34,7 @@ use const PHP_SESSION_ACTIVE;
 class PHPAdapter extends NullAdapter
 {
     /**
-     * Start the session.
-     *
-     * @throws SessionStartFailure
-     *
-     * @return void
+     * @inheritDoc
      */
     public function start(): void
     {
@@ -62,9 +58,7 @@ class PHPAdapter extends NullAdapter
     }
 
     /**
-     * Get the session id.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getId(): string
     {
@@ -72,13 +66,7 @@ class PHPAdapter extends NullAdapter
     }
 
     /**
-     * Set the session id.
-     *
-     * @param string $id The session id
-     *
-     * @throws InvalidSessionId
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setId(string $id): void
     {
@@ -94,9 +82,7 @@ class PHPAdapter extends NullAdapter
     }
 
     /**
-     * Get the session name.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getName(): string
     {
@@ -104,11 +90,7 @@ class PHPAdapter extends NullAdapter
     }
 
     /**
-     * Set the session name.
-     *
-     * @param string $name The session name
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setName(string $name): void
     {
@@ -116,9 +98,7 @@ class PHPAdapter extends NullAdapter
     }
 
     /**
-     * Is a session active?
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isActive(): bool
     {
@@ -126,9 +106,7 @@ class PHPAdapter extends NullAdapter
     }
 
     /**
-     * Clear the local session.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function clear(): void
     {
@@ -138,9 +116,7 @@ class PHPAdapter extends NullAdapter
     }
 
     /**
-     * Destroy the session.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function destroy(): void
     {

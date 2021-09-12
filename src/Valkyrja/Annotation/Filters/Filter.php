@@ -44,12 +44,7 @@ class Filter implements Contract
     }
 
     /**
-     * Get a class's annotations by type.
-     *
-     * @param string $type  The type
-     * @param string $class The class
-     *
-     * @return Annotation[]
+     * @inheritDoc
      */
     public function classAnnotationsByType(string $type, string $class): array
     {
@@ -57,12 +52,7 @@ class Filter implements Contract
     }
 
     /**
-     * Get a class's members' annotations by type.
-     *
-     * @param string $type  The type
-     * @param string $class The class
-     *
-     * @return Annotation[]
+     * @inheritDoc
      */
     public function classMembersAnnotationsByType(string $type, string $class): array
     {
@@ -70,12 +60,7 @@ class Filter implements Contract
     }
 
     /**
-     * Get a class's and class's members' annotations by type.
-     *
-     * @param string $type  The type
-     * @param string $class The class
-     *
-     * @return Annotation[]
+     * @inheritDoc
      */
     public function classAndMembersAnnotationsByType(string $type, string $class): array
     {
@@ -83,13 +68,7 @@ class Filter implements Contract
     }
 
     /**
-     * Get a property's annotations by type.
-     *
-     * @param string $type     The type
-     * @param string $class    The class
-     * @param string $property The property
-     *
-     * @return Annotation[]
+     * @inheritDoc
      */
     public function propertyAnnotationsByType(string $type, string $class, string $property): array
     {
@@ -97,12 +76,7 @@ class Filter implements Contract
     }
 
     /**
-     * Get a class's properties' annotations by type.
-     *
-     * @param string $type  The type
-     * @param string $class The class
-     *
-     * @return Annotation[]
+     * @inheritDoc
      */
     public function propertiesAnnotationsByType(string $type, string $class): array
     {
@@ -110,13 +84,7 @@ class Filter implements Contract
     }
 
     /**
-     * Get a method's annotations by type.
-     *
-     * @param string $type   The type
-     * @param string $class  The class
-     * @param string $method The method
-     *
-     * @return Annotation[]
+     * @inheritDoc
      */
     public function methodAnnotationsByType(string $type, string $class, string $method): array
     {
@@ -124,12 +92,7 @@ class Filter implements Contract
     }
 
     /**
-     * Get a class's methods' annotations by type.
-     *
-     * @param string $type  The type
-     * @param string $class The class
-     *
-     * @return Annotation[]
+     * @inheritDoc
      */
     public function methodsAnnotationsByType(string $type, string $class): array
     {
@@ -137,12 +100,7 @@ class Filter implements Contract
     }
 
     /**
-     * Get a function's annotations.
-     *
-     * @param string $type     The type
-     * @param string $function The function
-     *
-     * @return Annotation[]
+     * @inheritDoc
      */
     public function functionAnnotationsByType(string $type, string $function): array
     {
@@ -150,12 +108,7 @@ class Filter implements Contract
     }
 
     /**
-     * Filter annotations by type.
-     *
-     * @param string     $type           The type to match
-     * @param Annotation ...$annotations The annotations
-     *
-     * @return Annotation[]
+     * @inheritDoc
      */
     public function filterAnnotationsByType(string $type, Annotation ...$annotations): array
     {
@@ -163,12 +116,7 @@ class Filter implements Contract
     }
 
     /**
-     * Filter annotations by types.
-     *
-     * @param array      $types          The types to match
-     * @param Annotation ...$annotations The annotations
-     *
-     * @return Annotation[]
+     * @inheritDoc
      */
     public function filterAnnotationsByTypes(array $types, Annotation ...$annotations): array
     {

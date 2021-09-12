@@ -15,7 +15,6 @@ namespace Valkyrja\Session\Drivers;
 
 use Valkyrja\Session\Adapter;
 use Valkyrja\Session\Driver as Contract;
-use Valkyrja\Session\Exceptions\InvalidCsrfToken;
 
 /**
  * Class Driver.
@@ -42,9 +41,7 @@ class Driver implements Contract
     }
 
     /**
-     * Start the session.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function start(): void
     {
@@ -52,9 +49,7 @@ class Driver implements Contract
     }
 
     /**
-     * Get the session id.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getId(): string
     {
@@ -62,11 +57,7 @@ class Driver implements Contract
     }
 
     /**
-     * Set the session id.
-     *
-     * @param string $id
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setId(string $id): void
     {
@@ -74,9 +65,7 @@ class Driver implements Contract
     }
 
     /**
-     * Get the session name.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getName(): string
     {
@@ -84,11 +73,7 @@ class Driver implements Contract
     }
 
     /**
-     * Set the session name.
-     *
-     * @param string $name The session name
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setName(string $name): void
     {
@@ -96,9 +81,7 @@ class Driver implements Contract
     }
 
     /**
-     * Is a session active?
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isActive(): bool
     {
@@ -106,11 +89,7 @@ class Driver implements Contract
     }
 
     /**
-     * Determine whether the session has an item.
-     *
-     * @param string $id The item id
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function has(string $id): bool
     {
@@ -118,12 +97,7 @@ class Driver implements Contract
     }
 
     /**
-     * Get an item from the session.
-     *
-     * @param string     $id      The item id
-     * @param mixed|null $default The default value
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function get(string $id, $default = null)
     {
@@ -131,12 +105,7 @@ class Driver implements Contract
     }
 
     /**
-     * Set an item into the session.
-     *
-     * @param string $id    The id
-     * @param mixed  $value The value
-     *
-     * @return void
+     * @inheritDoc
      */
     public function set(string $id, $value): void
     {
@@ -144,11 +113,7 @@ class Driver implements Contract
     }
 
     /**
-     * Remove a session item.
-     *
-     * @param string $id The item id
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function remove(string $id): bool
     {
@@ -156,9 +121,7 @@ class Driver implements Contract
     }
 
     /**
-     * Get all items in the session.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function all(): array
     {
@@ -166,11 +129,7 @@ class Driver implements Contract
     }
 
     /**
-     * Generate a csrf token for a unique token id.
-     *
-     * @param string $id The csrf unique token id
-     *
-     * @return string
+     * @inheritDoc
      */
     public function generateCsrfToken(string $id): string
     {
@@ -178,14 +137,7 @@ class Driver implements Contract
     }
 
     /**
-     * Validate a csrf token.
-     *
-     * @param string $id    The csrf unique token id
-     * @param string $token The token to validate
-     *
-     * @throws InvalidCsrfToken
-     *
-     * @return void
+     * @inheritDoc
      */
     public function validateCsrfToken(string $id, string $token): void
     {
@@ -193,12 +145,7 @@ class Driver implements Contract
     }
 
     /**
-     * Determine if a csrf token is valid.
-     *
-     * @param string $id    The csrf unique token id
-     * @param string $token The token to validate
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isCsrfTokenValid(string $id, string $token): bool
     {
@@ -206,9 +153,7 @@ class Driver implements Contract
     }
 
     /**
-     * Clear the local session.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function clear(): void
     {
@@ -216,9 +161,7 @@ class Driver implements Contract
     }
 
     /**
-     * Destroy the session.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function destroy(): void
     {

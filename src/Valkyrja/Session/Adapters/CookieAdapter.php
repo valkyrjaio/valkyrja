@@ -65,12 +65,9 @@ class CookieAdapter extends PHPAdapter
     }
 
     /**
-     * Start the session.
+     * @inheritDoc
      *
-     * @throws SessionStartFailure
      * @throws CryptException
-     *
-     * @return void
      */
     public function start(): void
     {
@@ -93,14 +90,9 @@ class CookieAdapter extends PHPAdapter
     }
 
     /**
-     * Set an item into the session.
-     *
-     * @param string $id    The id
-     * @param mixed  $value The value
+     * @inheritDoc
      *
      * @throws CryptException
-     *
-     * @return void
      */
     public function set(string $id, $value): void
     {
@@ -110,13 +102,9 @@ class CookieAdapter extends PHPAdapter
     }
 
     /**
-     * Remove a session item.
-     *
-     * @param string $id The item id
+     * @inheritDoc
      *
      * @throws CryptException
-     *
-     * @return bool
      */
     public function remove(string $id): bool
     {
@@ -132,11 +120,9 @@ class CookieAdapter extends PHPAdapter
     }
 
     /**
-     * Clear the local session.
+     * @inheritDoc
      *
      * @throws CryptException
-     *
-     * @return void
      */
     public function clear(): void
     {
@@ -146,11 +132,9 @@ class CookieAdapter extends PHPAdapter
     }
 
     /**
-     * Destroy the session.
+     * @inheritDoc
      *
      * @throws CryptException
-     *
-     * @return void
      */
     public function destroy(): void
     {

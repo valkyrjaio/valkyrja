@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Models;
 
-use DateTime;
+use DateTimeInterface;
 use Valkyrja\Http\Constants\SameSite;
 use Valkyrja\Http\Cookie as Contract;
 use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
@@ -139,9 +139,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Returns the cookie as a string.
-     *
-     * @return string The cookie
+     * @inheritDoc
      */
     public function __toString(): string
     {
@@ -160,7 +158,7 @@ class Cookie extends Model implements Contract
         if ($expire !== 0) {
             $str .= '; expires='
                 . gmdate(
-                    DateTime::COOKIE,
+                    DateTimeInterface::COOKIE,
                     $expire
                 )
                 . '; max-age=' . $maxAge;
@@ -190,9 +188,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Gets the max age of the cookie.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function getMaxAge(): int
     {
@@ -202,9 +198,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Get the cookie's name.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getName(): string
     {
@@ -212,11 +206,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Set the cookie's name.
-     *
-     * @param string $name The name
-     *
-     * @return Cookie
+     * @inheritDoc
      */
     public function setName(string $name): self
     {
@@ -226,9 +216,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Get the cookie's value.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getValue(): ?string
     {
@@ -236,11 +224,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Set the cookie's value.
-     *
-     * @param string|null $value The value
-     *
-     * @return Cookie
+     * @inheritDoc
      */
     public function setValue(string $value = null): self
     {
@@ -250,9 +234,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Get expire time for the cookie.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function getExpire(): int
     {
@@ -260,11 +242,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Set expire time for the cookie.
-     *
-     * @param int $expire The expire time
-     *
-     * @return Cookie
+     * @inheritDoc
      */
     public function setExpire(int $expire): self
     {
@@ -274,9 +252,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Get the path the cookie is available to.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getPath(): string
     {
@@ -284,11 +260,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Set the path the cookie is available to.
-     *
-     * @param string $path The path
-     *
-     * @return Cookie
+     * @inheritDoc
      */
     public function setPath(string $path): self
     {
@@ -298,9 +270,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Get the domain the cookie is available to.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getDomain(): ?string
     {
@@ -308,11 +278,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Set the domain the cookie is available to.
-     *
-     * @param string|null $domain The domain
-     *
-     * @return Cookie
+     * @inheritDoc
      */
     public function setDomain(string $domain = null): self
     {
@@ -322,10 +288,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Whether the cookie should only be transmitted over a secure HTTPS
-     * connection.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isSecure(): bool
     {
@@ -333,12 +296,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Set whether the cookie should only be transmitted over a secure HTTPS
-     * connection.
-     *
-     * @param bool $secure
-     *
-     * @return Cookie
+     * @inheritDoc
      */
     public function setSecure(bool $secure): self
     {
@@ -348,10 +306,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Whether the cookie will be made accessible only through the HTTP
-     * protocol.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isHttpOnly(): bool
     {
@@ -359,11 +314,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Set whether the cookie will be made accessible only through the HTTP protocol.
-     *
-     * @param bool $httpOnly [optional] The flag
-     *
-     * @return Cookie
+     * @inheritDoc
      */
     public function setHttpOnly(bool $httpOnly = false): self
     {
@@ -373,9 +324,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Whether the cookie value should be sent with no url encoding.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isRaw(): bool
     {
@@ -383,11 +332,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Set whether the cookie value should be sent with no url encoding.
-     *
-     * @param bool $raw
-     *
-     * @return Cookie
+     * @inheritDoc
      */
     public function setRaw(bool $raw): self
     {
@@ -397,9 +342,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Get whether the cookie will be available for cross-site requests.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getSameSite(): ?string
     {
@@ -407,13 +350,7 @@ class Cookie extends Model implements Contract
     }
 
     /**
-     * Set whether the cookie will be available for cross-site requests.
-     *
-     * @param string|null $sameSite
-     *
-     * @throws InvalidSameSiteTypeException
-     *
-     * @return Cookie
+     * @inheritDoc
      */
     public function setSameSite(string $sameSite = null): self
     {

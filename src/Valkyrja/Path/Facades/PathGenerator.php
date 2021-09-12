@@ -26,9 +26,7 @@ use Valkyrja\Support\Facade\Facade;
 class PathGenerator extends Facade
 {
     /**
-     * The facade instance.
-     *
-     * @return string|object
+     * @inheritDoc
      */
     public static function instance()
     {

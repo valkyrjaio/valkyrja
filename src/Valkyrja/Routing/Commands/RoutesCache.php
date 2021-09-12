@@ -45,9 +45,7 @@ class RoutesCache extends Commander
     public const DESCRIPTION       = '';
 
     /**
-     * Run the command.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function run(): int
     {

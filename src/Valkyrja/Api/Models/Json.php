@@ -68,9 +68,7 @@ class Json extends Model implements Contract
     public string $status = Status::SUCCESS;
 
     /**
-     * Get the message.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getMessage(): ?string
     {
@@ -78,11 +76,7 @@ class Json extends Model implements Contract
     }
 
     /**
-     * Set the error message.
-     *
-     * @param string|null $message
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setMessage(string $message = null): self
     {
@@ -92,9 +86,7 @@ class Json extends Model implements Contract
     }
 
     /**
-     * Get the errors.
-     *
-     * @return string[]
+     * @inheritDoc
      */
     public function getErrors(): array
     {
@@ -102,11 +94,7 @@ class Json extends Model implements Contract
     }
 
     /**
-     * Set the errors.
-     *
-     * @param string[] $errors The errors
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setErrors(array $errors): self
     {
@@ -116,11 +104,7 @@ class Json extends Model implements Contract
     }
 
     /**
-     * Set an error.
-     *
-     * @param string $error The error
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setError(string $error): self
     {
@@ -130,9 +114,7 @@ class Json extends Model implements Contract
     }
 
     /**
-     * Get the warnings.
-     *
-     * @return string[]
+     * @inheritDoc
      */
     public function getWarnings(): array
     {
@@ -140,11 +122,7 @@ class Json extends Model implements Contract
     }
 
     /**
-     * Set the warnings.
-     *
-     * @param string[] $warnings The warnings
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setWarnings(array $warnings): self
     {
@@ -154,11 +132,7 @@ class Json extends Model implements Contract
     }
 
     /**
-     * Set an warning.
-     *
-     * @param string $warning The warning
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setWarning(string $warning): self
     {
@@ -168,9 +142,7 @@ class Json extends Model implements Contract
     }
 
     /**
-     * Get the data.
-     *
-     * @return array|null
+     * @inheritDoc
      */
     public function getData(): ?array
     {
@@ -178,11 +150,7 @@ class Json extends Model implements Contract
     }
 
     /**
-     * Set the data.
-     *
-     * @param array|null $data
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setData(array $data = null): self
     {
@@ -192,9 +160,7 @@ class Json extends Model implements Contract
     }
 
     /**
-     * Get the status code.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function getStatusCode(): int
     {
@@ -202,11 +168,7 @@ class Json extends Model implements Contract
     }
 
     /**
-     * Set the status code.
-     *
-     * @param int $statusCode
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setStatusCode(int $statusCode): self
     {
@@ -216,9 +178,7 @@ class Json extends Model implements Contract
     }
 
     /**
-     * Get the status.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getStatus(): string
     {
@@ -226,11 +186,7 @@ class Json extends Model implements Contract
     }
 
     /**
-     * Set the status.
-     *
-     * @param string $status
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setStatus(string $status): self
     {
@@ -240,9 +196,7 @@ class Json extends Model implements Contract
     }
 
     /**
-     * Serialize properties for json_encode.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function jsonSerialize(): array
     {

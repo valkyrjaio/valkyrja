@@ -26,11 +26,7 @@ use Valkyrja\Validation\Validator;
 abstract class ValidateRequestMiddleware extends Middleware
 {
     /**
-     * Middleware handler for before a request is dispatched.
-     *
-     * @param Request $request The request
-     *
-     * @return Request|Response
+     * @inheritDoc
      */
     public static function before(Request $request)
     {

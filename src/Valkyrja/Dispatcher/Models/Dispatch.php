@@ -137,9 +137,7 @@ class Dispatch extends Model implements Contract
     public ?array $arguments;
 
     /**
-     * Get the id.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getId(): ?string
     {
@@ -147,11 +145,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Set the id.
-     *
-     * @param string|null $id The id
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setId(string $id = null): self
     {
@@ -161,9 +155,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Get the name.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getName(): ?string
     {
@@ -171,11 +163,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Set the name.
-     *
-     * @param string|null $name The name
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setName(string $name = null): self
     {
@@ -185,9 +173,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Get the class.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getClass(): ?string
     {
@@ -195,11 +181,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Set the class.
-     *
-     * @param string|null $class The class
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setClass(string $class = null): self
     {
@@ -210,9 +192,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Check whether this is a class dispatch.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isClass(): bool
     {
@@ -220,9 +200,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Get the property.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getProperty(): ?string
     {
@@ -230,11 +208,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Set the property.
-     *
-     * @param string|null $property The property
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setProperty(string $property = null): self
     {
@@ -245,9 +219,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Check whether this is a class/property dispatch.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isProperty(): bool
     {
@@ -255,9 +227,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Get the method.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getMethod(): ?string
     {
@@ -265,11 +235,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Set the method.
-     *
-     * @param string|null $method The method
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setMethod(string $method = null): self
     {
@@ -280,9 +246,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Check whether this is a class/method dispatch.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isMethod(): bool
     {
@@ -290,9 +254,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Get whether the member is static.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isStatic(): bool
     {
@@ -300,11 +262,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Set whether the member is static.
-     *
-     * @param bool $static Whether the member is static
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setStatic(bool $static = true): self
     {
@@ -314,7 +272,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * @return string|null
+     * @inheritDoc
      */
     public function getFunction(): ?string
     {
@@ -322,11 +280,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Set the function.
-     *
-     * @param string|null $function The function
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setFunction(string $function = null): self
     {
@@ -337,9 +291,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Check whether this is a function dispatch.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isFunction(): bool
     {
@@ -347,9 +299,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Get the closure.
-     *
-     * @return Closure|null
+     * @inheritDoc
      */
     public function getClosure(): ?Closure
     {
@@ -357,11 +307,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Set the closure.
-     *
-     * @param Closure|null $closure The closure
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setClosure(Closure $closure = null): self
     {
@@ -372,9 +318,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Check whether this is a closure dispatch.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isClosure(): bool
     {
@@ -382,9 +326,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Get the matches.
-     *
-     * @return array|null
+     * @inheritDoc
      */
     public function getMatches(): ?array
     {
@@ -392,11 +334,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Set the matches.
-     *
-     * @param array|null $matches The matches
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setMatches(array $matches = null): self
     {
@@ -406,9 +344,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Get the arguments.
-     *
-     * @return array|null
+     * @inheritDoc
      */
     public function getArguments(): ?array
     {
@@ -416,11 +352,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Set the arguments.
-     *
-     * @param array|null $arguments The arguments
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setArguments(array $arguments = null): self
     {
@@ -430,9 +362,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Get the dependencies.
-     *
-     * @return string[]|null
+     * @inheritDoc
      */
     public function getDependencies(): ?array
     {
@@ -440,11 +370,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Set the dependencies.
-     *
-     * @param string[]|null $dependencies The dependencies
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setDependencies(array $dependencies = null): self
     {
@@ -454,9 +380,7 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Serialize properties for json_encode.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function jsonSerialize(): array
     {

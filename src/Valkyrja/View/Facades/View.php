@@ -30,9 +30,7 @@ use Valkyrja\View\View as Contract;
 class View extends Facade
 {
     /**
-     * The facade instance.
-     *
-     * @return string|object
+     * @inheritDoc
      */
     public static function instance()
     {

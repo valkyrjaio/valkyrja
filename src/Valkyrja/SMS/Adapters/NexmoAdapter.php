@@ -43,13 +43,9 @@ class NexmoAdapter implements Adapter
     }
 
     /**
-     * Send a message.
-     *
-     * @param Message $message The message to send
+     * @inheritDoc
      *
      * @throws Exception
-     *
-     * @return void
      */
     public function send(Message $message): void
     {

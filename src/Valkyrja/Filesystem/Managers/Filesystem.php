@@ -82,21 +82,16 @@ class Filesystem implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container   = $container;
-        $this->config      = $config;
-        $this->disks       = $config['disks'];
-        $this->adapters    = $config['adapters'];
-        $this->drivers     = $config['drivers'];
+        $this->container = $container;
+        $this->config = $config;
+        $this->disks = $config['disks'];
+        $this->adapters = $config['adapters'];
+        $this->drivers = $config['drivers'];
         $this->defaultDisk = $config['default'];
     }
 
     /**
-     * Use a disk by name.
-     *
-     * @param string|null $name    The disk name
-     * @param string|null $adapter The adapter
-     *
-     * @return Driver
+     * @inheritDoc
      */
     public function useDisk(string $name = null, string $adapter = null): Driver
     {
@@ -120,11 +115,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Determine whether a path exists.
-     *
-     * @param string $path The path
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function exists(string $path): bool
     {
@@ -132,11 +123,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Read a file.
-     *
-     * @param string $path The path
-     *
-     * @return string|null The contents or null on failure
+     * @inheritDoc
      */
     public function read(string $path): ?string
     {
@@ -144,12 +131,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Write a file.
-     *
-     * @param string $path     The path
-     * @param string $contents The contents
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function write(string $path, string $contents): bool
     {
@@ -157,12 +139,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Write a file with a stream.
-     *
-     * @param string   $path     The path
-     * @param resource $resource The resource
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function writeStream(string $path, $resource): bool
     {
@@ -170,12 +147,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Update an existing file.
-     *
-     * @param string $path     The path
-     * @param string $contents The contents
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function update(string $path, string $contents): bool
     {
@@ -183,12 +155,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Update an existing file with a stream.
-     *
-     * @param string   $path     The path
-     * @param resource $resource The resource
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function updateStream(string $path, $resource): bool
     {
@@ -196,12 +163,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Write a file or update a file depending on existence.
-     *
-     * @param string $path     The path
-     * @param string $contents The contents
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function put(string $path, string $contents): bool
     {
@@ -209,12 +171,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Write a file or update a file depending on existence with a stream.
-     *
-     * @param string   $path     The path
-     * @param resource $resource The resource
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function putStream(string $path, $resource): bool
     {
@@ -222,12 +179,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Rename a file.
-     *
-     * @param string $path    The existing path
-     * @param string $newPath The new path
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function rename(string $path, string $newPath): bool
     {
@@ -235,12 +187,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Copy a file.
-     *
-     * @param string $path    The existing path
-     * @param string $newPath The new path
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function copy(string $path, string $newPath): bool
     {
@@ -248,11 +195,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Delete a file.
-     *
-     * @param string $path The path
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function delete(string $path): bool
     {
@@ -260,11 +203,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Get a file's meta data.
-     *
-     * @param string $path The path
-     *
-     * @return array|null An array of meta data or null on failure
+     * @inheritDoc
      */
     public function metadata(string $path): ?array
     {
@@ -272,11 +211,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Get a file's mime type.
-     *
-     * @param string $path The path
-     *
-     * @return string|null The mime type or null on failure
+     * @inheritDoc
      */
     public function mimetype(string $path): ?string
     {
@@ -284,11 +219,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Get a file's size.
-     *
-     * @param string $path The path
-     *
-     * @return int|null The size in bytes or null on failure
+     * @inheritDoc
      */
     public function size(string $path): ?int
     {
@@ -296,11 +227,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Get a file's timestamp.
-     *
-     * @param string $path The path
-     *
-     * @return int|null The timestamp or null on failure
+     * @inheritDoc
      */
     public function timestamp(string $path): ?int
     {
@@ -308,11 +235,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Get a file's visibility.
-     *
-     * @param string $path The path
-     *
-     * @return string|null The visibility ('public' or 'private') or null on failure
+     * @inheritDoc
      */
     public function visibility(string $path): ?string
     {
@@ -320,12 +243,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Set a file's visibility.
-     *
-     * @param string     $path       The path
-     * @param Visibility $visibility The visibility
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function setVisibility(string $path, Visibility $visibility): bool
     {
@@ -333,11 +251,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Set a file's visibility to public.
-     *
-     * @param string $path The path
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function setVisibilityPublic(string $path): bool
     {
@@ -345,11 +259,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Set a file's visibility to private.
-     *
-     * @param string $path The path
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function setVisibilityPrivate(string $path): bool
     {
@@ -357,11 +267,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Create a new directory.
-     *
-     * @param string $path The path
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function createDir(string $path): bool
     {
@@ -369,11 +275,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * Delete a directory.
-     *
-     * @param string $path The path
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function deleteDir(string $path): bool
     {
@@ -381,12 +283,7 @@ class Filesystem implements Contract
     }
 
     /**
-     * List the contents of a directory.
-     *
-     * @param string|null $directory [optional] The directory
-     * @param bool        $recursive [optional] Whether to recurse through the directory
-     *
-     * @return array
+     * @inheritDoc
      */
     public function listContents(string $directory = null, bool $recursive = false): array
     {

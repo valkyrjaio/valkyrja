@@ -25,12 +25,7 @@ use Valkyrja\Routing\Support\Middleware;
 class NoCacheMiddleware extends Middleware
 {
     /**
-     * Middleware handler for after a request is dispatched.
-     *
-     * @param Request  $request  The request
-     * @param Response $response The response
-     *
-     * @return Response
+     * @inheritDoc
      */
     public static function after(Request $request, Response $response): Response
     {

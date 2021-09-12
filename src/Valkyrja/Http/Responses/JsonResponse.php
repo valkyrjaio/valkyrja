@@ -94,11 +94,7 @@ class JsonResponse extends Response implements Contract
     }
 
     /**
-     * With callback.
-     *
-     * @param string $callback The callback
-     *
-     * @return static
+     * @inheritDoc
      */
     public function withCallback(string $callback): self
     {
@@ -111,11 +107,9 @@ class JsonResponse extends Response implements Contract
     }
 
     /**
-     * Without callback.
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return static
      */
     public function withoutCallback(): self
     {

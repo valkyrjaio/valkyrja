@@ -81,11 +81,7 @@ class Validator implements Contract
     }
 
     /**
-     * Get a rule set by name.
-     *
-     * @param string|null $name [optional] The name of the rules to get
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function getRules(string $name = null)
     {
@@ -97,9 +93,7 @@ class Validator implements Contract
     }
 
     /**
-     * Validate against set rules.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function validate(): bool
     {
@@ -113,11 +107,7 @@ class Validator implements Contract
     }
 
     /**
-     * Validate a set of rules.
-     *
-     * @param array ...$rules The rules
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function validateRules(array $rules): bool
     {
@@ -127,11 +117,7 @@ class Validator implements Contract
     }
 
     /**
-     * Set the rules to validate.
-     *
-     * @param array ...$rules The rules
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setRules(array $rules): void
     {
@@ -139,9 +125,7 @@ class Validator implements Contract
     }
 
     /**
-     * Get the error messages.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getErrorMessages(): array
     {
@@ -149,9 +133,7 @@ class Validator implements Contract
     }
 
     /**
-     * Get the last error message thrown.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getFirstErrorMessage(): ?string
     {

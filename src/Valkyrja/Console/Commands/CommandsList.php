@@ -46,11 +46,9 @@ class CommandsList extends Commander
     public const DESCRIPTION       = 'List all the commands';
 
     /**
-     * Run the command.
+     * @inheritDoc
      *
      * @param string|null $namespace [optional] The namespace to show commands for
-     *
-     * @return int
      */
     public function run(string $namespace = null): int
     {
@@ -86,9 +84,7 @@ class CommandsList extends Commander
     }
 
     /**
-     * Get the valid arguments.
-     *
-     * @return array
+     * @inheritDoc
      */
     protected function getArguments(): array
     {

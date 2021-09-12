@@ -15,7 +15,6 @@ namespace Valkyrja\Reflection\Reflectors;
 
 use Closure;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
@@ -49,13 +48,7 @@ class Reflector implements Contract
     protected static array $reflections = [];
 
     /**
-     * Get a class's reflection.
-     *
-     * @param string $class The class
-     *
-     * @throws ReflectionException
-     *
-     * @return ReflectionClass
+     * @inheritDoc
      */
     public function getClassReflection(string $class): ReflectionClass
     {
@@ -66,14 +59,7 @@ class Reflector implements Contract
     }
 
     /**
-     * Get a property's reflection.
-     *
-     * @param string $class    The class
-     * @param string $property The property
-     *
-     * @throws ReflectionException
-     *
-     * @return ReflectionProperty
+     * @inheritDoc
      */
     public function getPropertyReflection(string $class, string $property): ReflectionProperty
     {
@@ -84,14 +70,7 @@ class Reflector implements Contract
     }
 
     /**
-     * Get a method's reflection.
-     *
-     * @param string $class  The class
-     * @param string $method The method
-     *
-     * @throws ReflectionException
-     *
-     * @return ReflectionMethod
+     * @inheritDoc
      */
     public function getMethodReflection(string $class, string $method): ReflectionMethod
     {
@@ -102,13 +81,7 @@ class Reflector implements Contract
     }
 
     /**
-     * Get a function's reflection.
-     *
-     * @param string $function The function
-     *
-     * @throws ReflectionException
-     *
-     * @return ReflectionFunction
+     * @inheritDoc
      */
     public function getFunctionReflection(string $function): ReflectionFunction
     {
@@ -119,13 +92,7 @@ class Reflector implements Contract
     }
 
     /**
-     * Get a closure's reflection.
-     *
-     * @param Closure $closure The closure
-     *
-     * @throws ReflectionException
-     *
-     * @return ReflectionFunction
+     * @inheritDoc
      */
     public function getClosureReflection(Closure $closure): ReflectionFunction
     {
@@ -136,11 +103,7 @@ class Reflector implements Contract
     }
 
     /**
-     * Get dependencies from a reflection.
-     *
-     * @param ReflectionFunctionAbstract $reflection The reflection
-     *
-     * @return string[]
+     * @inheritDoc
      */
     public function getDependencies(ReflectionFunctionAbstract $reflection): array
     {
@@ -148,11 +111,7 @@ class Reflector implements Contract
     }
 
     /**
-     * Get dependencies from parameters.
-     *
-     * @param ReflectionParameter[] $parameters The parameters
-     *
-     * @return string[]
+     * @inheritDoc
      */
     public function getDependenciesFromParameters(ReflectionParameter ...$parameters): array
     {

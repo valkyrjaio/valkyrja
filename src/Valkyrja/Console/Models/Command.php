@@ -59,9 +59,7 @@ class Command extends Dispatch implements Contract
     public ?string $description = null;
 
     /**
-     * Get the path.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getPath(): ?string
     {
@@ -69,11 +67,7 @@ class Command extends Dispatch implements Contract
     }
 
     /**
-     * Set the path.
-     *
-     * @param string $path The path
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setPath(string $path): self
     {
@@ -83,9 +77,7 @@ class Command extends Dispatch implements Contract
     }
 
     /**
-     * Get the regex.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getRegex(): ?string
     {
@@ -93,11 +85,7 @@ class Command extends Dispatch implements Contract
     }
 
     /**
-     * Set the regex.
-     *
-     * @param string|null $regex The regex
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setRegex(string $regex = null): self
     {
@@ -107,9 +95,7 @@ class Command extends Dispatch implements Contract
     }
 
     /**
-     * Get the params.
-     *
-     * @return array|null
+     * @inheritDoc
      */
     public function getParams(): ?array
     {
@@ -117,11 +103,7 @@ class Command extends Dispatch implements Contract
     }
 
     /**
-     * Set the params.
-     *
-     * @param array|null $params The params
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setParams(array $params = null): self
     {
@@ -131,9 +113,7 @@ class Command extends Dispatch implements Contract
     }
 
     /**
-     * Get the segments.
-     *
-     * @return array|null
+     * @inheritDoc
      */
     public function getSegments(): ?array
     {
@@ -141,11 +121,7 @@ class Command extends Dispatch implements Contract
     }
 
     /**
-     * Set the segments.
-     *
-     * @param array|null $segments The segments
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setSegments(array $segments = null): self
     {
@@ -155,9 +131,7 @@ class Command extends Dispatch implements Contract
     }
 
     /**
-     * Get the description.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getDescription(): ?string
     {
@@ -165,11 +139,7 @@ class Command extends Dispatch implements Contract
     }
 
     /**
-     * Set the description.
-     *
-     * @param string|null $description The description
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setDescription(string $description = null): self
     {

@@ -47,11 +47,9 @@ class CacheAll extends Commander
     public const SHORT_DESCRIPTION = 'Generate all caches and sync';
 
     /**
-     * Generate all cache files.
+     * @inheritDoc
      *
      * @param string|null $sync [optional] Whether to sync the cached files
-     *
-     * @return int
      */
     public function run(string $sync = null): int
     {
@@ -87,9 +85,7 @@ class CacheAll extends Commander
     }
 
     /**
-     * Get the valid options.
-     *
-     * @return array
+     * @inheritDoc
      */
     protected function getOptions(): array
     {

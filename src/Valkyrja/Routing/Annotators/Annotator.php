@@ -18,9 +18,9 @@ use ReflectionException;
 use Valkyrja\Annotation\Annotator as AnnotationAnnotator;
 use Valkyrja\Annotation\Filter;
 use Valkyrja\Reflection\Reflector;
-use Valkyrja\Routing\Enums\AnnotationName;
 use Valkyrja\Routing\Annotations\Route;
 use Valkyrja\Routing\Annotator as Contract;
+use Valkyrja\Routing\Enums\AnnotationName;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route as RouteContract;
@@ -71,15 +71,11 @@ class Annotator implements Contract
     }
 
     /**
-     * Get routes.
-     *
-     * @param string ...$classes The classes
+     * @inheritDoc
      *
      * @throws ReflectionException
      * @throws InvalidRoutePath
      * @throws InvalidArgumentException
-     *
-     * @return RouteContract[]
      */
     public function getRoutes(string ...$classes): array
     {

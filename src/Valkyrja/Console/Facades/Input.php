@@ -42,9 +42,7 @@ use Valkyrja\Support\Facade\Facade;
 class Input extends Facade
 {
     /**
-     * The facade instance.
-     *
-     * @return string|object
+     * @inheritDoc
      */
     public static function instance()
     {

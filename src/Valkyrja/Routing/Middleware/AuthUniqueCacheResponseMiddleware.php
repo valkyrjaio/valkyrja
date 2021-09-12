@@ -26,11 +26,7 @@ use function md5;
 class AuthUniqueCacheResponseMiddleware extends CacheResponseMiddleware
 {
     /**
-     * Get a hashed version of the request path.
-     *
-     * @param Request $request
-     *
-     * @return string
+     * @inheritDoc
      */
     protected static function getHashedPath(Request $request): string
     {

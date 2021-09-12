@@ -65,25 +65,11 @@ class Route extends Dispatch implements RouteContract
     public ?string $regex;
 
     /**
-     * Any params for dynamic routes.
-     *
-     * @var array|null
-     */
-    public ?array $params;
-
-    /**
      * The dynamic parameters
      *
      * @var Parameter[]
      */
     public array $parameters;
-
-    /**
-     * Any segments for optional parts of path.
-     *
-     * @var array|null
-     */
-    public ?array $segments;
 
     /**
      * The middleware for this route.
@@ -121,9 +107,7 @@ class Route extends Dispatch implements RouteContract
     ];
 
     /**
-     * Get the route's path.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getPath(): ?string
     {
@@ -131,11 +115,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Set the route's path.
-     *
-     * @param string $path The route path
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setPath(string $path): self
     {
@@ -147,9 +127,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Get the redirect path.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getTo(): ?string
     {
@@ -157,11 +135,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Set the redirect path.
-     *
-     * @param string|null $to
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setTo(string $to = null): self
     {
@@ -171,9 +145,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Get the redirect status code.
-     *
-     * @return int|null
+     * @inheritDoc
      */
     public function getCode(): ?int
     {
@@ -181,11 +153,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Set the redirect status code.
-     *
-     * @param int|null $code
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setCode(int $code = null): self
     {
@@ -195,9 +163,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Get the request methods.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getMethods(): array
     {
@@ -205,13 +171,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Set the request methods.
-     *
-     * @param array $methods The request methods
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setMethods(array $methods): self
     {
@@ -225,9 +185,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Get the regex.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getRegex(): ?string
     {
@@ -235,11 +193,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Set the regex.
-     *
-     * @param string|null $regex The regex
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setRegex(string $regex = null): self
     {
@@ -249,33 +203,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Get the params.
-     *
-     * @return array|null
-     */
-    public function getParams(): ?array
-    {
-        return $this->params ?? null;
-    }
-
-    /**
-     * Set the params.
-     *
-     * @param array|null $params The params
-     *
-     * @return static
-     */
-    public function setParams(array $params = null): self
-    {
-        $this->params = $params;
-
-        return $this;
-    }
-
-    /**
-     * Get the parameters.
-     *
-     * @return Parameter[]
+     * @inheritDoc
      */
     public function getParameters(): array
     {
@@ -283,11 +211,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Set the parameters.
-     *
-     * @param Parameter[]|array[] $parameters The parameters
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setParameters(array $parameters): self
     {
@@ -297,11 +221,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Set a parameter.
-     *
-     * @param Parameter $parameter The parameter
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setParameter(Parameter $parameter): self
     {
@@ -313,17 +233,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Add a parameter.
-     *
-     * @param string      $name                The name
-     * @param string      $regex               The regex
-     * @param string|null $entity              [optional] The entity class name
-     * @param string|null $entityColumn        [optional] The entity column to query against
-     * @param array|null  $entityRelationships [optional] The entity relationships
-     * @param bool        $isOptional          [optional] Whether the parameter is optional
-     * @param bool        $shouldCapture       [optional] Whether this parameter should be captured
-     *
-     * @return static
+     * @inheritDoc
      */
     public function addParameter(
         string $name,
@@ -356,33 +266,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Get the segments.
-     *
-     * @return array|null
-     */
-    public function getSegments(): ?array
-    {
-        return $this->segments ?? null;
-    }
-
-    /**
-     * Set the segments.
-     *
-     * @param array|null $segments The segments
-     *
-     * @return static
-     */
-    public function setSegments(array $segments = null): self
-    {
-        $this->segments = $segments;
-
-        return $this;
-    }
-
-    /**
-     * Get the middleware.
-     *
-     * @return array|null
+     * @inheritDoc
      */
     public function getMiddleware(): ?array
     {
@@ -390,11 +274,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Set the middleware.
-     *
-     * @param array|null $middleware The middleware
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setMiddleware(array $middleware = null): self
     {
@@ -404,11 +284,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Route with added middleware.
-     *
-     * @param array $middleware The middleware
-     *
-     * @return static
+     * @inheritDoc
      */
     public function withMiddleware(array $middleware): self
     {
@@ -418,9 +294,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Check whether the route is dynamic.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isDynamic(): bool
     {
@@ -428,11 +302,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Set the route as dynamic.
-     *
-     * @param bool $dynamic Whether the route it dynamic
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setDynamic(bool $dynamic = true): self
     {
@@ -442,9 +312,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Get whether the route is secure.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isSecure(): bool
     {
@@ -452,11 +320,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Set whether the route is secure.
-     *
-     * @param bool $secure Whether the route is secure
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setSecure(bool $secure = true): self
     {
@@ -466,9 +330,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Get whether the route is a redirect.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isRedirect(): bool
     {
@@ -476,11 +338,7 @@ class Route extends Dispatch implements RouteContract
     }
 
     /**
-     * Set whether the route is a redirect.
-     *
-     * @param bool $redirect
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setRedirect(bool $redirect): self
     {

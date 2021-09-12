@@ -76,9 +76,7 @@ class PHPEngine implements Engine
     }
 
     /**
-     * Start rendering.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function startRender(): void
     {
@@ -86,9 +84,7 @@ class PHPEngine implements Engine
     }
 
     /**
-     * End rendering.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function endRender(): string
     {
@@ -96,12 +92,7 @@ class PHPEngine implements Engine
     }
 
     /**
-     * Render a file.
-     *
-     * @param string $name      The file name
-     * @param array  $variables [optional] The variables
-     *
-     * @return string
+     * @inheritDoc
      */
     public function renderFile(string $name, array $variables = []): string
     {

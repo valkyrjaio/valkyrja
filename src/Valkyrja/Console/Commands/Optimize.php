@@ -52,11 +52,9 @@ class Optimize extends Commander
     public const SHORT_DESCRIPTION = 'Optimize the application';
 
     /**
-     * Optimize the application.
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return int
      */
     public function run(): int
     {

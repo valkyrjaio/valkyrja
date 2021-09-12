@@ -60,12 +60,9 @@ class CacheAdapter extends PHPAdapter
     }
 
     /**
-     * Start the session.
+     * @inheritDoc
      *
      * @throws JsonException
-     * @throws SessionStartFailure
-     *
-     * @return void
      */
     public function start(): void
     {
@@ -86,14 +83,9 @@ class CacheAdapter extends PHPAdapter
     }
 
     /**
-     * Set an item into the session.
-     *
-     * @param string $id    The id
-     * @param mixed  $value The value
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return void
      */
     public function set(string $id, $value): void
     {
@@ -103,13 +95,9 @@ class CacheAdapter extends PHPAdapter
     }
 
     /**
-     * Remove a session item.
-     *
-     * @param string $id The item id
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return bool
      */
     public function remove(string $id): bool
     {
@@ -125,11 +113,9 @@ class CacheAdapter extends PHPAdapter
     }
 
     /**
-     * Clear the local session.
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return void
      */
     public function clear(): void
     {
@@ -139,11 +125,9 @@ class CacheAdapter extends PHPAdapter
     }
 
     /**
-     * Destroy the session.
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return void
      */
     public function destroy(): void
     {

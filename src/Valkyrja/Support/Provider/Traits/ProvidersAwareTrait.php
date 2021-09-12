@@ -56,12 +56,7 @@ trait ProvidersAwareTrait
     protected static string $defaultPublishMethod = 'publish';
 
     /**
-     * Register a provider.
-     *
-     * @param string $provider The provider
-     * @param bool   $force    [optional] Whether to force regardless of deferred status
-     *
-     * @return void
+     * @inheritDoc
      */
     public function register(string $provider, bool $force = false): void
     {
@@ -90,11 +85,7 @@ trait ProvidersAwareTrait
     }
 
     /**
-     * Check whether a given item is provided by a deferred provider.
-     *
-     * @param string $itemId The provided item id
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isProvided(string $itemId): bool
     {
@@ -102,11 +93,7 @@ trait ProvidersAwareTrait
     }
 
     /**
-     * Check whether a given item is published.
-     *
-     * @param string $itemId The provided item id
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isPublished(string $itemId): bool
     {
@@ -114,11 +101,7 @@ trait ProvidersAwareTrait
     }
 
     /**
-     * Determine whether a provider has been registered.
-     *
-     * @param string $provider The provider
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isRegistered(string $provider): bool
     {
@@ -126,11 +109,7 @@ trait ProvidersAwareTrait
     }
 
     /**
-     * Publish a provided item.
-     *
-     * @param string $itemId The provided item id
-     *
-     * @return void
+     * @inheritDoc
      */
     public function publishProvided(string $itemId): void
     {

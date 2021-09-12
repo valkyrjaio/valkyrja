@@ -123,12 +123,7 @@ class Container implements Contract
     }
 
     /**
-     * Get a container instance with context.
-     *
-     * @param string      $context The context class or function name
-     * @param string|null $member  [optional] The context method name
-     *
-     * @return static
+     * @inheritDoc
      */
     public function withContext(string $context, string $member = null): self
     {
@@ -142,9 +137,7 @@ class Container implements Contract
     }
 
     /**
-     * Get a container instance with no context.
-     *
-     * @return static
+     * @inheritDoc
      */
     public function withoutContext(): self
     {
@@ -158,11 +151,7 @@ class Container implements Contract
     }
 
     /**
-     * Check whether a given service exists.
-     *
-     * @param string $serviceId The service id
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function has(string $serviceId): bool
     {
@@ -176,12 +165,7 @@ class Container implements Contract
     }
 
     /**
-     * Bind a service to the container.
-     *
-     * @param string $serviceId The service id
-     * @param string $service   The service
-     *
-     * @return static
+     * @inheritDoc
      */
     public function bind(string $serviceId, string $service): self
     {
@@ -195,12 +179,7 @@ class Container implements Contract
     }
 
     /**
-     * Bind a service to a closure in the container.
-     *
-     * @param string  $serviceId The service id
-     * @param Closure $closure   The closure
-     *
-     * @return static
+     * @inheritDoc
      */
     public function bindClosure(string $serviceId, Closure $closure): self
     {
@@ -212,12 +191,7 @@ class Container implements Contract
     }
 
     /**
-     * Bind a singleton to the container.
-     *
-     * @param string $serviceId The service id
-     * @param string $singleton The singleton service
-     *
-     * @return static
+     * @inheritDoc
      */
     public function bindSingleton(string $serviceId, string $singleton): self
     {
@@ -231,12 +205,7 @@ class Container implements Contract
     }
 
     /**
-     * Set an alias in the container.
-     *
-     * @param string $alias     The alias
-     * @param string $serviceId The service id to alias
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setAlias(string $alias, string $serviceId): self
     {
@@ -249,12 +218,7 @@ class Container implements Contract
     }
 
     /**
-     * Set a closure in the container.
-     *
-     * @param string  $serviceId The service id
-     * @param Closure $closure   The closure
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setClosure(string $serviceId, Closure $closure): self
     {
@@ -267,12 +231,7 @@ class Container implements Contract
     }
 
     /**
-     * Set a singleton in the container.
-     *
-     * @param string $serviceId The service id
-     * @param mixed  $singleton The singleton
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setSingleton(string $serviceId, $singleton): self
     {
@@ -286,11 +245,7 @@ class Container implements Contract
     }
 
     /**
-     * Check whether a given service is an alias.
-     *
-     * @param string $serviceId The service id
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isAlias(string $serviceId): bool
     {
@@ -300,11 +255,7 @@ class Container implements Contract
     }
 
     /**
-     * Check whether a given service is bound to a closure.
-     *
-     * @param string $serviceId The service id
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isClosure(string $serviceId): bool
     {
@@ -314,11 +265,7 @@ class Container implements Contract
     }
 
     /**
-     * Check whether a given service is a singleton.
-     *
-     * @param string $serviceId The service id
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isSingleton(string $serviceId): bool
     {
@@ -328,11 +275,7 @@ class Container implements Contract
     }
 
     /**
-     * Check whether a given service exists.
-     *
-     * @param string $serviceId The service id
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isService(string $serviceId): bool
     {
@@ -342,12 +285,7 @@ class Container implements Contract
     }
 
     /**
-     * Get a service from the container.
-     *
-     * @param string $serviceId The service id
-     * @param array  $arguments [optional] The arguments
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function get(string $serviceId, array $arguments = [])
     {
@@ -376,12 +314,7 @@ class Container implements Contract
     }
 
     /**
-     * Get a service bound to a closure from the container.
-     *
-     * @param string $serviceId The service id
-     * @param array  $arguments [optional] The arguments
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function getClosure(string $serviceId, array $arguments = [])
     {
@@ -391,11 +324,7 @@ class Container implements Contract
     }
 
     /**
-     * Get a singleton from the container.
-     *
-     * @param string $serviceId The service id
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function getSingleton(string $serviceId)
     {
@@ -405,12 +334,7 @@ class Container implements Contract
     }
 
     /**
-     * Make a service.
-     *
-     * @param string $serviceId The service id
-     * @param array  $arguments [optional] The arguments
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function makeService(string $serviceId, array $arguments = [])
     {
@@ -420,13 +344,7 @@ class Container implements Contract
     }
 
     /**
-     * Get a service id with optional context.
-     *
-     * @param string      $serviceId The service id
-     * @param string|null $context   [optional] The context class or function name
-     * @param string|null $member    [optional] The context member name
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getServiceId(string $serviceId, string $context = null, string $member = null): string
     {
@@ -440,12 +358,7 @@ class Container implements Contract
     }
 
     /**
-     * Offset set.
-     *
-     * @param string|null $serviceId The service id
-     * @param mixed       $service   The service
-     *
-     * @return void
+     * @inheritDoc
      */
     public function offsetSet($serviceId, $service): void
     {
@@ -453,11 +366,7 @@ class Container implements Contract
     }
 
     /**
-     * Offset exists.
-     *
-     * @param string $serviceId The service id
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function offsetExists($serviceId): bool
     {
@@ -465,11 +374,7 @@ class Container implements Contract
     }
 
     /**
-     * Offset unset.
-     *
-     * @param string $serviceId The service id
-     *
-     * @return void
+     * @inheritDoc
      */
     public function offsetUnset($serviceId): void
     {
@@ -477,11 +382,7 @@ class Container implements Contract
     }
 
     /**
-     * Offset get.
-     *
-     * @param string $serviceId The service id
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function offsetGet($serviceId)
     {

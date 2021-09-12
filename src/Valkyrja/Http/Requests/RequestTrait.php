@@ -55,7 +55,7 @@ trait RequestTrait
 {
     use MessageTrait;
 
-    public static string $HOST_NAME      = 'Host';
+    public static string $HOST_NAME = 'Host';
     public static string $HOST_NAME_NORM = 'host';
 
     /**
@@ -80,17 +80,7 @@ trait RequestTrait
     protected ?string $requestTarget = null;
 
     /**
-     * Retrieves the message's request target.
-     * Retrieves the message's request-target either as it will appear (for
-     * clients), as it appeared at request (for servers), or as it was
-     * specified for the instance (see withRequestTarget()).
-     * In most cases, this will be the origin-form of the composed URI,
-     * unless a value was provided to the concrete implementation (see
-     * withRequestTarget() below).
-     * If no URI is available, and no request-target has been specifically
-     * provided, this method MUST return the string "/".
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getRequestTarget(): string
     {
@@ -112,23 +102,7 @@ trait RequestTrait
     }
 
     /**
-     * Return an instance with the specific request-target.
-     * If the request needs a non-origin-form request-target — e.g., for
-     * specifying an absolute-form, authority-form, or asterisk-form —
-     * this method may be used to create an instance with the specified
-     * request-target, verbatim.
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * changed request target.
-     *
-     * @link http://tools.ietf.org/html/rfc7230#section-5.3 (for the various
-     *     request-target forms allowed in request messages)
-     *
-     * @param string $requestTarget The request target
-     *
-     * @throws InvalidRequestTarget
-     *
-     * @return static
+     * @inheritDoc
      */
     public function withRequestTarget(string $requestTarget): self
     {
@@ -142,9 +116,7 @@ trait RequestTrait
     }
 
     /**
-     * Retrieves the HTTP method of the request.
-     *
-     * @return string Returns the request method.
+     * @inheritDoc
      */
     public function getMethod(): string
     {
@@ -152,19 +124,7 @@ trait RequestTrait
     }
 
     /**
-     * Return an instance with the provided HTTP method.
-     * While HTTP method names are typically all uppercase characters, HTTP
-     * method names are case-sensitive and thus implementations SHOULD NOT
-     * modify the given string.
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * changed request method.
-     *
-     * @param string $method Case-sensitive method.
-     *
-     * @throws InvalidMethod for invalid HTTP methods.
-     *
-     * @return static
+     * @inheritDoc
      */
     public function withMethod(string $method): self
     {
@@ -178,12 +138,7 @@ trait RequestTrait
     }
 
     /**
-     * Retrieves the URI instance.
-     * This method MUST return a Uri instance.
-     *
-     * @link http://tools.ietf.org/html/rfc3986#section-4.3
-     *
-     * @return Uri Returns a Uri instance representing the URI of the request.
+     * @inheritDoc
      */
     public function getUri(): Uri
     {
@@ -191,34 +146,7 @@ trait RequestTrait
     }
 
     /**
-     * Returns an instance with the provided URI.
-     * This method MUST update the Host header of the returned request by
-     * default if the URI contains a host component. If the URI does not
-     * contain a host component, any pre-existing Host header MUST be carried
-     * over to the returned request.
-     * You can opt-in to preserving the original state of the Host header by
-     * setting `$preserveHost` to `true`. When `$preserveHost` is set to
-     * `true`, this method interacts with the Host header in the following
-     * ways:
-     * - If the Host header is missing or empty, and the new URI contains
-     *   a host component, this method MUST update the Host header in the
-     *   returned request.
-     * - If the Host header is missing or empty, and the new URI does not
-     * contain a host component, this method MUST NOT update the Host header in
-     * the returned request.
-     * - If a Host header is present and non-empty, this method MUST NOT update
-     *   the Host header in the returned request.
-     * This method MUST be implemented in such a way as to retain the
-     * immutability of the message, and MUST return an instance that has the
-     * new Uri instance.
-     *
-     * @link http://tools.ietf.org/html/rfc3986#section-4.3
-     *
-     * @param Uri  $uri          New request URI to use.
-     * @param bool $preserveHost Preserve the original state of the Host
-     *                           header.
-     *
-     * @return static
+     * @inheritDoc
      */
     public function withUri(Uri $uri, bool $preserveHost = false): self
     {

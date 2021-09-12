@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Middleware;
 
 use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\Repository;
@@ -38,11 +37,7 @@ class EntityMiddleware extends Middleware
     protected static ORM $orm;
 
     /**
-     * Middleware handler for before a request is dispatched.
-     *
-     * @param Request $request The request
-     *
-     * @return Request|Response
+     * @inheritDoc
      */
     public static function before(Request $request)
     {

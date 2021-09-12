@@ -122,12 +122,7 @@ class Mail implements Contract
     }
 
     /**
-     * Use a mailer by name.
-     *
-     * @param string|null $name    [optional] The mailer name
-     * @param string|null $adapter [optional] The adapter
-     *
-     * @return Driver
+     * @inheritDoc
      */
     public function useMailer(string $name = null, string $adapter = null): Driver
     {
@@ -151,12 +146,7 @@ class Mail implements Contract
     }
 
     /**
-     * Create a new message.
-     *
-     * @param string|null $name [optional] The name of the message
-     * @param array       $data [optional] The data
-     *
-     * @return Message
+     * @inheritDoc
      */
     public function createMessage(string $name = null, array $data = []): Message
     {
@@ -177,11 +167,7 @@ class Mail implements Contract
     }
 
     /**
-     * Send a message.
-     *
-     * @param Message $message The message to send
-     *
-     * @return void
+     * @inheritDoc
      */
     public function send(Message $message): void
     {

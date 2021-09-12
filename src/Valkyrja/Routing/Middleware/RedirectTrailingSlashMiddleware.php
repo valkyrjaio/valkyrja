@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Middleware;
 
 use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Routing\Support\Middleware;
 use Valkyrja\Support\Type\Str;
@@ -27,11 +26,7 @@ use Valkyrja\Support\Type\Str;
 class RedirectTrailingSlashMiddleware extends Middleware
 {
     /**
-     * Middleware handler for before a request is dispatched.
-     *
-     * @param Request $request The request
-     *
-     * @return Request|Response
+     * @inheritDoc
      */
     public static function before(Request $request)
     {

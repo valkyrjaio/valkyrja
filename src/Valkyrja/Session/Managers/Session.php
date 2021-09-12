@@ -15,7 +15,6 @@ namespace Valkyrja\Session\Managers;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Session\Driver;
-use Valkyrja\Session\Exceptions\InvalidCsrfToken;
 use Valkyrja\Session\Session as Contract;
 
 /**
@@ -82,21 +81,16 @@ class Session implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container      = $container;
-        $this->config         = $config;
+        $this->container = $container;
+        $this->config = $config;
         $this->defaultSession = $config['default'];
-        $this->adapters       = $config['adapters'];
-        $this->drivers        = $config['drivers'];
-        $this->sessions       = $config['sessions'];
+        $this->adapters = $config['adapters'];
+        $this->drivers = $config['drivers'];
+        $this->sessions = $config['sessions'];
     }
 
     /**
-     * Use a session by name.
-     *
-     * @param string|null $name    The session name
-     * @param string|null $adapter The adapter
-     *
-     * @return Driver
+     * @inheritDoc
      */
     public function useSession(string $name = null, string $adapter = null): Driver
     {
@@ -120,9 +114,7 @@ class Session implements Contract
     }
 
     /**
-     * Start the session.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function start(): void
     {
@@ -130,9 +122,7 @@ class Session implements Contract
     }
 
     /**
-     * Get the session id.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getId(): string
     {
@@ -140,11 +130,7 @@ class Session implements Contract
     }
 
     /**
-     * Set the session id.
-     *
-     * @param string $id
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setId(string $id): void
     {
@@ -152,9 +138,7 @@ class Session implements Contract
     }
 
     /**
-     * Get the session name.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getName(): string
     {
@@ -162,11 +146,7 @@ class Session implements Contract
     }
 
     /**
-     * Set the session name.
-     *
-     * @param string $name The session name
-     *
-     * @return void
+     * @inheritDoc
      */
     public function setName(string $name): void
     {
@@ -174,9 +154,7 @@ class Session implements Contract
     }
 
     /**
-     * Is a session active?
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isActive(): bool
     {
@@ -184,11 +162,7 @@ class Session implements Contract
     }
 
     /**
-     * Determine whether the session has an item.
-     *
-     * @param string $id The item id
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function has(string $id): bool
     {
@@ -196,12 +170,7 @@ class Session implements Contract
     }
 
     /**
-     * Get an item from the session.
-     *
-     * @param string     $id      The item id
-     * @param mixed|null $default The default value
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function get(string $id, $default = null)
     {
@@ -209,12 +178,7 @@ class Session implements Contract
     }
 
     /**
-     * Set an item into the session.
-     *
-     * @param string $id    The id
-     * @param mixed  $value The value
-     *
-     * @return void
+     * @inheritDoc
      */
     public function set(string $id, $value): void
     {
@@ -222,11 +186,7 @@ class Session implements Contract
     }
 
     /**
-     * Remove a session item.
-     *
-     * @param string $id The item id
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function remove(string $id): bool
     {
@@ -234,9 +194,7 @@ class Session implements Contract
     }
 
     /**
-     * Get all items in the session.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function all(): array
     {
@@ -244,11 +202,7 @@ class Session implements Contract
     }
 
     /**
-     * Generate a csrf token for a unique token id.
-     *
-     * @param string $id The csrf unique token id
-     *
-     * @return string
+     * @inheritDoc
      */
     public function generateCsrfToken(string $id): string
     {
@@ -256,14 +210,7 @@ class Session implements Contract
     }
 
     /**
-     * Validate a csrf token.
-     *
-     * @param string $id    The csrf unique token id
-     * @param string $token The token to validate
-     *
-     * @throws InvalidCsrfToken
-     *
-     * @return void
+     * @inheritDoc
      */
     public function validateCsrfToken(string $id, string $token): void
     {
@@ -271,12 +218,7 @@ class Session implements Contract
     }
 
     /**
-     * Determine if a csrf token is valid.
-     *
-     * @param string $id    The csrf unique token id
-     * @param string $token The token to validate
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isCsrfTokenValid(string $id, string $token): bool
     {
@@ -284,9 +226,7 @@ class Session implements Contract
     }
 
     /**
-     * Clear the local session.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function clear(): void
     {
@@ -294,9 +234,7 @@ class Session implements Contract
     }
 
     /**
-     * Destroy the session.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function destroy(): void
     {

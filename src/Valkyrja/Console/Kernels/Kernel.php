@@ -23,7 +23,6 @@ use Valkyrja\Console\Kernel as Contract;
 use Valkyrja\Console\Output;
 use Valkyrja\Container\Container;
 use Valkyrja\Event\Events;
-use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Log\Logger;
 
 use function Valkyrja\dd;
@@ -71,14 +70,7 @@ class Kernel implements Contract
     }
 
     /**
-     * Handle a console input.
-     *
-     * @param Input  $input  The input
-     * @param Output $output The output
-     *
-     * @throws HttpException
-     *
-     * @return int
+     * @inheritDoc
      */
     public function handle(Input $input, Output $output): int
     {
@@ -101,12 +93,7 @@ class Kernel implements Contract
     }
 
     /**
-     * Terminate the kernel request.
-     *
-     * @param Input $input    The input
-     * @param int   $exitCode The response
-     *
-     * @return void
+     * @inheritDoc
      */
     public function terminate(Input $input, int $exitCode): void
     {
@@ -114,12 +101,7 @@ class Kernel implements Contract
     }
 
     /**
-     * Run the kernel.
-     *
-     * @param Input|null  $input  The input
-     * @param Output|null $output The output
-     *
-     * @return int
+     * @inheritDoc
      */
     public function run(Input $input = null, Output $output = null): int
     {

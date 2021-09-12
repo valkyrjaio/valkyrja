@@ -28,9 +28,7 @@ trait Annotatable
     public ?string $type;
 
     /**
-     * Get the type.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getType(): ?string
     {
@@ -38,11 +36,7 @@ trait Annotatable
     }
 
     /**
-     * Set the type.
-     *
-     * @param string|null $type The type
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setType(string $type = null): self
     {

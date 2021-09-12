@@ -40,6 +40,15 @@ interface ProvidersAware
     public function isProvided(string $itemId): bool;
 
     /**
+     * Check whether a given item is published.
+     *
+     * @param string $itemId The provided item id
+     *
+     * @return bool
+     */
+    public function isPublished(string $itemId): bool;
+
+    /**
      * Determine whether a provider has been registered.
      *
      * @param string $provider The provider

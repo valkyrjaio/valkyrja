@@ -47,11 +47,9 @@ class ConfigCache extends Commander
     public const SHORT_DESCRIPTION = 'Generate the config cache';
 
     /**
-     * Run the command.
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return int
      */
     public function run(): int
     {

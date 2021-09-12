@@ -23,9 +23,7 @@ use Valkyrja\Console\Enums\FormatOption;
 trait FormatterOptions
 {
     /**
-     * Set the bold option.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function bold(): void
     {
@@ -33,9 +31,7 @@ trait FormatterOptions
     }
 
     /**
-     * Set the underscore option.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function underscore(): void
     {
@@ -43,9 +39,7 @@ trait FormatterOptions
     }
 
     /**
-     * Set the blink option.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function blink(): void
     {
@@ -53,9 +47,7 @@ trait FormatterOptions
     }
 
     /**
-     * Set the reverse option.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function reverse(): void
     {
@@ -63,9 +55,7 @@ trait FormatterOptions
     }
 
     /**
-     * Set the conceal option.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function conceal(): void
     {

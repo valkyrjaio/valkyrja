@@ -38,13 +38,9 @@ class VerifyAuthBroadcastMiddleware extends Middleware
     protected static string $broadcastMessageParamName = 'broadcast_message';
 
     /**
-     * Middleware handler for before a request is dispatched.
-     *
-     * @param Request $request The request
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return Request|Response
      */
     public static function before(Request $request)
     {

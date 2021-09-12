@@ -80,9 +80,7 @@ class JsonData extends Model implements Contract
     public ?array $data = null;
 
     /**
-     * Get the item.
-     *
-     * @return object|null
+     * @inheritDoc
      */
     public function getItem(): ?object
     {
@@ -90,11 +88,7 @@ class JsonData extends Model implements Contract
     }
 
     /**
-     * Set the item.
-     *
-     * @param object|null $item
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setItem(object $item = null): self
     {
@@ -104,9 +98,7 @@ class JsonData extends Model implements Contract
     }
 
     /**
-     * Get the item key.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getItemKey(): string
     {
@@ -114,11 +106,7 @@ class JsonData extends Model implements Contract
     }
 
     /**
-     * Set the item key.
-     *
-     * @param string $itemKey
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setItemKey(string $itemKey): self
     {
@@ -128,9 +116,7 @@ class JsonData extends Model implements Contract
     }
 
     /**
-     * Get the items.
-     *
-     * @return array|null
+     * @inheritDoc
      */
     public function getItems(): ?array
     {
@@ -138,11 +124,7 @@ class JsonData extends Model implements Contract
     }
 
     /**
-     * Set the items.
-     *
-     * @param array|null $items
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setItems(array $items = null): self
     {
@@ -152,9 +134,7 @@ class JsonData extends Model implements Contract
     }
 
     /**
-     * Get the items key.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getItemsKey(): string
     {
@@ -162,11 +142,7 @@ class JsonData extends Model implements Contract
     }
 
     /**
-     * Set the items key.
-     *
-     * @param string $itemsKey
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setItemsKey(string $itemsKey): self
     {
@@ -176,9 +152,7 @@ class JsonData extends Model implements Contract
     }
 
     /**
-     * Get the total.
-     *
-     * @return int|null
+     * @inheritDoc
      */
     public function getTotal(): ?int
     {
@@ -186,11 +160,7 @@ class JsonData extends Model implements Contract
     }
 
     /**
-     * Set the total.
-     *
-     * @param int|null $total
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setTotal(int $total = null): self
     {
@@ -200,9 +170,7 @@ class JsonData extends Model implements Contract
     }
 
     /**
-     * Get the messages.
-     *
-     * @return array|null
+     * @inheritDoc
      */
     public function getMessages(): ?array
     {
@@ -210,11 +178,7 @@ class JsonData extends Model implements Contract
     }
 
     /**
-     * Set the messages.
-     *
-     * @param array|null $messages
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setMessages(array $messages = null): self
     {
@@ -224,9 +188,7 @@ class JsonData extends Model implements Contract
     }
 
     /**
-     * Get the data.
-     *
-     * @return array|null
+     * @inheritDoc
      */
     public function getData(): ?array
     {
@@ -234,11 +196,7 @@ class JsonData extends Model implements Contract
     }
 
     /**
-     * Set the data.
-     *
-     * @param array|null $data
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setData(array $data = null): self
     {
@@ -248,9 +206,7 @@ class JsonData extends Model implements Contract
     }
 
     /**
-     * Get the message.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getMessage(): ?string
     {
@@ -258,11 +214,7 @@ class JsonData extends Model implements Contract
     }
 
     /**
-     * Set the error message.
-     *
-     * @param string|null $message
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setMessage(string $message = null): self
     {
@@ -272,11 +224,7 @@ class JsonData extends Model implements Contract
     }
 
     /**
-     * Get model as an array.
-     *
-     * @param string ...$properties [optional] An array of properties to return
-     *
-     * @return array
+     * @inheritDoc
      */
     public function asArray(string ...$properties): array
     {

@@ -122,12 +122,7 @@ class SMS implements Contract
     }
 
     /**
-     * Use a messenger by name.
-     *
-     * @param string|null $name    [optional] The messenger name
-     * @param string|null $adapter [optional] The adapter
-     *
-     * @return Driver
+     * @inheritDoc
      */
     public function useMessenger(string $name = null, string $adapter = null): Driver
     {
@@ -151,12 +146,7 @@ class SMS implements Contract
     }
 
     /**
-     * Create a new message.
-     *
-     * @param string|null $name [optional] The name of the message
-     * @param array       $data [optional] The data
-     *
-     * @return Message
+     * @inheritDoc
      */
     public function createMessage(string $name = null, array $data = []): Message
     {
@@ -177,11 +167,7 @@ class SMS implements Contract
     }
 
     /**
-     * Send a message.
-     *
-     * @param Message $message The message to send
-     *
-     * @return void
+     * @inheritDoc
      */
     public function send(Message $message): void
     {

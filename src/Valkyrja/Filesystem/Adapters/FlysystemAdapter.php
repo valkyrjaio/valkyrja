@@ -46,11 +46,7 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Determine whether a path exists.
-     *
-     * @param string $path The path
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function exists(string $path): bool
     {
@@ -58,13 +54,9 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Read a file.
-     *
-     * @param string $path The path
+     * @inheritDoc
      *
      * @throws FileNotFoundException
-     *
-     * @return string|null The contents or null on failure
      */
     public function read(string $path): ?string
     {
@@ -74,14 +66,9 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Write a file.
-     *
-     * @param string $path     The path
-     * @param string $contents The contents
+     * @inheritDoc
      *
      * @throws FileExistsException
-     *
-     * @return bool
      */
     public function write(string $path, string $contents): bool
     {
@@ -89,15 +76,10 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Write a file with a stream.
-     *
-     * @param string   $path     The path
-     * @param resource $resource The resource
+     * @inheritDoc
      *
      * @throws FileExistsException
      * @throws InvalidArgumentException
-     *
-     * @return bool
      */
     public function writeStream(string $path, $resource): bool
     {
@@ -105,14 +87,9 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Update an existing file.
-     *
-     * @param string $path     The path
-     * @param string $contents The contents
+     * @inheritDoc
      *
      * @throws FileNotFoundException
-     *
-     * @return bool
      */
     public function update(string $path, string $contents): bool
     {
@@ -120,15 +97,10 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Update an existing file with a stream.
-     *
-     * @param string   $path     The path
-     * @param resource $resource The resource
+     * @inheritDoc
      *
      * @throws FileNotFoundException
      * @throws InvalidArgumentException
-     *
-     * @return bool
      */
     public function updateStream(string $path, $resource): bool
     {
@@ -136,12 +108,7 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Write a file or update a file depending on existence.
-     *
-     * @param string $path     The path
-     * @param string $contents The contents
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function put(string $path, string $contents): bool
     {
@@ -149,14 +116,9 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Write a file or update a file depending on existence with a stream.
-     *
-     * @param string   $path     The path
-     * @param resource $resource The resource
+     * @inheritDoc
      *
      * @throws InvalidArgumentException
-     *
-     * @return bool
      */
     public function putStream(string $path, $resource): bool
     {
@@ -164,15 +126,10 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Rename a file.
-     *
-     * @param string $path    The existing path
-     * @param string $newPath The new path
+     * @inheritDoc
      *
      * @throws FileNotFoundException
      * @throws FileExistsException
-     *
-     * @return bool
      */
     public function rename(string $path, string $newPath): bool
     {
@@ -180,15 +137,10 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Copy a file.
-     *
-     * @param string $path    The existing path
-     * @param string $newPath The new path
+     * @inheritDoc
      *
      * @throws FileNotFoundException
      * @throws FileExistsException
-     *
-     * @return bool
      */
     public function copy(string $path, string $newPath): bool
     {
@@ -196,13 +148,9 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Delete a file.
-     *
-     * @param string $path The path
+     * @inheritDoc
      *
      * @throws FileNotFoundException
-     *
-     * @return bool
      */
     public function delete(string $path): bool
     {
@@ -210,13 +158,9 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Get a file's meta data.
-     *
-     * @param string $path The path
+     * @inheritDoc
      *
      * @throws FileNotFoundException
-     *
-     * @return array|null An array of meta data or null on failure
      */
     public function metadata(string $path): ?array
     {
@@ -226,13 +170,9 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Get a file's mime type.
-     *
-     * @param string $path The path
+     * @inheritDoc
      *
      * @throws FileNotFoundException
-     *
-     * @return string|null The mime type or null on failure
      */
     public function mimetype(string $path): ?string
     {
@@ -242,13 +182,9 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Get a file's size.
-     *
-     * @param string $path The path
+     * @inheritDoc
      *
      * @throws FileNotFoundException
-     *
-     * @return int|null The size in bytes or null on failure
      */
     public function size(string $path): ?int
     {
@@ -258,13 +194,9 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Get a file's timestamp.
-     *
-     * @param string $path The path
+     * @inheritDoc
      *
      * @throws FileNotFoundException
-     *
-     * @return int|null The timestamp or null on failure
      */
     public function timestamp(string $path): ?int
     {
@@ -274,13 +206,9 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Get a file's visibility.
-     *
-     * @param string $path The path
+     * @inheritDoc
      *
      * @throws FileNotFoundException
-     *
-     * @return string|null The visibility ('public' or 'private') or null on failure
      */
     public function visibility(string $path): ?string
     {
@@ -290,14 +218,9 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Set a file's visibility.
-     *
-     * @param string     $path       The path
-     * @param Visibility $visibility The visibility
+     * @inheritDoc
      *
      * @throws FileNotFoundException
-     *
-     * @return bool
      */
     public function setVisibility(string $path, Visibility $visibility): bool
     {
@@ -305,13 +228,9 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Set a file's visibility to public.
-     *
-     * @param string $path The path
+     * @inheritDoc
      *
      * @throws FileNotFoundException
-     *
-     * @return bool
      */
     public function setVisibilityPublic(string $path): bool
     {
@@ -319,13 +238,9 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Set a file's visibility to private.
-     *
-     * @param string $path The path
+     * @inheritDoc
      *
      * @throws FileNotFoundException
-     *
-     * @return bool
      */
     public function setVisibilityPrivate(string $path): bool
     {
@@ -333,11 +248,7 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Create a new directory.
-     *
-     * @param string $path The path
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function createDir(string $path): bool
     {
@@ -345,13 +256,9 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * Delete a directory.
-     *
-     * @param string $path The path
+     * @inheritDoc
      *
      * @throws RootViolationException
-     *
-     * @return bool
      */
     public function deleteDir(string $path): bool
     {
@@ -359,12 +266,7 @@ class FlysystemAdapter implements Adapter
     }
 
     /**
-     * List the contents of a directory.
-     *
-     * @param string|null $directory [optional] The directory
-     * @param bool        $recursive [optional] Whether to recurse through the directory
-     *
-     * @return array
+     * @inheritDoc
      */
     public function listContents(string $directory = null, bool $recursive = false): array
     {

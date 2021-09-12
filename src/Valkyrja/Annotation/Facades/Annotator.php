@@ -18,9 +18,9 @@ use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionProperty;
 use Valkyrja\Annotation\Annotation;
+use Valkyrja\Annotation\Annotator as Contract;
 use Valkyrja\Annotation\Filter;
 use Valkyrja\Annotation\Parser;
-use Valkyrja\Annotation\Annotator as Contract;
 use Valkyrja\Support\Facade\Facade;
 
 /**
@@ -48,9 +48,7 @@ use Valkyrja\Support\Facade\Facade;
 class Annotator extends Facade
 {
     /**
-     * The facade instance.
-     *
-     * @return string|object
+     * @inheritDoc
      */
     public static function instance()
     {

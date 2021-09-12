@@ -43,11 +43,7 @@ class Driver implements Contract
     }
 
     /**
-     * Make a request.
-     *
-     * @param Request $request The request
-     *
-     * @return Response
+     * @inheritDoc
      */
     public function request(Request $request): Response
     {
@@ -55,11 +51,7 @@ class Driver implements Contract
     }
 
     /**
-     * Make a get request.
-     *
-     * @param Request $request The request
-     *
-     * @return Response
+     * @inheritDoc
      */
     public function get(Request $request): Response
     {
@@ -67,11 +59,7 @@ class Driver implements Contract
     }
 
     /**
-     * Make a post request.
-     *
-     * @param Request $request The request
-     *
-     * @return Response
+     * @inheritDoc
      */
     public function post(Request $request): Response
     {
@@ -79,11 +67,7 @@ class Driver implements Contract
     }
 
     /**
-     * Make a head request.
-     *
-     * @param Request $request The request
-     *
-     * @return Response
+     * @inheritDoc
      */
     public function head(Request $request): Response
     {
@@ -91,11 +75,7 @@ class Driver implements Contract
     }
 
     /**
-     * Make a put request.
-     *
-     * @param Request $request The request
-     *
-     * @return Response
+     * @inheritDoc
      */
     public function put(Request $request): Response
     {
@@ -103,11 +83,7 @@ class Driver implements Contract
     }
 
     /**
-     * Make a patch request.
-     *
-     * @param Request $request The request
-     *
-     * @return Response
+     * @inheritDoc
      */
     public function patch(Request $request): Response
     {
@@ -115,11 +91,7 @@ class Driver implements Contract
     }
 
     /**
-     * Make a delete request.
-     *
-     * @param Request $request The request
-     *
-     * @return Response
+     * @inheritDoc
      */
     public function delete(Request $request): Response
     {

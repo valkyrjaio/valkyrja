@@ -70,9 +70,7 @@ class Input implements Contract
     }
 
     /**
-     * Get the arguments.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getArguments(): array
     {
@@ -80,9 +78,7 @@ class Input implements Contract
     }
 
     /**
-     * Get the short options.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getShortOptions(): array
     {
@@ -90,9 +86,7 @@ class Input implements Contract
     }
 
     /**
-     * Get the arguments.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getLongOptions(): array
     {
@@ -100,9 +94,7 @@ class Input implements Contract
     }
 
     /**
-     * Get the arguments.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getOptions(): array
     {
@@ -110,9 +102,7 @@ class Input implements Contract
     }
 
     /**
-     * Get the arguments as a string.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getStringArguments(): string
     {
@@ -129,9 +119,7 @@ class Input implements Contract
     }
 
     /**
-     * Get the input arguments.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getInputArguments(): array
     {
@@ -139,11 +127,7 @@ class Input implements Contract
     }
 
     /**
-     * Get an argument.
-     *
-     * @param string $argument The argument
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getArgument(string $argument): ?string
     {
@@ -151,11 +135,7 @@ class Input implements Contract
     }
 
     /**
-     * Determine if an argument exists.
-     *
-     * @param string $argument The argument
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function hasArgument(string $argument): bool
     {
@@ -163,11 +143,7 @@ class Input implements Contract
     }
 
     /**
-     * Get a short option.
-     *
-     * @param string $option The option
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getShortOption(string $option): ?string
     {
@@ -175,11 +151,7 @@ class Input implements Contract
     }
 
     /**
-     * Determine if a short option exists.
-     *
-     * @param string $option The short option
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function hasShortOption(string $option): bool
     {
@@ -187,11 +159,7 @@ class Input implements Contract
     }
 
     /**
-     * Get a long option.
-     *
-     * @param string $option The option
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getLongOption(string $option): ?string
     {
@@ -199,11 +167,7 @@ class Input implements Contract
     }
 
     /**
-     * Determine if a long option exists.
-     *
-     * @param string $option The option
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function hasLongOption(string $option): bool
     {
@@ -211,11 +175,7 @@ class Input implements Contract
     }
 
     /**
-     * Get an option (short or long).
-     *
-     * @param string $option The option
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function getOption(string $option): ?string
     {
@@ -223,11 +183,7 @@ class Input implements Contract
     }
 
     /**
-     * Check if an option exists (long or short).
-     *
-     * @param string $option The option
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function hasOption(string $option): bool
     {
@@ -235,9 +191,7 @@ class Input implements Contract
     }
 
     /**
-     * Get the global options.
-     *
-     * @return Option[]
+     * @inheritDoc
      */
     public function getGlobalOptions(): array
     {
@@ -249,9 +203,7 @@ class Input implements Contract
     }
 
     /**
-     * Get the global options as a flat array.
-     *
-     * @return string[]
+     * @inheritDoc
      */
     public function getGlobalOptionsFlat(): array
     {

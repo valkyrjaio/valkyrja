@@ -98,12 +98,7 @@ class Logger implements Contract
     }
 
     /**
-     * Use a logger by name.
-     *
-     * @param string|null $name    [optional] The logger name
-     * @param string|null $adapter [optional] The adapter
-     *
-     * @return Driver
+     * @inheritDoc
      */
     public function useLogger(string $name = null, string $adapter = null): Driver
     {
@@ -127,12 +122,7 @@ class Logger implements Contract
     }
 
     /**
-     * Log a debug message.
-     *
-     * @param string $message The message
-     * @param array  $context [optional] The context
-     *
-     * @return void
+     * @inheritDoc
      */
     public function debug(string $message, array $context = []): void
     {
@@ -140,12 +130,7 @@ class Logger implements Contract
     }
 
     /**
-     * Log an info message.
-     *
-     * @param string $message The message
-     * @param array  $context [optional] The context
-     *
-     * @return void
+     * @inheritDoc
      */
     public function info(string $message, array $context = []): void
     {
@@ -153,12 +138,7 @@ class Logger implements Contract
     }
 
     /**
-     * Log a notice message.
-     *
-     * @param string $message The message
-     * @param array  $context [optional] The context
-     *
-     * @return void
+     * @inheritDoc
      */
     public function notice(string $message, array $context = []): void
     {
@@ -166,12 +146,7 @@ class Logger implements Contract
     }
 
     /**
-     * Log a warning message.
-     *
-     * @param string $message The message
-     * @param array  $context [optional] The context
-     *
-     * @return void
+     * @inheritDoc
      */
     public function warning(string $message, array $context = []): void
     {
@@ -179,12 +154,7 @@ class Logger implements Contract
     }
 
     /**
-     * Log a error message.
-     *
-     * @param string $message The message
-     * @param array  $context [optional] The context
-     *
-     * @return void
+     * @inheritDoc
      */
     public function error(string $message, array $context = []): void
     {
@@ -192,12 +162,7 @@ class Logger implements Contract
     }
 
     /**
-     * Log a critical message.
-     *
-     * @param string $message The message
-     * @param array  $context [optional] The context
-     *
-     * @return void
+     * @inheritDoc
      */
     public function critical(string $message, array $context = []): void
     {
@@ -205,12 +170,7 @@ class Logger implements Contract
     }
 
     /**
-     * Log a alert message.
-     *
-     * @param string $message The message
-     * @param array  $context [optional] The context
-     *
-     * @return void
+     * @inheritDoc
      */
     public function alert(string $message, array $context = []): void
     {
@@ -218,12 +178,7 @@ class Logger implements Contract
     }
 
     /**
-     * Log a emergency message.
-     *
-     * @param string $message The message
-     * @param array  $context [optional] The context
-     *
-     * @return void
+     * @inheritDoc
      */
     public function emergency(string $message, array $context = []): void
     {
@@ -231,13 +186,7 @@ class Logger implements Contract
     }
 
     /**
-     * Log a message.
-     *
-     * @param string $level   The log level
-     * @param string $message The message
-     * @param array  $context [optional] The context
-     *
-     * @return void
+     * @inheritDoc
      */
     public function log(string $level, string $message, array $context = []): void
     {
@@ -245,13 +194,7 @@ class Logger implements Contract
     }
 
     /**
-     * Log an exception or throwable.
-     *
-     * @param Throwable $exception The exception
-     * @param string    $message   The message
-     * @param array     $context   [optional] The context
-     *
-     * @return void
+     * @inheritDoc
      */
     public function exception(Throwable $exception, string $message, array $context = []): void
     {

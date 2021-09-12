@@ -56,12 +56,7 @@ class Tagger implements Contract
     }
 
     /**
-     * Make a new Tag Store.
-     *
-     * @param Adapter $store
-     * @param string  ...$tags
-     *
-     * @return static
+     * @inheritDoc
      */
     public static function make(Adapter $store, string ...$tags): self
     {
@@ -69,13 +64,9 @@ class Tagger implements Contract
     }
 
     /**
-     * Determine if an item exists in the cache.
-     *
-     * @param string $key
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return mixed
      */
     public function has(string $key): bool
     {
@@ -89,13 +80,9 @@ class Tagger implements Contract
     }
 
     /**
-     * Retrieve an item from the cache by key.
-     *
-     * @param string $key
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return string|null
      */
     public function get(string $key): ?string
     {
@@ -109,15 +96,9 @@ class Tagger implements Contract
     }
 
     /**
-     * Retrieve multiple items from the cache by key.
-     *
-     * Items not found in the cache will have a null value.
-     *
-     * @param string ...$keys
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return array
      */
     public function many(string ...$keys): array
     {
@@ -137,15 +118,9 @@ class Tagger implements Contract
     }
 
     /**
-     * Store an item in the cache for a given number of minutes.
-     *
-     * @param string $key
-     * @param string $value
-     * @param int    $minutes
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return void
      */
     public function put(string $key, string $value, int $minutes): void
     {
@@ -155,24 +130,9 @@ class Tagger implements Contract
     }
 
     /**
-     * Store multiple items in the cache for a given number of minutes.
-     *
-     * <code>
-     *      $store->putMany(
-     *          [
-     *              'key'  => 'value',
-     *              'key2' => 'value2',
-     *          ],
-     *          5
-     *      )
-     * </code>
-     *
-     * @param array $values
-     * @param int   $minutes
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return void
      */
     public function putMany(array $values, int $minutes): void
     {
@@ -182,14 +142,9 @@ class Tagger implements Contract
     }
 
     /**
-     * Increment the value of an item in the cache.
-     *
-     * @param string $key
-     * @param int    $value
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return int
      */
     public function increment(string $key, int $value = 1): int
     {
@@ -199,14 +154,9 @@ class Tagger implements Contract
     }
 
     /**
-     * Decrement the value of an item in the cache.
-     *
-     * @param string $key
-     * @param int    $value
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return int
      */
     public function decrement(string $key, int $value = 1): int
     {
@@ -216,14 +166,9 @@ class Tagger implements Contract
     }
 
     /**
-     * Store an item in the cache indefinitely.
-     *
-     * @param string $key
-     * @param string $value
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return void
      */
     public function forever(string $key, string $value): void
     {
@@ -233,13 +178,9 @@ class Tagger implements Contract
     }
 
     /**
-     * Remove an item from the cache.
-     *
-     * @param string $key
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return bool
      */
     public function forget(string $key): bool
     {
@@ -249,11 +190,9 @@ class Tagger implements Contract
     }
 
     /**
-     * Remove all items from the cache.
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return bool
      */
     public function flush(): bool
     {
@@ -267,13 +206,9 @@ class Tagger implements Contract
     }
 
     /**
-     * Tag a key.
-     *
-     * @param string $key
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return static
      */
     public function tag(string $key): self
     {
@@ -289,13 +224,9 @@ class Tagger implements Contract
     }
 
     /**
-     * Untag a key.
-     *
-     * @param string $key
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return static
      */
     public function untag(string $key): self
     {
@@ -311,13 +242,9 @@ class Tagger implements Contract
     }
 
     /**
-     * Tag many keys.
-     *
-     * @param string ...$keys
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return static
      */
     public function tagMany(string ...$keys): self
     {
@@ -329,13 +256,9 @@ class Tagger implements Contract
     }
 
     /**
-     * Untag many keys.
-     *
-     * @param string ...$keys
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return static
      */
     public function untagMany(string ...$keys): self
     {

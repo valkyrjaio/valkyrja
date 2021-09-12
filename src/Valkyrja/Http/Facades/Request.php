@@ -61,9 +61,7 @@ use Valkyrja\Support\Facade\Facade;
 class Request extends Facade
 {
     /**
-     * The facade instance.
-     *
-     * @return string|object
+     * @inheritDoc
      */
     public static function instance()
     {

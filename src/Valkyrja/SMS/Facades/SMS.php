@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\SMS\Facades;
 
 use Valkyrja\SMS\Driver;
-use Valkyrja\SMS\SMS as Contract;
 use Valkyrja\SMS\Message;
+use Valkyrja\SMS\SMS as Contract;
 use Valkyrja\Support\Facade\Facade;
 
 /**
@@ -30,9 +30,7 @@ use Valkyrja\Support\Facade\Facade;
 class SMS extends Facade
 {
     /**
-     * The facade instance.
-     *
-     * @return string|object
+     * @inheritDoc
      */
     public static function instance()
     {

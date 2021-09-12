@@ -39,11 +39,7 @@ use function unserialize;
 class CacheResponseMiddleware extends Middleware
 {
     /**
-     * Middleware handler for before a request is dispatched.
-     *
-     * @param Request $request The request
-     *
-     * @return Request|Response
+     * @inheritDoc
      */
     public static function before(Request $request)
     {
@@ -76,22 +72,7 @@ class CacheResponseMiddleware extends Middleware
     }
 
     /**
-     * Get the ttl.
-     *
-     * @return int
-     */
-    protected static function getTtl(): int
-    {
-        return 1800;
-    }
-
-    /**
-     * Middleware handler run when the application is terminating.
-     *
-     * @param Request  $request  The request
-     * @param Response $response The response
-     *
-     * @return void
+     * @inheritDoc
      */
     public static function terminate(Request $request, Response $response): void
     {
@@ -99,6 +80,16 @@ class CacheResponseMiddleware extends Middleware
             Directory::cachePath('response/' . static::getHashedPath($request)),
             base64_encode(serialize($response))
         );
+    }
+
+    /**
+     * Get the ttl.
+     *
+     * @return int
+     */
+    protected static function getTtl(): int
+    {
+        return 1800;
     }
 
     /**

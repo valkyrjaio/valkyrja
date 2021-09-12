@@ -104,11 +104,7 @@ class Template implements Contract
     }
 
     /**
-     * Create a new template.
-     *
-     * @param Engine $engine The engine
-     *
-     * @return static
+     * @inheritDoc
      */
     public static function createTemplate(Engine $engine): self
     {
@@ -116,9 +112,7 @@ class Template implements Contract
     }
 
     /**
-     * Get the template name.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getName(): string
     {
@@ -126,11 +120,7 @@ class Template implements Contract
     }
 
     /**
-     * Set the template name.
-     *
-     * @param string $name The name
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setName(string $name): self
     {
@@ -140,9 +130,7 @@ class Template implements Contract
     }
 
     /**
-     * Get the variables.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getVariables(): array
     {
@@ -150,11 +138,7 @@ class Template implements Contract
     }
 
     /**
-     * Set the variables.
-     *
-     * @param array $variables [optional] The variables to set
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setVariables(array $variables = []): self
     {
@@ -164,11 +148,7 @@ class Template implements Contract
     }
 
     /**
-     * Get a variable.
-     *
-     * @param string $key The variable key to set
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function getVariable(string $key)
     {
@@ -176,12 +156,7 @@ class Template implements Contract
     }
 
     /**
-     * Set a single variable.
-     *
-     * @param string $key   The variable key to set
-     * @param mixed  $value The value to set
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setVariable(string $key, $value): self
     {
@@ -191,11 +166,7 @@ class Template implements Contract
     }
 
     /**
-     * Escape a value for output.
-     *
-     * @param mixed $value The value to escape
-     *
-     * @return string
+     * @inheritDoc
      */
     public function escape($value): string
     {
@@ -206,11 +177,7 @@ class Template implements Contract
     }
 
     /**
-     * Set the layout for the view template.
-     *
-     * @param string|null $layout [optional] The layout to set
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setLayout(string $layout = null): self
     {
@@ -232,9 +199,7 @@ class Template implements Contract
     }
 
     /**
-     * Set no layout for this view.
-     *
-     * @return static
+     * @inheritDoc
      */
     public function withoutLayout(): self
     {
@@ -244,12 +209,7 @@ class Template implements Contract
     }
 
     /**
-     * Get a partial.
-     *
-     * @param string $partial   The partial
-     * @param array  $variables [optional]
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getPartial(string $partial, array $variables = []): string
     {
@@ -257,11 +217,7 @@ class Template implements Contract
     }
 
     /**
-     * Output a block.
-     *
-     * @param string $name The block's name
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getBlock(string $name): string
     {
@@ -269,13 +225,7 @@ class Template implements Contract
     }
 
     /**
-     * Determine if a block exists.
-     *
-     * @param string $name
-     *
-     * @return bool
-     *  True if the block exists
-     *  False if the block doesn't exist
+     * @inheritDoc
      */
     public function hasBlock(string $name): bool
     {
@@ -283,11 +233,7 @@ class Template implements Contract
     }
 
     /**
-     * Start a block.
-     *
-     * @param string $name The block's name
-     *
-     * @return void
+     * @inheritDoc
      */
     public function startBlock(string $name): void
     {
@@ -297,9 +243,7 @@ class Template implements Contract
     }
 
     /**
-     * End a block.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function endBlock(): void
     {
@@ -316,11 +260,7 @@ class Template implements Contract
     }
 
     /**
-     * Render the template.
-     *
-     * @param array $variables [optional] The variables to set
-     *
-     * @return string
+     * @inheritDoc
      */
     public function render(array $variables = []): string
     {
@@ -328,9 +268,7 @@ class Template implements Contract
     }
 
     /**
-     * Get the view as a string.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function __toString(): string
     {

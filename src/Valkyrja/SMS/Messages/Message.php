@@ -51,9 +51,7 @@ class Message implements Contract
     protected bool $isUnicode = true;
 
     /**
-     * Get the phone number to send to.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getTo(): string
     {
@@ -61,11 +59,7 @@ class Message implements Contract
     }
 
     /**
-     * Set who to send to.
-     *
-     * @param string $to The to
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setTo(string $to): self
     {
@@ -75,9 +69,7 @@ class Message implements Contract
     }
 
     /**
-     * Get the phone number to set as sent from.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getFrom(): string
     {
@@ -85,11 +77,7 @@ class Message implements Contract
     }
 
     /**
-     * Set the from.
-     *
-     * @param string $from The from
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setFrom(string $from): self
     {
@@ -99,9 +87,7 @@ class Message implements Contract
     }
 
     /**
-     * Get the text.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getText(): string
     {
@@ -109,11 +95,7 @@ class Message implements Contract
     }
 
     /**
-     * Set the text.
-     *
-     * @param string $text The text
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setText(string $text): self
     {
@@ -123,9 +105,7 @@ class Message implements Contract
     }
 
     /**
-     * Get whether the text is unicode.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isUnicode(): bool
     {
@@ -133,11 +113,7 @@ class Message implements Contract
     }
 
     /**
-     * Set whether the text is unicode.
-     *
-     * @param bool $isUnicode [optional] Whether the text is unicode
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setIsUnicode(bool $isUnicode = true): self
     {

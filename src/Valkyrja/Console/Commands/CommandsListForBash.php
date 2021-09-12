@@ -41,11 +41,9 @@ class CommandsListForBash extends Commander
     public const SHORT_DESCRIPTION = 'List all the commands for bash auto complete';
 
     /**
-     * Run the command.
+     * @inheritDoc
      *
      * @param string|null $commandTyped The command typed
-     *
-     * @return int
      */
     public function run(string $commandTyped = null): int
     {

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Managers;
 
-use InvalidArgumentException;
 use Valkyrja\Cache\Cache as Contract;
 use Valkyrja\Cache\Driver;
 use Valkyrja\Cache\Tagger;
@@ -83,23 +82,16 @@ class Cache implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container    = $container;
-        $this->config       = $config;
-        $this->stores       = $config['stores'];
-        $this->adapters     = $config['adapters'];
-        $this->drivers      = $config['drivers'];
+        $this->container = $container;
+        $this->config = $config;
+        $this->stores = $config['stores'];
+        $this->adapters = $config['adapters'];
+        $this->drivers = $config['drivers'];
         $this->defaultStore = $config['default'];
     }
 
     /**
-     * Use a store by name.
-     *
-     * @param string|null $name    [optional] The store name
-     * @param string|null $adapter [optional] The adapter
-     *
-     * @throws InvalidArgumentException If the name doesn't exist
-     *
-     * @return Driver
+     * @inheritDoc
      */
     public function useStore(string $name = null, string $adapter = null): Driver
     {
@@ -123,11 +115,7 @@ class Cache implements Contract
     }
 
     /**
-     * Determine if an item exists in the cache.
-     *
-     * @param string $key
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function has(string $key): bool
     {
@@ -135,11 +123,7 @@ class Cache implements Contract
     }
 
     /**
-     * Retrieve an item from the cache by key.
-     *
-     * @param string $key
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function get(string $key): ?string
     {
@@ -147,13 +131,7 @@ class Cache implements Contract
     }
 
     /**
-     * Retrieve multiple items from the cache by key.
-     *
-     * Items not found in the cache will have a null value.
-     *
-     * @param string ...$keys
-     *
-     * @return array
+     * @inheritDoc
      */
     public function many(string ...$keys): array
     {
@@ -161,13 +139,7 @@ class Cache implements Contract
     }
 
     /**
-     * Store an item in the cache for a given number of minutes.
-     *
-     * @param string $key
-     * @param string $value
-     * @param int    $minutes
-     *
-     * @return void
+     * @inheritDoc
      */
     public function put(string $key, string $value, int $minutes): void
     {
@@ -175,22 +147,7 @@ class Cache implements Contract
     }
 
     /**
-     * Store multiple items in the cache for a given number of minutes.
-     *
-     * <code>
-     *      $store->putMany(
-     *          [
-     *              'key'  => 'value',
-     *              'key2' => 'value2',
-     *          ],
-     *          5
-     *      )
-     * </code>
-     *
-     * @param array $values
-     * @param int   $minutes
-     *
-     * @return void
+     * @inheritDoc
      */
     public function putMany(array $values, int $minutes): void
     {
@@ -198,12 +155,7 @@ class Cache implements Contract
     }
 
     /**
-     * Increment the value of an item in the cache.
-     *
-     * @param string $key
-     * @param int    $value
-     *
-     * @return int
+     * @inheritDoc
      */
     public function increment(string $key, int $value = 1): int
     {
@@ -211,12 +163,7 @@ class Cache implements Contract
     }
 
     /**
-     * Decrement the value of an item in the cache.
-     *
-     * @param string $key
-     * @param int    $value
-     *
-     * @return int
+     * @inheritDoc
      */
     public function decrement(string $key, int $value = 1): int
     {
@@ -224,12 +171,7 @@ class Cache implements Contract
     }
 
     /**
-     * Store an item in the cache indefinitely.
-     *
-     * @param string $key
-     * @param string $value
-     *
-     * @return void
+     * @inheritDoc
      */
     public function forever(string $key, string $value): void
     {
@@ -237,11 +179,7 @@ class Cache implements Contract
     }
 
     /**
-     * Remove an item from the cache.
-     *
-     * @param string $key
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function forget(string $key): bool
     {
@@ -249,9 +187,7 @@ class Cache implements Contract
     }
 
     /**
-     * Remove all items from the cache.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function flush(): bool
     {
@@ -259,9 +195,7 @@ class Cache implements Contract
     }
 
     /**
-     * Get the cache key prefix.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getPrefix(): string
     {
@@ -269,11 +203,7 @@ class Cache implements Contract
     }
 
     /**
-     * Get the tagger.
-     *
-     * @param string ...$tags
-     *
-     * @return Tagger
+     * @inheritDoc
      */
     public function getTagger(string ...$tags): Tagger
     {

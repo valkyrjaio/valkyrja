@@ -16,8 +16,6 @@ namespace Valkyrja\Container\Annotators;
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Filter;
-use Valkyrja\Container\Annotations\Service\Context;
-use Valkyrja\Container\Annotations\Service;
 use Valkyrja\Container\Annotator as Contract;
 use Valkyrja\Container\Enums\AnnotationName;
 use Valkyrja\Reflection\Reflector;
@@ -56,13 +54,9 @@ class Annotator implements Contract
     }
 
     /**
-     * Get the services.
-     *
-     * @param string ...$classes The classes
+     * @inheritDoc
      *
      * @throws ReflectionException
-     *
-     * @return Service[]
      */
     public function getServices(string ...$classes): array
     {
@@ -70,13 +64,9 @@ class Annotator implements Contract
     }
 
     /**
-     * Get the alias services.
-     *
-     * @param string ...$classes The classes
+     * @inheritDoc
      *
      * @throws ReflectionException
-     *
-     * @return Service[]
      */
     public function getAliasServices(string ...$classes): array
     {
@@ -84,13 +74,9 @@ class Annotator implements Contract
     }
 
     /**
-     * Get the context services.
-     *
-     * @param string ...$classes The classes
+     * @inheritDoc
      *
      * @throws ReflectionException
-     *
-     * @return Context[]
      */
     public function getContextServices(string ...$classes): array
     {

@@ -53,13 +53,9 @@ class MailgunAdapter implements Adapter
     }
 
     /**
-     * Send a message.
-     *
-     * @param Message $message The message to send
+     * @inheritDoc
      *
      * @throws MissingRequiredParameter
-     *
-     * @return void
      */
     public function send(Message $message): void
     {

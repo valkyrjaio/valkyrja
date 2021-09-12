@@ -44,18 +44,14 @@ class TwigEngine implements Engine
     }
 
     /**
-     * Start rendering.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function startRender(): void
     {
     }
 
     /**
-     * End rendering.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function endRender(): string
     {
@@ -63,16 +59,11 @@ class TwigEngine implements Engine
     }
 
     /**
-     * Render a file.
-     *
-     * @param string $name      The file name
-     * @param array  $variables [optional] The variables
+     * @inheritDoc
      *
      * @throws LoaderError  When the template cannot be found
      * @throws SyntaxError  When an error occurred during compilation
      * @throws RuntimeError When an error occurred during rendering
-     *
-     * @return string
      */
     public function renderFile(string $name, array $variables = []): string
     {

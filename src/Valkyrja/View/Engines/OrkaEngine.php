@@ -107,12 +107,7 @@ class OrkaEngine extends PHPEngine
     }
 
     /**
-     * Render a file.
-     *
-     * @param string $name      The file name
-     * @param array  $variables [optional] The variables
-     *
-     * @return string
+     * @inheritDoc
      */
     public function renderFile(string $name, array $variables = []): string
     {
