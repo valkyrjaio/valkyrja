@@ -25,9 +25,7 @@ use Valkyrja\Config\Constants\EnvKey;
 class Config extends Model
 {
     /**
-     * The model properties env keys.
-     *
-     * @var array
+     * @inheritDoc
      */
     protected static array $envKeys = [
         CKP::MIDDLEWARE                  => EnvKey::ROUTING_MIDDLEWARE,

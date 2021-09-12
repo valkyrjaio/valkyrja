@@ -26,9 +26,7 @@ use Valkyrja\Console\Support\Provider;
 class Config extends Model
 {
     /**
-     * The model properties env keys.
-     *
-     * @var array
+     * @inheritDoc
      */
     protected static array $envKeys = [
         CKP::HANDLERS                    => EnvKey::CONSOLE_HANDLERS,

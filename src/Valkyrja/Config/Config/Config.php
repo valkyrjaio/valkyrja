@@ -47,9 +47,7 @@ use Valkyrja\View\Config\Config as View;
 class Config extends Model
 {
     /**
-     * The model properties env keys.
-     *
-     * @var array
+     * @inheritDoc
      */
     protected static array $envKeys = [
         CKP::PROVIDERS       => EnvKey::CONFIG_PROVIDERS,

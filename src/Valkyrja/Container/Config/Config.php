@@ -26,9 +26,7 @@ use Valkyrja\Container\Support\Provider;
 class Config extends Model
 {
     /**
-     * The model properties env keys.
-     *
-     * @var array
+     * @inheritDoc
      */
     protected static array $envKeys = [
         CKP::ALIASES                     => EnvKey::CONTAINER_ALIASES,
