@@ -81,12 +81,12 @@ class Session implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container = $container;
-        $this->config = $config;
+        $this->container      = $container;
+        $this->config         = $config;
         $this->defaultSession = $config['default'];
-        $this->adapters = $config['adapters'];
-        $this->drivers = $config['drivers'];
-        $this->sessions = $config['sessions'];
+        $this->adapters       = $config['adapters'];
+        $this->drivers        = $config['drivers'];
+        $this->sessions       = $config['sessions'];
     }
 
     /**

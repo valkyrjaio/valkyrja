@@ -15,7 +15,6 @@ namespace Valkyrja\Broadcast\Adapters;
 
 use JsonException;
 use Pusher\Pusher;
-use Pusher\PusherException;
 use Valkyrja\Broadcast\Message;
 use Valkyrja\Support\Type\Arr;
 

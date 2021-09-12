@@ -82,11 +82,11 @@ class Cache implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container = $container;
-        $this->config = $config;
-        $this->stores = $config['stores'];
-        $this->adapters = $config['adapters'];
-        $this->drivers = $config['drivers'];
+        $this->container    = $container;
+        $this->config       = $config;
+        $this->stores       = $config['stores'];
+        $this->adapters     = $config['adapters'];
+        $this->drivers      = $config['drivers'];
         $this->defaultStore = $config['default'];
     }
 
