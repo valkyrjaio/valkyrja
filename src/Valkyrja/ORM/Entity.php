@@ -44,6 +44,13 @@ interface Entity extends Model
     public static function getRepository(): ?string;
 
     /**
+     * Get the connection to use for this entity.
+     *
+     * @return string|null
+     */
+    public static function getConnection(): ?string;
+
+    /**
      * Entity relationship properties.
      *
      * <code>

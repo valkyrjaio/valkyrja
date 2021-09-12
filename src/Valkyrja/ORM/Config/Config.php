@@ -43,9 +43,7 @@ class Config extends Model
     ];
 
     /**
-     * The model properties env keys.
-     *
-     * @var array
+     * @inheritDoc
      */
     protected static array $envKeys = [
         CKP::DEFAULT       => EnvKey::ORM_DEFAULT,

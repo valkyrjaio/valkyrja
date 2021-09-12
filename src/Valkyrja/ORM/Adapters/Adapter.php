@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Adapters;
 
-use Valkyrja\Container\Container;
 use Valkyrja\ORM\Adapter as Contract;
+use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Retriever;
-use Valkyrja\Support\Type\Cls;
 
 /**
  * Abstract Class Adapter.
@@ -29,11 +28,11 @@ use Valkyrja\Support\Type\Cls;
 abstract class Adapter implements Contract
 {
     /**
-     * The container service.
+     * The ORM service.
      *
-     * @var Container
+     * @var ORM
      */
-    protected Container $container;
+    protected ORM $orm;
 
     /**
      * The entity persister.
@@ -80,12 +79,12 @@ abstract class Adapter implements Contract
     /**
      * Adapter constructor.
      *
-     * @param Container $container The container
-     * @param array     $config    The config
+     * @param ORM   $orm    The orm
+     * @param array $config The config
      */
-    public function __construct(Container $container, array $config)
+    public function __construct(ORM $orm, array $config)
     {
-        $this->container         = $container;
+        $this->orm               = $orm;
         $this->config            = $config;
         $this->queryClass        = $this->config['query'];
         $this->queryBuilderClass = $this->config['queryBuilder'];
@@ -94,22 +93,11 @@ abstract class Adapter implements Contract
     }
 
     /**
-     * Create a new query instance.
-     *
-     * @param string|null $query
-     * @param string|null $entity
-     *
-     * @return Query
+     * @inheritDoc
      */
     public function createQuery(string $query = null, string $entity = null): Query
     {
-        /** @var Query $queryInstance */
-        $queryInstance = Cls::getDefaultableService(
-            $this->container,
-            $this->queryClass,
-            Query::class,
-            [$this]
-        );
+        $queryInstance = $this->orm->createQuery($this, $this->queryClass);
 
         if (null !== $entity) {
             $queryInstance->entity($entity);
@@ -123,22 +111,11 @@ abstract class Adapter implements Contract
     }
 
     /**
-     * Create a new query builder instance.
-     *
-     * @param string|null $entity
-     * @param string|null $alias
-     *
-     * @return QueryBuilder
+     * @inheritDoc
      */
     public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = Cls::getDefaultableService(
-            $this->container,
-            $this->queryBuilderClass,
-            QueryBuilder::class,
-            [$this]
-        );
+        $queryBuilder = $this->orm->createQueryBuilder($this, $this->queryBuilderClass);
 
         if (null !== $entity) {
             $queryBuilder->entity($entity, $alias);
@@ -148,33 +125,19 @@ abstract class Adapter implements Contract
     }
 
     /**
-     * Create a new retriever instance.
-     *
-     * @return Retriever
+     * @inheritDoc
      */
     public function createRetriever(): Retriever
     {
-        return Cls::getDefaultableService(
-            $this->container,
-            $this->retrieverClass,
-            Retriever::class,
-            [$this]
-        );
+        return $this->orm->createRetriever($this, $this->retrieverClass);
     }
 
     /**
-     * Get the persister.
-     *
-     * @return Persister
+     * @inheritDoc
      */
     public function getPersister(): Persister
     {
         return $this->persister
-            ?? $this->persister = Cls::getDefaultableService(
-                $this->container,
-                $this->persisterClass,
-                Persister::class,
-                [$this]
-            );
+            ?? $this->persister = $this->orm->createPersister($this, $this->persisterClass);
     }
 }

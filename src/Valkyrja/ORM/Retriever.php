@@ -18,7 +18,8 @@ use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 /**
  * Interface Retriever
  *
- * @author Melech Mizrachi
+ * @author   Melech Mizrachi
+ * @template T
  */
 interface Retriever
 {
@@ -29,7 +30,7 @@ interface Retriever
      *      $retriever->bind(Entity::class, true | false)
      * </code>
      *
-     * @param string $entity
+     * @param class-string<T> $entity
      *
      * @return static
      */
@@ -42,8 +43,8 @@ interface Retriever
      *      $retriever->findOne(Entity::class, 1, true | false)
      * </code>
      *
-     * @param string     $entity
-     * @param string|int $id
+     * @param class-string<T> $entity
+     * @param string|int      $id
      *
      * @return static
      */
@@ -56,7 +57,7 @@ interface Retriever
      *      $retriever->count(Entity::class)
      * </code>
      *
-     * @param string $entity
+     * @param class-string<T> $entity
      *
      * @return static
      */
@@ -155,14 +156,14 @@ interface Retriever
     /**
      * Get results.
      *
-     * @return Entity[]
+     * @return T[]
      */
     public function getResult(): array;
 
     /**
      * Get one or null.
      *
-     * @return Entity|null
+     * @return T|null
      */
     public function getOneOrNull(): ?Entity;
 
@@ -171,7 +172,7 @@ interface Retriever
      *
      * @throws EntityNotFoundException
      *
-     * @return Entity
+     * @return T
      */
     public function getOneOrFail(): Entity;
 

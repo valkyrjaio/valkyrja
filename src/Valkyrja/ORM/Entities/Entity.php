@@ -66,9 +66,14 @@ abstract class Entity extends Model implements EntityContract
     protected static array $storableHiddenFields = [];
 
     /**
-     * Get the table.
+     * The connection to use.
      *
-     * @return string
+     * @var string|null
+     */
+    protected static ?string $connection = null;
+
+    /**
+     * @inheritDoc
      */
     public static function getTableName(): string
     {
@@ -76,9 +81,7 @@ abstract class Entity extends Model implements EntityContract
     }
 
     /**
-     * Get the id field.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getIdField(): string
     {
@@ -86,9 +89,7 @@ abstract class Entity extends Model implements EntityContract
     }
 
     /**
-     * Get the repository to use for this entity.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public static function getRepository(): ?string
     {
@@ -96,17 +97,15 @@ abstract class Entity extends Model implements EntityContract
     }
 
     /**
-     * Entity relationship properties.
-     *
-     * <code>
-     *      [
-     *          'property_name',
-     *          'property_name_alt',
-     *          ...
-     *      ]
-     * </code>
-     *
-     * @return string[]
+     * @inheritDoc
+     */
+    public static function getConnection(): ?string
+    {
+        return static::$connection;
+    }
+
+    /**
+     * @inheritDoc
      */
     public static function getRelationshipProperties(): array
     {
@@ -114,9 +113,7 @@ abstract class Entity extends Model implements EntityContract
     }
 
     /**
-     * Get a list of hidden fields we can expose for storage.
-     *
-     * @return string[]
+     * @inheritDoc
      */
     public static function getStorableHiddenFields(): array
     {
@@ -124,13 +121,9 @@ abstract class Entity extends Model implements EntityContract
     }
 
     /**
-     * Get the entity as an array for saving to the data store.
-     *
-     * @param string ...$properties [optional] An array of properties to return
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return array
      */
     public function asStorableArray(string ...$properties): array
     {
@@ -138,13 +131,9 @@ abstract class Entity extends Model implements EntityContract
     }
 
     /**
-     * Get model as an array.
-     *
-     * @param string ...$properties [optional] An array of properties to return
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return array
      */
     public function asArray(string ...$properties): array
     {

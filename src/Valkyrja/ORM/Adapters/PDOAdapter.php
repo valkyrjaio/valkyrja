@@ -15,11 +15,10 @@ namespace Valkyrja\ORM\Adapters;
 
 use PDO;
 use RuntimeException;
-use Valkyrja\Container\Container;
+use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\PDOAdapter as Contract;
 use Valkyrja\ORM\Statement;
 use Valkyrja\ORM\Statements\PDOStatement;
-use Valkyrja\Support\Type\Cls;
 
 use function is_bool;
 
@@ -40,21 +39,19 @@ class PDOAdapter extends Adapter implements Contract
     /**
      * PDOAdapter constructor.
      *
-     * @param Container $container The container
-     * @param PDO       $pdo       The PDO
-     * @param array     $config    The config
+     * @param ORM   $orm    The orm
+     * @param PDO   $pdo    The PDO
+     * @param array $config The config
      */
-    public function __construct(Container $container, PDO $pdo, array $config)
+    public function __construct(ORM $orm, PDO $pdo, array $config)
     {
         $this->pdo = $pdo;
 
-        parent::__construct($container, $config);
+        parent::__construct($orm, $config);
     }
 
     /**
-     * Initiate a transaction.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function beginTransaction(): bool
     {
@@ -62,9 +59,7 @@ class PDOAdapter extends Adapter implements Contract
     }
 
     /**
-     * In a transaction.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function inTransaction(): bool
     {
@@ -72,9 +67,7 @@ class PDOAdapter extends Adapter implements Contract
     }
 
     /**
-     * Ensure a transaction is in progress.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function ensureTransaction(): void
     {
@@ -84,10 +77,7 @@ class PDOAdapter extends Adapter implements Contract
     }
 
     /**
-     * Commit all items in the transaction.
-     *
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function commit(): bool
     {
@@ -95,9 +85,7 @@ class PDOAdapter extends Adapter implements Contract
     }
 
     /**
-     * Rollback the previous transaction.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function rollback(): bool
     {
@@ -105,11 +93,7 @@ class PDOAdapter extends Adapter implements Contract
     }
 
     /**
-     * Rollback the previous transaction.
-     *
-     * @param string $query The query
-     *
-     * @return Statement
+     * @inheritDoc
      */
     public function prepare(string $query): Statement
     {
@@ -119,21 +103,11 @@ class PDOAdapter extends Adapter implements Contract
             throw new RuntimeException('Statement preparation has failed.');
         }
 
-        return Cls::getDefaultableService(
-            $this->container,
-            PDOStatement::class,
-            \Valkyrja\ORM\PDOStatement::class,
-            [$statement]
-        );
+        return $this->orm->createStatement($this, PDOStatement::class, [$statement]);
     }
 
     /**
-     * Get the last inserted id.
-     *
-     * @param string|null $table [optional] The table last inserted into
-     * @param string|null $idField [optional] The id field of the table last inserted into
-     *
-     * @return string
+     * @inheritDoc
      */
     public function lastInsertId(string $table = null, string $idField = null): string
     {

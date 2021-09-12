@@ -42,16 +42,11 @@ class PgSqlPDO extends PDO
      */
     public function __construct(array $config)
     {
-        $schema  = $config['schema'] ?? null;
         $charset = $config['charset'] ?? 'utf8';
 
         $dsn = $this->getDsnPart($config, 'sslmode')
             . ";options='--client_encoding={$charset}'";
 
         parent::__construct($config, 'pgsql', $dsn);
-
-        if ($schema && $statement = $this->prepare("set search_path to {$schema}")) {
-            $statement->execute();
-        }
     }
 }

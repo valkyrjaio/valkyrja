@@ -67,7 +67,7 @@ abstract class SqlFileMigration extends SmartMigration
                 continue;
             }
 
-            $query = $orm->createQuery($queryString);
+            $query = $orm->useConnection()->createQuery($queryString);
 
             if (! $query->execute()) {
                 throw new RuntimeException($query->getError());

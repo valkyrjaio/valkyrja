@@ -73,15 +73,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Find by given criteria.
-     *
-     * <code>
-     *      $retriever->find(Entity::class, true | false)
-     * </code>
-     *
-     * @param string $entity The entity
-     *
-     * @return static
+     * @inheritDoc
      */
     public function find(string $entity): self
     {
@@ -91,16 +83,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Find a single entity given its id.
-     *
-     * <code>
-     *      $retriever->findOne(Entity::class, 1, true | false)
-     * </code>
-     *
-     * @param string     $entity The entity
-     * @param string|int $id     The id to find
-     *
-     * @return static
+     * @inheritDoc
      */
     public function findOne(string $entity, $id): self
     {
@@ -115,15 +98,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Count all the results of given criteria.
-     *
-     * <code>
-     *      $retriever->count(Entity::class)
-     * </code>
-     *
-     * @param string $entity The entity
-     *
-     * @return static
+     * @inheritDoc
      */
     public function count(string $entity): self
     {
@@ -133,11 +108,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Set columns.
-     *
-     * @param array $columns The columns to return
-     *
-     * @return static
+     * @inheritDoc
      */
     public function columns(array $columns): self
     {
@@ -147,14 +118,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Add a where condition.
-     * - Each additional use will add an `AND` where condition.
-     *
-     * @param string      $column   The column
-     * @param string|null $operator [optional] The operator
-     * @param mixed|null  $value    [optional] The value to find
-     *
-     * @return static
+     * @inheritDoc
      */
     public function where(string $column, string $operator = null, $value = null): self
     {
@@ -165,13 +129,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Add an additional `OR` where condition.
-     *
-     * @param string      $column   The column
-     * @param string|null $operator [optional] The operator
-     * @param mixed|null  $value    [optional] The value to find
-     *
-     * @return static
+     * @inheritDoc
      */
     public function orWhere(string $column, string $operator = null, $value = null): self
     {
@@ -182,16 +140,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Join with another table.
-     *
-     * @param string      $table    The table to join on
-     * @param string      $column1  The column to join on
-     * @param string      $column2  The secondary column to join on
-     * @param string|null $operator [optional] The operator
-     * @param string|null $type     [optional] The type of join
-     * @param bool|null   $isWhere  [optional] Whether this is a where join
-     *
-     * @return static
+     * @inheritDoc
      */
     public function join(
         string $table,
@@ -207,11 +156,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Set group by.
-     *
-     * @param string $column The column to group by
-     *
-     * @return static
+     * @inheritDoc
      */
     public function groupBy(string $column): self
     {
@@ -221,12 +166,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Set order by.
-     *
-     * @param string      $column The column to order by
-     * @param string|null $type   [optional] Ascending or descending order by type
-     *
-     * @return static
+     * @inheritDoc
      */
     public function orderBy(string $column, string $type = null): self
     {
@@ -236,11 +176,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Set limit.
-     *
-     * @param int $limit The limit of rows to return
-     *
-     * @return static
+     * @inheritDoc
      */
     public function limit(int $limit): self
     {
@@ -250,11 +186,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Set offset.
-     *
-     * @param int $offset The offset
-     *
-     * @return static
+     * @inheritDoc
      */
     public function offset(int $offset): self
     {
@@ -264,9 +196,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Get results.
-     *
-     * @return Entity[]
+     * @inheritDoc
      */
     public function getResult(): array
     {
@@ -276,9 +206,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Get one or null.
-     *
-     * @return Entity|null
+     * @inheritDoc
      */
     public function getOneOrNull(): ?Entity
     {
@@ -286,11 +214,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Get one or fail.
-     *
-     * @throws EntityNotFoundException
-     *
-     * @return Entity
+     * @inheritDoc
      */
     public function getOneOrFail(): Entity
     {
@@ -304,9 +228,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Get count results.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function getCount(): int
     {
@@ -318,9 +240,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Get the query builder.
-     *
-     * @return QueryBuilder
+     * @inheritDoc
      */
     public function getQueryBuilder(): QueryBuilder
     {
@@ -328,9 +248,7 @@ class Retriever implements Contract
     }
 
     /**
-     * Get the query.
-     *
-     * @return Query
+     * @inheritDoc
      */
     public function getQuery(): Query
     {

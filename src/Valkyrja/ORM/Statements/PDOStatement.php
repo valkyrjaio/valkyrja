@@ -35,7 +35,7 @@ class PDOStatement implements Contract
     protected Statement $statement;
 
     /**
-     * PDOConnection constructor.
+     * PDOStatement constructor.
      *
      * @param Statement $statement
      */
@@ -45,12 +45,7 @@ class PDOStatement implements Contract
     }
 
     /**
-     * Bind a value.
-     *
-     * @param string $parameter
-     * @param mixed  $value
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function bindValue(string $parameter, $value): bool
     {
@@ -62,9 +57,7 @@ class PDOStatement implements Contract
     }
 
     /**
-     * Execute the statement.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function execute(): bool
     {
@@ -72,11 +65,7 @@ class PDOStatement implements Contract
     }
 
     /**
-     * Get a column's meta information.
-     *
-     * @param int $columnNumber The column index in relation to the query statement
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getColumnMeta(int $columnNumber): array
     {
@@ -84,9 +73,7 @@ class PDOStatement implements Contract
     }
 
     /**
-     * Fetch the results.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function fetch(): array
     {
@@ -94,11 +81,7 @@ class PDOStatement implements Contract
     }
 
     /**
-     * Fetch a single column.
-     *
-     * @param int $columnNumber
-     *
-     * @return mixed
+     * @inheritDoc
      */
     public function fetchColumn(int $columnNumber = 0)
     {
@@ -106,9 +89,7 @@ class PDOStatement implements Contract
     }
 
     /**
-     * Fetch all the results.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function fetchAll(): array
     {
@@ -116,11 +97,7 @@ class PDOStatement implements Contract
     }
 
     /**
-     * Fetch the results as an object.
-     *
-     * @param string $className
-     *
-     * @return object
+     * @inheritDoc
      */
     public function fetchObject(string $className = 'stdClass'): object
     {
@@ -128,9 +105,7 @@ class PDOStatement implements Contract
     }
 
     /**
-     * The number of rows returned.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function rowCount(): int
     {
@@ -138,9 +113,7 @@ class PDOStatement implements Contract
     }
 
     /**
-     * Count of columns returned.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function columnCount(): int
     {
@@ -148,9 +121,7 @@ class PDOStatement implements Contract
     }
 
     /**
-     * The error code.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function errorCode(): string
     {
@@ -158,9 +129,7 @@ class PDOStatement implements Contract
     }
 
     /**
-     * The error message.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public function errorMessage(): ?string
     {

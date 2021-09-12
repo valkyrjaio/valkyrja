@@ -31,66 +31,99 @@ interface ORM
     public function useConnection(string $name = null, string $adapter = null): Driver;
 
     /**
-     * Get an adapter.
+     * Create an adapter.
      *
-     * @param string|null $name       [optional] The adapter name
-     * @param string|null $connection [optional] The connection
+     * @template T
      *
-     * @return Adapter
+     * @param class-string<T> $name   The adapter class name
+     * @param array           $config The config
+     *
+     * @return T
      */
-    public function getAdapter(string $name = null, string $connection = null): Adapter;
+    public function createAdapter(string $name, array $config): Adapter;
 
     /**
-     * Create a new query builder instance.
+     * Create a query builder.
      *
-     * @param string|null $entity
-     * @param string|null $alias
+     * @template QueryBuilder
+     *
+     * @param Adapter                    $adapter The adapter
+     * @param class-string<QueryBuilder> $name    The query builder class name
      *
      * @return QueryBuilder
      */
-    public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder;
+    public function createQueryBuilder(Adapter $adapter, string $name): QueryBuilder;
 
     /**
-     * Create a new query instance.
+     * Create a query.
      *
-     * @param string|null $query
-     * @param string|null $entity
+     * @template T
      *
-     * @return Query
+     * @param Adapter         $adapter The adapter
+     * @param class-string<T> $name    The query class name
+     *
+     * @return T
      */
-    public function createQuery(string $query = null, string $entity = null): Query;
+    public function createQuery(Adapter $adapter, string $name): Query;
 
     /**
-     * Create a new retriever instance.
+     * Create a retriever.
      *
-     * @return Retriever
+     * @template T
+     *
+     * @param Adapter         $adapter The adapter
+     * @param class-string<T> $name    The retriever class name
+     *
+     * @return T
      */
-    public function createRetriever(): Retriever;
+    public function createRetriever(Adapter $adapter, string $name): Retriever;
 
     /**
-     * Get the persister.
+     * Create a persister.
      *
-     * @return Persister
+     * @template T
+     *
+     * @param Adapter         $adapter The adapter
+     * @param class-string<T> $name    The persister class name
+     *
+     * @return T
      */
-    public function getPersister(): Persister;
+    public function createPersister(Adapter $adapter, string $name): Persister;
 
     /**
      * Get a repository by entity name.
      *
-     * @param string $entity
+     * @template T
      *
-     * @return Repository
+     * @param class-string<T> $entity
+     *
+     * @return Repository<T>
      */
     public function getRepository(string $entity): Repository;
 
     /**
      * Get a repository from an entity class.
      *
-     * @param Entity $entity
+     * @template T
      *
-     * @return Repository
+     * @param Entity|T $entity
+     *
+     * @return Repository<T>
      */
     public function getRepositoryFromClass(Entity $entity): Repository;
+
+    /**
+     * Create a statement.
+     *
+     * @template T
+     *
+     * @param Adapter         $adapter The adapter
+     * @param class-string<T> $name    The statement class name
+     * @param array           $data    [optional] Additional data required for the statement
+     *
+     * @return T
+     */
+    public function createStatement(Adapter $adapter, string $name, array $data = []): Statement;
 
     /**
      * Initiate a transaction.

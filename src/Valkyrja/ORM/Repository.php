@@ -18,14 +18,15 @@ use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 /**
  * Interface Repository.
  *
- * @author Melech Mizrachi
+ * @author   Melech Mizrachi
+ * @template T
  */
 interface Repository
 {
     /**
      * Find by given criteria.
      *
-     * @return static
+     * @return static<T>
      */
     public function find(): self;
 
@@ -34,14 +35,14 @@ interface Repository
      *
      * @param string|int $id The id
      *
-     * @return static
+     * @return static<T>
      */
     public function findOne($id): self;
 
     /**
      * Count all the results of given criteria.
      *
-     * @return static
+     * @return static<T>
      */
     public function count(): self;
 
@@ -50,7 +51,7 @@ interface Repository
      *
      * @param array $columns The columns
      *
-     * @return static
+     * @return static<T>
      */
     public function columns(array $columns): self;
 
@@ -62,7 +63,7 @@ interface Repository
      * @param string|null $operator [optional] The operator
      * @param mixed|null  $value    [optional] The value
      *
-     * @return static
+     * @return static<T>
      */
     public function where(string $column, string $operator = null, $value = null): self;
 
@@ -73,7 +74,7 @@ interface Repository
      * @param string|null $operator [optional] The operator
      * @param mixed|null  $value    [optional] The value
      *
-     * @return static
+     * @return static<T>
      */
     public function orWhere(string $column, string $operator = null, $value = null): self;
 
@@ -87,7 +88,7 @@ interface Repository
      * @param string|null $type     [optional] The type of join
      * @param bool|null   $isWhere  [optional] Whether this is a where join
      *
-     * @return static
+     * @return static<T>
      */
     public function join(
         string $table,
@@ -104,7 +105,7 @@ interface Repository
      * @param string      $column    The column
      * @param string|null $direction [optional] The order direction
      *
-     * @return static
+     * @return static<T>
      */
     public function orderBy(string $column, string $direction = null): self;
 
@@ -113,7 +114,7 @@ interface Repository
      *
      * @param int $limit The limit
      *
-     * @return static
+     * @return static<T>
      */
     public function limit(int $limit): self;
 
@@ -122,7 +123,7 @@ interface Repository
      *
      * @param int $offset The offset
      *
-     * @return static
+     * @return static<T>
      */
     public function offset(int $offset): self;
 
@@ -131,21 +132,21 @@ interface Repository
      *
      * @param array|null $relationships [optional] The relationships to get
      *
-     * @return static
+     * @return static<T>
      */
     public function withRelationships(array $relationships = null): self;
 
     /**
      * Get results.
      *
-     * @return Entity[]
+     * @return array<int, T>
      */
     public function getResult(): array;
 
     /**
      * Get one or null.
      *
-     * @return Entity|null
+     * @return T|null
      */
     public function getOneOrNull(): ?Entity;
 
@@ -154,7 +155,7 @@ interface Repository
      *
      * @throws EntityNotFoundException
      *
-     * @return Entity
+     * @return T
      */
     public function getOneOrFail(): Entity;
 
@@ -172,8 +173,8 @@ interface Repository
      *      $repository->create(new Entity(), true | false)
      * </code>
      *
-     * @param Entity $entity The entity
-     * @param bool   $defer  [optional] Whether to defer creation or create immediately
+     * @param Entity|T $entity The entity
+     * @param bool     $defer  [optional] Whether to defer creation or create immediately
      *
      * @return void
      */
@@ -186,8 +187,8 @@ interface Repository
      *      $repository->save(new Entity(), true | false)
      * </code>
      *
-     * @param Entity $entity The entity
-     * @param bool   $defer  [optional] Whether to defer save or save immediately
+     * @param Entity|T $entity The entity
+     * @param bool     $defer  [optional] Whether to defer save or save immediately
      *
      * @return void
      */
@@ -200,8 +201,8 @@ interface Repository
      *      $repository->delete(new Entity(), true | false)
      * </code>
      *
-     * @param Entity $entity The entity
-     * @param bool   $defer  [optional] Whether to deletion creation or delete immediately
+     * @param Entity|T $entity The entity
+     * @param bool     $defer  [optional] Whether to deletion creation or delete immediately
      *
      * @return void
      */
@@ -214,8 +215,8 @@ interface Repository
      *      $persister->softDelete(new SoftDeleteEntity(), true | false)
      * </code>
      *
-     * @param SoftDeleteEntity $entity The entity
-     * @param bool             $defer  [optional] Whether to defer deletion or delete immediately
+     * @param SoftDeleteEntity|T $entity The entity
+     * @param bool               $defer  [optional] Whether to defer deletion or delete immediately
      *
      * @return void
      */
@@ -228,7 +229,7 @@ interface Repository
      *      $repository->clear(new Entity())
      * </code>
      *
-     * @param Entity|null $entity The entity instance to remove.
+     * @param Entity|T|null $entity The entity instance to remove.
      *
      * @return void
      */

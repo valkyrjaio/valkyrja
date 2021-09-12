@@ -59,21 +59,17 @@ class Query implements QueryContract
     protected ?string $entity = null;
 
     /**
-     * PDOQuery constructor.
+     * Query constructor.
      *
-     * @param Adapter $connection
+     * @param Adapter $adapter
      */
-    public function __construct(Adapter $connection)
+    public function __construct(Adapter $adapter)
     {
-        $this->adapter = $connection;
+        $this->adapter = $adapter;
     }
 
     /**
-     * Set the table to query on.
-     *
-     * @param string $table
-     *
-     * @return static
+     * @inheritDoc
      */
     public function table(string $table): self
     {
@@ -83,11 +79,7 @@ class Query implements QueryContract
     }
 
     /**
-     * Set the entity to query with.
-     *
-     * @param string $entity
-     *
-     * @return static
+     * @inheritDoc
      */
     public function entity(string $entity): self
     {
@@ -97,11 +89,7 @@ class Query implements QueryContract
     }
 
     /**
-     * Prepare the query.
-     *
-     * @param string $query
-     *
-     * @return static
+     * @inheritDoc
      */
     public function prepare(string $query): self
     {
@@ -119,12 +107,7 @@ class Query implements QueryContract
     }
 
     /**
-     * Bind a value.
-     *
-     * @param string $property
-     * @param mixed  $value
-     *
-     * @return static
+     * @inheritDoc
      */
     public function bindValue(string $property, $value): self
     {
@@ -143,9 +126,7 @@ class Query implements QueryContract
     }
 
     /**
-     * Execute the query.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function execute(): bool
     {
@@ -153,9 +134,7 @@ class Query implements QueryContract
     }
 
     /**
-     * Get the result(s).
-     *
-     * @return Entity[]|object[]
+     * @inheritDoc
      */
     public function getResult(): array
     {
@@ -185,9 +164,7 @@ class Query implements QueryContract
     }
 
     /**
-     * Get one or null.
-     *
-     * @return Entity|object|null
+     * @inheritDoc
      */
     public function getOneOrNull(): ?object
     {
@@ -195,11 +172,7 @@ class Query implements QueryContract
     }
 
     /**
-     * Get one or fail.
-     *
-     * @throws NotFoundException
-     *
-     * @return Entity|object
+     * @inheritDoc
      */
     public function getOneOrFail(): object
     {
@@ -213,9 +186,7 @@ class Query implements QueryContract
     }
 
     /**
-     * Get count results.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function getCount(): int
     {
@@ -225,9 +196,7 @@ class Query implements QueryContract
     }
 
     /**
-     * Get the error if one occurred.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getError(): string
     {

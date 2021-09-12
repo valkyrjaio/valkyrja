@@ -21,15 +21,6 @@ namespace Valkyrja\ORM;
 interface Driver
 {
     /**
-     * Get a repository by entity name.
-     *
-     * @param string $entity
-     *
-     * @return Repository
-     */
-    public function getRepository(string $entity): Repository;
-
-    /**
      * Initiate a transaction.
      *
      * @return bool

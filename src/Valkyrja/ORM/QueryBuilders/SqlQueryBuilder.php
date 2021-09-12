@@ -121,30 +121,15 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * SqlQueryBuilder constructor.
      *
-     * @param Adapter $connection
+     * @param Adapter $adapter
      */
-    public function __construct(Adapter $connection)
+    public function __construct(Adapter $adapter)
     {
-        $this->adapter = $connection;
+        $this->adapter = $adapter;
     }
 
     /**
-     * Create a SELECT query statement.
-     *
-     * <code>
-     *      $queryBuilder->select();
-     *      $queryBuilder->select(
-     *          [
-     *              'column1',
-     *              'column2',
-     *              ...
-     *          ]
-     *      );
-     * </code>
-     *
-     * @param array|null $columns
-     *
-     * @return static
+     * @inheritDoc
      */
     public function select(array $columns = null): QueryBuilder
     {
@@ -155,13 +140,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Create an INSERT query statement.
-     *
-     * <code>
-     *      $queryBuilder->insert();
-     * </code>
-     *
-     * @return static
+     * @inheritDoc
      */
     public function insert(): QueryBuilder
     {
@@ -171,13 +150,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Create an UPDATE query statement.
-     *
-     * <code>
-     *      $queryBuilder->update();
-     * </code>
-     *
-     * @return static
+     * @inheritDoc
      */
     public function update(): QueryBuilder
     {
@@ -187,13 +160,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Create an DELETE query statement.
-     *
-     * <code>
-     *      $queryBuilder->delete();
-     * </code>
-     *
-     * @return static
+     * @inheritDoc
      */
     public function delete(): QueryBuilder
     {
@@ -203,21 +170,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Set the table on which to perform the query statement.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table');
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table', 't');
-     * </code>
-     *
-     * @param string      $table
-     * @param string|null $alias
-     *
-     * @return static
+     * @inheritDoc
      */
     public function table(string $table, string $alias = null): QueryBuilder
     {
@@ -227,16 +180,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Set the entity to query with.
-     *
-     * <code>
-     *      $queryBuilder->entity(Entity::class);
-     * </code>
-     *
-     * @param string      $entity
-     * @param string|null $alias
-     *
-     * @return static
+     * @inheritDoc
      */
     public function entity(string $entity, string $alias = null): self
     {
@@ -248,23 +192,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Add a value for a column to set.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->insert()
-     *          ->table('table')
-     *          ->set('column', ':column');
-     *      $queryBuilder
-     *          ->update()
-     *          ->table('table')
-     *          ->set('column', ':column');
-     * </code>
-     *
-     * @param string     $column
-     * @param mixed|null $value
-     *
-     * @return static
+     * @inheritDoc
      */
     public function set(string $column, $value = null): QueryBuilder
     {
@@ -274,26 +202,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Add a where condition to the query statement.
-     * - Each additional use will add an `AND` where condition.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column');
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->where('column2', '=', ':column2');
-     * </code>
-     *
-     * @param string      $column
-     * @param string|null $operator
-     * @param mixed|null  $value
-     *
-     * @return static
+     * @inheritDoc
      */
     public function where(string $column, string $operator = null, $value = null): QueryBuilder
     {
@@ -303,21 +212,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Add an additional `OR` where condition to the query statement.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->orWhere('column2', '=', ':column2');
-     * </code>
-     *
-     * @param string      $column
-     * @param string|null $operator
-     * @param mixed|null  $value
-     *
-     * @return static
+     * @inheritDoc
      */
     public function orWhere(string $column, string $operator = null, $value = null): QueryBuilder
     {
@@ -327,16 +222,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Join with another table.
-     *
-     * @param string      $table    The table to join on
-     * @param string      $column1  The column to join on
-     * @param string      $column2  The secondary column to join on
-     * @param string|null $operator [optional] The operator
-     * @param string|null $type     [optional] The type of join
-     * @param bool|null   $isWhere  [optional] Whether this is a where join
-     *
-     * @return static
+     * @inheritDoc
      */
     public function join(
         string $table,
@@ -361,19 +247,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Add an groupBy by to the query statement.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->groupBy('column');
-     * </code>
-     *
-     * @param string $column
-     *
-     * @return static
+     * @inheritDoc
      */
     public function groupBy(string $column): self
     {
@@ -383,20 +257,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Add an order by without specifying the order to the query statement.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->orderBy('column');
-     * </code>
-     *
-     * @param string      $column
-     * @param string|null $type [optional]
-     *
-     * @return static
+     * @inheritDoc
      */
     public function orderBy(string $column, string $type = null): QueryBuilder
     {
@@ -406,19 +267,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Add an order by ascending to the query statement.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->orderByAsc('column');
-     * </code>
-     *
-     * @param string $column
-     *
-     * @return static
+     * @inheritDoc
      */
     public function orderByAsc(string $column): QueryBuilder
     {
@@ -426,19 +275,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Add an order by descending to the query statement.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->orderByDesc('column');
-     * </code>
-     *
-     * @param string $column
-     *
-     * @return static
+     * @inheritDoc
      */
     public function orderByDesc(string $column): QueryBuilder
     {
@@ -446,19 +283,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Add limit to the query statement.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->limit(1);
-     * </code>
-     *
-     * @param int $limit
-     *
-     * @return static
+     * @inheritDoc
      */
     public function limit(int $limit): QueryBuilder
     {
@@ -468,19 +293,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Add offset to the query statement.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->offset(1);
-     * </code>
-     *
-     * @param int $offset
-     *
-     * @return static
+     * @inheritDoc
      */
     public function offset(int $offset): QueryBuilder
     {
@@ -490,9 +303,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Get the built query string.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getQueryString(): string
     {
@@ -521,9 +332,7 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Create a new query.
-     *
-     * @return Query
+     * @inheritDoc
      */
     public function createQuery(): Query
     {

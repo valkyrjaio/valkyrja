@@ -21,9 +21,7 @@ namespace Valkyrja\ORM\Entities;
 trait SoftDeleteEntityTrait
 {
     /**
-     * Get the deleted flag field.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getIsDeletedField(): string
     {
@@ -31,9 +29,7 @@ trait SoftDeleteEntityTrait
     }
 
     /**
-     * Get the date deleted field.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getDateDeletedField(): string
     {

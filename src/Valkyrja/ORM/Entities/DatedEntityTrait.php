@@ -21,9 +21,7 @@ namespace Valkyrja\ORM\Entities;
 trait DatedEntityTrait
 {
     /**
-     * Get the date created field.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getDateCreatedField(): string
     {
@@ -31,9 +29,7 @@ trait DatedEntityTrait
     }
 
     /**
-     * Get the date modified field.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getDateModifiedField(): string
     {

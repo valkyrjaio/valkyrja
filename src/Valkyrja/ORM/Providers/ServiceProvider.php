@@ -18,19 +18,26 @@ use Valkyrja\Cache\Cache;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\ORM\Adapter;
+use Valkyrja\ORM\AdapterFactory;
 use Valkyrja\ORM\CacheRepository;
 use Valkyrja\ORM\Driver;
+use Valkyrja\ORM\DriverFactory;
 use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\PDOAdapter;
 use Valkyrja\ORM\PDOs\PDO;
-use Valkyrja\ORM\PDOStatement;
 use Valkyrja\ORM\Persister;
+use Valkyrja\ORM\PersisterFactory;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
+use Valkyrja\ORM\QueryBuilderFactory;
+use Valkyrja\ORM\QueryFactory;
 use Valkyrja\ORM\Repository;
+use Valkyrja\ORM\RepositoryFactory;
 use Valkyrja\ORM\Retriever;
+use Valkyrja\ORM\RetrieverFactory;
 use Valkyrja\ORM\Retrievers\LocalCacheRetriever;
 use Valkyrja\ORM\Statement;
+use Valkyrja\ORM\StatementFactory;
 
 /**
  * Class ServiceProvider.
@@ -46,7 +53,16 @@ class ServiceProvider extends Provider
     {
         return [
             ORM::class                 => 'publishORM',
+            AdapterFactory::class      => 'publishAdapterFactory',
+            DriverFactory::class       => 'publishDriverFactory',
+            PersisterFactory::class    => 'publishPersisterFactory',
+            QueryBuilderFactory::class => 'publishQueryBuilderFactory',
+            QueryFactory::class        => 'publishQueryFactory',
+            RepositoryFactory::class   => 'publishRepositoryFactory',
+            RetrieverFactory::class    => 'publishRetrieverFactory',
+            StatementFactory::class    => 'publishStatementFactory',
             Driver::class              => 'publishDriver',
+            Adapter::class             => 'publishAdapter',
             PDOAdapter::class          => 'publishPdoAdapter',
             Repository::class          => 'publishRepository',
             CacheRepository::class     => 'publishCacheRepository',
@@ -56,7 +72,6 @@ class ServiceProvider extends Provider
             Query::class               => 'publishQuery',
             QueryBuilder::class        => 'publishQueryBuilder',
             Statement::class           => 'publishStatement',
-            PDOStatement::class        => 'publishPdoStatement',
             PDO::class                 => 'publishPDO',
         ];
     }
@@ -68,7 +83,16 @@ class ServiceProvider extends Provider
     {
         return [
             ORM::class,
+            AdapterFactory::class,
+            DriverFactory::class,
+            PersisterFactory::class,
+            QueryBuilderFactory::class,
+            QueryFactory::class,
+            RepositoryFactory::class,
+            RetrieverFactory::class,
+            StatementFactory::class,
             Driver::class,
+            Adapter::class,
             PDOAdapter::class,
             Repository::class,
             CacheRepository::class,
@@ -77,7 +101,6 @@ class ServiceProvider extends Provider
             Query::class,
             QueryBuilder::class,
             Statement::class,
-            PDOStatement::class,
             PDO::class,
         ];
     }
@@ -103,9 +126,144 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             ORM::class,
             new \Valkyrja\ORM\Managers\ORM(
-                $container,
+                $container->getSingleton(AdapterFactory::class),
+                $container->getSingleton(DriverFactory::class),
+                $container->getSingleton(PersisterFactory::class),
+                $container->getSingleton(QueryBuilderFactory::class),
+                $container->getSingleton(QueryFactory::class),
+                $container->getSingleton(RepositoryFactory::class),
+                $container->getSingleton(RetrieverFactory::class),
+                $container->getSingleton(StatementFactory::class),
                 $config['orm']
             )
+        );
+    }
+
+    /**
+     * Publish the adapter factory.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishAdapterFactory(Container $container): void
+    {
+        self::publishFactory(
+            $container,
+            AdapterFactory::class,
+            \Valkyrja\ORM\Factories\AdapterFactory::class
+        );
+    }
+
+    /**
+     * Publish the driver factory.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishDriverFactory(Container $container): void
+    {
+        self::publishFactory(
+            $container,
+            DriverFactory::class,
+            \Valkyrja\ORM\Factories\DriverFactory::class
+        );
+    }
+
+    /**
+     * Publish the persister factory.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishPersisterFactory(Container $container): void
+    {
+        self::publishFactory(
+            $container,
+            PersisterFactory::class,
+            \Valkyrja\ORM\Factories\PersisterFactory::class
+        );
+    }
+
+    /**
+     * Publish the query builder factory.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishQueryBuilderFactory(Container $container): void
+    {
+        self::publishFactory(
+            $container,
+            QueryBuilderFactory::class,
+            \Valkyrja\ORM\Factories\QueryBuilderFactory::class
+        );
+    }
+
+    /**
+     * Publish the query factory.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishQueryFactory(Container $container): void
+    {
+        self::publishFactory(
+            $container,
+            QueryFactory::class,
+            \Valkyrja\ORM\Factories\QueryFactory::class
+        );
+    }
+
+    /**
+     * Publish the repository factory.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishRepositoryFactory(Container $container): void
+    {
+        self::publishFactory(
+            $container,
+            RepositoryFactory::class,
+            \Valkyrja\ORM\Factories\RepositoryFactory::class
+        );
+    }
+
+    /**
+     * Publish the retriever factory.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishRetrieverFactory(Container $container): void
+    {
+        self::publishFactory(
+            $container,
+            RetrieverFactory::class,
+            \Valkyrja\ORM\Factories\RetrieverFactory::class
+        );
+    }
+
+    /**
+     * Publish the statement factory.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishStatementFactory(Container $container): void
+    {
+        self::publishFactory(
+            $container,
+            StatementFactory::class,
+            \Valkyrja\ORM\Factories\StatementFactory::class
         );
     }
 
@@ -120,10 +278,31 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Driver::class,
-            static function (string $name, Adapter $adapter, array $config) use ($container): Driver {
+            static function (string $name, Adapter $adapter, array $config): Driver {
                 return new $name(
-                    $container,
                     $adapter,
+                    $config
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishAdapter(Container $container): void
+    {
+        $orm = $container->getSingleton(ORM::class);
+
+        $container->setClosure(
+            Adapter::class,
+            static function (string $name, array $config) use ($orm) {
+                return new $name(
+                    $orm,
                     $config
                 );
             }
@@ -139,9 +318,11 @@ class ServiceProvider extends Provider
      */
     public static function publishPdoAdapter(Container $container): void
     {
+        $orm = $container->getSingleton(ORM::class);
+
         $container->setClosure(
             PDOAdapter::class,
-            static function (string $name, array $config) use ($container) {
+            static function (string $name, array $config) use ($container, $orm) {
                 $pdoConfig = $config['config'];
                 $pdoClass  = $pdoConfig['pdo'] ?? \PDO::class;
 
@@ -152,7 +333,7 @@ class ServiceProvider extends Provider
                 }
 
                 return new $name(
-                    $container,
+                    $orm,
                     $pdo,
                     $config
                 );
@@ -322,28 +503,26 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Statement::class,
-            static function (string $name): Statement {
-                return new $name();
+            static function (string $name, Adapter $adapter, array $data = []): Statement {
+                return new $name(...$data);
             }
         );
     }
 
     /**
-     * Publish a pdo statement service.
+     * Publish a factory.
      *
      * @param Container $container The container
+     * @param string    $interface The interface name
+     * @param string    $name      The factory class name
      *
      * @return void
      */
-    public static function publishPdoStatement(Container $container): void
+    protected static function publishFactory(Container $container, string $interface, string $name): void
     {
-        $container->setClosure(
-            PDOStatement::class,
-            static function (string $name, \PDOStatement $statement): PDOStatement {
-                return new $name(
-                    $statement
-                );
-            }
+        $container->setSingleton(
+            $interface,
+            new $name($container)
         );
     }
 }

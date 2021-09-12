@@ -20,7 +20,6 @@ use Valkyrja\ORM\CacheRepository as Contract;
 use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
-use Valkyrja\ORM\Exceptions\InvalidEntityException;
 use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\SoftDeleteEntity;
 use Valkyrja\Support\Type\Arr;
@@ -106,11 +105,7 @@ class CacheRepository extends Repository implements Contract
     }
 
     /**
-     * Find a single entity given its id.
-     *
-     * @param string|int $id
-     *
-     * @return static
+     * @inheritDoc
      */
     public function findOne($id): self
     {
@@ -122,14 +117,7 @@ class CacheRepository extends Repository implements Contract
     }
 
     /**
-     * Add a where condition.
-     * - Each additional use will add an `AND` where condition.
-     *
-     * @param string      $column
-     * @param string|null $operator
-     * @param mixed|null  $value
-     *
-     * @return static
+     * @inheritDoc
      */
     public function where(string $column, string $operator = null, $value = null): self
     {
@@ -143,13 +131,7 @@ class CacheRepository extends Repository implements Contract
     }
 
     /**
-     * Add an additional `OR` where condition.
-     *
-     * @param string      $column
-     * @param string|null $operator
-     * @param mixed|null  $value
-     *
-     * @return static
+     * @inheritDoc
      */
     public function orWhere(string $column, string $operator = null, $value = null): self
     {
@@ -163,11 +145,9 @@ class CacheRepository extends Repository implements Contract
     }
 
     /**
-     * Get results.
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return Entity[]
      */
     public function getResult(): array
     {
@@ -193,11 +173,7 @@ class CacheRepository extends Repository implements Contract
     }
 
     /**
-     * Get one or fail.
-     *
-     * @throws EntityNotFoundException
-     *
-     * @return Entity
+     * @inheritDoc
      */
     public function getOneOrFail(): Entity
     {
@@ -211,11 +187,9 @@ class CacheRepository extends Repository implements Contract
     }
 
     /**
-     * Get count results.
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return int
      */
     public function getCount(): int
     {
@@ -235,18 +209,7 @@ class CacheRepository extends Repository implements Contract
     }
 
     /**
-     * Create a new entity.
-     *
-     * <code>
-     *      $repository->create(new Entity(), true | false)
-     * </code>
-     *
-     * @param Entity $entity
-     * @param bool   $defer [optional]
-     *
-     * @throws InvalidEntityException
-     *
-     * @return void
+     * @inheritDoc
      */
     public function create(Entity $entity, bool $defer = true): void
     {
@@ -256,18 +219,7 @@ class CacheRepository extends Repository implements Contract
     }
 
     /**
-     * Update an existing entity.
-     *
-     * <code>
-     *      $repository->save(new Entity(), true | false)
-     * </code>
-     *
-     * @param Entity $entity
-     * @param bool   $defer [optional]
-     *
-     * @throws InvalidEntityException
-     *
-     * @return void
+     * @inheritDoc
      */
     public function save(Entity $entity, bool $defer = true): void
     {
@@ -277,18 +229,7 @@ class CacheRepository extends Repository implements Contract
     }
 
     /**
-     * Delete an existing entity.
-     *
-     * <code>
-     *      $repository->delete(new Entity(), true | false)
-     * </code>
-     *
-     * @param Entity $entity
-     * @param bool   $defer [optional]
-     *
-     * @throws InvalidEntityException
-     *
-     * @return void
+     * @inheritDoc
      */
     public function delete(Entity $entity, bool $defer = true): void
     {
@@ -298,18 +239,7 @@ class CacheRepository extends Repository implements Contract
     }
 
     /**
-     * Soft delete an existing entity.
-     *
-     * <code>
-     *      $persister->softDelete(new SoftDeleteEntity(), true | false)
-     * </code>
-     *
-     * @param SoftDeleteEntity $entity
-     * @param bool             $defer [optional]
-     *
-     * @throws InvalidEntityException
-     *
-     * @return void
+     * @inheritDoc
      */
     public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
     {
@@ -319,17 +249,7 @@ class CacheRepository extends Repository implements Contract
     }
 
     /**
-     * Clear all, or a single, deferred entity.
-     *
-     * <code>
-     *      $repository->clear(new Entity())
-     * </code>
-     *
-     * @param Entity|null $entity The entity
-     *
-     * @throws InvalidEntityException
-     *
-     * @return void
+     * @inheritDoc
      */
     public function clear(Entity $entity = null): void
     {
@@ -360,9 +280,7 @@ class CacheRepository extends Repository implements Contract
     }
 
     /**
-     * Persist all entities.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function persist(): bool
     {

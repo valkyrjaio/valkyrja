@@ -78,19 +78,10 @@ class Persister implements Contract
     }
 
     /**
-     * Create a new entity.
-     *
-     * <code>
-     *      $persister->create(new Entity(), true | false)
-     * </code>
-     *
-     * @param Entity $entity The entity to create
-     * @param bool   $defer  [optional] Whether to defer the creation
+     * @inheritDoc
      *
      * @throws ExecuteException
      * @throws JsonException
-     *
-     * @return void
      */
     public function create(Entity $entity, bool $defer = true): void
     {
@@ -118,19 +109,10 @@ class Persister implements Contract
     }
 
     /**
-     * Update an existing entity.
-     *
-     * <code>
-     *      $persister->save(new Entity(), true | false)
-     * </code>
-     *
-     * @param Entity $entity The entity to save
-     * @param bool   $defer  [optional] Whether to defer the save
+     * @inheritDoc
      *
      * @throws ExecuteException
      * @throws JsonException
-     *
-     * @return void
      */
     public function save(Entity $entity, bool $defer = true): void
     {
@@ -155,19 +137,10 @@ class Persister implements Contract
     }
 
     /**
-     * Delete an existing entity.
-     *
-     * <code>
-     *      $persister->delete(new Entity(), true | false)
-     * </code>
-     *
-     * @param Entity $entity The entity to delete
-     * @param bool   $defer  [optional] Whether to defer the deletion
+     * @inheritDoc
      *
      * @throws ExecuteException
      * @throws JsonException
-     *
-     * @return void
      */
     public function delete(Entity $entity, bool $defer = true): void
     {
@@ -188,19 +161,10 @@ class Persister implements Contract
     }
 
     /**
-     * Soft delete an existing entity.
-     *
-     * <code>
-     *      $persister->softDelete(new SoftDeleteEntity(), true | false)
-     * </code>
-     *
-     * @param SoftDeleteEntity $entity The entity to soft delete
-     * @param bool             $defer  [optional] Whether to defer the soft deletion
+     * @inheritDoc
      *
      * @throws ExecuteException
      * @throws JsonException
-     *
-     * @return void
      */
     public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
     {
@@ -211,15 +175,7 @@ class Persister implements Contract
     }
 
     /**
-     * Clear all, or a single, deferred entity.
-     *
-     * <code>
-     *      $persister->clear(new Entity())
-     * </code>
-     *
-     * @param Entity|null $entity [optional] The entity instance to remove.
-     *
-     * @return void
+     * @inheritDoc
      */
     public function clear(Entity $entity = null): void
     {
@@ -258,12 +214,10 @@ class Persister implements Contract
     }
 
     /**
-     * Persist all entities.
+     * @inheritDoc
      *
      * @throws ExecuteException
      * @throws JsonException
-     *
-     * @return bool
      */
     public function persist(): bool
     {

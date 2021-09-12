@@ -33,7 +33,8 @@ use function get_class;
 /**
  * Class Repository.
  *
- * @author Melech Mizrachi
+ * @author   Melech Mizrachi
+ * @template T
  */
 class Repository implements Contract
 {
@@ -68,7 +69,7 @@ class Repository implements Contract
     /**
      * The entity to use.
      *
-     * @var string|Entity
+     * @var string|Entity|T
      */
     protected string $entity;
 
@@ -89,9 +90,9 @@ class Repository implements Contract
     /**
      * Repository constructor.
      *
-     * @param ORM    $manager The orm manager
-     * @param Driver $driver  The driver
-     * @param string $entity  The entity class name
+     * @param ORM             $manager The orm manager
+     * @param Driver          $driver  The driver
+     * @param class-string<T> $entity  The entity class name
      *
      * @throws InvalidArgumentException
      */
@@ -106,9 +107,7 @@ class Repository implements Contract
     }
 
     /**
-     * Find by given criteria.
-     *
-     * @return static
+     * @inheritDoc
      */
     public function find(): self
     {
@@ -119,11 +118,7 @@ class Repository implements Contract
     }
 
     /**
-     * Find a single entity given its id.
-     *
-     * @param string|int $id The id
-     *
-     * @return static
+     * @inheritDoc
      */
     public function findOne($id): self
     {
@@ -134,9 +129,7 @@ class Repository implements Contract
     }
 
     /**
-     * Count all the results of given criteria.
-     *
-     * @return static
+     * @inheritDoc
      */
     public function count(): self
     {
@@ -151,7 +144,7 @@ class Repository implements Contract
      *
      * @param array $columns
      *
-     * @return static
+     * @return static<T>
      */
     public function columns(array $columns): self
     {
@@ -168,7 +161,7 @@ class Repository implements Contract
      * @param string|null $operator
      * @param mixed|null  $value
      *
-     * @return static
+     * @return static<T>
      */
     public function where(string $column, string $operator = null, $value = null): self
     {
@@ -184,7 +177,7 @@ class Repository implements Contract
      * @param string|null $operator
      * @param mixed|null  $value
      *
-     * @return static
+     * @return static<T>
      */
     public function orWhere(string $column, string $operator = null, $value = null): self
     {
@@ -203,7 +196,7 @@ class Repository implements Contract
      * @param string|null $type     [optional] The type of join
      * @param bool|null   $isWhere  [optional] Whether this is a where join
      *
-     * @return static
+     * @return static<T>
      */
     public function join(
         string $table,
@@ -224,7 +217,7 @@ class Repository implements Contract
      * @param string      $column
      * @param string|null $direction
      *
-     * @return static
+     * @return static<T>
      */
     public function orderBy(string $column, string $direction = null): self
     {
@@ -238,7 +231,7 @@ class Repository implements Contract
      *
      * @param int $limit
      *
-     * @return static
+     * @return static<T>
      */
     public function limit(int $limit): self
     {
@@ -252,7 +245,7 @@ class Repository implements Contract
      *
      * @param int $offset
      *
-     * @return static
+     * @return static<T>
      */
     public function offset(int $offset): self
     {
@@ -266,7 +259,7 @@ class Repository implements Contract
      *
      * @param array|null $relationships [optional] The relationships to get
      *
-     * @return static
+     * @return static<T>
      */
     public function withRelationships(array $relationships = null): self
     {
@@ -279,7 +272,7 @@ class Repository implements Contract
     /**
      * Get results.
      *
-     * @return Entity[]
+     * @return T[]
      */
     public function getResult(): array
     {
@@ -293,7 +286,7 @@ class Repository implements Contract
     /**
      * Get one or null.
      *
-     * @return Entity|null
+     * @return T|null
      */
     public function getOneOrNull(): ?Entity
     {
@@ -305,7 +298,7 @@ class Repository implements Contract
      *
      * @throws EntityNotFoundException
      *
-     * @return Entity
+     * @return T
      */
     public function getOneOrFail(): Entity
     {
@@ -329,8 +322,8 @@ class Repository implements Contract
      *      $repository->create(new Entity(), true | false)
      * </code>
      *
-     * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param Entity|T $entity
+     * @param bool     $defer [optional]
      *
      * @throws InvalidEntityException
      *
@@ -350,8 +343,8 @@ class Repository implements Contract
      *      $repository->save(new Entity(), true | false)
      * </code>
      *
-     * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param Entity|T $entity
+     * @param bool     $defer [optional]
      *
      * @throws InvalidEntityException
      *
@@ -371,8 +364,8 @@ class Repository implements Contract
      *      $repository->delete(new Entity(), true | false)
      * </code>
      *
-     * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param Entity|T $entity
+     * @param bool     $defer [optional]
      *
      * @throws InvalidEntityException
      *
@@ -392,8 +385,8 @@ class Repository implements Contract
      *      $persister->softDelete(new SoftDeleteEntity(), true | false)
      * </code>
      *
-     * @param SoftDeleteEntity $entity
-     * @param bool             $defer [optional]
+     * @param SoftDeleteEntity|T $entity
+     * @param bool               $defer [optional]
      *
      * @throws InvalidEntityException
      *
@@ -413,7 +406,7 @@ class Repository implements Contract
      *      $repository->clear(new Entity())
      * </code>
      *
-     * @param Entity|null $entity The entity
+     * @param Entity|T|null $entity The entity
      *
      * @throws InvalidEntityException
      *
@@ -465,7 +458,7 @@ class Repository implements Contract
     /**
      * Validate the passed entity.
      *
-     * @param Entity $entity The entity
+     * @param Entity|T $entity The entity
      *
      * @throws InvalidEntityException
      *
@@ -498,7 +491,7 @@ class Repository implements Contract
     /**
      * Set relationships on the entities from results.
      *
-     * @param Entity ...$entities The entities to add relationships to
+     * @param Entity|T ...$entities The entities to add relationships to
      *
      * @return void
      */
@@ -521,8 +514,8 @@ class Repository implements Contract
     /**
      * Set relationships on an entity.
      *
-     * @param array  $relationships The relationships to set
-     * @param Entity $entity        The entity
+     * @param array    $relationships The relationships to set
+     * @param Entity|T $entity        The entity
      *
      * @return void
      */
@@ -538,8 +531,8 @@ class Repository implements Contract
     /**
      * Set a relationship property.
      *
-     * @param Entity $entity       The entity
-     * @param string $relationship The relationship to set
+     * @param Entity|T $entity       The entity
+     * @param string   $relationship The relationship to set
      *
      * @return void
      */

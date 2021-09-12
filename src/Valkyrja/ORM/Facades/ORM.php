@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Facades;
 
+use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\ORM as Contract;
@@ -22,6 +23,7 @@ use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SoftDeleteEntity;
+use Valkyrja\ORM\Statement;
 use Valkyrja\Support\Facade\Facade;
 
 /**
@@ -30,11 +32,14 @@ use Valkyrja\Support\Facade\Facade;
  * @author Melech Mizrachi
  *
  * @method static Driver useConnection(string $name = null, string $adapter = null)
- * @method static QueryBuilder createQueryBuilder(string $entity = null, string $alias = null)
- * @method static Query createQuery(string $query = null, string $entity = null)
+ * @method static Adapter createAdapter(string $name, array $config)
+ * @method static QueryBuilder createQueryBuilder(Adapter $adapter, string $name)
+ * @method static Query createQuery(Adapter $adapter, string $name)
+ * @method static Retriever createRetriever(Adapter $adapter, string $name)
+ * @method static Persister createPersister(Adapter $adapter, string $name)
  * @method static Repository getRepository(string $entity)
- * @method static Retriever createRetriever()
- * @method static Persister getPersister()
+ * @method static Repository getRepositoryFromClass(Entity $entity)
+ * @method static Statement createStatement(Adapter $adapter, string $name, array $data = [])
  * @method static bool beginTransaction()
  * @method static bool inTransaction()
  * @method static void ensureTransaction()
@@ -53,9 +58,7 @@ use Valkyrja\Support\Facade\Facade;
 class ORM extends Facade
 {
     /**
-     * The facade instance.
-     *
-     * @return string|object
+     * @inheritDoc
      */
     public static function instance()
     {
