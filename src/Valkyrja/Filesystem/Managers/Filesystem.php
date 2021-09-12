@@ -82,11 +82,11 @@ class Filesystem implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container = $container;
-        $this->config = $config;
-        $this->disks = $config['disks'];
-        $this->adapters = $config['adapters'];
-        $this->drivers = $config['drivers'];
+        $this->container   = $container;
+        $this->config      = $config;
+        $this->disks       = $config['disks'];
+        $this->adapters    = $config['adapters'];
+        $this->drivers     = $config['drivers'];
         $this->defaultDisk = $config['default'];
     }
 
