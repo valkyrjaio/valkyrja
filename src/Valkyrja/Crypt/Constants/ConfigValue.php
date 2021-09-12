@@ -24,14 +24,10 @@ use Valkyrja\Crypt\Drivers\Driver;
  */
 final class ConfigValue
 {
-    public const DEFAULT  = CKP::DEFAULT;
-    public const ADAPTERS = [
-        CKP::SODIUM => SodiumAdapter::class,
-    ];
-    public const DRIVERS  = [
-        CKP::DEFAULT => Driver::class,
-    ];
-    public const CRYPTS   = [
+    public const DEFAULT = CKP::DEFAULT;
+    public const ADAPTER = SodiumAdapter::class;
+    public const DRIVER  = Driver::class;
+    public const CRYPTS  = [
         CKP::DEFAULT => [
             CKP::ADAPTER  => CKP::SODIUM,
             CKP::DRIVER   => CKP::DEFAULT,
@@ -41,9 +37,9 @@ final class ConfigValue
     ];
 
     public static array $defaults = [
-        CKP::DEFAULT  => self::DEFAULT,
-        CKP::ADAPTERS => self::ADAPTERS,
-        CKP::DRIVERS  => self::DRIVERS,
-        CKP::CRYPTS   => self::CRYPTS,
+        CKP::DEFAULT => self::DEFAULT,
+        CKP::ADAPTER => self::ADAPTER,
+        CKP::DRIVER  => self::DRIVER,
+        CKP::CRYPTS  => self::CRYPTS,
     ];
 }

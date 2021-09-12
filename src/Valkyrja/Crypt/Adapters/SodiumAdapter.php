@@ -16,7 +16,6 @@ namespace Valkyrja\Crypt\Adapters;
 use Exception;
 use JsonException;
 use SodiumException;
-use Valkyrja\Crypt\Adapter;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
@@ -39,39 +38,10 @@ use const SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
  *
  * @author Melech Mizrachi
  */
-class SodiumAdapter implements Adapter
+class SodiumAdapter extends Adapter
 {
     /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
-     * The key.
-     *
-     * @var string
-     */
-    protected string $key;
-
-    /**
-     * SodiumAdapter constructor.
-     *
-     * @param array $config The config
-     */
-    public function __construct(array $config)
-    {
-        $this->config = $config;
-        $this->key    = $config['key'];
-    }
-
-    /**
-     * Determine if an encrypted message is valid.
-     *
-     * @param string $encrypted
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isValidEncryptedMessage(string $encrypted): bool
     {
@@ -87,14 +57,10 @@ class SodiumAdapter implements Adapter
     }
 
     /**
-     * Encrypt a message.
+     * @inheritDoc
      *
-     * @param string      $message The message to encrypt
-     * @param string|null $key     The encryption key
-     *
-     * @throws Exception Random Bytes Failure
-     *
-     * @return string
+     * @throws Exception
+     * @throws SodiumException
      */
     public function encrypt(string $message, string $key = null): string
     {
@@ -109,14 +75,10 @@ class SodiumAdapter implements Adapter
     }
 
     /**
-     * Encrypt an array.
+     * @inheritDoc
      *
-     * @param array       $array The array to encrypt
-     * @param string|null $key   The encryption key
-     *
-     * @throws Exception Random Bytes Failure
-     *
-     * @return string
+     * @throws JsonException
+     * @throws SodiumException
      */
     public function encryptArray(array $array, string $key = null): string
     {
@@ -124,14 +86,10 @@ class SodiumAdapter implements Adapter
     }
 
     /**
-     * Encrypt a json array.
+     * @inheritDoc
      *
-     * @param object      $object The object to encrypt
-     * @param string|null $key    The encryption key
-     *
-     * @throws Exception Random Bytes Failure
-     *
-     * @return string
+     * @throws JsonException
+     * @throws SodiumException
      */
     public function encryptObject(object $object, string $key = null): string
     {
@@ -139,15 +97,9 @@ class SodiumAdapter implements Adapter
     }
 
     /**
-     * Decrypt a message.
+     * @inheritDoc
      *
-     * @param string      $encrypted The encrypted message to decrypt
-     * @param string|null $key       The encryption key
-     *
-     * @throws CryptException On any failure
      * @throws SodiumException
-     *
-     * @return string
      */
     public function decrypt(string $encrypted, string $key = null): string
     {
@@ -160,16 +112,10 @@ class SodiumAdapter implements Adapter
     }
 
     /**
-     * Decrypt a message originally encrypted from an array.
+     * @inheritDoc
      *
-     * @param string      $encrypted The encrypted message
-     * @param string|null $key       The encryption key
-     *
-     * @throws CryptException On any failure
      * @throws JsonException
      * @throws SodiumException
-     *
-     * @return array
      */
     public function decryptArray(string $encrypted, string $key = null): array
     {
@@ -177,16 +123,10 @@ class SodiumAdapter implements Adapter
     }
 
     /**
-     * Decrypt a message originally encrypted from an object.
+     * @inheritDoc
      *
-     * @param string      $encrypted The encrypted message
-     * @param string|null $key       The encryption key
-     *
-     * @throws CryptException On any failure
      * @throws JsonException
      * @throws SodiumException
-     *
-     * @return object
      */
     public function decryptObject(string $encrypted, string $key = null): object
     {

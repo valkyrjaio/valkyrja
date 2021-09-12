@@ -25,15 +25,13 @@ use Valkyrja\Config\Constants\EnvKey;
 class Config extends Model
 {
     /**
-     * The model properties env keys.
-     *
-     * @var array
+     * @inheritDoc
      */
     protected static array $envKeys = [
-        CKP::DEFAULT  => EnvKey::CRYPT_DEFAULT,
-        CKP::ADAPTERS => EnvKey::CRYPT_ADAPTERS,
-        CKP::DRIVERS  => EnvKey::CRYPT_DRIVERS,
-        CKP::CRYPTS   => EnvKey::CRYPT_CRYPTS,
+        CKP::DEFAULT => EnvKey::CRYPT_DEFAULT,
+        CKP::ADAPTER => EnvKey::CRYPT_ADAPTER,
+        CKP::DRIVER  => EnvKey::CRYPT_DRIVER,
+        CKP::CRYPTS  => EnvKey::CRYPT_CRYPTS,
     ];
 
     /**
@@ -44,18 +42,18 @@ class Config extends Model
     public string $default;
 
     /**
-     * The adapters.
+     * The adapter.
      *
-     * @var string[]
+     * @var string
      */
-    public array $adapters;
+    public string $adapter;
 
     /**
-     * The drivers.
+     * The driver.
      *
-     * @var string[]
+     * @var string
      */
-    public array $drivers;
+    public string $driver;
 
     /**
      * The config.

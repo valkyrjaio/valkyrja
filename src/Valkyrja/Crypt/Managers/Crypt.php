@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt\Managers;
 
 use Valkyrja\Container\Container;
+use Valkyrja\Crypt\Adapter;
 use Valkyrja\Crypt\Crypt as Contract;
 use Valkyrja\Crypt\Driver;
-use Valkyrja\Crypt\Exceptions\CryptException;
+use Valkyrja\Support\Type\Cls;
 
 /**
  * Class Crypt.
@@ -47,11 +48,11 @@ class Crypt implements Contract
     protected array $config;
 
     /**
-     * The adapters.
+     * The default adapter.
      *
-     * @var array
+     * @var string
      */
-    protected array $adapters;
+    protected string $defaultAdapter;
 
     /**
      * The crypts.
@@ -61,11 +62,11 @@ class Crypt implements Contract
     protected array $crypts;
 
     /**
-     * The drivers config.
+     * The default driver.
      *
-     * @var array
+     * @var string
      */
-    protected array $drivers;
+    protected string $defaultDriver;
 
     /**
      * The default crypt.
@@ -82,21 +83,16 @@ class Crypt implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container = $container;
-        $this->config    = $config;
-        $this->crypts    = $config['crypts'];
-        $this->adapters  = $config['adapters'];
-        $this->drivers   = $config['drivers'];
-        $this->default   = $config['default'];
+        $this->container      = $container;
+        $this->config         = $config;
+        $this->crypts         = $config['crypts'];
+        $this->defaultAdapter = $config['adapter'];
+        $this->defaultDriver  = $config['driver'];
+        $this->default        = $config['default'];
     }
 
     /**
-     * Use a crypt by name.
-     *
-     * @param string|null $name    [optional] The crypt name
-     * @param string|null $adapter [optional] The adapter
-     *
-     * @return Driver
+     * @inheritDoc
      */
     public function useCrypt(string $name = null, string $adapter = null): Driver
     {
@@ -105,26 +101,18 @@ class Crypt implements Contract
         // The config to use
         $config = $this->crypts[$name];
         // The adapter to use
-        $adapter ??= $config['adapter'];
+        $adapter ??= $config['adapter'] ?? $this->defaultAdapter;
+        // The adapter to use
+        $driver = $config['driver'] ?? $this->defaultDriver;
         // The cache key to use
         $cacheKey = $name . $adapter;
 
         return self::$driversCache[$cacheKey]
-            ?? self::$driversCache[$cacheKey] = $this->container->get(
-                $this->drivers[$config['driver']],
-                [
-                    $config,
-                    $this->adapters[$adapter],
-                ]
-            );
+            ?? self::$driversCache[$cacheKey] = $this->createDriver($driver, $adapter, $config);
     }
 
     /**
-     * Determine if an encrypted message is valid.
-     *
-     * @param string $encrypted
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isValidEncryptedMessage(string $encrypted): bool
     {
@@ -132,14 +120,7 @@ class Crypt implements Contract
     }
 
     /**
-     * Encrypt a message.
-     *
-     * @param string      $message The message to encrypt
-     * @param string|null $key     The encryption key
-     *
-     * @throws CryptException
-     *
-     * @return string
+     * @inheritDoc
      */
     public function encrypt(string $message, string $key = null): string
     {
@@ -147,14 +128,7 @@ class Crypt implements Contract
     }
 
     /**
-     * Decrypt a message.
-     *
-     * @param string      $encrypted The encrypted message to decrypt
-     * @param string|null $key       The encryption key
-     *
-     * @throws CryptException On any failure
-     *
-     * @return string
+     * @inheritDoc
      */
     public function decrypt(string $encrypted, string $key = null): string
     {
@@ -162,14 +136,7 @@ class Crypt implements Contract
     }
 
     /**
-     * Encrypt an array.
-     *
-     * @param array       $array The array to encrypt
-     * @param string|null $key   The encryption key
-     *
-     * @throws CryptException
-     *
-     * @return string
+     * @inheritDoc
      */
     public function encryptArray(array $array, string $key = null): string
     {
@@ -177,14 +144,7 @@ class Crypt implements Contract
     }
 
     /**
-     * Decrypt a message originally encrypted from an array.
-     *
-     * @param string      $encrypted The encrypted message
-     * @param string|null $key       The encryption key
-     *
-     * @throws CryptException On any failure
-     *
-     * @return array
+     * @inheritDoc
      */
     public function decryptArray(string $encrypted, string $key = null): array
     {
@@ -192,14 +152,7 @@ class Crypt implements Contract
     }
 
     /**
-     * Encrypt a json array.
-     *
-     * @param object      $object The object to encrypt
-     * @param string|null $key    The encryption key
-     *
-     * @throws CryptException
-     *
-     * @return string
+     * @inheritDoc
      */
     public function encryptObject(object $object, string $key = null): string
     {
@@ -207,17 +160,51 @@ class Crypt implements Contract
     }
 
     /**
-     * Decrypt a message originally encrypted from an object.
-     *
-     * @param string      $encrypted The encrypted message
-     * @param string|null $key       The encryption key
-     *
-     * @throws CryptException On any failure
-     *
-     * @return object
+     * @inheritDoc
      */
     public function decryptObject(string $encrypted, string $key = null): object
     {
         return $this->useCrypt()->decryptObject($encrypted, $key);
+    }
+
+    /**
+     * Get an driver by name.
+     *
+     * @param string $name    The driver
+     * @param string $adapter The adapter
+     * @param array  $config  The config
+     *
+     * @return Driver
+     */
+    protected function createDriver(string $name, string $adapter, array $config): Driver
+    {
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            Driver::class,
+            [
+                $this->createAdapter($adapter, $config),
+            ]
+        );
+    }
+
+    /**
+     * Get an adapter by name.
+     *
+     * @param string $name   The adapter
+     * @param array  $config The config
+     *
+     * @return Adapter
+     */
+    protected function createAdapter(string $name, array $config): Adapter
+    {
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            Adapter::class,
+            [
+                $config,
+            ]
+        );
     }
 }

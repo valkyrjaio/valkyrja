@@ -128,8 +128,8 @@ final class EnvKey
     public const CRYPT_KEY             = 'CRYPT_KEY';
     public const CRYPT_KEY_PATH        = 'CRYPT_KEY_PATH';
     public const CRYPT_DEFAULT         = 'CRYPT_DEFAULT';
-    public const CRYPT_ADAPTERS        = 'CRYPT_ADAPTERS';
-    public const CRYPT_DRIVERS         = 'CRYPT_DRIVERS';
+    public const CRYPT_ADAPTER         = 'CRYPT_ADAPTER';
+    public const CRYPT_DRIVER          = 'CRYPT_DRIVER';
     public const CRYPT_CRYPTS          = 'CRYPT_CRYPTS';
     public const CRYPT_DEFAULT_ADAPTER = 'CRYPT_DEFAULT_ADAPTER';
     public const CRYPT_DEFAULT_DRIVER  = 'CRYPT_DEFAULT_DRIVER';

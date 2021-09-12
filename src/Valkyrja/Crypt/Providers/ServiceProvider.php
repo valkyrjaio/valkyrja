@@ -15,9 +15,9 @@ namespace Valkyrja\Crypt\Providers;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Crypt\Adapters\SodiumAdapter;
+use Valkyrja\Crypt\Adapter;
 use Valkyrja\Crypt\Crypt;
-use Valkyrja\Crypt\Drivers\Driver;
+use Valkyrja\Crypt\Driver;
 
 /**
  * Class ServiceProvider.
@@ -32,9 +32,9 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Crypt::class         => 'publishCrypt',
-            Driver::class        => 'publishDefaultDriver',
-            SodiumAdapter::class => 'publishSodiumAdapter',
+            Crypt::class   => 'publishCrypt',
+            Driver::class  => 'publishDriver',
+            Adapter::class => 'publishAdapter',
         ];
     }
 
@@ -46,7 +46,7 @@ class ServiceProvider extends Provider
         return [
             Crypt::class,
             Driver::class,
-            SodiumAdapter::class,
+            Adapter::class,
         ];
     }
 
@@ -84,36 +84,31 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishDefaultDriver(Container $container): void
+    public static function publishDriver(Container $container): void
     {
         $container->setClosure(
             Driver::class,
-            static function (array $config, string $adapter) use ($container): Driver {
-                return new Driver(
-                    $container->get(
-                        $adapter,
-                        [
-                            $config,
-                        ]
-                    )
+            static function (string $name, Adapter $adapter): Driver {
+                return new $name(
+                    $adapter
                 );
             }
         );
     }
 
     /**
-     * Publish the sodium adapter service.
+     * Publish the adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishSodiumAdapter(Container $container): void
+    public static function publishAdapter(Container $container): void
     {
         $container->setClosure(
-            SodiumAdapter::class,
-            static function (array $config): SodiumAdapter {
-                return new SodiumAdapter(
+            Adapter::class,
+            static function (string $name, array $config): Adapter {
+                return new $name(
                     $config
                 );
             }
