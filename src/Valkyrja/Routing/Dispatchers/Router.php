@@ -245,6 +245,10 @@ class Router implements Contract
         $this->determineIsSecureRoute($request, $route);
         // Set the route in the middleware
         Middleware::$route = $route;
+        // Trigger an event for route matched
+        $this->events->trigger(RouteMatched::class, [$route, $request]);
+        // Set the found route in the service container
+        $this->container->setSingleton(Route::class, $route);
         // Dispatch the route's before request handled middleware
         $requestAfterMiddleware = $this->requestMiddleware($request, $route->getMiddleware() ?? []);
 
@@ -252,11 +256,6 @@ class Router implements Contract
         if ($requestAfterMiddleware instanceof Response) {
             return $requestAfterMiddleware;
         }
-
-        // Trigger an event for route matched
-        $this->events->trigger(RouteMatched::class, [$route, $requestAfterMiddleware]);
-        // Set the found route in the service container
-        $this->container->setSingleton(Route::class, $route);
 
         // Set the request in the abstract controller
         Controller::$request = $request;

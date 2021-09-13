@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Dispatchers;
 
+use JsonException;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Event;
 use Valkyrja\Event\Events as Contract;
 use Valkyrja\Event\Listener;
 use Valkyrja\Event\Models\Listener as ListenerModel;
+use Valkyrja\Support\Type\Cls;
 
 use function get_class;
 use function is_array;
@@ -116,6 +118,8 @@ class Events implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public function getListeners(string $event): array
     {
@@ -162,24 +166,27 @@ class Events implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public function trigger(string $event, array $arguments = null): array
     {
         // The responses
         $responses = [];
 
-        if (! $this->has($event) || ! $this->hasListeners($event)) {
+        // Ensure the event exists and that it has listeners
+        if (! $this->hasListeners($event)) {
             return $responses;
         }
 
         // If there are arguments and the event is a class, override the arguments with a new instance of the event
         // class with the arguments as parameters
-        if ($arguments !== null && class_exists($event)) {
+        if ($arguments !== null && Cls::inherits($event, Event::class)) {
             $arguments = [new $event(...$arguments)];
         }
 
         // Iterate through all the event's listeners
-        foreach ($this->getListeners($event) as $listener) {
+        foreach (self::$events[$event] as $listener) {
             // Attempt to dispatch the event listener using any one of the callable options
             $dispatch = $this->dispatcher->dispatch($this->ensureListener($listener), $arguments);
 
@@ -193,6 +200,8 @@ class Events implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public function event(Event $event): array
     {
@@ -201,6 +210,8 @@ class Events implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public function all(): array
     {
@@ -220,6 +231,8 @@ class Events implements Contract
      *
      * @param array $eventsArray
      *
+     * @throws JsonException
+     *
      * @return array
      */
     protected function ensureEventListeners(array $eventsArray): array
@@ -238,6 +251,8 @@ class Events implements Contract
      *
      * @param array $listenersArray The listeners array
      *
+     * @throws JsonException
+     *
      * @return array
      */
     protected function ensureListeners(array $listenersArray): array
@@ -255,6 +270,8 @@ class Events implements Contract
      * Ensure a listener, or null, is returned.
      *
      * @param Listener|array $listener The listener
+     *
+     * @throws JsonException
      *
      * @return Listener
      */

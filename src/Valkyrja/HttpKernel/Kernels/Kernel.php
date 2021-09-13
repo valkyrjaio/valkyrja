@@ -21,8 +21,7 @@ use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\HttpKernel\Events\HttpKernelHandled;
-use Valkyrja\HttpKernel\Events\HttpKernelTerminate;
+use Valkyrja\HttpKernel\Events\RequestHandled;
 use Valkyrja\HttpKernel\Kernel as Contract;
 use Valkyrja\Log\Logger;
 use Valkyrja\Routing\Route;
@@ -133,6 +132,9 @@ class Kernel implements Contract
 
         try {
             $response = $this->dispatchRouter($request);
+
+            // Dispatch the after request handled middleware and return the response
+            $response = $this->responseMiddleware($request, $response);
         } catch (Throwable $exception) {
             $response = $this->getExceptionResponse($exception);
 
@@ -140,13 +142,10 @@ class Kernel implements Contract
             $this->logException($exception);
         }
 
-        // Dispatch the after request handled middleware and return the response
-        $response = $this->responseMiddleware($request, $response);
-
         // Set the returned response in the container
         $this->container->setSingleton(Response::class, $response);
-        // Trigger an event for kernel handled
-        $this->events->trigger(HttpKernelHandled::class, [$request, $response]);
+        // Trigger an event for the request having been handled
+        $this->events->trigger(RequestHandled::class, [$request, $response]);
 
         return $response;
     }
@@ -180,13 +179,6 @@ class Kernel implements Contract
         if ($this->container->has(Route::class)) {
             // Terminate the route middleware
             $this->terminateRoute($request, $response);
-        }
-
-        try {
-            // Trigger an event for kernel handled
-            $this->events->trigger(HttpKernelTerminate::class, [$request, $response]);
-        } catch (Throwable $exception) {
-            $this->logException($exception);
         }
     }
 
