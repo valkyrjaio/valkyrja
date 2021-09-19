@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Adapters;
 
-use Valkyrja\Cache\Adapter;
+use Valkyrja\Cache\Adapter as Contract;
 use Valkyrja\Cache\Tagger;
 use Valkyrja\Cache\Taggers\Tagger as TagClass;
 
@@ -22,7 +22,7 @@ use Valkyrja\Cache\Taggers\Tagger as TagClass;
  *
  * @author Melech Mizrachi
  */
-class NullAdapter implements Adapter
+class NullAdapter implements Contract
 {
     /**
      * The prefix to use for all keys.

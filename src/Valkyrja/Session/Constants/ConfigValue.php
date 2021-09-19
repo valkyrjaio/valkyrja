@@ -14,11 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Session\Drivers\Driver;
-use Valkyrja\Session\Adapters\CacheAdapter;
-use Valkyrja\Session\Adapters\CookieAdapter;
-use Valkyrja\Session\Adapters\NullAdapter;
 use Valkyrja\Session\Adapters\PHPAdapter;
+use Valkyrja\Session\Drivers\Driver;
 
 /**
  * Constant ConfigValue.
@@ -28,19 +25,12 @@ use Valkyrja\Session\Adapters\PHPAdapter;
 final class ConfigValue
 {
     public const DEFAULT  = CKP::DEFAULT;
-    public const ADAPTERS = [
-        CKP::CACHE  => CacheAdapter::class,
-        CKP::COOKIE => CookieAdapter::class,
-        CKP::NULL   => NullAdapter::class,
-        CKP::PHP    => PHPAdapter::class,
-    ];
-    public const DRIVERS  = [
-        CKP::DEFAULT => Driver::class,
-    ];
+    public const ADAPTER  = PHPAdapter::class;
+    public const DRIVER   = Driver::class;
     public const SESSIONS = [
         CKP::DEFAULT => [
-            CKP::ADAPTER       => CKP::PHP,
-            CKP::DRIVER        => CKP::DEFAULT,
+            CKP::ADAPTER       => null,
+            CKP::DRIVER        => null,
             CKP::ID            => null,
             CKP::NAME          => null,
             /**
@@ -60,8 +50,8 @@ final class ConfigValue
 
     public static array $defaults = [
         CKP::DEFAULT  => self::DEFAULT,
-        CKP::ADAPTERS => self::ADAPTERS,
-        CKP::DRIVERS  => self::DRIVERS,
+        CKP::ADAPTER  => self::ADAPTER,
+        CKP::DRIVER   => self::DRIVER,
         CKP::SESSIONS => self::SESSIONS,
     ];
 }

@@ -16,6 +16,7 @@ namespace Valkyrja\Broadcast\Adapters;
 use JsonException;
 use Pusher\Pusher;
 use Valkyrja\Broadcast\Message;
+use Valkyrja\Broadcast\PusherAdapter as Contract;
 use Valkyrja\Support\Type\Arr;
 
 /**
@@ -23,7 +24,7 @@ use Valkyrja\Support\Type\Arr;
  *
  * @author Melech Mizrachi
  */
-class PusherAdapter extends NullAdapter
+class PusherAdapter extends NullAdapter implements Contract
 {
     /**
      * The pusher service.

@@ -423,7 +423,6 @@ class Valkyrja implements Application
 
         // If debug is on, enable debug handling
         if ($this->debug()) {
-
             // Enable exception handling
             $exceptionHandler::enable(E_ALL, true);
         }

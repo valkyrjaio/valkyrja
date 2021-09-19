@@ -13,10 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Managers;
 
+use Valkyrja\Cache\Adapter;
 use Valkyrja\Cache\Cache as Contract;
 use Valkyrja\Cache\Driver;
+use Valkyrja\Cache\LogAdapter;
+use Valkyrja\Cache\RedisAdapter;
 use Valkyrja\Cache\Tagger;
 use Valkyrja\Container\Container;
+use Valkyrja\Support\Type\Cls;
 
 /**
  * Class Cache.
@@ -30,7 +34,7 @@ class Cache implements Contract
      *
      * @var Driver[]
      */
-    protected static array $driversCache = [];
+    protected static array $drivers = [];
 
     /**
      * The container.
@@ -47,13 +51,6 @@ class Cache implements Contract
     protected array $config;
 
     /**
-     * The adapters.
-     *
-     * @var array
-     */
-    protected array $adapters;
-
-    /**
      * The stores.
      *
      * @var array
@@ -61,11 +58,18 @@ class Cache implements Contract
     protected array $stores;
 
     /**
-     * The drivers config.
+     * The default adapter.
      *
-     * @var array
+     * @var string
      */
-    protected array $drivers;
+    protected string $defaultAdapter;
+
+    /**
+     * The default driver.
+     *
+     * @var string
+     */
+    protected string $defaultDriver;
 
     /**
      * The default store.
@@ -82,12 +86,12 @@ class Cache implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container    = $container;
-        $this->config       = $config;
-        $this->stores       = $config['stores'];
-        $this->adapters     = $config['adapters'];
-        $this->drivers      = $config['drivers'];
-        $this->defaultStore = $config['default'];
+        $this->container      = $container;
+        $this->config         = $config;
+        $this->stores         = $config['stores'];
+        $this->defaultAdapter = $config['adapter'];
+        $this->defaultDriver  = $config['driver'];
+        $this->defaultStore   = $config['default'];
     }
 
     /**
@@ -99,19 +103,15 @@ class Cache implements Contract
         $name ??= $this->defaultStore;
         // The store config to use
         $store = $this->stores[$name];
+        // The driver to use
+        $driver ??= $store['driver'] ?? $this->defaultDriver;
         // The adapter to use
-        $adapter ??= $store['adapter'];
+        $adapter ??= $store['adapter'] ?? $this->defaultAdapter;
         // The cache key to use
         $cacheKey = $name . $adapter;
 
-        return self::$driversCache[$cacheKey]
-            ?? self::$driversCache[$cacheKey] = $this->container->get(
-                $this->drivers[$store['driver']],
-                [
-                    $store,
-                    $this->adapters[$adapter],
-                ]
-            );
+        return self::$drivers[$cacheKey]
+            ?? self::$drivers[$cacheKey] = $this->createDriver($driver, $adapter, $store);
     }
 
     /**
@@ -208,5 +208,54 @@ class Cache implements Contract
     public function getTagger(string ...$tags): Tagger
     {
         return $this->useStore()->getTagger(...$tags);
+    }
+
+    /**
+     * Get an driver by name.
+     *
+     * @param string $name    The driver
+     * @param string $adapter The adapter
+     * @param array  $config  The config
+     *
+     * @return Driver
+     */
+    protected function createDriver(string $name, string $adapter, array $config): Driver
+    {
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            Driver::class,
+            [
+                $this->createAdapter($adapter, $config),
+            ]
+        );
+    }
+
+    /**
+     * Get an adapter by name.
+     *
+     * @param string $name   The adapter
+     * @param array  $config The config
+     *
+     * @return Adapter
+     */
+    protected function createAdapter(string $name, array $config): Adapter
+    {
+        $defaultClass = Adapter::class;
+
+        if (Cls::inherits($name, RedisAdapter::class)) {
+            $defaultClass = RedisAdapter::class;
+        } elseif (Cls::inherits($name, LogAdapter::class)) {
+            $defaultClass = LogAdapter::class;
+        }
+
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            $defaultClass,
+            [
+                $config,
+            ]
+        );
     }
 }

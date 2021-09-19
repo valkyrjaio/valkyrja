@@ -15,15 +15,15 @@ namespace Valkyrja\SMS\Adapters;
 
 use Exception;
 use Nexmo\Client as Nexmo;
-use Valkyrja\SMS\Adapter;
 use Valkyrja\SMS\Message;
+use Valkyrja\SMS\NexmoAdapter as Contract;
 
 /**
  * Class NexmoAdapter.
  *
  * @author Melech Mizrachi
  */
-class NexmoAdapter implements Adapter
+class NexmoAdapter implements Contract
 {
     /**
      * The Nexmo client.

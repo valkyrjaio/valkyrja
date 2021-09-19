@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Config;
 
+use Valkyrja\Cache\Adapters\RedisAdapter;
+use Valkyrja\Cache\Drivers\Driver;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
@@ -28,10 +30,10 @@ class Config extends Model
      * @inheritDoc
      */
     protected static array $envKeys = [
-        CKP::DEFAULT  => EnvKey::CACHE_DEFAULT,
-        CKP::ADAPTERS => EnvKey::CACHE_ADAPTERS,
-        CKP::DRIVERS  => EnvKey::CACHE_DRIVERS,
-        CKP::STORES   => EnvKey::CACHE_STORES,
+        CKP::DEFAULT => EnvKey::CACHE_DEFAULT,
+        CKP::ADAPTER => EnvKey::CACHE_ADAPTER,
+        CKP::DRIVER  => EnvKey::CACHE_DRIVER,
+        CKP::STORES  => EnvKey::CACHE_STORES,
     ];
 
     /**
@@ -39,26 +41,45 @@ class Config extends Model
      *
      * @var string
      */
-    public string $default;
+    public string $default = CKP::REDIS;
 
     /**
-     * The adapters.
+     * The default adapter.
      *
-     * @var string[]
+     * @var string
      */
-    public array $adapters;
+    public string $adapter = RedisAdapter::class;
 
     /**
-     * The drivers.
+     * The default driver.
      *
-     * @var string[]
+     * @var string
      */
-    public array $drivers;
+    public string $driver = Driver::class;
 
     /**
      * The cache stores.
      *
      * @var array
      */
-    public array $stores;
+    public array $stores = [
+        CKP::REDIS => [
+            CKP::ADAPTER => CKP::REDIS,
+            CKP::DRIVER  => null,
+            CKP::HOST    => '',
+            CKP::PORT    => '',
+            CKP::PREFIX  => '',
+        ],
+        CKP::NULL  => [
+            CKP::ADAPTER => CKP::NULL,
+            CKP::DRIVER  => null,
+            CKP::PREFIX  => '',
+        ],
+        CKP::LOG   => [
+            CKP::ADAPTER => CKP::LOG,
+            CKP::DRIVER  => null,
+            CKP::LOGGER  => null,
+            CKP::PREFIX  => '',
+        ],
+    ];
 }

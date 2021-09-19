@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\SMS\Adapters;
 
-use Valkyrja\SMS\Adapter;
+use Valkyrja\SMS\Adapter as Contract;
 use Valkyrja\SMS\Message;
 
 /**
@@ -21,7 +21,7 @@ use Valkyrja\SMS\Message;
  *
  * @author Melech Mizrachi
  */
-class NullAdapter implements Adapter
+class NullAdapter implements Contract
 {
     /**
      * The config.

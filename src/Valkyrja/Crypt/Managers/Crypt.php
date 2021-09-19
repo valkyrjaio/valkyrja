@@ -31,7 +31,7 @@ class Crypt implements Contract
      *
      * @var Driver[]
      */
-    protected static array $driversCache = [];
+    protected static array $drivers = [];
 
     /**
      * The container.
@@ -107,8 +107,8 @@ class Crypt implements Contract
         // The cache key to use
         $cacheKey = $name . $adapter;
 
-        return self::$driversCache[$cacheKey]
-            ?? self::$driversCache[$cacheKey] = $this->createDriver($driver, $adapter, $config);
+        return self::$drivers[$cacheKey]
+            ?? self::$drivers[$cacheKey] = $this->createDriver($driver, $adapter, $config);
     }
 
     /**

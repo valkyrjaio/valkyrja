@@ -19,9 +19,10 @@ use League\Flysystem\AwsS3v3\AwsS3Adapter as FlysystemAwsS3Adapter;
 use League\Flysystem\Filesystem as Flysystem;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Filesystem\Adapters\FlysystemAdapter;
-use Valkyrja\Filesystem\Drivers\Driver;
+use Valkyrja\Filesystem\Adapter;
+use Valkyrja\Filesystem\Driver;
 use Valkyrja\Filesystem\Filesystem;
+use Valkyrja\Filesystem\FlysystemAdapter;
 
 /**
  * Class ServiceProvider.
@@ -37,7 +38,8 @@ class ServiceProvider extends Provider
     {
         return [
             Filesystem::class            => 'publishFilesystem',
-            Driver::class                => 'publishDefaultDriver',
+            Driver::class                => 'publishDriver',
+            Adapter::class               => 'publishAdapter',
             FlysystemAdapter::class      => 'publishFlysystemAdapter',
             FlysystemLocalAdapter::class => 'publishFlysystemLocalAdapter',
             FlysystemAwsS3Adapter::class => 'publishFlysystemAwsS3Adapter',
@@ -52,6 +54,7 @@ class ServiceProvider extends Provider
         return [
             Filesystem::class,
             Driver::class,
+            Adapter::class,
             FlysystemAdapter::class,
             FlysystemLocalAdapter::class,
             FlysystemAwsS3Adapter::class,
@@ -86,31 +89,45 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the default driver service.
+     * Publish a driver service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishDefaultDriver(Container $container): void
+    public static function publishDriver(Container $container): void
     {
         $container->setClosure(
             Driver::class,
-            static function (array $config, string $adapter) use ($container): Driver {
-                return new Driver(
-                    $container->get(
-                        $adapter,
-                        [
-                            $config,
-                        ]
-                    )
+            static function (string $name, Adapter $adapter): Driver {
+                return new $name(
+                    $adapter
                 );
             }
         );
     }
 
     /**
-     * Publish the flysystem adapter service.
+     * Publish an adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishAdapter(Container $container): void
+    {
+        $container->setClosure(
+            Adapter::class,
+            static function (string $name, array $config): Adapter {
+                return new $name(
+                    $config,
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a flysystem adapter service.
      *
      * @param Container $container The container
      *
@@ -120,8 +137,8 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             FlysystemAdapter::class,
-            static function (array $config) use ($container) {
-                return new FlysystemAdapter(
+            static function (string $name, array $config) use ($container): FlysystemAdapter {
+                return new $name(
                     new Flysystem(
                         $container->get(
                             $config['flysystemAdapter'],

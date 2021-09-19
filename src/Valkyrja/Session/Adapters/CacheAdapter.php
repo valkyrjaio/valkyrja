@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Adapters;
 
 use JsonException;
-use Valkyrja\Cache\Cache;
-use Valkyrja\Cache\Driver as CacheDriver;
+use Valkyrja\Cache\Driver as Cache;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 use Valkyrja\Support\Type\Arr;
 
@@ -37,13 +36,6 @@ class CacheAdapter extends PHPAdapter
     protected Cache $cache;
 
     /**
-     * The cache store.
-     *
-     * @var CacheDriver
-     */
-    protected CacheDriver $cacheStore;
-
-    /**
      * CacheAdapter constructor.
      *
      * @param Cache       $cache       The cache
@@ -55,8 +47,7 @@ class CacheAdapter extends PHPAdapter
     {
         parent::__construct($config, $sessionId, $sessionName);
 
-        $this->cache      = $cache;
-        $this->cacheStore = $cache->useStore();
+        $this->cache = $cache;
     }
 
     /**
@@ -79,7 +70,7 @@ class CacheAdapter extends PHPAdapter
         }
 
         // Set the data
-        $this->data = Arr::fromString($this->cacheStore->get($this->getCacheSessionId()));
+        $this->data = Arr::fromString($this->cache->get($this->getCacheSessionId()));
     }
 
     /**
@@ -155,6 +146,6 @@ class CacheAdapter extends PHPAdapter
      */
     protected function updateCacheSession(): void
     {
-        $this->cacheStore->forever($this->getCacheSessionId(), Arr::toString($this->data));
+        $this->cache->forever($this->getCacheSessionId(), Arr::toString($this->data));
     }
 }

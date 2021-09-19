@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Client\Constants;
 
 use Valkyrja\Client\Adapters\GuzzleAdapter;
-use Valkyrja\Client\Adapters\LogAdapter;
-use Valkyrja\Client\Adapters\NullAdapter;
 use Valkyrja\Client\Drivers\Driver;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 
@@ -26,27 +24,21 @@ use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
  */
 final class ConfigValue
 {
-    public const DEFAULT  = CKP::DEFAULT;
-    public const ADAPTERS = [
-        CKP::GUZZLE => GuzzleAdapter::class,
-        CKP::NULL   => NullAdapter::class,
-        CKP::LOG    => LogAdapter::class,
-    ];
-    public const DRIVERS  = [
-        CKP::DEFAULT => Driver::class,
-    ];
-    public const CLIENTS  = [
-        CKP::DEFAULT => [
-            CKP::ADAPTER => CKP::GUZZLE,
-            CKP::DRIVER  => CKP::DEFAULT,
+    public const DEFAULT = CKP::GUZZLE;
+    public const ADAPTER = GuzzleAdapter::class;
+    public const DRIVER  = Driver::class;
+    public const CLIENTS = [
+        CKP::GUZZLE => [
+            CKP::ADAPTER => null,
+            CKP::DRIVER  => null,
             CKP::OPTIONS => [],
         ],
     ];
 
     public static array $defaults = [
-        CKP::DEFAULT  => self::DEFAULT,
-        CKP::ADAPTERS => self::ADAPTERS,
-        CKP::DRIVERS  => self::DRIVERS,
-        CKP::CLIENTS  => self::CLIENTS,
+        CKP::DEFAULT => self::DEFAULT,
+        CKP::ADAPTER => self::ADAPTER,
+        CKP::DRIVER  => self::DRIVER,
+        CKP::CLIENTS => self::CLIENTS,
     ];
 }

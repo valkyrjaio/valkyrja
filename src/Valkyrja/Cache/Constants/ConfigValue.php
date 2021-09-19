@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Constants;
 
-use Valkyrja\Cache\Adapters\LogAdapter;
-use Valkyrja\Cache\Adapters\NullAdapter;
 use Valkyrja\Cache\Adapters\RedisAdapter;
 use Valkyrja\Cache\Drivers\Driver;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
@@ -26,16 +24,10 @@ use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
  */
 final class ConfigValue
 {
-    public const DEFAULT  = CKP::REDIS;
-    public const ADAPTERS = [
-        CKP::REDIS => RedisAdapter::class,
-        CKP::NULL  => NullAdapter::class,
-        CKP::LOG   => LogAdapter::class,
-    ];
-    public const DRIVERS  = [
-        CKP::DEFAULT => Driver::class,
-    ];
-    public const STORES   = [
+    public const DEFAULT = CKP::REDIS;
+    public const ADAPTER = RedisAdapter::class;
+    public const DRIVER  = Driver::class;
+    public const STORES  = [
         CKP::REDIS => [
             CKP::ADAPTER => CKP::REDIS,
             CKP::DRIVER  => CKP::DEFAULT,
@@ -58,8 +50,8 @@ final class ConfigValue
 
     public static array $defaults = [
         CKP::DEFAULT  => self::DEFAULT,
-        CKP::ADAPTERS => self::ADAPTERS,
-        CKP::DRIVERS  => self::DRIVERS,
+        CKP::ADAPTERS => self::ADAPTER,
+        CKP::DRIVERS  => self::DRIVER,
         CKP::STORES   => self::STORES,
     ];
 }

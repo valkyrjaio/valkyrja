@@ -18,11 +18,12 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Http\Request;
-use Valkyrja\Session\Adapters\CacheAdapter;
+use Valkyrja\Log\Logger;
+use Valkyrja\Session\Adapter;
 use Valkyrja\Session\Adapters\CookieAdapter;
-use Valkyrja\Session\Adapters\NullAdapter;
-use Valkyrja\Session\Adapters\PHPAdapter;
-use Valkyrja\Session\Drivers\Driver;
+use Valkyrja\Session\CacheAdapter;
+use Valkyrja\Session\Driver;
+use Valkyrja\Session\LogAdapter;
 use Valkyrja\Session\Session;
 
 /**
@@ -39,11 +40,11 @@ class ServiceProvider extends Provider
     {
         return [
             Session::class       => 'publishSession',
-            Driver::class        => 'publishDefaultDriver',
+            Driver::class        => 'publishDriver',
+            Adapter::class       => 'publishAdapter',
             CacheAdapter::class  => 'publishCacheAdapter',
             CookieAdapter::class => 'publishCookieAdapter',
-            NullAdapter::class   => 'publishNullAdapter',
-            PHPAdapter::class    => 'publishPHPAdapter',
+            LogAdapter::class    => 'publishLogAdapter',
         ];
     }
 
@@ -55,10 +56,10 @@ class ServiceProvider extends Provider
         return [
             Session::class,
             Driver::class,
+            Adapter::class,
             CacheAdapter::class,
             CookieAdapter::class,
-            NullAdapter::class,
-            PHPAdapter::class,
+            LogAdapter::class,
         ];
     }
 
@@ -90,31 +91,45 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the default driver service.
+     * Publish a driver service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishDefaultDriver(Container $container): void
+    public static function publishDriver(Container $container): void
     {
         $container->setClosure(
             Driver::class,
-            static function (array $config, string $adapter) use ($container): Driver {
-                return new Driver(
-                    $container->get(
-                        $adapter,
-                        [
-                            $config,
-                        ]
-                    )
+            static function (string $name, Adapter $adapter): Driver {
+                return new $name(
+                    $adapter
                 );
             }
         );
     }
 
     /**
-     * Publish the cache adapter service.
+     * Publish an adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishAdapter(Container $container): void
+    {
+        $container->setClosure(
+            Adapter::class,
+            static function (string $name, array $config): Adapter {
+                return new $name(
+                    $config
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a cache adapter service.
      *
      * @param Container $container The container
      *
@@ -126,9 +141,31 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             CacheAdapter::class,
-            static function (array $config) use ($cache): CacheAdapter {
-                return new CacheAdapter(
+            static function (string $name, array $config) use ($cache): CacheAdapter {
+                return new $name(
                     $cache,
+                    $config
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a log adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishLogAdapter(Container $container): void
+    {
+        $logger = $container->getSingleton(Logger::class);
+
+        $container->setClosure(
+            LogAdapter::class,
+            static function (string $name, array $config) use ($logger): LogAdapter {
+                return new $name(
+                    $logger->useLogger($config['logger'] ?? null),
                     $config
                 );
             }
@@ -153,44 +190,6 @@ class ServiceProvider extends Provider
                 return new CookieAdapter(
                     $crypt,
                     $request,
-                    $config
-                );
-            }
-        );
-    }
-
-    /**
-     * Publish the null adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishNullAdapter(Container $container): void
-    {
-        $container->setClosure(
-            NullAdapter::class,
-            static function (array $config): NullAdapter {
-                return new NullAdapter(
-                    $config
-                );
-            }
-        );
-    }
-
-    /**
-     * Publish the php adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishPHPAdapter(Container $container): void
-    {
-        $container->setClosure(
-            PHPAdapter::class,
-            static function (array $config): PHPAdapter {
-                return new PHPAdapter(
                     $config
                 );
             }

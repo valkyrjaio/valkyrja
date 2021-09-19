@@ -15,7 +15,7 @@ namespace Valkyrja\Log\Adapters;
 
 use Psr\Log\LoggerInterface;
 use Throwable;
-use Valkyrja\Log\Adapter as Contract;
+use Valkyrja\Log\PsrAdapter as Contract;
 
 /**
  * Class PsrAdapter.

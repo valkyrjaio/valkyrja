@@ -18,10 +18,10 @@ use Nexmo\Client\Credentials\Basic;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger;
-use Valkyrja\SMS\Adapters\LogAdapter;
-use Valkyrja\SMS\Adapters\NexmoAdapter;
-use Valkyrja\SMS\Adapters\NullAdapter;
-use Valkyrja\SMS\Messages\Message;
+use Valkyrja\SMS\Adapter;
+use Valkyrja\SMS\LogAdapter;
+use Valkyrja\SMS\Message;
+use Valkyrja\SMS\NexmoAdapter;
 use Valkyrja\SMS\SMS;
 
 /**
@@ -38,11 +38,11 @@ class ServiceProvider extends Provider
     {
         return [
             SMS::class          => 'publishSMS',
+            Adapter::class      => 'publishAdapter',
             LogAdapter::class   => 'publishLogAdapter',
-            Message::class      => 'publishMessage',
-            Nexmo::class        => 'publishNexmo',
             NexmoAdapter::class => 'publishNexmoAdapter',
-            NullAdapter::class  => 'publishNullAdapter',
+            Nexmo::class        => 'publishNexmo',
+            Message::class      => 'publishMessage',
         ];
     }
 
@@ -53,11 +53,11 @@ class ServiceProvider extends Provider
     {
         return [
             SMS::class,
+            Adapter::class,
             LogAdapter::class,
-            Message::class,
-            Nexmo::class,
             NexmoAdapter::class,
-            NullAdapter::class,
+            Nexmo::class,
+            Message::class,
         ];
     }
 
@@ -89,7 +89,67 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the nexmo message service.
+     * Publish an adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishAdapter(Container $container): void
+    {
+        $container->setClosure(
+            Adapter::class,
+            static function (string $name, array $config): Adapter {
+                return new $name(
+                    $config
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish the log adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishLogAdapter(Container $container): void
+    {
+        $logger = $container->getSingleton(Logger::class);
+
+        $container->setClosure(
+            LogAdapter::class,
+            static function (string $name, array $config) use ($logger): LogAdapter {
+                return new $name(
+                    $logger->useLogger($config['logger'] ?? null),
+                    $config
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a nexmo adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishNexmoAdapter(Container $container): void
+    {
+        $container->setClosure(
+            NexmoAdapter::class,
+            static function (string $name, array $config) use ($container): NexmoAdapter {
+                return new $name(
+                    $container->get(Nexmo::class, [$config])
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a nexmo service.
      *
      * @param Container $container The container
      *
@@ -108,68 +168,7 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the log adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishLogAdapter(Container $container): void
-    {
-        /** @var Logger $logger */
-        $logger = $container->getSingleton(Logger::class);
-
-        $container->setClosure(
-            LogAdapter::class,
-            static function (array $config) use ($logger): LogAdapter {
-                return new LogAdapter(
-                    $logger->useLogger($config['logger'] ?? null),
-                    $config
-                );
-            }
-        );
-    }
-
-    /**
-     * Publish the nexmo adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishNexmoAdapter(Container $container): void
-    {
-        $container->setClosure(
-            NexmoAdapter::class,
-            static function (array $config) use ($container): NexmoAdapter {
-                return new NexmoAdapter(
-                    $container->get(Nexmo::class, [$config])
-                );
-            }
-        );
-    }
-
-    /**
-     * Publish the null adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishNullAdapter(Container $container): void
-    {
-        $container->setClosure(
-            NullAdapter::class,
-            static function (array $config): NullAdapter {
-                return new NullAdapter(
-                    $config
-                );
-            }
-        );
-    }
-
-    /**
-     * Publish the message service.
+     * Publish a message service.
      *
      * @param Container $container The container
      *
@@ -179,8 +178,8 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Message::class,
-            static function (array $config): Message {
-                return (new Message())->setFrom($config['fromName']);
+            static function (string $name, array $config): Message {
+                return (new $name())->setFrom($config['fromName']);
             }
         );
     }

@@ -14,8 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Managers;
 
 use Valkyrja\Container\Container;
+use Valkyrja\Session\Adapter;
+use Valkyrja\Session\CacheAdapter;
 use Valkyrja\Session\Driver;
+use Valkyrja\Session\LogAdapter;
 use Valkyrja\Session\Session as Contract;
+use Valkyrja\Support\Type\Cls;
 
 /**
  * Class Sessions.
@@ -29,7 +33,7 @@ class Session implements Contract
      *
      * @var Driver[]
      */
-    protected static array $driversCache = [];
+    protected static array $drivers = [];
 
     /**
      * The container.
@@ -46,18 +50,18 @@ class Session implements Contract
     protected array $config;
 
     /**
-     * The adapters.
+     * The default adapter.
      *
-     * @var array
+     * @var string
      */
-    protected array $adapters;
+    protected string $defaultAdapter;
 
     /**
-     * The drivers config.
+     * The default driver.
      *
-     * @var array
+     * @var string
      */
-    protected array $drivers;
+    protected string $defaultDriver;
 
     /**
      * The default session.
@@ -84,8 +88,8 @@ class Session implements Contract
         $this->container      = $container;
         $this->config         = $config;
         $this->defaultSession = $config['default'];
-        $this->adapters       = $config['adapters'];
-        $this->drivers        = $config['drivers'];
+        $this->defaultAdapter = $config['adapter'];
+        $this->defaultDriver  = $config['driver'];
         $this->sessions       = $config['sessions'];
     }
 
@@ -99,18 +103,14 @@ class Session implements Contract
         // The session to use
         $session = $this->sessions[$name];
         // The adapter to use
-        $adapter ??= $session['adapter'];
+        $driver ??= $session['driver'] ?? $this->defaultDriver;
+        // The adapter to use
+        $adapter ??= $session['adapter'] ?? $this->defaultAdapter;
         // The cache key to use
         $cacheKey = $name . $adapter;
 
-        return self::$driversCache[$cacheKey]
-            ?? self::$driversCache[$cacheKey] = $this->container->get(
-                $this->drivers[$session['driver']],
-                [
-                    $session,
-                    $this->adapters[$adapter],
-                ]
-            );
+        return self::$drivers[$cacheKey]
+            ?? self::$drivers[$cacheKey] = $this->createDriver($driver, $adapter, $session);
     }
 
     /**
@@ -239,5 +239,54 @@ class Session implements Contract
     public function destroy(): void
     {
         $this->useSession()->destroy();
+    }
+
+    /**
+     * Get an driver by name.
+     *
+     * @param string $name    The driver
+     * @param string $adapter The adapter
+     * @param array  $config  The config
+     *
+     * @return Driver
+     */
+    protected function createDriver(string $name, string $adapter, array $config): Driver
+    {
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            Driver::class,
+            [
+                $this->createAdapter($adapter, $config),
+            ]
+        );
+    }
+
+    /**
+     * Get an adapter by name.
+     *
+     * @param string $name   The adapter
+     * @param array  $config The config
+     *
+     * @return Adapter
+     */
+    protected function createAdapter(string $name, array $config): Adapter
+    {
+        $defaultClass = Adapter::class;
+
+        if (Cls::inherits($name, CacheAdapter::class)) {
+            $defaultClass = CacheAdapter::class;
+        } elseif (Cls::inherits($name, LogAdapter::class)) {
+            $defaultClass = LogAdapter::class;
+        }
+
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            $defaultClass,
+            [
+                $config,
+            ]
+        );
     }
 }

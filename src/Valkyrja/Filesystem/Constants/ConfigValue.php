@@ -26,14 +26,10 @@ use Valkyrja\Filesystem\Drivers\Driver;
  */
 final class ConfigValue
 {
-    public const DEFAULT  = CKP::LOCAL;
-    public const ADAPTERS = [
-        CKP::FLYSYSTEM => FlysystemAdapter::class,
-    ];
-    public const DRIVERS  = [
-        CKP::DEFAULT => Driver::class,
-    ];
-    public const DISKS    = [
+    public const DEFAULT = CKP::LOCAL;
+    public const ADAPTER = FlysystemAdapter::class;
+    public const DRIVER  = Driver::class;
+    public const DISKS   = [
         CKP::LOCAL => [
             CKP::ADAPTER           => CKP::FLYSYSTEM,
             CKP::DRIVER            => CKP::DEFAULT,
@@ -56,8 +52,8 @@ final class ConfigValue
 
     public static array $defaults = [
         CKP::DEFAULT  => self::DEFAULT,
-        CKP::ADAPTERS => self::ADAPTERS,
-        CKP::DRIVERS  => self::DRIVERS,
+        CKP::ADAPTERS => self::ADAPTER,
+        CKP::DRIVERS  => self::DRIVER,
         CKP::DISKS    => self::DISKS,
     ];
 }

@@ -18,7 +18,7 @@ use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
-use Valkyrja\Client\Adapter as Contract;
+use Valkyrja\Client\GuzzleAdapter as Contract;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;

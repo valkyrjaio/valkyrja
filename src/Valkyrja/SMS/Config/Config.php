@@ -16,6 +16,11 @@ namespace Valkyrja\SMS\Config;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\SMS\Adapters\LogAdapter;
+use Valkyrja\SMS\Adapters\NexmoAdapter;
+use Valkyrja\SMS\Adapters\NullAdapter;
+use Valkyrja\SMS\Drivers\Driver;
+use Valkyrja\SMS\Messages\Message;
 
 /**
  * Class Config.
@@ -28,13 +33,13 @@ class Config extends Model
      * @inheritDoc
      */
     protected static array $envKeys = [
-        CKP::DEFAULT          => EnvKey::SMS_DEFAULT,
-        CKP::ADAPTERS         => EnvKey::SMS_ADAPTERS,
-        CKP::DRIVERS          => EnvKey::SMS_DRIVERS,
-        CKP::MESSENGERS       => EnvKey::SMS_MESSENGERS,
-        CKP::DEFAULT_MESSAGE  => EnvKey::SMS_DEFAULT_MESSAGE,
-        CKP::MESSAGE_ADAPTERS => EnvKey::SMS_MESSAGE_ADAPTERS,
-        CKP::MESSAGES         => EnvKey::SMS_MESSAGES,
+        CKP::DEFAULT         => EnvKey::SMS_DEFAULT,
+        CKP::DEFAULT_MESSAGE => EnvKey::SMS_DEFAULT_MESSAGE,
+        CKP::ADAPTER         => EnvKey::SMS_ADAPTER,
+        CKP::DRIVER          => EnvKey::SMS_DRIVER,
+        CKP::MESSAGE         => EnvKey::SMS_MESSAGE,
+        CKP::MESSENGERS      => EnvKey::SMS_MESSENGERS,
+        CKP::MESSAGES        => EnvKey::SMS_MESSAGES,
     ];
 
     /**
@@ -42,47 +47,68 @@ class Config extends Model
      *
      * @var string
      */
-    public string $default;
-
-    /**
-     * The adapters.
-     *
-     * @var string[]
-     */
-    public array $adapters;
-
-    /**
-     * The drivers.
-     *
-     * @var string[]
-     */
-    public array $drivers;
-
-    /**
-     * The messengers.
-     *
-     * @var array[]
-     */
-    public array $messengers;
+    public string $default = CKP::NEXMO;
 
     /**
      * The default message.
      *
      * @var string
      */
-    public string $defaultMessage;
+    public string $defaultMessage = CKP::DEFAULT;
 
     /**
-     * The message adapters.
+     * The default adapter.
      *
-     * @var string[]
+     * @var string
      */
-    public array $messageAdapters;
+    public string $adapter = NexmoAdapter::class;
+
+    /**
+     * The default driver.
+     *
+     * @var string
+     */
+    public string $driver = Driver::class;
+
+    /**
+     * The default message class.
+     *
+     * @var string
+     */
+    public string $message = Message::class;
+
+    /**
+     * The messengers.
+     *
+     * @var array[]
+     */
+    public array $messengers = [
+        CKP::NEXMO => [
+            CKP::ADAPTER  => null,
+            CKP::DRIVER   => null,
+            CKP::USERNAME => '',
+            CKP::PASSWORD => '',
+        ],
+        CKP::LOG   => [
+            CKP::ADAPTER => LogAdapter::class,
+            CKP::DRIVER  => null,
+            CKP::LOGGER  => null,
+        ],
+        CKP::NULL  => [
+            CKP::ADAPTER => NullAdapter::class,
+            CKP::DRIVER  => null,
+        ],
+    ];
 
     /**
      * The messages.
      *
      * @var array[]
      */
-    public array $messages;
+    public array $messages = [
+        CKP::DEFAULT => [
+            CKP::MESSAGE   => null,
+            CKP::FROM_NAME => 'Example',
+        ],
+    ];
 }

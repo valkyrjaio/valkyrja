@@ -27,50 +27,42 @@ use Valkyrja\SMS\Messages\Message;
  */
 final class ConfigValue
 {
-    public const DEFAULT          = CKP::NEXMO;
-    public const ADAPTERS         = [
-        CKP::LOG   => LogAdapter::class,
-        CKP::NEXMO => NexmoAdapter::class,
-        CKP::NULL  => NullAdapter::class,
-    ];
-    public const DRIVERS          = [
-        CKP::DEFAULT => Driver::class,
-    ];
-    public const MESSENGERS       = [
-        CKP::LOG   => [
-            CKP::ADAPTER => CKP::LOG,
-            CKP::DRIVER  => CKP::DEFAULT,
-            CKP::LOGGER  => null,
-        ],
+    public const DEFAULT         = CKP::NEXMO;
+    public const DEFAULT_MESSAGE = CKP::DEFAULT;
+    public const ADAPTER         = NexmoAdapter::class;
+    public const DRIVER          = Driver::class;
+    public const MESSAGE         = Message::class;
+    public const MESSENGERS      = [
         CKP::NEXMO => [
-            CKP::ADAPTER  => CKP::NULL,
-            CKP::DRIVER   => CKP::DEFAULT,
+            CKP::ADAPTER  => null,
+            CKP::DRIVER   => null,
             CKP::USERNAME => '',
             CKP::PASSWORD => '',
         ],
+        CKP::LOG   => [
+            CKP::ADAPTER => LogAdapter::class,
+            CKP::DRIVER  => null,
+            CKP::LOGGER  => null,
+        ],
         CKP::NULL  => [
-            CKP::ADAPTER => CKP::NULL,
-            CKP::DRIVER  => CKP::DEFAULT,
+            CKP::ADAPTER => NullAdapter::class,
+            CKP::DRIVER  => null,
         ],
     ];
-    public const DEFAULT_MESSAGE  = CKP::DEFAULT;
-    public const MESSAGE_ADAPTERS = [
-        CKP::DEFAULT => Message::class,
-    ];
-    public const MESSAGES         = [
+    public const MESSAGES        = [
         CKP::DEFAULT => [
-            CKP::ADAPTER   => CKP::DEFAULT,
+            CKP::MESSAGE   => null,
             CKP::FROM_NAME => 'Example',
         ],
     ];
 
     public static array $defaults = [
-        CKP::DEFAULT          => self::DEFAULT,
-        CKP::ADAPTERS         => self::ADAPTERS,
-        CKP::DRIVERS          => self::DRIVERS,
-        CKP::MESSENGERS       => self::MESSENGERS,
-        CKP::DEFAULT_MESSAGE  => self::DEFAULT_MESSAGE,
-        CKP::MESSAGE_ADAPTERS => self::MESSAGE_ADAPTERS,
-        CKP::MESSAGES         => self::MESSAGES,
+        CKP::DEFAULT         => self::DEFAULT,
+        CKP::DEFAULT_MESSAGE => self::DEFAULT_MESSAGE,
+        CKP::ADAPTER         => self::ADAPTER,
+        CKP::DRIVER          => self::DRIVER,
+        CKP::MESSAGE         => self::MESSAGE,
+        CKP::MESSENGERS      => self::MESSENGERS,
+        CKP::MESSAGES        => self::MESSAGES,
     ];
 }

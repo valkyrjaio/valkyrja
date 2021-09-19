@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Log\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Log\Adapters\NullAdapter;
 use Valkyrja\Log\Adapters\PsrAdapter;
 use Valkyrja\Log\Drivers\Driver;
 
@@ -25,18 +24,12 @@ use Valkyrja\Log\Drivers\Driver;
  */
 final class ConfigValue
 {
-    public const DEFAULT  = CKP::PSR;
-    public const ADAPTERS = [
-        CKP::NULL => NullAdapter::class,
-        CKP::PSR  => PsrAdapter::class,
-    ];
-    public const DRIVERS  = [
-        CKP::DEFAULT => Driver::class,
-    ];
-    public const LOGGERS  = [
+    public const DEFAULT = CKP::PSR;
+    public const ADAPTER = PsrAdapter::class;
+    public const DRIVER  = Driver::class;
+    public const LOGGERS = [
         CKP::PSR => [
-            CKP::ADAPTER   => CKP::PSR,
-            CKP::DRIVER    => CKP::DEFAULT,
+            CKP::ADAPTER   => null,
             CKP::NAME      => 'application-log',
             CKP::FILE_PATH => '',
         ],
@@ -44,8 +37,8 @@ final class ConfigValue
 
     public static array $defaults = [
         CKP::DEFAULT  => self::DEFAULT,
-        CKP::ADAPTERS => self::ADAPTERS,
-        CKP::DRIVERS  => self::ADAPTERS,
-        CKP::LOGGERS  => self::ADAPTERS,
+        CKP::ADAPTERS => self::ADAPTER,
+        CKP::DRIVERS  => self::ADAPTER,
+        CKP::LOGGERS  => self::LOGGERS,
     ];
 }

@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Config;
 
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Filesystem\Adapters\FlysystemAdapter;
+use Valkyrja\Filesystem\Drivers\Driver;
 
 /**
  * Class Config.
@@ -28,10 +32,10 @@ class Config extends Model
      * @inheritDoc
      */
     protected static array $envKeys = [
-        CKP::DEFAULT  => EnvKey::FILESYSTEM_DEFAULT,
-        CKP::ADAPTERS => EnvKey::FILESYSTEM_ADAPTERS,
-        CKP::DRIVERS  => EnvKey::FILESYSTEM_DRIVERS,
-        CKP::DISKS    => EnvKey::FILESYSTEM_DISKS,
+        CKP::DEFAULT => EnvKey::FILESYSTEM_DEFAULT,
+        CKP::ADAPTER => EnvKey::FILESYSTEM_ADAPTER,
+        CKP::DRIVER  => EnvKey::FILESYSTEM_DRIVER,
+        CKP::DISKS   => EnvKey::FILESYSTEM_DISKS,
     ];
 
     /**
@@ -39,26 +43,45 @@ class Config extends Model
      *
      * @var string
      */
-    public string $default;
+    public string $default = CKP::LOCAL;
 
     /**
-     * The adapters.
+     * The default adapter.
      *
-     * @var string[]
+     * @var string
      */
-    public array $adapters;
+    public string $adapter = FlysystemAdapter::class;
 
     /**
-     * The drivers.
+     * The default driver.
      *
-     * @var string[]
+     * @var string
      */
-    public array $drivers;
+    public string $driver = Driver::class;
 
     /**
      * The disks.
      *
      * @var array
      */
-    public array $disks;
+    public array $disks = [
+        CKP::LOCAL => [
+            CKP::ADAPTER           => null,
+            CKP::DRIVER            => null,
+            CKP::FLYSYSTEM_ADAPTER => Local::class,
+            CKP::DIR               => '/',
+        ],
+        CKP::S3    => [
+            CKP::ADAPTER           => null,
+            CKP::DRIVER            => null,
+            CKP::FLYSYSTEM_ADAPTER => AwsS3Adapter::class,
+            CKP::KEY               => '',
+            CKP::SECRET            => '',
+            CKP::REGION            => 'us1',
+            CKP::VERSION           => 'latest',
+            CKP::BUCKET            => '',
+            CKP::PREFIX            => '',
+            CKP::OPTIONS           => [],
+        ],
+    ];
 }

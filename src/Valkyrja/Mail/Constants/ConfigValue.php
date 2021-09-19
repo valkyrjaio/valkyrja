@@ -28,29 +28,24 @@ use Valkyrja\Mail\Messages\Message;
  */
 final class ConfigValue
 {
-    public const DEFAULT          = CKP::PHP_MAILER;
-    public const ADAPTERS         = [
-        CKP::LOG        => LogAdapter::class,
-        CKP::NULL       => NullAdapter::class,
-        CKP::PHP_MAILER => PHPMailerAdapter::class,
-        CKP::MAILGUN    => MailgunAdapter::class,
-    ];
-    public const DRIVERS          = [
-        CKP::DEFAULT => Driver::class,
-    ];
-    public const MAILERS          = [
+    public const DEFAULT         = CKP::PHP_MAILER;
+    public const DEFAULT_MESSAGE = CKP::DEFAULT;
+    public const ADAPTER         = MailgunAdapter::class;
+    public const DRIVER          = Driver::class;
+    public const MESSAGE         = Message::class;
+    public const MAILERS         = [
         CKP::LOG        => [
-            CKP::ADAPTER => CKP::LOG,
-            CKP::DRIVER  => CKP::DEFAULT,
+            CKP::ADAPTER => LogAdapter::class,
+            CKP::DRIVER  => null,
             CKP::LOGGER  => null,
         ],
         CKP::NULL       => [
-            CKP::ADAPTER => CKP::NULL,
-            CKP::DRIVER  => CKP::DEFAULT,
+            CKP::ADAPTER => NullAdapter::class,
+            CKP::DRIVER  => null,
         ],
         CKP::PHP_MAILER => [
-            CKP::ADAPTER    => CKP::PHP_MAILER,
-            CKP::DRIVER     => CKP::DEFAULT,
+            CKP::ADAPTER    => PHPMailerAdapter::class,
+            CKP::DRIVER     => null,
             CKP::USERNAME   => '',
             CKP::PASSWORD   => '',
             CKP::HOST       => 'smtp1.example.com;smtp2.example.com',
@@ -58,31 +53,27 @@ final class ConfigValue
             CKP::ENCRYPTION => 'tls',
         ],
         CKP::MAILGUN    => [
-            CKP::ADAPTER => CKP::MAILGUN,
-            CKP::DRIVER  => CKP::DEFAULT,
+            CKP::ADAPTER => null,
+            CKP::DRIVER  => null,
             CKP::DOMAIN  => '',
             CKP::API_KEY => '',
         ],
     ];
-    public const DEFAULT_MESSAGE  = CKP::DEFAULT;
-    public const MESSAGE_ADAPTERS = [
-        CKP::DEFAULT => Message::class,
-    ];
-    public const MESSAGES         = [
+    public const MESSAGES        = [
         CKP::DEFAULT => [
-            CKP::ADAPTER      => CKP::DEFAULT,
+            CKP::ADAPTER      => null,
             CKP::FROM_ADDRESS => 'hello@example.com',
             CKP::FROM_NAME    => 'Example',
         ],
     ];
 
     public static array $defaults = [
-        CKP::DEFAULT          => self::DEFAULT,
-        CKP::ADAPTERS         => self::ADAPTERS,
-        CKP::DRIVERS          => self::DRIVERS,
-        CKP::MAILERS          => self::MAILERS,
-        CKP::DEFAULT_MESSAGE  => self::DEFAULT_MESSAGE,
-        CKP::MESSAGE_ADAPTERS => self::MESSAGE_ADAPTERS,
-        CKP::MESSAGES         => self::MESSAGES,
+        CKP::DEFAULT         => self::DEFAULT,
+        CKP::DEFAULT_MESSAGE => self::DEFAULT_MESSAGE,
+        CKP::ADAPTER         => self::ADAPTER,
+        CKP::DRIVER          => self::DRIVER,
+        CKP::MESSAGE         => self::MESSAGE,
+        CKP::MAILERS         => self::MAILERS,
+        CKP::MESSAGES        => self::MESSAGES,
     ];
 }

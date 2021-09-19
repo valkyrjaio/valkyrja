@@ -14,9 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Mail\Managers;
 
 use Valkyrja\Container\Container;
+use Valkyrja\Mail\Adapter;
 use Valkyrja\Mail\Driver;
+use Valkyrja\Mail\LogAdapter;
 use Valkyrja\Mail\Mail as Contract;
+use Valkyrja\Mail\MailgunAdapter;
 use Valkyrja\Mail\Message;
+use Valkyrja\Mail\PHPMailerAdapter;
+use Valkyrja\Support\Type\Cls;
 
 /**
  * Class Mail.
@@ -30,7 +35,7 @@ class Mail implements Contract
      *
      * @var Driver[]
      */
-    protected static array $driversCache = [];
+    protected static array $drivers = [];
 
     /**
      * The container.
@@ -47,18 +52,18 @@ class Mail implements Contract
     protected array $config;
 
     /**
-     * The adapters.
+     * The default adapter.
      *
-     * @var string[]
+     * @var string
      */
-    protected array $adapters;
+    protected string $defaultAdapter;
 
     /**
-     * The drivers config.
+     * The default driver.
      *
-     * @var string[]
+     * @var string
      */
-    protected array $drivers;
+    protected string $defaultDriver;
 
     /**
      * The mailers.
@@ -68,11 +73,11 @@ class Mail implements Contract
     protected array $mailers;
 
     /**
-     * The message adapters.
+     * The default message class.
      *
-     * @var string[]
+     * @var string
      */
-    protected array $messageAdapters;
+    protected string $defaultMessageClass;
 
     /**
      * The messages config.
@@ -110,15 +115,15 @@ class Mail implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container       = $container;
-        $this->config          = $config;
-        $this->adapters        = $config['adapters'];
-        $this->drivers         = $config['drivers'];
-        $this->mailers         = $config['mailers'];
-        $this->default         = $config['default'];
-        $this->defaultMessage  = $config['defaultMessage'];
-        $this->messageAdapters = $config['messageAdapters'];
-        $this->messages        = $config['messages'];
+        $this->container           = $container;
+        $this->config              = $config;
+        $this->default             = $config['default'];
+        $this->defaultMessage      = $config['defaultMessage'];
+        $this->defaultAdapter      = $config['adapter'];
+        $this->defaultDriver       = $config['driver'];
+        $this->defaultMessageClass = $config['message'];
+        $this->mailers             = $config['mailers'];
+        $this->messages            = $config['messages'];
     }
 
     /**
@@ -130,19 +135,15 @@ class Mail implements Contract
         $name ??= $this->default;
         // The config to use
         $config = $this->mailers[$name];
+        // The driver to use
+        $driver ??= $config['driver'] ?? $this->defaultDriver;
         // The adapter to use
-        $adapter ??= $config['adapter'];
+        $adapter ??= $config['adapter'] ?? $this->defaultAdapter;
         // The cache key to use
         $cacheKey = $name . $adapter;
 
-        return self::$driversCache[$cacheKey]
-            ?? self::$driversCache[$cacheKey] = $this->container->get(
-                $this->drivers[$config['driver']],
-                [
-                    $config,
-                    $this->adapters[$adapter],
-                ]
-            );
+        return self::$drivers[$cacheKey]
+            ?? self::$drivers[$cacheKey] = $this->createDriver($driver, $adapter, $config);
     }
 
     /**
@@ -154,11 +155,13 @@ class Mail implements Contract
         $name ??= $this->defaultMessage;
         // The message config
         $config = $this->messages[$name];
-        // The adapter to use
-        $adapter = $config['adapter'];
+        // The message to use
+        $message = $config['message'] ?? $this->defaultMessageClass;
 
-        return $this->container->get(
-            $this->messageAdapters[$adapter],
+        return Cls::getDefaultableService(
+            $this->container,
+            $message,
+            Message::class,
             [
                 $config,
                 $data,
@@ -172,5 +175,56 @@ class Mail implements Contract
     public function send(Message $message): void
     {
         $this->useMailer()->send($message);
+    }
+
+    /**
+     * Get an driver by name.
+     *
+     * @param string $name    The driver
+     * @param string $adapter The adapter
+     * @param array  $config  The config
+     *
+     * @return Driver
+     */
+    protected function createDriver(string $name, string $adapter, array $config): Driver
+    {
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            Driver::class,
+            [
+                $this->createAdapter($adapter, $config),
+            ]
+        );
+    }
+
+    /**
+     * Get an adapter by name.
+     *
+     * @param string $name   The adapter
+     * @param array  $config The config
+     *
+     * @return Adapter
+     */
+    protected function createAdapter(string $name, array $config): Adapter
+    {
+        $defaultClass = Adapter::class;
+
+        if (Cls::inherits($name, MailgunAdapter::class)) {
+            $defaultClass = MailgunAdapter::class;
+        } elseif (Cls::inherits($name, PHPMailerAdapter::class)) {
+            $defaultClass = PHPMailerAdapter::class;
+        } elseif (Cls::inherits($name, LogAdapter::class)) {
+            $defaultClass = LogAdapter::class;
+        }
+
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            $defaultClass,
+            [
+                $config,
+            ]
+        );
     }
 }

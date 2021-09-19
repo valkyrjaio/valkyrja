@@ -20,11 +20,11 @@ use Monolog\Logger as Monolog;
 use Psr\Log\LoggerInterface;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Log\Adapters\NullAdapter;
-use Valkyrja\Log\Adapters\PsrAdapter;
+use Valkyrja\Log\Adapter;
 use Valkyrja\Log\Constants\LogLevel;
-use Valkyrja\Log\Drivers\Driver;
+use Valkyrja\Log\Driver;
 use Valkyrja\Log\Logger;
+use Valkyrja\Log\PsrAdapter;
 
 use function date;
 
@@ -42,8 +42,8 @@ class ServiceProvider extends Provider
     {
         return [
             Logger::class          => 'publishLogger',
-            Driver::class          => 'publishDefaultDriver',
-            NullAdapter::class     => 'publishNullAdapter',
+            Driver::class          => 'publishDriver',
+            Adapter::class         => 'publishAdapter',
             PsrAdapter::class      => 'publishPsrAdapter',
             LoggerInterface::class => 'publishLoggerInterface',
         ];
@@ -57,7 +57,7 @@ class ServiceProvider extends Provider
         return [
             Logger::class,
             Driver::class,
-            NullAdapter::class,
+            Adapter::class,
             PsrAdapter::class,
             LoggerInterface::class,
         ];
@@ -99,18 +99,13 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishDefaultDriver(Container $container): void
+    public static function publishDriver(Container $container): void
     {
         $container->setClosure(
             Driver::class,
-            static function (array $config, string $adapter) use ($container): Driver {
-                return new Driver(
-                    $container->get(
-                        $adapter,
-                        [
-                            $config,
-                        ]
-                    )
+            static function (string $name, Adapter $adapter): Driver {
+                return new $name(
+                    $adapter
                 );
             }
         );
@@ -127,8 +122,8 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             PsrAdapter::class,
-            static function (array $config) use ($container): PsrAdapter {
-                return new PsrAdapter(
+            static function (string $name, array $config) use ($container): PsrAdapter {
+                return new $name(
                     $container->get(
                         LoggerInterface::class,
                         [
@@ -142,18 +137,18 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Bind the null adapter service.
+     * Bind an adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishNullAdapter(Container $container): void
+    public static function publishAdapter(Container $container): void
     {
         $container->setClosure(
-            NullAdapter::class,
-            static function (array $config): NullAdapter {
-                return new NullAdapter(
+            Adapter::class,
+            static function (string $name, array $config): Adapter {
+                return new $name(
                     $config
                 );
             }
@@ -161,7 +156,7 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Bind the logger interface.
+     * Bind a logger interface.
      *
      * @param Container $container The container
      *
@@ -174,9 +169,9 @@ class ServiceProvider extends Provider
         $container->setClosure(
             LoggerInterface::class,
             static function (array $config): LoggerInterface {
-                $filePath = $config['filePath'];
-                $name     = $config['name'] . date('-Y-m-d');
-                $handler  = new StreamHandler(
+                $filePath  = $config['filePath'];
+                $name      = $config['name'] . date('-Y-m-d');
+                $handler   = new StreamHandler(
                     "${filePath}/${name}.log",
                     LogLevel::DEBUG
                 );

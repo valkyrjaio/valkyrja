@@ -155,6 +155,34 @@ class ORM implements Contract
     protected string $defaultRepository;
 
     /**
+     * The default query.
+     *
+     * @var string
+     */
+    protected string $defaultQuery;
+
+    /**
+     * The default query builder.
+     *
+     * @var string
+     */
+    protected string $defaultQueryBuilder;
+
+    /**
+     * The default persister.
+     *
+     * @var string
+     */
+    protected string $defaultPersister;
+
+    /**
+     * The default retriever.
+     *
+     * @var string
+     */
+    protected string $defaultRetriever;
+
+    /**
      * ORM constructor.
      *
      * @param AdapterFactory      $adapterFactory      The adapter factory
@@ -192,6 +220,10 @@ class ORM implements Contract
         $this->defaultAdapter      = $config['adapter'];
         $this->defaultDriver       = $config['driver'];
         $this->defaultRepository   = $config['repository'];
+        $this->defaultQuery        = $config['query'];
+        $this->defaultQueryBuilder = $config['queryBuilder'];
+        $this->defaultPersister    = $config['persister'];
+        $this->defaultRetriever    = $config['retriever'];
     }
 
     /**
@@ -224,13 +256,13 @@ class ORM implements Contract
     public function createAdapter(string $name, array $config): Adapter
     {
         // Set the query
-        $config['query'] ??= $this->config['query'];
+        $config['query'] ??= $this->defaultQuery;
         // Set the query builder
-        $config['queryBuilder'] ??= $this->config['queryBuilder'];
+        $config['queryBuilder'] ??= $this->defaultQueryBuilder;
         // Set the persister
-        $config['persister'] ??= $this->config['persister'];
+        $config['persister'] ??= $this->defaultPersister;
         // Set the retriever
-        $config['retriever'] ??= $this->config['retriever'];
+        $config['retriever'] ??= $this->defaultRetriever;
 
         return $this->adapterFactory->createAdapter($name, $config);
     }

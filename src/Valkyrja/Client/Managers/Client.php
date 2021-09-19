@@ -13,11 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client\Managers;
 
+use Valkyrja\Client\Adapter;
 use Valkyrja\Client\Client as Contract;
 use Valkyrja\Client\Driver;
+use Valkyrja\Client\GuzzleAdapter;
+use Valkyrja\Client\LogAdapter;
 use Valkyrja\Container\Container;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
+use Valkyrja\Support\Type\Cls;
 
 /**
  * Class Client.
@@ -31,7 +35,7 @@ class Client implements Contract
      *
      * @var Driver[]
      */
-    protected static array $driversCache = [];
+    protected static array $drivers = [];
 
     /**
      * The container.
@@ -50,9 +54,9 @@ class Client implements Contract
     /**
      * The adapters.
      *
-     * @var array
+     * @var string
      */
-    protected array $adapters;
+    protected string $defaultAdapter;
 
     /**
      * The crypts.
@@ -64,16 +68,16 @@ class Client implements Contract
     /**
      * The drivers config.
      *
-     * @var array
+     * @var string
      */
-    protected array $drivers;
+    protected string $defaultDriver;
 
     /**
      * The default client.
      *
      * @var string
      */
-    protected string $default;
+    protected string $defaultClient;
 
     /**
      * Client constructor.
@@ -83,12 +87,12 @@ class Client implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container = $container;
-        $this->config    = $config;
-        $this->clients   = $config['clients'];
-        $this->adapters  = $config['adapters'];
-        $this->drivers   = $config['drivers'];
-        $this->default   = $config['default'];
+        $this->container      = $container;
+        $this->config         = $config;
+        $this->clients        = $config['clients'];
+        $this->defaultAdapter = $config['adapter'];
+        $this->defaultDriver  = $config['driver'];
+        $this->defaultClient  = $config['default'];
     }
 
     /**
@@ -97,22 +101,18 @@ class Client implements Contract
     public function useClient(string $name = null, string $adapter = null): Driver
     {
         // The client to use
-        $name ??= $this->default;
+        $name ??= $this->defaultClient;
         // The client config to use
         $config = $this->clients[$name];
         // The adapter to use
-        $adapter ??= $config['adapter'];
+        $adapter ??= $config['adapter'] ?? $this->defaultAdapter;
+        // Get the driver
+        $driver = $config['driver'] ?? $this->defaultDriver;
         // The cache key to use
         $cacheKey = $name . $adapter;
 
-        return self::$driversCache[$cacheKey]
-            ?? self::$driversCache[$cacheKey] = $this->container->get(
-                $this->drivers[$config['driver']],
-                [
-                    $config,
-                    $this->adapters[$adapter],
-                ]
-            );
+        return self::$drivers[$cacheKey]
+            ?? self::$drivers[$cacheKey] = $this->createDriver($driver, $adapter, $config);
     }
 
     /**
@@ -169,5 +169,54 @@ class Client implements Contract
     public function delete(Request $request): Response
     {
         return $this->useClient()->delete($request);
+    }
+
+    /**
+     * Get an driver by name.
+     *
+     * @param string $name    The driver
+     * @param string $adapter The adapter
+     * @param array  $config  The config
+     *
+     * @return Driver
+     */
+    protected function createDriver(string $name, string $adapter, array $config): Driver
+    {
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            Driver::class,
+            [
+                $this->createAdapter($adapter, $config),
+            ]
+        );
+    }
+
+    /**
+     * Get an adapter by name.
+     *
+     * @param string $name   The adapter
+     * @param array  $config The config
+     *
+     * @return Adapter
+     */
+    protected function createAdapter(string $name, array $config): Adapter
+    {
+        $defaultClass = Adapter::class;
+
+        if (Cls::inherits($name, GuzzleAdapter::class)) {
+            $defaultClass = GuzzleAdapter::class;
+        } elseif (Cls::inherits($name, LogAdapter::class)) {
+            $defaultClass = LogAdapter::class;
+        }
+
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            $defaultClass,
+            [
+                $config,
+            ]
+        );
     }
 }

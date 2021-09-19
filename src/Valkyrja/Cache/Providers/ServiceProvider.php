@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Providers;
 
 use Predis\Client;
-use Valkyrja\Cache\Adapters\LogAdapter;
-use Valkyrja\Cache\Adapters\NullAdapter;
-use Valkyrja\Cache\Adapters\RedisAdapter;
+use Valkyrja\Cache\Adapter;
 use Valkyrja\Cache\Cache;
-use Valkyrja\Cache\Drivers\Driver;
+use Valkyrja\Cache\Driver;
+use Valkyrja\Cache\LogAdapter;
+use Valkyrja\Cache\RedisAdapter;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger;
@@ -37,9 +37,9 @@ class ServiceProvider extends Provider
     {
         return [
             Cache::class        => 'publishCache',
-            Driver::class       => 'publishDefaultDriver',
+            Driver::class       => 'publishDriver',
+            Adapter::class      => 'publishAdapter',
             LogAdapter::class   => 'publishLogAdapter',
-            NullAdapter::class  => 'publishNullAdapter',
             RedisAdapter::class => 'publishRedisAdapter',
         ];
     }
@@ -52,8 +52,8 @@ class ServiceProvider extends Provider
         return [
             Cache::class,
             Driver::class,
+            Adapter::class,
             LogAdapter::class,
-            NullAdapter::class,
             RedisAdapter::class,
         ];
     }
@@ -92,25 +92,39 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishDefaultDriver(Container $container): void
+    public static function publishDriver(Container $container): void
     {
         $container->setClosure(
             Driver::class,
-            static function (array $config, string $adapter) use ($container): Driver {
-                return new Driver(
-                    $container->get(
-                        $adapter,
-                        [
-                            $config,
-                        ]
-                    )
+            static function (string $name, Adapter $adapter): Driver {
+                return new $name(
+                    $adapter
                 );
             }
         );
     }
 
     /**
-     * Publish the log store service.
+     * Publish an adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishAdapter(Container $container): void
+    {
+        $container->setClosure(
+            Adapter::class,
+            static function (string $name, array $config): Adapter {
+                return new $name(
+                    $config['prefix'] ?? null
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a log adapter service.
      *
      * @param Container $container The container
      *
@@ -122,9 +136,9 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             LogAdapter::class,
-            static function (array $config) use ($logger): LogAdapter {
-                return new LogAdapter(
-                    $logger,
+            static function (string $name, array $config) use ($logger): LogAdapter {
+                return new $name(
+                    $logger->useLogger($config['logger'] ?? null),
                     $config['prefix'] ?? null
                 );
             }
@@ -132,26 +146,7 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the null store service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishNullAdapter(Container $container): void
-    {
-        $container->setClosure(
-            NullAdapter::class,
-            static function (array $config): NullAdapter {
-                return new NullAdapter(
-                    $config['prefix'] ?? null
-                );
-            }
-        );
-    }
-
-    /**
-     * Publish the redis store service.
+     * Publish a redis adapter service.
      *
      * @param Container $container The container
      *
@@ -161,10 +156,10 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             RedisAdapter::class,
-            static function (array $config): RedisAdapter {
+            static function (string $name, array $config): RedisAdapter {
                 $predis = new Client($config);
 
-                return new RedisAdapter(
+                return new $name(
                     $predis,
                     $config['prefix'] ?? null
                 );

@@ -16,6 +16,12 @@ namespace Valkyrja\Mail\Config;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Mail\Adapters\LogAdapter;
+use Valkyrja\Mail\Adapters\MailgunAdapter;
+use Valkyrja\Mail\Adapters\NullAdapter;
+use Valkyrja\Mail\Adapters\PHPMailerAdapter;
+use Valkyrja\Mail\Drivers\Driver;
+use Valkyrja\Mail\Messages\Message;
 
 /**
  * Class Config.
@@ -28,13 +34,13 @@ class Config extends Model
      * @inheritDoc
      */
     protected static array $envKeys = [
-        CKP::DEFAULT          => EnvKey::MAIL_DEFAULT,
-        CKP::ADAPTERS         => EnvKey::MAIL_ADAPTERS,
-        CKP::DRIVERS          => EnvKey::MAIL_DRIVERS,
-        CKP::MAILERS          => EnvKey::MAIL_MAILERS,
-        CKP::DEFAULT_MESSAGE  => EnvKey::MAIL_DEFAULT_MESSAGE,
-        CKP::MESSAGE_ADAPTERS => EnvKey::MAIL_MESSAGE_ADAPTERS,
-        CKP::MESSAGES         => EnvKey::MAIL_MESSAGES,
+        CKP::DEFAULT         => EnvKey::MAIL_DEFAULT,
+        CKP::DEFAULT_MESSAGE => EnvKey::MAIL_DEFAULT_MESSAGE,
+        CKP::ADAPTER         => EnvKey::MAIL_ADAPTER,
+        CKP::DRIVER          => EnvKey::MAIL_DRIVER,
+        CKP::MESSAGE         => EnvKey::MAIL_MESSAGE,
+        CKP::MAILERS         => EnvKey::MAIL_MAILERS,
+        CKP::MESSAGES        => EnvKey::MAIL_MESSAGES,
     ];
 
     /**
@@ -42,47 +48,78 @@ class Config extends Model
      *
      * @var string
      */
-    public string $default;
-
-    /**
-     * The adapters.
-     *
-     * @var string[]
-     */
-    public array $adapters;
-
-    /**
-     * The drivers.
-     *
-     * @var string[]
-     */
-    public array $drivers;
-
-    /**
-     * The mailers.
-     *
-     * @var array[]
-     */
-    public array $mailers;
+    public string $default = CKP::PHP_MAILER;
 
     /**
      * The default message.
      *
      * @var string
      */
-    public string $defaultMessage;
+    public string $defaultMessage = CKP::DEFAULT;
 
     /**
-     * The message adapters.
+     * The default adapter.
      *
-     * @var string[]
+     * @var string
      */
-    public array $messageAdapters;
+    public string $adapter = MailgunAdapter::class;
+
+    /**
+     * The default driver.
+     *
+     * @var string
+     */
+    public string $driver = Driver::class;
+
+    /**
+     * The default message class.
+     *
+     * @var string
+     */
+    public string $message = Message::class;
+
+    /**
+     * The mailers.
+     *
+     * @var array[]
+     */
+    public array $mailers = [
+        CKP::LOG        => [
+            CKP::ADAPTER => LogAdapter::class,
+            CKP::DRIVER  => null,
+            CKP::LOGGER  => null,
+        ],
+        CKP::NULL       => [
+            CKP::ADAPTER => NullAdapter::class,
+            CKP::DRIVER  => null,
+        ],
+        CKP::PHP_MAILER => [
+            CKP::ADAPTER    => PHPMailerAdapter::class,
+            CKP::DRIVER     => null,
+            CKP::USERNAME   => '',
+            CKP::PASSWORD   => '',
+            CKP::HOST       => 'smtp1.example.com;smtp2.example.com',
+            CKP::PORT       => 587,
+            CKP::ENCRYPTION => 'tls',
+        ],
+        CKP::MAILGUN    => [
+            CKP::ADAPTER => null,
+            CKP::DRIVER  => null,
+            CKP::DOMAIN  => '',
+            CKP::API_KEY => '',
+        ],
+    ];
 
     /**
      * The messages.
      *
      * @var array[]
      */
-    public array $messages;
+    public array $messages = [
+        CKP::DEFAULT => [
+            CKP::ADAPTER      => null,
+            CKP::FROM_ADDRESS => 'hello@example.com',
+            CKP::FROM_NAME    => 'Example',
+        ],
+    ];
 }

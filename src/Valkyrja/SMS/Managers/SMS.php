@@ -14,9 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\SMS\Managers;
 
 use Valkyrja\Container\Container;
+use Valkyrja\SMS\Adapter;
 use Valkyrja\SMS\Driver;
+use Valkyrja\SMS\LogAdapter;
 use Valkyrja\SMS\Message;
+use Valkyrja\SMS\NexmoAdapter;
 use Valkyrja\SMS\SMS as Contract;
+use Valkyrja\Support\Type\Cls;
 
 /**
  * Class SMS.
@@ -30,7 +34,7 @@ class SMS implements Contract
      *
      * @var Driver[]
      */
-    protected static array $driversCache = [];
+    protected static array $drivers = [];
 
     /**
      * The container.
@@ -47,18 +51,25 @@ class SMS implements Contract
     protected array $config;
 
     /**
-     * The adapters.
+     * The default adapter.
      *
-     * @var string[]
+     * @var string
      */
-    protected array $adapters;
+    protected string $defaultAdapter;
 
     /**
-     * The drivers config.
+     * The default driver.
      *
-     * @var string[]
+     * @var string
      */
-    protected array $drivers;
+    protected string $defaultDriver;
+
+    /**
+     * The default message class.
+     *
+     * @var string
+     */
+    protected string $defaultMessageClass;
 
     /**
      * The messengers.
@@ -66,13 +77,6 @@ class SMS implements Contract
      * @var array[]
      */
     protected array $messengers;
-
-    /**
-     * The message adapters.
-     *
-     * @var string[]
-     */
-    protected array $messageAdapters;
 
     /**
      * The messages config.
@@ -110,15 +114,15 @@ class SMS implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container       = $container;
-        $this->config          = $config;
-        $this->adapters        = $config['adapters'];
-        $this->drivers         = $config['drivers'];
-        $this->messengers      = $config['messengers'];
-        $this->default         = $config['default'];
-        $this->defaultMessage  = $config['defaultMessage'];
-        $this->messageAdapters = $config['messageAdapters'];
-        $this->messages        = $config['messages'];
+        $this->container           = $container;
+        $this->config              = $config;
+        $this->default             = $config['default'];
+        $this->defaultMessage      = $config['defaultMessage'];
+        $this->defaultAdapter      = $config['adapter'];
+        $this->defaultDriver       = $config['driver'];
+        $this->defaultMessageClass = $config['message'];
+        $this->messengers          = $config['messengers'];
+        $this->messages            = $config['messages'];
     }
 
     /**
@@ -130,19 +134,15 @@ class SMS implements Contract
         $name ??= $this->default;
         // The config to use
         $config = $this->messengers[$name];
+        // The driver to use
+        $driver ??= $config['driver'] ?? $this->defaultDriver;
         // The adapter to use
-        $adapter ??= $config['adapter'];
+        $adapter ??= $config['adapter'] ?? $this->defaultAdapter;
         // The cache key to use
         $cacheKey = $name . $adapter;
 
-        return self::$driversCache[$cacheKey]
-            ?? self::$driversCache[$cacheKey] = $this->container->get(
-                $this->drivers[$config['driver']],
-                [
-                    $config,
-                    $this->adapters[$adapter],
-                ]
-            );
+        return self::$drivers[$cacheKey]
+            ?? self::$drivers[$cacheKey] = $this->createDriver($driver, $adapter, $config);
     }
 
     /**
@@ -154,11 +154,13 @@ class SMS implements Contract
         $name ??= $this->defaultMessage;
         // The message config
         $config = $this->messages[$name];
-        // The adapter to use
-        $adapter = $config['adapter'];
+        // The message to use
+        $message = $config['message'] ?? $this->defaultMessageClass;
 
-        return $this->container->get(
-            $this->messageAdapters[$adapter],
+        return Cls::getDefaultableService(
+            $this->container,
+            $message,
+            Message::class,
             [
                 $config,
                 $data,
@@ -172,5 +174,54 @@ class SMS implements Contract
     public function send(Message $message): void
     {
         $this->useMessenger()->send($message);
+    }
+
+    /**
+     * Get an driver by name.
+     *
+     * @param string $name    The driver
+     * @param string $adapter The adapter
+     * @param array  $config  The config
+     *
+     * @return Driver
+     */
+    protected function createDriver(string $name, string $adapter, array $config): Driver
+    {
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            Driver::class,
+            [
+                $this->createAdapter($adapter, $config),
+            ]
+        );
+    }
+
+    /**
+     * Get an adapter by name.
+     *
+     * @param string $name   The adapter
+     * @param array  $config The config
+     *
+     * @return Adapter
+     */
+    protected function createAdapter(string $name, array $config): Adapter
+    {
+        $defaultClass = Adapter::class;
+
+        if (Cls::inherits($name, NexmoAdapter::class)) {
+            $defaultClass = NexmoAdapter::class;
+        } elseif (Cls::inherits($name, LogAdapter::class)) {
+            $defaultClass = LogAdapter::class;
+        }
+
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            $defaultClass,
+            [
+                $config,
+            ]
+        );
     }
 }

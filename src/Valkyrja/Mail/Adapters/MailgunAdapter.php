@@ -16,7 +16,7 @@ namespace Valkyrja\Mail\Adapters;
 use Mailgun\Mailgun;
 use Mailgun\Message\BatchMessage;
 use Mailgun\Message\Exceptions\MissingRequiredParameter;
-use Valkyrja\Mail\Adapter;
+use Valkyrja\Mail\MailgunAdapter as Contract;
 use Valkyrja\Mail\Message;
 
 /**
@@ -24,7 +24,7 @@ use Valkyrja\Mail\Message;
  *
  * @author Melech Mizrachi
  */
-class MailgunAdapter implements Adapter
+class MailgunAdapter implements Contract
 {
     /**
      * The Mailgun service.

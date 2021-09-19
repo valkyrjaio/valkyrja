@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Adapters;
 
-use Valkyrja\Mail\Adapter;
+use Valkyrja\Mail\Adapter as Contract;
 use Valkyrja\Mail\Message;
 
 /**
@@ -21,7 +21,7 @@ use Valkyrja\Mail\Message;
  *
  * @author Melech Mizrachi
  */
-class NullAdapter implements Adapter
+class NullAdapter implements Contract
 {
     /**
      * The config.

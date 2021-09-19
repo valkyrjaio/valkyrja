@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\SMS\Adapters;
 
 use Valkyrja\Log\Driver as Logger;
-use Valkyrja\SMS\Adapter;
+use Valkyrja\SMS\LogAdapter as Contract;
 use Valkyrja\SMS\Message;
 
 /**
@@ -22,7 +22,7 @@ use Valkyrja\SMS\Message;
  *
  * @author Melech Mizrachi
  */
-class LogAdapter implements Adapter
+class LogAdapter implements Contract
 {
     /**
      * The log adapter.

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client\Config;
 
+use Valkyrja\Client\Adapters\GuzzleAdapter;
+use Valkyrja\Client\Drivers\Driver;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
@@ -28,10 +30,10 @@ class Config extends Model
      * @inheritDoc
      */
     protected static array $envKeys = [
-        CKP::DEFAULT  => EnvKey::CLIENT_DEFAULT,
-        CKP::ADAPTERS => EnvKey::CLIENT_ADAPTERS,
-        CKP::DRIVERS  => EnvKey::CLIENT_DRIVERS,
-        CKP::CLIENTS  => EnvKey::CLIENT_CLIENTS,
+        CKP::DEFAULT => EnvKey::CLIENT_DEFAULT,
+        CKP::ADAPTER => EnvKey::CLIENT_ADAPTER,
+        CKP::DRIVER  => EnvKey::CLIENT_DRIVER,
+        CKP::CLIENTS => EnvKey::CLIENT_CLIENTS,
     ];
 
     /**
@@ -39,26 +41,32 @@ class Config extends Model
      *
      * @var string
      */
-    public string $default;
+    public string $default = CKP::GUZZLE;
 
     /**
-     * The adapters.
+     * The adapter.
      *
-     * @var string[]
+     * @var string
      */
-    public array $adapters;
+    public string $adapter = GuzzleAdapter::class;
 
     /**
-     * The drivers.
+     * The driver.
      *
-     * @var string[]
+     * @var string
      */
-    public array $drivers;
+    public string $driver = Driver::class;
 
     /**
      * The client connections.
      *
      * @var array
      */
-    public array $clients;
+    public array $clients = [
+        CKP::GUZZLE => [
+            CKP::ADAPTER => null,
+            CKP::DRIVER  => null,
+            CKP::OPTIONS => [],
+        ],
+    ];
 }

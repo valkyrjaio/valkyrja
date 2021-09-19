@@ -14,9 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem\Managers;
 
 use Valkyrja\Container\Container;
+use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Driver;
 use Valkyrja\Filesystem\Enums\Visibility;
 use Valkyrja\Filesystem\Filesystem as Contract;
+use Valkyrja\Filesystem\FlysystemAdapter;
+use Valkyrja\Support\Type\Cls;
 
 /**
  * Class Filesystem.
@@ -30,7 +33,7 @@ class Filesystem implements Contract
      *
      * @var Driver[]
      */
-    protected static array $driversCache = [];
+    protected static array $drivers = [];
 
     /**
      * The container service.
@@ -47,13 +50,6 @@ class Filesystem implements Contract
     protected array $config;
 
     /**
-     * The adapters.
-     *
-     * @var array
-     */
-    protected array $adapters;
-
-    /**
      * The disks.
      *
      * @var array
@@ -61,11 +57,18 @@ class Filesystem implements Contract
     protected array $disks;
 
     /**
-     * The drivers config.
+     * The default adapter.
      *
-     * @var array
+     * @var string
      */
-    protected array $drivers;
+    protected string $defaultAdapter;
+
+    /**
+     * The default driver.
+     *
+     * @var string
+     */
+    protected string $defaultDriver;
 
     /**
      * The default disk.
@@ -82,12 +85,12 @@ class Filesystem implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container   = $container;
-        $this->config      = $config;
-        $this->disks       = $config['disks'];
-        $this->adapters    = $config['adapters'];
-        $this->drivers     = $config['drivers'];
-        $this->defaultDisk = $config['default'];
+        $this->container      = $container;
+        $this->config         = $config;
+        $this->disks          = $config['disks'];
+        $this->defaultAdapter = $config['adapter'];
+        $this->defaultDriver  = $config['driver'];
+        $this->defaultDisk    = $config['default'];
     }
 
     /**
@@ -99,19 +102,15 @@ class Filesystem implements Contract
         $name ??= $this->defaultDisk;
         // The disk config to use
         $disk = $this->disks[$name];
+        // The driver to use
+        $driver ??= $disk['driver'] ?? $this->defaultDriver;
         // The adapter to use
-        $adapter ??= $disk['adapter'];
+        $adapter ??= $disk['adapter'] ?? $this->defaultAdapter;
         // The cache key to use
         $cacheKey = $name . $adapter;
 
-        return self::$driversCache[$cacheKey]
-            ?? self::$driversCache[$cacheKey] = $this->container->get(
-                $this->drivers[$disk['driver']],
-                [
-                    $disk,
-                    $this->adapters[$adapter],
-                ]
-            );
+        return self::$drivers[$cacheKey]
+            ?? self::$drivers[$cacheKey] = $this->createDriver($driver, $adapter, $disk);
     }
 
     /**
@@ -288,5 +287,52 @@ class Filesystem implements Contract
     public function listContents(string $directory = null, bool $recursive = false): array
     {
         return $this->useDisk()->listContents($directory, $recursive);
+    }
+
+    /**
+     * Get an driver by name.
+     *
+     * @param string $name    The driver
+     * @param string $adapter The adapter
+     * @param array  $config  The config
+     *
+     * @return Driver
+     */
+    protected function createDriver(string $name, string $adapter, array $config): Driver
+    {
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            Driver::class,
+            [
+                $this->createAdapter($adapter, $config),
+            ]
+        );
+    }
+
+    /**
+     * Get an adapter by name.
+     *
+     * @param string $name   The adapter
+     * @param array  $config The config
+     *
+     * @return Adapter
+     */
+    protected function createAdapter(string $name, array $config): Adapter
+    {
+        $defaultClass = Adapter::class;
+
+        if (Cls::inherits($name, FlysystemAdapter::class)) {
+            $defaultClass = FlysystemAdapter::class;
+        }
+
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            $defaultClass,
+            [
+                $config,
+            ]
+        );
     }
 }

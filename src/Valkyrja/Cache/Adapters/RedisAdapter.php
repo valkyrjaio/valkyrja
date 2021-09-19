@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Adapters;
 
 use Predis\ClientInterface as Client;
-use Valkyrja\Cache\Adapter;
+use Valkyrja\Cache\RedisAdapter as Contract;
 use Valkyrja\Cache\Tagger;
 use Valkyrja\Cache\Taggers\Tagger as TagClass;
 
@@ -23,7 +23,7 @@ use Valkyrja\Cache\Taggers\Tagger as TagClass;
  *
  * @author Melech Mizrachi
  */
-class RedisAdapter implements Adapter
+class RedisAdapter implements Contract
 {
     /**
      * The prefix to use for all keys.

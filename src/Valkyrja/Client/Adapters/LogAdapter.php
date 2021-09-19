@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Client\Adapters;
 
 use JsonException;
-use Valkyrja\Client\Adapter as Contract;
+use Valkyrja\Client\LogAdapter as Contract;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\Log\Logger;
+use Valkyrja\Log\Driver as Logger;
 use Valkyrja\Support\Type\Obj;
 
 /**

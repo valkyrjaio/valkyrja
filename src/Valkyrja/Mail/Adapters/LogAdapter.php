@@ -15,7 +15,7 @@ namespace Valkyrja\Mail\Adapters;
 
 use JsonException;
 use Valkyrja\Log\Driver as Logger;
-use Valkyrja\Mail\Adapter;
+use Valkyrja\Mail\LogAdapter as Contract;
 use Valkyrja\Mail\Message;
 use Valkyrja\Support\Type\Arr;
 
@@ -24,7 +24,7 @@ use Valkyrja\Support\Type\Arr;
  *
  * @author Melech Mizrachi
  */
-class LogAdapter implements Adapter
+class LogAdapter implements Contract
 {
     /**
      * The log driver.

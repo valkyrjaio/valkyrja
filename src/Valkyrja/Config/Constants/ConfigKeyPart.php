@@ -188,9 +188,14 @@ final class ConfigKeyPart
     public const SESSIONS                    = 'sessions';
     public const LOGGER                      = 'logger';
     public const LOGGERS                     = 'loggers';
+    public const CLIENT                      = 'client';
     public const CLIENTS                     = 'clients';
+    public const MAILER                      = 'mailer';
     public const MAILERS                     = 'mailers';
+    public const MESSENGER                   = 'messenger';
     public const MESSENGERS                  = 'messengers';
+    public const BROADCASTER                 = 'BROADCASTER';
+    public const BROADCASTERS                = 'BROADCASTERS';
     public const COOKIE_PARAMS               = 'cookieParams';
     public const BUNDLE                      = 'bundle';
     public const BUNDLES                     = 'bundles';

@@ -15,15 +15,15 @@ namespace Valkyrja\Mail\Adapters;
 
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
-use Valkyrja\Mail\Adapter;
 use Valkyrja\Mail\Message;
+use Valkyrja\Mail\PHPMailerAdapter as Contract;
 
 /**
  * Class PHPMailerAdapter.
  *
  * @author Melech Mizrachi
  */
-class PHPMailerAdapter implements Adapter
+class PHPMailerAdapter implements Contract
 {
     /**
      * The PHP Mailer.

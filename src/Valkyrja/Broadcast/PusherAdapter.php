@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast\Adapters;
+namespace Valkyrja\Broadcast;
 
 /**
- * Class CacheAdapter.
+ * Interface PusherAdapter.
  *
  * @author Melech Mizrachi
  */
-class CacheAdapter extends NullAdapter
+interface PusherAdapter extends Adapter
 {
 }

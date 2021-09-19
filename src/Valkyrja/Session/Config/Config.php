@@ -16,6 +16,8 @@ namespace Valkyrja\Session\Config;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Session\Adapters\PHPAdapter;
+use Valkyrja\Session\Drivers\Driver;
 
 /**
  * Class Config.
@@ -29,8 +31,8 @@ class Config extends Model
      */
     protected static array $envKeys = [
         CKP::DEFAULT  => EnvKey::SESSION_DEFAULT,
-        CKP::ADAPTERS => EnvKey::SESSION_ADAPTERS,
-        CKP::DRIVERS  => EnvKey::SESSION_ADAPTERS,
+        CKP::ADAPTER  => EnvKey::SESSION_ADAPTER,
+        CKP::DRIVER   => EnvKey::SESSION_DRIVER,
         CKP::SESSIONS => EnvKey::SESSION_SESSIONS,
     ];
 
@@ -39,26 +41,45 @@ class Config extends Model
      *
      * @var string
      */
-    public string $default;
+    public string $default = CKP::DEFAULT;
 
     /**
-     * The adapters.
+     * The default adapter.
      *
-     * @var string[]
+     * @var string
      */
-    public array $adapters;
+    public string $adapter = PHPAdapter::class;
 
     /**
-     * The drivers.
+     * The default driver.
      *
-     * @var string[]
+     * @var string
      */
-    public array $drivers;
+    public string $driver = Driver::class;
 
     /**
      * The sessions.
      *
      * @var array
      */
-    public array $sessions;
+    public array $sessions = [
+        CKP::DEFAULT => [
+            CKP::ADAPTER       => null,
+            CKP::DRIVER        => null,
+            CKP::ID            => null,
+            CKP::NAME          => null,
+            /**
+             * @example
+             *  [
+             *      'lifetime' => 600,
+             *      'path'     => '/',
+             *      'domain'   => 'example.com',
+             *      'secure'   => true,
+             *      'httponly' => true,
+             *      'samesite' => 'lax',
+             *  ]
+             */
+            CKP::COOKIE_PARAMS => null,
+        ],
+    ];
 }

@@ -15,13 +15,13 @@ namespace Valkyrja\Broadcast\Providers;
 
 use Pusher\Pusher;
 use Pusher\PusherException;
-use Valkyrja\Broadcast\Adapters\CacheAdapter;
+use Valkyrja\Broadcast\Adapter;
 use Valkyrja\Broadcast\Adapters\CryptPusherAdapter;
-use Valkyrja\Broadcast\Adapters\LogAdapter;
-use Valkyrja\Broadcast\Adapters\NullAdapter;
-use Valkyrja\Broadcast\Adapters\PusherAdapter;
 use Valkyrja\Broadcast\Broadcast;
-use Valkyrja\Broadcast\Messages\Message;
+use Valkyrja\Broadcast\Driver;
+use Valkyrja\Broadcast\LogAdapter;
+use Valkyrja\Broadcast\Message;
+use Valkyrja\Broadcast\PusherAdapter;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
@@ -44,10 +44,10 @@ class ServiceProvider extends Provider
     {
         return [
             Broadcast::class          => 'publishBroadcaster',
-            CacheAdapter::class       => 'publishCacheAdapter',
+            Driver::class             => 'publishDriver',
+            Adapter::class            => 'publishAdapter',
             CryptPusherAdapter::class => 'publishCryptPusherAdapter',
             LogAdapter::class         => 'publishLogAdapter',
-            NullAdapter::class        => 'publishNullAdapter',
             Pusher::class             => 'publishPusher',
             PusherAdapter::class      => 'publishPusherAdapter',
             Message::class            => 'publishMessage',
@@ -61,10 +61,10 @@ class ServiceProvider extends Provider
     {
         return [
             Broadcast::class,
-            CacheAdapter::class,
             CryptPusherAdapter::class,
+            Driver::class,
+            Adapter::class,
             LogAdapter::class,
-            NullAdapter::class,
             Pusher::class,
             PusherAdapter::class,
             Message::class,
@@ -99,17 +99,82 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the cache adapter service.
+     * Publish a driver service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishCacheAdapter(Container $container): void
+    public static function publishDriver(Container $container): void
     {
-        $container->setSingleton(
-            CacheAdapter::class,
-            new CacheAdapter()
+        $container->setClosure(
+            Driver::class,
+            static function (string $name, Adapter $adapter): Driver {
+                return new $name(
+                    $adapter
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish an adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishAdapter(Container $container): void
+    {
+        $container->setClosure(
+            Adapter::class,
+            static function (string $name, array $config): Adapter {
+                return new $name(
+                    $config
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a log adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishLogAdapter(Container $container): void
+    {
+        $logger = $container->getSingleton(Logger::class);
+
+        $container->setClosure(
+            LogAdapter::class,
+            static function (string $name, array $config) use ($logger): LogAdapter {
+                return new $name(
+                    $logger->useLogger($config['logger'] ?? null),
+                    $config
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a pusher adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishPusherAdapter(Container $container): void
+    {
+        $container->setClosure(
+            PusherAdapter::class,
+            static function (string $name, array $config) use ($container): PusherAdapter {
+                return new $name(
+                    $container->get(Pusher::class, [$config]),
+                    $config
+                );
+            }
         );
     }
 
@@ -122,50 +187,15 @@ class ServiceProvider extends Provider
      */
     public static function publishCryptPusherAdapter(Container $container): void
     {
-        $config = $container->getSingleton('config');
-
-        $container->setSingleton(
+        $container->setClosure(
             CryptPusherAdapter::class,
-            new CryptPusherAdapter(
-                $container->getSingleton(Pusher::class),
-                $container->getSingleton(Crypt::class),
-                $config['broadcast']['adapters']['crypt']
-            )
-        );
-    }
-
-    /**
-     * Publish the log adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishLogAdapter(Container $container): void
-    {
-        $config = $container->getSingleton('config');
-
-        $container->setSingleton(
-            LogAdapter::class,
-            new LogAdapter(
-                $container->getSingleton(Logger::class),
-                $config['broadcast']['adapters']['log']
-            )
-        );
-    }
-
-    /**
-     * Publish the null adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishNullAdapter(Container $container): void
-    {
-        $container->setSingleton(
-            NullAdapter::class,
-            new NullAdapter()
+            static function (string $name, array $config) use ($container): CryptPusherAdapter {
+                return new $name(
+                    $container->get(Pusher::class, [$config]),
+                    $container->getSingleton(Crypt::class),
+                    $config
+                );
+            }
         );
     }
 
@@ -180,45 +210,27 @@ class ServiceProvider extends Provider
      */
     public static function publishPusher(Container $container): void
     {
-        $config        = $container->getSingleton('config');
-        $adapterConfig = $config['broadcast']['adapters']['pusher'];
-
-        $container->setSingleton(
-            NullAdapter::class,
-            new Pusher(
-                $adapterConfig['key'],
-                $adapterConfig['secret'],
-                $adapterConfig['id'],
-                [
-                    'cluster'      => $adapterConfig['cluster'],
-                    'useTLS'       => $adapterConfig['useTLS'],
-                    'curl_options' => [
-                        CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
-                    ],
-                ]
-            )
+        $container->setClosure(
+            Pusher::class,
+            static function (array $config): Pusher {
+                return new Pusher(
+                    $config['key'],
+                    $config['secret'],
+                    $config['id'],
+                    [
+                        'cluster'      => $config['cluster'],
+                        'useTLS'       => $config['useTLS'],
+                        'curl_options' => [
+                            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+                        ],
+                    ]
+                );
+            }
         );
     }
 
     /**
-     * Publish the pusher adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishPusherAdapter(Container $container): void
-    {
-        $container->setSingleton(
-            PusherAdapter::class,
-            new PusherAdapter(
-                $container->getSingleton(Pusher::class)
-            )
-        );
-    }
-
-    /**
-     * Publish the default message service.
+     * Publish a message service.
      *
      * @param Container $container The container
      *
@@ -228,8 +240,8 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Message::class,
-            static function () {
-                return new Message();
+            static function (string $name, array $config): Message {
+                return (new $name())->setChannel($config['channel']);
             }
         );
     }

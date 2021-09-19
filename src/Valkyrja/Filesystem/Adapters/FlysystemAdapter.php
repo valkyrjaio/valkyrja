@@ -18,15 +18,15 @@ use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\FilesystemInterface as FlysystemInterface;
 use League\Flysystem\RootViolationException;
-use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Enums\Visibility;
+use Valkyrja\Filesystem\FlysystemAdapter as Contract;
 
 /**
  * Class FlysystemAdapter.
  *
  * @author Melech Mizrachi
  */
-class FlysystemAdapter implements Adapter
+class FlysystemAdapter implements Contract
 {
     /**
      * The Flysystem filesystem.

@@ -275,7 +275,7 @@ class Notifier implements Contract
     protected function notifyByBroadcast(Notification $notification): void
     {
         $broadcast        = $this->broadcast;
-        $broadcastAdapter = $broadcast->getAdapter($notification->getBroadcastAdapterName());
+        $broadcastAdapter = $broadcast->useBroadcaster($notification->getBroadcastAdapterName());
         $broadcastMessage = $notification->getBroadcastMessageName();
 
         foreach ($this->broadcastEvents as $broadcastEvent) {

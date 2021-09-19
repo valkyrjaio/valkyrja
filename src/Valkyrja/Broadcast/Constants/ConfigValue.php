@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Constants;
 
-use Valkyrja\Broadcast\Adapters\CacheAdapter;
 use Valkyrja\Broadcast\Adapters\CryptPusherAdapter;
 use Valkyrja\Broadcast\Adapters\LogAdapter;
 use Valkyrja\Broadcast\Adapters\NullAdapter;
 use Valkyrja\Broadcast\Adapters\PusherAdapter;
+use Valkyrja\Broadcast\Drivers\Driver;
 use Valkyrja\Broadcast\Messages\Message;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 
@@ -28,25 +28,24 @@ use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
  */
 final class ConfigValue
 {
-    public const ADAPTER  = CKP::CRYPT;
-    public const ADAPTERS = [
-        CKP::CACHE  => [
-            CKP::DRIVER => CacheAdapter::class,
-            CKP::STORE  => null,
-        ],
-        CKP::CRYPT  => [
-            CKP::DRIVER  => CryptPusherAdapter::class,
-            CKP::ADAPTER => null,
-        ],
+    public const DEFAULT         = CKP::PUSHER;
+    public const DEFAULT_MESSAGE = CKP::DEFAULT;
+    public const ADAPTER         = PusherAdapter::class;
+    public const DRIVER          = Driver::class;
+    public const MESSAGE         = Message::class;
+    public const BROADCASTERS    = [
         CKP::LOG    => [
-            CKP::DRIVER  => LogAdapter::class,
-            CKP::ADAPTER => null,
+            CKP::ADAPTER => LogAdapter::class,
+            CKP::DRIVER  => null,
+            CKP::LOGGER  => null,
         ],
         CKP::NULL   => [
-            CKP::DRIVER => NullAdapter::class,
+            CKP::ADAPTER => NullAdapter::class,
+            CKP::DRIVER  => null,
         ],
         CKP::PUSHER => [
-            CKP::DRIVER  => PusherAdapter::class,
+            CKP::ADAPTER => CryptPusherAdapter::class,
+            CKP::DRIVER  => null,
             CKP::KEY     => '',
             CKP::SECRET  => '',
             CKP::ID      => '',
@@ -54,15 +53,17 @@ final class ConfigValue
             CKP::USE_TLS => true,
         ],
     ];
-    public const MESSAGE  = CKP::DEFAULT;
-    public const MESSAGES = [
-        CKP::DEFAULT => Message::class,
+    public const MESSAGES        = [
+        CKP::DEFAULT => null,
     ];
 
     public static array $defaults = [
-        CKP::ADAPTER  => self::ADAPTER,
-        CKP::ADAPTERS => self::ADAPTERS,
-        CKP::MESSAGE  => self::MESSAGE,
-        CKP::MESSAGES => self::MESSAGES,
+        CKP::DEFAULT         => self::DEFAULT,
+        CKP::DEFAULT_MESSAGE => self::DEFAULT_MESSAGE,
+        CKP::ADAPTER         => self::ADAPTER,
+        CKP::DRIVER          => self::DRIVER,
+        CKP::MESSAGE         => self::MESSAGE,
+        CKP::BROADCASTERS    => self::BROADCASTERS,
+        CKP::MESSAGES        => self::MESSAGES,
     ];
 }

@@ -18,13 +18,13 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger;
-use Valkyrja\Mail\Adapters\LogAdapter;
-use Valkyrja\Mail\Adapters\MailgunAdapter;
-use Valkyrja\Mail\Adapters\NullAdapter;
-use Valkyrja\Mail\Adapters\PHPMailerAdapter;
-use Valkyrja\Mail\Drivers\Driver;
+use Valkyrja\Mail\Adapter;
+use Valkyrja\Mail\Driver;
+use Valkyrja\Mail\LogAdapter;
 use Valkyrja\Mail\Mail;
-use Valkyrja\Mail\Messages\Message;
+use Valkyrja\Mail\MailgunAdapter;
+use Valkyrja\Mail\Message;
+use Valkyrja\Mail\PHPMailerAdapter;
 
 /**
  * Class ServiceProvider.
@@ -40,13 +40,13 @@ class ServiceProvider extends Provider
     {
         return [
             Mail::class             => 'publishMail',
-            Driver::class           => 'publishDefaultDriver',
+            Driver::class           => 'publishDriver',
+            Adapter::class          => 'publishAdapter',
             LogAdapter::class       => 'publishLogAdapter',
-            NullAdapter::class      => 'publishNullAdapter',
-            PHPMailer::class        => 'publishPHPMailer',
             PHPMailerAdapter::class => 'publishPHPMailerAdapter',
-            Mailgun::class          => 'publishMailgun',
             MailgunAdapter::class   => 'publishMailgunAdapter',
+            PHPMailer::class        => 'publishPHPMailer',
+            Mailgun::class          => 'publishMailgun',
             Message::class          => 'publishMessage',
         ];
     }
@@ -59,12 +59,12 @@ class ServiceProvider extends Provider
         return [
             Mail::class,
             Driver::class,
+            Adapter::class,
             LogAdapter::class,
-            NullAdapter::class,
-            PHPMailer::class,
             PHPMailerAdapter::class,
-            Mailgun::class,
             MailgunAdapter::class,
+            PHPMailer::class,
+            Mailgun::class,
             Message::class,
         ];
     }
@@ -103,18 +103,32 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishDefaultDriver(Container $container): void
+    public static function publishDriver(Container $container): void
     {
         $container->setClosure(
             Driver::class,
-            static function (array $config, string $adapter) use ($container): Driver {
-                return new Driver(
-                    $container->get(
-                        $adapter,
-                        [
-                            $config,
-                        ]
-                    )
+            static function (string $name, Adapter $adapter): Driver {
+                return new $name(
+                    $adapter
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish an adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishAdapter(Container $container): void
+    {
+        $container->setClosure(
+            Adapter::class,
+            static function (string $name, array $config): Adapter {
+                return new $name(
+                    $config
                 );
             }
         );
@@ -129,13 +143,12 @@ class ServiceProvider extends Provider
      */
     public static function publishLogAdapter(Container $container): void
     {
-        /** @var Logger $logger */
         $logger = $container->getSingleton(Logger::class);
 
         $container->setClosure(
             LogAdapter::class,
-            static function (array $config) use ($logger): LogAdapter {
-                return new LogAdapter(
+            static function (string $name, array $config) use ($logger): LogAdapter {
+                return new $name(
                     $logger->useLogger($config['logger'] ?? null),
                     $config
                 );
@@ -144,26 +157,29 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the null adapter service.
+     * Publish the PHP Mailer adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishNullAdapter(Container $container): void
+    public static function publishPHPMailerAdapter(Container $container): void
     {
+        $globalConfig = $container->getSingleton('config');
+        $appDebug     = $globalConfig['app']['debug'] ?? null;
+
         $container->setClosure(
-            NullAdapter::class,
-            static function (array $config): NullAdapter {
-                return new NullAdapter(
-                    $config
+            PHPMailerAdapter::class,
+            static function (string $name, array $config) use ($container): PHPMailerAdapter {
+                return new $name(
+                    $container->get(PHPMailer::class, [$config])
                 );
             }
         );
     }
 
     /**
-     * Publish the PHP mailer service.
+     * Publish the PHP Mailer service.
      *
      * @param Container $container The container
      *
@@ -203,19 +219,20 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the PHP Mailer adapter service.
+     * Publish the Mailgun adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishPHPMailerAdapter(Container $container): void
+    public static function publishMailgunAdapter(Container $container): void
     {
         $container->setClosure(
-            PHPMailerAdapter::class,
-            static function (array $config) use ($container): PHPMailerAdapter {
-                return new PHPMailerAdapter(
-                    $container->get(PHPMailer::class, [$config])
+            MailgunAdapter::class,
+            static function (string $name, array $config) use ($container): MailgunAdapter {
+                return new $name(
+                    $container->get(Mailgun::class, [$config]),
+                    $config
                 );
             }
         );
@@ -241,26 +258,6 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the Mailgun adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishMailgunAdapter(Container $container): void
-    {
-        $container->setClosure(
-            MailgunAdapter::class,
-            static function (array $config) use ($container): MailgunAdapter {
-                return new MailgunAdapter(
-                    $container->get(Mailgun::class, [$config]),
-                    $config
-                );
-            }
-        );
-    }
-
-    /**
      * Publish the message service.
      *
      * @param Container $container The container
@@ -271,8 +268,8 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Message::class,
-            static function (array $config): Message {
-                return (new Message())->setFrom($config['fromEmail'], $config['fromName']);
+            static function (string $name, array $config): Message {
+                return (new $name())->setFrom($config['fromEmail'], $config['fromName']);
             }
         );
     }
