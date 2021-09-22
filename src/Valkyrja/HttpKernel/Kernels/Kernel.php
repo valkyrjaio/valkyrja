@@ -22,6 +22,7 @@ use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\HttpKernel\Events\RequestHandled;
+use Valkyrja\HttpKernel\Events\RequestTerminating;
 use Valkyrja\HttpKernel\Kernel as Contract;
 use Valkyrja\Log\Logger;
 use Valkyrja\Routing\Route;
@@ -169,6 +170,8 @@ class Kernel implements Contract
     public function terminate(Request $request, Response $response): void
     {
         try {
+            // Trigger an event for the request being terminated
+            $this->events->trigger(RequestTerminating::class, [$request, $response]);
             // Dispatch the terminable middleware
             $this->terminableMiddleware($request, $response);
         } catch (Throwable $exception) {
