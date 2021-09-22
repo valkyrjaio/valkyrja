@@ -77,7 +77,7 @@ class Validator implements Contract
     {
         $this->container    = $container;
         $this->config       = $config;
-        $this->defaultRules = $config['rule'] ?? CKP::DEFAULT;
+        $this->defaultRules = $config['rule'];
     }
 
     /**
@@ -85,11 +85,10 @@ class Validator implements Contract
      */
     public function getRules(string $name = null)
     {
-        $rules = $this->config[CKP::RULES][$name]
-            ?? $this->config[CKP::RULES][$this->defaultRules];
+        $name ??= $this->defaultRules;
 
         return self::$rules[$name]
-            ?? self::$rules[$name] = $this->container->get($rules);
+            ?? self::$rules[$name] = $this->container->get($name);
     }
 
     /**

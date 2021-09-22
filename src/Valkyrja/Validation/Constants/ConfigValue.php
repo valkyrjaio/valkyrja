@@ -25,36 +25,31 @@ use Valkyrja\Validation\Rules\ORM;
 final class ConfigValue
 {
     public const RULE      = CKP::DEFAULT;
-    public const RULES     = [
-        CKP::DEFAULT => Base::class,
-        CKP::ORM     => ORM::class,
-    ];
     public const RULES_MAP = [
-        Rule::REQUIRED     => CKP::DEFAULT,
-        Rule::EQUALS       => CKP::DEFAULT,
-        Rule::EMPTY        => CKP::DEFAULT,
-        Rule::NOT_EMPTY    => CKP::DEFAULT,
-        Rule::ALPHA        => CKP::DEFAULT,
-        Rule::LOWERCASE    => CKP::DEFAULT,
-        Rule::UPPERCASE    => CKP::DEFAULT,
-        Rule::MIN          => CKP::DEFAULT,
-        Rule::MAX          => CKP::DEFAULT,
-        Rule::STARTS_WITH  => CKP::DEFAULT,
-        Rule::ENDS_WITH    => CKP::DEFAULT,
-        Rule::CONTAINS     => CKP::DEFAULT,
-        Rule::CONTAINS_ANY => CKP::DEFAULT,
-        Rule::EMAIL        => CKP::DEFAULT,
-        Rule::NUMERIC      => CKP::DEFAULT,
-        Rule::BOOLEAN      => CKP::DEFAULT,
-        Rule::LESS_THAN    => CKP::DEFAULT,
-        Rule::GREATER_THAN => CKP::DEFAULT,
-        Rule::ORM_UNIQUE   => CKP::ORM,
-        Rule::ORM_EXISTS   => CKP::ORM,
+        Rule::REQUIRED     => Base::class,
+        Rule::EQUALS       => Base::class,
+        Rule::EMPTY        => Base::class,
+        Rule::NOT_EMPTY    => Base::class,
+        Rule::ALPHA        => Base::class,
+        Rule::LOWERCASE    => Base::class,
+        Rule::UPPERCASE    => Base::class,
+        Rule::MIN          => Base::class,
+        Rule::MAX          => Base::class,
+        Rule::STARTS_WITH  => Base::class,
+        Rule::ENDS_WITH    => Base::class,
+        Rule::CONTAINS     => Base::class,
+        Rule::CONTAINS_ANY => Base::class,
+        Rule::EMAIL        => Base::class,
+        Rule::NUMERIC      => Base::class,
+        Rule::BOOLEAN      => Base::class,
+        Rule::LESS_THAN    => Base::class,
+        Rule::GREATER_THAN => Base::class,
+        Rule::ORM_UNIQUE   => ORM::class,
+        Rule::ORM_EXISTS   => ORM::class,
     ];
 
     public static array $defaults = [
         CKP::RULE      => self::RULE,
-        CKP::RULES     => self::RULES,
         CKP::RULES_MAP => self::RULES_MAP,
     ];
 }
