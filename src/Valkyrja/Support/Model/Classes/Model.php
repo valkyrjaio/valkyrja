@@ -116,7 +116,7 @@ abstract class Model implements Contract
             return $this->$methodName();
         }
 
-        return $this->{$name};
+        return $this->{$name} ?? null;
     }
 
     /**
