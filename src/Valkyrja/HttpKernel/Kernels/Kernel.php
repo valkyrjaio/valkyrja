@@ -245,24 +245,57 @@ class Kernel implements Contract
             throw $exception;
         }
 
-        /** @var ResponseFactory $responseFactory */
-        $responseFactory = $this->container->getSingleton(ResponseFactory::class);
-
         // If no response has been set and there is a template with the error code
         if ($exception instanceof HttpException) {
-            try {
-                // Set the response as the error template
-                return $exception->getResponse()
-                    ?? $responseFactory->view(
-                        $this->errorsTemplateDir . '/' . $exception->getStatusCode(),
-                        null,
-                        $exception->getStatusCode()
-                    );
-            } catch (Throwable $exception) {
-            }
+            return $this->getHttpExceptionResponse($exception);
         }
 
-        return $responseFactory->view("{$this->errorsTemplateDir}/500", null, StatusCode::INTERNAL_SERVER_ERROR);
+        return $this->getResponseFactory()
+            ->view(
+                "{$this->errorsTemplateDir}/500",
+                null,
+                StatusCode::INTERNAL_SERVER_ERROR
+            );
+    }
+
+    /**
+     * Get an http exception response.
+     *
+     * @param HttpException $exception The http exception
+     *
+     * @return Response
+     */
+    protected function getHttpExceptionResponse(HttpException $exception): Response
+    {
+        $responseFactory = $this->getResponseFactory();
+
+        try {
+            // Set the response as the error template
+            return $exception->getResponse()
+                ?? $responseFactory->view(
+                    $this->errorsTemplateDir . '/' . $exception->getStatusCode(),
+                    null,
+                    $exception->getStatusCode()
+                );
+        } catch (Throwable $throwable) {
+            return $responseFactory->view(
+                "{$this->errorsTemplateDir}/error",
+                [
+                    'exception' => $exception,
+                ],
+                $exception->getStatusCode()
+            );
+        }
+    }
+
+    /**
+     * Get the response factory.
+     *
+     * @return ResponseFactory
+     */
+    protected function getResponseFactory(): ResponseFactory
+    {
+        return $this->container->getSingleton(ResponseFactory::class);
     }
 
     /**
