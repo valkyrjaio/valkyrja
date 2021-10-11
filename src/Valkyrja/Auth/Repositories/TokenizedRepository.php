@@ -75,6 +75,20 @@ class TokenizedRepository extends Repository implements Contract
      *
      * @throws CryptException
      */
+    public function setUsers(AuthenticatedUsers $users): self
+    {
+        parent::setUsers($users);
+
+        $this->setUserToken();
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws CryptException
+     */
     public function authenticate(User $user): self
     {
         parent::authenticate($user);
