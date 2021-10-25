@@ -17,6 +17,7 @@ use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Matcher as Contract;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Helpers;
+use Valkyrja\Support\Model\Constants\PropertyType;
 
 use function preg_match;
 
@@ -114,6 +115,8 @@ class Matcher implements Contract
     {
         // Clone the route to avoid changing the one set in the master array
         $dynamicRoute = clone $this->collection->getDynamic($path, $method);
+        // Get the parameters
+        $parameters = $dynamicRoute->getParameters();
         // The first match is the path itself
         array_shift($matches);
 
@@ -124,6 +127,21 @@ class Matcher implements Contract
                 // Set the value to null so the controller's action
                 // can use the default it sets
                 $matches[$key] = null;
+            } elseif (($parameter = $parameters[$key] ?? null) && $type = $parameter->getType()) {
+                switch ($type) {
+                    case PropertyType::BOOL :
+                        $matches[$key] = (bool) $match;
+
+                        break;
+                    case PropertyType::INT :
+                        $matches[$key] = (int) $match;
+
+                        break;
+                    case PropertyType::FLOAT :
+                        $matches[$key] = (float) $match;
+
+                        break;
+                }
             }
         }
 

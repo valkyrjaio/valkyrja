@@ -37,6 +37,13 @@ class Parameter extends Model
     public ?string $regex;
 
     /**
+     * The parameter type to cast as.
+     *
+     * @var string|null
+     */
+    public ?string $type;
+
+    /**
      * The entity class name.
      *
      * @var string|null
@@ -115,6 +122,30 @@ class Parameter extends Model
     public function setRegex(string $regex = null): self
     {
         $this->regex = $regex;
+
+        return $this;
+    }
+
+    /**
+     * Get the type.
+     *
+     * @return string|null
+     */
+    public function getType(): ?string
+    {
+        return $this->type ?? null;
+    }
+
+    /**
+     * Set the type.
+     *
+     * @param string|null $type The type
+     *
+     * @return static
+     */
+    public function setType(string $type = null): self
+    {
+        $this->type = $type;
 
         return $this;
     }
