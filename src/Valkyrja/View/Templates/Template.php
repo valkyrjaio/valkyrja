@@ -18,7 +18,6 @@ use Valkyrja\View\Template as Contract;
 use Valkyrja\View\View;
 
 use function array_merge;
-use function count;
 use function htmlentities;
 
 use const ENT_QUOTES;
@@ -247,15 +246,11 @@ class Template implements Contract
      */
     public function endBlock(): void
     {
-        $lastCount = count($this->blockStatus) - 1;
-        $block     = $this->blockStatus[$lastCount];
-
-        unset($this->blockStatus[$lastCount]);
-
-        if ($lastCount === 0) {
-            $this->blockStatus = [];
-        }
-
+        // Get the last item in the array (newest block to close)
+        $block = end($this->blockStatus);
+        // Remove the last item in the array (as we are now closing it out)
+        array_pop($this->blockStatus);
+        // Render the block and set the value in the blocks array
         $this->blocks[$block] = $this->engine->endRender();
     }
 
