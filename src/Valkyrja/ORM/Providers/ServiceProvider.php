@@ -18,26 +18,20 @@ use Valkyrja\Cache\Cache;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\ORM\Adapter;
-use Valkyrja\ORM\AdapterFactory;
 use Valkyrja\ORM\CacheRepository;
 use Valkyrja\ORM\Driver;
-use Valkyrja\ORM\DriverFactory;
+use Valkyrja\ORM\Factory;
+use Valkyrja\ORM\Migrations\Migration;
 use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\PDOAdapter;
 use Valkyrja\ORM\PDOs\PDO;
 use Valkyrja\ORM\Persister;
-use Valkyrja\ORM\PersisterFactory;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\QueryBuilderFactory;
-use Valkyrja\ORM\QueryFactory;
 use Valkyrja\ORM\Repository;
-use Valkyrja\ORM\RepositoryFactory;
 use Valkyrja\ORM\Retriever;
-use Valkyrja\ORM\RetrieverFactory;
 use Valkyrja\ORM\Retrievers\LocalCacheRetriever;
 use Valkyrja\ORM\Statement;
-use Valkyrja\ORM\StatementFactory;
 
 /**
  * Class ServiceProvider.
@@ -53,14 +47,7 @@ class ServiceProvider extends Provider
     {
         return [
             ORM::class                 => 'publishORM',
-            AdapterFactory::class      => 'publishAdapterFactory',
-            DriverFactory::class       => 'publishDriverFactory',
-            PersisterFactory::class    => 'publishPersisterFactory',
-            QueryBuilderFactory::class => 'publishQueryBuilderFactory',
-            QueryFactory::class        => 'publishQueryFactory',
-            RepositoryFactory::class   => 'publishRepositoryFactory',
-            RetrieverFactory::class    => 'publishRetrieverFactory',
-            StatementFactory::class    => 'publishStatementFactory',
+            Factory::class             => 'publishFactory',
             Driver::class              => 'publishDriver',
             Adapter::class             => 'publishAdapter',
             PDOAdapter::class          => 'publishPdoAdapter',
@@ -73,6 +60,7 @@ class ServiceProvider extends Provider
             QueryBuilder::class        => 'publishQueryBuilder',
             Statement::class           => 'publishStatement',
             PDO::class                 => 'publishPDO',
+            Migration::class           => 'publishMigration',
         ];
     }
 
@@ -83,14 +71,7 @@ class ServiceProvider extends Provider
     {
         return [
             ORM::class,
-            AdapterFactory::class,
-            DriverFactory::class,
-            PersisterFactory::class,
-            QueryBuilderFactory::class,
-            QueryFactory::class,
-            RepositoryFactory::class,
-            RetrieverFactory::class,
-            StatementFactory::class,
+            Factory::class,
             Driver::class,
             Adapter::class,
             PDOAdapter::class,
@@ -102,6 +83,7 @@ class ServiceProvider extends Provider
             QueryBuilder::class,
             Statement::class,
             PDO::class,
+            Migration::class,
         ];
     }
 
@@ -126,144 +108,24 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             ORM::class,
             new \Valkyrja\ORM\Managers\ORM(
-                $container->getSingleton(AdapterFactory::class),
-                $container->getSingleton(DriverFactory::class),
-                $container->getSingleton(PersisterFactory::class),
-                $container->getSingleton(QueryBuilderFactory::class),
-                $container->getSingleton(QueryFactory::class),
-                $container->getSingleton(RepositoryFactory::class),
-                $container->getSingleton(RetrieverFactory::class),
-                $container->getSingleton(StatementFactory::class),
+                $container->getSingleton(Factory::class),
                 $config['orm']
             )
         );
     }
 
     /**
-     * Publish the adapter factory.
+     * Publish the factory.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishAdapterFactory(Container $container): void
+    public static function publishFactory(Container $container): void
     {
-        self::publishFactory(
-            $container,
-            AdapterFactory::class,
-            \Valkyrja\ORM\Factories\AdapterFactory::class
-        );
-    }
-
-    /**
-     * Publish the driver factory.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishDriverFactory(Container $container): void
-    {
-        self::publishFactory(
-            $container,
-            DriverFactory::class,
-            \Valkyrja\ORM\Factories\DriverFactory::class
-        );
-    }
-
-    /**
-     * Publish the persister factory.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishPersisterFactory(Container $container): void
-    {
-        self::publishFactory(
-            $container,
-            PersisterFactory::class,
-            \Valkyrja\ORM\Factories\PersisterFactory::class
-        );
-    }
-
-    /**
-     * Publish the query builder factory.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishQueryBuilderFactory(Container $container): void
-    {
-        self::publishFactory(
-            $container,
-            QueryBuilderFactory::class,
-            \Valkyrja\ORM\Factories\QueryBuilderFactory::class
-        );
-    }
-
-    /**
-     * Publish the query factory.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishQueryFactory(Container $container): void
-    {
-        self::publishFactory(
-            $container,
-            QueryFactory::class,
-            \Valkyrja\ORM\Factories\QueryFactory::class
-        );
-    }
-
-    /**
-     * Publish the repository factory.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishRepositoryFactory(Container $container): void
-    {
-        self::publishFactory(
-            $container,
-            RepositoryFactory::class,
-            \Valkyrja\ORM\Factories\RepositoryFactory::class
-        );
-    }
-
-    /**
-     * Publish the retriever factory.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishRetrieverFactory(Container $container): void
-    {
-        self::publishFactory(
-            $container,
-            RetrieverFactory::class,
-            \Valkyrja\ORM\Factories\RetrieverFactory::class
-        );
-    }
-
-    /**
-     * Publish the statement factory.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishStatementFactory(Container $container): void
-    {
-        self::publishFactory(
-            $container,
-            StatementFactory::class,
-            \Valkyrja\ORM\Factories\StatementFactory::class
+        $container->setSingleton(
+            Factory::class,
+            new \Valkyrja\ORM\Factories\Factory($container)
         );
     }
 
@@ -510,19 +372,19 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish a factory.
+     * Publish a migration service.
      *
      * @param Container $container The container
-     * @param string    $interface The interface name
-     * @param string    $name      The factory class name
      *
      * @return void
      */
-    protected static function publishFactory(Container $container, string $interface, string $name): void
+    public static function publishMigration(Container $container): void
     {
-        $container->setSingleton(
-            $interface,
-            new $name($container)
+        $container->setClosure(
+            Migration::class,
+            static function (string $name, ORM $orm): Migration {
+                return new $name($orm);
+            }
         );
     }
 }

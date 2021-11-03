@@ -11,61 +11,60 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Support;
+namespace Valkyrja\ORM\Migrations;
 
 use Exception;
-use Valkyrja\ORM\ORM;
 
 /**
- * Abstract Class SmartMigration.
+ * Abstract Class TransactionalMigration.
  *
  * @author Melech Mizrachi
  */
-abstract class SmartMigration extends Migration
+abstract class TransactionalMigration extends Migration
 {
     /**
-     * Run the migration.
+     * @inheritDoc
      *
-     * @param ORM $orm The ORM
-     *
-     * @return void
+     * @throws Exception
      */
-    public static function run(ORM $orm): void
+    public function run(): void
     {
+        $orm = $this->orm;
+
         try {
             $orm->ensureTransaction();
 
-            static::runMigration($orm);
+            $this->runMigration();
 
             $orm->persist();
         } catch (Exception $exception) {
             $orm->rollback();
 
-            static::runFailure($orm, $exception);
+            $this->runFailure($exception);
 
             throw $exception;
         }
     }
 
     /**
-     * Rollback the migration.
+     * @inheritDoc
      *
-     * @param ORM $orm The ORM
-     *
-     * @return void
+     * @throws Exception
      */
-    public static function rollback(ORM $orm): void
+    public function rollback(): void
     {
+        $orm = $this->orm;
+
         try {
             $orm->ensureTransaction();
 
-            static::rollbackMigration($orm);
+            $this->rollbackMigration();
 
             $orm->persist();
         } catch (Exception $exception) {
             $orm->rollback();
 
-            static::rollbackFailure($orm, $exception);
+            $this->rollbackFailure($exception);
 
             throw $exception;
         }
@@ -74,42 +73,36 @@ abstract class SmartMigration extends Migration
     /**
      * Do on run failure.
      *
-     * @param ORM       $orm       The ORM
      * @param Exception $exception The exception
      *
      * @return void
      */
-    protected static function runFailure(ORM $orm, Exception $exception): void
+    protected function runFailure(Exception $exception): void
     {
     }
 
     /**
      * Do on rollback failure.
      *
-     * @param ORM       $orm       The ORM
      * @param Exception $exception The exception
      *
      * @return void
      */
-    protected static function rollbackFailure(ORM $orm, Exception $exception): void
+    protected function rollbackFailure(Exception $exception): void
     {
     }
 
     /**
      * Run the migration.
      *
-     * @param ORM $orm The ORM
-     *
      * @return void
      */
-    abstract protected static function runMigration(ORM $orm): void;
+    abstract protected function runMigration(): void;
 
     /**
      * Rollback the migration.
      *
-     * @param ORM $orm The ORM
-     *
      * @return void
      */
-    abstract protected static function rollbackMigration(ORM $orm): void;
+    abstract protected function rollbackMigration(): void;
 }

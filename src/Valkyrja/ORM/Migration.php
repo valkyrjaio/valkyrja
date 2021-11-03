@@ -14,21 +14,23 @@ declare(strict_types=1);
 namespace Valkyrja\ORM;
 
 /**
- * Interface AdapterFactory.
+ * Interface Migration.
  *
  * @author Melech Mizrachi
  */
-interface AdapterFactory
+interface Migration
 {
     /**
-     * Create an adapter.
+     * Run the migration.
      *
-     * @template T
-     *
-     * @param class-string<T> $name   The adapter class name
-     * @param array           $config The config
-     *
-     * @return T
+     * @return void
      */
-    public function createAdapter(string $name, array $config): Adapter;
+    public function run(): void;
+
+    /**
+     * Rollback the migration.
+     *
+     * @return void
+     */
+    public function rollback(): void;
 }

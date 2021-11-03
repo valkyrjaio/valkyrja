@@ -11,11 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Support;
+namespace Valkyrja\ORM\Migrations;
 
 use Exception;
 use RuntimeException;
-use Valkyrja\ORM\ORM;
 
 use function explode;
 use function file_get_contents;
@@ -24,41 +23,32 @@ use function trim;
 /**
  * Class SqlFileMigration.
  */
-abstract class SqlFileMigration extends SmartMigration
+abstract class SqlFileMigration extends TransactionalMigration
 {
     /**
-     * Run the migration.
-     *
-     * @param ORM $orm The ORM
-     *
-     * @return void
+     * @inheritDoc
      */
-    protected static function runMigration(ORM $orm): void
+    protected function runMigration(): void
     {
-        static::executeSql($orm, static::getRunMigrationFilePath());
+        $this->executeSql($this->getRunMigrationFilePath());
     }
 
     /**
-     * Rollback the migration.
-     *
-     * @param ORM $orm The ORM
-     *
-     * @return void
+     * @inheritDoc
      */
-    protected static function rollbackMigration(ORM $orm): void
+    protected function rollbackMigration(): void
     {
-        static::executeSql($orm, static::getRollbackMigrationFilePath());
+        $this->executeSql($this->getRollbackMigrationFilePath());
     }
 
     /**
      * Execute sql.
      *
-     * @param ORM    $orm         The ORM
      * @param string $sqlFilePath The sql file path
      *
      * @return void
      */
-    protected static function executeSql(ORM $orm, string $sqlFilePath): void
+    protected function executeSql(string $sqlFilePath): void
     {
         $sql = file_get_contents($sqlFilePath);
 
@@ -67,7 +57,7 @@ abstract class SqlFileMigration extends SmartMigration
                 continue;
             }
 
-            $query = $orm->useConnection()->createQuery($queryString);
+            $query = $this->orm->useConnection()->createQuery($queryString);
 
             if (! $query->execute()) {
                 throw new RuntimeException($query->getError());
@@ -78,12 +68,11 @@ abstract class SqlFileMigration extends SmartMigration
     /**
      * Do on run failure.
      *
-     * @param ORM       $orm       The ORM
      * @param Exception $exception The exception
      *
      * @return void
      */
-    protected static function runFailure(ORM $orm, Exception $exception): void
+    protected function runFailure(Exception $exception): void
     {
     }
 
@@ -92,12 +81,12 @@ abstract class SqlFileMigration extends SmartMigration
      *
      * @return string
      */
-    abstract protected static function getRunMigrationFilePath(): string;
+    abstract protected function getRunMigrationFilePath(): string;
 
     /**
      * Get the rollback sql file path.
      *
      * @return string
      */
-    abstract protected static function getRollbackMigrationFilePath(): string;
+    abstract protected function getRollbackMigrationFilePath(): string;
 }

@@ -126,6 +126,18 @@ interface ORM
     public function createStatement(Adapter $adapter, string $name, array $data = []): Statement;
 
     /**
+     * Create a migration.
+     *
+     * @template T
+     *
+     * @param class-string<T> $name The migration class name
+     * @param array           $data [optional] Additional data required for the migration
+     *
+     * @return T
+     */
+    public function createMigration(string $name, array $data = []): Migration;
+
+    /**
      * Initiate a transaction.
      *
      * @return bool

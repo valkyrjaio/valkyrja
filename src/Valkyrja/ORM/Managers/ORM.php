@@ -14,24 +14,18 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Managers;
 
 use Valkyrja\ORM\Adapter;
-use Valkyrja\ORM\AdapterFactory;
 use Valkyrja\ORM\Driver;
-use Valkyrja\ORM\DriverFactory;
 use Valkyrja\ORM\Entity;
+use Valkyrja\ORM\Factory;
+use Valkyrja\ORM\Migration;
 use Valkyrja\ORM\ORM as Contract;
 use Valkyrja\ORM\Persister;
-use Valkyrja\ORM\PersisterFactory;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\QueryBuilderFactory;
-use Valkyrja\ORM\QueryFactory;
 use Valkyrja\ORM\Repository;
-use Valkyrja\ORM\RepositoryFactory;
 use Valkyrja\ORM\Retriever;
-use Valkyrja\ORM\RetrieverFactory;
 use Valkyrja\ORM\SoftDeleteEntity;
 use Valkyrja\ORM\Statement;
-use Valkyrja\ORM\StatementFactory;
 
 use function get_class;
 
@@ -57,60 +51,11 @@ class ORM implements Contract
     protected static array $repositories = [];
 
     /**
-     * The adapter factory.
+     * The factory.
      *
-     * @var AdapterFactory
+     * @var Factory
      */
-    protected AdapterFactory $adapterFactory;
-
-    /**
-     * The driver factory.
-     *
-     * @var DriverFactory
-     */
-    protected DriverFactory $driverFactory;
-
-    /**
-     * The persister factory.
-     *
-     * @var PersisterFactory
-     */
-    protected PersisterFactory $persisterFactory;
-
-    /**
-     * The query builder factory.
-     *
-     * @var QueryBuilderFactory
-     */
-    protected QueryBuilderFactory $queryBuilderFactory;
-
-    /**
-     * The query factory.
-     *
-     * @var QueryFactory
-     */
-    protected QueryFactory $queryFactory;
-
-    /**
-     * The repository factory.
-     *
-     * @var RepositoryFactory
-     */
-    protected RepositoryFactory $repositoryFactory;
-
-    /**
-     * The retriever factory.
-     *
-     * @var RetrieverFactory
-     */
-    protected RetrieverFactory $retrieverFactory;
-
-    /**
-     * The statement factory.
-     *
-     * @var StatementFactory
-     */
-    protected StatementFactory $statementFactory;
+    protected Factory $factory;
 
     /**
      * The config.
@@ -185,35 +130,14 @@ class ORM implements Contract
     /**
      * ORM constructor.
      *
-     * @param AdapterFactory      $adapterFactory      The adapter factory
-     * @param DriverFactory       $driverFactory       The driver factory
-     * @param PersisterFactory    $persisterFactory    The persister factory
-     * @param QueryBuilderFactory $queryBuilderFactory The query builder factory
-     * @param QueryFactory        $queryFactory        The query factory
-     * @param RepositoryFactory   $repositoryFactory   The repository factory
-     * @param RetrieverFactory    $retrieverFactory    The retriever factory
-     * @param StatementFactory    $statementFactory    The statement factory
-     * @param array               $config              The config
+     * @param Factory $factory The factory
+     * @param array   $config  The config
      */
     public function __construct(
-        AdapterFactory $adapterFactory,
-        DriverFactory $driverFactory,
-        PersisterFactory $persisterFactory,
-        QueryBuilderFactory $queryBuilderFactory,
-        QueryFactory $queryFactory,
-        RepositoryFactory $repositoryFactory,
-        RetrieverFactory $retrieverFactory,
-        StatementFactory $statementFactory,
+        Factory $factory,
         array $config
     ) {
-        $this->adapterFactory      = $adapterFactory;
-        $this->driverFactory       = $driverFactory;
-        $this->persisterFactory    = $persisterFactory;
-        $this->queryBuilderFactory = $queryBuilderFactory;
-        $this->queryFactory        = $queryFactory;
-        $this->repositoryFactory   = $repositoryFactory;
-        $this->retrieverFactory    = $retrieverFactory;
-        $this->statementFactory    = $statementFactory;
+        $this->factory             = $factory;
         $this->config              = $config;
         $this->connections         = $config['connections'];
         $this->defaultConnection   = $config['default'];
@@ -243,7 +167,7 @@ class ORM implements Contract
         $cacheKey = $name . $driver . $adapter;
 
         return self::$drivers[$cacheKey]
-            ?? self::$drivers[$cacheKey] = $this->driverFactory->createDriver(
+            ?? self::$drivers[$cacheKey] = $this->factory->createDriver(
                 $this->createAdapter($adapter, $config),
                 $driver,
                 $config
@@ -264,7 +188,7 @@ class ORM implements Contract
         // Set the retriever
         $config['retriever'] ??= $this->defaultRetriever;
 
-        return $this->adapterFactory->createAdapter($name, $config);
+        return $this->factory->createAdapter($name, $config);
     }
 
     /**
@@ -272,7 +196,7 @@ class ORM implements Contract
      */
     public function createQueryBuilder(Adapter $adapter, string $name): QueryBuilder
     {
-        return $this->queryBuilderFactory->createQueryBuilder($adapter, $name);
+        return $this->factory->createQueryBuilder($adapter, $name);
     }
 
     /**
@@ -280,7 +204,7 @@ class ORM implements Contract
      */
     public function createQuery(Adapter $adapter, string $name): Query
     {
-        return $this->queryFactory->createQuery($adapter, $name);
+        return $this->factory->createQuery($adapter, $name);
     }
 
     /**
@@ -288,7 +212,7 @@ class ORM implements Contract
      */
     public function createRetriever(Adapter $adapter, string $name): Retriever
     {
-        return $this->retrieverFactory->createRetriever($adapter, $name);
+        return $this->factory->createRetriever($adapter, $name);
     }
 
     /**
@@ -296,7 +220,7 @@ class ORM implements Contract
      */
     public function createPersister(Adapter $adapter, string $name): Persister
     {
-        return $this->persisterFactory->createPersister($adapter, $name);
+        return $this->factory->createPersister($adapter, $name);
     }
 
     /**
@@ -309,7 +233,7 @@ class ORM implements Contract
         $cacheKey = $name . $entity;
 
         return static::$repositories[$cacheKey]
-            ?? static::$repositories[$cacheKey] = $this->repositoryFactory->createRepository(
+            ?? static::$repositories[$cacheKey] = $this->factory->createRepository(
                 $this->useConnection($entity::getConnection()),
                 $name,
                 $entity
@@ -329,7 +253,15 @@ class ORM implements Contract
      */
     public function createStatement(Adapter $adapter, string $name, array $data = []): Statement
     {
-        return $this->statementFactory->createStatement($adapter, $name, $data);
+        return $this->factory->createStatement($adapter, $name, $data);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createMigration(string $name, array $data = []): Migration
+    {
+        return $this->factory->createMigration($name, $data);
     }
 
     /**
