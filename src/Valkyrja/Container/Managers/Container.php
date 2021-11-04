@@ -461,7 +461,7 @@ class Container implements Contract
      *
      * @return bool
      */
-    public function isAliasInternal(string $serviceId): bool
+    protected function isAliasInternal(string $serviceId): bool
     {
         return isset(self::$aliases[$serviceId]);
     }
@@ -473,7 +473,7 @@ class Container implements Contract
      *
      * @return bool
      */
-    public function isClosureInternal(string $serviceId): bool
+    protected function isClosureInternal(string $serviceId): bool
     {
         return isset(self::$closures[$serviceId]);
     }
@@ -485,7 +485,7 @@ class Container implements Contract
      *
      * @return bool
      */
-    public function isSingletonInternal(string $serviceId): bool
+    protected function isSingletonInternal(string $serviceId): bool
     {
         return isset(self::$singletons[$serviceId]);
     }
@@ -497,7 +497,7 @@ class Container implements Contract
      *
      * @return bool
      */
-    public function isServiceInternal(string $serviceId): bool
+    protected function isServiceInternal(string $serviceId): bool
     {
         return isset(self::$services[$serviceId]);
     }
@@ -510,7 +510,7 @@ class Container implements Contract
      *
      * @return mixed
      */
-    public function getClosureWithoutChecks(string $serviceId, array $arguments = [])
+    protected function getClosureWithoutChecks(string $serviceId, array $arguments = [])
     {
         $closure = self::$closures[$serviceId];
 
@@ -524,7 +524,7 @@ class Container implements Contract
      *
      * @return mixed
      */
-    public function getSingletonWithoutChecks(string $serviceId)
+    protected function getSingletonWithoutChecks(string $serviceId)
     {
         return self::$instances[$serviceId] ?? self::$instances[$serviceId] = $this->makeService($serviceId);
     }
