@@ -61,14 +61,14 @@ class MailgunAdapter implements Contract
     {
         $mailgunMessage = $this->mailgun->messages()->getBatchMessage($this->config['domain']);
         $replyTo        = $message->getReplyToRecipients()[0] ?? null;
-        $from           = ['email' => $message->getFromEmail(), 'name' => $message->getFromName()];
+        $from           = [['email' => $message->getFromEmail(), 'name' => $message->getFromName()]];
 
         $mailgunMessage->setSubject($message->getSubject());
         $mailgunMessage->setTextBody($message->getBody());
 
         if ($message->isHtml()) {
             $mailgunMessage->setHtmlBody($message->getBody());
-            $mailgunMessage->setTextBody($message->getPlainBody());
+            $mailgunMessage->setTextBody($message->getPlainBody() ?? '');
         }
 
         $this->setRecipients($mailgunMessage, 'setFromAddress', $from);

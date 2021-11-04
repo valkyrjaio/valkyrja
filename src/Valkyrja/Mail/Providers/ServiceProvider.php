@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Providers;
 
+use GuzzleHttp\Client;
+use Mailgun\HttpClient\HttpClientConfigurator;
 use Mailgun\Mailgun;
 use PHPMailer\PHPMailer\PHPMailer;
 use Valkyrja\Container\Container;
@@ -250,8 +252,12 @@ class ServiceProvider extends Provider
         $container->setClosure(
             Mailgun::class,
             static function (array $config): Mailgun {
+                $httpClientConfigurator = (new HttpClientConfigurator())
+                    ->setApiKey($config['apiKey'])
+                    ->setHttpClient(new Client());
+
                 return new Mailgun(
-                    $config['apiKey']
+                    $httpClientConfigurator
                 );
             }
         );
@@ -269,7 +275,7 @@ class ServiceProvider extends Provider
         $container->setClosure(
             Message::class,
             static function (string $name, array $config): Message {
-                return (new $name())->setFrom($config['fromEmail'], $config['fromName']);
+                return (new $name())->setFrom($config['fromAddress'], $config['fromName']);
             }
         );
     }
