@@ -199,7 +199,8 @@ class Repository implements Contract
     {
         $requestParams = $request->onlyParsedBody($this->userEntityName::getAuthenticationFields());
 
-        $requestParams[$this->userEntityName::getPasswordField()] = $request->getParsedBodyParam($this->userEntityName::getPasswordField());
+        $requestParams[$this->userEntityName::getPasswordField()] =
+            $request->getParsedBodyParam($this->userEntityName::getPasswordField());
 
         $user = $this->userEntityName::fromArray($requestParams);
 
@@ -270,8 +271,7 @@ class Repository implements Contract
 
         $this->adapter->updateResetToken($dbUser);
 
-        $user->__set($user::getResetTokenField(), $dbUser->__get($dbUser::getResetTokenField()));
-        $user->__set($user::getIdField(), $dbUser->__get($dbUser::getIdField()));
+        $user->updateProperties($dbUser->asArray());
 
         return $this;
     }
