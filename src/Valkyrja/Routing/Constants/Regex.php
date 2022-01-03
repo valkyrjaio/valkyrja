@@ -20,6 +20,7 @@ namespace Valkyrja\Routing\Constants;
  */
 final class Regex
 {
+    public const ANY                        = '.*';
     public const NUM                        = '\d+';
     public const ID                         = self::NUM;
     public const SLUG                       = '[a-zA-Z0-9-]+';
