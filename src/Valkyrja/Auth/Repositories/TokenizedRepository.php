@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Repositories;
 
 use Exception;
+use RuntimeException;
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\AuthenticatedUsers;
 use Valkyrja\Auth\Constants\Header;
@@ -152,9 +153,29 @@ class TokenizedRepository extends Repository implements Contract
 
         $collection        = $this->users;
         $collectionAsArray = $collection->asArray();
+        // Required fields that should exist within the tokenized user
+        $requiredFields = [
+            $this->userEntityName::getIdField(),
+        ];
+
+        // If the always authenticate flag is on in the config we need the password and authentication fields to be part
+        // of the tokenized user
+        if ($this->config['alwaysAuthenticate']) {
+            $requiredFields[] = $this->userEntityName::getPasswordField();
+
+            $requiredFields = array_merge($requiredFields, $this->user::getAuthenticationFields());
+        }
 
         foreach ($collection->all() as $key => $userFromCollection) {
-            $collectionAsArray['users'][$key] = $userFromCollection->asTokenizableArray();
+            $userAsTokenizableArray = $collectionAsArray['users'][$key] = $userFromCollection->asTokenizableArray();
+
+            foreach ($requiredFields as $requiredField) {
+                if (! isset($userAsTokenizableArray[$requiredField])) {
+                    $entityName = $this->userEntityName;
+
+                    throw new RuntimeException("Required field `${requiredField}` is not being returned in ${entityName}::asTokenizableArray()");
+                }
+            }
         }
 
         $token = $this->crypt->encryptArray($collectionAsArray);
