@@ -61,7 +61,9 @@ trait TokenizableUserTrait
      */
     public function asTokenizableArray(): array
     {
-        return $this->asStorableArray();
+        return [
+            static::getIdField() => $this->{static::getIdField()},
+        ];
     }
 
     /**

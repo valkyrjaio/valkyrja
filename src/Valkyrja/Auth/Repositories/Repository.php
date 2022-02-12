@@ -148,6 +148,14 @@ class Repository implements Contract
      */
     public function getUsers(): AuthenticatedUsers
     {
+        if ($this->config['keepUserFresh']) {
+            foreach ($this->users->all() as $user) {
+                $dbUser = $this->adapter->retrieveById($user);
+
+                $user->updateProperties($dbUser->asStorableArray());
+            }
+        }
+
         return $this->users;
     }
 
@@ -271,7 +279,7 @@ class Repository implements Contract
 
         $this->adapter->updateResetToken($dbUser);
 
-        $user->updateProperties($dbUser->asArray());
+        $user->updateProperties($dbUser->asStorableArray());
 
         return $this;
     }
