@@ -85,20 +85,10 @@ class Persister implements Contract
      */
     public function create(Entity $entity, bool $defer = true): void
     {
-        if ($entity instanceof DatedEntity) {
-            $date = Helpers::getFormattedDate();
-
-            $entity->__set($entity::getDateCreatedField(), $date);
-            $entity->__set($entity::getDateModifiedField(), $date);
-        }
+        $this->modifyEntityBeforeCreate($entity);
 
         if (! $defer) {
-            // Ensure a transaction is in progress
-            $this->adapter->ensureTransaction();
-
-            $this->persistEntity(Statement::INSERT, $entity, $entity->asStorableArray());
-
-            $this->adapter->commit();
+            $this->persistEntityThroughTransaction(Statement::INSERT, $entity, $entity->asStorableArray());
 
             return;
         }
@@ -116,17 +106,10 @@ class Persister implements Contract
      */
     public function save(Entity $entity, bool $defer = true): void
     {
-        if ($entity instanceof DatedEntity) {
-            $entity->__set($entity::getDateModifiedField(), Helpers::getFormattedDate());
-        }
+        $this->modifyEntityBeforeSave($entity);
 
         if (! $defer) {
-            // Ensure a transaction is in progress
-            $this->adapter->ensureTransaction();
-
-            $this->persistEntity(Statement::UPDATE, $entity, $entity->asChangedArray());
-
-            $this->adapter->commit();
+            $this->persistEntityThroughTransaction(Statement::UPDATE, $entity, $entity->asChangedArray());
 
             return;
         }
@@ -145,12 +128,7 @@ class Persister implements Contract
     public function delete(Entity $entity, bool $defer = true): void
     {
         if (! $defer) {
-            // Ensure a transaction is in progress
-            $this->adapter->ensureTransaction();
-
-            $this->persistEntity(Statement::DELETE, $entity);
-
-            $this->adapter->commit();
+            $this->persistEntityThroughTransaction(Statement::DELETE, $entity);
 
             return;
         }
@@ -240,15 +218,84 @@ class Persister implements Contract
     }
 
     /**
-     * Save or create or delete a row.
+     * Modify an entity before creating it.
      *
-     * <code>
-     *      $this
-     *          ->saveCreateDelete(
-     *             'update' | 'insert' | 'delete',
-     *              Entity::class
-     *          )
-     * </code>
+     * @param Entity $entity The entity
+     *
+     * @return void
+     */
+    protected function modifyEntityBeforeCreate(Entity $entity): void
+    {
+        if ($entity instanceof DatedEntity) {
+            $this->modifyDatedEntityBeforeCreate($entity);
+        }
+    }
+
+    /**
+     * Modify a dated entity before creating it.
+     *
+     * @param DatedEntity $entity The entity
+     *
+     * @return void
+     */
+    protected function modifyDatedEntityBeforeCreate(DatedEntity $entity): void
+    {
+        $date = Helpers::getFormattedDate();
+
+        $entity->__set($entity::getDateCreatedField(), $date);
+        $entity->__set($entity::getDateModifiedField(), $date);
+    }
+
+    /**
+     * Modify an entity before saving it.
+     *
+     * @param Entity $entity The entity
+     *
+     * @return void
+     */
+    protected function modifyEntityBeforeSave(Entity $entity): void
+    {
+        if ($entity instanceof DatedEntity) {
+            $this->modifyDatedEntityBeforeSave($entity);
+        }
+    }
+
+    /**
+     * Modify a dated entity before saving it.
+     *
+     * @param DatedEntity $entity The entity
+     *
+     * @return void
+     */
+    protected function modifyDatedEntityBeforeSave(DatedEntity $entity): void
+    {
+        $entity->__set($entity::getDateModifiedField(), Helpers::getFormattedDate());
+    }
+
+    /**
+     * Persist an entity through a transaction.
+     *
+     * @param string $type       The type of persist
+     * @param Entity $entity     The entity to persist
+     * @param array  $properties [optional] The properties to persist
+     *
+     * @throws ExecuteException
+     * @throws JsonException
+     *
+     * @return void
+     */
+    protected function persistEntityThroughTransaction(string $type, Entity $entity, array $properties = []): void
+    {
+        // Ensure a transaction is in progress
+        $this->adapter->ensureTransaction();
+
+        $this->persistEntity($type, $entity, $properties);
+
+        $this->adapter->commit();
+    }
+
+    /**
+     * Persist an entity.
      *
      * @param string $type       The type of persist
      * @param Entity $entity     The entity to persist
@@ -261,6 +308,7 @@ class Persister implements Contract
      */
     protected function persistEntity(string $type, Entity $entity, array $properties = []): void
     {
+        // The id field
         $idField = $entity::getIdField();
 
         // Get the query builder
@@ -268,18 +316,10 @@ class Persister implements Contract
         // Get the query
         $query = $this->getQuery($queryBuilder, $type, $idField, $entity->{$idField}, $properties);
 
-        // If the execute failed
-        if (! $query->execute()) {
-            // Throw a fail exception
-            throw new ExecuteException($query->getError());
-        }
-
-        if (
-            ! $entity->__isset($idField)
-            && $lastInsertId = $this->adapter->lastInsertId($entity::getTableName(), $idField)
-        ) {
-            $entity->__set($idField, $lastInsertId);
-        }
+        // Execute the query
+        $this->executeQuery($query);
+        // Set the entity id field after persisting
+        $this->setEntityIdFieldAfterPersist($entity, $idField);
     }
 
     /**
@@ -294,21 +334,16 @@ class Persister implements Contract
     protected function getQueryBuilder(string $type, Entity $entity, array $properties): QueryBuilder
     {
         // Create a new query
-        $queryBuilder = $this->adapter->createQueryBuilder();
+        $queryBuilder = $this->createQueryBuilder();
 
-        $queryBuilder->table($entity::getTableName());
-        $queryBuilder->{strtolower($type)}();
-
-        // If this type isn't an insert
-        if ($type !== Statement::INSERT) {
-            // Set the id for the where clause
-            $queryBuilder->where($entity::getIdField());
-        }
-
-        if ($type !== Statement::DELETE) {
-            // Set the properties
-            $this->setQueryBuilderProperties($queryBuilder, $properties);
-        }
+        // Set the table in the query builder
+        $this->setTableInQueryBuilder($queryBuilder, $entity);
+        // Set the type in the query builder
+        $this->setTypeInQueryBuilder($queryBuilder, $type);
+        // Set the id field where clause in the query builder
+        $this->setIdFieldInQueryBuilder($queryBuilder, $entity, $type);
+        // Set the properties in the query builder
+        $this->setQueryBuilderProperties($queryBuilder, $properties, $type);
 
         return $queryBuilder;
     }
@@ -334,20 +369,71 @@ class Persister implements Contract
         array $properties
     ): Query {
         // Create a new query with the query builder
-        $query = $this->adapter->createQuery($queryBuilder->getQueryString());
+        $query = $this->createQueryFromQueryBuilder($queryBuilder);
 
-        // If this type isn't an insert
-        if ($type !== Statement::INSERT) {
-            // Set the id value for the where clause
-            $query->bindValue($idField, $id);
-        }
-
-        if ($type !== Statement::DELETE) {
-            // Set the properties.
-            $this->bindQueryProperties($query, $properties);
-        }
+        // Bind the id in the query
+        $this->bindIdValueInQuery($query, $type, $idField, $id);
+        // Set the properties.
+        $this->bindQueryProperties($query, $properties, $type);
 
         return $query;
+    }
+
+    /**
+     * Create a query builder to persist an entity.
+     *
+     * @return QueryBuilder
+     */
+    protected function createQueryBuilder(): QueryBuilder
+    {
+        return $this->adapter->createQueryBuilder();
+    }
+
+    /**
+     * Set the table to use in a query builder for a given entity.
+     *
+     * @param QueryBuilder $queryBuilder The query builder
+     * @param Entity       $entity       The entity
+     *
+     * @return void
+     */
+    protected function setTableInQueryBuilder(QueryBuilder $queryBuilder, Entity $entity): void
+    {
+        $queryBuilder->table($entity::getTableName());
+    }
+
+    /**
+     * Set the type of query in the query builder.
+     *
+     * @param QueryBuilder $queryBuilder The query builder
+     * @param string       $type         The type of persist
+     *
+     * @return void
+     */
+    protected function setTypeInQueryBuilder(QueryBuilder $queryBuilder, string $type): void
+    {
+        $queryBuilder->{strtolower($type)}();
+    }
+
+    /**
+     * Set where in a query builder for a specific entity.
+     *
+     * @param QueryBuilder $queryBuilder The query builder
+     * @param Entity       $entity       The entity to persist
+     * @param string       $type         The type of persist
+     *
+     * @return void
+     */
+    protected function setIdFieldInQueryBuilder(QueryBuilder $queryBuilder, Entity $entity, string $type): void
+    {
+        // If this type is an insert we won't have an id yet for a where clause
+        if ($type === Statement::INSERT) {
+            // So back out
+            return;
+        }
+
+        // Set the id for the where clause
+        $queryBuilder->where($entity::getIdField());
     }
 
     /**
@@ -355,11 +441,18 @@ class Persister implements Contract
      *
      * @param QueryBuilder $queryBuilder The query builder
      * @param array        $properties   The properties to persist
+     * @param string       $type         The type of persist
      *
      * @return void
      */
-    protected function setQueryBuilderProperties(QueryBuilder $queryBuilder, array $properties): void
+    protected function setQueryBuilderProperties(QueryBuilder $queryBuilder, array $properties, string $type): void
     {
+        // If this is a delete statement we only needed the id field which was set prior
+        if ($type === Statement::DELETE) {
+            // So back out in this case and don't iterate through properties
+            return;
+        }
+
         // Iterate through the properties
         foreach ($properties as $column => $value) {
             $this->setQueryBuilderProperty($queryBuilder, $column, $value);
@@ -382,17 +475,58 @@ class Persister implements Contract
     }
 
     /**
+     * Create a query to persist an entity given a query builder.
+     *
+     * @param QueryBuilder $queryBuilder The query builder
+     *
+     * @return Query
+     */
+    protected function createQueryFromQueryBuilder(QueryBuilder $queryBuilder): Query
+    {
+        return $this->adapter->createQuery($queryBuilder->getQueryString());
+    }
+
+    /**
+     * Bind an id value in a query.
+     *
+     * @param Query      $query   The query
+     * @param string     $type    The type of persist
+     * @param string     $idField The id field
+     * @param string|int $id      The id
+     *
+     * @return void
+     */
+    protected function bindIdValueInQuery(Query $query, string $type, string $idField, $id): void
+    {
+        // If this type is an insert then there was no reason to add a where clause so we should not bind the value
+        if ($type === Statement::INSERT) {
+            // So get out
+            return;
+        }
+
+        // Bind the id value for the where clause
+        $query->bindValue($idField, $id);
+    }
+
+    /**
      * Set properties for save, create, or delete statements.
      *
-     * @param Query $query      The query
-     * @param array $properties The properties to persist
+     * @param Query  $query      The query
+     * @param array  $properties The properties to persist
+     * @param string $type       The type of persist
      *
      * @throws JsonException
      *
      * @return void
      */
-    protected function bindQueryProperties(Query $query, array $properties): void
+    protected function bindQueryProperties(Query $query, array $properties, string $type): void
     {
+        // If this is a delete statement we only needed the id field which was set prior
+        if ($type === Statement::DELETE) {
+            // So back out in this case and don't iterate through properties
+            return;
+        }
+
         // Iterate through the properties
         foreach ($properties as $column => $value) {
             $this->bindQueryProperty($query, $column, $value);
@@ -422,6 +556,40 @@ class Persister implements Contract
 
         // Bind property
         $query->bindValue($column, $value);
+    }
+
+    /**
+     * @param Query $query The query
+     *
+     * @throws ExecuteException
+     *
+     * @return void
+     */
+    protected function executeQuery(Query $query): void
+    {
+        // If the execute failed
+        if (! $query->execute()) {
+            // Throw a fail exception
+            throw new ExecuteException($query->getError());
+        }
+    }
+
+    /**
+     * Set the entity id field after persisting.
+     *
+     * @param Entity $entity  The entity
+     * @param string $idField The id field
+     *
+     * @return void
+     */
+    protected function setEntityIdFieldAfterPersist(Entity $entity, string $idField): void
+    {
+        if (
+            ! $entity->__isset($idField)
+            && $lastInsertId = $this->adapter->lastInsertId($entity::getTableName(), $idField)
+        ) {
+            $entity->__set($idField, $lastInsertId);
+        }
     }
 
     /**
