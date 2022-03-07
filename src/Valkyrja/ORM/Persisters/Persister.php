@@ -185,32 +185,7 @@ class Persister implements Contract
             return;
         }
 
-        // Get the id of the object
-        $id = spl_object_id($entity);
-
-        // If the model is set to be created
-        if (isset($this->createEntities[$id])) {
-            // Unset it
-            unset($this->createEntities[$id]);
-
-            return;
-        }
-
-        // If the model is set to be saved
-        if (isset($this->saveEntities[$id])) {
-            // Unset it
-            unset($this->saveEntities[$id]);
-
-            return;
-        }
-
-        // If the model is set to be deleted
-        if (isset($this->deleteEntities[$id])) {
-            // Unset it
-            unset($this->deleteEntities[$id]);
-
-            return;
-        }
+        $this->clearEntity($entity);
     }
 
     /**
@@ -230,6 +205,26 @@ class Persister implements Contract
         $this->clearDeferred();
 
         return $this->adapter->commit();
+    }
+
+    /**
+     * Clear a single deferred entity.
+     *
+     * @param Entity $entity The entity instance to remove.
+     *
+     * @return void
+     */
+    protected function clearEntity(Entity $entity): void
+    {
+        // Get the id of the object
+        $id = spl_object_id($entity);
+
+        // Unset it
+        unset(
+            $this->createEntities[$id],
+            $this->saveEntities[$id],
+            $this->deleteEntities[$id]
+        );
     }
 
     /**
