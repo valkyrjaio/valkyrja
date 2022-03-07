@@ -354,10 +354,24 @@ class Persister implements Contract
     protected function setQueryBuilderProperties(QueryBuilder $queryBuilder, array $properties): void
     {
         // Iterate through the properties
-        foreach ($properties as $column => $property) {
-            // Set the column and param name
-            $queryBuilder->set($column);
+        foreach ($properties as $column => $value) {
+            $this->setQueryBuilderProperty($queryBuilder, $column, $value);
         }
+    }
+
+    /**
+     * Set properties for save, delete, or create queries.
+     *
+     * @param QueryBuilder $queryBuilder The query builder
+     * @param string       $column       The column name
+     * @param mixed        $value        The property value
+     *
+     * @return void
+     */
+    protected function setQueryBuilderProperty(QueryBuilder $queryBuilder, string $column, $value): void
+    {
+        // Set the column and param name
+        $queryBuilder->set($column);
     }
 
     /**
@@ -373,18 +387,34 @@ class Persister implements Contract
     protected function bindQueryProperties(Query $query, array $properties): void
     {
         // Iterate through the properties
-        foreach ($properties as $column => $property) {
-            // If the property is an object, then serialize it
-            if (is_object($property)) {
-                $property = serialize($property);
-            } // Otherwise json encode if its an array
-            elseif (is_array($property)) {
-                $property = Arr::toString($property);
-            }
-
-            // Bind property
-            $query->bindValue($column, $property);
+        foreach ($properties as $column => $value) {
+            $this->bindQueryProperty($query, $column, $value);
         }
+    }
+
+    /**
+     * Set property for save, create, or delete statements.
+     *
+     * @param Query  $query  The query
+     * @param string $column The column name
+     * @param mixed  $value  The property value
+     *
+     * @throws JsonException
+     *
+     * @return void
+     */
+    protected function bindQueryProperty(Query $query, string $column, $value): void
+    {
+        // If the property is an object, then serialize it
+        if (is_object($value)) {
+            $value = serialize($value);
+        } // Otherwise json encode if its an array
+        elseif (is_array($value)) {
+            $value = Arr::toString($value);
+        }
+
+        // Bind property
+        $query->bindValue($column, $value);
     }
 
     /**
