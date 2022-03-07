@@ -418,7 +418,7 @@ class SqlQueryBuilder implements QueryBuilder
             . ' ' . Statement::INTO
             . ' ' . $this->table
             . ' (' . implode(', ', array_keys($this->values)) . ')'
-            . ' ' . Statement::VALUE
+            . ' ' . Statement::VALUES
             . ' (' . implode(', ', $this->values) . ')';
     }
 

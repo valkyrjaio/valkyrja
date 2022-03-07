@@ -36,7 +36,7 @@ final class Statement
     public const AS        = 'AS';
     public const FROM      = 'FROM';
     public const SET       = 'SET';
-    public const VALUE     = 'VALUES';
+    public const VALUES    = 'VALUES';
     public const WHERE     = 'WHERE';
     public const WHERE_AND = 'AND';
     public const WHERE_OR  = 'OR';
