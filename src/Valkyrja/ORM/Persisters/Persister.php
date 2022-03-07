@@ -103,7 +103,7 @@ class Persister implements Contract
             return;
         }
 
-        $id = spl_object_id($entity);
+        $id = $this->getIdFromEntity($entity);
 
         $this->createEntities[$id] = $entity;
     }
@@ -131,7 +131,7 @@ class Persister implements Contract
             return;
         }
 
-        $id = spl_object_id($entity);
+        $id = $this->getIdFromEntity($entity);
 
         $this->saveEntities[$id] = $entity;
     }
@@ -155,7 +155,7 @@ class Persister implements Contract
             return;
         }
 
-        $id = spl_object_id($entity);
+        $id = $this->getIdFromEntity($entity);
 
         $this->deleteEntities[$id] = $entity;
     }
@@ -208,6 +208,18 @@ class Persister implements Contract
     }
 
     /**
+     * Get an id from an entity.
+     *
+     * @param Entity $entity
+     *
+     * @return int
+     */
+    protected function getIdFromEntity(Entity $entity): int
+    {
+        return spl_object_id($entity);
+    }
+
+    /**
      * Clear a single deferred entity.
      *
      * @param Entity $entity The entity instance to remove.
@@ -217,7 +229,7 @@ class Persister implements Contract
     protected function clearEntity(Entity $entity): void
     {
         // Get the id of the object
-        $id = spl_object_id($entity);
+        $id = $this->getIdFromEntity($entity);
 
         // Unset it
         unset(
