@@ -151,6 +151,8 @@ class PDOStatement implements Contract
             $type = PDO::PARAM_INT;
         } elseif (is_bool($value)) {
             $type = PDO::PARAM_BOOL;
+        } elseif ($value === null) {
+            $type = PDO::PARAM_NULL;
         }
 
         return $type;

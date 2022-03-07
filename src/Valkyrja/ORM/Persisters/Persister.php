@@ -355,10 +355,6 @@ class Persister implements Contract
     {
         // Iterate through the properties
         foreach ($properties as $column => $property) {
-            if ($property === null) {
-                continue;
-            }
-
             // Set the column and param name
             $queryBuilder->set($column);
         }
@@ -378,10 +374,6 @@ class Persister implements Contract
     {
         // Iterate through the properties
         foreach ($properties as $column => $property) {
-            if ($property === null) {
-                continue;
-            }
-
             // If the property is an object, then serialize it
             if (is_object($property)) {
                 $property = serialize($property);
