@@ -57,9 +57,14 @@ abstract class RequestFactory
         array $cookies = null,
         array $files = null
     ): Request {
+        $files ??= $_FILES;
+
         $server  = ServerFactory::normalizeServer($server ?? $_SERVER);
-        $files   = FileFactory::normalizeFiles($files ?? $_FILES);
         $headers = HeaderFactory::marshalHeaders($server);
+
+        if (! empty($files)) {
+            $files = FileFactory::normalizeFiles($files);
+        }
 
         if (null === $cookies && array_key_exists('cookie', $headers)) {
             $cookies = CookieFactory::parseCookieHeader($headers['cookie']);
