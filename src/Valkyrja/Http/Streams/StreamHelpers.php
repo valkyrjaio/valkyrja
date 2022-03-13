@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Streams;
 
-use RuntimeException;
 use Valkyrja\Http\Exceptions\InvalidStream;
+use Valkyrja\Http\Exceptions\StreamException;
 
 use function fopen;
 use function get_resource_type;
@@ -93,7 +93,7 @@ trait StreamHelpers
      */
     protected function isValidStream(): bool
     {
-        return null === $this->stream;
+        return $this->stream === null;
     }
 
     /**
@@ -106,7 +106,7 @@ trait StreamHelpers
         // If there is no stream
         if ($this->isValidStream()) {
             // Throw a runtime exception
-            throw new RuntimeException('No resource available; cannot read');
+            throw new InvalidStream('No resource available; cannot read');
         }
     }
 
@@ -151,7 +151,7 @@ trait StreamHelpers
         // If the stream isn't writable
         if (! $this->isWritable()) {
             // Throw a new runtime exception
-            throw new RuntimeException('Stream is not writable');
+            throw new StreamException('Stream is not writable');
         }
     }
 
@@ -167,7 +167,7 @@ trait StreamHelpers
         // If the write was not successful
         if (false === $result) {
             // Throw a runtime exception
-            throw new RuntimeException('Error writing to stream');
+            throw new StreamException('Error writing to stream');
         }
     }
 
@@ -181,7 +181,7 @@ trait StreamHelpers
         // If the stream isn't seekable
         if (! $this->isSeekable()) {
             // Throw a new runtime exception
-            throw new RuntimeException('Stream is not seekable');
+            throw new StreamException('Stream is not seekable');
         }
     }
 
@@ -197,7 +197,7 @@ trait StreamHelpers
         // If the result was not a 0, denoting an error occurred
         if (0 !== $result) {
             // Throw a new runtime exception
-            throw new RuntimeException('Error seeking within stream');
+            throw new StreamException('Error seeking within stream');
         }
     }
 
@@ -224,7 +224,7 @@ trait StreamHelpers
         // If the stream is not readable
         if (! $this->isReadable()) {
             // Throw a runtime exception
-            throw new RuntimeException('Stream is not readable');
+            throw new StreamException('Stream is not readable');
         }
     }
 
@@ -240,7 +240,7 @@ trait StreamHelpers
         // If there was a failure in reading the stream
         if (false === $result) {
             // Throw a runtime exception
-            throw new RuntimeException('Error reading stream');
+            throw new StreamException('Error reading stream');
         }
     }
 }

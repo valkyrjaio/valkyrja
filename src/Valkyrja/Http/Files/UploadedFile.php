@@ -16,6 +16,7 @@ namespace Valkyrja\Http\Files;
 use InvalidArgumentException;
 use RuntimeException;
 use Valkyrja\Http\Exceptions\InvalidStream;
+use Valkyrja\Http\Exceptions\UploadedFileException;
 use Valkyrja\Http\Stream;
 use Valkyrja\Http\Streams\Stream as HttpStream;
 use Valkyrja\Http\UploadedFile as UploadedFileContract;
@@ -147,13 +148,13 @@ class UploadedFile implements UploadedFileContract
         // If the error status is not OK
         if (UPLOAD_ERR_OK !== $this->errorStatus) {
             // Throw a runtime exception as there's been an uploaded file error
-            throw new RuntimeException('Cannot retrieve stream due to upload error');
+            throw new UploadedFileException('Cannot retrieve stream due to upload error');
         }
 
         // If the file has already been moved
         if ($this->moved) {
             // Throw a runtime exception as subsequent moves are not allowed in PSR-7
-            throw new RuntimeException('Cannot retrieve stream after it has already been moved');
+            throw new UploadedFileException('Cannot retrieve stream after it has already been moved');
         }
 
         // If the stream has been set
@@ -180,14 +181,14 @@ class UploadedFile implements UploadedFileContract
         // If the error status is not OK
         if (UPLOAD_ERR_OK !== $this->errorStatus) {
             // Throw a runtime exception as there's been an uploaded file error
-            throw new RuntimeException('Cannot retrieve stream due to upload error');
+            throw new UploadedFileException('Cannot retrieve stream due to upload error');
         }
 
         // If the file has already been moved
         if ($this->moved) {
             // Throw a runtime exception as subsequent moves are not allowed
             // in PSR-7
-            throw new RuntimeException('Cannot move file after it has already been moved');
+            throw new UploadedFileException('Cannot move file after it has already been moved');
         }
 
         $targetDirectory = dirname($targetPath);
@@ -196,7 +197,7 @@ class UploadedFile implements UploadedFileContract
         // or the target directory is not writable
         if (! is_dir($targetDirectory) || ! is_writable($targetDirectory)) {
             // Throw a runtime exception
-            throw new RuntimeException(
+            throw new UploadedFileException(
                 sprintf('The target directory `%s` does not exists or is not writable', $targetDirectory)
             );
         }
@@ -214,7 +215,7 @@ class UploadedFile implements UploadedFileContract
         // and if the move_uploaded_file function call failed
         elseif (! move_uploaded_file($this->file, $targetPath)) {
             // Throw a runtime exception
-            throw new RuntimeException('Error occurred while moving uploaded file');
+            throw new UploadedFileException('Error occurred while moving uploaded file');
         }
 
         $this->moved = true;
@@ -270,7 +271,7 @@ class UploadedFile implements UploadedFileContract
         // If the handler failed to open
         if (false === $handle) {
             // Throw a runtime exception
-            throw new RuntimeException('Unable to write to designated path');
+            throw new UploadedFileException('Unable to write to designated path');
         }
 
         // Get the stream

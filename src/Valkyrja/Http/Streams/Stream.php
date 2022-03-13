@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Streams;
 
 use RuntimeException;
 use Valkyrja\Http\Exceptions\InvalidStream;
+use Valkyrja\Http\Exceptions\StreamException;
 use Valkyrja\Http\Stream as StreamContract;
 
 use function fclose;
@@ -247,7 +248,7 @@ class Stream implements StreamContract
         // If the tell is not an int
         if ($result === false) {
             // Throw a runtime exception
-            throw new RuntimeException('Error occurred during tell operation');
+            throw new StreamException('Error occurred during tell operation');
         }
 
         return $result;
@@ -275,7 +276,7 @@ class Stream implements StreamContract
         // If the stream isn't readable
         if (! $this->isReadable()) {
             // Throw a runtime exception
-            throw new RuntimeException('Stream is not readable');
+            throw new StreamException('Stream is not readable');
         }
 
         // Get the stream contents
@@ -284,7 +285,7 @@ class Stream implements StreamContract
         // If there was a failure in getting the stream contents
         if (false === $result) {
             // Throw a runtime exception
-            throw new RuntimeException('Error reading from stream');
+            throw new StreamException('Error reading from stream');
         }
 
         return $result;

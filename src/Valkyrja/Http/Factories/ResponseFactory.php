@@ -68,7 +68,7 @@ class ResponseFactory implements Contract
      */
     public function createJsonResponse(array $data = null, int $statusCode = null, array $headers = null): JsonResponse
     {
-        return new  \Valkyrja\Http\Responses\JsonResponse($data, $statusCode, $headers);
+        return new \Valkyrja\Http\Responses\JsonResponse($data, $statusCode, $headers);
     }
 
     /**

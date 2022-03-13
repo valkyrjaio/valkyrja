@@ -30,7 +30,6 @@ use function ltrim;
 use function preg_match;
 use function preg_replace;
 use function strlen;
-
 use function strpos;
 use function strrpos;
 use function strtolower;
@@ -64,7 +63,7 @@ abstract class UriFactory
 
         // URI scheme
         $scheme = 'http';
-        $https  = self::get('HTTPS', $server);
+        $https  = $server['HTTPS'] ?? null;
 
         if (($https && 'off' !== $https)
             || self::getHeader('x-forwarded-proto', $headers, false) === 'https'
@@ -72,9 +71,7 @@ abstract class UriFactory
             $scheme = 'https';
         }
 
-        if (! empty($scheme)) {
-            $uri = $uri->withScheme($scheme);
-        }
+        $uri = $uri->withScheme($scheme);
 
         // Set the host
         $accumulator = (object) ['host' => '', 'port' => null];
@@ -111,25 +108,6 @@ abstract class UriFactory
         }
 
         return $uri->withPath($path)->withFragment($fragment)->withQuery($query);
-    }
-
-    /**
-     * Access a value in an array, returning a default value if not found.
-     * Will also do a case-insensitive search if a case sensitive search fails.
-     *
-     * @param string     $key
-     * @param array      $values
-     * @param mixed|null $default
-     *
-     * @return mixed
-     */
-    public static function get(string $key, array $values, $default = null)
-    {
-        if (array_key_exists($key, $values)) {
-            return $values[$key];
-        }
-
-        return $default;
     }
 
     /**
@@ -209,24 +187,24 @@ abstract class UriFactory
     {
         // IIS7 with URL Rewrite: make sure we get the unencoded url
         // (double slash problem).
-        $iisUrlRewritten = self::get('IIS_WasUrlRewritten', $server);
-        $unencodedUrl    = self::get('UNENCODED_URL', $server, '');
+        $iisUrlRewritten = $server['IIS_WasUrlRewritten'] ?? null;
+        $unencodedUrl    = $server['UNENCODED_URL'] ?? '';
 
-        if ('1' === $iisUrlRewritten && ! empty($unencodedUrl)) {
+        if ($iisUrlRewritten === '1' && ! empty($unencodedUrl)) {
             return $unencodedUrl;
         }
 
-        $requestUri = self::get('REQUEST_URI', $server);
+        $requestUri = $server['REQUEST_URI'] ?? null;
 
         // Check this first so IIS will catch.
-        $httpXRewriteUrl = self::get('HTTP_X_REWRITE_URL', $server);
+        $httpXRewriteUrl = $server['HTTP_X_REWRITE_URL'] ?? null;
 
         if ($httpXRewriteUrl !== null) {
             $requestUri = $httpXRewriteUrl;
         }
 
         // Check for IIS 7.0 or later with ISAPI_Rewrite
-        $httpXOriginalUrl = self::get('HTTP_X_ORIGINAL_URL', $server);
+        $httpXOriginalUrl = $server['HTTP_X_ORIGINAL_URL'] ?? null;
 
         if ($httpXOriginalUrl !== null) {
             $requestUri = $httpXOriginalUrl;
@@ -236,7 +214,7 @@ abstract class UriFactory
             return preg_replace('#^[^/:]+://[^/]+#', '', $requestUri);
         }
 
-        $origPathInfo = self::get('ORIG_PATH_INFO', $server);
+        $origPathInfo = $server['ORIG_PATH_INFO'] ?? null;
 
         if (empty($origPathInfo)) {
             return '/';

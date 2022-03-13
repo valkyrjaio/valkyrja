@@ -35,7 +35,7 @@ abstract class FileFactory
      *
      * @throws InvalidArgumentException for unrecognized values
      *
-     * @return array
+     * @return UploadedFile[]
      */
     public static function normalizeFiles(array $files): array
     {

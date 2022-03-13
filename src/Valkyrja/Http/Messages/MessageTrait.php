@@ -139,10 +139,9 @@ trait MessageTrait
             unset($new->headers[$new->headerNames[$normalized]]);
         }
 
-        $values = $this->assertHeaderValues(...$values);
-
         $new->headerNames[$normalized] = $name;
-        $new->headers[$name]           = $values;
+
+        $new->headers[$name] = $this->assertHeaderValues(...$values);
 
         return $new;
     }
@@ -162,9 +161,7 @@ trait MessageTrait
 
         $new = clone $this;
 
-        $values = $this->assertHeaderValues(...$values);
-
-        $new->headers[$name] = array_merge($this->headers[$name], $values);
+        $new->headers[$name] = array_merge($this->headers[$name], $this->assertHeaderValues(...$values));
 
         return $new;
     }
@@ -210,7 +207,7 @@ trait MessageTrait
     /**
      * Set headers.
      *
-     * @param array $originalHeaders
+     * @param array<string, string|array> $originalHeaders The original headers
      *
      * @throws InvalidArgumentException
      *
@@ -222,12 +219,12 @@ trait MessageTrait
 
         foreach ($originalHeaders as $header => $value) {
             $value = is_array($value) ? $value : [$value];
-            $value = $this->assertHeaderValues(...$value);
 
             HeaderSecurity::assertValidName($header);
 
             $headerNames[strtolower($header)] = $header;
-            $headers[$header]                 = $value;
+
+            $headers[$header] = $this->assertHeaderValues(...$value);
         }
 
         $this->headerNames = $headerNames;
@@ -237,7 +234,7 @@ trait MessageTrait
     /**
      * Validate the protocol version.
      *
-     * @param string $version
+     * @param string $version The version
      *
      * @throws InvalidProtocolVersion
      *

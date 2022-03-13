@@ -65,10 +65,8 @@ use Valkyrja\Support\Type\Str;
  *
  * @author Melech Mizrachi
  */
-class Request implements Contract
+class Request extends SimpleRequest implements Contract
 {
-    use RequestTrait;
-
     /**
      * The server params.
      *
@@ -119,7 +117,7 @@ class Request implements Contract
     protected array $files = [];
 
     /**
-     * NativeServerRequest constructor.
+     * Request constructor.
      *
      * @param Uri|null     $uri        [optional] The uri
      * @param string|null  $method     [optional] The method
@@ -155,7 +153,7 @@ class Request implements Contract
         string $protocol = null,
         UploadedFile ...$files
     ) {
-        $this->initialize($uri, $method, $body, $headers);
+        parent::__construct($uri, $method, $body, $headers);
 
         if (
             $this->hasHeader(Header::CONTENT_TYPE)

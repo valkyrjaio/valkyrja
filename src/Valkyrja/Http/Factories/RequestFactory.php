@@ -57,8 +57,8 @@ abstract class RequestFactory
         array $cookies = null,
         array $files = null
     ): Request {
-        $server  = ServerFactory::normalizeServer($server ?: $_SERVER);
-        $files   = FileFactory::normalizeFiles($files ?: $_FILES);
+        $server  = ServerFactory::normalizeServer($server ?? $_SERVER);
+        $files   = FileFactory::normalizeFiles($files ?? $_FILES);
         $headers = HeaderFactory::marshalHeaders($server);
 
         if (null === $cookies && array_key_exists('cookie', $headers)) {
@@ -66,36 +66,17 @@ abstract class RequestFactory
         }
 
         return new Request(
-            UriFactory::marshalUriFromServer($server, $headers),
-            static::get('REQUEST_METHOD', $server, RequestMethod::GET),
-            new Stream(StreamType::INPUT),
-            $headers,
-            $server,
-            $cookies ?? $_COOKIE,
-            $query ?? $_GET,
-            $body ?? $_POST,
-            static::marshalProtocolVersion($server),
+               UriFactory::marshalUriFromServer($server, $headers),
+               $server['REQUEST_METHOD'] ?? RequestMethod::GET,
+               new Stream(StreamType::INPUT),
+               $headers,
+               $server,
+               $cookies ?? $_COOKIE,
+               $query ?? $_GET,
+               $body ?? $_POST,
+               static::getProtocolVersionFromServer($server),
             ...$files,
         );
-    }
-
-    /**
-     * Access a value in an array, returning a default value if not found.
-     * Will also do a case-insensitive search if a case sensitive search fails.
-     *
-     * @param string $key
-     * @param array  $values
-     * @param mixed  $default
-     *
-     * @return mixed
-     */
-    public static function get($key, array $values, $default = null)
-    {
-        if (array_key_exists($key, $values)) {
-            return $values[$key];
-        }
-
-        return $default;
     }
 
     /**
@@ -107,17 +88,19 @@ abstract class RequestFactory
      *
      * @return string
      */
-    protected static function marshalProtocolVersion(array $server): string
+    protected static function getProtocolVersionFromServer(array $server): string
     {
-        if (! isset($server['SERVER_PROTOCOL'])) {
+        $serverProtocol = $server['SERVER_PROTOCOL'] ?? null;
+
+        if ($serverProtocol === null) {
             return '1.1';
         }
 
-        if (! preg_match('#^(HTTP/)?(?P<version>[1-9]\d*(?:\.\d)?)$#', $server['SERVER_PROTOCOL'], $matches)) {
+        if (! preg_match('#^(HTTP/)?(?P<version>[1-9]\d*(?:\.\d)?)$#', $serverProtocol, $matches)) {
             throw new UnexpectedValueException(
                 sprintf(
                     'Unrecognized protocol version (%s)',
-                    $server['SERVER_PROTOCOL']
+                    $serverProtocol
                 )
             );
         }
