@@ -66,15 +66,15 @@ abstract class RequestFactory
         }
 
         return new Request(
-               UriFactory::marshalUriFromServer($server, $headers),
-               $server['REQUEST_METHOD'] ?? RequestMethod::GET,
-               new Stream(StreamType::INPUT),
-               $headers,
-               $server,
-               $cookies ?? $_COOKIE,
-               $query ?? $_GET,
-               $body ?? $_POST,
-               static::getProtocolVersionFromServer($server),
+            UriFactory::marshalUriFromServer($server, $headers),
+            $server['REQUEST_METHOD'] ?? RequestMethod::GET,
+            new Stream(StreamType::INPUT),
+            $headers,
+            $server,
+            $cookies ?? $_COOKIE,
+            $query ?? $_GET,
+            $body ?? $_POST,
+            static::getProtocolVersionFromServer($server),
             ...$files,
         );
     }

@@ -56,7 +56,7 @@ class SimpleRequest implements SimpleRequestContract
 {
     use MessageTrait;
 
-    public static string $HOST_NAME = 'Host';
+    public static string $HOST_NAME      = 'Host';
     public static string $HOST_NAME_NORM = 'host';
 
     /**
