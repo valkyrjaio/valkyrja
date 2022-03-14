@@ -26,7 +26,7 @@ interface Dispatch extends Model
     /**
      * Get the id.
      *
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string;
 
@@ -42,7 +42,7 @@ interface Dispatch extends Model
     /**
      * Get the name.
      *
-     * @return string
+     * @return string|null
      */
     public function getName(): ?string;
 
@@ -58,7 +58,7 @@ interface Dispatch extends Model
     /**
      * Get the class.
      *
-     * @return string
+     * @return string|null
      */
     public function getClass(): ?string;
 
@@ -81,7 +81,7 @@ interface Dispatch extends Model
     /**
      * Get the property.
      *
-     * @return string
+     * @return string|null
      */
     public function getProperty(): ?string;
 
@@ -104,7 +104,7 @@ interface Dispatch extends Model
     /**
      * Get the method.
      *
-     * @return string
+     * @return string|null
      */
     public function getMethod(): ?string;
 
@@ -141,7 +141,7 @@ interface Dispatch extends Model
     public function setStatic(bool $static = true): self;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getFunction(): ?string;
 
@@ -164,7 +164,7 @@ interface Dispatch extends Model
     /**
      * Get the closure.
      *
-     * @return Closure
+     * @return Closure|null
      */
     public function getClosure(): ?Closure;
 
@@ -187,7 +187,7 @@ interface Dispatch extends Model
     /**
      * Get the matches.
      *
-     * @return array
+     * @return array|null
      */
     public function getMatches(): ?array;
 
@@ -203,7 +203,7 @@ interface Dispatch extends Model
     /**
      * Get the arguments.
      *
-     * @return array
+     * @return array|null
      */
     public function getArguments(): ?array;
 
@@ -219,7 +219,7 @@ interface Dispatch extends Model
     /**
      * Get the dependencies.
      *
-     * @return array
+     * @return array|null
      */
     public function getDependencies(): ?array;
 

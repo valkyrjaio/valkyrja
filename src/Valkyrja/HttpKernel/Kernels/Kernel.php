@@ -252,7 +252,7 @@ class Kernel implements Contract
 
         return $this->getResponseFactory()
             ->view(
-                "{$this->errorsTemplateDir}/500",
+                "$this->errorsTemplateDir/500",
                 null,
                 StatusCode::INTERNAL_SERVER_ERROR
             );
@@ -279,7 +279,7 @@ class Kernel implements Contract
                 );
         } catch (Throwable $throwable) {
             return $responseFactory->view(
-                "{$this->errorsTemplateDir}/error",
+                "$this->errorsTemplateDir/error",
                 [
                     'exception' => $exception,
                 ],
@@ -310,7 +310,7 @@ class Kernel implements Contract
         /** @var Logger $logger */
         $logger     = $this->container->getSingleton(Logger::class);
         $url        = $this->request->getUri()->getPath();
-        $logMessage = "Kernel Error\nUrl: {$url}";
+        $logMessage = "Kernel Error\nUrl: $url";
 
         $logger->exception($exception, $logMessage);
     }

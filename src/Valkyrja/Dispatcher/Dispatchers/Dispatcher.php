@@ -244,8 +244,7 @@ class Dispatcher implements Contract
      */
     protected function isInvalidClassProperty(Dispatch $dispatch): bool
     {
-        return $dispatch->isProperty()
-            && ! property_exists($dispatch->getClass(), $dispatch->getProperty());
+        return $dispatch->isProperty() && ! property_exists($dispatch->getClass(), $dispatch->getProperty());
     }
 
     /**
@@ -321,7 +320,7 @@ class Dispatcher implements Contract
      * @param Dispatch   $dispatch  The dispatch
      * @param array|null $arguments [optional] The arguments
      *
-     * @return array
+     * @return array|null
      */
     protected function getArguments(Dispatch $dispatch, array $arguments = null): ?array
     {
@@ -351,7 +350,7 @@ class Dispatcher implements Contract
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @return array
+     * @return array|null
      */
     protected function getDependencies(Dispatch $dispatch): ?array
     {

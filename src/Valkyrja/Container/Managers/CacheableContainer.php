@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Managers;
 
+use JsonException;
 use Valkyrja\Container\Annotator;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Config\Config as ContainerConfig;
@@ -30,6 +31,8 @@ class CacheableContainer extends Container
 
     /**
      * Get a cacheable representation of the service container.
+     *
+     * @throws JsonException
      *
      * @return Cache|object
      */
@@ -161,7 +164,7 @@ class CacheableContainer extends Container
     protected function setupServiceProviders($config): void
     {
         // Iterate through all the providers
-        foreach ($config['providers'] as $key => $provider) {
+        foreach ($config['providers'] as $provider) {
             $this->register($provider);
         }
 
@@ -171,7 +174,7 @@ class CacheableContainer extends Container
         }
 
         // Iterate through all the providers
-        foreach ($config['devProviders'] as $key => $devProvider) {
+        foreach ($config['devProviders'] as $devProvider) {
             $this->register($devProvider);
         }
     }
