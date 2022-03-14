@@ -31,7 +31,7 @@ abstract class AuthorizedMiddleware extends AuthMiddleware
     {
         try {
             // Check if the user is authorized
-            if (static::checkAuthorized(static::getUser())) {
+            if (static::checkAuthorized($request, static::getUser())) {
                 // Only continue the request if the user is authorized
                 return $request;
             }
@@ -45,9 +45,10 @@ abstract class AuthorizedMiddleware extends AuthMiddleware
     /**
      * Check if the authenticated user is authorized.
      *
-     * @param User $user The authenticated user
+     * @param Request $request The request
+     * @param User    $user    The authenticated user
      *
      * @return bool
      */
-    abstract protected static function checkAuthorized(User $user): bool;
+    abstract protected static function checkAuthorized(Request $request, User $user): bool;
 }

@@ -43,13 +43,6 @@ abstract class Middleware
     public static Events $events;
 
     /**
-     * The request.
-     *
-     * @var Request
-     */
-    public static Request $request;
-
-    /**
      * The response factory.
      *
      * @var ResponseFactory
