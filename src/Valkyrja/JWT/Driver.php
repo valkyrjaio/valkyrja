@@ -11,28 +11,30 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth;
+namespace Valkyrja\JWT;
 
 /**
- * Interface TokenizedRepository.
+ * Interface Driver.
  *
  * @author Melech Mizrachi
  */
-interface TokenizedRepository extends Repository
+interface Driver
 {
     /**
-     * Get the token.
+     * Encode a payload array into a JWT string.
+     *
+     * @param array $payload The payload
      *
      * @return string
      */
-    public function getToken(): string;
+    public function encode(array $payload): string;
 
     /**
-     * Authenticate using a given token.
+     * Decode a JWT string into a payload array.
      *
-     * @param string $token The token
+     * @param string $jwt The JWT string
      *
-     * @return $this
+     * @return array
      */
-    public function authenticateFromToken(string $token): self;
+    public function decode(string $jwt): array;
 }

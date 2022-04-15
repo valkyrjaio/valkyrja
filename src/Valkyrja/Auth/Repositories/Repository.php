@@ -23,7 +23,8 @@ use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\Repository as Contract;
 use Valkyrja\Auth\User;
 use Valkyrja\Http\Request;
-use Valkyrja\Session\Session;
+use Valkyrja\Session\Driver as Session;
+use Valkyrja\Session\Session as SessionManager;
 use Valkyrja\Support\Type\Cls;
 
 /**
@@ -48,7 +49,7 @@ class Repository implements Contract
     protected Adapter $adapter;
 
     /**
-     * The session manager.
+     * The session.
      *
      * @var Session
      */
@@ -99,18 +100,18 @@ class Repository implements Contract
     /**
      * Repository constructor.
      *
-     * @param Adapter $adapter
-     * @param Session $session
-     * @param array   $config
-     * @param string  $user
+     * @param Adapter        $adapter The adapter
+     * @param SessionManager $session The session service
+     * @param array          $config  The config
+     * @param string         $user    The user class
      */
-    public function __construct(Adapter $adapter, Session $session, array $config, string $user)
+    public function __construct(Adapter $adapter, SessionManager $session, array $config, string $user)
     {
         Cls::validateInherits($user, User::class);
 
         $this->config         = $config;
         $this->adapter        = $adapter;
-        $this->session        = $session;
+        $this->session        = $session->useSession();
         $this->userEntityName = $user;
 
         $this->usersModel = $this->userEntityName::getAuthCollection();
@@ -389,18 +390,6 @@ class Repository implements Contract
         }
 
         $this->setAuthenticatedUser($user);
-
-        return $this;
-    }
-
-    /**
-     * Store the confirmed password timestamp in session.
-     *
-     * @return static
-     */
-    protected function storeConfirmedPassword(): self
-    {
-        $this->session->set(SessionId::PASSWORD_CONFIRMED_TIMESTAMP, time());
 
         return $this;
     }

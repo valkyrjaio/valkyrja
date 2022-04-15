@@ -52,6 +52,8 @@ final class ConfigKeyPart
     public const TIMEZONE                    = 'timezone';
     public const VERSION                     = 'version';
     public const KEY                         = 'key';
+    public const PRIVATE_KEY                 = 'privateKey';
+    public const PUBLIC_KEY                  = 'publicKey';
     public const KEY_PATH                    = 'keyPath';
     public const HTTP_EXCEPTION              = 'httpException';
     public const EXCEPTION_HANDLER           = 'exceptionHandler';
@@ -97,6 +99,7 @@ final class ConfigKeyPart
     public const USER                        = 'user';
     public const USERNAME                    = 'username';
     public const PASSWORD                    = 'password';
+    public const PASSPHRASE                  = 'passphrase';
     public const MESSAGE                     = 'message';
     public const DEFAULT_MESSAGE             = 'defaultMessage';
     public const MESSAGE_ADAPTERS            = 'messageAdapters';
@@ -200,4 +203,6 @@ final class ConfigKeyPart
     public const BUNDLE                      = 'bundle';
     public const BUNDLES                     = 'bundles';
     public const MANIFEST                    = 'manifest';
+    public const ALGO                        = 'algo';
+    public const ALGOS                       = 'algos';
 }

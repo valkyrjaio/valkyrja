@@ -17,14 +17,16 @@ use Exception;
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth as Contract;
 use Valkyrja\Auth\AuthenticatedUsers;
-use Valkyrja\Auth\Constants\Header;
+use Valkyrja\Auth\CryptTokenizedRepository;
 use Valkyrja\Auth\Gate;
+use Valkyrja\Auth\JWTCryptRepository;
+use Valkyrja\Auth\JWTRepository;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\ORMAdapter;
 use Valkyrja\Auth\Repository;
-use Valkyrja\Auth\TokenizedRepository;
 use Valkyrja\Auth\User;
 use Valkyrja\Container\Container;
+use Valkyrja\Http\Constants\Header;
 use Valkyrja\Http\Request;
 use Valkyrja\Support\Type\Cls;
 
@@ -175,8 +177,8 @@ class Auth implements Contract
     public function requestWithAuthToken(Request $request, string $user = null, string $adapter = null): Request
     {
         return $request->withHeader(
-            Header::AUTH_TOKEN,
-            $this->getRepository($user, $adapter)->getUser()::asTokenized()
+            Header::AUTHORIZATION,
+            'Bearer ' . $this->getRepository($user, $adapter)->getToken()
         );
     }
 
@@ -185,7 +187,7 @@ class Auth implements Contract
      */
     public function requestWithoutAuthToken(Request $request): Request
     {
-        return $request->withoutHeader(Header::AUTH_TOKEN);
+        return $request->withoutHeader(Header::AUTHORIZATION);
     }
 
     /**
@@ -413,10 +415,19 @@ class Auth implements Contract
      */
     protected function __getRepository(string $name, string $user, string $adapter = null): Repository
     {
+        $defaultClass = Repository::class;
+        if (Cls::inherits($name, JWTCryptRepository::class)) {
+            $defaultClass = JWTCryptRepository::class;
+        } elseif (Cls::inherits($name, CryptTokenizedRepository::class)) {
+            $defaultClass = CryptTokenizedRepository::class;
+        } elseif (Cls::inherits($name, JWTRepository::class)) {
+            $defaultClass = JWTRepository::class;
+        }
+
         return Cls::getDefaultableService(
             $this->container,
             $name,
-            Cls::inherits($name, TokenizedRepository::class) ? TokenizedRepository::class : Repository::class,
+            $defaultClass,
             [
                 $this->getAdapter($adapter),
                 $user,

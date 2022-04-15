@@ -28,6 +28,7 @@ use Valkyrja\Container\Config\Config as Container;
 use Valkyrja\Crypt\Config\Config as Crypt;
 use Valkyrja\Event\Config\Config as Event;
 use Valkyrja\Filesystem\Config\Config as Filesystem;
+use Valkyrja\JWT\Config\Config as JWT;
 use Valkyrja\Log\Config\Config as Log;
 use Valkyrja\Mail\Config\Config as Mail;
 use Valkyrja\Notification\Config\Config as Notification;
@@ -131,6 +132,13 @@ class Config extends Model
      * @var Filesystem
      */
     public Filesystem $filesystem;
+
+    /**
+     * The JWT module config.
+     *
+     * @var JWT
+     */
+    public JWT $jwt;
 
     /**
      * The logging module config.

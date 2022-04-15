@@ -13,60 +13,45 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Repositories;
 
-use Exception;
-use RuntimeException;
-use Valkyrja\Auth\Adapter;
+use Throwable;
 use Valkyrja\Auth\AuthenticatedUsers;
-use Valkyrja\Auth\Constants\Header;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
+use Valkyrja\Auth\Exceptions\MissingTokenizableUserRequiredFieldsException;
+use Valkyrja\Auth\Exceptions\TokenizationException;
 use Valkyrja\Auth\TokenizableUser;
 use Valkyrja\Auth\TokenizedRepository as Contract;
 use Valkyrja\Auth\User;
-use Valkyrja\Crypt\Crypt;
-use Valkyrja\Crypt\Exceptions\CryptException;
+use Valkyrja\Http\Constants\Header;
 use Valkyrja\Http\Request;
-use Valkyrja\Session\Session;
+use Valkyrja\Support\Type\Str;
 
 /**
- * Class TokenizedRepository.
+ * Abstract Class TokenizedRepository.
  *
  * @author Melech Mizrachi
+ *
+ * @property TokenizableUser        $user
+ * @property TokenizableUser|string $userEntityName
  */
-class TokenizedRepository extends Repository implements Contract
+abstract class TokenizedRepository extends Repository implements Contract
 {
     /**
-     * The crypt service.
+     * The token.
      *
-     * @var Crypt
+     * @var string
      */
-    protected Crypt $crypt;
-
-    /**
-     * Repository constructor.
-     *
-     * @param Adapter $adapter
-     * @param Crypt   $crypt The crypt
-     * @param Session $session
-     * @param array   $config
-     * @param string  $user
-     */
-    public function __construct(Adapter $adapter, Crypt $crypt, Session $session, array $config, string $user)
-    {
-        parent::__construct($adapter, $session, $config, $user);
-
-        $this->crypt = $crypt;
-    }
+    protected string $token;
 
     /**
      * @inheritDoc
      *
-     * @throws CryptException
+     * @throws TokenizationException
      */
     public function setUser(User $user): self
     {
         parent::setUser($user);
 
-        $this->setUserToken();
+        $this->resetToken();
 
         return $this;
     }
@@ -74,13 +59,13 @@ class TokenizedRepository extends Repository implements Contract
     /**
      * @inheritDoc
      *
-     * @throws CryptException
+     * @throws TokenizationException
      */
     public function setUsers(AuthenticatedUsers $users): self
     {
         parent::setUsers($users);
 
-        $this->setUserToken();
+        $this->resetToken();
 
         return $this;
     }
@@ -88,13 +73,13 @@ class TokenizedRepository extends Repository implements Contract
     /**
      * @inheritDoc
      *
-     * @throws CryptException
+     * @throws TokenizationException
      */
     public function authenticate(User $user): self
     {
         parent::authenticate($user);
 
-        $this->setUserToken();
+        $this->resetToken();
 
         return $this;
     }
@@ -105,11 +90,8 @@ class TokenizedRepository extends Repository implements Contract
     public function authenticateFromSession(): self
     {
         $token = $this->getTokenFromSession();
-        $user  = $this->getUserFromToken($token);
 
-        $this->authenticateWithUser($user);
-
-        return $this;
+        return $this->authenticateFromToken($token);
     }
 
     /**
@@ -117,16 +99,15 @@ class TokenizedRepository extends Repository implements Contract
      */
     public function authenticateFromRequest(Request $request): self
     {
-        $token = $request->getHeaderLine(Header::AUTH_TOKEN);
-        $user  = $this->getUserFromToken($token);
+        $token = $this->getTokenFromRequest($request);
 
-        return $this->authenticateWithUser($user);
+        return $this->authenticateFromToken($token);
     }
 
     /**
      * @inheritDoc
      *
-     * @throws CryptException
+     * @throws TokenizationException
      */
     public function setSession(): self
     {
@@ -138,22 +119,50 @@ class TokenizedRepository extends Repository implements Contract
     /**
      * Get the user token.
      *
-     * @throws CryptException
+     * @throws TokenizationException
      *
      * @return string
      */
-    protected function getToken(): string
+    public function getToken(): string
     {
-        /** @var TokenizableUser $user */
-        $user = $this->user;
+        return $this->token ??= $this->getFreshToken();
+    }
 
-        if ($token = $user::asTokenized()) {
-            return $token;
+    /**
+     * @inheritDoc
+     */
+    public function authenticateFromToken(string $token): self
+    {
+        $user = $this->getUserFromToken($token);
+
+        return $this->authenticateWithUser($user);
+    }
+
+    /**
+     * Try tokenizing the users.
+     *
+     * @param AuthenticatedUsers $users The users
+     *
+     * @throws TokenizationException
+     *
+     * @return string
+     */
+    protected function tryTokenizingUsers(AuthenticatedUsers $users): string
+    {
+        try {
+            return $this->tokenizeUsers($users);
+        } catch (Throwable $exception) {
+            throw new TokenizationException($exception->getMessage(), $exception->getCode(), $exception);
         }
+    }
 
-        $collection        = $this->users;
-        $collectionAsArray = $collection->asArray();
-        // Required fields that should exist within the tokenized user
+    /**
+     * Get the required fields.
+     *
+     * @return string[]
+     */
+    protected function getRequiredFields(): array
+    {
         $requiredFields = [
             $this->userEntityName::getIdField(),
         ];
@@ -166,39 +175,33 @@ class TokenizedRepository extends Repository implements Contract
             $requiredFields = array_merge($requiredFields, $this->user::getAuthenticationFields());
         }
 
-        foreach ($collection->all() as $key => $userFromCollection) {
+        return $requiredFields;
+    }
+
+    /**
+     * Ensure required fields for tokenization.
+     *
+     * @param AuthenticatedUsers $users The users
+     *
+     * @return void
+     */
+    protected function ensureRequiredFieldsForTokenization(AuthenticatedUsers $users): void
+    {
+        // Required fields that should exist within the tokenized user
+        $requiredFields = $this->getRequiredFields();
+
+        /** @var TokenizableUser $userFromCollection */
+        foreach ($users->all() as $key => $userFromCollection) {
             $userAsTokenizableArray = $collectionAsArray['users'][$key] = $userFromCollection->asTokenizableArray();
 
             foreach ($requiredFields as $requiredField) {
                 if (! isset($userAsTokenizableArray[$requiredField])) {
                     $entityName = $this->userEntityName;
 
-                    throw new RuntimeException("Required field `${requiredField}` is not being returned in ${entityName}::asTokenizableArray()");
+                    throw new MissingTokenizableUserRequiredFieldsException("Required field `$requiredField` is not being returned in $entityName::asTokenizableArray()");
                 }
             }
         }
-
-        $token = $this->crypt->encryptArray($collectionAsArray);
-
-        $user::setTokenized($token);
-
-        return $token;
-    }
-
-    /**
-     * Determine if a token is valid.
-     *
-     * @param string|null $token [optional] The token
-     *
-     * @return bool
-     */
-    protected function isTokenValid(string $token = null): bool
-    {
-        if (! $token) {
-            return false;
-        }
-
-        return $this->crypt->isValidEncryptedMessage($token);
     }
 
     /**
@@ -212,11 +215,25 @@ class TokenizedRepository extends Repository implements Contract
     }
 
     /**
+     * Get the token from a request.
+     *
+     * @param Request $request The request
+     *
+     * @return string
+     */
+    protected function getTokenFromRequest(Request $request): string
+    {
+        $token = $request->getHeaderLine(Header::AUTHORIZATION);
+
+        return Str::replace($token, 'Bearer ', '');
+    }
+
+    /**
      * Store the user token in session.
      *
      * @param string|null $token [optional] The token to store
      *
-     * @throws CryptException
+     * @throws TokenizationException
      *
      * @return static
      */
@@ -232,17 +249,18 @@ class TokenizedRepository extends Repository implements Contract
      *
      * @param string|null $token [optional] The token
      *
+     * @throws InvalidAuthenticationException
+     *
      * @return User
      */
     protected function getUserFromToken(string $token = null): User
     {
-        if (
-            ! $this->isTokenValid($token)
-            || null === $users = $this->tryGettingUserFromToken($token)
-        ) {
+        try {
+            $users = $this->tryUnTokenizingUsers($token);
+        } catch (Throwable $exception) {
             $this->resetAfterUnAuthentication();
 
-            throw new InvalidAuthenticationException('Invalid user token.');
+            throw new InvalidAuthenticationException('Invalid user token.', $exception->getCode(), $exception);
         }
 
         $this->users = $users;
@@ -250,35 +268,70 @@ class TokenizedRepository extends Repository implements Contract
         return $users->getCurrent();
     }
 
+
     /**
      * Attempt to get users from token.
      *
      * @param string $token The token
      *
-     * @return AuthenticatedUsers|null
+     * @throws TokenizationException
+     *
+     * @return AuthenticatedUsers
      */
-    protected function tryGettingUserFromToken(string $token): ?AuthenticatedUsers
+    protected function tryUnTokenizingUsers(string $token): AuthenticatedUsers
     {
         try {
-            $usersProperties = $this->crypt->decryptArray($token);
-            /** @var AuthenticatedUsers $users */
-            $users = $this->usersModel::fromArray($usersProperties);
-        } catch (Exception $exception) {
-            return null;
+            return $this->unTokenizeUsers($token);
+        } catch (Throwable $exception) {
+            throw new TokenizationException($exception->getMessage(), $exception->getCode(), $exception);
         }
+    }
 
-        return $users;
+    /**
+     * Get a fresh token.
+     *
+     * @return string
+     */
+    protected function getFreshToken(): string
+    {
+        $user  = $this->user;
+        $users = $this->users;
+
+        $this->ensureRequiredFieldsForTokenization($users);
+        $token = $this->tryTokenizingUsers($users);
+
+        $user::setTokenized($token);
+
+        return $token;
     }
 
     /**
      * Set the user token.
      *
-     * @throws CryptException
+     * @throws TokenizationException
      *
      * @return void
      */
-    protected function setUserToken(): void
+    protected function resetToken(): void
     {
-        $this->user::setTokenized($this->getToken());
+        $this->user::setTokenized($this->token = $this->getFreshToken());
     }
+
+    /**
+     * Tokenize the users.
+     *
+     * @param AuthenticatedUsers $users The users
+     *
+     * @return string
+     */
+    abstract protected function tokenizeUsers(AuthenticatedUsers $users): string;
+
+    /**
+     * Un-tokenize users.
+     *
+     * @param string $token The token
+     *
+     * @return AuthenticatedUsers
+     */
+    abstract protected function unTokenizeUsers(string $token): AuthenticatedUsers;
 }

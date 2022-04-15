@@ -11,28 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth;
+namespace Valkyrja\JWT\Models;
+
+use Valkyrja\Support\Model\Classes\Model;
 
 /**
- * Interface TokenizedRepository.
+ * Class EdDSAKey.
  *
  * @author Melech Mizrachi
  */
-interface TokenizedRepository extends Repository
+class EdDSAKey extends Model
 {
     /**
-     * Get the token.
+     * The private key.
      *
-     * @return string
+     * @var string
      */
-    public function getToken(): string;
+    public string $privateKey;
 
     /**
-     * Authenticate using a given token.
+     * The public key.
      *
-     * @param string $token The token
-     *
-     * @return $this
+     * @var string
      */
-    public function authenticateFromToken(string $token): self;
+    public string $publicKey;
 }

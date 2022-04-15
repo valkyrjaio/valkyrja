@@ -27,6 +27,7 @@ use Valkyrja\Event\Providers\ServiceProvider as EventServiceProvider;
 use Valkyrja\Filesystem\Providers\ServiceProvider as FilesystemServiceProvider;
 use Valkyrja\Http\Providers\ServiceProvider as HttpServiceProvider;
 use Valkyrja\HttpKernel\Providers\ServiceProvider as HttpKernelServiceProvider;
+use Valkyrja\JWT\Providers\ServiceProvider as JWTServiceProvider;
 use Valkyrja\Log\Providers\ServiceProvider as LogServiceProvider;
 use Valkyrja\Mail\Providers\ServiceProvider as MailServiceProvider;
 use Valkyrja\Notification\Providers\ServiceProvider as NotificationServiceProvider;
@@ -60,6 +61,7 @@ final class Provider
     public const FILESYSTEM   = FilesystemServiceProvider::class;
     public const HTTP         = HttpServiceProvider::class;
     public const HTTP_KERNEL  = HttpKernelServiceProvider::class;
+    public const JWT          = JWTServiceProvider::class;
     public const LOG          = LogServiceProvider::class;
     public const MAIL         = MailServiceProvider::class;
     public const NOTIFICATION = NotificationServiceProvider::class;

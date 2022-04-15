@@ -162,6 +162,24 @@ final class EnvKey
     public const FILESYSTEM_S3_PREFIX               = 'FILESYSTEM_S3_PREFIX';
     public const FILESYSTEM_S3_OPTIONS              = 'FILESYSTEM_S3_OPTIONS';
 
+    public const JWT_DEFAULT           = 'JWT_DEFAULT';
+    public const JWT_ADAPTER           = 'JWT_ADAPTER';
+    public const JWT_DRIVER            = 'JWT_DRIVER';
+    public const JWT_ALGOS             = 'JWT_ALGOS';
+    public const JWT_HS_ADAPTER        = 'JWT_HS_ADAPTER';
+    public const JWT_HS_DRIVER         = 'JWT_HS_DRIVER';
+    public const JWT_HS_KEY            = 'JWT_HS_KEY';
+    public const JWT_RS_ADAPTER        = 'JWT_RS_ADAPTER';
+    public const JWT_RS_DRIVER         = 'JWT_RS_DRIVER';
+    public const JWT_RS_PRIVATE_KEY    = 'JWT_RS_PRIVATE_KEY';
+    public const JWT_RS_PUBLIC_KEY     = 'JWT_RS_PUBLIC_KEY';
+    public const JWT_RS_KEY_PATH       = 'JWT_RS_KEY_PATH';
+    public const JWT_RS_PASSPHRASE     = 'JWT_RS_PASSPHRASE';
+    public const JWT_EDDSA_ADAPTER     = 'JWT_EDDSA_ADAPTER';
+    public const JWT_EDDSA_DRIVER      = 'JWT_EDDSA_DRIVER';
+    public const JWT_EDDSA_PRIVATE_KEY = 'JWT_EDDSA_PRIVATE_KEY';
+    public const JWT_EDDSA_PUBLIC_KEY  = 'JWT_EDDSA_PUBLIC_KEY';
+
     public const LOG_NAME      = 'LOG_NAME';
     public const LOG_FILE_PATH = 'LOG_FILE_PATH';
     public const LOG_DEFAULT   = 'LOG_DEFAULT';

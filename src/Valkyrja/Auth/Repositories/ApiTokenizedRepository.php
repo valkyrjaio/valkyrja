@@ -26,8 +26,15 @@ use Valkyrja\Auth\TokenizableUser;
  *
  * @property TokenizableUser $user
  */
-class ApiTokenizedRepository extends Repository
+class ApiTokenizedRepository extends Repository implements \Valkyrja\Auth\TokenizedRepository
 {
+    /**
+     * The token.
+     *
+     * @var string
+     */
+    protected string $token;
+
     /**
      * @inheritDoc
      */
@@ -35,7 +42,7 @@ class ApiTokenizedRepository extends Repository
     {
         parent::authenticateFromSession();
 
-        $this->user::setTokenized($this->session->get($this->user::getTokenSessionId()));
+        $this->user::setTokenized($this->getToken());
 
         return $this;
     }
@@ -47,7 +54,25 @@ class ApiTokenizedRepository extends Repository
     {
         parent::setSession();
 
-        $this->session->set($this->user::getTokenSessionId(), $this->user::asTokenized());
+        $this->session->set($this->user::getTokenSessionId(), $this->getToken());
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getToken(): string
+    {
+        return $this->token ??= $this->session->get($this->user::getTokenSessionId());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function authenticateFromToken(string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }

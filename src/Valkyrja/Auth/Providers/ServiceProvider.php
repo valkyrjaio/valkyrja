@@ -15,16 +15,19 @@ namespace Valkyrja\Auth\Providers;
 
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth;
+use Valkyrja\Auth\CryptTokenizedRepository;
 use Valkyrja\Auth\EntityPolicy;
 use Valkyrja\Auth\Gate;
+use Valkyrja\Auth\JWTCryptRepository;
+use Valkyrja\Auth\JWTRepository;
 use Valkyrja\Auth\ORMAdapter;
 use Valkyrja\Auth\Policy;
 use Valkyrja\Auth\Repository;
-use Valkyrja\Auth\TokenizedRepository;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Http\Request;
+use Valkyrja\JWT\JWT;
 use Valkyrja\ORM\ORM;
 use Valkyrja\Session\Session;
 
@@ -41,14 +44,16 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Auth::class                => 'publishAuth',
-            Gate::class                => 'publishGate',
-            Repository::class          => 'publishRepository',
-            TokenizedRepository::class => 'publishTokenizedRepository',
-            Adapter::class             => 'publishAdapter',
-            ORMAdapter::class          => 'publishOrmAdapter',
-            Policy::class              => 'publishPolicy',
-            EntityPolicy::class        => 'publishEntityPolicy',
+            Auth::class                     => 'publishAuth',
+            Gate::class                     => 'publishGate',
+            Repository::class               => 'publishRepository',
+            CryptTokenizedRepository::class => 'publishCryptTokenizedRepository',
+            JWTRepository::class            => 'publishJWTRepository',
+            JWTCryptRepository::class       => 'publishJWTCryptRepository',
+            Adapter::class                  => 'publishAdapter',
+            ORMAdapter::class               => 'publishOrmAdapter',
+            Policy::class                   => 'publishPolicy',
+            EntityPolicy::class             => 'publishEntityPolicy',
         ];
     }
 
@@ -61,7 +66,9 @@ class ServiceProvider extends Provider
             Auth::class,
             Gate::class,
             Repository::class,
-            TokenizedRepository::class,
+            CryptTokenizedRepository::class,
+            JWTRepository::class,
+            JWTCryptRepository::class,
             Adapter::class,
             ORMAdapter::class,
             Policy::class,
@@ -223,20 +230,67 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the tokenized repository service.
+     * Publish the crypt tokenized repository service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishTokenizedRepository(Container $container): void
+    public static function publishCryptTokenizedRepository(Container $container): void
     {
         $container->setClosure(
-            TokenizedRepository::class,
-            static function (string $name, Adapter $adapter, string $user, array $config) use ($container): TokenizedRepository {
+            CryptTokenizedRepository::class,
+            static function (string $name, Adapter $adapter, string $user, array $config) use ($container): CryptTokenizedRepository {
                 return new $name(
                     $adapter,
                     $container->getSingleton(Crypt::class),
+                    $container->getSingleton(Session::class),
+                    $config,
+                    $user
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish the JWT crypt tokenized repository service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishJWTCryptRepository(Container $container): void
+    {
+        $container->setClosure(
+            JWTCryptRepository::class,
+            static function (string $name, Adapter $adapter, string $user, array $config) use ($container): JWTCryptRepository {
+                return new $name(
+                    $adapter,
+                    $container->getSingleton(JWT::class),
+                    $container->getSingleton(Crypt::class),
+                    $container->getSingleton(Session::class),
+                    $config,
+                    $user
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish the JWT tokenized repository service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishJWTRepository(Container $container): void
+    {
+        $container->setClosure(
+            JWTRepository::class,
+            static function (string $name, Adapter $adapter, string $user, array $config) use ($container): JWTRepository {
+                return new $name(
+                    $adapter,
+                    $container->getSingleton(JWT::class),
                     $container->getSingleton(Session::class),
                     $config,
                     $user

@@ -40,6 +40,7 @@ final class ConfigValue
         Provider::FILESYSTEM,
         Provider::HTTP,
         Provider::HTTP_KERNEL,
+        Provider::JWT,
         Provider::LOG,
         Provider::MAIL,
         Provider::NOTIFICATION,

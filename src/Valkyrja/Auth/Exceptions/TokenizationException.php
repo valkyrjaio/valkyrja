@@ -11,14 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth\Constants;
+namespace Valkyrja\Auth\Exceptions;
+
+use RuntimeException;
 
 /**
- * Constant Header.
+ * Exception TokenizationException.
  *
  * @author Melech Mizrachi
  */
-final class Header
+class TokenizationException extends RuntimeException
 {
-    public const AUTH_TOKEN = 'Auth-Token';
 }
