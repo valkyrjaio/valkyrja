@@ -268,7 +268,6 @@ abstract class TokenizedRepository extends Repository implements Contract
         return $users->getCurrent();
     }
 
-
     /**
      * Attempt to get users from token.
      *
