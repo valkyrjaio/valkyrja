@@ -154,7 +154,7 @@ trait MessageTrait
         HeaderSecurity::assertValidName($name);
 
         if (! $this->hasHeader($name)) {
-            return $this->withHeader($name);
+            return $this->withHeader($name, ...$values);
         }
 
         $name = $this->headerNames[strtolower($name)];
