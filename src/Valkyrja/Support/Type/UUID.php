@@ -50,12 +50,12 @@ class UUID
     {
         $node ??= random_bytes(16);
         // nano second time (only micro second precision) since start of UTC
-        $time = microtime(true) * 10000000 + 0x01b21dd213814000;
-        $time = pack("H*", sprintf('%016x', $time));
+        $time = microtime(true) * 10000000 + 0x01B21DD213814000;
+        $time = pack('H*', sprintf('%016x', $time));
 
         $sequence    = random_bytes(2);
-        $sequence[0] = chr(ord($sequence[0]) & 0x3f | 0x80);   // variant bits 10x
-        $time[0]     = chr(ord($time[0]) & 0x0f | 0x10);           // version bits 0001
+        $sequence[0] = chr(ord($sequence[0]) & 0x3F | 0x80);   // variant bits 10x
+        $time[0]     = chr(ord($time[0]) & 0x0F | 0x10);           // version bits 0001
 
         if (! empty($node)) {
             // non hex string identifier
@@ -90,7 +90,6 @@ class UUID
             . '-' . bin2hex($time[0] . $time[1])                     // time hi
             . '-' . bin2hex($sequence)                                      // seq
             . '-' . $node;                                                  // node
-
     }
 
     /**
@@ -142,9 +141,9 @@ class UUID
     {
         $data = random_bytes(16);
         // Set version to 0100
-        $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
+        $data[6] = chr(ord($data[6]) & 0x0F | 0x40);
         // Set bits 6-7 to 10
-        $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
+        $data[8] = chr(ord($data[8]) & 0x3F | 0x80);
 
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
