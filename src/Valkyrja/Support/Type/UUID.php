@@ -19,8 +19,8 @@ use RuntimeException;
 use function chr;
 use function hexdec;
 use function md5;
+use function ord;
 use function preg_match;
-use function random_int;
 use function sha1;
 use function sprintf;
 use function str_replace;
@@ -34,6 +34,65 @@ use function substr;
  */
 class UUID
 {
+    /**
+     * Generate v1 UUID
+     *
+     * Version 1 UUIDs are time-based based. It can take an optional
+     * node identifier based on mac address or a unique string id.
+     *
+     * @param string|null $node
+     *
+     * @throws Exception
+     *
+     * @return string
+     */
+    public static function v1(string $node = null): string
+    {
+        $node ??= random_bytes(16);
+        // nano second time (only micro second precision) since start of UTC
+        $time = microtime(true) * 10000000 + 0x01b21dd213814000;
+        $time = pack("H*", sprintf('%016x', $time));
+
+        $sequence    = random_bytes(2);
+        $sequence[0] = chr(ord($sequence[0]) & 0x3f | 0x80);   // variant bits 10x
+        $time[0]     = chr(ord($time[0]) & 0x0f | 0x10);           // version bits 0001
+
+        if (! empty($node)) {
+            // non hex string identifier
+            if (preg_match('/[^a-f0-9]/is', $node)) {
+                // base node off md5 hash for sequence
+                $node = md5($node);
+                // set multicast bit not IEEE 802 MAC
+                $node = (hexdec(substr($node, 0, 2)) | 1) . substr($node, 2, 10);
+            }
+
+            if (is_numeric($node)) {
+                $node = sprintf('%012x', $node);
+            }
+
+            $len = strlen($node);
+
+            if ($len > 12) {
+                $node = substr($node, 0, 12);
+            } elseif ($len < 12) {
+                $node .= str_repeat('0', 12 - $len);
+            }
+        } else {
+            // base node off random sequence
+            $node = random_bytes(6);
+            // set multicast bit not IEEE 802 MAC
+            $node[0] = chr(ord($node[0]) | 1);
+            $node    = bin2hex($node);
+        }
+
+        return bin2hex($time[4] . $time[5] . $time[6] . $time[7])    // time low
+            . '-' . bin2hex($time[2] . $time[3])                     // time med
+            . '-' . bin2hex($time[0] . $time[1])                     // time hi
+            . '-' . bin2hex($sequence)                                      // seq
+            . '-' . $node;                                                  // node
+
+    }
+
     /**
      * Generate a v3 UUID.
      *
@@ -81,30 +140,13 @@ class UUID
      */
     public static function v4(): string
     {
-        return sprintf(
-            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        $data = random_bytes(16);
+        // Set version to 0100
+        $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
+        // Set bits 6-7 to 10
+        $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
 
-            // 32 bits for "time_low"
-            random_int(0, 0xFFFF),
-            random_int(0, 0xFFFF),
-
-            // 16 bits for "time_mid"
-            random_int(0, 0xFFFF),
-
-            // 16 bits for "time_hi_and_version",
-            // four most significant bits holds version number 4
-            random_int(0, 0x0FFF) | 0x4000,
-
-            // 16 bits, 8 bits for "clk_seq_hi_res",
-            // 8 bits for "clk_seq_low",
-            // two most significant bits holds zero and one for variant DCE1.1
-            random_int(0, 0x3FFF) | 0x8000,
-
-            // 48 bits for "node"
-            random_int(0, 0xFFFF),
-            random_int(0, 0xFFFF),
-            random_int(0, 0xFFFF)
-        );
+        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
 
     /**
@@ -143,6 +185,33 @@ class UUID
             // 48 bits for "node"
             substr($hash, 20, 12)
         );
+    }
+
+    /**
+     * Generate a v6 UUID.
+     *
+     * @param string|null $node
+     *
+     * @throws Exception
+     *
+     * @return string
+     */
+    public static function v6(string $node = null): string
+    {
+        $uuid     = self::v1($node);
+        $uuid     = str_replace('-', '', $uuid);
+        $timeLow1 = substr($uuid, 0, 5);
+        $timeLow2 = substr($uuid, 5, 3);
+        $timeMid  = substr($uuid, 8, 4);
+        $timeHigh = substr($uuid, 13, 3);
+        $rest     = substr($uuid, 16);
+
+        return
+            $timeHigh . $timeMid . $timeLow1[0] . '-' .
+            substr($timeLow1, 1) . '-' .
+            '6' . $timeLow2 . '-' .
+            substr($rest, 0, 4) . '-' .
+            substr($rest, 4);
     }
 
     /**
