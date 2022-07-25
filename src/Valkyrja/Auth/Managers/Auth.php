@@ -17,6 +17,7 @@ use Exception;
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth as Contract;
 use Valkyrja\Auth\AuthenticatedUsers;
+use Valkyrja\Auth\Constants\HeaderValue;
 use Valkyrja\Auth\CryptTokenizedRepository;
 use Valkyrja\Auth\Gate;
 use Valkyrja\Auth\JWTCryptRepository;
@@ -178,7 +179,7 @@ class Auth implements Contract
     {
         return $request->withHeader(
             Header::AUTHORIZATION,
-            'Bearer ' . $this->getRepository($user, $adapter)->getToken()
+            HeaderValue::BEARER . ' ' . $this->getRepository($user, $adapter)->getToken()
         );
     }
 
