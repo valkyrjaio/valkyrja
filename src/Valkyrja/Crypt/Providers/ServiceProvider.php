@@ -34,9 +34,9 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Crypt::class => 'publishCrypt',
+            Crypt::class   => 'publishCrypt',
             Factory::class => 'publishFactory',
-            Driver::class => 'publishDriver',
+            Driver::class  => 'publishDriver',
             Adapter::class => 'publishAdapter',
         ];
     }

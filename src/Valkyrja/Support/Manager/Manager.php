@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Manager;
 
-use Valkyrja\Support\Manager\Factory;
-
 /**
  * Interface Manager.
  *
