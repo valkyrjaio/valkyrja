@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Notification\Managers;
 
 use Valkyrja\Broadcast\Broadcast;
-use Valkyrja\Container\Container;
 use Valkyrja\Mail\Mail;
+use Valkyrja\Notification\Factory;
 use Valkyrja\Notification\NotifiableUser;
 use Valkyrja\Notification\Notification;
 use Valkyrja\Notification\Notifier as Contract;
@@ -36,11 +36,11 @@ class Notifier implements Contract
     protected Broadcast $broadcast;
 
     /**
-     * The container.
+     * The factory.
      *
-     * @var Container
+     * @var Factory
      */
-    protected Container $container;
+    protected Factory $factory;
 
     /**
      * The mail service.
@@ -87,16 +87,16 @@ class Notifier implements Contract
     /**
      * Notifier constructor.
      *
-     * @param Container $container   The container
+     * @param Factory   $factory     The factory
      * @param Broadcast $broadcaster The broadcaster
      * @param Mail      $mail        The mail service
      * @param SMS       $sms         The sms service
      * @param array     $config      The config
      */
-    public function __construct(Container $container, Broadcast $broadcaster, Mail $mail, SMS $sms, array $config)
+    public function __construct(Factory $factory, Broadcast $broadcaster, Mail $mail, SMS $sms, array $config)
     {
+        $this->factory   = $factory;
         $this->broadcast = $broadcaster;
-        $this->container = $container;
         $this->config    = $config;
         $this->mail      = $mail;
         $this->sms       = $sms;
@@ -107,7 +107,7 @@ class Notifier implements Contract
      */
     public function createNotification(string $name, array $data = []): Notification
     {
-        return $this->container->get($this->config['notifications'][$name] ?? $name, $data);
+        return $this->factory->createNotification($name, $data);
     }
 
     /**

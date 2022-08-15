@@ -17,6 +17,8 @@ use Valkyrja\Broadcast\Broadcast;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Mail\Mail;
+use Valkyrja\Notification\Factories\ContainerFactory;
+use Valkyrja\Notification\Factory;
 use Valkyrja\Notification\Notifier;
 use Valkyrja\SMS\SMS;
 
@@ -34,6 +36,7 @@ class ServiceProvider extends Provider
     {
         return [
             Notifier::class => 'publishNotifier',
+            Factory::class  => 'publishFactory',
         ];
     }
 
@@ -44,6 +47,7 @@ class ServiceProvider extends Provider
     {
         return [
             Notifier::class,
+            Factory::class,
         ];
     }
 
@@ -68,11 +72,28 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Notifier::class,
             new \Valkyrja\Notification\Managers\Notifier(
-                $container,
+                $container->getSingleton(Factory::class),
                 $container->getSingleton(Broadcast::class),
                 $container->getSingleton(Mail::class),
                 $container->getSingleton(SMS::class),
                 $config['notification']
+            )
+        );
+    }
+
+    /**
+     * Publish the factory service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishFactory(Container $container): void
+    {
+        $container->setSingleton(
+            Factory::class,
+            new ContainerFactory(
+                $container,
             )
         );
     }
