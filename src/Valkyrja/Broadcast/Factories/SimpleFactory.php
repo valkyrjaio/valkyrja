@@ -17,7 +17,7 @@ use Valkyrja\Broadcast\Adapter;
 use Valkyrja\Broadcast\Driver;
 use Valkyrja\Broadcast\Loader as Contract;
 use Valkyrja\Broadcast\Message;
-use Valkyrja\Support\Manager\Factories\SimpleLoaderWithMessage as Loader;
+use Valkyrja\Support\Manager\Factories\SimpleFactoryWithMessage as Loader;
 
 /**
  * Class SimpleFactory.

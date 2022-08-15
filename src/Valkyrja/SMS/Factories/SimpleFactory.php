@@ -17,7 +17,7 @@ use Valkyrja\SMS\Adapter;
 use Valkyrja\SMS\Driver;
 use Valkyrja\SMS\Factory as Contract;
 use Valkyrja\SMS\Message;
-use Valkyrja\Support\Manager\Factories\SimpleLoaderWithMessage as Loader;
+use Valkyrja\Support\Manager\Factories\SimpleFactoryWithMessage as Loader;
 
 /**
  * Class SimpleFactory.

@@ -18,11 +18,11 @@ use Valkyrja\Support\Manager\Message;
 use Valkyrja\Support\Type\Cls;
 
 /**
- * Class ContainerLoaderWithMessage.
+ * Class ContainerFactoryWithMessage.
  *
  * @author Melech Mizrachi
  */
-class ContainerLoaderWithMessage extends ContainerFactory implements FactoryWithMessage
+class ContainerFactoryWithMessage extends ContainerFactory implements FactoryWithMessage
 {
     /**
      * The default driver class.

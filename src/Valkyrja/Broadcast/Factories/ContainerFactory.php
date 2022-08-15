@@ -19,7 +19,7 @@ use Valkyrja\Broadcast\Loader as Contract;
 use Valkyrja\Broadcast\LogAdapter;
 use Valkyrja\Broadcast\Message;
 use Valkyrja\Broadcast\PusherAdapter;
-use Valkyrja\Support\Manager\Factories\ContainerLoaderWithMessage as Loader;
+use Valkyrja\Support\Manager\Factories\ContainerFactoryWithMessage as Loader;
 use Valkyrja\Support\Type\Cls;
 
 /**

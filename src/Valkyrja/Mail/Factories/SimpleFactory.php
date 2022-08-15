@@ -17,7 +17,7 @@ use Valkyrja\Mail\Adapter;
 use Valkyrja\Mail\Driver;
 use Valkyrja\Mail\Factory as Contract;
 use Valkyrja\Mail\Message;
-use Valkyrja\Support\Manager\Factories\SimpleLoaderWithMessage as Loader;
+use Valkyrja\Support\Manager\Factories\SimpleFactoryWithMessage as Loader;
 
 /**
  * Class SimpleFactory.

@@ -17,11 +17,11 @@ use Valkyrja\Support\Manager\FactoryWithMessage;
 use Valkyrja\Support\Manager\Message;
 
 /**
- * Class SimpleLoaderWithMessage.
+ * Class SimpleFactoryWithMessage.
  *
  * @author Melech Mizrachi
  */
-class SimpleLoaderWithMessage extends SimpleFactory implements FactoryWithMessage
+class SimpleFactoryWithMessage extends SimpleFactory implements FactoryWithMessage
 {
     /**
      * @inheritDoc

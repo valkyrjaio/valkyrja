@@ -20,7 +20,7 @@ use Valkyrja\Mail\LogAdapter;
 use Valkyrja\Mail\MailgunAdapter;
 use Valkyrja\Mail\Message;
 use Valkyrja\Mail\PHPMailerAdapter;
-use Valkyrja\Support\Manager\Factories\ContainerLoaderWithMessage as Loader;
+use Valkyrja\Support\Manager\Factories\ContainerFactoryWithMessage as Loader;
 use Valkyrja\Support\Type\Cls;
 
 /**

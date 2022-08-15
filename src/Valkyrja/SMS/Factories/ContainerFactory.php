@@ -19,7 +19,7 @@ use Valkyrja\SMS\Factory as Contract;
 use Valkyrja\SMS\LogAdapter;
 use Valkyrja\SMS\Message;
 use Valkyrja\SMS\NexmoAdapter;
-use Valkyrja\Support\Manager\Factories\ContainerLoaderWithMessage as Loader;
+use Valkyrja\Support\Manager\Factories\ContainerFactoryWithMessage as Loader;
 use Valkyrja\Support\Type\Cls;
 
 /**
