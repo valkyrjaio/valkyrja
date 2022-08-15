@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Loaders;
+namespace Valkyrja\SMS\Loaders;
 
-use Valkyrja\Mail\Adapter;
-use Valkyrja\Mail\Driver;
-use Valkyrja\Mail\Loader as Contract;
-use Valkyrja\Mail\Message;
+use Valkyrja\SMS\Adapter;
+use Valkyrja\SMS\Driver;
+use Valkyrja\SMS\Loader as Contract;
+use Valkyrja\SMS\Message;
 use Valkyrja\Support\Loader\Loaders\SimpleLoaderWithMessage as Loader;
 
 /**
