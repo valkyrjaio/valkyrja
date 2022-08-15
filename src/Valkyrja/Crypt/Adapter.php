@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt;
 
 use Valkyrja\Crypt\Exceptions\CryptException;
+use Valkyrja\Support\Manager\Adapter as Contract;
 
 /**
  * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-interface Adapter
+interface Adapter extends Contract
 {
     /**
      * Determine if an encrypted message is valid.
@@ -34,7 +35,7 @@ interface Adapter
     /**
      * Encrypt a message.
      *
-     * @param string $message The message to encrypt
+     * @param string      $message The message to encrypt
      * @param string|null $key     The encryption key
      *
      * @throws CryptException On any failure
@@ -46,7 +47,7 @@ interface Adapter
     /**
      * Encrypt an array.
      *
-     * @param array  $array The array to encrypt
+     * @param array       $array The array to encrypt
      * @param string|null $key   The encryption key
      *
      * @throws CryptException On any failure
@@ -58,7 +59,7 @@ interface Adapter
     /**
      * Encrypt a json array.
      *
-     * @param object $object The object to encrypt
+     * @param object      $object The object to encrypt
      * @param string|null $key    The encryption key
      *
      * @throws CryptException On any failure
@@ -70,7 +71,7 @@ interface Adapter
     /**
      * Decrypt a message.
      *
-     * @param string $encrypted The encrypted message to decrypt
+     * @param string      $encrypted The encrypted message to decrypt
      * @param string|null $key       The encryption key
      *
      * @throws CryptException On any failure
@@ -82,7 +83,7 @@ interface Adapter
     /**
      * Decrypt a message originally encrypted from an array.
      *
-     * @param string $encrypted The encrypted message
+     * @param string      $encrypted The encrypted message
      * @param string|null $key       The encryption key
      *
      * @throws CryptException On any failure
@@ -94,7 +95,7 @@ interface Adapter
     /**
      * Decrypt a message originally encrypted from an object.
      *
-     * @param string $encrypted The encrypted message
+     * @param string      $encrypted The encrypted message
      * @param string|null $key       The encryption key
      *
      * @throws CryptException On any failure

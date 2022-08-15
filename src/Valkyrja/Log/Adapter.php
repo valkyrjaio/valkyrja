@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Log;
 
 use Throwable;
+use Valkyrja\Support\Manager\Adapter as Contract;
 
 /**
  * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-interface Adapter
+interface Adapter extends Contract
 {
     /**
      * Log a debug message.

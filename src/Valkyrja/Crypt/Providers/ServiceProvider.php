@@ -18,6 +18,8 @@ use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Adapter;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Driver;
+use Valkyrja\Crypt\Loader;
+use Valkyrja\Crypt\Loaders\ContainerLoader;
 
 /**
  * Class ServiceProvider.
@@ -33,6 +35,7 @@ class ServiceProvider extends Provider
     {
         return [
             Crypt::class   => 'publishCrypt',
+            Loader::class  => 'publishLoader',
             Driver::class  => 'publishDriver',
             Adapter::class => 'publishAdapter',
         ];
@@ -45,6 +48,7 @@ class ServiceProvider extends Provider
     {
         return [
             Crypt::class,
+            Loader::class,
             Driver::class,
             Adapter::class,
         ];
@@ -71,9 +75,24 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Crypt::class,
             new \Valkyrja\Crypt\Managers\Crypt(
-                $container,
+                $container->getSingleton(Loader::class),
                 $config['crypt']
             )
+        );
+    }
+
+    /**
+     * Publish the loader service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishLoader(Container $container): void
+    {
+        $container->setSingleton(
+            Loader::class,
+            new ContainerLoader($container),
         );
     }
 

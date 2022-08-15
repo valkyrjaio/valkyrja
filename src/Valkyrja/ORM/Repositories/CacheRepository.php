@@ -99,7 +99,7 @@ class CacheRepository extends Repository implements Contract
     public function __construct(ORM $manager, Driver $driver, Cache $cache, string $entity)
     {
         $this->cache = $cache;
-        $this->store = $cache->useStore();
+        $this->store = $cache->use();
 
         parent::__construct($manager, $driver, $entity);
     }

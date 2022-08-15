@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\JWT;
 
+use Valkyrja\Support\Manager\Driver as Contract;
+
 /**
  * Interface Driver.
  *
  * @author Melech Mizrachi
  */
-interface Driver
+interface Driver extends Contract
 {
     /**
      * Encode a payload array into a JWT string.

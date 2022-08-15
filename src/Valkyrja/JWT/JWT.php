@@ -13,21 +13,21 @@ declare(strict_types=1);
 
 namespace Valkyrja\JWT;
 
+use Valkyrja\Support\Manager\Manager;
+
 /**
  * Interface JWT.
  *
  * @author Melech Mizrachi
  */
-interface JWT
+interface JWT extends Manager
 {
     /**
-     * Use an algorithm.
-     *
-     * @param string|null $algo [optional] The algorithm to use
+     * @inheritDoc
      *
      * @return Driver
      */
-    public function useAlgo(string $algo = null): Driver;
+    public function use(string $name = null): Driver;
 
     /**
      * Encode a payload array into a JWT string.

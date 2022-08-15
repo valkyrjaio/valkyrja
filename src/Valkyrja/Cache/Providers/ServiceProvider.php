@@ -17,6 +17,8 @@ use Predis\Client;
 use Valkyrja\Cache\Adapter;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Cache\Driver;
+use Valkyrja\Cache\Loader;
+use Valkyrja\Cache\Loaders\ContainerLoader;
 use Valkyrja\Cache\LogAdapter;
 use Valkyrja\Cache\RedisAdapter;
 use Valkyrja\Container\Container;
@@ -37,6 +39,7 @@ class ServiceProvider extends Provider
     {
         return [
             Cache::class        => 'publishCache',
+            Loader::class       => 'publishLoader',
             Driver::class       => 'publishDriver',
             Adapter::class      => 'publishAdapter',
             LogAdapter::class   => 'publishLogAdapter',
@@ -51,6 +54,7 @@ class ServiceProvider extends Provider
     {
         return [
             Cache::class,
+            Loader::class,
             Driver::class,
             Adapter::class,
             LogAdapter::class,
@@ -79,9 +83,24 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Cache::class,
             new \Valkyrja\Cache\Managers\Cache(
-                $container,
+                $container->getSingleton(Loader::class),
                 $config['cache']
             )
+        );
+    }
+
+    /**
+     * Publish the loader service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishLoader(Container $container): void
+    {
+        $container->setSingleton(
+            Loader::class,
+            new ContainerLoader($container),
         );
     }
 
@@ -138,7 +157,7 @@ class ServiceProvider extends Provider
             LogAdapter::class,
             static function (string $name, array $config) use ($logger): LogAdapter {
                 return new $name(
-                    $logger->useLogger($config['logger'] ?? null),
+                    $logger->use($config['logger'] ?? null),
                     $config['prefix'] ?? null
                 );
             }

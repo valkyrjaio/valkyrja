@@ -19,6 +19,8 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger;
 use Valkyrja\SMS\Adapter;
+use Valkyrja\SMS\Loader;
+use Valkyrja\SMS\Loaders\ContainerLoader;
 use Valkyrja\SMS\LogAdapter;
 use Valkyrja\SMS\Message;
 use Valkyrja\SMS\NexmoAdapter;
@@ -38,6 +40,7 @@ class ServiceProvider extends Provider
     {
         return [
             SMS::class          => 'publishSMS',
+            Loader::class       => 'publishLoader',
             Adapter::class      => 'publishAdapter',
             LogAdapter::class   => 'publishLogAdapter',
             NexmoAdapter::class => 'publishNexmoAdapter',
@@ -53,6 +56,7 @@ class ServiceProvider extends Provider
     {
         return [
             SMS::class,
+            Loader::class,
             Adapter::class,
             LogAdapter::class,
             NexmoAdapter::class,
@@ -82,9 +86,24 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             SMS::class,
             new \Valkyrja\SMS\Managers\SMS(
-                $container,
+                $container->getSingleton(Loader::class),
                 $config['sms']
             )
+        );
+    }
+
+    /**
+     * Publish the loader service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishLoader(Container $container): void
+    {
+        $container->setSingleton(
+            Loader::class,
+            new ContainerLoader($container),
         );
     }
 
@@ -122,7 +141,7 @@ class ServiceProvider extends Provider
             LogAdapter::class,
             static function (string $name, array $config) use ($logger): LogAdapter {
                 return new $name(
-                    $logger->useLogger($config['logger'] ?? null),
+                    $logger->use($config['logger'] ?? null),
                     $config
                 );
             }

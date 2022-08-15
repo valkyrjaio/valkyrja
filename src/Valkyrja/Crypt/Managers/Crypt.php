@@ -13,102 +13,39 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Managers;
 
-use Valkyrja\Container\Container;
-use Valkyrja\Crypt\Adapter;
 use Valkyrja\Crypt\Crypt as Contract;
 use Valkyrja\Crypt\Driver;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Crypt\Loader;
+use Valkyrja\Support\Manager\Managers\Manager;
 
 /**
  * Class Crypt.
  *
  * @author Melech Mizrachi
+ *
+ * @property Loader $loader
  */
-class Crypt implements Contract
+class Crypt extends Manager implements Contract
 {
-    /**
-     * The drivers.
-     *
-     * @var Driver[]
-     */
-    protected static array $drivers = [];
-
-    /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
-     * The default adapter.
-     *
-     * @var string
-     */
-    protected string $defaultAdapter;
-
-    /**
-     * The crypts.
-     *
-     * @var array
-     */
-    protected array $crypts;
-
-    /**
-     * The default driver.
-     *
-     * @var string
-     */
-    protected string $defaultDriver;
-
-    /**
-     * The default crypt.
-     *
-     * @var string
-     */
-    protected string $default;
-
     /**
      * Crypt constructor.
      *
-     * @param Container $container The container
-     * @param array     $config    The config
+     * @param Loader $loader The loader
+     * @param array  $config The config
      */
-    public function __construct(Container $container, array $config)
+    public function __construct(Loader $loader, array $config)
     {
-        $this->container      = $container;
-        $this->config         = $config;
-        $this->crypts         = $config['crypts'];
-        $this->defaultAdapter = $config['adapter'];
-        $this->defaultDriver  = $config['driver'];
-        $this->default        = $config['default'];
+        parent::__construct($loader, $config);
+
+        $this->configurations = $config['crypts'];
     }
 
     /**
      * @inheritDoc
      */
-    public function useCrypt(string $name = null, string $adapter = null): Driver
+    public function use(string $name = null): Driver
     {
-        // The crypt to use
-        $name ??= $this->default;
-        // The config to use
-        $config = $this->crypts[$name];
-        // The adapter to use
-        $adapter ??= $config['adapter'] ?? $this->defaultAdapter;
-        // The adapter to use
-        $driver = $config['driver'] ?? $this->defaultDriver;
-        // The cache key to use
-        $cacheKey = $name . $adapter;
-
-        return self::$drivers[$cacheKey]
-            ?? self::$drivers[$cacheKey] = $this->createDriver($driver, $adapter, $config);
+        return parent::use($name);
     }
 
     /**
@@ -116,7 +53,7 @@ class Crypt implements Contract
      */
     public function isValidEncryptedMessage(string $encrypted): bool
     {
-        return $this->useCrypt()->isValidEncryptedMessage($encrypted);
+        return $this->use()->isValidEncryptedMessage($encrypted);
     }
 
     /**
@@ -124,7 +61,7 @@ class Crypt implements Contract
      */
     public function encrypt(string $message, string $key = null): string
     {
-        return $this->useCrypt()->encrypt($message, $key);
+        return $this->use()->encrypt($message, $key);
     }
 
     /**
@@ -132,7 +69,7 @@ class Crypt implements Contract
      */
     public function decrypt(string $encrypted, string $key = null): string
     {
-        return $this->useCrypt()->decrypt($encrypted, $key);
+        return $this->use()->decrypt($encrypted, $key);
     }
 
     /**
@@ -140,7 +77,7 @@ class Crypt implements Contract
      */
     public function encryptArray(array $array, string $key = null): string
     {
-        return $this->useCrypt()->encryptArray($array, $key);
+        return $this->use()->encryptArray($array, $key);
     }
 
     /**
@@ -148,7 +85,7 @@ class Crypt implements Contract
      */
     public function decryptArray(string $encrypted, string $key = null): array
     {
-        return $this->useCrypt()->decryptArray($encrypted, $key);
+        return $this->use()->decryptArray($encrypted, $key);
     }
 
     /**
@@ -156,7 +93,7 @@ class Crypt implements Contract
      */
     public function encryptObject(object $object, string $key = null): string
     {
-        return $this->useCrypt()->encryptObject($object, $key);
+        return $this->use()->encryptObject($object, $key);
     }
 
     /**
@@ -164,47 +101,6 @@ class Crypt implements Contract
      */
     public function decryptObject(string $encrypted, string $key = null): object
     {
-        return $this->useCrypt()->decryptObject($encrypted, $key);
-    }
-
-    /**
-     * Get an driver by name.
-     *
-     * @param string $name    The driver
-     * @param string $adapter The adapter
-     * @param array  $config  The config
-     *
-     * @return Driver
-     */
-    protected function createDriver(string $name, string $adapter, array $config): Driver
-    {
-        return Cls::getDefaultableService(
-            $this->container,
-            $name,
-            Driver::class,
-            [
-                $this->createAdapter($adapter, $config),
-            ]
-        );
-    }
-
-    /**
-     * Get an adapter by name.
-     *
-     * @param string $name   The adapter
-     * @param array  $config The config
-     *
-     * @return Adapter
-     */
-    protected function createAdapter(string $name, array $config): Adapter
-    {
-        return Cls::getDefaultableService(
-            $this->container,
-            $name,
-            Adapter::class,
-            [
-                $config,
-            ]
-        );
+        return $this->use()->decryptObject($encrypted, $key);
     }
 }

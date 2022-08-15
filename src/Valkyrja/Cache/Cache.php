@@ -13,26 +13,21 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache;
 
-use InvalidArgumentException;
+use Valkyrja\Support\Manager\Manager;
 
 /**
  * Interface Cache.
  *
  * @author Melech Mizrachi
  */
-interface Cache
+interface Cache extends Manager
 {
     /**
-     * Use a store by name.
-     *
-     * @param string|null $name    [optional] The store name
-     * @param string|null $adapter [optional] The adapter
-     *
-     * @throws InvalidArgumentException If the name doesn't exist
+     * @inheritDoc
      *
      * @return Driver
      */
-    public function useStore(string $name = null, string $adapter = null): Driver;
+    public function use(string $name = null): Driver;
 
     /**
      * Determine if an item exists in the cache.

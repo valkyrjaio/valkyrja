@@ -68,6 +68,8 @@ final class ConfigKeyPart
     public const PROVIDERS                   = 'providers';
     public const PROVIDED                    = 'provided';
     public const COLLECTION                  = 'collection';
+    public const CONFIGURATION               = 'configuration';
+    public const CONFIGURATIONS              = 'configurations';
     public const ALIASES                     = 'aliases';
     public const DEV_PROVIDERS               = 'devProviders';
     public const SETUP_FACADE                = 'setupFacade';

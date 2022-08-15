@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache;
 
+use Valkyrja\Support\Manager\Driver as Contract;
+
 /**
  * Interface Driver.
  *
  * @author Melech Mizrachi
  */
-interface Driver
+interface Driver extends Contract
 {
     /**
      * Determine if an item exists in the cache.

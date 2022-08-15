@@ -23,6 +23,8 @@ use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Adapter;
 use Valkyrja\Log\Constants\LogLevel;
 use Valkyrja\Log\Driver;
+use Valkyrja\Log\Loader;
+use Valkyrja\Log\Loaders\ContainerLoader;
 use Valkyrja\Log\Logger;
 use Valkyrja\Log\PsrAdapter;
 
@@ -42,6 +44,7 @@ class ServiceProvider extends Provider
     {
         return [
             Logger::class          => 'publishLogger',
+            Loader::class          => 'publishLoader',
             Driver::class          => 'publishDriver',
             Adapter::class         => 'publishAdapter',
             PsrAdapter::class      => 'publishPsrAdapter',
@@ -56,6 +59,7 @@ class ServiceProvider extends Provider
     {
         return [
             Logger::class,
+            Loader::class,
             Driver::class,
             Adapter::class,
             PsrAdapter::class,
@@ -86,9 +90,24 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Logger::class,
             new \Valkyrja\Log\Managers\Logger(
-                $container,
+                $container->getSingleton(Loader::class),
                 $config['log']
             )
+        );
+    }
+
+    /**
+     * Publish the loader service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishLoader(Container $container): void
+    {
+        $container->setSingleton(
+            Loader::class,
+            new ContainerLoader($container),
         );
     }
 

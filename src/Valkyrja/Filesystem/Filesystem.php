@@ -14,23 +14,21 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem;
 
 use Valkyrja\Filesystem\Enums\Visibility;
+use Valkyrja\Support\Manager\Manager;
 
 /**
  * Interface Filesystem.
  *
  * @author Melech Mizrachi
  */
-interface Filesystem
+interface Filesystem extends Manager
 {
     /**
-     * Use a disk by name.
-     *
-     * @param string|null $name The disk name
-     * @param string|null $adapter The adapter
+     * @inheritDoc
      *
      * @return Driver
      */
-    public function useDisk(string $name = null, string $adapter = null): Driver;
+    public function use(string $name = null): Driver;
 
     /**
      * Determine whether a path exists.

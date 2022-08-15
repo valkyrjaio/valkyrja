@@ -18,6 +18,7 @@ use Valkyrja\Container\Support\Provider;
 use Valkyrja\JWT\Adapter;
 use Valkyrja\JWT\Driver;
 use Valkyrja\JWT\JWT;
+use Valkyrja\JWT\Loader;
 use Valkyrja\JWT\Loaders\ContainerLoader;
 
 /**
@@ -34,6 +35,7 @@ class ServiceProvider extends Provider
     {
         return [
             JWT::class     => 'publishJWT',
+            Loader::class  => 'publishLoader',
             Driver::class  => 'publishDriver',
             Adapter::class => 'publishAdapter',
         ];
@@ -46,6 +48,7 @@ class ServiceProvider extends Provider
     {
         return [
             JWT::class,
+            Loader::class,
             Driver::class,
             Adapter::class,
         ];
@@ -72,9 +75,24 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             JWT::class,
             new \Valkyrja\JWT\Managers\JWT(
-                new ContainerLoader($container),
+                $container->getSingleton(Loader::class),
                 $config['jwt']
             )
+        );
+    }
+
+    /**
+     * Publish the loader service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishLoader(Container $container): void
+    {
+        $container->setSingleton(
+            Loader::class,
+            new ContainerLoader($container),
         );
     }
 

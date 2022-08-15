@@ -111,7 +111,7 @@ class Repository implements Contract
 
         $this->config         = $config;
         $this->adapter        = $adapter;
-        $this->session        = $session->useSession();
+        $this->session        = $session->use();
         $this->userEntityName = $user;
 
         $this->usersModel = $this->userEntityName::getAuthCollection();

@@ -14,23 +14,21 @@ declare(strict_types=1);
 namespace Valkyrja\Session;
 
 use Valkyrja\Session\Exceptions\InvalidCsrfToken;
+use Valkyrja\Support\Manager\Manager;
 
 /**
  * Interface Session.
  *
  * @author Melech Mizrachi
  */
-interface Session
+interface Session extends Manager
 {
     /**
-     * Use a session by name.
-     *
-     * @param string|null $name    The session name
-     * @param string|null $adapter The adapter
+     * @inheritDoc
      *
      * @return Driver
      */
-    public function useSession(string $name = null, string $adapter = null): Driver;
+    public function use(string $name = null): Driver;
 
     /**
      * Start the session.

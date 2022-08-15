@@ -13,105 +13,40 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Managers;
 
-use Valkyrja\Cache\Adapter;
 use Valkyrja\Cache\Cache as Contract;
 use Valkyrja\Cache\Driver;
-use Valkyrja\Cache\LogAdapter;
-use Valkyrja\Cache\RedisAdapter;
+use Valkyrja\Cache\Loader;
 use Valkyrja\Cache\Tagger;
-use Valkyrja\Container\Container;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Support\Manager\Managers\Manager;
 
 /**
  * Class Cache.
  *
  * @author Melech Mizrachi
+ *
+ * @property Loader $loader
  */
-class Cache implements Contract
+class Cache extends Manager implements Contract
 {
-    /**
-     * The drivers.
-     *
-     * @var Driver[]
-     */
-    protected static array $drivers = [];
-
-    /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
-     * The stores.
-     *
-     * @var array
-     */
-    protected array $stores;
-
-    /**
-     * The default adapter.
-     *
-     * @var string
-     */
-    protected string $defaultAdapter;
-
-    /**
-     * The default driver.
-     *
-     * @var string
-     */
-    protected string $defaultDriver;
-
-    /**
-     * The default store.
-     *
-     * @var string
-     */
-    protected string $defaultStore;
-
     /**
      * Cache constructor.
      *
-     * @param Container $container The container
-     * @param array     $config    The config
+     * @param Loader $loader The loader
+     * @param array  $config The config
      */
-    public function __construct(Container $container, array $config)
+    public function __construct(Loader $loader, array $config)
     {
-        $this->container      = $container;
-        $this->config         = $config;
-        $this->stores         = $config['stores'];
-        $this->defaultAdapter = $config['adapter'];
-        $this->defaultDriver  = $config['driver'];
-        $this->defaultStore   = $config['default'];
+        parent::__construct($loader, $config);
+
+        $this->configurations = $config['stores'];
     }
 
     /**
      * @inheritDoc
      */
-    public function useStore(string $name = null, string $adapter = null): Driver
+    public function use(string $name = null): Driver
     {
-        // The store to use
-        $name ??= $this->defaultStore;
-        // The store config to use
-        $store = $this->stores[$name];
-        // The driver to use
-        $driver ??= $store['driver'] ?? $this->defaultDriver;
-        // The adapter to use
-        $adapter ??= $store['adapter'] ?? $this->defaultAdapter;
-        // The cache key to use
-        $cacheKey = $name . $adapter;
-
-        return self::$drivers[$cacheKey]
-            ?? self::$drivers[$cacheKey] = $this->createDriver($driver, $adapter, $store);
+        return parent::use($name);
     }
 
     /**
@@ -119,7 +54,7 @@ class Cache implements Contract
      */
     public function has(string $key): bool
     {
-        return $this->useStore()->has($key);
+        return $this->use()->has($key);
     }
 
     /**
@@ -127,7 +62,7 @@ class Cache implements Contract
      */
     public function get(string $key): ?string
     {
-        return $this->useStore()->get($key);
+        return $this->use()->get($key);
     }
 
     /**
@@ -135,7 +70,7 @@ class Cache implements Contract
      */
     public function many(string ...$keys): array
     {
-        return $this->useStore()->many(...$keys);
+        return $this->use()->many(...$keys);
     }
 
     /**
@@ -143,7 +78,7 @@ class Cache implements Contract
      */
     public function put(string $key, string $value, int $minutes): void
     {
-        $this->useStore()->put($key, $value, $minutes);
+        $this->use()->put($key, $value, $minutes);
     }
 
     /**
@@ -151,7 +86,7 @@ class Cache implements Contract
      */
     public function putMany(array $values, int $minutes): void
     {
-        $this->useStore()->putMany($values, $minutes);
+        $this->use()->putMany($values, $minutes);
     }
 
     /**
@@ -159,7 +94,7 @@ class Cache implements Contract
      */
     public function increment(string $key, int $value = 1): int
     {
-        return $this->useStore()->increment($key, $value);
+        return $this->use()->increment($key, $value);
     }
 
     /**
@@ -167,7 +102,7 @@ class Cache implements Contract
      */
     public function decrement(string $key, int $value = 1): int
     {
-        return $this->useStore()->decrement($key, $value);
+        return $this->use()->decrement($key, $value);
     }
 
     /**
@@ -175,7 +110,7 @@ class Cache implements Contract
      */
     public function forever(string $key, string $value): void
     {
-        $this->useStore()->forever($key, $value);
+        $this->use()->forever($key, $value);
     }
 
     /**
@@ -183,7 +118,7 @@ class Cache implements Contract
      */
     public function forget(string $key): bool
     {
-        return $this->useStore()->forget($key);
+        return $this->use()->forget($key);
     }
 
     /**
@@ -191,7 +126,7 @@ class Cache implements Contract
      */
     public function flush(): bool
     {
-        return $this->useStore()->flush();
+        return $this->use()->flush();
     }
 
     /**
@@ -199,7 +134,7 @@ class Cache implements Contract
      */
     public function getPrefix(): string
     {
-        return $this->useStore()->getPrefix();
+        return $this->use()->getPrefix();
     }
 
     /**
@@ -207,55 +142,6 @@ class Cache implements Contract
      */
     public function getTagger(string ...$tags): Tagger
     {
-        return $this->useStore()->getTagger(...$tags);
-    }
-
-    /**
-     * Get an driver by name.
-     *
-     * @param string $name    The driver
-     * @param string $adapter The adapter
-     * @param array  $config  The config
-     *
-     * @return Driver
-     */
-    protected function createDriver(string $name, string $adapter, array $config): Driver
-    {
-        return Cls::getDefaultableService(
-            $this->container,
-            $name,
-            Driver::class,
-            [
-                $this->createAdapter($adapter, $config),
-            ]
-        );
-    }
-
-    /**
-     * Get an adapter by name.
-     *
-     * @param string $name   The adapter
-     * @param array  $config The config
-     *
-     * @return Adapter
-     */
-    protected function createAdapter(string $name, array $config): Adapter
-    {
-        $defaultClass = Adapter::class;
-
-        if (Cls::inherits($name, RedisAdapter::class)) {
-            $defaultClass = RedisAdapter::class;
-        } elseif (Cls::inherits($name, LogAdapter::class)) {
-            $defaultClass = LogAdapter::class;
-        }
-
-        return Cls::getDefaultableService(
-            $this->container,
-            $name,
-            $defaultClass,
-            [
-                $config,
-            ]
-        );
+        return $this->use()->getTagger(...$tags);
     }
 }

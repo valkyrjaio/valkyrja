@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache;
 
+use Valkyrja\Support\Manager\Adapter as Contract;
+
 /**
  * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-interface Adapter
+interface Adapter extends Contract
 {
     /**
      * Determine if an item exists in the cache.

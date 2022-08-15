@@ -16,22 +16,21 @@ namespace Valkyrja\JWT\Loaders;
 use Valkyrja\JWT\Adapter;
 use Valkyrja\JWT\Driver;
 use Valkyrja\JWT\Loader as Contract;
+use Valkyrja\Support\Loader\Loaders\SimpleLoader as Loader;
 
 /**
  * Class SimpleLoader.
  *
  * @author Melech Mizrachi
  */
-class SimpleLoader implements Contract
+class SimpleLoader extends Loader implements Contract
 {
     /**
      * @inheritDoc
      */
     public function createDriver(string $name, string $adapter, array $config): Driver
     {
-        return new $name(
-            $this->createAdapter($name, $config)
-        );
+        return parent::createDriver($name, $adapter, $config);
     }
 
     /**
@@ -39,6 +38,6 @@ class SimpleLoader implements Contract
      */
     public function createAdapter(string $name, array $config): Adapter
     {
-        return new $name($config);
+        return parent::createAdapter($name, $config);
     }
 }

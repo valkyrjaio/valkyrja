@@ -49,7 +49,7 @@ class JWTCryptRepository extends CryptTokenizedRepository implements Contract
     {
         parent::__construct($adapter, $crypt, $session, $config, $user);
 
-        $this->jwt = $jwt->useAlgo();
+        $this->jwt = $jwt->use();
     }
 
     /**

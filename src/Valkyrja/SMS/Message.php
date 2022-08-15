@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\SMS;
 
+use Valkyrja\Support\Manager\Message as Contract;
+
 /**
  * Interface Message.
  *
  * @author Melech Mizrachi
  */
-interface Message
+interface Message extends Contract
 {
     /**
      * Get the phone number to send to.

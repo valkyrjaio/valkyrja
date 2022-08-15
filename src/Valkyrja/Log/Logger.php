@@ -14,23 +14,21 @@ declare(strict_types=1);
 namespace Valkyrja\Log;
 
 use Throwable;
+use Valkyrja\Support\Manager\Manager;
 
 /**
  * Interface Logger.
  *
  * @author Melech Mizrachi
  */
-interface Logger
+interface Logger extends Manager
 {
     /**
-     * Use a logger by name.
-     *
-     * @param string|null $name    [optional] The logger name
-     * @param string|null $adapter [optional] The adapter
+     * @inheritDoc
      *
      * @return Driver
      */
-    public function useLogger(string $name = null, string $adapter = null): Driver;
+    public function use(string $name = null): Driver;
 
     /**
      * Log a debug message.

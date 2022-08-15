@@ -13,29 +13,26 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast;
 
+use Valkyrja\Support\Manager\MessageManager;
+
 /**
  * Interface Broadcast.
  *
  * @author Melech Mizrachi
  */
-interface Broadcast
+interface Broadcast extends MessageManager
 {
     /**
-     * Use a broadcaster by name.
-     *
-     * @param string|null $name    [optional] The mailer name
-     * @param string|null $adapter [optional] The adapter
+     * @inheritDoc
      *
      * @return Driver
      */
-    public function useBroadcaster(string $name = null, string $adapter = null): Driver;
+    public function use(string $name = null): Driver;
 
     /**
-     * Create a new message.
-     *
-     * @param string|null $name [optional] The name of the message
+     * @inheritDoc
      *
      * @return Message
      */
-    public function createMessage(string $name = null): Message;
+    public function createMessage(string $name = null, array $data = []): Message;
 }

@@ -48,7 +48,7 @@ class JWTRepository extends TokenizedRepository implements Contract
     {
         parent::__construct($adapter, $session, $config, $user);
 
-        $this->jwt = $jwt->useAlgo();
+        $this->jwt = $jwt->use();
     }
 
     /**

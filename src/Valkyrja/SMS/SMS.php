@@ -13,31 +13,28 @@ declare(strict_types=1);
 
 namespace Valkyrja\SMS;
 
+use Valkyrja\Support\Manager\MessageManager;
+
 /**
  * Interface SMS.
  *
  * @author Melech Mizrachi
  */
-interface SMS
+interface SMS extends MessageManager
 {
     /**
-     * Use a messenger by name.
-     *
-     * @param string|null $name    [optional] The messenger name
-     * @param string|null $adapter [optional] The adapter
+     * @inheritDoc
      *
      * @return Driver
      */
-    public function useMessenger(string $name = null, string $adapter = null): Driver;
+    public function use(string $name = null): Driver;
 
     /**
-     * Create a new message.
-     *
-     * @param string|null $name [optional] The name of the message
+     * @inheritDoc
      *
      * @return Message
      */
-    public function createMessage(string $name = null): Message;
+    public function createMessage(string $name = null, array $data = []): Message;
 
     /**
      * Send a message.

@@ -18,6 +18,8 @@ use Valkyrja\Client\Adapter;
 use Valkyrja\Client\Client;
 use Valkyrja\Client\Driver;
 use Valkyrja\Client\GuzzleAdapter;
+use Valkyrja\Client\Loader;
+use Valkyrja\Client\Loaders\ContainerLoader;
 use Valkyrja\Client\LogAdapter;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
@@ -38,6 +40,7 @@ class ServiceProvider extends Provider
     {
         return [
             Client::class        => 'publishClient',
+            Loader::class        => 'publishLoader',
             Driver::class        => 'publishDriver',
             GuzzleAdapter::class => 'publishGuzzleAdapter',
             LogAdapter::class    => 'publishLogAdapter',
@@ -52,6 +55,7 @@ class ServiceProvider extends Provider
     {
         return [
             Client::class,
+            Loader::class,
             Driver::class,
             GuzzleAdapter::class,
             LogAdapter::class,
@@ -80,9 +84,24 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Client::class,
             new \Valkyrja\Client\Managers\Client(
-                $container,
+                $container->getSingleton(Loader::class),
                 $config['client']
             )
+        );
+    }
+
+    /**
+     * Publish the loader service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishLoader(Container $container): void
+    {
+        $container->setSingleton(
+            Loader::class,
+            new ContainerLoader($container),
         );
     }
 
@@ -142,7 +161,7 @@ class ServiceProvider extends Provider
             LogAdapter::class,
             static function (string $name, array $config) use ($logger, $responseFactory): LogAdapter {
                 return new $name(
-                    $logger->useLogger($config['logger'] ?? null),
+                    $logger->use($config['logger'] ?? null),
                     $responseFactory,
                     $config
                 );

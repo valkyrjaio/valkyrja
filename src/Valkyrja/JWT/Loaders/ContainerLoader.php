@@ -13,49 +13,34 @@ declare(strict_types=1);
 
 namespace Valkyrja\JWT\Loaders;
 
-use Valkyrja\Container\Container;
 use Valkyrja\JWT\Adapter;
 use Valkyrja\JWT\Driver;
 use Valkyrja\JWT\Loader as Contract;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Support\Loader\Loaders\ContainerLoader as Loader;
 
 /**
  * Class ContainerLoader.
  *
  * @author Melech Mizrachi
  */
-class ContainerLoader implements Contract
+class ContainerLoader extends Loader implements Contract
 {
     /**
-     * The container.
-     *
-     * @var Container
+     * @inheritDoc
      */
-    protected Container $container;
+    protected static string $defaultDriverClass = Driver::class;
 
     /**
-     * ContainerLoader constructor.
-     *
-     * @param Container $container The container
+     * @inheritDoc
      */
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-    }
+    protected static string $defaultAdapterClass = Adapter::class;
 
     /**
      * @inheritDoc
      */
     public function createDriver(string $name, string $adapter, array $config): Driver
     {
-        return Cls::getDefaultableService(
-            $this->container,
-            $name,
-            Driver::class,
-            [
-                $this->createAdapter($adapter, $config),
-            ]
-        );
+        return parent::createDriver($name, $adapter, $config);
     }
 
     /**
@@ -63,13 +48,6 @@ class ContainerLoader implements Contract
      */
     public function createAdapter(string $name, array $config): Adapter
     {
-        return Cls::getDefaultableService(
-            $this->container,
-            $name,
-            Adapter::class,
-            [
-                $config,
-            ]
-        );
+        return parent::createAdapter($name, $config);
     }
 }

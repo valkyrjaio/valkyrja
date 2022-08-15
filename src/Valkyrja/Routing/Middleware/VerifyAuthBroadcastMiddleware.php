@@ -127,7 +127,7 @@ class VerifyAuthBroadcastMiddleware extends Middleware
     {
         $idField = $user::getIdField();
 
-        return $broadcaster->useBroadcaster()->determineKeyValueMatch(
+        return $broadcaster->use()->determineKeyValueMatch(
             $idField,
             $user->__get($idField),
             $broadcastMessage

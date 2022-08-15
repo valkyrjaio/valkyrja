@@ -52,7 +52,7 @@ class CryptPusherAdapter extends PusherAdapter
         parent::__construct($pusher);
 
         $this->config = $config;
-        $this->crypt  = $crypt->useCrypt($config['adapter']);
+        $this->crypt  = $crypt->use($config['adapter']);
     }
 
     /**

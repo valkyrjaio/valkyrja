@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Log;
 
 use Throwable;
+use Valkyrja\Support\Manager\Driver as Contract;
 
 /**
  * Interface Driver.
  *
  * @author Melech Mizrachi
  */
-interface Driver
+interface Driver extends Contract
 {
     /**
      * Log a debug message.

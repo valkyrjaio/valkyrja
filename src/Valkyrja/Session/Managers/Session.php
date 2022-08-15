@@ -13,104 +13,37 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Managers;
 
-use Valkyrja\Container\Container;
-use Valkyrja\Session\Adapter;
-use Valkyrja\Session\CacheAdapter;
 use Valkyrja\Session\Driver;
-use Valkyrja\Session\LogAdapter;
+use Valkyrja\Session\Loader;
 use Valkyrja\Session\Session as Contract;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Support\Manager\Managers\Manager;
 
 /**
  * Class Sessions.
  *
  * @author Melech Mizrachi
  */
-class Session implements Contract
+class Session extends Manager implements Contract
 {
-    /**
-     * The drivers.
-     *
-     * @var Driver[]
-     */
-    protected static array $drivers = [];
-
-    /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
-     * The default adapter.
-     *
-     * @var string
-     */
-    protected string $defaultAdapter;
-
-    /**
-     * The default driver.
-     *
-     * @var string
-     */
-    protected string $defaultDriver;
-
-    /**
-     * The default session.
-     *
-     * @var string
-     */
-    protected string $defaultSession;
-
-    /**
-     * The sessions.
-     *
-     * @var array
-     */
-    protected array $sessions;
-
     /**
      * Session constructor.
      *
-     * @param Container $container The container
-     * @param array     $config    The config
+     * @param Loader $loader The loader
+     * @param array  $config The config
      */
-    public function __construct(Container $container, array $config)
+    public function __construct(Loader $loader, array $config)
     {
-        $this->container      = $container;
-        $this->config         = $config;
-        $this->defaultSession = $config['default'];
-        $this->defaultAdapter = $config['adapter'];
-        $this->defaultDriver  = $config['driver'];
-        $this->sessions       = $config['sessions'];
+        parent::__construct($loader, $config);
+
+        $this->configurations = $config['sessions'];
     }
 
     /**
      * @inheritDoc
      */
-    public function useSession(string $name = null, string $adapter = null): Driver
+    public function use(string $name = null): Driver
     {
-        // The session to use
-        $name ??= $this->defaultSession;
-        // The session to use
-        $session = $this->sessions[$name];
-        // The adapter to use
-        $driver ??= $session['driver'] ?? $this->defaultDriver;
-        // The adapter to use
-        $adapter ??= $session['adapter'] ?? $this->defaultAdapter;
-        // The cache key to use
-        $cacheKey = $name . $adapter;
-
-        return self::$drivers[$cacheKey]
-            ?? self::$drivers[$cacheKey] = $this->createDriver($driver, $adapter, $session);
+        return parent::use($name);
     }
 
     /**
@@ -118,7 +51,7 @@ class Session implements Contract
      */
     public function start(): void
     {
-        $this->useSession()->start();
+        $this->use()->start();
     }
 
     /**
@@ -126,7 +59,7 @@ class Session implements Contract
      */
     public function getId(): string
     {
-        return $this->useSession()->getId();
+        return $this->use()->getId();
     }
 
     /**
@@ -134,7 +67,7 @@ class Session implements Contract
      */
     public function setId(string $id): void
     {
-        $this->useSession()->setId($id);
+        $this->use()->setId($id);
     }
 
     /**
@@ -142,7 +75,7 @@ class Session implements Contract
      */
     public function getName(): string
     {
-        return $this->useSession()->getName();
+        return $this->use()->getName();
     }
 
     /**
@@ -150,7 +83,7 @@ class Session implements Contract
      */
     public function setName(string $name): void
     {
-        $this->useSession()->setName($name);
+        $this->use()->setName($name);
     }
 
     /**
@@ -158,7 +91,7 @@ class Session implements Contract
      */
     public function isActive(): bool
     {
-        return $this->useSession()->isActive();
+        return $this->use()->isActive();
     }
 
     /**
@@ -166,7 +99,7 @@ class Session implements Contract
      */
     public function has(string $id): bool
     {
-        return $this->useSession()->has($id);
+        return $this->use()->has($id);
     }
 
     /**
@@ -174,7 +107,7 @@ class Session implements Contract
      */
     public function get(string $id, $default = null)
     {
-        return $this->useSession()->get($id, $default);
+        return $this->use()->get($id, $default);
     }
 
     /**
@@ -182,7 +115,7 @@ class Session implements Contract
      */
     public function set(string $id, $value): void
     {
-        $this->useSession()->set($id, $value);
+        $this->use()->set($id, $value);
     }
 
     /**
@@ -190,7 +123,7 @@ class Session implements Contract
      */
     public function remove(string $id): bool
     {
-        return $this->useSession()->remove($id);
+        return $this->use()->remove($id);
     }
 
     /**
@@ -198,7 +131,7 @@ class Session implements Contract
      */
     public function all(): array
     {
-        return $this->useSession()->all();
+        return $this->use()->all();
     }
 
     /**
@@ -206,7 +139,7 @@ class Session implements Contract
      */
     public function generateCsrfToken(string $id): string
     {
-        return $this->useSession()->generateCsrfToken($id);
+        return $this->use()->generateCsrfToken($id);
     }
 
     /**
@@ -214,7 +147,7 @@ class Session implements Contract
      */
     public function validateCsrfToken(string $id, string $token): void
     {
-        $this->useSession()->validateCsrfToken($id, $token);
+        $this->use()->validateCsrfToken($id, $token);
     }
 
     /**
@@ -222,7 +155,7 @@ class Session implements Contract
      */
     public function isCsrfTokenValid(string $id, string $token): bool
     {
-        return $this->useSession()->isCsrfTokenValid($id, $token);
+        return $this->use()->isCsrfTokenValid($id, $token);
     }
 
     /**
@@ -230,7 +163,7 @@ class Session implements Contract
      */
     public function clear(): void
     {
-        $this->useSession()->clear();
+        $this->use()->clear();
     }
 
     /**
@@ -238,55 +171,6 @@ class Session implements Contract
      */
     public function destroy(): void
     {
-        $this->useSession()->destroy();
-    }
-
-    /**
-     * Get an driver by name.
-     *
-     * @param string $name    The driver
-     * @param string $adapter The adapter
-     * @param array  $config  The config
-     *
-     * @return Driver
-     */
-    protected function createDriver(string $name, string $adapter, array $config): Driver
-    {
-        return Cls::getDefaultableService(
-            $this->container,
-            $name,
-            Driver::class,
-            [
-                $this->createAdapter($adapter, $config),
-            ]
-        );
-    }
-
-    /**
-     * Get an adapter by name.
-     *
-     * @param string $name   The adapter
-     * @param array  $config The config
-     *
-     * @return Adapter
-     */
-    protected function createAdapter(string $name, array $config): Adapter
-    {
-        $defaultClass = Adapter::class;
-
-        if (Cls::inherits($name, CacheAdapter::class)) {
-            $defaultClass = CacheAdapter::class;
-        } elseif (Cls::inherits($name, LogAdapter::class)) {
-            $defaultClass = LogAdapter::class;
-        }
-
-        return Cls::getDefaultableService(
-            $this->container,
-            $name,
-            $defaultClass,
-            [
-                $config,
-            ]
-        );
+        $this->use()->destroy();
     }
 }

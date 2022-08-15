@@ -13,29 +13,24 @@ declare(strict_types=1);
 
 namespace Valkyrja\JWT;
 
+use Valkyrja\Support\Loader\Loader as Contract;
+
 /**
  * Interface Loader.
  *
  * @author Melech Mizrachi
  */
-interface Loader
+interface Loader extends Contract
 {
     /**
-     * Get a driver by name.
-     *
-     * @param string $name    The driver
-     * @param string $adapter The adapter
-     * @param array  $config  The config
+     * @inheritDoc
      *
      * @return Driver
      */
     public function createDriver(string $name, string $adapter, array $config): Driver;
 
     /**
-     * Get an adapter by name.
-     *
-     * @param string $name   The adapter
-     * @param array  $config The config
+     * @inheritDoc
      *
      * @return Adapter
      */

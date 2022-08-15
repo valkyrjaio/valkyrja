@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem;
 
 use Valkyrja\Filesystem\Enums\Visibility;
+use Valkyrja\Support\Manager\Driver as Contract;
 
 /**
  * Interface Driver.
  *
  * @author Melech Mizrachi
  */
-interface Driver
+interface Driver extends Contract
 {
     /**
      * Determine whether a path exists.

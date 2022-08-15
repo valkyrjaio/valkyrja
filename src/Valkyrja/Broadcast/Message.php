@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast;
 
+use Valkyrja\Support\Manager\Message as Contract;
+
 /**
  * Interface Message.
  *
  * @author Melech Mizrachi
  */
-interface Message
+interface Message extends Contract
 {
     /**
      * Get the channel to broadcast on.

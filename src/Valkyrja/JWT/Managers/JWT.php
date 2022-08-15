@@ -16,63 +16,17 @@ namespace Valkyrja\JWT\Managers;
 use Valkyrja\JWT\Driver;
 use Valkyrja\JWT\JWT as Contract;
 use Valkyrja\JWT\Loader;
+use Valkyrja\Support\Manager\Managers\Manager;
 
 /**
  * Class JWT.
  *
  * @author Melech Mizrachi
+ *
+ * @property Loader $loader
  */
-class JWT implements Contract
+class JWT extends Manager implements Contract
 {
-    /**
-     * The drivers.
-     *
-     * @var Driver[]
-     */
-    protected static array $drivers = [];
-
-    /**
-     * The loader.
-     *
-     * @var Loader
-     */
-    protected Loader $loader;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
-     * The default algo.
-     *
-     * @var string
-     */
-    protected string $default;
-
-    /**
-     * The default adapter.
-     *
-     * @var string
-     */
-    protected string $defaultAdapter;
-
-    /**
-     * The default driver.
-     *
-     * @var string
-     */
-    protected string $defaultDriver;
-
-    /**
-     * The algorithms.
-     *
-     * @var array[]
-     */
-    protected array $algos;
-
     /**
      * JWT constructor.
      *
@@ -81,32 +35,17 @@ class JWT implements Contract
      */
     public function __construct(Loader $loader, array $config)
     {
-        $this->loader         = $loader;
-        $this->config         = $config;
-        $this->default        = $config['default'];
-        $this->defaultAdapter = $config['adapter'];
-        $this->defaultDriver  = $config['driver'];
-        $this->algos          = $config['algos'];
+        parent::__construct($loader, $config);
+
+        $this->configurations = $config['algos'];
     }
 
     /**
      * @inheritDoc
      */
-    public function useAlgo(string $algo = null): Driver
+    public function use(string $name = null): Driver
     {
-        // The algo to use
-        $algo ??= $this->default;
-        // The config to use
-        $config = $this->algos[$algo];
-        // The driver to use
-        $driver = $config['driver'] ?? $this->defaultDriver;
-        // The adapter to use
-        $adapter = $config['adapter'] ?? $this->defaultAdapter;
-        // The cache key to use
-        $cacheKey = $algo . $driver . $adapter;
-
-        return self::$drivers[$cacheKey]
-            ?? self::$drivers[$cacheKey] = $this->loader->createDriver($driver, $adapter, $config);
+        return parent::use($name);
     }
 
     /**
@@ -114,7 +53,7 @@ class JWT implements Contract
      */
     public function encode(array $payload): string
     {
-        return $this->useAlgo()->encode($payload);
+        return $this->use()->encode($payload);
     }
 
     /**
@@ -122,6 +61,6 @@ class JWT implements Contract
      */
     public function decode(string $jwt): array
     {
-        return $this->useAlgo()->decode($jwt);
+        return $this->use()->decode($jwt);
     }
 }

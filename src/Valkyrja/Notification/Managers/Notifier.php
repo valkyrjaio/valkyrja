@@ -275,7 +275,7 @@ class Notifier implements Contract
     protected function notifyByBroadcast(Notification $notification): void
     {
         $broadcast        = $this->broadcast;
-        $broadcastAdapter = $broadcast->useBroadcaster($notification->getBroadcastAdapterName());
+        $broadcastAdapter = $broadcast->use($notification->getBroadcastAdapterName());
         $broadcastMessage = $notification->getBroadcastMessageName();
 
         foreach ($this->broadcastEvents as $broadcastEvent) {
@@ -298,7 +298,7 @@ class Notifier implements Contract
     protected function notifyByMail(Notification $notification): void
     {
         $mail        = $this->mail;
-        $mailAdapter = $mail->useMailer($notification->getMailAdapterName());
+        $mailAdapter = $mail->use($notification->getMailAdapterName());
         $mailMessage = $notification->getMailMessageName();
 
         foreach ($this->mailRecipients as $mailRecipient) {
@@ -321,7 +321,7 @@ class Notifier implements Contract
     protected function notifyBySms(Notification $notification): void
     {
         $sms        = $this->sms;
-        $smsAdapter = $sms->useMessenger($notification->getSmsAdapterName());
+        $smsAdapter = $sms->use($notification->getSmsAdapterName());
         $smsMessage = $notification->getSmsMessageName();
 
         foreach ($this->smsRecipients as $smsRecipient) {

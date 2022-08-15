@@ -48,7 +48,7 @@ class CryptTokenizedRepository extends TokenizedRepository implements Contract
     {
         parent::__construct($adapter, $session, $config, $user);
 
-        $this->crypt = $crypt->useCrypt();
+        $this->crypt = $crypt->use();
     }
 
     /**

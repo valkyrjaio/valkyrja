@@ -16,21 +16,17 @@ namespace Valkyrja\Broadcast\Drivers;
 use Valkyrja\Broadcast\Adapter;
 use Valkyrja\Broadcast\Driver as Contract;
 use Valkyrja\Broadcast\Message;
+use Valkyrja\Support\Manager\Drivers\Driver as ParentDriver;
 
 /**
  * Class Driver.
  *
  * @author Melech Mizrachi
+ *
+ * @property Adapter $adapter
  */
-class Driver implements Contract
+class Driver extends ParentDriver implements Contract
 {
-    /**
-     * The adapter.
-     *
-     * @var Adapter
-     */
-    protected Adapter $adapter;
-
     /**
      * Driver constructor.
      *
@@ -38,7 +34,7 @@ class Driver implements Contract
      */
     public function __construct(Adapter $adapter)
     {
-        $this->adapter = $adapter;
+        parent::__construct($adapter);
     }
 
     /**

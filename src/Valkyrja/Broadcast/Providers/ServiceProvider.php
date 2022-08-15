@@ -19,6 +19,8 @@ use Valkyrja\Broadcast\Adapter;
 use Valkyrja\Broadcast\Adapters\CryptPusherAdapter;
 use Valkyrja\Broadcast\Broadcast;
 use Valkyrja\Broadcast\Driver;
+use Valkyrja\Broadcast\Loader;
+use Valkyrja\Broadcast\Loaders\ContainerLoader;
 use Valkyrja\Broadcast\LogAdapter;
 use Valkyrja\Broadcast\Message;
 use Valkyrja\Broadcast\PusherAdapter;
@@ -44,6 +46,7 @@ class ServiceProvider extends Provider
     {
         return [
             Broadcast::class          => 'publishBroadcaster',
+            Loader::class             => 'publishLoader',
             Driver::class             => 'publishDriver',
             Adapter::class            => 'publishAdapter',
             CryptPusherAdapter::class => 'publishCryptPusherAdapter',
@@ -61,6 +64,7 @@ class ServiceProvider extends Provider
     {
         return [
             Broadcast::class,
+            Loader::class,
             CryptPusherAdapter::class,
             Driver::class,
             Adapter::class,
@@ -92,9 +96,24 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Broadcast::class,
             new \Valkyrja\Broadcast\Managers\Broadcast(
-                $container,
+                $container->getSingleton(Loader::class),
                 $config['client']
             )
+        );
+    }
+
+    /**
+     * Publish the loader service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishLoader(Container $container): void
+    {
+        $container->setSingleton(
+            Loader::class,
+            new ContainerLoader($container),
         );
     }
 
@@ -151,7 +170,7 @@ class ServiceProvider extends Provider
             LogAdapter::class,
             static function (string $name, array $config) use ($logger): LogAdapter {
                 return new $name(
-                    $logger->useLogger($config['logger'] ?? null),
+                    $logger->use($config['logger'] ?? null),
                     $config
                 );
             }

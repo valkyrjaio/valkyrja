@@ -15,13 +15,14 @@ namespace Valkyrja\Broadcast;
 
 use InvalidArgumentException;
 use JsonException;
+use Valkyrja\Support\Manager\Driver as Contract;
 
 /**
  * Interface Driver.
  *
  * @author Melech Mizrachi
  */
-interface Driver
+interface Driver extends Contract
 {
     /**
      * Determine if a key/value pair exists and matches in a broadcast message.

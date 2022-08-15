@@ -14,23 +14,21 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt;
 
 use Valkyrja\Crypt\Exceptions\CryptException;
+use Valkyrja\Support\Manager\Manager;
 
 /**
  * Interface Crypt.
  *
  * @author Melech Mizrachi
  */
-interface Crypt
+interface Crypt extends Manager
 {
     /**
-     * Use a crypt by name.
-     *
-     * @param string|null $name    The crypt name
-     * @param string|null $adapter The adapter
+     * @inheritDoc
      *
      * @return Driver
      */
-    public function useCrypt(string $name = null, string $adapter = null): Driver;
+    public function use(string $name = null): Driver;
 
     /**
      * Determine if an encrypted message is valid.
