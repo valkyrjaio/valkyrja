@@ -24,19 +24,19 @@ use Valkyrja\Support\Manager\Managers\MessageManager;
  *
  * @author Melech Mizrachi
  *
- * @property Loader $loader
+ * @property Loader $factory
  */
 class Broadcast extends MessageManager implements Contract
 {
     /**
      * Broadcast constructor.
      *
-     * @param Loader $loader The loader
-     * @param array  $config The config
+     * @param Loader $factory The factory
+     * @param array  $config  The config
      */
-    public function __construct(Loader $loader, array $config)
+    public function __construct(Loader $factory, array $config)
     {
-        parent::__construct($loader, $config);
+        parent::__construct($factory, $config);
 
         $this->configurations = $config['broadcasters'];
     }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Manager\Managers;
 
-use Valkyrja\Support\Loader\Loader;
+use Valkyrja\Support\Manager\Factory;
 use Valkyrja\Support\Manager\Driver;
 use Valkyrja\Support\Manager\Manager as Contract;
 
@@ -32,11 +32,11 @@ abstract class Manager implements Contract
     protected static array $drivers = [];
 
     /**
-     * The loader.
+     * The factory.
      *
-     * @var Loader
+     * @var Factory
      */
-    protected Loader $loader;
+    protected Factory $factory;
 
     /**
      * The config.
@@ -76,12 +76,12 @@ abstract class Manager implements Contract
     /**
      * Manager constructor.
      *
-     * @param Loader $loader The loader
-     * @param array  $config The config
+     * @param Factory $factory The factory
+     * @param array   $config  The config
      */
-    public function __construct(Loader $loader, array $config)
+    public function __construct(Factory $factory, array $config)
     {
-        $this->loader               = $loader;
+        $this->factory              = $factory;
         $this->config               = $config;
         $this->defaultConfiguration = $config['default'];
         $this->defaultAdapter       = $config['adapter'];
@@ -106,16 +106,16 @@ abstract class Manager implements Contract
         $cacheKey = $name . $adapter;
 
         return self::$drivers[$cacheKey]
-            ?? self::$drivers[$cacheKey] = $this->loader->createDriver($driver, $adapter, $config);
+            ?? self::$drivers[$cacheKey] = $this->factory->createDriver($driver, $adapter, $config);
     }
 
     /**
      * Get the loader.
      *
-     * @return Loader
+     * @return Factory
      */
-    public function getLoader(): Loader
+    public function getFactory(): Factory
     {
-        return $this->loader;
+        return $this->factory;
     }
 }

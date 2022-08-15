@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Manager;
 
-use Valkyrja\Support\Loader\Loader;
+use Valkyrja\Support\Manager\Factory;
 
 /**
  * Interface Manager.
@@ -34,7 +34,7 @@ interface Manager
     /**
      * Get the loader.
      *
-     * @return Loader
+     * @return Factory
      */
-    public function getLoader(): Loader;
+    public function getFactory(): Factory;
 }

@@ -15,7 +15,7 @@ namespace Valkyrja\Client\Managers;
 
 use Valkyrja\Client\Client as Contract;
 use Valkyrja\Client\Driver;
-use Valkyrja\Client\Loader;
+use Valkyrja\Client\Factory;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Support\Manager\Managers\Manager;
@@ -25,19 +25,19 @@ use Valkyrja\Support\Manager\Managers\Manager;
  *
  * @author Melech Mizrachi
  *
- * @property Loader $loader
+ * @property Factory $factory
  */
 class Client extends Manager implements Contract
 {
     /**
      * Client constructor.
      *
-     * @param Loader $loader The loader
-     * @param array  $config The config
+     * @param Factory $factory The factory
+     * @param array   $config  The config
      */
-    public function __construct(Loader $loader, array $config)
+    public function __construct(Factory $factory, array $config)
     {
-        parent::__construct($loader, $config);
+        parent::__construct($factory, $config);
 
         $this->configurations = $config['clients'];
     }

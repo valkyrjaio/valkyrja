@@ -21,10 +21,10 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Driver;
+use Valkyrja\Filesystem\Factories\ContainerFactory;
+use Valkyrja\Filesystem\Factory;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Filesystem\FlysystemAdapter;
-use Valkyrja\Filesystem\Loader;
-use Valkyrja\Filesystem\Loaders\ContainerLoader;
 
 /**
  * Class ServiceProvider.
@@ -40,7 +40,7 @@ class ServiceProvider extends Provider
     {
         return [
             Filesystem::class            => 'publishFilesystem',
-            Loader::class                => 'publishLoader',
+            Factory::class               => 'publishFactory',
             Driver::class                => 'publishDriver',
             Adapter::class               => 'publishAdapter',
             FlysystemAdapter::class      => 'publishFlysystemAdapter',
@@ -56,7 +56,7 @@ class ServiceProvider extends Provider
     {
         return [
             Filesystem::class,
-            Loader::class,
+            Factory::class,
             Driver::class,
             Adapter::class,
             FlysystemAdapter::class,
@@ -86,24 +86,24 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Filesystem::class,
             new \Valkyrja\Filesystem\Managers\Filesystem(
-                $container->getSingleton(Loader::class),
+                $container->getSingleton(Factory::class),
                 $config['filesystem']
             )
         );
     }
 
     /**
-     * Publish the loader service.
+     * Publish the factory service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishLoader(Container $container): void
+    public static function publishFactory(Container $container): void
     {
         $container->setSingleton(
-            Loader::class,
-            new ContainerLoader($container),
+            Factory::class,
+            new ContainerFactory($container),
         );
     }
 

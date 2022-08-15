@@ -17,8 +17,8 @@ use Predis\Client;
 use Valkyrja\Cache\Adapter;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Cache\Driver;
-use Valkyrja\Cache\Loader;
-use Valkyrja\Cache\Loaders\ContainerLoader;
+use Valkyrja\Cache\Factories\ContainerFactory;
+use Valkyrja\Cache\Factory;
 use Valkyrja\Cache\LogAdapter;
 use Valkyrja\Cache\RedisAdapter;
 use Valkyrja\Container\Container;
@@ -39,7 +39,7 @@ class ServiceProvider extends Provider
     {
         return [
             Cache::class        => 'publishCache',
-            Loader::class       => 'publishLoader',
+            Factory::class      => 'publishFactory',
             Driver::class       => 'publishDriver',
             Adapter::class      => 'publishAdapter',
             LogAdapter::class   => 'publishLogAdapter',
@@ -54,7 +54,7 @@ class ServiceProvider extends Provider
     {
         return [
             Cache::class,
-            Loader::class,
+            Factory::class,
             Driver::class,
             Adapter::class,
             LogAdapter::class,
@@ -83,24 +83,24 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Cache::class,
             new \Valkyrja\Cache\Managers\Cache(
-                $container->getSingleton(Loader::class),
+                $container->getSingleton(Factory::class),
                 $config['cache']
             )
         );
     }
 
     /**
-     * Publish the loader service.
+     * Publish the factory service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishLoader(Container $container): void
+    public static function publishFactory(Container $container): void
     {
         $container->setSingleton(
-            Loader::class,
-            new ContainerLoader($container),
+            Factory::class,
+            new ContainerFactory($container),
         );
     }
 

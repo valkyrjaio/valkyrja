@@ -15,7 +15,7 @@ namespace Valkyrja\Log\Managers;
 
 use Throwable;
 use Valkyrja\Log\Driver;
-use Valkyrja\Log\Loader;
+use Valkyrja\Log\Factory;
 use Valkyrja\Log\Logger as Contract;
 use Valkyrja\Support\Manager\Managers\Manager;
 
@@ -24,19 +24,19 @@ use Valkyrja\Support\Manager\Managers\Manager;
  *
  * @author Melech Mizrachi
  *
- * @property Loader $loader
+ * @property Factory $factory
  */
 class Logger extends Manager implements Contract
 {
     /**
      * Logger constructor.
      *
-     * @param Loader $loader The loader
-     * @param array  $config The config
+     * @param Factory $factory The factory
+     * @param array   $config  The config
      */
-    public function __construct(Loader $loader, array $config)
+    public function __construct(Factory $factory, array $config)
     {
-        parent::__construct($loader, $config);
+        parent::__construct($factory, $config);
 
         $this->configurations = $config['loggers'];
     }

@@ -18,8 +18,8 @@ use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Adapter;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Driver;
-use Valkyrja\Crypt\Loader;
-use Valkyrja\Crypt\Loaders\ContainerLoader;
+use Valkyrja\Crypt\Factories\ContainerFactory;
+use Valkyrja\Crypt\Factory;
 
 /**
  * Class ServiceProvider.
@@ -34,9 +34,9 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Crypt::class   => 'publishCrypt',
-            Loader::class  => 'publishLoader',
-            Driver::class  => 'publishDriver',
+            Crypt::class => 'publishCrypt',
+            Factory::class => 'publishFactory',
+            Driver::class => 'publishDriver',
             Adapter::class => 'publishAdapter',
         ];
     }
@@ -48,7 +48,7 @@ class ServiceProvider extends Provider
     {
         return [
             Crypt::class,
-            Loader::class,
+            Factory::class,
             Driver::class,
             Adapter::class,
         ];
@@ -75,24 +75,24 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Crypt::class,
             new \Valkyrja\Crypt\Managers\Crypt(
-                $container->getSingleton(Loader::class),
+                $container->getSingleton(Factory::class),
                 $config['crypt']
             )
         );
     }
 
     /**
-     * Publish the loader service.
+     * Publish the factory service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishLoader(Container $container): void
+    public static function publishFactory(Container $container): void
     {
         $container->setSingleton(
-            Loader::class,
-            new ContainerLoader($container),
+            Factory::class,
+            new ContainerFactory($container),
         );
     }
 

@@ -22,8 +22,8 @@ use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Adapter;
 use Valkyrja\Mail\Driver;
-use Valkyrja\Mail\Loader;
-use Valkyrja\Mail\Loaders\ContainerLoader;
+use Valkyrja\Mail\Factories\ContainerFactory;
+use Valkyrja\Mail\Factory;
 use Valkyrja\Mail\LogAdapter;
 use Valkyrja\Mail\Mail;
 use Valkyrja\Mail\MailgunAdapter;
@@ -44,7 +44,7 @@ class ServiceProvider extends Provider
     {
         return [
             Mail::class             => 'publishMail',
-            Loader::class           => 'publishLoader',
+            Factory::class          => 'publishFactory',
             Driver::class           => 'publishDriver',
             Adapter::class          => 'publishAdapter',
             LogAdapter::class       => 'publishLogAdapter',
@@ -63,7 +63,7 @@ class ServiceProvider extends Provider
     {
         return [
             Mail::class,
-            Loader::class,
+            Factory::class,
             Driver::class,
             Adapter::class,
             LogAdapter::class,
@@ -96,24 +96,24 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Mail::class,
             new \Valkyrja\Mail\Managers\Mail(
-                $container->getSingleton(Loader::class),
+                $container->getSingleton(Factory::class),
                 $config['mail']
             )
         );
     }
 
     /**
-     * Publish the loader service.
+     * Publish the factory service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishLoader(Container $container): void
+    public static function publishFactory(Container $container): void
     {
         $container->setSingleton(
-            Loader::class,
-            new ContainerLoader($container),
+            Factory::class,
+            new ContainerFactory($container),
         );
     }
 

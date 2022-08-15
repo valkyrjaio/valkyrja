@@ -15,7 +15,7 @@ namespace Valkyrja\Cache\Managers;
 
 use Valkyrja\Cache\Cache as Contract;
 use Valkyrja\Cache\Driver;
-use Valkyrja\Cache\Loader;
+use Valkyrja\Cache\Factory;
 use Valkyrja\Cache\Tagger;
 use Valkyrja\Support\Manager\Managers\Manager;
 
@@ -24,19 +24,19 @@ use Valkyrja\Support\Manager\Managers\Manager;
  *
  * @author Melech Mizrachi
  *
- * @property Loader $loader
+ * @property Factory $factory
  */
 class Cache extends Manager implements Contract
 {
     /**
      * Cache constructor.
      *
-     * @param Loader $loader The loader
-     * @param array  $config The config
+     * @param Factory $factory The factory
+     * @param array   $config  The config
      */
-    public function __construct(Loader $loader, array $config)
+    public function __construct(Factory $factory, array $config)
     {
-        parent::__construct($loader, $config);
+        parent::__construct($factory, $config);
 
         $this->configurations = $config['stores'];
     }

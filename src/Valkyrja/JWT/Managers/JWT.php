@@ -15,7 +15,7 @@ namespace Valkyrja\JWT\Managers;
 
 use Valkyrja\JWT\Driver;
 use Valkyrja\JWT\JWT as Contract;
-use Valkyrja\JWT\Loader;
+use Valkyrja\JWT\Factory;
 use Valkyrja\Support\Manager\Managers\Manager;
 
 /**
@@ -23,19 +23,19 @@ use Valkyrja\Support\Manager\Managers\Manager;
  *
  * @author Melech Mizrachi
  *
- * @property Loader $loader
+ * @property Factory $factory
  */
 class JWT extends Manager implements Contract
 {
     /**
      * JWT constructor.
      *
-     * @param Loader $loader The loader
-     * @param array  $config The config
+     * @param Factory $factory The factory
+     * @param array   $config  The config
      */
-    public function __construct(Loader $loader, array $config)
+    public function __construct(Factory $factory, array $config)
     {
-        parent::__construct($loader, $config);
+        parent::__construct($factory, $config);
 
         $this->configurations = $config['algos'];
     }

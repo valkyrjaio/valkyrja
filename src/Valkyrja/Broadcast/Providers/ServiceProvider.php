@@ -20,7 +20,7 @@ use Valkyrja\Broadcast\Adapters\CryptPusherAdapter;
 use Valkyrja\Broadcast\Broadcast;
 use Valkyrja\Broadcast\Driver;
 use Valkyrja\Broadcast\Loader;
-use Valkyrja\Broadcast\Loaders\ContainerLoader;
+use Valkyrja\Broadcast\Factories\ContainerFactory;
 use Valkyrja\Broadcast\LogAdapter;
 use Valkyrja\Broadcast\Message;
 use Valkyrja\Broadcast\PusherAdapter;
@@ -46,7 +46,7 @@ class ServiceProvider extends Provider
     {
         return [
             Broadcast::class          => 'publishBroadcaster',
-            Loader::class             => 'publishLoader',
+            Loader::class             => 'publishFactory',
             Driver::class             => 'publishDriver',
             Adapter::class            => 'publishAdapter',
             CryptPusherAdapter::class => 'publishCryptPusherAdapter',
@@ -103,17 +103,17 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the loader service.
+     * Publish the factory service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishLoader(Container $container): void
+    public static function publishFactory(Container $container): void
     {
         $container->setSingleton(
             Loader::class,
-            new ContainerLoader($container),
+            new ContainerFactory($container),
         );
     }
 

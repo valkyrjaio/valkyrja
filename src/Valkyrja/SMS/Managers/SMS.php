@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\SMS\Managers;
 
 use Valkyrja\SMS\Driver;
-use Valkyrja\SMS\Loader;
+use Valkyrja\SMS\Factory;
 use Valkyrja\SMS\Message;
 use Valkyrja\SMS\SMS as Contract;
 use Valkyrja\Support\Manager\Managers\MessageManager;
@@ -24,19 +24,19 @@ use Valkyrja\Support\Manager\Managers\MessageManager;
  *
  * @author Melech Mizrachi
  *
- * @property Loader $loader
+ * @property Factory $factory
  */
 class SMS extends MessageManager implements Contract
 {
     /**
      * Mail constructor.
      *
-     * @param Loader $loader The loader
-     * @param array  $config The config
+     * @param Factory $factory The factory
+     * @param array   $config  The config
      */
-    public function __construct(Loader $loader, array $config)
+    public function __construct(Factory $factory, array $config)
     {
-        parent::__construct($loader, $config);
+        parent::__construct($factory, $config);
 
         $this->configurations = $config['messengers'];
     }

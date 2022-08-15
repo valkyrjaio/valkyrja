@@ -19,8 +19,8 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger;
 use Valkyrja\SMS\Adapter;
-use Valkyrja\SMS\Loader;
-use Valkyrja\SMS\Loaders\ContainerLoader;
+use Valkyrja\SMS\Factories\ContainerFactory;
+use Valkyrja\SMS\Factory;
 use Valkyrja\SMS\LogAdapter;
 use Valkyrja\SMS\Message;
 use Valkyrja\SMS\NexmoAdapter;
@@ -40,7 +40,7 @@ class ServiceProvider extends Provider
     {
         return [
             SMS::class          => 'publishSMS',
-            Loader::class       => 'publishLoader',
+            Factory::class      => 'publishFactory',
             Adapter::class      => 'publishAdapter',
             LogAdapter::class   => 'publishLogAdapter',
             NexmoAdapter::class => 'publishNexmoAdapter',
@@ -56,7 +56,7 @@ class ServiceProvider extends Provider
     {
         return [
             SMS::class,
-            Loader::class,
+            Factory::class,
             Adapter::class,
             LogAdapter::class,
             NexmoAdapter::class,
@@ -86,24 +86,24 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             SMS::class,
             new \Valkyrja\SMS\Managers\SMS(
-                $container->getSingleton(Loader::class),
+                $container->getSingleton(Factory::class),
                 $config['sms']
             )
         );
     }
 
     /**
-     * Publish the loader service.
+     * Publish the factory service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishLoader(Container $container): void
+    public static function publishFactory(Container $container): void
     {
         $container->setSingleton(
-            Loader::class,
-            new ContainerLoader($container),
+            Factory::class,
+            new ContainerFactory($container),
         );
     }
 

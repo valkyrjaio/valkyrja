@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast;
 
-use Valkyrja\Support\Loader\LoaderWithMessage as Contract;
+use Valkyrja\Support\Manager\FactoryWithMessage as Contract;
 
 /**
- * Interface Loader.
+ * Interface Factory.
  *
  * @author Melech Mizrachi
  */

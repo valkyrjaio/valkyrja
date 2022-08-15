@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Managers;
 
 use Valkyrja\Session\Driver;
-use Valkyrja\Session\Loader;
+use Valkyrja\Session\Factory;
 use Valkyrja\Session\Session as Contract;
 use Valkyrja\Support\Manager\Managers\Manager;
 
@@ -28,12 +28,12 @@ class Session extends Manager implements Contract
     /**
      * Session constructor.
      *
-     * @param Loader $loader The loader
-     * @param array  $config The config
+     * @param Factory $factory The factory
+     * @param array   $config  The config
      */
-    public function __construct(Loader $loader, array $config)
+    public function __construct(Factory $factory, array $config)
     {
-        parent::__construct($loader, $config);
+        parent::__construct($factory, $config);
 
         $this->configurations = $config['sessions'];
     }

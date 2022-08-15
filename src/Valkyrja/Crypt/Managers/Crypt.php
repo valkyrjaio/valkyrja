@@ -15,7 +15,7 @@ namespace Valkyrja\Crypt\Managers;
 
 use Valkyrja\Crypt\Crypt as Contract;
 use Valkyrja\Crypt\Driver;
-use Valkyrja\Crypt\Loader;
+use Valkyrja\Crypt\Factory;
 use Valkyrja\Support\Manager\Managers\Manager;
 
 /**
@@ -23,19 +23,19 @@ use Valkyrja\Support\Manager\Managers\Manager;
  *
  * @author Melech Mizrachi
  *
- * @property Loader $loader
+ * @property Factory $factory
  */
 class Crypt extends Manager implements Contract
 {
     /**
      * Crypt constructor.
      *
-     * @param Loader $loader The loader
-     * @param array  $config The config
+     * @param Factory $factory The factory
+     * @param array   $config  The config
      */
-    public function __construct(Loader $loader, array $config)
+    public function __construct(Factory $factory, array $config)
     {
-        parent::__construct($loader, $config);
+        parent::__construct($factory, $config);
 
         $this->configurations = $config['crypts'];
     }

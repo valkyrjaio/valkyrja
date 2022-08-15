@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Manager\Managers;
 
-use Valkyrja\Support\Loader\LoaderWithMessage;
+use Valkyrja\Support\Manager\FactoryWithMessage;
 use Valkyrja\Support\Manager\Message;
 use Valkyrja\Support\Manager\MessageManager as Contract;
 
@@ -22,7 +22,7 @@ use Valkyrja\Support\Manager\MessageManager as Contract;
  *
  * @author Melech Mizrachi
  *
- * @property LoaderWithMessage $loader
+ * @property FactoryWithMessage $factory
  */
 abstract class MessageManager extends Manager implements Contract
 {
@@ -50,12 +50,12 @@ abstract class MessageManager extends Manager implements Contract
     /**
      * MessageManager constructor.
      *
-     * @param LoaderWithMessage $loader The loader
-     * @param array             $config The config
+     * @param FactoryWithMessage $factory The factory
+     * @param array              $config  The config
      */
-    public function __construct(LoaderWithMessage $loader, array $config)
+    public function __construct(FactoryWithMessage $factory, array $config)
     {
-        parent::__construct($loader, $config);
+        parent::__construct($factory, $config);
 
         $this->defaultMessage      = $config['defaultMessage'];
         $this->defaultMessageClass = $config['message'];
@@ -74,6 +74,6 @@ abstract class MessageManager extends Manager implements Contract
         // The message to use
         $message = $config['message'] ?? $this->defaultMessageClass;
 
-        return $this->loader->createMessage($message, $config, $data);
+        return $this->factory->createMessage($message, $config, $data);
     }
 }

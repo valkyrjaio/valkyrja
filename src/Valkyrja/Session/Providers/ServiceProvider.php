@@ -23,8 +23,8 @@ use Valkyrja\Session\Adapter;
 use Valkyrja\Session\Adapters\CookieAdapter;
 use Valkyrja\Session\CacheAdapter;
 use Valkyrja\Session\Driver;
-use Valkyrja\Session\Loader;
-use Valkyrja\Session\Loaders\ContainerLoader;
+use Valkyrja\Session\Factories\ContainerFactory;
+use Valkyrja\Session\Factory;
 use Valkyrja\Session\LogAdapter;
 use Valkyrja\Session\Session;
 
@@ -42,7 +42,7 @@ class ServiceProvider extends Provider
     {
         return [
             Session::class       => 'publishSession',
-            Loader::class        => 'publishLoader',
+            Factory::class       => 'publishFactory',
             Driver::class        => 'publishDriver',
             Adapter::class       => 'publishAdapter',
             CacheAdapter::class  => 'publishCacheAdapter',
@@ -58,7 +58,7 @@ class ServiceProvider extends Provider
     {
         return [
             Session::class,
-            Loader::class,
+            Factory::class,
             Driver::class,
             Adapter::class,
             CacheAdapter::class,
@@ -88,24 +88,24 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Session::class,
             new \Valkyrja\Session\Managers\Session(
-                $container->getSingleton(Loader::class),
+                $container->getSingleton(Factory::class),
                 $config['session']
             )
         );
     }
 
     /**
-     * Publish the loader service.
+     * Publish the factory service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishLoader(Container $container): void
+    public static function publishFactory(Container $container): void
     {
         $container->setSingleton(
-            Loader::class,
-            new ContainerLoader($container),
+            Factory::class,
+            new ContainerFactory($container),
         );
     }
 

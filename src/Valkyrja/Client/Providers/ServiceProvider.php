@@ -17,9 +17,9 @@ use GuzzleHttp\Client as Guzzle;
 use Valkyrja\Client\Adapter;
 use Valkyrja\Client\Client;
 use Valkyrja\Client\Driver;
+use Valkyrja\Client\Factories\ContainerFactory;
+use Valkyrja\Client\Factory;
 use Valkyrja\Client\GuzzleAdapter;
-use Valkyrja\Client\Loader;
-use Valkyrja\Client\Loaders\ContainerLoader;
 use Valkyrja\Client\LogAdapter;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
@@ -40,7 +40,7 @@ class ServiceProvider extends Provider
     {
         return [
             Client::class        => 'publishClient',
-            Loader::class        => 'publishLoader',
+            Factory::class       => 'publishFactory',
             Driver::class        => 'publishDriver',
             GuzzleAdapter::class => 'publishGuzzleAdapter',
             LogAdapter::class    => 'publishLogAdapter',
@@ -55,7 +55,7 @@ class ServiceProvider extends Provider
     {
         return [
             Client::class,
-            Loader::class,
+            Factory::class,
             Driver::class,
             GuzzleAdapter::class,
             LogAdapter::class,
@@ -84,24 +84,24 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Client::class,
             new \Valkyrja\Client\Managers\Client(
-                $container->getSingleton(Loader::class),
+                $container->getSingleton(Factory::class),
                 $config['client']
             )
         );
     }
 
     /**
-     * Publish the loader service.
+     * Publish the factory service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishLoader(Container $container): void
+    public static function publishFactory(Container $container): void
     {
         $container->setSingleton(
-            Loader::class,
-            new ContainerLoader($container),
+            Factory::class,
+            new ContainerFactory($container),
         );
     }
 
