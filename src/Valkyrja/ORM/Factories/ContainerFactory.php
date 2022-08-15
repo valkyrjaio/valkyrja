@@ -29,11 +29,11 @@ use Valkyrja\ORM\Statement;
 use Valkyrja\Support\Type\Cls;
 
 /**
- * Class Factory.
+ * Class ContainerFactory.
  *
  * @author Melech Mizrachi
  */
-class Factory implements Contract
+class ContainerFactory implements Contract
 {
     /**
      * The container service.
@@ -43,7 +43,7 @@ class Factory implements Contract
     protected Container $container;
 
     /**
-     * AdapterFactory constructor.
+     * ContainerFactory constructor.
      *
      * @param Container $container The container service
      */

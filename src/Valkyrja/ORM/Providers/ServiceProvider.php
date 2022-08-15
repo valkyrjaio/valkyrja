@@ -125,7 +125,7 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Factory::class,
-            new \Valkyrja\ORM\Factories\Factory($container)
+            new \Valkyrja\ORM\Factories\ContainerFactory($container)
         );
     }
 
