@@ -17,6 +17,8 @@ use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth;
 use Valkyrja\Auth\CryptTokenizedRepository;
 use Valkyrja\Auth\EntityPolicy;
+use Valkyrja\Auth\Factories\ContainerFactory;
+use Valkyrja\Auth\Factory;
 use Valkyrja\Auth\Gate;
 use Valkyrja\Auth\JWTCryptRepository;
 use Valkyrja\Auth\JWTRepository;
@@ -45,6 +47,7 @@ class ServiceProvider extends Provider
     {
         return [
             Auth::class                     => 'publishAuth',
+            Factory::class                  => 'publishFactory',
             Gate::class                     => 'publishGate',
             Repository::class               => 'publishRepository',
             CryptTokenizedRepository::class => 'publishCryptTokenizedRepository',
@@ -64,6 +67,7 @@ class ServiceProvider extends Provider
     {
         return [
             Auth::class,
+            Factory::class,
             Gate::class,
             Repository::class,
             CryptTokenizedRepository::class,
@@ -97,9 +101,26 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Auth::class,
             new \Valkyrja\Auth\Managers\Auth(
-                $container,
+                $container->getSingleton(Factory::class),
                 $container->getSingleton(Request::class),
                 $config['auth']
+            )
+        );
+    }
+
+    /**
+     * Publish the factory service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishFactory(Container $container): void
+    {
+        $container->setSingleton(
+            Factory::class,
+            new ContainerFactory(
+                $container,
             )
         );
     }

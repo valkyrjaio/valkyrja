@@ -35,13 +35,6 @@ use Valkyrja\Support\Type\Cls;
 class Repository implements Contract
 {
     /**
-     * The adapter name to use.
-     *
-     * @var string|null
-     */
-    protected static ?string $adapterName = null;
-
-    /**
      * The adapter.
      *
      * @var Adapter

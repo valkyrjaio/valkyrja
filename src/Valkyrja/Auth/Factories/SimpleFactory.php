@@ -1,0 +1,51 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Valkyrja Framework package.
+ *
+ * (c) Melech Mizrachi <melechmizrachi@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Valkyrja\Auth\Factories;
+
+use Valkyrja\Auth\Adapter;
+use Valkyrja\Auth\Factory as Contract;
+use Valkyrja\Auth\Gate;
+use Valkyrja\Auth\Repository;
+
+/**
+ * Class SimpleFactory.
+ *
+ * @author Melech Mizrachi
+ */
+class SimpleFactory implements Contract
+{
+    /**
+     * @inheritDoc
+     */
+    public function createAdapter(string $name, array $config): Adapter
+    {
+        return new $name($config);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createRepository(Adapter $adapter, string $name, string $user, array $config): Repository
+    {
+        return new $name($adapter, $user, $config);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createGate(Repository $repository, string $name, array $config): Gate
+    {
+        return new $name($repository, $config);
+    }
+}

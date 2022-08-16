@@ -18,18 +18,13 @@ use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth as Contract;
 use Valkyrja\Auth\AuthenticatedUsers;
 use Valkyrja\Auth\Constants\HeaderValue;
-use Valkyrja\Auth\CryptTokenizedRepository;
+use Valkyrja\Auth\Factory;
 use Valkyrja\Auth\Gate;
-use Valkyrja\Auth\JWTCryptRepository;
-use Valkyrja\Auth\JWTRepository;
 use Valkyrja\Auth\LockableUser;
-use Valkyrja\Auth\ORMAdapter;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Auth\User;
-use Valkyrja\Container\Container;
 use Valkyrja\Http\Constants\Header;
 use Valkyrja\Http\Request;
-use Valkyrja\Support\Type\Cls;
 
 /**
  * Class Auth.
@@ -60,11 +55,11 @@ class Auth implements Contract
     protected static array $gates = [];
 
     /**
-     * The container service.
+     * The factory service.
      *
-     * @var Container
+     * @var Factory
      */
-    protected Container $container;
+    protected Factory $factory;
 
     /**
      * The request.
@@ -111,13 +106,13 @@ class Auth implements Contract
     /**
      * Auth constructor.
      *
-     * @param Container $container The container
-     * @param Request   $request   The request
-     * @param array     $config    The config
+     * @param Factory $factory The factory
+     * @param Request $request The request
+     * @param array   $config  The config
      */
-    public function __construct(Container $container, Request $request, array $config)
+    public function __construct(Factory $factory, Request $request, array $config)
     {
-        $this->container         = $container;
+        $this->factory           = $factory;
         $this->request           = $request;
         $this->config            = $config;
         $this->defaultAdapter    = $config['adapter'];
@@ -144,7 +139,7 @@ class Auth implements Contract
         $name ??= $this->defaultAdapter;
 
         return self::$adapters[$name]
-            ?? self::$adapters[$name] = $this->__getAdapter($name);
+            ?? self::$adapters[$name] = $this->factory->createAdapter($name, $this->config);
     }
 
     /**
@@ -158,7 +153,12 @@ class Auth implements Contract
         $name = $user::getAuthRepository() ?? $this->defaultRepository;
 
         return self::$repositories[$name]
-            ?? self::$repositories[$name] = $this->__getRepository($name, $user, $adapter);
+            ?? self::$repositories[$name] = $this->factory->createRepository(
+                $this->getAdapter($adapter),
+                $name,
+                $user,
+                $this->config
+            );
     }
 
     /**
@@ -169,7 +169,11 @@ class Auth implements Contract
         $name ??= $this->defaultGate;
 
         return self::$gates[$name]
-            ?? self::$gates[$name] = $this->__getGate($name, $user, $adapter);
+            ?? self::$gates[$name] = $this->factory->createGate(
+                $this->getRepository($user, $adapter),
+                $name,
+                $this->config
+            );
     }
 
     /**
@@ -384,78 +388,5 @@ class Auth implements Contract
             $repository->authenticateFromRequest($this->request);
         } catch (Exception $exception) {
         }
-    }
-
-    /**
-     * Get an adapter by name.
-     *
-     * @param string $name The adapter
-     *
-     * @return Adapter
-     */
-    protected function __getAdapter(string $name): Adapter
-    {
-        return Cls::getDefaultableService(
-            $this->container,
-            $name,
-            Cls::inherits($name, ORMAdapter::class) ? ORMAdapter::class : Adapter::class,
-            [
-                $this->config,
-            ]
-        );
-    }
-
-    /**
-     * Get a repository by user entity name.
-     *
-     * @param string      $name    The name
-     * @param string      $user    The user
-     * @param string|null $adapter [optional] The adapter
-     *
-     * @return Repository
-     */
-    protected function __getRepository(string $name, string $user, string $adapter = null): Repository
-    {
-        $defaultClass = Repository::class;
-        if (Cls::inherits($name, JWTCryptRepository::class)) {
-            $defaultClass = JWTCryptRepository::class;
-        } elseif (Cls::inherits($name, CryptTokenizedRepository::class)) {
-            $defaultClass = CryptTokenizedRepository::class;
-        } elseif (Cls::inherits($name, JWTRepository::class)) {
-            $defaultClass = JWTRepository::class;
-        }
-
-        return Cls::getDefaultableService(
-            $this->container,
-            $name,
-            $defaultClass,
-            [
-                $this->getAdapter($adapter),
-                $user,
-                $this->config,
-            ]
-        );
-    }
-
-    /**
-     * Get a gate by name.
-     *
-     * @param string      $name    The name
-     * @param string|null $user    [optional] The user
-     * @param string|null $adapter [optional] The adapter
-     *
-     * @return Gate
-     */
-    protected function __getGate(string $name, string $user = null, string $adapter = null): Gate
-    {
-        return Cls::getDefaultableService(
-            $this->container,
-            $name,
-            Gate::class,
-            [
-                $this->getRepository($user, $adapter),
-                $this->config,
-            ]
-        );
     }
 }
