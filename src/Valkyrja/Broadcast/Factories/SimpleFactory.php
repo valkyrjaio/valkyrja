@@ -15,16 +15,16 @@ namespace Valkyrja\Broadcast\Factories;
 
 use Valkyrja\Broadcast\Adapter;
 use Valkyrja\Broadcast\Driver;
-use Valkyrja\Broadcast\Loader as Contract;
+use Valkyrja\Broadcast\Factory as Contract;
 use Valkyrja\Broadcast\Message;
-use Valkyrja\Support\Manager\Factories\SimpleFactoryWithMessage as Loader;
+use Valkyrja\Support\Manager\Factories\SimpleFactoryWithMessage as Factory;
 
 /**
  * Class SimpleFactory.
  *
  * @author Melech Mizrachi
  */
-class SimpleFactory extends Loader implements Contract
+class SimpleFactory extends Factory implements Contract
 {
     /**
      * @inheritDoc

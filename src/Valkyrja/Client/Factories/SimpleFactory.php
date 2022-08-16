@@ -16,14 +16,14 @@ namespace Valkyrja\Client\Factories;
 use Valkyrja\Client\Adapter;
 use Valkyrja\Client\Driver;
 use Valkyrja\Client\Factory as Contract;
-use Valkyrja\Support\Manager\Factories\SimpleFactory as Loader;
+use Valkyrja\Support\Manager\Factories\SimpleFactory as Factory;
 
 /**
  * Class SimpleFactory.
  *
  * @author Melech Mizrachi
  */
-class SimpleFactory extends Loader implements Contract
+class SimpleFactory extends Factory implements Contract
 {
     /**
      * @inheritDoc

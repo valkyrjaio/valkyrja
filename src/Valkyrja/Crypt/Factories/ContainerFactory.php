@@ -16,14 +16,14 @@ namespace Valkyrja\Crypt\Factories;
 use Valkyrja\Crypt\Adapter;
 use Valkyrja\Crypt\Driver;
 use Valkyrja\Crypt\Factory as Contract;
-use Valkyrja\Support\Manager\Factories\ContainerFactory as Loader;
+use Valkyrja\Support\Manager\Factories\ContainerFactory as Factory;
 
 /**
  * Class ContainerFactory.
  *
  * @author Melech Mizrachi
  */
-class ContainerFactory extends Loader implements Contract
+class ContainerFactory extends Factory implements Contract
 {
     /**
      * @inheritDoc

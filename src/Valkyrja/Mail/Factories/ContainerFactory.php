@@ -20,7 +20,7 @@ use Valkyrja\Mail\LogAdapter;
 use Valkyrja\Mail\MailgunAdapter;
 use Valkyrja\Mail\Message;
 use Valkyrja\Mail\PHPMailerAdapter;
-use Valkyrja\Support\Manager\Factories\ContainerFactoryWithMessage as Loader;
+use Valkyrja\Support\Manager\Factories\ContainerFactoryWithMessage as Factory;
 use Valkyrja\Support\Type\Cls;
 
 /**
@@ -28,7 +28,7 @@ use Valkyrja\Support\Type\Cls;
  *
  * @author Melech Mizrachi
  */
-class ContainerFactory extends Loader implements Contract
+class ContainerFactory extends Factory implements Contract
 {
     /**
      * @inheritDoc

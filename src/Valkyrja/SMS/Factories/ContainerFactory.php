@@ -19,7 +19,7 @@ use Valkyrja\SMS\Factory as Contract;
 use Valkyrja\SMS\LogAdapter;
 use Valkyrja\SMS\Message;
 use Valkyrja\SMS\NexmoAdapter;
-use Valkyrja\Support\Manager\Factories\ContainerFactoryWithMessage as Loader;
+use Valkyrja\Support\Manager\Factories\ContainerFactoryWithMessage as Factory;
 use Valkyrja\Support\Type\Cls;
 
 /**
@@ -27,7 +27,7 @@ use Valkyrja\Support\Type\Cls;
  *
  * @author Melech Mizrachi
  */
-class ContainerFactory extends Loader implements Contract
+class ContainerFactory extends Factory implements Contract
 {
     /**
      * @inheritDoc

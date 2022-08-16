@@ -17,14 +17,14 @@ use Valkyrja\SMS\Adapter;
 use Valkyrja\SMS\Driver;
 use Valkyrja\SMS\Factory as Contract;
 use Valkyrja\SMS\Message;
-use Valkyrja\Support\Manager\Factories\SimpleFactoryWithMessage as Loader;
+use Valkyrja\Support\Manager\Factories\SimpleFactoryWithMessage as Factory;
 
 /**
  * Class SimpleFactory.
  *
  * @author Melech Mizrachi
  */
-class SimpleFactory extends Loader implements Contract
+class SimpleFactory extends Factory implements Contract
 {
     /**
      * @inheritDoc

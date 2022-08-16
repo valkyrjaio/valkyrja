@@ -17,7 +17,7 @@ use Valkyrja\Log\Adapter;
 use Valkyrja\Log\Driver;
 use Valkyrja\Log\Factory as Contract;
 use Valkyrja\Log\PsrAdapter;
-use Valkyrja\Support\Manager\Factories\ContainerFactory as Loader;
+use Valkyrja\Support\Manager\Factories\ContainerFactory as Factory;
 use Valkyrja\Support\Type\Cls;
 
 /**
@@ -25,7 +25,7 @@ use Valkyrja\Support\Type\Cls;
  *
  * @author Melech Mizrachi
  */
-class ContainerFactory extends Loader implements Contract
+class ContainerFactory extends Factory implements Contract
 {
     /**
      * @inheritDoc

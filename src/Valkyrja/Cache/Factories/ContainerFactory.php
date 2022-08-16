@@ -18,7 +18,7 @@ use Valkyrja\Cache\Driver;
 use Valkyrja\Cache\Factory as Contract;
 use Valkyrja\Cache\LogAdapter;
 use Valkyrja\Cache\RedisAdapter;
-use Valkyrja\Support\Manager\Factories\ContainerFactory as Loader;
+use Valkyrja\Support\Manager\Factories\ContainerFactory as Factory;
 use Valkyrja\Support\Type\Cls;
 
 /**
@@ -26,7 +26,7 @@ use Valkyrja\Support\Type\Cls;
  *
  * @author Melech Mizrachi
  */
-class ContainerFactory extends Loader implements Contract
+class ContainerFactory extends Factory implements Contract
 {
     /**
      * @inheritDoc

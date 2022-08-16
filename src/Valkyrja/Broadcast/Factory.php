@@ -20,7 +20,7 @@ use Valkyrja\Support\Manager\FactoryWithMessage as Contract;
  *
  * @author Melech Mizrachi
  */
-interface Loader extends Contract
+interface Factory extends Contract
 {
     /**
      * @inheritDoc

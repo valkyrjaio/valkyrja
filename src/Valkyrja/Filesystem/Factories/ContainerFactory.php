@@ -17,7 +17,7 @@ use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Driver;
 use Valkyrja\Filesystem\Factory as Contract;
 use Valkyrja\Filesystem\FlysystemAdapter;
-use Valkyrja\Support\Manager\Factories\ContainerFactory as Loader;
+use Valkyrja\Support\Manager\Factories\ContainerFactory as Factory;
 use Valkyrja\Support\Type\Cls;
 
 /**
@@ -25,7 +25,7 @@ use Valkyrja\Support\Type\Cls;
  *
  * @author Melech Mizrachi
  */
-class ContainerFactory extends Loader implements Contract
+class ContainerFactory extends Factory implements Contract
 {
     /**
      * @inheritDoc
