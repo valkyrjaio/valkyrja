@@ -13,29 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Enums;
 
-use Valkyrja\Support\Enum\Enum;
-
 /**
  * Enum InputOption.
  *
  * @author Melech Mizrachi
- *
- * @method static OptionMode NONE()
- * @method static OptionMode REQUIRED()
- * @method static OptionMode OPTIONAL()
- * @method static OptionMode IS_ARRAY()
  */
-final class OptionMode extends Enum
+enum OptionMode: string
 {
-    public const NONE     = 'NONE';
-    public const REQUIRED = 'REQUIRED';
-    public const OPTIONAL = 'OPTIONAL';
-    public const IS_ARRAY = 'IS_ARRAY';
-
-    protected static ?array $VALUES = [
-        self::NONE     => self::NONE,
-        self::REQUIRED => self::REQUIRED,
-        self::OPTIONAL => self::OPTIONAL,
-        self::IS_ARRAY => self::IS_ARRAY,
-    ];
+    case NONE = 'NONE';
+    case REQUIRED = 'REQUIRED';
+    case OPTIONAL = 'OPTIONAL';
+    case IS_ARRAY = 'IS_ARRAY';
 }

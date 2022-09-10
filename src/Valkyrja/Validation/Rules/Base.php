@@ -36,7 +36,7 @@ class Base
      *
      * @return void
      */
-    public function required($subject): void
+    public function required(mixed $subject): void
     {
         if (! $subject) {
             throw new ValidationException("{$subject} is required");
@@ -53,7 +53,7 @@ class Base
      *
      * @return void
      */
-    public function equals($subject, $value): void
+    public function equals(mixed $subject, mixed $value): void
     {
         if ($subject !== $value) {
             throw new ValidationException("{$subject} must equal {$value}");
@@ -71,7 +71,7 @@ class Base
      */
     public function empty(string $subject = null): void
     {
-        if ($subject || ! empty($subject)) {
+        if ($subject) {
             throw new ValidationException("{$subject} must be empty");
         }
     }
@@ -85,7 +85,7 @@ class Base
      *
      * @return void
      */
-    public function notEmpty($subject): void
+    public function notEmpty(mixed $subject): void
     {
         if (! $subject) {
             throw new ValidationException("{$subject} must not be empty");
@@ -275,7 +275,7 @@ class Base
      *
      * @return void
      */
-    public function boolean($subject): void
+    public function boolean(mixed $subject): void
     {
         if (! is_bool($subject)) {
             throw new ValidationException("{$subject} must be a boolean");
@@ -291,7 +291,7 @@ class Base
      *
      * @return void
      */
-    public function numeric($subject): void
+    public function numeric(mixed $subject): void
     {
         if (! is_numeric($subject)) {
             throw new ValidationException("{$subject} must be numeric");

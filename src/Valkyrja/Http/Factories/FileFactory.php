@@ -72,9 +72,9 @@ abstract class FileFactory
      *
      * @throws InvalidArgumentException
      *
-     * @return array|UploadedFile
+     * @return UploadedFile|UploadedFile[]
      */
-    private static function createUploadedFileFromSpec(array $value)
+    private static function createUploadedFileFromSpec(array $value): UploadedFile|array
     {
         if (is_array($value['tmp_name'])) {
             return self::normalizeNestedFileSpec($value);

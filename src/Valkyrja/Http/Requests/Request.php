@@ -185,7 +185,7 @@ class Request extends SimpleRequest implements Contract
     /**
      * @inheritDoc
      */
-    public function getServerParam(string $name, $default = null)
+    public function getServerParam(string $name, mixed $default = null): mixed
     {
         return $this->server[$name] ?? $default;
     }
@@ -273,7 +273,7 @@ class Request extends SimpleRequest implements Contract
     /**
      * @inheritDoc
      */
-    public function getQueryParam(string $name, $default = null)
+    public function getQueryParam(string $name, mixed $default = null): mixed
     {
         return $this->query[$name] ?? $default;
     }
@@ -345,7 +345,7 @@ class Request extends SimpleRequest implements Contract
     /**
      * @inheritDoc
      */
-    public function getParsedBodyParam(string $name, $default = null)
+    public function getParsedBodyParam(string $name, mixed $default = null): mixed
     {
         return $this->parsedBody[$name] ?? $default;
     }
@@ -385,7 +385,7 @@ class Request extends SimpleRequest implements Contract
     /**
      * @inheritDoc
      */
-    public function getParsedJsonParam(string $name, $default = null)
+    public function getParsedJsonParam(string $name, mixed $default = null): mixed
     {
         return $this->parsedJson[$name] ?? $default;
     }
@@ -425,7 +425,7 @@ class Request extends SimpleRequest implements Contract
     /**
      * @inheritDoc
      */
-    public function getAttribute(string $name, $default = null)
+    public function getAttribute(string $name, mixed $default = null): mixed
     {
         return $this->attributes[$name] ?? $default;
     }
@@ -433,7 +433,7 @@ class Request extends SimpleRequest implements Contract
     /**
      * @inheritDoc
      */
-    public function withAttribute(string $name, $value): self
+    public function withAttribute(string $name, mixed $value): self
     {
         $new = clone $this;
 

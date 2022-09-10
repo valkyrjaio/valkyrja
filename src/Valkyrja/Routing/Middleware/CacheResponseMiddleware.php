@@ -41,7 +41,7 @@ class CacheResponseMiddleware extends Middleware
     /**
      * @inheritDoc
      */
-    public static function before(Request $request)
+    public static function before(Request $request): Request|Response
     {
         $filePath = Directory::cachePath('response/' . static::getHashedPath($request));
 

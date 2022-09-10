@@ -88,13 +88,13 @@ interface Collector
      * </code>
      *
      * @param string         $path            The path
-     * @param string|Closure $handler         The handler
+     * @param Closure|string $handler         The handler
      * @param string|null    $name            [optional] The name of the route
      * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @return Route
      */
-    public function get(string $path, $handler, string $name = null, bool $setDependencies = false): Route;
+    public function get(string $path, Closure|string $handler, string $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set a POST route.
@@ -108,13 +108,13 @@ interface Collector
      * </code>
      *
      * @param string         $path            The path
-     * @param string|Closure $handler         The handler
+     * @param Closure|string $handler         The handler
      * @param string|null    $name            [optional] The name of the route
      * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @return Route
      */
-    public function post(string $path, $handler, string $name = null, bool $setDependencies = false): Route;
+    public function post(string $path, Closure|string $handler, string $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set a PUT route.
@@ -128,13 +128,13 @@ interface Collector
      * </code>
      *
      * @param string         $path            The path
-     * @param string|Closure $handler         The handler
+     * @param Closure|string $handler         The handler
      * @param string|null    $name            [optional] The name of the route
      * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @return Route
      */
-    public function put(string $path, $handler, string $name = null, bool $setDependencies = false): Route;
+    public function put(string $path, Closure|string $handler, string $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set a PATCH route.
@@ -148,13 +148,13 @@ interface Collector
      * </code>
      *
      * @param string         $path            The path
-     * @param string|Closure $handler         The handler
+     * @param Closure|string $handler         The handler
      * @param string|null    $name            [optional] The name of the route
      * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @return Route
      */
-    public function patch(string $path, $handler, string $name = null, bool $setDependencies = false): Route;
+    public function patch(string $path, Closure|string $handler, string $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set a DELETE route.
@@ -168,13 +168,13 @@ interface Collector
      * </code>
      *
      * @param string         $path            The path
-     * @param string|Closure $handler         The handler
+     * @param Closure|string $handler         The handler
      * @param string|null    $name            [optional] The name of the route
      * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @return Route
      */
-    public function delete(string $path, $handler, string $name = null, bool $setDependencies = false): Route;
+    public function delete(string $path, Closure|string $handler, string $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set a HEAD route.
@@ -188,13 +188,13 @@ interface Collector
      * </code>
      *
      * @param string         $path            The path
-     * @param string|Closure $handler         The handler
+     * @param Closure|string $handler         The handler
      * @param string|null    $name            [optional] The name of the route
      * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @return Route
      */
-    public function head(string $path, $handler, string $name = null, bool $setDependencies = false): Route;
+    public function head(string $path, Closure|string $handler, string $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set any request method route.
@@ -208,13 +208,13 @@ interface Collector
      * </code>
      *
      * @param string         $path            The path
-     * @param string|Closure $handler         The handler
+     * @param Closure|string $handler         The handler
      * @param string|null    $name            [optional] The name of the route
      * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @return Route
      */
-    public function any(string $path, $handler, string $name = null, bool $setDependencies = false): Route;
+    public function any(string $path, Closure|string $handler, string $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set any request method route.

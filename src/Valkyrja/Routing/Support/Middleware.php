@@ -73,7 +73,7 @@ abstract class Middleware
      *
      * @return Request|Response
      */
-    public static function before(Request $request)
+    public static function before(Request $request): Request|Response
     {
         // Do logic using the request before it is processed by the controller action, here
 

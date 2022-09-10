@@ -457,11 +457,11 @@ class Collection implements Contract
     /**
      * Ensure a route, or null, is returned.
      *
-     * @param Route|string|array|null $route The route
+     * @param Route|array|string|null $route The route
      *
      * @return Route|null
      */
-    protected function ensureRoute($route = null): ?Route
+    protected function ensureRoute(Route|array|string $route = null): ?Route
     {
         if (is_string($route)) {
             $route = $this->routes[$route];

@@ -51,7 +51,7 @@ interface Application extends ArrayAccess
      *
      * @return mixed
      */
-    public static function env(string $key = null, mixed $default = null);
+    public static function env(string $key = null, mixed $default = null): mixed;
 
     /**
      * Get environment variables.
@@ -94,9 +94,9 @@ interface Application extends ArrayAccess
      * @param string|null $key     [optional] The key to get
      * @param mixed       $default [optional] The default value if the key is not found
      *
-     * @return mixed|Config|null
+     * @return Config|array|null
      */
-    public function config(string $key = null, $default = null);
+    public function config(string $key = null, mixed $default = null): Config|array|null;
 
     /**
      * Add to the global config array.

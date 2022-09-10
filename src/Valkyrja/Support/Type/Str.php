@@ -22,8 +22,6 @@ use function preg_replace;
 use function random_bytes;
 use function str_replace;
 use function strlen;
-use function strncmp;
-use function strpos;
 use function strtolower;
 use function strtoupper;
 use function substr;
@@ -63,7 +61,7 @@ class Str
      */
     public static function startsWith(string $subject, string $needle): bool
     {
-        return $needle !== '' && strncmp($subject, $needle, strlen($needle)) === 0;
+        return $needle !== '' && str_starts_with($subject, $needle);
     }
 
     /**
@@ -91,7 +89,7 @@ class Str
     {
         $needleLen = strlen($needle);
 
-        return $needle !== '' && strncmp(static::substr($subject, -$needleLen, $needleLen), $needle, $needleLen) === 0;
+        return $needle !== '' && str_starts_with(static::substr($subject, -$needleLen, $needleLen), $needle);
     }
 
     /**
@@ -117,7 +115,7 @@ class Str
      */
     public static function contains(string $subject, string $needle): bool
     {
-        return strpos($subject, $needle) !== false;
+        return str_contains($subject, $needle);
     }
 
     /**
@@ -295,7 +293,7 @@ class Str
     /**
      * Convert a string to capitalized.
      *
-     * @param string      $subject The subject
+     * @param string      $subject   The subject
      * @param string|null $delimiter [optional] The delimiter
      *
      * @return string
@@ -324,7 +322,7 @@ class Str
     /**
      * Convert a string to capitalized.
      *
-     * @param string      $subject The subject
+     * @param string      $subject   The subject
      * @param string|null $delimiter [optional] The delimiter
      *
      * @return string
@@ -542,7 +540,7 @@ class Str
      */
     public static function isAlphabetic(string $subject): bool
     {
-        return (bool) ctype_alpha($subject);
+        return ctype_alpha($subject);
     }
 
     /**
@@ -554,7 +552,7 @@ class Str
      */
     public static function isLowercase(string $subject): bool
     {
-        return (bool) ctype_lower($subject);
+        return ctype_lower($subject);
     }
 
     /**
@@ -566,7 +564,7 @@ class Str
      */
     public static function isUppercase(string $subject): bool
     {
-        return (bool) ctype_upper($subject);
+        return ctype_upper($subject);
     }
 
     /**

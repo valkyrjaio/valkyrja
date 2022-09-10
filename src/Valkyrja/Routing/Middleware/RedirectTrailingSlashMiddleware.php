@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Middleware;
 
 use Valkyrja\Http\Request;
+use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Routing\Support\Middleware;
 use Valkyrja\Support\Type\Str;
@@ -28,7 +29,7 @@ class RedirectTrailingSlashMiddleware extends Middleware
     /**
      * @inheritDoc
      */
-    public static function before(Request $request)
+    public static function before(Request $request): Request|Response
     {
         $slash = '/';
         $path  = $request->getUri()->getPath();

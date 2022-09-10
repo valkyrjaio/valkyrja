@@ -45,11 +45,8 @@ class RoutesList extends Commander
     public const SHORT_DESCRIPTION = 'List all routes';
     public const DESCRIPTION       = '';
 
-    protected const CYAN_FORMAT       = "\e[" . FormatForeground::CYAN . 'm';
-    protected const LIGHT_CYAN_FORMAT = "\e[" . FormatForeground::LIGHT_CYAN . 'm';
-    protected const INVERT_FORMAT     = "\e[" . FormatOption::INVERSE . 'm';
-    protected const END_COLOR_FORMAT  = "\e[" . FormatForeground::DEFAULT . 'm';
-    protected const END_FORMAT        = "\e[0m";
+    protected const INVERT_FORMAT = "\e[" . FormatOption::INVERSE . 'm';
+    protected const END_FORMAT    = "\e[0m";
 
     /**
      * @inheritDoc
@@ -76,7 +73,7 @@ class RoutesList extends Commander
         ];
 
         // Sort routes by path
-        usort($routerRoutes, fn (Route $a, Route $b) => $a->getPath() <=> $b->getPath());
+        usort($routerRoutes, static fn(Route $a, Route $b) => $a->getPath() <=> $b->getPath());
 
         foreach ($routerRoutes as $route) {
             $this->setRoute($route, $routes, $lengths);
@@ -85,7 +82,7 @@ class RoutesList extends Commander
         $sepLine = $this->getSepLine($lengths);
         $odd     = false;
 
-        output()->writeMessage($this->oddFormat(! $odd) . $sepLine, true);
+        output()->writeMessage($this->oddFormat(true) . $sepLine, true);
         $this->headerMessage($headerTexts, $lengths);
         output()->writeMessage($sepLine, true);
 
@@ -191,8 +188,8 @@ class RoutesList extends Commander
     protected function oddFormat(bool $odd): string
     {
         return $odd
-            ? static::INVERT_FORMAT . static::CYAN_FORMAT
-            : static::INVERT_FORMAT . static::LIGHT_CYAN_FORMAT;
+            ? static::INVERT_FORMAT . "\e[" . FormatForeground::CYAN->value . 'm'
+            : static::INVERT_FORMAT . "\e[" . FormatForeground::LIGHT_CYAN->value . 'm';
     }
 
     /**

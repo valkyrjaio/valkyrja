@@ -133,7 +133,7 @@ class ORMAdapter extends Adapter implements Contract
             $user->__set($passwordField, $this->hashPassword($user->__get($passwordField)));
 
             $this->orm->ensureTransaction();
-            $repository->create($user, true);
+            $repository->create($user);
             $repository->persist();
 
             return true;

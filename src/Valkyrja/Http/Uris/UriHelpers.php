@@ -23,7 +23,6 @@ use Valkyrja\Http\Exceptions\InvalidScheme;
 use function ltrim;
 use function preg_replace;
 use function sprintf;
-use function strpos;
 use function strtolower;
 
 /**
@@ -93,11 +92,11 @@ trait UriHelpers
      */
     protected function validatePath(string $path): string
     {
-        if (strpos($path, '?') !== false) {
+        if (str_contains($path, '?')) {
             throw new InvalidPath('Invalid path provided; must not contain a query string');
         }
 
-        if (strpos($path, '#') !== false) {
+        if (str_contains($path, '#')) {
             throw new InvalidPath('Invalid path provided; must not contain a URI fragment');
         }
 
@@ -117,7 +116,7 @@ trait UriHelpers
      */
     protected function validateQuery(string $query): string
     {
-        if (strpos($query, '#') !== false) {
+        if (str_contains($query, '#')) {
             throw new InvalidQuery('Query string must not include a URI fragment');
         }
 

@@ -275,7 +275,7 @@ class Events implements Contract
      *
      * @return Listener
      */
-    protected function ensureListener($listener): Listener
+    protected function ensureListener(Listener|array $listener): Listener
     {
         if (is_array($listener)) {
             return ListenerModel::fromArray($listener);

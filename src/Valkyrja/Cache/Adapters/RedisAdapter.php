@@ -111,7 +111,7 @@ class RedisAdapter implements Contract
      */
     public function increment(string $key, int $value = 1): int
     {
-        return (int) $this->predis->incrby($this->getKey($key), $value);
+        return $this->predis->incrby($this->getKey($key), $value);
     }
 
     /**
@@ -119,7 +119,7 @@ class RedisAdapter implements Contract
      */
     public function decrement(string $key, int $value = 1): int
     {
-        return (int) $this->predis->decrby($this->getKey($key), $value);
+        return $this->predis->decrby($this->getKey($key), $value);
     }
 
     /**

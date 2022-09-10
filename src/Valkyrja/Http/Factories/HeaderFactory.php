@@ -17,13 +17,9 @@ use function array_change_key_case;
 use function array_key_exists;
 use function implode;
 use function is_array;
-
 use function str_replace;
-use function strpos;
 use function strtolower;
 use function substr;
-
-use const CASE_LOWER;
 
 /**
  * Abstract Class HeadersFactory.
@@ -46,7 +42,7 @@ abstract class HeaderFactory
         foreach ($server as $key => $value) {
             // Apache prefixes environment variables with REDIRECT_
             // if they are added by rewrite rules
-            if (strpos($key, 'REDIRECT_') === 0) {
+            if (str_starts_with($key, 'REDIRECT_')) {
                 $key = substr($key, 9);
 
                 // We will not overwrite existing variables with the
@@ -56,14 +52,14 @@ abstract class HeaderFactory
                 }
             }
 
-            if ($value && strpos($key, 'HTTP_') === 0) {
+            if ($value && str_starts_with($key, 'HTTP_')) {
                 $name           = str_replace('_', '-', strtolower(substr($key, 5)));
                 $headers[$name] = $value;
 
                 continue;
             }
 
-            if ($value && strpos($key, 'CONTENT_') === 0) {
+            if ($value && str_starts_with($key, 'CONTENT_')) {
                 $name           = 'content-' . strtolower(substr($key, 8));
                 $headers[$name] = $value;
             }
@@ -87,7 +83,7 @@ abstract class HeaderFactory
     public static function getHeader(string $header, array $headers, mixed $default = null): string
     {
         $header  = strtolower($header);
-        $headers = array_change_key_case($headers, CASE_LOWER);
+        $headers = array_change_key_case($headers);
 
         if (array_key_exists($header, $headers)) {
             return is_array($headers[$header]) ? implode(', ', $headers[$header]) : $headers[$header];

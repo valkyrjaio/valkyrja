@@ -149,7 +149,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
-    public function getVariable(string $key)
+    public function getVariable(string $key): mixed
     {
         return $this->variables[$key] ?? null;
     }
@@ -170,9 +170,8 @@ class Template implements Contract
     public function escape($value): string
     {
         $value = mb_convert_encoding((string) $value, 'UTF-8', 'UTF-8');
-        $value = htmlentities($value, ENT_QUOTES, 'UTF-8');
 
-        return $value;
+        return htmlentities($value, ENT_QUOTES, 'UTF-8');
     }
 
     /**

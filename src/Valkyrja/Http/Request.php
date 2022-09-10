@@ -64,12 +64,12 @@ interface Request extends SimpleRequest
      * Retrieve a specific server value.
      * Retrieves a server value sent by the client to the server.
      *
-     * @param string $name    The server name to retrieve
-     * @param mixed  $default [optional] Default value to return if the param does not exist
+     * @param string     $name    The server name to retrieve
+     * @param mixed|null $default [optional] Default value to return if the param does not exist
      *
      * @return mixed
      */
-    public function getServerParam(string $name, $default = null);
+    public function getServerParam(string $name, mixed $default = null): mixed;
 
     /**
      * Determine if a specific server exists.
@@ -183,12 +183,12 @@ interface Request extends SimpleRequest
      * Retrieve a specific query param value.
      * Retrieves a query param value sent by the client to the server.
      *
-     * @param string $name    The query param name to retrieve
-     * @param mixed  $default [optional] Default value to return if the param does not exist
+     * @param string     $name    The query param name to retrieve
+     * @param mixed|null $default [optional] Default value to return if the param does not exist
      *
      * @return mixed
      */
-    public function getQueryParam(string $name, $default = null);
+    public function getQueryParam(string $name, mixed $default = null): mixed;
 
     /**
      * Determine if a specific query param exists.
@@ -289,12 +289,12 @@ interface Request extends SimpleRequest
      * Retrieve a specific body param value.
      * Retrieves a body param value sent by the client to the server.
      *
-     * @param string $name    The body param name to retrieve
-     * @param mixed  $default [optional] Default value to return if the param does not exist
+     * @param string     $name    The body param name to retrieve
+     * @param mixed|null $default [optional] Default value to return if the param does not exist
      *
      * @return mixed
      */
-    public function getParsedBodyParam(string $name, $default = null);
+    public function getParsedBodyParam(string $name, mixed $default = null): mixed;
 
     /**
      * Determine if a specific body param exists.
@@ -338,12 +338,12 @@ interface Request extends SimpleRequest
      * Retrieve a specific json param value.
      * Retrieves a json param value sent by the client to the server.
      *
-     * @param string $name    The json param name to retrieve
-     * @param mixed  $default [optional] Default value to return if the param does not exist
+     * @param string     $name    The json param name to retrieve
+     * @param mixed|null $default [optional] Default value to return if the param does not exist
      *
      * @return mixed
      */
-    public function getParsedJsonParam(string $name, $default = null);
+    public function getParsedJsonParam(string $name, mixed $default = null): mixed;
 
     /**
      * Determine if a specific json param exists.
@@ -392,14 +392,14 @@ interface Request extends SimpleRequest
      * This method obviates the need for a hasAttribute() method, as it allows
      * specifying a default value to return if the attribute is not found.
      *
-     * @param string $name    The attribute name.
-     * @param mixed  $default Default value to return if the attribute does not exist.
+     * @param string     $name    The attribute name.
+     * @param mixed|null $default Default value to return if the attribute does not exist.
      *
      * @return mixed
      *
      * @see getAttributes()
      */
-    public function getAttribute(string $name, $default = null);
+    public function getAttribute(string $name, mixed $default = null): mixed;
 
     /**
      * Return an instance with the specified derived request attribute.
@@ -416,7 +416,7 @@ interface Request extends SimpleRequest
      *
      * @see getAttributes()
      */
-    public function withAttribute(string $name, $value): self;
+    public function withAttribute(string $name, mixed $value): self;
 
     /**
      * Return an instance that removes the specified derived request attribute.

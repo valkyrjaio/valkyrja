@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Middleware;
 
 use Valkyrja\Http\Request;
+use Valkyrja\Http\Response;
 
 /**
  * Class AuthenticatedMiddleware.
@@ -32,7 +33,7 @@ class AuthenticatedMiddleware extends AuthMiddleware
     /**
      * @inheritDoc
      */
-    public static function before(Request $request)
+    public static function before(Request $request): Request|Response
     {
         $repository = static::getRepository();
 

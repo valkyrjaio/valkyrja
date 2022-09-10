@@ -49,7 +49,7 @@ class SodiumAdapter extends Adapter
             $this->getDecoded($encrypted);
 
             return true;
-        } catch (CryptException $exception) {
+        } catch (CryptException) {
             // Left empty to default to false
         }
 
@@ -160,7 +160,7 @@ class SodiumAdapter extends Adapter
      *
      * @return void
      */
-    protected function validateDecoded($decoded): void
+    protected function validateDecoded(bool|string $decoded): void
     {
         $this->validateDecodedType($decoded);
         $this->validateDecodedStrLen($decoded);
@@ -175,7 +175,7 @@ class SodiumAdapter extends Adapter
      *
      * @return void
      */
-    protected function validateDecodedType($decoded): void
+    protected function validateDecodedType(bool|string $decoded): void
     {
         if (! $this->isValidDecodedType($decoded)) {
             throw new CryptException('The encoding failed');
@@ -189,7 +189,7 @@ class SodiumAdapter extends Adapter
      *
      * @return bool
      */
-    protected function isValidDecodedType($decoded): bool
+    protected function isValidDecodedType(bool|string $decoded): bool
     {
         return $decoded !== false && is_string($decoded);
     }
@@ -203,7 +203,7 @@ class SodiumAdapter extends Adapter
      *
      * @return void
      */
-    protected function validateDecodedStrLen($decoded): void
+    protected function validateDecodedStrLen(bool|string $decoded): void
     {
         if (! $this->isValidDecodedStrLen($decoded)) {
             throw new CryptException('The message was truncated');
@@ -217,7 +217,7 @@ class SodiumAdapter extends Adapter
      *
      * @return bool
      */
-    protected function isValidDecodedStrLen($decoded): bool
+    protected function isValidDecodedStrLen(bool|string $decoded): bool
     {
         return mb_strlen($decoded, '8bit') > (SODIUM_CRYPTO_SECRETBOX_NONCEBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES);
     }
@@ -256,7 +256,7 @@ class SodiumAdapter extends Adapter
      *
      * @return void
      */
-    protected function validatePlainDecoded($plain): void
+    protected function validatePlainDecoded(bool|string $plain): void
     {
         if (! $this->isValidPlainDecoded($plain)) {
             throw new CryptException('The message was tampered with in transit');
@@ -270,7 +270,7 @@ class SodiumAdapter extends Adapter
      *
      * @return bool
      */
-    protected function isValidPlainDecoded($plain): bool
+    protected function isValidPlainDecoded(bool|string $plain): bool
     {
         return $plain !== false;
     }

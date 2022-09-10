@@ -35,8 +35,6 @@ use function strrpos;
 use function strtolower;
 use function substr;
 
-use const CASE_LOWER;
-
 /**
  * Abstract Class UriFactory.
  *
@@ -103,7 +101,7 @@ abstract class UriFactory
         // URI fragment
         $fragment = '';
 
-        if (strpos($path, '#') !== false) {
+        if (str_contains($path, '#')) {
             [$path, $fragment] = explode('#', $path, 2);
         }
 
@@ -125,7 +123,7 @@ abstract class UriFactory
     public static function getHeader(string $header, array $headers, mixed $default = null): string
     {
         $header  = strtolower($header);
-        $headers = array_change_key_case($headers, CASE_LOWER);
+        $headers = array_change_key_case($headers);
 
         if (array_key_exists($header, $headers)) {
             return is_array($headers[$header]) ? implode(', ', $headers[$header]) : $headers[$header];
@@ -247,7 +245,7 @@ abstract class UriFactory
      *
      * @return void
      */
-    private static function marshalHostAndPortFromHeader(stdClass $accumulator, $host): void
+    private static function marshalHostAndPortFromHeader(stdClass $accumulator, string|array $host): void
     {
         if (is_array($host)) {
             $host = implode(', ', $host);

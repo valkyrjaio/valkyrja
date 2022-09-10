@@ -62,7 +62,7 @@ class Valkyrja implements Application
      *
      * @var Config|array
      */
-    protected static $config;
+    protected static Config|array $config;
 
     /**
      * Get the instance of the container.
@@ -135,7 +135,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public static function env(string $key = null, $default = null)
+    public static function env(string $key = null, $default = null): mixed
     {
         $env = self::$env;
 
@@ -179,7 +179,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function config(string $key = null, $default = null)
+    public function config(string $key = null, mixed $default = null): Config|array|null
     {
         // If no key was specified
         if (null === $key) {
@@ -276,45 +276,45 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function offsetSet($serviceId, $service): void
+    public function offsetSet($offset, $value): void
     {
-        self::$container->bind($serviceId, $service);
+        self::$container->bind($offset, $value);
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetExists($serviceId): bool
+    public function offsetExists($offset): bool
     {
-        return self::$container->has($serviceId);
+        return self::$container->has($offset);
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetUnset($serviceId): void
+    public function offsetUnset($offset): void
     {
-        throw new RuntimeException('Cannot unset service: ' . $serviceId);
+        throw new RuntimeException('Cannot unset service: ' . $offset);
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetGet($serviceId)
+    public function offsetGet($offset): mixed
     {
-        if ($serviceId === 'config') {
+        if ($offset === 'config') {
             return self::$config;
         }
 
-        if ($serviceId === 'env') {
+        if ($offset === 'env') {
             return self::$env;
         }
 
-        if ($serviceId === Container::class) {
+        if ($offset === Container::class) {
             return self::$container;
         }
 
-        return self::$container->get($serviceId);
+        return self::$container->get($offset);
     }
 
     /**

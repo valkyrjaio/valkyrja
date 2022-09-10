@@ -190,7 +190,7 @@ class Annotator implements Contract
     protected function getClassAnnotations(string $class): array
     {
         return $this->filter->filterAnnotationsByTypes(
-            AnnotationName::getValidValues(),
+               AnnotationName::getValidValues(),
             ...$this->annotator->classAnnotations($class)
         );
     }
@@ -244,13 +244,13 @@ class Annotator implements Contract
         // If the base is dynamic
         if ($controllerRoute->isDynamic()) {
             // Set the route to dynamic
-            $newRoute->setDynamic(true);
+            $newRoute->setDynamic();
         }
 
         // If the base is secure
         if ($controllerRoute->isSecure()) {
             // Set the route to dynamic
-            $newRoute->setSecure(true);
+            $newRoute->setSecure();
         }
 
         // If there is a base middleware collection for this controller
@@ -300,7 +300,7 @@ class Annotator implements Contract
     protected function getClassMemberAnnotations(string $class): array
     {
         return $this->filter->filterAnnotationsByTypes(
-            AnnotationName::getValidValues(),
+               AnnotationName::getValidValues(),
             ...$this->annotator->classMembersAnnotations($class)
         );
     }

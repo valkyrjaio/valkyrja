@@ -386,7 +386,7 @@ class Auth implements Contract
 
             // Try to login from the user session
             $repository->authenticateFromRequest($this->request);
-        } catch (Exception $exception) {
+        } catch (Exception) {
         }
     }
 }

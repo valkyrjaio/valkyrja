@@ -20,7 +20,6 @@ use function implode;
 use function is_array;
 use function preg_match;
 use function str_replace;
-use function strpos;
 
 /**
  * Class PathGenerator.
@@ -50,7 +49,7 @@ class PathGenerator implements Contract
         }
 
         // Iterate through the segments
-        foreach ($segments as $index => $segment) {
+        foreach ($segments as $segment) {
             // No need to do replacements if there was no data
             if (null !== $data) {
                 // Replace any parameters
@@ -58,7 +57,7 @@ class PathGenerator implements Contract
             }
 
             // If parameters were replaced or none to begin with
-            if (strpos($segment, '{') === false) {
+            if (! str_contains($segment, '{')) {
                 // Append this segment
                 $path .= $segment;
             }
@@ -160,7 +159,7 @@ class PathGenerator implements Contract
         $segment = null;
 
         foreach ($segments as $segment) {
-            if (strpos($segment, $param) !== false) {
+            if (str_contains($segment, $param)) {
                 return $segment;
             }
         }

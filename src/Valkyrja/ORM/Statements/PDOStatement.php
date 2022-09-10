@@ -83,7 +83,7 @@ class PDOStatement implements Contract
     /**
      * @inheritDoc
      */
-    public function fetchColumn(int $columnNumber = 0)
+    public function fetchColumn(int $columnNumber = 0): mixed
     {
         return $this->statement->fetchColumn($columnNumber);
     }

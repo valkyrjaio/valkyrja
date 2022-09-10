@@ -121,9 +121,9 @@ class Reflector implements Contract
         // Iterate through the method's parameters
         foreach ($parameters as $parameter) {
             // We only care for classes
-            if ($parameter->getClass()) {
+            if ($parameter->getType()) {
                 // Set the injectable in the array
-                $dependencies[] = $parameter->getClass()->getName();
+                $dependencies[] = $parameter->getType()->getName();
             }
         }
 

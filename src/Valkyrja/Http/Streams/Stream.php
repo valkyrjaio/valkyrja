@@ -175,7 +175,7 @@ class Stream implements StreamContract
             // Get the stream's contents
             return $this->getContents();
         } // On a runtime exception
-        catch (RuntimeException $e) {
+        catch (RuntimeException) {
             // Return a string
             return '';
         }
@@ -294,7 +294,7 @@ class Stream implements StreamContract
     /**
      * @inheritDoc
      */
-    public function getMetadata(string $key = null)
+    public function getMetadata(string $key = null): mixed
     {
         // If no key was specified
         if (null === $key) {

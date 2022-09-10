@@ -19,7 +19,6 @@ use Valkyrja\Http\Exceptions\StreamException;
 use function fopen;
 use function get_resource_type;
 use function is_resource;
-use function strpos;
 
 /**
  * Trait StreamHelpers.
@@ -123,7 +122,7 @@ trait StreamHelpers
      *          provided. Returns a specific key value if a key is provided
      *          and the value is found, or null if the key is not found.
      */
-    abstract public function getMetadata(string $key = null);
+    abstract public function getMetadata(string $key = null): mixed;
 
     /**
      * Is mode writable.
@@ -134,11 +133,11 @@ trait StreamHelpers
      */
     protected function isModeWriteable(string $mode): bool
     {
-        return false !== strpos($mode, 'x')
-            || false !== strpos($mode, 'w')
-            || false !== strpos($mode, 'c')
-            || false !== strpos($mode, 'a')
-            || false !== strpos($mode, '+');
+        return str_contains($mode, 'x')
+            || str_contains($mode, 'w')
+            || str_contains($mode, 'c')
+            || str_contains($mode, 'a')
+            || str_contains($mode, '+');
     }
 
     /**
@@ -162,7 +161,7 @@ trait StreamHelpers
      *
      * @return void
      */
-    protected function verifyWriteResult($result): void
+    protected function verifyWriteResult(string|false $result): void
     {
         // If the write was not successful
         if (false === $result) {
@@ -210,8 +209,8 @@ trait StreamHelpers
      */
     protected function isModeReadable(string $mode): bool
     {
-        return false !== strpos($mode, 'r')
-            || false !== strpos($mode, '+');
+        return str_contains($mode, 'r')
+            || str_contains($mode, '+');
     }
 
     /**
@@ -235,7 +234,7 @@ trait StreamHelpers
      *
      * @return void
      */
-    protected function verifyReadResult($result): void
+    protected function verifyReadResult(string|false $result): void
     {
         // If there was a failure in reading the stream
         if (false === $result) {

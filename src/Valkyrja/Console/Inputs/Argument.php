@@ -37,9 +37,9 @@ class Argument
     /**
      * The mode.
      *
-     * @var string
+     * @var ArgumentMode
      */
-    protected $mode;
+    protected ArgumentMode $mode;
 
     /**
      * Argument constructor.
@@ -52,7 +52,7 @@ class Argument
     {
         $this->name        = $name;
         $this->description = $description;
-        $this->mode        = $mode ? $mode->getValue() : ArgumentMode::OPTIONAL;
+        $this->mode        = $mode ?? ArgumentMode::OPTIONAL;
     }
 
     /**
@@ -78,9 +78,9 @@ class Argument
     /**
      * Get the mode.
      *
-     * @return string
+     * @return ArgumentMode
      */
-    public function getMode(): string
+    public function getMode(): ArgumentMode
     {
         return $this->mode;
     }

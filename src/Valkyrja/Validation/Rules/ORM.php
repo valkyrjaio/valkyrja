@@ -84,7 +84,7 @@ class ORM
      *
      * @return void
      */
-    public function ormExists($subject, string $entity, string $field = null): void
+    public function ormExists(mixed $subject, string $entity, string $field = null): void
     {
         /** @var Entity|string $entity */
         $field ??= $entity::getIdField();

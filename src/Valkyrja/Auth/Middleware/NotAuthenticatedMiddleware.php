@@ -37,7 +37,7 @@ class NotAuthenticatedMiddleware extends AuthMiddleware
     /**
      * @inheritDoc
      */
-    public static function before(Request $request)
+    public static function before(Request $request): Request|Response
     {
         $repository = static::getRepository();
 

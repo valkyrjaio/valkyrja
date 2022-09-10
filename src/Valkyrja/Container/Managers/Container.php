@@ -360,33 +360,33 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function offsetSet($serviceId, $service): void
+    public function offsetSet($offset, $value): void
     {
-        $this->bind($serviceId, $service);
+        $this->bind($offset, $value);
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetExists($serviceId): bool
+    public function offsetExists($offset): bool
     {
-        return $this->has($serviceId);
+        return $this->has($offset);
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetUnset($serviceId): void
+    public function offsetUnset($offset): void
     {
-        unset(self::$services[$serviceId]);
+        unset(self::$services[$offset]);
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetGet($serviceId)
+    public function offsetGet($offset): mixed
     {
-        return $this->get($serviceId);
+        return $this->get($offset);
     }
 
     /**

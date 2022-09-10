@@ -69,7 +69,7 @@ trait MiddlewareAwareTrait
      *
      * @return Request|Response
      */
-    public function requestMiddleware(Request $request, array $middleware = null)
+    public function requestMiddleware(Request $request, array $middleware = null): Response|Request
     {
         // Set the middleware to any middleware passed or the base middleware
         $middleware = $middleware ?? static::$middleware;

@@ -13,26 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Enums;
 
-use Valkyrja\Support\Enum\Enum;
-
 /**
  * Enum InputArgument.
  *
  * @author Melech Mizrachi
- *
- * @method static ArgumentMode REQUIRED()
- * @method static ArgumentMode OPTIONAL()
- * @method static ArgumentMode IS_ARRAY()
  */
-final class ArgumentMode extends Enum
+enum ArgumentMode: string
 {
-    public const REQUIRED = 'REQUIRED';
-    public const OPTIONAL = 'OPTIONAL';
-    public const IS_ARRAY = 'IS_ARRAY';
-
-    protected static ?array $VALUES = [
-        self::REQUIRED => self::REQUIRED,
-        self::OPTIONAL => self::OPTIONAL,
-        self::IS_ARRAY => self::IS_ARRAY,
-    ];
+    case REQUIRED = 'REQUIRED';
+    case OPTIONAL = 'OPTIONAL';
+    case IS_ARRAY = 'IS_ARRAY';
 }

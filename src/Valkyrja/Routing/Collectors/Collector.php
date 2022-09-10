@@ -92,7 +92,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string $path, $handler, string $name = null, bool $setDependencies = true): Route
+    public function get(string $path, Closure|string $handler, string $name = null, bool $setDependencies = true): Route
     {
         return $this->setMethodsAndAddRoute(
             [
@@ -109,7 +109,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function post(string $path, $handler, string $name = null, bool $setDependencies = true): Route
+    public function post(string $path, Closure|string $handler, string $name = null, bool $setDependencies = true): Route
     {
         return $this->setMethodsAndAddRoute([RequestMethod::POST], $path, $handler, $name, $setDependencies);
     }
@@ -117,7 +117,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function put(string $path, $handler, string $name = null, bool $setDependencies = true): Route
+    public function put(string $path, Closure|string $handler, string $name = null, bool $setDependencies = true): Route
     {
         return $this->setMethodsAndAddRoute([RequestMethod::PUT], $path, $handler, $name, $setDependencies);
     }
@@ -125,7 +125,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function patch(string $path, $handler, string $name = null, bool $setDependencies = true): Route
+    public function patch(string $path, Closure|string $handler, string $name = null, bool $setDependencies = true): Route
     {
         return $this->setMethodsAndAddRoute([RequestMethod::PATCH], $path, $handler, $name, $setDependencies);
     }
@@ -133,7 +133,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function delete(string $path, $handler, string $name = null, bool $setDependencies = true): Route
+    public function delete(string $path, Closure|string $handler, string $name = null, bool $setDependencies = true): Route
     {
         return $this->setMethodsAndAddRoute([RequestMethod::DELETE], $path, $handler, $name, $setDependencies);
     }
@@ -141,7 +141,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function head(string $path, $handler, string $name = null, bool $setDependencies = true): Route
+    public function head(string $path, Closure|string $handler, string $name = null, bool $setDependencies = true): Route
     {
         return $this->setMethodsAndAddRoute([RequestMethod::HEAD], $path, $handler, $name, $setDependencies);
     }
@@ -149,7 +149,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function any(string $path, $handler, string $name = null, bool $setDependencies = true): Route
+    public function any(string $path, Closure|string $handler, string $name = null, bool $setDependencies = true): Route
     {
         return $this->setMethodsAndAddRoute(RequestMethod::ANY, $path, $handler, $name, $setDependencies);
     }

@@ -177,7 +177,7 @@ trait CollectorHelpers
      *
      * @return string|array
      */
-    protected function mergePropertiesForRoute($value, $routeValue, string $glue = '')
+    protected function mergePropertiesForRoute(string|array $value, string|array $routeValue, string $glue = ''): string|array
     {
         if (is_array($value) && is_array($routeValue)) {
             return array_merge($value, $routeValue);
@@ -198,7 +198,7 @@ trait CollectorHelpers
      * Get a route for a helper method.
      *
      * @param string         $path            The path
-     * @param string|Closure $handler         The handler
+     * @param Closure|string $handler         The handler
      * @param string|null    $name            [optional] The name of the route
      * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
@@ -208,7 +208,7 @@ trait CollectorHelpers
      */
     protected function getRouteForHelper(
         string $path,
-        $handler,
+        Closure|string $handler,
         string $name = null,
         bool $setDependencies = true
     ): Route {
@@ -231,7 +231,7 @@ trait CollectorHelpers
     /**
      * @param array          $methods         The methods to set
      * @param string         $path            The path
-     * @param string|Closure $handler         The handler
+     * @param Closure|string $handler         The handler
      * @param string|null    $name            [optional] The name of the route
      * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
@@ -240,7 +240,7 @@ trait CollectorHelpers
     protected function setMethodsAndAddRoute(
         array $methods,
         string $path,
-        $handler,
+        Closure|string $handler,
         string $name = null,
         bool $setDependencies = true
     ): Route {
@@ -257,16 +257,14 @@ trait CollectorHelpers
      * Set the route handler.
      *
      * @param Route          $route   The route
-     * @param string|Closure $handler The handler
+     * @param Closure|string $handler The handler
      *
      * @throws InvalidArgumentException
      *
      * @return void
      */
-    protected function setRouteHandler(Route $route, $handler): void
+    protected function setRouteHandler(Route $route, Closure|string $handler): void
     {
-        $this->verifyHandler($handler);
-
         if ($handler instanceof Closure) {
             $route->setClosure($handler);
 
@@ -274,20 +272,6 @@ trait CollectorHelpers
         }
 
         $this->setRouteHandlerFromString($route, $handler);
-    }
-
-    /**
-     * Verify a handler.
-     *
-     * @param mixed $handler The handler
-     *
-     * @return void
-     */
-    protected function verifyHandler($handler): void
-    {
-        if (! is_string($handler) && ! ($handler instanceof Closure)) {
-            throw new InvalidArgumentException('Invalid handler provided.');
-        }
     }
 
     /**

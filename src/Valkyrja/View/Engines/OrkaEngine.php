@@ -131,9 +131,7 @@ class OrkaEngine extends PHPEngine
      */
     protected function parseContent(string $contents): string
     {
-        $contents = preg_replace(array_keys(self::$replace), self::$replace, $contents);
-
-        return $contents;
+        return preg_replace(array_keys(self::$replace), self::$replace, $contents);
     }
 
     /**

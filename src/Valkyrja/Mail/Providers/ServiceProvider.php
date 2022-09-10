@@ -186,9 +186,6 @@ class ServiceProvider extends Provider
      */
     public static function publishPHPMailerAdapter(Container $container): void
     {
-        $globalConfig = $container->getSingleton('config');
-        $appDebug     = $globalConfig['app']['debug'] ?? null;
-
         $container->setClosure(
             PHPMailerAdapter::class,
             static function (string $name, array $config) use ($container): PHPMailerAdapter {

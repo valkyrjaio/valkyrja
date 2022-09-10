@@ -20,7 +20,6 @@ use function explode;
 use function implode;
 use function in_array;
 use function is_array;
-use function strpos;
 
 /**
  * Class Input.
@@ -234,10 +233,10 @@ class Input implements Contract
             $type  = 'arguments';
 
             // If the key has double dash it is a long option
-            if (strpos($key, '--') !== false) {
+            if (str_contains($key, '--')) {
                 $type = 'longOptions';
             } // If the key has a single dash it is a short option
-            elseif (strpos($key, '-') !== false) {
+            elseif (str_contains($key, '-')) {
                 $type = 'shortOptions';
             }
 

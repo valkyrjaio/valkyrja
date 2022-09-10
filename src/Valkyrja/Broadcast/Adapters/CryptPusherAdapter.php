@@ -15,8 +15,8 @@ namespace Valkyrja\Broadcast\Adapters;
 
 use Pusher\Pusher;
 use Valkyrja\Broadcast\Message;
-use Valkyrja\Crypt\Adapter as CryptAdapter;
 use Valkyrja\Crypt\Crypt;
+use Valkyrja\Crypt\Driver as CryptDriver;
 use Valkyrja\Crypt\Exceptions\CryptException;
 
 /**
@@ -27,11 +27,11 @@ use Valkyrja\Crypt\Exceptions\CryptException;
 class CryptPusherAdapter extends PusherAdapter
 {
     /**
-     * The crypt adapter.
+     * The crypt driver.
      *
-     * @var CryptAdapter
+     * @var CryptDriver
      */
-    protected CryptAdapter $crypt;
+    protected CryptDriver $crypt;
 
     /**
      * The config.

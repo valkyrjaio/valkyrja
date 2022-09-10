@@ -23,7 +23,6 @@ use function extract;
 use function implode;
 use function ob_get_clean;
 use function ob_start;
-use function strpos;
 use function trim;
 
 use const EXTR_SKIP;
@@ -149,7 +148,7 @@ class PHPEngine implements Engine
     {
         // If the first character of the template is an @ symbol
         // Then this is a template from a path in the config
-        if (strpos($template, '@') === 0) {
+        if (str_starts_with($template, '@')) {
             $explodeOn = Directory::DIRECTORY_SEPARATOR;
             $parts     = explode($explodeOn, $template);
             $path      = $this->config['paths'][$parts[0]] ?? null;

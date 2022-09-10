@@ -14,13 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Type;
 
 use ArrayAccess;
-use InvalidArgumentException;
 use JsonException;
-use Traversable;
 use Valkyrja\Config\Constants\ConfigKeyPart;
 
 use function explode;
-use function is_array;
 use function json_decode;
 use function json_encode;
 

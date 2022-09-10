@@ -32,7 +32,6 @@ use function method_exists;
 use function preg_match_all;
 use function property_exists;
 use function str_replace;
-use function strpos;
 use function trim;
 
 /**
@@ -171,7 +170,7 @@ class Parser implements Contract
      *
      * @param string $docString The doc string
      *
-     * @return array[]
+     * @return array[]|null
      */
     protected function getMatches(string $docString): ?array
     {
@@ -283,7 +282,7 @@ class Parser implements Contract
      *
      * @param string|null $match The match
      *
-     * @return string
+     * @return string|null
      */
     protected function cleanPart(string $match = null): ?string
     {
@@ -301,7 +300,7 @@ class Parser implements Contract
      *
      * @return mixed
      */
-    protected function determinePropertyValue($value)
+    protected function determinePropertyValue(mixed $value): mixed
     {
         if (is_array($value)) {
             return $this->determineArrayPropertyValue($value);
@@ -315,7 +314,7 @@ class Parser implements Contract
         $value = trim($value);
 
         // If there was no double colon found there's no need to go further
-        if (strpos($value, '::') === false) {
+        if (! str_contains($value, '::')) {
             return $value;
         }
 
@@ -347,7 +346,7 @@ class Parser implements Contract
      *
      * @return mixed
      */
-    protected function determineStaticPropertyValue($value)
+    protected function determineStaticPropertyValue(mixed $value): mixed
     {
         [$class, $member] = explode('::', $value, 2);
         // Check if the class name is a key defined in the reference classes config

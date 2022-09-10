@@ -42,7 +42,7 @@ class VerifyAuthBroadcastMiddleware extends Middleware
      *
      * @throws JsonException
      */
-    public static function before(Request $request)
+    public static function before(Request $request): Request|Response
     {
         $container = self::$container;
         /** @var Auth $auth */

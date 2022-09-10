@@ -20,6 +20,7 @@ use Valkyrja\Container\Support\Provider;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\CacheRepository;
 use Valkyrja\ORM\Driver;
+use Valkyrja\ORM\Factories\ContainerFactory;
 use Valkyrja\ORM\Factory;
 use Valkyrja\ORM\Migrations\Migration;
 use Valkyrja\ORM\ORM;
@@ -125,7 +126,7 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Factory::class,
-            new \Valkyrja\ORM\Factories\ContainerFactory($container)
+            new ContainerFactory($container)
         );
     }
 

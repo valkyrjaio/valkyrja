@@ -29,7 +29,6 @@ use function is_dir;
 use function is_writable;
 use function move_uploaded_file;
 use function sprintf;
-use function strpos;
 
 use const PHP_SAPI;
 use const UPLOAD_ERR_EXTENSION;
@@ -207,7 +206,7 @@ class UploadedFile implements UploadedFileContract
         // If the PHP_SAPI value is empty
         // or there is no file
         // or the PHP_SAPI value is set to a CLI environment
-        if (empty($sapi) || ! $this->file || 0 === strpos($sapi, 'cli')) {
+        if (empty($sapi) || ! $this->file || str_starts_with($sapi, 'cli')) {
             // Non-SAPI environment, or no filename present
             $this->writeStream($targetPath);
         }

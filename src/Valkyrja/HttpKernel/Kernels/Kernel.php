@@ -277,7 +277,7 @@ class Kernel implements Contract
                     null,
                     $exception->getStatusCode()
                 );
-        } catch (Throwable $throwable) {
+        } catch (Throwable) {
             return $responseFactory->view(
                 "$this->errorsTemplateDir/error",
                 [

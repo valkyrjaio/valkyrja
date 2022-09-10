@@ -65,7 +65,7 @@ class HttpException extends RuntimeException
         $this->headers    = $headers ?? [];
         $this->response   = $response;
 
-        parent::__construct($message ?? '', 0, null);
+        parent::__construct($message ?? '');
     }
 
     /**

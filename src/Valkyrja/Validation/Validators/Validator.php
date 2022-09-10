@@ -83,7 +83,7 @@ class Validator implements Contract
     /**
      * @inheritDoc
      */
-    public function getRules(string $name = null)
+    public function getRules(string $name = null): mixed
     {
         $name ??= $this->defaultRules;
 
@@ -166,7 +166,7 @@ class Validator implements Contract
      *
      * @return void
      */
-    protected function validateSubject(string $subjectName, $subject, array $rules = []): void
+    protected function validateSubject(string $subjectName, mixed $subject, array $rules = []): void
     {
         foreach ($rules as $name => $rule) {
             if (isset($this->errorMessages[$subjectName])) {
@@ -187,7 +187,7 @@ class Validator implements Contract
      *
      * @return void
      */
-    protected function validateRule(string $subjectName, string $name, $subject, array $rule): void
+    protected function validateRule(string $subjectName, string $name, mixed $subject, array $rule): void
     {
         $arguments    = $rule['arguments'] ?? [];
         $rulesName    = $this->config[CKP::RULES_MAP][$name] ?? null;

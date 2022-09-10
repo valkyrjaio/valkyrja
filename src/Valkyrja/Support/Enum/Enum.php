@@ -199,7 +199,7 @@ abstract class Enum
             // Get a reflection class of the enum
             $values = (new ReflectionClass(static::class))->getConstants();
         } // Catch any exceptions
-        catch (Exception $exception) {
+        catch (Exception) {
             $values = [];
         }
 

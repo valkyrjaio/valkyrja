@@ -230,7 +230,7 @@ class GuzzleAdapter implements Contract
         $body = $request->getBody();
         $body->rewind();
 
-        if ($body && $contents = $body->getContents()) {
+        if ($contents = $body->getContents()) {
             $options['body'] = $contents;
         }
     }

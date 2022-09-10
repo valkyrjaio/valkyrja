@@ -49,7 +49,7 @@ interface MiddlewareAware
      *
      * @return Request|Response
      */
-    public function requestMiddleware(Request $request, array $middleware = null);
+    public function requestMiddleware(Request $request, array $middleware = null): Response|Request;
 
     /**
      * Dispatch after request processed middleware.

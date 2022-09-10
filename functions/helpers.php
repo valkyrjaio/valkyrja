@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja;
 
+use Config\Config;
 use Valkyrja\Annotation\Annotator;
 use Valkyrja\Api\Api;
 use Valkyrja\Application\Application;
@@ -20,7 +21,6 @@ use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Auth\Auth;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Client\Client;
-use Valkyrja\Config\Config;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Input;
 use Valkyrja\Console\Kernel as ConsoleKernel;
@@ -49,6 +49,7 @@ use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Collector;
+use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Support\Abort;
@@ -164,9 +165,9 @@ function client(): Client
  * @param string|null $key     [optional] The key to get
  * @param mixed       $default [optional] The default value if the key is not found
  *
- * @return mixed|Config|null
+ * @return Config|array|null
  */
-function config(string $key = null, mixed $default = null): mixed
+function config(string $key = null, mixed $default = null): Config|array|null
 {
     return Valkyrja::app()->config($key, $default);
 }
@@ -209,7 +210,7 @@ function dispatcher(): Dispatcher
  *
  * @return mixed
  */
-function env(string $key = null, $default = null)
+function env(string $key = null, mixed $default = null): mixed
 {
     // Does not use the app() helper due to the self::$instance property
     // that Valkyrja::app() relies on has not been set yet when
@@ -439,6 +440,8 @@ function url(): Url
  * Get a route by name.
  *
  * @param string $name The name of the route to get
+ *
+ * @throws InvalidRouteName
  *
  * @return Route
  */

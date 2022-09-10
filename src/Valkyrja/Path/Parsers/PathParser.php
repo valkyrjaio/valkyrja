@@ -22,7 +22,6 @@ use function is_array;
 use function preg_match_all;
 use function preg_split;
 use function str_replace;
-use function strpos;
 use function substr_count;
 
 /**
@@ -277,7 +276,7 @@ REGEX;
         // Iterate through the segments once more
         foreach ($segments as $segment) {
             // If the segment has the deliminator
-            if (strpos($segment, $deliminator) !== false) {
+            if (str_contains($segment, $deliminator)) {
                 $this->splitSegmentsDeliminator($returnSegments, $segment, $deliminator);
 
                 continue;
@@ -309,7 +308,7 @@ REGEX;
             }
 
             // If the segment has the deliminator
-            if (strpos($part, $deliminator) !== false) {
+            if (str_contains($part, $deliminator)) {
                 $this->splitSegmentsDeliminator($segments, $part, $deliminator);
 
                 continue;

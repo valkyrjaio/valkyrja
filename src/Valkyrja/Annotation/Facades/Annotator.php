@@ -50,7 +50,7 @@ class Annotator extends Facade
     /**
      * @inheritDoc
      */
-    public static function instance()
+    public static function instance(): object|string
     {
         return self::$container->getSingleton(Contract::class);
     }

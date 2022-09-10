@@ -53,9 +53,9 @@ class Option
     /**
      * The mode.
      *
-     * @var string
+     * @var OptionMode
      */
-    protected $mode;
+    protected OptionMode $mode;
 
     /**
      * Option constructor.
@@ -76,7 +76,7 @@ class Option
         $this->name        = $name;
         $this->shortcut    = $shortcut;
         $this->description = $description;
-        $this->mode        = $mode ? $mode->getValue() : OptionMode::NONE;
+        $this->mode        = $mode ?? OptionMode::NONE;
         $this->default     = $default;
     }
 
@@ -93,7 +93,7 @@ class Option
     /**
      * Get the shortcut.
      *
-     * @return string
+     * @return string|null
      */
     public function getShortcut(): ?string
     {
@@ -113,7 +113,7 @@ class Option
     /**
      * The default value.
      *
-     * @return string
+     * @return string|null
      */
     public function getDefault(): ?string
     {
@@ -123,9 +123,9 @@ class Option
     /**
      * Get the mode.
      *
-     * @return string
+     * @return OptionMode
      */
-    public function getMode(): string
+    public function getMode(): OptionMode
     {
         return $this->mode;
     }
