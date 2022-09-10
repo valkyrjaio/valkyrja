@@ -79,7 +79,10 @@ class ORMAdapter extends Adapter implements Contract
             $find->where($loginField, null, $user->__get($loginField));
         }
 
-        return $find->getOneOrNull();
+        /** @var User|null $result */
+        $result = $find->getOneOrNull();
+
+        return $result;
     }
 
     /**
@@ -89,10 +92,13 @@ class ORMAdapter extends Adapter implements Contract
     {
         $resetTokenField = $user::getResetTokenField();
 
-        return $this->getUserRepository($user)
+        /** @var User|null $result */
+        $result = $this->getUserRepository($user)
             ->find()
             ->where($resetTokenField, null, $user->__get($resetTokenField))
             ->getOneOrNull();
+
+        return $result;
     }
 
     /**
@@ -100,9 +106,12 @@ class ORMAdapter extends Adapter implements Contract
      */
     public function retrieveById(User $user): User
     {
-        return $this->getUserRepository($user)
+        /** @var User $result */
+        $result = $this->getUserRepository($user)
             ->findOne($user->__get($user::getIdField()))
             ->getOneOrFail();
+
+        return $result;
     }
 
     /**
