@@ -18,7 +18,7 @@ namespace Valkyrja\ORM;
  *
  * @author Melech Mizrachi
  */
-interface QueryBuilder
+interface QueryBuilder extends BaseQueryBuilder
 {
     /**
      * Create a SELECT query statement.
@@ -72,39 +72,6 @@ interface QueryBuilder
      * @return static
      */
     public function delete(): static;
-
-    /**
-     * Set the table on which to perform the query statement.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table');
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table', 't');
-     * </code>
-     *
-     * @param string      $table
-     * @param string|null $alias
-     *
-     * @return static
-     */
-    public function table(string $table, string $alias = null): static;
-
-    /**
-     * Set the entity to query with.
-     *
-     * <code>
-     *      $queryBuilder->entity(Entity::class);
-     * </code>
-     *
-     * @param string      $entity
-     * @param string|null $alias
-     *
-     * @return static
-     */
-    public function entity(string $entity, string $alias = null): static;
 
     /**
      * Add a value for a column to set.
@@ -293,18 +260,4 @@ interface QueryBuilder
      * @return static
      */
     public function offset(int $offset): static;
-
-    /**
-     * Get the built query string.
-     *
-     * @return string
-     */
-    public function getQueryString(): string;
-
-    /**
-     * Create a new query.
-     *
-     * @return Query
-     */
-    public function createQuery(): Query;
 }
