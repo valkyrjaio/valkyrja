@@ -2,7 +2,7 @@
     <img src="https://i.imgur.com/bnZA2RT.png" width="400">
 </a></p>
 <p align="center">
-    <a href="https://travis-ci.org/valkyrjaio/valkyrja"><img src="https://travis-ci.org/valkyrjaio/valkyrja.svg" alt="Build Status"></a>
+    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/php.yml"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/php.yml/badge.svg" alt="Build Status"></a>
     <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/v/stable.svg" alt="Latest Stable Version"></a>
     <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/d/total.svg" alt="Total Downloads"></a>
     <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/license.svg" alt="License"></a>
@@ -90,20 +90,37 @@ Benchmark Results
 * \*\*\* No Composer autoloader
 
 [Valkyrja]: https://valkyrja.io
+
 [2]: https://valkyrja.io
+
 [3]: https://valkyrja.io
+
 [4]: https://valkyrja.io
+
 [5]: https://valkyrja.io
+
 [6]: https://valkyrja.io
+
 [7]: https://valkyrja.io
+
 [8]: https://valkyrja.io
+
 [9]: https://valkyrja.io
+
 [10]: https://valkyrja.io
+
 [11]: https://valkyrja.io
+
 [12]: https://valkyrja.io
+
 [13]: https://valkyrja.io
+
 [14]: https://valkyrja.io
+
 [15]: https://valkyrja.io
+
 [16]: https://valkyrja.io
+
 [MIT license]: https://opensource.org/licenses/MIT
+
 [Valkyrja App repository]: https://github.com/valkyrjaio/application
