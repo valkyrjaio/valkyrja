@@ -194,7 +194,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function set(string $column, $value = null): static
+    public function set(string $column, mixed $value = null): static
     {
         $this->values[$column] = $value ?? ":$column";
 
@@ -204,7 +204,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function where(string $column, string $operator = null, $value = null): static
+    public function where(string $column, string $operator = null, mixed $value = null): static
     {
         $this->setWhere($this->getWhereString($column, $operator ?? Operator::EQUALS, $value), Statement::WHERE_AND);
 
@@ -214,7 +214,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function orWhere(string $column, string $operator = null, $value = null): static
+    public function orWhere(string $column, string $operator = null, mixed $value = null): static
     {
         $this->setWhere($this->getWhereString($column, $operator ?? Operator::EQUALS, $value), Statement::WHERE_OR);
 
