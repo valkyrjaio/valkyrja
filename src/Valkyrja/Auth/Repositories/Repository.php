@@ -18,6 +18,7 @@ use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\AuthenticatedUsers;
 use Valkyrja\Auth\Constants\SessionId;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
+use Valkyrja\Auth\Exceptions\InvalidCurrentAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\Repository as Contract;
@@ -346,7 +347,7 @@ class Repository implements Contract
      */
     protected function getUserFromSession(): User
     {
-        if (isset($this->user)) {
+        if ($this->user !== null) {
             return $this->user;
         }
 
@@ -358,7 +359,20 @@ class Repository implements Contract
 
         $this->users = $this->usersModel::fromArray($sessionUsers);
 
-        return $this->user = $this->users->getCurrent();
+        $current = $this->users->getCurrent();
+
+        if (! $current) {
+            throw new InvalidCurrentAuthenticationException('No current authenticated user.');
+            // Debate whether to use this instead since there are session users so just take the first one... but that
+            // could be incorrect if that should not be the current user amongst a plethora of possibilities. It should
+            // be up to the app developer on how to handle this.
+            //
+            // $current = $this->users->all()[0];
+            //
+            // $this->users->setCurrent($current);
+        }
+
+        return $this->user = $current;
     }
 
     /**
