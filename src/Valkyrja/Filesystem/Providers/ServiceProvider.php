@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem\Providers;
 
 use Aws\S3\S3Client as AwsS3Client;
-use League\Flysystem\Adapter\Local as FlysystemLocalAdapter;
 use League\Flysystem\AwsS3v3\AwsS3Adapter as FlysystemAwsS3Adapter;
 use League\Flysystem\Filesystem as Flysystem;
+use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Filesystem\Adapter;
@@ -212,12 +212,12 @@ class ServiceProvider extends Provider
                 ];
 
                 return new FlysystemAwsS3Adapter(
-                    new AwsS3Client(
-                        $clientConfig
-                    ),
-                    $config['bucket'],
-                    $config['prefix'],
-                    $config['options']
+                    client : new AwsS3Client(
+                                 $clientConfig
+                             ),
+                    bucket : $config['bucket'],
+                    prefix : $config['prefix'],
+                    options: $config['options']
                 );
             }
         );
