@@ -85,7 +85,7 @@ abstract class Facade
      *
      * @return void
      */
-    public static function setInstance( string|object $instance): void
+    public static function setInstance(string|object $instance): void
     {
         static::verifyInstance($instance);
 

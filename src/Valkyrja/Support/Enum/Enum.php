@@ -180,8 +180,8 @@ abstract class Enum
      * @throws RuntimeException
      *
      * @return mixed
-     * @example `Enum::VALUE();` equivalent to `new Enum(Enum::VALUE);`
      *
+     * @example `Enum::VALUE();` equivalent to `new Enum(Enum::VALUE);`
      */
     public static function __callStatic(string $method, array $args = [])
     {
