@@ -51,7 +51,10 @@ jobs:
         run: |
           XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --stderr
 
-      - name: Upload Coverage Report
+      - name: Upload Codecov Coverage Report
+        uses: codecov/codecov-action@v3
+
+      - name: Upload Coveralls Coverage Report
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
