@@ -827,4 +827,9 @@ final class Header
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.47
      */
     public const WWW_AUTHENTICATE = 'WWW-Authenticate';
+
+    /**
+     * X-Requested-With Header.
+     */
+    public const X_REQUESTED_WITH = 'X-Requested-With';
 }

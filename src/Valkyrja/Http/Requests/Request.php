@@ -459,7 +459,7 @@ class Request extends SimpleRequest implements Contract
      */
     public function isXmlHttpRequest(): bool
     {
-        return 'XMLHttpRequest' === $this->getHeaderLine('X-Requested-With');
+        return 'XMLHttpRequest' === $this->getHeaderLine(Header::X_REQUESTED_WITH);
     }
 
     /**
