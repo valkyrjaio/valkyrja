@@ -95,7 +95,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string $id, $default = null)
+    public function get(string $id, mixed $default = null): mixed
     {
         return $this->adapter->get($id, $default);
     }

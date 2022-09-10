@@ -159,7 +159,7 @@ class NullAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string $id, $default = null)
+    public function get(string $id, mixed $default = null): mixed
     {
         return $this->data[$id] ?? $default;
     }

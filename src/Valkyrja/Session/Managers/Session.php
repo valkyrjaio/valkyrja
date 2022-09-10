@@ -105,7 +105,7 @@ class Session extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string $id, $default = null)
+    public function get(string $id, mixed $default = null): mixed
     {
         return $this->use()->get($id, $default);
     }
