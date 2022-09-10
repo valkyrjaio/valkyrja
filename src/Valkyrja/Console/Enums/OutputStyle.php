@@ -21,6 +21,6 @@ namespace Valkyrja\Console\Enums;
 enum OutputStyle: string
 {
     case NORMAL = 'NORMAL';
-    case PLAIN = 'PLAIN';
-    case RAW = 'RAW';
+    case PLAIN  = 'PLAIN';
+    case RAW    = 'RAW';
 }

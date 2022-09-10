@@ -20,7 +20,7 @@ namespace Valkyrja\Console\Enums;
  */
 enum OptionMode: string
 {
-    case NONE = 'NONE';
+    case NONE     = 'NONE';
     case REQUIRED = 'REQUIRED';
     case OPTIONAL = 'OPTIONAL';
     case IS_ARRAY = 'IS_ARRAY';
