@@ -122,7 +122,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         $methodName = 'set' . Str::toStudlyCase($name);
 
@@ -221,7 +221,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getOriginalPropertyValue(string $name)
+    public function getOriginalPropertyValue(string $name): mixed
     {
         return $this->__originalProperties[$name] ?? null;
     }
@@ -364,7 +364,7 @@ abstract class Model implements Contract
         array $propertyAllowedClasses,
         string $property,
         mixed $value
-    ) {
+    ): mixed {
         // Check if a type was set for this attribute
         $type = $propertyTypes[$property] ?? null;
 
@@ -433,7 +433,7 @@ abstract class Model implements Contract
      *
      * @return mixed
      */
-    protected function __getModelFromValueType(string $property, $type, $value)
+    protected function __getModelFromValueType(string $property, string|array $type, mixed $value): mixed
     {
         if (is_array($type)) {
             $type = $type[0];
@@ -461,7 +461,7 @@ abstract class Model implements Contract
      *
      * @return mixed
      */
-    protected function __getModelFromValue(string $property, string $type, $value)
+    protected function __getModelFromValue(string $property, string $type, mixed $value): mixed
     {
         if ($value instanceof Contract) {
             $value = $value->jsonSerialize();
