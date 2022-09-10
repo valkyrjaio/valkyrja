@@ -58,7 +58,7 @@ abstract class ApiController extends Controller
      * @return JsonResponse
      */
     public static function createApiJsonResponse(
-        array $data,
+        array $data = [],
         string $message = null,
         string $status = null,
         int $statusCode = null,
