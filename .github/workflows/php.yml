@@ -52,6 +52,8 @@ jobs:
           XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --stderr
 
       - name: Upload Coverage Report
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          bash <(curl -s https://codecov.io/bash)
-          php vendor/bin/php-coveralls
+          composer global require php-coveralls/php-coveralls
+          php-coveralls --coverage_clover=build/logs/clover.xml -v
