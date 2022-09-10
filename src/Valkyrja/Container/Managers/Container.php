@@ -287,7 +287,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string $serviceId, array $arguments = [])
+    public function get(string $serviceId, array $arguments = []): mixed
     {
         $serviceId = $this->getServiceIdAndEnsurePublished($serviceId);
 
@@ -316,7 +316,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function getClosure(string $serviceId, array $arguments = [])
+    public function getClosure(string $serviceId, array $arguments = []): mixed
     {
         $serviceId = $this->getServiceIdAndEnsurePublished($serviceId);
 
@@ -326,7 +326,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function getSingleton(string $serviceId)
+    public function getSingleton(string $serviceId): mixed
     {
         $serviceId = $this->getServiceIdAndEnsurePublished($serviceId);
 
@@ -336,7 +336,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function makeService(string $serviceId, array $arguments = [])
+    public function makeService(string $serviceId, array $arguments = []): mixed
     {
         $serviceId = $this->getServiceIdAndEnsurePublished($serviceId);
 
@@ -510,7 +510,7 @@ class Container implements Contract
      *
      * @return mixed
      */
-    protected function getClosureWithoutChecks(string $serviceId, array $arguments = [])
+    protected function getClosureWithoutChecks(string $serviceId, array $arguments = []): mixed
     {
         $closure = self::$closures[$serviceId];
 
@@ -524,7 +524,7 @@ class Container implements Contract
      *
      * @return mixed
      */
-    protected function getSingletonWithoutChecks(string $serviceId)
+    protected function getSingletonWithoutChecks(string $serviceId): mixed
     {
         return self::$instances[$serviceId] ?? self::$instances[$serviceId] = $this->makeService($serviceId);
     }
@@ -535,9 +535,9 @@ class Container implements Contract
      * @param string $serviceId The service id
      * @param array  $arguments [optional] The arguments
      *
-     * @return mixed
+     * @return Service
      */
-    protected function makeServiceWithoutChecks(string $serviceId, array $arguments = [])
+    protected function makeServiceWithoutChecks(string $serviceId, array $arguments = []): Service
     {
         // Make the object by dispatching the service
         $made = self::$services[$serviceId]::make($this, $arguments);

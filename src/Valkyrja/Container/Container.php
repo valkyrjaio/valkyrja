@@ -166,7 +166,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return mixed
      */
-    public function getClosure(string $serviceId, array $arguments = []);
+    public function getClosure(string $serviceId, array $arguments = []): mixed;
 
     /**
      * Get a singleton from the container.
@@ -177,7 +177,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return mixed|T
      */
-    public function getSingleton(string $serviceId);
+    public function getSingleton(string $serviceId): mixed;
 
     /**
      * Make a service.
@@ -189,7 +189,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return mixed|T
      */
-    public function makeService(string $serviceId, array $arguments = []);
+    public function makeService(string $serviceId, array $arguments = []): mixed;
 
     /**
      * Get a service id with optional context.
