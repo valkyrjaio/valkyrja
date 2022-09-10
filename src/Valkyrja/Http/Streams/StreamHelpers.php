@@ -157,11 +157,11 @@ trait StreamHelpers
     /**
      * Verify the write result.
      *
-     * @param string|false $result
+     * @param int|false $result
      *
      * @return void
      */
-    protected function verifyWriteResult(string|false $result): void
+    protected function verifyWriteResult(int|false $result): void
     {
         // If the write was not successful
         if (false === $result) {
