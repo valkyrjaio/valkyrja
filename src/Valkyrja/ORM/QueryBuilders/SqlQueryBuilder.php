@@ -357,11 +357,11 @@ class SqlQueryBuilder implements QueryBuilder
      *
      * @param string $column
      * @param string $operator
-     * @param null   $value
+     * @param mixed  $value
      *
      * @return string
      */
-    protected function getWhereString(string $column, string $operator, $value = null): string
+    protected function getWhereString(string $column, string $operator, mixed $value = null): string
     {
         return $column . ' ' . $operator . ' ' . $this->getWhereValue($column, $value);
     }
