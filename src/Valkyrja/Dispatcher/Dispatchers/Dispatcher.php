@@ -63,7 +63,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
-    public function dispatch(Dispatch $dispatch, array $arguments = null)
+    public function dispatch(Dispatch $dispatch, array $arguments = null): mixed
     {
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments);
@@ -84,7 +84,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
-    public function dispatchClassMethod(Dispatch $dispatch, array $arguments = null)
+    public function dispatchClassMethod(Dispatch $dispatch, array $arguments = null): mixed
     {
         // Ensure a class and method exist before continuing
         if (! $dispatch->isMethod()) {
@@ -94,7 +94,8 @@ class Dispatcher implements Contract
         $class     = $this->getClassFromDispatch($dispatch);
         $method    = $dispatch->getMethod();
         $arguments = $arguments ?? [];
-        $response  = $dispatch->isStatic() ? $class::$method(...$arguments) : $class->$method(...$arguments);
+        /** @var mixed $response */
+        $response = $dispatch->isStatic() ? $class::$method(...$arguments) : $class->$method(...$arguments);
 
         return $response ?? Constant::DISPATCHED;
     }
@@ -102,7 +103,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
-    public function dispatchClassProperty(Dispatch $dispatch)
+    public function dispatchClassProperty(Dispatch $dispatch): mixed
     {
         // Ensure a class and property exist before continuing
         if (! $dispatch->isProperty()) {
@@ -111,6 +112,7 @@ class Dispatcher implements Contract
 
         $class    = $this->getClassFromDispatch($dispatch);
         $property = $dispatch->getProperty();
+        /** @var mixed $response */
         $response = $dispatch->isStatic() ? $class::$$property : $class->{$property};
 
         return $response ?? Constant::DISPATCHED;
@@ -119,7 +121,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
-    public function dispatchClass(Dispatch $dispatch, array $arguments = null)
+    public function dispatchClass(Dispatch $dispatch, array $arguments = null): mixed
     {
         // Ensure a class exists before continuing
         if (! $dispatch->isClass()) {
@@ -144,7 +146,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
-    public function dispatchFunction(Dispatch $dispatch, array $arguments = null)
+    public function dispatchFunction(Dispatch $dispatch, array $arguments = null): mixed
     {
         // Ensure a function exists before continuing
         if (! $dispatch->isFunction()) {
@@ -161,7 +163,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
-    public function dispatchClosure(Dispatch $dispatch, array $arguments = null)
+    public function dispatchClosure(Dispatch $dispatch, array $arguments = null): mixed
     {
         // Ensure a closure exists before continuing
         if (! $dispatch->isClosure()) {
@@ -389,7 +391,7 @@ class Dispatcher implements Contract
      *
      * @return mixed
      */
-    protected function getArgumentValue($argument)
+    protected function getArgumentValue(mixed $argument): mixed
     {
         if ($argument instanceof Dispatch) {
             // Dispatch the argument and set the results to the argument
