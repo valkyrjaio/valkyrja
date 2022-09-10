@@ -18,10 +18,12 @@ use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth as Contract;
 use Valkyrja\Auth\AuthenticatedUsers;
 use Valkyrja\Auth\Constants\HeaderValue;
+use Valkyrja\Auth\Exceptions\AuthRuntimeException;
 use Valkyrja\Auth\Factory;
 use Valkyrja\Auth\Gate;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\Repository;
+use Valkyrja\Auth\TokenizedRepository;
 use Valkyrja\Auth\User;
 use Valkyrja\Http\Constants\Header;
 use Valkyrja\Http\Request;
@@ -181,9 +183,21 @@ class Auth implements Contract
      */
     public function requestWithAuthToken(Request $request, string $user = null, string $adapter = null): Request
     {
+        $repository = $this->getRepository($user, $adapter);
+        
+        if (! ($repository instanceof TokenizedRepository)) {
+            throw new AuthRuntimeException(
+                "The repository for ${user} should be an instance of "
+                . TokenizedRepository::class
+                . '. '
+                . $repository::class
+                . ' provided.'
+            );
+        }
+
         return $request->withHeader(
             Header::AUTHORIZATION,
-            HeaderValue::BEARER . ' ' . $this->getRepository($user, $adapter)->getToken()
+            HeaderValue::BEARER . ' ' . $repository->getToken()
         );
     }
 
