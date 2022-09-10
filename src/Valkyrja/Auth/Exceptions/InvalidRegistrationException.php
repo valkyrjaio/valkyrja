@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Exceptions;
 
-use RuntimeException;
-
 /**
  * Exception InvalidRegistrationException.
  *
  * @author Melech Mizrachi
  */
-class InvalidRegistrationException extends RuntimeException
+class InvalidRegistrationException extends AuthRuntimeException
 {
 }

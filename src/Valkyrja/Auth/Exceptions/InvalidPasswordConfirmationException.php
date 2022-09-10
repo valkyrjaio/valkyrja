@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Exceptions;
 
-use RuntimeException;
-
 /**
  * Exception InvalidPasswordConfirmationException.
  *
  * @author Melech Mizrachi
  */
-class InvalidPasswordConfirmationException extends RuntimeException
+class InvalidPasswordConfirmationException extends AuthRuntimeException
 {
 }

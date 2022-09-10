@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Exceptions;
 
-use RuntimeException;
-
 /**
  * Exception TokenizationException.
  *
  * @author Melech Mizrachi
  */
-class TokenizationException extends RuntimeException
+class TokenizationException extends AuthRuntimeException
 {
 }

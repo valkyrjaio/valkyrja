@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Exceptions;
 
+use RuntimeException;
+
 /**
- * Exception MissingTokenizableUserRequiredFieldsException.
+ * Exception AuthRuntimeException.
  *
  * @author Melech Mizrachi
  */
-class MissingTokenizableUserRequiredFieldsException extends AuthRuntimeException
+class AuthRuntimeException extends RuntimeException
 {
 }

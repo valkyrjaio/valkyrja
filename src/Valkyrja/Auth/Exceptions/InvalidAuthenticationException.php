@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Exceptions;
 
-use RuntimeException;
-
 /**
  * Exception InvalidAuthenticationException.
  *
  * @author Melech Mizrachi
  */
-class InvalidAuthenticationException extends RuntimeException
+class InvalidAuthenticationException extends AuthRuntimeException
 {
 }
