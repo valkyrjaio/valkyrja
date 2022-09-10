@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja;
 
-use Config\Config;
 use Valkyrja\Annotation\Annotator;
 use Valkyrja\Api\Api;
 use Valkyrja\Application\Application;
@@ -165,9 +164,9 @@ function client(): Client
  * @param string|null $key     [optional] The key to get
  * @param mixed       $default [optional] The default value if the key is not found
  *
- * @return Config|array|null
+ * @return mixed
  */
-function config(string $key = null, mixed $default = null): Config|array|null
+function config(string $key = null, mixed $default = null): mixed
 {
     return Valkyrja::app()->config($key, $default);
 }

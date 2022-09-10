@@ -94,9 +94,9 @@ interface Application extends ArrayAccess
      * @param string|null $key     [optional] The key to get
      * @param mixed       $default [optional] The default value if the key is not found
      *
-     * @return Config|array|null
+     * @return mixed
      */
-    public function config(string $key = null, mixed $default = null): Config|array|null;
+    public function config(string $key = null, mixed $default = null): mixed;
 
     /**
      * Add to the global config array.

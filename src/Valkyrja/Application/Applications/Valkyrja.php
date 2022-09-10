@@ -179,7 +179,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function config(string $key = null, mixed $default = null): Config|array|null
+    public function config(string $key = null, mixed $default = null): mixed
     {
         // If no key was specified
         if (null === $key) {
