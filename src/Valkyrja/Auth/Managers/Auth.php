@@ -387,6 +387,9 @@ class Auth implements Contract
             // Try to login from the user session
             $repository->authenticateFromRequest($this->request);
         } catch (Exception) {
+            // No need to throw an error here as we're just attempting an authentication in the constructor.
+            // To determine authenticated state properly usage of isAuthenticated is recommended.
+            // Could revisit adding an exception here depending on the error.
         }
     }
 }
