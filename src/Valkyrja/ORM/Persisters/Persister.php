@@ -612,6 +612,7 @@ class Persister implements Contract
      *
      * @throws ExecuteException
      * @throws JsonException
+     *
      * @return void
      */
     protected function persistEntities(string $type, Entity ...$entities): void
