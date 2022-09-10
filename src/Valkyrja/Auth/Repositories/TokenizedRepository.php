@@ -17,6 +17,7 @@ use Throwable;
 use Valkyrja\Auth\AuthenticatedUsers;
 use Valkyrja\Auth\Constants\HeaderValue;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
+use Valkyrja\Auth\Exceptions\InvalidCurrentAuthenticationException;
 use Valkyrja\Auth\Exceptions\MissingTokenizableUserRequiredFieldsException;
 use Valkyrja\Auth\Exceptions\TokenizationException;
 use Valkyrja\Auth\TokenizableUser;
@@ -269,7 +270,13 @@ abstract class TokenizedRepository extends Repository implements Contract
 
         $this->users = $users;
 
-        return $users->getCurrent();
+        $current = $this->users->getCurrent();
+
+        if (! $current) {
+            throw new InvalidCurrentAuthenticationException('No current authenticated user.');
+        }
+
+        return $current;
     }
 
     /**
