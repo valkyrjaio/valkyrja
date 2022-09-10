@@ -184,7 +184,7 @@ class Auth implements Contract
     public function requestWithAuthToken(Request $request, string $user = null, string $adapter = null): Request
     {
         $repository = $this->getRepository($user, $adapter);
-        
+
         if (! ($repository instanceof TokenizedRepository)) {
             throw new AuthRuntimeException(
                 "The repository for ${user} should be an instance of "
