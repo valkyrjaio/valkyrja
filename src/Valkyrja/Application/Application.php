@@ -41,7 +41,7 @@ interface Application extends ArrayAccess
      *
      * @return Application
      */
-    public static function app(): Application;
+    public static function app(): self;
 
     /**
      * Get an environment variable.
