@@ -177,9 +177,9 @@ class Persister implements Contract
         // Ensure a transaction is in progress
         $this->adapter->ensureTransaction();
 
-        $this->persistCreate();
-        $this->persistSave();
-        $this->persistDelete();
+        $this->persistEntities(Statement::INSERT, ...$this->createEntities);
+        $this->persistEntities(Statement::UPDATE, ...$this->saveEntities);
+        $this->persistEntities(Statement::DELETE, ...$this->deleteEntities);
         $this->clearDeferred();
 
         return $this->adapter->commit();
@@ -605,53 +605,21 @@ class Persister implements Contract
     }
 
     /**
-     * Persist all entities for creation.
+     * Persist a list of entities.
+     *
+     * @param string $type        The type of persist
+     * @param Entity ...$entities The entities to persist
      *
      * @throws ExecuteException
      * @throws JsonException
-     *
      * @return void
      */
-    protected function persistCreate(): void
+    protected function persistEntities(string $type, Entity ...$entities): void
     {
-        // Iterate through the models awaiting creation
-        foreach ($this->createEntities as $createEntity) {
-            // Create the model
-            $this->persistEntity(Statement::INSERT, $createEntity, $createEntity->asStorableArray());
-        }
-    }
-
-    /**
-     * Persist all entities for save.
-     *
-     * @throws ExecuteException
-     * @throws JsonException
-     *
-     * @return void
-     */
-    protected function persistSave(): void
-    {
-        // Iterate through the models awaiting save
-        foreach ($this->saveEntities as $saveEntity) {
-            // Save the model
-            $this->persistEntity(Statement::UPDATE, $saveEntity, $saveEntity->asChangedArray());
-        }
-    }
-
-    /**
-     * Persist all entities for deletion.
-     *
-     * @throws ExecuteException
-     * @throws JsonException
-     *
-     * @return void
-     */
-    protected function persistDelete(): void
-    {
-        // Iterate through the models awaiting deletion
-        foreach ($this->deleteEntities as $deleteEntity) {
-            // delete the model
-            $this->persistEntity(Statement::DELETE, $deleteEntity);
+        // Iterate through the entities
+        foreach ($entities as $entity) {
+            // Persist the entity
+            $this->persistEntity($type, $entity);
         }
     }
 }
