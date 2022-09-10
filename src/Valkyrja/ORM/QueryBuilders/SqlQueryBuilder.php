@@ -131,7 +131,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function select(array $columns = null): QueryBuilder
+    public function select(array $columns = null): static
     {
         $this->type    = Statement::SELECT;
         $this->columns = $columns ?? ['*'];
@@ -142,7 +142,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function insert(): QueryBuilder
+    public function insert(): static
     {
         $this->type = Statement::INSERT;
 
@@ -152,7 +152,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function update(): QueryBuilder
+    public function update(): static
     {
         $this->type = Statement::UPDATE;
 
@@ -162,7 +162,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function delete(): QueryBuilder
+    public function delete(): static
     {
         $this->type = Statement::DELETE;
 
@@ -172,7 +172,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function table(string $table, string $alias = null): QueryBuilder
+    public function table(string $table, string $alias = null): static
     {
         $this->table = $table . ' ' . ((string) $alias);
 
@@ -194,7 +194,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function set(string $column, $value = null): QueryBuilder
+    public function set(string $column, $value = null): static
     {
         $this->values[$column] = $value ?? ":$column";
 
@@ -204,7 +204,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function where(string $column, string $operator = null, $value = null): QueryBuilder
+    public function where(string $column, string $operator = null, $value = null): static
     {
         $this->setWhere($this->getWhereString($column, $operator ?? Operator::EQUALS, $value), Statement::WHERE_AND);
 
@@ -214,7 +214,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function orWhere(string $column, string $operator = null, $value = null): QueryBuilder
+    public function orWhere(string $column, string $operator = null, $value = null): static
     {
         $this->setWhere($this->getWhereString($column, $operator ?? Operator::EQUALS, $value), Statement::WHERE_OR);
 
@@ -259,7 +259,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function orderBy(string $column, string $type = null): QueryBuilder
+    public function orderBy(string $column, string $type = null): static
     {
         $this->orderBy[] = $column . ' ' . ((string) $type);
 
@@ -269,7 +269,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function orderByAsc(string $column): QueryBuilder
+    public function orderByAsc(string $column): static
     {
         return $this->orderBy($column, OrderBy::ASC);
     }
@@ -277,7 +277,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function orderByDesc(string $column): QueryBuilder
+    public function orderByDesc(string $column): static
     {
         return $this->orderBy($column, OrderBy::DESC);
     }
@@ -285,7 +285,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function limit(int $limit): QueryBuilder
+    public function limit(int $limit): static
     {
         $this->limit = $limit;
 
@@ -295,7 +295,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function offset(int $offset): QueryBuilder
+    public function offset(int $offset): static
     {
         $this->offset = $offset;
 
