@@ -76,8 +76,8 @@ abstract class GatedMiddleware extends AuthorizedMiddleware
     protected static function getAction(Request $request): string
     {
         return static::$action
-            ?? self::$route->getMethod()
-            ?? self::$route->getProperty()
+            ?? self::$route?->getMethod()
+            ?? self::$route?->getProperty()
             ?? $request->getMethod();
     }
 
