@@ -109,7 +109,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function find(): self
+    public function find(): static
     {
         $this->retriever = $this->driver->createRetriever()->find($this->entity);
         $this->resetRelationships();
@@ -120,7 +120,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function findOne(int|string $id): self
+    public function findOne(int|string $id): static
     {
         $this->retriever = $this->driver->createRetriever()->findOne($this->entity, $id);
         $this->resetRelationships();
@@ -131,7 +131,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function count(): self
+    public function count(): static
     {
         $this->retriever = $this->driver->createRetriever()->count($this->entity);
         $this->resetRelationships();
@@ -146,7 +146,7 @@ class Repository implements Contract
      *
      * @return static<T>
      */
-    public function columns(array $columns): self
+    public function columns(array $columns): static
     {
         $this->retriever->columns($columns);
 
@@ -163,7 +163,7 @@ class Repository implements Contract
      *
      * @return static<T>
      */
-    public function where(string $column, string $operator = null, mixed $value = null): self
+    public function where(string $column, string $operator = null, mixed $value = null): static
     {
         $this->retriever->where($column, $operator, $value);
 
@@ -179,7 +179,7 @@ class Repository implements Contract
      *
      * @return static<T>
      */
-    public function orWhere(string $column, string $operator = null, mixed $value = null): self
+    public function orWhere(string $column, string $operator = null, mixed $value = null): static
     {
         $this->retriever->orWhere($column, $operator, $value);
 
@@ -205,7 +205,7 @@ class Repository implements Contract
         string $operator = null,
         string $type = null,
         bool $isWhere = null
-    ): self {
+    ): static {
         $this->retriever->join($table, $column1, $column2, $operator, $type, $isWhere);
 
         return $this;
@@ -219,7 +219,7 @@ class Repository implements Contract
      *
      * @return static<T>
      */
-    public function orderBy(string $column, string $direction = null): self
+    public function orderBy(string $column, string $direction = null): static
     {
         $this->retriever->orderBy($column, $direction);
 
@@ -233,7 +233,7 @@ class Repository implements Contract
      *
      * @return static<T>
      */
-    public function limit(int $limit): self
+    public function limit(int $limit): static
     {
         $this->retriever->limit($limit);
 
@@ -247,7 +247,7 @@ class Repository implements Contract
      *
      * @return static<T>
      */
-    public function offset(int $offset): self
+    public function offset(int $offset): static
     {
         $this->retriever->offset($offset);
 
@@ -261,7 +261,7 @@ class Repository implements Contract
      *
      * @return static<T>
      */
-    public function withRelationships(array $relationships = null): self
+    public function withRelationships(array $relationships = null): static
     {
         $this->getRelations  = true;
         $this->relationships = $relationships;

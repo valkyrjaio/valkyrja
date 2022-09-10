@@ -34,7 +34,7 @@ interface Retriever
      *
      * @return static
      */
-    public function find(string $entity): self;
+    public function find(string $entity): static;
 
     /**
      * Find a single entity given its id.
@@ -48,7 +48,7 @@ interface Retriever
      *
      * @return static
      */
-    public function findOne(string $entity, int|string $id): self;
+    public function findOne(string $entity, int|string $id): static;
 
     /**
      * Count all the results of given criteria.
@@ -61,7 +61,7 @@ interface Retriever
      *
      * @return static
      */
-    public function count(string $entity): self;
+    public function count(string $entity): static;
 
     /**
      * Set columns.
@@ -70,7 +70,7 @@ interface Retriever
      *
      * @return static
      */
-    public function columns(array $columns): self;
+    public function columns(array $columns): static;
 
     /**
      * Add a where condition.
@@ -82,7 +82,7 @@ interface Retriever
      *
      * @return static
      */
-    public function where(string $column, string $operator = null, mixed $value = null): self;
+    public function where(string $column, string $operator = null, mixed $value = null): static;
 
     /**
      * Add an additional `OR` where condition.
@@ -93,7 +93,7 @@ interface Retriever
      *
      * @return static
      */
-    public function orWhere(string $column, string $operator = null, mixed $value = null): self;
+    public function orWhere(string $column, string $operator = null, mixed $value = null): static;
 
     /**
      * Join with another table.
@@ -114,7 +114,7 @@ interface Retriever
         string $operator = null,
         string $type = null,
         bool $isWhere = null
-    ): self;
+    ): static;
 
     /**
      * Set group by.
@@ -123,7 +123,7 @@ interface Retriever
      *
      * @return static
      */
-    public function groupBy(string $column): self;
+    public function groupBy(string $column): static;
 
     /**
      * Set an order by.
@@ -133,7 +133,7 @@ interface Retriever
      *
      * @return static
      */
-    public function orderBy(string $column, string $type = null): self;
+    public function orderBy(string $column, string $type = null): static;
 
     /**
      * Set limit.
@@ -142,7 +142,7 @@ interface Retriever
      *
      * @return static
      */
-    public function limit(int $limit): self;
+    public function limit(int $limit): static;
 
     /**
      * Set offset.
@@ -151,7 +151,7 @@ interface Retriever
      *
      * @return static
      */
-    public function offset(int $offset): self;
+    public function offset(int $offset): static;
 
     /**
      * Get results.

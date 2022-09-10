@@ -90,7 +90,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setItem(object $item = null): self
+    public function setItem(object $item = null): static
     {
         $this->item = $item;
 
@@ -108,7 +108,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setItemKey(string $itemKey): self
+    public function setItemKey(string $itemKey): static
     {
         $this->itemKey = $itemKey;
 
@@ -126,7 +126,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setItems(array $items = null): self
+    public function setItems(array $items = null): static
     {
         $this->items = $items;
 
@@ -144,7 +144,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setItemsKey(string $itemsKey): self
+    public function setItemsKey(string $itemsKey): static
     {
         $this->itemsKey = $itemsKey;
 
@@ -162,7 +162,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setTotal(int $total = null): self
+    public function setTotal(int $total = null): static
     {
         $this->total = $total;
 
@@ -180,7 +180,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setMessages(array $messages = null): self
+    public function setMessages(array $messages = null): static
     {
         $this->messages = $messages;
 
@@ -198,7 +198,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setData(array $data = null): self
+    public function setData(array $data = null): static
     {
         $this->data = $data;
 
@@ -216,7 +216,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setMessage(string $message = null): self
+    public function setMessage(string $message = null): static
     {
         $this->message = $message;
 

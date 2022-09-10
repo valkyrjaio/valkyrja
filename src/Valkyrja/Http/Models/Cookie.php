@@ -208,7 +208,7 @@ class Cookie extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -226,7 +226,7 @@ class Cookie extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setValue(string $value = null): self
+    public function setValue(string $value = null): static
     {
         $this->value = $value;
 
@@ -244,7 +244,7 @@ class Cookie extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setExpire(int $expire): self
+    public function setExpire(int $expire): static
     {
         $this->expire = $expire;
 
@@ -262,7 +262,7 @@ class Cookie extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setPath(string $path): self
+    public function setPath(string $path): static
     {
         $this->path = $path;
 
@@ -280,7 +280,7 @@ class Cookie extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setDomain(string $domain = null): self
+    public function setDomain(string $domain = null): static
     {
         $this->domain = $domain;
 
@@ -298,7 +298,7 @@ class Cookie extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setSecure(bool $secure): self
+    public function setSecure(bool $secure): static
     {
         $this->secure = $secure;
 
@@ -316,7 +316,7 @@ class Cookie extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setHttpOnly(bool $httpOnly = false): self
+    public function setHttpOnly(bool $httpOnly = false): static
     {
         $this->httpOnly = $httpOnly;
 
@@ -334,7 +334,7 @@ class Cookie extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setRaw(bool $raw): self
+    public function setRaw(bool $raw): static
     {
         $this->raw = $raw;
 
@@ -352,7 +352,7 @@ class Cookie extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setSameSite(string $sameSite = null): self
+    public function setSameSite(string $sameSite = null): static
     {
         if (! in_array($sameSite, [SameSite::LAX, SameSite::STRICT, null], true)) {
             throw new InvalidSameSiteTypeException(

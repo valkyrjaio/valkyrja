@@ -107,7 +107,7 @@ class CacheRepository extends Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function findOne(int|string $id): self
+    public function findOne(int|string $id): static
     {
         parent::findOne($id);
 
@@ -119,7 +119,7 @@ class CacheRepository extends Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function where(string $column, string $operator = null, $value = null): self
+    public function where(string $column, string $operator = null, $value = null): static
     {
         if ($column === $this->entity::getIdField()) {
             $this->id = $value;
@@ -133,7 +133,7 @@ class CacheRepository extends Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function orWhere(string $column, string $operator = null, $value = null): self
+    public function orWhere(string $column, string $operator = null, $value = null): static
     {
         if ($column === $this->entity::getIdField()) {
             $this->id = $value;

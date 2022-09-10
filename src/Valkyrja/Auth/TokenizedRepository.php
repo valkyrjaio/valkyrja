@@ -34,5 +34,5 @@ interface TokenizedRepository extends Repository
      *
      * @return $this
      */
-    public function authenticateFromToken(string $token): self;
+    public function authenticateFromToken(string $token): static;
 }

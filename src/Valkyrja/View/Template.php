@@ -27,7 +27,7 @@ interface Template
      *
      * @return static
      */
-    public static function createTemplate(Engine $engine): self;
+    public static function createTemplate(Engine $engine): static;
 
     /**
      * Get the template name.
@@ -43,7 +43,7 @@ interface Template
      *
      * @return static
      */
-    public function setName(string $name): self;
+    public function setName(string $name): static;
 
     /**
      * Get the variables.
@@ -59,7 +59,7 @@ interface Template
      *
      * @return static
      */
-    public function setVariables(array $variables = []): self;
+    public function setVariables(array $variables = []): static;
 
     /**
      * Get a variable.
@@ -78,7 +78,7 @@ interface Template
      *
      * @return static
      */
-    public function setVariable(string $key, mixed $value): self;
+    public function setVariable(string $key, mixed $value): static;
 
     /**
      * Escape a value for output.
@@ -96,14 +96,14 @@ interface Template
      *
      * @return static
      */
-    public function setLayout(string $layout = null): self;
+    public function setLayout(string $layout = null): static;
 
     /**
      * Set no layout for this view.
      *
      * @return static
      */
-    public function withoutLayout(): self;
+    public function withoutLayout(): static;
 
     /**
      * Output a partial.

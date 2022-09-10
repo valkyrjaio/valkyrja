@@ -182,7 +182,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function entity(string $entity, string $alias = null): self
+    public function entity(string $entity, string $alias = null): static
     {
         $this->entity = $entity;
 
@@ -231,7 +231,7 @@ class SqlQueryBuilder implements QueryBuilder
         string $operator = null,
         string $type = null,
         bool $isWhere = null
-    ): self {
+    ): static {
         // The operator defaulting to =
         $operator ??= Operator::EQUALS;
         // WHERE or ON for the join
@@ -249,7 +249,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function groupBy(string $column): self
+    public function groupBy(string $column): static
     {
         $this->groupBy[] = $column;
 

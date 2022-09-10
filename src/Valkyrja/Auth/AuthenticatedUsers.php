@@ -44,7 +44,7 @@ interface AuthenticatedUsers extends Model
      *
      * @return static
      */
-    public function setCurrent(User $user): self;
+    public function setCurrent(User $user): static;
 
     /**
      * Add a user to the collection.
@@ -53,7 +53,7 @@ interface AuthenticatedUsers extends Model
      *
      * @return static
      */
-    public function add(User $user): self;
+    public function add(User $user): static;
 
     /**
      * Remove a user from the collection.
@@ -62,7 +62,7 @@ interface AuthenticatedUsers extends Model
      *
      * @return static
      */
-    public function remove(User $user): self;
+    public function remove(User $user): static;
 
     /**
      * Get all the users in the collection

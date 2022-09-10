@@ -64,7 +64,7 @@ class AuthenticatedUsers extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setCurrent(User $user): self
+    public function setCurrent(User $user): static
     {
         $this->currentId = $user->__get($user::getIdField());
 
@@ -74,7 +74,7 @@ class AuthenticatedUsers extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function add(User $user): self
+    public function add(User $user): static
     {
         $this->users[$user->__get($user::getIdField())] = $user;
 
@@ -84,7 +84,7 @@ class AuthenticatedUsers extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function remove(User $user): self
+    public function remove(User $user): static
     {
         $id = $user->__get($user::getIdField());
 

@@ -66,7 +66,7 @@ interface SimpleRequest extends Message
      *
      * @return static
      */
-    public function withRequestTarget(string $requestTarget): self;
+    public function withRequestTarget(string $requestTarget): static;
 
     /**
      * Retrieves the HTTP method of the request.
@@ -90,7 +90,7 @@ interface SimpleRequest extends Message
      *
      * @return static
      */
-    public function withMethod(string $method): self;
+    public function withMethod(string $method): static;
 
     /**
      * Retrieves the URI instance.
@@ -133,5 +133,5 @@ interface SimpleRequest extends Message
      *
      * @return static
      */
-    public function withUri(Uri $uri, bool $preserveHost = false): self;
+    public function withUri(Uri $uri, bool $preserveHost = false): static;
 }

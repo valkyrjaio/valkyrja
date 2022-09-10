@@ -30,7 +30,7 @@ interface Collection
      *
      * @return self
      */
-    public function setAll(array $collection): self;
+    public function setAll(array $collection): static;
 
     /**
      * Determine if a value exists in the collection.
@@ -115,7 +115,7 @@ interface Collection
      *
      * @return self
      */
-    public function set(string $key, mixed $value): self;
+    public function set(string $key, mixed $value): static;
 
     /**
      * Determine if an item is in the collection.
@@ -142,7 +142,7 @@ interface Collection
      *
      * @return self
      */
-    public function remove(string $key): self;
+    public function remove(string $key): static;
 
     /**
      * Convert the collection to a string.

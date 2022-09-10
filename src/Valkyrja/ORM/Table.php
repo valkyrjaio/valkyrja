@@ -25,7 +25,7 @@ interface Table
      *
      * @return static
      */
-    public function create(): self;
+    public function create(): static;
 
     /**
      * Rename the table.
@@ -34,14 +34,14 @@ interface Table
      *
      * @return static
      */
-    public function rename(string $name): self;
+    public function rename(string $name): static;
 
     /**
      * Drop the table.
      *
      * @return static
      */
-    public function drop(): self;
+    public function drop(): static;
 
     /**
      * Set the name of the table.
@@ -50,21 +50,21 @@ interface Table
      *
      * @return static
      */
-    public function setName(string $name): self;
+    public function setName(string $name): static;
 
     /**
      * Do only if the table doesn't already exist.
      *
      * @return static
      */
-    public function ifNotExists(): self;
+    public function ifNotExists(): static;
 
     /**
      * Do only if the table exists.
      *
      * @return static
      */
-    public function ifExists(): self;
+    public function ifExists(): static;
 
     /**
      * Create a new column.

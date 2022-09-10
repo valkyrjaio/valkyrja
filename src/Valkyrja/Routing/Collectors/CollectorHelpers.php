@@ -69,7 +69,7 @@ trait CollectorHelpers
      *
      * @return static
      */
-    protected function withGroupableSelf(string $method, mixed $value): self
+    protected function withGroupableSelf(string $method, mixed $value): static
     {
         $self = clone $this;
         $self->ensureRoute();

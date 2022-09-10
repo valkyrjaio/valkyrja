@@ -42,7 +42,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function withPath(string $path): self
+    public function withPath(string $path): static
     {
         return $this->withGroupableSelf('setPath', $path);
     }
@@ -50,7 +50,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function withController(string $controller): self
+    public function withController(string $controller): static
     {
         return $this->withGroupableSelf('setClass', $controller);
     }
@@ -58,7 +58,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function withName(string $name): self
+    public function withName(string $name): static
     {
         return $this->withGroupableSelf('setName', $name);
     }
@@ -66,7 +66,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function withMiddleware(array $middleware): self
+    public function withMiddleware(array $middleware): static
     {
         return $this->withGroupableSelf('setMiddleware', $middleware);
     }
@@ -74,7 +74,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function withSecure(bool $secure = true): self
+    public function withSecure(bool $secure = true): static
     {
         return $this->withGroupableSelf('setSecure', $secure);
     }
@@ -82,7 +82,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function group(Closure $group): self
+    public function group(Closure $group): static
     {
         $group($this);
 

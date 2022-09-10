@@ -58,7 +58,7 @@ class Tagger implements Contract
     /**
      * @inheritDoc
      */
-    public static function make(Adapter $store, string ...$tags): self
+    public static function make(Adapter $store, string ...$tags): static
     {
         return new static($store, ...$tags);
     }
@@ -210,7 +210,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
-    public function tag(string $key): self
+    public function tag(string $key): static
     {
         foreach ($this->tags as $tag) {
             $keys = $this->getKeys($tag);
@@ -228,7 +228,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
-    public function untag(string $key): self
+    public function untag(string $key): static
     {
         foreach ($this->tags as $tag) {
             $keys = $this->getKeys($tag);
@@ -246,7 +246,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
-    public function tagMany(string ...$keys): self
+    public function tagMany(string ...$keys): static
     {
         foreach ($keys as $key) {
             $this->tag($key);
@@ -260,7 +260,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
-    public function untagMany(string ...$keys): self
+    public function untagMany(string ...$keys): static
     {
         foreach ($keys as $key) {
             $this->untag($key);

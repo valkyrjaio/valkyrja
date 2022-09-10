@@ -36,5 +36,5 @@ interface Listener extends Dispatch
      *
      * @return static
      */
-    public function setEvent(string $event = null): self;
+    public function setEvent(string $event = null): static;
 }

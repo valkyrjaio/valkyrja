@@ -95,7 +95,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -119,7 +119,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setRegex(string $regex = null): self
+    public function setRegex(string $regex = null): static
     {
         $this->regex = $regex;
 
@@ -143,7 +143,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setType(string $type = null): self
+    public function setType(string $type = null): static
     {
         $this->type = $type;
 
@@ -167,7 +167,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setEntity(string $entity = null): self
+    public function setEntity(string $entity = null): static
     {
         $this->entity = $entity;
 
@@ -191,7 +191,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setEntityColumn(string $entityColumn = null): self
+    public function setEntityColumn(string $entityColumn = null): static
     {
         $this->entityColumn = $entityColumn;
 
@@ -215,7 +215,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setEntityRelationships(array $entityRelationships = null): self
+    public function setEntityRelationships(array $entityRelationships = null): static
     {
         $this->entityRelationships = $entityRelationships;
 
@@ -239,7 +239,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setIsOptional(bool $isOptional): self
+    public function setIsOptional(bool $isOptional): static
     {
         $this->isOptional = $isOptional;
 
@@ -263,7 +263,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setShouldCapture(bool $shouldCapture): self
+    public function setShouldCapture(bool $shouldCapture): static
     {
         $this->shouldCapture = $shouldCapture;
 

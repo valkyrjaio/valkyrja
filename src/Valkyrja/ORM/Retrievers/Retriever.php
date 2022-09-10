@@ -72,7 +72,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function find(string $entity): self
+    public function find(string $entity): static
     {
         $this->setQueryProperties($entity);
 
@@ -82,7 +82,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function findOne(string $entity, int|string $id): self
+    public function findOne(string $entity, int|string $id): static
     {
         $this->setQueryProperties($entity);
         $this->limit(1);
@@ -96,7 +96,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function count(string $entity): self
+    public function count(string $entity): static
     {
         $this->setQueryProperties($entity, [Statement::COUNT_ALL]);
 
@@ -106,7 +106,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function columns(array $columns): self
+    public function columns(array $columns): static
     {
         $this->queryBuilder = $this->queryBuilder->select($columns);
 
@@ -116,7 +116,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function where(string $column, string $operator = null, mixed $value = null): self
+    public function where(string $column, string $operator = null, mixed $value = null): static
     {
         $this->queryBuilder->where($column, $operator, is_array($value) ? $value : null);
         $this->setValue($column, $value);
@@ -127,7 +127,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function orWhere(string $column, string $operator = null, mixed $value = null): self
+    public function orWhere(string $column, string $operator = null, mixed $value = null): static
     {
         $this->queryBuilder->orWhere($column, $operator);
         $this->setValue($column, $value);
@@ -145,7 +145,7 @@ class Retriever implements Contract
         string $operator = null,
         string $type = null,
         bool $isWhere = null
-    ): self {
+    ): static {
         $this->queryBuilder->join($table, $column1, $column2, $operator, $type, $isWhere);
 
         return $this;
@@ -154,7 +154,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function groupBy(string $column): self
+    public function groupBy(string $column): static
     {
         $this->queryBuilder->groupBy($column);
 
@@ -164,7 +164,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function orderBy(string $column, string $type = null): self
+    public function orderBy(string $column, string $type = null): static
     {
         $this->queryBuilder->orderBy($column, $type);
 
@@ -174,7 +174,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function limit(int $limit): self
+    public function limit(int $limit): static
     {
         $this->queryBuilder->limit($limit);
 
@@ -184,7 +184,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function offset(int $offset): self
+    public function offset(int $offset): static
     {
         $this->queryBuilder->offset($offset);
 

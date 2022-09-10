@@ -117,7 +117,7 @@ class Route extends Dispatch implements RouteContract
     /**
      * @inheritDoc
      */
-    public function setPath(string $path): self
+    public function setPath(string $path): static
     {
         $this->dynamic = Str::contains($path, '{');
 
@@ -137,7 +137,7 @@ class Route extends Dispatch implements RouteContract
     /**
      * @inheritDoc
      */
-    public function setTo(string $to = null): self
+    public function setTo(string $to = null): static
     {
         $this->to = $to;
 
@@ -155,7 +155,7 @@ class Route extends Dispatch implements RouteContract
     /**
      * @inheritDoc
      */
-    public function setCode(int $code = null): self
+    public function setCode(int $code = null): static
     {
         $this->code = $code;
 
@@ -173,7 +173,7 @@ class Route extends Dispatch implements RouteContract
     /**
      * @inheritDoc
      */
-    public function setMethods(array $methods): self
+    public function setMethods(array $methods): static
     {
         if (array_diff($methods, RequestMethod::ANY)) {
             throw new InvalidArgumentException('Invalid request methods set');
@@ -195,7 +195,7 @@ class Route extends Dispatch implements RouteContract
     /**
      * @inheritDoc
      */
-    public function setRegex(string $regex = null): self
+    public function setRegex(string $regex = null): static
     {
         $this->regex = $regex;
 
@@ -213,7 +213,7 @@ class Route extends Dispatch implements RouteContract
     /**
      * @inheritDoc
      */
-    public function setParameters(array $parameters): self
+    public function setParameters(array $parameters): static
     {
         $this->__setParameters(...$parameters);
 
@@ -223,7 +223,7 @@ class Route extends Dispatch implements RouteContract
     /**
      * @inheritDoc
      */
-    public function setParameter(Parameter $parameter): self
+    public function setParameter(Parameter $parameter): static
     {
         $this->parameters ??= [];
 
@@ -243,7 +243,7 @@ class Route extends Dispatch implements RouteContract
         array $entityRelationships = null,
         bool $isOptional = false,
         bool $shouldCapture = true
-    ): self {
+    ): static {
         $parameter = new Parameter();
         $parameter->setName($name);
         $parameter->setRegex($regex);
@@ -276,7 +276,7 @@ class Route extends Dispatch implements RouteContract
     /**
      * @inheritDoc
      */
-    public function setMiddleware(array $middleware = null): self
+    public function setMiddleware(array $middleware = null): static
     {
         $this->middleware = $middleware;
 
@@ -286,7 +286,7 @@ class Route extends Dispatch implements RouteContract
     /**
      * @inheritDoc
      */
-    public function withMiddleware(array $middleware): self
+    public function withMiddleware(array $middleware): static
     {
         $this->middleware = array_merge($this->middleware ?? [], $middleware);
 
@@ -304,7 +304,7 @@ class Route extends Dispatch implements RouteContract
     /**
      * @inheritDoc
      */
-    public function setDynamic(bool $dynamic = true): self
+    public function setDynamic(bool $dynamic = true): static
     {
         $this->dynamic = $dynamic;
 
@@ -322,7 +322,7 @@ class Route extends Dispatch implements RouteContract
     /**
      * @inheritDoc
      */
-    public function setSecure(bool $secure = true): self
+    public function setSecure(bool $secure = true): static
     {
         $this->secure = $secure;
 
@@ -340,7 +340,7 @@ class Route extends Dispatch implements RouteContract
     /**
      * @inheritDoc
      */
-    public function setRedirect(bool $redirect): self
+    public function setRedirect(bool $redirect): static
     {
         $this->redirect = $redirect;
 

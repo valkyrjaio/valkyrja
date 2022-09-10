@@ -238,7 +238,7 @@ interface Uri
      *
      * @return static A new instance with the specified scheme.
      */
-    public function withScheme(string $scheme): self;
+    public function withScheme(string $scheme): static;
 
     /**
      * Return an instance with the specified user information.
@@ -253,7 +253,7 @@ interface Uri
      *
      * @return static A new instance with the specified user information.
      */
-    public function withUserInfo(string $user, string $password = null): self;
+    public function withUserInfo(string $user, string $password = null): static;
 
     /**
      * Return an instance with the specified host.
@@ -267,7 +267,7 @@ interface Uri
      *
      * @return static A new instance with the specified host.
      */
-    public function withHost(string $host): self;
+    public function withHost(string $host): static;
 
     /**
      * Return an instance with the specified port.
@@ -285,7 +285,7 @@ interface Uri
      *
      * @return static A new instance with the specified port.
      */
-    public function withPort(int $port = null): self;
+    public function withPort(int $port = null): static;
 
     /**
      * Return an instance with the specified path.
@@ -307,7 +307,7 @@ interface Uri
      *
      * @return static A new instance with the specified path.
      */
-    public function withPath(string $path): self;
+    public function withPath(string $path): static;
 
     /**
      * Return an instance with the specified query string.
@@ -323,7 +323,7 @@ interface Uri
      *
      * @return static A new instance with the specified query string.
      */
-    public function withQuery(string $query): self;
+    public function withQuery(string $query): static;
 
     /**
      * Return an instance with the specified URI fragment.
@@ -337,7 +337,7 @@ interface Uri
      *
      * @return static A new instance with the specified fragment.
      */
-    public function withFragment(string $fragment): self;
+    public function withFragment(string $fragment): static;
 
     /**
      * Return the string representation as a URI reference.

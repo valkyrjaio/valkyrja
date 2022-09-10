@@ -36,7 +36,7 @@ interface Command extends Dispatch
      *
      * @return static
      */
-    public function setPath(string $path): self;
+    public function setPath(string $path): static;
 
     /**
      * Get the regex.
@@ -52,7 +52,7 @@ interface Command extends Dispatch
      *
      * @return static
      */
-    public function setRegex(string $regex = null): self;
+    public function setRegex(string $regex = null): static;
 
     /**
      * Get the params.
@@ -68,7 +68,7 @@ interface Command extends Dispatch
      *
      * @return static
      */
-    public function setParams(array $params = null): self;
+    public function setParams(array $params = null): static;
 
     /**
      * Get the segments.
@@ -84,7 +84,7 @@ interface Command extends Dispatch
      *
      * @return static
      */
-    public function setSegments(array $segments = null): self;
+    public function setSegments(array $segments = null): static;
 
     /**
      * Get the description.
@@ -100,5 +100,5 @@ interface Command extends Dispatch
      *
      * @return static
      */
-    public function setDescription(string $description = null): self;
+    public function setDescription(string $description = null): static;
 }

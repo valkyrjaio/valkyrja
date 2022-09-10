@@ -29,7 +29,7 @@ interface Model extends JsonSerializable
      *
      * @return static
      */
-    public static function fromArray(array $properties): self;
+    public static function fromArray(array $properties): static;
 
     /**
      * Get a property.
@@ -75,7 +75,7 @@ interface Model extends JsonSerializable
      *
      * @return $this
      */
-    public function withProperties(array $properties): self;
+    public function withProperties(array $properties): static;
 
     /**
      * Get model as an array.

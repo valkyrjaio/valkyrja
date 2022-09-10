@@ -130,7 +130,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function setUser(User $user): self
+    public function setUser(User $user): static
     {
         $this->setAuthenticatedUser($user);
 
@@ -156,7 +156,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function setUsers(AuthenticatedUsers $users): self
+    public function setUsers(AuthenticatedUsers $users): static
     {
         $this->users = $users;
         $this->user  = $users->getCurrent();
@@ -169,7 +169,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function authenticate(User $user): self
+    public function authenticate(User $user): static
     {
         if (! $this->adapter->authenticate($user)) {
             throw new InvalidAuthenticationException('Invalid user credentials.');
@@ -183,7 +183,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function authenticateFromSession(): self
+    public function authenticateFromSession(): static
     {
         if (! $user = $this->getUserFromSession()) {
             $this->resetAfterUnAuthentication();
@@ -197,7 +197,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function authenticateFromRequest(Request $request): self
+    public function authenticateFromRequest(Request $request): static
     {
         $requestParams = $request->onlyParsedBody($this->userEntityName::getAuthenticationFields());
 
@@ -212,7 +212,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function unAuthenticate(User $user = null): self
+    public function unAuthenticate(User $user = null): static
     {
         if ($this->isAuthenticated) {
             $this->resetAfterUnAuthentication($user);
@@ -224,7 +224,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function setSession(): self
+    public function setSession(): static
     {
         $collection        = $this->users;
         $collectionAsArray = $collection->asArray();
@@ -241,7 +241,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function unsetSession(): self
+    public function unsetSession(): static
     {
         $this->session->remove($this->userEntityName::getUserSessionId());
 
@@ -251,7 +251,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function register(User $user): self
+    public function register(User $user): static
     {
         $this->adapter->create($user);
 
@@ -263,7 +263,7 @@ class Repository implements Contract
      *
      * @throws Exception
      */
-    public function forgot(User $user): self
+    public function forgot(User $user): static
     {
         $dbUser = $this->adapter->retrieve($user);
 
@@ -283,7 +283,7 @@ class Repository implements Contract
      *
      * @throws Exception
      */
-    public function reset(string $resetToken, string $password): self
+    public function reset(string $resetToken, string $password): static
     {
         if (! $user = $this->adapter->retrieveByResetToken(new $this->userEntityName(), $resetToken)) {
             throw new InvalidAuthenticationException('Invalid reset token.');
@@ -298,7 +298,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function lock(LockableUser $user): self
+    public function lock(LockableUser $user): static
     {
         $this->lockUnlock($user, true);
 
@@ -308,7 +308,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function unlock(LockableUser $user): self
+    public function unlock(LockableUser $user): static
     {
         $this->lockUnlock($user, false);
 
@@ -318,7 +318,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function confirmPassword(string $password): self
+    public function confirmPassword(string $password): static
     {
         if (! $this->adapter->verifyPassword($this->user, $password)) {
             throw new InvalidPasswordConfirmationException('Invalid password confirmation.');
@@ -370,7 +370,7 @@ class Repository implements Contract
      *
      * @return static
      */
-    protected function authenticateWithUser(User $user): self
+    protected function authenticateWithUser(User $user): static
     {
         if ($this->config['alwaysAuthenticate']) {
             $this->ensureUserValidity($user);
@@ -451,7 +451,7 @@ class Repository implements Contract
      *
      * @return static
      */
-    protected function ensureUserValidity(User $user): self
+    protected function ensureUserValidity(User $user): static
     {
         $passwordField = $user::getPasswordField();
         // Get a fresh user from the database

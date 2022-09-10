@@ -36,5 +36,5 @@ interface Annotation extends Dispatch
      *
      * @return static
      */
-    public function setType(string $annotationType = null): self;
+    public function setType(string $annotationType = null): static;
 }

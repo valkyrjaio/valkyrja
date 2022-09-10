@@ -29,7 +29,7 @@ interface Collector
      *
      * @return static
      */
-    public function withPath(string $path): self;
+    public function withPath(string $path): static;
 
     /**
      * Get a router with a controller context to group routes with.
@@ -38,7 +38,7 @@ interface Collector
      *
      * @return static
      */
-    public function withController(string $controller): self;
+    public function withController(string $controller): static;
 
     /**
      * Get a router with a name context to group routes with.
@@ -47,7 +47,7 @@ interface Collector
      *
      * @return static
      */
-    public function withName(string $name): self;
+    public function withName(string $name): static;
 
     /**
      * Get a router with middleware context to group routes with.
@@ -56,7 +56,7 @@ interface Collector
      *
      * @return static
      */
-    public function withMiddleware(array $middleware): self;
+    public function withMiddleware(array $middleware): static;
 
     /**
      * Get a router with a secure context to group routes with.
@@ -65,7 +65,7 @@ interface Collector
      *
      * @return static
      */
-    public function withSecure(bool $secure = true): self;
+    public function withSecure(bool $secure = true): static;
 
     /**
      * Group routes together.
@@ -74,7 +74,7 @@ interface Collector
      *
      * @return static
      */
-    public function group(Closure $group): self;
+    public function group(Closure $group): static;
 
     /**
      * Helper method to set a GET route.

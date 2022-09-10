@@ -209,7 +209,7 @@ class Request extends SimpleRequest implements Contract
     /**
      * @inheritDoc
      */
-    public function withCookieParams(array $cookies): self
+    public function withCookieParams(array $cookies): static
     {
         $new = clone $this;
 
@@ -261,7 +261,7 @@ class Request extends SimpleRequest implements Contract
     /**
      * @inheritDoc
      */
-    public function withQueryParams(array $query): self
+    public function withQueryParams(array $query): static
     {
         $new = clone $this;
 
@@ -297,7 +297,7 @@ class Request extends SimpleRequest implements Contract
     /**
      * @inheritDoc
      */
-    public function withUploadedFiles(UploadedFile ...$uploadedFiles): self
+    public function withUploadedFiles(UploadedFile ...$uploadedFiles): static
     {
         $new = clone $this;
 
@@ -333,7 +333,7 @@ class Request extends SimpleRequest implements Contract
     /**
      * @inheritDoc
      */
-    public function withParsedBody(array $data): self
+    public function withParsedBody(array $data): static
     {
         $new = clone $this;
 
@@ -433,7 +433,7 @@ class Request extends SimpleRequest implements Contract
     /**
      * @inheritDoc
      */
-    public function withAttribute(string $name, mixed $value): self
+    public function withAttribute(string $name, mixed $value): static
     {
         $new = clone $this;
 
@@ -445,7 +445,7 @@ class Request extends SimpleRequest implements Contract
     /**
      * @inheritDoc
      */
-    public function withoutAttribute(string $name): self
+    public function withoutAttribute(string $name): static
     {
         $new = clone $this;
 

@@ -78,7 +78,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setMessage(string $message = null): self
+    public function setMessage(string $message = null): static
     {
         $this->message = $message;
 
@@ -96,7 +96,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setErrors(array $errors): self
+    public function setErrors(array $errors): static
     {
         $this->errors = $errors;
 
@@ -106,7 +106,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setError(string $error): self
+    public function setError(string $error): static
     {
         $this->errors[] = $error;
 
@@ -124,7 +124,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setWarnings(array $warnings): self
+    public function setWarnings(array $warnings): static
     {
         $this->warnings = $warnings;
 
@@ -134,7 +134,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setWarning(string $warning): self
+    public function setWarning(string $warning): static
     {
         $this->warnings[] = $warning;
 
@@ -152,7 +152,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setData(array $data = null): self
+    public function setData(array $data = null): static
     {
         $this->data = $data;
 
@@ -170,7 +170,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setStatusCode(int $statusCode): self
+    public function setStatusCode(int $statusCode): static
     {
         $this->statusCode = $statusCode;
 
@@ -188,7 +188,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setStatus(string $status): self
+    public function setStatus(string $status): static
     {
         $this->status = $status;
 
