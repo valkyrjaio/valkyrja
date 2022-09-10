@@ -83,14 +83,14 @@ function app(): Application
  *
  * @throws HttpException
  *
- * @return void
+ * @return never
  */
 function abort(
     int $statusCode = null,
     string $message = null,
     array $headers = null,
     Response $response = null
-): void {
+): never {
     Abort::abort($statusCode, $message, $headers, $response);
 }
 
@@ -101,9 +101,9 @@ function abort(
  *
  * @throws HttpException
  *
- * @return void
+ * @return never
  */
-function abortResponse(Response $response): void
+function abortResponse(Response $response): never
 {
     Abort::response($response);
 }
@@ -166,7 +166,7 @@ function client(): Client
  *
  * @return mixed|Config|null
  */
-function config(string $key = null, $default = null)
+function config(string $key = null, mixed $default = null): mixed
 {
     return Valkyrja::app()->config($key, $default);
 }
@@ -541,13 +541,13 @@ function redirectRoute(
  *
  * @throws HttpRedirectException
  *
- * @return void
+ * @return never
  */
 function redirectTo(
     string $uri = null,
     int $statusCode = null,
     array $headers = null
-): void {
+): never {
     Abort::redirect($uri, $statusCode, $headers);
 }
 
@@ -624,9 +624,9 @@ function template(string $template = null, array $variables = []): Template
  *
  * @param mixed ...$args The arguments to dump
  *
- * @return void
+ * @return never
  */
-function dd(...$args): void
+function dd(...$args): never
 {
     var_dump($args);
 

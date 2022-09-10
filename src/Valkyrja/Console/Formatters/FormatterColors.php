@@ -90,10 +90,10 @@ trait FormatterColors
     /**
      * Set a color.
      *
-     * @param int  $color      The color
-     * @param bool $background [optional] Whether this is to set the background
+     * @param FormatBackground $color      The color
+     * @param bool             $background [optional] Whether this is to set the background
      *
      * @return void
      */
-    abstract protected function setColor(int $color, bool $background = null): void;
+    abstract protected function setColor(FormatBackground $color, bool $background = null): void;
 }

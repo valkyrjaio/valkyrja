@@ -13,26 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Enums;
 
-use Valkyrja\Support\Enum\Enum;
-
 /**
  * Enum OutputStyle.
  *
  * @author Melech Mizrachi
- *
- * @method static OptionMode NORMAL()
- * @method static OptionMode PLAIN()
- * @method static OptionMode RAW()
  */
-final class OutputStyle extends Enum
+enum OutputStyle: string
 {
-    public const NORMAL = 'NORMAL';
-    public const PLAIN  = 'PLAIN';
-    public const RAW    = 'RAW';
-
-    protected static ?array $VALUES = [
-        self::NORMAL => self::NORMAL,
-        self::PLAIN  => self::PLAIN,
-        self::RAW    => self::RAW,
-    ];
+    case NORMAL = 'NORMAL';
+    case PLAIN = 'PLAIN';
+    case RAW = 'RAW';
 }

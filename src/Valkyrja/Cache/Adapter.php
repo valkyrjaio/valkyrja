@@ -27,7 +27,7 @@ interface Adapter extends Contract
      *
      * @param string $key
      *
-     * @return mixed
+     * @return bool
      */
     public function has(string $key): bool;
 

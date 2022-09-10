@@ -125,7 +125,7 @@ interface QueryBuilder
      *
      * @return static
      */
-    public function set(string $column, $value = null): self;
+    public function set(string $column, mixed $value = null): self;
 
     /**
      * Add a where condition to the query statement.
@@ -149,7 +149,7 @@ interface QueryBuilder
      *
      * @return static
      */
-    public function where(string $column, string $operator = null, $value = null): self;
+    public function where(string $column, string $operator = null, mixed $value = null): self;
 
     /**
      * Add an additional `OR` where condition to the query statement.
@@ -168,7 +168,7 @@ interface QueryBuilder
      *
      * @return static
      */
-    public function orWhere(string $column, string $operator = null, $value = null): self;
+    public function orWhere(string $column, string $operator = null, mixed $value = null): self;
 
     /**
      * Join with another table.

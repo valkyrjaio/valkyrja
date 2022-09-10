@@ -39,7 +39,7 @@ interface Collection
      *
      * @return bool
      */
-    public function exists($value): bool;
+    public function exists(mixed $value): bool;
 
     /**
      * Get all the items in the collection.
@@ -86,7 +86,7 @@ interface Collection
      *
      * @return mixed
      */
-    public function __set(string $key, $value);
+    public function __set(string $key, mixed $value);
 
     /**
      * Get a single item from the collection.
@@ -96,7 +96,7 @@ interface Collection
      *
      * @return mixed
      */
-    public function get(string $key, $default = null);
+    public function get(string $key, mixed $default = null): mixed;
 
     /**
      * Determine if an item is in the collection.
@@ -115,7 +115,7 @@ interface Collection
      *
      * @return self
      */
-    public function set(string $key, $value): self;
+    public function set(string $key, mixed $value): self;
 
     /**
      * Determine if an item is in the collection.

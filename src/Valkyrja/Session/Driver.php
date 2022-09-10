@@ -86,7 +86,7 @@ interface Driver extends Contract
      *
      * @return mixed
      */
-    public function get(string $id, $default = null);
+    public function get(string $id, mixed $default = null): mixed;
 
     /**
      * Set an item into the session.
@@ -96,7 +96,7 @@ interface Driver extends Contract
      *
      * @return void
      */
-    public function set(string $id, $value): void;
+    public function set(string $id, mixed $value): void;
 
     /**
      * Remove a session item.

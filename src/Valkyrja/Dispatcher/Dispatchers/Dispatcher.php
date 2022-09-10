@@ -256,7 +256,7 @@ class Dispatcher implements Contract
      *
      * @return mixed|string|null
      */
-    protected function getClassFromDispatch(Dispatch $dispatch)
+    protected function getClassFromDispatch(Dispatch $dispatch): mixed
     {
         if (! $dispatch->getClass()) {
             throw new InvalidArgumentException('Invalid class defined in dispatch model.');

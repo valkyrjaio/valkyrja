@@ -28,7 +28,7 @@ interface Statement
      *
      * @return bool
      */
-    public function bindValue(string $parameter, $value): bool;
+    public function bindValue(string $parameter, mixed $value): bool;
 
     /**
      * Execute the statement.
@@ -60,7 +60,7 @@ interface Statement
      *
      * @return mixed
      */
-    public function fetchColumn(int $columnNumber = 0);
+    public function fetchColumn(int $columnNumber = 0): mixed;
 
     /**
      * Fetch all the results.

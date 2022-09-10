@@ -36,20 +36,14 @@ class Arr
     /**
      * Get a subject value by dot notation key.
      *
-     * @param array|Traversable|ArrayAccess $subject      The subject to search
-     * @param string                        $key          The dot notation to search for
-     * @param mixed|null                    $defaultValue The default value
+     * @param ArrayAccess|iterable $subject      The subject to search
+     * @param string               $key          The dot notation to search for
+     * @param mixed|null           $defaultValue The default value
      *
      * @return mixed
      */
-    public static function getValueDotNotation($subject, string $key, $defaultValue = null)
+    public static function getValueDotNotation(ArrayAccess|iterable $subject, string $key, mixed $defaultValue = null): mixed
     {
-        if (! is_array($subject) && ! ($subject instanceof Traversable) && ! ($subject instanceof ArrayAccess)) {
-            throw new InvalidArgumentException(
-                'The subject must be either an array or implement the ArrayAccess, or Traversable, interface.'
-            );
-        }
-
         $value = $subject;
 
         // Explode the keys on period and iterate through the keys

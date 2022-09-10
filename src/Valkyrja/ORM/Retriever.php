@@ -44,11 +44,11 @@ interface Retriever
      * </code>
      *
      * @param class-string<T> $entity
-     * @param string|int      $id
+     * @param int|string      $id
      *
      * @return static
      */
-    public function findOne(string $entity, $id): self;
+    public function findOne(string $entity, int|string $id): self;
 
     /**
      * Count all the results of given criteria.
@@ -82,7 +82,7 @@ interface Retriever
      *
      * @return static
      */
-    public function where(string $column, string $operator = null, $value = null): self;
+    public function where(string $column, string $operator = null, mixed $value = null): self;
 
     /**
      * Add an additional `OR` where condition.
@@ -93,7 +93,7 @@ interface Retriever
      *
      * @return static
      */
-    public function orWhere(string $column, string $operator = null, $value = null): self;
+    public function orWhere(string $column, string $operator = null, mixed $value = null): self;
 
     /**
      * Join with another table.

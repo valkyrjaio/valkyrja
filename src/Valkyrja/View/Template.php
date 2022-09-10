@@ -68,7 +68,7 @@ interface Template
      *
      * @return mixed
      */
-    public function getVariable(string $key);
+    public function getVariable(string $key): mixed;
 
     /**
      * Set a single variable.
@@ -78,7 +78,7 @@ interface Template
      *
      * @return static
      */
-    public function setVariable(string $key, $value): self;
+    public function setVariable(string $key, mixed $value): self;
 
     /**
      * Escape a value for output.

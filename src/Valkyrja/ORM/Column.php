@@ -65,11 +65,11 @@ interface Column
     /**
      * Set the default value for this column.
      *
-     * @param string|int|bool $value [optional] The default value
+     * @param bool|int|string|null $value [optional] The default value
      *
      * @return static
      */
-    public function setDefault($value = null): self;
+    public function setDefault(bool|int|string $value = null): self;
 
     /**
      * Set this as a non-nullable column.

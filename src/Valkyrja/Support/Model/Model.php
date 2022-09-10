@@ -48,7 +48,7 @@ interface Model extends JsonSerializable
      *
      * @return void
      */
-    public function __set(string $name, $value): void;
+    public function __set(string $name, mixed $value): void;
 
     /**
      * Check if a property is set.
@@ -100,7 +100,7 @@ interface Model extends JsonSerializable
      *
      * @return mixed
      */
-    public function getOriginalPropertyValue(string $name);
+    public function getOriginalPropertyValue(string $name): mixed;
 
     /**
      * Get all original properties.

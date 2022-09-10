@@ -93,7 +93,7 @@ interface Session extends Manager
      *
      * @return mixed
      */
-    public function get(string $id, $default = null);
+    public function get(string $id, mixed $default = null): mixed;
 
     /**
      * Set an item into the session.
@@ -103,7 +103,7 @@ interface Session extends Manager
      *
      * @return void
      */
-    public function set(string $id, $value): void;
+    public function set(string $id, mixed $value): void;
 
     /**
      * Remove a session item.

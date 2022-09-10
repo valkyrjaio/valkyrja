@@ -62,7 +62,7 @@ abstract class Enum
      *
      * @throws InvalidArgumentException
      */
-    public function __construct($value)
+    public function __construct(mixed $value)
     {
         $this->setValue($value);
     }
@@ -74,7 +74,7 @@ abstract class Enum
      *
      * @return bool
      */
-    public static function isValid($value): bool
+    public static function isValid(mixed $value): bool
     {
         if (is_array($value) || is_object($value)) {
             return false;
@@ -136,7 +136,7 @@ abstract class Enum
      *
      * @return mixed
      */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }
@@ -150,7 +150,7 @@ abstract class Enum
      *
      * @return void
      */
-    public function setValue($value): void
+    public function setValue(mixed $value): void
     {
         // If the value is not valid
         if (! static::isValid($value)) {
@@ -174,14 +174,14 @@ abstract class Enum
     /**
      * Handle creating a new enum instance for a given value via static call.
      *
-     * @example `Enum::VALUE();` equivalent to `new Enum(Enum::VALUE);`
-     *
      * @param string $method The method to call
      * @param array  $args   [optional] The argument
      *
      * @throws RuntimeException
      *
      * @return mixed
+     * @example `Enum::VALUE();` equivalent to `new Enum(Enum::VALUE);`
+     *
      */
     public static function __callStatic(string $method, array $args = [])
     {

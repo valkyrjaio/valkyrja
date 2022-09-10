@@ -202,7 +202,7 @@ class FlysystemAdapter implements Contract
     {
         $timestamp = $this->flysystem->getTimestamp($path);
 
-        return false !== $timestamp ? (int) $timestamp : null;
+        return false !== $timestamp ? $timestamp : null;
     }
 
     /**
@@ -224,7 +224,7 @@ class FlysystemAdapter implements Contract
      */
     public function setVisibility(string $path, Visibility $visibility): bool
     {
-        return $this->flysystem->setVisibility($path, $visibility->getValue());
+        return $this->flysystem->setVisibility($path, $visibility->value);
     }
 
     /**
@@ -234,7 +234,7 @@ class FlysystemAdapter implements Contract
      */
     public function setVisibilityPublic(string $path): bool
     {
-        return $this->flysystem->setVisibility($path, Visibility::PUBLIC);
+        return $this->flysystem->setVisibility($path, Visibility::PUBLIC->value);
     }
 
     /**
@@ -244,7 +244,7 @@ class FlysystemAdapter implements Contract
      */
     public function setVisibilityPrivate(string $path): bool
     {
-        return $this->flysystem->setVisibility($path, Visibility::PRIVATE);
+        return $this->flysystem->setVisibility($path, Visibility::PRIVATE->value);
     }
 
     /**

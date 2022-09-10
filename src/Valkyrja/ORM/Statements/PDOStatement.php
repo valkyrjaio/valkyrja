@@ -143,7 +143,7 @@ class PDOStatement implements Contract
      *
      * @return int
      */
-    protected function getBindValueType($value): int
+    protected function getBindValueType(mixed $value): int
     {
         $type = PDO::PARAM_STR;
 

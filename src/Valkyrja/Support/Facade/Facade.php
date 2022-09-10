@@ -154,7 +154,7 @@ abstract class Facade
      *
      * @return void
      */
-    protected static function verifyInstance($instance): void
+    protected static function verifyInstance(mixed $instance): void
     {
         if (! is_string($instance) && ! is_object($instance)) {
             throw new InvalidArgumentException('Instance must be a string or an object.');

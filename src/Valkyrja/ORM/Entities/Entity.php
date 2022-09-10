@@ -160,7 +160,7 @@ abstract class Entity extends Model implements EntityContract
      *
      * @return mixed
      */
-    protected function __getPropertyValueForDataStore(array $propertyTypes, string $property)
+    protected function __getPropertyValueForDataStore(array $propertyTypes, string $property): mixed
     {
         $value = $this->__get($property);
         // Check if a type was set for this attribute

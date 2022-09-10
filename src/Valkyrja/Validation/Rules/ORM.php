@@ -60,7 +60,7 @@ class ORM
      *
      * @return void
      */
-    public function ormUnique($subject, string $entity, string $field = null): void
+    public function ormUnique(mixed $subject, string $entity, string $field = null): void
     {
         /** @var Entity|string $entity */
         $field ??= $entity::getIdField();

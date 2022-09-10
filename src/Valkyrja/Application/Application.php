@@ -51,7 +51,7 @@ interface Application extends ArrayAccess
      *
      * @return mixed
      */
-    public static function env(string $key = null, $default = null);
+    public static function env(string $key = null, mixed $default = null);
 
     /**
      * Get environment variables.

@@ -13,68 +13,28 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Enums;
 
-use Valkyrja\Support\Enum\Enum;
-
 /**
  * Enum FormatBackground.
  *
  * @author Melech Mizrachi
- *
- * @method static FormatBackground BLACK()
- * @method static FormatBackground RED()
- * @method static FormatBackground GREEN()
- * @method static FormatBackground YELLOW()
- * @method static FormatBackground BLUE()
- * @method static FormatBackground MAGENTA()
- * @method static FormatBackground CYAN()
- * @method static FormatBackground WHITE()
- * @method static FormatBackground DARK_GRAY()
- * @method static FormatBackground LIGHT_RED()
- * @method static FormatBackground LIGHT_GREEN()
- * @method static FormatBackground LIGHT_YELLOW()
- * @method static FormatBackground LIGHT_BLUE()
- * @method static FormatBackground LIGHT_MAGENTA()
- * @method static FormatBackground LIGHT_CYAN()
- * @method static FormatBackground LIGHT_WHITE()
- * @method static FormatBackground DEFAULT()
  */
-final class FormatBackground extends Enum
+enum FormatBackground: int
 {
-    public const BLACK         = 40;
-    public const RED           = 41;
-    public const GREEN         = 42;
-    public const YELLOW        = 43;
-    public const BLUE          = 44;
-    public const MAGENTA       = 45;
-    public const CYAN          = 46;
-    public const WHITE         = 47;
-    public const DARK_GRAY     = 100;
-    public const LIGHT_RED     = 101;
-    public const LIGHT_GREEN   = 102;
-    public const LIGHT_YELLOW  = 103;
-    public const LIGHT_BLUE    = 104;
-    public const LIGHT_MAGENTA = 105;
-    public const LIGHT_CYAN    = 106;
-    public const LIGHT_WHITE   = 107;
-    public const DEFAULT       = 49;
-
-    protected static ?array $VALUES = [
-        self::BLACK         => self::BLACK,
-        self::RED           => self::RED,
-        self::GREEN         => self::GREEN,
-        self::YELLOW        => self::YELLOW,
-        self::BLUE          => self::BLUE,
-        self::MAGENTA       => self::MAGENTA,
-        self::CYAN          => self::CYAN,
-        self::WHITE         => self::WHITE,
-        self::DARK_GRAY     => self::DARK_GRAY,
-        self::LIGHT_RED     => self::LIGHT_RED,
-        self::LIGHT_GREEN   => self::LIGHT_GREEN,
-        self::LIGHT_YELLOW  => self::LIGHT_YELLOW,
-        self::LIGHT_BLUE    => self::LIGHT_BLUE,
-        self::LIGHT_MAGENTA => self::LIGHT_MAGENTA,
-        self::LIGHT_CYAN    => self::LIGHT_CYAN,
-        self::LIGHT_WHITE   => self::LIGHT_WHITE,
-        self::DEFAULT       => self::DEFAULT,
-    ];
+    case BLACK = 40;
+    case RED = 41;
+    case GREEN = 42;
+    case YELLOW = 43;
+    case BLUE = 44;
+    case MAGENTA = 45;
+    case CYAN = 46;
+    case WHITE = 47;
+    case DARK_GRAY = 100;
+    case LIGHT_RED = 101;
+    case LIGHT_GREEN = 102;
+    case LIGHT_YELLOW = 103;
+    case LIGHT_BLUE = 104;
+    case LIGHT_MAGENTA = 105;
+    case LIGHT_CYAN = 106;
+    case LIGHT_WHITE = 107;
+    case DEFAULT = 49;
 }

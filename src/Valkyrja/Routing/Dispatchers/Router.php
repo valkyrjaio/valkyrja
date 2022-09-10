@@ -311,7 +311,7 @@ class Router implements Contract
      *
      * @return Response
      */
-    protected function getResponseFromDispatch($dispatch): Response
+    protected function getResponseFromDispatch(mixed $dispatch): Response
     {
         // If the dispatch is a Response then simply return it
         if ($dispatch instanceof Response) {

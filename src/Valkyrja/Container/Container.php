@@ -108,7 +108,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return static
      */
-    public function setSingleton(string $serviceId, $singleton): self;
+    public function setSingleton(string $serviceId, mixed $singleton): self;
 
     /**
      * Check whether a given service is an alias.
@@ -156,7 +156,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return mixed|T
      */
-    public function get(string $serviceId, array $arguments = []);
+    public function get(string $serviceId, array $arguments = []): mixed;
 
     /**
      * Get a service bound to a closure from the container.

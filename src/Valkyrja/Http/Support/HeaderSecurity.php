@@ -148,7 +148,7 @@ final class HeaderSecurity
      *
      * @see http://tools.ietf.org/html/rfc7230#section-3.2
      *
-     * @param mixed $name
+     * @param string $name
      *
      * @throws InvalidArgumentException
      *

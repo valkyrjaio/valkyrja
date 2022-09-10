@@ -27,7 +27,7 @@ interface Validator
      *
      * @return mixed
      */
-    public function getRules(string $name = null);
+    public function getRules(string $name = null): mixed;
 
     /**
      * Validate against set rules.

@@ -354,7 +354,7 @@ class Persister implements Contract
      * @param QueryBuilder $queryBuilder The query builder
      * @param string       $type         The type of persist
      * @param string       $idField      The id field
-     * @param string|int   $id           The id
+     * @param int|string   $id           The id
      * @param array        $properties   The properties to persist
      *
      * @throws JsonException
@@ -365,7 +365,7 @@ class Persister implements Contract
         QueryBuilder $queryBuilder,
         string $type,
         string $idField,
-        $id,
+        int|string $id,
         array $properties
     ): Query {
         // Create a new query with the query builder
@@ -468,7 +468,7 @@ class Persister implements Contract
      *
      * @return void
      */
-    protected function setQueryBuilderProperty(QueryBuilder $queryBuilder, string $column, $value): void
+    protected function setQueryBuilderProperty(QueryBuilder $queryBuilder, string $column, mixed $value): void
     {
         // Set the column and param name
         $queryBuilder->set($column);
@@ -492,11 +492,11 @@ class Persister implements Contract
      * @param Query      $query   The query
      * @param string     $type    The type of persist
      * @param string     $idField The id field
-     * @param string|int $id      The id
+     * @param int|string $id      The id
      *
      * @return void
      */
-    protected function bindIdValueInQuery(Query $query, string $type, string $idField, $id): void
+    protected function bindIdValueInQuery(Query $query, string $type, string $idField, int|string $id): void
     {
         // If this type is an insert then there was no reason to add a where clause so we should not bind the value
         if ($type === Statement::INSERT) {
@@ -544,7 +544,7 @@ class Persister implements Contract
      *
      * @return void
      */
-    protected function bindQueryProperty(Query $query, string $column, $value): void
+    protected function bindQueryProperty(Query $query, string $column, mixed $value): void
     {
         // If the property is an object, then serialize it
         if (is_object($value)) {

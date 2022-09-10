@@ -131,7 +131,7 @@ class PathGenerator implements Contract
      *
      * @return void
      */
-    protected function validateDatum(string $key, $datum, string $regex): void
+    protected function validateDatum(string $key, mixed $datum, string $regex): void
     {
         if (is_array($datum)) {
             foreach ($datum as $datumItem) {

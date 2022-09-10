@@ -323,7 +323,7 @@ class ORM implements Contract
     /**
      * @inheritDoc
      */
-    public function findOne(string $entity, $id): Retriever
+    public function findOne(string $entity, int|string $id): Retriever
     {
         return $this->useConnection()->createRetriever()->findOne($entity, $id);
     }

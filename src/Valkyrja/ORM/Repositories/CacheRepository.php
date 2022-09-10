@@ -70,9 +70,9 @@ class CacheRepository extends Repository implements Contract
     /**
      * The id of a findOne (to tag if null returned).
      *
-     * @var string|int|null
+     * @var int|string|null
      */
-    protected $id;
+    protected int|string|null $id;
 
     /**
      * The entities awaiting to be stored.
@@ -107,7 +107,7 @@ class CacheRepository extends Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function findOne($id): self
+    public function findOne(int|string $id): self
     {
         parent::findOne($id);
 
@@ -340,16 +340,10 @@ class CacheRepository extends Repository implements Contract
     {
         $id = spl_object_id($entity);
 
-        switch ($type) {
-            case self::$storeType:
-                $this->storeEntities[$id] = $entity;
-
-                break;
-            case self::$forgetType:
-                $this->forgetEntities[$id] = $entity;
-
-                break;
-        }
+        match ($type) {
+            self::$storeType  => $this->storeEntities[$id] = $entity,
+            self::$forgetType => $this->forgetEntities[$id] = $entity,
+        };
     }
 
     /**

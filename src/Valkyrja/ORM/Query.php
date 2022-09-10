@@ -57,7 +57,7 @@ interface Query
      *
      * @return static
      */
-    public function bindValue(string $property, $value): self;
+    public function bindValue(string $property, mixed $value): self;
 
     /**
      * Execute the query.

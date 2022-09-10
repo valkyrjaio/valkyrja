@@ -47,7 +47,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static bool rollback()
  * @method static string lastInsertId()
  * @method static Retriever find(string $entity, bool $getRelations = false)
- * @method static Retriever findOne(string $entity, string|int $id, bool $getRelations = false)
+ * @method static Retriever findOne(string $entity, int|string $id, bool $getRelations = false)
  * @method static Retriever count(string $entity)
  * @method static void create(Entity $entity, bool $defer = true)
  * @method static void save(Entity $entity, bool $defer = true)

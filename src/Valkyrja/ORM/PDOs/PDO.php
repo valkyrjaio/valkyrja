@@ -72,7 +72,7 @@ abstract class PDO extends BasePDO
      *
      * @return string
      */
-    protected function getDsnPart(array $config, string $name, $default = null): string
+    protected function getDsnPart(array $config, string $name, mixed $default = null): string
     {
         $value = $config[$name] ?? $default;
 

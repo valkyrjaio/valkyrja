@@ -58,7 +58,7 @@ class Formatter implements Contract
      */
     public function setForeground(FormatForeground $foreground = null): void
     {
-        $this->foreground = $foreground ? (int) $foreground->getValue() : null;
+        $this->foreground = $foreground?->value;
     }
 
     /**
@@ -66,7 +66,7 @@ class Formatter implements Contract
      */
     public function setBackground(FormatBackground $background = null): void
     {
-        $this->background = $background ? (int) $background->getValue() : null;
+        $this->background = $background?->value;
     }
 
     /**
@@ -161,20 +161,20 @@ class Formatter implements Contract
     /**
      * Set a color.
      *
-     * @param int  $color      The color
-     * @param bool $background [optional] Whether this is to set the background
+     * @param FormatBackground $color      The color
+     * @param bool             $background [optional] Whether this is to set the background
      *
      * @return void
      */
-    protected function setColor(int $color, bool $background = null): void
+    protected function setColor(FormatBackground $color, bool $background = null): void
     {
         if (null !== $background) {
-            $this->background = $color;
+            $this->background = $color->value;
 
             return;
         }
 
-        $this->foreground = $color;
+        $this->foreground = $color->value;
     }
 
     /**

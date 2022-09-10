@@ -124,7 +124,7 @@ class EntityMiddleware extends Middleware
      *
      * @return void
      */
-    protected static function findAndSetEntityFromParameter(int $index, Parameter $parameter, array &$dependencies, &$value): void
+    protected static function findAndSetEntityFromParameter(int $index, Parameter $parameter, array &$dependencies, mixed &$value): void
     {
         $entityName = $parameter->getEntity();
         // Attempt to get the entity from the ORM repository
@@ -159,7 +159,7 @@ class EntityMiddleware extends Middleware
      *
      * @return Entity
      */
-    protected static function findEntityFromParameter(Parameter $parameter, $value): Entity
+    protected static function findEntityFromParameter(Parameter $parameter, mixed $value): Entity
     {
         $entityName    = $parameter->getEntity();
         $relationships = $parameter->getEntityRelationships() ?? [];
@@ -187,7 +187,7 @@ class EntityMiddleware extends Middleware
      *
      * @return void
      */
-    protected static function entityNotFound(string $entity, $value): void
+    protected static function entityNotFound(string $entity, mixed $value): void
     {
         Abort::abort404();
     }

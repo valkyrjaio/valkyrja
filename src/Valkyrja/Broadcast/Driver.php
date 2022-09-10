@@ -37,7 +37,7 @@ interface Driver extends Contract
      *
      * @return bool
      */
-    public function determineKeyValueMatch(string $key, $value, string $message): bool;
+    public function determineKeyValueMatch(string $key, mixed $value, string $message): bool;
 
     /**
      * Send a message.

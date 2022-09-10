@@ -103,7 +103,7 @@ abstract class AuthMiddleware extends Middleware
      *
      * @return mixed|null
      */
-    protected static function getConfig(string $key = null, $default = null)
+    protected static function getConfig(string $key = null, mixed $default = null): mixed
     {
         $config = self::$config ??= static::getAuth()->getConfig();
 

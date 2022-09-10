@@ -203,11 +203,11 @@ interface ORM
      * </code>
      *
      * @param string     $entity
-     * @param string|int $id
+     * @param int|string $id
      *
      * @return Retriever
      */
-    public function findOne(string $entity, $id): Retriever;
+    public function findOne(string $entity, int|string $id): Retriever;
 
     /**
      * Count all the results of given criteria.

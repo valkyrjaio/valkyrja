@@ -374,7 +374,7 @@ class SqlQueryBuilder implements QueryBuilder
      *
      * @return string
      */
-    protected function getWhereValue(string $column, $value): string
+    protected function getWhereValue(string $column, mixed $value): string
     {
         if (null === $value) {
             return Helpers::getColumnForValueBind($column);

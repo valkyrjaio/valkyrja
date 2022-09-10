@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Retrievers;
 
-use InvalidArgumentException;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Constants\Statement;
 use Valkyrja\ORM\Entity;
@@ -24,8 +23,6 @@ use Valkyrja\ORM\Retriever as Contract;
 use Valkyrja\Support\Type\Cls;
 
 use function is_array;
-use function is_int;
-use function is_string;
 
 /**
  * Class Retriever
@@ -85,9 +82,8 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function findOne(string $entity, $id): self
+    public function findOne(string $entity, int|string $id): self
     {
-        $this->validateId($id);
         $this->setQueryProperties($entity);
         $this->limit(1);
 
@@ -120,7 +116,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function where(string $column, string $operator = null, $value = null): self
+    public function where(string $column, string $operator = null, mixed $value = null): self
     {
         $this->queryBuilder->where($column, $operator, is_array($value) ? $value : null);
         $this->setValue($column, $value);
@@ -131,7 +127,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function orWhere(string $column, string $operator = null, $value = null): self
+    public function orWhere(string $column, string $operator = null, mixed $value = null): self
     {
         $this->queryBuilder->orWhere($column, $operator);
         $this->setValue($column, $value);
@@ -272,20 +268,6 @@ class Retriever implements Contract
     }
 
     /**
-     * Validate an id.
-     *
-     * @param mixed $id The id
-     *
-     * @return void
-     */
-    protected function validateId($id): void
-    {
-        if (! is_string($id) && ! is_int($id)) {
-            throw new InvalidArgumentException('ID should be an int or string only.');
-        }
-    }
-
-    /**
      * Set a value to bind later.
      *
      * @param string $column The column to bind
@@ -293,7 +275,7 @@ class Retriever implements Contract
      *
      * @return void
      */
-    protected function setValue(string $column, $value): void
+    protected function setValue(string $column, mixed $value): void
     {
         $this->values[$column] = $value;
     }

@@ -120,7 +120,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function findOne($id): self
+    public function findOne(int|string $id): self
     {
         $this->retriever = $this->driver->createRetriever()->findOne($this->entity, $id);
         $this->resetRelationships();
@@ -163,7 +163,7 @@ class Repository implements Contract
      *
      * @return static<T>
      */
-    public function where(string $column, string $operator = null, $value = null): self
+    public function where(string $column, string $operator = null, mixed $value = null): self
     {
         $this->retriever->where($column, $operator, $value);
 
@@ -179,7 +179,7 @@ class Repository implements Contract
      *
      * @return static<T>
      */
-    public function orWhere(string $column, string $operator = null, $value = null): self
+    public function orWhere(string $column, string $operator = null, mixed $value = null): self
     {
         $this->retriever->orWhere($column, $operator, $value);
 

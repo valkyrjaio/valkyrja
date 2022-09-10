@@ -31,9 +31,9 @@ class Abort
      * @param array|null    $headers  [optional] The headers
      * @param Response|null $response [optional] The response to send
      *
-     * @return void
+     * @return never
      */
-    public static function abort404(array $headers = null, Response $response = null): void
+    public static function abort404(array $headers = null, Response $response = null): never
     {
         static::abort(StatusCode::NOT_FOUND, '404', $headers, $response);
     }
@@ -46,14 +46,14 @@ class Abort
      * @param array|null    $headers    [optional] The headers
      * @param Response|null $response   [optional] The response to send
      *
-     * @return void
+     * @return never
      */
     public static function abort(
         int $statusCode = null,
         string $message = null,
         array $headers = null,
         Response $response = null
-    ): void {
+    ): never {
         throw new HttpException($statusCode, $message, $headers, $response);
     }
 
@@ -62,11 +62,11 @@ class Abort
      *
      * @param Response $response The response
      *
-     * @return void
+     * @return never
      */
-    public static function response(Response $response): void
+    public static function response(Response $response): never
     {
-        self::abort(null, null, null, $response);
+        static::abort(null, null, null, $response);
     }
 
     /**
@@ -78,9 +78,9 @@ class Abort
      *
      * @throws HttpRedirectException
      *
-     * @return void
+     * @return never
      */
-    public static function redirect(string $uri = null, int $statusCode = null, array $headers = null): void
+    public static function redirect(string $uri = null, int $statusCode = null, array $headers = null): never
     {
         throw new HttpRedirectException($statusCode, $uri, $headers);
     }

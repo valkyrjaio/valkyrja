@@ -363,7 +363,7 @@ abstract class Model implements Contract
         array $propertyTypes,
         array $propertyAllowedClasses,
         string $property,
-        $value
+        mixed $value
     ) {
         // Check if a type was set for this attribute
         $type = $propertyTypes[$property] ?? null;
