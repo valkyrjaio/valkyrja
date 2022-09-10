@@ -74,16 +74,16 @@ trait Cacheable
     /**
      * Get a cacheable representation of the data.
      *
-     * @return Config|object
+     * @return Config
      */
-    abstract public function getCacheable(): object;
+    abstract public function getCacheable(): Config;
 
     /**
      * Get the config.
      *
      * @return Config|array
      */
-    abstract protected function getConfig();
+    abstract protected function getConfig(): Config|array;
 
     /**
      * Before setup.
@@ -92,12 +92,12 @@ trait Cacheable
      *
      * @return void
      */
-    abstract protected function beforeSetup($config): void;
+    abstract protected function beforeSetup(Config|array $config): void;
 
     /**
      * Setup from cache.
      *
-     * @param Config|array $config
+     * @param array $config
      *
      * @return void
      */
@@ -110,7 +110,7 @@ trait Cacheable
      *
      * @return void
      */
-    abstract protected function setupNotCached($config): void;
+    abstract protected function setupNotCached(Config|array $config): void;
 
     /**
      * Set annotations.
@@ -119,7 +119,7 @@ trait Cacheable
      *
      * @return void
      */
-    protected function setupFromAnnotations($config): void
+    protected function setupFromAnnotations(Config|array $config): void
     {
         // If annotations are enabled and cacheable should use annotations
         if (($config['useAnnotations'] ?? false)) {
@@ -134,7 +134,7 @@ trait Cacheable
      *
      * @return void
      */
-    abstract protected function setupAnnotations($config): void;
+    abstract protected function setupAnnotations(Config|array $config): void;
 
     /**
      * Set annotations.
@@ -143,7 +143,7 @@ trait Cacheable
      *
      * @return void
      */
-    protected function requireConfig($config): void
+    protected function requireConfig(Config|array $config): void
     {
         require $config['filePath'];
     }
@@ -155,5 +155,5 @@ trait Cacheable
      *
      * @return void
      */
-    abstract protected function afterSetup($config): void;
+    abstract protected function afterSetup(Config|array $config): void;
 }

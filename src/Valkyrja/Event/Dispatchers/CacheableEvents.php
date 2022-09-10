@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Dispatchers;
 
+use Valkyrja\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Annotator;
@@ -53,9 +54,9 @@ class CacheableEvents extends Events
     /**
      * Get a cacheable representation of the events.
      *
-     * @return Cache|object
+     * @return Cache
      */
-    public function getCacheable(): object
+    public function getCacheable(): Config
     {
         $this->setup(true, false);
 
@@ -70,7 +71,7 @@ class CacheableEvents extends Events
      *
      * @return EventConfig|array
      */
-    protected function getConfig()
+    protected function getConfig(): Config|array
     {
         return $this->config;
     }
@@ -82,7 +83,7 @@ class CacheableEvents extends Events
      *
      * @return void
      */
-    protected function beforeSetup($config): void
+    protected function beforeSetup(Config|array $config): void
     {
     }
 
@@ -93,7 +94,7 @@ class CacheableEvents extends Events
      *
      * @return void
      */
-    protected function setupNotCached($config): void
+    protected function setupNotCached(Config|array $config): void
     {
         self::$events = [];
     }
@@ -101,7 +102,7 @@ class CacheableEvents extends Events
     /**
      * Setup the events from cache.
      *
-     * @param EventConfig|array $config
+     * @param array $config
      *
      * @return void
      */

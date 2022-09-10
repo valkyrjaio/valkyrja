@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Managers;
 
 use JsonException;
+use Valkyrja\Config\Config;
 use Valkyrja\Container\Annotator;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Config\Config as ContainerConfig;
@@ -34,9 +35,9 @@ class CacheableContainer extends Container
      *
      * @throws JsonException
      *
-     * @return Cache|object
+     * @return Cache
      */
-    public function getCacheable(): object
+    public function getCacheable(): Config
     {
         $this->setup(true, false);
 
@@ -63,7 +64,7 @@ class CacheableContainer extends Container
      *
      * @return ContainerConfig|array
      */
-    protected function getConfig()
+    protected function getConfig(): Config|array
     {
         return $this->config;
     }
@@ -75,14 +76,14 @@ class CacheableContainer extends Container
      *
      * @return void
      */
-    protected function beforeSetup($config): void
+    protected function beforeSetup(Config|array $config): void
     {
     }
 
     /**
      * Setup the container from cache.
      *
-     * @param ContainerConfig|array $config
+     * @param array $config
      *
      * @return void
      */
@@ -107,7 +108,7 @@ class CacheableContainer extends Container
      *
      * @return void
      */
-    protected function setupNotCached($config): void
+    protected function setupNotCached(Config|array $config): void
     {
         self::$aliases        = [];
         self::$registered     = [];
@@ -127,7 +128,7 @@ class CacheableContainer extends Container
      *
      * @return void
      */
-    protected function setupAnnotations($config): void
+    protected function setupAnnotations(Config|array $config): void
     {
         /** @var Annotator $containerAnnotations */
         $containerAnnotations = $this->getSingleton(Annotator::class);
@@ -161,7 +162,7 @@ class CacheableContainer extends Container
      *
      * @return void
      */
-    protected function setupServiceProviders($config): void
+    protected function setupServiceProviders(Config|array $config): void
     {
         // Iterate through all the providers
         foreach ($config['providers'] as $provider) {
@@ -186,7 +187,7 @@ class CacheableContainer extends Container
      *
      * @return void
      */
-    protected function afterSetup($config): void
+    protected function afterSetup(Config|array $config): void
     {
     }
 

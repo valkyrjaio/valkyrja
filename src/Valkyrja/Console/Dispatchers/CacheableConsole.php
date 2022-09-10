@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Dispatchers;
 
 use ReflectionException;
+use Valkyrja\Config\Config;
 use Valkyrja\Console\Annotator;
 use Valkyrja\Console\Command;
 use Valkyrja\Console\Config\Cache;
@@ -37,9 +38,9 @@ class CacheableConsole extends Console
     /**
      * Get a cacheable representation of the commands.
      *
-     * @return ConsoleConfig|object
+     * @return Cache
      */
-    public function getCacheable(): object
+    public function getCacheable(): Config
     {
         $this->setup(true, false);
 
@@ -57,7 +58,7 @@ class CacheableConsole extends Console
      *
      * @return ConsoleConfig|array
      */
-    protected function getConfig()
+    protected function getConfig(): Config|array
     {
         return $this->config;
     }
@@ -69,14 +70,14 @@ class CacheableConsole extends Console
      *
      * @return void
      */
-    protected function beforeSetup($config): void
+    protected function beforeSetup(Config|array $config): void
     {
     }
 
     /**
      * Setup the console from cache.
      *
-     * @param ConsoleConfig|array $config
+     * @param array $config
      *
      * @return void
      */
@@ -104,7 +105,7 @@ class CacheableConsole extends Console
      *
      * @return void
      */
-    protected function setupNotCached($config): void
+    protected function setupNotCached(Config|array $config): void
     {
         self::$paths         = [];
         self::$commands      = [];
@@ -123,7 +124,7 @@ class CacheableConsole extends Console
      *
      * @return void
      */
-    protected function setupAnnotations($config): void
+    protected function setupAnnotations(Config|array $config): void
     {
         /** @var Annotator $commandAnnotations */
         $commandAnnotations = $this->container->getSingleton(Annotator::class);
@@ -143,7 +144,7 @@ class CacheableConsole extends Console
      *
      * @return void
      */
-    protected function setupCommandProviders($config): void
+    protected function setupCommandProviders(Config|array $config): void
     {
         // Iterate through all the providers
         foreach ($config['providers'] as $provider) {
@@ -168,7 +169,7 @@ class CacheableConsole extends Console
      *
      * @return void
      */
-    protected function afterSetup($config): void
+    protected function afterSetup(Config|array $config): void
     {
     }
 }

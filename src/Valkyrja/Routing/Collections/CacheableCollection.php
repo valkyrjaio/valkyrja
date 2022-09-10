@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Collections;
 
 use JsonException;
+use Valkyrja\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Routing\Annotator;
@@ -57,7 +58,7 @@ class CacheableCollection extends Collection
      *
      * @return Cache
      */
-    public function getCacheable(): object
+    public function getCacheable(): Config
     {
         $this->setup(true, false);
 
@@ -79,7 +80,7 @@ class CacheableCollection extends Collection
      *
      * @return RoutingConfig|array
      */
-    protected function getConfig()
+    protected function getConfig(): Config|array
     {
         return $this->config;
     }
@@ -91,7 +92,7 @@ class CacheableCollection extends Collection
      *
      * @return void
      */
-    protected function beforeSetup($config): void
+    protected function beforeSetup(Config|array $config): void
     {
     }
 
@@ -102,14 +103,14 @@ class CacheableCollection extends Collection
      *
      * @return void
      */
-    protected function setupNotCached($config): void
+    protected function setupNotCached(Config|array $config): void
     {
     }
 
     /**
      * Setup the router from cache.
      *
-     * @param RoutingConfig|array $config
+     * @param array $config
      *
      * @return void
      */
@@ -132,7 +133,7 @@ class CacheableCollection extends Collection
      *
      * @return void
      */
-    protected function setupAnnotations($config): void
+    protected function setupAnnotations(Config|array $config): void
     {
         /** @var Annotator $routeAnnotations */
         $routeAnnotations = $this->container->getSingleton(Annotator::class);
@@ -152,7 +153,7 @@ class CacheableCollection extends Collection
      *
      * @return void
      */
-    protected function afterSetup($config): void
+    protected function afterSetup(Config|array $config): void
     {
         $this->dynamic = [];
 
