@@ -154,28 +154,29 @@ class SodiumAdapter extends Adapter
     /**
      * Validate a decoded encrypted message.
      *
-     * @param bool|string $decoded
+     * @param string|false $decoded
      *
      * @throws CryptException
      *
      * @return void
      */
-    protected function validateDecoded(bool|string $decoded): void
+    protected function validateDecoded(string|false $decoded): void
     {
         $this->validateDecodedType($decoded);
+        /** @var string $decoded */
         $this->validateDecodedStrLen($decoded);
     }
 
     /**
      * Validate a decoded encrypted message type.
      *
-     * @param bool|string $decoded
+     * @param string|false $decoded
      *
      * @throws CryptException
      *
      * @return void
      */
-    protected function validateDecodedType(bool|string $decoded): void
+    protected function validateDecodedType(string|false $decoded): void
     {
         if (! $this->isValidDecodedType($decoded)) {
             throw new CryptException('The encoding failed');
@@ -185,11 +186,11 @@ class SodiumAdapter extends Adapter
     /**
      * Check if a decoded encrypted message is a valid type.
      *
-     * @param bool|string $decoded
+     * @param string|false $decoded
      *
      * @return bool
      */
-    protected function isValidDecodedType(bool|string $decoded): bool
+    protected function isValidDecodedType(string|false $decoded): bool
     {
         return $decoded !== false && is_string($decoded);
     }
@@ -197,13 +198,13 @@ class SodiumAdapter extends Adapter
     /**
      * Validate a decoded encrypted message string length.
      *
-     * @param bool|string $decoded
+     * @param string $decoded
      *
      * @throws CryptException
      *
      * @return void
      */
-    protected function validateDecodedStrLen(bool|string $decoded): void
+    protected function validateDecodedStrLen(string $decoded): void
     {
         if (! $this->isValidDecodedStrLen($decoded)) {
             throw new CryptException('The message was truncated');
@@ -213,11 +214,11 @@ class SodiumAdapter extends Adapter
     /**
      * Validate a decoded encrypted message string length.
      *
-     * @param bool|string $decoded
+     * @param string $decoded
      *
      * @return bool
      */
-    protected function isValidDecodedStrLen(bool|string $decoded): bool
+    protected function isValidDecodedStrLen(string $decoded): bool
     {
         return mb_strlen($decoded, '8bit') > (SODIUM_CRYPTO_SECRETBOX_NONCEBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES);
     }
