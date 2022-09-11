@@ -35,7 +35,7 @@ class CacheableContainer extends Container
      *
      * @throws JsonException
      *
-     * @return Cache
+     * @return ContainerConfig
      */
     public function getCacheable(): Config
     {
