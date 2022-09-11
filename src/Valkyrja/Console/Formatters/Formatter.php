@@ -161,12 +161,12 @@ class Formatter implements Contract
     /**
      * Set a color.
      *
-     * @param FormatBackground $color      The color
-     * @param bool             $background [optional] Whether this is to set the background
+     * @param FormatBackground|FormatForeground $color      The color
+     * @param bool                              $background [optional] Whether this is to set the background
      *
      * @return void
      */
-    protected function setColor(FormatBackground $color, bool $background = null): void
+    protected function setColor(FormatBackground|FormatForeground $color, bool $background = null): void
     {
         if (null !== $background) {
             $this->background = $color->value;

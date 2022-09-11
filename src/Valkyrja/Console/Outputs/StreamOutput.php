@@ -42,7 +42,7 @@ class StreamOutput extends Output implements StreamOutputContract
     /**
      * Output constructor.
      *
-     * @param null $stream The resource to use as a stream
+     * @param resource|null $stream The resource to use as a stream
      */
     public function __construct($stream = null)
     {
