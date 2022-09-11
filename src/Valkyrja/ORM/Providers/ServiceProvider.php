@@ -101,13 +101,6 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * @inheritDoc
-     */
-    public static function publish(Container $container): void
-    {
-    }
-
-    /**
      * Publish the ORM service.
      *
      * @param Container $container The container

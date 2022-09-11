@@ -60,13 +60,6 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * @inheritDoc
-     */
-    public static function publish(Container $container): void
-    {
-    }
-
-    /**
      * Publish the view service.
      *
      * @param Container $container The container

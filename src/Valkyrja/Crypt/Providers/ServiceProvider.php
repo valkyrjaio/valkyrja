@@ -34,9 +34,9 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Crypt::class   => 'publishCrypt',
+            Crypt::class => 'publishCrypt',
             Factory::class => 'publishFactory',
-            Driver::class  => 'publishDriver',
+            Driver::class => 'publishDriver',
             Adapter::class => 'publishAdapter',
         ];
     }
@@ -52,13 +52,6 @@ class ServiceProvider extends Provider
             Driver::class,
             Adapter::class,
         ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function publish(Container $container): void
-    {
     }
 
     /**

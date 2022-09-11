@@ -49,13 +49,6 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * @inheritDoc
-     */
-    public static function publish(Container $container): void
-    {
-    }
-
-    /**
      * Publish the validator service.
      *
      * @param Container $container The container

@@ -66,5 +66,7 @@ trait Provides
      *
      * @return void
      */
-    abstract public static function publish(Container $container): void;
+    public static function publish(Container $container): void
+    {
+    }
 }

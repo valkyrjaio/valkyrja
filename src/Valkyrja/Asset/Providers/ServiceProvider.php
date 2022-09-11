@@ -46,11 +46,4 @@ class ServiceProvider extends Provider
             Asset::class,
         ];
     }
-
-    /**
-     * @inheritDoc
-     */
-    public static function publish(Container $container): void
-    {
-    }
 }
