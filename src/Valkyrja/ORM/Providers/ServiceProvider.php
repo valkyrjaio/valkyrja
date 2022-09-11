@@ -19,9 +19,11 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\CacheRepository;
+use Valkyrja\ORM\DeleteQueryBuilder;
 use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Factories\ContainerFactory;
 use Valkyrja\ORM\Factory;
+use Valkyrja\ORM\InsertQueryBuilder;
 use Valkyrja\ORM\Migrations\Migration;
 use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\PDOAdapter;
@@ -32,7 +34,9 @@ use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\Retrievers\LocalCacheRetriever;
+use Valkyrja\ORM\SelectQueryBuilder;
 use Valkyrja\ORM\Statement;
+use Valkyrja\ORM\UpdateQueryBuilder;
 
 /**
  * Class ServiceProvider.
@@ -59,6 +63,10 @@ class ServiceProvider extends Provider
             LocalCacheRetriever::class => 'publishLocalCacheRetriever',
             Query::class               => 'publishQuery',
             QueryBuilder::class        => 'publishQueryBuilder',
+            DeleteQueryBuilder::class  => 'publishDeleteQueryBuilder',
+            InsertQueryBuilder::class  => 'publishInsertQueryBuilder',
+            SelectQueryBuilder::class  => 'publishSelectQueryBuilder',
+            UpdateQueryBuilder::class  => 'publishUpdateQueryBuilder',
             Statement::class           => 'publishStatement',
             PDO::class                 => 'publishPDO',
             Migration::class           => 'publishMigration',
@@ -82,6 +90,10 @@ class ServiceProvider extends Provider
             Retriever::class,
             Query::class,
             QueryBuilder::class,
+            DeleteQueryBuilder::class,
+            InsertQueryBuilder::class,
+            SelectQueryBuilder::class,
+            UpdateQueryBuilder::class,
             Statement::class,
             PDO::class,
             Migration::class,
@@ -348,6 +360,82 @@ class ServiceProvider extends Provider
         $container->setClosure(
             QueryBuilder::class,
             static function (string $name, Adapter $adapter): QueryBuilder {
+                return new $name(
+                    $adapter
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a delete query builder service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishDeleteQueryBuilder(Container $container): void
+    {
+        $container->setClosure(
+            DeleteQueryBuilder::class,
+            static function (string $name, Adapter $adapter): DeleteQueryBuilder {
+                return new $name(
+                    $adapter
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a insert query builder service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishInsertQueryBuilder(Container $container): void
+    {
+        $container->setClosure(
+            InsertQueryBuilder::class,
+            static function (string $name, Adapter $adapter): InsertQueryBuilder {
+                return new $name(
+                    $adapter
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a select query builder service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishSelectQueryBuilder(Container $container): void
+    {
+        $container->setClosure(
+            SelectQueryBuilder::class,
+            static function (string $name, Adapter $adapter): SelectQueryBuilder {
+                return new $name(
+                    $adapter
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a update query builder service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishUpdateQueryBuilder(Container $container): void
+    {
+        $container->setClosure(
+            UpdateQueryBuilder::class,
+            static function (string $name, Adapter $adapter): UpdateQueryBuilder {
                 return new $name(
                     $adapter
                 );

@@ -72,6 +72,54 @@ interface Factory
     public function createQueryBuilder(Adapter $adapter, string $name): QueryBuilder;
 
     /**
+     * Create a delete query builder.
+     *
+     * @template T
+     *
+     * @param Adapter         $adapter The adapter
+     * @param class-string<T> $name    The delete query builder class name
+     *
+     * @return T
+     */
+    public function createDeleteQueryBuilder(Adapter $adapter, string $name): DeleteQueryBuilder;
+
+    /**
+     * Create a insert query builder.
+     *
+     * @template T
+     *
+     * @param Adapter         $adapter The adapter
+     * @param class-string<T> $name    The insert query builder class name
+     *
+     * @return T
+     */
+    public function createInsertQueryBuilder(Adapter $adapter, string $name): InsertQueryBuilder;
+
+    /**
+     * Create a select query builder.
+     *
+     * @template T
+     *
+     * @param Adapter         $adapter The adapter
+     * @param class-string<T> $name    The select query builder class name
+     *
+     * @return T
+     */
+    public function createSelectQueryBuilder(Adapter $adapter, string $name): SelectQueryBuilder;
+
+    /**
+     * Create a update query builder.
+     *
+     * @template T
+     *
+     * @param Adapter         $adapter The adapter
+     * @param class-string<T> $name    The update query builder class name
+     *
+     * @return T
+     */
+    public function createUpdateQueryBuilder(Adapter $adapter, string $name): UpdateQueryBuilder;
+
+    /**
      * Create a query.
      *
      * @template T

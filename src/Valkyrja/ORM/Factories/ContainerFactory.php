@@ -16,8 +16,10 @@ namespace Valkyrja\ORM\Factories;
 use Valkyrja\Container\Container;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\CacheRepository;
+use Valkyrja\ORM\DeleteQueryBuilder;
 use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Factory as Contract;
+use Valkyrja\ORM\InsertQueryBuilder;
 use Valkyrja\ORM\Migration;
 use Valkyrja\ORM\PDOAdapter;
 use Valkyrja\ORM\Persister;
@@ -25,7 +27,9 @@ use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 use Valkyrja\ORM\Retriever;
+use Valkyrja\ORM\SelectQueryBuilder;
 use Valkyrja\ORM\Statement;
+use Valkyrja\ORM\UpdateQueryBuilder;
 use Valkyrja\Support\Type\Cls;
 
 /**
@@ -108,6 +112,58 @@ class ContainerFactory implements Contract
             $this->container,
             $name,
             QueryBuilder::class,
+            [$adapter]
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createDeleteQueryBuilder(Adapter $adapter, string $name): DeleteQueryBuilder
+    {
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            DeleteQueryBuilder::class,
+            [$adapter]
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createInsertQueryBuilder(Adapter $adapter, string $name): InsertQueryBuilder
+    {
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            InsertQueryBuilder::class,
+            [$adapter]
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createSelectQueryBuilder(Adapter $adapter, string $name): SelectQueryBuilder
+    {
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            SelectQueryBuilder::class,
+            [$adapter]
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createUpdateQueryBuilder(Adapter $adapter, string $name): UpdateQueryBuilder
+    {
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            UpdateQueryBuilder::class,
             [$adapter]
         );
     }

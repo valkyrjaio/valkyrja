@@ -15,31 +15,21 @@ namespace Valkyrja\ORM\QueryBuilders;
 
 use Valkyrja\ORM\Constants\OrderBy;
 use Valkyrja\ORM\Constants\Statement;
-use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\QueryBuilders\Traits\Join;
-use Valkyrja\ORM\QueryBuilders\Traits\Set;
 use Valkyrja\ORM\QueryBuilders\Traits\Where;
+use Valkyrja\ORM\SelectQueryBuilder as Contract;
 
-use function array_keys;
 use function implode;
 
 /**
- * Class SqlQueryBuilder.
+ * Class SqlSelectQueryBuilder.
  *
  * @author Melech Mizrachi
  */
-class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
+class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
 {
     use Join;
-    use Set;
     use Where;
-
-    /**
-     * The type of statement to build.
-     *
-     * @var string
-     */
-    protected string $type;
 
     /**
      * The columns for use in a select statement.
@@ -79,40 +69,9 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function select(array $columns = null): static
+    public function columns(array $columns = null): static
     {
-        $this->type    = Statement::SELECT;
         $this->columns = $columns ?? ['*'];
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function insert(): static
-    {
-        $this->type = Statement::INSERT;
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function update(): static
-    {
-        $this->type = Statement::UPDATE;
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function delete(): static
-    {
-        $this->type = Statement::DELETE;
 
         return $this;
     }
@@ -178,37 +137,6 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
      */
     public function getQueryString(): string
     {
-        $queryString = '';
-
-        switch ($this->type) {
-            case Statement::SELECT:
-                $queryString = $this->getSelectQuery();
-
-                break;
-            case Statement::UPDATE:
-                $queryString = $this->getUpdateQuery();
-
-                break;
-            case Statement::INSERT:
-                $queryString = $this->getInsertQuery();
-
-                break;
-            case Statement::DELETE:
-                $queryString = $this->getDeleteQuery();
-
-                break;
-        }
-
-        return $queryString;
-    }
-
-    /**
-     * Get a SELECT query.
-     *
-     * @return string
-     */
-    protected function getSelectQuery(): string
-    {
         return Statement::SELECT
             . ' ' . implode(', ', $this->columns)
             . ' ' . Statement::FROM
@@ -218,50 +146,6 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
             . ' ' . $this->getOrderByQuery()
             . ' ' . $this->getLimitQuery()
             . ' ' . $this->getOffsetQuery();
-    }
-
-    /**
-     * Get an INSERT query.
-     *
-     * @return string
-     */
-    protected function getInsertQuery(): string
-    {
-        return Statement::INSERT
-            . ' ' . Statement::INTO
-            . ' ' . $this->table
-            . ' (' . implode(', ', array_keys($this->values)) . ')'
-            . ' ' . Statement::VALUES
-            . ' (' . implode(', ', $this->values) . ')'
-            . ' ' . $this->getJoinQuery();
-    }
-
-    /**
-     * Get an UPDATE query.
-     *
-     * @return string
-     */
-    protected function getUpdateQuery(): string
-    {
-        return Statement::UPDATE
-            . ' ' . $this->table
-            . ' ' . $this->getSetQuery()
-            . ' ' . $this->getWhereQuery()
-            . ' ' . $this->getJoinQuery();
-    }
-
-    /**
-     * Get an DELETE query.
-     *
-     * @return string
-     */
-    protected function getDeleteQuery(): string
-    {
-        return Statement::DELETE
-            . ' ' . Statement::FROM
-            . ' ' . $this->table
-            . ' ' . $this->getWhereQuery()
-            . ' ' . $this->getJoinQuery();
     }
 
     /**
