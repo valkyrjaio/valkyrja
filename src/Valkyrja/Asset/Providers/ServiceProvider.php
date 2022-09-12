@@ -15,7 +15,6 @@ namespace Valkyrja\Asset\Providers;
 
 use Valkyrja\Asset\Adapters\DefaultAdapter;
 use Valkyrja\Asset\Asset;
-use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 
 /**
