@@ -234,7 +234,9 @@ class Dispatcher implements Contract
      */
     protected function isInvalidClassMethod(Dispatch $dispatch): bool
     {
-        return $dispatch->isMethod() && ! method_exists($dispatch->getClass(), $dispatch->getMethod());
+        return $dispatch->isMethod()
+            && $dispatch->getMethod()
+            && ! method_exists($dispatch->getClass(), $dispatch->getMethod());
     }
 
     /**
@@ -246,7 +248,9 @@ class Dispatcher implements Contract
      */
     protected function isInvalidClassProperty(Dispatch $dispatch): bool
     {
-        return $dispatch->isProperty() && ! property_exists($dispatch->getClass(), $dispatch->getProperty());
+        return $dispatch->isProperty()
+            && $dispatch->getProperty()
+            && ! property_exists($dispatch->getClass(), $dispatch->getProperty());
     }
 
     /**
