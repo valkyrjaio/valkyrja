@@ -16,6 +16,7 @@ namespace Valkyrja\Auth\Repositories;
 use Throwable;
 use Valkyrja\Auth\AuthenticatedUsers;
 use Valkyrja\Auth\Constants\HeaderValue;
+use Valkyrja\Auth\Exceptions\AuthRuntimeException;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidCurrentAuthenticationException;
 use Valkyrja\Auth\Exceptions\MissingTokenizableUserRequiredFieldsException;
@@ -91,6 +92,10 @@ abstract class TokenizedRepository extends Repository implements Contract
     public function authenticateFromSession(): static
     {
         $token = $this->getTokenFromSession();
+
+        if ($token === null) {
+            throw new AuthRuntimeException('Invalid token provided.');
+        }
 
         return $this->authenticateFromToken($token);
     }
@@ -252,13 +257,13 @@ abstract class TokenizedRepository extends Repository implements Contract
     /**
      * Get a user from a token.
      *
-     * @param string|null $token [optional] The token
+     * @param string $token The token
      *
      * @throws InvalidAuthenticationException
      *
      * @return User
      */
-    protected function getUserFromToken(string $token = null): User
+    protected function getUserFromToken(string $token): User
     {
         try {
             $users = $this->tryUnTokenizingUsers($token);

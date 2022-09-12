@@ -15,11 +15,14 @@ namespace Valkyrja\Auth\Factories;
 
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\CryptTokenizedRepository;
+use Valkyrja\Auth\EntityPolicy;
+use Valkyrja\Auth\EntityRoutePolicy;
 use Valkyrja\Auth\Factory as Contract;
 use Valkyrja\Auth\Gate;
 use Valkyrja\Auth\JWTCryptRepository;
 use Valkyrja\Auth\JWTRepository;
 use Valkyrja\Auth\ORMAdapter;
+use Valkyrja\Auth\Policy;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Container\Container;
 use Valkyrja\Support\Type\Cls;
@@ -93,7 +96,7 @@ class ContainerFactory implements Contract
     /**
      * @inheritDoc
      */
-    public function createGate(Repository $repository, string $name, array $config): Gate
+    public function createGate(Repository $repository, string $name): Gate
     {
         return Cls::getDefaultableService(
             $this->container,
@@ -101,7 +104,29 @@ class ContainerFactory implements Contract
             Gate::class,
             [
                 $repository,
-                $config,
+            ]
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createPolicy(Repository $repository, string $name): Policy
+    {
+        $defaultClass = Policy::class;
+
+        if (Cls::inherits($name, EntityPolicy::class)) {
+            $defaultClass = EntityPolicy::class;
+        } elseif (Cls::inherits($name, EntityRoutePolicy::class)) {
+            $defaultClass = EntityRoutePolicy::class;
+        }
+
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
+            $defaultClass,
+            [
+                $repository,
             ]
         );
     }

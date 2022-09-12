@@ -13,22 +13,27 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Policies;
 
-use Valkyrja\Auth\PermissibleUser;
+use Valkyrja\Auth\EntityRoutePolicy as Contract;
 
 /**
- * Class UserPermissiblePolicy.
+ * Abstract Class EntityPolicy.
  *
  * @author Melech Mizrachi
  */
-class UserPermissiblePolicy extends Policy
+abstract class EntityRoutePolicy extends EntityPolicy implements Contract
 {
+    /**
+     * The entity param number.
+     *
+     * @var int
+     */
+    protected static int $entityParamNumber = 0;
+
     /**
      * @inheritDoc
      */
-    protected function checkIsAuthorized(string $action): bool
+    public static function getEntityParamNumber(): int
     {
-        return $this->user instanceof PermissibleUser
-            ? $this->user->isAllowed($action)
-            : false;
+        return static::$entityParamNumber;
     }
 }

@@ -16,6 +16,7 @@ namespace Valkyrja\Auth\Factories;
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Factory as Contract;
 use Valkyrja\Auth\Gate;
+use Valkyrja\Auth\Policy;
 use Valkyrja\Auth\Repository;
 
 /**
@@ -44,8 +45,16 @@ class SimpleFactory implements Contract
     /**
      * @inheritDoc
      */
-    public function createGate(Repository $repository, string $name, array $config): Gate
+    public function createGate(Repository $repository, string $name): Gate
     {
-        return new $name($repository, $config);
+        return new $name($repository);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createPolicy(Repository $repository, string $name): Policy
+    {
+        return new $name($repository);
     }
 }

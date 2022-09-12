@@ -23,16 +23,21 @@ interface Policy
     /**
      * Before authorization check.
      *
+     * @param string $action The action to check if authorized for
+     *
      * @return bool|null
      */
-    public function before(): ?bool;
+    public function before(string &$action): ?bool;
 
     /**
      * After authorization check.
      *
+     * @param bool   $isAuthorized Whether the action is authorized
+     * @param string $action       The action to check if authorized for
+     *
      * @return bool|null
      */
-    public function after(): ?bool;
+    public function after(bool $isAuthorized, string $action): ?bool;
 
     /**
      * Check if the authenticated user is authorized.

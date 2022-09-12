@@ -321,6 +321,10 @@ class Repository implements Contract
      */
     public function confirmPassword(string $password): static
     {
+        if ($this->user === null) {
+            throw new InvalidCurrentAuthenticationException('No user currently authenticated.');
+        }
+
         if (! $this->adapter->verifyPassword($this->user, $password)) {
             throw new InvalidPasswordConfirmationException('Invalid password confirmation.');
         }
@@ -336,6 +340,14 @@ class Repository implements Contract
         $confirmedAt = time() - ((int) $this->session->get(SessionId::PASSWORD_CONFIRMED_TIMESTAMP, 0));
 
         return $confirmedAt > (int) ($this->config['passwordTimeout'] ?? 10800);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAdapter(): Adapter
+    {
+        return $this->adapter;
     }
 
     /**

@@ -64,6 +64,24 @@ interface Auth
     public function getGate(string $name = null, string $user = null, string $adapter = null): Gate;
 
     /**
+     * Get a policy by name.
+     *
+     * @param string|null $name    [optional] The policy name
+     * @param string|null $user    [optional] The user
+     * @param string|null $adapter [optional] The adapter
+     *
+     * @return Policy
+     */
+    public function getPolicy(string $name = null, string $user = null, string $adapter = null): Policy;
+
+    /**
+     * Get the factory.
+     *
+     * @return Factory
+     */
+    public function getFactory(): Factory;
+
+    /**
      * Get a request with auth token header.
      *
      * @param Request     $request The request

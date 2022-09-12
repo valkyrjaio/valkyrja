@@ -17,6 +17,7 @@ use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth;
 use Valkyrja\Auth\CryptTokenizedRepository;
 use Valkyrja\Auth\EntityPolicy;
+use Valkyrja\Auth\EntityRoutePolicy;
 use Valkyrja\Auth\Factories\ContainerFactory;
 use Valkyrja\Auth\Factory;
 use Valkyrja\Auth\Gate;
@@ -57,6 +58,7 @@ class ServiceProvider extends Provider
             ORMAdapter::class               => 'publishOrmAdapter',
             Policy::class                   => 'publishPolicy',
             EntityPolicy::class             => 'publishEntityPolicy',
+            EntityRoutePolicy::class        => 'publishEntityRoutePolicy',
         ];
     }
 
@@ -77,6 +79,7 @@ class ServiceProvider extends Provider
             ORMAdapter::class,
             Policy::class,
             EntityPolicy::class,
+            EntityRoutePolicy::class,
         ];
     }
 
@@ -170,11 +173,10 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Gate::class,
-            static function (string $name, Repository $repository, array $config) use ($container): Gate {
+            static function (string $name, Repository $repository) use ($container): Gate {
                 return new $name(
-                    $container,
+                    $container->getSingleton(Auth::class),
                     $repository,
-                    $config,
                 );
             }
         );
@@ -212,6 +214,28 @@ class ServiceProvider extends Provider
             EntityPolicy::class,
             static function (string $name, Repository $repository) use ($container): EntityPolicy {
                 /** @var EntityPolicy|string $name */
+
+                return new $name(
+                    $repository,
+                    $container->getSingleton($name::getEntityClassName()),
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish an entity route policy service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishEntityRoutePolicy(Container $container): void
+    {
+        $container->setClosure(
+            EntityRoutePolicy::class,
+            static function (string $name, Repository $repository) use ($container): EntityRoutePolicy {
+                /** @var EntityRoutePolicy|string $name */
 
                 return new $name(
                     $repository,

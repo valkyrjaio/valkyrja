@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Gates;
 
-use Valkyrja\Auth\EntityPolicy;
+use Valkyrja\Auth\Auth;
 use Valkyrja\Auth\Gate as Contract;
-use Valkyrja\Auth\Policy;
 use Valkyrja\Auth\Repository;
-use Valkyrja\Container\Container;
-use Valkyrja\Support\Type\Cls;
 
 /**
  * Class Gate.
@@ -28,18 +25,11 @@ use Valkyrja\Support\Type\Cls;
 class Gate implements Contract
 {
     /**
-     * The policies cache.
+     * The auth service.
      *
-     * @var Policy[]
+     * @var Auth
      */
-    protected static array $policies = [];
-
-    /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
+    protected Auth $auth;
 
     /**
      * The repository.
@@ -49,30 +39,21 @@ class Gate implements Contract
     protected Repository $repository;
 
     /**
-     * The default policy.
-     *
-     * @var string
-     */
-    protected string $defaultPolicy;
-
-    /**
      * Gate constructor.
      *
-     * @param Container  $container  The container
+     * @param Auth       $auth       The auth service
      * @param Repository $repository The repository
-     * @param array      $config     The config
      */
-    public function __construct(Container $container, Repository $repository, array $config)
+    public function __construct(Auth $auth, Repository $repository)
     {
-        $this->container     = $container;
-        $this->repository    = $repository;
-        $this->defaultPolicy = $config['policy'];
+        $this->auth       = $auth;
+        $this->repository = $repository;
     }
 
     /**
      * @inheritDoc
      */
-    public function before(): ?bool
+    public function before(string &$action, string &$policy = null): ?bool
     {
         return null;
     }
@@ -80,7 +61,7 @@ class Gate implements Contract
     /**
      * @inheritDoc
      */
-    public function after(): ?bool
+    public function after(bool $isAuthorized, string $action, string $policy = null): ?bool
     {
         return null;
     }
@@ -90,38 +71,31 @@ class Gate implements Contract
      */
     public function isAuthorized(string $action, string $policy = null): bool
     {
-        return $this->before()
-            ?? $this->after()
-            ?? $this->getPolicy($policy)->isAuthorized($action);
+        if ($beforeAuthorized = $this->before($action, $policy)) {
+            return $beforeAuthorized;
+        }
+
+        $isAuthorized = $this->checkIsAuthorized($action, $policy);
+
+        return $this->after($isAuthorized, $action, $policy)
+            ?? $isAuthorized;
     }
 
     /**
-     * @inheritDoc
-     */
-    public function getPolicy(string $name = null): Policy
-    {
-        $name ??= $this->defaultPolicy;
-
-        return static::$policies[$name]
-            ?? static::$policies[$name] = $this->__getPolicy($name);
-    }
-
-    /**
-     * Get a policy by name.
+     * Check if the action/policy combo are authorized.
      *
-     * @param string $name The policy name
+     * @param string      $action The action to check if authorized for
+     * @param string|null $policy [optional] The policy
      *
-     * @return Policy
+     * @return bool
      */
-    protected function __getPolicy(string $name): Policy
+    protected function checkIsAuthorized(string $action, string $policy = null): bool
     {
-        return Cls::getDefaultableService(
-            $this->container,
-            $name,
-            Cls::inherits($name, EntityPolicy::class) ? EntityPolicy::class : Policy::class,
-            [
-                $this->repository,
-            ]
-        );
+        return $this->auth->getPolicy(
+            $policy,
+            $this->repository->getUser()::class,
+            $this->repository->getAdapter()::class
+        )
+            ->isAuthorized($action);
     }
 }

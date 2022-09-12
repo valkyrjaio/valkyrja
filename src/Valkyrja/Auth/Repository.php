@@ -183,4 +183,11 @@ interface Repository
      * @return bool
      */
     public function isReAuthenticationRequired(): bool;
+
+    /**
+     * Get the adapter.
+     *
+     * @return Adapter
+     */
+    public function getAdapter(): Adapter;
 }

@@ -32,13 +32,6 @@ abstract class EntityPolicy extends Policy implements Contract
     protected static string $entityClassName;
 
     /**
-     * The entity param number.
-     *
-     * @var int
-     */
-    protected static int $entityParamNumber = 0;
-
-    /**
      * The entity.
      *
      * @var Entity
@@ -49,6 +42,7 @@ abstract class EntityPolicy extends Policy implements Contract
      * Policy constructor.
      *
      * @param Repository $repository The repository
+     * @param Entity     $entity     The entity
      */
     public function __construct(Repository $repository, Entity $entity)
     {
@@ -63,13 +57,5 @@ abstract class EntityPolicy extends Policy implements Contract
     public static function getEntityClassName(): string
     {
         return static::$entityClassName;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function getEntityParamNumber(): int
-    {
-        return static::$entityParamNumber;
     }
 }

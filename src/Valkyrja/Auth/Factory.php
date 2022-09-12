@@ -47,9 +47,18 @@ interface Factory
      *
      * @param Repository $repository The repository
      * @param string     $name       The name
-     * @param array      $config     The config
      *
      * @return Gate
      */
-    public function createGate(Repository $repository, string $name, array $config): Gate;
+    public function createGate(Repository $repository, string $name): Gate;
+
+    /**
+     * Create a policy by name.
+     *
+     * @param Repository $repository The repository
+     * @param string     $name       The name
+     *
+     * @return Policy
+     */
+    public function createPolicy(Repository $repository, string $name): Policy;
 }

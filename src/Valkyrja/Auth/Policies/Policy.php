@@ -52,7 +52,7 @@ abstract class Policy implements Contract
     /**
      * @inheritDoc
      */
-    public function before(): ?bool
+    public function before(string &$action): ?bool
     {
         return null;
     }
@@ -60,7 +60,7 @@ abstract class Policy implements Contract
     /**
      * @inheritDoc
      */
-    public function after(): ?bool
+    public function after(bool $isAuthorized, string $action): ?bool
     {
         return null;
     }
@@ -70,8 +70,27 @@ abstract class Policy implements Contract
      */
     public function isAuthorized(string $action): bool
     {
-        return $this->before()
-            ?? $this->after()
-            ?? (method_exists($this, $action) ? $this->$action() : false);
+        if ($beforeAuthorized = $this->before($action)) {
+            return $beforeAuthorized;
+        }
+
+        $isAuthorized = $this->checkIsAuthorized($action);
+
+        return $this->after($isAuthorized, $action)
+            ?? $isAuthorized;
+    }
+
+    /**
+     * Check if the action is authorized.
+     *
+     * @param string $action The action to check if authorized for
+     *
+     * @return bool
+     */
+    protected function checkIsAuthorized(string $action): bool
+    {
+        return method_exists($this, $action)
+            ? $this->$action()
+            : false;
     }
 }

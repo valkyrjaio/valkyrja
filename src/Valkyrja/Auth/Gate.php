@@ -23,16 +23,23 @@ interface Gate
     /**
      * Before authorization check.
      *
+     * @param string      $action The action to check if authorized for
+     * @param string|null $policy [optional] The policy
+     *
      * @return bool|null
      */
-    public function before(): ?bool;
+    public function before(string &$action, string &$policy = null): ?bool;
 
     /**
      * After authorization check.
      *
+     * @param bool        $isAuthorized Whether the action is authorized per the policy
+     * @param string      $action       The action to check if authorized for
+     * @param string|null $policy       [optional] The policy
+     *
      * @return bool|null
      */
-    public function after(): ?bool;
+    public function after(bool $isAuthorized, string $action, string $policy = null): ?bool;
 
     /**
      * Check if the authenticated user is authorized.
@@ -43,13 +50,4 @@ interface Gate
      * @return bool
      */
     public function isAuthorized(string $action, string $policy = null): bool;
-
-    /**
-     * Get a policy by name.
-     *
-     * @param string|null $name [optional] The policy name
-     *
-     * @return Policy
-     */
-    public function getPolicy(string $name = null): Policy;
 }

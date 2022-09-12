@@ -22,6 +22,7 @@ use Valkyrja\Auth\Exceptions\AuthRuntimeException;
 use Valkyrja\Auth\Factory;
 use Valkyrja\Auth\Gate;
 use Valkyrja\Auth\LockableUser;
+use Valkyrja\Auth\Policy;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Auth\TokenizedRepository;
 use Valkyrja\Auth\User;
@@ -55,6 +56,13 @@ class Auth implements Contract
      * @var Gate[]
      */
     protected static array $gates = [];
+
+    /**
+     * The policies cache.
+     *
+     * @var Policy[]
+     */
+    protected static array $policies = [];
 
     /**
      * The factory service.
@@ -99,6 +107,13 @@ class Auth implements Contract
     protected string $defaultGate;
 
     /**
+     * The default policy.
+     *
+     * @var string
+     */
+    protected string $defaultPolicy;
+
+    /**
      * The default user entity.
      *
      * @var string
@@ -121,6 +136,7 @@ class Auth implements Contract
         $this->defaultRepository = $config['repository'];
         $this->defaultGate       = $config['gate'];
         $this->defaultUserEntity = $config['userEntity'];
+        $this->defaultPolicy     = $config['policy'];
 
         $this->tryAuthenticating();
     }
@@ -173,9 +189,30 @@ class Auth implements Contract
         return self::$gates[$name]
             ?? self::$gates[$name] = $this->factory->createGate(
                 $this->getRepository($user, $adapter),
-                $name,
-                $this->config
+                $name
             );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPolicy(string $name = null, string $user = null, string $adapter = null): Policy
+    {
+        $name ??= $this->defaultPolicy;
+
+        return static::$policies[$name]
+            ?? static::$policies[$name] = $this->factory->createPolicy(
+                $this->getRepository($user, $adapter),
+                $name
+            );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getFactory(): Factory
+    {
+        return $this->factory;
     }
 
     /**
