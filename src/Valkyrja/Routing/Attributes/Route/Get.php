@@ -34,8 +34,8 @@ class Get extends Route
         parent::__construct(
             path      : $path,
             methods   : [
-                            RequestMethod::GET,
-                        ],
+                RequestMethod::GET,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,

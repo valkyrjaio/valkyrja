@@ -34,8 +34,8 @@ class Post extends Route
         parent::__construct(
             path      : $path,
             methods   : [
-                            RequestMethod::POST,
-                        ],
+                RequestMethod::POST,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,

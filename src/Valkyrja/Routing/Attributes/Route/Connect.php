@@ -34,8 +34,8 @@ class Connect extends Route
         parent::__construct(
             path      : $path,
             methods   : [
-                            RequestMethod::CONNECT,
-                        ],
+                RequestMethod::CONNECT,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,

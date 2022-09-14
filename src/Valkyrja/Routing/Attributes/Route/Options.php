@@ -34,8 +34,8 @@ class Options extends Route
         parent::__construct(
             path      : $path,
             methods   : [
-                            RequestMethod::OPTIONS,
-                        ],
+                RequestMethod::OPTIONS,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,

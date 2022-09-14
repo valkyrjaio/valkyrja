@@ -34,8 +34,8 @@ class Head extends Route
         parent::__construct(
             path      : $path,
             methods   : [
-                            RequestMethod::HEAD,
-                        ],
+                RequestMethod::HEAD,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,

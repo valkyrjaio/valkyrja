@@ -151,5 +151,4 @@ class RouteAttributes extends Attributes implements Contract
 
         return $path;
     }
-
 }

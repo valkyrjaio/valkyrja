@@ -34,8 +34,8 @@ class Put extends Route
         parent::__construct(
             path      : $path,
             methods   : [
-                            RequestMethod::PUT,
-                        ],
+                RequestMethod::PUT,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,

@@ -34,8 +34,8 @@ class Patch extends Route
         parent::__construct(
             path      : $path,
             methods   : [
-                            RequestMethod::PATCH,
-                        ],
+                RequestMethod::PATCH,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,
