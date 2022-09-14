@@ -15,6 +15,7 @@ namespace Valkyrja\Reflection;
 
 use Closure;
 use ReflectionClass;
+use ReflectionClassConstant;
 use ReflectionException;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
@@ -41,7 +42,19 @@ interface Reflector
     public function getClassReflection(string $class): ReflectionClass;
 
     /**
-     * Get a property's reflection.
+     * Get a class constant's reflection.
+     *
+     * @param string $class The class
+     * @param string $const The constant
+     *
+     * @throws ReflectionException
+     *
+     * @return ReflectionClassConstant
+     */
+    public function getClassConstReflection(string $class, string $const): ReflectionClassConstant;
+
+    /**
+     * Get a class property's reflection.
      *
      * @param string $class    The class
      * @param string $property The property
@@ -53,7 +66,7 @@ interface Reflector
     public function getPropertyReflection(string $class, string $property): ReflectionProperty;
 
     /**
-     * Get a method's reflection.
+     * Get a class method's reflection.
      *
      * @param string $class  The class
      * @param string $method The method
@@ -67,13 +80,13 @@ interface Reflector
     /**
      * Get a function's reflection.
      *
-     * @param string $function The function
+     * @param callable|string $function The function
      *
      * @throws ReflectionException
      *
      * @return ReflectionFunction
      */
-    public function getFunctionReflection(string $function): ReflectionFunction;
+    public function getFunctionReflection(callable|string $function): ReflectionFunction;
 
     /**
      * Get a closure's reflection.

@@ -15,6 +15,7 @@ namespace Valkyrja\Reflection\Reflectors;
 
 use Closure;
 use ReflectionClass;
+use ReflectionClassConstant;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
@@ -22,6 +23,7 @@ use ReflectionParameter;
 use ReflectionProperty;
 use Valkyrja\Reflection\Reflector as Contract;
 
+use function is_string;
 use function spl_object_id;
 
 /**
@@ -61,6 +63,17 @@ class Reflector implements Contract
     /**
      * @inheritDoc
      */
+    public function getClassConstReflection(string $class, string $const): ReflectionClassConstant
+    {
+        $index = static::PROPERTY_CACHE . $class . $const;
+
+        return self::$reflections[$index]
+            ?? self::$reflections[$index] = $this->getClassReflection($class)->getReflectionConstant($const);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getPropertyReflection(string $class, string $property): ReflectionProperty
     {
         $index = static::PROPERTY_CACHE . $class . $property;
@@ -83,8 +96,12 @@ class Reflector implements Contract
     /**
      * @inheritDoc
      */
-    public function getFunctionReflection(string $function): ReflectionFunction
+    public function getFunctionReflection(callable|string $function): ReflectionFunction
     {
+        if (! is_string($function)) {
+            return new ReflectionFunction($function);
+        }
+
         $index = static::FUNCTION_CACHE . $function;
 
         return self::$reflections[$index]

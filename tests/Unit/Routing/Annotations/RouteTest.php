@@ -17,6 +17,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Annotations\Route;
+use Valkyrja\Routing\Attributes\Parameter;
 
 use function get_class;
 
@@ -25,6 +26,12 @@ use function get_class;
  *
  * @author Melech Mizrachi
  */
+#[\Valkyrja\Routing\Attributes\Route(
+    '',
+    parameters: [
+        new Parameter(),
+    ]
+)]
 class RouteTest extends TestCase
 {
     /**

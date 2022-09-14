@@ -15,6 +15,7 @@ namespace Valkyrja\Container\Constants;
 
 use Valkyrja\Annotation\Providers\ServiceProvider as AnnotationServiceProvider;
 use Valkyrja\Api\Providers\ServiceProvider as ApiServiceProvider;
+use Valkyrja\Attributes\Providers\ServiceProvider as AttributesServiceProvider;
 use Valkyrja\Auth\Providers\ServiceProvider as AuthServiceProvider;
 use Valkyrja\Broadcast\Providers\ServiceProvider as BroadcastServiceProvider;
 use Valkyrja\Cache\Providers\ServiceProvider as CacheServiceProvider;
@@ -49,6 +50,7 @@ final class Provider
 {
     public const ANNOTATION   = AnnotationServiceProvider::class;
     public const API          = ApiServiceProvider::class;
+    public const ATTRIBUTES   = AttributesServiceProvider::class;
     public const AUTH         = AuthServiceProvider::class;
     public const BROADCAST    = BroadcastServiceProvider::class;
     public const CACHE        = CacheServiceProvider::class;

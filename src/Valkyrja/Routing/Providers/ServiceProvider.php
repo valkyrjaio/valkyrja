@@ -27,6 +27,7 @@ use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Collections\CacheableCollection;
 use Valkyrja\Routing\Collector;
 use Valkyrja\Routing\Matcher;
+use Valkyrja\Routing\RouteAttributes;
 use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Url;
 
@@ -43,12 +44,13 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Annotator::class  => 'publishAnnotator',
-            Router::class     => 'publishRouter',
-            Collector::class  => 'publishCollector',
-            Collection::class => 'publishCollection',
-            Matcher::class    => 'publishMatcher',
-            Url::class        => 'publishUrl',
+            Annotator::class       => 'publishAnnotator',
+            Router::class          => 'publishRouter',
+            Collector::class       => 'publishCollector',
+            Collection::class      => 'publishCollection',
+            Matcher::class         => 'publishMatcher',
+            Url::class             => 'publishUrl',
+            RouteAttributes::class => 'publishRouteAttributes',
         ];
     }
 
@@ -64,6 +66,7 @@ class ServiceProvider extends Provider
             Collection::class,
             Matcher::class,
             Url::class,
+            RouteAttributes::class,
         ];
     }
 
@@ -186,6 +189,23 @@ class ServiceProvider extends Provider
                 $container->getSingleton(Request::class),
                 $container->getSingleton(Router::class),
                 $config['routing']
+            )
+        );
+    }
+
+    /**
+     * Publish the route attributes service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishRouteAttributes(Container $container): void
+    {
+        $container->setSingleton(
+            RouteAttributes::class,
+            new \Valkyrja\Routing\Annotators\RouteAttributes(
+                $container->getSingleton(Reflector::class)
             )
         );
     }

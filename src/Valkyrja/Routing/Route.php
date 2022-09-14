@@ -49,11 +49,11 @@ interface Route extends Dispatch
     /**
      * Set the redirect path.
      *
-     * @param string|null $redirectPath
+     * @param string|null $to The path to redirect to
      *
      * @return static
      */
-    public function setTo(string $redirectPath = null): static;
+    public function setTo(string $to = null): static;
 
     /**
      * Get the redirect status code.
@@ -65,7 +65,7 @@ interface Route extends Dispatch
     /**
      * Set the redirect status code.
      *
-     * @param int|null $code
+     * @param int|null $code The status code
      *
      * @return static
      */

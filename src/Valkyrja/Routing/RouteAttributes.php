@@ -11,20 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Annotators;
-
-use Valkyrja\Reflection\Reflector;
+namespace Valkyrja\Routing;
 
 /**
- * Class Processor.
+ * Interface RouteAttributes.
  *
  * @author Melech Mizrachi
  */
-class Processor
+interface RouteAttributes
 {
-    public function __construct(
-        protected Reflector $reflector
-    ) {
-        $routes = $this->reflector->getClassReflection();
-    }
+    /**
+     * Get route attributes.
+     *
+     * @param string ...$classes The classes
+     *
+     * @return Route[]
+     */
+    public function getRoutes(string ...$classes): array;
 }

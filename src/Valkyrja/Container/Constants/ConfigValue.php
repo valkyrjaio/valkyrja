@@ -30,6 +30,7 @@ final class ConfigValue
         Provider::EVENT,
         Provider::ANNOTATION,
         Provider::API,
+        Provider::ATTRIBUTES,
         Provider::AUTH,
         Provider::BROADCAST,
         Provider::CACHE,

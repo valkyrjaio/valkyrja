@@ -20,6 +20,7 @@ use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Routing\Annotator;
 use Valkyrja\Routing\Config\Cache;
 use Valkyrja\Routing\Config\Config as RoutingConfig;
+use Valkyrja\Routing\RouteAttributes;
 use Valkyrja\Support\Cacheable\Cacheable;
 
 /**
@@ -141,6 +142,30 @@ class CacheableCollection extends Collection
         // Get all the annotated routes from the list of controllers
         // Iterate through the routes
         foreach ($routeAnnotations->getRoutes(...$config['controllers']) as $route) {
+            // Set the route
+            $this->add($route);
+        }
+
+        $this->setupAttributes($config);
+    }
+
+    /**
+     * Setup attributed routes.
+     *
+     * @param RoutingConfig|array $config
+     *
+     * @throws JsonException
+     *
+     * @return void
+     */
+    protected function setupAttributes(Config|array $config): void
+    {
+        /** @var RouteAttributes $routeAttributes */
+        $routeAttributes = $this->container->getSingleton(RouteAttributes::class);
+
+        // Get all the attributes routes from the list of controllers
+        // Iterate through the routes
+        foreach ($routeAttributes->getRoutes(...$config['controllers']) as $route) {
             // Set the route
             $this->add($route);
         }

@@ -139,6 +139,8 @@ class Route extends Dispatch implements RouteContract
      */
     public function setTo(string $to = null): static
     {
+        $this->redirect = $to !== null;
+
         $this->to = $to;
 
         return $this;
