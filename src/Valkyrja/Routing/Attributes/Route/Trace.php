@@ -34,8 +34,8 @@ class Trace extends Route
         parent::__construct(
             path      : $path,
             methods   : [
-                            RequestMethod::TRACE,
-                        ],
+                RequestMethod::TRACE,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,

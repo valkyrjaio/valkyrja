@@ -34,8 +34,8 @@ class Delete extends Route
         parent::__construct(
             path      : $path,
             methods   : [
-                            RequestMethod::DELETE,
-                        ],
+                RequestMethod::DELETE,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,
