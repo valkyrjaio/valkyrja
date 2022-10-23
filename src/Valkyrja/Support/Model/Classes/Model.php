@@ -438,13 +438,12 @@ abstract class Model implements Contract
         if (is_array($type)) {
             $type = $type[0];
 
-            foreach ($value as &$item) {
-                $item = $this->__getModelFromValue($property, $type, $item);
-            }
-
-            unset($item);
-
-            return $value;
+            return array_map(
+                function (array $data) use ($property, $type) {
+                    return $this->__getModelFromValue($property, $type, $data);
+                },
+                $value
+            );
         }
 
         return $this->__getModelFromValue($property, $type, $value);
