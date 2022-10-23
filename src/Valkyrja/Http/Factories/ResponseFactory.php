@@ -52,7 +52,7 @@ class ResponseFactory implements Contract
         $stream->write($content ?? '');
         $stream->rewind();
 
-        return new \Valkyrja\Http\Responses\Response($stream, $statusCode ?? StatusCode::OK, $headers);
+        return new \Valkyrja\Http\Responses\Response($stream, $statusCode ?? StatusCode::OK, $headers ?? []);
     }
 
     /**
@@ -62,7 +62,11 @@ class ResponseFactory implements Contract
      */
     public function createJsonResponse(array $data = null, int $statusCode = null, array $headers = null): JsonResponse
     {
-        return new \Valkyrja\Http\Responses\JsonResponse($data, $statusCode ?? StatusCode::OK, $headers);
+        return new \Valkyrja\Http\Responses\JsonResponse(
+            $data ?? [],
+            $statusCode ?? StatusCode::OK,
+            $headers ?? []
+        );
     }
 
     /**
@@ -81,7 +85,11 @@ class ResponseFactory implements Contract
      */
     public function createRedirectResponse(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse
     {
-        return new \Valkyrja\Http\Responses\RedirectResponse($uri, $statusCode ?? StatusCode::OK, $headers);
+        return new \Valkyrja\Http\Responses\RedirectResponse(
+            $uri ?? '/',
+            $statusCode ?? StatusCode::OK,
+            $headers ?? []
+        );
     }
 
     /**
