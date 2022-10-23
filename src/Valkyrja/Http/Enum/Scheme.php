@@ -20,6 +20,6 @@ namespace Valkyrja\Http\Enums;
  */
 enum Scheme: string
 {
-    case HTTP = 'http';
+    case HTTP  = 'http';
     case HTTPS = 'https';
 }

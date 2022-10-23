@@ -20,9 +20,9 @@ namespace Valkyrja\ORM\Enums;
  */
 enum WhereType: string
 {
-    case AND = 'AND';
-    case OR = 'OR';
-    case NOT = 'NOT';
+    case AND     = 'AND';
+    case OR      = 'OR';
+    case NOT     = 'NOT';
     case AND_NOT = 'AND NOT';
-    case OR_NOT = 'OR NOT';
+    case OR_NOT  = 'OR NOT';
 }
