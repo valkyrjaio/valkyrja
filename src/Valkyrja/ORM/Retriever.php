@@ -21,7 +21,7 @@ use Valkyrja\ORM\Exceptions\EntityNotFoundException;
  * @author   Melech Mizrachi
  * @template T
  */
-interface Retriever
+interface Retriever extends WhereQueryBuilder
 {
     /**
      * Find by given criteria.
@@ -71,29 +71,6 @@ interface Retriever
      * @return static
      */
     public function columns(array $columns): static;
-
-    /**
-     * Add a where condition.
-     * - Each additional use will add an `AND` where condition.
-     *
-     * @param string      $column
-     * @param string|null $operator
-     * @param mixed|null  $value
-     *
-     * @return static
-     */
-    public function where(string $column, string $operator = null, mixed $value = null): static;
-
-    /**
-     * Add an additional `OR` where condition.
-     *
-     * @param string      $column
-     * @param string|null $operator
-     * @param mixed|null  $value
-     *
-     * @return static
-     */
-    public function orWhere(string $column, string $operator = null, mixed $value = null): static;
 
     /**
      * Join with another table.

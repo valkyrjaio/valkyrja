@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM;
 
+use Valkyrja\ORM\Enums\WhereType;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 
 /**
@@ -60,23 +61,36 @@ interface Repository
      * - Each additional use will add an `AND` where condition.
      *
      * @param string      $column   The column
-     * @param string|null $operator [optional] The operator
-     * @param mixed|null  $value    [optional] The value
+     * @param string|null $operator [optional]
+     * @param mixed|null  $value    [optional]
+     * @param bool        $setType  [optional]
      *
      * @return static<T>
      */
-    public function where(string $column, string $operator = null, mixed $value = null): static;
+    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): static;
 
     /**
-     * Add an additional `OR` where condition.
-     *
-     * @param string      $column   The column
-     * @param string|null $operator [optional] The operator
-     * @param mixed|null  $value    [optional] The value
+     * Start a where clause in parentheses.
      *
      * @return static<T>
      */
-    public function orWhere(string $column, string $operator = null, mixed $value = null): static;
+    public function startWhereGroup(): static;
+
+    /**
+     * End a where clause in parentheses.
+     *
+     * @return static<T>
+     */
+    public function endWhereGroup(): static;
+
+    /**
+     * Add a where type.
+     *
+     * @param WhereType $type The type
+     *
+     * @return static<T>
+     */
+    public function whereType(WhereType $type = WhereType::AND): static;
 
     /**
      * Join with another table.
@@ -259,4 +273,18 @@ interface Repository
      * @return Query
      */
     public function createQuery(string $query): Query;
+
+    /**
+     * Get the retriever.
+     *
+     * @return Retriever
+     */
+    public function getRetriever(): Retriever;
+
+    /**
+     * Get the persister.
+     *
+     * @return Persister
+     */
+    public function getPersister(): Persister;
 }

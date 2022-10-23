@@ -16,7 +16,7 @@ namespace Valkyrja\ORM\Repositories;
 use InvalidArgumentException;
 use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Exceptions\EntityNotFoundException;
+use Valkyrja\ORM\Enums\WhereType;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
 use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\Persister;
@@ -140,11 +140,7 @@ class Repository implements Contract
     }
 
     /**
-     * Set columns.
-     *
-     * @param array $columns
-     *
-     * @return static<T>
+     * @inheritDoc
      */
     public function columns(array $columns): static
     {
@@ -154,49 +150,47 @@ class Repository implements Contract
     }
 
     /**
-     * Add a where condition.
-     * - Each additional use will add an `AND` where condition.
-     *
-     * @param string      $column
-     * @param string|null $operator
-     * @param mixed|null  $value
-     *
-     * @return static<T>
+     * @inheritDoc
      */
-    public function where(string $column, string $operator = null, mixed $value = null): static
+    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): static
     {
-        $this->retriever->where($column, $operator, $value);
+        $this->retriever->where($column, $operator, $value, $setType);
 
         return $this;
     }
 
     /**
-     * Add an additional `OR` where condition.
-     *
-     * @param string      $column
-     * @param string|null $operator
-     * @param mixed|null  $value
-     *
-     * @return static<T>
+     * @inheritDoc
      */
-    public function orWhere(string $column, string $operator = null, mixed $value = null): static
+    public function startWhereGroup(): static
     {
-        $this->retriever->orWhere($column, $operator, $value);
+        $this->retriever->startWhereGroup();
 
         return $this;
     }
 
     /**
-     * Join with another table.
-     *
-     * @param string      $table    The table to join on
-     * @param string      $column1  The column to join on
-     * @param string      $column2  The secondary column to join on
-     * @param string|null $operator [optional] The operator
-     * @param string|null $type     [optional] The type of join
-     * @param bool|null   $isWhere  [optional] Whether this is a where join
-     *
-     * @return static<T>
+     * @inheritDoc
+     */
+    public function endWhereGroup(): static
+    {
+        $this->retriever->endWhereGroup();
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function whereType(WhereType $type = WhereType::AND): static
+    {
+        $this->retriever->whereType($type);
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
      */
     public function join(
         string $table,
@@ -212,12 +206,7 @@ class Repository implements Contract
     }
 
     /**
-     * Set an order by.
-     *
-     * @param string      $column
-     * @param string|null $direction
-     *
-     * @return static<T>
+     * @inheritDoc
      */
     public function orderBy(string $column, string $direction = null): static
     {
@@ -227,11 +216,7 @@ class Repository implements Contract
     }
 
     /**
-     * Set limit.
-     *
-     * @param int $limit
-     *
-     * @return static<T>
+     * @inheritDoc
      */
     public function limit(int $limit): static
     {
@@ -241,11 +226,7 @@ class Repository implements Contract
     }
 
     /**
-     * Set offset.
-     *
-     * @param int $offset
-     *
-     * @return static<T>
+     * @inheritDoc
      */
     public function offset(int $offset): static
     {
@@ -255,11 +236,7 @@ class Repository implements Contract
     }
 
     /**
-     * Add relationships to include with the results.
-     *
-     * @param array|null $relationships [optional] The relationships to get
-     *
-     * @return static<T>
+     * @inheritDoc
      */
     public function withRelationships(array $relationships = null): static
     {
@@ -270,9 +247,7 @@ class Repository implements Contract
     }
 
     /**
-     * Get results.
-     *
-     * @return T[]
+     * @inheritDoc
      */
     public function getResult(): array
     {
@@ -284,9 +259,7 @@ class Repository implements Contract
     }
 
     /**
-     * Get one or null.
-     *
-     * @return T|null
+     * @inheritDoc
      */
     public function getOneOrNull(): ?Entity
     {
@@ -294,11 +267,7 @@ class Repository implements Contract
     }
 
     /**
-     * Get one or fail.
-     *
-     * @throws EntityNotFoundException
-     *
-     * @return T
+     * @inheritDoc
      */
     public function getOneOrFail(): Entity
     {
@@ -306,9 +275,7 @@ class Repository implements Contract
     }
 
     /**
-     * Get count results.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function getCount(): int
     {
@@ -316,18 +283,9 @@ class Repository implements Contract
     }
 
     /**
-     * Create a new entity.
-     *
-     * <code>
-     *      $repository->create(new Entity(), true | false)
-     * </code>
-     *
-     * @param Entity|T $entity
-     * @param bool     $defer [optional]
+     * @inheritDoc
      *
      * @throws InvalidEntityException
-     *
-     * @return void
      */
     public function create(Entity $entity, bool $defer = true): void
     {
@@ -337,18 +295,9 @@ class Repository implements Contract
     }
 
     /**
-     * Update an existing entity.
-     *
-     * <code>
-     *      $repository->save(new Entity(), true | false)
-     * </code>
-     *
-     * @param Entity|T $entity
-     * @param bool     $defer [optional]
+     * @inheritDoc
      *
      * @throws InvalidEntityException
-     *
-     * @return void
      */
     public function save(Entity $entity, bool $defer = true): void
     {
@@ -358,18 +307,9 @@ class Repository implements Contract
     }
 
     /**
-     * Delete an existing entity.
-     *
-     * <code>
-     *      $repository->delete(new Entity(), true | false)
-     * </code>
-     *
-     * @param Entity|T $entity
-     * @param bool     $defer [optional]
+     * @inheritDoc
      *
      * @throws InvalidEntityException
-     *
-     * @return void
      */
     public function delete(Entity $entity, bool $defer = true): void
     {
@@ -379,18 +319,9 @@ class Repository implements Contract
     }
 
     /**
-     * Soft delete an existing entity.
-     *
-     * <code>
-     *      $persister->softDelete(new SoftDeleteEntity(), true | false)
-     * </code>
-     *
-     * @param SoftDeleteEntity|T $entity
-     * @param bool               $defer [optional]
+     * @inheritDoc
      *
      * @throws InvalidEntityException
-     *
-     * @return void
      */
     public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
     {
@@ -400,17 +331,9 @@ class Repository implements Contract
     }
 
     /**
-     * Clear all, or a single, deferred entity.
-     *
-     * <code>
-     *      $repository->clear(new Entity())
-     * </code>
-     *
-     * @param Entity|T|null $entity The entity
+     * @inheritDoc
      *
      * @throws InvalidEntityException
-     *
-     * @return void
      */
     public function clear(Entity $entity = null): void
     {
@@ -422,9 +345,7 @@ class Repository implements Contract
     }
 
     /**
-     * Persist all entities.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function persist(): bool
     {
@@ -432,11 +353,7 @@ class Repository implements Contract
     }
 
     /**
-     * Get a new query builder instance.
-     *
-     * @param string|null $alias The alias to use
-     *
-     * @return QueryBuilder
+     * @inheritDoc
      */
     public function createQueryBuilder(string $alias = null): QueryBuilder
     {
@@ -444,15 +361,27 @@ class Repository implements Contract
     }
 
     /**
-     * Create a new query.
-     *
-     * @param string $query The query string
-     *
-     * @return Query
+     * @inheritDoc
      */
     public function createQuery(string $query): Query
     {
         return $this->driver->createQuery($query, $this->entity);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRetriever(): Retriever
+    {
+        return $this->retriever;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPersister(): Persister
+    {
+        return $this->persister;
     }
 
     /**

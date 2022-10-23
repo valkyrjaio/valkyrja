@@ -142,25 +142,22 @@ class Query implements QueryContract
 
         // If there is no entity specified just return the results
         if (null === $this->entity) {
-            foreach ($results as &$result) {
-                $result = (object) $result;
-            }
-
-            unset($result);
-
-            return $results;
+            return array_map(
+                static function (array $data) {
+                    return (object) $data;
+                },
+                $results
+            );
         }
 
-        $entities = [];
+        $entity = $this->entity;
 
-        // Iterate through the rows found
-        foreach ($results as $result) {
-            // Create a new entity
-            /** @var Entity $entity */
-            $entities[] = $this->entity::fromArray($result);
-        }
-
-        return $entities;
+        return array_map(
+            static function (array $data) use ($entity) {
+                return $entity::fromArray($data);
+            },
+            $results
+        );
     }
 
     /**

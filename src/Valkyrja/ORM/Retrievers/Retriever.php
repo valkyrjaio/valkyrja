@@ -16,13 +16,12 @@ namespace Valkyrja\ORM\Retrievers;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Constants\Statement;
 use Valkyrja\ORM\Entity;
+use Valkyrja\ORM\Enums\WhereType;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Retriever as Contract;
 use Valkyrja\Support\Type\Cls;
-
-use function is_array;
 
 /**
  * Class Retriever
@@ -116,21 +115,51 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function where(string $column, string $operator = null, mixed $value = null): static
+    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): static
     {
-        $this->queryBuilder->where($column, $operator, is_array($value) ? $value : null);
-        $this->setValue($column, $value);
+        $this->queryBuilder->where($column, $operator, $value, $setType);
+
+        if (! ($value instanceof QueryBuilder)) {
+            $this->setValue($column, $value);
+        }
 
         return $this;
     }
 
     /**
-     * @inheritDoc
+     * Start a where clause in parentheses.
+     *
+     * @return static
      */
-    public function orWhere(string $column, string $operator = null, mixed $value = null): static
+    public function startWhereGroup(): static
     {
-        $this->queryBuilder->orWhere($column, $operator);
-        $this->setValue($column, $value);
+        $this->queryBuilder->startWhereGroup();
+
+        return $this;
+    }
+
+    /**
+     * End a where clause in parentheses.
+     *
+     * @return static
+     */
+    public function endWhereGroup(): static
+    {
+        $this->queryBuilder->endWhereGroup();
+
+        return $this;
+    }
+
+    /**
+     * Add a where type.
+     *
+     * @param WhereType $type The type
+     *
+     * @return static
+     */
+    public function whereType(WhereType $type = WhereType::AND): static
+    {
+        $this->queryBuilder->whereType($type);
 
         return $this;
     }

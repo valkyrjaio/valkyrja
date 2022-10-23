@@ -21,6 +21,7 @@ use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\ORM;
+use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\SoftDeleteEntity;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
@@ -119,27 +120,13 @@ class CacheRepository extends Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function where(string $column, string $operator = null, $value = null): static
+    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): static
     {
-        if ($column === $this->entity::getIdField()) {
+        if (! ($value instanceof QueryBuilder) && $column === $this->entity::getIdField()) {
             $this->id = $value;
         }
 
-        parent::where($column, $operator, $value);
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function orWhere(string $column, string $operator = null, $value = null): static
-    {
-        if ($column === $this->entity::getIdField()) {
-            $this->id = $value;
-        }
-
-        parent::orWhere($column, $operator, $value);
+        parent::where($column, $operator, $value, $setType);
 
         return $this;
     }
@@ -341,7 +328,7 @@ class CacheRepository extends Repository implements Contract
         $id = spl_object_id($entity);
 
         match ($type) {
-            self::$storeType  => $this->storeEntities[$id]  = $entity,
+            self::$storeType  => $this->storeEntities[$id] = $entity,
             self::$forgetType => $this->forgetEntities[$id] = $entity,
         };
     }

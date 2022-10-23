@@ -15,6 +15,8 @@ namespace Valkyrja\ORM\QueryBuilders\Traits;
 
 use Valkyrja\ORM\Constants\Operator;
 use Valkyrja\ORM\Constants\Statement;
+use Valkyrja\ORM\Enums\WhereType;
+use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Support\Helpers;
 
 use function array_keys;
@@ -36,11 +38,21 @@ trait Where
     protected array $where = [];
 
     /**
+     * Has a where group been started.
+     *
+     * @var bool
+     */
+    protected bool $whereGroupStarted = false;
+
+    /**
      * @inheritDoc
      */
-    public function where(string $column, string $operator = null, mixed $value = null): static
+    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): static
     {
-        $this->setWhere($this->getWhereString($column, $operator ?? Operator::EQUALS, $value), Statement::WHERE_AND);
+        $this->setWhere(
+            $this->getWhereString($column, $operator ?? Operator::EQUALS, $value),
+            $setType ? Statement::WHERE_AND : ''
+        );
 
         return $this;
     }
@@ -48,9 +60,29 @@ trait Where
     /**
      * @inheritDoc
      */
-    public function orWhere(string $column, string $operator = null, mixed $value = null): static
+    public function startWhereGroup(): static
     {
-        $this->setWhere($this->getWhereString($column, $operator ?? Operator::EQUALS, $value), Statement::WHERE_OR);
+        $this->whereGroupStarted = true;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function endWhereGroup(): static
+    {
+        $this->where[] = ')';
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function whereType(WhereType $type = WhereType::AND): static
+    {
+        $this->where[] = $type->value;
 
         return $this;
     }
@@ -58,14 +90,19 @@ trait Where
     /**
      * Set a where condition.
      *
-     * @param string      $where
-     * @param string|null $type
+     * @param string $where
+     * @param string $type
      *
      * @return void
      */
-    protected function setWhere(string $where, string $type = null): void
+    protected function setWhere(string $where, string $type): void
     {
-        $this->where[] = (empty($this->where) ? '' : (string) $type) . ' ' . $where;
+        $this->where[] = (empty($this->where) ? '' : $type)
+            . ' '
+            . ($this->whereGroupStarted ? '(' : '')
+            . $where;
+
+        $this->whereGroupStarted = false;
     }
 
     /**
@@ -92,15 +129,15 @@ trait Where
      */
     protected function getWhereValue(string $column, mixed $value): string
     {
-        if (null === $value) {
-            return Helpers::getColumnForValueBind($column);
+        $columnValueBind = Helpers::getColumnForValueBind($column);
+
+        if ($value instanceof QueryBuilder) {
+            return '(' . $value->getQueryString() . ')';
         }
 
         if (! is_array($value)) {
-            return (string) $value;
+            return $columnValueBind;
         }
-
-        $columnValueBind = Helpers::getColumnForValueBind($column);
 
         return '(' . $columnValueBind . implode(', ' . $columnValueBind, array_keys($value)) . ')';
     }

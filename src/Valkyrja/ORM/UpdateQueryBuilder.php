@@ -18,7 +18,7 @@ namespace Valkyrja\ORM;
  *
  * @author Melech Mizrachi
  */
-interface UpdateQueryBuilder extends BaseQueryBuilder
+interface UpdateQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
 {
     /**
      * Add a value for a column to set.
@@ -40,49 +40,6 @@ interface UpdateQueryBuilder extends BaseQueryBuilder
      * @return static
      */
     public function set(string $column, mixed $value = null): static;
-
-    /**
-     * Add a where condition to the query statement.
-     * - Each additional use will add an `AND` where condition.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column');
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->where('column2', '=', ':column2');
-     * </code>
-     *
-     * @param string      $column
-     * @param string|null $operator
-     * @param mixed|null  $value
-     *
-     * @return static
-     */
-    public function where(string $column, string $operator = null, mixed $value = null): static;
-
-    /**
-     * Add an additional `OR` where condition to the query statement.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->orWhere('column2', '=', ':column2');
-     * </code>
-     *
-     * @param string      $column
-     * @param string|null $operator
-     * @param mixed|null  $value
-     *
-     * @return static
-     */
-    public function orWhere(string $column, string $operator = null, mixed $value = null): static;
 
     /**
      * Join with another table.
