@@ -46,48 +46,6 @@ use const UPLOAD_ERR_OK;
 class UploadedFile implements UploadedFileContract
 {
     /**
-     * The uploaded file.
-     *
-     * @var string|null
-     */
-    protected ?string $file = null;
-
-    /**
-     * The uploaded file as a stream.
-     *
-     * @var Stream|null
-     */
-    protected ?Stream $stream = null;
-
-    /**
-     * THe uploaded file size.
-     *
-     * @var int
-     */
-    protected int $size;
-
-    /**
-     * The error status. One of UPLOAD_ERR_* constant.
-     *
-     * @var int
-     */
-    protected int $errorStatus;
-
-    /**
-     * The uploaded file's name.
-     *
-     * @var string|null
-     */
-    protected ?string $fileName = null;
-
-    /**
-     * The uploaded file's media type.
-     *
-     * @var string|null
-     */
-    protected ?string $mediaType = null;
-
-    /**
      * Whether the file has been moved yet.
      *
      * @var bool
@@ -107,12 +65,12 @@ class UploadedFile implements UploadedFileContract
      * @throws InvalidArgumentException
      */
     public function __construct(
-        int $size,
-        int $errorStatus,
-        string $file = null,
-        Stream $stream = null,
-        string $fileName = null,
-        string $mediaType = null
+        protected int $size,
+        protected int $errorStatus,
+        protected string|null $file = null,
+        protected Stream|null $stream = null,
+        protected string|null $fileName = null,
+        protected string|null $mediaType = null
     ) {
         // If the error is less than the lowest valued UPLOAD_ERR_* constant
         // Or the error is greater than the highest valued UPLOAD_ERR_* constant
@@ -130,13 +88,6 @@ class UploadedFile implements UploadedFileContract
                 'Either one of file or stream are required. Neither passed as arguments.'
             );
         }
-
-        $this->file        = $file;
-        $this->size        = $size;
-        $this->errorStatus = $errorStatus;
-        $this->stream      = $stream;
-        $this->fileName    = $fileName;
-        $this->mediaType   = $mediaType;
     }
 
     /**

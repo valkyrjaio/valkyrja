@@ -37,6 +37,9 @@ class EmptyResponse extends Response implements Contract
      */
     public function __construct(array $headers = [])
     {
-        parent::__construct(null, StatusCode::NO_CONTENT, $headers);
+        parent::__construct(
+            statusCode: StatusCode::NO_CONTENT,
+            headers   : $headers
+        );
     }
 }

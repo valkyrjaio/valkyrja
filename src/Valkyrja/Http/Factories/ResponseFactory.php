@@ -33,20 +33,13 @@ use Valkyrja\View\View;
 class ResponseFactory implements Contract
 {
     /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
      * ResponseBuilder constructor.
      *
      * @param Container $container
      */
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        protected Container $container
+    ) {
     }
 
     /**

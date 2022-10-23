@@ -56,22 +56,8 @@ class SimpleRequest implements SimpleRequestContract
 {
     use MessageTrait;
 
-    public static string $HOST_NAME      = 'Host';
+    public static string $HOST_NAME = 'Host';
     public static string $HOST_NAME_NORM = 'host';
-
-    /**
-     * The uri.
-     *
-     * @var Uri
-     */
-    protected Uri $uri;
-
-    /**
-     * The method.
-     *
-     * @var string
-     */
-    protected string $method;
 
     /**
      * The request target.
@@ -83,10 +69,10 @@ class SimpleRequest implements SimpleRequestContract
     /**
      * SimpleRequest constructor.
      *
-     * @param Uri|null    $uri     [optional] The uri
-     * @param string|null $method  [optional] The method
-     * @param Stream|null $body    [optional] The body stream
-     * @param array|null  $headers [optional] The headers
+     * @param Uri    $uri     [optional] The uri
+     * @param string $method  [optional] The method
+     * @param Stream $body    [optional] The body stream
+     * @param array  $headers [optional] The headers
      *
      * @throws InvalidArgumentException
      * @throws InvalidMethod
@@ -97,9 +83,23 @@ class SimpleRequest implements SimpleRequestContract
      * @throws InvalidScheme
      * @throws InvalidStream
      */
-    public function __construct(Uri $uri = null, string $method = null, Stream $body = null, array $headers = null)
-    {
-        $this->initialize($uri, $method, $body, $headers);
+    public function __construct(
+        protected Uri $uri = new HttpUri(),
+        protected string $method = RequestMethod::GET,
+        Stream $body = new HttpStream(StreamType::INPUT),
+        array $headers = []
+    ) {
+        $this->setBody($body);
+        $this->setHeaders($headers);
+        $this->validateMethod($method);
+        $this->validateProtocolVersion($this->protocol);
+
+        if ($this->hasHeader(static::$HOST_NAME) && $this->uri->getHost()) {
+            $this->headerNames[static::$HOST_NAME_NORM] = static::$HOST_NAME;
+            $this->headers[static::$HOST_NAME]          = [
+                $this->uri->getHost(),
+            ];
+        }
     }
 
     /**
@@ -223,48 +223,6 @@ class SimpleRequest implements SimpleRequestContract
     {
         if (! in_array($method, RequestMethod::ANY, true)) {
             throw new InvalidMethod(sprintf('Unsupported HTTP method "%s" provided', $method));
-        }
-    }
-
-    /**
-     * Initialize the Request.
-     *
-     * @param Uri|null    $uri     [optional] The uri
-     * @param string|null $method  [optional] The method
-     * @param Stream|null $body    [optional] The body stream
-     * @param array|null  $headers [optional] The headers
-     *
-     * @throws InvalidArgumentException
-     * @throws InvalidMethod
-     * @throws InvalidPath
-     * @throws InvalidPort
-     * @throws InvalidProtocolVersion
-     * @throws InvalidQuery
-     * @throws InvalidScheme
-     * @throws InvalidStream
-     *
-     * @return void
-     */
-    protected function initialize(
-        Uri $uri = null,
-        string $method = null,
-        Stream $body = null,
-        array $headers = null
-    ): void {
-        $this->uri     = $uri ?? new HttpUri();
-        $this->method  = $method ?? RequestMethod::GET;
-        $this->stream  = $body ?? new HttpStream(StreamType::INPUT);
-        $this->headers = $headers ?? [];
-
-        $this->setHeaders($this->headers);
-        $this->validateMethod($this->method);
-        $this->validateProtocolVersion($this->protocol);
-
-        if ($this->hasHeader(static::$HOST_NAME) && $this->uri->getHost()) {
-            $this->headerNames[static::$HOST_NAME_NORM] = static::$HOST_NAME;
-            $this->headers[static::$HOST_NAME]          = [
-                $this->uri->getHost(),
-            ];
         }
     }
 }

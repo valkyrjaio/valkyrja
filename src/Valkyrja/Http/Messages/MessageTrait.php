@@ -199,9 +199,21 @@ trait MessageTrait
     {
         $new = clone $this;
 
-        $new->stream = $body;
+        $new->setBody($body);
 
         return $new;
+    }
+
+    /**
+     * Set the body.
+     *
+     * @param Stream $body The body
+     *
+     * @return void
+     */
+    protected function setBody(Stream $body): void
+    {
+        $this->stream = $body;
     }
 
     /**

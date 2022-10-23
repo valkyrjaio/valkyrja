@@ -24,29 +24,15 @@ use Valkyrja\Validation\Validator;
 abstract class ValidateRequest
 {
     /**
-     * The request.
-     *
-     * @var Request
-     */
-    protected Request $request;
-
-    /**
-     * The validator.
-     *
-     * @var Validator
-     */
-    protected Validator $validator;
-
-    /**
      * ValidateRequest constructor.
      *
      * @param Request   $request   The request
      * @param Validator $validator The validator
      */
-    public function __construct(Request $request, Validator $validator)
-    {
-        $this->request   = $request;
-        $this->validator = $validator;
+    public function __construct(
+        protected Request $request,
+        protected Validator $validator
+    ) {
     }
 
     /**

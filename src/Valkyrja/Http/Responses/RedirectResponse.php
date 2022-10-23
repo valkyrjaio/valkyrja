@@ -30,31 +30,21 @@ use Valkyrja\Http\Request;
 class RedirectResponse extends Response implements Contract
 {
     /**
-     * The uri to redirect to.
-     *
-     * @var string
-     */
-    protected string $uri;
-
-    /**
      * RedirectResponse constructor.
      *
-     * @param string|null $uri        [optional] The uri
-     * @param int|null    $statusCode [optional] The status
-     * @param array|null  $headers    [optional] The headers
+     * @param string $uri        [optional] The uri
+     * @param int    $statusCode [optional] The status
+     * @param array  $headers    [optional] The headers
      *
      * @throws InvalidArgumentException
      * @throws InvalidStatusCode
      * @throws InvalidStream
      */
-    public function __construct(string $uri = null, int $statusCode = null, array $headers = null)
+    public function __construct(protected string $uri = '/', int $statusCode = StatusCode::OK, array $headers = [])
     {
-        $this->uri = $uri ?? '/';
-
         parent::__construct(
-            null,
-            $statusCode ?? StatusCode::FOUND,
-            $this->injectHeader(Header::LOCATION, $this->uri, $headers, true)
+            statusCode: $statusCode ?? StatusCode::FOUND,
+            headers   : $this->injectHeader(Header::LOCATION, $uri, $headers, true)
         );
     }
 

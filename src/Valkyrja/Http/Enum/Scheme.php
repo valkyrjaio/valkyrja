@@ -11,16 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Constants;
+namespace Valkyrja\Http\Enums;
 
 /**
  * Constant Scheme.
  *
  * @author Melech Mizrachi
  */
-final class Scheme
+enum Scheme: string
 {
-    public const EMPTY = '';
-    public const HTTP  = 'http';
-    public const HTTPS = 'https';
+    case HTTP = 'http';
+    case HTTPS = 'https';
 }

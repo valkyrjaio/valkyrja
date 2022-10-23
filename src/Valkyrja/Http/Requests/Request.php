@@ -17,6 +17,8 @@ use InvalidArgumentException;
 use JsonException;
 use Valkyrja\Http\Constants\ContentType;
 use Valkyrja\Http\Constants\Header;
+use Valkyrja\Http\Constants\RequestMethod;
+use Valkyrja\Http\Constants\StreamType;
 use Valkyrja\Http\Exceptions\InvalidMethod;
 use Valkyrja\Http\Exceptions\InvalidPath;
 use Valkyrja\Http\Exceptions\InvalidPort;
@@ -27,8 +29,10 @@ use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\Exceptions\InvalidUploadedFile;
 use Valkyrja\Http\Request as Contract;
 use Valkyrja\Http\Stream;
+use Valkyrja\Http\Streams\Stream as HttpStream;
 use Valkyrja\Http\UploadedFile;
 use Valkyrja\Http\Uri;
+use Valkyrja\Http\Uris\Uri as HttpUri;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Str;
 
@@ -68,39 +72,11 @@ use Valkyrja\Support\Type\Str;
 class Request extends SimpleRequest implements Contract
 {
     /**
-     * The server params.
-     *
-     * @var array
-     */
-    protected array $server = [];
-
-    /**
      * The attributes.
      *
      * @var array
      */
     protected array $attributes = [];
-
-    /**
-     * The query params.
-     *
-     * @var array
-     */
-    protected array $query = [];
-
-    /**
-     * The cookies.
-     *
-     * @var array
-     */
-    protected array $cookies = [];
-
-    /**
-     * The parsed body.
-     *
-     * @var array
-     */
-    protected array $parsedBody = [];
 
     /**
      * The parsed json.
@@ -119,15 +95,15 @@ class Request extends SimpleRequest implements Contract
     /**
      * Request constructor.
      *
-     * @param Uri|null     $uri        [optional] The uri
-     * @param string|null  $method     [optional] The method
-     * @param Stream|null  $body       [optional] The body stream
-     * @param array|null   $headers    [optional] The headers
-     * @param array|null   $server     [optional] The server
-     * @param array|null   $cookies    [optional] The cookies
-     * @param array|null   $query      [optional] The query string
-     * @param array|null   $parsedBody [optional] The parsed body
-     * @param string|null  $protocol   [optional] The protocol version
+     * @param Uri          $uri        [optional] The uri
+     * @param string       $method     [optional] The method
+     * @param Stream       $body       [optional] The body stream
+     * @param array        $headers    [optional] The headers
+     * @param array        $server     [optional] The server
+     * @param array        $cookies    [optional] The cookies
+     * @param array        $query      [optional] The query string
+     * @param array        $parsedBody [optional] The parsed body
+     * @param string       $protocol   [optional] The protocol version
      * @param UploadedFile ...$files   [optional] The files
      *
      * @throws InvalidArgumentException
@@ -142,15 +118,15 @@ class Request extends SimpleRequest implements Contract
      * @throws JsonException
      */
     public function __construct(
-        Uri $uri = null,
-        string $method = null,
-        Stream $body = null,
-        array $headers = null,
-        array $server = null,
-        array $cookies = null,
-        array $query = null,
-        array $parsedBody = null,
-        string $protocol = null,
+        Uri $uri = new HttpUri(),
+        string $method = RequestMethod::GET,
+        Stream $body = new HttpStream(StreamType::INPUT),
+        array $headers = [],
+        protected array $server = [],
+        protected array $cookies = [],
+        protected array $query = [],
+        protected array $parsedBody = [],
+        protected string $protocol = '1.1',
         UploadedFile ...$files
     ) {
         parent::__construct($uri, $method, $body, $headers);
@@ -159,19 +135,14 @@ class Request extends SimpleRequest implements Contract
             $this->hasHeader(Header::CONTENT_TYPE)
             && Str::contains($this->getHeaderLine(Header::CONTENT_TYPE), ContentType::APPLICATION_JSON)
         ) {
-            $this->parsedJson = Arr::fromString((string) $this->stream);
+            $this->parsedJson = Arr::fromString((string) $body);
 
             if (! $parsedBody) {
-                $parsedBody = $this->parsedJson;
+                $this->parsedBody = $this->parsedJson;
             }
         }
 
-        $this->server     = $server ?? [];
-        $this->cookies    = $cookies ?? [];
-        $this->query      = $query ?? [];
-        $this->parsedBody = $parsedBody ?? [];
-        $this->protocol   = $protocol ?? '1.1';
-        $this->files      = $files ?? [];
+        $this->files = $files ?? [];
     }
 
     /**

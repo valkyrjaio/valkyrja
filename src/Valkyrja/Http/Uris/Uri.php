@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Uris;
 
+use Valkyrja\Http\Constants\Scheme;
 use Valkyrja\Http\Exceptions\InvalidPath;
 use Valkyrja\Http\Exceptions\InvalidPort;
 use Valkyrja\Http\Exceptions\InvalidQuery;
@@ -43,55 +44,6 @@ class Uri implements UriContract
     use UriHelpers;
 
     /**
-     * The scheme.
-     *
-     * @var string
-     */
-    protected string $scheme;
-
-    /**
-     * The user info.
-     *
-     * @var string
-     */
-    protected string $userInfo;
-
-    /**
-     * The host.
-     *
-     * @var string
-     */
-    protected string $host;
-
-    /**
-     * The port.
-     *
-     * @var int|null
-     */
-    protected ?int $port = null;
-
-    /**
-     * The path.
-     *
-     * @var string
-     */
-    protected string $path;
-
-    /**
-     * The query string.
-     *
-     * @var string
-     */
-    protected string $query;
-
-    /**
-     * The fragment.
-     *
-     * @var string
-     */
-    protected string $fragment;
-
-    /**
      * The URI as a string.
      *
      * @var string|null
@@ -101,13 +53,13 @@ class Uri implements UriContract
     /**
      * UriImpl constructor.
      *
-     * @param string|null $scheme   [optional] The scheme
-     * @param string|null $userInfo [optional] The user info
-     * @param string|null $host     [optional] The host
-     * @param int|null    $port     [optional] The port
-     * @param string|null $path     [optional] The path
-     * @param string|null $query    [optional] The query
-     * @param string|null $fragment [optional] The fragment
+     * @param string   $scheme   [optional] The scheme
+     * @param string   $userInfo [optional] The user info
+     * @param string   $host     [optional] The host
+     * @param int|null $port     [optional] The port
+     * @param string   $path     [optional] The path
+     * @param string   $query    [optional] The query
+     * @param string   $fragment [optional] The fragment
      *
      * @throws InvalidPath
      * @throws InvalidPort
@@ -115,22 +67,18 @@ class Uri implements UriContract
      * @throws InvalidScheme
      */
     public function __construct(
-        string $scheme = null,
-        string $userInfo = null,
-        string $host = null,
-        int $port = null,
-        string $path = null,
-        string $query = null,
-        string $fragment = null
+        protected string $scheme = Scheme::EMPTY,
+        protected string $userInfo = '',
+        protected string $host = '',
+        protected int|null $port = null,
+        protected string $path = '',
+        protected string $query = '',
+        protected string $fragment = ''
     ) {
-        $this->scheme   = $this->validateScheme($scheme ?? '');
-        $this->userInfo = $userInfo ?? '';
-        $this->host     = $host ?? '';
-        $this->port     = $port;
-        $this->path     = $this->validatePath($path ?? '');
-        $this->query    = $this->validateQuery($query ?? '');
-        $this->fragment = $this->validateFragment($fragment ?? '');
-
+        $this->validateScheme($this->scheme);
+        $this->path = $this->validatePath($this->path);
+        $this->validateFragment($this->query);
+        $this->validateFragment($this->fragment);
         $this->validatePort($this->port);
     }
 

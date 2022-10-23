@@ -18,6 +18,7 @@ use JsonException;
 use RuntimeException;
 use Valkyrja\Http\Constants\ContentType;
 use Valkyrja\Http\Constants\Header;
+use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Constants\StreamType;
 use Valkyrja\Http\Exceptions\InvalidStatusCode;
 use Valkyrja\Http\Exceptions\InvalidStream;
@@ -39,33 +40,12 @@ use const JSON_THROW_ON_ERROR;
 class JsonResponse extends Response implements Contract
 {
     /**
-     * The default encoding options to use for json_encode().
-     *
-     * @constant int
-     */
-    protected const DEFAULT_ENCODING_OPTIONS = 79;
-
-    /**
-     * The json data.
-     *
-     * @var array
-     */
-    protected array $data;
-
-    /**
-     * Encoding options.
-     *
-     * @var int
-     */
-    protected int $encodingOptions;
-
-    /**
      * NativeJsonResponse constructor.
      *
-     * @param array|null $data            [optional] The data
-     * @param int|null   $statusCode      [optional] The status
-     * @param array|null $headers         [optional] The headers
-     * @param int|null   $encodingOptions [optional] The encoding options
+     * @param array $data            [optional] The data
+     * @param int   $statusCode      [optional] The status
+     * @param array $headers         [optional] The headers
+     * @param int   $encodingOptions [optional] The encoding options
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
@@ -74,16 +54,13 @@ class JsonResponse extends Response implements Contract
      * @throws JsonException
      */
     public function __construct(
-        array $data = null,
-        int $statusCode = null,
-        array $headers = null,
-        int $encodingOptions = null
+        protected array $data = [],
+        int $statusCode = StatusCode::OK,
+        array $headers = [],
+        protected int $encodingOptions = 79
     ) {
-        $this->data            = $data ?? [];
-        $this->encodingOptions = $encodingOptions ?? static::DEFAULT_ENCODING_OPTIONS;
-
         $body = new Stream(StreamType::TEMP, 'wb+');
-        $body->write(json_encode($this->data, JSON_THROW_ON_ERROR | $this->encodingOptions));
+        $body->write(json_encode($data, JSON_THROW_ON_ERROR | $this->encodingOptions));
         $body->rewind();
 
         parent::__construct(

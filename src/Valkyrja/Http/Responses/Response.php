@@ -46,13 +46,6 @@ class Response implements Contract
     use MessageTrait;
 
     /**
-     * The status code.
-     *
-     * @var int
-     */
-    protected int $statusCode;
-
-    /**
      * The status phrase.
      *
      * @var string
@@ -62,20 +55,23 @@ class Response implements Contract
     /**
      * NativeResponse constructor.
      *
-     * @param Stream|null $body       [optional] The body
-     * @param int|null    $statusCode [optional] The status
-     * @param array|null  $headers    [optional] The headers
+     * @param Stream $body       [optional] The body
+     * @param int    $statusCode [optional] The status
+     * @param array  $headers    [optional] The headers
      *
      * @throws InvalidArgumentException
      * @throws InvalidStatusCode
      * @throws InvalidStream
      */
-    public function __construct(Stream $body = null, int $statusCode = null, array $headers = null)
-    {
-        $this->stream       = $body ?? new HttpStream(StreamType::INPUT, 'rw');
+    public function __construct(
+        Stream $body = new HttpStream(StreamType::INPUT, 'rw'),
+        protected int $statusCode = StatusCode::OK,
+        array $headers = []
+    ) {
         $this->statusCode   = $this->validateStatusCode($statusCode ?? StatusCode::OK);
         $this->statusPhrase = StatusCode::TEXTS[$this->statusCode];
 
+        $this->setBody($body);
         $this->setHeaders($headers ?? []);
     }
 
