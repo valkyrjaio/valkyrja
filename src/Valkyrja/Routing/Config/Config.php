@@ -28,16 +28,15 @@ class Config extends Model
      * @inheritDoc
      */
     protected static array $envKeys = [
-        CKP::MIDDLEWARE                  => EnvKey::ROUTING_MIDDLEWARE,
-        CKP::MIDDLEWARE_GROUPS           => EnvKey::ROUTING_MIDDLEWARE_GROUPS,
-        CKP::CONTROLLERS                 => EnvKey::ROUTING_CONTROLLERS,
-        CKP::USE_TRAILING_SLASH          => EnvKey::ROUTING_USE_TRAILING_SLASH,
-        CKP::USE_ABSOLUTE_URLS           => EnvKey::ROUTING_USE_ABSOLUTE_URLS,
-        CKP::USE_ANNOTATIONS             => EnvKey::ROUTING_USE_ANNOTATIONS,
-        CKP::USE_ANNOTATIONS_EXCLUSIVELY => EnvKey::ROUTING_USE_ANNOTATIONS_EXCLUSIVELY,
-        CKP::FILE_PATH                   => EnvKey::ROUTING_FILE_PATH,
-        CKP::CACHE_FILE_PATH             => EnvKey::ROUTING_CACHE_FILE_PATH,
-        CKP::USE_CACHE                   => EnvKey::ROUTING_USE_CACHE_FILE,
+        CKP::MIDDLEWARE         => EnvKey::ROUTING_MIDDLEWARE,
+        CKP::MIDDLEWARE_GROUPS  => EnvKey::ROUTING_MIDDLEWARE_GROUPS,
+        CKP::CONTROLLERS        => EnvKey::ROUTING_CONTROLLERS,
+        CKP::USE_TRAILING_SLASH => EnvKey::ROUTING_USE_TRAILING_SLASH,
+        CKP::USE_ABSOLUTE_URLS  => EnvKey::ROUTING_USE_ABSOLUTE_URLS,
+        CKP::USE_ANNOTATIONS    => EnvKey::ROUTING_USE_ANNOTATIONS,
+        CKP::FILE_PATH          => EnvKey::ROUTING_FILE_PATH,
+        CKP::CACHE_FILE_PATH    => EnvKey::ROUTING_CACHE_FILE_PATH,
+        CKP::USE_CACHE          => EnvKey::ROUTING_USE_CACHE_FILE,
     ];
 
     /**
@@ -81,13 +80,6 @@ class Config extends Model
      * @var bool
      */
     public bool $useAnnotations;
-
-    /**
-     * The flag to use annotations exclusively (forgoing filePath).
-     *
-     * @var bool
-     */
-    public bool $useAnnotationsExclusively;
 
     /**
      * The cache from a Cacheable::getCacheable().

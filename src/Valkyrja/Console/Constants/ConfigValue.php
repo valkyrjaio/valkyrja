@@ -22,8 +22,8 @@ use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
  */
 final class ConfigValue
 {
-    public const HANDLERS                    = [];
-    public const PROVIDERS                   = [
+    public const HANDLERS        = [];
+    public const PROVIDERS       = [
         Provider::CLEAR_CACHE_COMMAND,
         Provider::CONFIG_CACHE_COMMAND,
         Provider::CONFIG_CLEAR_COMMAND,
@@ -37,23 +37,21 @@ final class ConfigValue
         Provider::ROUTES_CACHE_COMMAND,
         Provider::ROUTES_LIST_COMMAND,
     ];
-    public const DEV_PROVIDERS               = [];
-    public const QUIET                       = false;
-    public const USE_ANNOTATIONS             = false;
-    public const USE_ANNOTATIONS_EXCLUSIVELY = false;
-    public const FILE_PATH                   = '';
-    public const CACHE_FILE_PATH             = '';
-    public const USE_CACHE_FILE              = false;
+    public const DEV_PROVIDERS   = [];
+    public const QUIET           = false;
+    public const USE_ANNOTATIONS = false;
+    public const FILE_PATH       = '';
+    public const CACHE_FILE_PATH = '';
+    public const USE_CACHE_FILE  = false;
 
     public static array $defaults = [
-        CKP::HANDLERS                    => self::HANDLERS,
-        CKP::PROVIDERS                   => self::PROVIDERS,
-        CKP::DEV_PROVIDERS               => self::DEV_PROVIDERS,
-        CKP::QUIET                       => self::QUIET,
-        CKP::USE_ANNOTATIONS             => self::USE_ANNOTATIONS,
-        CKP::USE_ANNOTATIONS_EXCLUSIVELY => self::USE_ANNOTATIONS_EXCLUSIVELY,
-        CKP::FILE_PATH                   => self::FILE_PATH,
-        CKP::CACHE_FILE_PATH             => self::CACHE_FILE_PATH,
-        CKP::USE_CACHE                   => self::USE_CACHE_FILE,
+        CKP::HANDLERS        => self::HANDLERS,
+        CKP::PROVIDERS       => self::PROVIDERS,
+        CKP::DEV_PROVIDERS   => self::DEV_PROVIDERS,
+        CKP::QUIET           => self::QUIET,
+        CKP::USE_ANNOTATIONS => self::USE_ANNOTATIONS,
+        CKP::FILE_PATH       => self::FILE_PATH,
+        CKP::CACHE_FILE_PATH => self::CACHE_FILE_PATH,
+        CKP::USE_CACHE       => self::USE_CACHE_FILE,
     ];
 }

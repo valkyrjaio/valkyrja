@@ -66,41 +66,38 @@ final class ConfigKey
     public const CLIENT_ADAPTER  = 'client.adapter';
     public const CLIENT_ADAPTERS = 'client.adapters';
 
-    public const CONSOLE_PROVIDERS                   = 'console.providers';
-    public const CONSOLE_DEV_PROVIDERS               = 'console.devProviders';
-    public const CONSOLE_QUIET                       = 'console.quiet';
-    public const CONSOLE_USE_ANNOTATIONS             = 'console.useAnnotations';
-    public const CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY = 'console.useAnnotationsExclusively';
-    public const CONSOLE_HANDLERS                    = 'console.handlers';
-    public const CONSOLE_FILE_PATH                   = 'console.filePath';
-    public const CONSOLE_CACHE_FILE_PATH             = 'console.cacheFilePath';
-    public const CONSOLE_USE_CACHE_FILE              = 'console.useCache';
-    public const CONSOLE_CACHE                       = 'console.cache';
+    public const CONSOLE_PROVIDERS       = 'console.providers';
+    public const CONSOLE_DEV_PROVIDERS   = 'console.devProviders';
+    public const CONSOLE_QUIET           = 'console.quiet';
+    public const CONSOLE_USE_ANNOTATIONS = 'console.useAnnotations';
+    public const CONSOLE_HANDLERS        = 'console.handlers';
+    public const CONSOLE_FILE_PATH       = 'console.filePath';
+    public const CONSOLE_CACHE_FILE_PATH = 'console.cacheFilePath';
+    public const CONSOLE_USE_CACHE_FILE  = 'console.useCache';
+    public const CONSOLE_CACHE           = 'console.cache';
 
-    public const CONTAINER_PROVIDERS                   = 'container.providers';
-    public const CONTAINER_DEV_PROVIDERS               = 'container.devProviders';
-    public const CONTAINER_SETUP_FACADE                = 'container.setupFacade';
-    public const CONTAINER_USE_ANNOTATIONS             = 'container.useAnnotations';
-    public const CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY = 'container.useAnnotationsExclusively';
-    public const CONTAINER_SERVICES                    = 'container.services';
-    public const CONTAINER_CONTEXT_SERVICES            = 'container.contextServices';
-    public const CONTAINER_FILE_PATH                   = 'container.filePath';
-    public const CONTAINER_CACHE_FILE_PATH             = 'container.cacheFilePath';
-    public const CONTAINER_USE_CACHE_FILE              = 'container.useCache';
-    public const CONTAINER_CACHE                       = 'container.cache';
+    public const CONTAINER_PROVIDERS        = 'container.providers';
+    public const CONTAINER_DEV_PROVIDERS    = 'container.devProviders';
+    public const CONTAINER_SETUP_FACADE     = 'container.setupFacade';
+    public const CONTAINER_USE_ANNOTATIONS  = 'container.useAnnotations';
+    public const CONTAINER_SERVICES         = 'container.services';
+    public const CONTAINER_CONTEXT_SERVICES = 'container.contextServices';
+    public const CONTAINER_FILE_PATH        = 'container.filePath';
+    public const CONTAINER_CACHE_FILE_PATH  = 'container.cacheFilePath';
+    public const CONTAINER_USE_CACHE_FILE   = 'container.useCache';
+    public const CONTAINER_CACHE            = 'container.cache';
 
     public const CRYPT_KEY      = 'crypt.key';
     public const CRYPT_KEY_PATH = 'crypt.keyPath';
     public const CRYPT_ADAPTER  = 'crypt.adapter';
     public const CRYPT_ADAPTERS = 'crypt.adapters';
 
-    public const EVENTS_USE_ANNOTATIONS             = 'event.useAnnotations';
-    public const EVENTS_USE_ANNOTATIONS_EXCLUSIVELY = 'event.useAnnotationsExclusively';
-    public const EVENTS_CLASSES                     = 'event.classes';
-    public const EVENTS_FILE_PATH                   = 'event.filePath';
-    public const EVENTS_CACHE_FILE_PATH             = 'event.cacheFilePath';
-    public const EVENTS_USE_CACHE_FILE              = 'event.useCache';
-    public const EVENTS_CACHE                       = 'event.cache';
+    public const EVENTS_USE_ANNOTATIONS = 'event.useAnnotations';
+    public const EVENTS_CLASSES         = 'event.classes';
+    public const EVENTS_FILE_PATH       = 'event.filePath';
+    public const EVENTS_CACHE_FILE_PATH = 'event.cacheFilePath';
+    public const EVENTS_USE_CACHE_FILE  = 'event.useCache';
+    public const EVENTS_CACHE           = 'event.cache';
 
     public const FILESYSTEM_DEFAULT       = 'filesystem.default';
     public const FILESYSTEM_ADAPTERS      = 'filesystem.adapters';
@@ -152,17 +149,16 @@ final class ConfigKey
 
     public const PATH_PATTERNS = 'path.patterns';
 
-    public const ROUTING_TRAILING_SLASH              = 'routing.trailingSlash';
-    public const ROUTING_USE_ABSOLUTE_URLS           = 'routing.useAbsoluteUrls';
-    public const ROUTING_MIDDLEWARE                  = 'routing.middleware';
-    public const ROUTING_MIDDLEWARE_GROUPS           = 'routing.middlewareGroups';
-    public const ROUTING_USE_ANNOTATIONS             = 'routing.useAnnotations';
-    public const ROUTING_USE_ANNOTATIONS_EXCLUSIVELY = 'routing.useAnnotationsExclusively';
-    public const ROUTING_CONTROLLERS                 = 'routing.controllers';
-    public const ROUTING_FILE_PATH                   = 'routing.filePath';
-    public const ROUTING_CACHE_FILE_PATH             = 'routing.cacheFilePath';
-    public const ROUTING_USE_CACHE_FILE              = 'routing.useCache';
-    public const ROUTING_CACHE                       = 'routing.cache';
+    public const ROUTING_TRAILING_SLASH    = 'routing.trailingSlash';
+    public const ROUTING_USE_ABSOLUTE_URLS = 'routing.useAbsoluteUrls';
+    public const ROUTING_MIDDLEWARE        = 'routing.middleware';
+    public const ROUTING_MIDDLEWARE_GROUPS = 'routing.middlewareGroups';
+    public const ROUTING_USE_ANNOTATIONS   = 'routing.useAnnotations';
+    public const ROUTING_CONTROLLERS       = 'routing.controllers';
+    public const ROUTING_FILE_PATH         = 'routing.filePath';
+    public const ROUTING_CACHE_FILE_PATH   = 'routing.cacheFilePath';
+    public const ROUTING_USE_CACHE_FILE    = 'routing.useCache';
+    public const ROUTING_CACHE             = 'routing.cache';
 
     public const SESSION_ID       = 'session.id';
     public const SESSION_NAME     = 'session.name';

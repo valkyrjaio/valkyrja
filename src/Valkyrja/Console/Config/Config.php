@@ -29,15 +29,14 @@ class Config extends Model
      * @inheritDoc
      */
     protected static array $envKeys = [
-        CKP::HANDLERS                    => EnvKey::CONSOLE_HANDLERS,
-        CKP::PROVIDERS                   => EnvKey::CONSOLE_PROVIDERS,
-        CKP::DEV_PROVIDERS               => EnvKey::CONSOLE_DEV_PROVIDERS,
-        CKP::QUIET                       => EnvKey::CONSOLE_QUIET,
-        CKP::USE_ANNOTATIONS             => EnvKey::CONSOLE_USE_ANNOTATIONS,
-        CKP::USE_ANNOTATIONS_EXCLUSIVELY => EnvKey::CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY,
-        CKP::FILE_PATH                   => EnvKey::CONSOLE_FILE_PATH,
-        CKP::CACHE_FILE_PATH             => EnvKey::CONSOLE_CACHE_FILE_PATH,
-        CKP::USE_CACHE                   => EnvKey::CONSOLE_USE_CACHE_FILE,
+        CKP::HANDLERS        => EnvKey::CONSOLE_HANDLERS,
+        CKP::PROVIDERS       => EnvKey::CONSOLE_PROVIDERS,
+        CKP::DEV_PROVIDERS   => EnvKey::CONSOLE_DEV_PROVIDERS,
+        CKP::QUIET           => EnvKey::CONSOLE_QUIET,
+        CKP::USE_ANNOTATIONS => EnvKey::CONSOLE_USE_ANNOTATIONS,
+        CKP::FILE_PATH       => EnvKey::CONSOLE_FILE_PATH,
+        CKP::CACHE_FILE_PATH => EnvKey::CONSOLE_CACHE_FILE_PATH,
+        CKP::USE_CACHE       => EnvKey::CONSOLE_USE_CACHE_FILE,
     ];
 
     /**
@@ -74,13 +73,6 @@ class Config extends Model
      * @var bool
      */
     public bool $useAnnotations;
-
-    /**
-     * The flag to use annotations exclusively (forgoing filePath).
-     *
-     * @var bool
-     */
-    public bool $useAnnotationsExclusively;
 
     /**
      * The cache from a Cacheable::getCacheable().

@@ -156,6 +156,17 @@ class CacheableContainer extends Container
     }
 
     /**
+     * Set attributes.
+     *
+     * @param ContainerConfig|array $config
+     *
+     * @return void
+     */
+    protected function setupAttributes(Config|array $config): void
+    {
+    }
+
+    /**
      * Setup service providers.
      *
      * @param ContainerConfig|array $config

@@ -138,6 +138,17 @@ class CacheableConsole extends Console
     }
 
     /**
+     * Set attributes.
+     *
+     * @param ConsoleConfig|array $config
+     *
+     * @return void
+     */
+    protected function setupAttributes(Config|array $config): void
+    {
+    }
+
+    /**
      * Setup command providers.
      *
      * @param ConsoleConfig|array $config

@@ -105,27 +105,25 @@ final class EnvKey
     public const CLIENT_DRIVER  = 'CLIENT_DRIVER';
     public const CLIENT_CLIENTS = 'CLIENT_CLIENTS';
 
-    public const CONSOLE_PROVIDERS                   = 'CONSOLE_PROVIDERS';
-    public const CONSOLE_DEV_PROVIDERS               = 'CONSOLE_DEV_PROVIDERS';
-    public const CONSOLE_QUIET                       = 'CONSOLE_QUIET';
-    public const CONSOLE_USE_ANNOTATIONS             = 'CONSOLE_USE_ANNOTATIONS';
-    public const CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY = 'CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY';
-    public const CONSOLE_HANDLERS                    = 'CONSOLE_HANDLERS';
-    public const CONSOLE_FILE_PATH                   = 'CONSOLE_FILE_PATH';
-    public const CONSOLE_CACHE_FILE_PATH             = 'CONSOLE_CACHE_FILE_PATH';
-    public const CONSOLE_USE_CACHE_FILE              = 'CONSOLE_USE_CACHE_FILE';
+    public const CONSOLE_PROVIDERS       = 'CONSOLE_PROVIDERS';
+    public const CONSOLE_DEV_PROVIDERS   = 'CONSOLE_DEV_PROVIDERS';
+    public const CONSOLE_QUIET           = 'CONSOLE_QUIET';
+    public const CONSOLE_USE_ANNOTATIONS = 'CONSOLE_USE_ANNOTATIONS';
+    public const CONSOLE_HANDLERS        = 'CONSOLE_HANDLERS';
+    public const CONSOLE_FILE_PATH       = 'CONSOLE_FILE_PATH';
+    public const CONSOLE_CACHE_FILE_PATH = 'CONSOLE_CACHE_FILE_PATH';
+    public const CONSOLE_USE_CACHE_FILE  = 'CONSOLE_USE_CACHE_FILE';
 
-    public const CONTAINER_PROVIDERS                   = 'CONTAINER_PROVIDERS';
-    public const CONTAINER_DEV_PROVIDERS               = 'CONTAINER_DEV_PROVIDERS';
-    public const CONTAINER_SETUP_FACADE                = 'CONTAINER_SETUP_FACADE';
-    public const CONTAINER_USE_ANNOTATIONS             = 'CONTAINER_USE_ANNOTATIONS';
-    public const CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY = 'CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY';
-    public const CONTAINER_ALIASES                     = 'CONTAINER_ALIASES';
-    public const CONTAINER_SERVICES                    = 'CONTAINER_SERVICES';
-    public const CONTAINER_CONTEXT_SERVICES            = 'CONTAINER_CONTEXT_SERVICES';
-    public const CONTAINER_FILE_PATH                   = 'CONTAINER_FILE_PATH';
-    public const CONTAINER_CACHE_FILE_PATH             = 'CONTAINER_CACHE_FILE_PATH';
-    public const CONTAINER_USE_CACHE_FILE              = 'CONTAINER_USE_CACHE_FILE';
+    public const CONTAINER_PROVIDERS        = 'CONTAINER_PROVIDERS';
+    public const CONTAINER_DEV_PROVIDERS    = 'CONTAINER_DEV_PROVIDERS';
+    public const CONTAINER_SETUP_FACADE     = 'CONTAINER_SETUP_FACADE';
+    public const CONTAINER_USE_ANNOTATIONS  = 'CONTAINER_USE_ANNOTATIONS';
+    public const CONTAINER_ALIASES          = 'CONTAINER_ALIASES';
+    public const CONTAINER_SERVICES         = 'CONTAINER_SERVICES';
+    public const CONTAINER_CONTEXT_SERVICES = 'CONTAINER_CONTEXT_SERVICES';
+    public const CONTAINER_FILE_PATH        = 'CONTAINER_FILE_PATH';
+    public const CONTAINER_CACHE_FILE_PATH  = 'CONTAINER_CACHE_FILE_PATH';
+    public const CONTAINER_USE_CACHE_FILE   = 'CONTAINER_USE_CACHE_FILE';
 
     public const CRYPT_KEY             = 'CRYPT_KEY';
     public const CRYPT_KEY_PATH        = 'CRYPT_KEY_PATH';
@@ -136,12 +134,11 @@ final class EnvKey
     public const CRYPT_DEFAULT_ADAPTER = 'CRYPT_DEFAULT_ADAPTER';
     public const CRYPT_DEFAULT_DRIVER  = 'CRYPT_DEFAULT_DRIVER';
 
-    public const EVENT_USE_ANNOTATIONS             = 'EVENT_USE_ANNOTATIONS';
-    public const EVENT_USE_ANNOTATIONS_EXCLUSIVELY = 'EVENT_USE_ANNOTATIONS_EXCLUSIVELY';
-    public const EVENT_LISTENERS                   = 'EVENT_LISTENERS';
-    public const EVENT_FILE_PATH                   = 'EVENT_FILE_PATH';
-    public const EVENT_CACHE_FILE_PATH             = 'EVENT_CACHE_FILE_PATH';
-    public const EVENT_USE_CACHE_FILE              = 'EVENT_USE_CACHE_FILE';
+    public const EVENT_USE_ANNOTATIONS = 'EVENT_USE_ANNOTATIONS';
+    public const EVENT_LISTENERS       = 'EVENT_LISTENERS';
+    public const EVENT_FILE_PATH       = 'EVENT_FILE_PATH';
+    public const EVENT_CACHE_FILE_PATH = 'EVENT_CACHE_FILE_PATH';
+    public const EVENT_USE_CACHE_FILE  = 'EVENT_USE_CACHE_FILE';
 
     public const FILESYSTEM_DEFAULT                 = 'FILESYSTEM_DEFAULT';
     public const FILESYSTEM_ADAPTER                 = 'FILESYSTEM_ADAPTER';
@@ -265,17 +262,16 @@ final class EnvKey
 
     public const PATH_PATTERNS = 'PATH_PATTERNS';
 
-    public const ROUTING_USE_TRAILING_SLASH          = 'ROUTING_USE_TRAILING_SLASH';
-    public const ROUTING_USE_ABSOLUTE_URLS           = 'ROUTING_USE_ABSOLUTE_URLS';
-    public const ROUTING_MIDDLEWARE                  = 'ROUTING_MIDDLEWARE';
-    public const ROUTING_MIDDLEWARE_GROUPS           = 'ROUTING_MIDDLEWARE_GROUPS';
-    public const ROUTING_HTTP_EXCEPTION              = 'ROUTING_HTTP_EXCEPTION';
-    public const ROUTING_USE_ANNOTATIONS             = 'ROUTING_USE_ANNOTATIONS';
-    public const ROUTING_USE_ANNOTATIONS_EXCLUSIVELY = 'ROUTING_USE_ANNOTATIONS_EXCLUSIVELY';
-    public const ROUTING_CONTROLLERS                 = 'ROUTING_CONTROLLERS';
-    public const ROUTING_FILE_PATH                   = 'ROUTING_FILE_PATH';
-    public const ROUTING_CACHE_FILE_PATH             = 'ROUTING_CACHE_FILE_PATH';
-    public const ROUTING_USE_CACHE_FILE              = 'ROUTING_USE_CACHE_FILE';
+    public const ROUTING_USE_TRAILING_SLASH = 'ROUTING_USE_TRAILING_SLASH';
+    public const ROUTING_USE_ABSOLUTE_URLS  = 'ROUTING_USE_ABSOLUTE_URLS';
+    public const ROUTING_MIDDLEWARE         = 'ROUTING_MIDDLEWARE';
+    public const ROUTING_MIDDLEWARE_GROUPS  = 'ROUTING_MIDDLEWARE_GROUPS';
+    public const ROUTING_HTTP_EXCEPTION     = 'ROUTING_HTTP_EXCEPTION';
+    public const ROUTING_USE_ANNOTATIONS    = 'ROUTING_USE_ANNOTATIONS';
+    public const ROUTING_CONTROLLERS        = 'ROUTING_CONTROLLERS';
+    public const ROUTING_FILE_PATH          = 'ROUTING_FILE_PATH';
+    public const ROUTING_CACHE_FILE_PATH    = 'ROUTING_CACHE_FILE_PATH';
+    public const ROUTING_USE_CACHE_FILE     = 'ROUTING_USE_CACHE_FILE';
 
     public const SESSION_ID               = 'SESSION_ID';
     public const SESSION_NAME             = 'SESSION_NAME';

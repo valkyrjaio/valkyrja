@@ -145,8 +145,6 @@ class CacheableCollection extends Collection
             // Set the route
             $this->add($route);
         }
-
-        $this->setupAttributes($config);
     }
 
     /**

@@ -134,6 +134,17 @@ class CacheableEvents extends Events
     }
 
     /**
+     * Set attributes.
+     *
+     * @param EventConfig|array $config
+     *
+     * @return void
+     */
+    protected function setupAttributes(Config|array $config): void
+    {
+    }
+
+    /**
      * After setup.
      *
      * @param EventConfig|array $config

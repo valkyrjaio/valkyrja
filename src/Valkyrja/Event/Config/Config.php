@@ -28,12 +28,11 @@ class Config extends Model
      * @inheritDoc
      */
     protected static array $envKeys = [
-        CKP::LISTENERS                   => EnvKey::EVENT_LISTENERS,
-        CKP::USE_ANNOTATIONS             => EnvKey::EVENT_USE_ANNOTATIONS,
-        CKP::USE_ANNOTATIONS_EXCLUSIVELY => EnvKey::EVENT_USE_ANNOTATIONS_EXCLUSIVELY,
-        CKP::FILE_PATH                   => EnvKey::EVENT_FILE_PATH,
-        CKP::CACHE_FILE_PATH             => EnvKey::EVENT_CACHE_FILE_PATH,
-        CKP::USE_CACHE                   => EnvKey::EVENT_USE_CACHE_FILE,
+        CKP::LISTENERS       => EnvKey::EVENT_LISTENERS,
+        CKP::USE_ANNOTATIONS => EnvKey::EVENT_USE_ANNOTATIONS,
+        CKP::FILE_PATH       => EnvKey::EVENT_FILE_PATH,
+        CKP::CACHE_FILE_PATH => EnvKey::EVENT_CACHE_FILE_PATH,
+        CKP::USE_CACHE       => EnvKey::EVENT_USE_CACHE_FILE,
     ];
 
     /**
@@ -49,13 +48,6 @@ class Config extends Model
      * @var bool
      */
     public bool $useAnnotations;
-
-    /**
-     * The flag to use annotations exclusively (forgoing filePath).
-     *
-     * @var bool
-     */
-    public bool $useAnnotationsExclusively;
 
     /**
      * The cache from a Cacheable::getCacheable().

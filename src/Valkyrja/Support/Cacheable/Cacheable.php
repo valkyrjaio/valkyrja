@@ -59,14 +59,8 @@ trait Cacheable
         }
 
         $this->setupNotCached($config);
+        $this->setupFromAttributes($config);
         $this->setupFromAnnotations($config);
-
-        // If only annotations should be used for routing
-        if ($config['useAnnotationsExclusively'] ?? false) {
-            // Return to avoid loading routes file
-            return;
-        }
-
         $this->requireConfig($config);
         $this->afterSetup($config);
     }
@@ -122,7 +116,7 @@ trait Cacheable
     protected function setupFromAnnotations(Config|array $config): void
     {
         // If annotations are enabled and cacheable should use annotations
-        if (($config['useAnnotations'] ?? false)) {
+        if (($config['useAnnotations'] ?? true)) {
             $this->setupAnnotations($config);
         }
     }
@@ -135,6 +129,30 @@ trait Cacheable
      * @return void
      */
     abstract protected function setupAnnotations(Config|array $config): void;
+
+    /**
+     * Set attributes.
+     *
+     * @param Config|array $config
+     *
+     * @return void
+     */
+    protected function setupFromAttributes(Config|array $config): void
+    {
+        // If attributes are enabled and cacheable should use attributes
+        if (($config['useAttributes'] ?? true)) {
+            $this->setupAttributes($config);
+        }
+    }
+
+    /**
+     * Set attributes.
+     *
+     * @param Config|array $config
+     *
+     * @return void
+     */
+    abstract protected function setupAttributes(Config|array $config): void;
 
     /**
      * Set annotations.

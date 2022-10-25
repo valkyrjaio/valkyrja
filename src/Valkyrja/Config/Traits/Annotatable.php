@@ -26,11 +26,4 @@ trait Annotatable
      * @var bool
      */
     public bool $useAnnotations;
-
-    /**
-     * The flag to use annotations exclusively (forgoing filePath).
-     *
-     * @var bool
-     */
-    public bool $useAnnotationsExclusively;
 }

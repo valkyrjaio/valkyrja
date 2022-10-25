@@ -29,17 +29,16 @@ class Config extends Model
      * @inheritDoc
      */
     protected static array $envKeys = [
-        CKP::ALIASES                     => EnvKey::CONTAINER_ALIASES,
-        CKP::SERVICES                    => EnvKey::CONTAINER_SERVICES,
-        CKP::CONTEXT_SERVICES            => EnvKey::CONTAINER_CONTEXT_SERVICES,
-        CKP::PROVIDERS                   => EnvKey::CONTAINER_PROVIDERS,
-        CKP::DEV_PROVIDERS               => EnvKey::CONTAINER_DEV_PROVIDERS,
-        CKP::SETUP_FACADE                => EnvKey::CONTAINER_SETUP_FACADE,
-        CKP::USE_ANNOTATIONS             => EnvKey::CONTAINER_USE_ANNOTATIONS,
-        CKP::USE_ANNOTATIONS_EXCLUSIVELY => EnvKey::CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY,
-        CKP::FILE_PATH                   => EnvKey::CONTAINER_FILE_PATH,
-        CKP::CACHE_FILE_PATH             => EnvKey::CONTAINER_CACHE_FILE_PATH,
-        CKP::USE_CACHE                   => EnvKey::CONTAINER_USE_CACHE_FILE,
+        CKP::ALIASES          => EnvKey::CONTAINER_ALIASES,
+        CKP::SERVICES         => EnvKey::CONTAINER_SERVICES,
+        CKP::CONTEXT_SERVICES => EnvKey::CONTAINER_CONTEXT_SERVICES,
+        CKP::PROVIDERS        => EnvKey::CONTAINER_PROVIDERS,
+        CKP::DEV_PROVIDERS    => EnvKey::CONTAINER_DEV_PROVIDERS,
+        CKP::SETUP_FACADE     => EnvKey::CONTAINER_SETUP_FACADE,
+        CKP::USE_ANNOTATIONS  => EnvKey::CONTAINER_USE_ANNOTATIONS,
+        CKP::FILE_PATH        => EnvKey::CONTAINER_FILE_PATH,
+        CKP::CACHE_FILE_PATH  => EnvKey::CONTAINER_CACHE_FILE_PATH,
+        CKP::USE_CACHE        => EnvKey::CONTAINER_USE_CACHE_FILE,
     ];
 
     /**
@@ -90,13 +89,6 @@ class Config extends Model
      * @var bool
      */
     public bool $useAnnotations;
-
-    /**
-     * The flag to use annotations exclusively (forgoing filePath).
-     *
-     * @var bool
-     */
-    public bool $useAnnotationsExclusively;
 
     /**
      * The cache from a Cacheable::getCacheable().
