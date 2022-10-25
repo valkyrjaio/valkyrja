@@ -29,6 +29,7 @@ class Permanent extends Model
         string $path,
         string $to,
         array $methods = null,
+        string $name = null,
         bool $secure = null,
     ) {
         parent::__construct(
@@ -36,6 +37,7 @@ class Permanent extends Model
             to     : $to,
             code   : StatusCode::MOVED_PERMANENTLY,
             methods: $methods,
+            name   : $name,
             secure : $secure,
         );
     }

@@ -26,12 +26,14 @@ class Secure extends Route
 {
     public function __construct(
         string $path,
+        string $name = null,
         array $methods = null,
         array $parameters = null,
         array $middleware = null,
     ) {
         parent::__construct(
             path      : $path,
+            name      : $name,
             methods   : $methods,
             parameters: $parameters,
             middleware: $middleware,

@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Annotators;
+namespace Valkyrja\Routing\Attributes;
 
 use InvalidArgumentException;
 use ReflectionException;
 use Valkyrja\Attributes\Managers\Attributes;
-use Valkyrja\Routing\Attributes\Route;
+use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\RouteAttributes as Contract;
 
 /**
@@ -29,6 +29,7 @@ class RouteAttributes extends Attributes implements Contract
     /**
      * @inheritDoc
      *
+     * @throws InvalidRoutePath
      * @throws ReflectionException
      */
     public function getRoutes(string ...$classes): array
@@ -47,10 +48,32 @@ class RouteAttributes extends Attributes implements Contract
             if (! empty($classAttributes)) {
                 // Iterate through all the class attributes
                 foreach ($classAttributes as $classAttribute) {
+                    $classAttribute->setParameters(
+                        [
+                            ...$classAttribute->getParameters(),
+                            ...$this->forClass($class, Parameter::class),
+                        ]
+                    );
+
                     // If the class' members' had attributes
                     if (! empty($memberAttributes)) {
                         // Iterate through all the members' attributes
                         foreach ($memberAttributes as $routeAttribute) {
+                            $routeParameters = [];
+
+                            if ($property = $routeAttribute->getProperty()) {
+                                $routeParameters = $this->forProperty($class, $property, Parameter::class);
+                            } elseif ($method = $routeAttribute->getMethod()) {
+                                $routeParameters = $this->forMethod($class, $method, Parameter::class);
+                            }
+
+                            $routeAttribute->setParameters(
+                                [
+                                    ...$routeAttribute->getParameters(),
+                                    ...$routeParameters,
+                                ]
+                            );
+
                             // And set a new route with the controller defined annotation additions
                             $finalAttributes[] = $this->getControllerBuiltRoute($classAttribute, $routeAttribute);
                         }
@@ -68,7 +91,49 @@ class RouteAttributes extends Attributes implements Contract
             ];
         }
 
+        foreach ($routes as $route) {
+            $this->setRouteProperties($route);
+        }
+
         return $routes;
+    }
+
+    /**
+     * Set the route properties from arguments.
+     *
+     * @param Route $route
+     *
+     * @throws InvalidRoutePath
+     * @throws ReflectionException
+     *
+     * @return void
+     */
+    protected function setRouteProperties(Route $route): void
+    {
+        if (! $route->getClass()) {
+            throw new InvalidArgumentException('Invalid class defined in route.');
+        }
+
+        if ($route->getMethod() !== null) {
+            $methodReflection = $this->reflector->getMethodReflection(
+                $route->getClass(),
+                $route->getMethod()
+            );
+
+            // Set the dependencies
+            $route->setDependencies($this->reflector->getDependencies($methodReflection));
+        }
+
+        // Avoid having large arrays in cached routes file
+        $route->setMatches();
+
+        if ($route->getPath() === null) {
+            throw new InvalidRoutePath(
+                'Invalid route path for route : '
+                . $route->getClass()
+                . '@' . $route->getMethod()
+            );
+        }
     }
 
     /**
@@ -119,10 +184,24 @@ class RouteAttributes extends Attributes implements Contract
         if (null !== $controllerAttribute->getMiddleware()) {
             // Merge the route's middleware and the controller's middleware
             // keeping the controller's middleware first
-            $middleware = array_merge($controllerAttribute->getMiddleware(), $memberAttribute->getMiddleware() ?? []);
+            $attribute->setMiddleware(
+                [
+                    ...$controllerAttribute->getMiddleware(),
+                    ...($memberAttribute->getMiddleware() ?? []),
+                ]
+            );
+        }
 
-            // Set the middleware in the route
-            $attribute->setMiddleware($middleware);
+        // If there is a base parameters collection for this controller
+        if (! empty($controllerAttribute->getParameters())) {
+            // Merge the route's parameters and the controller's parameters
+            // keeping the controller's parameters first
+            $attribute->setMiddleware(
+                [
+                    ...$controllerAttribute->getParameters(),
+                    ...$memberAttribute->getParameters(),
+                ]
+            );
         }
 
         return $attribute;

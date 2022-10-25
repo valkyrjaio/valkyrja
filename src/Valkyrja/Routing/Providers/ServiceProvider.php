@@ -204,7 +204,7 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             RouteAttributes::class,
-            new \Valkyrja\Routing\Annotators\RouteAttributes(
+            new \Valkyrja\Routing\Attributes\RouteAttributes(
                 $container->getSingleton(Reflector::class)
             )
         );

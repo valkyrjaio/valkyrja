@@ -28,12 +28,14 @@ class Options extends Model
     public function __construct(
         string $path,
         string $to,
+        string $name = null,
         bool $secure = null,
     ) {
         parent::__construct(
             path  : $path,
             to    : $to,
             code  : StatusCode::MOVED_PERMANENTLY,
+            name  : $name,
             secure: $secure,
         );
     }

@@ -79,6 +79,61 @@ class Parameter extends Model
     public bool $shouldCapture = true;
 
     /**
+     * Parameter constructor.
+     *
+     * @param string|null $name                [optional]
+     * @param string|null $regex               [optional]
+     * @param string|null $type                [optional]
+     * @param string|null $entity              [optional]
+     * @param string|null $entityColumn        [optional]
+     * @param array|null  $entityRelationships [optional]
+     * @param bool|null   $isOptional          [optional]
+     * @param bool|null   $shouldCapture       [optional]
+     */
+    public function __construct(
+        string $name = null,
+        string $regex = null,
+        string $type = null,
+        string $entity = null,
+        string $entityColumn = null,
+        array $entityRelationships = null,
+        bool $isOptional = null,
+        bool $shouldCapture = null,
+    ) {
+        if ($name) {
+            $this->setName($name);
+        }
+
+        if ($regex) {
+            $this->setRegex($regex);
+        }
+
+        if ($type) {
+            $this->setType($type);
+        }
+
+        if ($entity) {
+            $this->setEntity($entity);
+        }
+
+        if ($entityColumn) {
+            $this->setEntityColumn($entityColumn);
+        }
+
+        if ($entityRelationships) {
+            $this->setEntityRelationships($entityRelationships);
+        }
+
+        if ($isOptional) {
+            $this->setIsOptional($isOptional);
+        }
+
+        if ($shouldCapture) {
+            $this->setShouldCapture($shouldCapture);
+        }
+    }
+
+    /**
      * Get the name.
      *
      * @return string|null

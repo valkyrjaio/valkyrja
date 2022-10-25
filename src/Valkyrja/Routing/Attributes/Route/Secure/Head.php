@@ -26,11 +26,13 @@ class Head extends Model
 {
     public function __construct(
         string $path,
+        string $name = null,
         array $parameters = null,
         array $middleware = null,
     ) {
         parent::__construct(
             path      : $path,
+            name      : $name,
             parameters: $parameters,
             middleware: $middleware,
             secure    : true,

@@ -27,15 +27,17 @@ class Head extends Route
 {
     public function __construct(
         string $path,
+        string $name = null,
         array $parameters = null,
         array $middleware = null,
         bool $secure = null,
     ) {
         parent::__construct(
             path      : $path,
+            name      : $name,
             methods   : [
-                RequestMethod::HEAD,
-            ],
+                            RequestMethod::HEAD,
+                        ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,

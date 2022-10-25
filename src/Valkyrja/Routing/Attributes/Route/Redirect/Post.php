@@ -28,10 +28,12 @@ class Post extends Model
         string $path,
         string $to,
         int $code = null,
+        string $name = null,
         bool $secure = null,
     ) {
         parent::__construct(
             path  : $path,
+            name  : $name,
             secure: $secure,
             to    : $to,
             code  : $code,

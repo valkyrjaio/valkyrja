@@ -26,6 +26,7 @@ class Route extends Model
 {
     public function __construct(
         string $path,
+        string $name = null,
         array $methods = null,
         array $parameters = null,
         array $middleware = null,
@@ -33,8 +34,14 @@ class Route extends Model
         string $to = null,
         int $code = null,
     ) {
+        $this->path = $path;
+
         if ($path) {
             $this->name = $path;
+        }
+
+        if ($name) {
+            $this->name = $name;
         }
 
         if ($methods) {
@@ -46,7 +53,7 @@ class Route extends Model
         }
 
         if ($middleware) {
-            $this->middleware = $middleware;
+            $this->setMiddleware($middleware);
         }
 
         if ($secure) {

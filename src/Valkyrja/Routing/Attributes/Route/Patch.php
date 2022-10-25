@@ -27,15 +27,17 @@ class Patch extends Route
 {
     public function __construct(
         string $path,
+        string $name = null,
         array $parameters = null,
         array $middleware = null,
         bool $secure = null,
     ) {
         parent::__construct(
             path      : $path,
+            name      : $name,
             methods   : [
-                RequestMethod::PATCH,
-            ],
+                            RequestMethod::PATCH,
+                        ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,

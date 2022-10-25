@@ -29,10 +29,12 @@ class Redirect extends Route
         string $to,
         int $code = null,
         array $methods = null,
+        string $name = null,
         bool $secure = null,
     ) {
         parent::__construct(
             path   : $path,
+            name   : $name,
             methods: $methods,
             secure : $secure,
             to     : $to,

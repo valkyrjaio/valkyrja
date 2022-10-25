@@ -24,46 +24,4 @@ use Valkyrja\Routing\Models\Parameter as Model;
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class Parameter extends Model
 {
-    public function __construct(
-        string $name = null,
-        string $regex = null,
-        string $type = null,
-        string $entity = null,
-        string $entityColumn = null,
-        array $entityRelationships = null,
-        bool $isOptional = null,
-        bool $shouldCapture = null,
-    ) {
-        if ($name) {
-            $this->name = $name;
-        }
-
-        if ($regex) {
-            $this->regex = $regex;
-        }
-
-        if ($type) {
-            $this->type = $type;
-        }
-
-        if ($entity) {
-            $this->entity = $entity;
-        }
-
-        if ($entityColumn) {
-            $this->entityColumn = $entityColumn;
-        }
-
-        if ($entityRelationships) {
-            $this->entityRelationships = $entityRelationships;
-        }
-
-        if ($isOptional) {
-            $this->isOptional = $isOptional;
-        }
-
-        if ($shouldCapture) {
-            $this->shouldCapture = $shouldCapture;
-        }
-    }
 }
