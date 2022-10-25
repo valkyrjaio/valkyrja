@@ -185,12 +185,14 @@ abstract class Model implements Contract
             $allProperties = $this->__onlyProperties($allProperties, $properties);
         }
 
+        unset($allProperties['__exposed'], $allProperties['__originalProperties']);
+
         // Ensure for each property we use the magic __get method so as to go through any magic get{Property} methods
         foreach ($allProperties as $property => $value) {
             $allProperties[$property] = $this->__get($property);
-        }
 
-        unset($allProperties['__exposed'], $allProperties['__originalProperties']);
+            // Remove properties with null value if model flag is set to do so.
+        }
 
         return $allProperties;
     }
