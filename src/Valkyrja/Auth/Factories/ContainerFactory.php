@@ -115,10 +115,10 @@ class ContainerFactory implements Contract
     {
         $defaultClass = Policy::class;
 
-        if (Cls::inherits($name, EntityPolicy::class)) {
-            $defaultClass = EntityPolicy::class;
-        } elseif (Cls::inherits($name, EntityRoutePolicy::class)) {
+        if (Cls::inherits($name, EntityRoutePolicy::class)) {
             $defaultClass = EntityRoutePolicy::class;
+        } elseif (Cls::inherits($name, EntityPolicy::class)) {
+            $defaultClass = EntityPolicy::class;
         }
 
         return Cls::getDefaultableService(
