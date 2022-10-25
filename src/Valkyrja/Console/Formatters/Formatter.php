@@ -132,13 +132,13 @@ class Formatter implements Contract
         // Check if a foreground was specified
         if (null !== $this->foreground) {
             $set[]   = $this->foreground;
-            $unset[] = FormatForeground::DEFAULT;
+            $unset[] = FormatForeground::DEFAULT->value;
         }
 
         // Check if a background was specified
         if (null !== $this->background) {
             $set[]   = $this->background;
-            $unset[] = FormatBackground::DEFAULT;
+            $unset[] = FormatBackground::DEFAULT->value;
         }
 
         // Check if options were specified
