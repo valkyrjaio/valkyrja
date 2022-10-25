@@ -62,12 +62,12 @@ interface Attributes
      * @template T
      *
      * @param string               $class     The class
-     * @param string               $const     The constant
+     * @param string               $constant  The constant
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
      * @return object[]|T[]
      */
-    public function forConstant(string $class, string $const, string $attribute = null, int $flags = null): array;
+    public function forConstant(string $class, string $constant, string $attribute = null, int $flags = null): array;
 
     /**
      * Get a class' constants' attributes.

@@ -93,9 +93,9 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
-    public function forConstant(string $class, string $const, string $attribute = null, int $flags = null): array
+    public function forConstant(string $class, string $constant, string $attribute = null, int $flags = null): array
     {
-        return $this->forClassMember($attribute, $flags, $this->reflector->getClassConstReflection($class, $const));
+        return $this->forClassMember($attribute, $flags, $this->reflector->getClassConstReflection($class, $constant));
     }
 
     /**
