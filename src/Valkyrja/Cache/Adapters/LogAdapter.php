@@ -58,7 +58,7 @@ class LogAdapter implements Contract
      */
     public function has(string $key): bool
     {
-        $this->logger->info(self::class . " has: ${key}");
+        $this->logger->info(self::class . " has: {$key}");
 
         return true;
     }
@@ -68,7 +68,7 @@ class LogAdapter implements Contract
      */
     public function get(string $key): ?string
     {
-        $this->logger->info(self::class . " get: ${key}");
+        $this->logger->info(self::class . " get: {$key}");
 
         return '';
     }
@@ -82,7 +82,7 @@ class LogAdapter implements Contract
     {
         $keysString = Arr::toString($keys);
 
-        $this->logger->info(self::class . " many: ${keysString}");
+        $this->logger->info(self::class . " many: {$keysString}");
 
         return [];
     }
@@ -92,7 +92,7 @@ class LogAdapter implements Contract
      */
     public function put(string $key, string $value, int $minutes): void
     {
-        $this->logger->info(self::class . " put: ${key}, value ${value}, minutes ${minutes}");
+        $this->logger->info(self::class . " put: {$key}, value {$value}, minutes {$minutes}");
     }
 
     /**
@@ -104,7 +104,7 @@ class LogAdapter implements Contract
     {
         $valuesString = Arr::toString($values);
 
-        $this->logger->info(self::class . " putMany: ${valuesString}, minutes ${minutes}");
+        $this->logger->info(self::class . " putMany: {$valuesString}, minutes {$minutes}");
     }
 
     /**
@@ -112,7 +112,7 @@ class LogAdapter implements Contract
      */
     public function increment(string $key, int $value = 1): int
     {
-        $this->logger->info(self::class . " increment: ${key}, value ${value}");
+        $this->logger->info(self::class . " increment: {$key}, value {$value}");
 
         return $value;
     }
@@ -122,7 +122,7 @@ class LogAdapter implements Contract
      */
     public function decrement(string $key, int $value = 1): int
     {
-        $this->logger->info(self::class . " decrement: ${key}, value ${value}");
+        $this->logger->info(self::class . " decrement: {$key}, value {$value}");
 
         return $value;
     }
@@ -132,7 +132,7 @@ class LogAdapter implements Contract
      */
     public function forever(string $key, $value): void
     {
-        $this->logger->info(self::class . " forever: ${key}, value ${value}");
+        $this->logger->info(self::class . " forever: {$key}, value {$value}");
     }
 
     /**
@@ -140,7 +140,7 @@ class LogAdapter implements Contract
      */
     public function forget(string $key): bool
     {
-        $this->logger->info(self::class . " forget: ${key}");
+        $this->logger->info(self::class . " forget: {$key}");
 
         return true;
     }

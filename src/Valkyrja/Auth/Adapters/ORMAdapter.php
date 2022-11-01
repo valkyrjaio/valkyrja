@@ -152,6 +152,14 @@ class ORMAdapter extends Adapter implements Contract
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getOrm(): ORM
+    {
+        return $this->orm;
+    }
+
+    /**
      * Get an ORM repository for the user.
      *
      * @param User $user The user

@@ -191,7 +191,7 @@ class ServiceProvider extends Provider
                 $filePath  = $config['filePath'];
                 $name      = $config['name'] . date('-Y-m-d');
                 $handler   = new StreamHandler(
-                    "${filePath}/${name}.log",
+                    "{$filePath}/{$name}.log",
                     LogLevel::DEBUG
                 );
                 $formatter = new LineFormatter(

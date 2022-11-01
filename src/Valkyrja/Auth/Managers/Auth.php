@@ -224,7 +224,7 @@ class Auth implements Contract
 
         if (! ($repository instanceof TokenizedRepository)) {
             throw new AuthRuntimeException(
-                "The repository for ${user} should be an instance of "
+                "The repository for {$user} should be an instance of "
                 . TokenizedRepository::class
                 . '. '
                 . $repository::class
