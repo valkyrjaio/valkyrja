@@ -36,8 +36,8 @@ class Post extends Route
             path      : $path,
             name      : $name,
             methods   : [
-                            RequestMethod::POST,
-                        ],
+                RequestMethod::POST,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,

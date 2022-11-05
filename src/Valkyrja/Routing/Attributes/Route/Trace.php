@@ -36,8 +36,8 @@ class Trace extends Route
             path      : $path,
             name      : $name,
             methods   : [
-                            RequestMethod::TRACE,
-                        ],
+                RequestMethod::TRACE,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,

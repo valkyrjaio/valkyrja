@@ -36,8 +36,8 @@ class Options extends Route
             path      : $path,
             name      : $name,
             methods   : [
-                            RequestMethod::OPTIONS,
-                        ],
+                RequestMethod::OPTIONS,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,

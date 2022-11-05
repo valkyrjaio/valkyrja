@@ -36,8 +36,8 @@ class Patch extends Route
             path      : $path,
             name      : $name,
             methods   : [
-                            RequestMethod::PATCH,
-                        ],
+                RequestMethod::PATCH,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,

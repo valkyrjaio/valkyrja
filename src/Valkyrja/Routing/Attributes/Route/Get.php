@@ -36,8 +36,8 @@ class Get extends Route
             path      : $path,
             name      : $name,
             methods   : [
-                            RequestMethod::GET,
-                        ],
+                RequestMethod::GET,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,
