@@ -36,8 +36,8 @@ class Delete extends Route
             path      : $path,
             name      : $name,
             methods   : [
-                            RequestMethod::DELETE,
-                        ],
+                RequestMethod::DELETE,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,

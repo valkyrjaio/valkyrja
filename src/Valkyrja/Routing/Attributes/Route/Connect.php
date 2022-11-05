@@ -36,8 +36,8 @@ class Connect extends Route
             path      : $path,
             name      : $name,
             methods   : [
-                            RequestMethod::CONNECT,
-                        ],
+                RequestMethod::CONNECT,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,

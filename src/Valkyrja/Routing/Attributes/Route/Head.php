@@ -36,8 +36,8 @@ class Head extends Route
             path      : $path,
             name      : $name,
             methods   : [
-                            RequestMethod::HEAD,
-                        ],
+                RequestMethod::HEAD,
+            ],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,
