@@ -17,6 +17,7 @@ use Throwable;
 use Valkyrja\Api\Api;
 use Valkyrja\Api\Constants\Status;
 use Valkyrja\Http\Constants\StatusCode;
+use Valkyrja\Http\Facades\Request;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Log\Facades\Logger;
 
@@ -95,7 +96,7 @@ abstract class ApiController extends Controller
         array $errors = null,
         array $warnings = null
     ): JsonResponse {
-        $url        = self::$request->getUri()->getPath();
+        $url        = Request::getUri()->getPath();
         $logMessage = "{$message}\nUrl: {$url}";
 
         // Trace code and additional details get added in Logger::exception()
