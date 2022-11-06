@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\View\Managers;
 
 use Valkyrja\Container\Container;
+use Valkyrja\View\Config\Config;
 use Valkyrja\View\Engine;
 use Valkyrja\View\Template;
 use Valkyrja\View\View as Contract;
@@ -31,13 +32,6 @@ class View implements Contract
      * @var Engine[]
      */
     protected static array $engines = [];
-
-    /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
 
     /**
      * The body content template.
@@ -61,13 +55,6 @@ class View implements Contract
     protected array $variables = [];
 
     /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * The default engine.
      *
      * @var string
@@ -77,14 +64,14 @@ class View implements Contract
     /**
      * View constructor.
      *
-     * @param Container $container The container
-     * @param array     $config    The config
+     * @param Container    $container The container
+     * @param Config|array $config    The config
      */
-    public function __construct(Container $container, array $config)
-    {
-        $this->container = $container;
-        $this->config    = $config;
-        $this->engine    = $config['engine'];
+    public function __construct(
+        protected Container $container,
+        protected Config|array $config
+    ) {
+        $this->engine = $config['engine'];
     }
 
     /**
