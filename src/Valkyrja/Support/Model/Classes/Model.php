@@ -59,7 +59,7 @@ abstract class Model implements Contract
      *      ]
      * </code>
      *
-     * @var array
+     * @var array<string, string|string[]>
      */
     protected static array $propertyCastings = [];
 
@@ -73,7 +73,7 @@ abstract class Model implements Contract
      *      ]
      * </code>
      *
-     * @var array
+     * @var array<string, string[]>
      */
     protected static array $castingsAllowedClasses = [];
 
@@ -302,7 +302,9 @@ abstract class Model implements Contract
     {
         $onlyProperties = [];
 
-        // Iterate through the list and set only those properties
+        // Iterate through the list and set only those properties if the property exists in the allProperties array
+        // NOTE: The allProperties array will already have gone through logic to get exposable properties, so only
+        //       if the property exists in this array should we return it in the onlyProperties array.
         foreach ($properties as $onlyProperty) {
             if (isset($allProperties[$onlyProperty])) {
                 $onlyProperties[$onlyProperty] = true;
