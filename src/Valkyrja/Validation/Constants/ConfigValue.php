@@ -44,6 +44,8 @@ final class ConfigValue
         Rule::BOOLEAN      => Base::class,
         Rule::LESS_THAN    => Base::class,
         Rule::GREATER_THAN => Base::class,
+        Rule::ONE_OF       => Base::class,
+        Rule::REGEX        => Base::class,
         Rule::ORM_UNIQUE   => ORM::class,
         Rule::ORM_EXISTS   => ORM::class,
     ];
