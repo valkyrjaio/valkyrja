@@ -17,6 +17,7 @@ use Exception;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Container\Container;
 use Valkyrja\Validation\Constants\Rule;
+use Valkyrja\Validation\Factory;
 use Valkyrja\Validation\Validator as Contract;
 
 /**
@@ -32,20 +33,6 @@ class Validator implements Contract
      * @var object[]
      */
     protected static array $rules = [];
-
-    /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
 
     /**
      * The default rules.
@@ -71,13 +58,13 @@ class Validator implements Contract
     /**
      * Validator constructor.
      *
-     * @param Container $container
-     * @param array     $config
+     * @param Factory $factory
+     * @param array   $config
      */
-    public function __construct(Container $container, array $config)
-    {
-        $this->container    = $container;
-        $this->config       = $config;
+    public function __construct(
+        protected Factory $factory,
+        protected array $config
+    ) {
         $this->defaultRules = $config['rule'];
     }
 
@@ -89,7 +76,7 @@ class Validator implements Contract
         $name ??= $this->defaultRules;
 
         return self::$rules[$name]
-            ?? self::$rules[$name] = $this->container->get($name);
+            ?? self::$rules[$name] = $this->factory->createRules($name);
     }
 
     /**

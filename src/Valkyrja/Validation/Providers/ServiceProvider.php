@@ -16,6 +16,8 @@ namespace Valkyrja\Validation\Providers;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\ORM\ORM as ORMManager;
+use Valkyrja\Validation\Factories\ContainerFactory;
+use Valkyrja\Validation\Factory;
 use Valkyrja\Validation\Rules\ORM;
 use Valkyrja\Validation\Validator;
 
@@ -33,7 +35,8 @@ class ServiceProvider extends Provider
     {
         return [
             Validator::class => 'publishValidator',
-            ORM::class       => 'publishORM',
+            Factory::class   => 'publishFactory',
+            ORM::class       => 'publishOrmRules',
         ];
     }
 
@@ -62,8 +65,25 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Validator::class,
             new \Valkyrja\Validation\Validators\Validator(
-                $container,
+                $container->getSingleton(Factory::class),
                 $config['validation']
+            )
+        );
+    }
+
+    /**
+     * Publish the factory service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publicFactory(Container $container): void
+    {
+        $container->setSingleton(
+            Factory::class,
+            new ContainerFactory(
+                $container,
             )
         );
     }
@@ -75,7 +95,7 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishORM(Container $container): void
+    public static function publishOrmRules(Container $container): void
     {
         $container->setSingleton(
             ORM::class,
