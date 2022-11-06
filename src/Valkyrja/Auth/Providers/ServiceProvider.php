@@ -15,6 +15,7 @@ namespace Valkyrja\Auth\Providers;
 
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth;
+use Valkyrja\Auth\Config\Config;
 use Valkyrja\Auth\CryptTokenizedRepository;
 use Valkyrja\Auth\EntityPolicy;
 use Valkyrja\Auth\EntityRoutePolicy;
@@ -132,7 +133,7 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Adapter::class,
-            static function (string $name, array $config): Adapter {
+            static function (string $name, Config|array $config): Adapter {
                 return new $name(
                     $config,
                 );
@@ -153,7 +154,7 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             ORMAdapter::class,
-            static function (string $name, array $config) use ($orm): ORMAdapter {
+            static function (string $name, Config|array $config) use ($orm): ORMAdapter {
                 return new $name(
                     $orm,
                     $config
@@ -256,7 +257,7 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Repository::class,
-            static function (string $name, Adapter $adapter, string $user, array $config) use ($container): Repository {
+            static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container): Repository {
                 return new $name(
                     $adapter,
                     $container->getSingleton(Session::class),
@@ -278,7 +279,7 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             CryptTokenizedRepository::class,
-            static function (string $name, Adapter $adapter, string $user, array $config) use ($container): CryptTokenizedRepository {
+            static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container): CryptTokenizedRepository {
                 return new $name(
                     $adapter,
                     $container->getSingleton(Crypt::class),
@@ -301,7 +302,7 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             JWTCryptRepository::class,
-            static function (string $name, Adapter $adapter, string $user, array $config) use ($container): JWTCryptRepository {
+            static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container): JWTCryptRepository {
                 return new $name(
                     $adapter,
                     $container->getSingleton(JWT::class),
@@ -325,7 +326,7 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             JWTRepository::class,
-            static function (string $name, Adapter $adapter, string $user, array $config) use ($container): JWTRepository {
+            static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container): JWTRepository {
                 return new $name(
                     $adapter,
                     $container->getSingleton(JWT::class),

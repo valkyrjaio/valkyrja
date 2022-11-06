@@ -22,6 +22,7 @@ use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Routing\Collection;
+use Valkyrja\Routing\Config\Config;
 use Valkyrja\Routing\Events\RouteMatched;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Matcher;
@@ -46,62 +47,6 @@ class Router implements Contract
     use MiddlewareAwareTrait;
 
     /**
-     * The route collection.
-     *
-     * @var Collection
-     */
-    protected Collection $collection;
-
-    /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
-     * The dispatcher.
-     *
-     * @var Dispatcher
-     */
-    protected Dispatcher $dispatcher;
-
-    /**
-     * The events.
-     *
-     * @var Events
-     */
-    protected Events $events;
-
-    /**
-     * The matcher.
-     *
-     * @var Matcher
-     */
-    protected Matcher $matcher;
-
-    /**
-     * The response factory.
-     *
-     * @var ResponseFactory
-     */
-    protected ResponseFactory $responseFactory;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
-     * Whether to run in debug.
-     *
-     * @var bool
-     */
-    protected bool $debug;
-
-    /**
      * Router constructor.
      *
      * @param Collection      $collection
@@ -110,28 +55,19 @@ class Router implements Contract
      * @param Events          $events
      * @param Matcher         $matcher
      * @param ResponseFactory $responseFactory
-     * @param array           $config
+     * @param Config|array    $config
      * @param bool            $debug
      */
     public function __construct(
-        Collection $collection,
-        Container $container,
-        Dispatcher $dispatcher,
-        Events $events,
-        Matcher $matcher,
-        ResponseFactory $responseFactory,
-        array $config,
-        bool $debug = false
+        protected Collection $collection,
+        protected Container $container,
+        protected Dispatcher $dispatcher,
+        protected Events $events,
+        protected Matcher $matcher,
+        protected ResponseFactory $responseFactory,
+        protected Config|array $config,
+        protected bool $debug = false
     ) {
-        $this->collection      = $collection;
-        $this->container       = $container;
-        $this->dispatcher      = $dispatcher;
-        $this->events          = $events;
-        $this->matcher         = $matcher;
-        $this->responseFactory = $responseFactory;
-        $this->config          = $config;
-        $this->debug           = $debug;
-
         Controller::$container       = Middleware::$container = $container;
         Controller::$events          = Middleware::$events = $events;
         Controller::$responseFactory = Middleware::$responseFactory = $responseFactory;

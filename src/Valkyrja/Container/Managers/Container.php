@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Managers;
 
 use Closure;
+use Valkyrja\Container\Config\Config;
 use Valkyrja\Container\Container as Contract;
 use Valkyrja\Container\Service;
 use Valkyrja\Support\Facade\Facade;
@@ -72,13 +73,6 @@ class Container implements Contract
     protected static array $singletons = [];
 
     /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * The context class or function name.
      *
      * @var string|null
@@ -100,23 +94,15 @@ class Container implements Contract
     protected ?string $contextMember = null;
 
     /**
-     * Whether to run in debug.
-     *
-     * @var bool
-     */
-    protected bool $debug = false;
-
-    /**
      * Container constructor.
      *
-     * @param array $config
-     * @param bool  $debug
+     * @param Config|array $config
+     * @param bool         $debug
      */
-    public function __construct(array $config, bool $debug = false)
-    {
-        $this->config = $config;
-        $this->debug  = $debug;
-
+    public function __construct(
+        protected Config|array $config,
+        protected bool $debug = false
+    ) {
         if (! self::$facadeSetup && $config['setupFacade']) {
             Facade::setContainer($this);
         }
@@ -233,7 +219,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function setSingleton(string $serviceId, $singleton): static
+    public function setSingleton(string $serviceId, mixed $singleton): static
     {
         $serviceId = $this->getServiceIdInternal($serviceId);
 

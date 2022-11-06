@@ -15,6 +15,7 @@ namespace Valkyrja\View\Engines;
 
 use RuntimeException;
 use Valkyrja\Support\Directory;
+use Valkyrja\View\Config\Config;
 use Valkyrja\View\Engine;
 use Valkyrja\View\Exceptions\InvalidConfigPath;
 
@@ -56,20 +57,13 @@ class PHPEngine implements Engine
     protected array $variables = [];
 
     /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * PHPEngine constructor.
      *
-     * @param array $config The config
+     * @param Config|array $config The config
      */
-    public function __construct(array $config)
-    {
-        $this->config        = $config;
+    public function __construct(
+        protected Config|array $config
+    ) {
         $this->templateDir   = $config['dir'];
         $this->fileExtension = $config['disks']['php']['fileExtension'] ?? '.phtml';
     }

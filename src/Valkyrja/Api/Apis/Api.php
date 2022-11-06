@@ -15,6 +15,7 @@ namespace Valkyrja\Api\Apis;
 
 use Exception;
 use Valkyrja\Api\Api as Contract;
+use Valkyrja\Api\Config\Config;
 use Valkyrja\Api\Constants\Status;
 use Valkyrja\Api\Json;
 use Valkyrja\Api\JsonData;
@@ -40,12 +41,12 @@ class Api implements Contract
      * Api constructor.
      *
      * @param ResponseFactory $responseFactory
-     * @param array           $config
+     * @param Config|array    $config
      * @param bool            $debug [optional]
      */
     public function __construct(
         protected ResponseFactory $responseFactory,
-        protected array $config,
+        protected Config|array $config,
         protected bool $debug = false
     ) {
     }

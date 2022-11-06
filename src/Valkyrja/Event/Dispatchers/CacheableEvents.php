@@ -33,11 +33,11 @@ class CacheableEvents extends Events
     /**
      * Events constructor.
      *
-     * @param Container  $container  The container
-     * @param Dispatcher $dispatcher The dispatcher
-     * @param array      $config     The config
+     * @param Container         $container  The container
+     * @param Dispatcher        $dispatcher The dispatcher
+     * @param EventConfig|array $config     The config
      */
-    public function __construct(protected Container $container, Dispatcher $dispatcher, array $config)
+    public function __construct(protected Container $container, Dispatcher $dispatcher, EventConfig|array $config)
     {
         parent::__construct($dispatcher, $config);
     }

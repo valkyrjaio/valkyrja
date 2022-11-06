@@ -15,6 +15,7 @@ namespace Valkyrja\View\Engines;
 
 use Valkyrja\Auth\Facades\Auth;
 use Valkyrja\Support\Directory;
+use Valkyrja\View\Config\Config;
 
 use function array_keys;
 use function file_get_contents;
@@ -86,24 +87,18 @@ class OrkaEngine extends PHPEngine
     ];
 
     /**
-     * Whether to run in debug mode.
-     *
-     * @var bool
-     */
-    protected bool $isDebug = false;
-
-    /**
      * OrkaEngine constructor.
      *
-     * @param array $config  The config
-     * @param bool  $isDebug Whether to run in debug mode
+     * @param Config|array $config  The config
+     * @param bool         $isDebug Whether to run in debug mode
      */
-    public function __construct(array $config, bool $isDebug)
-    {
+    public function __construct(
+        Config|array $config,
+        protected bool $isDebug
+    ) {
         parent::__construct($config);
 
         $this->fileExtension = $config['disks']['orka']['fileExtension'] ?? '.orka.phtml';
-        $this->isDebug       = $isDebug;
     }
 
     /**

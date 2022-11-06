@@ -25,6 +25,7 @@ use Valkyrja\HttpKernel\Events\RequestHandled;
 use Valkyrja\HttpKernel\Events\RequestTerminating;
 use Valkyrja\HttpKernel\Kernel as Contract;
 use Valkyrja\Log\Logger;
+use Valkyrja\Routing\Config\Config;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Support\MiddlewareAwareTrait;
@@ -48,46 +49,11 @@ class Kernel implements Contract
     use MiddlewareAwareTrait;
 
     /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
-     * The events.
-     *
-     * @var Events
-     */
-    protected Events $events;
-
-    /**
      * The request.
      *
      * @var Request
      */
     protected Request $request;
-
-    /**
-     * The router.
-     *
-     * @var Router
-     */
-    protected Router $router;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
-     * Whether to run in debug.
-     *
-     * @var bool
-     */
-    protected bool $debug;
 
     /**
      * The errors template directory.
@@ -99,25 +65,19 @@ class Kernel implements Contract
     /**
      * Kernel constructor.
      *
-     * @param Container $container The container
-     * @param Events    $events    The events
-     * @param Router    $router    The router
-     * @param array     $config    The config
-     * @param bool      $debug     [optional] Whether to run in debug
+     * @param Container    $container The container
+     * @param Events       $events    The events
+     * @param Router       $router    The router
+     * @param Config|array $config    The config
+     * @param bool         $debug     [optional] Whether to run in debug
      */
     public function __construct(
-        Container $container,
-        Events $events,
-        Router $router,
-        array $config,
-        bool $debug = false
+        protected Container $container,
+        protected Events $events,
+        protected Router $router,
+        protected Config|array $config,
+        protected bool $debug = false
     ) {
-        $this->container = $container;
-        $this->events    = $events;
-        $this->router    = $router;
-        $this->config    = $config;
-        $this->debug     = $debug;
-
         self::$middleware       = $config['middleware'];
         self::$middlewareGroups = $config['middlewareGroups'];
     }
