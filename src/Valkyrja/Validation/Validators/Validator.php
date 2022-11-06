@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Validators;
 
 use Exception;
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Container\Container;
+use Valkyrja\Validation\Constants\Property;
 use Valkyrja\Validation\Constants\Rule;
 use Valkyrja\Validation\Factory;
 use Valkyrja\Validation\Validator as Contract;
@@ -141,7 +140,7 @@ class Validator implements Contract
     protected function validateRuleSet(array $ruleSet): void
     {
         foreach ($ruleSet as $key => $item) {
-            $this->validateSubject($key, $item['subject'] ?? null, $item['rules'] ?? []);
+            $this->validateSubject($key, $item[Property::SUBJECT] ?? null, $item[Property::RULES] ?? []);
         }
     }
 
@@ -189,9 +188,9 @@ class Validator implements Contract
      */
     protected function validateRule(string $subjectName, string $name, mixed $subject, array $rule): void
     {
-        $arguments    = $rule['arguments'] ?? [];
-        $rulesName    = $this->config[CKP::RULES_MAP][$name] ?? null;
-        $errorMessage = $rule['errorMessage'] ?? null;
+        $arguments    = $rule[Property::ARGUMENTS] ?? [];
+        $rulesName    = $this->config['rulesMap'][$name] ?? null;
+        $errorMessage = $rule[Property::MESSAGE] ?? null;
         // Not in try catch to avoid swallowing an error if rule doesn't exist
         $rules = $this->getRules($rulesName);
 
