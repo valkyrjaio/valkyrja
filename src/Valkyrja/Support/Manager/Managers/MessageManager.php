@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Manager\Managers;
 
+use Valkyrja\Support\Manager\Config\MessageConfig;
 use Valkyrja\Support\Manager\FactoryWithMessage;
 use Valkyrja\Support\Manager\Message;
 use Valkyrja\Support\Manager\MessageManager as Contract;
@@ -50,10 +51,10 @@ abstract class MessageManager extends Manager implements Contract
     /**
      * MessageManager constructor.
      *
-     * @param FactoryWithMessage $factory The factory
-     * @param array              $config  The config
+     * @param FactoryWithMessage  $factory The factory
+     * @param MessageConfig|array $config  The config
      */
-    public function __construct(FactoryWithMessage $factory, array $config)
+    public function __construct(FactoryWithMessage $factory, MessageConfig|array $config)
     {
         parent::__construct($factory, $config);
 

@@ -19,9 +19,9 @@ use Valkyrja\Broadcast\Adapters\NullAdapter;
 use Valkyrja\Broadcast\Adapters\PusherAdapter;
 use Valkyrja\Broadcast\Drivers\Driver;
 use Valkyrja\Broadcast\Messages\Message;
-use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Support\Manager\Config\MessageConfig as Model;
 
 /**
  * Class Config.
@@ -44,37 +44,22 @@ class Config extends Model
     ];
 
     /**
-     * The default adapter.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $default = CKP::PUSHER;
 
     /**
-     * The default message.
-     *
-     * @var string
-     */
-    public string $defaultMessage = CKP::DEFAULT;
-
-    /**
-     * The default adapter.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $adapter = PusherAdapter::class;
 
     /**
-     * The default driver.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $driver = Driver::class;
 
     /**
-     * The default message class.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $message = Message::class;
 
@@ -104,9 +89,7 @@ class Config extends Model
     ];
 
     /**
-     * The messages.
-     *
-     * @var array
+     * @inheritDoc
      */
     public array $messages = [
         CKP::DEFAULT => null,

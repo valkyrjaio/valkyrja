@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log\Config;
 
-use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\Log\Adapters\PsrAdapter;
 use Valkyrja\Log\Drivers\Driver;
+use Valkyrja\Support\Manager\Config\Config as Model;
 
 /**
  * Class Config.
@@ -37,23 +37,17 @@ class Config extends Model
     ];
 
     /**
-     * The default logger.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $default = CKP::PSR;
 
     /**
-     * The default adapter.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $adapter = PsrAdapter::class;
 
     /**
-     * The default driver.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $driver = Driver::class;
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Managers;
 
+use Valkyrja\Crypt\Config\Config;
 use Valkyrja\Crypt\Crypt as Contract;
 use Valkyrja\Crypt\Driver;
 use Valkyrja\Crypt\Factory;
@@ -30,10 +31,10 @@ class Crypt extends Manager implements Contract
     /**
      * Crypt constructor.
      *
-     * @param Factory $factory The factory
-     * @param array   $config  The config
+     * @param Factory      $factory The factory
+     * @param Config|array $config  The config
      */
-    public function __construct(Factory $factory, array $config)
+    public function __construct(Factory $factory, Config|array $config)
     {
         parent::__construct($factory, $config);
 

@@ -15,11 +15,11 @@ namespace Valkyrja\Filesystem\Config;
 
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
-use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\Filesystem\Adapters\FlysystemAdapter;
 use Valkyrja\Filesystem\Drivers\Driver;
+use Valkyrja\Support\Manager\Config\Config as Model;
 
 /**
  * Class Config.
@@ -39,23 +39,17 @@ class Config extends Model
     ];
 
     /**
-     * The default disk.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $default = CKP::LOCAL;
 
     /**
-     * The default adapter.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $adapter = FlysystemAdapter::class;
 
     /**
-     * The default driver.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $driver = Driver::class;
 

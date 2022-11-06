@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Managers;
 
+use Valkyrja\Filesystem\Config\Config;
 use Valkyrja\Filesystem\Driver;
 use Valkyrja\Filesystem\Enums\Visibility;
-use Valkyrja\Filesystem\Filesystem as Contract;
 use Valkyrja\Filesystem\Factory;
+use Valkyrja\Filesystem\Filesystem as Contract;
 use Valkyrja\Support\Manager\Managers\Manager;
 
 /**
@@ -31,10 +32,10 @@ class Filesystem extends Manager implements Contract
     /**
      * Filesystem constructor.
      *
-     * @param Factory $factory The factory
-     * @param array   $config  The config
+     * @param Factory      $factory The factory
+     * @param Config|array $config  The config
      */
-    public function __construct(Factory $factory, array $config)
+    public function __construct(Factory $factory, Config|array $config)
     {
         parent::__construct($factory, $config);
 

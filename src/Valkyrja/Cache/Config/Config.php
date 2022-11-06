@@ -15,9 +15,9 @@ namespace Valkyrja\Cache\Config;
 
 use Valkyrja\Cache\Adapters\RedisAdapter;
 use Valkyrja\Cache\Drivers\Driver;
-use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Support\Manager\Config\Config as Model;
 
 /**
  * Class Config.
@@ -37,23 +37,17 @@ class Config extends Model
     ];
 
     /**
-     * The default store.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $default = CKP::REDIS;
 
     /**
-     * The default adapter.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $adapter = RedisAdapter::class;
 
     /**
-     * The default driver.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $driver = Driver::class;
 

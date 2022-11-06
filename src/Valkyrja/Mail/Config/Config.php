@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Config;
 
-use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\Mail\Adapters\LogAdapter;
@@ -22,6 +21,7 @@ use Valkyrja\Mail\Adapters\NullAdapter;
 use Valkyrja\Mail\Adapters\PHPMailerAdapter;
 use Valkyrja\Mail\Drivers\Driver;
 use Valkyrja\Mail\Messages\Message;
+use Valkyrja\Support\Manager\Config\MessageConfig as Model;
 
 /**
  * Class Config.
@@ -44,37 +44,22 @@ class Config extends Model
     ];
 
     /**
-     * The default mailer.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $default = CKP::PHP_MAILER;
 
     /**
-     * The default message.
-     *
-     * @var string
-     */
-    public string $defaultMessage = CKP::DEFAULT;
-
-    /**
-     * The default adapter.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $adapter = MailgunAdapter::class;
 
     /**
-     * The default driver.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $driver = Driver::class;
 
     /**
-     * The default message class.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $message = Message::class;
 
@@ -111,9 +96,7 @@ class Config extends Model
     ];
 
     /**
-     * The messages.
-     *
-     * @var array[]
+     * @inheritDoc
      */
     public array $messages = [
         CKP::DEFAULT => [

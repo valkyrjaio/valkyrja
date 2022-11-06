@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Managers;
 
 use Valkyrja\Cache\Cache as Contract;
+use Valkyrja\Cache\Config\Config;
 use Valkyrja\Cache\Driver;
 use Valkyrja\Cache\Factory;
 use Valkyrja\Cache\Tagger;
@@ -31,10 +32,10 @@ class Cache extends Manager implements Contract
     /**
      * Cache constructor.
      *
-     * @param Factory $factory The factory
-     * @param array   $config  The config
+     * @param Factory      $factory The factory
+     * @param Config|array $config  The config
      */
-    public function __construct(Factory $factory, array $config)
+    public function __construct(Factory $factory, Config|array $config)
     {
         parent::__construct($factory, $config);
 

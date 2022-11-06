@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\SMS\Config;
 
-use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\SMS\Adapters\LogAdapter;
@@ -21,6 +20,7 @@ use Valkyrja\SMS\Adapters\NexmoAdapter;
 use Valkyrja\SMS\Adapters\NullAdapter;
 use Valkyrja\SMS\Drivers\Driver;
 use Valkyrja\SMS\Messages\Message;
+use Valkyrja\Support\Manager\Config\MessageConfig as Model;
 
 /**
  * Class Config.
@@ -43,37 +43,22 @@ class Config extends Model
     ];
 
     /**
-     * The default messenger.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $default = CKP::NEXMO;
 
     /**
-     * The default message.
-     *
-     * @var string
-     */
-    public string $defaultMessage = CKP::DEFAULT;
-
-    /**
-     * The default adapter.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $adapter = NexmoAdapter::class;
 
     /**
-     * The default driver.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $driver = Driver::class;
 
     /**
-     * The default message class.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $message = Message::class;
 
@@ -101,9 +86,7 @@ class Config extends Model
     ];
 
     /**
-     * The messages.
-     *
-     * @var array[]
+     * @inheritDoc
      */
     public array $messages = [
         CKP::DEFAULT => [

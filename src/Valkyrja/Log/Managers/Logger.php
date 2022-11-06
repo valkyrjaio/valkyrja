@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Log\Managers;
 
 use Throwable;
+use Valkyrja\Log\Config\Config;
 use Valkyrja\Log\Driver;
 use Valkyrja\Log\Factory;
 use Valkyrja\Log\Logger as Contract;
@@ -31,10 +32,10 @@ class Logger extends Manager implements Contract
     /**
      * Logger constructor.
      *
-     * @param Factory $factory The factory
-     * @param array   $config  The config
+     * @param Factory      $factory The factory
+     * @param Config|array $config  The config
      */
-    public function __construct(Factory $factory, array $config)
+    public function __construct(Factory $factory, Config|array $config)
     {
         parent::__construct($factory, $config);
 

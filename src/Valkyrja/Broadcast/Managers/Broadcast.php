@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast\Managers;
 
 use Valkyrja\Broadcast\Broadcast as Contract;
+use Valkyrja\Broadcast\Config\Config;
 use Valkyrja\Broadcast\Driver;
 use Valkyrja\Broadcast\Factory;
 use Valkyrja\Broadcast\Message;
@@ -31,10 +32,10 @@ class Broadcast extends MessageManager implements Contract
     /**
      * Broadcast constructor.
      *
-     * @param Factory $factory The factory
-     * @param array   $config  The config
+     * @param Factory      $factory The factory
+     * @param Config|array $config  The config
      */
-    public function __construct(Factory $factory, array $config)
+    public function __construct(Factory $factory, Config|array $config)
     {
         parent::__construct($factory, $config);
 

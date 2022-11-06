@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Config;
 
-use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\Session\Adapters\PHPAdapter;
 use Valkyrja\Session\Drivers\Driver;
+use Valkyrja\Support\Manager\Config\Config as Model;
 
 /**
  * Class Config.
@@ -37,23 +37,12 @@ class Config extends Model
     ];
 
     /**
-     * The default session.
-     *
-     * @var string
-     */
-    public string $default = CKP::DEFAULT;
-
-    /**
-     * The default adapter.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $adapter = PHPAdapter::class;
 
     /**
-     * The default driver.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $driver = Driver::class;
 

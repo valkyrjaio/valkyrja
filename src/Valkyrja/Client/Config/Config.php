@@ -15,9 +15,9 @@ namespace Valkyrja\Client\Config;
 
 use Valkyrja\Client\Adapters\GuzzleAdapter;
 use Valkyrja\Client\Drivers\Driver;
-use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Support\Manager\Config\Config as Model;
 
 /**
  * Class Config.
@@ -37,23 +37,17 @@ class Config extends Model
     ];
 
     /**
-     * The default client connection.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $default = CKP::GUZZLE;
 
     /**
-     * The adapter.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $adapter = GuzzleAdapter::class;
 
     /**
-     * The driver.
-     *
-     * @var string
+     * @inheritDoc
      */
     public string $driver = Driver::class;
 

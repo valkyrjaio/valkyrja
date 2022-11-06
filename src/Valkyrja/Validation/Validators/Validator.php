@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Validators;
 
 use Exception;
+use Valkyrja\Validation\Config\Config;
 use Valkyrja\Validation\Constants\Property;
 use Valkyrja\Validation\Constants\Rule;
 use Valkyrja\Validation\Factory;
@@ -57,12 +58,12 @@ class Validator implements Contract
     /**
      * Validator constructor.
      *
-     * @param Factory $factory
-     * @param array   $config
+     * @param Factory      $factory
+     * @param Config|array $config
      */
     public function __construct(
         protected Factory $factory,
-        protected array $config
+        protected Config|array $config
     ) {
         $this->defaultRules = $config['rule'];
     }

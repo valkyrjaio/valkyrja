@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Managers;
 
+use Valkyrja\Session\Config\Config;
 use Valkyrja\Session\Driver;
 use Valkyrja\Session\Factory;
 use Valkyrja\Session\Session as Contract;
@@ -28,10 +29,10 @@ class Session extends Manager implements Contract
     /**
      * Session constructor.
      *
-     * @param Factory $factory The factory
-     * @param array   $config  The config
+     * @param Factory      $factory The factory
+     * @param Config|array $config  The config
      */
-    public function __construct(Factory $factory, array $config)
+    public function __construct(Factory $factory, Config|array $config)
     {
         parent::__construct($factory, $config);
 

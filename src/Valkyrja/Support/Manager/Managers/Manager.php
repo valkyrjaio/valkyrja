@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Manager\Managers;
 
-use Valkyrja\Support\Manager\Factory;
+use Valkyrja\Support\Manager\Config\Config;
 use Valkyrja\Support\Manager\Driver;
+use Valkyrja\Support\Manager\Factory;
 use Valkyrja\Support\Manager\Manager as Contract;
 
 /**
@@ -30,20 +31,6 @@ abstract class Manager implements Contract
      * @var Driver[]
      */
     protected static array $drivers = [];
-
-    /**
-     * The factory.
-     *
-     * @var Factory
-     */
-    protected Factory $factory;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
 
     /**
      * The default adapter.
@@ -76,13 +63,13 @@ abstract class Manager implements Contract
     /**
      * Manager constructor.
      *
-     * @param Factory $factory The factory
-     * @param array   $config  The config
+     * @param Factory      $factory The factory
+     * @param Config|array $config  The config
      */
-    public function __construct(Factory $factory, array $config)
-    {
-        $this->factory              = $factory;
-        $this->config               = $config;
+    public function __construct(
+        protected Factory $factory,
+        protected Config|array $config
+    ) {
         $this->defaultConfiguration = $config['default'];
         $this->defaultAdapter       = $config['adapter'];
         $this->defaultDriver        = $config['driver'];

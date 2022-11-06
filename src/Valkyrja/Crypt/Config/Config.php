@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Config;
 
-use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Crypt\Adapters\SodiumAdapter;
+use Valkyrja\Crypt\Drivers\Driver;
+use Valkyrja\Support\Manager\Config\Config as Model;
 
 /**
  * Class Config.
@@ -35,30 +37,26 @@ class Config extends Model
     ];
 
     /**
-     * The default crypt.
-     *
-     * @var string
+     * @inheritDoc
      */
-    public string $default;
+    public string $adapter = SodiumAdapter::class;
 
     /**
-     * The adapter.
-     *
-     * @var string
+     * @inheritDoc
      */
-    public string $adapter;
-
-    /**
-     * The driver.
-     *
-     * @var string
-     */
-    public string $driver;
+    public string $driver = Driver::class;
 
     /**
      * The config.
      *
      * @var array
      */
-    public array $crypts;
+    public array $crypts = [
+        CKP::DEFAULT => [
+            CKP::ADAPTER  => CKP::SODIUM,
+            CKP::DRIVER   => CKP::DEFAULT,
+            CKP::KEY      => 'some_secret_key',
+            CKP::KEY_PATH => null,
+        ],
+    ];
 }

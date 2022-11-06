@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\JWT\Managers;
 
+use Valkyrja\JWT\Config\Config;
 use Valkyrja\JWT\Driver;
-use Valkyrja\JWT\JWT as Contract;
 use Valkyrja\JWT\Factory;
+use Valkyrja\JWT\JWT as Contract;
 use Valkyrja\Support\Manager\Managers\Manager;
 
 /**
@@ -30,10 +31,10 @@ class JWT extends Manager implements Contract
     /**
      * JWT constructor.
      *
-     * @param Factory $factory The factory
-     * @param array   $config  The config
+     * @param Factory      $factory The factory
+     * @param Config|array $config  The config
      */
-    public function __construct(Factory $factory, array $config)
+    public function __construct(Factory $factory, Config|array $config)
     {
         parent::__construct($factory, $config);
 

@@ -13,9 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\JWT\Config;
 
-use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\JWT\Adapters\Firebase\EdDSAAdapter;
+use Valkyrja\JWT\Adapters\Firebase\HSAdapter;
+use Valkyrja\JWT\Adapters\Firebase\RSAdapter;
+use Valkyrja\JWT\Adapters\FirebaseAdapter;
+use Valkyrja\JWT\Constants\Algo;
+use Valkyrja\JWT\Drivers\Driver;
+use Valkyrja\Support\Manager\Config\Config as Model;
 
 /**
  * Class Config.
@@ -35,30 +41,47 @@ class Config extends Model
     ];
 
     /**
-     * The default algo.
-     *
-     * @var string
+     * @inheritDoc
      */
-    public string $default;
+    public string $default = Algo::HS256;
 
     /**
-     * The default adapter.
-     *
-     * @var string
+     * @inheritDoc
      */
-    public string $adapter;
+    public string $adapter = FirebaseAdapter::class;
 
     /**
-     * The default driver.
-     *
-     * @var string
+     * @inheritDoc
      */
-    public string $driver;
+    public string $driver = Driver::class;
 
     /**
      * The algorithms.
      *
      * @var array[]
      */
-    public array $algos;
+    public array $algos = [
+        Algo::HS256 => [
+            CKP::ALGO    => Algo::HS256,
+            CKP::ADAPTER => HSAdapter::class,
+            CKP::DRIVER  => null,
+            CKP::KEY     => '',
+        ],
+        Algo::RS256 => [
+            CKP::ALGO        => Algo::RS256,
+            CKP::ADAPTER     => RSAdapter::class,
+            CKP::DRIVER      => null,
+            CKP::PRIVATE_KEY => null,
+            CKP::PUBLIC_KEY  => null,
+            CKP::KEY_PATH    => null,
+            CKP::PASSPHRASE  => null,
+        ],
+        Algo::EDDSA => [
+            CKP::ALGO        => Algo::EDDSA,
+            CKP::ADAPTER     => EdDSAAdapter::class,
+            CKP::DRIVER      => null,
+            CKP::PRIVATE_KEY => '',
+            CKP::PUBLIC_KEY  => '',
+        ],
+    ];
 }

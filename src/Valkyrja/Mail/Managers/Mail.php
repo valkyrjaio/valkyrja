@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Managers;
 
+use Valkyrja\Mail\Config\Config;
 use Valkyrja\Mail\Driver;
 use Valkyrja\Mail\Factory;
 use Valkyrja\Mail\Mail as Contract;
@@ -31,10 +32,10 @@ class Mail extends MessageManager implements Contract
     /**
      * Mail constructor.
      *
-     * @param Factory $factory The factory
-     * @param array   $config  The config
+     * @param Factory      $factory The factory
+     * @param Config|array $config  The config
      */
-    public function __construct(Factory $factory, array $config)
+    public function __construct(Factory $factory, Config|array $config)
     {
         parent::__construct($factory, $config);
 

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Client\Managers;
 
 use Valkyrja\Client\Client as Contract;
+use Valkyrja\Client\Config\Config;
 use Valkyrja\Client\Driver;
 use Valkyrja\Client\Factory;
 use Valkyrja\Http\Request;
@@ -32,10 +33,10 @@ class Client extends Manager implements Contract
     /**
      * Client constructor.
      *
-     * @param Factory $factory The factory
-     * @param array   $config  The config
+     * @param Factory      $factory The factory
+     * @param Config|array $config  The config
      */
-    public function __construct(Factory $factory, array $config)
+    public function __construct(Factory $factory, Config|array $config)
     {
         parent::__construct($factory, $config);
 
