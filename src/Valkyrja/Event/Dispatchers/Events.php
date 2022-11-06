@@ -15,6 +15,7 @@ namespace Valkyrja\Event\Dispatchers;
 
 use JsonException;
 use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Event\Config\Config;
 use Valkyrja\Event\Event;
 use Valkyrja\Event\Events as Contract;
 use Valkyrja\Event\Listener;
@@ -39,29 +40,15 @@ class Events implements Contract
     protected static array $events = [];
 
     /**
-     * The dispatcher.
-     *
-     * @var Dispatcher
-     */
-    protected Dispatcher $dispatcher;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * Events constructor.
      *
-     * @param Dispatcher $dispatcher The dispatcher
-     * @param array      $config     The config
+     * @param Dispatcher   $dispatcher The dispatcher
+     * @param Config|array $config     The config
      */
-    public function __construct(Dispatcher $dispatcher, array $config)
-    {
-        $this->dispatcher = $dispatcher;
-        $this->config     = $config;
+    public function __construct(
+        protected Dispatcher $dispatcher,
+        protected Config|array $config
+    ) {
     }
 
     /**
