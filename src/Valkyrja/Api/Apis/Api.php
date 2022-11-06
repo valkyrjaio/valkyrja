@@ -37,38 +37,17 @@ use function strtolower;
 class Api implements Contract
 {
     /**
-     * The response factory.
-     *
-     * @var ResponseFactory
-     */
-    protected ResponseFactory $responseFactory;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
-     * Whether to run in debug mode.
-     *
-     * @var bool
-     */
-    protected bool $debug = false;
-
-    /**
      * Api constructor.
      *
      * @param ResponseFactory $responseFactory
      * @param array           $config
      * @param bool            $debug [optional]
      */
-    public function __construct(ResponseFactory $responseFactory, array $config, bool $debug = false)
-    {
-        $this->responseFactory = $responseFactory;
-        $this->config          = $config;
-        $this->debug           = $debug;
+    public function __construct(
+        protected ResponseFactory $responseFactory,
+        protected array $config,
+        protected bool $debug = false
+    ) {
     }
 
     /**
