@@ -33,25 +33,18 @@ class CacheableCollection extends Collection
     use Cacheable;
 
     /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * RouteCollection constructor.
      *
-     * @param Container  $container
-     * @param Dispatcher $dispatcher
-     * @param array      $config
+     * @param Container           $container
+     * @param Dispatcher          $dispatcher
+     * @param RoutingConfig|array $config
      */
-    public function __construct(Container $container, Dispatcher $dispatcher, array $config)
-    {
+    public function __construct(
+        Container $container,
+        Dispatcher $dispatcher,
+        protected RoutingConfig|array $config
+    ) {
         parent::__construct($container, $dispatcher);
-
-        $this->container = $container;
-        $this->config    = $config;
     }
 
     /**

@@ -16,6 +16,7 @@ namespace Valkyrja\Routing\Urls;
 use RuntimeException;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Http\Request;
+use Valkyrja\Routing\Config\Config;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
@@ -34,38 +35,17 @@ use function substr;
 class Url implements Contract
 {
     /**
-     * The request.
-     *
-     * @var Request
-     */
-    protected Request $request;
-
-    /**
-     * The router.
-     *
-     * @var Router
-     */
-    protected Router $router;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * Router constructor.
      *
-     * @param Request $request The request
-     * @param Router  $router  The router
-     * @param array   $config  The routing config
+     * @param Request      $request The request
+     * @param Router       $router  The router
+     * @param Config|array $config  The routing config
      */
-    public function __construct(Request $request, Router $router, array $config)
-    {
-        $this->request = $request;
-        $this->router  = $router;
-        $this->config  = $config;
+    public function __construct(
+        protected Request $request,
+        protected Router $router,
+        protected Config|array $config
+    ) {
     }
 
     /**

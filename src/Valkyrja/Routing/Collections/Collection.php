@@ -20,7 +20,6 @@ use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Collection as Contract;
 use Valkyrja\Routing\Constants\Regex;
-use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Helpers;
 use Valkyrja\Support\Type\Arr;
@@ -67,36 +66,15 @@ class Collection implements Contract
     protected array $named = [];
 
     /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
-     * The dispatcher.
-     *
-     * @var Dispatcher
-     */
-    protected Dispatcher $dispatcher;
-
-    /**
-     * The route matcher.
-     *
-     * @var Matcher
-     */
-    protected Matcher $matcher;
-
-    /**
      * Collection constructor.
      *
      * @param Container  $container
      * @param Dispatcher $dispatcher
      */
-    public function __construct(Container $container, Dispatcher $dispatcher)
-    {
-        $this->container  = $container;
-        $this->dispatcher = $dispatcher;
+    public function __construct(
+        protected Container $container,
+        protected Dispatcher $dispatcher
+    ) {
     }
 
     /**
