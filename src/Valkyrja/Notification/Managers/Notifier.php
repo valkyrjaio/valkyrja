@@ -15,6 +15,7 @@ namespace Valkyrja\Notification\Managers;
 
 use Valkyrja\Broadcast\Broadcast;
 use Valkyrja\Mail\Mail;
+use Valkyrja\Notification\Config\Config;
 use Valkyrja\Notification\Factory;
 use Valkyrja\Notification\NotifiableUser;
 use Valkyrja\Notification\Notification;
@@ -28,41 +29,6 @@ use Valkyrja\SMS\SMS;
  */
 class Notifier implements Contract
 {
-    /**
-     * The broadcaster.
-     *
-     * @var Broadcast
-     */
-    protected Broadcast $broadcast;
-
-    /**
-     * The factory.
-     *
-     * @var Factory
-     */
-    protected Factory $factory;
-
-    /**
-     * The mail service.
-     *
-     * @var Mail
-     */
-    protected Mail $mail;
-
-    /**
-     * The SMS service.
-     *
-     * @var SMS
-     */
-    protected SMS $sms;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
     /**
      * The mail recipients.
      *
@@ -87,19 +53,19 @@ class Notifier implements Contract
     /**
      * Notifier constructor.
      *
-     * @param Factory   $factory     The factory
-     * @param Broadcast $broadcaster The broadcaster
-     * @param Mail      $mail        The mail service
-     * @param SMS       $sms         The sms service
-     * @param array     $config      The config
+     * @param Factory      $factory   The factory
+     * @param Broadcast    $broadcast The broadcast
+     * @param Mail         $mail      The mail service
+     * @param SMS          $sms       The sms service
+     * @param Config|array $config    The config
      */
-    public function __construct(Factory $factory, Broadcast $broadcaster, Mail $mail, SMS $sms, array $config)
-    {
-        $this->factory   = $factory;
-        $this->broadcast = $broadcaster;
-        $this->config    = $config;
-        $this->mail      = $mail;
-        $this->sms       = $sms;
+    public function __construct(
+        protected Factory $factory,
+        protected Broadcast $broadcast,
+        protected Mail $mail,
+        protected SMS $sms,
+        protected Config|array $config
+    ) {
     }
 
     /**
