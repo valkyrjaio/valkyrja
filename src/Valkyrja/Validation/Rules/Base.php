@@ -362,7 +362,7 @@ class Base
      */
     public function regex(string $subject, string $regex): void
     {
-        if (! preg_match($subject, $regex)) {
+        if (! preg_match($regex, $subject)) {
             throw new ValidationException("{$subject} must match the given regex {$regex}");
         }
     }
