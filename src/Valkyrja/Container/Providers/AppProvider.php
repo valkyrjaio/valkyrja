@@ -13,16 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Providers;
 
-use JsonException;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config;
 use Valkyrja\Container\Container as Contract;
 use Valkyrja\Container\Managers\CacheableContainer;
-use Valkyrja\Support\Type\Arr;
-use Valkyrja\Support\Type\Obj;
-
-use function is_array;
 
 /**
  * Class AppProvider.
@@ -33,16 +28,10 @@ class AppProvider extends Provider
 {
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public static function publish(Application $app): void
     {
         $config = $app->config();
-
-        if (! is_array($config)) {
-            $config = Arr::fromString(Obj::toString($config));
-        }
 
         $container = new CacheableContainer($config['container'], $app->debug());
 
