@@ -17,6 +17,7 @@ use Valkyrja\Support\Type\Integer;
 use Valkyrja\Support\Type\Str;
 use Valkyrja\Validation\Exceptions\ValidationException;
 
+use function in_array;
 use function is_bool;
 use function is_numeric;
 
@@ -218,10 +219,10 @@ class Base
      *
      * @return void
      */
-    public function contains(string $subject, ...$needles): void
+    public function contains(string $subject, string|int ...$needles): void
     {
         foreach ($needles as $needle) {
-            if (! Str::contains($subject, $needle)) {
+            if (! Str::contains($subject, (string) $needle)) {
                 throw new ValidationException("{$subject} must contain {$needle}");
             }
         }
@@ -237,10 +238,10 @@ class Base
      *
      * @return void
      */
-    public function containsAny(string $subject, ...$needles): void
+    public function containsAny(string $subject, string|int ...$needles): void
     {
         foreach ($needles as $needle) {
-            if (Str::contains($subject, $needle)) {
+            if (Str::contains($subject, (string) $needle)) {
                 return;
             }
         }
@@ -329,6 +330,40 @@ class Base
     {
         if (! Integer::greaterThan($subject, $min)) {
             throw new ValidationException("{$subject} must be greater than {$min}");
+        }
+    }
+
+    /**
+     * Subject is one of a set of valid values.
+     *
+     * @param mixed $subject     The subject
+     * @param array $validValues The valid values
+     *
+     * @throws ValidationException
+     *
+     * @return void
+     */
+    public function oneOf(mixed $subject, mixed ...$validValues): void
+    {
+        if (! in_array($subject, $validValues, true)) {
+            throw new ValidationException("{$subject} must be one of");
+        }
+    }
+
+    /**
+     * Subject matches a regex.
+     *
+     * @param string $subject The subject
+     * @param string $regex   The regex
+     *
+     * @throws ValidationException
+     *
+     * @return void
+     */
+    public function regex(string $subject, string $regex): void
+    {
+        if (! preg_match($subject, $regex)) {
+            throw new ValidationException("{$subject} must match the given regex {$regex}");
         }
     }
 }

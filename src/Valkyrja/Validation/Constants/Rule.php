@@ -38,6 +38,8 @@ final class Rule
     public const BOOLEAN      = 'boolean';
     public const LESS_THAN    = 'lessThan';
     public const GREATER_THAN = 'greaterThan';
+    public const ONE_OF       = 'oneOf';
+    public const REGEX        = 'regex';
     public const ORM_UNIQUE   = 'ormUnique';
     public const ORM_EXISTS   = 'ormExists';
 }
