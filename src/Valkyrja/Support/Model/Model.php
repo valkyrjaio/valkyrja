@@ -23,6 +23,13 @@ use JsonSerializable;
 interface Model extends JsonSerializable
 {
     /**
+     * Get a list of exposable properties.
+     *
+     * @return string[]
+     */
+    public static function getExposable(): array;
+
+    /**
      * Set properties from an array of properties.
      *
      * @param array $properties
@@ -85,6 +92,15 @@ interface Model extends JsonSerializable
      * @return array
      */
     public function asArray(string ...$properties): array;
+
+    /**
+     * Get model as an array with exposable properties.
+     *
+     * @param string ...$properties [optional] An array of properties to return
+     *
+     * @return array
+     */
+    public function asArrayWithExposable(string ...$properties): array;
 
     /**
      * Get model as an array including only changed properties.

@@ -78,6 +78,13 @@ abstract class Model implements Contract
     protected static array $castingsAllowedClasses = [];
 
     /**
+     * Properties that are exposable.
+     *
+     * @var string[]
+     */
+    protected static array $exposable = [];
+
+    /**
      * The properties to expose.
      *
      * @var string[]
@@ -90,6 +97,14 @@ abstract class Model implements Contract
      * @var array
      */
     protected array $__originalProperties = [];
+
+    /**
+     * @inheritDoc
+     */
+    public static function getExposable(): array
+    {
+        return static::$exposable;
+    }
 
     /**
      * @inheritDoc
@@ -195,6 +210,18 @@ abstract class Model implements Contract
         }
 
         return $allProperties;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function asArrayWithExposable(string ...$properties): array
+    {
+        $this->expose(...static::$exposable);
+        $array = $this->asArray(...$properties);
+        $this->unexpose(...static::$exposable);
+
+        return $array;
     }
 
     /**
