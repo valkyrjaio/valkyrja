@@ -74,6 +74,26 @@ class AuthenticatedUsers extends Model implements Contract
     /**
      * @inheritDoc
      */
+    public function isAuthenticated(User $user): bool
+    {
+        $id = $user->__get($user::getIdField());
+
+        if ($this->currentId === $id) {
+            return true;
+        }
+
+        foreach ($this->users as $authedUser) {
+            if ($authedUser->__get($authedUser::getIdField()) === $id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function add(User $user): static
     {
         $this->users[$user->__get($user::getIdField())] = $user;

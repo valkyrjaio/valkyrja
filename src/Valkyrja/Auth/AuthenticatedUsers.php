@@ -47,6 +47,15 @@ interface AuthenticatedUsers extends Model
     public function setCurrent(User $user): static;
 
     /**
+     * Check if a user is authenticated.
+     *
+     * @param User $user The user to check
+     *
+     * @return bool
+     */
+    public function isAuthenticated(User $user): bool;
+
+    /**
      * Add a user to the collection.
      *
      * @param User|T $user The user
