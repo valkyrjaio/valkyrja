@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Managers;
 
 use Valkyrja\ORM\Adapter;
+use Valkyrja\ORM\Config\Config;
 use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Factory;
@@ -49,20 +50,6 @@ class ORM implements Contract
      * @var Repository[]
      */
     protected static array $repositories = [];
-
-    /**
-     * The factory.
-     *
-     * @var Factory
-     */
-    protected Factory $factory;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
 
     /**
      * The connections.
@@ -130,15 +117,13 @@ class ORM implements Contract
     /**
      * ORM constructor.
      *
-     * @param Factory $factory The factory
-     * @param array   $config  The config
+     * @param Factory      $factory The factory
+     * @param Config|array $config  The config
      */
     public function __construct(
-        Factory $factory,
-        array $config
+        protected Factory $factory,
+        protected Config|array $config
     ) {
-        $this->factory             = $factory;
-        $this->config              = $config;
         $this->connections         = $config['connections'];
         $this->defaultConnection   = $config['default'];
         $this->defaultAdapter      = $config['adapter'];
