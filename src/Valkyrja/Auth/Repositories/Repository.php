@@ -16,6 +16,7 @@ namespace Valkyrja\Auth\Repositories;
 use Exception;
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\AuthenticatedUsers;
+use Valkyrja\Auth\Config\Config;
 use Valkyrja\Auth\Constants\SessionId;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidCurrentAuthenticationException;
@@ -35,13 +36,6 @@ use Valkyrja\Support\Type\Cls;
  */
 class Repository implements Contract
 {
-    /**
-     * The adapter.
-     *
-     * @var Adapter
-     */
-    protected Adapter $adapter;
-
     /**
      * The session.
      *
@@ -85,26 +79,21 @@ class Repository implements Contract
     protected bool $isAuthenticated = false;
 
     /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * Repository constructor.
      *
      * @param Adapter        $adapter The adapter
      * @param SessionManager $session The session service
-     * @param array          $config  The config
+     * @param Config|array   $config  The config
      * @param string         $user    The user class
      */
-    public function __construct(Adapter $adapter, SessionManager $session, array $config, string $user)
-    {
+    public function __construct(
+        protected Adapter $adapter,
+        SessionManager $session,
+        protected Config|array $config,
+        string $user
+    ) {
         Cls::validateInherits($user, User::class);
 
-        $this->config         = $config;
-        $this->adapter        = $adapter;
         $this->session        = $session->use();
         $this->userEntityName = $user;
 

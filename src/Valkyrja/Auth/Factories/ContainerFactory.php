@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Factories;
 
 use Valkyrja\Auth\Adapter;
+use Valkyrja\Auth\Config\Config;
 use Valkyrja\Auth\CryptTokenizedRepository;
 use Valkyrja\Auth\EntityPolicy;
 use Valkyrja\Auth\EntityRoutePolicy;
@@ -54,7 +55,7 @@ class ContainerFactory implements Contract
     /**
      * @inheritDoc
      */
-    public function createAdapter(string $name, array $config): Adapter
+    public function createAdapter(string $name, Config|array $config): Adapter
     {
         return Cls::getDefaultableService(
             $this->container,
@@ -69,7 +70,7 @@ class ContainerFactory implements Contract
     /**
      * @inheritDoc
      */
-    public function createRepository(Adapter $adapter, string $name, string $user, array $config): Repository
+    public function createRepository(Adapter $adapter, string $name, string $user, Config|array $config): Repository
     {
         $defaultClass = Repository::class;
 

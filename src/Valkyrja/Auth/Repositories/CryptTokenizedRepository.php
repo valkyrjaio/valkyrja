@@ -15,6 +15,7 @@ namespace Valkyrja\Auth\Repositories;
 
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\AuthenticatedUsers;
+use Valkyrja\Auth\Config\Config;
 use Valkyrja\Auth\CryptTokenizedRepository as Contract;
 use Valkyrja\Crypt\Crypt as CryptManager;
 use Valkyrja\Crypt\Driver as Crypt;
@@ -41,10 +42,10 @@ class CryptTokenizedRepository extends TokenizedRepository implements Contract
      * @param Adapter      $adapter The adapter
      * @param CryptManager $crypt   The crypt service
      * @param Session      $session The session
-     * @param array        $config  The config
+     * @param Config|array $config  The config
      * @param string       $user    The user class
      */
-    public function __construct(Adapter $adapter, CryptManager $crypt, Session $session, array $config, string $user)
+    public function __construct(Adapter $adapter, CryptManager $crypt, Session $session, Config|array $config, string $user)
     {
         parent::__construct($adapter, $session, $config, $user);
 

@@ -15,6 +15,7 @@ namespace Valkyrja\Auth\Adapters;
 
 use Exception;
 use Valkyrja\Auth\Adapter as Contract;
+use Valkyrja\Auth\Config\Config;
 use Valkyrja\Auth\User;
 use Valkyrja\Support\Type\Str;
 
@@ -28,20 +29,13 @@ use const PASSWORD_DEFAULT;
 abstract class Adapter implements Contract
 {
     /**
-     * The config.
+     * Adapter constructor.
      *
-     * @var array
+     * @param Config|array $config The config
      */
-    protected array $config;
-
-    /**
-     * NullAdapter constructor.
-     *
-     * @param array $config The config
-     */
-    public function __construct(array $config)
-    {
-        $this->config = $config;
+    public function __construct(
+        protected Config|array $config
+    ) {
     }
 
     /**

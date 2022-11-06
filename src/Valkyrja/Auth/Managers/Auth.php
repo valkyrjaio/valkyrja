@@ -17,6 +17,7 @@ use Exception;
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth as Contract;
 use Valkyrja\Auth\AuthenticatedUsers;
+use Valkyrja\Auth\Config\Config;
 use Valkyrja\Auth\Constants\HeaderValue;
 use Valkyrja\Auth\Exceptions\AuthRuntimeException;
 use Valkyrja\Auth\Factory;
@@ -65,27 +66,6 @@ class Auth implements Contract
     protected static array $policies = [];
 
     /**
-     * The factory service.
-     *
-     * @var Factory
-     */
-    protected Factory $factory;
-
-    /**
-     * The request.
-     *
-     * @var Request
-     */
-    protected Request $request;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config = [];
-
-    /**
      * The default adapter.
      *
      * @var string
@@ -123,15 +103,15 @@ class Auth implements Contract
     /**
      * Auth constructor.
      *
-     * @param Factory $factory The factory
-     * @param Request $request The request
-     * @param array   $config  The config
+     * @param Factory      $factory The factory
+     * @param Request      $request The request
+     * @param Config|array $config  The config
      */
-    public function __construct(Factory $factory, Request $request, array $config)
-    {
-        $this->factory           = $factory;
-        $this->request           = $request;
-        $this->config            = $config;
+    public function __construct(
+        protected Factory $factory,
+        protected Request $request,
+        protected Config|array $config
+    ) {
         $this->defaultAdapter    = $config['adapter'];
         $this->defaultRepository = $config['repository'];
         $this->defaultGate       = $config['gate'];

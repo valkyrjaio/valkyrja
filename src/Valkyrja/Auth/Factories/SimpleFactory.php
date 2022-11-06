@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Factories;
 
 use Valkyrja\Auth\Adapter;
+use Valkyrja\Auth\Config\Config;
 use Valkyrja\Auth\Factory as Contract;
 use Valkyrja\Auth\Gate;
 use Valkyrja\Auth\Policy;
@@ -29,7 +30,7 @@ class SimpleFactory implements Contract
     /**
      * @inheritDoc
      */
-    public function createAdapter(string $name, array $config): Adapter
+    public function createAdapter(string $name, Config|array $config): Adapter
     {
         return new $name($config);
     }
@@ -37,7 +38,7 @@ class SimpleFactory implements Contract
     /**
      * @inheritDoc
      */
-    public function createRepository(Adapter $adapter, string $name, string $user, array $config): Repository
+    public function createRepository(Adapter $adapter, string $name, string $user, Config|array $config): Repository
     {
         return new $name($adapter, $user, $config);
     }

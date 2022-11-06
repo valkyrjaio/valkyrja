@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth;
 
+use Valkyrja\Auth\Config\Config;
+
 /**
  * Interface Factory.
  *
@@ -23,24 +25,24 @@ interface Factory
     /**
      * Create an adapter by name.
      *
-     * @param string $name   The adapter
-     * @param array  $config The config
+     * @param string       $name   The adapter
+     * @param Config|array $config The config
      *
      * @return Adapter
      */
-    public function createAdapter(string $name, array $config): Adapter;
+    public function createAdapter(string $name, Config|array $config): Adapter;
 
     /**
      * Create a repository by user entity name.
      *
-     * @param Adapter $adapter The adapter
-     * @param string  $name    The name
-     * @param string  $user    The user
-     * @param array   $config  The config
+     * @param Adapter      $adapter The adapter
+     * @param string       $name    The name
+     * @param string       $user    The user
+     * @param Config|array $config  The config
      *
      * @return Repository
      */
-    public function createRepository(Adapter $adapter, string $name, string $user, array $config): Repository;
+    public function createRepository(Adapter $adapter, string $name, string $user, Config|array $config): Repository;
 
     /**
      * Create a gate by name.
