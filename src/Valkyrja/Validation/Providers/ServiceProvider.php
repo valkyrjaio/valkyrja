@@ -47,6 +47,7 @@ class ServiceProvider extends Provider
     {
         return [
             Validator::class,
+            Factory::class,
             ORM::class,
         ];
     }
@@ -78,7 +79,7 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publicFactory(Container $container): void
+    public static function publishFactory(Container $container): void
     {
         $container->setSingleton(
             Factory::class,
