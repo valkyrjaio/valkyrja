@@ -16,6 +16,7 @@ namespace Valkyrja\Validation\Validators;
 use Exception;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Container\Container;
+use Valkyrja\Validation\Constants\Rule;
 use Valkyrja\Validation\Validator as Contract;
 
 /**
@@ -168,12 +169,24 @@ class Validator implements Contract
      */
     protected function validateSubject(string $subjectName, mixed $subject, array $rules = []): void
     {
-        foreach ($rules as $name => $rule) {
-            if (isset($this->errorMessages[$subjectName])) {
-                continue;
-            }
+        // If this subject is not required and the subject is empty or not passed in
+        if (! isset($rules[Rule::REQUIRED]) && ! $subject) {
+            // Reset the error messages for this subject to avoid false flags
+            unset($this->errorMessages[$subjectName]);
 
+            // Don't go through the rules as we do not need to validate a non existent subject that isn't required
+            return;
+        }
+
+        // Iterate through the rules
+        foreach ($rules as $name => $rule) {
+            // Validate the rule
             $this->validateRule($subjectName, $name, $subject, $rule);
+
+            // If there is already a message no need to continue iterating through the rest of the rules
+            if (isset($this->errorMessages[$subjectName])) {
+                return;
+            }
         }
     }
 
