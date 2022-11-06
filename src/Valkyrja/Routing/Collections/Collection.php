@@ -292,7 +292,7 @@ class Collection implements Contract
             return;
         }
 
-        $regex = $route->getPath();
+        $regex = Str::replace($route->getPath(), '/', '\/');
 
         // Iterate through the route's parameters
         foreach ($route->getParameters() as $parameter) {
@@ -311,7 +311,7 @@ class Collection implements Contract
         }
 
         // Set the regex
-        $route->setRegex(Regex::START . Str::replace($regex, '/', '\/') . Regex::END);
+        $route->setRegex(Regex::START . $regex . Regex::END);
     }
 
     /**
