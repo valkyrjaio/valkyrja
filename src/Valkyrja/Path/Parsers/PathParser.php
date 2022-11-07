@@ -15,6 +15,7 @@ namespace Valkyrja\Path\Parsers;
 
 use InvalidArgumentException;
 use RuntimeException;
+use Valkyrja\Path\Config\Config;
 use Valkyrja\Path\PathParser as Contract;
 
 use function explode;
@@ -46,20 +47,13 @@ class PathParser implements Contract
 REGEX;
 
     /**
-     * The path config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * PathParser constructor.
      *
-     * @param array $config
+     * @param Config|array $config
      */
-    public function __construct(array $config)
-    {
-        $this->config = $config;
+    public function __construct(
+        protected Config|array $config
+    ) {
     }
 
     /**

@@ -15,6 +15,7 @@ namespace Valkyrja\Annotation\Parsers;
 
 use JsonException;
 use Valkyrja\Annotation\Annotation;
+use Valkyrja\Annotation\Config\Config;
 use Valkyrja\Annotation\Constants\Part;
 use Valkyrja\Annotation\Constants\Regex;
 use Valkyrja\Annotation\Exceptions\InvalidAnnotationKeyArgument;
@@ -42,20 +43,13 @@ use function trim;
 class Parser implements Contract
 {
     /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * Parser constructor.
      *
-     * @param array $config
+     * @param Config|array $config
      */
-    public function __construct(array $config)
-    {
-        $this->config = $config;
+    public function __construct(
+        protected Config|array $config
+    ) {
     }
 
     /**
