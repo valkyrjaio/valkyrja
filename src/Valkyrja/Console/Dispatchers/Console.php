@@ -15,6 +15,7 @@ namespace Valkyrja\Console\Dispatchers;
 
 use Valkyrja\Config\Constants\ConfigKeyPart;
 use Valkyrja\Console\Command;
+use Valkyrja\Console\Config\Config;
 use Valkyrja\Console\Console as Contract;
 use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Console\Input;
@@ -71,71 +72,23 @@ class Console implements Contract
     protected static array $namedCommands = [];
 
     /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
-     * The dispatcher.
-     *
-     * @var Dispatcher
-     */
-    protected Dispatcher $dispatcher;
-
-    /**
-     * The events.
-     *
-     * @var Events
-     */
-    protected Events $events;
-
-    /**
-     * The path parser.
-     *
-     * @var PathParser
-     */
-    protected PathParser $pathParser;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
-     * Whether to run in debug or not.
-     *
-     * @var bool
-     */
-    protected bool $debug = false;
-
-    /**
      * Console constructor.
      *
-     * @param Container  $container
-     * @param Dispatcher $dispatcher
-     * @param Events     $events
-     * @param PathParser $pathParser
-     * @param array      $config
-     * @param bool       $debug
+     * @param Container    $container
+     * @param Dispatcher   $dispatcher
+     * @param Events       $events
+     * @param PathParser   $pathParser
+     * @param Config|array $config
+     * @param bool         $debug
      */
     public function __construct(
-        Container $container,
-        Dispatcher $dispatcher,
-        Events $events,
-        PathParser $pathParser,
-        array $config,
-        bool $debug = false
+        protected Container $container,
+        protected Dispatcher $dispatcher,
+        protected Events $events,
+        protected PathParser $pathParser,
+        protected Config|array $config,
+        protected bool $debug = false
     ) {
-        $this->container  = $container;
-        $this->dispatcher = $dispatcher;
-        $this->events     = $events;
-        $this->pathParser = $pathParser;
-        $this->config     = $config;
-        $this->debug      = $debug;
     }
 
     /**
