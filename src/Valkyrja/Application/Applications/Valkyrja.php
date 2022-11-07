@@ -339,7 +339,7 @@ class Valkyrja implements Application
 
         $config ??= self::env('CONFIG_CLASS', Config::class);
 
-        $this->withConfig(new $config());
+        $this->withConfig(new $config(null, true));
     }
 
     /**

@@ -16,7 +16,9 @@ namespace Valkyrja\Config\Config;
 use Valkyrja\Annotation\Config\Config as Annotation;
 use Valkyrja\Api\Config\Config as Api;
 use Valkyrja\Application\Config\Config as App;
+use Valkyrja\Asset\Config\Config as Asset;
 use Valkyrja\Auth\Config\Config as Auth;
+use Valkyrja\Broadcast\Config\Config as Broadcast;
 use Valkyrja\Cache\Config\Config as Cache;
 use Valkyrja\Client\Config\Config as Client;
 use Valkyrja\Config\Config as Model;
@@ -78,11 +80,25 @@ class Config extends Model
     public App $app;
 
     /**
+     * The asset module config.
+     *
+     * @var Asset
+     */
+    public Asset $asset;
+
+    /**
      * The auth module config.
      *
      * @var Auth
      */
     public Auth $auth;
+
+    /**
+     * The broadcast module config.
+     *
+     * @var Broadcast
+     */
+    public Broadcast $broadcast;
 
     /**
      * The cache module config.

@@ -36,18 +36,22 @@ abstract class Config extends Model implements ArrayAccess
     /**
      * Model constructor.
      *
-     * @param array|null $properties   [optional]
-     * @param bool       $setupFromEnv [optional]
+     * @param array|null $properties [optional] The properties to set
+     * @param bool       $setup      [optional] Whether to setup this config
      *
      * @throws JsonException
      */
-    public function __construct(array $properties = null, bool $setupFromEnv = false)
+    public function __construct(array $properties = null, bool $setup = false)
     {
-        if (null !== $properties) {
+        if ($setup) {
+            $this->setup($properties);
+        }
+
+        if ($properties !== null) {
             $this->updateProperties($properties);
         }
 
-        if ($setupFromEnv) {
+        if ($setup) {
             $this->setPropertiesFromEnv();
         }
     }
@@ -92,6 +96,17 @@ abstract class Config extends Model implements ArrayAccess
     protected function getEnvKeys(): array
     {
         return static::$envKeys;
+    }
+
+    /**
+     * Setup the config.
+     *
+     * @param array|null $properties [optional] The properties to set
+     *
+     * @return void
+     */
+    protected function setup(array $properties = null): void
+    {
     }
 
     /**
