@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth;
 
+use Valkyrja\Auth\Config\Config;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
@@ -29,9 +30,9 @@ interface Auth
     /**
      * Set the config.
      *
-     * @return array
+     * @return Config|array
      */
-    public function getConfig(): array;
+    public function getConfig(): Config|array;
 
     /**
      * Get an adapter by name.
