@@ -16,6 +16,7 @@ namespace Valkyrja\Routing;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
+use Valkyrja\Routing\Config\Config;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 
 /**
@@ -28,9 +29,9 @@ interface Router extends MiddlewareAware
     /**
      * Get the config.
      *
-     * @return array
+     * @return Config|array
      */
-    public function getConfig(): array;
+    public function getConfig(): Config|array;
 
     /**
      * Whether to run in debug.

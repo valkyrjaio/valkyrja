@@ -77,7 +77,7 @@ class Router implements Contract
     /**
      * @inheritDoc
      */
-    public function getConfig(): array
+    public function getConfig(): Config|array
     {
         return $this->config;
     }
