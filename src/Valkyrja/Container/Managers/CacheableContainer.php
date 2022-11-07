@@ -42,7 +42,7 @@ class CacheableContainer extends Container
         $this->setup(true, false);
 
         // Set app config
-        $config        = new ContainerConfig($this->config);
+        $config        = new ContainerConfig((array) $this->config);
         $config->cache = $this->getCacheModel();
         $providers     = $config->providers;
 
