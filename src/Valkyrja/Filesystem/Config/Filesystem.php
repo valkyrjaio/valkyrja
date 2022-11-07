@@ -18,6 +18,7 @@ use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\Filesystem\Config\Config as Model;
+use Valkyrja\Filesystem\Constants\ConfigValue;
 
 use function Valkyrja\env;
 use function Valkyrja\storagePath;
@@ -32,6 +33,8 @@ class Filesystem extends Model
      */
     protected function setup(array $properties = null): void
     {
+        $this->updateProperties(ConfigValue::$defaults);
+
         $this->disks = [
             CKP::LOCAL => [
                 CKP::ADAPTER           => env(EnvKey::FILESYSTEM_LOCAL_ADAPTER),

@@ -18,6 +18,7 @@ use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\SMS\Adapters\LogAdapter;
 use Valkyrja\SMS\Adapters\NullAdapter;
 use Valkyrja\SMS\Config\Config as Model;
+use Valkyrja\SMS\Constants\ConfigValue;
 
 use function Valkyrja\env;
 
@@ -31,6 +32,8 @@ class SMS extends Model
      */
     protected function setup(array $properties = null): void
     {
+        $this->updateProperties(ConfigValue::$defaults);
+
         $this->messengers = [
             CKP::LOG   => [
                 CKP::ADAPTER => env(EnvKey::SMS_LOG_ADAPTER, LogAdapter::class),

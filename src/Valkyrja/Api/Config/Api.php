@@ -26,7 +26,6 @@ class Api extends Model
      */
     protected function setup(array $properties = null): void
     {
-        $this->jsonModel     = ConfigValue::JSON_MODEL;
-        $this->jsonDataModel = ConfigValue::JSON_DATA_MODEL;
+        $this->updateProperties(ConfigValue::$defaults);
     }
 }

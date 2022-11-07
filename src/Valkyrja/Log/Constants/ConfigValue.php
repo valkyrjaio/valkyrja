@@ -36,9 +36,9 @@ final class ConfigValue
     ];
 
     public static array $defaults = [
-        CKP::DEFAULT  => self::DEFAULT,
-        CKP::ADAPTERS => self::ADAPTER,
-        CKP::DRIVERS  => self::ADAPTER,
-        CKP::LOGGERS  => self::LOGGERS,
+        CKP::DEFAULT => self::DEFAULT,
+        CKP::ADAPTER => self::ADAPTER,
+        CKP::DRIVER  => self::DRIVER,
+        CKP::LOGGERS => self::LOGGERS,
     ];
 }

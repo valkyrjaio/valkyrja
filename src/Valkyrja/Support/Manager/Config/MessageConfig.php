@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Manager\Config;
 
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Support\Manager\Message;
-
 /**
  * Class Config.
  *
@@ -28,23 +25,19 @@ class MessageConfig extends Config
      *
      * @var string
      */
-    public string $defaultMessage = CKP::DEFAULT;
+    public string $defaultMessage;
 
     /**
      * The default message class.
      *
      * @var string
      */
-    public string $message = Message::class;
+    public string $message;
 
     /**
      * The messages.
      *
      * @var array[]
      */
-    public array $messages = [
-        CKP::DEFAULT => [
-            CKP::MESSAGE => null,
-        ],
-    ];
+    public array $messages;
 }

@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Config;
 
+use JsonException;
 use Valkyrja\Broadcast\Adapters\CryptPusherAdapter;
 use Valkyrja\Broadcast\Adapters\LogAdapter;
 use Valkyrja\Broadcast\Adapters\NullAdapter;
 use Valkyrja\Broadcast\Config\Config as Model;
+use Valkyrja\Broadcast\Constants\ConfigValue;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
 
@@ -29,9 +31,13 @@ class Broadcast extends Model
 {
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     protected function setup(array $properties = null): void
     {
+        $this->updateProperties(ConfigValue::$defaults);
+
         $this->broadcasters = [
             CKP::LOG    => [
                 CKP::ADAPTER => env(EnvKey::BROADCAST_LOG_ADAPTER, LogAdapter::class),
@@ -52,9 +58,6 @@ class Broadcast extends Model
                 CKP::CLUSTER => env(EnvKey::BROADCAST_PUSHER_CLUSTER, 'us1'),
                 CKP::USE_TLS => env(EnvKey::BROADCAST_PUSHER_USE_TLS, true),
             ],
-        ];
-        $this->messages     = [
-            CKP::DEFAULT => null,
         ];
     }
 }

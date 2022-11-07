@@ -26,6 +26,8 @@ class Notification extends Model
      */
     protected function setup(array $properties = null): void
     {
+        $this->updateProperties(ConfigValue::$defaults);
+
         $this->notifications = array_merge(ConfigValue::NOTIFICATIONS, []);
     }
 }

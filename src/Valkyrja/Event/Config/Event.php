@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Config;
 
 use Valkyrja\Event\Config\Config as Model;
+use Valkyrja\Event\Constants\ConfigValue;
 
 use function Valkyrja\cachePath;
 use function Valkyrja\eventsPath;
@@ -28,11 +29,9 @@ class Event extends Model
      */
     protected function setup(array $properties = null): void
     {
-        $this->listeners = [];
+        $this->updateProperties(ConfigValue::$defaults);
 
-        $this->filePath       = eventsPath('default.php');
-        $this->cacheFilePath  = cachePath('events.php');
-        $this->useAnnotations = false;
-        $this->useCache       = false;
+        $this->filePath      = eventsPath('default.php');
+        $this->cacheFilePath = cachePath('events.php');
     }
 }

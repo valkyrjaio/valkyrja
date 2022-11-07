@@ -30,10 +30,9 @@ class Crypt extends Model
      */
     protected function setup(array $properties = null): void
     {
-        $this->default = CKP::SODIUM;
-        $this->adapter = ConfigValue::ADAPTER;
-        $this->driver  = ConfigValue::DRIVER;
-        $this->crypts  = [
+        $this->updateProperties(ConfigValue::$defaults);
+
+        $this->crypts = [
             CKP::SODIUM => [
                 CKP::ADAPTER  => env(EnvKey::CRYPT_DEFAULT_ADAPTER),
                 CKP::DRIVER   => env(EnvKey::CRYPT_DEFAULT_DRIVER),

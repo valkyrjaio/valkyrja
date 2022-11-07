@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Config;
 
-use Valkyrja\Cache\Adapters\RedisAdapter;
-use Valkyrja\Cache\Drivers\Driver;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\Support\Manager\Config\Config as Model;
@@ -37,43 +35,9 @@ class Config extends Model
     ];
 
     /**
-     * @inheritDoc
-     */
-    public string $default = CKP::REDIS;
-
-    /**
-     * @inheritDoc
-     */
-    public string $adapter = RedisAdapter::class;
-
-    /**
-     * @inheritDoc
-     */
-    public string $driver = Driver::class;
-
-    /**
      * The cache stores.
      *
      * @var array
      */
-    public array $stores = [
-        CKP::REDIS => [
-            CKP::ADAPTER => CKP::REDIS,
-            CKP::DRIVER  => null,
-            CKP::HOST    => '',
-            CKP::PORT    => '',
-            CKP::PREFIX  => '',
-        ],
-        CKP::NULL  => [
-            CKP::ADAPTER => CKP::NULL,
-            CKP::DRIVER  => null,
-            CKP::PREFIX  => '',
-        ],
-        CKP::LOG   => [
-            CKP::ADAPTER => CKP::LOG,
-            CKP::DRIVER  => null,
-            CKP::LOGGER  => null,
-            CKP::PREFIX  => '',
-        ],
-    ];
+    public array $stores;
 }

@@ -16,6 +16,7 @@ namespace Valkyrja\Cache\Config;
 use Valkyrja\Cache\Adapters\LogAdapter;
 use Valkyrja\Cache\Adapters\NullAdapter;
 use Valkyrja\Cache\Config\Config as Model;
+use Valkyrja\Cache\Constants\ConfigValue;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
 
@@ -31,6 +32,8 @@ class Cache extends Model
      */
     protected function setup(array $properties = null): void
     {
+        $this->updateProperties(ConfigValue::$defaults);
+
         $this->stores = [
             CKP::REDIS => [
                 CKP::ADAPTER => env(EnvKey::CACHE_REDIS_ADAPTER),

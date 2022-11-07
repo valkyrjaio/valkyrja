@@ -35,4 +35,10 @@ final class ConfigValue
             CKP::MANIFEST => '/rev-manifest.json',
         ],
     ];
+
+    public static array $defaults = [
+        CKP::DEFAULT  => self::DEFAULT,
+        CKP::ADAPTERS => self::ADAPTERS,
+        CKP::BUNDLES  => self::BUNDLES,
+    ];
 }

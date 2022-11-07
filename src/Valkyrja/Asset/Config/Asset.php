@@ -30,7 +30,8 @@ class Asset extends Model
      */
     protected function setup(array $properties = null): void
     {
-        $this->default  = CKP::DEFAULT;
+        $this->updateProperties(ConfigValue::$defaults);
+
         $this->adapters = array_merge(ConfigValue::ADAPTERS, []);
         $this->bundles  = [
             CKP::DEFAULT => [

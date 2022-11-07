@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Client\Config;
 
 use Valkyrja\Client\Config\Config as Model;
+use Valkyrja\Client\Constants\ConfigValue;
 
 /**
  * Class Client.
@@ -25,5 +26,6 @@ class Client extends Model
      */
     protected function setup(array $properties = null): void
     {
+        $this->updateProperties(ConfigValue::$defaults);
     }
 }

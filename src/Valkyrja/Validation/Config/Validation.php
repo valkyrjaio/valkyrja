@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Config;
 
 use Valkyrja\Validation\Config\Config as Model;
+use Valkyrja\Validation\Constants\ConfigValue;
 
 /**
  * Class Validation.
@@ -25,6 +26,8 @@ class Validation extends Model
      */
     protected function setup(array $properties = null): void
     {
+        $this->updateProperties(ConfigValue::$defaults);
+
         $this->rulesMap = array_merge($this->rulesMap, []);
     }
 }

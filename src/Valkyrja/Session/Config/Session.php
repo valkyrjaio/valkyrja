@@ -16,6 +16,7 @@ namespace Valkyrja\Session\Config;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\Session\Config\Config as Model;
+use Valkyrja\Session\Constants\ConfigValue;
 
 use function Valkyrja\env;
 
@@ -29,6 +30,8 @@ class Session extends Model
      */
     protected function setup(array $properties = null): void
     {
+        $this->updateProperties(ConfigValue::$defaults);
+
         $this->sessions = [
             CKP::DEFAULT => [
                 CKP::ADAPTER       => null,

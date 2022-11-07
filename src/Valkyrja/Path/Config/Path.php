@@ -26,6 +26,8 @@ class Path extends Model
      */
     protected function setup(array $properties = null): void
     {
+        $this->updateProperties(ConfigValue::$defaults);
+
         $this->patterns = array_merge(ConfigValue::PATTERNS, []);
     }
 }

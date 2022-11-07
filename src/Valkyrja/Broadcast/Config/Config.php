@@ -13,12 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Config;
 
-use Valkyrja\Broadcast\Adapters\CryptPusherAdapter;
-use Valkyrja\Broadcast\Adapters\LogAdapter;
-use Valkyrja\Broadcast\Adapters\NullAdapter;
-use Valkyrja\Broadcast\Adapters\PusherAdapter;
-use Valkyrja\Broadcast\Drivers\Driver;
-use Valkyrja\Broadcast\Messages\Message;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\Support\Manager\Config\MessageConfig as Model;
@@ -46,52 +40,32 @@ class Config extends Model
     /**
      * @inheritDoc
      */
-    public string $default = CKP::PUSHER;
+    public string $default;
 
     /**
      * @inheritDoc
      */
-    public string $adapter = PusherAdapter::class;
+    public string $adapter;
 
     /**
      * @inheritDoc
      */
-    public string $driver = Driver::class;
+    public string $driver;
 
     /**
      * @inheritDoc
      */
-    public string $message = Message::class;
+    public string $message;
 
     /**
      * The adapters.
      *
      * @var array
      */
-    public array $broadcasters = [
-        CKP::LOG    => [
-            CKP::ADAPTER => LogAdapter::class,
-            CKP::DRIVER  => null,
-            CKP::LOGGER  => null,
-        ],
-        CKP::NULL   => [
-            CKP::ADAPTER => NullAdapter::class,
-        ],
-        CKP::PUSHER => [
-            CKP::DRIVER  => null,
-            CKP::ADAPTER => CryptPusherAdapter::class,
-            CKP::KEY     => '',
-            CKP::SECRET  => '',
-            CKP::ID      => '',
-            CKP::CLUSTER => '',
-            CKP::USE_TLS => true,
-        ],
-    ];
+    public array $broadcasters;
 
     /**
      * @inheritDoc
      */
-    public array $messages = [
-        CKP::DEFAULT => null,
-    ];
+    public array $messages;
 }

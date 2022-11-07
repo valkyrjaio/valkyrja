@@ -20,6 +20,7 @@ use Valkyrja\Mail\Adapters\MailgunAdapter;
 use Valkyrja\Mail\Adapters\NullAdapter;
 use Valkyrja\Mail\Adapters\PHPMailerAdapter;
 use Valkyrja\Mail\Config\Config as Model;
+use Valkyrja\Mail\Constants\ConfigValue;
 
 use function Valkyrja\env;
 
@@ -33,6 +34,8 @@ class Mail extends Model
      */
     protected function setup(array $properties = null): void
     {
+        $this->updateProperties(ConfigValue::$defaults);
+
         $this->mailers  = [
             CKP::LOG        => [
                 CKP::ADAPTER => env(EnvKey::MAIL_LOG_ADAPTER, LogAdapter::class),

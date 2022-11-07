@@ -14,9 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Manager\Config;
 
 use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Support\Manager\Adapter;
-use Valkyrja\Support\Manager\Driver;
 
 /**
  * Class Config.
@@ -30,31 +27,26 @@ class Config extends Model
      *
      * @var string
      */
-    public string $default = CKP::DEFAULT;
+    public string $default;
 
     /**
      * The default adapter.
      *
      * @var string
      */
-    public string $adapter = Adapter::class;
+    public string $adapter;
 
     /**
      * The default driver.
      *
      * @var string
      */
-    public string $driver = Driver::class;
+    public string $driver;
 
     /**
      * The configurations.
      *
      * @var array[]
      */
-    public array $configurations = [
-        CKP::DEFAULT => [
-            CKP::ADAPTER => null,
-            CKP::DRIVER  => null,
-        ],
-    ];
+    public array $configurations;
 }

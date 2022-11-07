@@ -16,6 +16,7 @@ namespace Valkyrja\Log\Config;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\Log\Config\Config as Model;
+use Valkyrja\Log\Constants\ConfigValue;
 
 use function Valkyrja\env;
 use function Valkyrja\storagePath;
@@ -30,6 +31,8 @@ class Log extends Model
      */
     protected function setup(array $properties = null): void
     {
+        $this->updateProperties(ConfigValue::$defaults);
+
         $this->loggers = [
             CKP::PSR => [
                 CKP::ADAPTER   => null,

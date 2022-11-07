@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Config;
 
 use Valkyrja\Routing\Config\Config as Model;
+use Valkyrja\Routing\Constants\ConfigValue;
 
 use function Valkyrja\cachePath;
 use function Valkyrja\routesPath;
@@ -28,15 +29,9 @@ class Routing extends Model
      */
     protected function setup(array $properties = null): void
     {
-        $this->middleware       = [];
-        $this->middlewareGroups = [];
-        $this->controllers      = [];
-        $this->useTrailingSlash = false;
-        $this->useAbsoluteUrls  = false;
+        $this->updateProperties(ConfigValue::$defaults);
 
-        $this->filePath       = routesPath('default.php');
-        $this->cacheFilePath  = cachePath('routes.php');
-        $this->useAnnotations = false;
-        $this->useCache       = false;
+        $this->filePath      = routesPath('default.php');
+        $this->cacheFilePath = cachePath('routes.php');
     }
 }

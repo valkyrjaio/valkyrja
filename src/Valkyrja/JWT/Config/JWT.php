@@ -34,10 +34,9 @@ class JWT extends Model
      */
     protected function setup(array $properties = null): void
     {
-        $this->default = ConfigValue::DEFAULT;
-        $this->adapter = ConfigValue::ADAPTER;
-        $this->driver  = ConfigValue::DRIVER;
-        $this->algos   = [
+        $this->updateProperties(ConfigValue::$defaults);
+
+        $this->algos = [
             Algo::HS256 => [
                 CKP::ALGO    => Algo::HS256,
                 CKP::ADAPTER => env(EnvKey::JWT_HS_ADAPTER, HSAdapter::class),

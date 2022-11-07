@@ -29,14 +29,12 @@ class Console extends Model
      */
     protected function setup(array $properties = null): void
     {
-        $this->handlers     = [];
+        $this->updateProperties(ConfigValue::$defaults);
+
         $this->providers    = array_merge(ConfigValue::PROVIDERS, []);
         $this->devProviders = array_merge(ConfigValue::DEV_PROVIDERS, []);
-        $this->quiet        = false;
 
-        $this->useAnnotations = false;
-        $this->filePath       = commandsPath('default.php');
-        $this->cacheFilePath  = cachePath('commands.php');
-        $this->useCache       = false;
+        $this->filePath      = commandsPath('default.php');
+        $this->cacheFilePath = cachePath('commands.php');
     }
 }

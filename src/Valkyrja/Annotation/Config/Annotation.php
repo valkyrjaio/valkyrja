@@ -26,8 +26,6 @@ class Annotation extends Model
      */
     protected function setup(array $properties = null): void
     {
-        $this->enabled = false;
-        $this->map     = array_merge(ConfigValue::MAP, []);
-        $this->aliases = array_merge(ConfigValue::ALIASES, []);
+        $this->updateProperties(ConfigValue::$defaults);
     }
 }

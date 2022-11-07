@@ -24,13 +24,13 @@ use Valkyrja\Crypt\Drivers\Driver;
  */
 final class ConfigValue
 {
-    public const DEFAULT = CKP::DEFAULT;
+    public const DEFAULT = CKP::SODIUM;
     public const ADAPTER = SodiumAdapter::class;
     public const DRIVER  = Driver::class;
     public const CRYPTS  = [
-        CKP::DEFAULT => [
-            CKP::ADAPTER  => CKP::SODIUM,
-            CKP::DRIVER   => CKP::DEFAULT,
+        CKP::SODIUM => [
+            CKP::ADAPTER  => null,
+            CKP::DRIVER   => null,
             CKP::KEY      => 'some_secret_key',
             CKP::KEY_PATH => null,
         ],

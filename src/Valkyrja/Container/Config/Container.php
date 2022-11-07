@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Config;
 
-use App\Providers\AppServiceProvider;
 use Valkyrja\Container\Config\Config as Model;
 use Valkyrja\Container\Constants\ConfigValue;
 
@@ -30,21 +29,14 @@ class Container extends Model
      */
     protected function setup(array $properties = null): void
     {
-        $this->aliases         = [];
-        $this->services        = [];
-        $this->contextServices = [];
-        $this->providers       = array_merge(
-            ConfigValue::PROVIDERS,
-            [
-                AppServiceProvider::class,
-            ]
-        );
-        $this->devProviders    = array_merge(ConfigValue::DEV_PROVIDERS, []);
-        $this->setupFacade     = true;
+        $this->updateProperties(ConfigValue::$defaults);
 
-        $this->filePath       = servicesPath('default.php');
-        $this->cacheFilePath  = cachePath('container.php');
-        $this->useAnnotations = false;
-        $this->useCache       = false;
+        $this->providers     = array_merge(
+            ConfigValue::PROVIDERS,
+            []
+        );
+        $this->devProviders  = array_merge(ConfigValue::DEV_PROVIDERS, []);
+        $this->filePath      = servicesPath('default.php');
+        $this->cacheFilePath = cachePath('container.php');
     }
 }

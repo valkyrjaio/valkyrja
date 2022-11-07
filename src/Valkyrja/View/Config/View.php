@@ -32,10 +32,10 @@ class View extends Model
      */
     protected function setup(array $properties = null): void
     {
+        $this->updateProperties(ConfigValue::$defaults);
+
         $this->dir     = resourcesPath('views');
-        $this->engine  = ConfigValue::ENGINE;
         $this->engines = array_merge(ConfigValue::ENGINES, []);
-        $this->paths   = [];
         $this->disks   = [
             CKP::PHP  => [
                 CKP::FILE_EXTENSION => env(EnvKey::VIEW_PHP_FILE_EXTENSION, '.phtml'),

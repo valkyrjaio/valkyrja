@@ -15,17 +15,11 @@ namespace Valkyrja\ORM\Config;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
-use Valkyrja\ORM\Adapters\PDOAdapter;
 use Valkyrja\ORM\Config\Config as Model;
-use Valkyrja\ORM\Drivers\Driver;
+use Valkyrja\ORM\Constants\ConfigValue;
 use Valkyrja\ORM\Drivers\PgSqlDriver;
 use Valkyrja\ORM\PDOs\MySqlPDO;
 use Valkyrja\ORM\PDOs\PgSqlPDO;
-use Valkyrja\ORM\Persisters\Persister;
-use Valkyrja\ORM\Queries\Query;
-use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
-use Valkyrja\ORM\Repositories\Repository;
-use Valkyrja\ORM\Retrievers\Retriever;
 
 use function Valkyrja\env;
 
@@ -39,15 +33,9 @@ class ORM extends Model
      */
     protected function setup(array $properties = null): void
     {
-        $this->default      = CKP::MYSQL;
-        $this->adapter      = PDOAdapter::class;
-        $this->driver       = Driver::class;
-        $this->query        = Query::class;
-        $this->queryBuilder = SqlQueryBuilder::class;
-        $this->persister    = Persister::class;
-        $this->retriever    = Retriever::class;
-        $this->repository   = Repository::class;
-        $this->connections  = [
+        $this->updateProperties(ConfigValue::$defaults);
+
+        $this->connections = [
             CKP::MYSQL => [
                 CKP::ADAPTER       => env(EnvKey::ORM_MYSQL_ADAPTER),
                 CKP::DRIVER        => env(EnvKey::ORM_MYSQL_DRIVER),
@@ -96,6 +84,5 @@ class ORM extends Model
                 ],
             ],
         ];
-        $this->migrations   = [];
     }
 }
