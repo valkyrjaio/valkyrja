@@ -25,6 +25,7 @@ use Valkyrja\Http\Response as Contract;
 use Valkyrja\Http\Stream;
 use Valkyrja\Http\Streams\Stream as HttpStream;
 
+use function header;
 use function sprintf;
 
 /**
@@ -135,7 +136,7 @@ class Response implements Contract
             $this->statusPhrase
         );
 
-        \header($httpLine, true, $this->statusCode);
+        header($httpLine, true, $this->statusCode);
 
         return $this;
     }
@@ -148,7 +149,7 @@ class Response implements Contract
         foreach ($this->headers as $name => $values) {
             /** @var array $values */
             foreach ($values as $value) {
-                \header("$name: $value", false);
+                header("$name: $value", false);
             }
         }
 
