@@ -14,12 +14,25 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Enums;
 
 /**
- * Constant Scheme.
+ * Enum Scheme.
  *
  * @author Melech Mizrachi
  */
-enum Scheme: string
+enum Scheme
 {
-    case HTTP  = 'http';
-    case HTTPS = 'https';
+    case HTTP;
+    case HTTPS;
+
+    /**
+     * Get the text representation of the scheme.
+     *
+     * @return string
+     */
+    public function text(): string
+    {
+        return match ($this) {
+            self::HTTP  => 'http',
+            self::HTTPS => 'https',
+        };
+    }
 }
