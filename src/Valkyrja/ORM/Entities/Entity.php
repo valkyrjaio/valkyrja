@@ -129,7 +129,7 @@ abstract class Entity extends Model implements Contract
      */
     public function asStorableArray(string ...$properties): array
     {
-        return $this->__toArrayOrStorable(true, ...$properties);
+        return $this->__asArrayOrStorable(true, ...$properties);
     }
 
     /**
@@ -139,7 +139,15 @@ abstract class Entity extends Model implements Contract
      */
     public function asArray(string ...$properties): array
     {
-        return $this->__toArrayOrStorable(false, ...$properties);
+        return $this->__asArrayOrStorable(false, ...$properties);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function __asChangedArray(bool $toJson = true): array
+    {
+        return parent::__asChangedArray($toJson);
     }
 
     /**
@@ -147,9 +155,9 @@ abstract class Entity extends Model implements Contract
      *
      * @throws JsonException
      */
-    protected function __asArrayForChangedComparison(): array
+    protected function __asArrayForChangedComparison(bool $toJson = true): array
     {
-        return $this->asStorableArray();
+        return $this->__asArrayOrStorable($toJson);
     }
 
     /**
@@ -195,7 +203,7 @@ abstract class Entity extends Model implements Contract
      *
      * @return array
      */
-    protected function __toArrayOrStorable(bool $storable = false, string ...$properties): array
+    protected function __asArrayOrStorable(bool $storable = false, string ...$properties): array
     {
         $storableHiddenFields   = $storable ? static::getStorableHiddenFields() : [];
         $allProperties          = array_merge(Obj::getProperties($this), $this->__exposed);
@@ -224,7 +232,8 @@ abstract class Entity extends Model implements Contract
             }
 
             // Get the value
-            $allProperties[$property] = $this->__getToArrayPropertyValue($propertyTypes, $property, $storable);
+            $allProperties[$property] =
+                $this->__getAsArrayOrStorablePropertyValue($propertyTypes, $property, $storable);
         }
 
         unset($allProperties['__exposed'], $allProperties['__originalProperties']);
@@ -243,7 +252,7 @@ abstract class Entity extends Model implements Contract
      *
      * @return mixed
      */
-    protected function __getToArrayPropertyValue(array $propertyTypes, string $property, bool $storable = false): mixed
+    protected function __getAsArrayOrStorablePropertyValue(array $propertyTypes, string $property, bool $storable = false): mixed
     {
         // If this is a storable array we're building
         if ($storable) {
@@ -251,6 +260,6 @@ abstract class Entity extends Model implements Contract
             return $this->__getPropertyValueForDataStore($propertyTypes, $property);
         }
 
-        return $this->__get($property);
+        return $this->__getAsArrayPropertyValue($propertyTypes, $property);
     }
 }

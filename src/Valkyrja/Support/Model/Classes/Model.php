@@ -488,9 +488,8 @@ abstract class Model implements Contract
             $value = $value->jsonSerialize();
         } elseif (is_object($value) || is_array($value)) {
             $value = (array) $value;
-        } elseif (! ($value instanceof BackedEnum) && Cls::inherits($type, BackedEnum::class)) {
-            /** @var BackedEnum $type */
-            return $type::tryFrom($value);
+        } elseif (is_string($value) && Cls::inherits($type, Contract::class)) {
+            $value = Arr::fromString($value);
         } else {
             // Return the value as is since it does not seem to match what we're expecting if we were to get a model
             // from the value data
