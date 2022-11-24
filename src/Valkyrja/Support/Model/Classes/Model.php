@@ -108,6 +108,22 @@ abstract class Model implements Contract
 
     /**
      * @inheritDoc
+     */
+    public static function getCastings(): array
+    {
+        return static::$propertyCastings;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getCastingsAllowedClasses(): array
+    {
+        return static::$castingsAllowedClasses;
+    }
+
+    /**
+     * @inheritDoc
      *
      * @throws JsonException
      */
@@ -354,8 +370,8 @@ abstract class Model implements Contract
      */
     protected function __setProperties(array $properties, bool $setOriginalProperties = false): void
     {
-        $propertyTypes          = static::$propertyCastings;
-        $propertyAllowedClasses = static::$castingsAllowedClasses;
+        $propertyTypes          = static::getCastings();
+        $propertyAllowedClasses = static::getCastingsAllowedClasses();
 
         // Iterate through the properties
         foreach ($properties as $property => $value) {

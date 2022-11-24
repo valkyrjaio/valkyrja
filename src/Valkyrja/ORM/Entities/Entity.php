@@ -231,7 +231,7 @@ abstract class Entity extends Model implements EntityContract
     {
         $storableHiddenFields   = $storable ? static::getStorableHiddenFields() : [];
         $allProperties          = array_merge(Obj::getProperties($this), $this->__exposed);
-        $propertyTypes          = static::$propertyCastings;
+        $propertyTypes          = static::getCastings();
         $relationshipProperties = static::getRelationshipProperties();
 
         // Iterate through all the storable hidden fields

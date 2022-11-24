@@ -30,9 +30,53 @@ interface Model extends JsonSerializable
     public static function getExposable(): array;
 
     /**
+     * Property castings used for mass property sets to avoid needing individual setters for simple type casting.
+     *
+     * <code>
+     *      [
+     *          // An property to be json_decoded to an array
+     *          'property_name' => 'array',
+     *          // An property to be unserialized to an object
+     *          'property_name' => 'object',
+     *          // An property to be json_decoded to an object
+     *          'property_name' => 'json',
+     *          // An property to be cast to an string
+     *          'property_name' => 'string',
+     *          // An property to be cast to an int
+     *          'property_name' => 'int',
+     *          // An property to be cast to an float
+     *          'property_name' => 'float',
+     *          // An property to be cast to an bool
+     *          'property_name' => 'bool',
+     *          // An property to be cast to a model
+     *          'property_name' => Model::class,
+     *          // An property to be cast to an array of models
+     *          'property_name' => [Model::class],
+     *      ]
+     * </code>
+     *
+     * @return array<string, string|string[]>
+     */
+    public static function getCastings(): array;
+
+    /**
+     * Allowed classes for serialization of object type properties.
+     *
+     * <code>
+     *      [
+     *          // An array of allowed classes for serialization for object types
+     *          'property_name' => [ClassName::class],
+     *      ]
+     * </code>
+     *
+     * @return array<string, string[]>
+     */
+    public static function getCastingsAllowedClasses(): array;
+
+    /**
      * Set properties from an array of properties.
      *
-     * @param array $properties
+     * @param array $properties The properties
      *
      * @return static
      */
@@ -69,7 +113,7 @@ interface Model extends JsonSerializable
     /**
      * Set properties from an array of properties.
      *
-     * @param array $properties
+     * @param array $properties The properties
      *
      * @return void
      */
@@ -80,7 +124,7 @@ interface Model extends JsonSerializable
      *
      * @param array $properties The properties to modify
      *
-     * @return $this
+     * @return static
      */
     public function withProperties(array $properties): static;
 
