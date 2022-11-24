@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Models;
 
+use Valkyrja\ORM\Entity;
 use Valkyrja\Support\Model\Classes\Model;
+use Valkyrja\Support\Type\Cls;
 
 /**
  * Class Parameter.
@@ -224,6 +226,10 @@ class Parameter extends Model
      */
     public function setEntity(string $entity = null): static
     {
+        if ($entity !== null) {
+            Cls::validateInherits($entity, Entity::class);
+        }
+
         $this->entity = $entity;
 
         return $this;
@@ -248,6 +254,10 @@ class Parameter extends Model
      */
     public function setEntityColumn(string $entityColumn = null): static
     {
+        if ($entityColumn !== null) {
+            Cls::validateHasProperty($this->entity, $entityColumn);
+        }
+
         $this->entityColumn = $entityColumn;
 
         return $this;

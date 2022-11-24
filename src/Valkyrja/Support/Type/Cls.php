@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Type;
 
 use Valkyrja\Container\Container;
+use Valkyrja\Support\Type\Exceptions\InvalidClassPropertyProvidedException;
 use Valkyrja\Support\Type\Exceptions\InvalidClassProvidedException;
 
 use function count;
@@ -40,7 +41,7 @@ class Cls
     public static function validateInherits(string $object, string $inherits): void
     {
         if (! static::inherits($object, $inherits)) {
-            throw new InvalidClassProvidedException('');
+            throw new InvalidClassProvidedException("Expected $inherits got $object");
         }
     }
 
@@ -55,6 +56,36 @@ class Cls
     public static function inherits(string $object, string $inherits): bool
     {
         return is_a($object, $inherits, true);
+    }
+
+    /**
+     * Validate that a class::name has a property.
+     *
+     * @param string $object   The object name to validate
+     * @param string $property The property name
+     *
+     * @throws InvalidClassProvidedException
+     *
+     * @return void
+     */
+    public static function validateHasProperty(string $object, string $property): void
+    {
+        if (! static::hasProperty($object, $property)) {
+            throw new InvalidClassPropertyProvidedException("$property does not exist in $object");
+        }
+    }
+
+    /**
+     * Check if a class::name has a property.
+     *
+     * @param string $object   The object name to check
+     * @param string $property The property name
+     *
+     * @return bool
+     */
+    public static function hasProperty(string $object, string $property): bool
+    {
+        return property_exists($object, $property);
     }
 
     /**
