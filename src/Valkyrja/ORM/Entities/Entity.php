@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Entities;
 
 use JsonException;
-use Valkyrja\ORM\Entity as EntityContract;
+use Valkyrja\ORM\Entity as Contract;
 use Valkyrja\Support\Model\Classes\Model;
 use Valkyrja\Support\Model\Constants\PropertyType;
+use Valkyrja\Support\Model\Enums\CastType;
+use Valkyrja\Support\Model\Model as ModelContract;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
 
@@ -28,7 +30,7 @@ use function is_string;
  *
  * @author Melech Mizrachi
  */
-abstract class Entity extends Model implements EntityContract
+abstract class Entity extends Model implements Contract
 {
     /**
      * The table name.
@@ -171,50 +173,16 @@ abstract class Entity extends Model implements EntityContract
             return $value;
         }
 
-        switch ($type) {
-            case PropertyType::OBJECT :
-                if (! is_string($value)) {
-                    $value = serialize($value);
-                }
-
-                break;
-            case PropertyType::ARRAY :
-                if (! is_string($value)) {
-                    $value = Arr::toString($value);
-                }
-
-                break;
-            case PropertyType::JSON :
-                if (! is_string($value)) {
-                    $value = Obj::toString($value);
-                }
-
-                break;
-            case PropertyType::STRING :
-                $value = (string) $value;
-
-                break;
-            case PropertyType::INT :
-                $value = (int) $value;
-
-                break;
-            case PropertyType::FLOAT :
-                $value = (float) $value;
-
-                break;
-            case PropertyType::BOOL :
-                $value = (bool) $value;
-
-                break;
-            default :
-                if ($value instanceof \Valkyrja\Support\Model\Model) {
-                    $value = $value->__toString();
-                }
-
-                break;
-        }
-
-        return $value;
+        return match ($type) {
+            CastType::object, PropertyType::OBJECT => ! is_string($value) ? serialize($value) : $value,
+            CastType::array, PropertyType::ARRAY   => ! is_string($value) ? Arr::toString($value) : $value,
+            CastType::json, PropertyType::JSON     => ! is_string($value) ? Obj::toString($value) : $value,
+            CastType::string, PropertyType::STRING => (string) $value,
+            CastType::int, PropertyType::INT       => (int) $value,
+            CastType::float, PropertyType::FLOAT   => (float) $value,
+            CastType::bool, PropertyType::BOOL     => (bool) $value,
+            default                                => ($value instanceof ModelContract) ? $value->__toString() : $value,
+        };
     }
 
     /**

@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Model\Classes;
 
+use BackedEnum;
 use JsonException;
 use Valkyrja\Support\Model\Constants\PropertyType;
+use Valkyrja\Support\Model\Enums\CastType;
 use Valkyrja\Support\Model\Model as Contract;
 use Valkyrja\Support\Type\Arr;
+use Valkyrja\Support\Type\Cls;
 use Valkyrja\Support\Type\Obj;
 use Valkyrja\Support\Type\Str;
 
@@ -39,19 +42,21 @@ abstract class Model implements Contract
      * <code>
      *      [
      *          // An property to be json_decoded to an array
-     *          'property_name' => 'array',
+     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::array,
      *          // An property to be unserialized to an object
-     *          'property_name' => 'object',
+     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::object,
      *          // An property to be json_decoded to an object
-     *          'property_name' => 'json',
+     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::json,
      *          // An property to be cast to an string
-     *          'property_name' => 'string',
+     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::string,
      *          // An property to be cast to an int
-     *          'property_name' => 'int',
+     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::int,
      *          // An property to be cast to an float
-     *          'property_name' => 'float',
+     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::float,
      *          // An property to be cast to an bool
-     *          'property_name' => 'bool',
+     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::bool,
+     *          // An property to be cast to an enum
+     *          'property_name' => Enum::class,
      *          // An property to be cast to a model
      *          'property_name' => Model::class,
      *          // An property to be cast to an array of models
@@ -420,53 +425,23 @@ abstract class Model implements Contract
             return $value;
         }
 
-        switch ($type) {
-            case PropertyType::OBJECT :
-                if (is_string($value)) {
-                    $value = unserialize(
-                        $value,
-                        [
-                            'allowed_classes' => $propertyAllowedClasses[$property] ?? [],
-                        ]
-                    );
-                }
-
-                break;
-            case PropertyType::ARRAY :
-                if (is_string($value)) {
-                    $value = Arr::fromString($value);
-                }
-
-                break;
-            case PropertyType::JSON :
-                if (is_string($value)) {
-                    $value = Obj::fromString($value);
-                }
-
-                break;
-            case PropertyType::STRING :
-                $value = (string) $value;
-
-                break;
-            case PropertyType::INT :
-                $value = (int) $value;
-
-                break;
-            case PropertyType::FLOAT :
-                $value = (float) $value;
-
-                break;
-            case PropertyType::BOOL :
-                $value = (bool) $value;
-
-                break;
-            default :
-                $value = $this->__getModelFromValueType($property, $type, $value);
-
-                break;
-        }
-
-        return $value;
+        return match ($type) {
+            CastType::object, PropertyType::OBJECT => is_string($value)
+                ? unserialize(
+                    $value,
+                    [
+                        'allowed_classes' => $propertyAllowedClasses[$property] ?? [],
+                    ]
+                )
+                : $value,
+            CastType::array, PropertyType::ARRAY   => is_string($value) ? Arr::fromString($value) : $value,
+            CastType::json, PropertyType::JSON     => is_string($value) ? Obj::fromString($value) : $value,
+            CastType::string, PropertyType::STRING => (string) $value,
+            CastType::int, PropertyType::INT       => (int) $value,
+            CastType::float, PropertyType::FLOAT   => (float) $value,
+            CastType::bool, PropertyType::BOOL     => (bool) $value,
+            default                                => $this->__getModelFromValueType($property, $type, $value),
+        };
     }
 
     /**
@@ -513,8 +488,9 @@ abstract class Model implements Contract
             $value = $value->jsonSerialize();
         } elseif (is_object($value) || is_array($value)) {
             $value = (array) $value;
-        } elseif (is_string($value)) {
-            $value = Arr::fromString($value);
+        } elseif (! ($value instanceof BackedEnum) && Cls::inherits($type, BackedEnum::class)) {
+            /** @var BackedEnum $type */
+            return $type::tryFrom($value);
         } else {
             // Return the value as is since it does not seem to match what we're expecting if we were to get a model
             // from the value data
