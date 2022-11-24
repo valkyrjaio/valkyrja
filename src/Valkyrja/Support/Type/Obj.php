@@ -73,16 +73,16 @@ class Obj
     /**
      * Get all object's properties regardless of visibility.
      *
-     * @param object    $subject          The subject object
-     * @param bool|null $includeProtected [optional] Whether to include protected members
-     * @param bool|null $includePrivate   [optional] Whether to include private members
+     * @param object $subject          The subject object
+     * @param bool   $includeProtected [optional] Whether to include protected members
+     * @param bool   $includePrivate   [optional] Whether to include private members
      *
      * @return array
      */
     public static function getAllProperties(
         object $subject,
-        bool $includeProtected = null,
-        bool $includePrivate = null
+        bool $includeProtected = true,
+        bool $includePrivate = true
     ): array {
         // The subject cast as an array
         $castSubject = (array) $subject;
