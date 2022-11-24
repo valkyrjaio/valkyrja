@@ -23,36 +23,36 @@ interface Matcher
     /**
      * Match a route by path.
      *
-     * @param string $path   The path
-     * @param string $method The request method
+     * @param string      $path   The path
+     * @param string|null $method [optional] The request method
      *
      * @return Route|null
      *      The route if found or null when no route is
      *      found for the path and method combination specified
      */
-    public function match(string $path, string $method): ?Route;
+    public function match(string $path, string $method = null): ?Route;
 
     /**
      * Match a dynamic route by path.
      *
-     * @param string $path   The path
-     * @param string $method The request method
+     * @param string      $path   The path
+     * @param string|null $method [optional] The request method
      *
      * @return Route|null
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function matchStatic(string $path, string $method): ?Route;
+    public function matchStatic(string $path, string $method = null): ?Route;
 
     /**
      * Match a static route by path.
      *
-     * @param string $path   The path
-     * @param string $method The request method
+     * @param string      $path   The path
+     * @param string|null $method [optional] The request method
      *
      * @return Route|null
      *      The route if found or null when no dynamic route is
      *      found for the path and method combination specified
      */
-    public function matchDynamic(string $path, string $method): ?Route;
+    public function matchDynamic(string $path, string $method = null): ?Route;
 }

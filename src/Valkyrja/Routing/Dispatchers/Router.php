@@ -158,7 +158,13 @@ class Router implements Contract
 
         // If no route is found
         if (null === $route) {
-            // Abort with 404
+            // If the route matches for any method
+            if ($this->matcher->match($requestUri)) {
+                // Then the route exists but not for the requested method, and so it is not allowed
+                Abort::abort405();
+            }
+
+            // Otherwise abort with 404
             Abort::abort404();
         }
 

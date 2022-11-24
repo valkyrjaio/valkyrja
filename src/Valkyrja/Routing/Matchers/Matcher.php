@@ -48,7 +48,7 @@ class Matcher implements Contract
     /**
      * @inheritDoc
      */
-    public function match(string $path, string $method): ?Route
+    public function match(string $path, string $method = null): ?Route
     {
         $path = Helpers::trimPath($path);
 
@@ -62,7 +62,7 @@ class Matcher implements Contract
     /**
      * @inheritDoc
      */
-    public function matchStatic(string $path, string $method): ?Route
+    public function matchStatic(string $path, string $method = null): ?Route
     {
         // Let's check if the route is set in the static routes
         if ($this->collection->hasStatic($path, $method)) {
@@ -75,7 +75,7 @@ class Matcher implements Contract
     /**
      * @inheritDoc
      */
-    public function matchDynamic(string $path, string $method): ?Route
+    public function matchDynamic(string $path, string $method = null): ?Route
     {
         // Attempt to find a match using dynamic routes that are set
         foreach ($this->collection->allDynamic($method) as $regex => $dynamicRoute) {
@@ -92,12 +92,12 @@ class Matcher implements Contract
     /**
      * Get a matched static route.
      *
-     * @param string $path   The path
-     * @param string $method The request method
+     * @param string      $path   The path
+     * @param string|null $method [optional] The request method
      *
      * @return Route
      */
-    protected function getMatchedStaticRoute(string $path, string $method): Route
+    protected function getMatchedStaticRoute(string $path, string $method = null): Route
     {
         return clone $this->collection->getStatic($path, $method);
     }
@@ -105,13 +105,13 @@ class Matcher implements Contract
     /**
      * Get a matched dynamic route.
      *
-     * @param string $path    The path
-     * @param array  $matches The regex matches
-     * @param string $method  The request method
+     * @param string      $path    The path
+     * @param array       $matches The regex matches
+     * @param string|null $method  [optional] The request method
      *
      * @return Route
      */
-    protected function getMatchedDynamicRoute(string $path, array $matches, string $method): Route
+    protected function getMatchedDynamicRoute(string $path, array $matches, string $method = null): Route
     {
         // Clone the route to avoid changing the one set in the master array
         $dynamicRoute = clone $this->collection->getDynamic($path, $method);
