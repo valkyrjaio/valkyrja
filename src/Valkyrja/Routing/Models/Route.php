@@ -16,7 +16,8 @@ namespace Valkyrja\Routing\Models;
 use InvalidArgumentException;
 use Valkyrja\Dispatcher\Models\Dispatch;
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Routing\Route as RouteContract;
+use Valkyrja\Routing\Route as Contract;
+use Valkyrja\Support\Model\Enums\CastType;
 use Valkyrja\Support\Type\Str;
 
 /**
@@ -24,7 +25,7 @@ use Valkyrja\Support\Type\Str;
  *
  * @author Melech Mizrachi
  */
-class Route extends Dispatch implements RouteContract
+class Route extends Dispatch implements Contract
 {
     /**
      * The path for this route.
@@ -240,6 +241,7 @@ class Route extends Dispatch implements RouteContract
     public function addParameter(
         string $name,
         string $regex,
+        CastType $type = null,
         string $entity = null,
         string $entityColumn = null,
         array $entityRelationships = null,

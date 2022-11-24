@@ -18,13 +18,13 @@ namespace Valkyrja\Support\Model\Enums;
  *
  * @author Melech Mizrachi
  */
-enum CastType
+enum CastType: string
 {
-    case json;
-    case array;
-    case object;
-    case string;
-    case int;
-    case float;
-    case bool;
+    case json = 'json';
+    case array = 'array';
+    case object = 'object';
+    case string = 'string';
+    case int = 'int';
+    case float = 'float';
+    case bool = 'bool';
 }

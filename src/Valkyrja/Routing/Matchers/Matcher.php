@@ -18,7 +18,7 @@ use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Matcher as Contract;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Helpers;
-use Valkyrja\Support\Model\Constants\PropertyType;
+use Valkyrja\Support\Model\Enums\CastType;
 
 use function preg_match;
 
@@ -137,15 +137,19 @@ class Matcher implements Contract
                 $matches[$key] = $parameter->getDefault();
             } elseif ($type = $parameter->getType()) {
                 switch ($type) {
-                    case PropertyType::BOOL :
+                    case CastType::string :
+                        $matches[$key] = (string) $match;
+
+                        break;
+                    case CastType::bool :
                         $matches[$key] = (bool) $match;
 
                         break;
-                    case PropertyType::INT :
+                    case CastType::int :
                         $matches[$key] = (int) $match;
 
                         break;
-                    case PropertyType::FLOAT :
+                    case CastType::float :
                         $matches[$key] = (float) $match;
 
                         break;

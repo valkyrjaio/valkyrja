@@ -15,6 +15,7 @@ namespace Valkyrja\Routing\Models;
 
 use Valkyrja\ORM\Entity;
 use Valkyrja\Support\Model\Classes\Model;
+use Valkyrja\Support\Model\Enums\CastType;
 use Valkyrja\Support\Type\Cls;
 
 /**
@@ -24,6 +25,10 @@ use Valkyrja\Support\Type\Cls;
  */
 class Parameter extends Model
 {
+    protected static array $propertyCastings = [
+        'type' => CastType::class,
+    ];
+
     /**
      * The name.
      *
@@ -41,9 +46,9 @@ class Parameter extends Model
     /**
      * The parameter type to cast as.
      *
-     * @var string|null
+     * @var CastType|null
      */
-    public ?string $type;
+    public ?CastType $type;
 
     /**
      * The entity class name.
@@ -81,21 +86,28 @@ class Parameter extends Model
     public bool $shouldCapture = true;
 
     /**
+     * The default to use if this is an optional parameter.
+     *
+     * @var mixed|null
+     */
+    public mixed $default = null;
+
+    /**
      * Parameter constructor.
      *
-     * @param string|null $name                [optional]
-     * @param string|null $regex               [optional]
-     * @param string|null $type                [optional]
-     * @param string|null $entity              [optional]
-     * @param string|null $entityColumn        [optional]
-     * @param array|null  $entityRelationships [optional]
-     * @param bool|null   $isOptional          [optional]
-     * @param bool|null   $shouldCapture       [optional]
+     * @param string|null   $name                [optional] The name
+     * @param string|null   $regex               [optional] The regex
+     * @param CastType|null $type                [optional] The cast type
+     * @param string|null   $entity              [optional] The entity class name
+     * @param string|null   $entityColumn        [optional] The entity column
+     * @param array|null    $entityRelationships [optional] The entity relationships to get
+     * @param bool|null     $isOptional          [optional] Whether this parameter is optional
+     * @param bool|null     $shouldCapture       [optional] Whether this parameter should be captured
      */
     public function __construct(
         string $name = null,
         string $regex = null,
-        string $type = null,
+        CastType $type = null,
         string $entity = null,
         string $entityColumn = null,
         array $entityRelationships = null,
@@ -191,9 +203,9 @@ class Parameter extends Model
     /**
      * Get the type.
      *
-     * @return string|null
+     * @return CastType|null
      */
-    public function getType(): ?string
+    public function getType(): ?CastType
     {
         return $this->type ?? null;
     }
@@ -201,11 +213,11 @@ class Parameter extends Model
     /**
      * Set the type.
      *
-     * @param string|null $type The type
+     * @param CastType|null $type The type
      *
      * @return static
      */
-    public function setType(string $type = null): static
+    public function setType(CastType $type = null): static
     {
         $this->type = $type;
 

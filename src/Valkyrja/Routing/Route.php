@@ -15,6 +15,7 @@ namespace Valkyrja\Routing;
 
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Routing\Models\Parameter;
+use Valkyrja\Support\Model\Enums\CastType;
 
 /**
  * Interface Route.
@@ -131,19 +132,22 @@ interface Route extends Dispatch
     /**
      * Add a parameter.
      *
-     * @param string      $name                The name
-     * @param string      $regex               The regex
-     * @param string|null $entity              [optional] The entity class name
-     * @param string|null $entityColumn        [optional] The entity column to query against
-     * @param array|null  $entityRelationships [optional] The entity relationships
-     * @param bool        $isOptional          [optional] Whether the parameter is optional
-     * @param bool        $shouldCapture       [optional] Whether this parameter should be captured
+     * @param string        $name                The name
+     * @param string        $regex               The regex
+     * @param CastType|null $type                [optional] The cast type
+     * @param string|null   $entity              [optional] The entity class name
+     * @param string|null   $entityColumn        [optional] The entity column to query against
+     * @param array|null    $entityRelationships [optional] The entity relationships
+     * @param bool          $isOptional          [optional] Whether the parameter is optional
+     * @param bool          $shouldCapture       [optional] Whether this parameter should be captured
+     * @param mixed         $default             [optional] The default value for this parameter
      *
      * @return static
      */
     public function addParameter(
         string $name,
         string $regex,
+        CastType $type = null,
         string $entity = null,
         string $entityColumn = null,
         array $entityRelationships = null,
