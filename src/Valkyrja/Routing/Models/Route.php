@@ -244,27 +244,22 @@ class Route extends Dispatch implements RouteContract
         string $entityColumn = null,
         array $entityRelationships = null,
         bool $isOptional = false,
-        bool $shouldCapture = true
+        bool $shouldCapture = true,
+        mixed $default = null
     ): static {
-        $parameter = new Parameter();
-        $parameter->setName($name);
-        $parameter->setRegex($regex);
-        $parameter->setIsOptional($isOptional);
-        $parameter->setShouldCapture($shouldCapture);
-
-        if ($entity) {
-            $parameter->setEntity($entity);
-        }
-
-        if ($entityColumn) {
-            $parameter->setEntityColumn($entityColumn);
-        }
-
-        if ($entityRelationships) {
-            $parameter->setEntityRelationships($entityRelationships);
-        }
-
-        return $this->setParameter($parameter);
+        return $this->setParameter(
+            new Parameter(
+                name               : $name,
+                regex              : $regex,
+                type               : $type,
+                entity             : $entity,
+                entityColumn       : $entityColumn,
+                entityRelationships: $entityRelationships,
+                isOptional         : $isOptional,
+                shouldCapture      : $shouldCapture,
+                default            : $default
+            )
+        );
     }
 
     /**

@@ -148,7 +148,8 @@ interface Route extends Dispatch
         string $entityColumn = null,
         array $entityRelationships = null,
         bool $isOptional = false,
-        bool $shouldCapture = true
+        bool $shouldCapture = true,
+        mixed $default = null
     ): static;
 
     /**

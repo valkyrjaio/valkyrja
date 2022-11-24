@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Matchers;
 
 use Valkyrja\Routing\Collection;
+use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Matcher as Contract;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Helpers;
@@ -47,6 +48,8 @@ class Matcher implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws InvalidRoutePath
      */
     public function match(string $path, string $method = null): ?Route
     {
@@ -74,6 +77,8 @@ class Matcher implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws InvalidRoutePath
      */
     public function matchDynamic(string $path, string $method = null): ?Route
     {
@@ -109,6 +114,8 @@ class Matcher implements Contract
      * @param array       $matches The regex matches
      * @param string|null $method  [optional] The request method
      *
+     * @throws InvalidRoutePath
+     *
      * @return Route
      */
     protected function getMatchedDynamicRoute(string $path, array $matches, string $method = null): Route
@@ -122,12 +129,13 @@ class Matcher implements Contract
 
         // Iterate through the matches
         foreach ($matches as $key => $match) {
+            $parameter = $parameters[$key] ?? throw new InvalidRoutePath("No parameter for match key $key");
+
             // If there is no match (middle of regex optional group)
             if (! $match) {
-                // Set the value to null so the controller's action
-                // can use the default it sets
-                $matches[$key] = null;
-            } elseif (($parameter = $parameters[$key] ?? null) && $type = $parameter->getType()) {
+                // Set the value to the parameter default
+                $matches[$key] = $parameter->getDefault();
+            } elseif ($type = $parameter->getType()) {
                 switch ($type) {
                     case PropertyType::BOOL :
                         $matches[$key] = (bool) $match;

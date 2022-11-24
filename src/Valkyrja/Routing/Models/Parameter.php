@@ -101,6 +101,7 @@ class Parameter extends Model
         array $entityRelationships = null,
         bool $isOptional = null,
         bool $shouldCapture = null,
+        mixed $default = null,
     ) {
         if ($name) {
             $this->setName($name);
@@ -132,6 +133,10 @@ class Parameter extends Model
 
         if ($shouldCapture) {
             $this->setShouldCapture($shouldCapture);
+        }
+
+        if ($default) {
+            $this->setDefault($default);
         }
     }
 
@@ -331,6 +336,28 @@ class Parameter extends Model
     public function setShouldCapture(bool $shouldCapture): static
     {
         $this->shouldCapture = $shouldCapture;
+
+        return $this;
+    }
+
+    /**
+     * Get the default value.
+     *
+     * @return mixed
+     */
+    public function getDefault(): mixed
+    {
+        return $this->default;
+    }
+
+    /**
+     * Set the default value.
+     *
+     * @return mixed
+     */
+    public function setDefault(mixed $default): static
+    {
+        $this->default = $default;
 
         return $this;
     }
