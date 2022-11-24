@@ -224,7 +224,7 @@ abstract class Entity extends Model implements Contract
             }
 
             // Get the value
-            $this->__setPropertyInArray($allProperties, $propertyTypes, $property, $storable);
+            $allProperties[$property] = $this->__getToArrayPropertyValue($propertyTypes, $property, $storable);
         }
 
         unset($allProperties['__exposed'], $allProperties['__originalProperties']);
@@ -233,31 +233,24 @@ abstract class Entity extends Model implements Contract
     }
 
     /**
-     * Set a property in an array.
+     * Get a property's value for to array.
      *
-     * @param array  $properties    The properties array to set into
      * @param array  $propertyTypes The property types
      * @param string $property      The property
      * @param bool   $storable      [optional] Whether to get as a storable array.
      *
      * @throws JsonException
      *
-     * @return void
+     * @return mixed
      */
-    protected function __setPropertyInArray(
-        array &$properties,
-        array $propertyTypes,
-        string $property,
-        bool $storable = false
-    ): void {
+    protected function __getToArrayPropertyValue(array $propertyTypes, string $property, bool $storable = false): mixed
+    {
         // If this is a storable array we're building
         if ($storable) {
             // Get the value for the data store
-            $properties[$property] = $this->__getPropertyValueForDataStore($propertyTypes, $property);
-
-            return;
+            return $this->__getPropertyValueForDataStore($propertyTypes, $property);
         }
 
-        $properties[$property] = $this->__get($property);
+        return $this->__get($property);
     }
 }
