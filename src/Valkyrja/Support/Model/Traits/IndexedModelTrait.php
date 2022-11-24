@@ -95,7 +95,7 @@ trait IndexedModelTrait
      */
     public function asIndexedArray(string ...$properties): array
     {
-        return static::getIndexedArrayFromMappedArray($this->asArray(...$properties));
+        return $this->__asIndexedArray(false, ...$properties);
     }
 
     /**
@@ -103,7 +103,7 @@ trait IndexedModelTrait
      */
     public function asIndexedArrayWithExposable(string ...$properties): array
     {
-        return static::getIndexedArrayFromMappedArray($this->asArrayWithExposable(...$properties));
+        return $this->__asIndexedArrayWithExposable(false, ...$properties);
     }
 
     /**
@@ -120,5 +120,31 @@ trait IndexedModelTrait
     public function asOriginalIndexedArray(): array
     {
         return static::getIndexedArrayFromMappedArray($this->asOriginalArray());
+    }
+
+    /**
+     * Get model as an array.
+     *
+     * @param bool   $toJson        [optional] Whether to get as a json array.
+     * @param string ...$properties [optional] An array of properties to return
+     *
+     * @return array
+     */
+    protected function __asIndexedArray(bool $toJson = false, string ...$properties): array
+    {
+        return static::getIndexedArrayFromMappedArray($this->__asArray($toJson, ...$properties));
+    }
+
+    /**
+     * Get model as an array with exposable properties.
+     *
+     * @param bool   $toJson        [optional] Whether to get as a json array.
+     * @param string ...$properties [optional] An array of properties to return
+     *
+     * @return array
+     */
+    protected function __asIndexedArrayWithExposable(bool $toJson = false, string ...$properties): array
+    {
+        return static::getIndexedArrayFromMappedArray($this->__asArrayWithExposable($toJson, ...$properties));
     }
 }

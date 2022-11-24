@@ -15,6 +15,7 @@ namespace Valkyrja\Support\Model\Classes;
 
 use BackedEnum;
 use JsonException;
+use UnitEnum;
 use Valkyrja\Support\Model\Constants\PropertyType;
 use Valkyrja\Support\Model\Enums\CastType;
 use Valkyrja\Support\Model\Model as Contract;
@@ -214,23 +215,7 @@ abstract class Model implements Contract
      */
     public function asArray(string ...$properties): array
     {
-        // Get the public properties
-        $allProperties = array_merge(Obj::getProperties($this), $this->__exposed);
-
-        if (! empty($properties)) {
-            $allProperties = $this->__onlyProperties($allProperties, $properties);
-        }
-
-        unset($allProperties['__exposed'], $allProperties['__originalProperties']);
-
-        // Ensure for each property we use the magic __get method so as to go through any magic get{Property} methods
-        foreach ($allProperties as $property => $value) {
-            $allProperties[$property] = $this->__get($property);
-
-            // Remove properties with null value if model flag is set to do so.
-        }
-
-        return $allProperties;
+        return $this->__asArray(false, ...$properties);
     }
 
     /**
@@ -238,11 +223,7 @@ abstract class Model implements Contract
      */
     public function asArrayWithExposable(string ...$properties): array
     {
-        $this->expose(...static::$exposable);
-        $array = $this->asArray(...$properties);
-        $this->unexpose(...static::$exposable);
-
-        return $array;
+        return $this->__asArrayWithExposable(false, ...$properties);
     }
 
     /**
@@ -250,22 +231,7 @@ abstract class Model implements Contract
      */
     public function asChangedArray(): array
     {
-        // The original properties set on the model
-        $originalProperties = $this->__originalProperties;
-        // The changed properties
-        $changed = [];
-
-        // Iterate through the model's properties
-        foreach ($this->__asArrayForChangedComparison() as $property => $value) {
-            $originalProperty = $originalProperties[$property] ?? null;
-
-            // Determine if the property changed
-            if ($originalProperty !== $value) {
-                $changed[$property] = $value;
-            }
-        }
-
-        return $changed;
+        return $this->__asChangedArray();
     }
 
     /**
@@ -289,7 +255,7 @@ abstract class Model implements Contract
      */
     public function jsonSerialize(): array
     {
-        return $this->asArray();
+        return $this->__asArray(true);
     }
 
     /**
@@ -326,16 +292,6 @@ abstract class Model implements Contract
         foreach ($properties as $property) {
             unset($this->__exposed[$property]);
         }
-    }
-
-    /**
-     * The model as an array to compare with original properties to determine what changed.
-     *
-     * @return array
-     */
-    protected function __asArrayForChangedComparison(): array
-    {
-        return $this->asArray();
     }
 
     /**
@@ -491,6 +447,20 @@ abstract class Model implements Contract
         } elseif (is_string($value) && Cls::inherits($type, Contract::class)) {
             $value = Arr::fromString($value);
         } else {
+            if (! ($value instanceof BackedEnum) && Cls::inherits($type, BackedEnum::class)) {
+                /** @var BackedEnum $type */
+                return $type::tryFrom($value);
+            }
+
+            if (! ($value instanceof UnitEnum) && Cls::inherits($type, UnitEnum::class)) {
+                return unserialize(
+                    $value,
+                    [
+                        'allowed_classes' => $type,
+                    ]
+                );
+            }
+
             // Return the value as is since it does not seem to match what we're expecting if we were to get a model
             // from the value data
             return $value;
@@ -502,5 +472,114 @@ abstract class Model implements Contract
 
         /** @var static $type */
         return $type::fromArray((array) $value);
+    }
+
+    /**
+     * Convert the entity to an array or json array.
+     *
+     * @param bool   $toJson        [optional] Whether to get as a json array.
+     * @param string ...$properties [optional] An array of properties to return
+     *
+     * @return array
+     */
+    protected function __asArray(bool $toJson = false, string ...$properties): array
+    {
+        // Get the public properties
+        $allProperties = array_merge(Obj::getProperties($this), $this->__exposed);
+        $propertyTypes = static::getCastings();
+
+        if (! empty($properties)) {
+            $allProperties = $this->__onlyProperties($allProperties, $properties);
+        }
+
+        unset($allProperties['__exposed'], $allProperties['__originalProperties']);
+
+        // Ensure for each property we use the magic __get method so as to go through any magic get{Property} methods
+        foreach ($allProperties as $property => $value) {
+            $allProperties[$property] = $this->__getAsArrayPropertyValue($propertyTypes, $property, $toJson);
+
+            // Remove properties with null value if model flag is set to do so.
+        }
+
+        return $allProperties;
+    }
+
+    /**
+     * @param bool   $toJson        [optional] Whether to get as a json array.
+     * @param string ...$properties [optional] An array of properties to return
+     *
+     * @return array
+     */
+    protected function __asArrayWithExposable(bool $toJson = false, string ...$properties): array
+    {
+        $this->expose(...static::$exposable);
+        $array = $this->__asArray($toJson, ...$properties);
+        $this->unexpose(...static::$exposable);
+
+        return $array;
+    }
+
+    /**
+     * @param bool $toJson [optional] Whether to get as a json array.
+     *
+     * @return array
+     */
+    protected function __asChangedArray(bool $toJson = false): array
+    {
+        // The original properties set on the model
+        $originalProperties = $this->__originalProperties;
+        // The changed properties
+        $changed = [];
+
+        // Iterate through the model's properties
+        foreach ($this->__asArrayForChangedComparison($toJson) as $property => $value) {
+            $originalProperty = $originalProperties[$property] ?? null;
+
+            // Determine if the property changed
+            if ($originalProperty !== $value) {
+                $changed[$property] = $value;
+            }
+        }
+
+        return $changed;
+    }
+
+    /**
+     * The model as an array to compare with original properties to determine what changed.
+     *
+     * @param bool $toJson [optional] Whether to get as a json array.
+     *
+     * @return array
+     */
+    protected function __asArrayForChangedComparison(bool $toJson = false): array
+    {
+        return $this->__asArray($toJson);
+    }
+
+    /**
+     * Get a property's value for to array.
+     *
+     * @param array  $propertyTypes The property types
+     * @param string $property      The property
+     * @param bool   $toJson        [optional] Whether to get as a json array.
+     *
+     * @return mixed
+     */
+    protected function __getAsArrayPropertyValue(array $propertyTypes, string $property, bool $toJson): mixed
+    {
+        $value = $this->__get($property);
+
+        // If this is a json array we're building
+        if ($toJson) {
+            if ($value instanceof BackedEnum) {
+                return $value->value;
+            }
+
+            if ($value instanceof UnitEnum) {
+                return serialize($value);
+            }
+        }
+
+        return $value;
     }
 }
