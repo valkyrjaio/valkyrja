@@ -18,6 +18,7 @@ use Valkyrja\Dispatcher\Models\Dispatch;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Route as Contract;
+use Valkyrja\Support\Model\Enums\CastType as ModelCastType;
 use Valkyrja\Support\Type\Str;
 
 /**
@@ -104,7 +105,7 @@ class Route extends Dispatch implements Contract
      * @inheritDoc
      */
     protected static array $castings = [
-        'parameters' => [Parameter::class],
+        'parameters' => [ModelCastType::object, [Parameter::class]],
     ];
 
     /**
