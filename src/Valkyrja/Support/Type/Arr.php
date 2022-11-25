@@ -18,6 +18,7 @@ use JsonException;
 use Valkyrja\Config\Constants\ConfigKeyPart;
 
 use function explode;
+use function is_array;
 use function json_decode;
 use function json_encode;
 
@@ -83,5 +84,41 @@ class Arr
     public static function fromString(string $subject): array
     {
         return json_decode($subject, true, 512, JSON_THROW_ON_ERROR);
+    }
+
+    /**
+     * Strip out null valued properties in an array.
+     *
+     * @param array $subject The subject array
+     *
+     * @return array
+     */
+    public static function newWithoutNull(array $subject): array
+    {
+        $new = $subject;
+
+        return static::withoutNull($new);
+    }
+
+    /**
+     * Strip out null valued properties in an array.
+     *
+     * @param array $subject The subject array
+     *
+     * @return array
+     */
+    public static function withoutNull(array &$subject): array
+    {
+        foreach ($subject as $key => &$value) {
+            if (is_array($value)) {
+                static::withoutNull($value);
+            }
+
+            if ($value === null) {
+                unset($subject[$key]);
+            }
+        }
+
+        return $subject;
     }
 }
