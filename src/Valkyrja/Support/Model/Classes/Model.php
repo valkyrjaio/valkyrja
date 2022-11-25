@@ -214,7 +214,7 @@ abstract class Model implements Contract
      */
     public function asArray(string ...$properties): array
     {
-        return $this->__asArray(false, ...$properties);
+        return $this->__asArray(false, false, ...$properties);
     }
 
     /**
@@ -476,22 +476,23 @@ abstract class Model implements Contract
     /**
      * Convert the entity to an array or json array.
      *
-     * @param bool   $toJson        [optional] Whether to get as a json array.
+     * @param bool   $toJson        [optional] Whether to get as a json array
+     * @param bool   $all           [optional] Whether to get all properties
      * @param string ...$properties [optional] An array of properties to return
      *
      * @return array
      */
-    protected function __asArray(bool $toJson = false, string ...$properties): array
+    protected function __asArray(bool $toJson = false, bool $all = false, string ...$properties): array
     {
         // Get the public properties
-        $allProperties = array_merge(Obj::getProperties($this), $this->__exposed);
+        $allProperties = $all ? get_object_vars($this) : array_merge(Obj::getProperties($this), $this->__exposed);
         $propertyTypes = static::getCastings();
+
+        unset($allProperties['__exposed'], $allProperties['__originalProperties']);
 
         if (! empty($properties)) {
             $allProperties = $this->__onlyProperties($allProperties, $properties);
         }
-
-        unset($allProperties['__exposed'], $allProperties['__originalProperties']);
 
         // Ensure for each property we use the magic __get method so as to go through any magic get{Property} methods
         foreach ($allProperties as $property => $value) {
@@ -512,7 +513,7 @@ abstract class Model implements Contract
     protected function __asArrayWithExposable(bool $toJson = false, string ...$properties): array
     {
         $this->expose(...static::$exposable);
-        $array = $this->__asArray($toJson, ...$properties);
+        $array = $this->__asArray($toJson, false, ...$properties);
         $this->unexpose(...static::$exposable);
 
         return $array;

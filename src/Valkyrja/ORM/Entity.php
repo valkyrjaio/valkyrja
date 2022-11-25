@@ -66,11 +66,11 @@ interface Entity extends Model
     public static function getRelationshipProperties(): array;
 
     /**
-     * Get a list of hidden fields we can expose for storage.
+     * Get a list of fields we do not want for storage.
      *
      * @return string[]
      */
-    public static function getStorableHiddenFields(): array;
+    public static function getUnStorableFields(): array;
 
     /**
      * Get the entity as an array for saving to the data store.

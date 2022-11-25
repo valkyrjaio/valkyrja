@@ -21,7 +21,6 @@ use Valkyrja\Support\Model\Model as ModelContract;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
 
-use function in_array;
 use function is_string;
 
 /**
@@ -60,11 +59,11 @@ abstract class Entity extends Model implements Contract
     protected static array $relationshipProperties = [];
 
     /**
-     * A list of hidden fields we can expose for storage.
+     * A list of fields we do not want to store.
      *
      * @var string[]
      */
-    protected static array $storableHiddenFields = [];
+    protected static array $unStorableFields = [];
 
     /**
      * The connection to use.
@@ -116,9 +115,9 @@ abstract class Entity extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public static function getStorableHiddenFields(): array
+    public static function getUnStorableFields(): array
     {
-        return static::$storableHiddenFields;
+        return static::$unStorableFields;
     }
 
     /**
@@ -128,17 +127,7 @@ abstract class Entity extends Model implements Contract
      */
     public function asStorableArray(string ...$properties): array
     {
-        return $this->__asArrayOrStorable(true, ...$properties);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @throws JsonException
-     */
-    public function asArray(string ...$properties): array
-    {
-        return $this->__asArrayOrStorable(false, ...$properties);
+        return $this->__asStorableArray(true, ...$properties);
     }
 
     /**
@@ -156,7 +145,7 @@ abstract class Entity extends Model implements Contract
      */
     protected function __asArrayForChangedComparison(bool $toJson = true): array
     {
-        return $this->__asArrayOrStorable($toJson);
+        return $this->__asStorableArray($toJson);
     }
 
     /**
@@ -171,7 +160,7 @@ abstract class Entity extends Model implements Contract
      */
     protected function __getPropertyValueForDataStore(array $propertyTypes, string $property): mixed
     {
-        $value = $this->__get($property);
+        $value = $this->__getAsArrayPropertyValue($propertyTypes, $property, true);
         // Check if a type was set for this attribute
         $type = $propertyTypes[$property] ?? null;
 
@@ -195,70 +184,31 @@ abstract class Entity extends Model implements Contract
     /**
      * Convert the entity to an array or storable array.
      *
-     * @param bool   $storable      [optional] Whether to get as a storable array.
+     * @param bool   $toJson        [optional] Whether to get as a json array
      * @param string ...$properties [optional] An array of properties to return
      *
      * @throws JsonException
      *
      * @return array
      */
-    protected function __asArrayOrStorable(bool $storable = false, string ...$properties): array
+    protected function __asStorableArray(bool $toJson = false, string ...$properties): array
     {
-        $storableHiddenFields   = $storable ? static::getStorableHiddenFields() : [];
-        $allProperties          = array_merge(Obj::getProperties($this), $this->__exposed);
-        $propertyTypes          = static::getCastings();
-        $relationshipProperties = static::getRelationshipProperties();
+        $unStorableFields = array_merge(static::getUnStorableFields(), static::getRelationshipProperties());
+        $allProperties    = $this->__asArray($toJson, true, ...$properties);
+        $propertyTypes    = static::getCastings();
 
-        // Iterate through all the storable hidden fields
-        foreach ($storableHiddenFields as $storableHiddenField) {
-            // Add the storable field to the all properties array
-            $allProperties[$storableHiddenField] = true;
-        }
-
-        // If a list of properties was specified
-        if (! empty($properties)) {
-            // Let's only return those properties
-            $allProperties = $this->__onlyProperties($allProperties, $properties);
+        // Iterate through all the un-storable fields
+        foreach ($unStorableFields as $unStorableHiddenField) {
+            // Remove the un-storable field to the all properties array
+            unset($allProperties[$unStorableHiddenField]);
         }
 
         // Iterate through the properties to return
         foreach ($allProperties as $property => $value) {
-            // If this property is a relationship and we're going for storage
-            if ($storable && in_array($property, $relationshipProperties, true)) {
-                unset($allProperties[$property]);
-
-                continue;
-            }
-
             // Get the value
-            $allProperties[$property] =
-                $this->__getAsArrayOrStorablePropertyValue($propertyTypes, $property, $storable);
+            $allProperties[$property] = $this->__getPropertyValueForDataStore($propertyTypes, $property);
         }
-
-        unset($allProperties['__exposed'], $allProperties['__originalProperties']);
 
         return $allProperties;
-    }
-
-    /**
-     * Get a property's value for to array.
-     *
-     * @param array  $propertyTypes The property types
-     * @param string $property      The property
-     * @param bool   $storable      [optional] Whether to get as a storable array.
-     *
-     * @throws JsonException
-     *
-     * @return mixed
-     */
-    protected function __getAsArrayOrStorablePropertyValue(array $propertyTypes, string $property, bool $storable = false): mixed
-    {
-        // If this is a storable array we're building
-        if ($storable) {
-            // Get the value for the data store
-            return $this->__getPropertyValueForDataStore($propertyTypes, $property);
-        }
-
-        return $this->__getAsArrayPropertyValue($propertyTypes, $property);
     }
 }

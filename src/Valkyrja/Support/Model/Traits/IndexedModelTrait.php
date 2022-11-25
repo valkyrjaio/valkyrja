@@ -95,7 +95,7 @@ trait IndexedModelTrait
      */
     public function asIndexedArray(string ...$properties): array
     {
-        return $this->__asIndexedArray(false, ...$properties);
+        return $this->__asIndexedArray(false, false, ...$properties);
     }
 
     /**
@@ -125,14 +125,15 @@ trait IndexedModelTrait
     /**
      * Get model as an array.
      *
-     * @param bool   $toJson        [optional] Whether to get as a json array.
+     * @param bool   $toJson        [optional] Whether to get as a json array
+     * @param bool   $all           [optional] Whether to get all properties
      * @param string ...$properties [optional] An array of properties to return
      *
      * @return array
      */
-    protected function __asIndexedArray(bool $toJson = false, string ...$properties): array
+    protected function __asIndexedArray(bool $toJson = false, bool $all = false, string ...$properties): array
     {
-        return static::getIndexedArrayFromMappedArray($this->__asArray($toJson, ...$properties));
+        return static::getIndexedArrayFromMappedArray($this->__asArray($toJson, $all, ...$properties));
     }
 
     /**

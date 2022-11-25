@@ -26,16 +26,6 @@ trait UserTrait
     /**
      * @inheritDoc
      */
-    public static function getStorableHiddenFields(): array
-    {
-        return [
-            static::getPasswordField(),
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
     public static function getAuthRepository(): ?string
     {
         return null;
