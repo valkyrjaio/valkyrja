@@ -16,7 +16,6 @@ namespace Valkyrja\ORM\Entities;
 use JsonException;
 use Valkyrja\ORM\Entity as Contract;
 use Valkyrja\Support\Model\Classes\Model;
-use Valkyrja\Support\Model\Constants\PropertyType;
 use Valkyrja\Support\Model\Enums\CastType;
 use Valkyrja\Support\Model\Model as ModelContract;
 use Valkyrja\Support\Type\Arr;
@@ -182,14 +181,14 @@ abstract class Entity extends Model implements Contract
         }
 
         return match ($type) {
-            CastType::object, PropertyType::OBJECT => ! is_string($value) ? serialize($value) : $value,
-            CastType::array, PropertyType::ARRAY   => ! is_string($value) ? Arr::toString($value) : $value,
-            CastType::json, PropertyType::JSON     => ! is_string($value) ? Obj::toString($value) : $value,
-            CastType::string, PropertyType::STRING => (string) $value,
-            CastType::int, PropertyType::INT       => (int) $value,
-            CastType::float, PropertyType::FLOAT   => (float) $value,
-            CastType::bool, PropertyType::BOOL     => (bool) $value,
-            default                                => ($value instanceof ModelContract) ? $value->__toString() : $value,
+            CastType::object => ! is_string($value) ? serialize($value) : $value,
+            CastType::array  => ! is_string($value) ? Arr::toString($value) : $value,
+            CastType::json   => ! is_string($value) ? Obj::toString($value) : $value,
+            CastType::string => (string) $value,
+            CastType::int    => (int) $value,
+            CastType::float  => (float) $value,
+            CastType::bool   => (bool) $value,
+            default          => ($value instanceof ModelContract) ? $value->__toString() : $value,
         };
     }
 

@@ -16,7 +16,6 @@ namespace Valkyrja\Support\Model\Classes;
 use BackedEnum;
 use JsonException;
 use UnitEnum;
-use Valkyrja\Support\Model\Constants\PropertyType;
 use Valkyrja\Support\Model\Enums\CastType;
 use Valkyrja\Support\Model\Model as Contract;
 use Valkyrja\Support\Type\Arr;
@@ -382,7 +381,7 @@ abstract class Model implements Contract
         }
 
         return match ($type) {
-            CastType::object, PropertyType::OBJECT => is_string($value)
+            CastType::object => is_string($value)
                 ? unserialize(
                     $value,
                     [
@@ -390,13 +389,13 @@ abstract class Model implements Contract
                     ]
                 )
                 : $value,
-            CastType::array, PropertyType::ARRAY   => is_string($value) ? Arr::fromString($value) : $value,
-            CastType::json, PropertyType::JSON     => is_string($value) ? Obj::fromString($value) : $value,
-            CastType::string, PropertyType::STRING => (string) $value,
-            CastType::int, PropertyType::INT       => (int) $value,
-            CastType::float, PropertyType::FLOAT   => (float) $value,
-            CastType::bool, PropertyType::BOOL     => (bool) $value,
-            default                                => $this->__getModelFromValueType($property, $type, $value),
+            CastType::array  => is_string($value) ? Arr::fromString($value) : $value,
+            CastType::json   => is_string($value) ? Obj::fromString($value) : $value,
+            CastType::string => (string) $value,
+            CastType::int    => (int) $value,
+            CastType::float  => (float) $value,
+            CastType::bool   => (bool) $value,
+            default          => $this->__getModelFromValueType($property, $type, $value),
         };
     }
 
