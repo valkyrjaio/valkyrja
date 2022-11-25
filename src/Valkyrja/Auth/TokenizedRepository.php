@@ -32,7 +32,7 @@ interface TokenizedRepository extends Repository
      *
      * @param string $token The token
      *
-     * @return $this
+     * @return static
      */
     public function authenticateFromToken(string $token): static;
 }

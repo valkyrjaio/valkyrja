@@ -155,11 +155,7 @@ abstract class TokenizedRepository extends Repository implements Contract
      */
     protected function tryTokenizingUsers(AuthenticatedUsers $users): string
     {
-        try {
-            return $this->tokenizeUsers($users);
-        } catch (Throwable $exception) {
-            throw new TokenizationException($exception->getMessage(), $exception->getCode(), $exception);
-        }
+        return $this->tokenizeUsers($users);
     }
 
     /**
@@ -231,7 +227,7 @@ abstract class TokenizedRepository extends Repository implements Contract
     {
         [$bearer, $token] = explode(' ', $request->getHeaderLine(Header::AUTHORIZATION));
 
-        if ($bearer !== HeaderValue::BEARER) {
+        if ($bearer !== HeaderValue::BEARER || ! $token) {
             throw new InvalidAuthenticationException('Invalid token structure.');
         }
 
@@ -259,7 +255,7 @@ abstract class TokenizedRepository extends Repository implements Contract
      *
      * @param string $token The token
      *
-     * @throws InvalidAuthenticationException
+     * @throws Throwable
      *
      * @return User
      */
@@ -270,7 +266,7 @@ abstract class TokenizedRepository extends Repository implements Contract
         } catch (Throwable $exception) {
             $this->resetAfterUnAuthentication();
 
-            throw new InvalidAuthenticationException('Invalid user token.', $exception->getCode(), $exception);
+            throw $exception;
         }
 
         $this->users = $users;

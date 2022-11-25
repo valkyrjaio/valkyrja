@@ -16,6 +16,7 @@ namespace Valkyrja\Auth\Models;
 use Valkyrja\Auth\AuthenticatedUsers as Contract;
 use Valkyrja\Auth\User;
 use Valkyrja\Support\Model\Classes\Model;
+use Valkyrja\Support\Model\Enums\CastType;
 
 /**
  * Class Collection.
@@ -28,7 +29,7 @@ class AuthenticatedUsers extends Model implements Contract
      * @inheritDoc
      */
     protected static array $propertyCastings = [
-        'users' => [\Valkyrja\Auth\Entities\User::class],
+        'users' => [CastType::model, [\Valkyrja\Auth\Entities\User::class]],
     ];
 
     /**

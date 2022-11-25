@@ -191,6 +191,10 @@ class Repository implements Contract
     {
         $requestParams = $request->onlyParsedBody($this->userEntityName::getAuthenticationFields());
 
+        if (empty($requestParams)) {
+            throw new InvalidAuthenticationException('No authentication fields');
+        }
+
         $requestParams[$this->userEntityName::getPasswordField()] =
             $request->getParsedBodyParam($this->userEntityName::getPasswordField());
 

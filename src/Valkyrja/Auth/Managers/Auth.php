@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Managers;
 
-use Exception;
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth as Contract;
 use Valkyrja\Auth\AuthenticatedUsers;
 use Valkyrja\Auth\Config\Config;
 use Valkyrja\Auth\Constants\HeaderValue;
 use Valkyrja\Auth\Exceptions\AuthRuntimeException;
+use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Factory;
 use Valkyrja\Auth\Gate;
 use Valkyrja\Auth\LockableUser;
@@ -417,7 +417,7 @@ class Auth implements Contract
 
             // Try to login from the user session
             $repository->authenticateFromRequest($this->request);
-        } catch (Exception) {
+        } catch (InvalidAuthenticationException) {
             // No need to throw an error here as we're just attempting an authentication in the constructor.
             // To determine authenticated state properly usage of isAuthenticated is recommended.
             // Could revisit adding an exception here depending on the error.
