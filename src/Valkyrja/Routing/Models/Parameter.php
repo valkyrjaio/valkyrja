@@ -26,6 +26,14 @@ use Valkyrja\Support\Type\Cls;
  */
 class Parameter extends Model
 {
+    /**
+     * @inheritDoc
+     */
+    protected static bool $setOriginalPropertiesFromArray = false;
+
+    /**
+     * @inheritDoc
+     */
     protected static array $castings = [
         'type' => [ModelCastType::enum, CastType::class],
     ];

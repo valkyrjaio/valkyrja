@@ -39,6 +39,13 @@ use function property_exists;
 abstract class Model implements Contract
 {
     /**
+     * Cached list of validation logic for models.
+     *
+     * @var array[]
+     */
+    protected static array $cachedValidations = [];
+
+    /**
      * Property castings used for mass property sets to avoid needing individual setters for simple type casting.
      *
      * <code>
@@ -92,6 +99,13 @@ abstract class Model implements Contract
     protected static array $exposable = [];
 
     /**
+     * Whether to set the original properties on creation via static::fromArray().
+     *
+     * @var bool
+     */
+    protected static bool $setOriginalPropertiesFromArray = true;
+
+    /**
      * The properties to expose.
      *
      * @var string[]
@@ -138,7 +152,7 @@ abstract class Model implements Contract
     {
         $model = new static();
 
-        $model->__setProperties($properties, true);
+        $model->__setProperties($properties, static::$setOriginalPropertiesFromArray);
 
         return $model;
     }
@@ -332,25 +346,23 @@ abstract class Model implements Contract
      */
     protected function __setProperties(array $properties, bool $setOriginalProperties = false): void
     {
-        $propertyTypes          = static::getCastings();
-        $propertyAllowedClasses = static::getCastingsAllowedClasses();
+        $castings       = static::getCastings();
+        $allowedClasses = static::getCastingsAllowedClasses();
+        $hasCastings    = self::$cachedValidations[static::class . 'hasCastings'] ??= ! empty($castings);
 
         // Iterate through the properties
         foreach ($properties as $property => $value) {
-            if (property_exists($this, $property)) {
-                if ($setOriginalProperties && ! isset($this->__originalProperties[$property])) {
-                    $this->__originalProperties[$property] = $value;
+            if (self::$cachedValidations[static::class . $property] ??= property_exists($this, $property)) {
+                if ($setOriginalProperties) {
+                    $this->__originalProperties[$property] ??= $value;
                 }
 
                 // Set the property
                 $this->__set(
                     $property,
-                    $this->__getPropertyValueByType(
-                        $propertyTypes,
-                        $propertyAllowedClasses,
-                        $property,
-                        $value
-                    )
+                    $hasCastings
+                        ? $this->__getPropertyValueByType($castings, $allowedClasses, $property, $value)
+                        : $value
                 );
             }
         }
@@ -359,26 +371,19 @@ abstract class Model implements Contract
     /**
      * Get a property's value by the type (if type is set).
      *
-     * @param array  $propertyTypes          The property types
-     * @param array  $propertyAllowedClasses The property allowed classes
-     * @param string $property               The property name
-     * @param mixed  $value                  The property value
+     * @param array  $castings       The castings
+     * @param array  $allowedClasses The casting allowed classes
+     * @param string $property       The property name
+     * @param mixed  $value          The property value
      *
      * @throws JsonException
      *
      * @return mixed
      */
-    protected function __getPropertyValueByType(
-        array $propertyTypes,
-        array $propertyAllowedClasses,
-        string $property,
-        mixed $value
-    ): mixed {
-        // Check if a type was set for this attribute
-        $type = $propertyTypes[$property] ?? null;
-
+    protected function __getPropertyValueByType(array $castings, array $allowedClasses, string $property, mixed $value): mixed
+    {
         // If there is no type specified or the value is null just return the value
-        if ($type === null || $value === null) {
+        if ($value === null || ($type = $castings[$property] ?? null) === null) {
             return $value;
         }
 
@@ -387,7 +392,7 @@ abstract class Model implements Contract
                 ? unserialize(
                     $value,
                     [
-                        'allowed_classes' => $propertyAllowedClasses[$property] ?? [],
+                        'allowed_classes' => $allowedClasses[$property] ?? [],
                     ]
                 )
                 : $value,
@@ -638,13 +643,13 @@ abstract class Model implements Contract
     /**
      * Get a property's value for to array.
      *
-     * @param array  $propertyTypes The property types
-     * @param string $property      The property
-     * @param bool   $toJson        [optional] Whether to get as a json array.
+     * @param array  $castings The castings
+     * @param string $property The property
+     * @param bool   $toJson   [optional] Whether to get as a json array.
      *
      * @return mixed
      */
-    protected function __getAsArrayPropertyValue(array $propertyTypes, string $property, bool $toJson): mixed
+    protected function __getAsArrayPropertyValue(array $castings, string $property, bool $toJson): mixed
     {
         $value = $this->__get($property);
 

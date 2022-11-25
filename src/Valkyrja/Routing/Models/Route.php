@@ -29,6 +29,13 @@ use Valkyrja\Support\Type\Str;
 class Route extends Dispatch implements Contract
 {
     /**
+     * @inheritDoc
+     */
+    protected static array $castings = [
+        'parameters' => [ModelCastType::object, [Parameter::class]],
+    ];
+
+    /**
      * The path for this route.
      *
      * @var string|null
@@ -100,13 +107,6 @@ class Route extends Dispatch implements Contract
      * @var bool
      */
     public bool $redirect = false;
-
-    /**
-     * @inheritDoc
-     */
-    protected static array $castings = [
-        'parameters' => [ModelCastType::object, [Parameter::class]],
-    ];
 
     /**
      * @inheritDoc

@@ -27,6 +27,11 @@ use function Valkyrja\env;
 abstract class Config extends Model implements ArrayAccess
 {
     /**
+     * @inheritDoc
+     */
+    protected static bool $setOriginalPropertiesFromArray = false;
+
+    /**
      * The model properties env keys.
      *
      * @var string[]

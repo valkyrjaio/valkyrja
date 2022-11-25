@@ -25,6 +25,11 @@ use Valkyrja\Support\Model\Classes\Model;
 class Dispatch extends Model implements Contract
 {
     /**
+     * @inheritDoc
+     */
+    protected static bool $setOriginalPropertiesFromArray = false;
+
+    /**
      * The id.
      *
      * @var string|null
