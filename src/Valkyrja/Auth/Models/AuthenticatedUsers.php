@@ -28,7 +28,7 @@ class AuthenticatedUsers extends Model implements Contract
     /**
      * @inheritDoc
      */
-    protected static array $propertyCastings = [
+    protected static array $castings = [
         'users' => [CastType::model, [\Valkyrja\Auth\Entities\User::class]],
     ];
 

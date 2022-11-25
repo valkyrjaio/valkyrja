@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Models;
 
 use Valkyrja\ORM\Entity;
+use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Support\Model\Classes\Model;
-use Valkyrja\Support\Model\Enums\CastType;
+use Valkyrja\Support\Model\Enums\CastType as ModelCastType;
 use Valkyrja\Support\Type\Cls;
 
 /**
@@ -25,8 +26,8 @@ use Valkyrja\Support\Type\Cls;
  */
 class Parameter extends Model
 {
-    protected static array $propertyCastings = [
-        'type' => CastType::class,
+    protected static array $castings = [
+        'type' => [ModelCastType::enum, CastType::class],
     ];
 
     /**

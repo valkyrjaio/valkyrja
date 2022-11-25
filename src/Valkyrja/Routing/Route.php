@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing;
 
 use Valkyrja\Dispatcher\Dispatch;
+use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Models\Parameter;
-use Valkyrja\Support\Model\Enums\CastType;
 
 /**
  * Interface Route.

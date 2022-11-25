@@ -165,11 +165,11 @@ abstract class Entity extends Model implements Contract
         $type = $propertyTypes[$property] ?? null;
 
         // If there is no type specified just return the value
-        if (null === $type) {
+        if ($type === null || $value === null) {
             return $value;
         }
 
-        return match ($type) {
+        return match ($this->__getTypeToCheck($type)) {
             CastType::object => ! is_string($value) ? serialize($value) : $value,
             CastType::array  => ! is_string($value) ? Arr::toString($value) : $value,
             CastType::json   => ! is_string($value) ? Obj::toString($value) : $value,
@@ -177,7 +177,9 @@ abstract class Entity extends Model implements Contract
             CastType::int    => (int) $value,
             CastType::float  => (float) $value,
             CastType::bool   => (bool) $value,
-            default          => ($value instanceof ModelContract) ? $value->__toString() : $value,
+            CastType::model  => ($value instanceof ModelContract) ? $value->__toString() : $value,
+            // By this point enums should have been taken care of in __getAsArrayPropertyValue()
+            CastType::enum   => $value,
         };
     }
 

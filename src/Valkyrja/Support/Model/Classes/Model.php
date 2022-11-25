@@ -15,7 +15,9 @@ namespace Valkyrja\Support\Model\Classes;
 
 use BackedEnum;
 use JsonException;
+use JsonSerializable;
 use UnitEnum;
+use Valkyrja\Support\Enum\JsonSerializableEnum;
 use Valkyrja\Support\Model\Enums\CastType;
 use Valkyrja\Support\Model\Model as Contract;
 use Valkyrja\Support\Type\Arr;
@@ -42,31 +44,31 @@ abstract class Model implements Contract
      * <code>
      *      [
      *          // An property to be json_decoded to an array
-     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::array,
+     *          'property_name' => CastType::array,
      *          // An property to be unserialized to an object
-     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::object,
+     *          'property_name' => CastType::object,
      *          // An property to be json_decoded to an object
-     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::json,
+     *          'property_name' => CastType::json,
      *          // An property to be cast to an string
-     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::string,
+     *          'property_name' => CastType::string,
      *          // An property to be cast to an int
-     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::int,
+     *          'property_name' => CastType::int,
      *          // An property to be cast to an float
-     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::float,
+     *          'property_name' => CastType::float,
      *          // An property to be cast to an bool
-     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::bool,
+     *          'property_name' => CastType::bool,
      *          // An property to be cast to an enum
-     *          'property_name' => Enum::class,
+     *          'property_name' => [CastType::enum, Enum::class],
      *          // An property to be cast to a model
-     *          'property_name' => Model::class,
+     *          'property_name' => [CastType::model, Model::class],
      *          // An property to be cast to an array of models
-     *          'property_name' => [Model::class],
+     *          'property_name' => [CastType::model, [Model::class]],
      *      ]
      * </code>
      *
-     * @var array<string, string|string[]>
+     * @return array<string, CastType|array<CastType, string|string[]>>
      */
-    protected static array $propertyCastings = [];
+    protected static array $castings = [];
 
     /**
      * Allowed classes for serialization of object type properties.
@@ -116,7 +118,7 @@ abstract class Model implements Contract
      */
     public static function getCastings(): array
     {
-        return static::$propertyCastings;
+        return static::$castings;
     }
 
     /**
@@ -375,12 +377,12 @@ abstract class Model implements Contract
         // Check if a type was set for this attribute
         $type = $propertyTypes[$property] ?? null;
 
-        // If there is no type specified just return the value
-        if (null === $type) {
+        // If there is no type specified or the value is null just return the value
+        if ($type === null || $value === null) {
             return $value;
         }
 
-        return match ($type) {
+        return match ($this->__getTypeToCheck($type)) {
             CastType::object => is_string($value)
                 ? unserialize(
                     $value,
@@ -395,23 +397,39 @@ abstract class Model implements Contract
             CastType::int    => (int) $value,
             CastType::float  => (float) $value,
             CastType::bool   => (bool) $value,
-            default          => $this->__getModelFromValueType($property, $type, $value),
+            CastType::model  => $this->__getModelFromValueType($property, $type[1], $value),
+            CastType::enum   => $this->__getEnumFromValueType($property, $type[1], $value),
         };
+    }
+
+    /**
+     * Get the type to check. Could be an array for models or enums since the second index will be the enum/model name.
+     *
+     * @param CastType|array $type The type
+     *
+     * @return CastType
+     */
+    protected function __getTypeToCheck(CastType|array $type): CastType
+    {
+        return $type instanceof CastType
+            ? $type
+            : $type[0];
     }
 
     /**
      * Get a model from value given a type not identified prior.
      *
      * @param string       $property The property name
-     * @param string|array $type     The type of the property
+     * @param array|string $type     The type of the property
      * @param mixed        $value    The value
      *
      * @throws JsonException
      *
      * @return mixed
      */
-    protected function __getModelFromValueType(string $property, string|array $type, mixed $value): mixed
+    protected function __getModelFromValueType(string $property, array|string $type, mixed $value): mixed
     {
+        // An array would indicate an array of models
         if (is_array($type)) {
             $type = $type[0];
 
@@ -439,29 +457,16 @@ abstract class Model implements Contract
      */
     protected function __getModelFromValue(string $property, string $type, mixed $value): mixed
     {
-        if ($value instanceof Contract) {
+        if (is_string($value)) {
+            $value = Arr::fromString($value);
+        } elseif ($value instanceof Contract) {
             $value = $value->jsonSerialize();
         } elseif (is_object($value) || is_array($value)) {
             $value = (array) $value;
-        } elseif (is_string($value) && Cls::inherits($type, Contract::class)) {
-            $value = Arr::fromString($value);
         } else {
-            if (! ($value instanceof BackedEnum) && Cls::inherits($type, BackedEnum::class)) {
-                /** @var BackedEnum $type */
-                return $type::tryFrom($value);
-            }
-
-            if (! ($value instanceof UnitEnum) && Cls::inherits($type, UnitEnum::class)) {
-                return unserialize(
-                    $value,
-                    [
-                        'allowed_classes' => $type,
-                    ]
-                );
-            }
-
             // Return the value as is since it does not seem to match what we're expecting if we were to get a model
             // from the value data
+            // Worth wondering how we got here in the first place... This really shouldn't be possible
             return $value;
         }
 
@@ -470,22 +475,82 @@ abstract class Model implements Contract
         }
 
         /** @var static $type */
-        return $type::fromArray((array) $value);
+        return $type::fromArray($value);
+    }
+
+    /**
+     * Get an enum from value given a type not identified prior.
+     *
+     * @param string       $property The property name
+     * @param array|string $type     The type of the property
+     * @param mixed        $value    The value
+     *
+     * @return mixed
+     */
+    protected function __getEnumFromValueType(string $property, array|string $type, mixed $value): mixed
+    {
+        // An array would indicate an array of enums
+        if (is_array($type)) {
+            $type = $type[0];
+
+            return array_map(
+                function (array $data) use ($property, $type) {
+                    return $this->__getEnumFromValue($property, $type, $data);
+                },
+                $value
+            );
+        }
+
+        return $this->__getEnumFromValue($property, $type, $value);
+    }
+
+    /**
+     * Get an enum from value.
+     *
+     * @param string $property The property name
+     * @param string $type     The type of the property
+     * @param mixed  $value    The value
+     *
+     * @return mixed
+     */
+    protected function __getEnumFromValue(string $property, string $type, mixed $value): mixed
+    {
+        // If it's already an enum just send it along the way
+        if ($value instanceof UnitEnum) {
+            return $value;
+        }
+
+        if (Cls::inherits($type, JsonSerializableEnum::class)) {
+            /** @var JsonSerializableEnum $type */
+            return $type::fromJson($value);
+        }
+
+        if (Cls::inherits($type, BackedEnum::class)) {
+            /** @var BackedEnum $type */
+            return $type::tryFrom($value);
+        }
+
+        return unserialize(
+            $value,
+            [
+                'allowed_classes' => $type,
+            ]
+        );
     }
 
     /**
      * Convert the entity to an array or json array.
      *
      * @param bool   $toJson        [optional] Whether to get as a json array
-     * @param bool   $all           [optional] Whether to get all properties
+     * @param bool   $includeHidden [optional] Whether to include hidden properties
      * @param string ...$properties [optional] An array of properties to return
      *
      * @return array
      */
-    protected function __asArray(bool $toJson = false, bool $all = false, string ...$properties): array
+    protected function __asArray(bool $toJson = false, bool $includeHidden = false, string ...$properties): array
     {
         // Get the public properties
-        $allProperties = $all ? get_object_vars($this) : array_merge(Obj::getProperties($this), $this->__exposed);
+        $allProperties = $this->__allProperties($includeHidden);
         $propertyTypes = static::getCastings();
 
         unset($allProperties['__exposed'], $allProperties['__originalProperties']);
@@ -502,6 +567,20 @@ abstract class Model implements Contract
         }
 
         return $allProperties;
+    }
+
+    /**
+     * Get all properties.
+     *
+     * @param bool $includeHidden [optional] Whether to include hidden properties
+     *
+     * @return array
+     */
+    protected function __allProperties(bool $includeHidden = false): array
+    {
+        return $includeHidden
+            ? get_object_vars($this)
+            : array_merge(Obj::getProperties($this), $this->__exposed);
     }
 
     /**
@@ -569,8 +648,8 @@ abstract class Model implements Contract
     {
         $value = $this->__get($property);
 
-        // If this is a json array we're building
-        if ($toJson) {
+        // If this is a json array we're building and the value isn't JsonSerializable
+        if ($toJson && ! ($value instanceof JsonSerializable)) {
             if ($value instanceof BackedEnum) {
                 return $value->value;
             }

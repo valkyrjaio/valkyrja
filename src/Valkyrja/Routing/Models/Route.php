@@ -16,8 +16,8 @@ namespace Valkyrja\Routing\Models;
 use InvalidArgumentException;
 use Valkyrja\Dispatcher\Models\Dispatch;
 use Valkyrja\Http\Constants\RequestMethod;
+use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Route as Contract;
-use Valkyrja\Support\Model\Enums\CastType;
 use Valkyrja\Support\Type\Str;
 
 /**
@@ -103,7 +103,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    protected static array $propertyCastings = [
+    protected static array $castings = [
         'parameters' => [Parameter::class],
     ];
 

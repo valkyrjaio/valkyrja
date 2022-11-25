@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Model\Enums;
+namespace Valkyrja\Routing\Enums;
 
 use Valkyrja\Support\Enum\JsonSerializable;
 use Valkyrja\Support\Enum\JsonSerializableEnum;
@@ -25,13 +25,9 @@ enum CastType: string implements JsonSerializableEnum
 {
     use JsonSerializable;
 
-    case json = 'json';
-    case array = 'array';
-    case object = 'object';
     case string = 'string';
     case int = 'int';
     case float = 'float';
     case bool = 'bool';
-    case model = 'model';
     case enum = 'enum';
 }

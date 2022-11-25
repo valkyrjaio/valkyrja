@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Model;
 
 use JsonSerializable;
+use Valkyrja\Support\Model\Enums\CastType;
 
 /**
  * Interface Model.
@@ -35,29 +36,29 @@ interface Model extends JsonSerializable
      * <code>
      *      [
      *          // An property to be json_decoded to an array
-     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::array,
+     *          'property_name' => CastType::array,
      *          // An property to be unserialized to an object
-     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::object,
+     *          'property_name' => CastType::object,
      *          // An property to be json_decoded to an object
-     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::json,
+     *          'property_name' => CastType::json,
      *          // An property to be cast to an string
-     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::string,
+     *          'property_name' => CastType::string,
      *          // An property to be cast to an int
-     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::int,
+     *          'property_name' => CastType::int,
      *          // An property to be cast to an float
-     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::float,
+     *          'property_name' => CastType::float,
      *          // An property to be cast to an bool
-     *          'property_name' => \Valkyrja\Support\Model\Enums\CastType::bool,
+     *          'property_name' => CastType::bool,
      *          // An property to be cast to an enum
-     *          'property_name' => Enum::class,
+     *          'property_name' => [CastType::enum, Enum::class],
      *          // An property to be cast to a model
-     *          'property_name' => Model::class,
+     *          'property_name' => [CastType::model, Model::class],
      *          // An property to be cast to an array of models
-     *          'property_name' => [Model::class],
+     *          'property_name' => [CastType::model, [Model::class]],
      *      ]
      * </code>
      *
-     * @return array<string, string|string[]>
+     * @return array<string, CastType|array<CastType, string|string[]>>
      */
     public static function getCastings(): array;
 
