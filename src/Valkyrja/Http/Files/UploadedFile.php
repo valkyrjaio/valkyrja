@@ -19,7 +19,7 @@ use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\Exceptions\UploadedFileException;
 use Valkyrja\Http\Stream;
 use Valkyrja\Http\Streams\Stream as HttpStream;
-use Valkyrja\Http\UploadedFile as UploadedFileContract;
+use Valkyrja\Http\UploadedFile as Contract;
 
 use function dirname;
 use function fclose;
@@ -35,15 +35,11 @@ use const UPLOAD_ERR_EXTENSION;
 use const UPLOAD_ERR_OK;
 
 /**
- * Value object representing a file uploaded through an HTTP request.
- * Instances of this interface are considered immutable; all methods that
- * might change state MUST be implemented such that they retain the internal
- * state of the current instance and return an instance that contains the
- * changed state.
+ * Class UploadedFile.
  *
  * @author Melech Mizrachi
  */
-class UploadedFile implements UploadedFileContract
+class UploadedFile implements Contract
 {
     /**
      * Whether the file has been moved yet.
