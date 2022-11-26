@@ -16,6 +16,7 @@ namespace Valkyrja\Event\Config;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Support\Model\Enums\CastType;
 
 /**
  * Class Config.
@@ -36,6 +37,13 @@ class Config extends Model
     ];
 
     /**
+     * @inheritDoc
+     */
+    protected static array $castings = [
+        CKP::CACHE => [CastType::model, Cache::class],
+    ];
+
+    /**
      * The annotated listeners.
      *
      * @var string[]
@@ -52,9 +60,9 @@ class Config extends Model
     /**
      * The cache from a Cacheable::getCacheable().
      *
-     * @var Model|null
+     * @var Cache|null
      */
-    public ?Model $cache = null;
+    public ?Cache $cache = null;
 
     /**
      * The file path.

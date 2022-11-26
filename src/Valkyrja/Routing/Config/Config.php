@@ -16,6 +16,7 @@ namespace Valkyrja\Routing\Config;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Support\Model\Enums\CastType;
 
 /**
  * Class Config.
@@ -37,6 +38,13 @@ class Config extends Model
         CKP::FILE_PATH          => EnvKey::ROUTING_FILE_PATH,
         CKP::CACHE_FILE_PATH    => EnvKey::ROUTING_CACHE_FILE_PATH,
         CKP::USE_CACHE          => EnvKey::ROUTING_USE_CACHE_FILE,
+    ];
+
+    /**
+     * @inheritDoc
+     */
+    protected static array $castings = [
+        CKP::CACHE => [CastType::model, Cache::class],
     ];
 
     /**
@@ -84,9 +92,9 @@ class Config extends Model
     /**
      * The cache from a Cacheable::getCacheable().
      *
-     * @var Model|null
+     * @var Cache|null
      */
-    public ?Model $cache = null;
+    public ?Cache $cache = null;
 
     /**
      * The file path.
