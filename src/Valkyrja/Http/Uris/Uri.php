@@ -63,7 +63,7 @@ class Uri implements Contract
     ) {
         $this->validateScheme($this->scheme);
         $this->path = $this->validatePath($this->path);
-        $this->validateFragment($this->query);
+        $this->validateQuery($this->query);
         $this->validateFragment($this->fragment);
         $this->validatePort($this->port);
     }
