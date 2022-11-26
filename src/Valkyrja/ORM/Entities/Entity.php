@@ -17,7 +17,6 @@ use JsonException;
 use Valkyrja\ORM\Entity as Contract;
 use Valkyrja\Support\Model\Classes\Model;
 use Valkyrja\Support\Model\Enums\CastType;
-use Valkyrja\Support\Model\Model as ModelContract;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
 
@@ -170,16 +169,20 @@ abstract class Entity extends Model implements Contract
         }
 
         return match ($this->__getTypeToCheck($type)) {
-            CastType::object => ! is_string($value) ? serialize($value) : $value,
-            CastType::array  => ! is_string($value) ? Arr::toString($value) : $value,
-            CastType::json   => ! is_string($value) ? Obj::toString($value) : $value,
             CastType::string => (string) $value,
             CastType::int    => (int) $value,
             CastType::float  => (float) $value,
+            CastType::double => (double) $value,
             CastType::bool   => (bool) $value,
-            CastType::model  => ($value instanceof ModelContract) ? $value->__toString() : $value,
+            CastType::model  => ! is_string($value) ? $value->__toString() : $value,
             // By this point enums should have been taken care of in __getAsArrayPropertyValue()
             CastType::enum   => $value,
+            CastType::array  => ! is_string($value) ? Arr::toString($value) : $value,
+            CastType::json   => ! is_string($value) ? Obj::toString($value) : $value,
+            CastType::object => ! is_string($value) ? serialize($value) : $value,
+            CastType::true   => true,
+            CastType::false  => false,
+            CastType::null   => null,
         };
     }
 

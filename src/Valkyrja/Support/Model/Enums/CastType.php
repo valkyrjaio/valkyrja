@@ -25,13 +25,17 @@ enum CastType: string implements JsonSerializableEnum
 {
     use JsonSerializable;
 
-    case json   = 'json';
-    case array  = 'array';
-    case object = 'object';
     case string = 'string';
-    case int    = 'int';
-    case float  = 'float';
-    case bool   = 'bool';
-    case model  = 'model';
-    case enum   = 'enum';
+    case int = 'int';
+    case float = 'float';
+    case double = 'double';
+    case bool = 'bool';
+    case true = 'true';
+    case false = 'false';
+    case null = 'null';
+    case json = 'json';
+    case array = 'array';
+    case object = 'object';
+    case model = 'model';
+    case enum = 'enum';
 }

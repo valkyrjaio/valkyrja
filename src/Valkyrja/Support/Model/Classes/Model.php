@@ -404,6 +404,15 @@ abstract class Model implements Contract
         }
 
         return match ($this->__getTypeToCheck($type)) {
+            CastType::string => (string) $value,
+            CastType::int    => (int) $value,
+            CastType::float  => (float) $value,
+            CastType::double => (double) $value,
+            CastType::bool   => (bool) $value,
+            CastType::model  => $this->__getModelFromValueType($property, $type[1], $value),
+            CastType::enum   => $this->__getEnumFromValueType($property, $type[1], $value),
+            CastType::array  => is_string($value) ? Arr::fromString($value) : (array) $value,
+            CastType::json   => is_string($value) ? Obj::fromString($value) : (object) $value,
             CastType::object => is_string($value)
                 ? unserialize(
                     $value,
@@ -411,15 +420,10 @@ abstract class Model implements Contract
                         'allowed_classes' => $allowedClasses[$property] ?? [],
                     ]
                 )
-                : $value,
-            CastType::array  => is_string($value) ? Arr::fromString($value) : $value,
-            CastType::json   => is_string($value) ? Obj::fromString($value) : $value,
-            CastType::string => (string) $value,
-            CastType::int    => (int) $value,
-            CastType::float  => (float) $value,
-            CastType::bool   => (bool) $value,
-            CastType::model  => $this->__getModelFromValueType($property, $type[1], $value),
-            CastType::enum   => $this->__getEnumFromValueType($property, $type[1], $value),
+                : (object) $value,
+            CastType::true   => true,
+            CastType::false  => false,
+            CastType::null   => null,
         };
     }
 
