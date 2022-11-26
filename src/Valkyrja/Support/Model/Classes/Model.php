@@ -162,9 +162,9 @@ abstract class Model implements Contract
      */
     public function __get(string $name)
     {
-        $methodName = 'get' . Str::toStudlyCase($name);
+        $methodName = self::$cachedValidations[static::class . "get$name"] ??= 'get' . Str::toStudlyCase($name);
 
-        if (method_exists($this, $methodName)) {
+        if (self::$cachedValidations[static::class . "exists$methodName"] ??= method_exists($this, $methodName)) {
             return $this->$methodName();
         }
 
@@ -176,9 +176,9 @@ abstract class Model implements Contract
      */
     public function __set(string $name, mixed $value): void
     {
-        $methodName = 'set' . Str::toStudlyCase($name);
+        $methodName = self::$cachedValidations[static::class . "set$name"] ??= 'set' . Str::toStudlyCase($name);
 
-        if (method_exists($this, $methodName)) {
+        if (self::$cachedValidations[static::class . "exists$methodName"] ??= method_exists($this, $methodName)) {
             $this->$methodName($value);
 
             return;
@@ -192,9 +192,9 @@ abstract class Model implements Contract
      */
     public function __isset(string $name): bool
     {
-        $methodName = 'isset' . Str::toStudlyCase($name);
+        $methodName = self::$cachedValidations[static::class . "isset$name"] ??= 'isset' . Str::toStudlyCase($name);
 
-        if (method_exists($this, $methodName)) {
+        if (self::$cachedValidations[static::class . "exists$methodName"] ??= method_exists($this, $methodName)) {
             return $this->$methodName();
         }
 
