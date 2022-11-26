@@ -15,13 +15,10 @@ namespace Valkyrja\Support\Model\Classes;
 
 use BackedEnum;
 use JsonException;
-use JsonSerializable;
 use UnitEnum;
-use Valkyrja\Support\Enum\JsonSerializableEnum;
 use Valkyrja\Support\Model\Enums\CastType;
 use Valkyrja\Support\Model\Model as Contract;
 use Valkyrja\Support\Type\Arr;
-use Valkyrja\Support\Type\Cls;
 use Valkyrja\Support\Type\Obj;
 use Valkyrja\Support\Type\Str;
 
@@ -545,22 +542,8 @@ abstract class Model implements Contract
             return $value;
         }
 
-        if (Cls::inherits($type, JsonSerializableEnum::class)) {
-            /** @var JsonSerializableEnum $type */
-            return $type::fromJson($value);
-        }
-
-        if (Cls::inherits($type, BackedEnum::class)) {
-            /** @var BackedEnum $type */
-            return $type::tryFrom($value);
-        }
-
-        return unserialize(
-            $value,
-            [
-                'allowed_classes' => $type,
-            ]
-        );
+        /** @var BackedEnum $type */
+        return $type::tryFrom($value);
     }
 
     /**
@@ -690,15 +673,8 @@ abstract class Model implements Contract
     {
         $value = $this->__get($property);
 
-        // If this is a json array we're building and the value isn't JsonSerializable
-        if ($toJson && ! ($value instanceof JsonSerializable)) {
-            if ($value instanceof BackedEnum) {
-                return $value->value;
-            }
-
-            if ($value instanceof UnitEnum) {
-                return serialize($value);
-            }
+        if ($value instanceof BackedEnum) {
+            return $value->value;
         }
 
         return $value;

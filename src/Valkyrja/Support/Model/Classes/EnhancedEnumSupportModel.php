@@ -11,19 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Enums;
+namespace Valkyrja\Support\Model\Classes;
+
+use Valkyrja\Support\Model\Traits\EnhancedEnumSupportModelTrait;
 
 /**
- * Enum CastType.
+ * Class EnhancedEnumSupportModel.
  *
  * @author Melech Mizrachi
  */
-enum CastType: string
+abstract class EnhancedEnumSupportModel extends Model
 {
-    case string = 'string';
-    case int = 'int';
-    case float = 'float';
-    case bool = 'bool';
-    case enum = 'enum';
-    case entity = 'entity';
+    use EnhancedEnumSupportModelTrait;
 }

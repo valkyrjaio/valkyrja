@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Entities;
 
+use BackedEnum;
 use JsonException;
 use Valkyrja\ORM\Entity as Contract;
 use Valkyrja\Support\Model\Classes\Model;
@@ -20,6 +21,7 @@ use Valkyrja\Support\Model\Enums\CastType;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
 
+use function is_int;
 use function is_string;
 
 /**
@@ -175,8 +177,7 @@ abstract class Entity extends Model implements Contract
             CastType::double => (double) $value,
             CastType::bool   => (bool) $value,
             CastType::model  => ! is_string($value) ? $value->__toString() : $value,
-            // By this point enums should have been taken care of in __getAsArrayPropertyValue()
-            CastType::enum   => $value,
+            CastType::enum   => ! is_string($value) && ! is_int($value) ? $this->__getEnumValueForDataStore($value) : $value,
             CastType::array  => ! is_string($value) ? Arr::toString($value) : $value,
             CastType::json   => ! is_string($value) ? Obj::toString($value) : $value,
             CastType::object => ! is_string($value) ? serialize($value) : $value,
@@ -215,5 +216,15 @@ abstract class Entity extends Model implements Contract
         }
 
         return $allProperties;
+    }
+
+    /**
+     * @param BackedEnum $value
+     *
+     * @return string|int
+     */
+    protected function __getEnumValueForDataStore(BackedEnum $value): string|int
+    {
+        return $value->value;
     }
 }

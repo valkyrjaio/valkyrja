@@ -23,7 +23,15 @@ trait JsonSerializable
     /**
      * @inheritDoc
      */
-    public static function fromJson(string|int $value): ?self
+    public static function fromJson(string|int $value): self
+    {
+        return static::from($value);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function tryFromJson(string|int $value): ?self
     {
         return static::tryFrom($value);
     }

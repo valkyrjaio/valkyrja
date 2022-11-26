@@ -13,18 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Model\Enums;
 
-use Valkyrja\Support\Enum\JsonSerializable;
-use Valkyrja\Support\Enum\JsonSerializableEnum;
-
 /**
  * Enum CastType.
  *
  * @author Melech Mizrachi
  */
-enum CastType: string implements JsonSerializableEnum
+enum CastType: string
 {
-    use JsonSerializable;
-
     case string = 'string';
     case int = 'int';
     case float = 'float';

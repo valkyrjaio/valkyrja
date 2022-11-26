@@ -27,9 +27,18 @@ interface JsonSerializableEnum extends JsonSerializable
      *
      * @param string|int $value The value
      *
+     * @return static
+     */
+    public static function fromJson(string|int $value): self;
+
+    /**
+     * Try to create from json.
+     *
+     * @param string|int $value The value
+     *
      * @return static|null
      */
-    public static function fromJson(string|int $value): ?self;
+    public static function tryFromJson(string|int $value): ?self;
 
     /**
      * Json serialize.
