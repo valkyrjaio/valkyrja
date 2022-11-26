@@ -198,8 +198,8 @@ final class ConfigKeyPart
     public const MAILERS                = 'mailers';
     public const MESSENGER              = 'messenger';
     public const MESSENGERS             = 'messengers';
-    public const BROADCASTER            = 'BROADCASTER';
-    public const BROADCASTERS           = 'BROADCASTERS';
+    public const BROADCASTER            = 'broadcaster';
+    public const BROADCASTERS           = 'broadcasters';
     public const COOKIE_PARAMS          = 'cookieParams';
     public const BUNDLE                 = 'bundle';
     public const BUNDLES                = 'bundles';
