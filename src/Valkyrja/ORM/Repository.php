@@ -29,7 +29,7 @@ interface Repository
      *
      * @return static<T>
      */
-    public function find(): static;
+    public function find(): self;
 
     /**
      * Find a single entity given its id.
@@ -38,14 +38,14 @@ interface Repository
      *
      * @return static<T>
      */
-    public function findOne(int|string $id): static;
+    public function findOne(int|string $id): self;
 
     /**
      * Count all the results of given criteria.
      *
      * @return static<T>
      */
-    public function count(): static;
+    public function count(): self;
 
     /**
      * Set columns.
@@ -54,7 +54,7 @@ interface Repository
      *
      * @return static<T>
      */
-    public function columns(array $columns): static;
+    public function columns(array $columns): self;
 
     /**
      * Add a where condition.
@@ -67,21 +67,21 @@ interface Repository
      *
      * @return static<T>
      */
-    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): static;
+    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): self;
 
     /**
      * Start a where clause in parentheses.
      *
      * @return static<T>
      */
-    public function startWhereGroup(): static;
+    public function startWhereGroup(): self;
 
     /**
      * End a where clause in parentheses.
      *
      * @return static<T>
      */
-    public function endWhereGroup(): static;
+    public function endWhereGroup(): self;
 
     /**
      * Add a where type.
@@ -90,7 +90,7 @@ interface Repository
      *
      * @return static<T>
      */
-    public function whereType(WhereType $type = WhereType::AND): static;
+    public function whereType(WhereType $type = WhereType::AND): self;
 
     /**
      * Join with another table.
@@ -111,7 +111,7 @@ interface Repository
         string $operator = null,
         string $type = null,
         bool $isWhere = null
-    ): static;
+    ): self;
 
     /**
      * Set an order by.
@@ -121,7 +121,7 @@ interface Repository
      *
      * @return static<T>
      */
-    public function orderBy(string $column, string $direction = null): static;
+    public function orderBy(string $column, string $direction = null): self;
 
     /**
      * Set limit.
@@ -130,7 +130,7 @@ interface Repository
      *
      * @return static<T>
      */
-    public function limit(int $limit): static;
+    public function limit(int $limit): self;
 
     /**
      * Set offset.
@@ -139,7 +139,7 @@ interface Repository
      *
      * @return static<T>
      */
-    public function offset(int $offset): static;
+    public function offset(int $offset): self;
 
     /**
      * Add relationships to include with the results.
@@ -148,7 +148,7 @@ interface Repository
      *
      * @return static<T>
      */
-    public function withRelationships(array $relationships = null): static;
+    public function withRelationships(array $relationships = null): self;
 
     /**
      * Get results.

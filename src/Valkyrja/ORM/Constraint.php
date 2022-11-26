@@ -25,7 +25,7 @@ interface Constraint
      *
      * @return static
      */
-    public function create(): static;
+    public function create(): self;
 
     /**
      * Rename the constraint.
@@ -34,14 +34,14 @@ interface Constraint
      *
      * @return static
      */
-    public function rename(string $name): static;
+    public function rename(string $name): self;
 
     /**
      * Drop the constraint.
      *
      * @return static
      */
-    public function drop(): static;
+    public function drop(): self;
 
     /**
      * Set the name of the constraint.
@@ -50,7 +50,7 @@ interface Constraint
      *
      * @return static
      */
-    public function setName(string $name): static;
+    public function setName(string $name): self;
 
     /**
      * Add a column to the constraint.
@@ -59,26 +59,26 @@ interface Constraint
      *
      * @return static
      */
-    public function addColumn(string $name): static;
+    public function addColumn(string $name): self;
 
     /**
      * Set this as a primary key constraint.
      *
      * @return static
      */
-    public function isPrimaryKey(): static;
+    public function isPrimaryKey(): self;
 
     /**
      * Do only if the table doesn't already exist.
      *
      * @return static
      */
-    public function ifNotExists(): static;
+    public function ifNotExists(): self;
 
     /**
      * Do only if the table exists.
      *
      * @return static
      */
-    public function ifExists(): static;
+    public function ifExists(): self;
 }

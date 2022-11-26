@@ -90,7 +90,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setItem(object $item = null): static
+    public function setItem(object $item = null): self
     {
         $this->item = $item;
 
@@ -108,7 +108,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setItemKey(string $itemKey): static
+    public function setItemKey(string $itemKey): self
     {
         $this->itemKey = $itemKey;
 
@@ -126,7 +126,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setItems(array $items = null): static
+    public function setItems(array $items = null): self
     {
         $this->items = $items;
 
@@ -144,7 +144,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setItemsKey(string $itemsKey): static
+    public function setItemsKey(string $itemsKey): self
     {
         $this->itemsKey = $itemsKey;
 
@@ -162,7 +162,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setTotal(int $total = null): static
+    public function setTotal(int $total = null): self
     {
         $this->total = $total;
 
@@ -180,7 +180,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setMessages(array $messages = null): static
+    public function setMessages(array $messages = null): self
     {
         $this->messages = $messages;
 
@@ -198,7 +198,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setData(array $data = null): static
+    public function setData(array $data = null): self
     {
         $this->data = $data;
 
@@ -216,7 +216,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setMessage(string $message = null): static
+    public function setMessage(string $message = null): self
     {
         $this->message = $message;
 

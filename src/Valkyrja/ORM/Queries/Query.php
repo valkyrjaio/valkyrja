@@ -71,7 +71,7 @@ class Query implements QueryContract
     /**
      * @inheritDoc
      */
-    public function table(string $table): static
+    public function table(string $table): self
     {
         $this->table = $table;
 
@@ -81,7 +81,7 @@ class Query implements QueryContract
     /**
      * @inheritDoc
      */
-    public function entity(string $entity): static
+    public function entity(string $entity): self
     {
         $this->entity = $entity;
 
@@ -91,7 +91,7 @@ class Query implements QueryContract
     /**
      * @inheritDoc
      */
-    public function prepare(string $query): static
+    public function prepare(string $query): self
     {
         if (null !== $this->entity) {
             $query = Str::replace($query, $this->entity, $this->entity::getTableName());
@@ -109,7 +109,7 @@ class Query implements QueryContract
     /**
      * @inheritDoc
      */
-    public function bindValue(string $property, mixed $value): static
+    public function bindValue(string $property, mixed $value): self
     {
         if (is_array($value)) {
             foreach ($value as $key => $item) {

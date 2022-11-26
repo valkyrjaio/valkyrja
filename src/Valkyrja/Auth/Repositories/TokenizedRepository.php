@@ -49,7 +49,7 @@ abstract class TokenizedRepository extends Repository implements Contract
      *
      * @throws TokenizationException
      */
-    public function setUser(User $user): static
+    public function setUser(User $user): self
     {
         parent::setUser($user);
 
@@ -63,7 +63,7 @@ abstract class TokenizedRepository extends Repository implements Contract
      *
      * @throws TokenizationException
      */
-    public function setUsers(AuthenticatedUsers $users): static
+    public function setUsers(AuthenticatedUsers $users): self
     {
         parent::setUsers($users);
 
@@ -77,7 +77,7 @@ abstract class TokenizedRepository extends Repository implements Contract
      *
      * @throws TokenizationException
      */
-    public function authenticate(User $user): static
+    public function authenticate(User $user): self
     {
         parent::authenticate($user);
 
@@ -89,7 +89,7 @@ abstract class TokenizedRepository extends Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function authenticateFromSession(): static
+    public function authenticateFromSession(): self
     {
         $token = $this->getTokenFromSession();
 
@@ -103,7 +103,7 @@ abstract class TokenizedRepository extends Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function authenticateFromRequest(Request $request): static
+    public function authenticateFromRequest(Request $request): self
     {
         $token = $this->getTokenFromRequest($request);
 
@@ -115,7 +115,7 @@ abstract class TokenizedRepository extends Repository implements Contract
      *
      * @throws TokenizationException
      */
-    public function setSession(): static
+    public function setSession(): self
     {
         $this->session->set($this->user::getTokenSessionId(), $this->getToken());
 
@@ -137,7 +137,7 @@ abstract class TokenizedRepository extends Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function authenticateFromToken(string $token): static
+    public function authenticateFromToken(string $token): self
     {
         $user = $this->getUserFromToken($token);
 
@@ -243,7 +243,7 @@ abstract class TokenizedRepository extends Repository implements Contract
      *
      * @return static
      */
-    protected function storeToken(string $token = null): static
+    protected function storeToken(string $token = null): self
     {
         $this->session->set($this->user::getTokenSessionId(), $token ?? $this->getToken());
 

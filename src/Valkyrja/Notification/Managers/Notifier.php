@@ -79,7 +79,7 @@ class Notifier implements Contract
     /**
      * @inheritDoc
      */
-    public function addMailRecipient(string $email, string $name = ''): static
+    public function addMailRecipient(string $email, string $name = ''): self
     {
         $this->mailRecipients[] = [
             'email' => $email,
@@ -92,7 +92,7 @@ class Notifier implements Contract
     /**
      * @inheritDoc
      */
-    public function addSmsRecipient(string $phoneNumber): static
+    public function addSmsRecipient(string $phoneNumber): self
     {
         $this->smsRecipients[] = [
             'to' => $phoneNumber,
@@ -104,7 +104,7 @@ class Notifier implements Contract
     /**
      * @inheritDoc
      */
-    public function addBroadcastEvent(string $event): static
+    public function addBroadcastEvent(string $event): self
     {
         $this->broadcastEvents[] = [
             'event' => $event,
@@ -116,7 +116,7 @@ class Notifier implements Contract
     /**
      * @inheritDoc
      */
-    public function addUserRecipient(NotifiableUser $user): static
+    public function addUserRecipient(NotifiableUser $user): self
     {
         $this->addSmsUserRecipient($user);
         $this->addMailUserRecipient($user);

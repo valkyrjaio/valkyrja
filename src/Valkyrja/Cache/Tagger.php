@@ -28,7 +28,7 @@ interface Tagger
      *
      * @return static
      */
-    public static function make(Adapter $store, string ...$tags): static;
+    public static function make(Adapter $store, string ...$tags): self;
 
     /**
      * Determine if an item exists in the cache.
@@ -143,7 +143,7 @@ interface Tagger
      *
      * @return static
      */
-    public function tag(string $key): static;
+    public function tag(string $key): self;
 
     /**
      * Untag a key.
@@ -152,7 +152,7 @@ interface Tagger
      *
      * @return static
      */
-    public function untag(string $key): static;
+    public function untag(string $key): self;
 
     /**
      * Tag many keys.
@@ -161,7 +161,7 @@ interface Tagger
      *
      * @return static
      */
-    public function tagMany(string ...$keys): static;
+    public function tagMany(string ...$keys): self;
 
     /**
      * Untag many keys.
@@ -170,5 +170,5 @@ interface Tagger
      *
      * @return static
      */
-    public function untagMany(string ...$keys): static;
+    public function untagMany(string ...$keys): self;
 }

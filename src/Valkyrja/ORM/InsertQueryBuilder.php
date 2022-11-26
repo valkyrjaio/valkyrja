@@ -39,7 +39,7 @@ interface InsertQueryBuilder extends BaseQueryBuilder
      *
      * @return static
      */
-    public function set(string $column, mixed $value = null): static;
+    public function set(string $column, mixed $value = null): self;
 
     /**
      * Join with another table.
@@ -60,5 +60,5 @@ interface InsertQueryBuilder extends BaseQueryBuilder
         string $operator = null,
         string $type = null,
         bool $isWhere = null
-    ): static;
+    ): self;
 }

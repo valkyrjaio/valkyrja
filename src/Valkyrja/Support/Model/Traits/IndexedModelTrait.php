@@ -65,7 +65,7 @@ trait IndexedModelTrait
     /**
      * @inheritDoc
      */
-    public static function fromIndexedArray(array $properties): static
+    public static function fromIndexedArray(array $properties): self
     {
         return static::fromArray(static::getMappedArrayFromIndexedArray($properties));
     }
@@ -85,7 +85,7 @@ trait IndexedModelTrait
      *
      * @throws JsonException
      */
-    public function withIndexedProperties(array $properties): static
+    public function withIndexedProperties(array $properties): self
     {
         return $this->withProperties(static::getMappedArrayFromIndexedArray($properties));
     }

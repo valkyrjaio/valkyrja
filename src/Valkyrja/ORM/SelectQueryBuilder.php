@@ -38,7 +38,7 @@ interface SelectQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function columns(array $columns = null): static;
+    public function columns(array $columns = null): self;
 
     /**
      * Join with another table.
@@ -59,7 +59,7 @@ interface SelectQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
         string $operator = null,
         string $type = null,
         bool $isWhere = null
-    ): static;
+    ): self;
 
     /**
      * Add an groupBy by to the query statement.
@@ -76,7 +76,7 @@ interface SelectQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function groupBy(string $column): static;
+    public function groupBy(string $column): self;
 
     /**
      * Add an order by to the query statement.
@@ -94,7 +94,7 @@ interface SelectQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function orderBy(string $column, string $type = null): static;
+    public function orderBy(string $column, string $type = null): self;
 
     /**
      * Add an order by ascending to the query statement.
@@ -111,7 +111,7 @@ interface SelectQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function orderByAsc(string $column): static;
+    public function orderByAsc(string $column): self;
 
     /**
      * Add an order by descending to the query statement.
@@ -128,7 +128,7 @@ interface SelectQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function orderByDesc(string $column): static;
+    public function orderByDesc(string $column): self;
 
     /**
      * Add limit to the query statement.
@@ -145,7 +145,7 @@ interface SelectQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function limit(int $limit): static;
+    public function limit(int $limit): self;
 
     /**
      * Add offset to the query statement.
@@ -162,5 +162,5 @@ interface SelectQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function offset(int $offset): static;
+    public function offset(int $offset): self;
 }

@@ -36,7 +36,7 @@ interface Json extends Model
      *
      * @return static
      */
-    public function setMessage(string $message = null): static;
+    public function setMessage(string $message = null): self;
 
     /**
      * Get the errors.
@@ -52,7 +52,7 @@ interface Json extends Model
      *
      * @return static
      */
-    public function setErrors(array $errors): static;
+    public function setErrors(array $errors): self;
 
     /**
      * Set an error.
@@ -61,7 +61,7 @@ interface Json extends Model
      *
      * @return static
      */
-    public function setError(string $error): static;
+    public function setError(string $error): self;
 
     /**
      * Get the warnings.
@@ -77,7 +77,7 @@ interface Json extends Model
      *
      * @return static
      */
-    public function setWarnings(array $warnings): static;
+    public function setWarnings(array $warnings): self;
 
     /**
      * Set an warning.
@@ -86,7 +86,7 @@ interface Json extends Model
      *
      * @return static
      */
-    public function setWarning(string $warning): static;
+    public function setWarning(string $warning): self;
 
     /**
      * Get the data.
@@ -102,7 +102,7 @@ interface Json extends Model
      *
      * @return static
      */
-    public function setData(array $data = null): static;
+    public function setData(array $data = null): self;
 
     /**
      * Get the status code.
@@ -118,7 +118,7 @@ interface Json extends Model
      *
      * @return static
      */
-    public function setStatusCode(int $statusCode): static;
+    public function setStatusCode(int $statusCode): self;
 
     /**
      * Get the status.
@@ -134,5 +134,5 @@ interface Json extends Model
      *
      * @return static
      */
-    public function setStatus(string $status): static;
+    public function setStatus(string $status): self;
 }

@@ -148,7 +148,7 @@ abstract class Model implements Contract
      *
      * @throws JsonException
      */
-    public static function fromArray(array $properties): static
+    public static function fromArray(array $properties): self
     {
         $model = new static();
 
@@ -216,7 +216,7 @@ abstract class Model implements Contract
      *
      * @throws JsonException
      */
-    public function withProperties(array $properties): static
+    public function withProperties(array $properties): self
     {
         $model = clone $this;
 

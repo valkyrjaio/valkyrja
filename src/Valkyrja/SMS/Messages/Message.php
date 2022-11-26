@@ -61,7 +61,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setTo(string $to): static
+    public function setTo(string $to): self
     {
         $this->to = $to;
 
@@ -79,7 +79,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setFrom(string $from): static
+    public function setFrom(string $from): self
     {
         $this->from = $from;
 
@@ -97,7 +97,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setText(string $text): static
+    public function setText(string $text): self
     {
         $this->text = $text;
 
@@ -115,7 +115,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setIsUnicode(bool $isUnicode = true): static
+    public function setIsUnicode(bool $isUnicode = true): self
     {
         $this->isUnicode = $isUnicode;
 

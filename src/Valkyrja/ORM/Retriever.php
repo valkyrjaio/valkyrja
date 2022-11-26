@@ -34,7 +34,7 @@ interface Retriever extends WhereQueryBuilder
      *
      * @return static
      */
-    public function find(string $entity): static;
+    public function find(string $entity): self;
 
     /**
      * Find a single entity given its id.
@@ -48,7 +48,7 @@ interface Retriever extends WhereQueryBuilder
      *
      * @return static
      */
-    public function findOne(string $entity, int|string $id): static;
+    public function findOne(string $entity, int|string $id): self;
 
     /**
      * Count all the results of given criteria.
@@ -61,7 +61,7 @@ interface Retriever extends WhereQueryBuilder
      *
      * @return static
      */
-    public function count(string $entity): static;
+    public function count(string $entity): self;
 
     /**
      * Set columns.
@@ -70,7 +70,7 @@ interface Retriever extends WhereQueryBuilder
      *
      * @return static
      */
-    public function columns(array $columns): static;
+    public function columns(array $columns): self;
 
     /**
      * Join with another table.
@@ -91,7 +91,7 @@ interface Retriever extends WhereQueryBuilder
         string $operator = null,
         string $type = null,
         bool $isWhere = null
-    ): static;
+    ): self;
 
     /**
      * Set group by.
@@ -100,7 +100,7 @@ interface Retriever extends WhereQueryBuilder
      *
      * @return static
      */
-    public function groupBy(string $column): static;
+    public function groupBy(string $column): self;
 
     /**
      * Set an order by.
@@ -110,7 +110,7 @@ interface Retriever extends WhereQueryBuilder
      *
      * @return static
      */
-    public function orderBy(string $column, string $type = null): static;
+    public function orderBy(string $column, string $type = null): self;
 
     /**
      * Set limit.
@@ -119,7 +119,7 @@ interface Retriever extends WhereQueryBuilder
      *
      * @return static
      */
-    public function limit(int $limit): static;
+    public function limit(int $limit): self;
 
     /**
      * Set offset.
@@ -128,7 +128,7 @@ interface Retriever extends WhereQueryBuilder
      *
      * @return static
      */
-    public function offset(int $offset): static;
+    public function offset(int $offset): self;
 
     /**
      * Get results.

@@ -193,7 +193,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setName(string $name): static
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -217,7 +217,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setRegex(string $regex = null): static
+    public function setRegex(string $regex = null): self
     {
         $this->regex = $regex;
 
@@ -241,7 +241,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setType(CastType $type = null): static
+    public function setType(CastType $type = null): self
     {
         $this->type = $type;
 
@@ -265,7 +265,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setEntity(string $entity = null): static
+    public function setEntity(string $entity = null): self
     {
         if ($entity !== null) {
             Cls::validateInherits($entity, Entity::class);
@@ -293,7 +293,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setEntityColumn(string $entityColumn = null): static
+    public function setEntityColumn(string $entityColumn = null): self
     {
         if ($entityColumn !== null) {
             Cls::validateHasProperty($this->entity, $entityColumn);
@@ -321,7 +321,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setEntityRelationships(array $entityRelationships = null): static
+    public function setEntityRelationships(array $entityRelationships = null): self
     {
         $this->entityRelationships = $entityRelationships;
 
@@ -345,7 +345,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setEnum(string $enum = null): static
+    public function setEnum(string $enum = null): self
     {
         if ($enum !== null) {
             Cls::validateInherits($enum, BackedEnum::class);
@@ -373,7 +373,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setIsOptional(bool $isOptional): static
+    public function setIsOptional(bool $isOptional): self
     {
         $this->isOptional = $isOptional;
 
@@ -397,7 +397,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setShouldCapture(bool $shouldCapture): static
+    public function setShouldCapture(bool $shouldCapture): self
     {
         $this->shouldCapture = $shouldCapture;
 
@@ -419,7 +419,7 @@ class Parameter extends Model
      *
      * @return mixed
      */
-    public function setDefault(mixed $default): static
+    public function setDefault(mixed $default): self
     {
         $this->default = $default;
 

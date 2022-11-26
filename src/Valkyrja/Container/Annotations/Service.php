@@ -57,7 +57,7 @@ class Service extends Dispatch implements Annotation
      *
      * @return static
      */
-    public function setSingleton(bool $singleton = true): static
+    public function setSingleton(bool $singleton = true): self
     {
         $this->singleton = $singleton;
 
@@ -81,7 +81,7 @@ class Service extends Dispatch implements Annotation
      *
      * @return static
      */
-    public function setDefaults(array $defaults = null): static
+    public function setDefaults(array $defaults = null): self
     {
         $this->defaults = $defaults;
 

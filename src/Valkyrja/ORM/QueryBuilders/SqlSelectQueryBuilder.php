@@ -69,7 +69,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function columns(array $columns = null): static
+    public function columns(array $columns = null): self
     {
         $this->columns = $columns ?? ['*'];
 
@@ -79,7 +79,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function groupBy(string $column): static
+    public function groupBy(string $column): self
     {
         $this->groupBy[] = $column;
 
@@ -89,7 +89,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function orderBy(string $column, string $type = null): static
+    public function orderBy(string $column, string $type = null): self
     {
         $this->orderBy[] = $column . ' ' . ((string) $type);
 
@@ -99,7 +99,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function orderByAsc(string $column): static
+    public function orderByAsc(string $column): self
     {
         return $this->orderBy($column, OrderBy::ASC);
     }
@@ -107,7 +107,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function orderByDesc(string $column): static
+    public function orderByDesc(string $column): self
     {
         return $this->orderBy($column, OrderBy::DESC);
     }
@@ -115,7 +115,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function limit(int $limit): static
+    public function limit(int $limit): self
     {
         $this->limit = $limit;
 
@@ -125,7 +125,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function offset(int $offset): static
+    public function offset(int $offset): self
     {
         $this->offset = $offset;
 

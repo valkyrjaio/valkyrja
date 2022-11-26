@@ -114,7 +114,7 @@ class Kernel implements Contract
     /**
      * @inheritDoc
      */
-    public function send(Response $response): static
+    public function send(Response $response): self
     {
         $response->send();
 

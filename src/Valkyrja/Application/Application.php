@@ -86,7 +86,7 @@ interface Application extends ArrayAccess
      *
      * @return static
      */
-    public function withConfig(Config $config): static;
+    public function withConfig(Config $config): self;
 
     /**
      * Get the config.
@@ -122,7 +122,7 @@ interface Application extends ArrayAccess
      *
      * @return static
      */
-    public function setContainer(Container $container): static;
+    public function setContainer(Container $container): self;
 
     /**
      * Get the dispatcher instance.

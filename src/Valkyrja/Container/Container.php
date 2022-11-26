@@ -32,14 +32,14 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return static
      */
-    public function withContext(string $context, string $member = null): static;
+    public function withContext(string $context, string $member = null): self;
 
     /**
      * Get a container instance with no context.
      *
      * @return static
      */
-    public function withoutContext(): static;
+    public function withoutContext(): self;
 
     /**
      * Check whether a given service exists.
@@ -58,7 +58,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return static
      */
-    public function bind(string $serviceId, string $service): static;
+    public function bind(string $serviceId, string $service): self;
 
     /**
      * Bind a service to a closure in the container.
@@ -68,7 +68,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return static
      */
-    public function bindClosure(string $serviceId, Closure $closure): static;
+    public function bindClosure(string $serviceId, Closure $closure): self;
 
     /**
      * Bind a singleton to the container.
@@ -78,7 +78,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return static
      */
-    public function bindSingleton(string $serviceId, string $singleton): static;
+    public function bindSingleton(string $serviceId, string $singleton): self;
 
     /**
      * Set an alias in the container.
@@ -88,7 +88,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return static
      */
-    public function setAlias(string $alias, string $serviceId): static;
+    public function setAlias(string $alias, string $serviceId): self;
 
     /**
      * Set a closure in the container.
@@ -98,7 +98,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return static
      */
-    public function setClosure(string $serviceId, Closure $closure): static;
+    public function setClosure(string $serviceId, Closure $closure): self;
 
     /**
      * Set a singleton in the container.
@@ -108,7 +108,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return static
      */
-    public function setSingleton(string $serviceId, mixed $singleton): static;
+    public function setSingleton(string $serviceId, mixed $singleton): self;
 
     /**
      * Check whether a given service is an alias.

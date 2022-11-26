@@ -36,7 +36,7 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function setChannel(string $channel): static;
+    public function setChannel(string $channel): self;
 
     /**
      * Get the event to broadcast.
@@ -52,7 +52,7 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function setEvent(string $event): static;
+    public function setEvent(string $event): self;
 
     /**
      * Get the data to broadcast.
@@ -68,7 +68,7 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function setData(array $data = null): static;
+    public function setData(array $data = null): self;
 
     /**
      * Get the message to broadcast.
@@ -84,5 +84,5 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function setMessage(string $message): static;
+    public function setMessage(string $message): self;
 }

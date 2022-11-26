@@ -27,12 +27,12 @@ interface JsonResponse extends Response
      *
      * @return static
      */
-    public function withCallback(string $callback): static;
+    public function withCallback(string $callback): self;
 
     /**
      * Without callback.
      *
      * @return static
      */
-    public function withoutCallback(): static;
+    public function withoutCallback(): self;
 }

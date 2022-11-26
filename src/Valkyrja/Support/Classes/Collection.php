@@ -48,7 +48,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function setAll(array $collection): static
+    public function setAll(array $collection): self
     {
         $this->collection = $collection;
 
@@ -130,7 +130,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function set(string $key, $value): static
+    public function set(string $key, $value): self
     {
         $this->collection[$key] = $value;
 
@@ -156,7 +156,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function remove(string $key): static
+    public function remove(string $key): self
     {
         if (! $this->has($key)) {
             return $this;

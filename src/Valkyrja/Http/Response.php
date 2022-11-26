@@ -61,7 +61,7 @@ interface Response extends Message
      *
      * @return static
      */
-    public function withStatus(int $code, string $reasonPhrase = null): static;
+    public function withStatus(int $code, string $reasonPhrase = null): self;
 
     /**
      * Gets the response reason phrase associated with the status code.
@@ -95,7 +95,7 @@ interface Response extends Message
      *
      * @return static
      */
-    public function withCookie(Cookie $cookie): static;
+    public function withCookie(Cookie $cookie): self;
 
     /**
      * Return an instance with the specified cookie appended to the
@@ -113,33 +113,33 @@ interface Response extends Message
      *
      * @return static
      */
-    public function withoutCookie(Cookie $cookie): static;
+    public function withoutCookie(Cookie $cookie): self;
 
     /**
      * Send the response HTTP line header.
      *
      * @return static
      */
-    public function sendHttpLine(): static;
+    public function sendHttpLine(): self;
 
     /**
      * Send the response headers.
      *
      * @return static
      */
-    public function sendHeaders(): static;
+    public function sendHeaders(): self;
 
     /**
      * Send the response body.
      *
      * @return static
      */
-    public function sendBody(): static;
+    public function sendBody(): self;
 
     /**
      * Send the response.
      *
      * @return static
      */
-    public function send(): static;
+    public function send(): self;
 }

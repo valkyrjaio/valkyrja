@@ -35,7 +35,7 @@ interface BaseQueryBuilder
      *
      * @return static
      */
-    public function table(string $table, string $alias = null): static;
+    public function table(string $table, string $alias = null): self;
 
     /**
      * Set the entity to query with.
@@ -49,7 +49,7 @@ interface BaseQueryBuilder
      *
      * @return static
      */
-    public function entity(string $entity, string $alias = null): static;
+    public function entity(string $entity, string $alias = null): self;
 
     /**
      * Get the built query string.

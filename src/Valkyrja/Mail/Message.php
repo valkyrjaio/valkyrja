@@ -44,7 +44,7 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function setFrom(string $email, string $name = ''): static;
+    public function setFrom(string $email, string $name = ''): self;
 
     /**
      * Get the recipients.
@@ -61,7 +61,7 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function addRecipient(string $email, string $name = ''): static;
+    public function addRecipient(string $email, string $name = ''): self;
 
     /**
      * Get the reply to recipients.
@@ -78,7 +78,7 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function addReplyTo(string $email, string $name = ''): static;
+    public function addReplyTo(string $email, string $name = ''): self;
 
     /**
      * Get the copy recipients.
@@ -95,7 +95,7 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function addCopyRecipient(string $email, string $name = ''): static;
+    public function addCopyRecipient(string $email, string $name = ''): self;
 
     /**
      * Get the blind copy recipients.
@@ -112,7 +112,7 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function addBlindCopyRecipient(string $email, string $name = ''): static;
+    public function addBlindCopyRecipient(string $email, string $name = ''): self;
 
     /**
      * Get the attachments.
@@ -129,7 +129,7 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function addAttachment(string $path, string $name = ''): static;
+    public function addAttachment(string $path, string $name = ''): self;
 
     /**
      * Get the subject.
@@ -145,7 +145,7 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function setSubject(string $subject): static;
+    public function setSubject(string $subject): self;
 
     /**
      * Get the body.
@@ -161,7 +161,7 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function setBody(string $body): static;
+    public function setBody(string $body): self;
 
     /**
      * Get whether the message body is html.
@@ -177,7 +177,7 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function setIsHtml(bool $isHtml = true): static;
+    public function setIsHtml(bool $isHtml = true): self;
 
     /**
      * Get the plain body.
@@ -193,5 +193,5 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function setPlainBody(string $plainBody = null): static;
+    public function setPlainBody(string $plainBody = null): self;
 }

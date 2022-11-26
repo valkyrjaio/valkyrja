@@ -34,7 +34,7 @@ trait Set
     /**
      * @inheritDoc
      */
-    public function set(string $column, mixed $value = null): static
+    public function set(string $column, mixed $value = null): self
     {
         $this->values[$column] = $value ?? ":$column";
 

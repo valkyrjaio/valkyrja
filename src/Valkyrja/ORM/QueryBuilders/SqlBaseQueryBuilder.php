@@ -59,7 +59,7 @@ abstract class SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function table(string $table, string $alias = null): static
+    public function table(string $table, string $alias = null): self
     {
         $this->table = $table . ' ' . ((string) $alias);
 
@@ -69,7 +69,7 @@ abstract class SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function entity(string $entity, string $alias = null): static
+    public function entity(string $entity, string $alias = null): self
     {
         $this->entity = $entity;
 

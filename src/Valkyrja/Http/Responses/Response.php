@@ -87,7 +87,7 @@ class Response implements Contract
     /**
      * @inheritDoc
      */
-    public function withStatus(int $code, string $reasonPhrase = null): static
+    public function withStatus(int $code, string $reasonPhrase = null): self
     {
         $new = clone $this;
 
@@ -108,7 +108,7 @@ class Response implements Contract
     /**
      * @inheritDoc
      */
-    public function withCookie(Cookie $cookie): static
+    public function withCookie(Cookie $cookie): self
     {
         return $this->withAddedHeader(Header::SET_COOKIE, (string) $cookie);
     }
@@ -116,7 +116,7 @@ class Response implements Contract
     /**
      * @inheritDoc
      */
-    public function withoutCookie(Cookie $cookie): static
+    public function withoutCookie(Cookie $cookie): self
     {
         $cookie->setValue();
         $cookie->setExpire(0);
@@ -127,7 +127,7 @@ class Response implements Contract
     /**
      * @inheritDoc
      */
-    public function sendHttpLine(): static
+    public function sendHttpLine(): self
     {
         $httpLine = sprintf(
             'HTTP/%s %s %s',
@@ -144,7 +144,7 @@ class Response implements Contract
     /**
      * @inheritDoc
      */
-    public function sendHeaders(): static
+    public function sendHeaders(): self
     {
         foreach ($this->headers as $name => $values) {
             /** @var array $values */
@@ -159,7 +159,7 @@ class Response implements Contract
     /**
      * @inheritDoc
      */
-    public function sendBody(): static
+    public function sendBody(): self
     {
         $stream = $this->stream;
 
@@ -178,7 +178,7 @@ class Response implements Contract
     /**
      * @inheritDoc
      */
-    public function send(): static
+    public function send(): self
     {
         $this->sendHttpLine();
         $this->sendHeaders();

@@ -38,7 +38,7 @@ trait Annotatable
     /**
      * @inheritDoc
      */
-    public function setType(string $type = null): static
+    public function setType(string $type = null): self
     {
         $this->type = $type;
 

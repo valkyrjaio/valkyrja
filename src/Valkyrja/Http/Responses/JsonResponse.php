@@ -73,7 +73,7 @@ class JsonResponse extends Response implements Contract
     /**
      * @inheritDoc
      */
-    public function withCallback(string $callback): static
+    public function withCallback(string $callback): self
     {
         $this->verifyCallback($callback);
         $this->stream->write(sprintf('/**/%s(%s);', $callback, $this->stream->getContents()));
@@ -88,7 +88,7 @@ class JsonResponse extends Response implements Contract
      *
      * @throws JsonException
      */
-    public function withoutCallback(): static
+    public function withoutCallback(): self
     {
         $this->stream->write(json_encode($this->data, JSON_THROW_ON_ERROR | $this->encodingOptions));
         $this->stream->rewind();

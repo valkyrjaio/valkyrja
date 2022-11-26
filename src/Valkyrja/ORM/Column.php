@@ -25,7 +25,7 @@ interface Column
      *
      * @return static
      */
-    public function create(): static;
+    public function create(): self;
 
     /**
      * Rename the column.
@@ -34,14 +34,14 @@ interface Column
      *
      * @return static
      */
-    public function rename(string $name): static;
+    public function rename(string $name): self;
 
     /**
      * Drop the column.
      *
      * @return static
      */
-    public function drop(): static;
+    public function drop(): self;
 
     /**
      * Set the name of the column.
@@ -50,7 +50,7 @@ interface Column
      *
      * @return static
      */
-    public function setName(string $name): static;
+    public function setName(string $name): self;
 
     /**
      * Set the column's type.
@@ -60,7 +60,7 @@ interface Column
      *
      * @return static
      */
-    public function setType(string $type, int $length = null): static;
+    public function setType(string $type, int $length = null): self;
 
     /**
      * Set the default value for this column.
@@ -69,47 +69,47 @@ interface Column
      *
      * @return static
      */
-    public function setDefault(bool|int|string $value = null): static;
+    public function setDefault(bool|int|string $value = null): self;
 
     /**
      * Set this as a non-nullable column.
      *
      * @return static
      */
-    public function isNotNullable(): static;
+    public function isNotNullable(): self;
 
     /**
      * Set this as a primary key column.
      *
      * @return static
      */
-    public function isPrimaryKey(): static;
+    public function isPrimaryKey(): self;
 
     /**
      * Set this as a unique column.
      *
      * @return static
      */
-    public function isUnique(): static;
+    public function isUnique(): self;
 
     /**
      * Set this as an auto incrementing column.
      *
      * @return static
      */
-    public function isAutoIncrementing(): static;
+    public function isAutoIncrementing(): self;
 
     /**
      * Do only if the table doesn't already exist.
      *
      * @return static
      */
-    public function ifNotExists(): static;
+    public function ifNotExists(): self;
 
     /**
      * Do only if the table exists.
      *
      * @return static
      */
-    public function ifExists(): static;
+    public function ifExists(): self;
 }

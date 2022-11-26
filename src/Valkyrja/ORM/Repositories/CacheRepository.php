@@ -108,7 +108,7 @@ class CacheRepository extends Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function findOne(int|string $id): static
+    public function findOne(int|string $id): self
     {
         parent::findOne($id);
 
@@ -120,7 +120,7 @@ class CacheRepository extends Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): static
+    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): self
     {
         if (! ($value instanceof QueryBuilder) && $column === $this->entity::getIdField()) {
             $this->id = $value;

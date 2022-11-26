@@ -28,5 +28,5 @@ interface Service
      *
      * @return static
      */
-    public static function make(Container $container, array $arguments = []): static;
+    public static function make(Container $container, array $arguments = []): self;
 }

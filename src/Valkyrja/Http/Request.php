@@ -105,7 +105,7 @@ interface Request extends SimpleRequest
      *
      * @return static
      */
-    public function withCookieParams(array $cookies): static;
+    public function withCookieParams(array $cookies): self;
 
     /**
      * Retrieve a specific cookie value.
@@ -177,7 +177,7 @@ interface Request extends SimpleRequest
      *
      * @return static
      */
-    public function withQueryParams(array $query): static;
+    public function withQueryParams(array $query): self;
 
     /**
      * Retrieve a specific query param value.
@@ -224,7 +224,7 @@ interface Request extends SimpleRequest
      *
      * @return static
      */
-    public function withUploadedFiles(UploadedFile ...$uploadedFiles): static;
+    public function withUploadedFiles(UploadedFile ...$uploadedFiles): self;
 
     /**
      * Retrieve any parameters provided in the request body.
@@ -283,7 +283,7 @@ interface Request extends SimpleRequest
      *
      * @return static
      */
-    public function withParsedBody(array $data): static;
+    public function withParsedBody(array $data): self;
 
     /**
      * Retrieve a specific body param value.
@@ -416,7 +416,7 @@ interface Request extends SimpleRequest
      *
      * @see getAttributes()
      */
-    public function withAttribute(string $name, mixed $value): static;
+    public function withAttribute(string $name, mixed $value): self;
 
     /**
      * Return an instance that removes the specified derived request attribute.
@@ -432,7 +432,7 @@ interface Request extends SimpleRequest
      *
      * @see getAttributes()
      */
-    public function withoutAttribute(string $name): static;
+    public function withoutAttribute(string $name): self;
 
     /**
      * Is this an AJAX request?

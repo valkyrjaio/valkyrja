@@ -36,7 +36,7 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function setTo(string $to): static;
+    public function setTo(string $to): self;
 
     /**
      * Get the phone number to set as sent from.
@@ -52,7 +52,7 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function setFrom(string $from): static;
+    public function setFrom(string $from): self;
 
     /**
      * Get the text.
@@ -68,7 +68,7 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function setText(string $text): static;
+    public function setText(string $text): self;
 
     /**
      * Get whether the text is unicode.
@@ -84,5 +84,5 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function setIsUnicode(bool $isUnicode = true): static;
+    public function setIsUnicode(bool $isUnicode = true): self;
 }

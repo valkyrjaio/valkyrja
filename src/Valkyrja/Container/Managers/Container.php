@@ -111,7 +111,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function withContext(string $context, string $member = null): static
+    public function withContext(string $context, string $member = null): self
     {
         $contextContainer = clone $this;
 
@@ -125,7 +125,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function withoutContext(): static
+    public function withoutContext(): self
     {
         $contextContainer = clone $this;
 
@@ -153,7 +153,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function bind(string $serviceId, string $service): static
+    public function bind(string $serviceId, string $service): self
     {
         Cls::validateInherits($service, Service::class);
 
@@ -167,7 +167,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function bindClosure(string $serviceId, Closure $closure): static
+    public function bindClosure(string $serviceId, Closure $closure): self
     {
         $serviceId = $this->getServiceIdInternal($serviceId);
 
@@ -179,7 +179,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function bindSingleton(string $serviceId, string $singleton): static
+    public function bindSingleton(string $serviceId, string $singleton): self
     {
         $serviceId = $this->getServiceIdInternal($serviceId);
 
@@ -193,7 +193,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function setAlias(string $alias, string $serviceId): static
+    public function setAlias(string $alias, string $serviceId): self
     {
         $serviceId = $this->getServiceIdInternal($serviceId);
 
@@ -206,7 +206,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function setClosure(string $serviceId, Closure $closure): static
+    public function setClosure(string $serviceId, Closure $closure): self
     {
         $serviceId = $this->getServiceIdInternal($serviceId);
 
@@ -219,7 +219,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function setSingleton(string $serviceId, mixed $singleton): static
+    public function setSingleton(string $serviceId, mixed $singleton): self
     {
         $serviceId = $this->getServiceIdInternal($serviceId);
 

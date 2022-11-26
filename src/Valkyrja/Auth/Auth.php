@@ -125,7 +125,7 @@ interface Auth
      *
      * @return static
      */
-    public function setUser(User $user): static;
+    public function setUser(User $user): self;
 
     /**
      * Get the authenticated users.
@@ -141,7 +141,7 @@ interface Auth
      *
      * @return static
      */
-    public function setUsers(AuthenticatedUsers $users): static;
+    public function setUsers(AuthenticatedUsers $users): self;
 
     /**
      * Authenticate a user with credentials.
@@ -152,7 +152,7 @@ interface Auth
      *
      * @return static
      */
-    public function authenticate(User $user): static;
+    public function authenticate(User $user): self;
 
     /**
      * Authenticate a user from an active session.
@@ -161,7 +161,7 @@ interface Auth
      *
      * @return static
      */
-    public function authenticateFromSession(): static;
+    public function authenticateFromSession(): self;
 
     /**
      * Authenticate a user from a request.
@@ -172,7 +172,7 @@ interface Auth
      *
      * @return static
      */
-    public function authenticateFromRequest(Request $request): static;
+    public function authenticateFromRequest(Request $request): self;
 
     /**
      * Un-authenticate any active users.
@@ -181,21 +181,21 @@ interface Auth
      *
      * @return static
      */
-    public function unAuthenticate(User $user = null): static;
+    public function unAuthenticate(User $user = null): self;
 
     /**
      * Set the authenticated user in the session.
      *
      * @return static
      */
-    public function setSession(): static;
+    public function setSession(): self;
 
     /**
      * Unset the authenticated user from the session.
      *
      * @return static
      */
-    public function unsetSession(): static;
+    public function unsetSession(): self;
 
     /**
      * Register a new user.
@@ -206,7 +206,7 @@ interface Auth
      *
      * @return static
      */
-    public function register(User $user): static;
+    public function register(User $user): self;
 
     /**
      * Forgot password.
@@ -215,7 +215,7 @@ interface Auth
      *
      * @return static
      */
-    public function forgot(User $user): static;
+    public function forgot(User $user): self;
 
     /**
      * Reset a user's password.
@@ -225,7 +225,7 @@ interface Auth
      *
      * @return static
      */
-    public function reset(string $resetToken, string $password): static;
+    public function reset(string $resetToken, string $password): self;
 
     /**
      * Lock a user.
@@ -234,7 +234,7 @@ interface Auth
      *
      * @return static
      */
-    public function lock(LockableUser $user): static;
+    public function lock(LockableUser $user): self;
 
     /**
      * Unlock a user.
@@ -243,7 +243,7 @@ interface Auth
      *
      * @return static
      */
-    public function unlock(LockableUser $user): static;
+    public function unlock(LockableUser $user): self;
 
     /**
      * Confirm the current user's password.
@@ -254,7 +254,7 @@ interface Auth
      *
      * @return static
      */
-    public function confirmPassword(string $password): static;
+    public function confirmPassword(string $password): self;
 
     /**
      * Determine if a re-authentication needs to occur.

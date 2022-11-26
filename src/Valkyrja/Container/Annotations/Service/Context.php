@@ -46,7 +46,7 @@ class Context extends Service
      *
      * @return static
      */
-    public function setService(string $service = null): static
+    public function setService(string $service = null): self
     {
         $this->service = $service;
 

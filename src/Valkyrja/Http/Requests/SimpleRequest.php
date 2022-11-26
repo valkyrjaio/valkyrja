@@ -127,7 +127,7 @@ class SimpleRequest implements SimpleRequestContract
     /**
      * @inheritDoc
      */
-    public function withRequestTarget(string $requestTarget): static
+    public function withRequestTarget(string $requestTarget): self
     {
         $this->validateRequestTarget($requestTarget);
 
@@ -149,7 +149,7 @@ class SimpleRequest implements SimpleRequestContract
     /**
      * @inheritDoc
      */
-    public function withMethod(string $method): static
+    public function withMethod(string $method): self
     {
         $this->validateMethod($method);
 
@@ -171,7 +171,7 @@ class SimpleRequest implements SimpleRequestContract
     /**
      * @inheritDoc
      */
-    public function withUri(Uri $uri, bool $preserveHost = false): static
+    public function withUri(Uri $uri, bool $preserveHost = false): self
     {
         $new = clone $this;
 

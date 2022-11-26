@@ -45,21 +45,21 @@ interface WhereQueryBuilder
      *
      * @return static
      */
-    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): static;
+    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): self;
 
     /**
      * Start a where clause in parentheses.
      *
      * @return static
      */
-    public function startWhereGroup(): static;
+    public function startWhereGroup(): self;
 
     /**
      * End a where clause in parentheses.
      *
      * @return static
      */
-    public function endWhereGroup(): static;
+    public function endWhereGroup(): self;
 
     /**
      * Add a where type.
@@ -68,5 +68,5 @@ interface WhereQueryBuilder
      *
      * @return static
      */
-    public function whereType(WhereType $type = WhereType::AND): static;
+    public function whereType(WhereType $type = WhereType::AND): self;
 }

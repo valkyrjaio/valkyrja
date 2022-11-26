@@ -21,13 +21,9 @@ namespace Valkyrja\Support\Enum;
 trait JsonSerializable
 {
     /**
-     * Create from json.
-     *
-     * @param string|int $value The value
-     *
-     * @return static|null
+     * @inheritDoc
      */
-    public static function fromJson(string|int $value): ?static
+    public static function fromJson(string|int $value): ?self
     {
         return static::tryFrom($value);
     }

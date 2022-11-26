@@ -196,7 +196,7 @@ class Uri implements UriContract
     /**
      * @inheritDoc
      */
-    public function withScheme(string $scheme): static
+    public function withScheme(string $scheme): self
     {
         $scheme = $this->validateScheme($scheme);
 
@@ -210,7 +210,7 @@ class Uri implements UriContract
     /**
      * @inheritDoc
      */
-    public function withUserInfo(string $user, string $password = null): static
+    public function withUserInfo(string $user, string $password = null): self
     {
         $info = $user;
 
@@ -228,7 +228,7 @@ class Uri implements UriContract
     /**
      * @inheritDoc
      */
-    public function withHost(string $host): static
+    public function withHost(string $host): self
     {
         $new = clone $this;
 
@@ -240,7 +240,7 @@ class Uri implements UriContract
     /**
      * @inheritDoc
      */
-    public function withPort(int $port = null): static
+    public function withPort(int $port = null): self
     {
         $this->validatePort($port);
 
@@ -254,7 +254,7 @@ class Uri implements UriContract
     /**
      * @inheritDoc
      */
-    public function withPath(string $path): static
+    public function withPath(string $path): self
     {
         $path = $this->validatePath($path);
 
@@ -268,7 +268,7 @@ class Uri implements UriContract
     /**
      * @inheritDoc
      */
-    public function withQuery(string $query): static
+    public function withQuery(string $query): self
     {
         $query = $this->validateQuery($query);
 
@@ -282,7 +282,7 @@ class Uri implements UriContract
     /**
      * @inheritDoc
      */
-    public function withFragment(string $fragment): static
+    public function withFragment(string $fragment): self
     {
         $fragment = $this->validateFragment($fragment);
 

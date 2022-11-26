@@ -113,7 +113,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function withConfig(Config $config): static
+    public function withConfig(Config $config): self
     {
         self::$config = $config;
 
@@ -210,7 +210,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function setContainer(Container $container): static
+    public function setContainer(Container $container): self
     {
         self::$container = $container;
 

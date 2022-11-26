@@ -40,7 +40,7 @@ interface Kernel extends MiddlewareAware
      *
      * @return static
      */
-    public function send(Response $response): static;
+    public function send(Response $response): self;
 
     /**
      * Terminate the kernel request.

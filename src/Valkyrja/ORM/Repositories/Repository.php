@@ -109,7 +109,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function find(): static
+    public function find(): self
     {
         $this->retriever = $this->driver->createRetriever()->find($this->entity);
         $this->resetRelationships();
@@ -120,7 +120,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function findOne(int|string $id): static
+    public function findOne(int|string $id): self
     {
         $this->retriever = $this->driver->createRetriever()->findOne($this->entity, $id);
         $this->resetRelationships();
@@ -131,7 +131,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function count(): static
+    public function count(): self
     {
         $this->retriever = $this->driver->createRetriever()->count($this->entity);
         $this->resetRelationships();
@@ -142,7 +142,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function columns(array $columns): static
+    public function columns(array $columns): self
     {
         $this->retriever->columns($columns);
 
@@ -152,7 +152,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): static
+    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): self
     {
         $this->retriever->where($column, $operator, $value, $setType);
 
@@ -162,7 +162,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function startWhereGroup(): static
+    public function startWhereGroup(): self
     {
         $this->retriever->startWhereGroup();
 
@@ -172,7 +172,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function endWhereGroup(): static
+    public function endWhereGroup(): self
     {
         $this->retriever->endWhereGroup();
 
@@ -182,7 +182,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function whereType(WhereType $type = WhereType::AND): static
+    public function whereType(WhereType $type = WhereType::AND): self
     {
         $this->retriever->whereType($type);
 
@@ -199,7 +199,7 @@ class Repository implements Contract
         string $operator = null,
         string $type = null,
         bool $isWhere = null
-    ): static {
+    ): self {
         $this->retriever->join($table, $column1, $column2, $operator, $type, $isWhere);
 
         return $this;
@@ -208,7 +208,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function orderBy(string $column, string $direction = null): static
+    public function orderBy(string $column, string $direction = null): self
     {
         $this->retriever->orderBy($column, $direction);
 
@@ -218,7 +218,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function limit(int $limit): static
+    public function limit(int $limit): self
     {
         $this->retriever->limit($limit);
 
@@ -228,7 +228,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function offset(int $offset): static
+    public function offset(int $offset): self
     {
         $this->retriever->offset($offset);
 
@@ -238,7 +238,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function withRelationships(array $relationships = null): static
+    public function withRelationships(array $relationships = null): self
     {
         $this->getRelations  = true;
         $this->relationships = $relationships;

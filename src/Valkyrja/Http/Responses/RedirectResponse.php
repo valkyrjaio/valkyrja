@@ -59,7 +59,7 @@ class RedirectResponse extends Response implements Contract
     /**
      * @inheritDoc
      */
-    public function setUri(string $uri): static
+    public function setUri(string $uri): self
     {
         // Set the uri
         $this->uri = $uri;
@@ -71,7 +71,7 @@ class RedirectResponse extends Response implements Contract
     /**
      * @inheritDoc
      */
-    public function secure(string $path, Request $request): static
+    public function secure(string $path, Request $request): self
     {
         // Set the uri to https with the host and path
         $this->setUri('https://' . $request->getUri()->getHostPort() . $path);
@@ -82,7 +82,7 @@ class RedirectResponse extends Response implements Contract
     /**
      * @inheritDoc
      */
-    public function back(Request $request): static
+    public function back(Request $request): self
     {
         $refererUri = $request->getHeaderLine('Referer');
 

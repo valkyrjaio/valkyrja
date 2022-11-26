@@ -36,7 +36,7 @@ interface JsonData extends Model
      *
      * @return static
      */
-    public function setItem(object $item = null): static;
+    public function setItem(object $item = null): self;
 
     /**
      * Get the item key.
@@ -52,7 +52,7 @@ interface JsonData extends Model
      *
      * @return static
      */
-    public function setItemKey(string $itemKey): static;
+    public function setItemKey(string $itemKey): self;
 
     /**
      * Get the items.
@@ -68,7 +68,7 @@ interface JsonData extends Model
      *
      * @return static
      */
-    public function setItems(array $items = null): static;
+    public function setItems(array $items = null): self;
 
     /**
      * Get the items key.
@@ -84,7 +84,7 @@ interface JsonData extends Model
      *
      * @return static
      */
-    public function setItemsKey(string $itemsKey): static;
+    public function setItemsKey(string $itemsKey): self;
 
     /**
      * Get the total.
@@ -100,7 +100,7 @@ interface JsonData extends Model
      *
      * @return static
      */
-    public function setTotal(int $total = null): static;
+    public function setTotal(int $total = null): self;
 
     /**
      * Get the messages.
@@ -116,7 +116,7 @@ interface JsonData extends Model
      *
      * @return static
      */
-    public function setMessages(array $messages = null): static;
+    public function setMessages(array $messages = null): self;
 
     /**
      * Get the data.
@@ -132,5 +132,5 @@ interface JsonData extends Model
      *
      * @return static
      */
-    public function setData(array $data = null): static;
+    public function setData(array $data = null): self;
 }

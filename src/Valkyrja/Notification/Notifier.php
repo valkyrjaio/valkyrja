@@ -38,7 +38,7 @@ interface Notifier
      *
      * @return static
      */
-    public function addMailRecipient(string $email, string $name = ''): static;
+    public function addMailRecipient(string $email, string $name = ''): self;
 
     /**
      * Add an SMS recipient to send a notification to.
@@ -47,7 +47,7 @@ interface Notifier
      *
      * @return static
      */
-    public function addSmsRecipient(string $phoneNumber): static;
+    public function addSmsRecipient(string $phoneNumber): self;
 
     /**
      * Add a broadcast event to send a notification to.
@@ -56,7 +56,7 @@ interface Notifier
      *
      * @return static
      */
-    public function addBroadcastEvent(string $event): static;
+    public function addBroadcastEvent(string $event): self;
 
     /**
      * Add a User recipient to send a notification to.
@@ -65,7 +65,7 @@ interface Notifier
      *
      * @return static
      */
-    public function addUserRecipient(NotifiableUser $user): static;
+    public function addUserRecipient(NotifiableUser $user): self;
 
     /**
      * Send a notification to recipients.
