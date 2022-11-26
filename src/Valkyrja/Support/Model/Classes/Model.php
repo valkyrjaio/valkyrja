@@ -150,7 +150,7 @@ abstract class Model implements Contract
      */
     public static function fromArray(array $properties): self
     {
-        $model = new static();
+        $model = static::__getNew($properties);
 
         $model->__setProperties($properties, static::$setOriginalPropertiesFromArray);
 
@@ -307,6 +307,18 @@ abstract class Model implements Contract
         foreach ($properties as $property) {
             unset($this->__exposed[$property]);
         }
+    }
+
+    /**
+     * Get a new instance.
+     *
+     * @param array $properties The properties
+     *
+     * @return $this
+     */
+    protected static function __getNew(array $properties): self
+    {
+        return new static();
     }
 
     /**
