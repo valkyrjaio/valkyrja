@@ -141,13 +141,13 @@ interface Model extends JsonSerializable
     public function asArray(string ...$properties): array;
 
     /**
-     * Get model as an array with exposable properties.
+     * Get model as an array with all properties including exposable ones.
      *
      * @param string ...$properties [optional] An array of properties to return
      *
      * @return array
      */
-    public function asArrayWithExposable(string ...$properties): array;
+    public function asExposedArray(string ...$properties): array;
 
     /**
      * Get model as an array including only changed properties.
@@ -155,6 +155,13 @@ interface Model extends JsonSerializable
      * @return array
      */
     public function asChangedArray(): array;
+
+    /**
+     * Get model as an array including only all changed properties including exposable ones.
+     *
+     * @return array
+     */
+    public function asExposedChangedArray(): array;
 
     /**
      * Get an original property value by name.

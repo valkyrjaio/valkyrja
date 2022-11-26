@@ -240,9 +240,9 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
-    public function asArrayWithExposable(string ...$properties): array
+    public function asExposedArray(string ...$properties): array
     {
-        return $this->__asArrayWithExposable(false, ...$properties);
+        return $this->__asExposedArray(false, ...$properties);
     }
 
     /**
@@ -251,6 +251,11 @@ abstract class Model implements Contract
     public function asChangedArray(): array
     {
         return $this->__asChangedArray();
+    }
+
+    public function asExposedChangedArray(): array
+    {
+        return $this->__asExposedChangedArray();
     }
 
     /**
@@ -605,7 +610,7 @@ abstract class Model implements Contract
      *
      * @return array
      */
-    protected function __asArrayWithExposable(bool $toJson = false, string ...$properties): array
+    protected function __asExposedArray(bool $toJson = false, string ...$properties): array
     {
         $this->expose(...static::$exposable);
         $array = $this->__asArray($toJson, false, ...$properties);
@@ -649,6 +654,23 @@ abstract class Model implements Contract
     protected function __asArrayForChangedComparison(bool $toJson = false): array
     {
         return $this->__asArray($toJson);
+    }
+
+    /**
+     * The model as an array to compare with original properties to determine what changed along with exposable
+     * properties.
+     *
+     * @param bool $toJson [optional] Whether to get as a json array.
+     *
+     * @return array
+     */
+    protected function __asExposedChangedArray(bool $toJson = false): array
+    {
+        $this->expose(...static::$exposable);
+        $array = $this->__asChangedArray($toJson);
+        $this->unexpose(...static::$exposable);
+
+        return $array;
     }
 
     /**

@@ -146,6 +146,6 @@ trait IndexedModelTrait
      */
     protected function __asIndexedArrayWithExposable(bool $toJson = false, string ...$properties): array
     {
-        return static::getIndexedArrayFromMappedArray($this->__asArrayWithExposable($toJson, ...$properties));
+        return static::getIndexedArrayFromMappedArray($this->__asExposedArray($toJson, ...$properties));
     }
 }
