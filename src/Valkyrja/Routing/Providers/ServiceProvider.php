@@ -27,6 +27,7 @@ use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Collections\CacheableCollection;
 use Valkyrja\Routing\Collector;
 use Valkyrja\Routing\Matcher;
+use Valkyrja\Routing\Matchers\EntityCapableMatcher;
 use Valkyrja\Routing\RouteAttributes;
 use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Url;
@@ -166,7 +167,8 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Matcher::class,
-            new \Valkyrja\Routing\Matchers\Matcher(
+            new EntityCapableMatcher(
+                $container,
                 $container->getSingleton(Collection::class)
             )
         );

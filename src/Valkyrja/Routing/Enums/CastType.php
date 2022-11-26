@@ -26,8 +26,9 @@ enum CastType: string implements JsonSerializableEnum
     use JsonSerializable;
 
     case string = 'string';
-    case int    = 'int';
-    case float  = 'float';
-    case bool   = 'bool';
-    case enum   = 'enum';
+    case int = 'int';
+    case float = 'float';
+    case bool = 'bool';
+    case enum = 'enum';
+    case entity = 'entity';
 }

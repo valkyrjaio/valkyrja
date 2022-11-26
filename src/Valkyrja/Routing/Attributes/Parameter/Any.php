@@ -15,6 +15,7 @@ namespace Valkyrja\Routing\Attributes\Parameter;
 
 use Attribute;
 use Valkyrja\Routing\Attributes\Parameter;
+use Valkyrja\Routing\Constants\ParameterName;
 use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Enums\CastType;
 
@@ -37,7 +38,7 @@ class Any extends Parameter
         mixed $default = null,
     ) {
         parent::__construct(
-            name               : $name ?? 'any',
+            name               : $name ?? ParameterName::ANY,
             regex              : Regex::ANY,
             type               : $type,
             entity             : $entity,

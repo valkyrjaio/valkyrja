@@ -15,6 +15,7 @@ namespace Valkyrja\Routing\Attributes\Parameter;
 
 use Attribute;
 use Valkyrja\Routing\Attributes\Parameter;
+use Valkyrja\Routing\Constants\ParameterName;
 use Valkyrja\Routing\Constants\Regex;
 
 /**
@@ -35,7 +36,7 @@ class Id extends Parameter
         mixed $default = null,
     ) {
         parent::__construct(
-            name               : $name ?? 'id',
+            name               : $name ?? ParameterName::ID,
             regex              : Regex::ID,
             entity             : $entity,
             entityColumn       : $entityColumn,

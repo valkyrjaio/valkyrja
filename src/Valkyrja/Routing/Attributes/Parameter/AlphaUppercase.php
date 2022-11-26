@@ -15,6 +15,7 @@ namespace Valkyrja\Routing\Attributes\Parameter;
 
 use Attribute;
 use Valkyrja\Routing\Attributes\Parameter;
+use Valkyrja\Routing\Constants\ParameterName;
 use Valkyrja\Routing\Constants\Regex;
 
 /**
@@ -35,7 +36,7 @@ class AlphaUppercase extends Parameter
         mixed $default = null,
     ) {
         parent::__construct(
-            name               : $name ?? 'alphaUppercase',
+            name               : $name ?? ParameterName::ALPHA_UPPERCASE,
             regex              : Regex::ALPHA_UPPERCASE,
             entity             : $entity,
             entityColumn       : $entityColumn,

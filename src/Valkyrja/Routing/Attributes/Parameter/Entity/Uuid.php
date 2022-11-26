@@ -11,36 +11,36 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Attributes\Parameter;
+namespace Valkyrja\Routing\Attributes\Parameter\Entity;
 
 use Attribute;
-use Valkyrja\Routing\Attributes\Parameter;
+use Valkyrja\Routing\Attributes\Parameter\Entity;
 use Valkyrja\Routing\Constants\ParameterName;
 use Valkyrja\Routing\Constants\Regex;
 
 /**
- * Attribute Slug.
+ * Attribute Id.
  *
  * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
-class Slug extends Parameter
+class Uuid extends Entity
 {
     public function __construct(
-        string $name = null,
         string $entity = null,
         string $entityColumn = null,
         array $entityRelationships = null,
+        string $name = null,
         bool $isOptional = null,
         bool $shouldCapture = null,
         mixed $default = null,
     ) {
         parent::__construct(
-            name               : $name ?? ParameterName::SLUG,
-            regex              : Regex::SLUG,
             entity             : $entity,
             entityColumn       : $entityColumn,
             entityRelationships: $entityRelationships,
+            name               : $name ?? ParameterName::UUID,
+            regex              : Regex::UUID,
             isOptional         : $isOptional,
             shouldCapture      : $shouldCapture,
             default            : $default,

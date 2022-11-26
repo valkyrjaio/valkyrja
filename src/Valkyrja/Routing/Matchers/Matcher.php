@@ -17,6 +17,7 @@ use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Matcher as Contract;
+use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Helpers;
 
@@ -130,31 +131,25 @@ class Matcher implements Contract
         $lastKey = array_key_last($matches);
 
         // Iterate through the matches
-        foreach ($matches as $key => $match) {
-            $parameter = $parameters[$key] ?? throw new InvalidRoutePath("No parameter for match key $key");
+        foreach ($matches as $index => $match) {
+            $parameter = $parameters[$index] ?? throw new InvalidRoutePath("No parameter for match key $index");
 
             // If there is no match (middle of regex optional group)
             if (! $match) {
                 // If the optional parameter was at the end, let the action decide the default assuming a default
                 // is not set in the parameter already
-                if ($lastKey === $key && ! $parameter->getDefault()) {
+                if ($lastKey === $index && ! $parameter->getDefault()) {
                     array_pop($matches);
 
                     continue;
                 }
 
                 // Set the value to the parameter default
-                $matches[$key] = $match = $parameter->getDefault();
+                $matches[$index] = $match = $parameter->getDefault();
             }
 
             if ($type = $parameter->getType()) {
-                $matches[$key] = match ($type) {
-                    CastType::string => (string) $match,
-                    CastType::bool   => (bool) $match,
-                    CastType::int    => (int) $match,
-                    CastType::float  => (float) $match,
-                    CastType::enum   => $parameter->getEnum()::from($match),
-                };
+                $matches[$index] = $this->getMatchValueForType($dynamicRoute, $parameter, $type, $index, $match);
             }
         }
 
@@ -162,5 +157,28 @@ class Matcher implements Contract
         $dynamicRoute->setMatches($matches);
 
         return $dynamicRoute;
+    }
+
+    /**
+     * Get a match value for the given cast type.
+     *
+     * @param Route     $route     The route
+     * @param Parameter $parameter The parameter
+     * @param CastType  $castType  The cast type
+     * @param int       $index     The match index
+     * @param mixed     $match     The match value
+     *
+     * @return mixed
+     */
+    protected function getMatchValueForType(Route $route, Parameter $parameter, CastType $castType, int $index, mixed $match): mixed
+    {
+        return match ($castType) {
+            CastType::string => (string) $match,
+            CastType::bool   => (bool) $match,
+            CastType::int    => (int) $match,
+            CastType::float  => (float) $match,
+            CastType::enum   => $parameter->getEnum()::from($match),
+            default          => $match,
+        };
     }
 }

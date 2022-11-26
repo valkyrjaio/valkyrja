@@ -16,28 +16,30 @@ namespace Valkyrja\Routing\Attributes\Parameter;
 use Attribute;
 use Valkyrja\Routing\Attributes\Parameter;
 use Valkyrja\Routing\Constants\ParameterName;
-use Valkyrja\Routing\Constants\Regex;
+use Valkyrja\Routing\Enums\CastType;
 
 /**
- * Attribute Slug.
+ * Attribute Entity.
  *
  * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
-class Slug extends Parameter
+class Entity extends Parameter
 {
     public function __construct(
-        string $name = null,
         string $entity = null,
         string $entityColumn = null,
         array $entityRelationships = null,
+        string $name = null,
+        string $regex = null,
         bool $isOptional = null,
         bool $shouldCapture = null,
         mixed $default = null,
     ) {
         parent::__construct(
-            name               : $name ?? ParameterName::SLUG,
-            regex              : Regex::SLUG,
+            name               : $name ?? ParameterName::ID,
+            regex              : $regex,
+            type               : CastType::entity,
             entity             : $entity,
             entityColumn       : $entityColumn,
             entityRelationships: $entityRelationships,
