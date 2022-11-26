@@ -54,23 +54,39 @@ class RouteAttributes extends Attributes implements Contract
                             ...$this->forClass($class, Parameter::class),
                         ]
                     );
+                    $classAttribute->setMiddleware(
+                        [
+                            ...($classAttribute->getMiddleware() ?? []),
+                            ...array_column($this->forClass($class, Middleware::class), 'name'),
+                        ]
+                    );
 
                     // If the class' members' had attributes
                     if (! empty($memberAttributes)) {
                         // Iterate through all the members' attributes
                         foreach ($memberAttributes as $routeAttribute) {
                             $routeParameters = [];
+                            $routeMiddleware = [];
 
                             if ($property = $routeAttribute->getProperty()) {
                                 $routeParameters = $this->forProperty($class, $property, Parameter::class);
+                                $routeMiddleware = $this->forProperty($class, $property, Middleware::class);
                             } elseif ($method = $routeAttribute->getMethod()) {
                                 $routeParameters = $this->forMethod($class, $method, Parameter::class);
+                                $routeMiddleware = $this->forMethod($class, $method, Middleware::class);
                             }
 
                             $routeAttribute->setParameters(
                                 [
                                     ...$routeAttribute->getParameters(),
                                     ...$routeParameters,
+                                ]
+                            );
+
+                            $routeAttribute->setMiddleware(
+                                [
+                                    ...($routeAttribute->getMiddleware() ?? []),
+                                    ...array_column($routeMiddleware, 'name'),
                                 ]
                             );
 

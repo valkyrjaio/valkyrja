@@ -21,8 +21,11 @@ use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
+use UnitEnum;
 use Valkyrja\Reflection\Reflector as Contract;
+use Valkyrja\Support\Type\Cls;
 
+use function is_callable;
 use function is_string;
 use function spl_object_id;
 
@@ -139,9 +142,24 @@ class Reflector implements Contract
         foreach ($parameters as $parameter) {
             $type = $parameter->getType();
             // We only care for classes
-            if ($type !== null && ! $type->isBuiltin()) {
+            if (
+                // A type does exist for this parameter
+                $type !== null
+                // The type is not a closure
+                && ! ($type instanceof Closure)
+                // The type is not a callable
+                && ! is_callable($type)
+                // The name is valid
+                && ($name = $type->getName())
+                // The class exists
+                && class_exists($name)
+                // It's not built in
+                && ! $type->isBuiltin()
+                // and it isn't an enum
+                && ! Cls::inherits($name, UnitEnum::class)
+            ) {
                 // Set the injectable in the array
-                $dependencies[] = $type->getName();
+                $dependencies[] = $name;
             }
         }
 

@@ -32,7 +32,7 @@ class Route extends Dispatch implements Contract
      * @inheritDoc
      */
     protected static array $castings = [
-        'parameters' => [ModelCastType::object, [Parameter::class]],
+        'parameters' => [ModelCastType::model, [Parameter::class]],
     ];
 
     /**
@@ -241,11 +241,12 @@ class Route extends Dispatch implements Contract
      */
     public function addParameter(
         string $name,
-        string $regex,
+        string $regex = null,
         CastType $type = null,
         string $entity = null,
         string $entityColumn = null,
         array $entityRelationships = null,
+        string $enum = null,
         bool $isOptional = false,
         bool $shouldCapture = true,
         mixed $default = null
@@ -258,6 +259,7 @@ class Route extends Dispatch implements Contract
                 entity             : $entity,
                 entityColumn       : $entityColumn,
                 entityRelationships: $entityRelationships,
+                enum               : $enum,
                 isOptional         : $isOptional,
                 shouldCapture      : $shouldCapture,
                 default            : $default

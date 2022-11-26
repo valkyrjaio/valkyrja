@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Models;
 
+use BackedEnum;
 use Valkyrja\ORM\Entity;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Support\Model\Classes\Model;
@@ -81,6 +82,13 @@ class Parameter extends Model
     public ?array $entityRelationships;
 
     /**
+     * The enum class name.
+     *
+     * @var string|null
+     */
+    public ?string $enum;
+
+    /**
      * Whether this parameter is optional.
      *
      * @var bool
@@ -110,8 +118,10 @@ class Parameter extends Model
      * @param string|null   $entity              [optional] The entity class name
      * @param string|null   $entityColumn        [optional] The entity column
      * @param array|null    $entityRelationships [optional] The entity relationships to get
+     * @param string|null   $enum                [optional] The enum type
      * @param bool|null     $isOptional          [optional] Whether this parameter is optional
      * @param bool|null     $shouldCapture       [optional] Whether this parameter should be captured
+     * @param mixed         $default             [optional] The default value for this parameter
      */
     public function __construct(
         string $name = null,
@@ -120,6 +130,7 @@ class Parameter extends Model
         string $entity = null,
         string $entityColumn = null,
         array $entityRelationships = null,
+        string $enum = null,
         bool $isOptional = null,
         bool $shouldCapture = null,
         mixed $default = null,
@@ -146,6 +157,10 @@ class Parameter extends Model
 
         if ($entityRelationships) {
             $this->setEntityRelationships($entityRelationships);
+        }
+
+        if ($enum) {
+            $this->setEnum($enum);
         }
 
         if ($isOptional) {
@@ -309,6 +324,34 @@ class Parameter extends Model
     public function setEntityRelationships(array $entityRelationships = null): static
     {
         $this->entityRelationships = $entityRelationships;
+
+        return $this;
+    }
+
+    /**
+     * Get the enum class name.
+     *
+     * @return BackedEnum|string|null
+     */
+    public function getEnum(): ?string
+    {
+        return $this->enum;
+    }
+
+    /**
+     * Set the enum class name.
+     *
+     * @param string|null $enum The enum class name
+     *
+     * @return static
+     */
+    public function setEnum(string $enum = null): static
+    {
+        if ($enum !== null) {
+            Cls::validateInherits($enum, BackedEnum::class);
+        }
+
+        $this->enum = $enum;
 
         return $this;
     }

@@ -20,6 +20,8 @@ use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Collection as Contract;
 use Valkyrja\Routing\Constants\Regex;
+use Valkyrja\Routing\Enums\CastType;
+use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Helpers;
 use Valkyrja\Support\Type\Arr;
@@ -80,6 +82,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      *
+     * @throws InvalidRoutePath
      * @throws JsonException
      */
     public function add(Route $route): void
@@ -103,6 +106,8 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public function get(string $path, string $method = null): ?Route
     {
@@ -119,6 +124,8 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public function all(): array
     {
@@ -127,6 +134,8 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public function allFlattened(): array
     {
@@ -135,6 +144,8 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public function getStatic(string $path, string $method = null): ?Route
     {
@@ -151,6 +162,8 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public function allStatic(string $method = null): array
     {
@@ -159,6 +172,8 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public function getDynamic(string $regex, string $method = null): ?Route
     {
@@ -175,6 +190,8 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public function allDynamic(string $method = null): array
     {
@@ -183,6 +200,8 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public function getNamed(string $name): ?Route
     {
@@ -199,6 +218,8 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public function allNamed(): array
     {
@@ -224,6 +245,8 @@ class Collection implements Contract
      *
      * @param Route $route The route
      *
+     * @throws InvalidRoutePath
+     *
      * @return void
      */
     protected function setRouteToRequestMethods(Route $route): void
@@ -238,6 +261,8 @@ class Collection implements Contract
      *
      * @param Route  $route         The route
      * @param string $requestMethod The request method
+     *
+     * @throws InvalidRoutePath
      *
      * @return void
      */
@@ -261,6 +286,8 @@ class Collection implements Contract
      *
      * @param Route $route The route
      *
+     * @throws InvalidRoutePath
+     *
      * @return void
      */
     protected function createRouteRegex(Route $route): void
@@ -270,21 +297,59 @@ class Collection implements Contract
             return;
         }
 
-        $regex = Str::replace($route->getPath(), '/', '\/');
+        // Replace all slashes with \/
+        $regex = Str::replace($route->getPath(), '/', Regex::PATH);
 
         // Iterate through the route's parameters
         foreach ($route->getParameters() as $parameter) {
-            $nameReplacement = "{{$parameter->getName()}}";
+            // Get the parameter name
+            $name = $parameter->getName();
+            // Get whether this parameter is optional
+            $isOptional = $parameter->isOptional();
 
-            // Check if the path doesn't contain the parameter's name
-            if (! Str::contains($regex, $nameReplacement)) {
-                continue;
+            // If the parameter is optional or the name has a ? affixed to it
+            if ($isOptional || Str::contains($regex, $name . '?')) {
+                // Then the parameter is optional
+                $isOptional = true;
+                // Ensure the parameter is set to optional
+                $parameter->setIsOptional(true);
+                // And affix ? to the name so it can properly be replaced by the regex later
+                $name .= '?';
             }
 
-            $paramRegex = (! $parameter->shouldCapture() ? Regex::START_NON_CAPTURE_GROUP : Regex::START_CAPTURE_GROUP)
-                . $parameter->getRegex()
-                . ($parameter->isOptional() ? Regex::END_OPTIONAL_CAPTURE_GROUP : Regex::END_CAPTURE_GROUP);
+            // If no regex is present
+            if (! $parameter->getRegex()) {
+                // And the type isn't enum or an enum wasn't specified
+                if (! ($enum = $parameter->getEnum()) && $parameter->getType() !== CastType::enum) {
+                    throw new InvalidRoutePath("{$route->getPath()} is missing a regex for `$parameter->name`");
+                }
 
+                // Set the regex to the enum cases
+                $parameter->setRegex(implode('|', array_column($enum::cases(), 'value')));
+                // Ensure the type case was set properly
+                $parameter->setType(CastType::enum);
+            }
+
+            // Get the replacement for this parameter's name (something like {name} or {name?}
+            // Prepend \/ if it optional so we can replace the path slash and set it in the
+            // regex below as a non-capture-optional group
+            $nameReplacement = ($isOptional ? Regex::PATH : '') . '{' . $name . '}';
+
+            // Check if the path doesn't contain the parameter's name replacement
+            if (! Str::contains($regex, $nameReplacement)) {
+                throw new InvalidRoutePath("{$route->getPath()} is missing $nameReplacement");
+            }
+
+            // If optional we don't want to capture the / before the value
+            $paramRegex = ($isOptional ? Regex::START_OPTIONAL_CAPTURE_GROUP : '')
+                // Start the actual value's capture group
+                . (! $parameter->shouldCapture() ? Regex::START_NON_CAPTURE_GROUP : Regex::START_CAPTURE_GROUP)
+                // Set the parameter's regex to match the value
+                . $parameter->getRegex()
+                // End the capture group
+                . ($isOptional ? Regex::END_OPTIONAL_CAPTURE_GROUP : Regex::END_CAPTURE_GROUP);
+
+            // Replace the {name} or \/{name?} with the finished regex
             $regex = Str::replace($regex, $nameReplacement, $paramRegex);
         }
 
@@ -315,6 +380,8 @@ class Collection implements Contract
      * @param string      $path   The path
      * @param string|null $method [optional] The request method
      *
+     * @throws JsonException
+     *
      * @return Route|null
      */
     protected function getOfType(array $type, string $path, string $method = null): ?Route
@@ -331,6 +398,8 @@ class Collection implements Contract
      *
      * @param array  $type The type [static|dynamic]
      * @param string $path The path
+     *
+     * @throws JsonException
      *
      * @return Route|null
      */
@@ -387,6 +456,8 @@ class Collection implements Contract
      * @param array       $type   The type [static|dynamic]
      * @param string|null $method [optional] The request method
      *
+     * @throws JsonException
+     *
      * @return array
      */
     protected function allOfType(array $type, string $method = null): array
@@ -403,6 +474,8 @@ class Collection implements Contract
      *
      * @param array $methodsArray
      *
+     * @throws JsonException
+     *
      * @return array
      */
     protected function ensureMethodRoutes(array $methodsArray): array
@@ -418,6 +491,8 @@ class Collection implements Contract
      * Ensure an array is an array of routes.
      *
      * @param array $routesArray The routes array
+     *
+     * @throws JsonException
      *
      * @return array
      */
@@ -436,6 +511,8 @@ class Collection implements Contract
      * Ensure a route, or null, is returned.
      *
      * @param Route|array|string|null $route The route
+     *
+     * @throws JsonException
      *
      * @return Route|null
      */

@@ -126,6 +126,8 @@ class Matcher implements Contract
         $parameters = $dynamicRoute->getParameters();
         // The first match is the path itself
         array_shift($matches);
+        // Get the last key in the array
+        $lastKey = array_key_last($matches);
 
         // Iterate through the matches
         foreach ($matches as $key => $match) {
@@ -133,27 +135,26 @@ class Matcher implements Contract
 
             // If there is no match (middle of regex optional group)
             if (! $match) {
-                // Set the value to the parameter default
-                $matches[$key] = $parameter->getDefault();
-            } elseif ($type = $parameter->getType()) {
-                switch ($type) {
-                    case CastType::string :
-                        $matches[$key] = (string) $match;
+                // If the optional parameter was at the end, let the action decide the default assuming a default
+                // is not set in the parameter already
+                if ($lastKey === $key && ! $parameter->getDefault()) {
+                    array_pop($matches);
 
-                        break;
-                    case CastType::bool :
-                        $matches[$key] = (bool) $match;
-
-                        break;
-                    case CastType::int :
-                        $matches[$key] = (int) $match;
-
-                        break;
-                    case CastType::float :
-                        $matches[$key] = (float) $match;
-
-                        break;
+                    continue;
                 }
+
+                // Set the value to the parameter default
+                $matches[$key] = $match = $parameter->getDefault();
+            }
+
+            if ($type = $parameter->getType()) {
+                $matches[$key] = match ($type) {
+                    CastType::string => (string) $match,
+                    CastType::bool   => (bool) $match,
+                    CastType::int    => (int) $match,
+                    CastType::float  => (float) $match,
+                    CastType::enum   => $parameter->getEnum()::from($match),
+                };
             }
         }
 

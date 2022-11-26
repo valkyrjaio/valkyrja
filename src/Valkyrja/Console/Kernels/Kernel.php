@@ -77,12 +77,12 @@ class Kernel implements Contract
         try {
             $exitCode = $this->console->dispatch($input, $output);
         } catch (Throwable $exception) {
+            // Log the error
+            $this->logException($exception);
+
             // Show the exception
             // TODO: Implement
             dd($exception);
-
-            // Log the error
-            $this->logException($exception);
 
             $exitCode = ExitCode::FAILURE;
         }
@@ -136,6 +136,6 @@ class Kernel implements Contract
         /** @var Logger $logger */
         $logger = $this->container->getSingleton(Logger::class);
 
-        $logger->error((string) $exception);
+        $logger->exception($exception, 'Kernel Error');
     }
 }
