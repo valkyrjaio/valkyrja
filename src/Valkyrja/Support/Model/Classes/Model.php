@@ -152,7 +152,7 @@ abstract class Model implements Contract
     {
         $model = static::__getNew($properties);
 
-        $model->__setProperties($properties, static::$setOriginalPropertiesFromArray);
+        $model->__setProperties($properties);
 
         return $model;
     }
@@ -182,6 +182,10 @@ abstract class Model implements Contract
             $this->$methodName($value);
 
             return;
+        }
+
+        if (static::$setOriginalPropertiesFromArray) {
+            $this->__originalProperties[$name] ??= $value;
         }
 
         $this->{$name} = $value;
@@ -349,14 +353,13 @@ abstract class Model implements Contract
     /**
      * Set properties from an array of properties.
      *
-     * @param array $properties            The properties to set
-     * @param bool  $setOriginalProperties [optional] Whether to set the original properties
+     * @param array $properties The properties to set
      *
      * @throws JsonException
      *
      * @return void
      */
-    protected function __setProperties(array $properties, bool $setOriginalProperties = false): void
+    protected function __setProperties(array $properties): void
     {
         $castings       = static::getCastings();
         $allowedClasses = static::getCastingsAllowedClasses();
@@ -365,10 +368,6 @@ abstract class Model implements Contract
         // Iterate through the properties
         foreach ($properties as $property => $value) {
             if (self::$cachedValidations[static::class . $property] ??= property_exists($this, $property)) {
-                if ($setOriginalProperties) {
-                    $this->__originalProperties[$property] ??= $value;
-                }
-
                 // Set the property
                 $this->__set(
                     $property,
