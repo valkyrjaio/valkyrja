@@ -24,7 +24,7 @@ use Valkyrja\Support\Type\Cls;
  *
  * @author Melech Mizrachi
  */
-trait EnhancedEnumSupportModelTrait
+trait EnhancedEnumModelTrait
 {
     /**
      * @inheritDoc

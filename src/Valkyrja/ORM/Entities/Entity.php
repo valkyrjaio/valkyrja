@@ -16,7 +16,7 @@ namespace Valkyrja\ORM\Entities;
 use BackedEnum;
 use JsonException;
 use Valkyrja\ORM\Entity as Contract;
-use Valkyrja\Support\Model\Classes\Model;
+use Valkyrja\Support\Model\Classes\CastableModel;
 use Valkyrja\Support\Model\Enums\CastType;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
@@ -29,7 +29,7 @@ use function is_string;
  *
  * @author Melech Mizrachi
  */
-abstract class Entity extends Model implements Contract
+abstract class Entity extends CastableModel implements Contract
 {
     /**
      * The table name.

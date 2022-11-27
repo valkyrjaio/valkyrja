@@ -17,9 +17,10 @@ use BackedEnum;
 use Valkyrja\ORM\Entity;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Support\Model\Classes\Model;
-use Valkyrja\Support\Model\Enums\CastType as ModelCastType;
 use Valkyrja\Support\Model\Traits\ExposedModelTrait;
 use Valkyrja\Support\Type\Cls;
+
+use function is_string;
 
 /**
  * Class Parameter.
@@ -33,14 +34,7 @@ class Parameter extends Model
     /**
      * @inheritDoc
      */
-    protected static bool $setOriginalPropertiesFromArray = false;
-
-    /**
-     * @inheritDoc
-     */
-    protected static array $castings = [
-        'type' => [ModelCastType::enum, CastType::class],
-    ];
+    protected static bool $shouldSetOriginalProperties = false;
 
     /**
      * Parameter constructor.
@@ -131,12 +125,16 @@ class Parameter extends Model
     /**
      * Set the type.
      *
-     * @param CastType|null $type The type
+     * @param CastType|string|null $type The type
      *
      * @return static
      */
-    public function setType(CastType $type = null): self
+    public function setType(CastType|string $type = null): self
     {
+        if (is_string($type)) {
+            $type = CastType::from($type);
+        }
+
         $this->type = $type;
 
         return $this;

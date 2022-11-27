@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Model\Classes;
 
-use Valkyrja\Support\Model\Traits\EnhancedEnumSupportModelTrait;
+use Valkyrja\Support\Model\Traits\EnhancedEnumModelTrait;
 
 /**
- * Class EnhancedEnumSupportModel.
+ * Class EnhancedEnumModel.
  *
  * @author Melech Mizrachi
  */
-abstract class EnhancedEnumSupportModel extends Model
+abstract class EnhancedEnumModel extends Model
 {
-    use EnhancedEnumSupportModelTrait;
+    use EnhancedEnumModelTrait;
 }

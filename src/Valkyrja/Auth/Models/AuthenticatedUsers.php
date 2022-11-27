@@ -15,7 +15,7 @@ namespace Valkyrja\Auth\Models;
 
 use Valkyrja\Auth\AuthenticatedUsers as Contract;
 use Valkyrja\Auth\User;
-use Valkyrja\Support\Model\Classes\Model;
+use Valkyrja\Support\Model\Classes\CastableModel;
 use Valkyrja\Support\Model\Enums\CastType;
 
 /**
@@ -23,7 +23,7 @@ use Valkyrja\Support\Model\Enums\CastType;
  *
  * @author Melech Mizrachi
  */
-class AuthenticatedUsers extends Model implements Contract
+class AuthenticatedUsers extends CastableModel implements Contract
 {
     /**
      * @inheritDoc

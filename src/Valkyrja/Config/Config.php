@@ -29,7 +29,7 @@ abstract class Config extends Model implements ArrayAccess
     /**
      * @inheritDoc
      */
-    protected static bool $setOriginalPropertiesFromArray = false;
+    protected static bool $shouldSetOriginalProperties = false;
 
     /**
      * The model properties env keys.

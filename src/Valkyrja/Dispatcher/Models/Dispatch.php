@@ -27,7 +27,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    protected static bool $setOriginalPropertiesFromArray = false;
+    protected static bool $shouldSetOriginalProperties = false;
 
     /**
      * The id.

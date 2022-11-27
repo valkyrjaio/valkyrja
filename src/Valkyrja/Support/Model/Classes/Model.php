@@ -16,26 +16,19 @@ namespace Valkyrja\Support\Model\Classes;
 use BackedEnum;
 use Closure;
 use JsonException;
-use UnitEnum;
-use Valkyrja\Support\Model\Enums\CastType;
 use Valkyrja\Support\Model\Model as Contract;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
 use Valkyrja\Support\Type\Str;
 
-use function is_array;
-use function is_int;
-use function is_object;
 use function is_string;
-use function method_exists;
-use function property_exists;
 
 /**
- * Class Model.
+ * Class SimpleModel.
  *
  * @author Melech Mizrachi
  */
-abstract class Model implements Contract
+class Model implements Contract
 {
     /**
      * Cached list of validation logic for models.
@@ -45,50 +38,11 @@ abstract class Model implements Contract
     protected static array $cachedValidations = [];
 
     /**
-     * Property castings used for mass property sets to avoid needing individual setters for simple type casting.
+     * Whether to set the original properties on creation via static::fromArray().
      *
-     * <code>
-     *      [
-     *          // An property to be json_decoded to an array
-     *          'property_name' => CastType::array,
-     *          // An property to be unserialized to an object
-     *          'property_name' => CastType::object,
-     *          // An property to be json_decoded to an object
-     *          'property_name' => CastType::json,
-     *          // An property to be cast to an string
-     *          'property_name' => CastType::string,
-     *          // An property to be cast to an int
-     *          'property_name' => CastType::int,
-     *          // An property to be cast to an float
-     *          'property_name' => CastType::float,
-     *          // An property to be cast to an bool
-     *          'property_name' => CastType::bool,
-     *          // An property to be cast to an enum
-     *          'property_name' => [CastType::enum, Enum::class],
-     *          // An property to be cast to a model
-     *          'property_name' => [CastType::model, Model::class],
-     *          // An property to be cast to an array of models
-     *          'property_name' => [CastType::model, [Model::class]],
-     *      ]
-     * </code>
-     *
-     * @return array<string, CastType|array<CastType, string|string[]>>
+     * @var bool
      */
-    protected static array $castings = [];
-
-    /**
-     * Allowed classes for serialization of object type properties.
-     *
-     * <code>
-     *      [
-     *          // An array of allowed classes for serialization for object types
-     *          'property_name' => [ClassName::class],
-     *      ]
-     * </code>
-     *
-     * @var array<string, string[]>
-     */
-    protected static array $castingsAllowedClasses = [];
+    protected static bool $shouldSetOriginalProperties = true;
 
     /**
      * Properties that are exposable.
@@ -98,11 +52,11 @@ abstract class Model implements Contract
     protected static array $exposable = [];
 
     /**
-     * Whether to set the original properties on creation via static::fromArray().
+     * The original properties.
      *
-     * @var bool
+     * @var array
      */
-    protected static bool $setOriginalPropertiesFromArray = true;
+    protected array $__originalProperties = [];
 
     /**
      * The properties to expose.
@@ -110,13 +64,6 @@ abstract class Model implements Contract
      * @var string[]
      */
     protected array $__exposed = [];
-
-    /**
-     * The original properties.
-     *
-     * @var array
-     */
-    protected array $__originalProperties = [];
 
     /**
      * @inheritDoc
@@ -129,24 +76,6 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
-    public static function getCastings(): array
-    {
-        return static::$castings;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function getCastingsAllowedClasses(): array
-    {
-        return static::$castingsAllowedClasses;
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @throws JsonException
-     */
     public static function fromArray(array $properties): self
     {
         $model = static::__getNew($properties);
@@ -157,11 +86,21 @@ abstract class Model implements Contract
     }
 
     /**
+     * Whether to set the original properties array.
+     *
+     * @return bool
+     */
+    protected static function shouldSetOriginalProperties(): bool
+    {
+        return static::$shouldSetOriginalProperties;
+    }
+
+    /**
      * @inheritDoc
      */
     public function __get(string $name)
     {
-        $methodName = self::$cachedValidations[static::class . "get$name"] ??= 'get' . Str::toStudlyCase($name);
+        $methodName = $this->__getPropertyGetMethodName($name);
 
         if (self::$cachedValidations[static::class . "exists$methodName"] ??= method_exists($this, $methodName)) {
             return $this->$methodName();
@@ -175,16 +114,16 @@ abstract class Model implements Contract
      */
     public function __set(string $name, mixed $value): void
     {
-        $methodName = self::$cachedValidations[static::class . "set$name"] ??= 'set' . Str::toStudlyCase($name);
+        $methodName = $this->__getPropertySetMethodName($name);
+
+        if (static::shouldSetOriginalProperties()) {
+            $this->__originalProperties[$name] ??= $value;
+        }
 
         if (self::$cachedValidations[static::class . "exists$methodName"] ??= method_exists($this, $methodName)) {
             $this->$methodName($value);
 
             return;
-        }
-
-        if (static::$setOriginalPropertiesFromArray) {
-            $this->__originalProperties[$name] ??= $value;
         }
 
         $this->{$name} = $value;
@@ -195,7 +134,7 @@ abstract class Model implements Contract
      */
     public function __isset(string $name): bool
     {
-        $methodName = self::$cachedValidations[static::class . "isset$name"] ??= 'isset' . Str::toStudlyCase($name);
+        $methodName = $this->__getPropertyIssetMethodName($name);
 
         if (self::$cachedValidations[static::class . "exists$methodName"] ??= method_exists($this, $methodName)) {
             return $this->$methodName();
@@ -205,9 +144,19 @@ abstract class Model implements Contract
     }
 
     /**
-     * @inheritDoc
+     * Determine whether the model has a property.
      *
-     * @throws JsonException
+     * @param string $property The property
+     *
+     * @return bool
+     */
+    public function hasProperty(string $property): bool
+    {
+        return self::$cachedValidations[static::class . $property] ??= property_exists($this, $property);
+    }
+
+    /**
+     * @inheritDoc
      */
     public function updateProperties(array $properties): void
     {
@@ -216,8 +165,6 @@ abstract class Model implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function withProperties(array $properties): self
     {
@@ -358,367 +305,66 @@ abstract class Model implements Contract
      *
      * @param array $properties The properties to set
      *
-     * @throws JsonException
-     *
      * @return void
      */
     protected function __setProperties(array $properties): void
     {
-        $castings    = static::getCastings();
-        $hasCastings = self::$cachedValidations[static::class . 'hasCastings'] ??= ! empty($castings);
-
         // Iterate through the properties
         foreach ($properties as $property => $value) {
-            if (self::$cachedValidations[static::class . $property] ??= property_exists($this, $property)) {
+            if ($this->hasProperty($property)) {
                 // Set the property
-                $this->__set(
-                    $property,
-                    $hasCastings
-                        ? $this->__getPropertyValueByType($castings, $property, $value)
-                        : $value
-                );
+                $this->__set($property, $value);
             }
         }
     }
 
     /**
-     * Get a property's value by the type (if type is set).
+     * Get a property's isset method name.
      *
-     * @param array  $castings The castings
-     * @param string $property The property name
-     * @param mixed  $value    The property value
-     *
-     * @throws JsonException
-     *
-     * @return mixed
-     */
-    protected function __getPropertyValueByType(array $castings, string $property, mixed $value): mixed
-    {
-        // If there is no type specified or the value is null just return the value
-        // Castings assignment is set in the if specifically to avoid an assignment
-        // if the value is null, which would be an unneeded assigned variable
-        if ($value === null || ($type = $castings[$property] ?? null) === null) {
-            return $value;
-        }
-
-        return $this->__getPropertyValueByTypeMatch($type, $property, $value);
-    }
-
-    /**
-     * Get a property's value by the type for a given type cast.
-     *
-     * @param CastType|array $type     The cast type
-     * @param string         $property The property name
-     * @param mixed          $value    The property value
-     *
-     * @throws JsonException
-     *
-     * @return mixed
-     */
-    protected function __getPropertyValueByTypeMatch(CastType|array $type, string $property, mixed $value): mixed
-    {
-        return match ($this->__getTypeToCheck($type)) {
-            CastType::string => $this->__getStringFromValueType($property, $value),
-            CastType::int    => $this->__getIntFromValueType($property, $value),
-            CastType::float  => $this->__getFloatFromValueType($property, $value),
-            CastType::double => $this->__getDoubleFromValueType($property, $value),
-            CastType::bool   => $this->__getBoolFromValueType($property, $value),
-            CastType::model  => $this->__getModelFromValueType($property, $type[1], $value),
-            CastType::enum   => $this->__getEnumFromValueType($property, $type[1], $value),
-            CastType::json   => $this->__getJsonFromValueType($property, $value),
-            CastType::array  => $this->__getArrayFromValueType($property, $value),
-            CastType::object => $this->__getObjectFromValueType($property, $value),
-            CastType::true   => $this->__getTrueFromValueType($property, $value),
-            CastType::false  => $this->__getFalseFromValueType($property, $value),
-            CastType::null   => $this->__getNullFromValueType($property, $value),
-        };
-    }
-
-    /**
-     * Get the type to check. Could be an array for models or enums since the second index will be the enum/model name.
-     *
-     * @param CastType|array $type The type
-     *
-     * @return CastType
-     */
-    protected function __getTypeToCheck(CastType|array $type): CastType
-    {
-        return $type instanceof CastType
-            ? $type
-            : $type[0];
-    }
-
-    /**
-     * Get the value for a string type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
+     * @param string $property The property
      *
      * @return string
      */
-    protected function __getStringFromValueType(string $property, mixed $value): string
+    protected function __getPropertyGetMethodName(string $property): string
     {
-        return (string) $value;
+        return $this->__getPropertyTypeMethodName($property, 'get');
     }
 
     /**
-     * Get the value for a int type cast.
+     * Get a property's isset method name.
      *
-     * @param string $property The property name
-     * @param mixed  $value    The value
+     * @param string $property The property
      *
-     * @return int
+     * @return string
      */
-    protected function __getIntFromValueType(string $property, mixed $value): int
+    protected function __getPropertySetMethodName(string $property): string
     {
-        return (int) $value;
+        return $this->__getPropertyTypeMethodName($property, 'set');
     }
 
     /**
-     * Get the value for a float type cast.
+     * Get a property's isset method name.
      *
-     * @param string $property The property name
-     * @param mixed  $value    The value
+     * @param string $property The property
      *
-     * @return float
+     * @return string
      */
-    protected function __getFloatFromValueType(string $property, mixed $value): float
+    protected function __getPropertyIssetMethodName(string $property): string
     {
-        return (float) $value;
+        return $this->__getPropertyTypeMethodName($property, 'isset');
     }
 
     /**
-     * Get the value for a double type cast.
+     * Get a property's isset method name.
      *
-     * @param string $property The property name
-     * @param mixed  $value    The value
+     * @param string $property The property
+     * @param string $type     The type (get|set|isset)
      *
-     * @return float
+     * @return string
      */
-    protected function __getDoubleFromValueType(string $property, mixed $value): float
+    protected function __getPropertyTypeMethodName(string $property, string $type): string
     {
-        return (float) $value;
-    }
-
-    /**
-     * Get the value for a bool type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @return bool
-     */
-    protected function __getBoolFromValueType(string $property, mixed $value): bool
-    {
-        return (bool) $value;
-    }
-
-    /**
-     * Get the value for a true type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @return true
-     */
-    protected function __getTrueFromValueType(string $property, mixed $value): bool
-    {
-        return true;
-    }
-
-    /**
-     * Get the value for a false type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @return false
-     */
-    protected function __getFalseFromValueType(string $property, mixed $value): bool
-    {
-        return false;
-    }
-
-    /**
-     * Get the value for a null type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @return null
-     */
-    protected function __getNullFromValueType(string $property, mixed $value): mixed
-    {
-        return null;
-    }
-
-    /**
-     * Get the value for a json type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @throws JsonException
-     *
-     * @return object
-     */
-    protected function __getJsonFromValueType(string $property, mixed $value): object
-    {
-        return is_string($value)
-            ? Obj::fromString($value)
-            : (object) $value;
-    }
-
-    /**
-     * Get the value for a array type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @throws JsonException
-     *
-     * @return array
-     */
-    protected function __getArrayFromValueType(string $property, mixed $value): array
-    {
-        return is_string($value)
-            ? Arr::fromString($value)
-            : (array) $value;
-    }
-
-    /**
-     * Get the value for a object type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @return object
-     */
-    protected function __getObjectFromValueType(string $property, mixed $value): object
-    {
-        return is_string($value)
-            ? unserialize(
-                $value,
-                [
-                    'allowed_classes' => static::getCastingsAllowedClasses()[$property] ?? [],
-                ]
-            )
-            : (object) $value;
-    }
-
-    /**
-     * Get a model from value given a type not identified prior.
-     *
-     * @param string       $property The property name
-     * @param array|string $type     The type of the property
-     * @param mixed        $value    The value
-     *
-     * @throws JsonException
-     *
-     * @return static|static[]
-     */
-    protected function __getModelFromValueType(string $property, array|string $type, mixed $value): self|array
-    {
-        // An array would indicate an array of models
-        if (is_array($type)) {
-            $type = $type[0];
-
-            return array_map(
-                function (array $data) use ($property, $type) {
-                    return $this->__getModelFromValue($property, $type, $data);
-                },
-                $value
-            );
-        }
-
-        return $this->__getModelFromValue($property, $type, $value);
-    }
-
-    /**
-     * Get a model from value.
-     *
-     * @param string $property The property name
-     * @param string $type     The type of the property
-     * @param mixed  $value    The value
-     *
-     * @throws JsonException
-     *
-     * @return static
-     */
-    protected function __getModelFromValue(string $property, string $type, mixed $value): self
-    {
-        if (is_string($value)) {
-            $value = Arr::fromString($value);
-        } elseif ($value instanceof Contract) {
-            $value = $value->jsonSerialize();
-        } elseif (is_object($value) || is_array($value)) {
-            $value = (array) $value;
-        }
-
-        if (isset($this->$property) && $this->$property instanceof Contract) {
-            $value = array_merge($this->$property->asArray(), $value);
-        }
-
-        /** @var static $type */
-        return $type::fromArray($value);
-    }
-
-    /**
-     * Get an enum from value given a type not identified prior.
-     *
-     * @param string       $property The property name
-     * @param array|string $type     The type of the property
-     * @param mixed        $value    The value
-     *
-     * @return UnitEnum|UnitEnum[]
-     */
-    protected function __getEnumFromValueType(string $property, array|string $type, mixed $value): UnitEnum|array
-    {
-        // An array would indicate an array of enums
-        if (is_array($type)) {
-            $type = $type[0];
-
-            return array_map(
-                function (array $data) use ($property, $type) {
-                    return $this->__getEnumFromValue($property, $type, $data);
-                },
-                $value
-            );
-        }
-
-        return $this->__getEnumFromValue($property, $type, $value);
-    }
-
-    /**
-     * Get an enum from value.
-     *
-     * @param string $property The property name
-     * @param string $type     The type of the property
-     * @param mixed  $value    The value
-     *
-     * @return UnitEnum
-     */
-    protected function __getEnumFromValue(string $property, string $type, mixed $value): UnitEnum
-    {
-        // If it's already an enum just send it along the way
-        if ($value instanceof BackedEnum) {
-            return $value;
-        }
-
-        /** @var BackedEnum $type */
-        return $type::tryFrom($value);
-    }
-
-    /**
-     * Get whether the value is a valid enum value.
-     *
-     * @param mixed $value The value
-     *
-     * @return bool
-     */
-    protected function __isValidEnumValue(mixed $value): bool
-    {
-        return is_string($value) || is_int($value);
+        return self::$cachedValidations[static::class . "$type$property"] ??= $type . Str::toStudlyCase($property);
     }
 
     /**
@@ -817,29 +463,6 @@ abstract class Model implements Contract
     }
 
     /**
-     * Get an array with exposed properties.
-     *
-     * @param Closure|string $callable      The callable
-     * @param string         ...$properties The properties
-     *
-     * @return array
-     */
-    protected function __arrayWithExposed(Closure|string $callable, string ...$properties): array
-    {
-        $this->expose(...static::$exposable);
-
-        if (is_string($callable)) {
-            $array = $this->$callable(...$properties);
-        } else {
-            $array = $callable(...$properties);
-        }
-
-        $this->unexpose(...static::$exposable);
-
-        return $array;
-    }
-
-    /**
      * Get a property's value for asArray.
      *
      * @param string $property The property
@@ -867,5 +490,30 @@ abstract class Model implements Contract
         }
 
         return $value;
+    }
+
+    /**
+     * Get an array with exposed properties.
+     *
+     * @param Closure|string $callable      The callable
+     * @param string         ...$properties The properties
+     *
+     * @return array
+     */
+    protected function __arrayWithExposed(Closure|string $callable, string ...$properties): array
+    {
+        $exposable = static::getExposable();
+
+        $this->expose(...$exposable);
+
+        if (is_string($callable)) {
+            $array = $this->$callable(...$properties);
+        } else {
+            $array = $callable(...$properties);
+        }
+
+        $this->unexpose(...$exposable);
+
+        return $array;
     }
 }

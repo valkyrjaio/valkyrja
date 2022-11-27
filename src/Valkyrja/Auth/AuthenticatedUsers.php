@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth;
 
-use Valkyrja\Support\Model\Model;
+use Valkyrja\Support\Model\CastableModel;
 
 /**
  * Interface AuthenticatedUsers.
@@ -21,7 +21,7 @@ use Valkyrja\Support\Model\Model;
  * @author   Melech Mizrachi
  * @template T
  */
-interface AuthenticatedUsers extends Model
+interface AuthenticatedUsers extends CastableModel
 {
     /**
      * Determine whether there is a current user in the collection.
