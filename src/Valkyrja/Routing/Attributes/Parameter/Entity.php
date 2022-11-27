@@ -32,8 +32,8 @@ class Entity extends Parameter
         array $entityRelationships = null,
         string $name = null,
         string $regex = null,
-        bool $isOptional = null,
-        bool $shouldCapture = null,
+        bool $isOptional = false,
+        bool $shouldCapture = true,
         mixed $default = null,
     ) {
         parent::__construct(

@@ -321,7 +321,7 @@ class Collection implements Contract
             if (! $parameter->getRegex()) {
                 // And the type isn't enum or an enum wasn't specified
                 if (! ($enum = $parameter->getEnum()) && $parameter->getType() !== CastType::enum) {
-                    throw new InvalidRoutePath("{$route->getPath()} is missing a regex for `$parameter->name`");
+                    throw new InvalidRoutePath("{$route->getPath()} is missing a regex for `{$parameter->getName()}`");
                 }
 
                 // Set the regex to the enum cases

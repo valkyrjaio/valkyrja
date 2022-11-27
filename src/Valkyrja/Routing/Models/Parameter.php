@@ -18,6 +18,7 @@ use Valkyrja\ORM\Entity;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Support\Model\Classes\Model;
 use Valkyrja\Support\Model\Enums\CastType as ModelCastType;
+use Valkyrja\Support\Model\Traits\ExposedModelTrait;
 use Valkyrja\Support\Type\Cls;
 
 /**
@@ -27,6 +28,8 @@ use Valkyrja\Support\Type\Cls;
  */
 class Parameter extends Model
 {
+    use ExposedModelTrait;
+
     /**
      * @inheritDoc
      */
@@ -38,76 +41,6 @@ class Parameter extends Model
     protected static array $castings = [
         'type' => [ModelCastType::enum, CastType::class],
     ];
-
-    /**
-     * The name.
-     *
-     * @var string|null
-     */
-    public ?string $name;
-
-    /**
-     * The regex.
-     *
-     * @var string|null
-     */
-    public ?string $regex;
-
-    /**
-     * The parameter type to cast as.
-     *
-     * @var CastType|null
-     */
-    public ?CastType $type;
-
-    /**
-     * The entity class name.
-     *
-     * @var string|null
-     */
-    public ?string $entity;
-
-    /**
-     * The entity column to query on.
-     *
-     * @var string|null
-     */
-    public ?string $entityColumn;
-
-    /**
-     * The entity relationships.
-     *
-     * @var string[]|null
-     */
-    public ?array $entityRelationships;
-
-    /**
-     * The enum class name.
-     *
-     * @var string|null
-     */
-    public ?string $enum;
-
-    /**
-     * Whether this parameter is optional.
-     *
-     * @var bool
-     */
-    public bool $isOptional = false;
-
-    /**
-     * Whether this parameter should be captured and passed to the action.
-     *
-     * @var bool
-     */
-    public bool $shouldCapture = true;
-
-    /**
-     * The default to use if this is an optional parameter.
-     *
-     * @var mixed|null
-     */
-    public mixed $default = null;
 
     /**
      * Parameter constructor.
@@ -124,56 +57,17 @@ class Parameter extends Model
      * @param mixed         $default             [optional] The default value for this parameter
      */
     public function __construct(
-        string $name = null,
-        string $regex = null,
-        CastType $type = null,
-        string $entity = null,
-        string $entityColumn = null,
-        array $entityRelationships = null,
-        string $enum = null,
-        bool $isOptional = null,
-        bool $shouldCapture = null,
-        mixed $default = null,
+        protected string|null $name = null,
+        protected string|null $regex = null,
+        protected CastType|null $type = null,
+        protected string|null $entity = null,
+        protected string|null $entityColumn = null,
+        protected array|null $entityRelationships = null,
+        protected string|null $enum = null,
+        protected bool $isOptional = false,
+        protected bool $shouldCapture = true,
+        protected mixed $default = null,
     ) {
-        if ($name) {
-            $this->setName($name);
-        }
-
-        if ($regex) {
-            $this->setRegex($regex);
-        }
-
-        if ($type) {
-            $this->setType($type);
-        }
-
-        if ($entity) {
-            $this->setEntity($entity);
-        }
-
-        if ($entityColumn) {
-            $this->setEntityColumn($entityColumn);
-        }
-
-        if ($entityRelationships) {
-            $this->setEntityRelationships($entityRelationships);
-        }
-
-        if ($enum) {
-            $this->setEnum($enum);
-        }
-
-        if ($isOptional) {
-            $this->setIsOptional($isOptional);
-        }
-
-        if ($shouldCapture) {
-            $this->setShouldCapture($shouldCapture);
-        }
-
-        if ($default) {
-            $this->setDefault($default);
-        }
     }
 
     /**
@@ -183,7 +77,7 @@ class Parameter extends Model
      */
     public function getName(): ?string
     {
-        return $this->name ?? null;
+        return $this->name;
     }
 
     /**
@@ -207,7 +101,7 @@ class Parameter extends Model
      */
     public function getRegex(): ?string
     {
-        return $this->regex ?? null;
+        return $this->regex;
     }
 
     /**
@@ -231,7 +125,7 @@ class Parameter extends Model
      */
     public function getType(): ?CastType
     {
-        return $this->type ?? null;
+        return $this->type;
     }
 
     /**
@@ -255,7 +149,7 @@ class Parameter extends Model
      */
     public function getEntity(): ?string
     {
-        return $this->entity ?? null;
+        return $this->entity;
     }
 
     /**
@@ -283,7 +177,7 @@ class Parameter extends Model
      */
     public function getEntityColumn(): ?string
     {
-        return $this->entityColumn ?? null;
+        return $this->entityColumn;
     }
 
     /**
@@ -311,7 +205,7 @@ class Parameter extends Model
      */
     public function getEntityRelationships(): ?array
     {
-        return $this->entityRelationships ?? null;
+        return $this->entityRelationships;
     }
 
     /**

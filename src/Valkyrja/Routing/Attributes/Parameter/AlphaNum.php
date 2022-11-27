@@ -31,8 +31,8 @@ class AlphaNum extends Parameter
         string $entity = null,
         string $entityColumn = null,
         array $entityRelationships = null,
-        bool $isOptional = null,
-        bool $shouldCapture = null,
+        bool $isOptional = false,
+        bool $shouldCapture = true,
         mixed $default = null,
     ) {
         parent::__construct(

@@ -52,7 +52,7 @@ class EntityCapableMatcher extends Matcher
         // If this is an entity cast type
         if ($castType === CastType::entity) {
             if (! $entityName = $parameter->getEntity()) {
-                throw new InvalidRouteParameter("Entity is missing for casted entity parameter $parameter->name");
+                throw new InvalidRouteParameter("Entity is missing for casted entity parameter {$parameter->getName()}");
             }
 
             // Try to get the entity
