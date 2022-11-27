@@ -24,7 +24,7 @@ use Valkyrja\Support\Type\Str;
 use function is_string;
 
 /**
- * Class SimpleModel.
+ * Class Model.
  *
  * @author Melech Mizrachi
  */
