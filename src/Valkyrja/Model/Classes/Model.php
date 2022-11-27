@@ -102,7 +102,7 @@ class Model implements Contract
     {
         $methodName = $this->__getPropertyGetMethodName($name);
 
-        if (self::$cachedValidations[static::class . "exists$methodName"] ??= method_exists($this, $methodName)) {
+        if ($this->__doesPropertyTypeMethodExist($methodName)) {
             return $this->$methodName();
         }
 
@@ -120,7 +120,7 @@ class Model implements Contract
             $this->__originalProperties[$name] ??= $value;
         }
 
-        if (self::$cachedValidations[static::class . "exists$methodName"] ??= method_exists($this, $methodName)) {
+        if ($this->__doesPropertyTypeMethodExist($methodName)) {
             $this->$methodName($value);
 
             return;
@@ -136,7 +136,7 @@ class Model implements Contract
     {
         $methodName = $this->__getPropertyIssetMethodName($name);
 
-        if (self::$cachedValidations[static::class . "exists$methodName"] ??= method_exists($this, $methodName)) {
+        if ($this->__doesPropertyTypeMethodExist($methodName)) {
             return $this->$methodName();
         }
 
@@ -365,6 +365,18 @@ class Model implements Contract
     protected function __getPropertyTypeMethodName(string $property, string $type): string
     {
         return self::$cachedValidations[static::class . "$type$property"] ??= $type . Str::toStudlyCase($property);
+    }
+
+    /**
+     * Determine if a property type method exists.
+     *
+     * @param string $methodName The method name
+     *
+     * @return bool
+     */
+    protected function __doesPropertyTypeMethodExist(string $methodName): bool
+    {
+        return self::$cachedValidations[static::class . "exists$methodName"] ??= method_exists($this, $methodName);
     }
 
     /**
