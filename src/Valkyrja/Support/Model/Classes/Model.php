@@ -23,6 +23,7 @@ use Valkyrja\Support\Type\Obj;
 use Valkyrja\Support\Type\Str;
 
 use function is_array;
+use function is_int;
 use function is_object;
 use function is_string;
 use function method_exists;
@@ -400,27 +401,36 @@ abstract class Model implements Contract
             return $value;
         }
 
+        return $this->__getPropertyValueByTypeMatch($type, $property, $value);
+    }
+
+    /**
+     * Get a property's value by the type for a given type cast.
+     *
+     * @param CastType|array $type     The cast type
+     * @param string         $property The property name
+     * @param mixed          $value    The property value
+     *
+     * @throws JsonException
+     *
+     * @return mixed
+     */
+    protected function __getPropertyValueByTypeMatch(CastType|array $type, string $property, mixed $value): mixed
+    {
         return match ($this->__getTypeToCheck($type)) {
-            CastType::string => (string) $value,
-            CastType::int    => (int) $value,
-            CastType::float  => (float) $value,
-            CastType::double => (double) $value,
-            CastType::bool   => (bool) $value,
+            CastType::string => $this->__getStringFromValueType($property, $value),
+            CastType::int    => $this->__getIntFromValueType($property, $value),
+            CastType::float  => $this->__getFloatFromValueType($property, $value),
+            CastType::double => $this->__getDoubleFromValueType($property, $value),
+            CastType::bool   => $this->__getBoolFromValueType($property, $value),
             CastType::model  => $this->__getModelFromValueType($property, $type[1], $value),
             CastType::enum   => $this->__getEnumFromValueType($property, $type[1], $value),
-            CastType::array  => is_string($value) ? Arr::fromString($value) : (array) $value,
-            CastType::json   => is_string($value) ? Obj::fromString($value) : (object) $value,
-            CastType::object => is_string($value)
-                ? unserialize(
-                    $value,
-                    [
-                        'allowed_classes' => static::getCastingsAllowedClasses()[$property] ?? [],
-                    ]
-                )
-                : (object) $value,
-            CastType::true   => true,
-            CastType::false  => false,
-            CastType::null   => null,
+            CastType::json   => $this->__getJsonFromValueType($property, $value),
+            CastType::array  => $this->__getArrayFromValueType($property, $value),
+            CastType::object => $this->__getObjectFromValueType($property, $value),
+            CastType::true   => $this->__getTrueFromValueType($property, $value),
+            CastType::false  => $this->__getFalseFromValueType($property, $value),
+            CastType::null   => $this->__getNullFromValueType($property, $value),
         };
     }
 
@@ -439,6 +449,164 @@ abstract class Model implements Contract
     }
 
     /**
+     * Get the value for a string type cast.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return string
+     */
+    protected function __getStringFromValueType(string $property, mixed $value): string
+    {
+        return (string) $value;
+    }
+
+    /**
+     * Get the value for a int type cast.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return int
+     */
+    protected function __getIntFromValueType(string $property, mixed $value): int
+    {
+        return (int) $value;
+    }
+
+    /**
+     * Get the value for a float type cast.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return float
+     */
+    protected function __getFloatFromValueType(string $property, mixed $value): float
+    {
+        return (float) $value;
+    }
+
+    /**
+     * Get the value for a double type cast.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return double
+     */
+    protected function __getDoubleFromValueType(string $property, mixed $value): float
+    {
+        return (double) $value;
+    }
+
+    /**
+     * Get the value for a bool type cast.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return bool
+     */
+    protected function __getBoolFromValueType(string $property, mixed $value): bool
+    {
+        return (bool) $value;
+    }
+
+    /**
+     * Get the value for a true type cast.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return true
+     */
+    protected function __getTrueFromValueType(string $property, mixed $value): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the value for a false type cast.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return false
+     */
+    protected function __getFalseFromValueType(string $property, mixed $value): bool
+    {
+        return false;
+    }
+
+    /**
+     * Get the value for a null type cast.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return null
+     */
+    protected function __getNullFromValueType(string $property, mixed $value): mixed
+    {
+        return null;
+    }
+
+    /**
+     * Get the value for a json type cast.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @throws JsonException
+     *
+     * @return object
+     */
+    protected function __getJsonFromValueType(string $property, mixed $value): object
+    {
+        return is_string($value)
+            ? Obj::fromString($value)
+            : (object) $value;
+    }
+
+    /**
+     * Get the value for a array type cast.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @throws JsonException
+     *
+     * @return array
+     */
+    protected function __getArrayFromValueType(string $property, mixed $value): array
+    {
+        return is_string($value)
+            ? Arr::fromString($value)
+            : (array) $value;
+    }
+
+    /**
+     * Get the value for a object type cast.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return object
+     */
+    protected function __getObjectFromValueType(string $property, mixed $value): object
+    {
+        return is_string($value)
+            ? unserialize(
+                $value,
+                [
+                    'allowed_classes' => static::getCastingsAllowedClasses()[$property] ?? [],
+                ]
+            )
+            : (object) $value;
+    }
+
+    /**
      * Get a model from value given a type not identified prior.
      *
      * @param string       $property The property name
@@ -447,9 +615,9 @@ abstract class Model implements Contract
      *
      * @throws JsonException
      *
-     * @return mixed
+     * @return static|static[]
      */
-    protected function __getModelFromValueType(string $property, array|string $type, mixed $value): mixed
+    protected function __getModelFromValueType(string $property, array|string $type, mixed $value): self|array
     {
         // An array would indicate an array of models
         if (is_array($type)) {
@@ -475,9 +643,9 @@ abstract class Model implements Contract
      *
      * @throws JsonException
      *
-     * @return mixed
+     * @return static
      */
-    protected function __getModelFromValue(string $property, string $type, mixed $value): mixed
+    protected function __getModelFromValue(string $property, string $type, mixed $value): self
     {
         if (is_string($value)) {
             $value = Arr::fromString($value);
@@ -485,11 +653,6 @@ abstract class Model implements Contract
             $value = $value->jsonSerialize();
         } elseif (is_object($value) || is_array($value)) {
             $value = (array) $value;
-        } else {
-            // Return the value as is since it does not seem to match what we're expecting if we were to get a model
-            // from the value data
-            // Worth wondering how we got here in the first place... This really shouldn't be possible
-            return $value;
         }
 
         if (isset($this->$property) && $this->$property instanceof Contract) {
@@ -507,9 +670,9 @@ abstract class Model implements Contract
      * @param array|string $type     The type of the property
      * @param mixed        $value    The value
      *
-     * @return mixed
+     * @return UnitEnum|UnitEnum[]
      */
-    protected function __getEnumFromValueType(string $property, array|string $type, mixed $value): mixed
+    protected function __getEnumFromValueType(string $property, array|string $type, mixed $value): UnitEnum|array
     {
         // An array would indicate an array of enums
         if (is_array($type)) {
@@ -533,17 +696,29 @@ abstract class Model implements Contract
      * @param string $type     The type of the property
      * @param mixed  $value    The value
      *
-     * @return mixed
+     * @return UnitEnum
      */
-    protected function __getEnumFromValue(string $property, string $type, mixed $value): mixed
+    protected function __getEnumFromValue(string $property, string $type, mixed $value): UnitEnum
     {
         // If it's already an enum just send it along the way
-        if ($value instanceof UnitEnum) {
+        if ($value instanceof BackedEnum) {
             return $value;
         }
 
         /** @var BackedEnum $type */
         return $type::tryFrom($value);
+    }
+
+    /**
+     * Get whether the value is a valid enum value.
+     *
+     * @param mixed $value The value
+     *
+     * @return bool
+     */
+    protected function __isValidEnumValue(mixed $value): bool
+    {
+        return is_string($value) || is_int($value);
     }
 
     /**
@@ -673,7 +848,7 @@ abstract class Model implements Contract
     {
         $value = $this->__get($property);
 
-        if ($value instanceof BackedEnum) {
+        if ($toJson && $value instanceof BackedEnum) {
             return $value->value;
         }
 

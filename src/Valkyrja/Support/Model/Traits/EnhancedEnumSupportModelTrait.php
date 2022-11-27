@@ -29,7 +29,7 @@ trait EnhancedEnumSupportModelTrait
     /**
      * @inheritDoc
      */
-    protected function __getEnumFromValue(string $property, string $type, mixed $value): mixed
+    protected function __getEnumFromValue(string $property, string $type, mixed $value): UnitEnum
     {
         // If it's already an enum just send it along the way
         if ($value instanceof UnitEnum) {

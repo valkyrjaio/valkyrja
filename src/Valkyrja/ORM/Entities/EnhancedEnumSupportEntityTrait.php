@@ -27,8 +27,12 @@ trait EnhancedEnumSupportEntityTrait
     /**
      * @inheritDoc
      */
-    protected function __getEnumValueForDataStore(BackedEnum|JsonSerializable|UnitEnum $value): string|int
+    protected function __getEnumValueForDataStore(BackedEnum|JsonSerializable|UnitEnum|string|int $value): string|int
     {
+        if ($this->__isValidEnumValue($value)) {
+            return $value;
+        }
+
         if ($value instanceof JsonSerializable) {
             return $value->jsonSerialize();
         }

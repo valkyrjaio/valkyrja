@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Enum;
 
 use JsonSerializable;
+use UnitEnum;
 
 /**
  * Interface JsonSerializable.
  *
  * @author Melech Mizrachi
  */
-interface JsonSerializableEnum extends JsonSerializable
+interface JsonSerializableEnum extends JsonSerializable, UnitEnum
 {
     /**
      * Create from json.

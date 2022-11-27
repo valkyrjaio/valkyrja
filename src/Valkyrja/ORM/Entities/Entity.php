@@ -21,7 +21,7 @@ use Valkyrja\Support\Model\Enums\CastType;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
 
-use function is_int;
+use function is_array;
 use function is_string;
 
 /**
@@ -150,44 +150,6 @@ abstract class Entity extends Model implements Contract
     }
 
     /**
-     * Get a property's value for data store.
-     *
-     * @param array  $castings The castings
-     * @param string $property The property name
-     *
-     * @throws JsonException
-     *
-     * @return mixed
-     */
-    protected function __getPropertyValueForDataStore(array $castings, string $property): mixed
-    {
-        $value = $this->__getAsArrayPropertyValue($castings, $property, true);
-        // Check if a type was set for this attribute
-        $type = $castings[$property] ?? null;
-
-        // If there is no type specified just return the value
-        if ($type === null || $value === null) {
-            return $value;
-        }
-
-        return match ($this->__getTypeToCheck($type)) {
-            CastType::string => (string) $value,
-            CastType::int    => (int) $value,
-            CastType::float  => (float) $value,
-            CastType::double => (double) $value,
-            CastType::bool   => (bool) $value,
-            CastType::model  => ! is_string($value) ? $value->__toString() : $value,
-            CastType::enum   => ! is_string($value) && ! is_int($value) ? $this->__getEnumValueForDataStore($value) : $value,
-            CastType::array  => ! is_string($value) ? Arr::toString($value) : $value,
-            CastType::json   => ! is_string($value) ? Obj::toString($value) : $value,
-            CastType::object => ! is_string($value) ? serialize($value) : $value,
-            CastType::true   => true,
-            CastType::false  => false,
-            CastType::null   => null,
-        };
-    }
-
-    /**
      * Convert the entity to an array or storable array.
      *
      * @param bool   $toJson        [optional] Whether to get as a json array
@@ -219,12 +181,250 @@ abstract class Entity extends Model implements Contract
     }
 
     /**
-     * @param BackedEnum $value
+     * Get a property's value for data store.
+     *
+     * @param array  $castings The castings
+     * @param string $property The property name
+     *
+     * @throws JsonException
+     *
+     * @return mixed
+     */
+    protected function __getPropertyValueForDataStore(array $castings, string $property): mixed
+    {
+        $value = $this->__getAsArrayPropertyValue($castings, $property, true);
+        // Check if a type was set for this attribute
+        $type = $castings[$property] ?? null;
+
+        // If there is no type specified just return the value
+        if ($type === null || $value === null) {
+            return $value;
+        }
+
+        return $this->__getPropertyValueForDataStoreMatch($type, $property, $value);
+    }
+
+    /**
+     * Get a property's value by the type for a given type cast.
+     *
+     * @param CastType|array $type     The cast type
+     * @param string         $property The property name
+     * @param mixed          $value    The property value
+     *
+     * @throws JsonException
+     *
+     * @return mixed
+     */
+    protected function __getPropertyValueForDataStoreMatch(CastType|array $type, string $property, mixed $value): mixed
+    {
+        return match ($this->__getTypeToCheck($type)) {
+            CastType::string => $this->__getStringValueForDataStore($property, $value),
+            CastType::int    => $this->__getIntValueForDataStore($property, $value),
+            CastType::float  => $this->__getFloatValueForDataStore($property, $value),
+            CastType::double => $this->__getDoubleValueForDataStore($property, $value),
+            CastType::bool   => $this->__getBoolValueForDataStore($property, $value),
+            CastType::model  => $this->__getModelValueForDataStore($property, $value),
+            CastType::enum   => $this->__getEnumValueForDataStore($property, $value),
+            CastType::array  => $this->__getArrayValueForDataStore($property, $value),
+            CastType::json   => $this->__getJsonValueForDataStore($property, $value),
+            CastType::object => $this->__getObjectValueForDataStore($property, $value),
+            CastType::true   => $this->__getTrueValueForDataStore($property, $value),
+            CastType::false  => $this->__getFalseValueForDataStore($property, $value),
+            CastType::null   => $this->__getNullValueForDataStore($property, $value),
+        };
+    }
+
+    /**
+     * Get a string type cast value for data store.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return string
+     */
+    protected function __getStringValueForDataStore(string $property, mixed $value): string
+    {
+        return (string) $value;
+    }
+
+    /**
+     * Get an int type cast value for data store.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return int
+     */
+    protected function __getIntValueForDataStore(string $property, mixed $value): int
+    {
+        return (int) $value;
+    }
+
+    /**
+     * Get a float type cast value for data store.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return float
+     */
+    protected function __getFloatValueForDataStore(string $property, mixed $value): float
+    {
+        return (float) $value;
+    }
+
+    /**
+     * Get a double type cast value for data store.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return double
+     */
+    protected function __getDoubleValueForDataStore(string $property, mixed $value): float
+    {
+        return (double) $value;
+    }
+
+    /**
+     * Get a bool type cast value for data store.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return bool
+     */
+    protected function __getBoolValueForDataStore(string $property, mixed $value): bool
+    {
+        return (bool) $value;
+    }
+
+    /**
+     * Get an true type cast value for data store.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return true
+     */
+    protected function __getTrueValueForDataStore(string $property, mixed $value): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get a false type cast value for data store.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return false
+     */
+    protected function __getFalseValueForDataStore(string $property, mixed $value): bool
+    {
+        return false;
+    }
+
+    /**
+     * Get a null type cast value for data store.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return null
+     */
+    protected function __getNullValueForDataStore(string $property, mixed $value): mixed
+    {
+        return null;
+    }
+
+    /**
+     * Get a json type cast value for data store.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @throws JsonException
+     *
+     * @return string
+     */
+    protected function __getJsonValueForDataStore(string $property, mixed $value): string
+    {
+        return is_string($value)
+            ? $value
+            : Obj::toString($value);
+    }
+
+    /**
+     * Get a array type cast value for data store.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @throws JsonException
+     *
+     * @return string
+     */
+    protected function __getArrayValueForDataStore(string $property, mixed $value): string
+    {
+        return is_string($value)
+            ? $value
+            : Arr::toString($value);
+    }
+
+    /**
+     * Get a object type cast value for data store.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return string
+     */
+    protected function __getObjectValueForDataStore(string $property, mixed $value): string
+    {
+        return is_string($value)
+            ? $value
+            : serialize($value);
+    }
+
+    /**
+     * Get a model type cast value for data store.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @throws JsonException
+     *
+     * @return string
+     */
+    protected function __getModelValueForDataStore(string $property, mixed $value): string
+    {
+        if (is_string($value)) {
+            return $value;
+        }
+
+        if (is_array($value)) {
+            return Arr::toString($value);
+        }
+
+        return $value->__toString();
+    }
+
+    /**
+     * Get an enum type cast value for data store.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
      *
      * @return string|int
      */
-    protected function __getEnumValueForDataStore(BackedEnum $value): string|int
+    protected function __getEnumValueForDataStore(string $property, mixed $value): string|int
     {
+        if ($this->__isValidEnumValue($value)) {
+            return $value;
+        }
+
+        /** @var BackedEnum $value */
         return $value->value;
     }
 }
