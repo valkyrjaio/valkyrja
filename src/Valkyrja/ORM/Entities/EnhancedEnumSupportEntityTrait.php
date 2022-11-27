@@ -15,7 +15,6 @@ namespace Valkyrja\ORM\Entities;
 
 use BackedEnum;
 use JsonSerializable;
-use UnitEnum;
 
 /**
  * Trait EnhancedEnumSupportEntityTrait.
