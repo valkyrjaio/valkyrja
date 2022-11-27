@@ -21,9 +21,9 @@ namespace Valkyrja\Routing\Enums;
 enum CastType: string
 {
     case string = 'string';
-    case int = 'int';
-    case float = 'float';
-    case bool = 'bool';
-    case enum = 'enum';
+    case int    = 'int';
+    case float  = 'float';
+    case bool   = 'bool';
+    case enum   = 'enum';
     case entity = 'entity';
 }

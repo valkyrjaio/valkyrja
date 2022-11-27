@@ -21,16 +21,16 @@ namespace Valkyrja\Support\Model\Enums;
 enum CastType: string
 {
     case string = 'string';
-    case int = 'int';
-    case float = 'float';
+    case int    = 'int';
+    case float  = 'float';
     case double = 'double';
-    case bool = 'bool';
-    case true = 'true';
-    case false = 'false';
-    case null = 'null';
-    case json = 'json';
-    case array = 'array';
+    case bool   = 'bool';
+    case true   = 'true';
+    case false  = 'false';
+    case null   = 'null';
+    case json   = 'json';
+    case array  = 'array';
     case object = 'object';
-    case model = 'model';
-    case enum = 'enum';
+    case model  = 'model';
+    case enum   = 'enum';
 }

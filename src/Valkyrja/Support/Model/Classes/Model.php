@@ -493,11 +493,11 @@ abstract class Model implements Contract
      * @param string $property The property name
      * @param mixed  $value    The value
      *
-     * @return double
+     * @return float
      */
     protected function __getDoubleFromValueType(string $property, mixed $value): float
     {
-        return (double) $value;
+        return (float) $value;
     }
 
     /**
