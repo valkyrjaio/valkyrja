@@ -363,9 +363,8 @@ abstract class Model implements Contract
      */
     protected function __setProperties(array $properties): void
     {
-        $castings       = static::getCastings();
-        $allowedClasses = static::getCastingsAllowedClasses();
-        $hasCastings    = self::$cachedValidations[static::class . 'hasCastings'] ??= ! empty($castings);
+        $castings    = static::getCastings();
+        $hasCastings = self::$cachedValidations[static::class . 'hasCastings'] ??= ! empty($castings);
 
         // Iterate through the properties
         foreach ($properties as $property => $value) {
@@ -374,7 +373,7 @@ abstract class Model implements Contract
                 $this->__set(
                     $property,
                     $hasCastings
-                        ? $this->__getPropertyValueByType($castings, $allowedClasses, $property, $value)
+                        ? $this->__getPropertyValueByType($castings, $property, $value)
                         : $value
                 );
             }
@@ -384,18 +383,19 @@ abstract class Model implements Contract
     /**
      * Get a property's value by the type (if type is set).
      *
-     * @param array  $castings       The castings
-     * @param array  $allowedClasses The casting allowed classes
-     * @param string $property       The property name
-     * @param mixed  $value          The property value
+     * @param array  $castings The castings
+     * @param string $property The property name
+     * @param mixed  $value    The property value
      *
      * @throws JsonException
      *
      * @return mixed
      */
-    protected function __getPropertyValueByType(array $castings, array $allowedClasses, string $property, mixed $value): mixed
+    protected function __getPropertyValueByType(array $castings, string $property, mixed $value): mixed
     {
         // If there is no type specified or the value is null just return the value
+        // Castings assignment is set in the if specifically to avoid an assignment
+        // if the value is null, which would be an unneeded assigned variable
         if ($value === null || ($type = $castings[$property] ?? null) === null) {
             return $value;
         }
@@ -414,7 +414,7 @@ abstract class Model implements Contract
                 ? unserialize(
                     $value,
                     [
-                        'allowed_classes' => $allowedClasses[$property] ?? [],
+                        'allowed_classes' => static::getCastingsAllowedClasses()[$property] ?? [],
                     ]
                 )
                 : (object) $value,

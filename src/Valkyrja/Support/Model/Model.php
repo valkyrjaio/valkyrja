@@ -51,6 +51,8 @@ interface Model extends JsonSerializable
      *          'property_name' => CastType::bool,
      *          // An property to be cast to an enum
      *          'property_name' => [CastType::enum, Enum::class],
+     *          // An property to be cast to an array of enums
+     *          'property_name' => [CastType::enum, Enum::class],
      *          // An property to be cast to a model
      *          'property_name' => [CastType::model, Model::class],
      *          // An property to be cast to an array of models
