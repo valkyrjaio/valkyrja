@@ -63,7 +63,7 @@ trait EnhancedEnumModelTrait
      */
     protected function __getJsonPropertyValue(string $property): mixed
     {
-        $value = $this->__getAsArrayPropertyValue($property);
+        $value = $this->__get($property);
 
         // If this is a json array we're building and the value isn't JsonSerializable
         if (! ($value instanceof JsonSerializable)) {

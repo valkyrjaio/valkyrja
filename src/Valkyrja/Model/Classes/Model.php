@@ -116,9 +116,7 @@ class Model implements Contract
     {
         $methodName = $this->__getPropertySetMethodName($name);
 
-        if (static::shouldSetOriginalProperties()) {
-            $this->__originalProperties[$name] ??= $value;
-        }
+        $this->__setOriginalProperty($name, $value);
 
         if ($this->__doesPropertyTypeMethodExist($methodName)) {
             $this->$methodName($value);
@@ -187,10 +185,7 @@ class Model implements Contract
 
         $allProperties = $this->__checkOnlyProperties($allProperties, $properties);
 
-        // Ensure for each property we use the magic __get method so as to go through any magic get{Property} methods
-        foreach ($allProperties as $property => $value) {
-            $allProperties[$property] = $this->__getAsArrayPropertyValue($property);
-        }
+        $this->__setPropertyValues($allProperties, '__get');
 
         return $allProperties;
     }
@@ -243,11 +238,7 @@ class Model implements Contract
         $allProperties = $this->__allProperties();
 
         $this->__removeInternalProperties($allProperties);
-
-        // Ensure for each property we use the magic __get method so as to go through any magic get{Property} methods
-        foreach ($allProperties as $property => $value) {
-            $allProperties[$property] = $this->__getJsonPropertyValue($property);
-        }
+        $this->__setPropertyValues($allProperties, '__getJsonPropertyValue');
 
         return $allProperties;
     }
@@ -380,6 +371,21 @@ class Model implements Contract
     }
 
     /**
+     * Set an original property.
+     *
+     * @param string $name  The property name
+     * @param mixed  $value The value
+     *
+     * @return void
+     */
+    protected function __setOriginalProperty(string $name, mixed $value): void
+    {
+        if (static::shouldSetOriginalProperties()) {
+            $this->__originalProperties[$name] ??= $value;
+        }
+    }
+
+    /**
      * Get all properties.
      *
      * @param bool $includeHidden [optional] Whether to include hidden properties
@@ -485,15 +491,18 @@ class Model implements Contract
     }
 
     /**
-     * Get a property's value for asArray.
+     * Set property values.
      *
-     * @param string $property The property
+     * @param array  $properties The properties
+     * @param string $method     The method name
      *
-     * @return mixed
+     * @return void
      */
-    protected function __getAsArrayPropertyValue(string $property): mixed
+    protected function __setPropertyValues(array &$properties, string $method): void
     {
-        return $this->__get($property);
+        foreach ($properties as $property => $value) {
+            $properties[$property] = $this->$method($property);
+        }
     }
 
     /**
@@ -505,7 +514,7 @@ class Model implements Contract
      */
     protected function __getJsonPropertyValue(string $property): mixed
     {
-        $value = $this->__getAsArrayPropertyValue($property);
+        $value = $this->__get($property);
 
         if ($value instanceof BackedEnum) {
             return $value->value;

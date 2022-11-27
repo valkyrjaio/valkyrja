@@ -15,9 +15,9 @@ namespace Valkyrja\ORM\Entities;
 
 use BackedEnum;
 use JsonException;
-use Valkyrja\ORM\Entity as Contract;
 use Valkyrja\Model\Classes\CastableModel;
 use Valkyrja\Model\Enums\CastType;
+use Valkyrja\ORM\Entity as Contract;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
 
@@ -174,7 +174,7 @@ abstract class Entity extends CastableModel implements Contract
      */
     protected function __getPropertyValueForDataStore(array $castings, string $property): mixed
     {
-        $value = $this->__getAsArrayPropertyValue($property);
+        $value = $this->__get($property);
         // Check if a type was set for this attribute
         $type = $castings[$property] ?? null;
 
