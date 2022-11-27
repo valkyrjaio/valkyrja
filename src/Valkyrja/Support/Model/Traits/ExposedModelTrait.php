@@ -25,6 +25,6 @@ trait ExposedModelTrait
      */
     protected function __allProperties(bool $includeHidden = false): array
     {
-        return get_object_vars($this);
+        return $this->__allPropertiesIncludingHidden();
     }
 }

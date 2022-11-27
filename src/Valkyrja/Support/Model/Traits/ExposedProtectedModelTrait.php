@@ -28,7 +28,7 @@ trait ExposedProtectedModelTrait
     protected function __allProperties(bool $includeHidden = false): array
     {
         return $includeHidden
-            ? get_object_vars($this)
+            ? $this->__allPropertiesIncludingHidden()
             : array_merge(Obj::getAllProperties($this, includePrivate: false), $this->__exposed);
     }
 }

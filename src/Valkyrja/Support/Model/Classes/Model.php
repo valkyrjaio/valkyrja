@@ -377,8 +377,18 @@ class Model implements Contract
     protected function __allProperties(bool $includeHidden = false): array
     {
         return $includeHidden
-            ? get_object_vars($this)
+            ? $this->__allPropertiesIncludingHidden()
             : array_merge(Obj::getProperties($this), $this->__exposed);
+    }
+
+    /**
+     * Get all properties regardless of visibility.
+     *
+     * @return array
+     */
+    protected function __allPropertiesIncludingHidden(): array
+    {
+        return get_object_vars($this);
     }
 
     /**
