@@ -34,28 +34,28 @@ class Route extends Dispatch implements Contract
      *
      * @var string|null
      */
-    public ?string $path;
+    protected ?string $path;
 
     /**
      * The redirect path for this route.
      *
      * @var string|null
      */
-    public ?string $to;
+    protected ?string $to;
 
     /**
      * The redirect status code for this route.
      *
      * @var int|null
      */
-    public ?int $code;
+    protected ?int $code;
 
     /**
      * The request methods for this route.
      *
      * @var array
      */
-    public array $methods = [
+    protected array $methods = [
         RequestMethod::GET,
         RequestMethod::HEAD,
     ];
@@ -65,42 +65,42 @@ class Route extends Dispatch implements Contract
      *
      * @var string|null
      */
-    public ?string $regex;
+    protected ?string $regex;
 
     /**
      * The dynamic parameters
      *
      * @var Parameter[]
      */
-    public array $parameters;
+    protected array $parameters;
 
     /**
      * The middleware for this route.
      *
      * @var array|null
      */
-    public ?array $middleware;
+    protected ?array $middleware;
 
     /**
      * Whether the route is dynamic.
      *
      * @var bool
      */
-    public bool $dynamic = false;
+    protected bool $dynamic = false;
 
     /**
      * Whether the route is secure.
      *
      * @var bool
      */
-    public bool $secure = false;
+    protected bool $secure = false;
 
     /**
      * Whether the route is a redirect.
      *
      * @var bool
      */
-    public bool $redirect = false;
+    protected bool $redirect = false;
 
     /**
      * @inheritDoc

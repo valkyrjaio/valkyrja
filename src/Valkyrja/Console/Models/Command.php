@@ -28,35 +28,35 @@ class Command extends Dispatch implements Contract
      *
      * @var string|null
      */
-    public ?string $path = null;
+    protected ?string $path = null;
 
     /**
      * The regex for dynamic routes.
      *
      * @var string|null
      */
-    public ?string $regex = null;
+    protected ?string $regex = null;
 
     /**
      * Any params for dynamic routes.
      *
      * @var array|null
      */
-    public ?array $params = null;
+    protected ?array $params = null;
 
     /**
      * Any segments for optional parts of path.
      *
      * @var array|null
      */
-    public ?array $segments = null;
+    protected ?array $segments = null;
 
     /**
      * The description.
      *
      * @var string|null
      */
-    public ?string $description = null;
+    protected ?string $description = null;
 
     /**
      * @inheritDoc

@@ -17,7 +17,6 @@ use BackedEnum;
 use Valkyrja\ORM\Entity;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Support\Model\Classes\Model;
-use Valkyrja\Support\Model\Traits\ExposedModelTrait;
 use Valkyrja\Support\Type\Cls;
 
 use function is_string;
@@ -29,8 +28,6 @@ use function is_string;
  */
 class Parameter extends Model
 {
-    use ExposedModelTrait;
-
     /**
      * @inheritDoc
      */
@@ -316,5 +313,21 @@ class Parameter extends Model
         $this->default = $default;
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function __allProperties(bool $includeHidden = false): array
+    {
+        return $this->__allPropertiesIncludingHidden();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->__allPropertiesIncludingHidden();
     }
 }

@@ -34,112 +34,112 @@ class Dispatch extends Model implements Contract
      *
      * @var string|null
      */
-    public ?string $id;
+    protected ?string $id;
 
     /**
      * The name.
      *
      * @var string|null
      */
-    public ?string $name;
+    protected ?string $name;
 
     /**
      * The class.
      *
      * @var string|null
      */
-    public ?string $class;
+    protected ?string $class;
 
     /**
      * Whether this is a class dispatch.
      *
      * @var bool
      */
-    public bool $isClass;
+    protected bool $isClass;
 
     /**
      * The property.
      *
      * @var string|null
      */
-    public ?string $property;
+    protected ?string $property;
 
     /**
      * Whether this is a class/property dispatch.
      *
      * @var bool
      */
-    public bool $isProperty;
+    protected bool $isProperty;
 
     /**
      * The method.
      *
      * @var string|null
      */
-    public ?string $method;
+    protected ?string $method;
 
     /**
      * Whether this is a class/method dispatch.
      *
      * @var bool
      */
-    public bool $isMethod;
+    protected bool $isMethod;
 
     /**
      * Whether the property or method is static.
      *
      * @var bool
      */
-    public bool $static;
+    protected bool $static;
 
     /**
      * The function.
      *
      * @var string|null
      */
-    public ?string $function;
+    protected ?string $function;
 
     /**
      * Whether this is a function dispatch.
      *
      * @var bool
      */
-    public bool $isFunction;
+    protected bool $isFunction;
 
     /**
      * The matches.
      *
      * @var array|null
      */
-    public ?array $matches;
+    protected ?array $matches;
 
     /**
      * The closure.
      *
      * @var Closure|null
      */
-    public ?Closure $closure;
+    protected ?Closure $closure;
 
     /**
      * Whether this is a closure dispatch.
      *
      * @var bool
      */
-    public bool $isClosure;
+    protected bool $isClosure;
 
     /**
      * The dependencies.
      *
      * @var string[]|null
      */
-    public ?array $dependencies;
+    protected ?array $dependencies;
 
     /**
      * The arguments.
      *
      * @var array|null
      */
-    public ?array $arguments;
+    protected ?array $arguments;
 
     /**
      * @inheritDoc
@@ -387,9 +387,17 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
+    protected function __allProperties(bool $includeHidden = false): array
+    {
+        return $this->__allPropertiesIncludingHidden();
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function jsonSerialize(): array
     {
-        $array = get_object_vars($this);
+        $array = $this->__allPropertiesIncludingHidden();
 
         unset($array['arguments'], $array['closure']);
 

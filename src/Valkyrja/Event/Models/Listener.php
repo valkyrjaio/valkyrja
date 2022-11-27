@@ -14,21 +14,21 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Models;
 
 use Valkyrja\Dispatcher\Models\Dispatch;
-use Valkyrja\Event\Listener as ListenerContract;
+use Valkyrja\Event\Listener as Contract;
 
 /**
  * Class Listener.
  *
  * @author Melech Mizrachi
  */
-class Listener extends Dispatch implements ListenerContract
+class Listener extends Dispatch implements Contract
 {
     /**
      * The event to listen to.
      *
      * @var string|null
      */
-    public ?string $event;
+    protected ?string $event;
 
     /**
      * @inheritDoc
