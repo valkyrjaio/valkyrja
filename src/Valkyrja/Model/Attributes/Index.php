@@ -11,15 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View;
+namespace Valkyrja\Model\Attributes;
 
-use Valkyrja\Model\Model;
+use Attribute;
 
 /**
- * Interface Page.
+ * Attribute Index.
  *
  * @author Melech Mizrachi
  */
-interface Page extends Model
+#[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
+class Index
 {
+    public function __construct(
+        public int $num,
+    ) {
+    }
 }

@@ -11,15 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View;
+namespace Valkyrja\Model\Classes;
 
-use Valkyrja\Model\Model;
+use Valkyrja\Model\CastableModel as Contract;
+use Valkyrja\Model\Traits\CastableModelTrait;
 
 /**
- * Interface Page.
+ * Class CastableModel.
  *
  * @author Melech Mizrachi
  */
-interface Page extends Model
+abstract class CastableModel extends Model implements Contract
 {
+    use CastableModelTrait;
 }

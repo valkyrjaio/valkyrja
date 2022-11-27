@@ -16,8 +16,8 @@ namespace Valkyrja\ORM\Entities;
 use BackedEnum;
 use JsonException;
 use Valkyrja\ORM\Entity as Contract;
-use Valkyrja\Support\Model\Classes\CastableModel;
-use Valkyrja\Support\Model\Enums\CastType;
+use Valkyrja\Model\Classes\CastableModel;
+use Valkyrja\Model\Enums\CastType;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
 

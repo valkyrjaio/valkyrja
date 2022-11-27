@@ -11,15 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View;
+namespace Valkyrja\Model\Attributes;
 
-use Valkyrja\Model\Model;
+use Attribute;
+use Valkyrja\Model\Enums\CastType;
 
 /**
- * Interface Page.
+ * Attribute Cast.
  *
  * @author Melech Mizrachi
  */
-interface Page extends Model
+#[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
+class Cast
 {
+    public function __construct(
+        public CastType|string|array $type,
+    ) {
+    }
 }

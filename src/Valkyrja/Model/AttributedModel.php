@@ -11,28 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\JWT\Models;
+namespace Valkyrja\Model;
 
-use Valkyrja\Model\Classes\Model;
+use ReflectionAttribute;
 
 /**
- * Class EdDSAKey.
+ * Interface AttributedModel.
  *
  * @author Melech Mizrachi
  */
-class EdDSAKey extends Model
+interface AttributedModel extends Model
 {
     /**
-     * The private key.
+     * Get the model's attributes.
      *
-     * @var string
-     */
-    public string $privateKey;
-
-    /**
-     * The public key.
+     * @param string|null $name [optional] The attribute name to filter by
      *
-     * @var string
+     * @return ReflectionAttribute[]
      */
-    public string $publicKey;
+    public static function getAttributes(string $name = null): array;
 }

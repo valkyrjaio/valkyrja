@@ -11,15 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View;
-
-use Valkyrja\Model\Model;
+namespace Valkyrja\Model\Exceptions;
 
 /**
- * Interface Page.
+ * Class InvalidArgumentException.
  *
  * @author Melech Mizrachi
  */
-interface Page extends Model
+class InvalidArgumentException extends \InvalidArgumentException
 {
 }

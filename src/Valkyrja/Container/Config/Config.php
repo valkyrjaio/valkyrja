@@ -17,7 +17,7 @@ use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Support\Model\Enums\CastType;
+use Valkyrja\Model\Enums\CastType;
 
 /**
  * Class Config.

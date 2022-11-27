@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api;
 
-use Valkyrja\Support\Model\Model;
+use Valkyrja\Model\Model;
 
 /**
  * Interface JsonData.

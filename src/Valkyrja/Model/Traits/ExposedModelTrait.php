@@ -11,15 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View;
-
-use Valkyrja\Model\Model;
+namespace Valkyrja\Model\Traits;
 
 /**
- * Interface Page.
+ * Trait ExposedModelTrait.
  *
  * @author Melech Mizrachi
  */
-interface Page extends Model
+trait ExposedModelTrait
 {
+    /**
+     * @inheritDoc
+     */
+    protected function __allProperties(bool $includeHidden = false): array
+    {
+        return $this->__allPropertiesIncludingHidden();
+    }
 }

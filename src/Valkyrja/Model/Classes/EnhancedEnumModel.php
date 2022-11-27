@@ -11,15 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View;
+namespace Valkyrja\Model\Classes;
 
-use Valkyrja\Model\Model;
+use Valkyrja\Model\Traits\EnhancedEnumModelTrait;
 
 /**
- * Interface Page.
+ * Class EnhancedEnumModel.
  *
  * @author Melech Mizrachi
  */
-interface Page extends Model
+abstract class EnhancedEnumModel extends Model
 {
+    use EnhancedEnumModelTrait;
 }

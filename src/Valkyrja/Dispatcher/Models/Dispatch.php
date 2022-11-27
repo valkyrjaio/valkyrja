@@ -15,7 +15,7 @@ namespace Valkyrja\Dispatcher\Models;
 
 use Closure;
 use Valkyrja\Dispatcher\Dispatch as Contract;
-use Valkyrja\Support\Model\Classes\Model;
+use Valkyrja\Model\Classes\Model;
 
 /**
  * Class Dispatch.

@@ -11,15 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View;
+namespace Valkyrja\Model\Classes;
 
-use Valkyrja\Model\Model;
+use Valkyrja\Model\IndexedModel as Contract;
+use Valkyrja\Model\Traits\IndexedModelTrait;
 
 /**
- * Interface Page.
+ * Class IndexedModel.
  *
  * @author Melech Mizrachi
  */
-interface Page extends Model
+abstract class IndexedModel extends Model implements Contract
 {
+    use IndexedModelTrait;
 }

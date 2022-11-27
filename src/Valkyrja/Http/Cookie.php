@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http;
 
 use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
-use Valkyrja\Support\Model\Model;
+use Valkyrja\Model\Model;
 
 /**
  * Interface Cookie.

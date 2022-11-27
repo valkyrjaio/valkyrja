@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Api\Models;
 
 use Valkyrja\Api\JsonData as Contract;
-use Valkyrja\Support\Model\Classes\Model;
+use Valkyrja\Model\Classes\Model;
 
 /**
  * Class JsonData.

@@ -16,7 +16,7 @@ namespace Valkyrja\Routing\Models;
 use BackedEnum;
 use Valkyrja\ORM\Entity;
 use Valkyrja\Routing\Enums\CastType;
-use Valkyrja\Support\Model\Classes\Model;
+use Valkyrja\Model\Classes\Model;
 use Valkyrja\Support\Type\Cls;
 
 use function is_string;

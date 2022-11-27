@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM;
 
-use Valkyrja\Support\Model\CastableModel;
+use Valkyrja\Model\CastableModel;
 
 /**
  * Interface Entity.
