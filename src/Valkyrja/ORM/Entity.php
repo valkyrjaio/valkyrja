@@ -80,4 +80,11 @@ interface Entity extends Model
      * @return array
      */
     public function asStorableArray(string ...$properties): array;
+
+    /**
+     * Get the entity as an array for saving to the data store including only changed properties.
+     *
+     * @return array
+     */
+    public function asStorableChangedArray(): array;
 }

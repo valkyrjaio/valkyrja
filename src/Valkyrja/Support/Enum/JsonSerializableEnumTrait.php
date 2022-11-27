@@ -14,17 +14,27 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Enum;
 
 /**
- * Trait JsonSerializable.
+ * Trait JsonSerializableEnumTrait.
  *
  * @author Melech Mizrachi
  */
-trait JsonSerializable
+trait JsonSerializableEnumTrait
 {
+    use JsonSerializable;
+
     /**
      * @inheritDoc
      */
-    public function jsonSerialize(): string|int
+    public static function fromJson(string|int $value): self
     {
-        return $this->value;
+        return static::from($value);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function tryFromJson(string|int $value): ?self
+    {
+        return static::tryFrom($value);
     }
 }

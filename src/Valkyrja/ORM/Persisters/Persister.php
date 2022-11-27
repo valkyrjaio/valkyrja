@@ -109,7 +109,7 @@ class Persister implements Contract
         $this->modifyEntityBeforeSave($entity);
 
         if (! $defer) {
-            $this->persistEntityThroughTransaction(Statement::UPDATE, $entity, $entity->asChangedArray());
+            $this->persistEntityThroughTransaction(Statement::UPDATE, $entity, $entity->asStorableChangedArray());
 
             return;
         }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Model\Classes;
 
 use BackedEnum;
+use Closure;
 use JsonException;
 use UnitEnum;
 use Valkyrja\Support\Model\Enums\CastType;
@@ -232,7 +233,19 @@ abstract class Model implements Contract
      */
     public function asArray(string ...$properties): array
     {
-        return $this->__asArray(false, false, ...$properties);
+        // Get the public properties
+        $allProperties = $this->__allProperties();
+
+        $this->__removeInternalProperties($allProperties);
+
+        $allProperties = $this->__checkOnlyProperties($allProperties, $properties);
+
+        // Ensure for each property we use the magic __get method so as to go through any magic get{Property} methods
+        foreach ($allProperties as $property => $value) {
+            $allProperties[$property] = $this->__getAsArrayPropertyValue($property);
+        }
+
+        return $allProperties;
     }
 
     /**
@@ -240,7 +253,7 @@ abstract class Model implements Contract
      */
     public function asExposedArray(string ...$properties): array
     {
-        return $this->__asExposedArray(false, ...$properties);
+        return $this->__arrayWithExposed('asArray', ...$properties);
     }
 
     /**
@@ -248,12 +261,15 @@ abstract class Model implements Contract
      */
     public function asChangedArray(): array
     {
-        return $this->__asChangedArray();
+        return $this->__getChangedProperties($this->asArray());
     }
 
+    /**
+     * @inheritDoc
+     */
     public function asExposedChangedArray(): array
     {
-        return $this->__asExposedChangedArray();
+        return $this->__arrayWithExposed('asChangedArray');
     }
 
     /**
@@ -277,7 +293,16 @@ abstract class Model implements Contract
      */
     public function jsonSerialize(): array
     {
-        return $this->__asArray(true);
+        $allProperties = $this->__allProperties();
+
+        $this->__removeInternalProperties($allProperties);
+
+        // Ensure for each property we use the magic __get method so as to go through any magic get{Property} methods
+        foreach ($allProperties as $property => $value) {
+            $allProperties[$property] = $this->__getJsonPropertyValue($property);
+        }
+
+        return $allProperties;
     }
 
     /**
@@ -326,31 +351,6 @@ abstract class Model implements Contract
     protected static function __getNew(array $properties): self
     {
         return new static();
-    }
-
-    /**
-     * Get an array subset of properties to return from a given list out of the returnable properties.
-     *
-     * @param array $allProperties All the properties returnable
-     * @param array $properties    The properties we wish to return
-     *
-     * @return array
-     */
-    protected function __onlyProperties(array $allProperties, array $properties): array
-    {
-        $onlyProperties = [];
-
-        // Iterate through the list and set only those properties if the property exists in the allProperties array
-        // NOTE: The allProperties array will already have gone through logic to get exposable properties, so only
-        //       if the property exists in this array should we return it in the onlyProperties array.
-        foreach ($properties as $onlyProperty) {
-            if (isset($allProperties[$onlyProperty])) {
-                $onlyProperties[$onlyProperty] = true;
-            }
-        }
-
-        // Return the properties requested
-        return $onlyProperties;
     }
 
     /**
@@ -722,37 +722,6 @@ abstract class Model implements Contract
     }
 
     /**
-     * Convert the entity to an array or json array.
-     *
-     * @param bool   $toJson        [optional] Whether to get as a json array
-     * @param bool   $includeHidden [optional] Whether to include hidden properties
-     * @param string ...$properties [optional] An array of properties to return
-     *
-     * @return array
-     */
-    protected function __asArray(bool $toJson = false, bool $includeHidden = false, string ...$properties): array
-    {
-        // Get the public properties
-        $allProperties = $this->__allProperties($includeHidden);
-        $propertyTypes = static::getCastings();
-
-        unset($allProperties['__exposed'], $allProperties['__originalProperties']);
-
-        if (! empty($properties)) {
-            $allProperties = $this->__onlyProperties($allProperties, $properties);
-        }
-
-        // Ensure for each property we use the magic __get method so as to go through any magic get{Property} methods
-        foreach ($allProperties as $property => $value) {
-            $allProperties[$property] = $this->__getAsArrayPropertyValue($propertyTypes, $property, $toJson);
-
-            // Remove properties with null value if model flag is set to do so.
-        }
-
-        return $allProperties;
-    }
-
-    /**
      * Get all properties.
      *
      * @param bool $includeHidden [optional] Whether to include hidden properties
@@ -767,27 +736,67 @@ abstract class Model implements Contract
     }
 
     /**
-     * @param bool   $toJson        [optional] Whether to get as a json array.
-     * @param string ...$properties [optional] An array of properties to return
+     * Remove internal model properties from an array of properties.
      *
-     * @return array
+     * @param array $properties The properties
+     *
+     * @return void
      */
-    protected function __asExposedArray(bool $toJson = false, string ...$properties): array
+    protected function __removeInternalProperties(array &$properties): void
     {
-        $this->expose(...static::$exposable);
-        $array = $this->__asArray($toJson, false, ...$properties);
-        $this->unexpose(...static::$exposable);
-
-        return $array;
+        unset($properties['__exposed'], $properties['__originalProperties']);
     }
 
     /**
-     * @param bool $toJson        [optional] Whether to get as a json array.
-     * @param bool $includeHidden [optional] Whether to include hidden properties
+     * Check if an array of all properties should be filtered by another list of properties.
+     *
+     * @param array $properties     The properties
+     * @param array $onlyProperties A list of properties to return
      *
      * @return array
      */
-    protected function __asChangedArray(bool $toJson = false, bool $includeHidden = false): array
+    protected function __checkOnlyProperties(array $properties, array $onlyProperties): array
+    {
+        if (! empty($onlyProperties)) {
+            return $this->__onlyProperties($properties, $onlyProperties);
+        }
+
+        return $properties;
+    }
+
+    /**
+     * Get an array subset of properties to return from a given list out of the returnable properties.
+     *
+     * @param array $allProperties All the properties returnable
+     * @param array $properties    The properties we wish to return
+     *
+     * @return array
+     */
+    protected function __onlyProperties(array $allProperties, array $properties): array
+    {
+        $onlyProperties = [];
+
+        // Iterate through the list and set only those properties if the property exists in the allProperties array
+        // NOTE: The allProperties array will already have gone through logic to get exposable properties, so only
+        //       if the property exists in this array should we return it in the onlyProperties array.
+        foreach ($properties as $onlyProperty) {
+            if (isset($allProperties[$onlyProperty])) {
+                $onlyProperties[$onlyProperty] = true;
+            }
+        }
+
+        // Return the properties requested
+        return $onlyProperties;
+    }
+
+    /**
+     * Get the changed properties given an array of properties.
+     *
+     * @param array $properties The properties to check the original properties against
+     *
+     * @return array
+     */
+    protected function __getChangedProperties(array $properties): array
     {
         // The original properties set on the model
         $originalProperties = $this->__originalProperties;
@@ -795,7 +804,7 @@ abstract class Model implements Contract
         $changed = [];
 
         // Iterate through the model's properties
-        foreach ($this->__asArrayForChangedComparison($toJson, $includeHidden) as $property => $value) {
+        foreach ($properties as $property => $value) {
             $originalProperty = $originalProperties[$property] ?? null;
 
             // Determine if the property changed
@@ -808,49 +817,52 @@ abstract class Model implements Contract
     }
 
     /**
-     * The model as an array to compare with original properties to determine what changed.
+     * Get an array with exposed properties.
      *
-     * @param bool $toJson        [optional] Whether to get as a json array.
-     * @param bool $includeHidden [optional] Whether to include hidden properties
-     *
-     * @return array
-     */
-    protected function __asArrayForChangedComparison(bool $toJson = false, bool $includeHidden = false): array
-    {
-        return $this->__asArray($toJson, $includeHidden);
-    }
-
-    /**
-     * The model as an array to compare with original properties to determine what changed along with exposable
-     * properties.
-     *
-     * @param bool $toJson [optional] Whether to get as a json array.
+     * @param Closure|string $callable      The callable
+     * @param string         ...$properties The properties
      *
      * @return array
      */
-    protected function __asExposedChangedArray(bool $toJson = false): array
+    protected function __arrayWithExposed(Closure|string $callable, string ...$properties): array
     {
         $this->expose(...static::$exposable);
-        $array = $this->__asChangedArray($toJson);
+
+        if (is_string($callable)) {
+            $array = $this->$callable(...$properties);
+        } else {
+            $array = $callable(...$properties);
+        }
+
         $this->unexpose(...static::$exposable);
 
         return $array;
     }
 
     /**
-     * Get a property's value for to array.
+     * Get a property's value for asArray.
      *
-     * @param array  $castings The castings
      * @param string $property The property
-     * @param bool   $toJson   [optional] Whether to get as a json array.
      *
      * @return mixed
      */
-    protected function __getAsArrayPropertyValue(array $castings, string $property, bool $toJson): mixed
+    protected function __getAsArrayPropertyValue(string $property): mixed
     {
-        $value = $this->__get($property);
+        return $this->__get($property);
+    }
 
-        if ($toJson && $value instanceof BackedEnum) {
+    /**
+     * Get a property's value for jsonSerialize.
+     *
+     * @param string $property The property
+     *
+     * @return mixed
+     */
+    protected function __getJsonPropertyValue(string $property): mixed
+    {
+        $value = $this->__getAsArrayPropertyValue($property);
+
+        if ($value instanceof BackedEnum) {
             return $value->value;
         }
 

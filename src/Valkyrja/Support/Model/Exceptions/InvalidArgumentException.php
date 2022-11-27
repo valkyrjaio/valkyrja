@@ -11,20 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Enum;
+namespace Valkyrja\Support\Model\Exceptions;
 
 /**
- * Trait JsonSerializable.
+ * Class InvalidArgumentException.
  *
  * @author Melech Mizrachi
  */
-trait JsonSerializable
+class InvalidArgumentException extends \InvalidArgumentException
 {
-    /**
-     * @inheritDoc
-     */
-    public function jsonSerialize(): string|int
-    {
-        return $this->value;
-    }
 }

@@ -128,42 +128,14 @@ abstract class Entity extends Model implements Contract
      */
     public function asStorableArray(string ...$properties): array
     {
-        return $this->__asStorableArray(true, ...$properties);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function __asChangedArray(bool $toJson = true, bool $includeHidden = false): array
-    {
-        return parent::__asChangedArray($toJson);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @throws JsonException
-     */
-    protected function __asArrayForChangedComparison(bool $toJson = true, bool $includeHidden = false): array
-    {
-        return $this->__asStorableArray($toJson);
-    }
-
-    /**
-     * Convert the entity to an array or storable array.
-     *
-     * @param bool   $toJson        [optional] Whether to get as a json array
-     * @param string ...$properties [optional] An array of properties to return
-     *
-     * @throws JsonException
-     *
-     * @return array
-     */
-    protected function __asStorableArray(bool $toJson = false, string ...$properties): array
-    {
         $unStorableFields = array_merge(static::getUnStorableFields(), static::getRelationshipProperties());
-        $allProperties    = $this->__asArray($toJson, true, ...$properties);
-        $castings         = static::getCastings();
+        // Get the public properties
+        $allProperties = $this->__allProperties(true);
+        $castings      = static::getCastings();
+
+        $this->__removeInternalProperties($allProperties);
+
+        $allProperties = $this->__checkOnlyProperties($allProperties, $properties);
 
         // Iterate through all the un-storable fields
         foreach ($unStorableFields as $unStorableHiddenField) {
@@ -181,6 +153,16 @@ abstract class Entity extends Model implements Contract
     }
 
     /**
+     * @inheritDoc
+     *
+     * @throws JsonException
+     */
+    public function asStorableChangedArray(): array
+    {
+        return $this->__getChangedProperties($this->asStorableArray());
+    }
+
+    /**
      * Get a property's value for data store.
      *
      * @param array  $castings The castings
@@ -192,7 +174,7 @@ abstract class Entity extends Model implements Contract
      */
     protected function __getPropertyValueForDataStore(array $castings, string $property): mixed
     {
-        $value = $this->__getAsArrayPropertyValue($castings, $property, true);
+        $value = $this->__getAsArrayPropertyValue($property);
         // Check if a type was set for this attribute
         $type = $castings[$property] ?? null;
 
