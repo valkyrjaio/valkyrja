@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model\Traits;
 
-use JsonException;
-
 /**
  * Trait IndexedModelTrait.
  *
@@ -72,8 +70,6 @@ trait IndexedModelTrait
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function updateIndexedProperties(array $properties): void
     {
@@ -82,8 +78,6 @@ trait IndexedModelTrait
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function withIndexedProperties(array $properties): self
     {
