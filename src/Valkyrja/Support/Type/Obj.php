@@ -97,23 +97,21 @@ class Obj
              * Protected members: \0*\0member_name
              * Private members: \0Class_name\0member_name
              */
-            $keyParts      = explode("\0", $key);
-            $keyPartsCount = count($keyParts);
+            $isProtected = str_contains($key, "\0*");
+            $keyParts    = explode("\0", $key);
 
-            if ($keyPartsCount > 1) {
-                if ($includeProtected === false && $keyParts[0] === '*') {
+            if (count($keyParts) > 1) {
+                if (! $includeProtected && $isProtected) {
                     continue;
                 }
 
-                if ($includePrivate === false && $keyParts[0] !== '*') {
+                if (! $includePrivate && ! $isProtected) {
                     continue;
                 }
             }
 
-            // Use the last key part as the property name
-            $property = $keyParts[$keyPartsCount - 1];
             // Set the property and value
-            $array[$property] = $value;
+            $array[end($keyParts)] = $value;
         }
 
         return $array;
