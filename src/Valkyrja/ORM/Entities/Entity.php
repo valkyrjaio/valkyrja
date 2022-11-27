@@ -134,7 +134,7 @@ abstract class Entity extends Model implements Contract
     /**
      * @inheritDoc
      */
-    protected function __asChangedArray(bool $toJson = true): array
+    protected function __asChangedArray(bool $toJson = true, bool $includeHidden = false): array
     {
         return parent::__asChangedArray($toJson);
     }
@@ -144,7 +144,7 @@ abstract class Entity extends Model implements Contract
      *
      * @throws JsonException
      */
-    protected function __asArrayForChangedComparison(bool $toJson = true): array
+    protected function __asArrayForChangedComparison(bool $toJson = true, bool $includeHidden = false): array
     {
         return $this->__asStorableArray($toJson);
     }

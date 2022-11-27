@@ -782,11 +782,12 @@ abstract class Model implements Contract
     }
 
     /**
-     * @param bool $toJson [optional] Whether to get as a json array.
+     * @param bool $toJson        [optional] Whether to get as a json array.
+     * @param bool $includeHidden [optional] Whether to include hidden properties
      *
      * @return array
      */
-    protected function __asChangedArray(bool $toJson = false): array
+    protected function __asChangedArray(bool $toJson = false, bool $includeHidden = false): array
     {
         // The original properties set on the model
         $originalProperties = $this->__originalProperties;
@@ -794,7 +795,7 @@ abstract class Model implements Contract
         $changed = [];
 
         // Iterate through the model's properties
-        foreach ($this->__asArrayForChangedComparison($toJson) as $property => $value) {
+        foreach ($this->__asArrayForChangedComparison($toJson, $includeHidden) as $property => $value) {
             $originalProperty = $originalProperties[$property] ?? null;
 
             // Determine if the property changed
@@ -809,13 +810,14 @@ abstract class Model implements Contract
     /**
      * The model as an array to compare with original properties to determine what changed.
      *
-     * @param bool $toJson [optional] Whether to get as a json array.
+     * @param bool $toJson        [optional] Whether to get as a json array.
+     * @param bool $includeHidden [optional] Whether to include hidden properties
      *
      * @return array
      */
-    protected function __asArrayForChangedComparison(bool $toJson = false): array
+    protected function __asArrayForChangedComparison(bool $toJson = false, bool $includeHidden = false): array
     {
-        return $this->__asArray($toJson);
+        return $this->__asArray($toJson, $includeHidden);
     }
 
     /**
