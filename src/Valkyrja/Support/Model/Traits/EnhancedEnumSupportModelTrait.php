@@ -55,14 +55,18 @@ trait EnhancedEnumSupportModelTrait
     }
 
     /**
-     * @inheritDoc
+     * Get a property's value for jsonSerialize.
+     *
+     * @param string $property The property
+     *
+     * @return mixed
      */
-    protected function __getAsArrayPropertyValue(array $castings, string $property, bool $toJson): mixed
+    protected function __getJsonPropertyValue(string $property): mixed
     {
-        $value = $this->__get($property);
+        $value = $this->__getAsArrayPropertyValue($property);
 
         // If this is a json array we're building and the value isn't JsonSerializable
-        if ($toJson && ! ($value instanceof JsonSerializable)) {
+        if (! ($value instanceof JsonSerializable)) {
             if ($value instanceof BackedEnum) {
                 return $value->value;
             }
