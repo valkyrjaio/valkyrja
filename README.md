@@ -21,7 +21,7 @@ About Valkyrja
 > **Note:** This repository contains the core code of the Valkyrja framework.
 > If you want to build an application using Valkyrja, visit the [Valkyrja App repository][github app repo].
 
-[Valkyrja][Valkyrja] is a PHP framework for web and console applications
+[Valkyrja][Valkyrja] is a PHP framework for web and console applications.
 
 Installation
 ------------
