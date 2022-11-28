@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Collection\Classes;
+namespace Valkyrja\Support\Collection\Collections;
 
 use Valkyrja\Support\Collection\Collection as Contract;
 use Valkyrja\Support\Type\Arr;
