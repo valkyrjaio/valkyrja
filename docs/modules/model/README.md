@@ -73,7 +73,7 @@ class BasicModel extends Model
 > **Note:** Using getter and setters with public properties is redundant. The magic `__isset`, `__set` and `__get` methods are
 > bypassed when using the property directly. However, they are still used internally within the model.
 
-> **Note:**: Getters and setters **ARE** required when using private methods.
+> **Note:** Getters and setters **ARE** required when using private methods.
 
 ### Differences Between Protected/Private Properties
 
