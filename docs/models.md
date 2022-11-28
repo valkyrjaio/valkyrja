@@ -1,5 +1,34 @@
 # Models
 
+- [Usage](#usage)
+- [Defining Models](#defining-models)
+    - [Differences Between Protected/Private Properties](#differences-between-protectedprivate-properties)
+    - [Naming Convention](#naming-convention)
+    - [Protected Getters/Setters](#protected-getterssetters)
+    - [Constructor Property Promotion](#constructor-property-promotion)
+    - [Defining With a Constructor](#with-a-constructor)
+- [Creating Instances](#creating-instances)
+    - [Via a Constructor](#via-a-constructor)
+    - [Creating From an Array](#creating-from-an-array)
+- [Updating Properties](#updating-properties)
+    - [Immutable Updating Properties](#immutable-updating-properties)
+- [Outputting as an Array](#outputting-as-an-array)
+    - [Enhanced Enum Support](#enhanced-enum-support)
+    - [Getting Changed Properties](#getting-changed-properties)
+    - [With Protected/Private Properties](#with-protectedprivate-properties)
+    - [Getting Original Properties](#getting-original-properties)
+    - [Getting An Original Property Value](#getting-an-original-property-value)
+    - [Don't Set Original Properties](#dont-set-original-properties)
+- [Casting](#casting)
+    - [Strings, Ints, Floats, Doubles, and Booleans](#to-strings-ints-floats-doubles-and-booleans)
+    - [True, False, and Null](#to-true-false-and-null)
+    - [JSON](#to-json)
+    - [Arrays](#to-arrays)
+    - [Objects](#to-objects)
+    - [Models](#to-models)
+    - [Enums](#to-enums)
+- [Indexed Models](#indexed-models)
+
 ## Usage
 
 A model can be as simple or complex as you may need it to be. Basic usage involves extending off of the
@@ -42,8 +71,7 @@ class BasicModel extends Model
 ```
 
 > Using getter and setters with public properties is redundant. The magic `__isset`, `__set` and `__get` methods are
-> bypassed when
-> using the property directly.
+> bypassed when using the property directly. However, they are still used internally within the model.
 
 > NOTE: Getters and setters **ARE** required when using private methods.
 
@@ -265,7 +293,7 @@ $model->nickname = 'J';
 echo $model->nickname;
 ```
 
-### With a Constructor
+### Via a Constructor
 
 If you chose to write your model with constructor property promotion you can simply pass all your values
 when creating the instance.
@@ -407,7 +435,7 @@ $array = $model->asArray(...$listOfProperties);
 > Specifying a property that is protected/private will not automatically output it.<br />
 > (See the `Getting Protected/Private Properties` section)
 
-## Enhanced Enum Support
+### Enhanced Enum Support
 
 By default `BackedEnum` is the only supported enum type. If you require support for `UnitEnum` you will need to use the
 `Valkyrja\Model\Traits\EnhancedEnumModelTrait` trait.
@@ -480,7 +508,7 @@ $listOfProperties = [
 $changedProperties = $model->asChangedArray(...$listOfProperties);
 ```
 
-### Getting Protected/Private Properties
+### With Protected/Private Properties
 
 By default `asArrray` and `asChangedArray` will not output `protected` or `private` properties. This is done
 intentionally to provide a way to protecting sensitive data that may not be exposable via an api for example.
@@ -632,7 +660,7 @@ class BasicModel extends Model
 
 > Note: An exception will occur if you try to use the `castings` static property.
 
-### Strings, Ints, Floats, Doubles, and Booleans
+### To Strings, Ints, Floats, Doubles, and Booleans
 
 There are simple types and their usage is similarly straight forward and simple. Set the `property` name as the key and
 the value to the corresponding `CastType` value you want to cast to.
@@ -663,7 +691,7 @@ class BasicModel extends CastableModel
 }
 ```
 
-### True, False, and Null
+### To True, False, and Null
 
 Just like the above types these are simple and straight forward. Their use case however is very limited, however can be
 very useful. Examples can include a property that has since introduction had its scope limited, and as such any
@@ -691,7 +719,7 @@ class BasicModel extends CastableModel
 }
 ```
 
-### JSON
+### To JSON
 
 If the value is a string then it is decoded into an object with `json_decode`. If the value is not a string it falls
 back to a simple `(object)` cast.
@@ -714,7 +742,7 @@ class BasicModel extends CastableModel
 }
 ```
 
-### Arrays
+### To Arrays
 
 If the value is a string then it is decoded into an array with `json_decode`. If the value is not a string it falls
 back to a simple `(array)` cast.
@@ -737,7 +765,7 @@ class BasicModel extends CastableModel
 }
 ```
 
-### Objects
+### To Objects
 
 If the value is a string then it is decoded into an object with `unserialize`. If the value is not a string it falls
 back to a simple `(object)` cast.
@@ -813,7 +841,7 @@ class BasicModel extends Model
 }
 ```
 
-### Models
+### To Models
 
 Model casts expect an array for the value in the key/pair in the `$castings` static property. The first value in the
 array is the `CastType` and the second value is either a class name, or array with first index of the class name. If
@@ -844,7 +872,7 @@ class BasicModel extends CastableModel
 
 > Note: Multiple models are not supported. The array of model is only to indicate an array of models to be returned.
 
-### Enums
+### To Enums
 
 Enum casts expect an array for the value in the key/pair in the `$castings` static property. The first value in the
 array is the `CastType` and the second value is either an enum class name, or array with first index of the enum class
