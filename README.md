@@ -19,108 +19,79 @@ About Valkyrja
 ------------
 
 > **Note:** This repository contains the core code of the Valkyrja framework.
-> If you want to build an application using Valkyrja, visit the [Valkyrja App repository][Valkyrja App repository].
+> If you want to build an application using Valkyrja, visit the [Valkyrja App repository][github app repo].
 
 [Valkyrja][Valkyrja] is a PHP framework for web and console applications
-
-- Annotations
-- Container
-- Console
-- Events
-- ORM
-- Routing
-- SPEED!
 
 Installation
 ------------
 
-* [Install Valkyrja][4] with Composer (see [requirements details][3]).
-* Valkyrja follows the [semantic versioning][5] strictly, publishes "Long Term
-  Support" (LTS) versions and has a [release process][6] that is predictable and
-  business-friendly.
+* [Install Valkyrja][install] with Composer (see [requirements details][requirements]).
+* Valkyrja follows the [semantic versioning][semantic versioning] strictly.
 
 Documentation
 -------------
 
-* Read the [Getting Started guide][7] if you are new to Valkyrja.
-* Try the [Valkyrja Demo application][2] to learn Valkyrja in practice.
-* Master Valkyrja with the [Guides and Tutorials][8], the [Components docs][9]
-  and the [Best Practices][10] reference.
+* Read the [Getting Started guide][getting started] if you are new to Valkyrja.
+* Try the [Valkyrja Demo application][github demo app repo] to learn Valkyrja in practice.
+* Master Valkyrja with the [Basics][basics], the [Modules][modules]
+  and the [Advanced][advanced] docs.
 
 Community
 ---------
 
-* Follow us on [GitHub][11].
-* Read our [Code of Conduct][12]
+* Follow us on [GitHub][github main].
+* Read our [Code of Conduct][code of conduct]
 
 Contributing
 ------------
 
-Valkyrja is an Open Source, community-driven project with thousands of
-[contributors][13]. Join them [contributing code][14] or [contributing documentation][15].
+Valkyrja is an Open Source, community-driven project.
+Join us by [contributing code][contribute code] or reading our [contributing documentation][contributing].
 
 Security Issues
 ---------------
 
 If you discover a security vulnerability within Valkyrja, please follow our
-[disclosure procedure][16].
+[disclosure procedure][security vulnerabilities].
 
 License
 ---------------
 
 The Valkyrja framework is open-sourced software licensed under the [MIT license][MIT license].
 
-Benchmark Results
----------------
-
-|Framework            |Requests/Second|Memory Usage|Time/Request|Files Loaded|
-|---------------------|--------------:|-----------:|-----------:|-----------:|
-|CodeIgniter***       |        6060.19|      411000|    0.000595|          27|
-|Valkyrja (version)*  |        5011.54|      657504|    0.001068|          85|
-|Valkyrja             |        4543.57|      678184|    0.001226|          93|
-|Lumen* **            |        4331.55|      710792|    0.003474|          79|
-|Slim* **             |        4041.30|      599536|    0.001786|         126|
-|Silex                |        2916.24|      740792|    0.002506|         146|
-|Symfony              |        1865.81|     1343984|    0.004068|         312|
-|Zend                 |        1823.19|     1179304|    0.003806|         204|
-|Laravel              |         953.60|     2204160|    0.006106|         277|
-
-* \* Does not render view
-* \*\* Does not dispatch to controller
-* \*\*\* No Composer autoloader
-
 [Valkyrja]: https://valkyrja.io
 
-[2]: https://valkyrja.io
+[github main]: https://github.com/valkyrjaio
 
-[3]: https://valkyrja.io
+[github app repo]: https://github.com/valkyrjaio/application
 
-[4]: https://valkyrja.io
+[github demo app repo]: https://github.com/valkyrjaio/application
 
-[5]: https://valkyrja.io
+[docs]: ./docs
 
-[6]: https://valkyrja.io
+[getting started]: ./docs/getting-started
 
-[7]: https://valkyrja.io
+[install]: ./docs/getting-started/installation
 
-[8]: https://valkyrja.io
+[requirements]: ./docs/getting-started/requirements
 
-[9]: https://valkyrja.io
+[basics]: ./docs/basics
 
-[10]: https://valkyrja.io
+[best practices]: ./docs/basics/best-practices
 
-[11]: https://valkyrja.io
+[advanced]: ./docs/advanced
 
-[12]: https://valkyrja.io
+[modules]: ./docs/Modules
 
-[13]: https://valkyrja.io
+[contributing]: ./docs/contributing
 
-[14]: https://valkyrja.io
+[code of conduct]: ./docs/contributing/code-of-conduct
 
-[15]: https://valkyrja.io
+[contribute code]: ./docs/contributing/code
 
-[16]: https://valkyrja.io
+[security vulnerabilities]: ./docs/contributing/security-vulnerabilities
+
+[semantic versioning]: https://semver.org/
 
 [MIT license]: https://opensource.org/licenses/MIT
-
-[Valkyrja App repository]: https://github.com/valkyrjaio/application
