@@ -6,7 +6,7 @@
 
 ## Modules
 
-- [Model](./modules/Model)
+- [Model](./modules/model)
 
 ## Advanced
 
