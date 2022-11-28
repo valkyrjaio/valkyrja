@@ -70,10 +70,10 @@ class BasicModel extends Model
 }
 ```
 
-> Using getter and setters with public properties is redundant. The magic `__isset`, `__set` and `__get` methods are
+> **Note:** Using getter and setters with public properties is redundant. The magic `__isset`, `__set` and `__get` methods are
 > bypassed when using the property directly. However, they are still used internally within the model.
 
-> NOTE: Getters and setters **ARE** required when using private methods.
+> **Note:**: Getters and setters **ARE** required when using private methods.
 
 ### Differences Between Protected/Private Properties
 
@@ -430,9 +430,9 @@ $listOfProperties = [
 $array = $model->asArray(...$listOfProperties);
 ```
 
-> JSON output via the `json_endcode` function is automatically taken care of.
+> **Note:** JSON output via the `json_endcode` function is automatically taken care of.
 
-> Specifying a property that is protected/private will not automatically output it.<br />
+> **Note:** Specifying a property that is protected/private will not automatically output it.<br />
 > (See the `Getting Protected/Private Properties` section)
 
 ### Enhanced Enum Support
@@ -564,7 +564,7 @@ $model->updateProperties($updatedProperties);
 $originalProperties = $model->asOriginalArray();
 ```
 
-> NOTE: This will only work for properties that were set via the magic `__set` method. Such as protected and private
+> **Note:** This will only work for properties that were set via the magic `__set` method. Such as protected and private
 > properties or properties set via `Model::fromArray`. Public properties bypass the magic `__set` method.
 
 ### Getting An Original Property Value
@@ -658,7 +658,7 @@ class BasicModel extends Model
 }
 ```
 
-> Note: An exception will occur if you try to use the `castings` static property.
+> **Note:** An exception will occur if you try to use the `castings` static property.
 
 ### To Strings, Ints, Floats, Doubles, and Booleans
 
@@ -870,7 +870,7 @@ class BasicModel extends CastableModel
 }
 ```
 
-> Note: Multiple models are not supported. The array of model is only to indicate an array of models to be returned.
+> **Note:** Multiple models are not supported. The array of model is only to indicate an array of models to be returned.
 
 ### To Enums
 
