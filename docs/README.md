@@ -2,4 +2,4 @@
 
 ## Modules
 
-- [Model](./Model.md)
+- [Model](./Modules/Model/Model.md)
