@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Attributes\Providers;
+namespace Valkyrja\Attribute\Providers;
 
-use Valkyrja\Attributes\Attributes;
+use Valkyrja\Attribute\Attributes;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Reflection\Reflector;
@@ -56,7 +56,7 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Attributes::class,
-            new \Valkyrja\Attributes\Managers\Attributes(
+            new \Valkyrja\Attribute\Managers\Attributes(
                 $container->getSingleton(Reflector::class),
             )
         );

@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Attributes\Managers;
+namespace Valkyrja\Attribute\Managers;
 
 use ReflectionAttribute;
 use ReflectionClassConstant;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
-use Valkyrja\Attributes\Attributes as Contract;
+use Valkyrja\Attribute\Attributes as Contract;
 use Valkyrja\Dispatcher\Constants\Property;
 use Valkyrja\Reflection\Reflector;
 

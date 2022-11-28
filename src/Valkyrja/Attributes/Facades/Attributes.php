@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Facades;
 
-use Valkyrja\Attributes\Attributes as Contract;
+use Valkyrja\Attribute\Attributes as Contract;
 use Valkyrja\Support\Facade\Facade;
 
 /**

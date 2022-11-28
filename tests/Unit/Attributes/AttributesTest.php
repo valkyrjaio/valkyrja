@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Attributes;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
-use Valkyrja\Attributes\Managers\Attributes;
+use Valkyrja\Attribute\Managers\Attributes;
 use Valkyrja\Tests\Unit\Attributes\Classes\Attribute;
 use Valkyrja\Tests\Unit\Attributes\Classes\AttributeChild;
 use Valkyrja\Tests\Unit\Attributes\Classes\AttributedClass;
