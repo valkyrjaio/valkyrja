@@ -49,7 +49,7 @@ interface Attributes
      *
      * @template T
      *
-     * @param string               $class     The class
+     * @param string               $class    K The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
      * @return object[]|T[]
