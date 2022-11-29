@@ -27,6 +27,7 @@ use Valkyrja\ORM\Repository;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SoftDeleteEntity;
 use Valkyrja\ORM\Statement;
+use Valkyrja\Support\Type\Cls;
 
 use function get_class;
 
@@ -213,6 +214,8 @@ class ORM implements Contract
      */
     public function getRepository(string $entity): Repository
     {
+        Cls::validateInherits($entity, Entity::class);
+
         /** @var Entity $entity */
         $name     = $entity::getRepository() ?? $this->defaultRepository;
         $cacheKey = $name . $entity;
