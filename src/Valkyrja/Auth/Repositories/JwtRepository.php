@@ -18,23 +18,23 @@ use Valkyrja\Auth\AuthenticatedUsers;
 use Valkyrja\Auth\Config\Config;
 use Valkyrja\Auth\Exceptions\TokenizationException;
 use Valkyrja\Auth\JWTRepository as Contract;
-use Valkyrja\Jwt\Driver as JWT;
-use Valkyrja\Jwt\Jwt as JWTManager;
+use Valkyrja\Jwt\Driver as Jwt;
+use Valkyrja\Jwt\Jwt as JwtManager;
 use Valkyrja\Session\Session;
 
 /**
- * Class JWTRepository.
+ * Class JwtRepository.
  *
  * @author Melech Mizrachi
  */
-class JWTRepository extends TokenizedRepository implements Contract
+class JwtRepository extends TokenizedRepository implements Contract
 {
     /**
-     * The JWT.
+     * The Jwt.
      *
-     * @var JWT
+     * @var Jwt
      */
-    protected JWT $jwt;
+    protected Jwt $jwt;
 
     /**
      * JWTRepository constructor.
@@ -45,7 +45,7 @@ class JWTRepository extends TokenizedRepository implements Contract
      * @param Config|array $config  The config
      * @param string       $user    The user class
      */
-    public function __construct(Adapter $adapter, JWTManager $jwt, Session $session, Config|array $config, string $user)
+    public function __construct(Adapter $adapter, JwtManager $jwt, Session $session, Config|array $config, string $user)
     {
         parent::__construct($adapter, $session, $config, $user);
 
@@ -77,7 +77,7 @@ class JWTRepository extends TokenizedRepository implements Contract
             throw new TokenizationException(
                 'alwaysAuthenticate setting is turned on in config. '
                 . 'This will result in exposed password and other sensitive user fields in an unsecured JWT. '
-                . 'Please use the ' . JWTCryptRepository::class . ' Repository instead.'
+                . 'Please use the ' . JwtCryptRepository::class . ' Repository instead.'
             );
         }
 
