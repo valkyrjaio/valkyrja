@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Attributes\Parameter\Entity;
 
 use Attribute;
-use Valkyrja\Routing\Attributes\Parameter\Entity;
-use Valkyrja\Routing\Constants\ParameterName;
-use Valkyrja\Routing\Constants\Regex;
+use Valkyrja\Routing\Attributes\Parameter\Id as Parameter;
+use Valkyrja\Routing\Enums\CastType;
 
 /**
  * Attribute Id.
@@ -24,7 +23,7 @@ use Valkyrja\Routing\Constants\Regex;
  * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
-class Id extends Entity
+class Id extends Parameter
 {
     public function __construct(
         string $entity = null,
@@ -36,11 +35,11 @@ class Id extends Entity
         mixed $default = null,
     ) {
         parent::__construct(
+            name               : $name,
+            type               : CastType::entity,
             entity             : $entity,
             entityColumn       : $entityColumn,
             entityRelationships: $entityRelationships,
-            name               : $name ?? ParameterName::ID,
-            regex              : Regex::ID,
             isOptional         : $isOptional,
             shouldCapture      : $shouldCapture,
             default            : $default,

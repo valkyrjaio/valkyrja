@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Attributes\Parameter\Entity;
 
 use Attribute;
-use Valkyrja\Routing\Attributes\Parameter\Entity;
-use Valkyrja\Routing\Constants\ParameterName;
-use Valkyrja\Routing\Constants\Regex;
+use Valkyrja\Routing\Attributes\Parameter\Uuid as Parameter;
+use Valkyrja\Routing\Enums\CastType;
 
 /**
  * Attribute Uuid.
@@ -24,7 +23,7 @@ use Valkyrja\Routing\Constants\Regex;
  * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
-class Uuid extends Entity
+class Uuid extends Parameter
 {
     public function __construct(
         string $entity = null,
@@ -36,11 +35,11 @@ class Uuid extends Entity
         mixed $default = null,
     ) {
         parent::__construct(
+            name               : $name,
+            type               : CastType::entity,
             entity             : $entity,
             entityColumn       : $entityColumn,
             entityRelationships: $entityRelationships,
-            name               : $name ?? ParameterName::UUID,
-            regex              : Regex::UUID,
             isOptional         : $isOptional,
             shouldCapture      : $shouldCapture,
             default            : $default,

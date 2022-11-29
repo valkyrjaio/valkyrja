@@ -17,6 +17,7 @@ use Attribute;
 use Valkyrja\Routing\Attributes\Parameter;
 use Valkyrja\Routing\Constants\ParameterName;
 use Valkyrja\Routing\Constants\Regex;
+use Valkyrja\Routing\Enums\CastType;
 
 /**
  * Attribute UlidS.
@@ -28,9 +29,11 @@ class UlidS extends Parameter
 {
     public function __construct(
         string $name = null,
+        CastType $type = null,
         string $entity = null,
         string $entityColumn = null,
         array $entityRelationships = null,
+        string $enum = null,
         bool $isOptional = false,
         bool $shouldCapture = true,
         mixed $default = null,
@@ -38,9 +41,11 @@ class UlidS extends Parameter
         parent::__construct(
             name               : $name ?? ParameterName::ULID_S,
             regex              : Regex::ULID_S,
+            type               : $type,
             entity             : $entity,
             entityColumn       : $entityColumn,
             entityRelationships: $entityRelationships,
+            enum               : $enum,
             isOptional         : $isOptional,
             shouldCapture      : $shouldCapture,
             default            : $default,
