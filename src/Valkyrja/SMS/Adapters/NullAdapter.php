@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\SMS\Adapters;
+namespace Valkyrja\Sms\Adapters;
 
-use Valkyrja\SMS\Adapter as Contract;
-use Valkyrja\SMS\Message;
+use Valkyrja\Sms\Adapter as Contract;
+use Valkyrja\Sms\Message;
 
 /**
  * Class NullAdapter.

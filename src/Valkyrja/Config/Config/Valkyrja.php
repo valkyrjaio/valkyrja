@@ -34,7 +34,7 @@ use Valkyrja\ORM\Config\ORM;
 use Valkyrja\Path\Config\Path;
 use Valkyrja\Routing\Config\Routing;
 use Valkyrja\Session\Config\Session;
-use Valkyrja\SMS\Config\SMS;
+use Valkyrja\Sms\Config\Sms;
 use Valkyrja\Validation\Config\Validation;
 use Valkyrja\View\Config\View;
 
@@ -73,7 +73,7 @@ class Valkyrja extends Model
         $this->path       = new Path($properties['path'] ?? null, true);
         $this->routing    = new Routing($properties['routing'] ?? null, true);
         $this->session    = new Session($properties['session'] ?? null, true);
-        $this->sms        = new SMS($properties['sms'] ?? null, true);
+        $this->sms        = new Sms($properties['sms'] ?? null, true);
         $this->validation = new Validation($properties['validation'] ?? null, true);
         $this->view       = new View($properties['view'] ?? null, true);
 

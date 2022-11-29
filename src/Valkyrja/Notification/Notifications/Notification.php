@@ -16,7 +16,7 @@ namespace Valkyrja\Notification\Notifications;
 use Valkyrja\Broadcast\Message as BroadcastMessage;
 use Valkyrja\Mail\Message as MailMessage;
 use Valkyrja\Notification\Notification as Contract;
-use Valkyrja\SMS\Message as SMSMessage;
+use Valkyrja\Sms\Message as SMSMessage;
 
 /**
  * Abstract Class Notification.

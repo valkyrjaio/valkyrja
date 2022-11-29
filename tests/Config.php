@@ -51,8 +51,8 @@ use Valkyrja\Routing\Config\Config as Routing;
 use Valkyrja\Routing\Constants\ConfigValue as RoutingConfigValue;
 use Valkyrja\Session\Config\Config as Session;
 use Valkyrja\Session\Constants\ConfigValue as SessionConfigValue;
-use Valkyrja\SMS\Config\Config as SMS;
-use Valkyrja\SMS\Constants\ConfigValue as SMSConfigValue;
+use Valkyrja\Sms\Config\Config as Sms;
+use Valkyrja\Sms\Constants\ConfigValue as SmsConfigValue;
 use Valkyrja\Validation\Config\Config as Validation;
 use Valkyrja\Validation\Constants\ConfigValue as ValidationConfigValue;
 use Valkyrja\View\Config\Config as View;
@@ -85,7 +85,7 @@ class Config extends Model
         $this->path         = new Path(PathConfigValue::$defaults, true);
         $this->routing      = new Routing(RoutingConfigValue::$defaults, true);
         $this->session      = new Session(SessionConfigValue::$defaults, true);
-        $this->sms          = new SMS(SMSConfigValue::$defaults, true);
+        $this->sms          = new Sms(SmsConfigValue::$defaults, true);
         $this->validation   = new Validation(ValidationConfigValue::$defaults, true);
         $this->view         = new View(ViewConfigValue::$defaults, true);
 

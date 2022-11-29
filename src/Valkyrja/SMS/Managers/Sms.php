@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\SMS\Managers;
+namespace Valkyrja\Sms\Managers;
 
-use Valkyrja\SMS\Config\Config;
-use Valkyrja\SMS\Driver;
-use Valkyrja\SMS\Factory;
-use Valkyrja\SMS\Message;
-use Valkyrja\SMS\SMS as Contract;
+use Valkyrja\Sms\Config\Config;
+use Valkyrja\Sms\Driver;
+use Valkyrja\Sms\Factory;
+use Valkyrja\Sms\Message;
+use Valkyrja\Sms\Sms as Contract;
 use Valkyrja\Support\Manager\Managers\MessageManager;
 
 /**
@@ -27,7 +27,7 @@ use Valkyrja\Support\Manager\Managers\MessageManager;
  *
  * @property Factory $factory
  */
-class SMS extends MessageManager implements Contract
+class Sms extends MessageManager implements Contract
 {
     /**
      * Mail constructor.

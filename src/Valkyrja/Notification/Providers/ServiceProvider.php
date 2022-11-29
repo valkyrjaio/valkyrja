@@ -20,7 +20,7 @@ use Valkyrja\Mail\Mail;
 use Valkyrja\Notification\Factories\ContainerFactory;
 use Valkyrja\Notification\Factory;
 use Valkyrja\Notification\Notifier;
-use Valkyrja\SMS\SMS;
+use Valkyrja\Sms\Sms;
 
 /**
  * Class ServiceProvider.
@@ -68,7 +68,7 @@ class ServiceProvider extends Provider
                 $container->getSingleton(Factory::class),
                 $container->getSingleton(Broadcast::class),
                 $container->getSingleton(Mail::class),
-                $container->getSingleton(SMS::class),
+                $container->getSingleton(Sms::class),
                 $config['notification']
             )
         );

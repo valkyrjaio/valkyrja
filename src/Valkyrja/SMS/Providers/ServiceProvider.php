@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\SMS\Providers;
+namespace Valkyrja\Sms\Providers;
 
 use Nexmo\Client as Nexmo;
 use Nexmo\Client\Credentials\Basic;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger;
-use Valkyrja\SMS\Adapter;
-use Valkyrja\SMS\Factories\ContainerFactory;
-use Valkyrja\SMS\Factory;
-use Valkyrja\SMS\LogAdapter;
-use Valkyrja\SMS\Message;
-use Valkyrja\SMS\NexmoAdapter;
-use Valkyrja\SMS\SMS;
+use Valkyrja\Sms\Adapter;
+use Valkyrja\Sms\Factories\ContainerFactory;
+use Valkyrja\Sms\Factory;
+use Valkyrja\Sms\LogAdapter;
+use Valkyrja\Sms\Message;
+use Valkyrja\Sms\NexmoAdapter;
+use Valkyrja\Sms\Sms;
 
 /**
  * Class ServiceProvider.
@@ -39,7 +39,7 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            SMS::class          => 'publishSMS',
+            Sms::class          => 'publishSMS',
             Factory::class      => 'publishFactory',
             Adapter::class      => 'publishAdapter',
             LogAdapter::class   => 'publishLogAdapter',
@@ -55,7 +55,7 @@ class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            SMS::class,
+            Sms::class,
             Factory::class,
             Adapter::class,
             LogAdapter::class,
@@ -77,8 +77,8 @@ class ServiceProvider extends Provider
         $config = $container->getSingleton('config');
 
         $container->setSingleton(
-            SMS::class,
-            new \Valkyrja\SMS\Managers\SMS(
+            Sms::class,
+            new \Valkyrja\Sms\Managers\Sms(
                 $container->getSingleton(Factory::class),
                 $config['sms']
             )

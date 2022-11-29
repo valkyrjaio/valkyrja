@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\SMS;
+namespace Valkyrja\Sms;
 
 use Valkyrja\Support\Manager\FactoryWithMessage as Contract;
 

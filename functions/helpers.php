@@ -54,8 +54,8 @@ use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Support\Abort;
 use Valkyrja\Routing\Url;
 use Valkyrja\Session\Session;
-use Valkyrja\SMS\Message as SMSMessage;
-use Valkyrja\SMS\SMS;
+use Valkyrja\Sms\Message as SmsMessage;
+use Valkyrja\Sms\Sms;
 use Valkyrja\Support\Directory;
 use Valkyrja\Validation\Validator;
 use Valkyrja\View\Template;
@@ -566,11 +566,11 @@ function session(): Session
 /**
  * Get SMS.
  *
- * @return SMS
+ * @return Sms
  */
-function sms(): SMS
+function sms(): Sms
 {
-    return Valkyrja::app()->container()->getSingleton(SMS::class);
+    return Valkyrja::app()->container()->getSingleton(Sms::class);
 }
 
 /**
@@ -578,9 +578,9 @@ function sms(): SMS
  *
  * @param string|null $name [optional] The name
  *
- * @return SMSMessage
+ * @return SmsMessage
  */
-function smsMessage(string $name = null): SMSMessage
+function smsMessage(string $name = null): SmsMessage
 {
     return \Valkyrja\sms()->createMessage($name);
 }

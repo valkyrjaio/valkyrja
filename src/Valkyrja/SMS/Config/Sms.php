@@ -11,21 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\SMS\Config;
+namespace Valkyrja\Sms\Config;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
-use Valkyrja\SMS\Adapters\LogAdapter;
-use Valkyrja\SMS\Adapters\NullAdapter;
-use Valkyrja\SMS\Config\Config as Model;
-use Valkyrja\SMS\Constants\ConfigValue;
+use Valkyrja\Sms\Adapters\LogAdapter;
+use Valkyrja\Sms\Adapters\NullAdapter;
+use Valkyrja\Sms\Config\Config as Model;
+use Valkyrja\Sms\Constants\ConfigValue;
 
 use function Valkyrja\env;
 
 /**
- * Class SMS.
+ * Class Sms.
  */
-class SMS extends Model
+class Sms extends Model
 {
     /**
      * @inheritDoc

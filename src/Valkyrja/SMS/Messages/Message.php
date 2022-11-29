@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\SMS\Messages;
+namespace Valkyrja\Sms\Messages;
 
-use Valkyrja\SMS\Message as Contract;
+use Valkyrja\Sms\Message as Contract;
 
 /**
  * Class Message.

@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\SMS\Adapters;
+namespace Valkyrja\Sms\Adapters;
 
 use Exception;
 use Nexmo\Client as Nexmo;
-use Valkyrja\SMS\Message;
-use Valkyrja\SMS\NexmoAdapter as Contract;
+use Valkyrja\Sms\Message;
+use Valkyrja\Sms\NexmoAdapter as Contract;
 
 /**
  * Class NexmoAdapter.

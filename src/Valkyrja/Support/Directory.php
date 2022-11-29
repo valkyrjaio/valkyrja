@@ -15,8 +15,6 @@ namespace Valkyrja\Support;
 
 use Valkyrja\Support\Type\Str;
 
-use const DIRECTORY_SEPARATOR;
-
 /**
  * Class Directory.
  *
@@ -29,7 +27,7 @@ class Directory
      *
      * @constant string
      */
-    public const DIRECTORY_SEPARATOR = DIRECTORY_SEPARATOR;
+    public const DIRECTORY_SEPARATOR = '/';
 
     /**
      * Base directory path.
@@ -43,21 +41,21 @@ class Directory
      *
      * @var string
      */
-    public static string $APP_PATH               = 'app';
-    public static string $BOOTSTRAP_PATH         = 'bootstrap';
-    public static string $COMMANDS_PATH          = 'commands';
-    public static string $EVENTS_PATH            = 'events';
-    public static string $ROUTES_PATH            = 'routes';
-    public static string $SERVICES_PATH          = 'services';
-    public static string $CONFIG_PATH            = 'config';
-    public static string $ENV_PATH               = 'env';
-    public static string $PUBLIC_PATH            = 'public';
-    public static string $RESOURCES_PATH         = 'resources';
-    public static string $STORAGE_PATH           = 'storage';
+    public static string $APP_PATH = 'app';
+    public static string $BOOTSTRAP_PATH = 'bootstrap';
+    public static string $COMMANDS_PATH = 'commands';
+    public static string $EVENTS_PATH = 'events';
+    public static string $ROUTES_PATH = 'routes';
+    public static string $SERVICES_PATH = 'services';
+    public static string $CONFIG_PATH = 'config';
+    public static string $ENV_PATH = 'env';
+    public static string $PUBLIC_PATH = 'public';
+    public static string $RESOURCES_PATH = 'resources';
+    public static string $STORAGE_PATH = 'storage';
     public static string $FRAMEWORK_STORAGE_PATH = 'framework';
-    public static string $CACHE_PATH             = 'cache';
-    public static string $TESTS_PATH             = 'tests';
-    public static string $VENDOR_PATH            = 'vendor';
+    public static string $CACHE_PATH = 'cache';
+    public static string $TESTS_PATH = 'tests';
+    public static string $VENDOR_PATH = 'vendor';
 
     /**
      * Get the app directory for the application.

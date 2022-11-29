@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\SMS\Adapters;
+namespace Valkyrja\Sms\Adapters;
 
 use Valkyrja\Log\Driver as Logger;
-use Valkyrja\SMS\LogAdapter as Contract;
-use Valkyrja\SMS\Message;
+use Valkyrja\Sms\LogAdapter as Contract;
+use Valkyrja\Sms\Message;
 
 /**
  * Class LogAdapter.

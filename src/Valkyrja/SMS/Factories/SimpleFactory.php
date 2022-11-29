@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\SMS\Factories;
+namespace Valkyrja\Sms\Factories;
 
-use Valkyrja\SMS\Adapter;
-use Valkyrja\SMS\Driver;
-use Valkyrja\SMS\Factory as Contract;
-use Valkyrja\SMS\Message;
+use Valkyrja\Sms\Adapter;
+use Valkyrja\Sms\Driver;
+use Valkyrja\Sms\Factory as Contract;
+use Valkyrja\Sms\Message;
 use Valkyrja\Support\Manager\Factories\SimpleFactoryWithMessage as Factory;
 
 /**

@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\SMS;
+namespace Valkyrja\Sms;
 
 use Valkyrja\Support\Manager\MessageManager;
 
 /**
- * Interface SMS.
+ * Interface Sms.
  *
  * @author Melech Mizrachi
  */
-interface SMS extends MessageManager
+interface Sms extends MessageManager
 {
     /**
      * @inheritDoc

@@ -20,7 +20,7 @@ use Valkyrja\Notification\Factory;
 use Valkyrja\Notification\NotifiableUser;
 use Valkyrja\Notification\Notification;
 use Valkyrja\Notification\Notifier as Contract;
-use Valkyrja\SMS\SMS;
+use Valkyrja\Sms\Sms;
 
 /**
  * Class Notifier.
@@ -56,14 +56,14 @@ class Notifier implements Contract
      * @param Factory      $factory   The factory
      * @param Broadcast    $broadcast The broadcast
      * @param Mail         $mail      The mail service
-     * @param SMS          $sms       The sms service
+     * @param Sms          $sms       The sms service
      * @param Config|array $config    The config
      */
     public function __construct(
         protected Factory $factory,
         protected Broadcast $broadcast,
         protected Mail $mail,
-        protected SMS $sms,
+        protected Sms $sms,
         protected Config|array $config
     ) {
     }

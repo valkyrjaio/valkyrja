@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\SMS\Facades;
+namespace Valkyrja\Sms\Facades;
 
-use Valkyrja\SMS\Driver;
-use Valkyrja\SMS\Message;
-use Valkyrja\SMS\SMS as Contract;
+use Valkyrja\Sms\Driver;
+use Valkyrja\Sms\Message;
+use Valkyrja\Sms\Sms as Contract;
 use Valkyrja\Support\Facade\Facade;
 
 /**
