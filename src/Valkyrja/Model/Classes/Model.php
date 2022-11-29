@@ -28,7 +28,7 @@ use function is_string;
  *
  * @author Melech Mizrachi
  */
-class Model implements Contract
+abstract class Model implements Contract
 {
     /**
      * Cached list of validation logic for models.
