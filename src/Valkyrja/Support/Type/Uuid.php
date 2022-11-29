@@ -122,7 +122,8 @@ class Uuid extends Uid
     protected static function convertToBits(string $uuid): string
     {
         // NOTE: Purposefully left as UUID to ensure we accept any valid UUID, not just one that uses this method
-        Uuid::validate($uuid);
+        $uuidClass = self::class;
+        $uuidClass::validate($uuid);
 
         // Get hexadecimal components of namespace
         $hex = str_replace(['-', '{', '}'], '', $uuid);
