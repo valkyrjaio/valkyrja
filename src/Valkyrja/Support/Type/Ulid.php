@@ -38,6 +38,8 @@ class Ulid extends Uid
 
     protected const MAX_RANDOM_BYTES = 4;
 
+    protected const FORMAT = '%010s%04s%04s%04s%04s';
+
     /**
      * The previously used time string.
      *
@@ -115,34 +117,6 @@ class Ulid extends Uid
     }
 
     /**
-     * Determine if a string is a valid ULID.
-     *
-     * @param string $ulid The ULID to check
-     *
-     * @return bool
-     */
-    public static function isValid(string $ulid): bool
-    {
-        return preg_match('/^' . static::REGEX . '$/i', $ulid) === 1;
-    }
-
-    /**
-     * Validate a ULID.
-     *
-     * @param string $ulid The ULID to check
-     *
-     * @throws InvalidUlidException
-     *
-     * @return void
-     */
-    public static function validate(string $ulid): void
-    {
-        if (! static::isValid($ulid)) {
-            static::throwInvalidException($ulid);
-        }
-    }
-
-    /**
      * Get a time to generate a ULID with.
      *
      * @param DateTimeInterface|null $dateTime [optional] The date time to use when generating the ULID
@@ -153,14 +127,38 @@ class Ulid extends Uid
     {
         // If no date was passed in
         if ($dateTime === null) {
-            // Use the microtime
-            $time = microtime();
-            $time = substr($time, 11) . substr($time, 2, 3);
-        } elseif ($time = $dateTime->format('Uv') < 0) {
+            return static::getTimeFromMicroTime(microtime());
+        }
+
+        if (($time = static::getTimeFromDateTime($dateTime)) < 0) {
             throw new InvalidArgumentException('The timestamp must be positive.');
         }
 
         return $time;
+    }
+
+    /**
+     * Get the time from micro time.
+     *
+     * @param string $time The micro time
+     *
+     * @return string
+     */
+    protected static function getTimeFromMicroTime(string $time): string
+    {
+        return substr($time, 11) . substr($time, 2, 3);
+    }
+
+    /**
+     * Get the time from a datetime.
+     *
+     * @param DateTimeInterface $dateTime The date time to use when generating the ULID
+     *
+     * @return string
+     */
+    protected static function getTimeFromDateTime(DateTimeInterface $dateTime): string
+    {
+        return $dateTime->format('Uv');
     }
 
     /**
@@ -290,7 +288,7 @@ class Ulid extends Uid
     protected static function formatTimeWithRandomBytes(string $time): string
     {
         return sprintf(
-            '%010s%04s%04s%04s%04s',
+            static::FORMAT,
             $time,
             static::convertRandomBytesPart(1),
             static::convertRandomBytesPart(2),
@@ -308,6 +306,10 @@ class Ulid extends Uid
      */
     protected static function convertRandomBytesPart(int $index): string
     {
+        if ($index > static::MAX_RANDOM_BYTES) {
+            return '';
+        }
+
         return base_convert((string) static::$randomBytes[$index], 10, 32);
     }
 

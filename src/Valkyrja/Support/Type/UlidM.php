@@ -28,6 +28,8 @@ class UlidM extends Ulid
 
     protected const MAX_RANDOM_BYTES = 3;
 
+    protected const FORMAT = '%010s%04s%04s%04s';
+
     /**
      * @inheritDoc
      */
@@ -42,20 +44,6 @@ class UlidM extends Ulid
     protected static function unsetRandomByteParts(array &$randomBytes): void
     {
         unset($randomBytes[4], $randomBytes[5]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected static function formatTimeWithRandomBytes(string $time): string
-    {
-        return sprintf(
-            '%010s%04s%04s%04s',
-            $time,
-            static::convertRandomBytesPart(1),
-            static::convertRandomBytesPart(2),
-            static::convertRandomBytesPart(3),
-        );
     }
 
     /**
