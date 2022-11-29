@@ -15,7 +15,7 @@ namespace Valkyrja\Auth\Models;
 
 use Valkyrja\Auth\AuthenticatedUsers as Contract;
 use Valkyrja\Auth\User;
-use Valkyrja\Model\Classes\CastableModel;
+use Valkyrja\Model\Models\CastableModel;
 use Valkyrja\Model\Enums\CastType;
 
 /**

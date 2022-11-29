@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\JWT\Models;
 
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 
 /**
  * Class EdDSAKey.

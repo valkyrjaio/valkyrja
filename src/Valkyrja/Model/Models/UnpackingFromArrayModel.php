@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Model\Classes;
+namespace Valkyrja\Model\Models;
 
-use Valkyrja\Model\Traits\ExposedModelTrait;
+use Valkyrja\Model\Traits\UnpackingFromArrayModelTrait;
 
 /**
- * Class ExposedModel.
+ * Class UnpackingFromArrayModel.
  *
  * @author Melech Mizrachi
  */
-abstract class ExposedModel extends Model
+abstract class UnpackingFromArrayModel extends Model
 {
-    use ExposedModelTrait;
+    use UnpackingFromArrayModelTrait;
 }

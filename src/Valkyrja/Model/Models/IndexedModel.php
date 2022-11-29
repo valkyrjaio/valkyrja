@@ -11,16 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Model\Classes;
+namespace Valkyrja\Model\Models;
 
-use Valkyrja\Model\Traits\EnhancedEnumModelTrait;
+use Valkyrja\Model\IndexedModel as Contract;
+use Valkyrja\Model\Traits\IndexedModelTrait;
 
 /**
- * Class EnhancedEnumModel.
+ * Class IndexedModel.
  *
  * @author Melech Mizrachi
  */
-abstract class EnhancedEnumModel extends Model
+abstract class IndexedModel extends Model implements Contract
 {
-    use EnhancedEnumModelTrait;
+    use IndexedModelTrait;
 }

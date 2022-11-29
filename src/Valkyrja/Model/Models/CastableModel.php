@@ -11,16 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Model\Classes;
+namespace Valkyrja\Model\Models;
 
-use Valkyrja\Model\Traits\UnpackingFromArrayModelTrait;
+use Valkyrja\Model\CastableModel as Contract;
+use Valkyrja\Model\Traits\CastableModelTrait;
 
 /**
- * Class UnpackingFromArrayModel.
+ * Class CastableModel.
  *
  * @author Melech Mizrachi
  */
-abstract class UnpackingFromArrayModel extends Model
+abstract class CastableModel extends Model implements Contract
 {
-    use UnpackingFromArrayModelTrait;
+    use CastableModelTrait;
 }

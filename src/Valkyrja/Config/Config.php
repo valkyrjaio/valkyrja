@@ -15,7 +15,7 @@ namespace Valkyrja\Config;
 
 use ArrayAccess;
 use JsonException;
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 
 use function Valkyrja\env;
 

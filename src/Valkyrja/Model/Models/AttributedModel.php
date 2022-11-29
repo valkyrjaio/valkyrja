@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Model\Classes;
+namespace Valkyrja\Model\Models;
 
 use Valkyrja\Model\AttributedModel as Contract;
 use Valkyrja\Model\Traits\AttributedModelTrait;

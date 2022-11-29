@@ -32,7 +32,7 @@
 ## Usage
 
 A model can be as simple or complex as you may need it to be. Basic usage involves extending off of the
-`Valkyrja\Model\Classes\Model` class and adding properties.
+`Valkyrja\Model\Models\Model` class and adding properties.
 
 ## Defining Models
 
@@ -45,7 +45,7 @@ when using `private` properties.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 
 class BasicModel extends Model
 {
@@ -90,7 +90,7 @@ the `Valkyrja\Model\Traits\ExposedProtectedModelTrait` trait.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 use Valkyrja\Model\Traits\ExposedProtectedModelTrait;
 
 class BasicModel extends Model
@@ -101,12 +101,12 @@ class BasicModel extends Model
 }
 ```
 
-Or extend off of `Valkyrja\Support\Model\Classes\ExposedProtectedModel`.
+Or extend off of `Valkyrja\Support\Model\Models\ExposedProtectedModel`.
 
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\ExposedProtectedModel;
+use Valkyrja\Model\Models\ExposedProtectedModel;
 
 class BasicModel extends ExposedProtectedModel
 {
@@ -121,7 +121,7 @@ If you would like to treat all properties (regardless of visibility) as exposabl
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 use Valkyrja\Model\Traits\ExposedModelTrait;
 
 class BasicModel extends Model
@@ -132,12 +132,12 @@ class BasicModel extends Model
 }
 ```
 
-Or extend off of `Valkyrja\Model\Classes\ExposedModel`.
+Or extend off of `Valkyrja\Model\Models\ExposedModel`.
 
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\ExposedModel;
+use Valkyrja\Model\Models\ExposedModel;
 
 class BasicModel extends ExposedModel
 {
@@ -153,7 +153,7 @@ the property name in StudlyCase.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 
 class BasicModel extends Model
 {
@@ -193,7 +193,7 @@ to `protected` so they are not publicly accessible.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 
 class BasicModel extends Model
 {
@@ -221,7 +221,7 @@ properties during creation.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 
 class BasicModelPromotion extends Model
 {
@@ -243,7 +243,7 @@ approach that uses the traditional property definitions and a constructor.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 
 class BasicModelConstructor extends Model
 {
@@ -343,7 +343,7 @@ need to use the `Valkyrja\Model\Traits\UnpackingFromArrayModelTrait` trait.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 use Valkyrja\Model\Traits\UnpackingFromArrayModelTrait;
 
 class BasicModel extends Model
@@ -354,12 +354,12 @@ class BasicModel extends Model
 }
 ```
 
-Or extend off of `Valkyrja\Model\Classes\UnpackingFromArrayModel`.
+Or extend off of `Valkyrja\Model\Models\UnpackingFromArrayModel`.
 
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\UnpackingFromArrayModel;
+use Valkyrja\Model\Models\UnpackingFromArrayModel;
 
 class BasicModel extends UnpackingFromArrayModel
 {
@@ -443,7 +443,7 @@ By default `BackedEnum` is the only supported enum type. If you require support 
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 use Valkyrja\Model\Traits\EnhancedEnumModelTrait;
 
 class BasicModel extends Model
@@ -454,12 +454,12 @@ class BasicModel extends Model
 }
 ```
 
-Or extend off of `Valkyrja\Model\Classes\EnhancedEnumModel`.
+Or extend off of `Valkyrja\Model\Models\EnhancedEnumModel`.
 
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\EnhancedEnumModel;
+use Valkyrja\Model\Models\EnhancedEnumModel;
 
 class BasicModel extends EnhancedEnumModel
 {
@@ -532,7 +532,7 @@ You may also use `asExposedArray` if you predefine exposable properties in your 
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 
 class BasicModel extends Model
 {
@@ -586,7 +586,7 @@ feature off by setting the `setOriginalPropertiesFromArray` static property to `
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 
 class BasicModel extends Model
 {
@@ -610,7 +610,7 @@ the `Valkyrja\Model\Traits\CastableModelTrait` trait.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 use Valkyrja\Model\Traits\CastableModelTrait;
 
 class BasicModel extends Model
@@ -621,12 +621,12 @@ class BasicModel extends Model
 }
 ```
 
-Or extend off of `Valkyrja\Model\Classes\CastableModel`.
+Or extend off of `Valkyrja\Model\Models\CastableModel`.
 
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\CastableModel;
+use Valkyrja\Model\Models\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -640,7 +640,7 @@ method instead.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 use Valkyrja\Model\Traits\CastableModelTrait;
 
 class BasicModel extends Model
@@ -668,7 +668,7 @@ the value to the corresponding `CastType` value you want to cast to.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\CastableModel;
+use Valkyrja\Model\Models\CastableModel;
 use Valkyrja\Model\Enums\CastType;
 
 class BasicModel extends CastableModel
@@ -700,7 +700,7 @@ incoming value should be overridden.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\CastableModel;
+use Valkyrja\Model\Models\CastableModel;
 use Valkyrja\Model\Enums\CastType;
 
 class BasicModel extends CastableModel
@@ -727,7 +727,7 @@ back to a simple `(object)` cast.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\CastableModel;
+use Valkyrja\Model\Models\CastableModel;
 use Valkyrja\Model\Enums\CastType;
 
 class BasicModel extends CastableModel
@@ -750,7 +750,7 @@ back to a simple `(array)` cast.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\CastableModel;
+use Valkyrja\Model\Models\CastableModel;
 use Valkyrja\Model\Enums\CastType;
 
 class BasicModel extends CastableModel
@@ -773,7 +773,7 @@ back to a simple `(object)` cast.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\CastableModel;
+use Valkyrja\Model\Models\CastableModel;
 use Valkyrja\Model\Enums\CastType;
 
 class BasicModel extends CastableModel
@@ -797,7 +797,7 @@ value is an array of string class names.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\CastableModel;
+use Valkyrja\Model\Models\CastableModel;
 use Valkyrja\Model\Enums\CastType;
 
 class BasicModel extends CastableModel
@@ -821,7 +821,7 @@ If you chose to use the `Valkyrja\Model\Traits\CastableModelTrait` trait you mus
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 use Valkyrja\Model\Traits\CastableModelTrait;
 
 class BasicModel extends Model
@@ -853,7 +853,7 @@ value in the array via the `fromArray` static method.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\CastableModel;
+use Valkyrja\Model\Models\CastableModel;
 use Valkyrja\Model\Enums\CastType;
 
 class BasicModel extends CastableModel
@@ -881,7 +881,7 @@ name. If the second value is an array then an array of enums will be returned.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\CastableModel;
+use Valkyrja\Model\Models\CastableModel;
 use Valkyrja\Model\Enums\CastType;
 
 class BasicModel extends CastableModel
@@ -904,7 +904,7 @@ By default `BackedEnum` is the only supported enum type. If you require support 
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\CastableModel;
+use Valkyrja\Model\Models\CastableModel;
 use Valkyrja\Model\Traits\EnhancedEnumCastableModelTrait;
 
 class BasicModel extends CastableModel
@@ -915,12 +915,12 @@ class BasicModel extends CastableModel
 }
 ```
 
-Or extend off of `Valkyrja\Model\Classes\EnhancedEnumCastableModel`.
+Or extend off of `Valkyrja\Model\Models\EnhancedEnumCastableModel`.
 
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\EnhancedEnumCastableModel;
+use Valkyrja\Model\Models\EnhancedEnumCastableModel;
 
 class BasicModel extends EnhancedEnumCastableModel
 {
@@ -940,7 +940,7 @@ in other modules.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\Model;
+use Valkyrja\Model\Models\Model;
 use Valkyrja\Model\IndexedModel;
 use Valkyrja\Model\Traits\IndexedModelTrait;
 
@@ -952,12 +952,12 @@ class BasicModel extends Model implements IndexedModel
 }
 ```
 
-Or extend off of `Valkyrja\Model\Classes\IndexedModel` and the interface will be implemented automatically.
+Or extend off of `Valkyrja\Model\Models\IndexedModel` and the interface will be implemented automatically.
 
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Classes\IndexedModel;
+use Valkyrja\Model\Models\IndexedModel;
 
 class BasicModel extends IndexedModel
 {

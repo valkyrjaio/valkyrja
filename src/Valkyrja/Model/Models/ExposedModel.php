@@ -11,17 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Model\Classes;
+namespace Valkyrja\Model\Models;
 
-use Valkyrja\Model\CastableModel as Contract;
-use Valkyrja\Model\Traits\CastableModelTrait;
+use Valkyrja\Model\Traits\ExposedModelTrait;
 
 /**
- * Class CastableModel.
+ * Class ExposedModel.
  *
  * @author Melech Mizrachi
  */
-abstract class CastableModel extends Model implements Contract
+abstract class ExposedModel extends Model
 {
-    use CastableModelTrait;
+    use ExposedModelTrait;
 }
