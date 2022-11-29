@@ -18,8 +18,8 @@ use Valkyrja\Auth\AuthenticatedUsers;
 use Valkyrja\Auth\Config\Config;
 use Valkyrja\Auth\Exceptions\TokenizationException;
 use Valkyrja\Auth\JWTRepository as Contract;
-use Valkyrja\JWT\Driver as JWT;
-use Valkyrja\JWT\JWT as JWTManager;
+use Valkyrja\Jwt\Driver as JWT;
+use Valkyrja\Jwt\Jwt as JWTManager;
 use Valkyrja\Session\Session;
 
 /**

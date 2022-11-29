@@ -28,7 +28,7 @@ use Valkyrja\Event\Providers\ServiceProvider as EventServiceProvider;
 use Valkyrja\Filesystem\Providers\ServiceProvider as FilesystemServiceProvider;
 use Valkyrja\Http\Providers\ServiceProvider as HttpServiceProvider;
 use Valkyrja\HttpKernel\Providers\ServiceProvider as HttpKernelServiceProvider;
-use Valkyrja\JWT\Providers\ServiceProvider as JWTServiceProvider;
+use Valkyrja\Jwt\Providers\ServiceProvider as JWTServiceProvider;
 use Valkyrja\Log\Providers\ServiceProvider as LogServiceProvider;
 use Valkyrja\Mail\Providers\ServiceProvider as MailServiceProvider;
 use Valkyrja\Notification\Providers\ServiceProvider as NotificationServiceProvider;

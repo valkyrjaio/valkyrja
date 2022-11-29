@@ -31,7 +31,7 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Http\Request;
-use Valkyrja\JWT\JWT;
+use Valkyrja\Jwt\Jwt;
 use Valkyrja\ORM\ORM;
 use Valkyrja\Session\Session;
 
@@ -305,7 +305,7 @@ class ServiceProvider extends Provider
             static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container): JWTCryptRepository {
                 return new $name(
                     $adapter,
-                    $container->getSingleton(JWT::class),
+                    $container->getSingleton(Jwt::class),
                     $container->getSingleton(Crypt::class),
                     $container->getSingleton(Session::class),
                     $config,
@@ -329,7 +329,7 @@ class ServiceProvider extends Provider
             static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container): JWTRepository {
                 return new $name(
                     $adapter,
-                    $container->getSingleton(JWT::class),
+                    $container->getSingleton(Jwt::class),
                     $container->getSingleton(Session::class),
                     $config,
                     $user

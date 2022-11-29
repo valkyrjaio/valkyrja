@@ -27,7 +27,7 @@ use Valkyrja\Container\Config\Container;
 use Valkyrja\Crypt\Config\Crypt;
 use Valkyrja\Event\Config\Event;
 use Valkyrja\Filesystem\Config\Filesystem;
-use Valkyrja\JWT\Config\JWT;
+use Valkyrja\Jwt\Config\Jwt;
 use Valkyrja\Log\Config\Log;
 use Valkyrja\Mail\Config\Mail;
 use Valkyrja\ORM\Config\ORM;
@@ -66,7 +66,7 @@ class Valkyrja extends Model
         $this->crypt      = new Crypt($properties['crypt'] ?? null, true);
         $this->event      = new Event($properties['event'] ?? null, true);
         $this->filesystem = new Filesystem($properties['filesystem'] ?? null, true);
-        $this->jwt        = new JWT($properties['jwt'] ?? null, true);
+        $this->jwt        = new Jwt($properties['jwt'] ?? null, true);
         $this->log        = new Log($properties['log'] ?? null, true);
         $this->mail       = new Mail($properties['mail'] ?? null, true);
         $this->orm        = new ORM($properties['orm'] ?? null, true);
