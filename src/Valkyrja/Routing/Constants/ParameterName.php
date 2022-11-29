@@ -29,7 +29,21 @@ final class ParameterName
     public const ANY = 'any';
     public const NUM = 'num';
 
-    public const ID   = 'id';
-    public const UUID = 'uuid';
+    public const ID = 'id';
+
     public const SLUG = 'slug';
+
+    public const UUID    = 'uuid';
+    public const UUID_V1 = 'uuidV1';
+    public const UUID_V3 = 'uuidV3';
+    public const UUID_V4 = 'uuidV4';
+    public const UUID_V5 = 'uuidV5';
+    public const UUID_V6 = 'uuidV6';
+    public const UUID_V7 = 'uuidV7';
+    public const UUID_V8 = 'uuidV8';
+
+    public const ULID   = 'ulid';
+    public const ULID_T = 'ulidT';
+    public const ULID_S = 'ulidS';
+    public const ULID_M = 'ulidM';
 }

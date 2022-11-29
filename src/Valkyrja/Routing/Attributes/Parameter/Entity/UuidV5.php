@@ -19,12 +19,12 @@ use Valkyrja\Routing\Constants\ParameterName;
 use Valkyrja\Routing\Constants\Regex;
 
 /**
- * Attribute Uuid.
+ * Attribute UuidV5.
  *
  * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
-class Uuid extends Entity
+class UuidV5 extends Entity
 {
     public function __construct(
         string $entity = null,
@@ -39,8 +39,8 @@ class Uuid extends Entity
             entity             : $entity,
             entityColumn       : $entityColumn,
             entityRelationships: $entityRelationships,
-            name               : $name ?? ParameterName::UUID,
-            regex              : Regex::UUID,
+            name               : $name ?? ParameterName::UUID_V5,
+            regex              : Regex::UUID_V5,
             isOptional         : $isOptional,
             shouldCapture      : $shouldCapture,
             default            : $default,

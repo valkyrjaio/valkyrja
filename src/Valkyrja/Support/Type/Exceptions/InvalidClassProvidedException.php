@@ -20,6 +20,6 @@ use InvalidArgumentException;
  *
  * @author Melech Mizrachi
  */
-class InvalidClassProvidedException extends InvalidArgumentException
+class InvalidClassProvidedException extends InvalidArgumentException implements ClassThrowable
 {
 }

@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Type\Exceptions;
 
-use InvalidArgumentException;
-
 /**
- * Class InvalidClassPropertyProvidedException.
+ * Class InvalidUuidV3Exception.
  *
  * @author Melech Mizrachi
  */
-class InvalidClassPropertyProvidedException extends InvalidArgumentException implements ClassThrowable
+class InvalidUuidV3Exception extends InvalidUuidException
 {
 }

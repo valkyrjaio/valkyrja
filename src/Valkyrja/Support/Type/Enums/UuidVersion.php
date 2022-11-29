@@ -11,15 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Type\Exceptions;
-
-use InvalidArgumentException;
+namespace Valkyrja\Support\Type\Enums;
 
 /**
- * Class InvalidClassPropertyProvidedException.
+ * Enum UuidVersion.
  *
  * @author Melech Mizrachi
  */
-class InvalidClassPropertyProvidedException extends InvalidArgumentException implements ClassThrowable
+enum UuidVersion: int
 {
+    case V1 = 1;
+    case V3 = 3;
+    case V4 = 4;
+    case V5 = 5;
+    case V6 = 6;
+    case V7 = 7;
+    case V8 = 8;
 }

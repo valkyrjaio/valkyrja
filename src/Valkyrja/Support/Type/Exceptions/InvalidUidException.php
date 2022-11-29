@@ -16,10 +16,10 @@ namespace Valkyrja\Support\Type\Exceptions;
 use InvalidArgumentException;
 
 /**
- * Class InvalidClassPropertyProvidedException.
+ * Class InvalidUidException.
  *
  * @author Melech Mizrachi
  */
-class InvalidClassPropertyProvidedException extends InvalidArgumentException implements ClassThrowable
+class InvalidUidException extends InvalidArgumentException implements UidThrowable
 {
 }

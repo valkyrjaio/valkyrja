@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Type\Exceptions;
 
-use InvalidArgumentException;
+use Throwable;
 
 /**
- * Class InvalidClassPropertyProvidedException.
+ * Class ClassThrowable.
  *
  * @author Melech Mizrachi
  */
-class InvalidClassPropertyProvidedException extends InvalidArgumentException implements ClassThrowable
+interface ClassThrowable extends Throwable, TypeThrowable
 {
 }
