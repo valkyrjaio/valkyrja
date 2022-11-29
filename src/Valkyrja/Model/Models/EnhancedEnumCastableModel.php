@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model\Models;
 
-use Valkyrja\Model\Traits\EnhancedEnumCastableModelTrait;
-
 /**
  * Class EnhancedEnumSupportModel.
  *

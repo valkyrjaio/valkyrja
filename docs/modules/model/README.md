@@ -70,7 +70,8 @@ class BasicModel extends Model
 }
 ```
 
-> **Note:** Using getter and setters with public properties is redundant. The magic `__isset`, `__set` and `__get` methods are
+> **Note:** Using getter and setters with public properties is redundant. The magic `__isset`, `__set` and `__get`
+> methods are
 > bypassed when using the property directly. However, they are still used internally within the model.
 
 > **Note:** Getters and setters **ARE** required when using private methods.
@@ -85,13 +86,13 @@ would give no way for uses of that property outside the model.
 
 If you would like to treat `public` and `protected` as exposable (with the only difference being that `protected`
 properties are forced to go through getters and setters), and private as non-exposable by default you'll need to use
-the `Valkyrja\Model\Traits\ExposedProtectedModelTrait` trait.
+the `Valkyrja\Model\Models\ExposedProtectedModelTrait` trait.
 
 ```php
 namespace App\Models;
 
 use Valkyrja\Model\Models\Model;
-use Valkyrja\Model\Traits\ExposedProtectedModelTrait;
+use Valkyrja\Model\Models\ExposedProtectedModelTrait;
 
 class BasicModel extends Model
 {
@@ -101,7 +102,7 @@ class BasicModel extends Model
 }
 ```
 
-Or extend off of `Valkyrja\Support\Model\Models\ExposedProtectedModel`.
+Or extend off of `Valkyrja\Model\Models\ExposedProtectedModel`.
 
 ```php
 namespace App\Models;
@@ -116,13 +117,13 @@ class BasicModel extends ExposedProtectedModel
 
 If you would like to treat all properties (regardless of visibility) as exposable (with the only difference being that
 `protected` and `private` properties are forced to go through getters and setters) you'll need to use the
-`Valkyrja\Model\Traits\ExposedModelTrait` trait.
+`Valkyrja\Model\Models\ExposedModelTrait` trait.
 
 ```php
 namespace App\Models;
 
 use Valkyrja\Model\Models\Model;
-use Valkyrja\Model\Traits\ExposedModelTrait;
+use Valkyrja\Model\Models\ExposedModelTrait;
 
 class BasicModel extends Model
 {
@@ -338,13 +339,13 @@ $model = BasicModel::fromArray($array);
 
 Do note that by default the properties passed to `Model::fromArray` are not passed to the constructor. If you wish to
 use array unpacking of the properties to avoid a runtime exception if your constructor has required parameters you will
-need to use the `Valkyrja\Model\Traits\UnpackingFromArrayModelTrait` trait.
+need to use the `Valkyrja\Model\Models\UnpackingFromArrayModelTrait` trait.
 
 ```php
 namespace App\Models;
 
 use Valkyrja\Model\Models\Model;
-use Valkyrja\Model\Traits\UnpackingFromArrayModelTrait;
+use Valkyrja\Model\Models\UnpackingFromArrayModelTrait;
 
 class BasicModel extends Model
 {
@@ -438,13 +439,13 @@ $array = $model->asArray(...$listOfProperties);
 ### Enhanced Enum Support
 
 By default `BackedEnum` is the only supported enum type. If you require support for `UnitEnum` you will need to use the
-`Valkyrja\Model\Traits\EnhancedEnumModelTrait` trait.
+`Valkyrja\Model\Models\EnhancedEnumModelTrait` trait.
 
 ```php
 namespace App\Models;
 
 use Valkyrja\Model\Models\Model;
-use Valkyrja\Model\Traits\EnhancedEnumModelTrait;
+use Valkyrja\Model\Models\EnhancedEnumModelTrait;
 
 class BasicModel extends Model
 {
@@ -605,13 +606,13 @@ The `$casting` static property is an array of key/value pairs where the key is t
 either a `CastType`, or an array where the first value is a `CastType`.
 
 The default model does not have casting capabilities built in. If you require support for casting you will need to use
-the `Valkyrja\Model\Traits\CastableModelTrait` trait.
+the `Valkyrja\Model\Models\CastableModelTrait` trait.
 
 ```php
 namespace App\Models;
 
 use Valkyrja\Model\Models\Model;
-use Valkyrja\Model\Traits\CastableModelTrait;
+use Valkyrja\Model\Models\CastableModelTrait;
 
 class BasicModel extends Model
 {
@@ -641,7 +642,7 @@ method instead.
 namespace App\Models;
 
 use Valkyrja\Model\Models\Model;
-use Valkyrja\Model\Traits\CastableModelTrait;
+use Valkyrja\Model\Models\CastableModelTrait;
 
 class BasicModel extends Model
 {
@@ -815,14 +816,14 @@ class BasicModel extends CastableModel
 }
 ```
 
-If you chose to use the `Valkyrja\Model\Traits\CastableModelTrait` trait you must not use the
+If you chose to use the `Valkyrja\Model\Models\CastableModelTrait` trait you must not use the
 `castingsAllowedClasses` static property, but override the `getCastingsAllowedClasses` static method instead.
 
 ```php
 namespace App\Models;
 
 use Valkyrja\Model\Models\Model;
-use Valkyrja\Model\Traits\CastableModelTrait;
+use Valkyrja\Model\Models\CastableModelTrait;
 
 class BasicModel extends Model
 {
@@ -899,13 +900,13 @@ class BasicModel extends CastableModel
 ```
 
 By default `BackedEnum` is the only supported enum type. If you require support for `UnitEnum` you will need to use the
-`Valkyrja\Model\Traits\EnhancedEnumCastableModelTrait` trait.
+`Valkyrja\Model\Models\EnhancedEnumCastableModelTrait` trait.
 
 ```php
 namespace App\Models;
 
 use Valkyrja\Model\Models\CastableModel;
-use Valkyrja\Model\Traits\EnhancedEnumCastableModelTrait;
+use Valkyrja\Model\Models\EnhancedEnumCastableModelTrait;
 
 class BasicModel extends CastableModel
 {
@@ -933,7 +934,7 @@ class BasicModel extends EnhancedEnumCastableModel
 There may be times you want to have an indexed representation of your model. Whether to save on bytes between services
 or other reasons, you'll need a way to convert an indexed array to your model and vice-versa.
 
-To accomplish this you can use the `Valkyrja\Model\Traits\IndexedModelTrait` and implement the
+To accomplish this you can use the `Valkyrja\Model\Models\IndexedModelTrait` and implement the
 `Valkyrja\Model\IndexedModel` interface if you wish to. Implementing the contract will allow for additional features
 in other modules.
 
@@ -942,7 +943,7 @@ namespace App\Models;
 
 use Valkyrja\Model\Models\Model;
 use Valkyrja\Model\IndexedModel;
-use Valkyrja\Model\Traits\IndexedModelTrait;
+use Valkyrja\Model\Models\IndexedModelTrait;
 
 class BasicModel extends Model implements IndexedModel
 {

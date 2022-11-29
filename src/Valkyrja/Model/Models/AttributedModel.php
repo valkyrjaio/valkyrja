@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Model\Models;
 
 use Valkyrja\Model\AttributedModel as Contract;
-use Valkyrja\Model\Traits\AttributedModelTrait;
 
 /**
  * Class AttributedModel.

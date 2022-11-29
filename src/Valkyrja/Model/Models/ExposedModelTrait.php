@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Model\Traits;
+namespace Valkyrja\Model\Models;
 
 /**
- * Trait UnpackingFromArrayModelTrait.
+ * Trait ExposedModelTrait.
  *
  * @author Melech Mizrachi
  */
-trait UnpackingFromArrayModelTrait
+trait ExposedModelTrait
 {
     /**
      * @inheritDoc
      */
-    protected static function __getNew(array $properties): self
+    protected function __allProperties(bool $includeHidden = false): array
     {
-        return new static(...$properties);
+        return $this->__allPropertiesIncludingHidden();
     }
 }

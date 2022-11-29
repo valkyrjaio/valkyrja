@@ -11,21 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Model\Traits;
+namespace Valkyrja\Model\Models;
 
 use BackedEnum;
-use JsonSerializable;
 use UnitEnum;
 use Valkyrja\Support\Enum\JsonSerializableEnum;
 use Valkyrja\Support\Type\Cls;
 
 /**
- * Trait EnhancedEnumSupportModelTrait.
+ * Trait EnhancedEnumSupportCastableModelTrait.
  *
  * @author Melech Mizrachi
  */
-trait EnhancedEnumModelTrait
+trait EnhancedEnumCastableModelTrait
 {
+    use EnhancedEnumModelTrait;
+
     /**
      * @inheritDoc
      */
@@ -52,30 +53,5 @@ trait EnhancedEnumModelTrait
                 'allowed_classes' => $type,
             ]
         );
-    }
-
-    /**
-     * Get a property's value for jsonSerialize.
-     *
-     * @param string $property The property
-     *
-     * @return mixed
-     */
-    protected function __getJsonPropertyValue(string $property): mixed
-    {
-        $value = $this->__get($property);
-
-        // If this is a json array we're building and the value isn't JsonSerializable
-        if (! ($value instanceof JsonSerializable)) {
-            if ($value instanceof BackedEnum) {
-                return $value->value;
-            }
-
-            if ($value instanceof UnitEnum) {
-                return serialize($value);
-            }
-        }
-
-        return $value;
     }
 }
