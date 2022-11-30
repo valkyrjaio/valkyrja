@@ -21,6 +21,7 @@
   },
   "require-dev"       : {
     "league/flysystem"            : "^3.0",
+    "league/flysystem-aws-s3-v3"  : "^3.0",
     "fakerphp/faker"              : "^1.20",
     "filp/whoops"                 : "^2.14",
     "firebase/php-jwt"            : "^6.3",
@@ -37,6 +38,7 @@
     "psr/log"                     : ">=1.1.4",
     "pusher/pusher-php-server"    : "^7.0",
     "twig/twig"                   : "^3.4",
+    "vimeo/psalm"                 : "^4.30.0",
     "ext-curl"                    : "*",
     "ext-pdo"                     : "*",
     "ext-openssl"                 : "*",

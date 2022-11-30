@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Provider\Traits;
 
+use Valkyrja\Support\Provider\Provides;
+
 /**
  * Trait AllowsProviders.
  *

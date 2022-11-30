@@ -324,10 +324,12 @@ class Collection implements Contract
                     throw new InvalidRoutePath("{$route->getPath()} is missing a regex for `{$parameter->getName()}`");
                 }
 
-                // Set the regex to the enum cases
-                $parameter->setRegex(implode('|', array_column($enum::cases(), 'value')));
-                // Ensure the type case was set properly
-                $parameter->setType(CastType::enum);
+                if ($enum) {
+                    // Set the regex to the enum cases
+                    $parameter->setRegex(implode('|', array_column($enum::cases(), 'value')));
+                    // Ensure the type case was set properly
+                    $parameter->setType(CastType::enum);
+                }
             }
 
             // Get the replacement for this parameter's name (something like {name} or {name?}

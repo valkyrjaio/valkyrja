@@ -32,9 +32,9 @@ interface Template
     /**
      * Get the template name.
      *
-     * @return string
+     * @return string|null
      */
-    public function getName(): string;
+    public function getName(): string|null;
 
     /**
      * Set the template name.
@@ -83,11 +83,11 @@ interface Template
     /**
      * Escape a value for output.
      *
-     * @param string $value The value to escape
+     * @param string|int|float $value The value to escape
      *
      * @return string
      */
-    public function escape(string $value): string;
+    public function escape(string|int|float $value): string;
 
     /**
      * Set the layout for the view template.

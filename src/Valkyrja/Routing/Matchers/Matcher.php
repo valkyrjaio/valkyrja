@@ -15,6 +15,7 @@ namespace Valkyrja\Routing\Matchers;
 
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Enums\CastType;
+use Valkyrja\Routing\Exceptions\InvalidRouteParameter;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Matcher as Contract;
 use Valkyrja\Routing\Models\Parameter;
@@ -51,6 +52,7 @@ class Matcher implements Contract
      * @inheritDoc
      *
      * @throws InvalidRoutePath
+     * @throws InvalidRouteParameter
      */
     public function match(string $path, string $method = null): ?Route
     {
@@ -80,6 +82,7 @@ class Matcher implements Contract
      * @inheritDoc
      *
      * @throws InvalidRoutePath
+     * @throws InvalidRouteParameter
      */
     public function matchDynamic(string $path, string $method = null): ?Route
     {
@@ -116,6 +119,7 @@ class Matcher implements Contract
      * @param string|null $method  [optional] The request method
      *
      * @throws InvalidRoutePath
+     * @throws InvalidRouteParameter
      *
      * @return Route
      */
@@ -168,6 +172,8 @@ class Matcher implements Contract
      * @param int       $index     The match index
      * @param mixed     $match     The match value
      *
+     * @throws InvalidRouteParameter
+     *
      * @return mixed
      */
     protected function getMatchValueForType(Route $route, Parameter $parameter, CastType $castType, int $index, mixed $match): mixed
@@ -177,7 +183,9 @@ class Matcher implements Contract
             CastType::bool   => (bool) $match,
             CastType::int    => (int) $match,
             CastType::float  => (float) $match,
-            CastType::enum   => $parameter->getEnum()::from($match),
+            CastType::enum   => ($enum = $parameter->getEnum())
+                ? $enum::from($match)
+                : throw new InvalidRouteParameter("Missing enum class name for {$parameter->getName()}"),
             default          => $match,
         };
     }

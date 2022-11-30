@@ -55,7 +55,7 @@ interface Factory
      * @param class-string<T> $name   The repository class name
      * @param class-string<E> $entity The entity class name
      *
-     * @return T<E>
+     * @return T
      */
     public function createRepository(Driver $driver, string $name, string $entity): Repository;
 

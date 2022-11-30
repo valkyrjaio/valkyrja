@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.30.0@d0bc6e25d89f649e4f36a534f330f8bb4643dd69">
+  <file src="src/Valkyrja/Annotation/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Api/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Auth/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="3">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Auth/Repositories/Repository.php">
+    <UndefinedClass occurrences="3">
+      <code>new $this-&gt;userEntityName()</code>
+      <code>new $this-&gt;userEntityName()</code>
+      <code>new $this-&gt;usersModel()</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Broadcast/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Cache/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Client/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Console/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Crypt/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Dispatcher/Dispatchers/Dispatcher.php">
+    <UndefinedClass occurrences="2">
+      <code>$class::$method(...$arguments)</code>
+      <code>new $class(...$arguments)</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Event/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Filesystem/Adapters/FlysystemAdapter.php">
+    <UndefinedClass occurrences="24">
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>$this-&gt;flysystem</code>
+      <code>FlysystemInterface</code>
+      <code>FlysystemInterface</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="19">
+      <code>FileExistsException</code>
+      <code>FileExistsException</code>
+      <code>FileExistsException</code>
+      <code>FileExistsException</code>
+      <code>FileNotFoundException</code>
+      <code>FileNotFoundException</code>
+      <code>FileNotFoundException</code>
+      <code>FileNotFoundException</code>
+      <code>FileNotFoundException</code>
+      <code>FileNotFoundException</code>
+      <code>FileNotFoundException</code>
+      <code>FileNotFoundException</code>
+      <code>FileNotFoundException</code>
+      <code>FileNotFoundException</code>
+      <code>FileNotFoundException</code>
+      <code>FileNotFoundException</code>
+      <code>FileNotFoundException</code>
+      <code>FileNotFoundException</code>
+      <code>RootViolationException</code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="src/Valkyrja/Filesystem/Config/Filesystem.php">
+    <UndefinedClass occurrences="2">
+      <code>AwsS3Adapter</code>
+      <code>Local</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Filesystem/Constants/ConfigValue.php">
+    <UndefinedClass occurrences="2">
+      <code>AwsS3Adapter</code>
+      <code>Local</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Filesystem/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="5">
+      <code>'config'</code>
+      <code>FlysystemAwsS3Adapter</code>
+      <code>FlysystemAwsS3Adapter</code>
+      <code>FlysystemAwsS3Adapter</code>
+      <code>FlysystemAwsS3Adapter</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/HttpKernel/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Jwt/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Log/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Mail/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="2">
+      <code>'config'</code>
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Notification/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/ORM/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Path/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Routing/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="3">
+      <code>'config'</code>
+      <code>'config'</code>
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Session/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Sms/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/Validation/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="1">
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Valkyrja/View/Providers/ServiceProvider.php">
+    <UndefinedClass occurrences="4">
+      <code>'config'</code>
+      <code>'config'</code>
+      <code>'config'</code>
+      <code>'config'</code>
+    </UndefinedClass>
+  </file>
+</files>

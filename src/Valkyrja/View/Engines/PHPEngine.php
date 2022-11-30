@@ -178,8 +178,9 @@ class PHPEngine implements Engine
      */
     protected function getDir(string $path = null): string
     {
-        return $this->templateDir . ($path
+        return $this->templateDir
+            . ($path
                 ? Directory::DIRECTORY_SEPARATOR . $path
-                : $path);
+                : '');
     }
 }

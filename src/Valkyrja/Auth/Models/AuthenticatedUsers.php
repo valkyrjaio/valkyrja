@@ -15,13 +15,15 @@ namespace Valkyrja\Auth\Models;
 
 use Valkyrja\Auth\AuthenticatedUsers as Contract;
 use Valkyrja\Auth\User;
-use Valkyrja\Model\Models\CastableModel;
 use Valkyrja\Model\Enums\CastType;
+use Valkyrja\Model\Models\CastableModel;
 
 /**
  * Class Collection.
  *
- * @author Melech Mizrachi
+ * @author   Melech Mizrachi
+ *
+ * @template T
  */
 class AuthenticatedUsers extends CastableModel implements Contract
 {
