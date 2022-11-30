@@ -46,4 +46,9 @@ final class ParameterName
     public const ULID_T = 'ulidT';
     public const ULID_S = 'ulidS';
     public const ULID_M = 'ulidM';
+
+    public const VLID   = 'vlid';
+    public const VLID_T = 'vlidT';
+    public const VLID_S = 'vlidS';
+    public const VLID_M = 'vlidM';
 }

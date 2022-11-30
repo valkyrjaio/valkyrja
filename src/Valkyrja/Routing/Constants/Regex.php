@@ -25,6 +25,10 @@ use Valkyrja\Support\Type\UuidV5;
 use Valkyrja\Support\Type\UuidV6;
 use Valkyrja\Support\Type\UuidV7;
 use Valkyrja\Support\Type\UuidV8;
+use Valkyrja\Support\Type\Vlid;
+use Valkyrja\Support\Type\VlidM;
+use Valkyrja\Support\Type\VlidS;
+use Valkyrja\Support\Type\VlidT;
 
 /**
  * Constant Regex.
@@ -54,6 +58,11 @@ final class Regex
     public const ULID_T = UlidT::REGEX;
     public const ULID_S = UlidS::REGEX;
     public const ULID_M = UlidM::REGEX;
+
+    public const VLID   = Vlid::REGEX;
+    public const VLID_T = VlidT::REGEX;
+    public const VLID_S = VlidS::REGEX;
+    public const VLID_M = VlidM::REGEX;
 
     public const ALPHA                = '[a-zA-Z]+';
     public const ALPHA_LOWERCASE      = '[a-z]+';
