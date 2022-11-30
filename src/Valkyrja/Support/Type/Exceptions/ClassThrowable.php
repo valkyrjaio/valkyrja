@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Type\Exceptions;
 
-use Throwable;
-
 /**
  * Class ClassThrowable.
  *
  * @author Melech Mizrachi
  */
-interface ClassThrowable extends Throwable, TypeThrowable
+interface ClassThrowable extends TypeThrowable
 {
 }

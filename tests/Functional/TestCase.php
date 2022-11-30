@@ -10,16 +10,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests;
+namespace Valkyrja\Tests\Functional;
 
+use JsonException;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Http\Factories\RequestFactory;
 use Valkyrja\Http\Request;
 use Valkyrja\Support\Directory;
+use Valkyrja\Tests\Config;
+use Valkyrja\Tests\EnvTest;
 
 /**
- * Test case for tests.
+ * Test case for functional tests.
  *
  * @author Melech Mizrachi
  */
@@ -34,6 +37,8 @@ class TestCase extends PHPUnitTestCase
 
     /**
      * Setup functional tests.
+     *
+     * @throws JsonException
      *
      * @return void
      */

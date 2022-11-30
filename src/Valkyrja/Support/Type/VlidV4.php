@@ -27,7 +27,10 @@ use Valkyrja\Support\Type\Exceptions\InvalidVlidV4Exception;
  */
 class VlidV4 extends Vlid
 {
-    public const REGEX = '[0-7][' . self::VALID_CHARACTERS . ']{12}[4][' . self::VALID_CHARACTERS . ']{4}';
+    public const REGEX = '[0-7]'
+    . '[' . self::VALID_CHARACTERS . ']{12}'
+    . '[4]'
+    . '[' . self::VALID_CHARACTERS . ']{4}';
 
     public const VERSION = VlidVersion::V4;
 

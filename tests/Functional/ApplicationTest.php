@@ -33,7 +33,6 @@ use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
 use Valkyrja\Tests\Config;
 use Valkyrja\Tests\EnvTest;
-use Valkyrja\Tests\TestCase;
 use Valkyrja\Tests\Unit\Support\ProviderClass;
 use Valkyrja\View\View;
 

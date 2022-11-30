@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Type\Exceptions;
 
-use Throwable;
-
 /**
  * Class UidThrowable.
  *
  * @author Melech Mizrachi
  */
-interface UidThrowable extends Throwable, TypeThrowable
+interface UidThrowable extends TypeThrowable
 {
 }

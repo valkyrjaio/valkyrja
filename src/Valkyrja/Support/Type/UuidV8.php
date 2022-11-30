@@ -31,7 +31,7 @@ abstract class UuidV8 extends Uuid
     . self::REGEX_PART . '{4}-'
     . self::REGEX_PART . '{12}';
 
-    protected const VERSION = UuidVersion::V8;
+    public const VERSION = UuidVersion::V8;
 
     /**
      * Generate a v8 UUID.

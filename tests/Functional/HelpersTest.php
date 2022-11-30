@@ -37,7 +37,6 @@ use Valkyrja\Routing\Dispatchers\Router;
 use Valkyrja\Routing\Route;
 use Valkyrja\Session\Managers\Session;
 use Valkyrja\Support\Directory;
-use Valkyrja\Tests\TestCase;
 use Valkyrja\View\Managers\View;
 
 use function get_class;

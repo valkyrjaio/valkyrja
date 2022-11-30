@@ -15,6 +15,7 @@ namespace Valkyrja\Support\Type;
 
 use Exception;
 use RuntimeException;
+use Valkyrja\Support\Type\Enums\UuidVersion;
 use Valkyrja\Support\Type\Exceptions\InvalidUuidException;
 
 use function chr;
@@ -35,9 +36,9 @@ class Uuid extends Uid
     . self::REGEX_PART . '{4}-'
     . self::REGEX_PART . '{12}';
 
-    protected const REGEX_PART = '[0-9A-Fa-f]';
+    public const VERSION = UuidVersion::V1;
 
-    protected const VERSION = 0;
+    protected const REGEX_PART = '[0-9A-Fa-f]';
 
     /**
      * Generate v1 UUID

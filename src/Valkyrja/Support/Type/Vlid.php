@@ -29,11 +29,17 @@ use Valkyrja\Support\Type\Exceptions\InvalidVlidException;
  */
 class Vlid extends Ulid
 {
-    public const REGEX = '[0-7][' . self::VALID_CHARACTERS . ']{25}';
-
-    protected const FORMAT = '%013s%01s%04s%04s%04s';
+    public const REGEX = '[0-7]'
+    . '[' . self::VALID_CHARACTERS . ']{12}'
+    . '[1-4]'
+    . '[' . self::VALID_CHARACTERS . ']{4}'
+    . '([' . self::VALID_CHARACTERS . ']{4})?'
+    . '([' . self::VALID_CHARACTERS . ']{4})?'
+    . '([' . self::VALID_CHARACTERS . ']{4})?';
 
     public const VERSION = VlidVersion::V1;
+
+    protected const FORMAT = '%013s%01s%04s%04s%04s';
 
     protected const MAX_RANDOM_BYTES = 3;
 

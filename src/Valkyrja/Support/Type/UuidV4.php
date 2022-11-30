@@ -34,7 +34,7 @@ class UuidV4 extends Uuid
     . self::REGEX_PART . '{4}-'
     . self::REGEX_PART . '{12}';
 
-    protected const VERSION = UuidVersion::V4;
+    public const VERSION = UuidVersion::V4;
 
     /**
      * Generate a v4 UUID.
