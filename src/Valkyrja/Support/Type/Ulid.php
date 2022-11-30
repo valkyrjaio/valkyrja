@@ -300,13 +300,24 @@ class Ulid extends Uid
     protected static function formatTimeWithRandomBytes(string $time): string
     {
         return sprintf(
-            static::FORMAT,
-            $time,
-            static::convertRandomBytesPart(1),
-            static::convertRandomBytesPart(2),
-            static::convertRandomBytesPart(3),
-            static::convertRandomBytesPart(4)
+               static::FORMAT,
+               $time,
+            ...static::getConvertedRandomBytesForFormat()
         );
+    }
+
+    /**
+     * @return string[]
+     */
+    protected static function getConvertedRandomBytesForFormat(): array
+    {
+        $convertedRandomBytes = [];
+
+        for ($i = 1; $i <= static::MAX_RANDOM_BYTES; $i++) {
+            $convertedRandomBytes[] = static::convertRandomBytesPart($i);
+        }
+
+        return $convertedRandomBytes;
     }
 
     /**

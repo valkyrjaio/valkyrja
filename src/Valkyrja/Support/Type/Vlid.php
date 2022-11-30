@@ -14,30 +14,91 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Type;
 
 use DateTimeInterface;
+use Exception;
+use Valkyrja\Support\Type\Enums\VlidVersion;
 use Valkyrja\Support\Type\Exceptions\InvalidVlidException;
 
 /**
  * Class Vlid.
  *
  * Valkyrja Universally Unique Lexicographically Sortable Identifier (VLID)
- * A more precise version of a ULID where time must be down to the microsecond.
+ * A more precise version of a ULID where time must be down to the microsecond, and can sacrifice on randomness a
+ * little while remaining 128 bit.
  *
  * @author Melech Mizrachi
  */
 class Vlid extends Ulid
 {
-    public const REGEX = '[0-7][' . self::VALID_CHARACTERS . ']{28}';
+    public const REGEX = '[0-7][' . self::VALID_CHARACTERS . ']{25}';
 
-    protected const MAX_RANDOM_BYTES = 4;
+    protected const FORMAT = '%013s%01s%04s%04s%04s';
 
-    protected const FORMAT = '%013s%04s%04s%04s%04s';
+    public const VERSION = VlidVersion::V0;
+
+    protected const MAX_RANDOM_BYTES = 3;
 
     /**
-     * Get the time from micro time.
+     * Generate a VLID v1.
      *
-     * @param string $time The micro time
+     * @param DateTimeInterface|null $dateTime  [optional] The date time to use when generating the ULID
+     * @param bool                   $lowerCase [optional] Whether to return as lower case
+     *
+     * @throws Exception
      *
      * @return string
+     */
+    final public static function v1(DateTimeInterface $dateTime = null, bool $lowerCase = false): string
+    {
+        return VlidV1::generate($dateTime, $lowerCase);
+    }
+
+    /**
+     * Generate a VLID v2.
+     *
+     * @param DateTimeInterface|null $dateTime  [optional] The date time to use when generating the ULID
+     * @param bool                   $lowerCase [optional] Whether to return as lower case
+     *
+     * @throws Exception
+     *
+     * @return string
+     */
+    final public static function v2(DateTimeInterface $dateTime = null, bool $lowerCase = false): string
+    {
+        return VlidV2::generate($dateTime, $lowerCase);
+    }
+
+    /**
+     * Generate a VLID v3.
+     *
+     * @param DateTimeInterface|null $dateTime  [optional] The date time to use when generating the ULID
+     * @param bool                   $lowerCase [optional] Whether to return as lower case
+     *
+     * @throws Exception
+     *
+     * @return string
+     */
+    final public static function v3(DateTimeInterface $dateTime = null, bool $lowerCase = false): string
+    {
+        return VlidV3::generate($dateTime, $lowerCase);
+    }
+
+    /**
+     * Generate a VLID v4.
+     *
+     * @param DateTimeInterface|null $dateTime  [optional] The date time to use when generating the ULID
+     * @param bool                   $lowerCase [optional] Whether to return as lower case
+     *
+     * @throws Exception
+     *
+     * @return string
+     */
+    final public static function v4(DateTimeInterface $dateTime = null, bool $lowerCase = false): string
+    {
+        return VlidV4::generate($dateTime, $lowerCase);
+    }
+
+    /**
+     * @inheritDoc
      */
     protected static function getTimeFromMicroTime(string $time): string
     {
@@ -45,15 +106,44 @@ class Vlid extends Ulid
     }
 
     /**
-     * Get the time from a datetime.
-     *
-     * @param DateTimeInterface $dateTime The date time to use when generating the ULID
-     *
-     * @return string
+     * @inheritDoc
      */
     protected static function getTimeFromDateTime(DateTimeInterface $dateTime): string
     {
         return $dateTime->format('Uu');
+    }
+
+    /**
+     * Format a time with random bytes.
+     *
+     * @param string $time The time
+     *
+     * @return string
+     */
+    protected static function formatTimeWithRandomBytes(string $time): string
+    {
+        return sprintf(
+               static::FORMAT,
+               $time,
+               static::VERSION->value,
+            ...static::getConvertedRandomBytesForFormat()
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected static function areAllRandomBytesMax(): bool
+    {
+        return static::$randomBytes === [1 => self::MAX_PART, self::MAX_PART, self::MAX_PART];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected static function unsetRandomByteParts(array &$randomBytes): void
+    {
+        unset($randomBytes[4], $randomBytes[5]);
     }
 
     /**
