@@ -14,9 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Constants;
 
 use Valkyrja\Support\Type\Ulid;
-use Valkyrja\Support\Type\UlidM;
-use Valkyrja\Support\Type\UlidS;
-use Valkyrja\Support\Type\UlidT;
 use Valkyrja\Support\Type\Uuid;
 use Valkyrja\Support\Type\UuidV1;
 use Valkyrja\Support\Type\UuidV3;
@@ -26,9 +23,6 @@ use Valkyrja\Support\Type\UuidV6;
 use Valkyrja\Support\Type\UuidV7;
 use Valkyrja\Support\Type\UuidV8;
 use Valkyrja\Support\Type\Vlid;
-use Valkyrja\Support\Type\VlidM;
-use Valkyrja\Support\Type\VlidS;
-use Valkyrja\Support\Type\VlidT;
 use Valkyrja\Support\Type\VlidV1;
 use Valkyrja\Support\Type\VlidV2;
 use Valkyrja\Support\Type\VlidV3;
@@ -58,19 +52,13 @@ final class Regex
     public const UUID_V7 = UuidV7::REGEX;
     public const UUID_V8 = UuidV8::REGEX;
 
-    public const ULID   = Ulid::REGEX;
-    public const ULID_T = UlidT::REGEX;
-    public const ULID_S = UlidS::REGEX;
-    public const ULID_M = UlidM::REGEX;
+    public const ULID = Ulid::REGEX;
 
     public const VLID    = Vlid::REGEX;
     public const VLID_V1 = VlidV1::REGEX;
     public const VLID_V2 = VlidV2::REGEX;
     public const VLID_V3 = VlidV3::REGEX;
     public const VLID_V4 = VlidV4::REGEX;
-    public const VLID_T  = VlidT::REGEX;
-    public const VLID_S  = VlidS::REGEX;
-    public const VLID_M  = VlidM::REGEX;
 
     public const ALPHA                = '[a-zA-Z]+';
     public const ALPHA_LOWERCASE      = '[a-z]+';

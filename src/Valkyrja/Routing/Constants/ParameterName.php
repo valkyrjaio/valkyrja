@@ -42,17 +42,11 @@ final class ParameterName
     public const UUID_V7 = 'uuidV7';
     public const UUID_V8 = 'uuidV8';
 
-    public const ULID   = 'ulid';
-    public const ULID_T = 'ulidT';
-    public const ULID_S = 'ulidS';
-    public const ULID_M = 'ulidM';
+    public const ULID = 'ulid';
 
     public const VLID    = 'vlid';
     public const VLID_V1 = 'vlidV1';
     public const VLID_V2 = 'vlidV2';
     public const VLID_V3 = 'vlidV3';
     public const VLID_V4 = 'vlidV4';
-    public const VLID_T  = 'vlidT';
-    public const VLID_S  = 'vlidS';
-    public const VLID_M  = 'vlidM';
 }
