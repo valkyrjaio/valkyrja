@@ -512,7 +512,7 @@ class Container implements Contract
      */
     protected function getSingletonWithoutChecks(string $serviceId): mixed
     {
-        return self::$instances[$serviceId] ?? self::$instances[$serviceId] = $this->makeService($serviceId);
+        return self::$instances[$serviceId] ??= $this->makeService($serviceId);
     }
 
     /**

@@ -137,7 +137,7 @@ class Auth implements Contract
         $name ??= $this->defaultAdapter;
 
         return self::$adapters[$name]
-            ?? self::$adapters[$name] = $this->factory->createAdapter($name, $this->config);
+            ??= $this->factory->createAdapter($name, $this->config);
     }
 
     /**
@@ -151,12 +151,7 @@ class Auth implements Contract
         $name = $user::getAuthRepository() ?? $this->defaultRepository;
 
         return self::$repositories[$name]
-            ?? self::$repositories[$name] = $this->factory->createRepository(
-                $this->getAdapter($adapter),
-                $name,
-                $user,
-                $this->config
-            );
+            ??= $this->factory->createRepository($this->getAdapter($adapter), $name, $user, $this->config);
     }
 
     /**
@@ -167,10 +162,7 @@ class Auth implements Contract
         $name ??= $this->defaultGate;
 
         return self::$gates[$name]
-            ?? self::$gates[$name] = $this->factory->createGate(
-                $this->getRepository($user, $adapter),
-                $name
-            );
+            ??= $this->factory->createGate($this->getRepository($user, $adapter), $name);
     }
 
     /**
@@ -181,10 +173,7 @@ class Auth implements Contract
         $name ??= $this->defaultPolicy;
 
         return static::$policies[$name]
-            ?? static::$policies[$name] = $this->factory->createPolicy(
-                $this->getRepository($user, $adapter),
-                $name
-            );
+            ??= $this->factory->createPolicy($this->getRepository($user, $adapter), $name);
     }
 
     /**

@@ -60,7 +60,7 @@ class Reflector implements Contract
         $index = static::CLASS_CACHE . $class;
 
         return self::$reflections[$index]
-            ?? self::$reflections[$index] = new ReflectionClass($class);
+            ??= new ReflectionClass($class);
     }
 
     /**
@@ -71,7 +71,7 @@ class Reflector implements Contract
         $index = static::PROPERTY_CACHE . $class . $const;
 
         return self::$reflections[$index]
-            ?? self::$reflections[$index] = $this->getClassReflection($class)->getReflectionConstant($const);
+            ??= $this->getClassReflection($class)->getReflectionConstant($const);
     }
 
     /**
@@ -82,7 +82,7 @@ class Reflector implements Contract
         $index = static::PROPERTY_CACHE . $class . $property;
 
         return self::$reflections[$index]
-            ?? self::$reflections[$index] = $this->getClassReflection($class)->getProperty($property);
+            ??= $this->getClassReflection($class)->getProperty($property);
     }
 
     /**
@@ -93,7 +93,7 @@ class Reflector implements Contract
         $index = static::METHOD_CACHE . $class . $method;
 
         return self::$reflections[$index]
-            ?? self::$reflections[$index] = $this->getClassReflection($class)->getMethod($method);
+            ??= $this->getClassReflection($class)->getMethod($method);
     }
 
     /**
@@ -108,7 +108,7 @@ class Reflector implements Contract
         $index = static::FUNCTION_CACHE . $function;
 
         return self::$reflections[$index]
-            ?? self::$reflections[$index] = new ReflectionFunction($function);
+            ??= new ReflectionFunction($function);
     }
 
     /**
@@ -119,7 +119,7 @@ class Reflector implements Contract
         $index = static::CLOSURE_CACHE . spl_object_id($closure);
 
         return self::$reflections[$index]
-            ?? self::$reflections[$index] = new ReflectionFunction($closure);
+            ??= new ReflectionFunction($closure);
     }
 
     /**

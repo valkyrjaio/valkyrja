@@ -98,9 +98,7 @@ class View implements Contract
         $name ??= $this->config['engine'];
 
         return self::$engines[$name]
-            ?? self::$engines[$name] = $this->container->getSingleton(
-                $this->config['engines'][$name]
-            );
+            ??= $this->container->getSingleton($this->config['engines'][$name]);
     }
 
     /**

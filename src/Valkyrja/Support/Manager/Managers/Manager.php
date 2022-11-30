@@ -93,7 +93,7 @@ abstract class Manager implements Contract
         $cacheKey = $name . $adapter;
 
         return self::$drivers[$cacheKey]
-            ?? self::$drivers[$cacheKey] = $this->factory->createDriver($driver, $adapter, $config);
+            ??= $this->factory->createDriver($driver, $adapter, $config);
     }
 
     /**

@@ -49,7 +49,8 @@ class Enum
 
         /** @var UnitEnum|string $enum */
 
-        return self::$cache[$cacheName] ??= array_column($enum::cases(), 'name');
+        return self::$cache[$cacheName]
+            ??= array_column($enum::cases(), 'name');
     }
 
     /**
@@ -71,10 +72,12 @@ class Enum
 
         if (Cls::inherits($enum, BackedEnum::class)) {
             /** @var BackedEnum|string $enum */
-            return self::$cache[$cacheName] ??= array_column($enum::cases(), 'value');
+            return self::$cache[$cacheName]
+                ??= array_column($enum::cases(), 'value');
         }
 
-        return self::$cache[$cacheName] ??= self::names($enum);
+        return self::$cache[$cacheName]
+            ??= self::names($enum);
     }
 
     /**

@@ -36,6 +36,6 @@ trait AttributedModelTrait
         $name = static::class . ($name ?? '');
 
         return self::$attributes[$name]
-            ?? self::$attributes[$name] = Reflector::getClassReflection(static::class)->getAttributes($name);
+            ??= Reflector::getClassReflection(static::class)->getAttributes($name);
     }
 }

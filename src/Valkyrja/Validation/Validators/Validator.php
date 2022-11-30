@@ -76,7 +76,7 @@ class Validator implements Contract
         $name ??= $this->defaultRules;
 
         return self::$rules[$name]
-            ?? self::$rules[$name] = $this->factory->createRules($name);
+            ??= $this->factory->createRules($name);
     }
 
     /**
