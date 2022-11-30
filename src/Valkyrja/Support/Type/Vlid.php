@@ -122,12 +122,7 @@ class Vlid extends Ulid
      */
     protected static function formatTimeWithRandomBytes(string $time): string
     {
-        return sprintf(
-               static::FORMAT,
-               $time,
-               static::VERSION->value,
-            ...static::getConvertedRandomBytesForFormat()
-        );
+        return sprintf(static::FORMAT, $time, static::VERSION->value, ...static::getConvertedRandomBytesForFormat());
     }
 
     /**
