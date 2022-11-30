@@ -33,7 +33,7 @@ class Vlid extends Ulid
 
     protected const FORMAT = '%013s%01s%04s%04s%04s';
 
-    public const VERSION = VlidVersion::V0;
+    public const VERSION = VlidVersion::V1;
 
     protected const MAX_RANDOM_BYTES = 3;
 

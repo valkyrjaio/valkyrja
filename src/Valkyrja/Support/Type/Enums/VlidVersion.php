@@ -20,7 +20,6 @@ namespace Valkyrja\Support\Type\Enums;
  */
 enum VlidVersion: int
 {
-    case V0 = 0;
     case V1 = 1;
     case V2 = 2;
     case V3 = 3;
