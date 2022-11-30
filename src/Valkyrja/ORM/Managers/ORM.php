@@ -153,11 +153,7 @@ class ORM implements Contract
         $cacheKey = $name . $driver . $adapter;
 
         return self::$drivers[$cacheKey]
-            ??= $this->factory->createDriver(
-            $this->createAdapter($adapter, $config),
-            $driver,
-            $config
-        );
+            ??= $this->factory->createDriver($this->createAdapter($adapter, $config), $driver, $config);
     }
 
     /**
