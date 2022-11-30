@@ -226,7 +226,7 @@ class Ulid extends Uid
      */
     protected static function randomize(string $time): void
     {
-        $randomBytes = unpack('n*', random_bytes(10));
+        $randomBytes = static::generateRandomBytes();
 
         static::processRandomizedByteParts($randomBytes);
 
@@ -234,6 +234,18 @@ class Ulid extends Uid
         self::$randomBytes = $randomBytes;
         // Set the time for later reference
         self::$time = $time;
+    }
+
+    /**
+     * Generate a randomized bytes array.
+     *
+     * @throws Exception
+     *
+     * @return array
+     */
+    protected static function generateRandomBytes(): array
+    {
+        return unpack('n*', random_bytes(10));
     }
 
     /**
