@@ -25,7 +25,7 @@ interface Manager
     /**
      * Use a specific configuration.
      *
-     * @param class-string<Driver>|null $name The name
+     * @param string|null $name The name
      *
      * @return Driver
      */

@@ -26,16 +26,12 @@ interface Sms extends Manager
     /**
      * @inheritDoc
      *
-     * @param class-string<Driver>|null $name The name
-     *
      * @return Driver
      */
     public function use(string $name = null): Driver;
 
     /**
      * @inheritDoc
-     *
-     * @param class-string<Message>|null $name [optional] The name of the message
      *
      * @return Message
      */

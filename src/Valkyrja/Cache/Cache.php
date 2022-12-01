@@ -26,8 +26,6 @@ interface Cache extends Manager
     /**
      * @inheritDoc
      *
-     * @param class-string<Driver>|null $name The name
-     *
      * @return Driver
      */
     public function use(string $name = null): Driver;
