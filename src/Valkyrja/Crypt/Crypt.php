@@ -20,11 +20,14 @@ use Valkyrja\Support\Manager\Manager;
  * Interface Crypt.
  *
  * @author Melech Mizrachi
+ * @extends Manager<Driver, Factory>
  */
 interface Crypt extends Manager
 {
     /**
      * @inheritDoc
+     *
+     * @param class-string<Driver>|null $name The name
      *
      * @return Driver
      */

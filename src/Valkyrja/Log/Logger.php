@@ -20,11 +20,14 @@ use Valkyrja\Support\Manager\Manager;
  * Interface Logger.
  *
  * @author Melech Mizrachi
+ * @extends Manager<Driver, Factory>
  */
 interface Logger extends Manager
 {
     /**
      * @inheritDoc
+     *
+     * @param class-string<Driver>|null $name The name
      *
      * @return Driver
      */

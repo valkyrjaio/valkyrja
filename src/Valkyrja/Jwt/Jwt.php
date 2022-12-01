@@ -19,11 +19,14 @@ use Valkyrja\Support\Manager\Manager;
  * Interface Jwt.
  *
  * @author Melech Mizrachi
+ * @extends Manager<Driver, Factory>
  */
 interface Jwt extends Manager
 {
     /**
      * @inheritDoc
+     *
+     * @param class-string<Driver>|null $name The name
      *
      * @return Driver
      */

@@ -13,17 +13,20 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast;
 
-use Valkyrja\Support\Manager\MessageManager;
+use Valkyrja\Support\Manager\MessageManager as Manager;
 
 /**
  * Interface Broadcast.
  *
  * @author Melech Mizrachi
+ * @extends Manager<Driver, Factory, Message>
  */
-interface Broadcast extends MessageManager
+interface Broadcast extends Manager
 {
     /**
      * @inheritDoc
+     *
+     * @param class-string<Driver>|null $name The name
      *
      * @return Driver
      */
@@ -31,6 +34,8 @@ interface Broadcast extends MessageManager
 
     /**
      * @inheritDoc
+     *
+     * @param class-string<Message>|null $name [optional] The name of the message
      *
      * @return Message
      */

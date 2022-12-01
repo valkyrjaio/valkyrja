@@ -18,16 +18,17 @@ use Valkyrja\Broadcast\Config\Config;
 use Valkyrja\Broadcast\Driver;
 use Valkyrja\Broadcast\Factory;
 use Valkyrja\Broadcast\Message;
-use Valkyrja\Support\Manager\Managers\MessageManager;
+use Valkyrja\Support\Manager\Managers\MessageManager as Manager;
 
 /**
  * Class Broadcast.
  *
  * @author Melech Mizrachi
  *
+ * @extends Manager<Driver, Factory, Message>
  * @property Factory $factory
  */
-class Broadcast extends MessageManager implements Contract
+class Broadcast extends Manager implements Contract
 {
     /**
      * Broadcast constructor.

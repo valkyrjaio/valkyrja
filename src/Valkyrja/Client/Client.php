@@ -21,11 +21,14 @@ use Valkyrja\Support\Manager\Manager;
  * Interface Client.
  *
  * @author Melech Mizrachi
+ * @extends Manager<Driver, Factory>
  */
 interface Client extends Manager
 {
     /**
      * @inheritDoc
+     *
+     * @param class-string<Driver>|null $name The name
      *
      * @return Driver
      */

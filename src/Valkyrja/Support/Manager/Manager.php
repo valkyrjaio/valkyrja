@@ -16,14 +16,16 @@ namespace Valkyrja\Support\Manager;
 /**
  * Interface Manager.
  *
- * @author Melech Mizrachi
+ * @author   Melech Mizrachi
+ * @template Driver
+ * @template Factory
  */
 interface Manager
 {
     /**
      * Use a specific configuration.
      *
-     * @param string|null $name The name
+     * @param class-string<Driver>|null $name The name
      *
      * @return Driver
      */

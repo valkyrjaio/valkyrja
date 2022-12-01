@@ -19,11 +19,14 @@ use Valkyrja\Support\Manager\Manager;
  * Interface Cache.
  *
  * @author Melech Mizrachi
+ * @extends Manager<Driver, Factory>
  */
 interface Cache extends Manager
 {
     /**
      * @inheritDoc
+     *
+     * @param class-string<Driver>|null $name The name
      *
      * @return Driver
      */

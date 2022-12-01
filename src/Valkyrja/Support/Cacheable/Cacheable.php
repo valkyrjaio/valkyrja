@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Cacheable;
 
 use Valkyrja\Config\Config;
-use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 
 /**
  * Trait Cacheable.
@@ -36,8 +35,6 @@ trait Cacheable
      *
      * @param bool $force    [optional] Whether to force setup
      * @param bool $useCache [optional] Whether to use cache
-     *
-     * @throws InvalidRoutePath
      *
      * @return void
      */

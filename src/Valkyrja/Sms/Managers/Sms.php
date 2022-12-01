@@ -18,7 +18,7 @@ use Valkyrja\Sms\Driver;
 use Valkyrja\Sms\Factory;
 use Valkyrja\Sms\Message;
 use Valkyrja\Sms\Sms as Contract;
-use Valkyrja\Support\Manager\Managers\MessageManager;
+use Valkyrja\Support\Manager\Managers\MessageManager as Manager;
 
 /**
  * Class SMS.
@@ -26,8 +26,9 @@ use Valkyrja\Support\Manager\Managers\MessageManager;
  * @author Melech Mizrachi
  *
  * @property Factory $factory
+ * @extends Manager<Driver, Factory, Message>
  */
-class Sms extends MessageManager implements Contract
+class Sms extends Manager implements Contract
 {
     /**
      * Mail constructor.

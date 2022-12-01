@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Manager\Managers;
 
 use Valkyrja\Support\Manager\Config\MessageConfig;
+use Valkyrja\Support\Manager\Driver;
+use Valkyrja\Support\Manager\Factory;
 use Valkyrja\Support\Manager\FactoryWithMessage;
 use Valkyrja\Support\Manager\Message;
 use Valkyrja\Support\Manager\MessageManager as Contract;
@@ -21,8 +23,12 @@ use Valkyrja\Support\Manager\MessageManager as Contract;
 /**
  * Class MessageManager.
  *
- * @author Melech Mizrachi
+ * @author   Melech Mizrachi
  *
+ * @template Driver
+ * @template Factory
+ * @template Message
+ * @implements Contract<Driver, Factory, Message>
  * @property FactoryWithMessage $factory
  */
 abstract class MessageManager extends Manager implements Contract

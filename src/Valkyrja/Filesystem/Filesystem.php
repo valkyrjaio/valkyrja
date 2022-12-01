@@ -20,11 +20,14 @@ use Valkyrja\Support\Manager\Manager;
  * Interface Filesystem.
  *
  * @author Melech Mizrachi
+ * @extends Manager<Driver, Factory>
  */
 interface Filesystem extends Manager
 {
     /**
      * @inheritDoc
+     *
+     * @param class-string<Driver>|null $name The name
      *
      * @return Driver
      */

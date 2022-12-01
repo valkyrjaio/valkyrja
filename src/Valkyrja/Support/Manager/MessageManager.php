@@ -16,15 +16,19 @@ namespace Valkyrja\Support\Manager;
 /**
  * Interface MessageManager.
  *
- * @author Melech Mizrachi
+ * @author   Melech Mizrachi
+ * @template Driver
+ * @template Factory
+ * @template Message
+ * @extends Manager<Driver, Factory>
  */
 interface MessageManager extends Manager
 {
     /**
      * Create a new message.
      *
-     * @param string|null $name [optional] The name of the message
-     * @param array       $data [optional] The data
+     * @param class-string<Message>|null $name [optional] The name of the message
+     * @param array                      $data [optional] The data
      *
      * @return Message
      */

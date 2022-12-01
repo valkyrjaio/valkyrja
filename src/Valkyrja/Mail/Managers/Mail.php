@@ -18,16 +18,17 @@ use Valkyrja\Mail\Driver;
 use Valkyrja\Mail\Factory;
 use Valkyrja\Mail\Mail as Contract;
 use Valkyrja\Mail\Message;
-use Valkyrja\Support\Manager\Managers\MessageManager;
+use Valkyrja\Support\Manager\Managers\MessageManager as Manager;
 
 /**
  * Class Mail.
  *
  * @author Melech Mizrachi
  *
+ * @extends Manager<Driver, Factory, Message>
  * @property Factory $factory
  */
-class Mail extends MessageManager implements Contract
+class Mail extends Manager implements Contract
 {
     /**
      * Mail constructor.

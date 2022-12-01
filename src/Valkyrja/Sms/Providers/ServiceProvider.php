@@ -112,6 +112,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Adapter::class,
+            /**
+             * @param class-string<Adapter> $name
+             */
             static function (string $name, array $config): Adapter {
                 return new $name(
                     $config
@@ -133,6 +136,9 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             LogAdapter::class,
+            /**
+             * @param class-string<LogAdapter> $name
+             */
             static function (string $name, array $config) use ($logger): LogAdapter {
                 return new $name(
                     $logger->use($config['logger'] ?? null),
@@ -153,6 +159,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             NexmoAdapter::class,
+            /**
+             * @param class-string<NexmoAdapter> $name
+             */
             static function (string $name, array $config) use ($container): NexmoAdapter {
                 return new $name(
                     $container->get(Nexmo::class, [$config])
@@ -191,6 +200,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Message::class,
+            /**
+             * @param class-string<Message> $name
+             */
             static function (string $name, array $config): Message {
                 return (new $name())->setFrom($config['fromName']);
             }
