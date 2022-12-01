@@ -122,6 +122,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Driver::class,
+            /**
+             * @param class-string<Driver> $name
+             */
             static function (string $name, Adapter $adapter): Driver {
                 return new $name(
                     $adapter
@@ -141,6 +144,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Adapter::class,
+            /**
+             * @param class-string<Adapter> $name
+             */
             static function (string $name, array $config): Adapter {
                 return new $name(
                     $config
@@ -162,6 +168,9 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             LogAdapter::class,
+            /**
+             * @param class-string<LogAdapter> $name
+             */
             static function (string $name, array $config) use ($logger): LogAdapter {
                 return new $name(
                     $logger->use($config['logger'] ?? null),
@@ -182,6 +191,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             PusherAdapter::class,
+            /**
+             * @param class-string<PusherAdapter> $name
+             */
             static function (string $name, array $config) use ($container): PusherAdapter {
                 return new $name(
                     $container->get(Pusher::class, [$config]),
@@ -202,6 +214,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             CryptPusherAdapter::class,
+            /**
+             * @param class-string<CryptPusherAdapter> $name
+             */
             static function (string $name, array $config) use ($container): CryptPusherAdapter {
                 return new $name(
                     $container->get(Pusher::class, [$config]),

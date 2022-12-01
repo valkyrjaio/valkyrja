@@ -101,6 +101,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Adapter::class,
+            /**
+             * @param class-string<Adapter> $name
+             */
             static function (string $name, array $config): Adapter {
                 return new $name(
                     $config,
@@ -120,6 +123,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Driver::class,
+            /**
+             * @param class-string<Driver> $name
+             */
             static function (string $name, Adapter $adapter): Driver {
                 return new $name(
                     $adapter

@@ -114,6 +114,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Driver::class,
+            /**
+             * @param class-string<Driver> $name
+             */
             static function (string $name, Adapter $adapter): Driver {
                 return new $name(
                     $adapter
@@ -133,6 +136,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Adapter::class,
+            /**
+             * @param class-string<Adapter> $name
+             */
             static function (string $name, array $config): Adapter {
                 return new $name(
                     $config
@@ -154,6 +160,9 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             CacheAdapter::class,
+            /**
+             * @param class-string<CacheAdapter> $name
+             */
             static function (string $name, array $config) use ($cache): CacheAdapter {
                 return new $name(
                     $cache,
@@ -176,6 +185,9 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             LogAdapter::class,
+            /**
+             * @param class-string<LogAdapter> $name
+             */
             static function (string $name, array $config) use ($logger): LogAdapter {
                 return new $name(
                     $logger->use($config['logger'] ?? null),

@@ -110,6 +110,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Driver::class,
+            /**
+             * @param class-string<Driver> $name
+             */
             static function (string $name, Adapter $adapter): Driver {
                 return new $name($adapter);
             }
@@ -129,6 +132,9 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             GuzzleAdapter::class,
+            /**
+             * @param class-string<GuzzleAdapter> $name
+             */
             static function (string $name, array $config) use ($responseFactory): GuzzleAdapter {
                 return new $name(
                     new Guzzle($config['options'] ?? null),
@@ -153,6 +159,9 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             LogAdapter::class,
+            /**
+             * @param class-string<LogAdapter> $name
+             */
             static function (string $name, array $config) use ($logger, $responseFactory): LogAdapter {
                 return new $name(
                     $logger->use($config['logger'] ?? null),
@@ -176,6 +185,9 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             Adapter::class,
+            /**
+             * @param class-string<Adapter> $name
+             */
             static function (string $name, array $config) use ($responseFactory): Adapter {
                 return new $name(
                     $responseFactory,

@@ -109,6 +109,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Driver::class,
+            /**
+             * @param class-string<Driver> $name
+             */
             static function (string $name, Adapter $adapter): Driver {
                 return new $name(
                     $adapter
@@ -128,6 +131,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Adapter::class,
+            /**
+             * @param class-string<Adapter> $name
+             */
             static function (string $name, array $config): Adapter {
                 return new $name(
                     $config['prefix'] ?? null
@@ -149,6 +155,9 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             LogAdapter::class,
+            /**
+             * @param class-string<LogAdapter> $name
+             */
             static function (string $name, array $config) use ($logger): LogAdapter {
                 return new $name(
                     $logger->use($config['logger'] ?? null),
@@ -169,6 +178,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             RedisAdapter::class,
+            /**
+             * @param class-string<RedisAdapter> $name
+             */
             static function (string $name, array $config): RedisAdapter {
                 $predis = new Client($config);
 

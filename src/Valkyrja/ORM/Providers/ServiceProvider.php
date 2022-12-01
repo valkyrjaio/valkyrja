@@ -147,6 +147,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Driver::class,
+            /**
+             * @param class-string<Driver> $name
+             */
             static function (string $name, Adapter $adapter, array $config): Driver {
                 return new $name(
                     $adapter,
@@ -169,7 +172,10 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             Adapter::class,
-            static function (string $name, array $config) use ($orm) {
+            /**
+             * @param class-string<Adapter> $name
+             */
+            static function (string $name, array $config) use ($orm): Adapter {
                 return new $name(
                     $orm,
                     $config
@@ -191,7 +197,10 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             PDOAdapter::class,
-            static function (string $name, array $config) use ($container, $orm) {
+            /**
+             * @param class-string<PDOAdapter> $name
+             */
+            static function (string $name, array $config) use ($container, $orm): PDOAdapter {
                 $pdoConfig = $config['config'];
                 $pdoClass  = $pdoConfig['pdo'] ?? \PDO::class;
 
@@ -221,6 +230,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             PDO::class,
+            /**
+             * @param class-string<PDO> $name
+             */
             static function (string $name, array $config): PDO {
                 if ($name === \PDO::class) {
                     // If we got here then that means the developer has opted to use the default PDO
@@ -250,6 +262,9 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             Repository::class,
+            /**
+             * @param class-string<Repository> $name
+             */
             static function (string $name, Driver $driver, string $entity) use ($orm): Repository {
                 return new $name(
                     $orm,
@@ -274,6 +289,9 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             CacheRepository::class,
+            /**
+             * @param class-string<CacheRepository> $name
+             */
             static function (string $name, Driver $driver, string $entity) use ($orm, $cache): CacheRepository {
                 return new $name(
                     $orm,
@@ -296,6 +314,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Persister::class,
+            /**
+             * @param class-string<Persister> $name
+             */
             static function (string $name, Adapter $adapter): Persister {
                 return new $name(
                     $adapter
@@ -315,6 +336,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Retriever::class,
+            /**
+             * @param class-string<Retriever> $name
+             */
             static function (string $name, Adapter $adapter): Retriever {
                 return new $name(
                     $adapter
@@ -334,6 +358,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Query::class,
+            /**
+             * @param class-string<Query> $name
+             */
             static function (string $name, Adapter $adapter): Query {
                 return new $name(
                     $adapter
@@ -353,6 +380,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             QueryBuilder::class,
+            /**
+             * @param class-string<QueryBuilder> $name
+             */
             static function (string $name, Adapter $adapter): QueryBuilder {
                 return new $name(
                     $adapter
@@ -372,6 +402,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             DeleteQueryBuilder::class,
+            /**
+             * @param class-string<DeleteQueryBuilder> $name
+             */
             static function (string $name, Adapter $adapter): DeleteQueryBuilder {
                 return new $name(
                     $adapter
@@ -391,6 +424,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             InsertQueryBuilder::class,
+            /**
+             * @param class-string<InsertQueryBuilder> $name
+             */
             static function (string $name, Adapter $adapter): InsertQueryBuilder {
                 return new $name(
                     $adapter
@@ -410,6 +446,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             SelectQueryBuilder::class,
+            /**
+             * @param class-string<SelectQueryBuilder> $name
+             */
             static function (string $name, Adapter $adapter): SelectQueryBuilder {
                 return new $name(
                     $adapter
@@ -429,6 +468,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             UpdateQueryBuilder::class,
+            /**
+             * @param class-string<UpdateQueryBuilder> $name
+             */
             static function (string $name, Adapter $adapter): UpdateQueryBuilder {
                 return new $name(
                     $adapter
@@ -448,6 +490,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Statement::class,
+            /**
+             * @param class-string<Statement> $name
+             */
             static function (string $name, Adapter $adapter, array $data = []): Statement {
                 return new $name(...$data);
             }
@@ -465,6 +510,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Migration::class,
+            /**
+             * @param class-string<Migration> $name
+             */
             static function (string $name, ORM $orm): Migration {
                 return new $name($orm);
             }

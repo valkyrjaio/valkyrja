@@ -133,6 +133,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Adapter::class,
+            /**
+             * @param class-string<Adapter> $name
+             */
             static function (string $name, Config|array $config): Adapter {
                 return new $name(
                     $config,
@@ -154,6 +157,9 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             ORMAdapter::class,
+            /**
+             * @param class-string<ORMAdapter> $name
+             */
             static function (string $name, Config|array $config) use ($orm): ORMAdapter {
                 return new $name(
                     $orm,
@@ -174,6 +180,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Gate::class,
+            /**
+             * @param class-string<Gate> $name
+             */
             static function (string $name, Repository $repository) use ($container): Gate {
                 return new $name(
                     $container->getSingleton(Auth::class),
@@ -194,6 +203,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Policy::class,
+            /**
+             * @param class-string<Policy> $name
+             */
             static function (string $name, Repository $repository): Policy {
                 return new $name(
                     $repository,
@@ -213,9 +225,10 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             EntityPolicy::class,
+            /**
+             * @param class-string<EntityPolicy> $name
+             */
             static function (string $name, Repository $repository) use ($container): EntityPolicy {
-                /** @var EntityPolicy|string $name */
-
                 return new $name(
                     $repository,
                     $container->getSingleton($name::getEntityClassName()),
@@ -235,9 +248,10 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             EntityRoutePolicy::class,
+            /**
+             * @param class-string<EntityRoutePolicy> $name
+             */
             static function (string $name, Repository $repository) use ($container): EntityRoutePolicy {
-                /** @var EntityRoutePolicy|string $name */
-
                 return new $name(
                     $repository,
                     $container->getSingleton($name::getEntityClassName() . $name::getEntityParamNumber()),
@@ -257,6 +271,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Repository::class,
+            /**
+             * @param class-string<Repository> $name
+             */
             static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container): Repository {
                 return new $name(
                     $adapter,
@@ -279,6 +296,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             CryptTokenizedRepository::class,
+            /**
+             * @param class-string<CryptTokenizedRepository> $name
+             */
             static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container): CryptTokenizedRepository {
                 return new $name(
                     $adapter,
@@ -302,6 +322,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             JWTCryptRepository::class,
+            /**
+             * @param class-string<JWTCryptRepository> $name
+             */
             static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container): JWTCryptRepository {
                 return new $name(
                     $adapter,
@@ -326,6 +349,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             JWTRepository::class,
+            /**
+             * @param class-string<JWTRepository> $name
+             */
             static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container): JWTRepository {
                 return new $name(
                     $adapter,

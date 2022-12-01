@@ -122,6 +122,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Driver::class,
+            /**
+             * @param class-string<Driver> $name
+             */
             static function (string $name, Adapter $adapter): Driver {
                 return new $name(
                     $adapter
@@ -141,6 +144,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Adapter::class,
+            /**
+             * @param class-string<Adapter> $name
+             */
             static function (string $name, array $config): Adapter {
                 return new $name(
                     $config
@@ -162,6 +168,9 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             LogAdapter::class,
+            /**
+             * @param class-string<LogAdapter> $name
+             */
             static function (string $name, array $config) use ($logger): LogAdapter {
                 return new $name(
                     $logger->use($config['logger'] ?? null),
@@ -182,6 +191,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             PHPMailerAdapter::class,
+            /**
+             * @param class-string<PHPMailerAdapter> $name
+             */
             static function (string $name, array $config) use ($container): PHPMailerAdapter {
                 return new $name(
                     $container->get(PHPMailer::class, [$config])
@@ -241,6 +253,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             MailgunAdapter::class,
+            /**
+             * @param class-string<MailgunAdapter> $name
+             */
             static function (string $name, array $config) use ($container): MailgunAdapter {
                 return new $name(
                     $container->get(Mailgun::class, [$config]),

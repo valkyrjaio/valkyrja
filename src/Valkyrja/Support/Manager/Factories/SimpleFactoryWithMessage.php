@@ -22,9 +22,6 @@ use Valkyrja\Support\Manager\Message;
  * Class SimpleFactoryWithMessage.
  *
  * @author   Melech Mizrachi
- * @template Adapter
- * @template Driver
- * @template Message
  * @implements Contract<Adapter, Driver, Message>
  */
 class SimpleFactoryWithMessage extends SimpleFactory implements Contract
