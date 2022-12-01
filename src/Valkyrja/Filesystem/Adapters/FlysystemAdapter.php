@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Adapters;
 
-use InvalidArgumentException;
-use League\Flysystem\FileExistsException;
-use League\Flysystem\FileNotFoundException;
-use League\Flysystem\FilesystemInterface as FlysystemInterface;
-use League\Flysystem\RootViolationException;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\FilesystemOperator as FlysystemInterface;
 use Valkyrja\Filesystem\Enums\Visibility;
 use Valkyrja\Filesystem\FlysystemAdapter as Contract;
 
@@ -29,24 +26,19 @@ use Valkyrja\Filesystem\FlysystemAdapter as Contract;
 class FlysystemAdapter implements Contract
 {
     /**
-     * The Flysystem filesystem.
-     *
-     * @var FlysystemInterface
-     */
-    protected FlysystemInterface $flysystem;
-
-    /**
      * FlysystemAdapter constructor.
      *
      * @param FlysystemInterface $flysystem The Flysystem filesystem
      */
-    public function __construct(FlysystemInterface $flysystem)
-    {
-        $this->flysystem = $flysystem;
+    public function __construct(
+        protected FlysystemInterface $flysystem
+    ) {
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function exists(string $path): bool
     {
@@ -56,220 +48,228 @@ class FlysystemAdapter implements Contract
     /**
      * @inheritDoc
      *
-     * @throws FileNotFoundException
+     * @throws FilesystemException
      */
     public function read(string $path): ?string
     {
-        $read = $this->flysystem->read($path);
-
-        return false !== $read ? $read : null;
+        return $this->flysystem->read($path);
     }
 
     /**
      * @inheritDoc
      *
-     * @throws FileExistsException
+     * @throws FilesystemException
      */
     public function write(string $path, string $contents): bool
     {
-        return $this->flysystem->write($path, $contents);
+        $this->flysystem->write($path, $contents);
+
+        return true;
     }
 
     /**
      * @inheritDoc
      *
-     * @throws FileExistsException
-     * @throws InvalidArgumentException
+     * @throws FilesystemException
      */
     public function writeStream(string $path, $resource): bool
     {
-        return $this->flysystem->writeStream($path, $resource);
+        $this->flysystem->writeStream($path, $resource);
+
+        return true;
     }
 
     /**
      * @inheritDoc
      *
-     * @throws FileNotFoundException
+     * @throws FilesystemException
      */
     public function update(string $path, string $contents): bool
     {
-        return $this->flysystem->update($path, $contents);
+        return $this->write($path, $contents);
     }
 
     /**
      * @inheritDoc
      *
-     * @throws FileNotFoundException
-     * @throws InvalidArgumentException
+     * @throws FilesystemException
      */
     public function updateStream(string $path, $resource): bool
     {
-        return $this->flysystem->updateStream($path, $resource);
+        return $this->writeStream($path, $resource);
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function put(string $path, string $contents): bool
     {
-        return $this->flysystem->put($path, $contents);
+        return $this->write($path, $contents);
     }
 
     /**
      * @inheritDoc
      *
-     * @throws InvalidArgumentException
+     * @throws FilesystemException
      */
     public function putStream(string $path, $resource): bool
     {
-        return $this->flysystem->putStream($path, $resource);
+        return $this->writeStream($path, $resource);
     }
 
     /**
      * @inheritDoc
      *
-     * @throws FileNotFoundException
-     * @throws FileExistsException
+     * @throws FilesystemException
      */
     public function rename(string $path, string $newPath): bool
     {
-        return $this->flysystem->rename($path, $newPath);
+        $this->flysystem->move($path, $newPath);
+
+        return true;
     }
 
     /**
      * @inheritDoc
      *
-     * @throws FileNotFoundException
-     * @throws FileExistsException
+     * @throws FilesystemException
      */
     public function copy(string $path, string $newPath): bool
     {
-        return $this->flysystem->copy($path, $newPath);
+        $this->flysystem->copy($path, $newPath);
+
+        return true;
     }
 
     /**
      * @inheritDoc
      *
-     * @throws FileNotFoundException
+     * @throws FilesystemException
      */
     public function delete(string $path): bool
     {
-        return $this->flysystem->delete($path);
+        $this->flysystem->delete($path);
+
+        return true;
     }
 
     /**
      * @inheritDoc
-     *
-     * @throws FileNotFoundException
      */
     public function metadata(string $path): ?array
     {
-        $metadata = $this->flysystem->getMetadata($path);
-
-        return false !== $metadata ? $metadata : null;
+        return null;
     }
 
     /**
      * @inheritDoc
      *
-     * @throws FileNotFoundException
+     * @throws FilesystemException
      */
     public function mimetype(string $path): ?string
     {
-        $mimetype = $this->flysystem->getMimetype($path);
-
-        return false !== $mimetype ? $mimetype : null;
+        return $this->flysystem->mimeType($path);
     }
 
     /**
      * @inheritDoc
      *
-     * @throws FileNotFoundException
+     * @throws FilesystemException
      */
     public function size(string $path): ?int
     {
-        $size = $this->flysystem->getSize($path);
-
-        return false !== $size ? $size : null;
+        return $this->flysystem->fileSize($path);
     }
 
     /**
      * @inheritDoc
      *
-     * @throws FileNotFoundException
+     * @throws FilesystemException
      */
     public function timestamp(string $path): ?int
     {
-        $timestamp = $this->flysystem->getTimestamp($path);
-
-        return false !== $timestamp ? $timestamp : null;
+        return $this->flysystem->lastModified($path);
     }
 
     /**
      * @inheritDoc
      *
-     * @throws FileNotFoundException
+     * @throws FilesystemException
      */
     public function visibility(string $path): ?string
     {
-        $visibility = $this->flysystem->getVisibility($path);
-
-        return false !== $visibility ? $visibility : null;
+        return $this->flysystem->visibility($path);
     }
 
     /**
      * @inheritDoc
      *
-     * @throws FileNotFoundException
+     * @throws FilesystemException
      */
     public function setVisibility(string $path, Visibility $visibility): bool
     {
-        return $this->flysystem->setVisibility($path, $visibility->value);
+        $this->flysystem->setVisibility($path, $visibility->value);
+
+        return true;
     }
 
     /**
      * @inheritDoc
      *
-     * @throws FileNotFoundException
+     * @throws FilesystemException
      */
     public function setVisibilityPublic(string $path): bool
     {
-        return $this->flysystem->setVisibility($path, Visibility::PUBLIC->value);
+        $this->flysystem->setVisibility($path, Visibility::PUBLIC->value);
+
+        return true;
     }
 
     /**
      * @inheritDoc
      *
-     * @throws FileNotFoundException
+     * @throws FilesystemException
      */
     public function setVisibilityPrivate(string $path): bool
     {
-        return $this->flysystem->setVisibility($path, Visibility::PRIVATE->value);
-    }
+        $this->flysystem->setVisibility($path, Visibility::PRIVATE->value);
 
-    /**
-     * @inheritDoc
-     */
-    public function createDir(string $path): bool
-    {
-        return $this->flysystem->createDir($path);
+        return true;
     }
 
     /**
      * @inheritDoc
      *
-     * @throws RootViolationException
+     * @throws FilesystemException
      */
-    public function deleteDir(string $path): bool
+    public function createDir(string $path): bool
     {
-        return $this->flysystem->deleteDir($path);
+        $this->flysystem->createDirectory($path);
+
+        return true;
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
+     */
+    public function deleteDir(string $path): bool
+    {
+        $this->flysystem->deleteDirectory($path);
+
+        return true;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function listContents(string $directory = null, bool $recursive = false): array
     {
-        return $this->flysystem->listContents($directory ?? '', $recursive);
+        return $this->flysystem->listContents($directory ?? '', $recursive)->toArray();
     }
 }

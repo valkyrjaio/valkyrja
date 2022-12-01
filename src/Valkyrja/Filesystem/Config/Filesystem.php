@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Config;
 
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\AwsS3v3\AwsS3Adapter;
+use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
+use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\Filesystem\Config\Config as Model;
@@ -39,13 +39,13 @@ class Filesystem extends Model
             CKP::LOCAL => [
                 CKP::ADAPTER           => env(EnvKey::FILESYSTEM_LOCAL_ADAPTER),
                 CKP::DRIVER            => env(EnvKey::FILESYSTEM_LOCAL_DRIVER),
-                CKP::FLYSYSTEM_ADAPTER => env(EnvKey::FILESYSTEM_LOCAL_FLYSYSTEM_ADAPTER, Local::class),
+                CKP::FLYSYSTEM_ADAPTER => env(EnvKey::FILESYSTEM_LOCAL_FLYSYSTEM_ADAPTER, FlysystemLocalAdapter::class),
                 CKP::DIR               => env(EnvKey::FILESYSTEM_LOCAL_DIR, storagePath('app')),
             ],
             CKP::S3    => [
                 CKP::ADAPTER           => env(EnvKey::FILESYSTEM_S3_ADAPTER),
                 CKP::DRIVER            => env(EnvKey::FILESYSTEM_S3_DRIVER),
-                CKP::FLYSYSTEM_ADAPTER => env(EnvKey::FILESYSTEM_S3_FLYSYSTEM_ADAPTER, AwsS3Adapter::class),
+                CKP::FLYSYSTEM_ADAPTER => env(EnvKey::FILESYSTEM_S3_FLYSYSTEM_ADAPTER, FlysystemAwsS3Adapter::class),
                 CKP::KEY               => env(EnvKey::FILESYSTEM_S3_KEY),
                 CKP::SECRET            => env(EnvKey::FILESYSTEM_S3_SECRET),
                 CKP::REGION            => env(EnvKey::FILESYSTEM_S3_REGION, 'us1'),

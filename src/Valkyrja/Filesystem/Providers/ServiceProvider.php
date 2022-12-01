@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem\Providers;
 
 use Aws\S3\S3Client as AwsS3Client;
-use League\Flysystem\AwsS3v3\AwsS3Adapter as FlysystemAwsS3Adapter;
+use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
 use League\Flysystem\Filesystem as Flysystem;
 use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
 use Valkyrja\Container\Container;

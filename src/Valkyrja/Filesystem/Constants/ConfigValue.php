@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Constants;
 
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\AwsS3v3\AwsS3Adapter;
+use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
+use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Filesystem\Adapters\FlysystemAdapter;
 use Valkyrja\Filesystem\Drivers\Driver;
@@ -33,13 +33,13 @@ final class ConfigValue
         CKP::LOCAL => [
             CKP::ADAPTER           => CKP::FLYSYSTEM,
             CKP::DRIVER            => CKP::DEFAULT,
-            CKP::FLYSYSTEM_ADAPTER => Local::class,
+            CKP::FLYSYSTEM_ADAPTER => FlysystemLocalAdapter::class,
             CKP::DIR               => '/',
         ],
         CKP::S3    => [
             CKP::ADAPTER           => CKP::FLYSYSTEM,
             CKP::DRIVER            => CKP::DEFAULT,
-            CKP::FLYSYSTEM_ADAPTER => AwsS3Adapter::class,
+            CKP::FLYSYSTEM_ADAPTER => FlysystemAwsS3Adapter::class,
             CKP::KEY               => '',
             CKP::SECRET            => '',
             CKP::REGION            => 'us1',
