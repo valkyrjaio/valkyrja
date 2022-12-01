@@ -23,160 +23,133 @@ interface Factory
     /**
      * Create an adapter.
      *
-     * @template T
+     * @param class-string<Adapter> $name   The adapter class name
+     * @param array                 $config The config
      *
-     * @param class-string<T> $name   The adapter class name
-     * @param array           $config The config
-     *
-     * @return T
+     * @return Adapter
      */
     public function createAdapter(string $name, array $config): Adapter;
 
     /**
      * Create a driver.
      *
-     * @template T
+     * @param Adapter              $adapter The adapter
+     * @param class-string<Driver> $name    The driver class name
+     * @param array                $config  The config
      *
-     * @param Adapter         $adapter The adapter
-     * @param class-string<T> $name    The driver class name
-     * @param array           $config  The config
-     *
-     * @return T
+     * @return Driver
      */
     public function createDriver(Adapter $adapter, string $name, array $config): Driver;
 
     /**
      * Create a repository.
      *
-     * @template T
-     * @template E
+     * @param Driver                   $driver The driver
+     * @param class-string<Repository> $name   The repository class name
+     * @param class-string<Entity>     $entity The entity class name
      *
-     * @param Driver          $driver The driver
-     * @param class-string<T> $name   The repository class name
-     * @param class-string<E> $entity The entity class name
-     *
-     * @return T
+     * @return Repository<Entity>
      */
     public function createRepository(Driver $driver, string $name, string $entity): Repository;
 
     /**
      * Create a query builder.
      *
-     * @template T
+     * @param Adapter                    $adapter The adapter
+     * @param class-string<QueryBuilder> $name    The query builder class name
      *
-     * @param Adapter         $adapter The adapter
-     * @param class-string<T> $name    The query builder class name
-     *
-     * @return T
+     * @return QueryBuilder
      */
     public function createQueryBuilder(Adapter $adapter, string $name): QueryBuilder;
 
     /**
      * Create a delete query builder.
      *
-     * @template T
+     * @param Adapter                          $adapter The adapter
+     * @param class-string<DeleteQueryBuilder> $name    The delete query builder class name
      *
-     * @param Adapter         $adapter The adapter
-     * @param class-string<T> $name    The delete query builder class name
-     *
-     * @return T
+     * @return DeleteQueryBuilder
      */
     public function createDeleteQueryBuilder(Adapter $adapter, string $name): DeleteQueryBuilder;
 
     /**
      * Create a insert query builder.
      *
-     * @template T
+     * @param Adapter                          $adapter The adapter
+     * @param class-string<InsertQueryBuilder> $name    The insert query builder class name
      *
-     * @param Adapter         $adapter The adapter
-     * @param class-string<T> $name    The insert query builder class name
-     *
-     * @return T
+     * @return InsertQueryBuilder
      */
     public function createInsertQueryBuilder(Adapter $adapter, string $name): InsertQueryBuilder;
 
     /**
      * Create a select query builder.
      *
-     * @template T
+     * @param Adapter                          $adapter The adapter
+     * @param class-string<SelectQueryBuilder> $name    The select query builder class name
      *
-     * @param Adapter         $adapter The adapter
-     * @param class-string<T> $name    The select query builder class name
-     *
-     * @return T
+     * @return SelectQueryBuilder
      */
     public function createSelectQueryBuilder(Adapter $adapter, string $name): SelectQueryBuilder;
 
     /**
      * Create a update query builder.
      *
-     * @template T
+     * @param Adapter                          $adapter The adapter
+     * @param class-string<UpdateQueryBuilder> $name    The update query builder class name
      *
-     * @param Adapter         $adapter The adapter
-     * @param class-string<T> $name    The update query builder class name
-     *
-     * @return T
+     * @return UpdateQueryBuilder
      */
     public function createUpdateQueryBuilder(Adapter $adapter, string $name): UpdateQueryBuilder;
 
     /**
      * Create a query.
      *
-     * @template T
+     * @param Adapter             $adapter The adapter
+     * @param class-string<Query> $name    The query class name
      *
-     * @param Adapter         $adapter The adapter
-     * @param class-string<T> $name    The query class name
-     *
-     * @return T
+     * @return Query
      */
     public function createQuery(Adapter $adapter, string $name): Query;
 
     /**
      * Create a persister.
      *
-     * @template T
+     * @param Adapter                 $adapter The adapter
+     * @param class-string<Persister> $name    The persister class name
      *
-     * @param Adapter         $adapter The adapter
-     * @param class-string<T> $name    The persister class name
-     *
-     * @return T
+     * @return Persister
      */
     public function createPersister(Adapter $adapter, string $name): Persister;
 
     /**
      * Create a retriever.
      *
-     * @template T
+     * @param Adapter                 $adapter The adapter
+     * @param class-string<Retriever> $name    The retriever class name
      *
-     * @param Adapter         $adapter The adapter
-     * @param class-string<T> $name    The retriever class name
-     *
-     * @return T
+     * @return Retriever
      */
     public function createRetriever(Adapter $adapter, string $name): Retriever;
 
     /**
      * Create a statement.
      *
-     * @template T
+     * @param Adapter                 $adapter The adapter
+     * @param class-string<Statement> $name    The statement class name
+     * @param array                   $data    [optional] Additional data required for the statement
      *
-     * @param Adapter         $adapter The adapter
-     * @param class-string<T> $name    The statement class name
-     * @param array           $data    [optional] Additional data required for the statement
-     *
-     * @return T
+     * @return Statement
      */
     public function createStatement(Adapter $adapter, string $name, array $data = []): Statement;
 
     /**
      * Create a migration.
      *
-     * @template T
+     * @param class-string<Migration> $name The migration class name
+     * @param array                   $data [optional] Additional data required for the migration
      *
-     * @param class-string<T> $name The migration class name
-     * @param array           $data [optional] Additional data required for the migration
-     *
-     * @return T
+     * @return Migration
      */
     public function createMigration(string $name, array $data = []): Migration;
 }

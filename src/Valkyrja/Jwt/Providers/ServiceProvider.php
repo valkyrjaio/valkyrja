@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Providers;
 
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Jwt\Adapter;
@@ -34,9 +35,9 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Jwt::class     => 'publishJWT',
+            Jwt::class => 'publishJWT',
             Factory::class => 'publishFactory',
-            Driver::class  => 'publishDriver',
+            Driver::class => 'publishDriver',
             Adapter::class => 'publishAdapter',
         ];
     }
@@ -63,7 +64,7 @@ class ServiceProvider extends Provider
      */
     public static function publishJWT(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             Jwt::class,

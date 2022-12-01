@@ -93,7 +93,7 @@ class ServiceProvider extends Provider
      */
     public static function publishAuth(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $config = $container->getSingleton(\Valkyrja\Config\Config\Config::class);
 
         $container->setSingleton(
             Auth::class,

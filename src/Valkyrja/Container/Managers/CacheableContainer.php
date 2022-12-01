@@ -33,9 +33,7 @@ class CacheableContainer extends Container
     use Cacheable;
 
     /**
-     * Get a cacheable representation of the service container.
-     *
-     * @return ContainerConfig
+     * @inheritDoc
      */
     public function getCacheable(): Config
     {

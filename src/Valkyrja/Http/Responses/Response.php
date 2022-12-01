@@ -60,11 +60,11 @@ class Response implements Contract
         protected int $statusCode = StatusCode::OK,
         array $headers = []
     ) {
-        $this->statusCode   = $this->validateStatusCode($statusCode ?? StatusCode::OK);
+        $this->statusCode   = $this->validateStatusCode($statusCode);
         $this->statusPhrase = StatusCode::TEXTS[$this->statusCode];
 
         $this->setBody($body);
-        $this->setHeaders($headers ?? []);
+        $this->setHeaders($headers);
     }
 
     /**

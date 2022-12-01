@@ -21,6 +21,7 @@ use Valkyrja\Client\Factories\ContainerFactory;
 use Valkyrja\Client\Factory;
 use Valkyrja\Client\GuzzleAdapter;
 use Valkyrja\Client\LogAdapter;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\ResponseFactory;
@@ -72,7 +73,7 @@ class ServiceProvider extends Provider
      */
     public static function publishClient(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             Client::class,

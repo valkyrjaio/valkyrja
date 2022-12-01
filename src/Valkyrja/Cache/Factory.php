@@ -19,11 +19,15 @@ use Valkyrja\Support\Manager\Factory as Contract;
  * Interface Factory.
  *
  * @author Melech Mizrachi
+ * @extends Contract<Adapter, Driver>
  */
 interface Factory extends Contract
 {
     /**
      * @inheritDoc
+     *
+     * @param class-string<Driver>  $name
+     * @param class-string<Adapter> $adapter
      *
      * @return Driver
      */
@@ -31,6 +35,8 @@ interface Factory extends Contract
 
     /**
      * @inheritDoc
+     *
+     * @param class-string<Adapter> $name
      *
      * @return Adapter
      */

@@ -220,7 +220,7 @@ class Parameter extends Model
     /**
      * Get the enum class name.
      *
-     * @return BackedEnum|string|null
+     * @return class-string<BackedEnum>|null
      */
     public function getEnum(): ?string
     {
@@ -230,7 +230,7 @@ class Parameter extends Model
     /**
      * Set the enum class name.
      *
-     * @param string|null $enum The enum class name
+     * @param class-string<BackedEnum>|null $enum The enum class name
      *
      * @return static
      */

@@ -33,9 +33,8 @@ use function get_class;
 /**
  * Class Repository.
  *
- * @author   Melech Mizrachi
- * @template E
- * @implements Contract<E>
+ * @author Melech Mizrachi
+ * @implements Contract<Entity>
  */
 class Repository implements Contract
 {
@@ -70,7 +69,7 @@ class Repository implements Contract
     /**
      * The entity to use.
      *
-     * @var string|Entity|E
+     * @var class-string<Entity>
      */
     protected string $entity;
 
@@ -91,9 +90,9 @@ class Repository implements Contract
     /**
      * Repository constructor.
      *
-     * @param ORM             $manager The orm manager
-     * @param Driver          $driver  The driver
-     * @param class-string<E> $entity  The entity class name
+     * @param ORM                  $manager The orm manager
+     * @param Driver               $driver  The driver
+     * @param class-string<Entity> $entity  The entity class name
      *
      * @throws InvalidArgumentException
      */
@@ -249,8 +248,27 @@ class Repository implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @return E[]|Entity[]
+     */
+    public function withAllRelationships(): self
+    {
+        $this->getRelations  = true;
+        $this->relationships = $this->entity::getRelationshipProperties();
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withoutRelationships(): self
+    {
+        $this->resetRelationships();
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
      */
     public function getResult(): array
     {
@@ -263,8 +281,6 @@ class Repository implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @return E|Entity|null
      */
     public function getOneOrNull(): ?Entity
     {
@@ -273,8 +289,6 @@ class Repository implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @return E|Entity
      */
     public function getOneOrFail(): Entity
     {
@@ -292,8 +306,6 @@ class Repository implements Contract
     /**
      * @inheritDoc
      *
-     * @param Entity|E $entity The entity
-     *
      * @throws InvalidEntityException
      */
     public function create(Entity $entity, bool $defer = true): void
@@ -305,8 +317,6 @@ class Repository implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @param Entity|E $entity The entity
      *
      * @throws InvalidEntityException
      */
@@ -320,8 +330,6 @@ class Repository implements Contract
     /**
      * @inheritDoc
      *
-     * @param Entity|E $entity The entity
-     *
      * @throws InvalidEntityException
      */
     public function delete(Entity $entity, bool $defer = true): void
@@ -334,8 +342,6 @@ class Repository implements Contract
     /**
      * @inheritDoc
      *
-     * @param Entity|E $entity The entity
-     *
      * @throws InvalidEntityException
      */
     public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
@@ -347,8 +353,6 @@ class Repository implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @param Entity|E|null $entity The entity instance to remove.
      *
      * @throws InvalidEntityException
      */
@@ -404,7 +408,7 @@ class Repository implements Contract
     /**
      * Validate the passed entity.
      *
-     * @param E $entity The entity
+     * @param Entity $entity The entity
      *
      * @throws InvalidEntityException
      *
@@ -437,7 +441,7 @@ class Repository implements Contract
     /**
      * Set relationships on the entities from results.
      *
-     * @param E ...$entities The entities to add relationships to
+     * @param Entity ...$entities The entities to add relationships to
      *
      * @return void
      */
@@ -451,7 +455,6 @@ class Repository implements Contract
 
         // Iterate through the rows found
         foreach ($entities as $entity) {
-            $relationships = $relationships ?? $entity::getRelationshipProperties();
             // Get the entity relations
             $this->setRelationshipsOnEntity($relationships, $entity);
         }
@@ -460,8 +463,8 @@ class Repository implements Contract
     /**
      * Set relationships on an entity.
      *
-     * @param array $relationships The relationships to set
-     * @param E     $entity        The entity
+     * @param array  $relationships The relationships to set
+     * @param Entity $entity        The entity
      *
      * @return void
      */
@@ -477,12 +480,12 @@ class Repository implements Contract
     /**
      * Set a relationship property.
      *
-     * @param E      $entity       The entity
+     * @param Entity $entity       The entity
      * @param string $relationship The relationship to set
      *
      * @return void
      */
-    public function setRelationship(Entity $entity, string $relationship): void
+    protected function setRelationship(Entity $entity, string $relationship): void
     {
         $methodName = 'set' . Str::toStudlyCase($relationship) . 'Relationship';
 

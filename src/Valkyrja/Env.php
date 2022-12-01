@@ -11,14 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM;
+namespace Valkyrja;
 
 /**
- * Interface CacheRepository.
+ * Class Env.
  *
  * @author Melech Mizrachi
- * @extends Repository<Entity>
  */
-interface CacheRepository extends Repository
+class Env
 {
 }

@@ -33,107 +33,89 @@ interface ORM
     /**
      * Create an adapter.
      *
-     * @template T
+     * @param class-string<Adapter> $name   The adapter class name
+     * @param array                 $config The config
      *
-     * @param class-string<T> $name   The adapter class name
-     * @param array           $config The config
-     *
-     * @return T
+     * @return Adapter
      */
     public function createAdapter(string $name, array $config): Adapter;
 
     /**
      * Create a query builder.
      *
-     * @template T
+     * @param Adapter                    $adapter The adapter
+     * @param class-string<QueryBuilder> $name    The query builder class name
      *
-     * @param Adapter         $adapter The adapter
-     * @param class-string<T> $name    The query builder class name
-     *
-     * @return T
+     * @return QueryBuilder
      */
     public function createQueryBuilder(Adapter $adapter, string $name): QueryBuilder;
 
     /**
      * Create a query.
      *
-     * @template T
+     * @param Adapter             $adapter The adapter
+     * @param class-string<Query> $name    The query class name
      *
-     * @param Adapter         $adapter The adapter
-     * @param class-string<T> $name    The query class name
-     *
-     * @return T
+     * @return Query
      */
     public function createQuery(Adapter $adapter, string $name): Query;
 
     /**
      * Create a retriever.
      *
-     * @template T
+     * @param Adapter                 $adapter The adapter
+     * @param class-string<Retriever> $name    The retriever class name
      *
-     * @param Adapter         $adapter The adapter
-     * @param class-string<T> $name    The retriever class name
-     *
-     * @return T
+     * @return Retriever
      */
     public function createRetriever(Adapter $adapter, string $name): Retriever;
 
     /**
      * Create a persister.
      *
-     * @template T
+     * @param Adapter                 $adapter The adapter
+     * @param class-string<Persister> $name    The persister class name
      *
-     * @param Adapter         $adapter The adapter
-     * @param class-string<T> $name    The persister class name
-     *
-     * @return T
+     * @return Persister
      */
     public function createPersister(Adapter $adapter, string $name): Persister;
 
     /**
      * Get a repository by entity name.
      *
-     * @template T
+     * @param class-string<Entity> $entity
      *
-     * @param class-string<T> $entity
-     *
-     * @return Repository<class-string<T>>
+     * @return Repository<Entity>
      */
     public function getRepository(string $entity): Repository;
 
     /**
      * Get a repository from an entity class.
      *
-     * @template T
+     * @param Entity $entity
      *
-     * @param T $entity
-     *
-     * @return Repository<class-string<T>>
+     * @return Repository<Entity>
      */
     public function getRepositoryFromClass(Entity $entity): Repository;
 
     /**
      * Create a statement.
      *
-     * @template T
+     * @param Adapter                 $adapter The adapter
+     * @param class-string<Statement> $name    The statement class name
+     * @param array                   $data    [optional] Additional data required for the statement
      *
-     * @param Adapter         $adapter The adapter
-     * @param class-string<T> $name    The statement class name
-     * @param array           $data    [optional] Additional data required for the statement
-     *
-     * @return T
+     * @return Statement
      */
     public function createStatement(Adapter $adapter, string $name, array $data = []): Statement;
 
     /**
      * Create a migration.
      *
-     * @template T
+     * @param class-string<Migration> $name The migration class name
+     * @param array                   $data [optional] Additional data required for the migration
      *
-     * @param class-string<T> $name The migration class name
-     * @param array           $data [optional] Additional data required for the migration
-     *
-     * @return T
+     * @return Migration
      */
     public function createMigration(string $name, array $data = []): Migration;
 

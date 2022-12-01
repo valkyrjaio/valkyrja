@@ -199,10 +199,7 @@ class Console implements Contract
      */
     public function dispatch(Input $input, Output $output): int
     {
-        // Verify the command exists
-        if (null === $command = $this->inputCommand($input)) {
-            throw new CommandNotFound('Specified command does not exists.');
-        }
+        $command = $this->inputCommand($input);
 
         if ($input->hasOption('-h') || $input->hasOption('--help')) {
             $command->setMethod('help');

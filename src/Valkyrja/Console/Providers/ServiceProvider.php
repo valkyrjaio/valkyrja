@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Providers;
 
 use Valkyrja\Annotation\Filter;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Console\Annotator;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Dispatchers\CacheableConsole;
@@ -92,7 +93,7 @@ class ServiceProvider extends Provider
      */
     public static function publishConsole(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             Console::class,

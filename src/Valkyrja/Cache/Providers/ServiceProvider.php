@@ -21,6 +21,7 @@ use Valkyrja\Cache\Factories\ContainerFactory;
 use Valkyrja\Cache\Factory;
 use Valkyrja\Cache\LogAdapter;
 use Valkyrja\Cache\RedisAdapter;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger;
@@ -71,7 +72,7 @@ class ServiceProvider extends Provider
      */
     public static function publishCache(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             Cache::class,

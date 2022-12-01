@@ -40,10 +40,10 @@ class RedirectResponse extends Response implements Contract
      * @throws InvalidStatusCode
      * @throws InvalidStream
      */
-    public function __construct(protected string $uri = '/', int $statusCode = StatusCode::OK, array $headers = [])
+    public function __construct(protected string $uri = '/', int $statusCode = StatusCode::FOUND, array $headers = [])
     {
         parent::__construct(
-            statusCode: $statusCode ?? StatusCode::FOUND,
+            statusCode: $statusCode,
             headers   : $this->injectHeader(Header::LOCATION, $uri, $headers, true)
         );
     }

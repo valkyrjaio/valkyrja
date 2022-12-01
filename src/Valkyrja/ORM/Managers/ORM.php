@@ -228,12 +228,6 @@ class ORM implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @template T
-     *
-     * @param T $entity
-     *
-     * @return Repository<class-string<T>>
      */
     public function getRepositoryFromClass(Entity $entity): Repository
     {
@@ -242,12 +236,6 @@ class ORM implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @template T
-     *
-     * @param class-string<T> $name The statement class name
-     *
-     * @return T
      */
     public function createStatement(Adapter $adapter, string $name, array $data = []): Statement
     {
@@ -256,12 +244,6 @@ class ORM implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @template T
-     *
-     * @param class-string<T> $name The migration class name
-     *
-     * @return T
      */
     public function createMigration(string $name, array $data = []): Migration
     {

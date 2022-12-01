@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Manager\Factories;
 
+use Valkyrja\Support\Manager\Adapter;
+use Valkyrja\Support\Manager\Driver;
 use Valkyrja\Support\Manager\FactoryWithMessage;
 use Valkyrja\Support\Manager\Message;
 use Valkyrja\Support\Type\Cls;
@@ -21,6 +23,7 @@ use Valkyrja\Support\Type\Cls;
  * Class ContainerFactoryWithMessage.
  *
  * @author Melech Mizrachi
+ * @implements FactoryWithMessage<Adapter, Driver, Message>
  */
 class ContainerFactoryWithMessage extends ContainerFactory implements FactoryWithMessage
 {

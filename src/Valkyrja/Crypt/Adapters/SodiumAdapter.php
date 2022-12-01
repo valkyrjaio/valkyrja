@@ -22,7 +22,6 @@ use Valkyrja\Support\Type\Obj;
 
 use function bin2hex;
 use function hex2bin;
-use function is_string;
 use function json_decode;
 use function random_bytes;
 use function sodium_crypto_secretbox;
@@ -192,7 +191,7 @@ class SodiumAdapter extends Adapter
      */
     protected function isValidDecodedType(string|false $decoded): bool
     {
-        return $decoded !== false && is_string($decoded);
+        return $decoded !== false;
     }
 
     /**

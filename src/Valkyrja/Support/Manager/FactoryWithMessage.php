@@ -16,16 +16,20 @@ namespace Valkyrja\Support\Manager;
 /**
  * Interface LoaderWithMessage.
  *
- * @author Melech Mizrachi
+ * @author   Melech Mizrachi
+ * @template Adapter
+ * @template Driver
+ * @template Message
+ * @extends Factory<Adapter, Driver>
  */
 interface FactoryWithMessage extends Factory
 {
     /**
      * Create a new message.
      *
-     * @param string $name   The message
-     * @param array  $config The config
-     * @param array  $data   [optional] The data
+     * @param class-string<Message> $name   The message
+     * @param array                 $config The config
+     * @param array                 $data   [optional] The data
      *
      * @return Message
      */

@@ -84,17 +84,15 @@ class Parser implements Contract
     public function getPropertiesAsArray(string $arguments = null): ?array
     {
         // If a valid properties list was passed in
-        if (null !== $arguments && $arguments) {
+        if ($arguments !== null) {
             $testArgs       = str_replace('=', ':', $arguments);
             $propertiesList = Arr::fromString('{' . $testArgs . '}');
 
-            if (is_array($propertiesList)) {
-                foreach ($propertiesList as &$value) {
-                    $value = $this->determinePropertyValue($value);
-                }
-
-                unset($value);
+            foreach ($propertiesList as &$value) {
+                $value = $this->determinePropertyValue($value);
             }
+
+            unset($value);
 
             return $propertiesList;
         }

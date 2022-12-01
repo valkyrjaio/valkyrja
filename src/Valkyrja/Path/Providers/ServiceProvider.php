@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Path\Providers;
 
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Path\PathGenerator;
@@ -71,7 +72,7 @@ class ServiceProvider extends Provider
      */
     public static function publishParser(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             PathParser::class,

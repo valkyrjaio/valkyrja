@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Cacheable;
 
 use Valkyrja\Config\Config;
+use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 
 /**
  * Trait Cacheable.
  *
  * @author   Melech Mizrachi
- *
- * @template T
+ * @template Config
  */
 trait Cacheable
 {
@@ -36,6 +36,8 @@ trait Cacheable
      *
      * @param bool $force    [optional] Whether to force setup
      * @param bool $useCache [optional] Whether to use cache
+     *
+     * @throws InvalidRoutePath
      *
      * @return void
      */
@@ -70,21 +72,21 @@ trait Cacheable
     /**
      * Get a cacheable representation of the data.
      *
-     * @return T
+     * @return Config
      */
     abstract public function getCacheable(): Config;
 
     /**
      * Get the config.
      *
-     * @return T|array
+     * @return Config|array
      */
     abstract protected function getConfig(): Config|array;
 
     /**
      * Before setup.
      *
-     * @param T|array $config
+     * @param Config|array $config
      *
      * @return void
      */
@@ -102,7 +104,7 @@ trait Cacheable
     /**
      * Set not cached.
      *
-     * @param T|array $config
+     * @param Config|array $config
      *
      * @return void
      */
@@ -111,7 +113,7 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param T|array $config
+     * @param Config|array $config
      *
      * @return void
      */
@@ -126,7 +128,7 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param T|array $config
+     * @param Config|array $config
      *
      * @return void
      */
@@ -135,7 +137,7 @@ trait Cacheable
     /**
      * Set attributes.
      *
-     * @param T|array $config
+     * @param Config|array $config
      *
      * @return void
      */
@@ -150,7 +152,7 @@ trait Cacheable
     /**
      * Set attributes.
      *
-     * @param T|array $config
+     * @param Config|array $config
      *
      * @return void
      */
@@ -159,7 +161,7 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param T|array $config
+     * @param Config|array $config
      *
      * @return void
      */
@@ -171,7 +173,7 @@ trait Cacheable
     /**
      * After setup.
      *
-     * @param T|array $config
+     * @param Config|array $config
      *
      * @return void
      */

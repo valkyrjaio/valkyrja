@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Api\Providers;
 
 use Valkyrja\Api\Api;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\ResponseFactory;
@@ -54,7 +55,7 @@ class ServiceProvider extends Provider
      */
     public static function publishApi(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             Api::class,

@@ -46,7 +46,7 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Check whether a given service exists.
      *
-     * @param string $serviceId The service id
+     * @param class-string|string $serviceId The service id
      *
      * @return bool
      */
@@ -55,8 +55,8 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Bind a service to the container.
      *
-     * @param string $serviceId The service id
-     * @param string $service   The service
+     * @param class-string|string $serviceId The service id
+     * @param class-string        $service   The service
      *
      * @return static
      */
@@ -65,8 +65,8 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Bind a service to a closure in the container.
      *
-     * @param string  $serviceId The service id
-     * @param Closure $closure   The closure
+     * @param class-string|string $serviceId The service id
+     * @param Closure             $closure   The closure
      *
      * @return static
      */
@@ -75,8 +75,8 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Bind a singleton to the container.
      *
-     * @param string $serviceId The service id
-     * @param string $singleton The singleton service
+     * @param class-string|string $serviceId The service id
+     * @param class-string        $singleton The singleton service
      *
      * @return static
      */
@@ -85,8 +85,8 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Set an alias in the container.
      *
-     * @param string $alias     The alias
-     * @param string $serviceId The service id to alias
+     * @param string              $alias     The alias
+     * @param class-string|string $serviceId The service id to alias
      *
      * @return static
      */
@@ -95,8 +95,8 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Set a closure in the container.
      *
-     * @param string  $serviceId The service id
-     * @param Closure $closure   The closure
+     * @param class-string|string $serviceId The service id
+     * @param Closure             $closure   The closure
      *
      * @return static
      */
@@ -105,8 +105,8 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Set a singleton in the container.
      *
-     * @param string $serviceId The service id
-     * @param mixed  $singleton The singleton
+     * @param class-string|string $serviceId The service id
+     * @param mixed               $singleton The singleton
      *
      * @return static
      */
@@ -115,7 +115,7 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Check whether a given service is an alias.
      *
-     * @param string $serviceId The service id
+     * @param class-string|string $serviceId The service id
      *
      * @return bool
      */
@@ -124,7 +124,7 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Check whether a given service is bound to a closure.
      *
-     * @param string $serviceId The service id
+     * @param class-string|string $serviceId The service id
      *
      * @return bool
      */
@@ -133,7 +133,7 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Check whether a given service is a singleton.
      *
-     * @param string $serviceId The service id
+     * @param class-string|string $serviceId The service id
      *
      * @return bool
      */
@@ -142,7 +142,7 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Check whether a given service exists.
      *
-     * @param string $serviceId The service id
+     * @param class-string|string $serviceId The service id
      *
      * @return bool
      */
@@ -153,20 +153,22 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @template T
      *
-     * @param class-string<T> $serviceId The service id
-     * @param array           $arguments [optional] The arguments
+     * @param class-string<T>|string $serviceId The service id
+     * @param array                  $arguments [optional] The arguments
      *
-     * @return mixed|T
+     * @return T|mixed
      */
     public function get(string $serviceId, array $arguments = []): mixed;
 
     /**
      * Get a service bound to a closure from the container.
      *
-     * @param string $serviceId The service id
-     * @param array  $arguments [optional] The arguments
+     * @template T
      *
-     * @return mixed
+     * @param class-string<T>|string $serviceId The service id
+     * @param array                  $arguments [optional] The arguments
+     *
+     * @return T|mixed
      */
     public function getClosure(string $serviceId, array $arguments = []): mixed;
 
@@ -175,9 +177,9 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @template T
      *
-     * @param class-string<T> $serviceId The service id
+     * @param class-string<T>|string $serviceId The service id
      *
-     * @return mixed|T
+     * @return T|mixed
      */
     public function getSingleton(string $serviceId): mixed;
 
@@ -186,19 +188,19 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @template T
      *
-     * @param class-string<T> $serviceId The service id
-     * @param array           $arguments [optional] The arguments
+     * @param class-string<T>|string $serviceId The service id
+     * @param array                  $arguments [optional] The arguments
      *
-     * @return mixed|T
+     * @return T|mixed
      */
     public function makeService(string $serviceId, array $arguments = []): mixed;
 
     /**
      * Get a service id with optional context.
      *
-     * @param string      $serviceId The service id
-     * @param string|null $context   [optional] The context class or function name
-     * @param string|null $member    [optional] The context member name
+     * @param class-string|string $serviceId The service id
+     * @param string|null         $context   [optional] The context class or function name
+     * @param string|null         $member    [optional] The context member name
      *
      * @return string
      */

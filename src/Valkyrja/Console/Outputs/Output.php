@@ -88,7 +88,7 @@ class Output implements Contract
     public function writeMessage(string $message, bool $newLine = null, OutputStyle $outputStyle = null): void
     {
         $newLine         = $newLine ?? false;
-        $outputStyleType = $outputStyle->value ?? OutputStyle::NORMAL;
+        $outputStyleType = $outputStyle?->value ?? OutputStyle::NORMAL;
 
         switch ($outputStyleType) {
             case OutputStyle::NORMAL:

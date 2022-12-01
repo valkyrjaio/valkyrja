@@ -20,14 +20,14 @@ use Valkyrja\ORM\Exceptions\EntityNotFoundException;
  * Interface Repository.
  *
  * @author   Melech Mizrachi
- * @template T
+ * @template Entity
  */
 interface Repository
 {
     /**
      * Find by given criteria.
      *
-     * @return static<T>
+     * @return static
      */
     public function find(): self;
 
@@ -36,14 +36,14 @@ interface Repository
      *
      * @param int|string $id The id
      *
-     * @return static<T>
+     * @return static
      */
     public function findOne(int|string $id): self;
 
     /**
      * Count all the results of given criteria.
      *
-     * @return static<T>
+     * @return static
      */
     public function count(): self;
 
@@ -52,7 +52,7 @@ interface Repository
      *
      * @param array $columns The columns
      *
-     * @return static<T>
+     * @return static
      */
     public function columns(array $columns): self;
 
@@ -65,21 +65,21 @@ interface Repository
      * @param mixed|null  $value    [optional]
      * @param bool        $setType  [optional]
      *
-     * @return static<T>
+     * @return static
      */
     public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): self;
 
     /**
      * Start a where clause in parentheses.
      *
-     * @return static<T>
+     * @return static
      */
     public function startWhereGroup(): self;
 
     /**
      * End a where clause in parentheses.
      *
-     * @return static<T>
+     * @return static
      */
     public function endWhereGroup(): self;
 
@@ -88,7 +88,7 @@ interface Repository
      *
      * @param WhereType $type The type
      *
-     * @return static<T>
+     * @return static
      */
     public function whereType(WhereType $type = WhereType::AND): self;
 
@@ -102,7 +102,7 @@ interface Repository
      * @param string|null $type     [optional] The type of join
      * @param bool|null   $isWhere  [optional] Whether this is a where join
      *
-     * @return static<T>
+     * @return static
      */
     public function join(
         string $table,
@@ -119,7 +119,7 @@ interface Repository
      * @param string      $column    The column
      * @param string|null $direction [optional] The order direction
      *
-     * @return static<T>
+     * @return static
      */
     public function orderBy(string $column, string $direction = null): self;
 
@@ -128,7 +128,7 @@ interface Repository
      *
      * @param int $limit The limit
      *
-     * @return static<T>
+     * @return static
      */
     public function limit(int $limit): self;
 
@@ -137,7 +137,7 @@ interface Repository
      *
      * @param int $offset The offset
      *
-     * @return static<T>
+     * @return static
      */
     public function offset(int $offset): self;
 
@@ -146,21 +146,35 @@ interface Repository
      *
      * @param array|null $relationships [optional] The relationships to get
      *
-     * @return static<T>
+     * @return static
      */
     public function withRelationships(array $relationships = null): self;
 
     /**
+     * Add all relationships to include with the results.
+     *
+     * @return static
+     */
+    public function withAllRelationships(): self;
+
+    /**
+     * Remove relationships to include with the results.
+     *
+     * @return static
+     */
+    public function withoutRelationships(): self;
+
+    /**
      * Get results.
      *
-     * @return T[]|Entity[]
+     * @return Entity[]
      */
     public function getResult(): array;
 
     /**
      * Get one or null.
      *
-     * @return T|null
+     * @return Entity|null
      */
     public function getOneOrNull(): ?Entity;
 
@@ -169,7 +183,7 @@ interface Repository
      *
      * @throws EntityNotFoundException
      *
-     * @return T|Entity
+     * @return Entity
      */
     public function getOneOrFail(): Entity;
 
@@ -187,8 +201,8 @@ interface Repository
      *      $repository->create(new Entity(), true | false)
      * </code>
      *
-     * @param Entity|T $entity The entity
-     * @param bool     $defer  [optional] Whether to defer creation or create immediately
+     * @param Entity $entity The entity
+     * @param bool   $defer  [optional] Whether to defer creation or create immediately
      *
      * @return void
      */
@@ -201,8 +215,8 @@ interface Repository
      *      $repository->save(new Entity(), true | false)
      * </code>
      *
-     * @param Entity|T $entity The entity
-     * @param bool     $defer  [optional] Whether to defer save or save immediately
+     * @param Entity $entity The entity
+     * @param bool   $defer  [optional] Whether to defer save or save immediately
      *
      * @return void
      */
@@ -215,8 +229,8 @@ interface Repository
      *      $repository->delete(new Entity(), true | false)
      * </code>
      *
-     * @param Entity|T $entity The entity
-     * @param bool     $defer  [optional] Whether to deletion creation or delete immediately
+     * @param Entity $entity The entity
+     * @param bool   $defer  [optional] Whether to deletion creation or delete immediately
      *
      * @return void
      */
@@ -229,8 +243,8 @@ interface Repository
      *      $persister->softDelete(new SoftDeleteEntity(), true | false)
      * </code>
      *
-     * @param Entity|T $entity The entity
-     * @param bool     $defer  [optional] Whether to defer deletion or delete immediately
+     * @param SoftDeleteEntity $entity The entity
+     * @param bool             $defer  [optional] Whether to defer deletion or delete immediately
      *
      * @return void
      */
@@ -243,7 +257,7 @@ interface Repository
      *      $repository->clear(new Entity())
      * </code>
      *
-     * @param Entity|T|null $entity The entity instance to remove.
+     * @param Entity|null $entity The entity instance to remove.
      *
      * @return void
      */

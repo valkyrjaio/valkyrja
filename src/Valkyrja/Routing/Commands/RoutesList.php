@@ -73,7 +73,7 @@ class RoutesList extends Commander
         ];
 
         // Sort routes by path
-        usort($routerRoutes, static fn (Route $a, Route $b) => $a->getPath() <=> $b->getPath());
+        usort($routerRoutes, static fn(Route $a, Route $b) => $a->getPath() <=> $b->getPath());
 
         foreach ($routerRoutes as $route) {
             $this->setRoute($route, $routes, $lengths);
@@ -104,7 +104,7 @@ class RoutesList extends Commander
                 . str_repeat(' ', $lengths[4] - strlen($route[4]))
                 . ' |';
 
-            $odd          = $key % 2 > 0;
+            $odd          = ((int) $key) % 2 > 0;
             $routeMessage = $this->oddFormat($odd) . $routeMessage;
 
             output()->writeMessage($routeMessage . static::END_FORMAT, true);

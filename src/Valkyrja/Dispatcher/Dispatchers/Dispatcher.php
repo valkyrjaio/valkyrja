@@ -256,19 +256,21 @@ class Dispatcher implements Contract
     /**
      * Get class from dispatch.
      *
+     * @template O
+     *
      * @param Dispatch $dispatch The dispatch
      *
      * @throws InvalidArgumentException
      *
-     * @return object|class-string<object>
+     * @return object|class-string<O>
      */
     protected function getClassFromDispatch(Dispatch $dispatch): mixed
     {
-        if (! $dispatch->getClass()) {
+        if (! $class = $dispatch->getClass()) {
             throw new InvalidArgumentException('Invalid class defined in dispatch model.');
         }
 
-        return $dispatch->isStatic() ? $dispatch->getClass() : $this->container->get($dispatch->getClass());
+        return $dispatch->isStatic() ? $class : $this->container->get($dispatch->getClass());
     }
 
     /**

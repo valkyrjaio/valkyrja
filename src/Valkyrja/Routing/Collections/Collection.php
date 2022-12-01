@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Collections;
 
+use BackedEnum;
 use InvalidArgumentException;
 use JsonException;
 use Valkyrja\Container\Container;
@@ -305,6 +306,7 @@ class Collection implements Contract
             // Get the parameter name
             $name = $parameter->getName();
             // Get whether this parameter is optional
+            /** @var bool $isOptional */
             $isOptional = $parameter->isOptional();
 
             // If the parameter is optional or the name has a ? affixed to it
@@ -324,7 +326,7 @@ class Collection implements Contract
                     throw new InvalidRoutePath("{$route->getPath()} is missing a regex for `{$parameter->getName()}`");
                 }
 
-                if ($enum) {
+                if ($enum instanceof BackedEnum) {
                     // Set the regex to the enum cases
                     $parameter->setRegex(implode('|', array_column($enum::cases(), 'value')));
                     // Ensure the type case was set properly

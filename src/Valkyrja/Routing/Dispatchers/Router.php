@@ -17,7 +17,6 @@ use InvalidArgumentException;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
-use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
@@ -154,7 +153,7 @@ class Router implements Contract
         // Decode the request uri
         $requestUri = rawurldecode($request->getUri()->getPath());
         // Try to match the route
-        $route = $this->matcher->match($requestUri, $request->getMethod() ?? RequestMethod::GET);
+        $route = $this->matcher->match($requestUri, $request->getMethod());
 
         // If no route is found
         if (null === $route) {

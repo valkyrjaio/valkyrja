@@ -15,7 +15,9 @@ namespace Valkyrja\View\Providers;
 
 use Twig\Environment;
 use Twig\Error\LoaderError;
+use Twig\Extension\ExtensionInterface;
 use Twig\Loader\FilesystemLoader;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\View\Engines\OrkaEngine;
@@ -70,7 +72,7 @@ class ServiceProvider extends Provider
      */
     public static function publishView(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             View::class,
@@ -90,7 +92,7 @@ class ServiceProvider extends Provider
      */
     public static function publishPHPEngine(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             PHPEngine::class,
@@ -109,7 +111,7 @@ class ServiceProvider extends Provider
      */
     public static function publishOrkaEngine(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             OrkaEngine::class,
@@ -148,7 +150,7 @@ class ServiceProvider extends Provider
      */
     public static function publishTwigEnvironment(Container $container): void
     {
-        $config     = $container->getSingleton('config');
+        $config     = $container->getSingleton(Config::class);
         $viewConfig = $config['view'];
         $twigConfig = $viewConfig['disks']['twig'];
 
@@ -172,6 +174,7 @@ class ServiceProvider extends Provider
 
         // Iterate through the extensions
         foreach ($twigConfig['extensions'] as $extension) {
+            /** @var class-string<ExtensionInterface> $extension */
             // And add each extension to the twig environment
             $twig->addExtension(new $extension());
         }

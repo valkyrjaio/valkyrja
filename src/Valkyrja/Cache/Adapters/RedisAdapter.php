@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Adapters;
 
-use Predis\ClientInterface as Client;
+use Predis\Client;
 use Valkyrja\Cache\RedisAdapter as Contract;
 use Valkyrja\Cache\Tagger;
 use Valkyrja\Cache\Taggers\Tagger as TagClass;

@@ -175,13 +175,7 @@ class Repository implements Contract
      */
     public function authenticateFromSession(): self
     {
-        if (! $user = $this->getUserFromSession()) {
-            $this->resetAfterUnAuthentication();
-
-            throw new InvalidAuthenticationException('No user session exists.');
-        }
-
-        return $this->authenticateWithUser($user);
+        return $this->authenticateWithUser($this->getUserFromSession());
     }
 
     /**
@@ -359,6 +353,8 @@ class Repository implements Contract
         $sessionUsers = $this->session->get($this->userEntityName::getUserSessionId());
 
         if (! $sessionUsers) {
+            $this->resetAfterUnAuthentication();
+
             throw new InvalidAuthenticationException('No authenticated users.');
         }
 
@@ -367,6 +363,8 @@ class Repository implements Contract
         $current = $this->users->getCurrent();
 
         if (! $current) {
+            $this->resetAfterUnAuthentication();
+
             throw new InvalidCurrentAuthenticationException('No current authenticated user.');
             // Debate whether to use this instead since there are session users so just take the first one... but that
             // could be incorrect if that should not be the current user amongst a plethora of possibilities. It should

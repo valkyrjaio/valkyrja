@@ -306,7 +306,7 @@ trait MessageTrait
      * @param string     $header   The header to set
      * @param string     $value    The value to set
      * @param array|null $headers  [optional] The headers
-     * @param bool|null  $override [optional] Whether to override any existing value
+     * @param bool       $override [optional] Whether to override any existing value
      *
      * @return array
      */

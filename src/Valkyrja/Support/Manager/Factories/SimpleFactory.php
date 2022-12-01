@@ -13,14 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Manager\Factories;
 
-use Valkyrja\Support\Manager\Factory;
 use Valkyrja\Support\Manager\Adapter;
 use Valkyrja\Support\Manager\Driver;
+use Valkyrja\Support\Manager\Factory;
 
 /**
  * Class SimpleFactory.
  *
  * @author Melech Mizrachi
+ * @implements Factory<Adapter, Driver>
  */
 class SimpleFactory implements Factory
 {

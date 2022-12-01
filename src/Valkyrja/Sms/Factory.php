@@ -19,11 +19,15 @@ use Valkyrja\Support\Manager\FactoryWithMessage as Contract;
  * Interface Factory.
  *
  * @author Melech Mizrachi
+ * @extends Contract<Adapter, Driver, Message>
  */
 interface Factory extends Contract
 {
     /**
      * @inheritDoc
+     *
+     * @param class-string<Driver>  $name    The driver
+     * @param class-string<Adapter> $adapter The adapter
      *
      * @return Driver
      */
@@ -32,12 +36,16 @@ interface Factory extends Contract
     /**
      * @inheritDoc
      *
+     * @param class-string<Adapter> $adapter The adapter
+     *
      * @return Adapter
      */
     public function createAdapter(string $name, array $config): Adapter;
 
     /**
      * @inheritDoc
+     *
+     * @param class-string<Message> $name The message
      *
      * @return Message
      */

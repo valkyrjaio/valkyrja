@@ -114,7 +114,7 @@ class Request extends SimpleRequest implements Contract
             }
         }
 
-        $this->files = $files ?? [];
+        $this->files = $files;
     }
 
     /**

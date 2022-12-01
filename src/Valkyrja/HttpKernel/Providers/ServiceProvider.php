@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\HttpKernel\Providers;
 
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Event\Events;
@@ -55,7 +56,7 @@ class ServiceProvider extends Provider
      */
     public static function publishKernel(Container $container): void
     {
-        $config     = $container->getSingleton('config');
+        $config     = $container->getSingleton(Config::class);
         $httpKernel = $config['app']['httpKernel'] ?? \Valkyrja\HttpKernel\Kernels\Kernel::class;
 
         $container->setSingleton(

@@ -54,6 +54,8 @@ class CacheableCollection extends Collection
     /**
      * Get a cacheable representation of the data.
      *
+     * @throws InvalidRoutePath
+     *
      * @return Cache
      */
     public function getCacheable(): Config

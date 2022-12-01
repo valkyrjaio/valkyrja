@@ -35,7 +35,7 @@ abstract class Config extends Model implements ArrayAccess
     /**
      * The model properties env keys.
      *
-     * @var string[]
+     * @var array<string, string>
      */
     protected static array $envKeys = [];
 

@@ -110,11 +110,14 @@ abstract class Facade
      */
     public static function __callStatic(string $method, array $args = [])
     {
+        /** @var mixed $instance */
         $instance = static::getInstance();
 
         if (! is_object($instance)) {
             throw new RuntimeException('A facade instance has not been set.');
         }
+
+        /** @var object $instance */
 
         if (static::isStaticMethod($method)) {
             return $instance::$method(...$args);

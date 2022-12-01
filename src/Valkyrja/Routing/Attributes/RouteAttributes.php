@@ -197,24 +197,24 @@ class RouteAttributes extends Attributes implements Contract
         }
 
         // If there is a base middleware collection for this controller
-        if (null !== $controllerAttribute->getMiddleware()) {
+        if (null !== $controllerMiddleware = $controllerAttribute->getMiddleware()) {
             // Merge the route's middleware and the controller's middleware
             // keeping the controller's middleware first
             $attribute->setMiddleware(
                 [
-                    ...$controllerAttribute->getMiddleware(),
+                    ...$controllerMiddleware,
                     ...($memberAttribute->getMiddleware() ?? []),
                 ]
             );
         }
 
         // If there is a base parameters collection for this controller
-        if (! empty($controllerAttribute->getParameters())) {
+        if (! empty($controllerParameters = $controllerAttribute->getParameters())) {
             // Merge the route's parameters and the controller's parameters
             // keeping the controller's parameters first
             $attribute->setMiddleware(
                 [
-                    ...$controllerAttribute->getParameters(),
+                    ...$controllerParameters,
                     ...$memberAttribute->getParameters(),
                 ]
             );

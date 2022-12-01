@@ -15,9 +15,10 @@ namespace Valkyrja\Container\Providers;
 
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Support\Provider;
-use Valkyrja\Config\Config;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container as Contract;
 use Valkyrja\Container\Managers\CacheableContainer;
+use Valkyrja\Env;
 
 /**
  * Class AppProvider.
@@ -40,8 +41,9 @@ class AppProvider extends Provider
         $container->setup();
         $container->setSingleton(Application::class, $app);
         $container->setSingleton('env', $app->env());
-        $container->setSingleton('config', $config);
-        $container->setAlias(Config::class, 'config');
+        $container->setAlias('env', Env::class);
+        $container->setSingleton(Config::class, $config);
+        $container->setAlias('config', Config::class);
         $container->setSingleton(Contract::class, $container);
     }
 }

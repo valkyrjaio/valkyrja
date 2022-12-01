@@ -17,6 +17,7 @@ use GuzzleHttp\Client;
 use Mailgun\HttpClient\HttpClientConfigurator;
 use Mailgun\Mailgun;
 use PHPMailer\PHPMailer\PHPMailer;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger;
@@ -84,7 +85,7 @@ class ServiceProvider extends Provider
      */
     public static function publishMail(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             Mail::class,
@@ -198,7 +199,7 @@ class ServiceProvider extends Provider
      */
     public static function publishPHPMailer(Container $container): void
     {
-        $globalConfig = $container->getSingleton('config');
+        $globalConfig = $container->getSingleton(Config::class);
         $appDebug     = $globalConfig['app']['debug'] ?? null;
 
         $container->setClosure(

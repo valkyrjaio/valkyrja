@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Providers;
 
 use Valkyrja\Annotation\Filter;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Dispatcher;
@@ -78,7 +79,7 @@ class ServiceProvider extends Provider
      */
     public static function publishEvents(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             Events::class,

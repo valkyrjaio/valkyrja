@@ -31,8 +31,8 @@ class Cls
     /**
      * Validate that a class::name inherits from another class::name.
      *
-     * @param string $object   The object name to validate
-     * @param string $inherits The inherits class name
+     * @param class-string|string $object   The object name to check
+     * @param class-string        $inherits The inherits class name
      *
      * @throws InvalidClassProvidedException
      *
@@ -48,8 +48,10 @@ class Cls
     /**
      * Check if a class::name inherits from another class::name.
      *
-     * @param string $object   The object name to check
-     * @param string $inherits The inherits class name
+     * @template O
+     *
+     * @param class-string|string $object   The object name to check
+     * @param class-string        $inherits The inherits class name
      *
      * @return bool
      */
@@ -61,8 +63,8 @@ class Cls
     /**
      * Validate that a class::name has a property.
      *
-     * @param string $object   The object name to validate
-     * @param string $property The property name
+     * @param class-string|string $object   The object name to validate
+     * @param string              $property The property name
      *
      * @throws InvalidClassProvidedException
      *
@@ -78,8 +80,8 @@ class Cls
     /**
      * Check if a class::name has a property.
      *
-     * @param string $object   The object name to check
-     * @param string $property The property name
+     * @param class-string|string $object   The object name to validate
+     * @param string              $property The property name
      *
      * @return bool
      */
@@ -119,13 +121,14 @@ class Cls
      *  constructor parameters as the service to return.
      *
      * @template T
+     * @template D
      *
-     * @param Container       $container    The container
-     * @param class-string<T> $class        The class to get
-     * @param class-string<T> $defaultClass The default class to fallback to
-     * @param array           $arguments    [optional] The arguments
+     * @param Container              $container    The container
+     * @param class-string<T>|string $class        The class to get
+     * @param class-string<D>|string $defaultClass The default class to fallback to
+     * @param array                  $arguments    [optional] The arguments
      *
-     * @return T
+     * @return T|D
      */
     public static function getDefaultableService(Container $container, string $class, string $defaultClass, array $arguments = []): object
     {

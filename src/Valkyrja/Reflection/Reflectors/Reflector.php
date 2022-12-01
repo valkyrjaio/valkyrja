@@ -137,18 +137,13 @@ class Reflector implements Contract
         // Iterate through the method's parameters
         foreach ($parameters as $parameter) {
             $type = $parameter->getType();
-            // We only care for classes
             if (
-                // A type does exist for this parameter
-                $type !== null
-                // The type is not a closure
-                && ! ($type instanceof Closure)
-                // The type is not a callable
-                && ! is_callable($type)
                 // The type is a ReflectionNamedType
-                && $type instanceof ReflectionNamedType
+                $type instanceof ReflectionNamedType
                 // The name is valid
                 && ($name = $type->getName())
+                // The name is not a callable
+                && ! is_callable($name)
                 // The class exists
                 && class_exists($name)
                 // It's not built in

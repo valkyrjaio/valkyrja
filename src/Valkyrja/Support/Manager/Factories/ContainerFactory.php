@@ -23,6 +23,7 @@ use Valkyrja\Support\Type\Cls;
  * Class ContainerFactory.
  *
  * @author Melech Mizrachi
+ * @implements Factory<Adapter, Driver>
  */
 class ContainerFactory implements Factory
 {

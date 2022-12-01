@@ -16,16 +16,18 @@ namespace Valkyrja\Support\Manager;
 /**
  * Interface Factory.
  *
- * @author Melech Mizrachi
+ * @author   Melech Mizrachi
+ * @template Adapter
+ * @template Driver
  */
 interface Factory
 {
     /**
      * Get a driver by name.
      *
-     * @param string $name    The driver
-     * @param string $adapter The adapter
-     * @param array  $config  The config
+     * @param class-string<Driver>  $name    The driver
+     * @param class-string<Adapter> $adapter The adapter
+     * @param array                 $config  The config
      *
      * @return Driver
      */
@@ -34,8 +36,8 @@ interface Factory
     /**
      * Get an adapter by name.
      *
-     * @param string $name   The adapter
-     * @param array  $config The config
+     * @param class-string<Adapter> $name   The adapter
+     * @param array                 $config The config
      *
      * @return Adapter
      */
