@@ -27,6 +27,8 @@ class Config extends Model
 {
     /**
      * @inheritDoc
+     *
+     * @var array<string, string>
      */
     protected static array $envKeys = [
         CKP::ENV               => EnvKey::APP_ENV,

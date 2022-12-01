@@ -34,14 +34,12 @@ use function unserialize;
 class CacheableConsole extends Console
 {
     /**
-     * @use Cacheable<ConsoleConfig>
+     * @use Cacheable<ConsoleConfig, Cache>
      */
     use Cacheable;
 
     /**
-     * Get a cacheable representation of the commands.
-     *
-     * @return Cache
+     * @inheritDoc
      */
     public function getCacheable(): Config
     {
@@ -74,7 +72,7 @@ class CacheableConsole extends Console
     /**
      * @inheritDoc
      */
-    protected function setupFromCache(array $config): void
+    protected function setupFromCache(Config|array $config): void
     {
         $cache = $config['cache'] ?? require $config['cacheFilePath'];
 

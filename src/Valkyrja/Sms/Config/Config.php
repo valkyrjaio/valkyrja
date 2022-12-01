@@ -26,6 +26,8 @@ class Config extends Model
 {
     /**
      * @inheritDoc
+     *
+     * @var array<string, string>
      */
     protected static array $envKeys = [
         CKP::DEFAULT         => EnvKey::SMS_DEFAULT,
@@ -66,6 +68,8 @@ class Config extends Model
 
     /**
      * @inheritDoc
+     *
+     * @var array[]
      */
     public array $messages;
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Attributes\Parameter\Entity;
 
 use Attribute;
+use Valkyrja\ORM\Entity;
 use Valkyrja\Routing\Attributes\Parameter\UuidV1 as Parameter;
 use Valkyrja\Routing\Enums\CastType;
 
@@ -25,6 +26,9 @@ use Valkyrja\Routing\Enums\CastType;
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class UuidV1 extends Parameter
 {
+    /**
+     * @param class-string<Entity>|null $entity
+     */
     public function __construct(
         string $entity = null,
         string $entityColumn = null,

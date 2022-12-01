@@ -28,7 +28,7 @@ use Valkyrja\Support\Cacheable\Cacheable;
 class CacheableContainer extends Container
 {
     /**
-     * @use Cacheable<ContainerConfig>
+     * @use Cacheable<ContainerConfig, ContainerConfig>
      */
     use Cacheable;
 
@@ -75,7 +75,7 @@ class CacheableContainer extends Container
     /**
      * @inheritDoc
      */
-    protected function setupFromCache(array $config): void
+    protected function setupFromCache(Config|array $config): void
     {
         $cache = $config['cache'] ?? require $config['cacheFilePath'];
 

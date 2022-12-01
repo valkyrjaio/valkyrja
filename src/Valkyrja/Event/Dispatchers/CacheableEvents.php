@@ -29,7 +29,7 @@ use Valkyrja\Support\Cacheable\Cacheable;
 class CacheableEvents extends Events
 {
     /**
-     * @use Cacheable<EventConfig>
+     * @use Cacheable<EventConfig, Cache>
      */
     use Cacheable;
 
@@ -46,9 +46,7 @@ class CacheableEvents extends Events
     }
 
     /**
-     * Get a cacheable representation of the events.
-     *
-     * @return Cache
+     * @inheritDoc
      */
     public function getCacheable(): Config
     {
@@ -86,7 +84,7 @@ class CacheableEvents extends Events
     /**
      * @inheritDoc
      */
-    protected function setupFromCache(array $config): void
+    protected function setupFromCache(Config|array $config): void
     {
         $cache = $config['cache'] ?? require $config['cacheFilePath'];
 

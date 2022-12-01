@@ -36,16 +36,16 @@ class Parameter extends Model
     /**
      * Parameter constructor.
      *
-     * @param string|null   $name                [optional] The name
-     * @param string|null   $regex               [optional] The regex
-     * @param CastType|null $type                [optional] The cast type
-     * @param string|null   $entity              [optional] The entity class name
-     * @param string|null   $entityColumn        [optional] The entity column
-     * @param array|null    $entityRelationships [optional] The entity relationships to get
-     * @param string|null   $enum                [optional] The enum type
-     * @param bool          $isOptional          [optional] Whether this parameter is optional
-     * @param bool          $shouldCapture       [optional] Whether this parameter should be captured
-     * @param mixed         $default             [optional] The default value for this parameter
+     * @param string|null                   $name                [optional] The name
+     * @param string|null                   $regex               [optional] The regex
+     * @param CastType|null                 $type                [optional] The cast type
+     * @param class-string<Entity>|null     $entity              [optional] The entity class name
+     * @param string|null                   $entityColumn        [optional] The entity column
+     * @param array|null                    $entityRelationships [optional] The entity relationships to get
+     * @param class-string<BackedEnum>|null $enum                [optional] The enum type
+     * @param bool                          $isOptional          [optional] Whether this parameter is optional
+     * @param bool                          $shouldCapture       [optional] Whether this parameter should be captured
+     * @param mixed                         $default             [optional] The default value for this parameter
      */
     public function __construct(
         protected string|null $name = null,
@@ -140,7 +140,7 @@ class Parameter extends Model
     /**
      * Get the entity class.
      *
-     * @return string|null
+     * @return class-string<Entity>|null
      */
     public function getEntity(): ?string
     {
@@ -150,7 +150,7 @@ class Parameter extends Model
     /**
      * Set the entity class name.
      *
-     * @param string|null $entity The entity class name
+     * @param class-string<Entity>|null $entity The entity class name
      *
      * @return static
      */

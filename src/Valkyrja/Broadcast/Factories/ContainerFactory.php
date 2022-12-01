@@ -26,6 +26,7 @@ use Valkyrja\Support\Type\Cls;
  * Class ContainerFactory.
  *
  * @author Melech Mizrachi
+ * @extends Factory<Driver, Adapter, Message>
  */
 class ContainerFactory extends Factory implements Contract
 {

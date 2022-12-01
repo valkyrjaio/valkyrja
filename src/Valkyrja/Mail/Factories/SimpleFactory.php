@@ -23,6 +23,7 @@ use Valkyrja\Support\Manager\Factories\SimpleFactoryWithMessage as Factory;
  * Class SimpleFactory.
  *
  * @author Melech Mizrachi
+ * @extends Factory<Driver, Adapter, Message>
  */
 class SimpleFactory extends Factory implements Contract
 {

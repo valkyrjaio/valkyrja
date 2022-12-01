@@ -20,6 +20,7 @@ use Valkyrja\Config\Config;
  *
  * @author   Melech Mizrachi
  * @template Config
+ * @template Cache
  */
 trait Cacheable
 {
@@ -53,6 +54,7 @@ trait Cacheable
 
         // If the application should use the routes cache file
         if ($useCache && ($config['useCache'])) {
+            /** @var Config|array $config */
             $this->setupFromCache($config);
 
             // Then return out of setup
@@ -69,7 +71,7 @@ trait Cacheable
     /**
      * Get a cacheable representation of the data.
      *
-     * @return Config
+     * @return Cache
      */
     abstract public function getCacheable(): Config;
 
@@ -92,11 +94,11 @@ trait Cacheable
     /**
      * Setup from cache.
      *
-     * @param array $config
+     * @param Config|array $config
      *
      * @return void
      */
-    abstract protected function setupFromCache(array $config): void;
+    abstract protected function setupFromCache(Config|array $config): void;
 
     /**
      * Set not cached.
@@ -117,7 +119,8 @@ trait Cacheable
     protected function setupFromAnnotations(Config|array $config): void
     {
         // If annotations are enabled and cacheable should use annotations
-        if (($config['useAnnotations'] ?? true)) {
+        if ($config['useAnnotations'] ?? true) {
+            /** @var Config|array $config */
             $this->setupAnnotations($config);
         }
     }
@@ -141,7 +144,8 @@ trait Cacheable
     protected function setupFromAttributes(Config|array $config): void
     {
         // If attributes are enabled and cacheable should use attributes
-        if (($config['useAttributes'] ?? true)) {
+        if ($config['useAttributes'] ?? true) {
+            /** @var Config|array $config */
             $this->setupAttributes($config);
         }
     }

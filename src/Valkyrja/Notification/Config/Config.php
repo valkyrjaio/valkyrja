@@ -26,6 +26,8 @@ class Config extends Model
 {
     /**
      * @inheritDoc
+     *
+     * @var array<string, string>
      */
     protected static array $envKeys = [
         CKP::NOTIFICATIONS => EnvKey::NOTIFICATION_NOTIFICATIONS,

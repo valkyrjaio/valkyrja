@@ -22,7 +22,10 @@ use Valkyrja\Support\Type\Cls;
 /**
  * Class ContainerFactoryWithMessage.
  *
- * @author Melech Mizrachi
+ * @author   Melech Mizrachi
+ * @template Driver
+ * @template Factory
+ * @template Message
  * @implements FactoryWithMessage<Adapter, Driver, Message>
  */
 class ContainerFactoryWithMessage extends ContainerFactory implements FactoryWithMessage

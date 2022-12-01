@@ -26,6 +26,9 @@ use Valkyrja\Routing\Enums\CastType;
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class Entity extends Parameter
 {
+    /**
+     * @param class-string<\Valkyrja\ORM\Entity>|null $entity
+     */
     public function __construct(
         string $entity = null,
         string $entityColumn = null,

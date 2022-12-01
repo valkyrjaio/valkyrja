@@ -99,7 +99,7 @@ class Url implements Contract
         $uri = str_replace(['http://', 'https://'], '', $uri);
 
         // Get the host of the uri
-        $host = substr($uri, 0, strpos($uri, '/'));
+        $host = substr($uri, 0, (int) strpos($uri, '/'));
 
         // If the host does not match the current request uri's host
         if ($host && $host !== $this->request->getUri()->getHost()) {
@@ -108,7 +108,7 @@ class Url implements Contract
         }
 
         // Get only the path (full string from the first slash to the end of the path)
-        $uri = substr($uri, strpos($uri, '/'), strlen($uri));
+        $uri = substr($uri, (int) strpos($uri, '/'), strlen($uri));
 
         // Try to match the route
         $route = $this->getRouteByPath($uri);

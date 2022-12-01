@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing;
 
+use BackedEnum;
 use Valkyrja\Dispatcher\Dispatch;
+use Valkyrja\ORM\Entity;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Models\Parameter;
 
@@ -132,16 +134,16 @@ interface Route extends Dispatch
     /**
      * Add a parameter.
      *
-     * @param string        $name                The name
-     * @param string|null   $regex               [optional] The regex
-     * @param CastType|null $type                [optional] The cast type
-     * @param string|null   $entity              [optional] The entity class name
-     * @param string|null   $entityColumn        [optional] The entity column to query against
-     * @param array|null    $entityRelationships [optional] The entity relationships
-     * @param string|null   $enum                [optional] The enum type
-     * @param bool          $isOptional          [optional] Whether the parameter is optional
-     * @param bool          $shouldCapture       [optional] Whether this parameter should be captured
-     * @param mixed         $default             [optional] The default value for this parameter
+     * @param string                        $name                The name
+     * @param string|null                   $regex               [optional] The regex
+     * @param CastType|null                 $type                [optional] The cast type
+     * @param class-string<Entity>|null     $entity              [optional] The entity class name
+     * @param string|null                   $entityColumn        [optional] The entity column to query against
+     * @param array|null                    $entityRelationships [optional] The entity relationships
+     * @param class-string<BackedEnum>|null $enum                [optional] The enum type
+     * @param bool                          $isOptional          [optional] Whether the parameter is optional
+     * @param bool                          $shouldCapture       [optional] Whether this parameter should be captured
+     * @param mixed                         $default             [optional] The default value for this parameter
      *
      * @return static
      */

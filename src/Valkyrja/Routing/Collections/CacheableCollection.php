@@ -32,7 +32,7 @@ use Valkyrja\Support\Cacheable\Cacheable;
 class CacheableCollection extends Collection
 {
     /**
-     * @use Cacheable<RoutingConfig>
+     * @use Cacheable<RoutingConfig, Cache>
      */
     use Cacheable;
 
@@ -52,11 +52,7 @@ class CacheableCollection extends Collection
     }
 
     /**
-     * Get a cacheable representation of the data.
-     *
-     * @throws InvalidRoutePath
-     *
-     * @return Cache
+     * @inheritDoc
      */
     public function getCacheable(): Config
     {
@@ -100,7 +96,7 @@ class CacheableCollection extends Collection
     /**
      * @inheritDoc
      */
-    protected function setupFromCache(array $config): void
+    protected function setupFromCache(Config|array $config): void
     {
         $cache = $config['cache'] ?? require $config['cacheFilePath'];
 

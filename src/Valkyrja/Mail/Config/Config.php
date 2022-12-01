@@ -66,6 +66,8 @@ class Config extends Model
 
     /**
      * @inheritDoc
+     *
+     * @var array[]
      */
     public array $messages;
 }
