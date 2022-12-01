@@ -49,21 +49,21 @@ class Collection implements Contract
     /**
      * The static routes.
      *
-     * @var Route[][]
+     * @var string[][]
      */
     protected array $static = [];
 
     /**
      * The dynamic routes.
      *
-     * @var Route[][]
+     * @var string[][]
      */
     protected array $dynamic = [];
 
     /**
      * The named routes.
      *
-     * @var Route[]
+     * @var string[]
      */
     protected array $named = [];
 
@@ -101,7 +101,7 @@ class Collection implements Contract
         // Set the route to the named
         $this->setRouteToNamed($route);
 
-        $this->routes[$route->getId()] = $route;
+        $this->routes[(string) $route->getId()] = $route;
     }
 
     /**
@@ -273,11 +273,11 @@ class Collection implements Contract
             $this->createRouteRegex($route);
 
             // Set the route in the dynamic routes list
-            $this->dynamic[$requestMethod][$route->getRegex()] = $route->getId();
+            $this->dynamic[$requestMethod][$route->getRegex()] = (string) $route->getId();
         } // Otherwise set it in the static routes array
         else {
             // Set the route in the static routes list
-            $this->static[$requestMethod][$route->getPath()] = $route->getId();
+            $this->static[$requestMethod][$route->getPath()] = (string) $route->getId();
         }
     }
 
@@ -371,7 +371,7 @@ class Collection implements Contract
         // If this route has a name set
         if ($route->getName()) {
             // Set the route in the named routes list
-            $this->named[$route->getName()] = $route->getId();
+            $this->named[$route->getName()] = (string) $route->getId();
         }
     }
 

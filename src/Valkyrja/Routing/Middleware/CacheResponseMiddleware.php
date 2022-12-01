@@ -55,7 +55,7 @@ class CacheResponseMiddleware extends Middleware
             $cache = file_get_contents($filePath);
             /** @var Response $response */
             $response = unserialize(
-                base64_decode($cache['response'], true),
+                base64_decode($cache, true),
                 [
                     'allowed_classes' => true,
                 ]

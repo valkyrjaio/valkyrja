@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Managers;
 
-use JsonException;
 use Valkyrja\Config\Config;
 use Valkyrja\Container\Annotator;
 use Valkyrja\Container\Config\Cache;
@@ -28,12 +27,13 @@ use Valkyrja\Support\Cacheable\Cacheable;
  */
 class CacheableContainer extends Container
 {
+    /**
+     * @use Cacheable<ContainerConfig>
+     */
     use Cacheable;
 
     /**
      * Get a cacheable representation of the service container.
-     *
-     * @throws JsonException
      *
      * @return ContainerConfig
      */
@@ -60,9 +60,7 @@ class CacheableContainer extends Container
     }
 
     /**
-     * Get the config.
-     *
-     * @return ContainerConfig|array
+     * @inheritDoc
      */
     protected function getConfig(): Config|array
     {
@@ -70,22 +68,14 @@ class CacheableContainer extends Container
     }
 
     /**
-     * Before setup.
-     *
-     * @param ContainerConfig|array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function beforeSetup(Config|array $config): void
     {
     }
 
     /**
-     * Setup the container from cache.
-     *
-     * @param array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function setupFromCache(array $config): void
     {
@@ -102,11 +92,7 @@ class CacheableContainer extends Container
     }
 
     /**
-     * Set not cached.
-     *
-     * @param ContainerConfig|array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function setupNotCached(Config|array $config): void
     {
@@ -122,11 +108,7 @@ class CacheableContainer extends Container
     }
 
     /**
-     * Setup annotations.
-     *
-     * @param ContainerConfig|array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function setupAnnotations(Config|array $config): void
     {
@@ -156,11 +138,7 @@ class CacheableContainer extends Container
     }
 
     /**
-     * Set attributes.
-     *
-     * @param ContainerConfig|array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function setupAttributes(Config|array $config): void
     {
@@ -192,11 +170,7 @@ class CacheableContainer extends Container
     }
 
     /**
-     * After setup.
-     *
-     * @param ContainerConfig|array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function afterSetup(Config|array $config): void
     {

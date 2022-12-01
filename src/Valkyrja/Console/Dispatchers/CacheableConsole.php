@@ -33,6 +33,9 @@ use function unserialize;
  */
 class CacheableConsole extends Console
 {
+    /**
+     * @use Cacheable<ConsoleConfig>
+     */
     use Cacheable;
 
     /**
@@ -54,9 +57,7 @@ class CacheableConsole extends Console
     }
 
     /**
-     * Get the config.
-     *
-     * @return ConsoleConfig|array
+     * @inheritDoc
      */
     protected function getConfig(): Config|array
     {
@@ -64,22 +65,14 @@ class CacheableConsole extends Console
     }
 
     /**
-     * Before setup.
-     *
-     * @param ConsoleConfig|array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function beforeSetup(Config|array $config): void
     {
     }
 
     /**
-     * Setup the console from cache.
-     *
-     * @param array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function setupFromCache(array $config): void
     {
@@ -99,11 +92,7 @@ class CacheableConsole extends Console
     }
 
     /**
-     * Set not cached.
-     *
-     * @param ConsoleConfig|array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function setupNotCached(Config|array $config): void
     {
@@ -116,13 +105,9 @@ class CacheableConsole extends Console
     }
 
     /**
-     * Setup annotations.
-     *
-     * @param ConsoleConfig|array $config
+     * @inheritDoc
      *
      * @throws ReflectionException
-     *
-     * @return void
      */
     protected function setupAnnotations(Config|array $config): void
     {
@@ -138,11 +123,7 @@ class CacheableConsole extends Console
     }
 
     /**
-     * Set attributes.
-     *
-     * @param ConsoleConfig|array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function setupAttributes(Config|array $config): void
     {
@@ -174,11 +155,7 @@ class CacheableConsole extends Console
     }
 
     /**
-     * After setup.
-     *
-     * @param ConsoleConfig|array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function afterSetup(Config|array $config): void
     {

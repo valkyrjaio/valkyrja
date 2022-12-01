@@ -15,8 +15,12 @@ namespace Valkyrja\Console\Commands;
 
 use JsonException;
 use Valkyrja\Console\Commanders\Commander;
+use Valkyrja\Console\Dispatchers\CacheableConsole;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\Provides;
+use Valkyrja\Container\Managers\CacheableContainer;
+use Valkyrja\Event\Dispatchers\CacheableEvents;
+use Valkyrja\Routing\Collections\CacheableCollection;
 use Valkyrja\Support\Type\Arr;
 
 use function file_put_contents;
@@ -71,10 +75,19 @@ class Optimize extends Commander
         $configCache['app']['debug'] = false;
         $configCache['app']['env']   = 'production';
 
-        $containerCache = container()->getCacheable();
-        $consoleCache   = console()->getCacheable();
-        $eventsCache    = events()->getCacheable();
-        $routesCache    = router()->getCollection()->getCacheable();
+        /** @var CacheableContainer $container */
+        $container = container();
+        /** @var CacheableConsole $console */
+        $console = console();
+        /** @var CacheableEvents $events */
+        $events = events();
+        /** @var CacheableCollection $collection */
+        $collection = router()->getCollection();
+
+        $containerCache = $container->getCacheable();
+        $consoleCache   = $console->getCacheable();
+        $eventsCache    = $events->getCacheable();
+        $routesCache    = $collection->getCacheable();
 
         $configCache['container']        = $containerCache;
         $configCache['console']['cache'] = $consoleCache;

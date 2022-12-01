@@ -243,6 +243,8 @@ class SodiumAdapter extends Adapter
 
         $this->validatePlainDecoded($plain);
 
+        /** @var string $plain */
+
         sodium_memzero($cipherText);
 
         return $plain;

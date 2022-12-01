@@ -13,19 +13,22 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Commands;
 
-use Valkyrja\Config\Constants\ConfigKey;
+use JsonException;
 use Valkyrja\Console\Commanders\Commander;
+use Valkyrja\Console\Dispatchers\CacheableConsole;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\Provides;
+use Valkyrja\Support\Type\Arr;
 
 use function file_put_contents;
-use function Valkyrja\app;
 use function Valkyrja\config;
 use function Valkyrja\console;
 use function Valkyrja\output;
 use function var_export;
 
+use const JSON_THROW_ON_ERROR;
 use const LOCK_EX;
+use const PHP_EOL;
 
 /**
  * Class ConsoleCache.
@@ -45,29 +48,32 @@ class ConsoleCache extends Commander
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public function run(): int
     {
-        app()->setup(
-            [
-                'app' => [
-                    'debug' => false,
-                    'env'   => 'production',
-                ],
-            ],
-            true
-        );
+        $configCache   = config();
+        $cacheFilePath = $configCache['console']['cacheFilePath'];
 
-        $cache = console()->getCacheable();
+        // If the cache file already exists, delete it
+        if (is_file($cacheFilePath)) {
+            unlink($cacheFilePath);
+        }
+
+        $configCache['app']['debug'] = false;
+        $configCache['app']['env']   = 'production';
+
+        /** @var CacheableConsole $console */
+        $console = console();
+
+        $cache = $console->getCacheable();
+
+        $asArray  = json_decode(json_encode($cache, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
+        $asString = '<?php return ' . var_export(Arr::withoutNull($asArray), true) . ';' . PHP_EOL;
 
         // Get the results of the cache attempt
-        $result = file_put_contents(
-            config(ConfigKey::CONSOLE_CACHE_FILE_PATH),
-            '<?php
-
-declare(strict_types=1); return ' . var_export($cache, true) . ';',
-            LOCK_EX
-        );
+        $result = file_put_contents($cacheFilePath, $asString, LOCK_EX);
 
         if ($result === false) {
             output()->writeMessage('An error occurred while generating console cache.', true);

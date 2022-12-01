@@ -35,6 +35,8 @@ trait Join
 
     /**
      * @inheritDoc
+     *
+     * @return static
      */
     public function join(
         string $table,

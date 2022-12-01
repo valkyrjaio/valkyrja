@@ -31,6 +31,13 @@ class Enum
     protected static array $cache = [];
 
     /**
+     * A cache of enum class names and their names, or values.
+     *
+     * @var array<string, string[]>
+     */
+    protected static array $namesCache = [];
+
+    /**
      * Get enum case names.
      *
      * @param string $enum The enum class name
@@ -41,15 +48,15 @@ class Enum
     {
         $cacheName = "names$enum";
 
-        if (isset(self::$cache[$cacheName])) {
-            return self::$cache[$cacheName];
+        if (isset(self::$namesCache[$cacheName])) {
+            return self::$namesCache[$cacheName];
         }
 
         Cls::validateInherits($enum, UnitEnum::class);
 
         /** @var UnitEnum|string $enum */
 
-        return self::$cache[$cacheName] = array_column($enum::cases(), 'name');
+        return self::$namesCache[$cacheName] = array_column($enum::cases(), 'name');
     }
 
     /**

@@ -123,14 +123,14 @@ interface Message
      * immutability of the message, and MUST return an instance that has the
      * new and/or updated header and value.
      *
-     * @param string $name     Case-insensitive header field name.
-     * @param string ...$value Header value(s).
+     * @param string $name      Case-insensitive header field name.
+     * @param string ...$values Header value(s).
      *
      * @throws InvalidArgumentException for invalid header names or values.
      *
      * @return static
      */
-    public function withHeader(string $name, string ...$value): self;
+    public function withHeader(string $name, string ...$values): self;
 
     /**
      * Return an instance with the specified header appended with the given
@@ -142,14 +142,14 @@ interface Message
      * immutability of the message, and MUST return an instance that has the
      * new header and/or value.
      *
-     * @param string $name     Case-insensitive header field name to add.
-     * @param string ...$value Header value(s).
+     * @param string $name      Case-insensitive header field name to add.
+     * @param string ...$values Header value(s).
      *
      * @throws InvalidArgumentException for invalid header names or values.
      *
      * @return static
      */
-    public function withAddedHeader(string $name, string ...$value): self;
+    public function withAddedHeader(string $name, string ...$values): self;
 
     /**
      * Return an instance without the specified header.

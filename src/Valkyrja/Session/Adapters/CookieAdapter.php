@@ -157,7 +157,7 @@ class CookieAdapter extends PHPAdapter
             $this->crypt->encryptArray($this->data),
             0,
             '/',
-            null,
+            '',
             false,
             true
         );

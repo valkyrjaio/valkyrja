@@ -118,12 +118,14 @@ class Cls
      * Get a service that can be defaulted whereby the default class exists in the container and has the same
      *  constructor parameters as the service to return.
      *
-     * @param Container $container    The container
-     * @param string    $class        The class to get
-     * @param string    $defaultClass The default class to fallback to
-     * @param array     $arguments    [optional] The arguments
+     * @template T
      *
-     * @return object|mixed
+     * @param Container       $container    The container
+     * @param class-string<T> $class        The class to get
+     * @param class-string<T> $defaultClass The default class to fallback to
+     * @param array           $arguments    [optional] The arguments
+     *
+     * @return T
      */
     public static function getDefaultableService(Container $container, string $class, string $defaultClass, array $arguments = []): object
     {

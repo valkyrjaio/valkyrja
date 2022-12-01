@@ -30,6 +30,8 @@ trait AttributedModelTrait
 
     /**
      * @inheritDoc
+     *
+     * @return ReflectionAttribute[]
      */
     public static function getAttributes(string $name = null): array
     {

@@ -26,6 +26,8 @@ use Valkyrja\HttpKernel\Kernel;
  * Interface Application.
  *
  * @author Melech Mizrachi
+ *
+ * @extends ArrayAccess<string, mixed>
  */
 interface Application extends ArrayAccess
 {

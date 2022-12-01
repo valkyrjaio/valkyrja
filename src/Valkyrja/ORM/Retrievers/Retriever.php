@@ -26,7 +26,9 @@ use Valkyrja\Support\Type\Cls;
 /**
  * Class Retriever
  *
- * @author Melech Mizrachi
+ * @author   Melech Mizrachi
+ * @template T
+ * @implements Contract<T>
  */
 class Retriever implements Contract
 {
@@ -222,12 +224,17 @@ class Retriever implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @return T[]
      */
     public function getResult(): array
     {
         $this->prepareResults();
 
-        return $this->query->getResult();
+        /** @var T[] $results */
+        $results = $this->query->getResult();
+
+        return $results;
     }
 
     /**

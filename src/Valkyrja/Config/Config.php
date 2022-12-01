@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Config;
 
 use ArrayAccess;
-use JsonException;
 use Valkyrja\Model\Models\Model;
 
 use function Valkyrja\env;
@@ -23,6 +22,8 @@ use function Valkyrja\env;
  * Abstract Class Config.
  *
  * @author Melech Mizrachi
+ *
+ * @implements ArrayAccess<string, mixed>
  */
 abstract class Config extends Model implements ArrayAccess
 {
@@ -43,8 +44,6 @@ abstract class Config extends Model implements ArrayAccess
      *
      * @param array|null $properties [optional] The properties to set
      * @param bool       $setup      [optional] Whether to setup this config
-     *
-     * @throws JsonException
      */
     public function __construct(array $properties = null, bool $setup = false)
     {

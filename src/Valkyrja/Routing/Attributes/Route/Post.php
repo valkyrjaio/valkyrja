@@ -31,16 +31,18 @@ class Post extends Route
         array $parameters = null,
         array $middleware = null,
         bool $secure = null,
+        string $to = null,
+        int $code = null,
     ) {
         parent::__construct(
             path      : $path,
             name      : $name,
-            methods   : [
-                RequestMethod::POST,
-            ],
+            methods   : [RequestMethod::POST],
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,
+            to        : $to,
+            code      : $code,
         );
     }
 }

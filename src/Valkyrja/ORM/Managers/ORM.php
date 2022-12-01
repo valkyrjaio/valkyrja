@@ -212,13 +212,15 @@ class ORM implements Contract
     {
         Cls::validateInherits($entity, Entity::class);
 
-        /** @var Entity $entity */
-        $name     = $entity::getRepository() ?? $this->defaultRepository;
+        /** @var Entity $entityClass */
+        $entityClass = $entity;
+
+        $name     = $entityClass::getRepository() ?? $this->defaultRepository;
         $cacheKey = $name . $entity;
 
         return static::$repositories[$cacheKey]
             ?? static::$repositories[$cacheKey] = $this->factory->createRepository(
-                $this->useConnection($entity::getConnection()),
+                $this->useConnection($entityClass::getConnection()),
                 $name,
                 $entity
             );
@@ -226,6 +228,12 @@ class ORM implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @template T
+     *
+     * @param T $entity
+     *
+     * @return Repository<class-string<T>>
      */
     public function getRepositoryFromClass(Entity $entity): Repository
     {
@@ -234,6 +242,12 @@ class ORM implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @template T
+     *
+     * @param class-string<T> $name The statement class name
+     *
+     * @return T
      */
     public function createStatement(Adapter $adapter, string $name, array $data = []): Statement
     {
@@ -242,6 +256,12 @@ class ORM implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @template T
+     *
+     * @param class-string<T> $name The migration class name
+     *
+     * @return T
      */
     public function createMigration(string $name, array $data = []): Migration
     {

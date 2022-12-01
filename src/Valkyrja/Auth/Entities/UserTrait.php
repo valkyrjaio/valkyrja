@@ -73,6 +73,8 @@ trait UserTrait
 
     /**
      * @inheritDoc
+     *
+     * @return string[]
      */
     public static function getAuthenticationFields(): array
     {

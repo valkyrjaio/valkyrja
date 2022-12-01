@@ -282,7 +282,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
-    public function __toString()
+    public function __toString(): string
     {
         if ($this->isValidUriString()) {
             return (string) $this->uriString;

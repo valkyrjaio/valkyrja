@@ -34,7 +34,8 @@ use function get_class;
  * Class Repository.
  *
  * @author   Melech Mizrachi
- * @template T
+ * @template E
+ * @implements Contract<E>
  */
 class Repository implements Contract
 {
@@ -69,7 +70,7 @@ class Repository implements Contract
     /**
      * The entity to use.
      *
-     * @var string|Entity|T
+     * @var string|Entity|E
      */
     protected string $entity;
 
@@ -92,7 +93,7 @@ class Repository implements Contract
      *
      * @param ORM             $manager The orm manager
      * @param Driver          $driver  The driver
-     * @param class-string<T> $entity  The entity class name
+     * @param class-string<E> $entity  The entity class name
      *
      * @throws InvalidArgumentException
      */
@@ -248,6 +249,8 @@ class Repository implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @return E[]|Entity[]
      */
     public function getResult(): array
     {
@@ -260,6 +263,8 @@ class Repository implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @return E|Entity|null
      */
     public function getOneOrNull(): ?Entity
     {
@@ -268,6 +273,8 @@ class Repository implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @return E|Entity
      */
     public function getOneOrFail(): Entity
     {
@@ -285,6 +292,8 @@ class Repository implements Contract
     /**
      * @inheritDoc
      *
+     * @param Entity|E $entity The entity
+     *
      * @throws InvalidEntityException
      */
     public function create(Entity $entity, bool $defer = true): void
@@ -296,6 +305,8 @@ class Repository implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param Entity|E $entity The entity
      *
      * @throws InvalidEntityException
      */
@@ -309,6 +320,8 @@ class Repository implements Contract
     /**
      * @inheritDoc
      *
+     * @param Entity|E $entity The entity
+     *
      * @throws InvalidEntityException
      */
     public function delete(Entity $entity, bool $defer = true): void
@@ -321,6 +334,8 @@ class Repository implements Contract
     /**
      * @inheritDoc
      *
+     * @param Entity|E $entity The entity
+     *
      * @throws InvalidEntityException
      */
     public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
@@ -332,6 +347,8 @@ class Repository implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param Entity|E|null $entity The entity instance to remove.
      *
      * @throws InvalidEntityException
      */
@@ -387,7 +404,7 @@ class Repository implements Contract
     /**
      * Validate the passed entity.
      *
-     * @param Entity|T $entity The entity
+     * @param E $entity The entity
      *
      * @throws InvalidEntityException
      *
@@ -420,7 +437,7 @@ class Repository implements Contract
     /**
      * Set relationships on the entities from results.
      *
-     * @param Entity|T ...$entities The entities to add relationships to
+     * @param E ...$entities The entities to add relationships to
      *
      * @return void
      */
@@ -443,8 +460,8 @@ class Repository implements Contract
     /**
      * Set relationships on an entity.
      *
-     * @param array    $relationships The relationships to set
-     * @param Entity|T $entity        The entity
+     * @param array $relationships The relationships to set
+     * @param E     $entity        The entity
      *
      * @return void
      */
@@ -460,8 +477,8 @@ class Repository implements Contract
     /**
      * Set a relationship property.
      *
-     * @param Entity|T $entity       The entity
-     * @param string   $relationship The relationship to set
+     * @param E      $entity       The entity
+     * @param string $relationship The relationship to set
      *
      * @return void
      */

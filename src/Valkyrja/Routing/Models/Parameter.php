@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Models;
 
 use BackedEnum;
+use Valkyrja\Model\Models\Model;
 use Valkyrja\ORM\Entity;
 use Valkyrja\Routing\Enums\CastType;
-use Valkyrja\Model\Models\Model;
 use Valkyrja\Support\Type\Cls;
 
 use function is_string;
@@ -43,8 +43,8 @@ class Parameter extends Model
      * @param string|null   $entityColumn        [optional] The entity column
      * @param array|null    $entityRelationships [optional] The entity relationships to get
      * @param string|null   $enum                [optional] The enum type
-     * @param bool|null     $isOptional          [optional] Whether this parameter is optional
-     * @param bool|null     $shouldCapture       [optional] Whether this parameter should be captured
+     * @param bool          $isOptional          [optional] Whether this parameter is optional
+     * @param bool          $shouldCapture       [optional] Whether this parameter should be captured
      * @param mixed         $default             [optional] The default value for this parameter
      */
     public function __construct(

@@ -49,7 +49,7 @@ trait EnhancedEnumModelTrait
         return unserialize(
             $value,
             [
-                'allowed_classes' => $type,
+                'allowed_classes' => [$type],
             ]
         );
     }

@@ -22,6 +22,8 @@ trait UnpackingFromArrayModelTrait
 {
     /**
      * @inheritDoc
+     *
+     * @return static
      */
     protected static function __getNew(array $properties): self
     {

@@ -33,6 +33,8 @@ trait Set
 
     /**
      * @inheritDoc
+     *
+     * @return static
      */
     public function set(string $column, mixed $value = null): self
     {

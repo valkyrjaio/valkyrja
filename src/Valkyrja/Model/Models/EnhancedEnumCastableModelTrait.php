@@ -50,7 +50,7 @@ trait EnhancedEnumCastableModelTrait
         return unserialize(
             $value,
             [
-                'allowed_classes' => $type,
+                'allowed_classes' => [$type],
             ]
         );
     }

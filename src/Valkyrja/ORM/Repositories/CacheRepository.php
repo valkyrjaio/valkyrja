@@ -36,7 +36,10 @@ use function unserialize;
 /**
  * Class CacheRepository.
  *
- * @author Melech Mizrachi
+ * @author   Melech Mizrachi
+ * @template E
+ * @extends Repository<E>
+ * @implements Contract<E>
  */
 class CacheRepository extends Repository implements Contract
 {
@@ -78,24 +81,24 @@ class CacheRepository extends Repository implements Contract
     /**
      * The entities awaiting to be stored.
      *
-     * @var Entity[]
+     * @var E[]|Entity[]
      */
     protected array $storeEntities = [];
 
     /**
      * The entities awaiting to be forgotten.
      *
-     * @var Entity[]
+     * @var E[]|Entity[]
      */
     protected array $forgetEntities = [];
 
     /**
      * Repository constructor.
      *
-     * @param ORM    $manager The orm manager
-     * @param Driver $driver  The driver
-     * @param Cache  $cache   The cache service
-     * @param string $entity  The entity class name
+     * @param ORM             $manager The orm manager
+     * @param Driver          $driver  The driver
+     * @param Cache           $cache   The cache service
+     * @param class-string<E> $entity  The entity class name
      */
     public function __construct(ORM $manager, Driver $driver, Cache $cache, string $entity)
     {
@@ -135,6 +138,8 @@ class CacheRepository extends Repository implements Contract
      * @inheritDoc
      *
      * @throws JsonException
+     *
+     * @return E[]|Entity[]
      */
     public function getResult(): array
     {
@@ -161,6 +166,8 @@ class CacheRepository extends Repository implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @return E|Entity
      */
     public function getOneOrFail(): Entity
     {
@@ -197,6 +204,8 @@ class CacheRepository extends Repository implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param Entity|E $entity The entity
      */
     public function create(Entity $entity, bool $defer = true): void
     {
@@ -207,6 +216,8 @@ class CacheRepository extends Repository implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param Entity|E $entity The entity
      */
     public function save(Entity $entity, bool $defer = true): void
     {
@@ -217,6 +228,8 @@ class CacheRepository extends Repository implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param Entity|E $entity The entity
      */
     public function delete(Entity $entity, bool $defer = true): void
     {
@@ -227,6 +240,8 @@ class CacheRepository extends Repository implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param Entity|E $entity The entity
      */
     public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
     {
@@ -237,6 +252,8 @@ class CacheRepository extends Repository implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param Entity|E|null $entity The entity instance to remove.
      */
     public function clear(Entity $entity = null): void
     {
@@ -328,7 +345,7 @@ class CacheRepository extends Repository implements Contract
         $id = spl_object_id($entity);
 
         match ($type) {
-            self::$storeType  => $this->storeEntities[$id]  = $entity,
+            self::$storeType  => $this->storeEntities[$id] = $entity,
             self::$forgetType => $this->forgetEntities[$id] = $entity,
         };
     }

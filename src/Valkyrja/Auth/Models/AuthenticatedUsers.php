@@ -23,7 +23,8 @@ use Valkyrja\Model\Models\CastableModel;
  *
  * @author   Melech Mizrachi
  *
- * @template T
+ * @template U
+ * @implements Contract<U>
  */
 class AuthenticatedUsers extends CastableModel implements Contract
 {
@@ -44,7 +45,7 @@ class AuthenticatedUsers extends CastableModel implements Contract
     /**
      * The users.
      *
-     * @var User[]|array<int|string, T>
+     * @var User[]|array<int|string, U>
      */
     protected array $users = [];
 
@@ -76,6 +77,8 @@ class AuthenticatedUsers extends CastableModel implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param User|U $user The user
      */
     public function isAuthenticated(User $user): bool
     {
@@ -96,6 +99,10 @@ class AuthenticatedUsers extends CastableModel implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param User|U $user The user
+     *
+     * @return static
      */
     public function add(User $user): self
     {
@@ -106,6 +113,10 @@ class AuthenticatedUsers extends CastableModel implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param User|U $user The user
+     *
+     * @return static
      */
     public function remove(User $user): self
     {

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Config;
 
 use Valkyrja\Config\Config as Model;
+use Valkyrja\Container\Service;
 
 /**
  * Class Cache.
@@ -53,7 +54,7 @@ class Cache extends Model
     /**
      * The services.
      *
-     * @var string[]
+     * @var class-string<Service>[]
      */
     public array $services;
 

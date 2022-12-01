@@ -37,7 +37,7 @@ interface Stream
      *
      * @return string
      */
-    public function __toString();
+    public function __toString(): string;
 
     /**
      * Closes the stream and any underlying resources.

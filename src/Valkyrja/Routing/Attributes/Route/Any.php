@@ -31,6 +31,8 @@ class Any extends Route
         array $parameters = null,
         array $middleware = null,
         bool $secure = null,
+        string $to = null,
+        int $code = null,
     ) {
         parent::__construct(
             path      : $path,
@@ -39,6 +41,8 @@ class Any extends Route
             parameters: $parameters,
             middleware: $middleware,
             secure    : $secure,
+            to        : $to,
+            code      : $code,
         );
     }
 }

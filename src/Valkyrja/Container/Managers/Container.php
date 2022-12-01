@@ -54,7 +54,7 @@ class Container implements Contract
     /**
      * The services.
      *
-     * @var Service[]
+     * @var class-string<Service>[]
      */
     protected static array $services = [];
 

@@ -62,6 +62,8 @@ trait IndexedModelTrait
 
     /**
      * @inheritDoc
+     *
+     * @return static
      */
     public static function fromIndexedArray(array $properties): self
     {
@@ -78,6 +80,8 @@ trait IndexedModelTrait
 
     /**
      * @inheritDoc
+     *
+     * @return static
      */
     public function withIndexedProperties(array $properties): self
     {

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Dispatchers;
 
+use InvalidArgumentException;
 use Valkyrja\Config\Constants\ConfigKeyPart;
 use Valkyrja\Console\Command;
 use Valkyrja\Console\Config\Config;
@@ -300,15 +301,19 @@ class Console implements Contract
         $command->setParams($parsedCommand['params']);
         $command->setSegments($parsedCommand['segments']);
 
+        if (! ($path = $command->getPath()) || ! ($regex = $command->getRegex())) {
+            throw new InvalidArgumentException('Invalid command provided.');
+        }
+
         // Set the command in the commands list
-        self::$commands[$command->getPath()] = $command;
+        self::$commands[$path] = $command;
         // Set the command in the commands paths list
-        self::$paths[$command->getRegex()] = $command->getPath();
+        self::$paths[$regex] = $path;
 
         // If the command has a name
         if (null !== $command->getName()) {
             // Set in the named commands list to find it more easily later
-            self::$namedCommands[$command->getName()] = $command->getPath();
+            self::$namedCommands[$command->getName()] = $path;
         }
     }
 }

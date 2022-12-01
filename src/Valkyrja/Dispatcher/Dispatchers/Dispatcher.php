@@ -130,14 +130,14 @@ class Dispatcher implements Contract
 
         // If the class is the id then this item is not yet set in the
         // service container so it needs a new instance returned
-        if ($dispatch->getClass() === $dispatch->getId()) {
-            // Get the class from the dispatcher
-            $class     = $dispatch->getClass();
-            $arguments = $arguments ?? [];
-            $class     = new $class(...$arguments);
-        } else {
-            // Get the class through the container
-            $class = $this->container->get($dispatch->getClass(), $arguments ?? []);
+        if ($className = $dispatch->getClass()) {
+            if ($className === $dispatch->getId()) {
+                $arguments = $arguments ?? [];
+                $class     = new $className(...$arguments);
+            } else {
+                // Get the class through the container
+                $class = $this->container->get($className, $arguments ?? []);
+            }
         }
 
         return $class ?? Constant::DISPATCHED;
@@ -260,7 +260,7 @@ class Dispatcher implements Contract
      *
      * @throws InvalidArgumentException
      *
-     * @return mixed|string|null
+     * @return object|class-string<object>
      */
     protected function getClassFromDispatch(Dispatch $dispatch): mixed
     {

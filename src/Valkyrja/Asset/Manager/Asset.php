@@ -21,12 +21,10 @@ use Valkyrja\Asset\Asset as Contract;
  *
  * @author Melech Mizrachi
  */
-class Asset implements Contract
+abstract class Asset implements Contract
 {
     /**
      * @inheritDoc
      */
-    public function getBundle(string $bundle, string $adapter = null): Adapter
-    {
-    }
+    abstract public function getBundle(string $bundle, string $adapter = null): Adapter;
 }

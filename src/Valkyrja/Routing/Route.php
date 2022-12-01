@@ -82,11 +82,11 @@ interface Route extends Dispatch
     /**
      * Set the request methods.
      *
-     * @param array $requestMethods The request methods
+     * @param array $methods The request methods
      *
      * @return static
      */
-    public function setMethods(array $requestMethods): self;
+    public function setMethods(array $methods): self;
 
     /**
      * Get the regex.

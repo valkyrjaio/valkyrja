@@ -215,7 +215,9 @@ class Route extends Dispatch implements Contract
     {
         if (is_array($parameters[0] ?? null)) {
             foreach ($parameters as $key => $parameter) {
-                $parameters[$key] = Parameter::fromArray($parameter);
+                if (is_array($parameter)) {
+                    $parameters[$key] = Parameter::fromArray($parameter);
+                }
             }
         }
 

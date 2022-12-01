@@ -160,7 +160,7 @@ class Stream implements StreamContract
     /**
      * @inheritDoc
      */
-    public function __toString()
+    public function __toString(): string
     {
         // If the stream is not readable
         if (! $this->isReadable()) {

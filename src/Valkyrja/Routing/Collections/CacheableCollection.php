@@ -20,6 +20,7 @@ use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Routing\Annotator;
 use Valkyrja\Routing\Config\Cache;
 use Valkyrja\Routing\Config\Config as RoutingConfig;
+use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\RouteAttributes;
 use Valkyrja\Support\Cacheable\Cacheable;
 
@@ -30,6 +31,9 @@ use Valkyrja\Support\Cacheable\Cacheable;
  */
 class CacheableCollection extends Collection
 {
+    /**
+     * @use Cacheable<RoutingConfig>
+     */
     use Cacheable;
 
     /**
@@ -70,9 +74,7 @@ class CacheableCollection extends Collection
     }
 
     /**
-     * Get the config.
-     *
-     * @return RoutingConfig|array
+     * @inheritDoc
      */
     protected function getConfig(): Config|array
     {
@@ -80,33 +82,21 @@ class CacheableCollection extends Collection
     }
 
     /**
-     * Before setup.
-     *
-     * @param RoutingConfig|array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function beforeSetup(Config|array $config): void
     {
     }
 
     /**
-     * Set not cached.
-     *
-     * @param RoutingConfig|array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function setupNotCached(Config|array $config): void
     {
     }
 
     /**
-     * Setup the router from cache.
-     *
-     * @param array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function setupFromCache(array $config): void
     {
@@ -119,13 +109,10 @@ class CacheableCollection extends Collection
     }
 
     /**
-     * Setup annotated routes.
+     * @inheritDoc
      *
-     * @param RoutingConfig|array $config
-     *
+     * @throws InvalidRoutePath
      * @throws JsonException
-     *
-     * @return void
      */
     protected function setupAnnotations(Config|array $config): void
     {
@@ -141,13 +128,10 @@ class CacheableCollection extends Collection
     }
 
     /**
-     * Setup attributed routes.
+     * @inheritDoc
      *
-     * @param RoutingConfig|array $config
-     *
+     * @throws InvalidRoutePath
      * @throws JsonException
-     *
-     * @return void
      */
     protected function setupAttributes(Config|array $config): void
     {
@@ -163,11 +147,9 @@ class CacheableCollection extends Collection
     }
 
     /**
-     * After setup.
+     * @inheritDoc
      *
-     * @param RoutingConfig|array $config
-     *
-     * @return void
+     * @throws InvalidRoutePath
      */
     protected function afterSetup(Config|array $config): void
     {

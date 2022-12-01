@@ -153,7 +153,7 @@ interface Repository
     /**
      * Get results.
      *
-     * @return array<int, T>
+     * @return T[]|Entity[]
      */
     public function getResult(): array;
 
@@ -169,7 +169,7 @@ interface Repository
      *
      * @throws EntityNotFoundException
      *
-     * @return T
+     * @return T|Entity
      */
     public function getOneOrFail(): Entity;
 
@@ -229,8 +229,8 @@ interface Repository
      *      $persister->softDelete(new SoftDeleteEntity(), true | false)
      * </code>
      *
-     * @param SoftDeleteEntity|T $entity The entity
-     * @param bool               $defer  [optional] Whether to defer deletion or delete immediately
+     * @param Entity|T $entity The entity
+     * @param bool     $defer  [optional] Whether to defer deletion or delete immediately
      *
      * @return void
      */

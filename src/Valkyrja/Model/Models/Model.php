@@ -33,9 +33,16 @@ abstract class Model implements Contract
     /**
      * Cached list of validation logic for models.
      *
-     * @var array[]
+     * @var array<string, string>
      */
     protected static array $cachedValidations = [];
+
+    /**
+     * Cached list of property/method exists validation logic for models.
+     *
+     * @var array<string, bool>
+     */
+    protected static array $cachedExistsValidations = [];
 
     /**
      * Whether to set the original properties on creation via static::fromArray().
@@ -61,7 +68,7 @@ abstract class Model implements Contract
     /**
      * The properties to expose.
      *
-     * @var string[]
+     * @var array<string, bool>
      */
     protected array $__exposed = [];
 
@@ -150,7 +157,7 @@ abstract class Model implements Contract
      */
     public function hasProperty(string $property): bool
     {
-        return self::$cachedValidations[static::class . $property] ??= property_exists($this, $property);
+        return self::$cachedExistsValidations[static::class . $property] ??= property_exists($this, $property);
     }
 
     /**
@@ -367,7 +374,8 @@ abstract class Model implements Contract
      */
     protected function __doesPropertyTypeMethodExist(string $methodName): bool
     {
-        return self::$cachedValidations[static::class . "exists$methodName"] ??= method_exists($this, $methodName);
+        return self::$cachedExistsValidations[static::class . "exists$methodName"] ??= method_exists($this,
+                                                                                                     $methodName);
     }
 
     /**

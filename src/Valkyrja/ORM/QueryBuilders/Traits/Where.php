@@ -46,6 +46,8 @@ trait Where
 
     /**
      * @inheritDoc
+     *
+     * @return static
      */
     public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): self
     {
@@ -59,6 +61,8 @@ trait Where
 
     /**
      * @inheritDoc
+     *
+     * @return static
      */
     public function startWhereGroup(): self
     {
@@ -69,6 +73,8 @@ trait Where
 
     /**
      * @inheritDoc
+     *
+     * @return static
      */
     public function endWhereGroup(): self
     {
@@ -79,6 +85,8 @@ trait Where
 
     /**
      * @inheritDoc
+     *
+     * @return static
      */
     public function whereType(WhereType $type = WhereType::AND): self
     {

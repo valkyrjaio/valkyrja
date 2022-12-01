@@ -28,6 +28,9 @@ use Valkyrja\Support\Cacheable\Cacheable;
  */
 class CacheableEvents extends Events
 {
+    /**
+     * @use Cacheable<EventConfig>
+     */
     use Cacheable;
 
     /**
@@ -58,9 +61,7 @@ class CacheableEvents extends Events
     }
 
     /**
-     * Get the config.
-     *
-     * @return EventConfig|array
+     * @inheritDoc
      */
     protected function getConfig(): Config|array
     {
@@ -68,22 +69,14 @@ class CacheableEvents extends Events
     }
 
     /**
-     * Before setup.
-     *
-     * @param EventConfig|array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function beforeSetup(Config|array $config): void
     {
     }
 
     /**
-     * Set not cached.
-     *
-     * @param EventConfig|array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function setupNotCached(Config|array $config): void
     {
@@ -91,11 +84,7 @@ class CacheableEvents extends Events
     }
 
     /**
-     * Setup the events from cache.
-     *
-     * @param array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function setupFromCache(array $config): void
     {
@@ -105,11 +94,7 @@ class CacheableEvents extends Events
     }
 
     /**
-     * Setup annotations.
-     *
-     * @param EventConfig|array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function setupAnnotations($config): void
     {
@@ -125,22 +110,14 @@ class CacheableEvents extends Events
     }
 
     /**
-     * Set attributes.
-     *
-     * @param EventConfig|array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function setupAttributes(Config|array $config): void
     {
     }
 
     /**
-     * After setup.
-     *
-     * @param EventConfig|array $config
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function afterSetup($config): void
     {

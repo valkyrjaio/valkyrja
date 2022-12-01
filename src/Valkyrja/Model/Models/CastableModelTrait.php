@@ -62,7 +62,7 @@ trait CastableModelTrait
      *      ]
      * </code>
      *
-     * @return array<string, CastType|array<CastType, string|string[]>>
+     * @var array<string, CastType|array<CastType, string|string[]>>
      */
     protected static array $castings = [];
 
@@ -82,6 +82,8 @@ trait CastableModelTrait
 
     /**
      * @inheritDoc
+     *
+     * @return array<string, CastType|array<CastType, string|string[]>>
      */
     public static function getCastings(): array
     {
@@ -90,6 +92,8 @@ trait CastableModelTrait
 
     /**
      * @inheritDoc
+     *
+     * @return array<string, string[]>
      */
     public static function getCastingsAllowedClasses(): array
     {
@@ -108,7 +112,7 @@ trait CastableModelTrait
     protected function __setProperties(array $properties): void
     {
         $castings    = static::getCastings();
-        $hasCastings = self::$cachedValidations[static::class . 'hasCastings'] ??= ! empty($castings);
+        $hasCastings = self::$cachedExistsValidations[static::class . 'hasCastings'] ??= ! empty($castings);
 
         // Iterate through the properties
         foreach ($properties as $property => $value) {
@@ -343,7 +347,7 @@ trait CastableModelTrait
             ? unserialize(
                 $value,
                 [
-                    'allowed_classes' => static::getCastingsAllowedClasses()[$property] ?? [],
+                    'allowed_classes' => static::getCastingsAllowedClasses()[$property] ?? false,
                 ]
             )
             : (object) $value;
@@ -449,7 +453,7 @@ trait CastableModelTrait
         }
 
         /** @var BackedEnum $type */
-        return $type::tryFrom($value);
+        return $type::from($value);
     }
 
     /**

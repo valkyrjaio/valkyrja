@@ -70,6 +70,8 @@ trait MessageTrait
 
     /**
      * @inheritDoc
+     *
+     * @return static
      */
     public function withProtocolVersion(string $version): self
     {
@@ -82,6 +84,8 @@ trait MessageTrait
 
     /**
      * @inheritDoc
+     *
+     * @return string[][]
      */
     public function getHeaders(): array
     {
@@ -98,6 +102,8 @@ trait MessageTrait
 
     /**
      * @inheritDoc
+     *
+     * @return string[]
      */
     public function getHeader(string $name): array
     {
@@ -126,6 +132,8 @@ trait MessageTrait
 
     /**
      * @inheritDoc
+     *
+     * @return static
      */
     public function withHeader(string $name, string ...$values): self
     {
@@ -148,6 +156,10 @@ trait MessageTrait
 
     /**
      * @inheritDoc
+     *
+     * @param string ...$value Header value(s).
+     *
+     * @return static
      */
     public function withAddedHeader(string $name, string ...$values): self
     {
@@ -168,6 +180,8 @@ trait MessageTrait
 
     /**
      * @inheritDoc
+     *
+     * @return static
      */
     public function withoutHeader(string $name): self
     {
@@ -194,6 +208,8 @@ trait MessageTrait
 
     /**
      * @inheritDoc
+     *
+     * @return static
      */
     public function withBody(Stream $body): self
     {

@@ -20,7 +20,9 @@ use Valkyrja\Support\Type\Arr;
 /**
  * Class Retriever
  *
- * @author Melech Mizrachi
+ * @author   Melech Mizrachi
+ * @template T
+ * @extends Retriever<T>
  */
 class LocalCacheRetriever extends Retriever
 {
@@ -35,6 +37,8 @@ class LocalCacheRetriever extends Retriever
      * @inheritDoc
      *
      * @throws JsonException
+     *
+     * @return T[]
      */
     public function getResult(): array
     {
@@ -46,6 +50,7 @@ class LocalCacheRetriever extends Retriever
 
         $this->prepareResults();
 
+        /** @var T[] $results */
         $results = $this->query->getResult();
 
         self::$localCache[$localCacheKey] = $results;

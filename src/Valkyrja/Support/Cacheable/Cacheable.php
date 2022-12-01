@@ -18,7 +18,9 @@ use Valkyrja\Config\Config;
 /**
  * Trait Cacheable.
  *
- * @author Melech Mizrachi
+ * @author   Melech Mizrachi
+ *
+ * @template T
  */
 trait Cacheable
 {
@@ -68,21 +70,21 @@ trait Cacheable
     /**
      * Get a cacheable representation of the data.
      *
-     * @return Config
+     * @return T
      */
     abstract public function getCacheable(): Config;
 
     /**
      * Get the config.
      *
-     * @return Config|array
+     * @return T|array
      */
     abstract protected function getConfig(): Config|array;
 
     /**
      * Before setup.
      *
-     * @param Config|array $config
+     * @param T|array $config
      *
      * @return void
      */
@@ -100,7 +102,7 @@ trait Cacheable
     /**
      * Set not cached.
      *
-     * @param Config|array $config
+     * @param T|array $config
      *
      * @return void
      */
@@ -109,7 +111,7 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param Config|array $config
+     * @param T|array $config
      *
      * @return void
      */
@@ -124,7 +126,7 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param Config|array $config
+     * @param T|array $config
      *
      * @return void
      */
@@ -133,7 +135,7 @@ trait Cacheable
     /**
      * Set attributes.
      *
-     * @param Config|array $config
+     * @param T|array $config
      *
      * @return void
      */
@@ -148,7 +150,7 @@ trait Cacheable
     /**
      * Set attributes.
      *
-     * @param Config|array $config
+     * @param T|array $config
      *
      * @return void
      */
@@ -157,7 +159,7 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param Config|array $config
+     * @param T|array $config
      *
      * @return void
      */
@@ -169,7 +171,7 @@ trait Cacheable
     /**
      * After setup.
      *
-     * @param Config|array $config
+     * @param T|array $config
      *
      * @return void
      */

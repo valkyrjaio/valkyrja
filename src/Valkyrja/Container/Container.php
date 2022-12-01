@@ -21,6 +21,8 @@ use Valkyrja\Support\Provider\ProvidersAware;
  * Interface Container.
  *
  * @author Melech Mizrachi
+ *
+ * @extends ArrayAccess<string, mixed>
  */
 interface Container extends ArrayAccess, ProvidersAware
 {

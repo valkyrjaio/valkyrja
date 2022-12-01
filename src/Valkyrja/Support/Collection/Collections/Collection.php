@@ -25,20 +25,21 @@ use function in_array;
  *
  * @author   Melech Mizrachi
  * @template T
+ * @implements Contract<T>
  */
 class Collection implements Contract
 {
     /**
      * The collection of items.
      *
-     * @var array<int, T>
+     * @var array<string|int, T>
      */
     protected array $collection = [];
 
     /**
      * Collection constructor.
      *
-     * @param array<int, T> $collection
+     * @param array<string|int, T> $collection
      */
     public function __construct(array $collection = [])
     {
@@ -98,7 +99,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function __get(string $key) // : mixed
+    public function __get(string|int $key) // : mixed
     {
         return $this->get($key);
     }
@@ -106,7 +107,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function __set(string $key, $value)
+    public function __set(string|int $key, $value)
     {
         return $this->set($key, $value);
     }
@@ -114,7 +115,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string $key, mixed $default = null): mixed
+    public function get(string|int $key, mixed $default = null): mixed
     {
         return $this->has($key) ? $this->collection[$key] : $default;
     }
@@ -122,7 +123,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function has(string $key): bool
+    public function has(string|int $key): bool
     {
         return isset($this->collection[$key]);
     }
@@ -130,7 +131,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function set(string $key, $value): self
+    public function set(string|int $key, $value): self
     {
         $this->collection[$key] = $value;
 
@@ -140,7 +141,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function __isset(string $key): bool
+    public function __isset(string|int $key): bool
     {
         return $this->has($key);
     }
@@ -148,7 +149,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function __unset(string $key): void
+    public function __unset(string|int $key): void
     {
         $this->remove($key);
     }
@@ -156,7 +157,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function remove(string $key): self
+    public function remove(string|int $key): self
     {
         if (! $this->has($key)) {
             return $this;

@@ -76,7 +76,9 @@ abstract class UriFactory
 
         self::marshalHostAndPortFromHeaders($accumulator, $server, $headers);
 
+        /** @var string $host */
         $host = $accumulator->host;
+        /** @var int|null $port */
         $port = $accumulator->port;
 
         if (! empty($host)) {

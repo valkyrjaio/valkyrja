@@ -45,12 +45,12 @@ interface ORM
     /**
      * Create a query builder.
      *
-     * @template QueryBuilder
+     * @template T
      *
-     * @param Adapter                    $adapter The adapter
-     * @param class-string<QueryBuilder> $name    The query builder class name
+     * @param Adapter         $adapter The adapter
+     * @param class-string<T> $name    The query builder class name
      *
-     * @return QueryBuilder
+     * @return T
      */
     public function createQueryBuilder(Adapter $adapter, string $name): QueryBuilder;
 
@@ -97,7 +97,7 @@ interface ORM
      *
      * @param class-string<T> $entity
      *
-     * @return Repository<T>
+     * @return Repository<class-string<T>>
      */
     public function getRepository(string $entity): Repository;
 
@@ -106,9 +106,9 @@ interface ORM
      *
      * @template T
      *
-     * @param Entity|T $entity
+     * @param T $entity
      *
-     * @return Repository<T>
+     * @return Repository<class-string<T>>
      */
     public function getRepositoryFromClass(Entity $entity): Repository;
 

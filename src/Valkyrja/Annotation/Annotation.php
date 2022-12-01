@@ -25,16 +25,16 @@ interface Annotation extends Dispatch
     /**
      * Get the type.
      *
-     * @return string
+     * @return string|null
      */
     public function getType(): ?string;
 
     /**
      * Set the type.
      *
-     * @param string|null $annotationType The type
+     * @param string|null $type The type
      *
      * @return static
      */
-    public function setType(string $annotationType = null): self;
+    public function setType(string $type = null): self;
 }

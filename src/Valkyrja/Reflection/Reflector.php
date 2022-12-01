@@ -80,13 +80,13 @@ interface Reflector
     /**
      * Get a function's reflection.
      *
-     * @param callable|string $function The function
+     * @param string $function The function
      *
      * @throws ReflectionException
      *
      * @return ReflectionFunction
      */
-    public function getFunctionReflection(callable|string $function): ReflectionFunction;
+    public function getFunctionReflection(string $function): ReflectionFunction;
 
     /**
      * Get a closure's reflection.

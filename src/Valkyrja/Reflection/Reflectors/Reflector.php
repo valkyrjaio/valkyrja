@@ -19,6 +19,7 @@ use ReflectionClassConstant;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
+use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionProperty;
 use UnitEnum;
@@ -26,7 +27,6 @@ use Valkyrja\Reflection\Reflector as Contract;
 use Valkyrja\Support\Type\Cls;
 
 use function is_callable;
-use function is_string;
 use function spl_object_id;
 
 /**
@@ -99,12 +99,8 @@ class Reflector implements Contract
     /**
      * @inheritDoc
      */
-    public function getFunctionReflection(callable|string $function): ReflectionFunction
+    public function getFunctionReflection(string $function): ReflectionFunction
     {
-        if (! is_string($function)) {
-            return new ReflectionFunction($function);
-        }
-
         $index = static::FUNCTION_CACHE . $function;
 
         return self::$reflections[$index]
@@ -149,6 +145,8 @@ class Reflector implements Contract
                 && ! ($type instanceof Closure)
                 // The type is not a callable
                 && ! is_callable($type)
+                // The type is a ReflectionNamedType
+                && $type instanceof ReflectionNamedType
                 // The name is valid
                 && ($name = $type->getName())
                 // The class exists

@@ -25,28 +25,28 @@ trait ProvidersAwareTrait
     /**
      * The items provided by providers that are deferred.
      *
-     * @var string[]
+     * @var array<string, string>
      */
     protected static array $provided = [];
 
     /**
      * The custom publish handler for items provided by providers that are deferred.
      *
-     * @var string[]
+     * @var array<string, string>
      */
     protected static array $providedMethod = [];
 
     /**
      * The items provided by providers that are published.
      *
-     * @var string[]
+     * @var array<string, bool>
      */
     protected static array $published = [];
 
     /**
      * The registered providers.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected static array $registered = [];
 
@@ -69,18 +69,19 @@ trait ProvidersAwareTrait
 
         // Helpers::validateClass($provider, Provides::class);
 
-        /** @var Provides $provider */
+        /** @var Provides $providerClass */
+        $providerClass = $provider;
 
         // If the service provider is deferred
         // and its defined what services it provides
-        if (! $force && $provider::deferred() && $provides = $provider::provides()) {
+        if (! $force && $providerClass::deferred() && $provides = $providerClass::provides()) {
             $this->registerDeferred($provider, ...$provides);
 
             return;
         }
 
         // Publish the service provider
-        $provider::{static::$defaultPublishMethod}($this);
+        $providerClass::{static::$defaultPublishMethod}($this);
 
         // The provider is now registered
         self::$registered[$provider] = true;
@@ -120,10 +121,11 @@ trait ProvidersAwareTrait
         // The publish method for this provided item in the provider
         $publishMethod = self::$providedMethod[$itemId] ?? static::$defaultPublishMethod;
 
-        self::$published[$itemId] = true;
-
         // Publish the service provider
         $provider::$publishMethod($this);
+
+        // Set published cache only after the success of a publish (in case of error)
+        self::$published[$itemId] = true;
     }
 
     /**
@@ -136,8 +138,9 @@ trait ProvidersAwareTrait
      */
     protected function registerDeferred(string $provider, string ...$provides): void
     {
-        /** @var Provides $provider */
-        $publishMethods = $provider::publishers();
+        /** @var Provides $providerClass */
+        $providerClass  = $provider;
+        $publishMethods = $providerClass::publishers();
 
         // Add the services to the service providers list
         foreach ($provides as $provided) {

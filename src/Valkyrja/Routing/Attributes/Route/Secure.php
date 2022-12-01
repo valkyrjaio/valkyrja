@@ -30,6 +30,8 @@ class Secure extends Route
         array $methods = null,
         array $parameters = null,
         array $middleware = null,
+        string $to = null,
+        int $code = null,
     ) {
         parent::__construct(
             path      : $path,
@@ -38,6 +40,8 @@ class Secure extends Route
             parameters: $parameters,
             middleware: $middleware,
             secure    : true,
+            to        : $to,
+            code      : $code,
         );
     }
 }
