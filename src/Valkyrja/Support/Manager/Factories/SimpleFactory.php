@@ -15,15 +15,15 @@ namespace Valkyrja\Support\Manager\Factories;
 
 use Valkyrja\Support\Manager\Adapter;
 use Valkyrja\Support\Manager\Driver;
-use Valkyrja\Support\Manager\Factory;
+use Valkyrja\Support\Manager\Factory as Contract;
 
 /**
  * Class SimpleFactory.
  *
  * @author Melech Mizrachi
- * @implements Factory<Adapter, Driver>
+ * @implements Contract<Adapter, Driver>
  */
-class SimpleFactory implements Factory
+class SimpleFactory implements Contract
 {
     /**
      * @inheritDoc
