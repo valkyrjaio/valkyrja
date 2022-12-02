@@ -16,6 +16,7 @@ namespace Valkyrja\Routing\Models;
 use BackedEnum;
 use Valkyrja\Model\Models\Model;
 use Valkyrja\ORM\Entity;
+use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Support\Type\Cls;
 
@@ -36,8 +37,8 @@ class Parameter extends Model
     /**
      * Parameter constructor.
      *
-     * @param string|null                   $name                [optional] The name
-     * @param string|null                   $regex               [optional] The regex
+     * @param string                        $name                The name
+     * @param string                        $regex               The regex
      * @param CastType|null                 $type                [optional] The cast type
      * @param class-string<Entity>|null     $entity              [optional] The entity class name
      * @param string|null                   $entityColumn        [optional] The entity column
@@ -48,8 +49,8 @@ class Parameter extends Model
      * @param mixed                         $default             [optional] The default value for this parameter
      */
     public function __construct(
-        protected string|null $name = null,
-        protected string|null $regex = null,
+        protected string $name,
+        protected string $regex = Regex::ANY,
         protected CastType|null $type = null,
         protected string|null $entity = null,
         protected string|null $entityColumn = null,
@@ -59,14 +60,18 @@ class Parameter extends Model
         protected bool $shouldCapture = true,
         protected mixed $default = null,
     ) {
+        $this->setEntity($entity);
+        $this->setEntityColumn($entityColumn);
+        $this->setEntityRelationships($entityRelationships);
+        $this->setEnum($enum);
     }
 
     /**
      * Get the name.
      *
-     * @return string|null
+     * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -88,9 +93,9 @@ class Parameter extends Model
     /**
      * Get the regex.
      *
-     * @return string|null
+     * @return string
      */
-    public function getRegex(): ?string
+    public function getRegex(): string
     {
         return $this->regex;
     }
@@ -98,11 +103,11 @@ class Parameter extends Model
     /**
      * Set the regex.
      *
-     * @param string|null $regex The regex
+     * @param string $regex The regex
      *
      * @return static
      */
-    public function setRegex(string $regex = null): self
+    public function setRegex(string $regex): self
     {
         $this->regex = $regex;
 
@@ -154,10 +159,6 @@ class Parameter extends Model
      */
     public function setEntity(string $entity = null): self
     {
-        if ($entity !== null) {
-            Cls::validateInherits($entity, Entity::class);
-        }
-
         $this->entity = $entity;
 
         return $this;
@@ -182,10 +183,6 @@ class Parameter extends Model
      */
     public function setEntityColumn(string $entityColumn = null): self
     {
-        if ($entityColumn !== null) {
-            Cls::validateHasProperty($this->entity ?? '', $entityColumn);
-        }
-
         $this->entityColumn = $entityColumn;
 
         return $this;

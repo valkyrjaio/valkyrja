@@ -19,13 +19,16 @@ use JsonException;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Http\Constants\RequestMethod;
+use Valkyrja\ORM\Entity;
 use Valkyrja\Routing\Collection as Contract;
 use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
+use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Helpers;
 use Valkyrja\Support\Type\Arr;
+use Valkyrja\Support\Type\Cls;
 use Valkyrja\Support\Type\Str;
 
 use function array_merge;
@@ -96,7 +99,9 @@ class Collection implements Contract
         // Set the id to an md5 hash of the route
         $route->setId(md5(Arr::toString($route->asArray())));
         // Set the path to the validated cleaned path (/some/path)
-        $route->setPath(Helpers::trimPath($route->getPath() ?? ''));
+        $route->setPath(Helpers::trimPath($route->getPath()));
+        // Set whether the route is dynamic
+        $route->setDynamic(Str::contains($route->getPath(), '{'));
         // Set the route to its request methods
         $this->setRouteToRequestMethods($route);
         // Set the route to the named
@@ -125,8 +130,6 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function all(): array
     {
@@ -135,8 +138,6 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function allFlattened(): array
     {
@@ -163,8 +164,6 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function allStatic(string $method = null): array
     {
@@ -191,8 +190,6 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function allDynamic(string $method = null): array
     {
@@ -201,8 +198,6 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function getNamed(string $name): ?Route
     {
@@ -219,8 +214,6 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function allNamed(): array
     {
@@ -303,58 +296,12 @@ class Collection implements Contract
 
         // Iterate through the route's parameters
         foreach ($route->getParameters() as $parameter) {
-            // Get the parameter name
-            $name = $parameter->getName();
-            // Get whether this parameter is optional
-            /** @var bool $isOptional */
-            $isOptional = $parameter->isOptional();
+            // Validate the parameter
+            $this->validateParameterEntity($route, $parameter);
+            $this->validateParameterEnum($parameter);
+            $this->validateParameterInRegex($parameter, $regex);
 
-            // If the parameter is optional or the name has a ? affixed to it
-            if ($isOptional || Str::contains($regex, $name . '?')) {
-                // Then the parameter is optional
-                $isOptional = true;
-                // Ensure the parameter is set to optional
-                $parameter->setIsOptional(true);
-                // And affix ? to the name so it can properly be replaced by the regex later
-                $name .= '?';
-            }
-
-            // If no regex is present
-            if (! $parameter->getRegex()) {
-                // And the type isn't enum or an enum wasn't specified
-                if (! ($enum = $parameter->getEnum()) && $parameter->getType() !== CastType::enum) {
-                    throw new InvalidRoutePath("{$route->getPath()} is missing a regex for `{$parameter->getName()}`");
-                }
-
-                if ($enum instanceof BackedEnum) {
-                    // Set the regex to the enum cases
-                    $parameter->setRegex(implode('|', array_column($enum::cases(), 'value')));
-                    // Ensure the type case was set properly
-                    $parameter->setType(CastType::enum);
-                }
-            }
-
-            // Get the replacement for this parameter's name (something like {name} or {name?}
-            // Prepend \/ if it optional so we can replace the path slash and set it in the
-            // regex below as a non-capture-optional group
-            $nameReplacement = ($isOptional ? Regex::PATH : '') . '{' . $name . '}';
-
-            // Check if the path doesn't contain the parameter's name replacement
-            if (! Str::contains($regex, $nameReplacement)) {
-                throw new InvalidRoutePath("{$route->getPath()} is missing $nameReplacement");
-            }
-
-            // If optional we don't want to capture the / before the value
-            $paramRegex = ($isOptional ? Regex::START_OPTIONAL_CAPTURE_GROUP : '')
-                // Start the actual value's capture group
-                . (! $parameter->shouldCapture() ? Regex::START_NON_CAPTURE_GROUP : Regex::START_CAPTURE_GROUP)
-                // Set the parameter's regex to match the value
-                . $parameter->getRegex()
-                // End the capture group
-                . ($isOptional ? Regex::END_OPTIONAL_CAPTURE_GROUP : Regex::END_CAPTURE_GROUP);
-
-            // Replace the {name} or \/{name?} with the finished regex
-            $regex = Str::replace($regex, $nameReplacement, $paramRegex);
+            $regex = $this->replaceParameterNameInRegex($route, $parameter, $regex);
         }
 
         // Set the regex
@@ -460,8 +407,6 @@ class Collection implements Contract
      * @param array       $type   The type [static|dynamic]
      * @param string|null $method [optional] The request method
      *
-     * @throws JsonException
-     *
      * @return array<string, Route>
      */
     protected function allOfType(array $type, string $method = null): array
@@ -478,8 +423,6 @@ class Collection implements Contract
      *
      * @param array $methodsArray
      *
-     * @throws JsonException
-     *
      * @return array
      */
     protected function ensureMethodRoutes(array $methodsArray): array
@@ -495,8 +438,6 @@ class Collection implements Contract
      * Ensure an array is an array of routes.
      *
      * @param array $routesArray The routes array
-     *
-     * @throws JsonException
      *
      * @return array
      */
@@ -529,5 +470,125 @@ class Collection implements Contract
         }
 
         return $route;
+    }
+
+    /**
+     * Validate the parameter entity.
+     *
+     * @param Route     $route     The route
+     * @param Parameter $parameter The parameter
+     *
+     * @return void
+     */
+    protected function validateParameterEntity(Route $route, Parameter $parameter): void
+    {
+        if (($entity = $parameter->getEntity()) !== null) {
+            Cls::validateInherits($entity, Entity::class);
+
+            /** @var class-string<Entity> $entity */
+            $this->removeEntityFromDependencies($route, $entity);
+
+            if (($entityColumn = $parameter->getEntityColumn()) !== null) {
+                Cls::validateHasProperty($entity ?? '', $entityColumn);
+            }
+        }
+    }
+
+    /**
+     * Remove the entity from the route's dependencies list.
+     *
+     * @param Route                $route      The route
+     * @param class-string<Entity> $entityName The entity class name
+     *
+     * @return void
+     */
+    protected function removeEntityFromDependencies(Route $route, string $entityName): void
+    {
+        $updatedDependencies = [];
+
+        foreach ($route->getDependencies() as $dependency) {
+            if ($dependency !== $entityName) {
+                $updatedDependencies[] = $dependency;
+            }
+        }
+
+        $route->setDependencies($updatedDependencies);
+    }
+
+    /**
+     * Validate the parameter enum.
+     *
+     * @param Parameter $parameter The parameter
+     *
+     * @return void
+     */
+    protected function validateParameterEnum(Parameter $parameter): void
+    {
+        if (($enum = $parameter->getEnum()) !== null) {
+            Cls::validateInherits($enum, BackedEnum::class);
+            /** @var BackedEnum $enum */
+            // Set the regex to the enum cases
+            $parameter->setRegex(implode('|', array_column($enum::cases(), 'value')));
+            // Ensure the type case was set properly
+            $parameter->setType(CastType::enum);
+        }
+    }
+
+    /**
+     * Validate the parameter name exists in the regex.
+     *
+     * @param Parameter $parameter The parameter
+     * @param string    $regex     The regex
+     *
+     * @return void
+     */
+    protected function validateParameterInRegex(Parameter $parameter, string $regex): void
+    {
+        // If the parameter is optional or the name has a ? affixed to it
+        if ($parameter->isOptional() || Str::contains($regex, $parameter->getName() . '?')) {
+            // Ensure the parameter is set to optional
+            $parameter->setIsOptional(true);
+        }
+    }
+
+    /**
+     * Replace the parameter name in the route's regex.
+     *
+     * @param Route     $route     The route
+     * @param Parameter $parameter The parameter
+     * @param string    $regex     The regex
+     *
+     * @throws InvalidRoutePath
+     *
+     * @return string
+     */
+    protected function replaceParameterNameInRegex(Route $route, Parameter $parameter, string $regex): string
+    {
+        // Get whether this parameter is optional
+        /** @var bool $isOptional */
+        $isOptional = $parameter->isOptional();
+
+        // Get the replacement for this parameter's name (something like {name} or {name?}
+        // Prepend \/ if it optional so we can replace the path slash and set it in the
+        // regex below as a non-capture-optional group
+        $nameReplacement =
+            ($isOptional ? Regex::PATH : '') . '{' . $parameter->getName() . ($isOptional ? '?' : '') . '}';
+
+        // Check if the path doesn't contain the parameter's name replacement
+        if (! Str::contains($regex, $nameReplacement)) {
+            throw new InvalidRoutePath("{$route->getPath()} is missing $nameReplacement");
+        }
+
+        // If optional we don't want to capture the / before the value
+        $parameterRegex = ($isOptional ? Regex::START_OPTIONAL_CAPTURE_GROUP : '')
+            // Start the actual value's capture group
+            . (! $parameter->shouldCapture() ? Regex::START_NON_CAPTURE_GROUP : Regex::START_CAPTURE_GROUP)
+            // Set the parameter's regex to match the value
+            . $parameter->getRegex()
+            // End the capture group
+            . ($isOptional ? Regex::END_OPTIONAL_CAPTURE_GROUP : Regex::END_CAPTURE_GROUP);
+
+        // Replace the {name} or \/{name?} with the finished regex
+        return Str::replace($regex, $nameReplacement, $parameterRegex);
     }
 }

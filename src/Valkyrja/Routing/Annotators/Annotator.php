@@ -88,7 +88,7 @@ class Annotator implements Contract
             $class = $route->getClass();
             $path  = $route->getPath();
 
-            if (null === $class || null === $path) {
+            if ($class === null) {
                 throw new InvalidArgumentException('Invalid class or path defined in route.');
             }
 
@@ -108,7 +108,7 @@ class Annotator implements Contract
                 }
             } else {
                 // Validate the path before setting the route
-                $route->setPath($this->validatePath($path));
+                $route->setPath($this->getParsedPath($path));
 
                 // Otherwise just set the route in the final array
                 $finalRoutes[] = $this->getRouteFromAnnotation($route);
@@ -167,14 +167,6 @@ class Annotator implements Contract
 
         // Avoid having large arrays in cached routes file
         $route->setMatches();
-
-        if (null === $route->getPath()) {
-            throw new InvalidRoutePath(
-                'Invalid route path for route : '
-                . $route->getClass()
-                . '@' . $route->getMethod()
-            );
-        }
     }
 
     /**
@@ -222,15 +214,12 @@ class Annotator implements Contract
             throw new InvalidArgumentException('Invalid path defined in route.');
         }
 
-        // If there is a base path for this controller
-        if (null !== $controllerRoute->getPath()) {
-            // Get the route's path
-            $path           = $this->validatePath($route->getPath());
-            $controllerPath = $this->validatePath($controllerRoute->getPath());
+        // Get the route's path
+        $path           = $this->getParsedPath($route->getPath());
+        $controllerPath = $this->getParsedPath($controllerRoute->getPath());
 
-            // Set the path to the base path and route path
-            $newRoute->setPath($this->validatePath($controllerPath . $path));
-        }
+        // Set the path to the base path and route path
+        $newRoute->setPath($this->getParsedPath($controllerPath . $path));
 
         // If there is a base name for this controller
         if (null !== $controllerRoute->getName()) {
@@ -264,13 +253,13 @@ class Annotator implements Contract
     }
 
     /**
-     * Validate a path.
+     * Get a parsed path.
      *
      * @param string $path The path
      *
      * @return string
      */
-    protected function validatePath(string $path): string
+    protected function getParsedPath(string $path): string
     {
         // Trim slashes from the beginning and end of the path
         if (! $path = trim($path, '/')) {

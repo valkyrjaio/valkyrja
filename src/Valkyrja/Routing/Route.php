@@ -29,9 +29,9 @@ interface Route extends Dispatch
     /**
      * Get the route's path.
      *
-     * @return string|null
+     * @return string
      */
-    public function getPath(): ?string;
+    public function getPath(): string;
 
     /**
      * Set the route's path.
@@ -41,6 +41,24 @@ interface Route extends Dispatch
      * @return static
      */
     public function setPath(string $path): self;
+
+    /**
+     * Append a path to the existing path.
+     *
+     * @param string $path The path to append
+     *
+     * @return static
+     */
+    public function withPath(string $path): self;
+
+    /**
+     * Append a name to the existing name.
+     *
+     * @param string $name The name to append
+     *
+     * @return static
+     */
+    public function withName(string $name): self;
 
     /**
      * Get the redirect path.

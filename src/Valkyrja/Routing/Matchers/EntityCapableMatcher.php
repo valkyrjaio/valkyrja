@@ -66,7 +66,6 @@ class EntityCapableMatcher extends Matcher
 
             // Set the entity with the param name as the service id into the container
             $this->container->setSingleton($entityName . $index, $entity);
-            $this->removeEntityFromDependencies($route, $entityName);
 
             return $entity;
         }
@@ -100,27 +99,6 @@ class EntityCapableMatcher extends Matcher
         return $orm->findOne($match)
             ->withRelationships($relationships)
             ->getOneOrNull();
-    }
-
-    /**
-     * Remove the entity from the route's dependencies list.
-     *
-     * @param Route  $route      The route
-     * @param string $entityName The entity class name
-     *
-     * @return void
-     */
-    protected function removeEntityFromDependencies(Route $route, string $entityName): void
-    {
-        $updatedDependencies = [];
-
-        foreach ($route->getDependencies() as $dependency) {
-            if ($dependency !== $entityName) {
-                $updatedDependencies[] = $dependency;
-            }
-        }
-
-        $route->setDependencies($updatedDependencies);
     }
 
     /**

@@ -141,14 +141,6 @@ class RouteAttributes extends Attributes implements Contract
 
         // Avoid having large arrays in cached routes file
         $route->setMatches();
-
-        if ($route->getPath() === null) {
-            throw new InvalidRoutePath(
-                'Invalid route path for route : '
-                . $route->getClass()
-                . '@' . $route->getMethod()
-            );
-        }
     }
 
     /**
@@ -167,15 +159,12 @@ class RouteAttributes extends Attributes implements Contract
             throw new InvalidArgumentException('Invalid path defined in route.');
         }
 
-        // If there is a base path for this controller
-        if (null !== $controllerAttribute->getPath()) {
-            // Get the route's path
-            $path           = $this->validatePath($memberAttribute->getPath());
-            $controllerPath = $this->validatePath($controllerAttribute->getPath());
+        // Get the route's path
+        $path           = $this->getFilteredPath($memberAttribute->getPath());
+        $controllerPath = $this->getFilteredPath($controllerAttribute->getPath());
 
-            // Set the path to the base path and route path
-            $attribute->setPath($this->validatePath($controllerPath . $path));
-        }
+        // Set the path to the base path and route path
+        $attribute->setPath($this->getFilteredPath($controllerPath . $path));
 
         // If there is a base name for this controller
         if (null !== $controllerAttribute->getName()) {
@@ -229,7 +218,7 @@ class RouteAttributes extends Attributes implements Contract
      *
      * @return string
      */
-    protected function validatePath(string $path): string
+    protected function getFilteredPath(string $path): string
     {
         // Trim slashes from the beginning and end of the path
         if (! $path = trim($path, '/')) {

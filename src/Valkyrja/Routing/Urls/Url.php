@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Urls;
 
-use RuntimeException;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Http\Request;
 use Valkyrja\Routing\Config\Config;
@@ -65,11 +64,6 @@ class Url implements Contract
             : '';
         // Get the path from the generator
         $path = $route->getPath();
-
-        // Ensure a valid path exists for this route
-        if (null === $path) {
-            throw new RuntimeException('Invalid path for route with name: ' . $name);
-        }
 
         // If any data was passed
         if ($data) {

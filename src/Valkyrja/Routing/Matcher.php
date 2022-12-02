@@ -33,7 +33,7 @@ interface Matcher
     public function match(string $path, string $method = null): ?Route;
 
     /**
-     * Match a dynamic route by path.
+     * Match a static route by path.
      *
      * @param string      $path   The path
      * @param string|null $method [optional] The request method
@@ -45,7 +45,7 @@ interface Matcher
     public function matchStatic(string $path, string $method = null): ?Route;
 
     /**
-     * Match a static route by path.
+     * Match a dynamic route by path.
      *
      * @param string      $path   The path
      * @param string|null $method [optional] The request method

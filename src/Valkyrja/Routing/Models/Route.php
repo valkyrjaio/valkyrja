@@ -18,7 +18,6 @@ use Valkyrja\Dispatcher\Models\Dispatch;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Route as Contract;
-use Valkyrja\Support\Type\Str;
 
 use function is_array;
 
@@ -32,9 +31,9 @@ class Route extends Dispatch implements Contract
     /**
      * The path for this route.
      *
-     * @var string|null
+     * @var string
      */
-    protected ?string $path;
+    protected string $path;
 
     /**
      * The redirect path for this route.
@@ -105,9 +104,9 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getPath(): ?string
+    public function getPath(): string
     {
-        return $this->path ?? null;
+        return $this->path;
     }
 
     /**
@@ -115,11 +114,33 @@ class Route extends Dispatch implements Contract
      */
     public function setPath(string $path): self
     {
-        $this->dynamic = Str::contains($path, '{');
-
         $this->path = $path;
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withPath(string $path): self
+    {
+        $route = clone $this;
+
+        $route->path .= $path;
+
+        return $route;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withName(string $name): self
+    {
+        $route = clone $this;
+
+        $route->name = ($this->name ?? '') . ".$name";
+
+        return $route;
     }
 
     /**
@@ -173,6 +194,7 @@ class Route extends Dispatch implements Contract
      */
     public function setMethods(array $methods): self
     {
+        // TODO: Change to use Method enum
         if (array_diff($methods, RequestMethod::ANY)) {
             throw new InvalidArgumentException('Invalid request methods set');
         }
@@ -292,9 +314,11 @@ class Route extends Dispatch implements Contract
      */
     public function withMiddleware(array $middleware): self
     {
-        $this->middleware = array_merge($this->middleware ?? [], $middleware);
+        $route = clone $this;
 
-        return $this;
+        $route->middleware = array_merge($this->middleware ?? [], $middleware);
+
+        return $route;
     }
 
     /**
