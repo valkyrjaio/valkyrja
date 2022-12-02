@@ -132,14 +132,11 @@ class Annotator implements Contract
 
         // Iterate through all the classes
         foreach ($classes as $class) {
-            // Get all the routes for each class and iterate through them
-            foreach ($this->getClassMemberAnnotations($class) as $annotation) {
-                // Set the annotation in the routes list
-                $routes[] = $annotation;
-            }
+            // Set the annotations in the routes list
+            $routes[] = $this->getClassMemberAnnotations($class);
         }
 
-        return $routes;
+        return array_merge(...$routes);
     }
 
     /**
@@ -190,7 +187,7 @@ class Annotator implements Contract
     protected function getClassAnnotations(string $class): array
     {
         return $this->filter->filterAnnotationsByTypes(
-            AnnotationName::getValidValues(),
+               AnnotationName::getValidValues(),
             ...$this->annotator->classAnnotations($class)
         );
     }
@@ -300,7 +297,7 @@ class Annotator implements Contract
     protected function getClassMemberAnnotations(string $class): array
     {
         return $this->filter->filterAnnotationsByTypes(
-            AnnotationName::getValidValues(),
+               AnnotationName::getValidValues(),
             ...$this->annotator->classMembersAnnotations($class)
         );
     }

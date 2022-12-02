@@ -122,8 +122,6 @@ class Annotator implements Contract
      *
      * @param Command $command The command annotation
      *
-     * @throws JsonException
-     *
      * @return CommandContract
      */
     protected function getCommandFromAnnotation(Command $command): CommandContract

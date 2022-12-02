@@ -70,7 +70,7 @@ class ORM
         $this->container->setSingleton($entity, $result);
 
         if (null !== $result) {
-            throw new ValidationException("{$subject} must be a unique value in {$entity} for field {$field}");
+            throw new ValidationException("$subject must be a unique value in $entity for field $field");
         }
     }
 
@@ -93,7 +93,7 @@ class ORM
         $this->container->setSingleton($entity, $result);
 
         if (null === $result) {
-            throw new ValidationException("{$subject} must exist in {$entity} for field {$field}");
+            throw new ValidationException("$subject must exist in $entity for field $field");
         }
     }
 }

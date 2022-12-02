@@ -15,9 +15,9 @@ namespace Valkyrja\Mail\Factories;
 
 use Valkyrja\Mail\Adapter;
 use Valkyrja\Mail\Driver;
-use Valkyrja\Mail\Factory as Contract;
+use Valkyrja\Mail\FactoryFactory as Contract;
 use Valkyrja\Mail\Message;
-use Valkyrja\Support\Manager\Factories\SimpleFactoryWithMessage as Factory;
+use Valkyrja\Support\Manager\Factories\MessageFactory as Factory;
 
 /**
  * Class SimpleFactory.

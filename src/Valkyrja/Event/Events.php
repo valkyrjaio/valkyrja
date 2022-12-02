@@ -33,8 +33,8 @@ interface Events
     /**
      * Add a listener to many events.
      *
-     * @param Listener $listener  The listener
-     * @param string   ...$events The events
+     * @param Listener                   $listener  The listener
+     * @param class-string<Event>|string ...$events The events
      *
      * @return void
      */
@@ -43,8 +43,8 @@ interface Events
     /**
      * Determine whether an event has a specified listener.
      *
-     * @param string $event      The event
-     * @param string $listenerId The event listener
+     * @param class-string<Event>|string $event      The event
+     * @param string                     $listenerId The event listener
      *
      * @return bool
      */
@@ -53,8 +53,8 @@ interface Events
     /**
      * Remove an event listener.
      *
-     * @param string $event      The event
-     * @param string $listenerId The event listener
+     * @param class-string<Event>|string $event      The event
+     * @param string                     $listenerId The event listener
      *
      * @return void
      */
@@ -63,7 +63,7 @@ interface Events
     /**
      * Get the event's listeners.
      *
-     * @param string $event The event
+     * @param class-string<Event>|string $event The event
      *
      * @return Listener[]
      */
@@ -72,7 +72,7 @@ interface Events
     /**
      * Determine whether an event has listeners.
      *
-     * @param string $event The event
+     * @param class-string<Event>|string $event The event
      *
      * @return bool
      */
@@ -81,7 +81,7 @@ interface Events
     /**
      * Add a new event.
      *
-     * @param string $event The event
+     * @param class-string<Event>|string $event The event
      *
      * @return void
      */
@@ -90,7 +90,7 @@ interface Events
     /**
      * Determine whether an event exists.
      *
-     * @param string $event The event
+     * @param class-string<Event>|string $event The event
      *
      * @return bool
      */
@@ -99,7 +99,7 @@ interface Events
     /**
      * Remove an event.
      *
-     * @param string $event The event
+     * @param class-string<Event>|string $event The event
      *
      * @return void
      */
@@ -108,10 +108,10 @@ interface Events
     /**
      * Trigger an event.
      *
-     * @param string     $event     The event
-     * @param array|null $arguments [optional] The arguments
+     * @param class-string<Event>|string $event     The event
+     * @param array|null                 $arguments [optional] The arguments
      *
-     * @return mixed[]
+     * @return array
      */
     public function trigger(string $event, array $arguments = null): array;
 
@@ -120,7 +120,7 @@ interface Events
      *
      * @param Event $event The event
      *
-     * @return mixed[]
+     * @return array
      */
     public function event(Event $event): array;
 

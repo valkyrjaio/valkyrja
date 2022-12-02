@@ -22,7 +22,6 @@ use Valkyrja\Event\Listener;
 use Valkyrja\Event\Models\Listener as ListenerModel;
 use Valkyrja\Support\Type\Cls;
 
-use function get_class;
 use function is_array;
 
 /**
@@ -192,7 +191,7 @@ class Events implements Contract
      */
     public function event(Event $event): array
     {
-        return $this->trigger(get_class($event), [$event]);
+        return $this->trigger($event::class, [$event]);
     }
 
     /**
@@ -257,8 +256,6 @@ class Events implements Contract
      * Ensure a listener, or null, is returned.
      *
      * @param Listener|array $listener The listener
-     *
-     * @throws JsonException
      *
      * @return Listener
      */

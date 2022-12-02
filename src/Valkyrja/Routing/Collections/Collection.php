@@ -516,8 +516,6 @@ class Collection implements Contract
      *
      * @param Route|array|string|null $route The route
      *
-     * @throws JsonException
-     *
      * @return Route|null
      */
     protected function ensureRoute(Route|array|string $route = null): ?Route

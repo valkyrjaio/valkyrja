@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Adapters;
 
+use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
+use Pusher\ApiErrorException;
 use Pusher\Pusher;
+use Pusher\PusherException;
 use Valkyrja\Broadcast\Message;
 use Valkyrja\Broadcast\PusherAdapter as Contract;
 use Valkyrja\Support\Type\Arr;
@@ -47,6 +50,9 @@ class PusherAdapter extends NullAdapter implements Contract
      * @inheritDoc
      *
      * @throws JsonException
+     * @throws GuzzleException
+     * @throws ApiErrorException
+     * @throws PusherException
      */
     public function send(Message $message): void
     {

@@ -52,7 +52,7 @@ class EntityMiddleware extends Middleware
     /**
      * Get the ORM repository for a given entity.
      *
-     * @param string $entity
+     * @param class-string<Entity> $entity The entity class name
      *
      * @return Repository
      */
@@ -108,28 +108,28 @@ class EntityMiddleware extends Middleware
      */
     protected static function checkParameterForEntity(int $index, Parameter $parameter, array &$dependencies, array &$matches): void
     {
-        if ($parameter->getEntity() === null) {
+        if (($entityName = $parameter->getEntity()) === null) {
             return;
         }
 
-        static::findAndSetEntityFromParameter($index, $parameter, $dependencies, $matches[$index]);
+        static::findAndSetEntityFromParameter($index, $parameter, $entityName, $dependencies, $matches[$index]);
     }
 
     /**
      * Try to find and set a route's entity dependency.
      *
-     * @param int       $index        The index
-     * @param Parameter $parameter    The parameter
-     * @param array     $dependencies The dependencies
-     * @param mixed     $value        The value
+     * @param int                  $index        The index
+     * @param Parameter            $parameter    The parameter
+     * @param class-string<Entity> $entityName   The entity class name
+     * @param array                $dependencies The dependencies
+     * @param mixed                $value        The value
      *
      * @return void
      */
-    protected static function findAndSetEntityFromParameter(int $index, Parameter $parameter, array &$dependencies, mixed &$value): void
+    protected static function findAndSetEntityFromParameter(int $index, Parameter $parameter, string $entityName, array &$dependencies, mixed &$value): void
     {
-        $entityName = $parameter->getEntity();
         // Attempt to get the entity from the ORM repository
-        $entity = static::findEntityFromParameter($parameter, $value);
+        $entity = static::findEntityFromParameter($parameter, $entityName, $value);
 
         if (! $entity) {
             static::entityNotFound($entityName, $value);
@@ -155,14 +155,14 @@ class EntityMiddleware extends Middleware
     /**
      * Try to find a route's entity dependency.
      *
-     * @param Parameter $parameter The parameter
-     * @param mixed     $value     The value
+     * @param Parameter            $parameter  The parameter
+     * @param class-string<Entity> $entityName The entity class name
+     * @param mixed                $value      The value
      *
      * @return Entity|null
      */
-    protected static function findEntityFromParameter(Parameter $parameter, mixed $value): ?Entity
+    protected static function findEntityFromParameter(Parameter $parameter, string $entityName, mixed $value): ?Entity
     {
-        $entityName    = $parameter->getEntity();
         $relationships = $parameter->getEntityRelationships() ?? [];
 
         // If there is a field specified to use

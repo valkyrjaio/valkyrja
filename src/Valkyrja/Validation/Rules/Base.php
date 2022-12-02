@@ -40,7 +40,7 @@ class Base
     public function required(mixed $subject): void
     {
         if (! $subject) {
-            throw new ValidationException("{$subject} is required");
+            throw new ValidationException("$subject is required");
         }
     }
 
@@ -57,7 +57,7 @@ class Base
     public function equals(mixed $subject, mixed $value): void
     {
         if ($subject !== $value) {
-            throw new ValidationException("{$subject} must equal {$value}");
+            throw new ValidationException("$subject must equal $value");
         }
     }
 
@@ -73,7 +73,7 @@ class Base
     public function empty(string $subject = null): void
     {
         if ($subject) {
-            throw new ValidationException("{$subject} must be empty");
+            throw new ValidationException("$subject must be empty");
         }
     }
 
@@ -89,7 +89,7 @@ class Base
     public function notEmpty(mixed $subject): void
     {
         if (! $subject) {
-            throw new ValidationException("{$subject} must not be empty");
+            throw new ValidationException("$subject must not be empty");
         }
     }
 
@@ -105,7 +105,7 @@ class Base
     public function alpha(mixed $subject): void
     {
         if (! Str::isAlphabetic((string) $subject)) {
-            throw new ValidationException("{$subject} must be alphabetic");
+            throw new ValidationException("$subject must be alphabetic");
         }
     }
 
@@ -121,7 +121,7 @@ class Base
     public function lowercase(mixed $subject): void
     {
         if (! Str::isLowercase((string) $subject)) {
-            throw new ValidationException("{$subject} must be lowercase");
+            throw new ValidationException("$subject must be lowercase");
         }
     }
 
@@ -137,7 +137,7 @@ class Base
     public function uppercase(mixed $subject): void
     {
         if (! Str::isUppercase((string) $subject)) {
-            throw new ValidationException("{$subject} must be uppercase");
+            throw new ValidationException("$subject must be uppercase");
         }
     }
 
@@ -154,7 +154,7 @@ class Base
     public function min(string $subject, int $min = 0): void
     {
         if (! Str::min($subject, $min)) {
-            throw new ValidationException("{$subject} must be longer than {$min}");
+            throw new ValidationException("$subject must be longer than $min");
         }
     }
 
@@ -171,7 +171,7 @@ class Base
     public function max(string $subject, int $max = 255): void
     {
         if (! Str::max($subject, $max)) {
-            throw new ValidationException("{$subject} must not be longer than {$max}");
+            throw new ValidationException("$subject must not be longer than $max");
         }
     }
 
@@ -188,7 +188,7 @@ class Base
     public function startsWith(string $subject, string $needle): void
     {
         if (! Str::startsWith($subject, $needle)) {
-            throw new ValidationException("{$subject} must start with {$needle}");
+            throw new ValidationException("$subject must start with $needle");
         }
     }
 
@@ -205,7 +205,7 @@ class Base
     public function endsWith(string $subject, string $needle): void
     {
         if (! Str::endsWith($subject, $needle)) {
-            throw new ValidationException("{$subject} must end with {$needle}");
+            throw new ValidationException("$subject must end with $needle");
         }
     }
 
@@ -223,7 +223,7 @@ class Base
     {
         foreach ($needles as $needle) {
             if (! Str::contains($subject, (string) $needle)) {
-                throw new ValidationException("{$subject} must contain {$needle}");
+                throw new ValidationException("$subject must contain $needle");
             }
         }
     }
@@ -248,7 +248,7 @@ class Base
 
         $needlesString = implode(', ', $needles);
 
-        throw new ValidationException("{$subject} must one of: {$needlesString}");
+        throw new ValidationException("$subject must one of: $needlesString");
     }
 
     /**
@@ -263,7 +263,7 @@ class Base
     public function email(string $subject): void
     {
         if (! Str::isEmail($subject)) {
-            throw new ValidationException("{$subject} is not a valid email");
+            throw new ValidationException("$subject is not a valid email");
         }
     }
 
@@ -279,7 +279,7 @@ class Base
     public function boolean(mixed $subject): void
     {
         if (! is_bool($subject)) {
-            throw new ValidationException("{$subject} must be a boolean");
+            throw new ValidationException("$subject must be a boolean");
         }
     }
 
@@ -295,7 +295,7 @@ class Base
     public function numeric(mixed $subject): void
     {
         if (! is_numeric($subject)) {
-            throw new ValidationException("{$subject} must be numeric");
+            throw new ValidationException("$subject must be numeric");
         }
     }
 
@@ -312,7 +312,7 @@ class Base
     public function lessThan(int $subject, int $max = 0): void
     {
         if (! Integer::lessThan($subject, $max)) {
-            throw new ValidationException("{$subject} must be less than {$max}");
+            throw new ValidationException("$subject must be less than $max");
         }
     }
 
@@ -329,7 +329,7 @@ class Base
     public function greaterThan(int $subject, int $min = 0): void
     {
         if (! Integer::greaterThan($subject, $min)) {
-            throw new ValidationException("{$subject} must be greater than {$min}");
+            throw new ValidationException("$subject must be greater than $min");
         }
     }
 
@@ -346,7 +346,7 @@ class Base
     public function oneOf(mixed $subject, mixed ...$validValues): void
     {
         if (! in_array($subject, $validValues, true)) {
-            throw new ValidationException("{$subject} must be one of");
+            throw new ValidationException("$subject must be one of");
         }
     }
 
@@ -363,7 +363,7 @@ class Base
     public function regex(string $subject, string $regex): void
     {
         if (! preg_match($regex, $subject)) {
-            throw new ValidationException("{$subject} must match the given regex {$regex}");
+            throw new ValidationException("$subject must match the given regex $regex");
         }
     }
 }

@@ -18,6 +18,8 @@
 
         <RedundantPropertyInitializationCheck errorLevel="suppress" />
 
+        <ReservedWord errorLevel="suppress" />
+
         <UndefinedClass>
             <errorLevel type="suppress">
                 <referencedClass name="app" />

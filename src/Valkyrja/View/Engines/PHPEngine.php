@@ -126,7 +126,7 @@ class PHPEngine implements Engine
             return;
         }
 
-        throw new RuntimeException("Path does not exist at {$path}");
+        throw new RuntimeException("Path does not exist at $path");
     }
 
     /**

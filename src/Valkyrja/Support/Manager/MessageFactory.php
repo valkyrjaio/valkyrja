@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Manager;
 
 /**
- * Interface LoaderWithMessage.
+ * Interface MessageFactory.
  *
  * @author   Melech Mizrachi
  * @template Adapter
@@ -22,7 +22,7 @@ namespace Valkyrja\Support\Manager;
  * @template Message
  * @extends Factory<Adapter, Driver>
  */
-interface FactoryWithMessage extends Factory
+interface MessageFactory extends Factory
 {
     /**
      * Create a new message.

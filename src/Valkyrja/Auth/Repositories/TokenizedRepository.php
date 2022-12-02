@@ -88,6 +88,8 @@ abstract class TokenizedRepository extends Repository implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws Throwable
      */
     public function authenticateFromSession(): self
     {
@@ -102,6 +104,8 @@ abstract class TokenizedRepository extends Repository implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws Throwable
      */
     public function authenticateFromRequest(Request $request): self
     {
@@ -136,6 +140,8 @@ abstract class TokenizedRepository extends Repository implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws Throwable
      */
     public function authenticateFromToken(string $token): self
     {

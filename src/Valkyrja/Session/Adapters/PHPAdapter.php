@@ -72,7 +72,7 @@ class PHPAdapter extends NullAdapter
     {
         if (! preg_match('/^[-,a-zA-Z0-9]{1,128}$/', $id)) {
             throw new InvalidSessionId(
-                "The session id, '{$id}', is invalid! "
+                "The session id, '$id', is invalid! "
                 . 'Session id can only contain alpha numeric characters, dashes, commas, '
                 . 'and be at least 1 character in length but up to 128 characters long.'
             );

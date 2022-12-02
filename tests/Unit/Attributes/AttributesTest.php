@@ -305,8 +305,18 @@ class AttributesTest extends TestCase
                self::THREE,
             ...$attributes
         );
+    }
 
-        $attributes = $this->attributes->forFunction(
+    /**
+     * Test the forFunction() method.
+     *
+     * @throws ReflectionException
+     *
+     * @return void
+     */
+    public function testForClosure(): void
+    {
+        $attributes = $this->attributes->forClosure(
             #[Attribute(self::VALUE4)]
             #[Attribute(self::VALUE5)]
             #[AttributeChild(self::VALUE6, self::SIX)]
@@ -324,7 +334,7 @@ class AttributesTest extends TestCase
             ...$attributes
         );
 
-        $attributes = $this->attributes->forFunction(
+        $attributes = $this->attributes->forClosure(
             #[Attribute(self::VALUE7)]
             #[Attribute(self::VALUE8)]
             #[AttributeChild(self::VALUE9, self::NINE)]

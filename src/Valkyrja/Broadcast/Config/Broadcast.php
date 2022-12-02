@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Config;
 
-use JsonException;
 use Valkyrja\Broadcast\Adapters\CryptPusherAdapter;
 use Valkyrja\Broadcast\Adapters\LogAdapter;
 use Valkyrja\Broadcast\Adapters\NullAdapter;
@@ -31,8 +30,6 @@ class Broadcast extends Model
 {
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     protected function setup(array $properties = null): void
     {

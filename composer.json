@@ -42,7 +42,9 @@
     "ext-curl"                    : "*",
     "ext-pdo"                     : "*",
     "ext-openssl"                 : "*",
-    "ext-sodium"                  : "*"
+    "ext-sodium"                  : "*",
+    "phpmetrics/phpmetrics": "^2.8",
+    "bmitch/churn-php": "^1.7"
   },
   "autoload"          : {
     "psr-4" : {

@@ -15,9 +15,9 @@ namespace Valkyrja\Broadcast\Factories;
 
 use Valkyrja\Broadcast\Adapter;
 use Valkyrja\Broadcast\Driver;
-use Valkyrja\Broadcast\Factory as Contract;
+use Valkyrja\Broadcast\FactoryFactory as Contract;
 use Valkyrja\Broadcast\Message;
-use Valkyrja\Support\Manager\Factories\SimpleFactoryWithMessage as Factory;
+use Valkyrja\Support\Manager\Factories\MessageFactory as Factory;
 
 /**
  * Class SimpleFactory.

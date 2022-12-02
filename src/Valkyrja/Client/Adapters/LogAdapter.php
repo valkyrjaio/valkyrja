@@ -74,7 +74,7 @@ class LogAdapter implements Contract
         $optionsString = Obj::toString($request);
 
         $this->logger->info(
-            static::class . " request: {$request->getMethod()}, uri {$request->getUri()->__toString()}, options {$optionsString}"
+            static::class . " request: {$request->getMethod()}, uri {$request->getUri()->__toString()}, options $optionsString"
         );
 
         return $this->responseFactory->createResponse();

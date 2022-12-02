@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM;
 
+use stdClass;
 use Valkyrja\ORM\Exceptions\NotFoundException;
 
 /**
@@ -76,9 +77,9 @@ interface Query
     /**
      * Get one or null.
      *
-     * @return Entity|object|null
+     * @return Entity|stdClass|null
      */
-    public function getOneOrNull(): ?object;
+    public function getOneOrNull(): Entity|stdClass|null;
 
     /**
      * Get one or fail.

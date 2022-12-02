@@ -76,6 +76,6 @@ abstract class PDO extends BasePDO
     {
         $value = $config[$name] ?? $default;
 
-        return $value ? ";{$name}={$value}" : '';
+        return $value ? ";$name=$value" : '';
     }
 }

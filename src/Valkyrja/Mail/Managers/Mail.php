@@ -15,7 +15,7 @@ namespace Valkyrja\Mail\Managers;
 
 use Valkyrja\Mail\Config\Config;
 use Valkyrja\Mail\Driver;
-use Valkyrja\Mail\Factory;
+use Valkyrja\Mail\FactoryFactory;
 use Valkyrja\Mail\Mail as Contract;
 use Valkyrja\Mail\Message;
 use Valkyrja\Support\Manager\Managers\MessageManager as Manager;
@@ -25,18 +25,18 @@ use Valkyrja\Support\Manager\Managers\MessageManager as Manager;
  *
  * @author Melech Mizrachi
  *
- * @extends Manager<Driver, Factory, Message>
- * @property Factory $factory
+ * @extends Manager<Driver, FactoryFactory, Message>
+ * @property FactoryFactory $factory
  */
 class Mail extends Manager implements Contract
 {
     /**
      * Mail constructor.
      *
-     * @param Factory      $factory The factory
-     * @param Config|array $config  The config
+     * @param FactoryFactory $factory The factory
+     * @param Config|array   $config  The config
      */
-    public function __construct(Factory $factory, Config|array $config)
+    public function __construct(FactoryFactory $factory, Config|array $config)
     {
         parent::__construct($factory, $config);
 

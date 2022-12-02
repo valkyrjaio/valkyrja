@@ -160,8 +160,8 @@ trait CollectorHelpers
             return;
         }
 
-        $getMethod = $method === 'Secure' ? "is{$method}" : "get{$method}";
-        $setMethod = "set{$method}";
+        $getMethod = $method === 'Secure' ? "is$method" : "get$method";
+        $setMethod = "set$method";
 
         if ($merge && $value = $this->route->{$getMethod}()) {
             $value = $this->mergePropertiesForRoute($value, $route->{$getMethod}(), $method === 'Name' ? '.' : '');

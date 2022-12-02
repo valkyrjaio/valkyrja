@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Client\Factories;
+namespace Valkyrja\Session\Factories;
 
-use Valkyrja\Client\Adapter;
-use Valkyrja\Client\Driver;
-use Valkyrja\Client\Factory as Contract;
-use Valkyrja\Support\Manager\Factories\SimpleFactory as Factory;
+use Valkyrja\Session\Adapter;
+use Valkyrja\Session\Driver;
+use Valkyrja\Session\Factory as Contract;
+use Valkyrja\Support\Manager\Factories\Factory as ManagerFactory;
 
 /**
- * Class SimpleFactory.
+ * Class Factory.
  *
  * @author Melech Mizrachi
  */
-class SimpleFactory extends Factory implements Contract
+class Factory extends ManagerFactory implements Contract
 {
     /**
      * @inheritDoc

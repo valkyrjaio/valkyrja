@@ -17,7 +17,8 @@ use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\Console\Support\Provider;
-use Valkyrja\Model\Enums\CastType;
+
+use function is_array;
 
 /**
  * Class Config.
@@ -40,13 +41,6 @@ class Config extends Model
         CKP::FILE_PATH       => EnvKey::CONSOLE_FILE_PATH,
         CKP::CACHE_FILE_PATH => EnvKey::CONSOLE_CACHE_FILE_PATH,
         CKP::USE_CACHE       => EnvKey::CONSOLE_USE_CACHE_FILE,
-    ];
-
-    /**
-     * @inheritDoc
-     */
-    protected static array $castings = [
-        CKP::CACHE => [CastType::model, Cache::class],
     ];
 
     /**
@@ -89,7 +83,7 @@ class Config extends Model
      *
      * @var Cache|null
      */
-    public ?Cache $cache = null;
+    public Cache|null $cache = null;
 
     /**
      * The file path.
@@ -111,4 +105,22 @@ class Config extends Model
      * @var bool
      */
     public bool $useCache;
+
+    /**
+     * Set the cache.
+     *
+     * @param Cache|array|null $cache The cache
+     *
+     * @return void
+     */
+    protected function setCache(Cache|array|null $cache): void
+    {
+        if (is_array($cache)) {
+            $this->cache = Cache::fromArray($cache);
+
+            return;
+        }
+
+        $this->cache = $cache;
+    }
 }

@@ -40,42 +40,42 @@ class Container implements Contract
     /**
      * The aliases.
      *
-     * @var string[]
+     * @var array<class-string<Service>|string, class-string<Service>|string>
      */
     protected static array $aliases = [];
 
     /**
      * The instances.
      *
-     * @var array
+     * @var array<class-string<Service>|string, mixed>
      */
     protected static array $instances = [];
 
     /**
      * The services.
      *
-     * @var class-string<Service>[]
+     * @var array<class-string<Service>|string, class-string<Service>>
      */
     protected static array $services = [];
 
     /**
      * The service closures.
      *
-     * @var Closure[]
+     * @var array<class-string<Service>|string, Closure>
      */
     protected static array $closures = [];
 
     /**
      * The singletons.
      *
-     * @var string[]
+     * @var array<class-string<Service>|string, class-string<Service>|string>
      */
     protected static array $singletons = [];
 
     /**
      * The context class or function name.
      *
-     * @var string|null
+     * @var class-string|string|null
      */
     protected ?string $context = null;
 
@@ -322,7 +322,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function makeService(string $serviceId, array $arguments = []): mixed
+    public function makeService(string $serviceId, array $arguments = []): Service
     {
         $serviceId = $this->getServiceIdAndEnsurePublished($serviceId);
 
@@ -378,7 +378,7 @@ class Container implements Contract
     /**
      * Ensure a provided service is published.
      *
-     * @param string $serviceId The service id
+     * @param class-string|string $serviceId The service id
      *
      * @return void
      */
@@ -394,7 +394,7 @@ class Container implements Contract
     /**
      * Get an aliased service id if it exists.
      *
-     * @param string $serviceId The service id
+     * @param class-string|string $serviceId The service id
      *
      * @return string
      */
@@ -406,7 +406,7 @@ class Container implements Contract
     /**
      * Get a service id and ensure that it is published if it is provided.
      *
-     * @param string $serviceId The service id
+     * @param class-string|string $serviceId The service id
      *
      * @return string
      */
@@ -423,7 +423,7 @@ class Container implements Contract
     /**
      * Get the context service id.
      *
-     * @param string $serviceId The service id
+     * @param class-string|string $serviceId The service id
      *
      * @return string
      */
@@ -443,7 +443,7 @@ class Container implements Contract
     /**
      * Check whether a given service is an alias.
      *
-     * @param string $serviceId The service id
+     * @param class-string|string $serviceId The service id
      *
      * @return bool
      */
@@ -455,7 +455,7 @@ class Container implements Contract
     /**
      * Check whether a given service is bound to a closure.
      *
-     * @param string $serviceId The service id
+     * @param class-string|string $serviceId The service id
      *
      * @return bool
      */
@@ -467,7 +467,7 @@ class Container implements Contract
     /**
      * Check whether a given service is a singleton.
      *
-     * @param string $serviceId The service id
+     * @param class-string|string $serviceId The service id
      *
      * @return bool
      */
@@ -479,7 +479,7 @@ class Container implements Contract
     /**
      * Check whether a given service exists.
      *
-     * @param string $serviceId The service id
+     * @param class-string|string $serviceId The service id
      *
      * @return bool
      */
@@ -491,8 +491,8 @@ class Container implements Contract
     /**
      * Get a service bound to a closure from the container.
      *
-     * @param string $serviceId The service id
-     * @param array  $arguments [optional] The arguments
+     * @param class-string|string $serviceId The service id
+     * @param array               $arguments [optional] The arguments
      *
      * @return mixed
      */
@@ -506,27 +506,32 @@ class Container implements Contract
     /**
      * Get a singleton from the container.
      *
-     * @param string $serviceId The service id
+     * @param class-string|string $serviceId The service id
      *
      * @return mixed
      */
     protected function getSingletonWithoutChecks(string $serviceId): mixed
     {
-        return self::$instances[$serviceId] ??= $this->makeService($serviceId);
+        /** @var mixed $instance */
+        $instance = self::$instances[$serviceId] ??= $this->makeService($serviceId);
+
+        return $instance;
     }
 
     /**
      * Make a service.
      *
-     * @param string $serviceId The service id
-     * @param array  $arguments [optional] The arguments
+     * @param class-string<Service>|string $serviceId The service id
+     * @param array                        $arguments [optional] The arguments
      *
      * @return Service
      */
     protected function makeServiceWithoutChecks(string $serviceId, array $arguments = []): Service
     {
+        /** @var Service $service */
+        $service = self::$services[$serviceId];
         // Make the object by dispatching the service
-        $made = self::$services[$serviceId]::make($this, $arguments);
+        $made = $service::make($this, $arguments);
 
         // If the service is a singleton
         if ($this->isSingleton($serviceId)) {

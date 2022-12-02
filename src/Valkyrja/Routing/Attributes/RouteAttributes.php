@@ -48,18 +48,18 @@ class RouteAttributes extends Attributes implements Contract
             if (! empty($classAttributes)) {
                 // Iterate through all the class attributes
                 foreach ($classAttributes as $classAttribute) {
-                    $classAttribute->setParameters(
-                        [
-                            ...$classAttribute->getParameters(),
-                            ...$this->forClass($class, Parameter::class),
-                        ]
-                    );
-                    $classAttribute->setMiddleware(
-                        [
-                            ...($classAttribute->getMiddleware() ?? []),
-                            ...array_column($this->forClass($class, Middleware::class), 'name'),
-                        ]
-                    );
+                    /** @var Parameter[] $mergedClassParameters */
+                    $mergedClassParameters = [
+                        ...$classAttribute->getParameters(),
+                        ...$this->forClass($class, Parameter::class),
+                    ];
+                    $mergedClassMiddleware = [
+                        ...($classAttribute->getMiddleware() ?? []),
+                        ...array_column($this->forClass($class, Middleware::class), 'name'),
+                    ];
+
+                    $classAttribute->setParameters($mergedClassParameters);
+                    $classAttribute->setMiddleware($mergedClassMiddleware);
 
                     // If the class' members' had attributes
                     if (! empty($memberAttributes)) {
@@ -76,19 +76,18 @@ class RouteAttributes extends Attributes implements Contract
                                 $routeMiddleware = $this->forMethod($class, $method, Middleware::class);
                             }
 
-                            $routeAttribute->setParameters(
-                                [
-                                    ...$routeAttribute->getParameters(),
-                                    ...$routeParameters,
-                                ]
-                            );
+                            /** @var Parameter[] $mergedPropertyParameters */
+                            $mergedPropertyParameters = [
+                                ...$routeAttribute->getParameters(),
+                                ...$routeParameters,
+                            ];
+                            $mergedPropertyMiddleware = [
+                                ...($routeAttribute->getMiddleware() ?? []),
+                                ...array_column($routeMiddleware, 'name'),
+                            ];
 
-                            $routeAttribute->setMiddleware(
-                                [
-                                    ...($routeAttribute->getMiddleware() ?? []),
-                                    ...array_column($routeMiddleware, 'name'),
-                                ]
-                            );
+                            $routeAttribute->setParameters($mergedPropertyParameters);
+                            $routeAttribute->setMiddleware($mergedPropertyMiddleware);
 
                             // And set a new route with the controller defined annotation additions
                             $finalAttributes[] = $this->getControllerBuiltRoute($classAttribute, $routeAttribute);

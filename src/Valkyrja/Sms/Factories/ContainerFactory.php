@@ -15,11 +15,11 @@ namespace Valkyrja\Sms\Factories;
 
 use Valkyrja\Sms\Adapter;
 use Valkyrja\Sms\Driver;
-use Valkyrja\Sms\Factory as Contract;
+use Valkyrja\Sms\FactoryFactory as Contract;
 use Valkyrja\Sms\LogAdapter;
 use Valkyrja\Sms\Message;
 use Valkyrja\Sms\NexmoAdapter;
-use Valkyrja\Support\Manager\Factories\ContainerFactoryWithMessage as Factory;
+use Valkyrja\Support\Manager\Factories\ContainerMessageFactory as Factory;
 use Valkyrja\Support\Type\Cls;
 
 /**

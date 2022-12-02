@@ -91,7 +91,7 @@ class PathGenerator implements Contract
             // If the data isn't found in the params array it is not a valid
             // param
             if (! isset($params[$key])) {
-                throw new InvalidArgumentException("Invalid route param '{$key}'");
+                throw new InvalidArgumentException("Invalid route param '$key'");
             }
 
             $regex = $params[$key]['regex'];
@@ -142,7 +142,7 @@ class PathGenerator implements Contract
 
         // If the value of the data doesn't match what was specified when the route was made
         if (preg_match('/^' . $regex . '$/', $datum) === 0) {
-            throw new InvalidArgumentException("Route param for {$key}, '{$datum}', does not match {$regex}");
+            throw new InvalidArgumentException("Route param for $key, '$datum', does not match $regex");
         }
     }
 
@@ -152,7 +152,7 @@ class PathGenerator implements Contract
      * @param array  $segments
      * @param string $param
      *
-     * @return string
+     * @return string|null
      */
     protected function findParamSegment(array $segments, string $param): ?string
     {

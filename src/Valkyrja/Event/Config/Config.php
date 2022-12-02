@@ -16,7 +16,8 @@ namespace Valkyrja\Event\Config;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
-use Valkyrja\Model\Enums\CastType;
+
+use function is_array;
 
 /**
  * Class Config.
@@ -39,13 +40,6 @@ class Config extends Model
     ];
 
     /**
-     * @inheritDoc
-     */
-    protected static array $castings = [
-        CKP::CACHE => [CastType::model, Cache::class],
-    ];
-
-    /**
      * The annotated listeners.
      *
      * @var string[]
@@ -64,7 +58,7 @@ class Config extends Model
      *
      * @var Cache|null
      */
-    public ?Cache $cache = null;
+    public Cache|null $cache = null;
 
     /**
      * The file path.
@@ -86,4 +80,22 @@ class Config extends Model
      * @var bool
      */
     public bool $useCache;
+
+    /**
+     * Set the cache.
+     *
+     * @param Cache|array|null $cache The cache
+     *
+     * @return void
+     */
+    protected function setCache(Cache|array|null $cache): void
+    {
+        if (is_array($cache)) {
+            $this->cache = Cache::fromArray($cache);
+
+            return;
+        }
+
+        $this->cache = $cache;
+    }
 }

@@ -45,7 +45,7 @@ class PgSqlPDO extends PDO
         $charset = $config['charset'] ?? 'utf8';
 
         $dsn = $this->getDsnPart($config, 'sslmode')
-            . ";options='--client_encoding={$charset}'";
+            . ";options='--client_encoding=$charset'";
 
         parent::__construct($config, 'pgsql', $dsn);
     }

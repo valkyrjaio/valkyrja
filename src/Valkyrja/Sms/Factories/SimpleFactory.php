@@ -15,9 +15,9 @@ namespace Valkyrja\Sms\Factories;
 
 use Valkyrja\Sms\Adapter;
 use Valkyrja\Sms\Driver;
-use Valkyrja\Sms\Factory as Contract;
+use Valkyrja\Sms\FactoryFactory as Contract;
 use Valkyrja\Sms\Message;
-use Valkyrja\Support\Manager\Factories\SimpleFactoryWithMessage as Factory;
+use Valkyrja\Support\Manager\Factories\MessageFactory as Factory;
 
 /**
  * Class SimpleFactory.

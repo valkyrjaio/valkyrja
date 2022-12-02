@@ -25,7 +25,7 @@ interface Command extends Dispatch
     /**
      * Get the path.
      *
-     * @return string
+     * @return string|null
      */
     public function getPath(): ?string;
 
@@ -41,7 +41,7 @@ interface Command extends Dispatch
     /**
      * Get the regex.
      *
-     * @return string
+     * @return string|null
      */
     public function getRegex(): ?string;
 
@@ -57,7 +57,7 @@ interface Command extends Dispatch
     /**
      * Get the params.
      *
-     * @return array
+     * @return array|null
      */
     public function getParams(): ?array;
 
@@ -73,7 +73,7 @@ interface Command extends Dispatch
     /**
      * Get the segments.
      *
-     * @return array
+     * @return array|null
      */
     public function getSegments(): ?array;
 
@@ -89,7 +89,7 @@ interface Command extends Dispatch
     /**
      * Get the description.
      *
-     * @return string
+     * @return string|null
      */
     public function getDescription(): ?string;
 

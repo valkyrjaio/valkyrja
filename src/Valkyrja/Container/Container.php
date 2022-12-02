@@ -29,8 +29,8 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Get a container instance with context.
      *
-     * @param string      $context The context class or function name
-     * @param string|null $member  [optional] The context method name
+     * @param class-string|string $context The context class or function name
+     * @param string|null         $member  [optional] The context method name
      *
      * @return static
      */
@@ -186,14 +186,12 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Make a service.
      *
-     * @template T
+     * @param class-string<Service>|string $serviceId The service id
+     * @param array                        $arguments [optional] The arguments
      *
-     * @param class-string<T>|string $serviceId The service id
-     * @param array                  $arguments [optional] The arguments
-     *
-     * @return T|mixed
+     * @return Service
      */
-    public function makeService(string $serviceId, array $arguments = []): mixed;
+    public function makeService(string $serviceId, array $arguments = []): Service;
 
     /**
      * Get a service id with optional context.

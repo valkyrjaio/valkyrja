@@ -128,11 +128,9 @@ class Parameter extends Model
      */
     public function setType(CastType|string $type = null): self
     {
-        if (is_string($type)) {
-            $type = CastType::from($type);
-        }
-
-        $this->type = $type;
+        $this->type = is_string($type)
+            ? CastType::from($type)
+            : $type;
 
         return $this;
     }
@@ -185,7 +183,7 @@ class Parameter extends Model
     public function setEntityColumn(string $entityColumn = null): self
     {
         if ($entityColumn !== null) {
-            Cls::validateHasProperty($this->entity, $entityColumn);
+            Cls::validateHasProperty($this->entity ?? '', $entityColumn);
         }
 
         $this->entityColumn = $entityColumn;

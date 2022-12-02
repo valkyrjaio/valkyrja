@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast;
+namespace Valkyrja\Sms;
 
-use Valkyrja\Support\Manager\FactoryWithMessage as Contract;
+use Valkyrja\Support\Manager\MessageFactory as Contract;
 
 /**
  * Interface Factory.
@@ -21,7 +21,7 @@ use Valkyrja\Support\Manager\FactoryWithMessage as Contract;
  * @author Melech Mizrachi
  * @extends Contract<Adapter, Driver, Message>
  */
-interface Factory extends Contract
+interface FactoryFactory extends Contract
 {
     /**
      * @inheritDoc

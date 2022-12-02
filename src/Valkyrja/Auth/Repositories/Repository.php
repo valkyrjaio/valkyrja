@@ -46,14 +46,14 @@ class Repository implements Contract
     /**
      * The user entity.
      *
-     * @var string|User
+     * @var class-string<User>
      */
     protected string $userEntityName;
 
     /**
      * The authenticated users model.
      *
-     * @var string|AuthenticatedUsers
+     * @var class-string<AuthenticatedUsers>
      */
     protected string $usersModel;
 
@@ -81,10 +81,10 @@ class Repository implements Contract
     /**
      * Repository constructor.
      *
-     * @param Adapter        $adapter The adapter
-     * @param SessionManager $session The session service
-     * @param Config|array   $config  The config
-     * @param string         $user    The user class
+     * @param Adapter            $adapter The adapter
+     * @param SessionManager     $session The session service
+     * @param Config|array       $config  The config
+     * @param class-string<User> $user    The user class
      */
     public function __construct(
         protected Adapter $adapter,
@@ -97,7 +97,7 @@ class Repository implements Contract
         $this->session        = $session->use();
         $this->userEntityName = $user;
 
-        $this->usersModel = $this->userEntityName::getAuthCollection();
+        $this->usersModel = $user::getAuthCollection() ?? \Valkyrja\Auth\Models\AuthenticatedUsers::class;
         $this->users      = new $this->usersModel();
     }
 
@@ -183,16 +183,18 @@ class Repository implements Contract
      */
     public function authenticateFromRequest(Request $request): self
     {
-        $requestParams = $request->onlyParsedBody($this->userEntityName::getAuthenticationFields());
+        /** @var class-string<User> $userClassName */
+        $userClassName = $this->userEntityName;
+        $requestParams = $request->onlyParsedBody($userClassName::getAuthenticationFields());
 
         if (empty($requestParams)) {
             throw new InvalidAuthenticationException('No authentication fields');
         }
 
-        $requestParams[$this->userEntityName::getPasswordField()] =
-            $request->getParsedBodyParam($this->userEntityName::getPasswordField());
+        $requestParams[$userClassName::getPasswordField()] =
+            $request->getParsedBodyParam($userClassName::getPasswordField());
 
-        $user = $this->userEntityName::fromArray($requestParams);
+        $user = $userClassName::fromArray($requestParams);
 
         return $this->authenticate($user);
     }
@@ -216,12 +218,14 @@ class Repository implements Contract
     {
         $collection        = $this->users;
         $collectionAsArray = $collection->asArray();
+        /** @var class-string<User> $userClassName */
+        $userClassName = $this->userEntityName;
 
         foreach ($collection->all() as $key => $user) {
             $collectionAsArray['users'][$key] = $user->asStorableArray();
         }
 
-        $this->session->set($this->userEntityName::getUserSessionId(), $collectionAsArray);
+        $this->session->set($userClassName::getUserSessionId(), $collectionAsArray);
 
         return $this;
     }
@@ -231,7 +235,10 @@ class Repository implements Contract
      */
     public function unsetSession(): self
     {
-        $this->session->remove($this->userEntityName::getUserSessionId());
+        /** @var class-string<User> $userClassName */
+        $userClassName = $this->userEntityName;
+
+        $this->session->remove($userClassName::getUserSessionId());
 
         return $this;
     }
@@ -350,7 +357,9 @@ class Repository implements Contract
             return $this->user;
         }
 
-        $sessionUsers = $this->session->get($this->userEntityName::getUserSessionId());
+        /** @var class-string<User> $userClassName */
+        $userClassName = $this->userEntityName;
+        $sessionUsers  = $this->session->get($userClassName::getUserSessionId());
 
         if (! $sessionUsers) {
             $this->resetAfterUnAuthentication();

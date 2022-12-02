@@ -14,13 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast\Providers;
 
 use Pusher\Pusher;
-use Pusher\PusherException;
 use Valkyrja\Broadcast\Adapter;
 use Valkyrja\Broadcast\Adapters\CryptPusherAdapter;
 use Valkyrja\Broadcast\Broadcast;
 use Valkyrja\Broadcast\Driver;
 use Valkyrja\Broadcast\Factories\ContainerFactory;
-use Valkyrja\Broadcast\Factory;
+use Valkyrja\Broadcast\FactoryFactory;
 use Valkyrja\Broadcast\LogAdapter;
 use Valkyrja\Broadcast\Message;
 use Valkyrja\Broadcast\PusherAdapter;
@@ -47,7 +46,7 @@ class ServiceProvider extends Provider
     {
         return [
             Broadcast::class          => 'publishBroadcaster',
-            Factory::class            => 'publishFactory',
+            FactoryFactory::class     => 'publishFactory',
             Driver::class             => 'publishDriver',
             Adapter::class            => 'publishAdapter',
             CryptPusherAdapter::class => 'publishCryptPusherAdapter',
@@ -65,7 +64,7 @@ class ServiceProvider extends Provider
     {
         return [
             Broadcast::class,
-            Factory::class,
+            FactoryFactory::class,
             CryptPusherAdapter::class,
             Driver::class,
             Adapter::class,
@@ -90,7 +89,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Broadcast::class,
             new \Valkyrja\Broadcast\Managers\Broadcast(
-                $container->getSingleton(Factory::class),
+                $container->getSingleton(FactoryFactory::class),
                 $config['client']
             )
         );
@@ -106,7 +105,7 @@ class ServiceProvider extends Provider
     public static function publishFactory(Container $container): void
     {
         $container->setSingleton(
-            Factory::class,
+            FactoryFactory::class,
             new ContainerFactory($container),
         );
     }
@@ -231,8 +230,6 @@ class ServiceProvider extends Provider
      * Publish the Pusher service.
      *
      * @param Container $container The container
-     *
-     * @throws PusherException
      *
      * @return void
      */

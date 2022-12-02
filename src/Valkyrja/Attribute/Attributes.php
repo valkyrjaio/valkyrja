@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Attribute;
 
+use Closure;
+
 /**
  * Interface Attributes.
  *
@@ -49,7 +51,7 @@ interface Attributes
      *
      * @template T
      *
-     * @param string               $class    K The class
+     * @param string               $class     K The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
      * @return object[]|T[]
@@ -136,10 +138,22 @@ interface Attributes
      *
      * @template T
      *
-     * @param callable|string      $function  The function
+     * @param string               $function  The function
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
      * @return object[]|T[]
      */
-    public function forFunction(callable|string $function, string $attribute = null, int $flags = null): array;
+    public function forFunction(string $function, string $attribute = null, int $flags = null): array;
+
+    /**
+     * Get a closure's attributes.
+     *
+     * @template T
+     *
+     * @param Closure              $closure   The closure
+     * @param class-string<T>|null $attribute [optional] The attribute to return
+     *
+     * @return object[]|T[]
+     */
+    public function forClosure(Closure $closure, string $attribute = null, int $flags = null): array;
 }

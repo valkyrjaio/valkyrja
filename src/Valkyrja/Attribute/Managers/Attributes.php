@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Attribute\Managers;
 
+use Closure;
 use ReflectionAttribute;
 use ReflectionClassConstant;
 use ReflectionException;
@@ -54,9 +55,9 @@ class Attributes implements Contract
     public function forClass(string $class, string $attribute = null, int $flags = null): array
     {
         return $this->getInstances(
-            [
-                Property::CLASS_NAME => $class,
-            ],
+               [
+                   Property::CLASS_NAME => $class,
+               ],
             ...$this->reflector->getClassReflection($class)->getAttributes($attribute, $flags ?? static::$defaultFlags)
         );
     }
@@ -106,8 +107,8 @@ class Attributes implements Contract
     public function forConstants(string $class, string $attribute = null, int $flags = null): array
     {
         return $this->forClassMember(
-            $attribute,
-            $flags,
+               $attribute,
+               $flags,
             ...$this->reflector->getClassReflection($class)->getReflectionConstants()
         );
     }
@@ -130,8 +131,8 @@ class Attributes implements Contract
     public function forProperties(string $class, string $attribute = null, int $flags = null): array
     {
         return $this->forClassMember(
-            $attribute,
-            $flags,
+               $attribute,
+               $flags,
             ...$this->reflector->getClassReflection($class)->getProperties()
         );
     }
@@ -154,8 +155,8 @@ class Attributes implements Contract
     public function forMethods(string $class, string $attribute = null, int $flags = null): array
     {
         return $this->forClassMember(
-            $attribute,
-            $flags,
+               $attribute,
+               $flags,
             ...$this->reflector->getClassReflection($class)->getMethods()
         );
     }
@@ -165,13 +166,29 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
-    public function forFunction(callable|string $function, string $attribute = null, int $flags = null): array
+    public function forFunction(string $function, string $attribute = null, int $flags = null): array
     {
         return $this->getInstances(
-            [
-                Property::FUNCTION => $function,
-            ],
+               [
+                   Property::FUNCTION => $function,
+               ],
             ...$this->reflector->getFunctionReflection($function)
+                   ->getAttributes($attribute, $flags ?? static::$defaultFlags)
+        );
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws ReflectionException
+     */
+    public function forClosure(Closure $closure, string $attribute = null, int $flags = null): array
+    {
+        return $this->getInstances(
+               [
+                   Property::CLOSURE => $closure,
+               ],
+            ...$this->reflector->getClosureReflection($closure)
                    ->getAttributes($attribute, $flags ?? static::$defaultFlags)
         );
     }
@@ -195,21 +212,21 @@ class Attributes implements Contract
             $instances = [
                 ...$instances,
                 ...$this->getInstances(
-                    [
-                        Property::CLASS_NAME => $member->getDeclaringClass()->getName(),
-                        Property::CONSTANT   => $member instanceof ReflectionClassConstant
-                            ? $member->getName()
-                            : null,
-                        Property::PROPERTY   => $member instanceof ReflectionProperty
-                            ? $member->getName()
-                            : null,
-                        Property::METHOD     => $member instanceof ReflectionMethod
-                            ? $member->getName()
-                            : null,
-                        Property::STATIC     => method_exists($member, 'isStatic')
-                            ? $member->isStatic()
-                            : null,
-                    ],
+                       [
+                           Property::CLASS_NAME => $member->getDeclaringClass()->getName(),
+                           Property::CONSTANT   => $member instanceof ReflectionClassConstant
+                               ? $member->getName()
+                               : null,
+                           Property::PROPERTY   => $member instanceof ReflectionProperty
+                               ? $member->getName()
+                               : null,
+                           Property::METHOD     => $member instanceof ReflectionMethod
+                               ? $member->getName()
+                               : null,
+                           Property::STATIC     => method_exists($member, 'isStatic')
+                               ? $member->isStatic()
+                               : null,
+                       ],
                     ...$member->getAttributes($attribute, $flags ?? static::$defaultFlags)
                 ),
             ];

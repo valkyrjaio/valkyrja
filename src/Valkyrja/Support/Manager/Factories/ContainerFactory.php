@@ -91,7 +91,7 @@ class ContainerFactory implements Factory
     /**
      * Get the default driver class.
      *
-     * @param string $name The driver
+     * @param class-string $name The driver
      *
      * @return string
      */
@@ -103,7 +103,7 @@ class ContainerFactory implements Factory
     /**
      * Get the default adapter class.
      *
-     * @param string $name The adapter
+     * @param class-string $name The adapter
      *
      * @return string
      */

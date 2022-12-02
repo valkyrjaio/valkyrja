@@ -66,7 +66,7 @@ class CommandsList extends Commander
         $this->optionsSection(...input()->getGlobalOptions());
         $this->sectionDivider();
 
-        $this->sectionTitleMessage('Commands' . ($namespace ? " for the \"{$namespace}\" namespace" : ''));
+        $this->sectionTitleMessage('Commands' . ($namespace ? " for the \"$namespace\" namespace" : ''));
 
         foreach ($commands as $command) {
             if (null === $namespace) {

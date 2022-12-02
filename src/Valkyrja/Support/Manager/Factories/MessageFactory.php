@@ -15,11 +15,11 @@ namespace Valkyrja\Support\Manager\Factories;
 
 use Valkyrja\Support\Manager\Adapter;
 use Valkyrja\Support\Manager\Driver;
-use Valkyrja\Support\Manager\FactoryWithMessage as Contract;
 use Valkyrja\Support\Manager\Message;
+use Valkyrja\Support\Manager\MessageFactory as Contract;
 
 /**
- * Class SimpleFactoryWithMessage.
+ * Class MessageFactory.
  *
  * @author   Melech Mizrachi
  * @template Driver
@@ -27,7 +27,7 @@ use Valkyrja\Support\Manager\Message;
  * @template Message
  * @implements Contract<Adapter, Driver, Message>
  */
-class SimpleFactoryWithMessage extends SimpleFactory implements Contract
+class MessageFactory extends Factory implements Contract
 {
     /**
      * @inheritDoc

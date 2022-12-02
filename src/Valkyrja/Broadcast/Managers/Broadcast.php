@@ -16,7 +16,7 @@ namespace Valkyrja\Broadcast\Managers;
 use Valkyrja\Broadcast\Broadcast as Contract;
 use Valkyrja\Broadcast\Config\Config;
 use Valkyrja\Broadcast\Driver;
-use Valkyrja\Broadcast\Factory;
+use Valkyrja\Broadcast\FactoryFactory;
 use Valkyrja\Broadcast\Message;
 use Valkyrja\Support\Manager\Managers\MessageManager as Manager;
 
@@ -25,18 +25,18 @@ use Valkyrja\Support\Manager\Managers\MessageManager as Manager;
  *
  * @author Melech Mizrachi
  *
- * @extends Manager<Driver, Factory, Message>
- * @property Factory $factory
+ * @extends Manager<Driver, FactoryFactory, Message>
+ * @property FactoryFactory $factory
  */
 class Broadcast extends Manager implements Contract
 {
     /**
      * Broadcast constructor.
      *
-     * @param Factory      $factory The factory
-     * @param Config|array $config  The config
+     * @param FactoryFactory $factory The factory
+     * @param Config|array   $config  The config
      */
-    public function __construct(Factory $factory, Config|array $config)
+    public function __construct(FactoryFactory $factory, Config|array $config)
     {
         parent::__construct($factory, $config);
 

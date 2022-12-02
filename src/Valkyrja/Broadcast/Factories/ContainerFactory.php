@@ -15,11 +15,11 @@ namespace Valkyrja\Broadcast\Factories;
 
 use Valkyrja\Broadcast\Adapter;
 use Valkyrja\Broadcast\Driver;
-use Valkyrja\Broadcast\Factory as Contract;
+use Valkyrja\Broadcast\FactoryFactory as Contract;
 use Valkyrja\Broadcast\LogAdapter;
 use Valkyrja\Broadcast\Message;
 use Valkyrja\Broadcast\PusherAdapter;
-use Valkyrja\Support\Manager\Factories\ContainerFactoryWithMessage as Factory;
+use Valkyrja\Support\Manager\Factories\ContainerMessageFactory as Factory;
 use Valkyrja\Support\Type\Cls;
 
 /**

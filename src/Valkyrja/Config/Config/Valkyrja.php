@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Config;
 
-use JsonException;
 use Valkyrja\Annotation\Config\Annotation;
 use Valkyrja\Api\Config\Api;
 use Valkyrja\Application\Config\App;
@@ -49,8 +48,6 @@ class Valkyrja extends Model
 {
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     protected function setup(array $properties = null): void
     {

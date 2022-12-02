@@ -15,12 +15,12 @@ namespace Valkyrja\Mail\Factories;
 
 use Valkyrja\Mail\Adapter;
 use Valkyrja\Mail\Driver;
-use Valkyrja\Mail\Factory as Contract;
+use Valkyrja\Mail\FactoryFactory as Contract;
 use Valkyrja\Mail\LogAdapter;
 use Valkyrja\Mail\MailgunAdapter;
 use Valkyrja\Mail\Message;
 use Valkyrja\Mail\PHPMailerAdapter;
-use Valkyrja\Support\Manager\Factories\ContainerFactoryWithMessage as Factory;
+use Valkyrja\Support\Manager\Factories\ContainerMessageFactory as Factory;
 use Valkyrja\Support\Type\Cls;
 
 /**

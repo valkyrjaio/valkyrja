@@ -55,7 +55,7 @@ trait Join
         // Get the join wording
         $join = Statement::JOIN;
 
-        $this->joins[] = "{$type} {$join} {$table} {$statementType} {$column1} {$operator} {$column2}";
+        $this->joins[] = "$type $join $table $statementType $column1 $operator $column2";
 
         return $this;
     }

@@ -44,8 +44,8 @@ interface BaseQueryBuilder
      *      $queryBuilder->entity(Entity::class);
      * </code>
      *
-     * @param string      $entity
-     * @param string|null $alias
+     * @param class-string<Entity> $entity
+     * @param string|null          $alias
      *
      * @return static
      */

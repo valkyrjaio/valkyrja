@@ -16,14 +16,14 @@ namespace Valkyrja\Filesystem\Factories;
 use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Driver;
 use Valkyrja\Filesystem\Factory as Contract;
-use Valkyrja\Support\Manager\Factories\SimpleFactory as Factory;
+use Valkyrja\Support\Manager\Factories\Factory as ManagerFactory;
 
 /**
- * Class SimpleFactory.
+ * Class Factory.
  *
  * @author Melech Mizrachi
  */
-class SimpleFactory extends Factory implements Contract
+class Factory extends ManagerFactory implements Contract
 {
     /**
      * @inheritDoc

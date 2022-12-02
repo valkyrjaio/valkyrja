@@ -108,11 +108,11 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::CLASS_NAME => $class,
-                ],
-                ...$this->parser->getAnnotations((string) $this->reflector->getClassReflection($class)->getDocComment())
-            );
+               [
+                   Property::CLASS_NAME => $class,
+               ],
+            ...$this->parser->getAnnotations((string) $this->reflector->getClassReflection($class)->getDocComment())
+        );
     }
 
     /**
@@ -126,9 +126,9 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= array_merge(
-                $this->propertiesAnnotations($class),
-                $this->methodsAnnotations($class)
-            );
+            $this->propertiesAnnotations($class),
+            $this->methodsAnnotations($class)
+        );
     }
 
     /**
@@ -142,9 +142,9 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= array_merge(
-                $this->classAnnotations($class),
-                $this->classMembersAnnotations($class)
-            );
+            $this->classAnnotations($class),
+            $this->classMembersAnnotations($class)
+        );
     }
 
     /**
@@ -159,13 +159,13 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::CLASS_NAME => $class,
-                    Property::PROPERTY   => $property,
-                    Property::STATIC     => $reflection->isStatic(),
-                ],
-                ...$this->parser->getAnnotations((string) $reflection->getDocComment())
-            );
+               [
+                   Property::CLASS_NAME => $class,
+                   Property::PROPERTY   => $property,
+                   Property::STATIC     => $reflection->isStatic(),
+               ],
+            ...$this->parser->getAnnotations((string) $reflection->getDocComment())
+        );
     }
 
     /**
@@ -189,15 +189,11 @@ class Annotator implements Contract
             $index = static::METHOD_CACHE . $class . $property->getName();
             // Set the property's reflection class in the cache
             self::$reflections[$index] = $property;
-
-            // Iterate through all the property's annotations
-            foreach ($this->propertyAnnotations($class, $property->getName()) as $propertyAnnotation) {
-                // Set the annotation in the list
-                $annotations[] = $propertyAnnotation;
-            }
+            // Set the annotations in the list
+            $annotations[] = $this->propertyAnnotations($class, $property->getName());
         }
 
-        return self::$annotations[$index] = $annotations;
+        return self::$annotations[$index] = array_merge(...$annotations);
     }
 
     /**
@@ -212,13 +208,13 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::CLASS_NAME => $class,
-                    Property::METHOD     => $method,
-                    Property::STATIC     => $reflection->isStatic(),
-                ],
-                ...$this->parser->getAnnotations((string) $reflection->getDocComment())
-            );
+               [
+                   Property::CLASS_NAME => $class,
+                   Property::METHOD     => $method,
+                   Property::STATIC     => $reflection->isStatic(),
+               ],
+            ...$this->parser->getAnnotations((string) $reflection->getDocComment())
+        );
     }
 
     /**
@@ -242,15 +238,11 @@ class Annotator implements Contract
             $index = static::METHOD_CACHE . $class . $method->getName();
             // Set the method's reflection class in the cache
             self::$reflections[$index] = $method;
-
-            // Iterate through all the method's annotations
-            foreach ($this->methodAnnotations($class, $method->getName()) as $methodAnnotation) {
-                // Set the annotation in the list
-                $annotations[] = $methodAnnotation;
-            }
+            // Set the annotations in the list
+            $annotations[] = $this->methodAnnotations($class, $method->getName());
         }
 
-        return self::$annotations[$index] = $annotations;
+        return self::$annotations[$index] = array_merge(...$annotations);
     }
 
     /**
@@ -264,13 +256,13 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::FUNCTION => $function,
-                ],
-                ...$this->parser->getAnnotations(
-                    (string) $this->reflector->getFunctionReflection($function)->getDocComment()
-                )
-            );
+               [
+                   Property::FUNCTION => $function,
+               ],
+            ...$this->parser->getAnnotations(
+            (string) $this->reflector->getFunctionReflection($function)->getDocComment()
+        )
+        );
     }
 
     /**

@@ -17,6 +17,7 @@ use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\BaseQueryBuilder as Contract;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Query;
+use Valkyrja\Support\Type\Cls;
 
 /**
  * Abstract Class SqlBaseQueryBuilder.
@@ -42,7 +43,7 @@ abstract class SqlBaseQueryBuilder implements Contract
     /**
      * The entity to query with.
      *
-     * @var Entity|string|null
+     * @var class-string<Entity>|null
      */
     protected ?string $entity = null;
 
@@ -71,6 +72,8 @@ abstract class SqlBaseQueryBuilder implements Contract
      */
     public function entity(string $entity, string $alias = null): self
     {
+        Cls::validateInherits($entity, Entity::class);
+
         $this->entity = $entity;
 
         $this->table($entity, $alias);

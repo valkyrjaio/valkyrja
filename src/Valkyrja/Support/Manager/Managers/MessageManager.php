@@ -16,8 +16,8 @@ namespace Valkyrja\Support\Manager\Managers;
 use Valkyrja\Support\Manager\Config\MessageConfig;
 use Valkyrja\Support\Manager\Driver;
 use Valkyrja\Support\Manager\Factory;
-use Valkyrja\Support\Manager\FactoryWithMessage;
 use Valkyrja\Support\Manager\Message;
+use Valkyrja\Support\Manager\MessageFactory;
 use Valkyrja\Support\Manager\MessageManager as Contract;
 
 /**
@@ -29,7 +29,7 @@ use Valkyrja\Support\Manager\MessageManager as Contract;
  * @template Factory
  * @template Message
  * @implements Contract<Driver, Factory, Message>
- * @property FactoryWithMessage $factory
+ * @property MessageFactory $factory
  */
 abstract class MessageManager extends Manager implements Contract
 {
@@ -57,10 +57,10 @@ abstract class MessageManager extends Manager implements Contract
     /**
      * MessageManager constructor.
      *
-     * @param FactoryWithMessage  $factory The factory
+     * @param MessageFactory      $factory The factory
      * @param MessageConfig|array $config  The config
      */
-    public function __construct(FactoryWithMessage $factory, MessageConfig|array $config)
+    public function __construct(MessageFactory $factory, MessageConfig|array $config)
     {
         parent::__construct($factory, $config);
 

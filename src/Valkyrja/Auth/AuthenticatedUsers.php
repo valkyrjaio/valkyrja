@@ -19,7 +19,7 @@ use Valkyrja\Model\CastableModel;
  * Interface AuthenticatedUsers.
  *
  * @author   Melech Mizrachi
- * @template T
+ * @template User
  */
 interface AuthenticatedUsers extends CastableModel
 {
@@ -33,7 +33,7 @@ interface AuthenticatedUsers extends CastableModel
     /**
      * Get the current user.
      *
-     * @return User|T|null
+     * @return User|null
      */
     public function getCurrent(): ?User;
 
@@ -58,7 +58,7 @@ interface AuthenticatedUsers extends CastableModel
     /**
      * Add a user to the collection.
      *
-     * @param User|T $user The user
+     * @param User $user The user
      *
      * @return static
      */
@@ -67,7 +67,7 @@ interface AuthenticatedUsers extends CastableModel
     /**
      * Remove a user from the collection.
      *
-     * @param User|T $user The user
+     * @param User $user The user
      *
      * @return static
      */
@@ -76,7 +76,7 @@ interface AuthenticatedUsers extends CastableModel
     /**
      * Get all the users in the collection
      *
-     * @return User[]|array<int|string, T>
+     * @return array<int|string, User>
      */
     public function all(): array;
 }

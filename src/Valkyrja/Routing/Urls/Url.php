@@ -75,7 +75,7 @@ class Url implements Contract
         if ($data) {
             // Iterate through the data and replace it in the path
             foreach ($data as $datumName => $datum) {
-                $path = str_replace("{{$datumName}}", $datum, $path);
+                $path = str_replace('{' . $datumName . '}', $datum, $path);
             }
         }
 

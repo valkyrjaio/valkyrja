@@ -128,9 +128,9 @@ class PsrAdapter implements Contract
     public function exception(Throwable $exception, string $message, array $context = []): void
     {
         $traceCode  = $this->getExceptionTraceCode($exception);
-        $logMessage = "\nTrace Code: {$traceCode}" .
+        $logMessage = "\nTrace Code: $traceCode" .
             "\nException Message: {$exception->getMessage()}" .
-            "\nMessage: {$message}" .
+            "\nMessage: $message" .
             "\nStack Trace:" .
             "\n==================================" .
             "\n{$exception->getTraceAsString()}" .

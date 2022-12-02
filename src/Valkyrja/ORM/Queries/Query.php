@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Queries;
 
+use stdClass;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\NotFoundException;
 use Valkyrja\ORM\Query as QueryContract;
 use Valkyrja\ORM\Statement;
 use Valkyrja\ORM\Support\Helpers;
+use Valkyrja\Support\Type\Cls;
 use Valkyrja\Support\Type\Str;
 
 use function is_array;
@@ -54,7 +56,7 @@ class Query implements QueryContract
     /**
      * The entity to query with.
      *
-     * @var Entity|string|null
+     * @var class-string<Entity>|null
      */
     protected ?string $entity = null;
 
@@ -83,6 +85,8 @@ class Query implements QueryContract
      */
     public function entity(string $entity): self
     {
+        Cls::validateInherits($entity, Entity::class);
+
         $this->entity = $entity;
 
         return $this;
@@ -93,8 +97,9 @@ class Query implements QueryContract
      */
     public function prepare(string $query): self
     {
-        if (null !== $this->entity) {
-            $query = Str::replace($query, $this->entity, $this->entity::getTableName());
+        /** @var class-string<Entity> $entity */
+        if (($entity = $this->entity) !== null) {
+            $query = Str::replace($query, $entity, $entity::getTableName());
         }
 
         $this->statement = $this->adapter->prepare($query);
@@ -150,6 +155,7 @@ class Query implements QueryContract
             );
         }
 
+        /** @var class-string<Entity> $entity */
         $entity = $this->entity;
 
         return array_map(
@@ -163,7 +169,7 @@ class Query implements QueryContract
     /**
      * @inheritDoc
      */
-    public function getOneOrNull(): ?object
+    public function getOneOrNull(): Entity|stdClass|null
     {
         return $this->getResult()[0] ?? null;
     }

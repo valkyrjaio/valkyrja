@@ -33,7 +33,7 @@ class Helpers
      */
     public static function getTableColumn(string $table, string $column): string
     {
-        return "{$table}.{$column}";
+        return "$table.$column";
     }
 
     /**

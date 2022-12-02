@@ -15,20 +15,20 @@ namespace Valkyrja\Support\Manager\Factories;
 
 use Valkyrja\Support\Manager\Adapter;
 use Valkyrja\Support\Manager\Driver;
-use Valkyrja\Support\Manager\FactoryWithMessage;
 use Valkyrja\Support\Manager\Message;
+use Valkyrja\Support\Manager\MessageFactory;
 use Valkyrja\Support\Type\Cls;
 
 /**
- * Class ContainerFactoryWithMessage.
+ * Class ContainerMessageFactory.
  *
  * @author   Melech Mizrachi
  * @template Driver
  * @template Factory
  * @template Message
- * @implements FactoryWithMessage<Adapter, Driver, Message>
+ * @implements MessageFactory<Adapter, Driver, Message>
  */
-class ContainerFactoryWithMessage extends ContainerFactory implements FactoryWithMessage
+class ContainerMessageFactory extends ContainerFactory implements MessageFactory
 {
     /**
      * The default driver class.

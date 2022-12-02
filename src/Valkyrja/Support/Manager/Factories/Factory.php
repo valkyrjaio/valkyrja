@@ -11,26 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt\Factories;
+namespace Valkyrja\Support\Manager\Factories;
 
-use Valkyrja\Crypt\Adapter;
-use Valkyrja\Crypt\Driver;
-use Valkyrja\Crypt\Factory as Contract;
-use Valkyrja\Support\Manager\Factories\SimpleFactory as Factory;
+use Valkyrja\Support\Manager\Adapter;
+use Valkyrja\Support\Manager\Driver;
+use Valkyrja\Support\Manager\Factory as Contract;
 
 /**
- * Class SimpleFactory.
+ * Class Factory.
  *
  * @author Melech Mizrachi
+ * @implements Contract<Adapter, Driver>
  */
-class SimpleFactory extends Factory implements Contract
+class Factory implements Contract
 {
     /**
      * @inheritDoc
      */
     public function createDriver(string $name, string $adapter, array $config): Driver
     {
-        return parent::createDriver($name, $adapter, $config);
+        return new $name(
+            $this->createAdapter($adapter, $config)
+        );
     }
 
     /**
@@ -38,6 +40,6 @@ class SimpleFactory extends Factory implements Contract
      */
     public function createAdapter(string $name, array $config): Adapter
     {
-        return parent::createAdapter($name, $config);
+        return new $name($config);
     }
 }

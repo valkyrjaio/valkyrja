@@ -406,11 +406,11 @@ class CacheRepository extends Repository implements Contract
      * Cache results.
      *
      * @param string                   $cacheKey
-     * @param Entity[]|Entity|int|null $results
+     * @param int|Entity|Entity[]|null $results
      *
      * @return void
      */
-    protected function cacheResults(string $cacheKey, $results): void
+    protected function cacheResults(string $cacheKey, Entity|array|int|null $results): void
     {
         $tags   = $this->id ? [$this->id] : [];
         $tags[] = $this->entity;
