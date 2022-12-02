@@ -92,7 +92,7 @@ interface Collection
      *
      * @param string|null $method [optional] The request method
      *
-     * @return string[]|string[][]
+     * @return array<string, Route>|array<string, array<string, Route>>
      */
     public function allStatic(string $method = null): array;
 
@@ -123,7 +123,7 @@ interface Collection
      *
      * @param string|null $method
      *
-     * @return string[]|string[][]
+     * @return array<string, Route>|array<string, array<string, Route>>
      */
     public function allDynamic(string $method = null): array;
 

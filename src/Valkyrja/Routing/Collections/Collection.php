@@ -390,7 +390,7 @@ class Collection implements Contract
      */
     protected function getOfType(array $type, string $path, string $method = null): ?Route
     {
-        if (null === $method) {
+        if ($method === null) {
             return $this->getAnyOfType($type, $path);
         }
 
@@ -428,7 +428,7 @@ class Collection implements Contract
      */
     protected function hasOfType(array $type, string $path, string $method = null): bool
     {
-        if (null === $method) {
+        if ($method === null) {
             return $this->hasAnyOfType($type, $path);
         }
 
@@ -462,7 +462,7 @@ class Collection implements Contract
      *
      * @throws JsonException
      *
-     * @return array
+     * @return array<string, Route>
      */
     protected function allOfType(array $type, string $method = null): array
     {
@@ -484,8 +484,8 @@ class Collection implements Contract
      */
     protected function ensureMethodRoutes(array $methodsArray): array
     {
-        foreach ($methodsArray as $key => $method) {
-            $methodsArray[$key] = $this->ensureRoutes($method);
+        foreach ($methodsArray as $method => $routes) {
+            $methodsArray[$method] = $this->ensureRoutes($routes);
         }
 
         return $methodsArray;
