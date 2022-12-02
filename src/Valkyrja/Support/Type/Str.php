@@ -468,7 +468,7 @@ class Str
     /**
      * Get a random string.
      *
-     * @param int $length [optional] The length
+     * @param int<1, max> $length [optional] The length
      *
      * @throws Exception
      *
@@ -482,7 +482,7 @@ class Str
     /**
      * Get a md5 random string.
      *
-     * @param int $length [optional] The length
+     * @param int<1, max> $length [optional] The length
      *
      * @throws Exception
      *
@@ -496,7 +496,7 @@ class Str
     /**
      * Get a base64 random string.
      *
-     * @param int $length [optional] The length
+     * @param int<1, max> $length [optional] The length
      *
      * @throws Exception
      *

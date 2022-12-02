@@ -58,14 +58,14 @@ interface Dispatch extends Model
     /**
      * Get the class.
      *
-     * @return string|null
+     * @return class-string|null
      */
     public function getClass(): ?string;
 
     /**
      * Set the class.
      *
-     * @param string|null $class The class
+     * @param class-string|null $class The class
      *
      * @return static
      */
@@ -141,14 +141,14 @@ interface Dispatch extends Model
     public function setStatic(bool $static = true): self;
 
     /**
-     * @return string|null
+     * @return callable-string|null
      */
     public function getFunction(): ?string;
 
     /**
      * Set the function.
      *
-     * @param string|null $function The function
+     * @param callable-string|null $function The function
      *
      * @return static
      */

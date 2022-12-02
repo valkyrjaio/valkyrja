@@ -159,12 +159,7 @@ class Matcher implements Contract
         // Clone the route to avoid changing the one set in the master array
         $route = clone $route;
 
-        if (! empty($matches)) {
-            $this->processMatches($route, $matches);
-
-            // Set the matches
-            $route->setMatches($matches);
-        }
+        $this->processMatches($route, $matches);
 
         return $route;
     }
@@ -182,10 +177,13 @@ class Matcher implements Contract
      */
     protected function processMatches(Route $route, array &$matches): void
     {
+        // The first match is the path itself, the rest could be empty.
+        if (array_shift($matches) === null || empty($matches)) {
+            return;
+        }
+
         // Get the parameters
         $parameters = $route->getParameters();
-        // The first match is the path itself
-        array_shift($matches);
         // Get the last index in the array
         $lastIndex = array_key_last($matches);
 
@@ -195,6 +193,9 @@ class Matcher implements Contract
 
             $this->updateMatchValueWithDefault($route, $parameter, $matches, $index, $match, $lastIndex);
         }
+
+        // Set the matches
+        $route->setMatches($matches);
     }
 
     /**

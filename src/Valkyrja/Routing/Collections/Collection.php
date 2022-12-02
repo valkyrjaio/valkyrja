@@ -262,16 +262,22 @@ class Collection implements Contract
      */
     protected function setRouteToRequestMethod(Route $route, string $requestMethod): void
     {
+        $id = $route->getId();
+
+        if ($id === null) {
+            throw new InvalidRoutePath('Invalid route provided.');
+        }
+
         // If this is a dynamic route
         if ($route->isDynamic()) {
-            $this->createRouteRegex($route);
+            $regex = $this->getRouteRegex($route);
 
             // Set the route in the dynamic routes list
-            $this->dynamic[$requestMethod][$route->getRegex()] = (string) $route->getId();
+            $this->dynamic[$requestMethod][$regex] = $id;
         } // Otherwise set it in the static routes array
         else {
             // Set the route in the static routes list
-            $this->static[$requestMethod][$route->getPath()] = (string) $route->getId();
+            $this->static[$requestMethod][$route->getPath()] = $id;
         }
     }
 
@@ -282,13 +288,13 @@ class Collection implements Contract
      *
      * @throws InvalidRoutePath
      *
-     * @return void
+     * @return string
      */
-    protected function createRouteRegex(Route $route): void
+    protected function getRouteRegex(Route $route): string
     {
         // If the regex has already been set then don't do anything
-        if ($route->getRegex() || empty($route->getParameters())) {
-            return;
+        if ($regex = $route->getRegex()) {
+            return $regex;
         }
 
         // Replace all slashes with \/
@@ -304,8 +310,12 @@ class Collection implements Contract
             $regex = $this->replaceParameterNameInRegex($route, $parameter, $regex);
         }
 
+        $regex = Regex::START . $regex . Regex::END;
+
         // Set the regex
-        $route->setRegex(Regex::START . $regex . Regex::END);
+        $route->setRegex($regex);
+
+        return $regex;
     }
 
     /**
@@ -318,9 +328,9 @@ class Collection implements Contract
     protected function setRouteToNamed(Route $route): void
     {
         // If this route has a name set
-        if ($route->getName()) {
+        if (($name = $route->getName()) !== null && ($id = $route->getId()) !== null) {
             // Set the route in the named routes list
-            $this->named[$route->getName()] = (string) $route->getId();
+            $this->named[$name] = $id;
         }
     }
 
@@ -504,9 +514,13 @@ class Collection implements Contract
      */
     protected function removeEntityFromDependencies(Route $route, string $entityName): void
     {
+        if (empty($dependencies = $route->getDependencies())) {
+            return;
+        }
+
         $updatedDependencies = [];
 
-        foreach ($route->getDependencies() as $dependency) {
+        foreach ($dependencies as $dependency) {
             if ($dependency !== $entityName) {
                 $updatedDependencies[] = $dependency;
             }

@@ -148,8 +148,8 @@ class RoutesList extends Commander
 
         $lengths[0] = max($lengths[0], strlen($requestMethod));
         $lengths[1] = max($lengths[1], strlen($route->getPath()));
-        $lengths[2] = max($lengths[2], strlen($route->getName()));
-        $lengths[3] = max($lengths[3], strlen($dispatch));
+        $lengths[2] = max($lengths[2], strlen($route->getName() ?? ''));
+        $lengths[3] = max($lengths[3], strlen($dispatch ?? ''));
         $lengths[4] = max($lengths[4], strlen($regex));
 
         $routes[] = [

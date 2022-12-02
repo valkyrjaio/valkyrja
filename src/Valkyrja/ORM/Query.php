@@ -70,7 +70,7 @@ interface Query
     /**
      * Get the result.
      *
-     * @return Entity[]|object[]
+     * @return Entity[]|stdClass[]
      */
     public function getResult(): array;
 

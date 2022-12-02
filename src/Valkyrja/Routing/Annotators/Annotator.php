@@ -127,7 +127,7 @@ class Annotator implements Contract
      */
     protected function getClassRoutes(array $classes): array
     {
-        /** @var Route[] $routes */
+        /** @var Route[][] $routes */
         $routes = [];
 
         // Iterate through all the classes
@@ -151,13 +151,13 @@ class Annotator implements Contract
      */
     protected function setRouteProperties(Route $route): void
     {
-        if (! $route->getClass()) {
+        if (($class = $route->getClass()) === null) {
             throw new InvalidArgumentException('Invalid class defined in route.');
         }
 
-        if (null === $route->getProperty()) {
+        if ($route->getProperty() === null) {
             $methodReflection = $this->reflector->getMethodReflection(
-                $route->getClass(),
+                $class,
                 $route->getMethod() ?? '__construct'
             );
 
@@ -210,21 +210,19 @@ class Annotator implements Contract
     {
         $newRoute = clone $route;
 
-        if (! $route->getPath()) {
-            throw new InvalidArgumentException('Invalid path defined in route.');
-        }
+        $path = $route->getPath();
 
         // Get the route's path
-        $path           = $this->getParsedPath($route->getPath());
+        $path           = $this->getParsedPath($path);
         $controllerPath = $this->getParsedPath($controllerRoute->getPath());
 
         // Set the path to the base path and route path
         $newRoute->setPath($this->getParsedPath($controllerPath . $path));
 
         // If there is a base name for this controller
-        if (null !== $controllerRoute->getName()) {
+        if (($controllerName = $controllerRoute->getName()) !== null) {
             // Set the name to the base name and route name
-            $newRoute->setName($controllerRoute->getName() . '.' . $route->getName());
+            $newRoute->setName($controllerName . '.' . $route->getName());
         }
 
         // If the base is dynamic
@@ -240,10 +238,10 @@ class Annotator implements Contract
         }
 
         // If there is a base middleware collection for this controller
-        if (null !== $controllerRoute->getMiddleware()) {
+        if (($controllerMiddleware = $controllerRoute->getMiddleware()) !== null) {
             // Merge the route's middleware and the controller's middleware
             // keeping the controller's middleware first
-            $middleware = array_merge($controllerRoute->getMiddleware(), $route->getMiddleware() ?? []);
+            $middleware = array_merge($controllerMiddleware, $route->getMiddleware() ?? []);
 
             // Set the middleware in the route
             $newRoute->setMiddleware($middleware);

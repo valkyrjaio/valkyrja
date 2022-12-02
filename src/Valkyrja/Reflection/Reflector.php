@@ -33,7 +33,7 @@ interface Reflector
     /**
      * Get a class's reflection.
      *
-     * @param string $class The class
+     * @param class-string $class The class
      *
      * @throws ReflectionException
      *
@@ -44,8 +44,8 @@ interface Reflector
     /**
      * Get a class constant's reflection.
      *
-     * @param string $class The class
-     * @param string $const The constant
+     * @param class-string $class The class
+     * @param string       $const The constant
      *
      * @throws ReflectionException
      *
@@ -56,8 +56,8 @@ interface Reflector
     /**
      * Get a class property's reflection.
      *
-     * @param string $class    The class
-     * @param string $property The property
+     * @param class-string $class    The class
+     * @param string       $property The property
      *
      * @throws ReflectionException
      *
@@ -68,8 +68,8 @@ interface Reflector
     /**
      * Get a class method's reflection.
      *
-     * @param string $class  The class
-     * @param string $method The method
+     * @param class-string $class  The class
+     * @param string       $method The method
      *
      * @throws ReflectionException
      *
@@ -80,7 +80,7 @@ interface Reflector
     /**
      * Get a function's reflection.
      *
-     * @param string $function The function
+     * @param callable-string $function The function
      *
      * @throws ReflectionException
      *

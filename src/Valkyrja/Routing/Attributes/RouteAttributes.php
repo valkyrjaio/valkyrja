@@ -125,16 +125,12 @@ class RouteAttributes extends Attributes implements Contract
      */
     protected function setRouteProperties(Route $route): void
     {
-        if (! $route->getClass()) {
+        if (($class = $route->getClass()) === null) {
             throw new InvalidArgumentException('Invalid class defined in route.');
         }
 
-        if ($route->getMethod() !== null) {
-            $methodReflection = $this->reflector->getMethodReflection(
-                $route->getClass(),
-                $route->getMethod()
-            );
-
+        if (($method = $route->getMethod()) !== null) {
+            $methodReflection = $this->reflector->getMethodReflection($class, $method);
             // Set the dependencies
             $route->setDependencies($this->reflector->getDependencies($methodReflection));
         }
@@ -167,9 +163,9 @@ class RouteAttributes extends Attributes implements Contract
         $attribute->setPath($this->getFilteredPath($controllerPath . $path));
 
         // If there is a base name for this controller
-        if (null !== $controllerAttribute->getName()) {
+        if (($controllerName = $controllerAttribute->getName()) !== null) {
             // Set the name to the base name and route name
-            $attribute->setName($controllerAttribute->getName() . '.' . $memberAttribute->getName());
+            $attribute->setName($controllerName . '.' . $memberAttribute->getName());
         }
 
         // If the base is dynamic
@@ -185,7 +181,7 @@ class RouteAttributes extends Attributes implements Contract
         }
 
         // If there is a base middleware collection for this controller
-        if (null !== $controllerMiddleware = $controllerAttribute->getMiddleware()) {
+        if (($controllerMiddleware = $controllerAttribute->getMiddleware()) !== null) {
             // Merge the route's middleware and the controller's middleware
             // keeping the controller's middleware first
             $attribute->setMiddleware(

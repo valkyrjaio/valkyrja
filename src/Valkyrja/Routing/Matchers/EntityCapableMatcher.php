@@ -76,9 +76,9 @@ class EntityCapableMatcher extends Matcher
     /**
      * Get the entity.
      *
-     * @param Parameter $parameter  The parameter
-     * @param string    $entityName The entity class name
-     * @param mixed     $match      The match value
+     * @param Parameter            $parameter  The parameter
+     * @param class-string<Entity> $entityName The entity class name
+     * @param mixed                $match      The match value
      *
      * @return Entity|null
      */

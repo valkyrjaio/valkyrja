@@ -16,6 +16,7 @@ namespace Valkyrja\Routing\Models;
 use InvalidArgumentException;
 use Valkyrja\Dispatcher\Models\Dispatch;
 use Valkyrja\Http\Constants\RequestMethod;
+use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Route as Contract;
 
@@ -278,7 +279,7 @@ class Route extends Dispatch implements Contract
         return $this->setParameter(
             new Parameter(
                 name               : $name,
-                regex              : $regex,
+                regex              : $regex ?? Regex::ANY,
                 type               : $type,
                 entity             : $entity,
                 entityColumn       : $entityColumn,

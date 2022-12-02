@@ -16,6 +16,7 @@ namespace Valkyrja\Routing\Attributes\Parameter;
 use Attribute;
 use Valkyrja\Routing\Attributes\Parameter;
 use Valkyrja\Routing\Constants\ParameterName;
+use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Enums\CastType;
 
 /**
@@ -41,7 +42,7 @@ class Entity extends Parameter
     ) {
         parent::__construct(
             name               : $name ?? ParameterName::ID,
-            regex              : $regex,
+            regex              : $regex ?? Regex::ANY,
             type               : CastType::entity,
             entity             : $entity,
             entityColumn       : $entityColumn,

@@ -236,10 +236,12 @@ class Collector implements Contract
         $route = clone $this->route;
 
         $route->withPath($path);
-        $route->withName($name);
+
+        if ($name !== null) {
+            $route->withName($name);
+        }
 
         $this->setRouteHandler($route, $handler);
-
         $route->setMethods($methods);
 
         if ($setDependencies) {
@@ -295,6 +297,7 @@ class Collector implements Contract
             return;
         }
 
+        /** @var callable-string $handler */
         $route->setFunction($handler);
     }
 
@@ -338,6 +341,7 @@ class Collector implements Contract
         [$class, $member] = explode($delimiter, $handler);
 
         if ($class) {
+            /** @var class-string $class */
             $route->setClass($class);
         }
 
