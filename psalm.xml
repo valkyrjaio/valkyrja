@@ -3,7 +3,7 @@
        xmlns="https://getpsalm.org/schema/config"
        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
        errorBaseline="psalm-baseline.xml"
-       errorLevel="3"
+       errorLevel="2"
 >
     <projectFiles>
         <directory name="src" />
@@ -36,6 +36,7 @@
 
         <RedundantCast>
             <errorLevel type="suppress">
+                <!-- For some reason Psalm thinks that the return of PDO::lastInsertId() isn't string|false -->
                 <file name="src/Valkyrja/ORM/Adapters/PDOAdapter.php" />
             </errorLevel>
         </RedundantCast>
