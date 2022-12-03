@@ -16,7 +16,7 @@ namespace Valkyrja\Cache\Drivers;
 use Valkyrja\Cache\Adapter;
 use Valkyrja\Cache\Driver as Contract;
 use Valkyrja\Cache\Tagger;
-use Valkyrja\Support\Manager\Drivers\Driver as ParentDriver;
+use Valkyrja\Manager\Drivers\Driver as ParentDriver;
 
 /**
  * Class Driver.

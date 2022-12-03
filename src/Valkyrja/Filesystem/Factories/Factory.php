@@ -16,7 +16,7 @@ namespace Valkyrja\Filesystem\Factories;
 use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Driver;
 use Valkyrja\Filesystem\Factory as Contract;
-use Valkyrja\Support\Manager\Factories\Factory as ManagerFactory;
+use Valkyrja\Manager\Factories\Factory as ManagerFactory;
 
 /**
  * Class Factory.

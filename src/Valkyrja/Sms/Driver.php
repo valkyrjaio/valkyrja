@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms;
 
-use Valkyrja\Support\Manager\Driver as Contract;
+use Valkyrja\Manager\Driver as Contract;
 
 /**
  * Interface Driver.

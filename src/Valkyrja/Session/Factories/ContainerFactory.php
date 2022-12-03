@@ -18,7 +18,7 @@ use Valkyrja\Session\CacheAdapter;
 use Valkyrja\Session\Driver;
 use Valkyrja\Session\Factory as Contract;
 use Valkyrja\Session\LogAdapter;
-use Valkyrja\Support\Manager\Factories\ContainerFactory as Factory;
+use Valkyrja\Manager\Factories\ContainerFactory as Factory;
 use Valkyrja\Support\Type\Cls;
 
 /**

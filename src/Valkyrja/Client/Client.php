@@ -15,7 +15,7 @@ namespace Valkyrja\Client;
 
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Support\Manager\Manager;
+use Valkyrja\Manager\Manager;
 
 /**
  * Interface Client.

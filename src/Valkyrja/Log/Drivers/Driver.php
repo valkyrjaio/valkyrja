@@ -16,7 +16,7 @@ namespace Valkyrja\Log\Drivers;
 use Throwable;
 use Valkyrja\Log\Adapter;
 use Valkyrja\Log\Driver as Contract;
-use Valkyrja\Support\Manager\Drivers\Driver as ParentDriver;
+use Valkyrja\Manager\Drivers\Driver as ParentDriver;
 
 /**
  * Class Driver.

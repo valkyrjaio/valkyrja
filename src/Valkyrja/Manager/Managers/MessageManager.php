@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Manager\Managers;
+namespace Valkyrja\Manager\Managers;
 
-use Valkyrja\Support\Manager\Config\MessageConfig;
-use Valkyrja\Support\Manager\Driver;
-use Valkyrja\Support\Manager\Factory;
-use Valkyrja\Support\Manager\Message;
-use Valkyrja\Support\Manager\MessageFactory;
-use Valkyrja\Support\Manager\MessageManager as Contract;
+use Valkyrja\Manager\Config\MessageConfig;
+use Valkyrja\Manager\Driver;
+use Valkyrja\Manager\Factory;
+use Valkyrja\Manager\Message;
+use Valkyrja\Manager\MessageFactory;
+use Valkyrja\Manager\MessageManager as Contract;
 
 /**
  * Class MessageManager.

@@ -15,7 +15,7 @@ namespace Valkyrja\Jwt\Drivers;
 
 use Valkyrja\Jwt\Adapter;
 use Valkyrja\Jwt\Driver as Contract;
-use Valkyrja\Support\Manager\Drivers\Driver as ParentDriver;
+use Valkyrja\Manager\Drivers\Driver as ParentDriver;
 
 /**
  * Class Driver.

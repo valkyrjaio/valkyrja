@@ -15,7 +15,7 @@ namespace Valkyrja\Broadcast;
 
 use InvalidArgumentException;
 use JsonException;
-use Valkyrja\Support\Manager\Driver as Contract;
+use Valkyrja\Manager\Driver as Contract;
 
 /**
  * Interface Driver.

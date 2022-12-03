@@ -17,7 +17,7 @@ use Valkyrja\Sms\Adapter;
 use Valkyrja\Sms\Driver;
 use Valkyrja\Sms\Factory as Contract;
 use Valkyrja\Sms\Message;
-use Valkyrja\Support\Manager\Factories\MessageFactory;
+use Valkyrja\Manager\Factories\MessageFactory;
 
 /**
  * Class Factory.

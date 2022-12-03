@@ -15,7 +15,7 @@ namespace Valkyrja\Client;
 
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Support\Manager\Adapter as Contract;
+use Valkyrja\Manager\Adapter as Contract;
 
 /**
  * Interface Adapter.

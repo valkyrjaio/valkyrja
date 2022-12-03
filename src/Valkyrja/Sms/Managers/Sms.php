@@ -18,7 +18,7 @@ use Valkyrja\Sms\Driver;
 use Valkyrja\Sms\Factory;
 use Valkyrja\Sms\Message;
 use Valkyrja\Sms\Sms as Contract;
-use Valkyrja\Support\Manager\Managers\MessageManager as Manager;
+use Valkyrja\Manager\Managers\MessageManager as Manager;
 
 /**
  * Class SMS.

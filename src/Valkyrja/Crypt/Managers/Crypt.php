@@ -17,7 +17,7 @@ use Valkyrja\Crypt\Config\Config;
 use Valkyrja\Crypt\Crypt as Contract;
 use Valkyrja\Crypt\Driver;
 use Valkyrja\Crypt\Factory;
-use Valkyrja\Support\Manager\Managers\Manager;
+use Valkyrja\Manager\Managers\Manager;
 
 /**
  * Class Crypt.

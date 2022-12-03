@@ -15,7 +15,7 @@ namespace Valkyrja\Filesystem\Config;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
-use Valkyrja\Support\Manager\Config\Config as Model;
+use Valkyrja\Manager\Config\Config as Model;
 
 /**
  * Class Config.

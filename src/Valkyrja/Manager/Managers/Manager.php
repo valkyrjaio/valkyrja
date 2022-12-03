@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Manager\Managers;
+namespace Valkyrja\Manager\Managers;
 
-use Valkyrja\Support\Manager\Config\Config;
-use Valkyrja\Support\Manager\Driver;
-use Valkyrja\Support\Manager\Factory;
-use Valkyrja\Support\Manager\Manager as Contract;
+use Valkyrja\Manager\Config\Config;
+use Valkyrja\Manager\Driver;
+use Valkyrja\Manager\Factory;
+use Valkyrja\Manager\Manager as Contract;
 
 /**
  * Class Manager.

@@ -16,7 +16,7 @@ namespace Valkyrja\Mail\Drivers;
 use Valkyrja\Mail\Adapter;
 use Valkyrja\Mail\Driver as Contract;
 use Valkyrja\Mail\Message;
-use Valkyrja\Support\Manager\Drivers\Driver as ParentDriver;
+use Valkyrja\Manager\Drivers\Driver as ParentDriver;
 
 /**
  * Class Driver.

@@ -18,7 +18,7 @@ use Valkyrja\Broadcast\Config\Config;
 use Valkyrja\Broadcast\Driver;
 use Valkyrja\Broadcast\Factory;
 use Valkyrja\Broadcast\Message;
-use Valkyrja\Support\Manager\Managers\MessageManager as Manager;
+use Valkyrja\Manager\Managers\MessageManager as Manager;
 
 /**
  * Class Broadcast.

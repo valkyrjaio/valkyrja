@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Session;
 
 use Valkyrja\Session\Exceptions\InvalidCsrfToken;
-use Valkyrja\Support\Manager\Manager;
+use Valkyrja\Manager\Manager;
 
 /**
  * Interface Session.

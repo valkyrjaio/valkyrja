@@ -18,7 +18,7 @@ use Valkyrja\Mail\Driver;
 use Valkyrja\Mail\Factory;
 use Valkyrja\Mail\Mail as Contract;
 use Valkyrja\Mail\Message;
-use Valkyrja\Support\Manager\Managers\MessageManager as Manager;
+use Valkyrja\Manager\Managers\MessageManager as Manager;
 
 /**
  * Class Mail.

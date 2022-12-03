@@ -16,7 +16,7 @@ namespace Valkyrja\Sms\Drivers;
 use Valkyrja\Sms\Adapter;
 use Valkyrja\Sms\Driver as Contract;
 use Valkyrja\Sms\Message;
-use Valkyrja\Support\Manager\Drivers\Driver as ParentDriver;
+use Valkyrja\Manager\Drivers\Driver as ParentDriver;
 
 /**
  * Class Driver.

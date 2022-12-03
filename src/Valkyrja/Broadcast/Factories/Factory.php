@@ -17,7 +17,7 @@ use Valkyrja\Broadcast\Adapter;
 use Valkyrja\Broadcast\Driver;
 use Valkyrja\Broadcast\Factory as Contract;
 use Valkyrja\Broadcast\Message;
-use Valkyrja\Support\Manager\Factories\MessageFactory;
+use Valkyrja\Manager\Factories\MessageFactory;
 
 /**
  * Class Factory.

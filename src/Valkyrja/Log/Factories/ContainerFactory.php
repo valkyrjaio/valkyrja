@@ -17,7 +17,7 @@ use Valkyrja\Log\Adapter;
 use Valkyrja\Log\Driver;
 use Valkyrja\Log\Factory as Contract;
 use Valkyrja\Log\PsrAdapter;
-use Valkyrja\Support\Manager\Factories\ContainerFactory as Factory;
+use Valkyrja\Manager\Factories\ContainerFactory as Factory;
 use Valkyrja\Support\Type\Cls;
 
 /**

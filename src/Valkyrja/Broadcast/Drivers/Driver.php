@@ -16,7 +16,7 @@ namespace Valkyrja\Broadcast\Drivers;
 use Valkyrja\Broadcast\Adapter;
 use Valkyrja\Broadcast\Driver as Contract;
 use Valkyrja\Broadcast\Message;
-use Valkyrja\Support\Manager\Drivers\Driver as ParentDriver;
+use Valkyrja\Manager\Drivers\Driver as ParentDriver;
 
 /**
  * Class Driver.

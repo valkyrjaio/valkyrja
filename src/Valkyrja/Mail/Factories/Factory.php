@@ -17,7 +17,7 @@ use Valkyrja\Mail\Adapter;
 use Valkyrja\Mail\Driver;
 use Valkyrja\Mail\Factory as Contract;
 use Valkyrja\Mail\Message;
-use Valkyrja\Support\Manager\Factories\MessageFactory;
+use Valkyrja\Manager\Factories\MessageFactory;
 
 /**
  * Class Factory.

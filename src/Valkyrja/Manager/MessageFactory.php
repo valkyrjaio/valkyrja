@@ -11,26 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Manager;
+namespace Valkyrja\Manager;
 
 /**
- * Interface MessageManager.
+ * Interface MessageFactory.
  *
  * @author   Melech Mizrachi
+ * @template Adapter
  * @template Driver
- * @template Factory
  * @template Message
- * @extends Manager<Driver, Factory>
+ * @extends Factory<Adapter, Driver>
  */
-interface MessageManager extends Manager
+interface MessageFactory extends Factory
 {
     /**
      * Create a new message.
      *
-     * @param string|null $name [optional] The name of the message
-     * @param array       $data [optional] The data
+     * @param class-string<Message> $name   The message
+     * @param array                 $config The config
+     * @param array                 $data   [optional] The data
      *
      * @return Message
      */
-    public function createMessage(string $name = null, array $data = []): Message;
+    public function createMessage(string $name, array $config, array $data = []): Message;
 }

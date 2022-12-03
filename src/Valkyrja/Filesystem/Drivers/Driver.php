@@ -16,7 +16,7 @@ namespace Valkyrja\Filesystem\Drivers;
 use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Driver as Contract;
 use Valkyrja\Filesystem\Enums\Visibility;
-use Valkyrja\Support\Manager\Drivers\Driver as ParentDriver;
+use Valkyrja\Manager\Drivers\Driver as ParentDriver;
 
 /**
  * Class Driver.

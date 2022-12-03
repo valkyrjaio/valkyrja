@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Manager\Drivers;
+namespace Valkyrja\Manager\Drivers;
 
-use Valkyrja\Support\Manager\Adapter;
-use Valkyrja\Support\Manager\Driver as Contract;
+use Valkyrja\Manager\Adapter;
+use Valkyrja\Manager\Driver as Contract;
 
 /**
  * Class Driver.

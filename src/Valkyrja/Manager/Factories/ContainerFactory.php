@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Manager\Factories;
+namespace Valkyrja\Manager\Factories;
 
 use Valkyrja\Container\Container;
-use Valkyrja\Support\Manager\Adapter;
-use Valkyrja\Support\Manager\Driver;
-use Valkyrja\Support\Manager\Factory;
+use Valkyrja\Manager\Adapter;
+use Valkyrja\Manager\Driver;
+use Valkyrja\Manager\Factory;
 use Valkyrja\Support\Type\Cls;
 
 /**

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms;
 
-use Valkyrja\Support\Manager\Message as Contract;
+use Valkyrja\Manager\Message as Contract;
 
 /**
  * Interface Message.

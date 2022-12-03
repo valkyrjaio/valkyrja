@@ -17,7 +17,7 @@ use Valkyrja\Session\Config\Config;
 use Valkyrja\Session\Driver;
 use Valkyrja\Session\Factory;
 use Valkyrja\Session\Session as Contract;
-use Valkyrja\Support\Manager\Managers\Manager;
+use Valkyrja\Manager\Managers\Manager;
 
 /**
  * Class Sessions.

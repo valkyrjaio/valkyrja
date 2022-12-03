@@ -15,7 +15,7 @@ namespace Valkyrja\Broadcast;
 
 use InvalidArgumentException;
 use JsonException;
-use Valkyrja\Support\Manager\Adapter as Contract;
+use Valkyrja\Manager\Adapter as Contract;
 
 /**
  * Interface Adapter.

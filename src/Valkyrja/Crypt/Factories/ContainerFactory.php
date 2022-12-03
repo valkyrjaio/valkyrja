@@ -16,7 +16,7 @@ namespace Valkyrja\Crypt\Factories;
 use Valkyrja\Crypt\Adapter;
 use Valkyrja\Crypt\Driver;
 use Valkyrja\Crypt\Factory as Contract;
-use Valkyrja\Support\Manager\Factories\ContainerFactory as Factory;
+use Valkyrja\Manager\Factories\ContainerFactory as Factory;
 
 /**
  * Class ContainerFactory.

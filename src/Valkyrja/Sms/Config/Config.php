@@ -15,7 +15,7 @@ namespace Valkyrja\Sms\Config;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
-use Valkyrja\Support\Manager\Config\MessageConfig as Model;
+use Valkyrja\Manager\Config\MessageConfig as Model;
 
 /**
  * Class Config.

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast;
 
-use Valkyrja\Support\Manager\MessageManager as Manager;
+use Valkyrja\Manager\MessageManager as Manager;
 
 /**
  * Interface Broadcast.

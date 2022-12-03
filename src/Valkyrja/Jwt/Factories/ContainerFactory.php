@@ -16,7 +16,7 @@ namespace Valkyrja\Jwt\Factories;
 use Valkyrja\Jwt\Adapter;
 use Valkyrja\Jwt\Driver;
 use Valkyrja\Jwt\Factory as Contract;
-use Valkyrja\Support\Manager\Factories\ContainerFactory as Factory;
+use Valkyrja\Manager\Factories\ContainerFactory as Factory;
 
 /**
  * Class ContainerFactory.

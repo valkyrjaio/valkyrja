@@ -18,7 +18,7 @@ use Valkyrja\Cache\Config\Config;
 use Valkyrja\Cache\Driver;
 use Valkyrja\Cache\Factory;
 use Valkyrja\Cache\Tagger;
-use Valkyrja\Support\Manager\Managers\Manager;
+use Valkyrja\Manager\Managers\Manager;
 
 /**
  * Class Cache.
