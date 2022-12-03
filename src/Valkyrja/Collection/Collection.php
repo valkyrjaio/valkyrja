@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Collection;
+namespace Valkyrja\Collection;
 
 use JsonException;
 

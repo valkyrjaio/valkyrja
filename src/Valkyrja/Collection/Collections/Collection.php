@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Collection\Collections;
+namespace Valkyrja\Collection\Collections;
 
-use Valkyrja\Support\Collection\Collection as Contract;
+use Valkyrja\Collection\Collection as Contract;
 use Valkyrja\Type\Arr;
 
 use function array_keys;
