@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/*
+/**
  * This file is part of the Valkyrja framework.
  *
  * (c) Melech Mizrachi
@@ -11,9 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Routing\Facades\Collector;
+use Valkyrja\Routing\Collector;
 
-Collector::group(static function (\Valkyrja\Routing\Collector $collector) {
+/** @var Collector $collector */
+
+$collector->group(static function (Collector $collector) {
     $collector->get(
         '/',
         static function () {

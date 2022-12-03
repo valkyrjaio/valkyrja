@@ -120,4 +120,14 @@ class CacheableEvents extends Events
     protected function afterSetup($config): void
     {
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected function requireFilePath(Config|array $config): void
+    {
+        $events = $this;
+
+        require $config['filePath'];
+    }
 }

@@ -55,7 +55,7 @@ final class ConfigValue
         Provider::VIEW,
     ];
     public const DEV_PROVIDERS    = [];
-    public const SETUP_FACADE     = true;
+    public const SETUP_FACADE     = false;
     public const USE_ANNOTATIONS  = false;
     public const FILE_PATH        = '';
     public const CACHE_FILE_PATH  = '';

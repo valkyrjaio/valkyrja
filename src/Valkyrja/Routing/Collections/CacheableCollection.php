@@ -18,6 +18,7 @@ use Valkyrja\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Routing\Annotator;
+use Valkyrja\Routing\Collector;
 use Valkyrja\Routing\Config\Cache;
 use Valkyrja\Routing\Config\Config as RoutingConfig;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
@@ -156,5 +157,15 @@ class CacheableCollection extends Collection
         foreach ($this->routes as $route) {
             $this->setRouteToRequestMethods($route);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function requireFilePath(Config|array $config): void
+    {
+        $collector = $this->container->getSingleton(Collector::class);
+
+        require $config['filePath'];
     }
 }

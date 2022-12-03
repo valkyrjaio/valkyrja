@@ -45,7 +45,7 @@ trait Provides
      *      public static function publishProvidedClass(Container $container): void
      * </code>
      *
-     * @return string[]
+     * @return array<class-string, string>
      */
     public static function publishers(): array
     {
@@ -55,14 +55,14 @@ trait Provides
     /**
      * The items provided by this provider.
      *
-     * @return string[]
+     * @return class-string[]
      */
     abstract public static function provides(): array;
 
     /**
      * Publish the provider.
      *
-     * @param Container $container
+     * @param Container $container The container
      *
      * @return void
      */

@@ -32,38 +32,17 @@ use Valkyrja\Http\ResponseFactory;
 class GuzzleAdapter implements Contract
 {
     /**
-     * The guzzle client.
-     *
-     * @var ClientInterface
-     */
-    protected ClientInterface $guzzle;
-
-    /**
-     * The response factory.
-     *
-     * @var ResponseFactory
-     */
-    protected ResponseFactory $responseFactory;
-
-    /**
-     * The client config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * GuzzleAdapter constructor.
      *
      * @param ClientInterface $guzzle          The guzzle client
      * @param ResponseFactory $responseFactory The response factory
      * @param array           $config          The client config
      */
-    public function __construct(ClientInterface $guzzle, ResponseFactory $responseFactory, array $config)
-    {
-        $this->guzzle          = $guzzle;
-        $this->responseFactory = $responseFactory;
-        $this->config          = $config;
+    public function __construct(
+        protected ClientInterface $guzzle,
+        protected ResponseFactory $responseFactory,
+        protected array $config
+    ) {
     }
 
     /**
