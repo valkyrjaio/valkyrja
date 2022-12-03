@@ -131,31 +131,33 @@ class RoutesList extends Commander
         $requestMethod = implode(' | ', $route->getMethods());
         $dispatch      = 'Closure';
         $regex         = $route->getRegex() ?? '';
+        $path          = $route->getPath();
+        $name          = $route->getName() ?? '';
 
         if ($requestMethod === 'GET | HEAD | POST | PUT | PATCH | CONNECT | OPTIONS | TRACE | DELETE') {
             $requestMethod = 'ANY';
         }
 
-        if (null !== $route->getFunction()) {
-            $dispatch = $route->getFunction();
-        } elseif (null !== $route->getClass()) {
-            $dispatch = $route->getClass()
+        if (($function = $route->getFunction()) !== null) {
+            $dispatch = $function;
+        } elseif (null !== $class = $route->getClass()) {
+            $dispatch = $class
                 . ($route->isStatic() ? '::' : '->')
-                . ($route->getMethod()
-                    ? $route->getMethod() . '()'
-                    : $route->getProperty());
+                . (($method = $route->getMethod())
+                    ? $method . '()'
+                    : $route->getProperty() ?? '');
         }
 
         $lengths[0] = max($lengths[0], strlen($requestMethod));
-        $lengths[1] = max($lengths[1], strlen($route->getPath()));
-        $lengths[2] = max($lengths[2], strlen($route->getName() ?? ''));
-        $lengths[3] = max($lengths[3], strlen($dispatch ?? ''));
+        $lengths[1] = max($lengths[1], strlen($path));
+        $lengths[2] = max($lengths[2], strlen($name));
+        $lengths[3] = max($lengths[3], strlen($dispatch));
         $lengths[4] = max($lengths[4], strlen($regex));
 
         $routes[] = [
             $requestMethod,
-            $route->getPath(),
-            $route->getName() ?? '',
+            $path,
+            $name,
             $dispatch,
             $regex,
         ];

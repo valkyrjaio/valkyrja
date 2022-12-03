@@ -222,7 +222,7 @@ class Annotator implements Contract
         // If there is a base name for this controller
         if (($controllerName = $controllerRoute->getName()) !== null) {
             // Set the name to the base name and route name
-            $newRoute->setName($controllerName . '.' . $route->getName());
+            $newRoute->setName($controllerName . (($name = $route->getName()) ? '.' . $name : ''));
         }
 
         // If the base is dynamic

@@ -165,7 +165,7 @@ class RouteAttributes extends Attributes implements Contract
         // If there is a base name for this controller
         if (($controllerName = $controllerAttribute->getName()) !== null) {
             // Set the name to the base name and route name
-            $attribute->setName($controllerName . '.' . $memberAttribute->getName());
+            $attribute->setName($controllerName . (($name = $memberAttribute->getName()) ? '.' . $name : ''));
         }
 
         // If the base is dynamic

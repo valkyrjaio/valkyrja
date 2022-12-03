@@ -499,7 +499,7 @@ class Collection implements Contract
             $this->removeEntityFromDependencies($route, $entity);
 
             if (($entityColumn = $parameter->getEntityColumn()) !== null) {
-                Cls::validateHasProperty($entity ?? '', $entityColumn);
+                Cls::validateHasProperty($entity, $entityColumn);
             }
         }
     }

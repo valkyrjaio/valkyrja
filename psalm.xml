@@ -16,12 +16,33 @@
     <issueHandlers>
         <PropertyNotSetInConstructor errorLevel="suppress" />
 
+        <!-- A bunch of false-positives with ??= -->
         <RedundantPropertyInitializationCheck errorLevel="suppress" />
 
+        <!-- Using class names as templates -->
         <ReservedWord errorLevel="suppress" />
+
+        <!-- As a framework things have to be dynamic -->
+        <InvalidClassConstantType errorLevel="suppress" />
+        <InvalidStringClass errorLevel="suppress" />
+        <UnresolvableInclude errorLevel="suppress" />
+        <UnsafeInstantiation errorLevel="suppress" />
+
+        <NoValue>
+            <errorLevel type="suppress">
+                <file name="src/Valkyrja/Type/Str.php" />
+            </errorLevel>
+        </NoValue>
+
+        <RedundantCast>
+            <errorLevel type="suppress">
+                <file name="src/Valkyrja/ORM/Adapters/PDOAdapter.php" />
+            </errorLevel>
+        </RedundantCast>
 
         <UndefinedClass>
             <errorLevel type="suppress">
+                <!-- Non class-string aliases -->
                 <referencedClass name="app" />
                 <referencedClass name="config" />
                 <referencedClass name="container" />

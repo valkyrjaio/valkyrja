@@ -100,7 +100,7 @@ class Uri implements Contract
         }
 
         if (! $this->isStandardPort()) {
-            $authority .= ':' . $this->port;
+            $authority .= ':' . ((string) $this->port);
         }
 
         return $authority;

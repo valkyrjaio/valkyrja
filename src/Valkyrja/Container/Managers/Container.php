@@ -337,7 +337,7 @@ class Container implements Contract
      */
     public function getServiceId(string $serviceId, string $context = null, string $member = null): string
     {
-        if (null === $this->context) {
+        if ($context === null) {
             return $serviceId;
         }
 
@@ -446,13 +446,13 @@ class Container implements Contract
     {
         $serviceId = $this->getAliasedServiceId($serviceId);
 
-        if (null === $this->context) {
+        if ($this->context === null) {
             return $serviceId;
         }
 
         // serviceId@context
         // serviceId@context::method
-        return $serviceId . $this->contextId;
+        return $serviceId . ($this->contextId ?? '');
     }
 
     /**

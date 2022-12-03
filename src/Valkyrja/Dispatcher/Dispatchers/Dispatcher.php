@@ -205,10 +205,10 @@ class Dispatcher implements Contract
         if ($this->isInvalidClassMethod($dispatch)) {
             throw new InvalidMethodException(
                 'Method does not exist in class : '
-                . $dispatch->getName() . ' '
-                . $dispatch->getClass()
+                . ($dispatch->getName() ?? '') . ' '
+                . ($dispatch->getClass() ?? '')
                 . '@'
-                . $dispatch->getMethod()
+                . ($dispatch->getMethod() ?? '')
             );
         }
     }
@@ -221,10 +221,10 @@ class Dispatcher implements Contract
         if ($this->isInvalidClassProperty($dispatch)) {
             throw new InvalidPropertyException(
                 'Property does not exist in class : '
-                . $dispatch->getName() . ' '
-                . $dispatch->getClass()
+                . ($dispatch->getName() ?? '') . ' '
+                . ($dispatch->getClass() ?? '')
                 . '@'
-                . $dispatch->getProperty()
+                . ($dispatch->getProperty() ?? '')
             );
         }
     }
@@ -239,8 +239,8 @@ class Dispatcher implements Contract
             // Throw a new invalid function exception
             throw new InvalidFunctionException(
                 'Function is not callable for : '
-                . $dispatch->getName() . ' '
-                . $dispatch->getFunction()
+                . ($dispatch->getName() ?? '') . ' '
+                . ($dispatch->getFunction() ?? '')
             );
         }
     }
@@ -321,7 +321,7 @@ class Dispatcher implements Contract
             // Throw a new invalid dispatch capability exception
             throw new InvalidDispatchCapabilityException(
                 'Dispatch capability is not valid for : '
-                . $dispatch->getName()
+                . ($dispatch->getName() ?? '')
             );
         }
     }

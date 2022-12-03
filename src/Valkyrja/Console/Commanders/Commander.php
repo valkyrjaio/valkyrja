@@ -290,8 +290,8 @@ abstract class Commander implements Contract
     {
         $name = '';
 
-        if ($option->getShortcut()) {
-            $name .= '-' . $option->getShortcut() . ', ';
+        if ($shortcut = $option->getShortcut()) {
+            $name .= '-' . $shortcut . ', ';
         } else {
             $name .= static::DOUBLE_TAB;
         }

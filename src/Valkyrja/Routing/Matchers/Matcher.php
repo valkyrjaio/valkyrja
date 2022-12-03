@@ -298,7 +298,7 @@ class Matcher implements Contract
      */
     protected function getEnumMatchValue(Parameter $parameter, mixed $match): BackedEnum
     {
-        /** @var class-string<BackedEnum> $enum */
+        /** @var class-string<BackedEnum>|null $enum */
         $enum = $parameter->getEnum();
 
         if ($enum && Cls::inherits($enum, BackedEnum::class)) {

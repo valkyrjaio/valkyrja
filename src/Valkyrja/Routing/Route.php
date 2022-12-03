@@ -134,7 +134,7 @@ interface Route extends Dispatch
     /**
      * Set the parameters.
      *
-     * @param Parameter[] $parameters The parameters
+     * @param Parameter[]|array $parameters The parameters
      *
      * @return static
      */
