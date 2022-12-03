@@ -26,6 +26,7 @@ use Valkyrja\Manager\Managers\MessageManager as Manager;
  * @author Melech Mizrachi
  *
  * @extends Manager<Driver, Factory, Message>
+ *
  * @property Factory $factory
  */
 class Mail extends Manager implements Contract

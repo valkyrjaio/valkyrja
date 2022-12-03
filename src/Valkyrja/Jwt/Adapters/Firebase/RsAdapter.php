@@ -39,7 +39,7 @@ class RsAdapter extends FirebaseAdapter
      */
     protected function setDecodeKey(): void
     {
-        $this->decodeKey = $this->config['publicKey']
+        $this->decodeKey    = $this->config['publicKey']
             ?? (($encodeKey = $this->encodeKey) instanceof OpenSSLAsymmetricKey
                 ? KeyGen::opensslPublicKey($encodeKey)
                 : throw new RuntimeException('When using KeyGen you must use a keyPath and passphrase'));

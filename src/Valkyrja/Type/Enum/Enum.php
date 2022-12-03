@@ -183,7 +183,7 @@ abstract class Enum
      *
      * @example `Enum::VALUE();` equivalent to `new Enum(Enum::VALUE);`
      */
-    public static function __callStatic(string $method, array $args = []): Enum
+    public static function __callStatic(string $method, array $args = []): self
     {
         return new static(constant('static::' . $method));
     }
