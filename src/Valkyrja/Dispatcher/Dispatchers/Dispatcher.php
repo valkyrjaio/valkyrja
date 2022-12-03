@@ -104,7 +104,8 @@ class Dispatcher implements Contract
         $response = is_string($class)
             ? $class::$method(...$arguments)
             : (/** @var object $class */
-            $class->$method(...$arguments));
+            $class->$method(...$arguments)
+            );
 
         return $response ?? Constant::DISPATCHED;
     }
@@ -188,7 +189,7 @@ class Dispatcher implements Contract
         }
 
         if (! $closure = $dispatch->getClosure()) {
-            throw new InvalidClosureException("Expecting a valid closure: Null provided");
+            throw new InvalidClosureException('Expecting a valid closure: Null provided');
         }
 
         $arguments = $arguments ?? [];
@@ -255,7 +256,7 @@ class Dispatcher implements Contract
     protected function isInvalidClassMethod(Dispatch $dispatch): bool
     {
         return $dispatch->isMethod()
-            && ($class = $dispatch->getClass())
+            && ($class  = $dispatch->getClass())
             && ($method = $dispatch->getMethod())
             && ! method_exists($class, $method);
     }
@@ -270,7 +271,7 @@ class Dispatcher implements Contract
     protected function isInvalidClassProperty(Dispatch $dispatch): bool
     {
         return $dispatch->isProperty()
-            && ($class = $dispatch->getClass())
+            && ($class    = $dispatch->getClass())
             && ($property = $dispatch->getProperty())
             && ! property_exists($class, $property);
     }

@@ -73,7 +73,7 @@ class RoutesList extends Commander
         ];
 
         // Sort routes by path
-        usort($routerRoutes, static fn(Route $a, Route $b) => $a->getPath() <=> $b->getPath());
+        usort($routerRoutes, static fn (Route $a, Route $b) => $a->getPath() <=> $b->getPath());
 
         foreach ($routerRoutes as $route) {
             $this->setRoute($route, $routes, $lengths);

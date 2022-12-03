@@ -29,6 +29,7 @@ use Valkyrja\Manager\MessageManager as Contract;
  * @template Factory
  * @template Message
  * @implements Contract<Driver, Factory, Message>
+ *
  * @property MessageFactory $factory
  */
 abstract class MessageManager extends Manager implements Contract

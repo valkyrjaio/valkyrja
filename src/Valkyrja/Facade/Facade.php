@@ -87,7 +87,6 @@ abstract class Facade
         }
 
         /** @var object $instance */
-
         if (static::isStaticMethod($method)) {
             return $instance::$method(...$args);
         }

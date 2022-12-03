@@ -374,8 +374,10 @@ abstract class Model implements Contract
      */
     protected function __doesPropertyTypeMethodExist(string $methodName): bool
     {
-        return self::$cachedExistsValidations[static::class . "exists$methodName"] ??= method_exists($this,
-                                                                                                     $methodName);
+        return self::$cachedExistsValidations[static::class . "exists$methodName"] ??= method_exists(
+            $this,
+            $methodName
+        );
     }
 
     /**
