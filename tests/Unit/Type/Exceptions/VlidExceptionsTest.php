@@ -10,10 +10,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Support\Type\Exceptions;
+namespace Valkyrja\Tests\Unit\Type\Exceptions;
 
 use InvalidArgumentException;
-use Throwable;
+use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\Exceptions\ClassThrowable;
 use Valkyrja\Type\Exceptions\InvalidClassPropertyProvidedException;
 use Valkyrja\Type\Exceptions\InvalidClassProvidedException;
@@ -32,24 +32,24 @@ use Valkyrja\Type\Exceptions\InvalidVlidV1Exception;
 use Valkyrja\Type\Exceptions\InvalidVlidV2Exception;
 use Valkyrja\Type\Exceptions\InvalidVlidV3Exception;
 use Valkyrja\Type\Exceptions\InvalidVlidV4Exception;
-use Valkyrja\Type\Exceptions\TypeThrowable;
+use Valkyrja\Type\Exceptions\Throwable;
 use Valkyrja\Type\Exceptions\UidThrowable;
 use Valkyrja\Type\Exceptions\UlidThrowable;
 use Valkyrja\Type\Exceptions\UuidThrowable;
 use Valkyrja\Type\Exceptions\VlidThrowable;
-use Valkyrja\Tests\Unit\TestCase;
 
 class VlidExceptionsTest extends TestCase
 {
     public function testTypeThrowable(): void
     {
-        $this->isA(Throwable::class, TypeThrowable::class);
+        $this->isA(\Throwable::class, Throwable::class);
+        $this->isA(\Valkyrja\Exception\Throwable::class, Throwable::class);
     }
 
     public function testClassExceptions(): void
     {
         $this->isA(Throwable::class, ClassThrowable::class);
-        $this->isA(TypeThrowable::class, ClassThrowable::class);
+        $this->isA(Throwable::class, ClassThrowable::class);
 
         $this->isA(ClassThrowable::class, InvalidClassProvidedException::class);
         $this->isA(InvalidArgumentException::class, InvalidClassProvidedException::class);
@@ -61,7 +61,7 @@ class VlidExceptionsTest extends TestCase
     public function testUidExceptions(): void
     {
         $this->isA(Throwable::class, UidThrowable::class);
-        $this->isA(TypeThrowable::class, UidThrowable::class);
+        $this->isA(Throwable::class, UidThrowable::class);
 
         $this->isA(UidThrowable::class, InvalidUidException::class);
         $this->isA(InvalidArgumentException::class, InvalidUidException::class);

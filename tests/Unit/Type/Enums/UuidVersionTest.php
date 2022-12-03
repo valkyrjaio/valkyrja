@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Support\Type\Enums;
+namespace Valkyrja\Tests\Unit\Type\Enums;
 
 use Valkyrja\Type\Enums\UuidVersion;
 use Valkyrja\Tests\Unit\TestCase;
