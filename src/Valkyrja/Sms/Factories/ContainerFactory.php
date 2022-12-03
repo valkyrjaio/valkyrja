@@ -20,7 +20,7 @@ use Valkyrja\Sms\LogAdapter;
 use Valkyrja\Sms\Message;
 use Valkyrja\Sms\NexmoAdapter;
 use Valkyrja\Manager\Factories\ContainerMessageFactory as Factory;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Type\Cls;
 
 /**
  * Class ContainerFactory.

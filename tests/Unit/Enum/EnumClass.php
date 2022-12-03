@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Enum;
 
-use Valkyrja\Support\Enum\Enum;
+use Valkyrja\Type\Enum\Enum;
 
 /**
  * Test implementation of the enum abstract.

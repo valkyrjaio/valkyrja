@@ -27,7 +27,7 @@ use Valkyrja\ORM\Repository;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SoftDeleteEntity;
 use Valkyrja\ORM\Statement;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Type\Cls;
 
 use function get_class;
 

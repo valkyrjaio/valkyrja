@@ -19,7 +19,7 @@ use Valkyrja\Cache\Factory as Contract;
 use Valkyrja\Cache\LogAdapter;
 use Valkyrja\Cache\RedisAdapter;
 use Valkyrja\Manager\Factories\ContainerFactory as Factory;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Type\Cls;
 
 /**
  * Class ContainerFactory.

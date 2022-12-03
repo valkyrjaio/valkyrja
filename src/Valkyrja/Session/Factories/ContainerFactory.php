@@ -19,7 +19,7 @@ use Valkyrja\Session\Driver;
 use Valkyrja\Session\Factory as Contract;
 use Valkyrja\Session\LogAdapter;
 use Valkyrja\Manager\Factories\ContainerFactory as Factory;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Type\Cls;
 
 /**
  * Class ContainerFactory.

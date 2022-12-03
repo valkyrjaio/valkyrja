@@ -22,7 +22,7 @@ use Valkyrja\Routing\Matcher as Contract;
 use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Helpers;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Type\Cls;
 
 use function is_array;
 use function preg_match;

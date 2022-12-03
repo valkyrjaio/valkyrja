@@ -15,7 +15,7 @@ namespace Valkyrja\Broadcast\Adapters;
 
 use Valkyrja\Broadcast\Adapter as Contract;
 use Valkyrja\Broadcast\Message;
-use Valkyrja\Support\Type\Arr;
+use Valkyrja\Type\Arr;
 
 /**
  * Class NullAdapter.

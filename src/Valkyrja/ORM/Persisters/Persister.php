@@ -24,7 +24,7 @@ use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\SoftDeleteEntity;
 use Valkyrja\ORM\Support\Helpers;
-use Valkyrja\Support\Type\Arr;
+use Valkyrja\Type\Arr;
 
 use function is_array;
 use function is_object;

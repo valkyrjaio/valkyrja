@@ -24,7 +24,7 @@ use ReflectionParameter;
 use ReflectionProperty;
 use UnitEnum;
 use Valkyrja\Reflection\Reflector as Contract;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Type\Cls;
 
 use function is_callable;
 use function spl_object_id;

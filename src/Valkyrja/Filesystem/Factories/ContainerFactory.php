@@ -18,7 +18,7 @@ use Valkyrja\Filesystem\Driver;
 use Valkyrja\Filesystem\Factory as Contract;
 use Valkyrja\Filesystem\FlysystemAdapter;
 use Valkyrja\Manager\Factories\ContainerFactory as Factory;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Type\Cls;
 
 /**
  * Class ContainerFactory.

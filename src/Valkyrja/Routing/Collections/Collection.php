@@ -27,9 +27,9 @@ use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Helpers;
-use Valkyrja\Support\Type\Arr;
-use Valkyrja\Support\Type\Cls;
-use Valkyrja\Support\Type\Str;
+use Valkyrja\Type\Arr;
+use Valkyrja\Type\Cls;
+use Valkyrja\Type\Str;
 
 use function array_merge;
 use function is_array;

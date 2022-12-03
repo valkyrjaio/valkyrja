@@ -16,7 +16,7 @@ namespace Valkyrja\ORM\Retrievers;
 use JsonException;
 use Valkyrja\ORM\Constants\Statement;
 use Valkyrja\ORM\Entity;
-use Valkyrja\Support\Type\Arr;
+use Valkyrja\Type\Arr;
 
 /**
  * Class Retriever

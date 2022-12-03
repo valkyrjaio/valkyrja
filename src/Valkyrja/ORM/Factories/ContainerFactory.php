@@ -30,7 +30,7 @@ use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SelectQueryBuilder;
 use Valkyrja\ORM\Statement;
 use Valkyrja\ORM\UpdateQueryBuilder;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Type\Cls;
 
 /**
  * Class ContainerFactory.

@@ -18,7 +18,7 @@ use Valkyrja\Model\Models\Model;
 use Valkyrja\ORM\Entity;
 use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Enums\CastType;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Type\Cls;
 
 use function is_string;
 

@@ -17,9 +17,9 @@ use BackedEnum;
 use Closure;
 use JsonException;
 use Valkyrja\Model\Model as Contract;
-use Valkyrja\Support\Type\Arr;
-use Valkyrja\Support\Type\Obj;
-use Valkyrja\Support\Type\Str;
+use Valkyrja\Type\Arr;
+use Valkyrja\Type\Obj;
+use Valkyrja\Type\Str;
 
 use function is_string;
 

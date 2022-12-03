@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Enums;
 
-use Valkyrja\Support\Enum\Enum;
+use Valkyrja\Type\Enum\Enum;
 
 /**
  * Enum AnnotationName.

@@ -27,7 +27,7 @@ use Valkyrja\Auth\User;
 use Valkyrja\Http\Request;
 use Valkyrja\Session\Driver as Session;
 use Valkyrja\Session\Session as SessionManager;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Type\Cls;
 
 /**
  * Class Repository.

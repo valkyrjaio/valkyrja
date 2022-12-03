@@ -23,7 +23,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-use Valkyrja\Support\Type\Exceptions\InvalidClassProvidedException;
+use Valkyrja\Type\Exceptions\InvalidClassProvidedException;
 
 use function is_callable;
 use function is_string;

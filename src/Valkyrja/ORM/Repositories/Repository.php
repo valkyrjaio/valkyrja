@@ -25,8 +25,8 @@ use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository as Contract;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SoftDeleteEntity;
-use Valkyrja\Support\Type\Cls;
-use Valkyrja\Support\Type\Str;
+use Valkyrja\Type\Cls;
+use Valkyrja\Type\Str;
 
 use function get_class;
 

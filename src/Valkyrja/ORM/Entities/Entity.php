@@ -18,8 +18,8 @@ use JsonException;
 use Valkyrja\Model\Models\CastableModel;
 use Valkyrja\Model\Enums\CastType;
 use Valkyrja\ORM\Entity as Contract;
-use Valkyrja\Support\Type\Arr;
-use Valkyrja\Support\Type\Obj;
+use Valkyrja\Type\Arr;
+use Valkyrja\Type\Obj;
 
 use function is_array;
 use function is_string;

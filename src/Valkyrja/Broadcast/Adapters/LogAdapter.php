@@ -16,7 +16,7 @@ namespace Valkyrja\Broadcast\Adapters;
 use JsonException;
 use Valkyrja\Broadcast\Message;
 use Valkyrja\Log\Driver as Logger;
-use Valkyrja\Support\Type\Arr;
+use Valkyrja\Type\Arr;
 
 /**
  * Class LogAdapter.

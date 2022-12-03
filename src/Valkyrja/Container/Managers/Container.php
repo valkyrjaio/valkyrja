@@ -20,7 +20,7 @@ use Valkyrja\Container\Exceptions\InvalidServiceIdException;
 use Valkyrja\Container\Service;
 use Valkyrja\Support\Facade\Facade;
 use Valkyrja\Support\Provider\Traits\ProvidersAwareTrait;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Type\Cls;
 
 use function is_string;
 

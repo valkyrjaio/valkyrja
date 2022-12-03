@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Enums;
 
 use Valkyrja\Event\Annotations\Listener;
-use Valkyrja\Support\Enum\Enum;
+use Valkyrja\Type\Enum\Enum;
 
 /**
  * Enum AnnotationClass.

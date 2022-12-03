@@ -22,7 +22,7 @@ use Valkyrja\Routing\Collector as Contract;
 use Valkyrja\Routing\Constants\HandleSplit;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route;
-use Valkyrja\Support\Type\Str;
+use Valkyrja\Type\Str;
 
 /**
  * Class Collector.

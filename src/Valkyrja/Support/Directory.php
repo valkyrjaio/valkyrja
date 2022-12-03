@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support;
 
-use Valkyrja\Support\Type\Str;
+use Valkyrja\Type\Str;
 
 /**
  * Class Directory.

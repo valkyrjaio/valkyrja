@@ -16,7 +16,7 @@ namespace Valkyrja\Cache\Taggers;
 use JsonException;
 use Valkyrja\Cache\Adapter;
 use Valkyrja\Cache\Tagger as Contract;
-use Valkyrja\Support\Type\Arr;
+use Valkyrja\Type\Arr;
 
 use function json_decode;
 

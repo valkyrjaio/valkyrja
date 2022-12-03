@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Constants;
 
-use Valkyrja\Support\Type\Ulid;
-use Valkyrja\Support\Type\Uuid;
-use Valkyrja\Support\Type\UuidV1;
-use Valkyrja\Support\Type\UuidV3;
-use Valkyrja\Support\Type\UuidV4;
-use Valkyrja\Support\Type\UuidV5;
-use Valkyrja\Support\Type\UuidV6;
-use Valkyrja\Support\Type\UuidV7;
-use Valkyrja\Support\Type\UuidV8;
-use Valkyrja\Support\Type\Vlid;
-use Valkyrja\Support\Type\VlidV1;
-use Valkyrja\Support\Type\VlidV2;
-use Valkyrja\Support\Type\VlidV3;
-use Valkyrja\Support\Type\VlidV4;
+use Valkyrja\Type\Ulid;
+use Valkyrja\Type\Uuid;
+use Valkyrja\Type\UuidV1;
+use Valkyrja\Type\UuidV3;
+use Valkyrja\Type\UuidV4;
+use Valkyrja\Type\UuidV5;
+use Valkyrja\Type\UuidV6;
+use Valkyrja\Type\UuidV7;
+use Valkyrja\Type\UuidV8;
+use Valkyrja\Type\Vlid;
+use Valkyrja\Type\VlidV1;
+use Valkyrja\Type\VlidV2;
+use Valkyrja\Type\VlidV3;
+use Valkyrja\Type\VlidV4;
 
 /**
  * Constant Regex.

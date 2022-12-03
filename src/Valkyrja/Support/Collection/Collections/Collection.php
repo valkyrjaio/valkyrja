@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Collection\Collections;
 
 use Valkyrja\Support\Collection\Collection as Contract;
-use Valkyrja\Support\Type\Arr;
+use Valkyrja\Type\Arr;
 
 use function array_keys;
 use function count;

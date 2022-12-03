@@ -30,7 +30,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Log\Facades\Logger;
 use Valkyrja\Routing\Support\Middleware;
 use Valkyrja\Routing\Url;
-use Valkyrja\Support\Type\Arr;
+use Valkyrja\Type\Arr;
 
 /**
  * Abstract Class AuthenticatedMiddleware.

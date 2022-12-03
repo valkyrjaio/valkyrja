@@ -17,8 +17,8 @@ use Exception;
 use JsonException;
 use SodiumException;
 use Valkyrja\Crypt\Exceptions\CryptException;
-use Valkyrja\Support\Type\Arr;
-use Valkyrja\Support\Type\Obj;
+use Valkyrja\Type\Arr;
+use Valkyrja\Type\Obj;
 
 use function bin2hex;
 use function hex2bin;

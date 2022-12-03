@@ -26,8 +26,8 @@ use Valkyrja\Event\Events;
 use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Exception\ExceptionHandler;
-use Valkyrja\Support\Type\Arr;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Type\Arr;
+use Valkyrja\Type\Cls;
 
 use function constant;
 use function date_default_timezone_set;

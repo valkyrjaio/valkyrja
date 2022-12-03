@@ -12,12 +12,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Support\Type;
 
-use Valkyrja\Support\Type\Enums\VlidVersion;
-use Valkyrja\Support\Type\Exceptions\InvalidVlidV1Exception;
-use Valkyrja\Support\Type\VlidV1;
-use Valkyrja\Support\Type\VlidV2;
-use Valkyrja\Support\Type\VlidV3;
-use Valkyrja\Support\Type\VlidV4;
+use Valkyrja\Type\Enums\VlidVersion;
+use Valkyrja\Type\Exceptions\InvalidVlidV1Exception;
+use Valkyrja\Type\VlidV1;
+use Valkyrja\Type\VlidV2;
+use Valkyrja\Type\VlidV3;
+use Valkyrja\Type\VlidV4;
 
 class VlidV1Test extends AbstractVlidTest
 {

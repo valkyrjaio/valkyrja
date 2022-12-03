@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Support\Type;
 
-use Valkyrja\Support\Type\Enums\VlidVersion;
+use Valkyrja\Type\Enums\VlidVersion;
 use Valkyrja\Tests\Unit\TestCase;
 
 abstract class AbstractVlidTest extends TestCase

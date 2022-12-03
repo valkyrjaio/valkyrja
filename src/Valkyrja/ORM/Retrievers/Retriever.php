@@ -21,7 +21,7 @@ use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Retriever as Contract;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Type\Cls;
 
 /**
  * Class Retriever

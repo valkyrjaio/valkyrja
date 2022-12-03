@@ -20,8 +20,8 @@ use Valkyrja\ORM\Exceptions\NotFoundException;
 use Valkyrja\ORM\Query as QueryContract;
 use Valkyrja\ORM\Statement;
 use Valkyrja\ORM\Support\Helpers;
-use Valkyrja\Support\Type\Cls;
-use Valkyrja\Support\Type\Str;
+use Valkyrja\Type\Cls;
+use Valkyrja\Type\Str;
 
 use function is_array;
 

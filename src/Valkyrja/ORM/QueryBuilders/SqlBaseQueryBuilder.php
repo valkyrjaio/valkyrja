@@ -17,7 +17,7 @@ use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\BaseQueryBuilder as Contract;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Query;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Type\Cls;
 
 /**
  * Abstract Class SqlBaseQueryBuilder.

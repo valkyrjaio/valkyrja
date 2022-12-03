@@ -19,7 +19,7 @@ use Valkyrja\Client\Factory as Contract;
 use Valkyrja\Client\GuzzleAdapter;
 use Valkyrja\Client\LogAdapter;
 use Valkyrja\Manager\Factories\ContainerFactory as Factory;
-use Valkyrja\Support\Type\Cls;
+use Valkyrja\Type\Cls;
 
 /**
  * Class ContainerFactory.
