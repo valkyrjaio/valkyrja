@@ -62,7 +62,7 @@ trait CastableModelTrait
      *      ]
      * </code>
      *
-     * @var array<string, CastType|array<CastType, string|string[]>>
+     * @var array<string, CastType|array{CastType, class-string|class-string[]}>
      */
     protected static array $castings = [];
 
@@ -76,14 +76,14 @@ trait CastableModelTrait
      *      ]
      * </code>
      *
-     * @var array<string, string[]>
+     * @var array<string, class-string[]>
      */
     protected static array $castingsAllowedClasses = [];
 
     /**
      * @inheritDoc
      *
-     * @return array<string, CastType|array<CastType, string|string[]>>
+     * @return array<string, CastType|array{CastType, class-string|class-string[]}>
      */
     public static function getCastings(): array
     {
@@ -93,7 +93,7 @@ trait CastableModelTrait
     /**
      * @inheritDoc
      *
-     * @return array<string, string[]>
+     * @return array<string, class-string[]>
      */
     public static function getCastingsAllowedClasses(): array
     {

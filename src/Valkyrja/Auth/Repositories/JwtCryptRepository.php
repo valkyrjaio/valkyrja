@@ -17,6 +17,7 @@ use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\AuthenticatedUsers;
 use Valkyrja\Auth\Config\Config;
 use Valkyrja\Auth\JWTCryptRepository as Contract;
+use Valkyrja\Auth\User;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Jwt\Driver as Jwt;
 use Valkyrja\Jwt\Jwt as JwtManager;
@@ -39,12 +40,12 @@ class JwtCryptRepository extends CryptTokenizedRepository implements Contract
     /**
      * JWTCryptRepository constructor.
      *
-     * @param Adapter      $adapter The adapter
-     * @param JWTManager   $jwt     The JWT service
-     * @param Crypt        $crypt   The crypt service
-     * @param Session      $session The session service
-     * @param Config|array $config  The config
-     * @param string       $user    The user class
+     * @param Adapter            $adapter The adapter
+     * @param JWTManager         $jwt     The JWT service
+     * @param Crypt              $crypt   The crypt service
+     * @param Session            $session The session service
+     * @param Config|array       $config  The config
+     * @param class-string<User> $user    The user class
      */
     public function __construct(Adapter $adapter, JwtManager $jwt, Crypt $crypt, Session $session, Config|array $config, string $user)
     {

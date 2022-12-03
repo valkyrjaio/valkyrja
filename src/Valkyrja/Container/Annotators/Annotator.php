@@ -122,9 +122,12 @@ class Annotator implements Contract
      */
     protected function setServiceProperties(Annotation $annotation): void
     {
-        if (null === $annotation->getProperty() && $annotation->getClass() !== null) {
+        $class    = $annotation->getClass();
+        $property = $annotation->getProperty();
+
+        if ($class && $property === null) {
             $reflection = $this->reflector->getMethodReflection(
-                $annotation->getClass(),
+                $class,
                 $annotation->getMethod() ?? '__construct'
             );
 

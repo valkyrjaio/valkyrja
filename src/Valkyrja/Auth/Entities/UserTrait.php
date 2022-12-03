@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entities;
 
+use Valkyrja\Auth\AuthenticatedUsers;
 use Valkyrja\Auth\Constants\SessionId;
 use Valkyrja\Auth\Constants\UserField;
+use Valkyrja\Auth\Repository;
 
 /**
  * Trait UserTrait.
@@ -25,6 +27,8 @@ trait UserTrait
 {
     /**
      * @inheritDoc
+     *
+     * @return class-string<Repository>|null
      */
     public static function getAuthRepository(): ?string
     {
@@ -33,6 +37,8 @@ trait UserTrait
 
     /**
      * @inheritDoc
+     *
+     * @return class-string<AuthenticatedUsers>|null
      */
     public static function getAuthCollection(): ?string
     {

@@ -366,9 +366,9 @@ class Parser implements Contract
     /**
      * Get a class alias.
      *
-     * @param string $class The class to check for a reference
+     * @param class-string|string $class The class to check for a reference
      *
-     * @return string
+     * @return class-string
      */
     protected function getClassFromAlias(string $class): string
     {

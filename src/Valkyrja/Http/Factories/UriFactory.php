@@ -72,6 +72,7 @@ abstract class UriFactory
         $uri = $uri->withScheme($scheme);
 
         // Set the host
+        /** @var stdClass $accumulator */
         $accumulator = (object) ['host' => '', 'port' => null];
 
         self::marshalHostAndPortFromHeaders($accumulator, $server, $headers);
@@ -84,7 +85,7 @@ abstract class UriFactory
         if (! empty($host)) {
             $uri = $uri->withHost($host);
 
-            if (! empty($port)) {
+            if ($port !== null) {
                 $uri = $uri->withPort($port);
             }
         }
@@ -276,7 +277,9 @@ abstract class UriFactory
         $accumulator->host = '[' . $server['SERVER_ADDR'] . ']';
         $accumulator->port = $accumulator->port ?: 80;
 
-        if ($accumulator->port . ']' === substr($accumulator->host, strrpos($accumulator->host, ':') + 1)) {
+        $portOffset = strrpos($accumulator->host, ':');
+
+        if ($portOffset !== false && $accumulator->port . ']' === substr($accumulator->host, $portOffset + 1)) {
             // The last digit of the IPv6-Address has been taken as port
             // Unset the port so the default port can be used
             $accumulator->port = null;

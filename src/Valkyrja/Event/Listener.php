@@ -25,16 +25,16 @@ interface Listener extends Dispatch
     /**
      * Get the event.
      *
-     * @return class-string<Event>|string|null
+     * @return class-string<Event>|string
      */
-    public function getEvent(): ?string;
+    public function getEvent(): string;
 
     /**
      * Set the event.
      *
-     * @param class-string<Event>|string|null $event The event
+     * @param class-string<Event>|string $event The event
      *
      * @return static
      */
-    public function setEvent(string $event = null): self;
+    public function setEvent(string $event): self;
 }

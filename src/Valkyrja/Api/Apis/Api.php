@@ -213,7 +213,10 @@ class Api implements Contract
      */
     protected function getJsonModel(): Json
     {
-        return new $this->config['jsonModel']();
+        /** @var class-string<Json> $jsonModel */
+        $jsonModel = $this->config['jsonModel'];
+
+        return new $jsonModel();
     }
 
     /**
@@ -223,7 +226,10 @@ class Api implements Contract
      */
     protected function getJsonDataModel(): JsonData
     {
-        return new $this->config['jsonDataModel']();
+        /** @var class-string<JsonData> $jsonDataModel */
+        $jsonDataModel = $this->config['jsonDataModel'];
+
+        return new $jsonDataModel();
     }
 
     /**

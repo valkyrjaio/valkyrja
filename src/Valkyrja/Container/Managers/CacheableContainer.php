@@ -17,6 +17,7 @@ use Valkyrja\Config\Config;
 use Valkyrja\Container\Annotator;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Config\Config as ContainerConfig;
+use Valkyrja\Container\Service;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Support\Cacheable\Cacheable;
 
@@ -115,23 +116,38 @@ class CacheableContainer extends Container
 
         // Get all the annotated services from the list of controllers and iterate through the services
         foreach ($containerAnnotations->getServices(...$config['services']) as $service) {
-            // Set the service
-            $this->bind($service->getId(), $service->getClass());
+            $class = $service->getClass();
+            $id    = $service->getId();
+
+            if ($class && $id) {
+                /** @var class-string<Service> $class */
+                // Set the service
+                $this->bind($id, $class);
+            }
         }
 
         // Get all the annotated services from the list of controllers and iterate through the services
         foreach ($containerAnnotations->getContextServices(...$config['contextServices']) as $context) {
-            // Set the service
-            $this->withContext($context->getClass(), $context->getMethod())->bind(
-                $context->getId(),
-                $context->getService()
-            );
+            $class   = $context->getClass();
+            $method  = $context->getMethod();
+            $id      = $context->getId();
+            $service = $context->getService();
+
+            if ($class && $id && $service) {
+                // Set the service
+                $this->withContext($class, $method)->bind($id, $service);
+            }
         }
 
         // Get all the annotated services from the list of classes and iterate through the services
         foreach ($containerAnnotations->getAliasServices(...$config['aliases']) as $alias) {
-            // Set the service
-            $this->setAlias($alias->getName(), $alias->getId());
+            $name = $alias->getName();
+            $id   = $alias->getId();
+
+            if ($name && $id) {
+                // Set the service
+                $this->setAlias($name, $id);
+            }
         }
     }
 

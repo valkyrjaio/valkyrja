@@ -27,7 +27,7 @@ interface Attributes
      *
      * @template T
      *
-     * @param string               $class     The class
+     * @param class-string         $class     The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
      * @return object[]|T[]
@@ -39,7 +39,7 @@ interface Attributes
      *
      * @template T
      *
-     * @param string               $class     The class
+     * @param class-string         $class     The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
      * @return object[]|T[]
@@ -51,7 +51,7 @@ interface Attributes
      *
      * @template T
      *
-     * @param string               $class     K The class
+     * @param class-string         $class     K The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
      * @return object[]|T[]
@@ -63,7 +63,7 @@ interface Attributes
      *
      * @template T
      *
-     * @param string               $class     The class
+     * @param class-string         $class     The class
      * @param string               $constant  The constant
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
@@ -76,7 +76,7 @@ interface Attributes
      *
      * @template T
      *
-     * @param string               $class     The class
+     * @param class-string         $class     The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
      * @return object[]|T[]
@@ -88,7 +88,7 @@ interface Attributes
      *
      * @template T
      *
-     * @param string               $class     The class
+     * @param class-string         $class     The class
      * @param string               $property  The property
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
@@ -101,7 +101,7 @@ interface Attributes
      *
      * @template T
      *
-     * @param string               $class     The class
+     * @param class-string         $class     The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
      * @return object[]|T[]
@@ -113,7 +113,7 @@ interface Attributes
      *
      * @template T
      *
-     * @param string               $class     The class
+     * @param class-string         $class     The class
      * @param string               $method    The method
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
@@ -126,7 +126,7 @@ interface Attributes
      *
      * @template T
      *
-     * @param string               $class     The class
+     * @param class-string         $class     The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
      * @return object[]|T[]
@@ -138,7 +138,7 @@ interface Attributes
      *
      * @template T
      *
-     * @param string               $function  The function
+     * @param callable-string      $function  The function
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
      * @return object[]|T[]

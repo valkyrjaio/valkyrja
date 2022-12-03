@@ -48,7 +48,7 @@ interface Parser
     /**
      * Get the annotations map.
      *
-     * @return array
+     * @return array<string, class-string<Annotation>>
      */
     public function getAnnotationsMap(): array;
 

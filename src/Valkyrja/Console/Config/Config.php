@@ -16,7 +16,7 @@ namespace Valkyrja\Console\Config;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
-use Valkyrja\Console\Support\Provider;
+use Valkyrja\Console\Commander;
 
 use function is_array;
 
@@ -46,21 +46,21 @@ class Config extends Model
     /**
      * The annotated command handlers.
      *
-     * @var string[]
+     * @var class-string<Commander>[]
      */
     public array $handlers;
 
     /**
      * The command providers.
      *
-     * @var Provider[]|string[]
+     * @var class-string[]
      */
     public array $providers;
 
     /**
      * The dev command providers.
      *
-     * @var Provider[]|string[]
+     * @var class-string[]
      */
     public array $devProviders;
 

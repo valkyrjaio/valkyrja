@@ -287,8 +287,8 @@ class Retriever implements Contract
     /**
      * Set query builder and query.
      *
-     * @param string        $entity  The entity
-     * @param string[]|null $columns [optional] The columns
+     * @param class-string<Entity> $entity  The entity
+     * @param string[]|null        $columns [optional] The columns
      *
      * @return void
      */

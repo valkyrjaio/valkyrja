@@ -42,7 +42,7 @@ class Config extends Model
     /**
      * The annotated listeners.
      *
-     * @var string[]
+     * @var class-string[]
      */
     public array $listeners;
 

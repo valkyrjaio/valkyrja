@@ -60,10 +60,10 @@ class Events implements Contract
         $this->dispatcher->verifyDispatch($listener);
 
         // If this listener has an id
-        if (null !== $listener->getId()) {
+        if (($id = $listener->getId()) !== null) {
             // Use it when setting to allow removal
             // or checking if it exists later
-            self::$events[$event][$listener->getId()] = $listener;
+            self::$events[$event][$id] = $listener;
         } else {
             // Otherwise set the listener normally
             self::$events[$event][] = $listener;

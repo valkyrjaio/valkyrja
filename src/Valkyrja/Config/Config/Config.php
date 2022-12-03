@@ -232,7 +232,7 @@ class Config extends Model
      * Array of config providers.
      *  NOTE: Provider::deferred() is disregarded.
      *
-     * @var Provider[]|string[]
+     * @var class-string<Provider>[]
      */
     public array $providers;
 

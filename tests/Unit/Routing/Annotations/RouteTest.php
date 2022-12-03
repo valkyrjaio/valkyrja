@@ -59,16 +59,6 @@ class RouteTest extends TestCase
     }
 
     /**
-     * Test the getPath getter method default value.
-     *
-     * @return void
-     */
-    public function testGetPathDefault(): void
-    {
-        self::assertEquals(null, $this->getRoute()->getPath());
-    }
-
-    /**
      * Test the setPath setter method.
      *
      * @return void

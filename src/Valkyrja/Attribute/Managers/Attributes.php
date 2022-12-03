@@ -196,7 +196,7 @@ class Attributes implements Contract
     /**
      * Get a class' members' attributes.
      *
-     * @param string|null                                                 $attribute  [optional] The attribute to return
+     * @param class-string|null                                           $attribute  [optional] The attribute to return
      * @param ReflectionClassConstant|ReflectionMethod|ReflectionProperty ...$members [optional] The members
      *
      * @return object[]

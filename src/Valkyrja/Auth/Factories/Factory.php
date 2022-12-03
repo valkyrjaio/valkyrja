@@ -21,11 +21,11 @@ use Valkyrja\Auth\Policy;
 use Valkyrja\Auth\Repository;
 
 /**
- * Class SimpleFactory.
+ * Class Factory.
  *
  * @author Melech Mizrachi
  */
-class SimpleFactory implements Contract
+class Factory implements Contract
 {
     /**
      * @inheritDoc

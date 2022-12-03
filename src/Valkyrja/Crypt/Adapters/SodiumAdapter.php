@@ -235,6 +235,10 @@ class SodiumAdapter extends Adapter
      */
     protected function getDecodedPlain(string $decoded, string $key = null): string
     {
+        if ($key === null) {
+            throw new CryptException("Invalid ky `$key` provided");
+        }
+
         $nonce      = mb_substr($decoded, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');
         $cipherText = mb_substr($decoded, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');
 

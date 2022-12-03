@@ -35,7 +35,7 @@ interface Query
     /**
      * Set the entity to query with.
      *
-     * @param string $entity
+     * @param class-string<Entity> $entity
      *
      * @return static
      */

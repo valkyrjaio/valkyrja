@@ -171,7 +171,7 @@ interface ORM
      *      $entityManager->find(Entity::class, true | false)
      * </code>
      *
-     * @param string $entity
+     * @param class-string<Entity> $entity
      *
      * @return Retriever
      */
@@ -184,8 +184,8 @@ interface ORM
      *      $entityManager->findOne(Entity::class, 1, true | false)
      * </code>
      *
-     * @param string     $entity
-     * @param int|string $id
+     * @param class-string<Entity> $entity
+     * @param int|string           $id
      *
      * @return Retriever
      */
@@ -201,7 +201,7 @@ interface ORM
      *          )
      * </code>
      *
-     * @param string $entity
+     * @param class-string<Entity> $entity
      *
      * @return Retriever
      */

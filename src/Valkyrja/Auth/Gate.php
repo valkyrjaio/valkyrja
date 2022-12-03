@@ -23,8 +23,8 @@ interface Gate
     /**
      * Before authorization check.
      *
-     * @param string      $action The action to check if authorized for
-     * @param string|null $policy [optional] The policy
+     * @param string                    $action The action to check if authorized for
+     * @param class-string<Policy>|null $policy [optional] The policy
      *
      * @return bool|null
      */
@@ -33,9 +33,9 @@ interface Gate
     /**
      * After authorization check.
      *
-     * @param bool        $isAuthorized Whether the action is authorized per the policy
-     * @param string      $action       The action to check if authorized for
-     * @param string|null $policy       [optional] The policy
+     * @param bool                      $isAuthorized Whether the action is authorized per the policy
+     * @param string                    $action       The action to check if authorized for
+     * @param class-string<Policy>|null $policy       [optional] The policy
      *
      * @return bool|null
      */
@@ -44,8 +44,8 @@ interface Gate
     /**
      * Check if the authenticated user is authorized.
      *
-     * @param string      $action The action to check if authorized for
-     * @param string|null $policy [optional] The policy
+     * @param string                    $action The action to check if authorized for
+     * @param class-string<Policy>|null $policy [optional] The policy
      *
      * @return bool
      */

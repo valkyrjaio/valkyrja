@@ -18,7 +18,7 @@ namespace Valkyrja\Auth;
  *
  * @author Melech Mizrachi
  */
-interface EntityPolicy
+interface EntityPolicy extends Policy
 {
     /**
      * Get the entity class name that's associated with this policy.

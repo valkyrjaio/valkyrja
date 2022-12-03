@@ -137,7 +137,7 @@ class ServiceProvider extends Provider
              */
             static function (string $name, array $config) use ($responseFactory): GuzzleAdapter {
                 return new $name(
-                    new Guzzle($config['options'] ?? null),
+                    new Guzzle($config['options'] ?? []),
                     $responseFactory,
                     $config
                 );

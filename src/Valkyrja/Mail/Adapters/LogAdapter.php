@@ -79,7 +79,7 @@ class LogAdapter implements Contract
         $this->log->info('Body:');
         $this->log->info($message->getBody());
         $this->log->info('Plain Body:');
-        $this->log->info($message->getPlainBody());
+        $this->log->info($message->getPlainBody() ?? '');
         $this->log->info('Is HTML:');
         $this->log->info((string) $message->isHtml());
     }

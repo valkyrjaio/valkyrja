@@ -55,8 +55,8 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Bind a service to the container.
      *
-     * @param class-string|string $serviceId The service id
-     * @param class-string        $service   The service
+     * @param class-string|string   $serviceId The service id
+     * @param class-string<Service> $service   The service
      *
      * @return static
      */
@@ -75,8 +75,8 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Bind a singleton to the container.
      *
-     * @param class-string|string $serviceId The service id
-     * @param class-string        $singleton The singleton service
+     * @param class-string|string   $serviceId The service id
+     * @param class-string<Service> $singleton The singleton service
      *
      * @return static
      */

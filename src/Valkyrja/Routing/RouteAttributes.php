@@ -23,7 +23,7 @@ interface RouteAttributes
     /**
      * Get route attributes.
      *
-     * @param string ...$classes The classes
+     * @param class-string ...$classes The classes
      *
      * @return Route[]
      */

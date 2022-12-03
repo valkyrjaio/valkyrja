@@ -145,21 +145,24 @@ class Query implements QueryContract
     {
         $results = $this->statement->fetchAll();
 
+        /** @var class-string<Entity>|null $entity */
+        $entity = $this->entity;
+
         // If there is no entity specified just return the results
-        if (null === $this->entity) {
+        if ($entity === null) {
             return array_map(
-                static function (array $data) {
-                    return (object) $data;
+                static function (array $data): stdClass {
+                    /** @var stdClass $object */
+                    $object = (object) $data;
+
+                    return $object;
                 },
                 $results
             );
         }
 
-        /** @var class-string<Entity> $entity */
-        $entity = $this->entity;
-
         return array_map(
-            static function (array $data) use ($entity) {
+            static function (array $data) use ($entity): Entity {
                 return $entity::fromArray($data);
             },
             $results

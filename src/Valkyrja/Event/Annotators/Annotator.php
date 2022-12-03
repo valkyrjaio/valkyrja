@@ -89,16 +89,16 @@ class Annotator implements Contract
      */
     protected function setListenerProperties(Listener $listener): void
     {
-        if (! $listener->getClass()) {
+        if (! ($class = $listener->getClass())) {
             throw new InvalidArgumentException('Invalid class defined in listener.');
         }
 
-        $classReflection = $this->reflector->getClassReflection($listener->getClass());
+        $classReflection = $this->reflector->getClassReflection($class);
 
-        if ($listener->getMethod() || $classReflection->hasMethod('__construct')) {
+        if (($method = $listener->getMethod()) || $classReflection->hasMethod('__construct')) {
             $methodReflection = $this->reflector->getMethodReflection(
-                $listener->getClass(),
-                $listener->getMethod() ?? '__construct'
+                $class,
+                $method ?? '__construct'
             );
 
             // Set the dependencies

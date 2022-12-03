@@ -39,6 +39,10 @@ class ContainerMessageFactory extends ContainerFactory implements MessageFactory
 
     /**
      * @inheritDoc
+     *
+     * @param class-string<Message> $name The message
+     *
+     * @return Message
      */
     public function createMessage(string $name, array $config, array $data = []): Message
     {

@@ -199,8 +199,8 @@ abstract class TokenizedRepository extends Repository implements Contract
         $requiredFields = $this->getRequiredFields();
 
         /** @var TokenizableUser $userFromCollection */
-        foreach ($users->all() as $key => $userFromCollection) {
-            $userAsTokenizableArray = $collectionAsArray['users'][$key] = $userFromCollection->asTokenizableArray();
+        foreach ($users->all() as $userFromCollection) {
+            $userAsTokenizableArray = $userFromCollection->asTokenizableArray();
 
             foreach ($requiredFields as $requiredField) {
                 if (! isset($userAsTokenizableArray[$requiredField])) {
@@ -300,7 +300,7 @@ abstract class TokenizedRepository extends Repository implements Contract
         try {
             return $this->unTokenizeUsers($token);
         } catch (Throwable $exception) {
-            throw new TokenizationException($exception->getMessage(), $exception->getCode(), $exception);
+            throw new TokenizationException($exception->getMessage(), (int) $exception->getCode(), $exception);
         }
     }
 

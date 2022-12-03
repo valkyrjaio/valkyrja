@@ -69,13 +69,13 @@ class CommandsList extends Commander
         $this->sectionTitleMessage('Commands' . ($namespace ? " for the \"$namespace\" namespace" : ''));
 
         foreach ($commands as $command) {
-            if (null === $namespace) {
+            if ($namespace === null) {
                 $this->commandSection($command, $previousSection);
             }
 
             $this->sectionMessage(
-                (! $namespace ? static::TAB : '') . $command->getName(),
-                $command->getDescription(),
+                (! $namespace ? static::TAB : '') . ($command->getName() ?? ''),
+                $command->getDescription() ?? '',
                 $longestLength + 2
             );
         }
@@ -109,7 +109,13 @@ class CommandsList extends Commander
 
         /** @var Command $command */
         foreach ($commands as $key => $command) {
-            $parts            = explode(':', $command->getName());
+            $name = $command->getName();
+
+            if (! $name) {
+                continue;
+            }
+
+            $parts            = explode(':', $name);
             $commandName      = $parts[1] ?? null;
             $commandNamespace = $commandName ? $parts[0] : 'global';
 
@@ -123,7 +129,7 @@ class CommandsList extends Commander
                 continue;
             }
 
-            $longestLength = max(strlen($command->getName()), $longestLength);
+            $longestLength = max(strlen($name), $longestLength);
 
             // If this is a global namespaced command
             if ('global' === $commandNamespace) {
@@ -156,7 +162,7 @@ class CommandsList extends Commander
      */
     protected function commandSection(Command $command, string &$previousSection): void
     {
-        $parts          = explode(':', $command->getName());
+        $parts          = explode(':', $command->getName() ?? '');
         $commandName    = $parts[1] ?? null;
         $currentSection = $commandName ? $parts[0] : 'global';
 

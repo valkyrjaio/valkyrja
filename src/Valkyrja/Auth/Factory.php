@@ -25,8 +25,8 @@ interface Factory
     /**
      * Create an adapter by name.
      *
-     * @param string       $name   The adapter
-     * @param Config|array $config The config
+     * @param class-string<Adapter> $name   The adapter
+     * @param Config|array          $config The config
      *
      * @return Adapter
      */
@@ -35,10 +35,10 @@ interface Factory
     /**
      * Create a repository by user entity name.
      *
-     * @param Adapter      $adapter The adapter
-     * @param string       $name    The name
-     * @param string       $user    The user
-     * @param Config|array $config  The config
+     * @param Adapter                  $adapter The adapter
+     * @param class-string<Repository> $name    The name
+     * @param class-string<User>       $user    The user
+     * @param Config|array             $config  The config
      *
      * @return Repository
      */
@@ -47,8 +47,8 @@ interface Factory
     /**
      * Create a gate by name.
      *
-     * @param Repository $repository The repository
-     * @param string     $name       The name
+     * @param Repository         $repository The repository
+     * @param class-string<Gate> $name       The name
      *
      * @return Gate
      */
@@ -57,8 +57,8 @@ interface Factory
     /**
      * Create a policy by name.
      *
-     * @param Repository $repository The repository
-     * @param string     $name       The name
+     * @param Repository           $repository The repository
+     * @param class-string<Policy> $name       The name
      *
      * @return Policy
      */

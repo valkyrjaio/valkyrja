@@ -16,7 +16,9 @@ namespace Valkyrja\Auth\Middleware;
 use Exception;
 use Valkyrja\Api\Api;
 use Valkyrja\Api\Constants\Status;
+use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth;
+use Valkyrja\Auth\Config\Config;
 use Valkyrja\Auth\Constants\RouteName;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Auth\User;
@@ -28,6 +30,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Log\Facades\Logger;
 use Valkyrja\Routing\Support\Middleware;
 use Valkyrja\Routing\Url;
+use Valkyrja\Support\Type\Arr;
 
 /**
  * Abstract Class AuthenticatedMiddleware.
@@ -53,21 +56,21 @@ abstract class AuthMiddleware extends Middleware
     /**
      * The config.
      *
-     * @var array
+     * @var Config|array
      */
-    public static array $config;
+    public static Config|array $config;
 
     /**
      * The adapter to use
      *
-     * @var string|null
+     * @var class-string<Adapter>|null
      */
     protected static ?string $adapterName = null;
 
     /**
      * The user class to use.
      *
-     * @var string|null
+     * @var class-string<User>|null
      */
     protected static ?string $userEntity = null;
 
@@ -108,7 +111,7 @@ abstract class AuthMiddleware extends Middleware
         $config = self::$config ??= static::getAuth()->getConfig();
 
         if (null !== $key) {
-            return $config[$key] ?? $default;
+            return Arr::getValueDotNotation($config, $key, $default);
         }
 
         return $config;

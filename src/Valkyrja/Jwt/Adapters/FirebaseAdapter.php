@@ -42,14 +42,14 @@ abstract class FirebaseAdapter implements Contract
     /**
      * The decode key.
      *
-     * @var string|resource|OpenSSLAsymmetricKey
+     * @var OpenSSLAsymmetricKey|resource|string
      */
     protected $encodeKey;
 
     /**
      * The decode key.
      *
-     * @var string|resource|OpenSSLAsymmetricKey
+     * @var OpenSSLAsymmetricKey|resource|string
      */
     protected $decodeKey;
 

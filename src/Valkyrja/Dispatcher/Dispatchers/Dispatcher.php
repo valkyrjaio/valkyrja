@@ -18,12 +18,15 @@ use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Constants\Constant;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Dispatcher\Dispatcher as Contract;
+use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
+use Valkyrja\Support\Type\Exceptions\InvalidClassProvidedException;
 
 use function is_callable;
+use function is_string;
 
 /**
  * Class Dispatcher.
@@ -91,11 +94,17 @@ class Dispatcher implements Contract
             return null;
         }
 
+        if (! $method = $dispatch->getMethod()) {
+            throw new InvalidMethodException("Expecting a valid method: $method provided");
+        }
+
         $class     = $this->getClassFromDispatch($dispatch);
-        $method    = $dispatch->getMethod();
         $arguments = $arguments ?? [];
         /** @var mixed $response */
-        $response = $dispatch->isStatic() ? $class::$method(...$arguments) : $class->$method(...$arguments);
+        $response = is_string($class)
+            ? $class::$method(...$arguments)
+            : (/** @var object $class */
+            $class->$method(...$arguments));
 
         return $response ?? Constant::DISPATCHED;
     }
@@ -110,10 +119,13 @@ class Dispatcher implements Contract
             return null;
         }
 
-        $class    = $this->getClassFromDispatch($dispatch);
-        $property = $dispatch->getProperty();
+        if (! $property = $dispatch->getProperty()) {
+            throw new InvalidPropertyException("Expecting a valid property: $property provided");
+        }
+
+        $class = $this->getClassFromDispatch($dispatch);
         /** @var mixed $response */
-        $response = $dispatch->isStatic() ? $class::$$property : $class->{$property};
+        $response = is_string($class) ? $class::$$property : $class->{$property};
 
         return $response ?? Constant::DISPATCHED;
     }
@@ -128,16 +140,18 @@ class Dispatcher implements Contract
             return null;
         }
 
+        if (! $className = $dispatch->getClass()) {
+            throw new InvalidClassProvidedException("Expecting a valid class: $className provided");
+        }
+
         // If the class is the id then this item is not yet set in the
         // service container so it needs a new instance returned
-        if ($className = $dispatch->getClass()) {
-            if ($className === $dispatch->getId()) {
-                $arguments = $arguments ?? [];
-                $class     = new $className(...$arguments);
-            } else {
-                // Get the class through the container
-                $class = $this->container->get($className, $arguments ?? []);
-            }
+        if ($className === $dispatch->getId()) {
+            $arguments = $arguments ?? [];
+            $class     = new $className(...$arguments);
+        } else {
+            // Get the class through the container
+            $class = $this->container->get($className, $arguments ?? []);
         }
 
         return $class ?? Constant::DISPATCHED;
@@ -153,7 +167,10 @@ class Dispatcher implements Contract
             return null;
         }
 
-        $function  = $dispatch->getFunction();
+        if (! $function = $dispatch->getFunction()) {
+            throw new InvalidFunctionException("Expecting a valid callable: $function provided");
+        }
+
         $arguments = $arguments ?? [];
         $response  = $function(...$arguments);
 
@@ -170,7 +187,10 @@ class Dispatcher implements Contract
             return null;
         }
 
-        $closure   = $dispatch->getClosure();
+        if (! $closure = $dispatch->getClosure()) {
+            throw new InvalidClosureException("Expecting a valid closure: Null provided");
+        }
+
         $arguments = $arguments ?? [];
         $response  = $closure(...$arguments);
 
@@ -235,8 +255,9 @@ class Dispatcher implements Contract
     protected function isInvalidClassMethod(Dispatch $dispatch): bool
     {
         return $dispatch->isMethod()
-            && $dispatch->getMethod()
-            && ! method_exists($dispatch->getClass(), $dispatch->getMethod());
+            && ($class = $dispatch->getClass())
+            && ($method = $dispatch->getMethod())
+            && ! method_exists($class, $method);
     }
 
     /**
@@ -249,20 +270,19 @@ class Dispatcher implements Contract
     protected function isInvalidClassProperty(Dispatch $dispatch): bool
     {
         return $dispatch->isProperty()
-            && $dispatch->getProperty()
-            && ! property_exists($dispatch->getClass(), $dispatch->getProperty());
+            && ($class = $dispatch->getClass())
+            && ($property = $dispatch->getProperty())
+            && ! property_exists($class, $property);
     }
 
     /**
      * Get class from dispatch.
      *
-     * @template O
-     *
      * @param Dispatch $dispatch The dispatch
      *
      * @throws InvalidArgumentException
      *
-     * @return object|class-string<O>
+     * @return object|class-string
      */
     protected function getClassFromDispatch(Dispatch $dispatch): mixed
     {
@@ -270,7 +290,7 @@ class Dispatcher implements Contract
             throw new InvalidArgumentException('Invalid class defined in dispatch model.');
         }
 
-        return $dispatch->isStatic() ? $class : $this->container->get($dispatch->getClass());
+        return $dispatch->isStatic() ? $class : $this->container->get($class);
     }
 
     /**
@@ -362,32 +382,34 @@ class Dispatcher implements Contract
      */
     protected function getDependencies(Dispatch $dispatch): ?array
     {
-        $dependencies = [];
+        $dependenciesInstances = [];
 
         // If there are dependencies
-        if ($dispatch->getDependencies()) {
-            $context = $dispatch->getClass() ?? $dispatch->getFunction() ?? '';
-            $member  = $dispatch->getMethod() ?? $dispatch->getProperty();
-
-            $container        = $this->container;
-            $containerContext = $container->withContext($context, $member);
-
-            // Iterate through all the dependencies
-            foreach ($dispatch->getDependencies() as $dependency) {
-                // If there is a context dependency
-                if ($containerContext->has($dependency)) {
-                    // Set the context dependency from the container
-                    $dependencies[] = $containerContext->get($dependency, []);
-
-                    continue;
-                }
-
-                // Set the dependency from the container
-                $dependencies[] = $container->get($dependency, []);
-            }
+        if (($dependencies = $dispatch->getDependencies()) === null) {
+            return $dependenciesInstances;
         }
 
-        return $dependencies;
+        $context = $dispatch->getClass() ?? $dispatch->getFunction() ?? '';
+        $member  = $dispatch->getMethod() ?? $dispatch->getProperty();
+
+        $container        = $this->container;
+        $containerContext = $container->withContext($context, $member);
+
+        // Iterate through all the dependencies
+        foreach ($dependencies as $dependency) {
+            // If there is a context dependency
+            if ($containerContext->has($dependency)) {
+                // Set the context dependency from the container
+                $dependenciesInstances[] = $containerContext->get($dependency);
+
+                continue;
+            }
+
+            // Set the dependency from the container
+            $dependenciesInstances[] = $container->get($dependency);
+        }
+
+        return $dependenciesInstances;
     }
 
     /**

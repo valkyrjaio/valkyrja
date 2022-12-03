@@ -21,11 +21,13 @@ use Valkyrja\Config\Config\Config;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Env;
 use Valkyrja\Event\Events;
 use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Exception\ExceptionHandler;
 use Valkyrja\Support\Type\Arr;
+use Valkyrja\Support\Type\Cls;
 
 use function constant;
 use function date_default_timezone_set;
@@ -53,7 +55,7 @@ class Valkyrja implements Application
     /**
      * Application env.
      *
-     * @var string|null
+     * @var class-string<Env>|null
      */
     protected static ?string $env = null;
 
@@ -81,7 +83,7 @@ class Valkyrja implements Application
     /**
      * Application constructor.
      *
-     * @param string|null $config [optional] The config class to use
+     * @param class-string<Config>|null $config [optional] The config class to use
      */
     public function __construct(string $config = null)
     {
@@ -170,7 +172,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public static function setEnv(string $env = null): void
+    public static function setEnv(string $env): void
     {
         // Set the env class to use
         self::$env = $env;
@@ -278,6 +280,8 @@ class Valkyrja implements Application
      */
     public function offsetSet($offset, $value): void
     {
+        /** @var class-string $offset */
+        // Let the container and PHP do the type handling here. Let's add the docblock to avoid static analyzer errors.
         self::$container->bind($offset, $value);
     }
 
@@ -320,7 +324,7 @@ class Valkyrja implements Application
     /**
      * Bootstrap the config.
      *
-     * @param string|null $config [optional] The config class to use
+     * @param class-string<Config>|null $config [optional] The config class to use
      *
      * @return void
      */
@@ -339,6 +343,9 @@ class Valkyrja implements Application
 
         $config ??= self::env('CONFIG_CLASS', Config::class);
 
+        Cls::validateInherits($config, Config::class);
+
+        /** @var class-string<Config> $config */
         $this->withConfig(new $config(null, true));
     }
 
@@ -388,10 +395,13 @@ class Valkyrja implements Application
      */
     protected function publishConfigProviders(): void
     {
-        foreach (self::$config['providers'] as $provider) {
-            /** @var \Valkyrja\Config\Support\Provider $provider */
+        /** @var Config $config */
+        $config = self::$config;
+
+        /** @var class-string<\Valkyrja\Config\Support\Provider> $provider */
+        foreach ($config->providers as $provider) {
             // Config providers are NOT deferred
-            $provider::publish(self::$config);
+            $provider::publish($config);
         }
     }
 

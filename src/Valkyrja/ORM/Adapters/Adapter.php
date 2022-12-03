@@ -44,28 +44,28 @@ abstract class Adapter implements Contract
     /**
      * The query service to use.
      *
-     * @var string
+     * @var class-string<Query>
      */
     protected string $queryClass;
 
     /**
      * The query builder service to use.
      *
-     * @var string
+     * @var class-string<QueryBuilder>
      */
     protected string $queryBuilderClass;
 
     /**
      * The persister service to use.
      *
-     * @var string
+     * @var class-string<Persister>
      */
     protected string $persisterClass;
 
     /**
      * The retriever service to use.
      *
-     * @var string
+     * @var class-string<Retriever>
      */
     protected string $retrieverClass;
 

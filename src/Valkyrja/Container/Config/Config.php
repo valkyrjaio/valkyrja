@@ -48,35 +48,35 @@ class Config extends Model
     /**
      * The annotated service aliases.
      *
-     * @var string[]
+     * @var class-string[]
      */
     public array $aliases;
 
     /**
      * The annotated services.
      *
-     * @var string[]
+     * @var class-string[]
      */
     public array $services;
 
     /**
      * The annotated context services.
      *
-     * @var string[]
+     * @var class-string[]
      */
     public array $contextServices;
 
     /**
      * The command providers.
      *
-     * @var Provider[]|string[]
+     * @var class-string<Provider>[]
      */
     public array $providers;
 
     /**
      * The dev command providers.
      *
-     * @var Provider[]|string[]
+     * @var class-string<Provider>[]
      */
     public array $devProviders;
 

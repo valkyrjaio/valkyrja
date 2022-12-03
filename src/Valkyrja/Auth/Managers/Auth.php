@@ -68,35 +68,35 @@ class Auth implements Contract
     /**
      * The default adapter.
      *
-     * @var string
+     * @var class-string<Adapter>
      */
     protected string $defaultAdapter;
 
     /**
      * The default repository.
      *
-     * @var string
+     * @var class-string<Repository>
      */
     protected string $defaultRepository;
 
     /**
      * The default gate.
      *
-     * @var string
+     * @var class-string<Gate>
      */
     protected string $defaultGate;
 
     /**
      * The default policy.
      *
-     * @var string
+     * @var class-string<Policy>
      */
     protected string $defaultPolicy;
 
     /**
      * The default user entity.
      *
-     * @var string
+     * @var class-string<User>
      */
     protected string $defaultUserEntity;
 

@@ -37,7 +37,7 @@ interface Auth
     /**
      * Get an adapter by name.
      *
-     * @param string|null $name [optional] The adapter name
+     * @param class-string<Adapter>|null $name [optional] The adapter name
      *
      * @return Adapter
      */
@@ -46,8 +46,8 @@ interface Auth
     /**
      * Get a repository by user entity name.
      *
-     * @param string|null $user    [optional] The user
-     * @param string|null $adapter [optional] The adapter
+     * @param class-string<User>|null    $user    [optional] The user
+     * @param class-string<Adapter>|null $adapter [optional] The adapter
      *
      * @return Repository
      */
@@ -56,9 +56,9 @@ interface Auth
     /**
      * Get a gate by name.
      *
-     * @param string|null $name    [optional] The name
-     * @param string|null $user    [optional] The user
-     * @param string|null $adapter [optional] The adapter
+     * @param class-string<Gate>|null    $name    [optional] The name
+     * @param class-string<User>|null    $user    [optional] The user
+     * @param class-string<Adapter>|null $adapter [optional] The adapter
      *
      * @return Gate
      */
@@ -67,9 +67,9 @@ interface Auth
     /**
      * Get a policy by name.
      *
-     * @param string|null $name    [optional] The policy name
-     * @param string|null $user    [optional] The user
-     * @param string|null $adapter [optional] The adapter
+     * @param class-string<Policy>|null  $name    [optional] The policy name
+     * @param class-string<User>|null    $user    [optional] The user
+     * @param class-string<Adapter>|null $adapter [optional] The adapter
      *
      * @return Policy
      */
@@ -85,9 +85,9 @@ interface Auth
     /**
      * Get a request with auth token header.
      *
-     * @param Request     $request The request
-     * @param string|null $user    [optional] The user
-     * @param string|null $adapter [optional] The adapter
+     * @param Request                    $request The request
+     * @param class-string<User>|null    $user    [optional] The user
+     * @param class-string<Adapter>|null $adapter [optional] The adapter
      *
      * @throws CryptException
      *

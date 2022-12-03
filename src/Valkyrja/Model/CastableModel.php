@@ -52,7 +52,7 @@ interface CastableModel extends Model
      *      ]
      * </code>
      *
-     * @return array<string, CastType|array<CastType, string|string[]>>
+     * @return array<string, CastType|array{CastType, class-string|class-string[]}>
      */
     public static function getCastings(): array;
 
@@ -66,7 +66,7 @@ interface CastableModel extends Model
      *      ]
      * </code>
      *
-     * @return array<string, string[]>
+     * @return array<string, class-string[]>
      */
     public static function getCastingsAllowedClasses(): array;
 }

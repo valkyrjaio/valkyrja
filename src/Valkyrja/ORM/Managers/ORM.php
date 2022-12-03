@@ -146,6 +146,7 @@ class ORM implements Contract
         // The connection config to use
         $config = $this->connections[$name];
         // The driver
+        /** @var class-string<Driver> $driver */
         $driver = $config['driver'] ?? $this->defaultDriver;
         // The adapter to use
         $adapter ??= $config['adapter'] ?? $this->defaultAdapter;
@@ -215,6 +216,7 @@ class ORM implements Contract
         /** @var Entity $entityClass */
         $entityClass = $entity;
 
+        /** @var class-string<Repository> $name */
         $name     = $entityClass::getRepository() ?? $this->defaultRepository;
         $cacheKey = $name . $entity;
 

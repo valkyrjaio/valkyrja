@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model\Models;
 
+use Attribute;
 use ReflectionAttribute;
 use Valkyrja\Reflection\Facades\Reflector;
 
@@ -31,13 +32,13 @@ trait AttributedModelTrait
     /**
      * @inheritDoc
      *
+     * @param class-string<Attribute>|null $name [optional] The attribute name to filter by
+     *
      * @return ReflectionAttribute[]
      */
     public static function getAttributes(string $name = null): array
     {
-        $name = static::class . ($name ?? '');
-
-        return self::$attributes[$name]
+        return self::$attributes[static::class . ($name ?? '')]
             ??= Reflector::getClassReflection(static::class)->getAttributes($name);
     }
 }

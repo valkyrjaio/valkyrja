@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model;
 
+use Attribute;
 use ReflectionAttribute;
 
 /**
@@ -25,7 +26,7 @@ interface AttributedModel extends Model
     /**
      * Get the model's attributes.
      *
-     * @param string|null $name [optional] The attribute name to filter by
+     * @param class-string<Attribute>|null $name [optional] The attribute name to filter by
      *
      * @return ReflectionAttribute[]
      */

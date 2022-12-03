@@ -30,7 +30,7 @@ trait StreamHelpers
     /**
      * The stream.
      *
-     * @var resource
+     * @var resource|null
      */
     protected $stream;
 
@@ -90,7 +90,7 @@ trait StreamHelpers
      *
      * @return bool
      */
-    protected function isValidStream(): bool
+    protected function isInValidStream(): bool
     {
         return $this->stream === null;
     }
@@ -103,7 +103,7 @@ trait StreamHelpers
     protected function verifyStream(): void
     {
         // If there is no stream
-        if ($this->isValidStream()) {
+        if ($this->isInValidStream()) {
             // Throw a runtime exception
             throw new InvalidStream('No resource available; cannot read');
         }

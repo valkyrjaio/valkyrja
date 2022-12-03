@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event;
 
-use Valkyrja\Event\Annotations\Listener;
-
 /**
  * Interface Annotator.
  *
@@ -27,7 +25,7 @@ interface Annotator
      *
      * @param string ...$classes The classes
      *
-     * @return Listener[]
+     * @return list<Listener>
      */
     public function getListeners(string ...$classes): array;
 }

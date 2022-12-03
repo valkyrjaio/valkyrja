@@ -19,6 +19,7 @@ use Valkyrja\Config\Config\Config;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Env;
 use Valkyrja\Event\Events;
 use Valkyrja\HttpKernel\Kernel;
 
@@ -58,24 +59,24 @@ interface Application extends ArrayAccess
     /**
      * Get environment variables.
      *
-     * @return string|null
+     * @return class-string<Env>|null
      */
     public static function getEnv(): ?string;
 
     /**
      * Set the environment variables class.
      *
-     * @param string|null $env [optional] The env file to use
+     * @param class-string<Env> $env The env file to use
      *
      * @return void
      */
-    public static function setEnv(string $env = null): void;
+    public static function setEnv(string $env): void;
 
     /**
      * Setup the application.
      *
-     * @param string|null $config [optional] The config to use
-     * @param bool        $force  [optional] Whether to force a setup
+     * @param class-string<Config>|null $config [optional] The config to use
+     * @param bool                      $force  [optional] Whether to force a setup
      *
      * @return void
      */

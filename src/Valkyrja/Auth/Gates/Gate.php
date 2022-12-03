@@ -15,6 +15,7 @@ namespace Valkyrja\Auth\Gates;
 
 use Valkyrja\Auth\Auth;
 use Valkyrja\Auth\Gate as Contract;
+use Valkyrja\Auth\Policy;
 use Valkyrja\Auth\Repository;
 
 /**
@@ -84,8 +85,8 @@ class Gate implements Contract
     /**
      * Check if the action/policy combo are authorized.
      *
-     * @param string      $action The action to check if authorized for
-     * @param string|null $policy [optional] The policy
+     * @param string                    $action The action to check if authorized for
+     * @param class-string<Policy>|null $policy [optional] The policy
      *
      * @return bool
      */

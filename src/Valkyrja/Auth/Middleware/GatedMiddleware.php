@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Middleware;
 
+use Valkyrja\Auth\Gate;
+use Valkyrja\Auth\Policy;
 use Valkyrja\Auth\User;
 use Valkyrja\Http\Request;
 
@@ -26,14 +28,14 @@ abstract class GatedMiddleware extends AuthorizedMiddleware
     /**
      * The gate to check against.
      *
-     * @var string|null
+     * @var class-string<Gate>|null
      */
     protected static ?string $gate = null;
 
     /**
      * The policy to check against.
      *
-     * @var string|null
+     * @var class-string<Policy>|null
      */
     protected static ?string $policy = null;
 

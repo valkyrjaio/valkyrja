@@ -16,6 +16,7 @@ namespace Valkyrja\Routing\Config;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Routing\Support\Middleware;
 
 use function is_array;
 
@@ -46,21 +47,21 @@ class Config extends Model
     /**
      * The middleware.
      *
-     * @var string[]
+     * @var class-string<Middleware>[]
      */
     public array $middleware;
 
     /**
      * The middleware groups.
      *
-     * @var string[]
+     * @var class-string<Middleware>[][]
      */
     public array $middlewareGroups;
 
     /**
      * The annotated controllers.
      *
-     * @var string[]
+     * @var class-string[]
      */
     public array $controllers;
 

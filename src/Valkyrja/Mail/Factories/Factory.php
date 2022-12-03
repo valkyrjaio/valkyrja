@@ -11,21 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Sms\Factories;
+namespace Valkyrja\Mail\Factories;
 
-use Valkyrja\Sms\Adapter;
-use Valkyrja\Sms\Driver;
-use Valkyrja\Sms\FactoryFactory as Contract;
-use Valkyrja\Sms\Message;
-use Valkyrja\Support\Manager\Factories\MessageFactory as Factory;
+use Valkyrja\Mail\Adapter;
+use Valkyrja\Mail\Driver;
+use Valkyrja\Mail\FactoryFactory as Contract;
+use Valkyrja\Mail\Message;
+use Valkyrja\Support\Manager\Factories\MessageFactory;
 
 /**
- * Class SimpleFactory.
+ * Class Factory.
  *
  * @author Melech Mizrachi
- * @extends Factory<Driver, Adapter, Message>
+ * @extends MessageFactory<Driver, Adapter, Message>
  */
-class SimpleFactory extends Factory implements Contract
+class Factory extends MessageFactory implements Contract
 {
     /**
      * @inheritDoc

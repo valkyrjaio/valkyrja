@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Factories;
 
-use Valkyrja\Validation\Factory;
+use Valkyrja\Validation\Factory as Contract;
 use Valkyrja\Validation\Rules\Base;
 
 /**
- * Class SimpleFactory.
+ * Class Factory.
  *
  * @author Melech Mizrachi
  */
-class SimpleFactory implements Factory
+class Factory implements Contract
 {
     /**
      * @inheritDoc

@@ -49,16 +49,6 @@ class ListenerTest extends TestCase
     }
 
     /**
-     * Test the getEvent method's default value.
-     *
-     * @return void
-     */
-    public function testGetEventDefault(): void
-    {
-        self::assertEquals(null, $this->class->getEvent());
-    }
-
-    /**
      * Test the getEvent method.
      *
      * @return void
@@ -68,16 +58,6 @@ class ListenerTest extends TestCase
         $this->class->setEvent($this->value);
 
         self::assertEquals($this->value, $this->class->getEvent());
-    }
-
-    /**
-     * Test the setEvent method with null value.
-     *
-     * @return void
-     */
-    public function testSetEventNull(): void
-    {
-        self::assertEquals($this->class, $this->class->setEvent(null));
     }
 
     /**

@@ -98,16 +98,20 @@ class Annotator implements Contract
      */
     protected function setCommandProperties(Annotation $annotation): void
     {
-        if (! $annotation->getClass()) {
+        $class = $annotation->getClass();
+
+        if (! $class) {
             return;
         }
 
-        $classReflection = $this->reflector->getClassReflection($annotation->getClass());
+        $classReflection = $this->reflector->getClassReflection($class);
 
-        if ($annotation->getMethod() || $classReflection->hasMethod('__construct')) {
+        $method = $annotation->getMethod();
+
+        if ($method || $classReflection->hasMethod('__construct')) {
             $methodReflection = $this->reflector->getMethodReflection(
-                $annotation->getClass(),
-                $annotation->getMethod() ?? '__construct'
+                $class,
+                $method ?? '__construct'
             );
 
             // Set the dependencies

@@ -61,7 +61,7 @@ class Stream implements StreamContract
     public function isSeekable(): bool
     {
         // If there is no stream
-        if ($this->isValidStream()) {
+        if ($this->isInValidStream()) {
             // Don't do anything
             return false;
         }
@@ -77,8 +77,11 @@ class Stream implements StreamContract
         $this->verifyStream();
         $this->verifySeekable();
 
+        /** @var resource $stream */
+        $stream = $this->stream;
+
         // Get the results of the seek attempt
-        $result = fseek($this->stream, $offset, $whence);
+        $result = fseek($stream, $offset, $whence);
 
         $this->verifySeekResult($result);
     }
@@ -97,12 +100,13 @@ class Stream implements StreamContract
     public function isReadable(): bool
     {
         // If there is no stream
-        if ($this->isValidStream()) {
+        if ($this->isInValidStream()) {
             // It's not readable
             return false;
         }
 
         // Get the stream's mode
+        /** @var string|null $mode */
         $mode = $this->getMetadata('mode');
 
         return $this->isModeReadable((string) $mode);
@@ -116,8 +120,11 @@ class Stream implements StreamContract
         $this->verifyStream();
         $this->verifyReadable();
 
+        /** @var resource $stream */
+        $stream = $this->stream;
+
         // Read the stream
-        $result = fread($this->stream, $length);
+        $result = fread($stream, $length);
 
         $this->verifyReadResult($result);
 
@@ -130,12 +137,13 @@ class Stream implements StreamContract
     public function isWritable(): bool
     {
         // If there is no stream
-        if ($this->isValidStream()) {
+        if ($this->isInValidStream()) {
             // The stream is definitely not writable
             return false;
         }
 
         // Get the stream's mode
+        /** @var string|null $mode */
         $mode = $this->getMetadata('mode');
 
         return $this->isModeWriteable((string) $mode);
@@ -149,8 +157,11 @@ class Stream implements StreamContract
         $this->verifyStream();
         $this->verifyWritable();
 
+        /** @var resource $stream */
+        $stream = $this->stream;
+
         // Attempt to write to the stream
-        $result = fwrite($this->stream, $string);
+        $result = fwrite($stream, $string);
 
         $this->verifyWriteResult($result);
 
@@ -187,12 +198,13 @@ class Stream implements StreamContract
     public function close(): void
     {
         // If there is no stream
-        if ($this->isValidStream()) {
+        if ($this->isInValidStream()) {
             // Don't do anything
             return;
         }
 
         // Detach the stream
+        /** @var resource $resource */
         $resource = $this->detach();
 
         // Close the stream
@@ -204,7 +216,8 @@ class Stream implements StreamContract
      */
     public function detach()
     {
-        $resource     = $this->stream;
+        $resource = $this->stream;
+
         $this->stream = null;
 
         return $resource;
@@ -224,13 +237,16 @@ class Stream implements StreamContract
     public function getSize(): ?int
     {
         // If the stream isn't set
-        if ($this->isValidStream()) {
+        if ($this->isInValidStream()) {
             // Return without attempting to get the fstat
             return null;
         }
 
+        /** @var resource $stream */
+        $stream = $this->stream;
+
         // Get the stream's fstat
-        $fstat = fstat($this->stream);
+        $fstat = fstat($stream);
 
         return $fstat['size'];
     }
@@ -242,8 +258,11 @@ class Stream implements StreamContract
     {
         $this->verifyStream();
 
+        /** @var resource $stream */
+        $stream = $this->stream;
+
         // Get the tell for the stream
-        $result = ftell($this->stream);
+        $result = ftell($stream);
 
         // If the tell is not an int
         if ($result === false) {
@@ -260,12 +279,15 @@ class Stream implements StreamContract
     public function eof(): bool
     {
         // If there is no stream
-        if ($this->isValidStream()) {
+        if ($this->isInValidStream()) {
             // Don't do anything
             return true;
         }
 
-        return feof($this->stream);
+        /** @var resource $stream */
+        $stream = $this->stream;
+
+        return feof($stream);
     }
 
     /**
@@ -279,8 +301,11 @@ class Stream implements StreamContract
             throw new StreamException('Stream is not readable');
         }
 
+        /** @var resource $stream */
+        $stream = $this->stream;
+
         // Get the stream contents
-        $result = stream_get_contents($this->stream);
+        $result = stream_get_contents($stream);
 
         // If there was a failure in getting the stream contents
         if (false === $result) {
@@ -296,14 +321,22 @@ class Stream implements StreamContract
      */
     public function getMetadata(string $key = null): mixed
     {
+        // Ensure the stream is valid
+        if ($this->isInValidStream()) {
+            return null;
+        }
+
+        /** @var resource $stream */
+        $stream = $this->stream;
+
         // If no key was specified
         if (null === $key) {
             // Return all the meta data
-            return stream_get_meta_data($this->stream);
+            return stream_get_meta_data($stream);
         }
 
         // Get the meta data
-        $metadata = stream_get_meta_data($this->stream);
+        $metadata = stream_get_meta_data($stream);
 
         return $metadata[$key] ?? null;
     }

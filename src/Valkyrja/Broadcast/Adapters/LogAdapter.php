@@ -64,7 +64,7 @@ class LogAdapter extends NullAdapter
         $this->log->info('Event:');
         $this->log->info($message->getEvent());
         $this->log->info('Data:');
-        $this->log->info(Arr::toString($message->getData()));
+        $this->log->info(Arr::toString($message->getData() ?? []));
         $this->log->info('Message:');
         $this->log->info($message->getMessage());
     }

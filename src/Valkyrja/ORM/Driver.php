@@ -77,8 +77,8 @@ interface Driver
     /**
      * Create a new query instance.
      *
-     * @param string|null $query
-     * @param string|null $entity
+     * @param string|null               $query
+     * @param class-string<Entity>|null $entity
      *
      * @return Query
      */
@@ -87,8 +87,8 @@ interface Driver
     /**
      * Create a new query builder instance.
      *
-     * @param string|null $entity
-     * @param string|null $alias
+     * @param class-string<Entity>|null $entity
+     * @param string|null               $alias
      *
      * @return QueryBuilder
      */

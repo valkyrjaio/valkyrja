@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api\Config;
 
+use Valkyrja\Api\Json;
+use Valkyrja\Api\JsonData;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
@@ -37,14 +39,14 @@ class Config extends Model
     /**
      * The JSON model class.
      *
-     * @var string
+     * @var class-string<Json>
      */
     public string $jsonModel;
 
     /**
      * The JSON data model class.
      *
-     * @var string
+     * @var class-string<JsonData>
      */
     public string $jsonDataModel;
 }

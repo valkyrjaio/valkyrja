@@ -46,7 +46,7 @@ class Dispatch extends Model implements Contract
     /**
      * The class.
      *
-     * @var string|null
+     * @var class-string|null
      */
     protected ?string $class;
 
@@ -95,7 +95,7 @@ class Dispatch extends Model implements Contract
     /**
      * The function.
      *
-     * @var string|null
+     * @var callable-string|null
      */
     protected ?string $function;
 

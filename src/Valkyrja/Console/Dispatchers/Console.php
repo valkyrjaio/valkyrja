@@ -298,7 +298,10 @@ class Console implements Contract
         $command->setParams($parsedCommand['params']);
         $command->setSegments($parsedCommand['segments']);
 
-        if (! ($path = $command->getPath()) || ! ($regex = $command->getRegex())) {
+        $path  = $command->getPath();
+        $regex = $command->getRegex();
+
+        if (! $path || ! $regex) {
             throw new InvalidArgumentException('Invalid command provided.');
         }
 
@@ -307,10 +310,12 @@ class Console implements Contract
         // Set the command in the commands paths list
         self::$paths[$regex] = $path;
 
+        $name = $command->getName();
+
         // If the command has a name
-        if (null !== $command->getName()) {
+        if ($name !== null) {
             // Set in the named commands list to find it more easily later
-            self::$namedCommands[$command->getName()] = $path;
+            self::$namedCommands[$name] = $path;
         }
     }
 }

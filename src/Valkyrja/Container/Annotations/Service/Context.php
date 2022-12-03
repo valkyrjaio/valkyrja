@@ -25,14 +25,14 @@ class Context extends Service
     /**
      * The service.
      *
-     * @var string|null
+     * @var class-string<\Valkyrja\Container\Service>|null
      */
     public ?string $service;
 
     /**
      * Get the service.
      *
-     * @return string|null
+     * @return class-string<\Valkyrja\Container\Service>|null
      */
     public function getService(): ?string
     {
@@ -42,7 +42,7 @@ class Context extends Service
     /**
      * Set the service.
      *
-     * @param string|null $service The service
+     * @param class-string<\Valkyrja\Container\Service>|null $service The service
      *
      * @return static
      */

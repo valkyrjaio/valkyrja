@@ -65,6 +65,7 @@ abstract class Config extends Model implements ArrayAccess
      */
     public function offsetExists($offset): bool
     {
+        /** @var string $offset */
         return isset($this->{$offset});
     }
 
@@ -73,6 +74,7 @@ abstract class Config extends Model implements ArrayAccess
      */
     public function offsetGet($offset): mixed
     {
+        /** @var string $offset */
         return $this->__get($offset);
     }
 
@@ -81,14 +83,18 @@ abstract class Config extends Model implements ArrayAccess
      */
     public function offsetSet($offset, $value): void
     {
+        /** @var string $offset */
         $this->__set($offset, $value);
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
+        $this->validateOffset($offset);
+
+        /** @var string $offset */
         unset($this->{$offset});
     }
 
@@ -122,6 +128,13 @@ abstract class Config extends Model implements ArrayAccess
     {
         foreach (static::$envKeys as $property => $value) {
             $this->__set($property, env(static::$envKeys[$property]) ?? $this->__get($property));
+        }
+    }
+
+    protected function validateOffset(mixed $offset): void
+    {
+        if (! \is_string($offset)) {
+            throw new \RuntimeException('Invalid offset provided.');
         }
     }
 }
