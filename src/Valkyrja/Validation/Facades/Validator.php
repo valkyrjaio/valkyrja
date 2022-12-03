@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Facades;
 
-use Valkyrja\Support\Facade\Facade;
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Validation\Validator as Contract;
 
 /**
@@ -28,7 +28,7 @@ use Valkyrja\Validation\Validator as Contract;
  * @method static string|null getErrorMessage()
  * @method static void setDefaultErrorMessage(string $defaultErrorMessage)
  */
-class Validator extends Facade
+class Validator extends ContainerFacade
 {
     /**
      * @inheritDoc

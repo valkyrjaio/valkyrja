@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Path\Facades;
 
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Path\PathGenerator as Contract;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class PathGenerator.
@@ -23,7 +23,7 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @method static string parse(array $segments, array $data = null, array $params = null)
  */
-class PathGenerator extends Facade
+class PathGenerator extends ContainerFacade
 {
     /**
      * @inheritDoc

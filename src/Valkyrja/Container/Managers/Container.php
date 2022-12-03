@@ -18,7 +18,7 @@ use Valkyrja\Container\Config\Config;
 use Valkyrja\Container\Container as Contract;
 use Valkyrja\Container\Exceptions\InvalidServiceIdException;
 use Valkyrja\Container\Service;
-use Valkyrja\Support\Facade\Facade;
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Support\Provider\Traits\ProvidersAwareTrait;
 use Valkyrja\Type\Cls;
 
@@ -107,7 +107,9 @@ class Container implements Contract
         protected bool $debug = false
     ) {
         if (! self::$facadeSetup && $config['setupFacade']) {
-            Facade::setContainer($this);
+            ContainerFacade::setContainer($this);
+
+            self::$facadeSetup = true;
         }
     }
 

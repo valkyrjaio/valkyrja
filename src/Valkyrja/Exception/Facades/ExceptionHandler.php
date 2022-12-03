@@ -15,7 +15,7 @@ namespace Valkyrja\Exception\Facades;
 
 use Throwable;
 use Valkyrja\Exception\ExceptionHandler as Contract;
-use Valkyrja\Support\Facade\Facade;
+use Valkyrja\Facade\ContainerFacade;
 
 use const E_ALL;
 
@@ -27,7 +27,7 @@ use const E_ALL;
  * @method static void enable(int $errorReportingLevel = E_ALL, bool $displayErrors = false)
  * @method static string getTraceCode(Throwable $exception)
  */
-class ExceptionHandler extends Facade
+class ExceptionHandler extends ContainerFacade
 {
     /**
      * The facade instance.

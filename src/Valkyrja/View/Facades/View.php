@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Facades;
 
-use Valkyrja\Support\Facade\Facade;
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\View\Engine;
 use Valkyrja\View\Template;
 use Valkyrja\View\View as Contract;
@@ -27,7 +27,7 @@ use Valkyrja\View\View as Contract;
  * @method static Engine getEngine(string $name = null)
  * @method static string render(string $name, array $variables = [])
  */
-class View extends Facade
+class View extends ContainerFacade
 {
     /**
      * @inheritDoc

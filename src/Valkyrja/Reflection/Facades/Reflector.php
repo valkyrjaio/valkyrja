@@ -20,8 +20,8 @@ use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Reflection\Reflector as Contract;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Reflector.
@@ -36,7 +36,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static string[] getDependencies(ReflectionFunctionAbstract $reflection)
  * @method static string[] getDependenciesFromParameters(ReflectionParameter ...$parameters)
  */
-class Reflector extends Facade
+class Reflector extends ContainerFacade
 {
     /**
      * @inheritDoc

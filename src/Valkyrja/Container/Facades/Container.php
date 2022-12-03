@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Facades;
 
-use Valkyrja\Support\Facade\Facade;
+use Valkyrja\Facade\ContainerFacade;
 
 /**
  * Class Container.
@@ -35,7 +35,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static mixed getSingleton(string $serviceId)
  * @method static string contextServiceId(string $serviceId, string $context, string $member = null)
  */
-class Container extends Facade
+class Container extends ContainerFacade
 {
     /**
      * @inheritDoc

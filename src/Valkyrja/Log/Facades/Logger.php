@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Log\Facades;
 
 use Throwable;
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Log\Driver;
 use Valkyrja\Log\Logger as Contract;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Logger.
@@ -35,7 +35,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static void log(string $message, array $context = [])
  * @method static void exception(Throwable $exception, string $message, array $context = [])
  */
-class Logger extends Facade
+class Logger extends ContainerFacade
 {
     /**
      * @inheritDoc

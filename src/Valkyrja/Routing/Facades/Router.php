@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Facades;
 
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router as Contract;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Router.
@@ -39,7 +39,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static bool isInternalUri(string $uri)
  * @method static Response dispatch(Request $request)
  */
-class Router extends Facade
+class Router extends ContainerFacade
 {
     /**
      * @inheritDoc

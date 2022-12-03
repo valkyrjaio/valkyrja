@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Annotation\Facades;
 
 use Valkyrja\Attribute\Attributes as Contract;
-use Valkyrja\Support\Facade\Facade;
+use Valkyrja\Facade\ContainerFacade;
 
 /**
  * Class Attributes.
@@ -30,7 +30,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static object[] forMethods(string $class, string $attribute = null)
  * @method static object[] forFunction(string $function, string $attribute = null)
  */
-class Attributes extends Facade
+class Attributes extends ContainerFacade
 {
     /**
      * @inheritDoc

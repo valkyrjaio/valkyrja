@@ -15,7 +15,7 @@ namespace Valkyrja\Crypt\Facades;
 
 use Valkyrja\Crypt\Adapter;
 use Valkyrja\Crypt\Crypt as Contract;
-use Valkyrja\Support\Facade\Facade;
+use Valkyrja\Facade\ContainerFacade;
 
 /**
  * Class Crypt.
@@ -30,7 +30,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static string encryptObject(object $object, string $key = null)
  * @method static object decryptObject(string $encrypted, string $key = null)
  */
-class Crypt extends Facade
+class Crypt extends ContainerFacade
 {
     /**
      * @inheritDoc

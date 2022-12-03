@@ -21,7 +21,7 @@ use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Annotator as Contract;
 use Valkyrja\Annotation\Filter;
 use Valkyrja\Annotation\Parser;
-use Valkyrja\Support\Facade\Facade;
+use Valkyrja\Facade\ContainerFacade;
 
 /**
  * Class Annotator.
@@ -45,7 +45,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static ReflectionMethod getMethodReflection(string $class, string $method)
  * @method static ReflectionFunction getFunctionReflection(string $function)
  */
-class Annotator extends Facade
+class Annotator extends ContainerFacade
 {
     /**
      * @inheritDoc

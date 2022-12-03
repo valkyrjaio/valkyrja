@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Facades;
 
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory as Contract;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class ResponseFactory.
@@ -31,7 +31,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static RedirectResponse route(string $route, array $parameters = null, int $statusCode = null, array $headers = null)
  * @method static Response view(string $template, array $data = null, int $statusCode = null, array $headers = null)
  */
-class ResponseFactory extends Facade
+class ResponseFactory extends ContainerFacade
 {
     /**
      * @inheritDoc

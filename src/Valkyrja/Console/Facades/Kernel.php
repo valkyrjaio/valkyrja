@@ -16,7 +16,7 @@ namespace Valkyrja\Console\Facades;
 use Valkyrja\Console\Input as ConsoleInput;
 use Valkyrja\Console\Kernel as Contract;
 use Valkyrja\Console\Output as ConsoleOutput;
-use Valkyrja\Support\Facade\Facade;
+use Valkyrja\Facade\ContainerFacade;
 
 /**
  * Class Kernel.
@@ -27,7 +27,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static void terminate(ConsoleInput $input, int $exitCode)
  * @method static int run(ConsoleInput $input = null, ConsoleOutput $output = null)
  */
-class Kernel extends Facade
+class Kernel extends ContainerFacade
 {
     /**
      * @inheritDoc

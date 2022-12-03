@@ -15,8 +15,8 @@ namespace Valkyrja\Client\Facades;
 
 use Valkyrja\Client\Client as Contract;
 use Valkyrja\Client\Driver;
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Http\Response;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Client.
@@ -32,7 +32,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static Response patch(string $uri, array $options = [])
  * @method static Response delete(string $uri, array $options = [])
  */
-class Client extends Facade
+class Client extends ContainerFacade
 {
     /**
      * @inheritDoc

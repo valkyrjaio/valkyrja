@@ -16,7 +16,7 @@ namespace Valkyrja\Console\Facades;
 use Valkyrja\Console\Enums\OutputStyle;
 use Valkyrja\Console\Formatter;
 use Valkyrja\Console\Output as Contract;
-use Valkyrja\Support\Facade\Facade;
+use Valkyrja\Facade\ContainerFacade;
 
 /**
  * Class Output.
@@ -27,7 +27,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static void write(array $messages, bool $newLine = null, OutputStyle $outputStyle = null)
  * @method static void writeMessage(string $message, bool $newLine = null, OutputStyle $outputStyle = null)
  */
-class Output extends Facade
+class Output extends ContainerFacade
 {
     /**
      * @inheritDoc

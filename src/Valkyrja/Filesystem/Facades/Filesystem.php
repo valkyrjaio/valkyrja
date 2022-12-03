@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Facades;
 
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Filesystem\Driver;
 use Valkyrja\Filesystem\Enums\Visibility;
 use Valkyrja\Filesystem\Filesystem as Contract;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Filesystem.
@@ -46,7 +46,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static bool deleteDir(string $path)
  * @method static array listContents(string $directory = null, bool $recursive = false)
  */
-class Filesystem extends Facade
+class Filesystem extends ContainerFacade
 {
     /**
      * @inheritDoc

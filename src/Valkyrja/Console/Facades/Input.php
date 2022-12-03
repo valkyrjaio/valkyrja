@@ -15,7 +15,7 @@ namespace Valkyrja\Console\Facades;
 
 use Valkyrja\Console\Input as Contract;
 use Valkyrja\Console\Inputs\Option;
-use Valkyrja\Support\Facade\Facade;
+use Valkyrja\Facade\ContainerFacade;
 
 /**
  * Class Input.
@@ -39,7 +39,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static Option[] getGlobalOptions()
  * @method static string[] getGlobalOptionsFlat()
  */
-class Input extends Facade
+class Input extends ContainerFacade
 {
     /**
      * @inheritDoc

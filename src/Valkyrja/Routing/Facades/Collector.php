@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Facades;
 
 use Closure;
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Routing\Collector as Contract;
 use Valkyrja\Routing\Route;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Collector.
@@ -38,7 +38,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static Contract withSecure(bool $secure = true)
  * @method static Contract group(Closure $group)
  */
-class Collector extends Facade
+class Collector extends ContainerFacade
 {
     /**
      * @inheritDoc

@@ -11,15 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Facade;
+namespace Valkyrja\Facade;
 
-use InvalidArgumentException;
 use RuntimeException;
-use Valkyrja\Container\Container;
 
 use function in_array;
 use function is_object;
-use function is_string;
 
 /**
  * Abstract Class Facade.
@@ -34,35 +31,6 @@ abstract class Facade
      * @var object[]
      */
     protected static array $instances = [];
-
-    /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected static Container $container;
-
-    /**
-     * Get the container.
-     *
-     * @return Container
-     */
-    public static function getContainer(): Container
-    {
-        return self::$container;
-    }
-
-    /**
-     * Set the container.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function setContainer(Container $container): void
-    {
-        self::$container = $container;
-    }
 
     /**
      * Get the instance.
@@ -81,21 +49,19 @@ abstract class Facade
     /**
      * Set the instance.
      *
-     * @param string|object $instance The instance
+     * @param object|class-string $instance The instance
      *
      * @return void
      */
-    public static function setInstance(string|object $instance): void
+    public static function setInstance(object|string $instance): void
     {
-        static::verifyInstance($instance);
-
-        if (is_object($instance)) {
-            self::$instances[static::class] = $instance;
-
-            return;
+        if (! is_object($instance)) {
+            throw new InvalidClassStringUsageException(
+                "Please use the ContainerFacade if you would like to simply pass a class name of $instance"
+            );
         }
 
-        self::$instances[static::class] = self::getContainer()->get($instance);
+        self::$instances[static::class] = $instance;
     }
 
     /**
@@ -114,7 +80,7 @@ abstract class Facade
         $instance = static::getInstance();
 
         if (! is_object($instance)) {
-            throw new RuntimeException('A facade instance has not been set.');
+            throw new InvalidArgumentException('A facade instance has not been set.');
         }
 
         /** @var object $instance */
@@ -151,23 +117,9 @@ abstract class Facade
     }
 
     /**
-     * Verify an instance's type.
-     *
-     * @param mixed $instance The instance
-     *
-     * @return void
-     */
-    protected static function verifyInstance(mixed $instance): void
-    {
-        if (! is_string($instance) && ! is_object($instance)) {
-            throw new InvalidArgumentException('Instance must be a string or an object.');
-        }
-    }
-
-    /**
      * The facade instance.
      *
-     * @return object|string
+     * @return object|class-string
      */
     abstract protected static function instance(): object|string;
 }

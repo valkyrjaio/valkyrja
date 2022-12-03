@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Path\Facades;
 
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Path\PathParser as Contract;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class PathParser.
@@ -23,7 +23,7 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @method static array parse(string $path)
  */
-class PathParser extends Facade
+class PathParser extends ContainerFacade
 {
     /**
      * @inheritDoc

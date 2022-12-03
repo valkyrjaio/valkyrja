@@ -17,7 +17,7 @@ use Valkyrja\Console\Command;
 use Valkyrja\Console\Console as Contract;
 use Valkyrja\Console\Input as ConsoleInput;
 use Valkyrja\Console\Output as ConsoleOutput;
-use Valkyrja\Support\Facade\Facade;
+use Valkyrja\Facade\ContainerFacade;
 
 /**
  * Class Console.
@@ -36,7 +36,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static void set(Command ...$commands)
  * @method static string[] getNamedCommands()
  */
-class Console extends Facade
+class Console extends ContainerFacade
 {
     /**
      * @inheritDoc

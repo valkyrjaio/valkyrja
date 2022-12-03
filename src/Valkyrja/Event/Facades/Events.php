@@ -16,7 +16,7 @@ namespace Valkyrja\Event\Facades;
 use Valkyrja\Event\Event;
 use Valkyrja\Event\Events as Contract;
 use Valkyrja\Event\Listener;
-use Valkyrja\Support\Facade\Facade;
+use Valkyrja\Facade\ContainerFacade;
 
 /**
  * Class Events.
@@ -37,7 +37,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static array all()
  * @method static void setEvents(array $events)
  */
-class Events extends Facade
+class Events extends ContainerFacade
 {
     /**
      * @inheritDoc

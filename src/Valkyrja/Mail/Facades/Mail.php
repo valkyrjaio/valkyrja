@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Facades;
 
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Mail\Driver;
 use Valkyrja\Mail\Mail as Contract;
 use Valkyrja\Mail\Message;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Mail.
@@ -27,7 +27,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static Message createMessage(string $name = null)
  * @method static void send(Message $message)
  */
-class Mail extends Facade
+class Mail extends ContainerFacade
 {
     /**
      * @inheritDoc

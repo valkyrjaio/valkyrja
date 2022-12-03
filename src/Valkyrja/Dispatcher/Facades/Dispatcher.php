@@ -15,7 +15,7 @@ namespace Valkyrja\Dispatcher\Facades;
 
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Dispatcher\Dispatcher as Contract;
-use Valkyrja\Support\Facade\Facade;
+use Valkyrja\Facade\ContainerFacade;
 
 /**
  * Class Dispatcher.
@@ -33,7 +33,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static mixed dispatchClosure(Dispatch $dispatch, array $arguments = null)
  * @method static mixed dispatch(Dispatch $dispatch, array $arguments = null)
  */
-class Dispatcher extends Facade
+class Dispatcher extends ContainerFacade
 {
     /**
      * @inheritDoc

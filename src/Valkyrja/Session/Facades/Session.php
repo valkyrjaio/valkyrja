@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Facades;
 
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Session\Driver as SessionContract;
 use Valkyrja\Session\Session as Contract;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Session.
@@ -39,7 +39,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static void clear()
  * @method static void destroy()
  */
-class Session extends Facade
+class Session extends ContainerFacade
 {
     /**
      * @inheritDoc

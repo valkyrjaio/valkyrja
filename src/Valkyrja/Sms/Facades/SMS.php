@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Facades;
 
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Sms\Driver;
 use Valkyrja\Sms\Message;
 use Valkyrja\Sms\Sms as Contract;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class SMS.
@@ -27,7 +27,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static Message createMessage(string $name = null)
  * @method static void send(Message $message)
  */
-class SMS extends Facade
+class SMS extends ContainerFacade
 {
     /**
      * @inheritDoc

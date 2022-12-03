@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification\Facades;
 
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Notification\NotifiableUser;
 use Valkyrja\Notification\Notification;
 use Valkyrja\Notification\Notifier as Contract;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Notifier.
@@ -30,7 +30,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static void notifyUser(Notification $notification, NotifiableUser $user)
  * @method static void notifyUsers(Notification $notification, NotifiableUser ...$users)
  */
-class Notifier extends Facade
+class Notifier extends ContainerFacade
 {
     /**
      * @inheritDoc

@@ -20,8 +20,8 @@ use Valkyrja\Auth\Gate;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Auth\User;
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Http\Request;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Auth.
@@ -51,7 +51,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static Contract confirmPassword(string $password)
  * @method static bool isReAuthenticationRequired()
  */
-class Auth extends Facade
+class Auth extends ContainerFacade
 {
     /**
      * @inheritDoc

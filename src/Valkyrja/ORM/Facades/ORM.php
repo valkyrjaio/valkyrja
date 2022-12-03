@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Facades;
 
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Entity;
@@ -24,7 +25,6 @@ use Valkyrja\ORM\Repository;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SoftDeleteEntity;
 use Valkyrja\ORM\Statement;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class ORM.
@@ -55,7 +55,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static void softDelete(SoftDeleteEntity $entity, bool $defer = true)
  * @method static void clear(Entity $entity = null)
  */
-class ORM extends Facade
+class ORM extends ContainerFacade
 {
     /**
      * @inheritDoc

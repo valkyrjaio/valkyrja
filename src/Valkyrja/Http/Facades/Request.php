@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Facades;
 
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Http\Request as Contract;
 use Valkyrja\Http\Stream;
 use Valkyrja\Http\UploadedFile;
 use Valkyrja\Http\Uri;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Request.
@@ -75,7 +75,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static Contract withoutAttribute(string $name)
  * @method static bool isXmlHttpRequest()
  */
-class Request extends Facade
+class Request extends ContainerFacade
 {
     /**
      * @inheritDoc

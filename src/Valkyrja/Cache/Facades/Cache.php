@@ -15,7 +15,7 @@ namespace Valkyrja\Cache\Facades;
 
 use Valkyrja\Cache\Cache as Contract;
 use Valkyrja\Cache\Driver;
-use Valkyrja\Support\Facade\Facade;
+use Valkyrja\Facade\ContainerFacade;
 
 /**
  * Class Cache.
@@ -24,7 +24,7 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @method static Driver useStore(string $name = null, string $adapter = null)
  */
-class Cache extends Facade
+class Cache extends ContainerFacade
 {
     /**
      * @inheritDoc

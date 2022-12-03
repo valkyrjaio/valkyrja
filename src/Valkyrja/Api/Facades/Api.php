@@ -16,9 +16,9 @@ namespace Valkyrja\Api\Facades;
 use Exception;
 use Valkyrja\Api\Api as Contract;
 use Valkyrja\Api\Json;
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\ORM\Entity;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Api.
@@ -38,7 +38,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static Json jsonFromEntities(Entity ...$entities)
  * @method static JsonResponse jsonResponseFromEntities(Entity ...$entities)
  */
-class Api extends Facade
+class Api extends ContainerFacade
 {
     /**
      * @inheritDoc

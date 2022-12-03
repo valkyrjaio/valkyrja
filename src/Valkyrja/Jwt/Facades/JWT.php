@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Facades;
 
+use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Jwt\Driver;
 use Valkyrja\Jwt\Jwt as Contract;
-use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class JWT.
@@ -26,7 +26,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static string encode(array $payload)
  * @method static array decode(string $jwt)
  */
-class JWT extends Facade
+class JWT extends ContainerFacade
 {
     /**
      * @inheritDoc
