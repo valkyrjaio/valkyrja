@@ -34,7 +34,7 @@ class Route extends Dispatch implements Contract
      *
      * @var string
      */
-    protected string $path;
+    protected string $path = '';
 
     /**
      * The redirect path for this route.
@@ -139,7 +139,13 @@ class Route extends Dispatch implements Contract
     {
         $route = clone $this;
 
-        $route->name = ($this->name ?? '') . ".$name";
+        $currentName = $this->name ?? '';
+
+        if ($name) {
+            $route->name = $currentName
+                ? "$currentName.$name"
+                : $name;
+        }
 
         return $route;
     }

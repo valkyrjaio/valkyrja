@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 use Valkyrja\Routing\Facades\Collector;
 
-Collector::get(
-    '/',
-    static function () {
-    },
-    'welcome'
-);
+Collector::group(static function (\Valkyrja\Routing\Collector $collector) {
+    $collector->get(
+        '/',
+        static function () {
+        },
+        'welcome'
+    );
+});

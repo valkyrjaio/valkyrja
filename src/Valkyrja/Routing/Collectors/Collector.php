@@ -233,12 +233,10 @@ class Collector implements Contract
         string $name = null,
         bool $setDependencies = true
     ): Route {
-        $route = clone $this->route;
-
-        $route->withPath($path);
+        $route = $this->route->withPath($path);
 
         if ($name !== null) {
-            $route->withName($name);
+            $route = $route->withName($name);
         }
 
         $this->setRouteHandler($route, $handler);
