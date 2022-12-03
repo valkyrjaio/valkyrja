@@ -115,7 +115,7 @@ function abortResponse(Response $response): never
  */
 function annotator(): Annotator
 {
-    return Valkyrja::app()->container()->getSingleton(Annotator::class);
+    return container()->getSingleton(Annotator::class);
 }
 
 /**
@@ -125,7 +125,7 @@ function annotator(): Annotator
  */
 function api(): Api
 {
-    return Valkyrja::app()->container()->getSingleton(Api::class);
+    return container()->getSingleton(Api::class);
 }
 
 /**
@@ -135,7 +135,7 @@ function api(): Api
  */
 function auth(): Auth
 {
-    return Valkyrja::app()->container()->getSingleton(Auth::class);
+    return container()->getSingleton(Auth::class);
 }
 
 /**
@@ -145,7 +145,7 @@ function auth(): Auth
  */
 function cache(): Cache
 {
-    return Valkyrja::app()->container()->getSingleton(Cache::class);
+    return container()->getSingleton(Cache::class);
 }
 
 /**
@@ -155,7 +155,7 @@ function cache(): Cache
  */
 function client(): Client
 {
-    return Valkyrja::app()->container()->getSingleton(Client::class);
+    return container()->getSingleton(Client::class);
 }
 
 /**
@@ -178,7 +178,7 @@ function config(string $key = null, mixed $default = null): mixed
  */
 function console(): Console
 {
-    return Valkyrja::app()->container()->getSingleton(Console::class);
+    return container()->getSingleton(Console::class);
 }
 
 /**
@@ -188,7 +188,7 @@ function console(): Console
  */
 function container(): Container
 {
-    return Valkyrja::app()->container();
+    return app()->container();
 }
 
 /**
@@ -198,7 +198,7 @@ function container(): Container
  */
 function dispatcher(): Dispatcher
 {
-    return Valkyrja::app()->container()->getSingleton(Dispatcher::class);
+    return container()->getSingleton(Dispatcher::class);
 }
 
 /**
@@ -224,7 +224,7 @@ function env(string $key = null, mixed $default = null): mixed
  */
 function events(): Events
 {
-    return Valkyrja::app()->container()->getSingleton(Events::class);
+    return container()->getSingleton(Events::class);
 }
 
 /**
@@ -234,7 +234,7 @@ function events(): Events
  */
 function filesystem(): Filesystem
 {
-    return Valkyrja::app()->container()->getSingleton(Filesystem::class);
+    return container()->getSingleton(Filesystem::class);
 }
 
 /**
@@ -244,7 +244,7 @@ function filesystem(): Filesystem
  */
 function input(): Input
 {
-    return Valkyrja::app()->container()->getSingleton(Input::class);
+    return container()->getSingleton(Input::class);
 }
 
 /**
@@ -254,7 +254,7 @@ function input(): Input
  */
 function kernel(): Kernel
 {
-    return Valkyrja::app()->container()->getSingleton(Kernel::class);
+    return container()->getSingleton(Kernel::class);
 }
 
 /**
@@ -264,7 +264,7 @@ function kernel(): Kernel
  */
 function consoleKernel(): ConsoleKernel
 {
-    return Valkyrja::app()->container()->getSingleton(ConsoleKernel::class);
+    return container()->getSingleton(ConsoleKernel::class);
 }
 
 /**
@@ -274,7 +274,7 @@ function consoleKernel(): ConsoleKernel
  */
 function crypt(): Crypt
 {
-    return Valkyrja::app()->container()->getSingleton(Crypt::class);
+    return container()->getSingleton(Crypt::class);
 }
 
 /**
@@ -284,7 +284,7 @@ function crypt(): Crypt
  */
 function logger(): Logger
 {
-    return Valkyrja::app()->container()->getSingleton(Logger::class);
+    return container()->getSingleton(Logger::class);
 }
 
 /**
@@ -294,7 +294,7 @@ function logger(): Logger
  */
 function mail(): Mail
 {
-    return Valkyrja::app()->container()->getSingleton(Mail::class);
+    return container()->getSingleton(Mail::class);
 }
 
 /**
@@ -316,7 +316,7 @@ function mailMessage(string $name = null): MailMessage
  */
 function notifier(): Notifier
 {
-    return Valkyrja::app()->container()->getSingleton(Notifier::class);
+    return container()->getSingleton(Notifier::class);
 }
 
 /**
@@ -352,7 +352,7 @@ function notifyUsers(Notification $notification, NotifiableUser ...$users): void
  */
 function pathGenerator(): PathGenerator
 {
-    return Valkyrja::app()->container()->getSingleton(PathGenerator::class);
+    return container()->getSingleton(PathGenerator::class);
 }
 
 /**
@@ -362,7 +362,7 @@ function pathGenerator(): PathGenerator
  */
 function pathParser(): PathParser
 {
-    return Valkyrja::app()->container()->getSingleton(PathParser::class);
+    return container()->getSingleton(PathParser::class);
 }
 
 /**
@@ -372,7 +372,7 @@ function pathParser(): PathParser
  */
 function orm(): ORM
 {
-    return Valkyrja::app()->container()->getSingleton(ORM::class);
+    return container()->getSingleton(ORM::class);
 }
 
 /**
@@ -382,7 +382,7 @@ function orm(): ORM
  */
 function output(): Output
 {
-    return Valkyrja::app()->container()->getSingleton(Output::class);
+    return container()->getSingleton(Output::class);
 }
 
 /**
@@ -392,7 +392,7 @@ function output(): Output
  */
 function reflector(): Reflector
 {
-    return Valkyrja::app()->container()->getSingleton(Reflector::class);
+    return container()->getSingleton(Reflector::class);
 }
 
 /**
@@ -402,7 +402,7 @@ function reflector(): Reflector
  */
 function request(): Request
 {
-    return Valkyrja::app()->container()->getSingleton(Request::class);
+    return container()->getSingleton(Request::class);
 }
 
 /**
@@ -412,7 +412,7 @@ function request(): Request
  */
 function router(): Router
 {
-    return Valkyrja::app()->container()->getSingleton(Router::class);
+    return container()->getSingleton(Router::class);
 }
 
 /**
@@ -422,7 +422,7 @@ function router(): Router
  */
 function collector(): Collector
 {
-    return Valkyrja::app()->container()->getSingleton(Collector::class);
+    return container()->getSingleton(Collector::class);
 }
 
 /**
@@ -432,7 +432,7 @@ function collector(): Collector
  */
 function url(): Url
 {
-    return Valkyrja::app()->container()->getSingleton(Url::class);
+    return container()->getSingleton(Url::class);
 }
 
 /**
@@ -470,7 +470,7 @@ function routeUrl(string $name, array $data = null, bool $absolute = null): stri
  */
 function responseFactory(): ResponseFactory
 {
-    return Valkyrja::app()->container()->getSingleton(ResponseFactory::class);
+    return container()->getSingleton(ResponseFactory::class);
 }
 
 /**
@@ -560,7 +560,7 @@ function redirectTo(
  */
 function session(): Session
 {
-    return Valkyrja::app()->container()->getSingleton(Session::class);
+    return container()->getSingleton(Session::class);
 }
 
 /**
@@ -570,7 +570,7 @@ function session(): Session
  */
 function sms(): Sms
 {
-    return Valkyrja::app()->container()->getSingleton(Sms::class);
+    return container()->getSingleton(Sms::class);
 }
 
 /**
@@ -592,7 +592,7 @@ function smsMessage(string $name = null): SmsMessage
  */
 function validator(): Validator
 {
-    return Valkyrja::app()->container()->getSingleton(Validator::class);
+    return container()->getSingleton(Validator::class);
 }
 
 /**
@@ -602,7 +602,7 @@ function validator(): Validator
  */
 function view(): View
 {
-    return Valkyrja::app()->container()->getSingleton(View::class);
+    return container()->getSingleton(View::class);
 }
 
 /**
@@ -616,7 +616,7 @@ function view(): View
 function template(string $template = null, array $variables = []): Template
 {
     /** @var View $view */
-    $view = Valkyrja::app()->container()->getSingleton(View::class);
+    $view = container()->getSingleton(View::class);
 
     return $view->createTemplate($template, $variables);
 }
