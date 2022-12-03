@@ -17,7 +17,7 @@ use Valkyrja\Application\Application;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Container\Providers\AppProvider as ContainerAppProvider;
 use Valkyrja\HttpKernel\Kernels\Kernel;
-use Valkyrja\Support\Exception\Classes\ExceptionHandler;
+use Valkyrja\Exception\Classes\ExceptionHandler;
 
 /**
  * Constant ConfigValue.

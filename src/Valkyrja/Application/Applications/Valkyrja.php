@@ -25,7 +25,7 @@ use Valkyrja\Env;
 use Valkyrja\Event\Events;
 use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Support\Directory;
-use Valkyrja\Support\Exception\ExceptionHandler;
+use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Type\Arr;
 use Valkyrja\Type\Cls;
 
