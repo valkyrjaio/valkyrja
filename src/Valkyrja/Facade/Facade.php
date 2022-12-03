@@ -15,6 +15,9 @@ namespace Valkyrja\Facade;
 
 use RuntimeException;
 
+use Valkyrja\Facade\Exceptions\InvalidArgumentException;
+use Valkyrja\Facade\Exceptions\InvalidClassStringUsageException;
+
 use function in_array;
 use function is_object;
 
