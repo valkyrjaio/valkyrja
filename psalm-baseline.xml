@@ -1,58 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="5.0.0@4e177bf0c9f03c17d2fbfd83b7cc9c47605274d8">
-  <file src="src/Valkyrja/Cache/Adapters/RedisAdapter.php">
-    <TooManyArguments occurrences="1">
-      <code>transaction</code>
-    </TooManyArguments>
-  </file>
-  <file src="src/Valkyrja/Console/Dispatchers/CacheableConsole.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
-      <code>Cache</code>
-    </ImplementedReturnTypeMismatch>
-  </file>
-  <file src="src/Valkyrja/Event/Dispatchers/CacheableEvents.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
-      <code>Cache</code>
-    </ImplementedReturnTypeMismatch>
-  </file>
-  <file src="src/Valkyrja/Http/Factories/FileFactory.php">
-    <InvalidArrayOffset occurrences="1">
-      <code>$normalizedFiles[$key]</code>
-    </InvalidArrayOffset>
-    <InvalidReturnStatement occurrences="2">
-      <code>$normalized</code>
-      <code>$normalizedFiles</code>
-    </InvalidReturnStatement>
-    <InvalidReturnType occurrences="2">
-      <code>UploadedFile[]</code>
-      <code>UploadedFile[]</code>
-    </InvalidReturnType>
-  </file>
-  <file src="src/Valkyrja/Model/Models/CastableModelTrait.php">
-    <UndefinedMethod occurrences="2">
-      <code>$type</code>
-      <code>$type</code>
-    </UndefinedMethod>
-  </file>
-  <file src="src/Valkyrja/Model/Models/UnpackingFromArrayModelTrait.php">
-    <TooManyArguments occurrences="1">
-      <code>new static(...$properties)</code>
-    </TooManyArguments>
-  </file>
-  <file src="src/Valkyrja/ORM/Adapters/PDOAdapter.php">
-    <RedundantCast occurrences="1">
-      <code>(string) $this-&gt;pdo-&gt;lastInsertId($name)</code>
-    </RedundantCast>
-  </file>
-  <file src="src/Valkyrja/Routing/Collections/CacheableCollection.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
-      <code>Cache</code>
-    </ImplementedReturnTypeMismatch>
-  </file>
-  <file src="src/Valkyrja/Support/Type/Str.php">
-    <NoValue occurrences="2">
-      <code>$subject</code>
-      <code>$subject</code>
-    </NoValue>
-  </file>
+    <file src="src/Valkyrja/Cache/Adapters/RedisAdapter.php">
+        <TooManyArguments occurrences="1">
+            <code>transaction</code>
+        </TooManyArguments>
+    </file>
+    <file src="src/Valkyrja/Console/Dispatchers/CacheableConsole.php">
+        <ImplementedReturnTypeMismatch occurrences="1">
+            <code>Cache</code>
+        </ImplementedReturnTypeMismatch>
+    </file>
+    <file src="src/Valkyrja/Event/Dispatchers/CacheableEvents.php">
+        <ImplementedReturnTypeMismatch occurrences="1">
+            <code>Cache</code>
+        </ImplementedReturnTypeMismatch>
+    </file>
+    <file src="src/Valkyrja/Http/Factories/FileFactory.php">
+        <InvalidArrayOffset occurrences="1">
+            <code>$normalizedFiles[$key]</code>
+        </InvalidArrayOffset>
+        <InvalidReturnStatement occurrences="2">
+            <code>$normalized</code>
+            <code>$normalizedFiles</code>
+        </InvalidReturnStatement>
+        <InvalidReturnType occurrences="2">
+            <code>UploadedFile[]</code>
+            <code>UploadedFile[]</code>
+        </InvalidReturnType>
+    </file>
+    <file src="src/Valkyrja/Model/Models/CastableModelTrait.php">
+        <UndefinedMethod occurrences="2">
+            <code>$type</code>
+            <code>$type</code>
+        </UndefinedMethod>
+    </file>
+    <file src="src/Valkyrja/Model/Models/UnpackingFromArrayModelTrait.php">
+        <TooManyArguments occurrences="1">
+            <code>new static(...$properties)</code>
+        </TooManyArguments>
+    </file>
+    <file src="src/Valkyrja/ORM/Adapters/PDOAdapter.php">
+        <RedundantCast occurrences="1">
+            <code>(string) $this-&gt;pdo-&gt;lastInsertId($name)</code>
+        </RedundantCast>
+    </file>
+    <file src="src/Valkyrja/Routing/Collections/CacheableCollection.php">
+        <ImplementedReturnTypeMismatch occurrences="1">
+            <code>Cache</code>
+        </ImplementedReturnTypeMismatch>
+    </file>
+    <file src="src/Valkyrja/Type/Str.php">
+        <NoValue occurrences="2">
+            <code>$subject</code>
+            <code>$subject</code>
+        </NoValue>
+    </file>
 </files>
