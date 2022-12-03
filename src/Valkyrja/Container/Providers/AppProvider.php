@@ -18,7 +18,7 @@ use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container as Contract;
 use Valkyrja\Container\Managers\CacheableContainer;
-use Valkyrja\Env;
+use Valkyrja\Application\Env;
 
 /**
  * Class AppProvider.

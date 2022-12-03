@@ -19,7 +19,7 @@ use Valkyrja\Config\Config\Config;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Env;
+use Valkyrja\Application\Env;
 use Valkyrja\Event\Events;
 use Valkyrja\HttpKernel\Kernel;
 
