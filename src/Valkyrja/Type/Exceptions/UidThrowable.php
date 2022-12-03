@@ -18,6 +18,6 @@ namespace Valkyrja\Type\Exceptions;
  *
  * @author Melech Mizrachi
  */
-interface UidThrowable extends TypeThrowable
+interface UidThrowable extends Throwable
 {
 }

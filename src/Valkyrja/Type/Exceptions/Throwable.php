@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Exceptions;
 
-use Throwable;
+use Valkyrja\Exception\Throwable as Contract;
 
 /**
  * Class TypeThrowable.
  *
  * @author Melech Mizrachi
  */
-interface TypeThrowable extends Throwable
+interface Throwable extends Contract
 {
 }

@@ -18,6 +18,6 @@ namespace Valkyrja\Type\Exceptions;
  *
  * @author Melech Mizrachi
  */
-interface ClassThrowable extends TypeThrowable
+interface ClassThrowable extends Throwable
 {
 }
