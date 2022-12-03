@@ -15,7 +15,7 @@ namespace Valkyrja\Sms\Managers;
 
 use Valkyrja\Sms\Config\Config;
 use Valkyrja\Sms\Driver;
-use Valkyrja\Sms\FactoryFactory;
+use Valkyrja\Sms\Factory;
 use Valkyrja\Sms\Message;
 use Valkyrja\Sms\Sms as Contract;
 use Valkyrja\Support\Manager\Managers\MessageManager as Manager;
@@ -25,18 +25,18 @@ use Valkyrja\Support\Manager\Managers\MessageManager as Manager;
  *
  * @author Melech Mizrachi
  *
- * @property FactoryFactory $factory
- * @extends Manager<Driver, FactoryFactory, Message>
+ * @property Factory $factory
+ * @extends Manager<Driver, Factory, Message>
  */
 class Sms extends Manager implements Contract
 {
     /**
      * Mail constructor.
      *
-     * @param FactoryFactory $factory The factory
-     * @param Config|array   $config  The config
+     * @param Factory      $factory The factory
+     * @param Config|array $config  The config
      */
-    public function __construct(FactoryFactory $factory, Config|array $config)
+    public function __construct(Factory $factory, Config|array $config)
     {
         parent::__construct($factory, $config);
 

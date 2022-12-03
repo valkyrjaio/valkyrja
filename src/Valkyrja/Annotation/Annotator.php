@@ -39,7 +39,7 @@ interface Annotator
     /**
      * Get a class's annotations.
      *
-     * @param string $class The class
+     * @param class-string $class The class
      *
      * @return Annotation[]
      */
@@ -48,7 +48,7 @@ interface Annotator
     /**
      * Get a class's members' annotations.
      *
-     * @param string $class The class
+     * @param class-string $class The class
      *
      * @return Annotation[]
      */
@@ -57,7 +57,7 @@ interface Annotator
     /**
      * Get a class's and class's members' annotations.
      *
-     * @param string $class The class
+     * @param class-string $class The class
      *
      * @return Annotation[]
      */
@@ -66,8 +66,8 @@ interface Annotator
     /**
      * Get a property's annotations.
      *
-     * @param string $class    The class
-     * @param string $property The property
+     * @param class-string $class    The class
+     * @param string       $property The property
      *
      * @return Annotation[]
      */
@@ -76,7 +76,7 @@ interface Annotator
     /**
      * Get a class's properties' annotations.
      *
-     * @param string $class The class
+     * @param class-string $class The class
      *
      * @return Annotation[]
      */
@@ -85,8 +85,8 @@ interface Annotator
     /**
      * Get a method's annotations.
      *
-     * @param string $class  The class
-     * @param string $method The method
+     * @param class-string $class  The class
+     * @param string       $method The method
      *
      * @return Annotation[]
      */
@@ -95,7 +95,7 @@ interface Annotator
     /**
      * Get a class's methods' annotations.
      *
-     * @param string $class The class
+     * @param class-string $class The class
      *
      * @return Annotation[]
      */
@@ -104,7 +104,7 @@ interface Annotator
     /**
      * Get a function's annotations.
      *
-     * @param string $function The function
+     * @param callable-string $function The function
      *
      * @return Annotation[]
      */

@@ -21,7 +21,7 @@ use Valkyrja\Support\Manager\MessageFactory as Contract;
  * @author Melech Mizrachi
  * @extends Contract<Adapter, Driver, Message>
  */
-interface FactoryFactory extends Contract
+interface Factory extends Contract
 {
     /**
      * @inheritDoc
@@ -36,7 +36,7 @@ interface FactoryFactory extends Contract
     /**
      * @inheritDoc
      *
-     * @param class-string<Adapter> $adapter The adapter
+     * @param class-string<Adapter> $name The adapter
      *
      * @return Adapter
      */

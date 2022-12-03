@@ -19,7 +19,7 @@ use Valkyrja\Support\Manager\MessageManager as Manager;
  * Interface Mail.
  *
  * @author Melech Mizrachi
- * @extends Manager<Driver, FactoryFactory, Message>
+ * @extends Manager<Driver, Factory, Message>
  */
 interface Mail extends Manager
 {

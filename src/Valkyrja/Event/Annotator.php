@@ -23,7 +23,7 @@ interface Annotator
     /**
      * Get the events.
      *
-     * @param string ...$classes The classes
+     * @param class-string ...$classes The classes
      *
      * @return list<Listener>
      */

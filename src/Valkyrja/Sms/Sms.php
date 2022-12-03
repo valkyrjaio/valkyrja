@@ -19,7 +19,7 @@ use Valkyrja\Support\Manager\MessageManager as Manager;
  * Interface Sms.
  *
  * @author Melech Mizrachi
- * @extends Manager<Driver, FactoryFactory, Message>
+ * @extends Manager<Driver, Factory, Message>
  */
 interface Sms extends Manager
 {

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Annotators;
 
-use JsonException;
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Filter;
@@ -58,8 +57,6 @@ class Annotator implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function getCommands(string ...$classes): array
     {

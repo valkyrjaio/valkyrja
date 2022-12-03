@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Sms;
+namespace Valkyrja\Mail;
 
 use Valkyrja\Support\Manager\MessageFactory as Contract;
 
@@ -21,7 +21,7 @@ use Valkyrja\Support\Manager\MessageFactory as Contract;
  * @author Melech Mizrachi
  * @extends Contract<Adapter, Driver, Message>
  */
-interface FactoryFactory extends Contract
+interface Factory extends Contract
 {
     /**
      * @inheritDoc
@@ -36,7 +36,7 @@ interface FactoryFactory extends Contract
     /**
      * @inheritDoc
      *
-     * @param class-string<Adapter> $adapter The adapter
+     * @param class-string<Adapter> $name The adapter
      *
      * @return Adapter
      */

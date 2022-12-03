@@ -15,7 +15,7 @@ namespace Valkyrja\Sms\Factories;
 
 use Valkyrja\Sms\Adapter;
 use Valkyrja\Sms\Driver;
-use Valkyrja\Sms\FactoryFactory as Contract;
+use Valkyrja\Sms\Factory as Contract;
 use Valkyrja\Sms\Message;
 use Valkyrja\Support\Manager\Factories\MessageFactory;
 
@@ -23,7 +23,7 @@ use Valkyrja\Support\Manager\Factories\MessageFactory;
  * Class Factory.
  *
  * @author Melech Mizrachi
- * @extends MessageFactory<Driver, Adapter, Message>
+ * @extends MessageFactory<Adapter, Driver, Message>
  */
 class Factory extends MessageFactory implements Contract
 {

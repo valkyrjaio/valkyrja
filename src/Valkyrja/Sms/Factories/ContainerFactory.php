@@ -15,7 +15,7 @@ namespace Valkyrja\Sms\Factories;
 
 use Valkyrja\Sms\Adapter;
 use Valkyrja\Sms\Driver;
-use Valkyrja\Sms\FactoryFactory as Contract;
+use Valkyrja\Sms\Factory as Contract;
 use Valkyrja\Sms\LogAdapter;
 use Valkyrja\Sms\Message;
 use Valkyrja\Sms\NexmoAdapter;
@@ -26,7 +26,7 @@ use Valkyrja\Support\Type\Cls;
  * Class ContainerFactory.
  *
  * @author Melech Mizrachi
- * @extends Factory<Driver, Adapter, Message>
+ * @extends Factory<Adapter, Driver, Message>
  */
 class ContainerFactory extends Factory implements Contract
 {

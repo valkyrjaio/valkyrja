@@ -121,7 +121,7 @@ class Annotator implements Contract
     /**
      * Get all classes' routes.
      *
-     * @param array $classes The classes
+     * @param class-string[] $classes The classes
      *
      * @return Route[]
      */
@@ -172,7 +172,7 @@ class Annotator implements Contract
     /**
      * Get class annotations
      *
-     * @param string $class The class
+     * @param class-string $class The class
      *
      * @return array
      */
@@ -277,7 +277,7 @@ class Annotator implements Contract
     /**
      * Get class member annotations
      *
-     * @param string $class The class
+     * @param class-string $class The class
      *
      * @return array
      */

@@ -23,8 +23,8 @@ interface Filter
     /**
      * Get a class's annotations by type.
      *
-     * @param string $type  The type
-     * @param string $class The class
+     * @param string       $type  The type
+     * @param class-string $class The class
      *
      * @return Annotation[]
      */
@@ -33,8 +33,8 @@ interface Filter
     /**
      * Get a class's members' annotations by type.
      *
-     * @param string $type  The type
-     * @param string $class The class
+     * @param string       $type  The type
+     * @param class-string $class The class
      *
      * @return Annotation[]
      */
@@ -43,8 +43,8 @@ interface Filter
     /**
      * Get a class's and class's members' annotations by type.
      *
-     * @param string $type  The type
-     * @param string $class The class
+     * @param string       $type  The type
+     * @param class-string $class The class
      *
      * @return Annotation[]
      */
@@ -53,9 +53,9 @@ interface Filter
     /**
      * Get a property's annotations by type.
      *
-     * @param string $type     The type
-     * @param string $class    The class
-     * @param string $property The property
+     * @param string       $type     The type
+     * @param class-string $class    The class
+     * @param string       $property The property
      *
      * @return Annotation[]
      */
@@ -64,8 +64,8 @@ interface Filter
     /**
      * Get a class's properties' annotations by type.
      *
-     * @param string $type  The type
-     * @param string $class The class
+     * @param string       $type  The type
+     * @param class-string $class The class
      *
      * @return Annotation[]
      */
@@ -74,9 +74,9 @@ interface Filter
     /**
      * Get a method's annotations by type.
      *
-     * @param string $type   The type
-     * @param string $class  The class
-     * @param string $method The method
+     * @param string       $type   The type
+     * @param class-string $class  The class
+     * @param string       $method The method
      *
      * @return Annotation[]
      */
@@ -85,8 +85,8 @@ interface Filter
     /**
      * Get a class's methods' annotations by type.
      *
-     * @param string $type  The type
-     * @param string $class The class
+     * @param string       $type  The type
+     * @param class-string $class The class
      *
      * @return Annotation[]
      */
@@ -95,8 +95,8 @@ interface Filter
     /**
      * Get a function's annotations.
      *
-     * @param string $type     The type
-     * @param string $function The function
+     * @param string          $type     The type
+     * @param callable-string $function The function
      *
      * @return Annotation[]
      */

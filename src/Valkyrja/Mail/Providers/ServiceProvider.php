@@ -24,7 +24,7 @@ use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Adapter;
 use Valkyrja\Mail\Driver;
 use Valkyrja\Mail\Factories\ContainerFactory;
-use Valkyrja\Mail\FactoryFactory;
+use Valkyrja\Mail\Factory;
 use Valkyrja\Mail\LogAdapter;
 use Valkyrja\Mail\Mail;
 use Valkyrja\Mail\MailgunAdapter;
@@ -45,7 +45,7 @@ class ServiceProvider extends Provider
     {
         return [
             Mail::class             => 'publishMail',
-            FactoryFactory::class   => 'publishFactory',
+            Factory::class          => 'publishFactory',
             Driver::class           => 'publishDriver',
             Adapter::class          => 'publishAdapter',
             LogAdapter::class       => 'publishLogAdapter',
@@ -64,7 +64,7 @@ class ServiceProvider extends Provider
     {
         return [
             Mail::class,
-            FactoryFactory::class,
+            Factory::class,
             Driver::class,
             Adapter::class,
             LogAdapter::class,
@@ -90,7 +90,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Mail::class,
             new \Valkyrja\Mail\Managers\Mail(
-                $container->getSingleton(FactoryFactory::class),
+                $container->getSingleton(Factory::class),
                 $config['mail']
             )
         );
@@ -106,7 +106,7 @@ class ServiceProvider extends Provider
     public static function publishFactory(Container $container): void
     {
         $container->setSingleton(
-            FactoryFactory::class,
+            Factory::class,
             new ContainerFactory($container),
         );
     }

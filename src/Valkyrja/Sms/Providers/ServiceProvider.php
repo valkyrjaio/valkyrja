@@ -21,7 +21,7 @@ use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger;
 use Valkyrja\Sms\Adapter;
 use Valkyrja\Sms\Factories\ContainerFactory;
-use Valkyrja\Sms\FactoryFactory;
+use Valkyrja\Sms\Factory;
 use Valkyrja\Sms\LogAdapter;
 use Valkyrja\Sms\Message;
 use Valkyrja\Sms\NexmoAdapter;
@@ -40,13 +40,13 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Sms::class => 'publishSMS',
-            FactoryFactory::class => 'publishFactory',
-            Adapter::class => 'publishAdapter',
-            LogAdapter::class => 'publishLogAdapter',
+            Sms::class          => 'publishSMS',
+            Factory::class      => 'publishFactory',
+            Adapter::class      => 'publishAdapter',
+            LogAdapter::class   => 'publishLogAdapter',
             NexmoAdapter::class => 'publishNexmoAdapter',
-            Nexmo::class => 'publishNexmo',
-            Message::class => 'publishMessage',
+            Nexmo::class        => 'publishNexmo',
+            Message::class      => 'publishMessage',
         ];
     }
 
@@ -57,7 +57,7 @@ class ServiceProvider extends Provider
     {
         return [
             Sms::class,
-            FactoryFactory::class,
+            Factory::class,
             Adapter::class,
             LogAdapter::class,
             NexmoAdapter::class,
@@ -80,7 +80,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Sms::class,
             new \Valkyrja\Sms\Managers\Sms(
-                $container->getSingleton(FactoryFactory::class),
+                $container->getSingleton(Factory::class),
                 $config['sms']
             )
         );
@@ -96,7 +96,7 @@ class ServiceProvider extends Provider
     public static function publishFactory(Container $container): void
     {
         $container->setSingleton(
-            FactoryFactory::class,
+            Factory::class,
             new ContainerFactory($container),
         );
     }

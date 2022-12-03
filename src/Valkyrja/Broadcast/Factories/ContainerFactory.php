@@ -15,7 +15,7 @@ namespace Valkyrja\Broadcast\Factories;
 
 use Valkyrja\Broadcast\Adapter;
 use Valkyrja\Broadcast\Driver;
-use Valkyrja\Broadcast\FactoryFactory as Contract;
+use Valkyrja\Broadcast\Factory as Contract;
 use Valkyrja\Broadcast\LogAdapter;
 use Valkyrja\Broadcast\Message;
 use Valkyrja\Broadcast\PusherAdapter;
@@ -26,7 +26,7 @@ use Valkyrja\Support\Type\Cls;
  * Class ContainerFactory.
  *
  * @author Melech Mizrachi
- * @extends Factory<Driver, Adapter, Message>
+ * @extends Factory<Adapter, Driver, Message>
  */
 class ContainerFactory extends Factory implements Contract
 {

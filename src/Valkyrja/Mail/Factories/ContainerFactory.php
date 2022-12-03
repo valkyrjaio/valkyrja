@@ -15,7 +15,7 @@ namespace Valkyrja\Mail\Factories;
 
 use Valkyrja\Mail\Adapter;
 use Valkyrja\Mail\Driver;
-use Valkyrja\Mail\FactoryFactory as Contract;
+use Valkyrja\Mail\Factory as Contract;
 use Valkyrja\Mail\LogAdapter;
 use Valkyrja\Mail\MailgunAdapter;
 use Valkyrja\Mail\Message;
@@ -27,7 +27,7 @@ use Valkyrja\Support\Type\Cls;
  * Class ContainerFactory.
  *
  * @author Melech Mizrachi
- * @extends Factory<Driver, Adapter, Message>
+ * @extends Factory<Adapter, Driver, Message>
  */
 class ContainerFactory extends Factory implements Contract
 {

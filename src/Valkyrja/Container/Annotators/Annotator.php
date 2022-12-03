@@ -86,8 +86,8 @@ class Annotator implements Contract
     /**
      * Get all annotations for a class and its members by type.
      *
-     * @param string $type       The type
-     * @param string ...$classes The classes
+     * @param string       $type       The type
+     * @param class-string ...$classes The classes
      *
      * @throws ReflectionException
      *

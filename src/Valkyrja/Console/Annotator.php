@@ -25,7 +25,7 @@ interface Annotator
     /**
      * Get the commands.
      *
-     * @param string ...$classes The classes
+     * @param class-string ...$classes The classes
      *
      * @throws ReflectionException
      *

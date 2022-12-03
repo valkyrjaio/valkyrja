@@ -36,7 +36,7 @@ interface Factory extends Contract
     /**
      * @inheritDoc
      *
-     * @param class-string<Adapter> $adapter The adapter
+     * @param class-string<Adapter> $name The adapter
      *
      * @return Adapter
      */

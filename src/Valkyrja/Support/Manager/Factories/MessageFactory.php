@@ -22,8 +22,8 @@ use Valkyrja\Support\Manager\MessageFactory as Contract;
  * Class MessageFactory.
  *
  * @author   Melech Mizrachi
+ * @template Adapter
  * @template Driver
- * @template Factory
  * @template Message
  * @implements Contract<Adapter, Driver, Message>
  */

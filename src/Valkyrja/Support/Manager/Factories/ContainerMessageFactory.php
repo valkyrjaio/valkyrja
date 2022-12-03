@@ -23,8 +23,8 @@ use Valkyrja\Support\Type\Cls;
  * Class ContainerMessageFactory.
  *
  * @author   Melech Mizrachi
+ * @template Adapter
  * @template Driver
- * @template Factory
  * @template Message
  * @implements MessageFactory<Adapter, Driver, Message>
  */
@@ -55,18 +55,6 @@ class ContainerMessageFactory extends ContainerFactory implements MessageFactory
                 $data,
             ]
         );
-    }
-
-    /**
-     * Get the default driver class.
-     *
-     * @param string $name The driver
-     *
-     * @return string
-     */
-    protected function getDriverDefaultClass(string $name): string
-    {
-        return static::$defaultDriverClass;
     }
 
     /**

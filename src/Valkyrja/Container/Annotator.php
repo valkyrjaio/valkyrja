@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container;
 
+use Valkyrja\Container\Annotations\Service;
 use Valkyrja\Container\Annotations\Service\Alias;
 use Valkyrja\Container\Annotations\Service\Context;
-use Valkyrja\Container\Annotations\Service;
 
 /**
  * Interface Annotator.
@@ -27,7 +27,7 @@ interface Annotator
     /**
      * Get the services.
      *
-     * @param string ...$classes The classes
+     * @param class-string ...$classes The classes
      *
      * @return Service[]
      */
@@ -36,7 +36,7 @@ interface Annotator
     /**
      * Get the alias services.
      *
-     * @param string ...$classes The classes
+     * @param class-string ...$classes The classes
      *
      * @return Alias[]
      */
@@ -45,7 +45,7 @@ interface Annotator
     /**
      * Get the context services.
      *
-     * @param string ...$classes The classes
+     * @param class-string ...$classes The classes
      *
      * @return Context[]
      */
