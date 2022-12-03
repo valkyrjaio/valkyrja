@@ -55,7 +55,6 @@ final class ConfigValue
         Provider::VIEW,
     ];
     public const DEV_PROVIDERS    = [];
-    public const SETUP_FACADE     = false;
     public const USE_ANNOTATIONS  = false;
     public const FILE_PATH        = '';
     public const CACHE_FILE_PATH  = '';
@@ -67,7 +66,6 @@ final class ConfigValue
         CKP::CONTEXT_SERVICES => self::CONTEXT_SERVICES,
         CKP::PROVIDERS        => self::PROVIDERS,
         CKP::DEV_PROVIDERS    => self::DEV_PROVIDERS,
-        CKP::SETUP_FACADE     => self::SETUP_FACADE,
         CKP::USE_ANNOTATIONS  => self::USE_ANNOTATIONS,
         CKP::FILE_PATH        => self::FILE_PATH,
         CKP::CACHE_FILE_PATH  => self::CACHE_FILE_PATH,

@@ -18,7 +18,6 @@ use Valkyrja\Container\Config\Config;
 use Valkyrja\Container\Container as Contract;
 use Valkyrja\Container\Exceptions\InvalidServiceIdException;
 use Valkyrja\Container\Service;
-use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Support\Provider\Traits\ProvidersAwareTrait;
 use Valkyrja\Type\Cls;
 
@@ -32,13 +31,6 @@ use function is_string;
 class Container implements Contract
 {
     use ProvidersAwareTrait;
-
-    /**
-     * Has the Facade been setup?
-     *
-     * @var bool
-     */
-    protected static bool $facadeSetup = false;
 
     /**
      * The aliases.
@@ -106,11 +98,6 @@ class Container implements Contract
         protected Config|array $config,
         protected bool $debug = false
     ) {
-        if (! self::$facadeSetup && $config['setupFacade']) {
-            ContainerFacade::setContainer($this);
-
-            self::$facadeSetup = true;
-        }
     }
 
     /**
