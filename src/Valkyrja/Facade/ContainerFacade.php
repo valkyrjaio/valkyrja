@@ -29,7 +29,7 @@ abstract class ContainerFacade extends Facade
      *
      * @var Container
      */
-    protected static Container $container;
+    private static Container $container;
 
     /**
      * Get the container.
@@ -38,7 +38,7 @@ abstract class ContainerFacade extends Facade
      */
     public static function getContainer(): Container
     {
-        return self::$container;
+        return self::$container ??= \Valkyrja\container();
     }
 
     /**

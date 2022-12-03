@@ -52,6 +52,6 @@ class Annotator extends ContainerFacade
      */
     public static function instance(): object|string
     {
-        return self::$container->getSingleton(Contract::class);
+        return self::getContainer()->getSingleton(Contract::class);
     }
 }

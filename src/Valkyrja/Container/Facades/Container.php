@@ -42,6 +42,6 @@ class Container extends ContainerFacade
      */
     public static function instance(): object|string
     {
-        return self::$container;
+        return self::getContainer();
     }
 }
