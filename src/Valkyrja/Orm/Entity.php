@@ -39,7 +39,7 @@ interface Entity extends CastableModel
     /**
      * Get the repository to use for this entity.
      *
-     * @return string|null
+     * @return class-string<Repository>|null
      */
     public static function getRepository(): ?string;
 

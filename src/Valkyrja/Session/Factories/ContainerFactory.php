@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Factories;
 
+use Valkyrja\Manager\Factories\ContainerFactory as Factory;
 use Valkyrja\Session\Adapter;
 use Valkyrja\Session\CacheAdapter;
 use Valkyrja\Session\Driver;
 use Valkyrja\Session\Factory as Contract;
 use Valkyrja\Session\LogAdapter;
-use Valkyrja\Manager\Factories\ContainerFactory as Factory;
-use Valkyrja\Type\Cls;
 
 /**
  * Class ContainerFactory.
@@ -61,9 +60,9 @@ class ContainerFactory extends Factory implements Contract
     {
         $defaultClass = parent::getAdapterDefaultClass($name);
 
-        if (Cls::inherits($name, CacheAdapter::class)) {
+        if (is_a($name, CacheAdapter::class, true)) {
             $defaultClass = CacheAdapter::class;
-        } elseif (Cls::inherits($name, LogAdapter::class)) {
+        } elseif (is_a($name, LogAdapter::class, true)) {
             $defaultClass = LogAdapter::class;
         }
 

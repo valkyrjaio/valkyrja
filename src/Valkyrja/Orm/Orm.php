@@ -23,8 +23,8 @@ interface Orm
     /**
      * Use a connection by name.
      *
-     * @param string|null $name    The connection name
-     * @param string|null $adapter The adapter
+     * @param string|null                $name    The connection name
+     * @param class-string<Adapter>|null $adapter The adapter
      *
      * @return Driver
      */

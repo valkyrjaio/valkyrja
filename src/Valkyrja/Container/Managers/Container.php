@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Managers;
 
 use Closure;
+use RuntimeException;
 use Valkyrja\Container\Config\Config;
 use Valkyrja\Container\Container as Contract;
-use Valkyrja\Container\Exceptions\InvalidServiceIdException;
 use Valkyrja\Container\Service;
 use Valkyrja\Support\Provider\Traits\ProvidersAwareTrait;
-use Valkyrja\Type\Cls;
 
-use function is_string;
+use function assert;
 
 /**
  * Class Container.
@@ -147,7 +146,7 @@ class Container implements Contract
      */
     public function bind(string $serviceId, string $service): self
     {
-        Cls::validateInherits($service, Service::class);
+        assert(is_a($service, Service::class, true));
 
         $serviceId = $this->getServiceIdInternal($serviceId);
 
@@ -340,9 +339,6 @@ class Container implements Contract
      */
     public function offsetSet($offset, $value): void
     {
-        $this->validateServiceId($offset);
-
-        /** @var string $offset */
         $this->bind($offset, $value);
     }
 
@@ -351,9 +347,6 @@ class Container implements Contract
      */
     public function offsetExists($offset): bool
     {
-        $this->validateServiceId($offset);
-
-        /** @var string $offset */
         return $this->has($offset);
     }
 
@@ -362,10 +355,7 @@ class Container implements Contract
      */
     public function offsetUnset($offset): void
     {
-        $this->validateServiceId($offset);
-
-        /** @var string $offset */
-        unset(self::$services[$offset]);
+        throw new RuntimeException("Cannot remove service with name $offset from the container.");
     }
 
     /**
@@ -373,9 +363,6 @@ class Container implements Contract
      */
     public function offsetGet($offset): mixed
     {
-        $this->validateServiceId($offset);
-
-        /** @var string $offset */
         return $this->get($offset);
     }
 
@@ -544,19 +531,5 @@ class Container implements Contract
         }
 
         return $made;
-    }
-
-    /**
-     * Validate service id.
-     *
-     * @param mixed $serviceId The service id
-     *
-     * @return void
-     */
-    protected function validateServiceId(mixed $serviceId): void
-    {
-        if (! is_string($serviceId)) {
-            throw new InvalidServiceIdException("Expecting a string offset, got $serviceId");
-        }
     }
 }

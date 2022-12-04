@@ -16,6 +16,8 @@ namespace Valkyrja\Type;
 use BackedEnum;
 use UnitEnum;
 
+use function assert;
+
 /**
  * Class Enum.
  *
@@ -40,7 +42,7 @@ class Enum
     /**
      * Get enum case names.
      *
-     * @param string $enum The enum class name
+     * @param class-string<UnitEnum> $enum The enum class name
      *
      * @return string[]
      */
@@ -52,9 +54,7 @@ class Enum
             return self::$namesCache[$cacheName];
         }
 
-        Cls::validateInherits($enum, UnitEnum::class);
-
-        /** @var UnitEnum|string $enum */
+        assert(is_a($enum, UnitEnum::class, true));
 
         return self::$namesCache[$cacheName] = array_column($enum::cases(), 'name');
     }
@@ -62,7 +62,7 @@ class Enum
     /**
      * Get enum case values.
      *
-     * @param string $enum The enum class name
+     * @param class-string<UnitEnum> $enum The enum class name
      *
      * @return string[]|int[]
      */
@@ -74,10 +74,9 @@ class Enum
             return self::$cache[$cacheName];
         }
 
-        Cls::validateInherits($enum, UnitEnum::class);
+        assert(is_a($enum, UnitEnum::class, true));
 
-        if (Cls::inherits($enum, BackedEnum::class)) {
-            /** @var BackedEnum|string $enum */
+        if (is_a($enum, BackedEnum::class, true)) {
             return self::$cache[$cacheName] = array_column($enum::cases(), 'value');
         }
 
@@ -87,7 +86,7 @@ class Enum
     /**
      * Get enum as an array with name as index and value as value.
      *
-     * @param string $enum The enum class name
+     * @param class-string<UnitEnum> $enum The enum class name
      *
      * @return array<string, int|string>
      */
@@ -99,7 +98,7 @@ class Enum
     /**
      * Get enum as an array with value as index and name as value.
      *
-     * @param string $enum The enum class name
+     * @param class-string<UnitEnum> $enum The enum class name
      *
      * @return array<int|string, string>
      */

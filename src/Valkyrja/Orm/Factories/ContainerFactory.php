@@ -64,7 +64,7 @@ class ContainerFactory implements Contract
         return Cls::getDefaultableService(
             $this->container,
             $name,
-            Cls::inherits($name, PdoAdapter::class) ? PdoAdapter::class : Adapter::class,
+            is_a($name, PdoAdapter::class, true) ? PdoAdapter::class : Adapter::class,
             [
                 $config,
             ]
@@ -95,7 +95,7 @@ class ContainerFactory implements Contract
         return Cls::getDefaultableService(
             $this->container,
             $name,
-            Cls::inherits($name, CacheRepository::class) ? CacheRepository::class : Repository::class,
+            is_a($name, CacheRepository::class, true) ? CacheRepository::class : Repository::class,
             [
                 $driver,
                 $entity,

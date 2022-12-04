@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Factories;
 
+use Valkyrja\Manager\Factories\ContainerMessageFactory as Factory;
 use Valkyrja\Sms\Adapter;
 use Valkyrja\Sms\Driver;
 use Valkyrja\Sms\Factory as Contract;
 use Valkyrja\Sms\LogAdapter;
 use Valkyrja\Sms\Message;
 use Valkyrja\Sms\NexmoAdapter;
-use Valkyrja\Manager\Factories\ContainerMessageFactory as Factory;
-use Valkyrja\Type\Cls;
 
 /**
  * Class ContainerFactory.
@@ -76,9 +75,9 @@ class ContainerFactory extends Factory implements Contract
     {
         $defaultClass = parent::getAdapterDefaultClass($name);
 
-        if (Cls::inherits($name, NexmoAdapter::class)) {
+        if (is_a($name, NexmoAdapter::class, true)) {
             $defaultClass = NexmoAdapter::class;
-        } elseif (Cls::inherits($name, LogAdapter::class)) {
+        } elseif (is_a($name, LogAdapter::class, true)) {
             $defaultClass = LogAdapter::class;
         }
 

@@ -18,6 +18,7 @@ use JsonException;
 use Valkyrja\Model\Enums\CastType;
 use Valkyrja\Model\Models\CastableModel;
 use Valkyrja\Orm\Entity as Contract;
+use Valkyrja\Orm\Repository;
 use Valkyrja\Type\Arr;
 use Valkyrja\Type\Obj;
 
@@ -48,7 +49,7 @@ abstract class Entity extends CastableModel implements Contract
     /**
      * The repository.
      *
-     * @var string|null
+     * @var class-string<Repository>|null
      */
     protected static ?string $repository = null;
 

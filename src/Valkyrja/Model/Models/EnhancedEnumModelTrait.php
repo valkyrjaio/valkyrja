@@ -17,7 +17,6 @@ use BackedEnum;
 use JsonSerializable;
 use UnitEnum;
 use Valkyrja\Type\Enum\JsonSerializableEnum;
-use Valkyrja\Type\Cls;
 
 /**
  * Trait EnhancedEnumSupportModelTrait.
@@ -36,13 +35,11 @@ trait EnhancedEnumModelTrait
             return $value;
         }
 
-        if (Cls::inherits($type, JsonSerializableEnum::class)) {
-            /** @var JsonSerializableEnum $type */
+        if (is_a($type, JsonSerializableEnum::class, true)) {
             return $type::fromJson($value);
         }
 
-        if (Cls::inherits($type, BackedEnum::class)) {
-            /** @var BackedEnum $type */
+        if (is_a($type, BackedEnum::class, true)) {
             return $type::from($value);
         }
 

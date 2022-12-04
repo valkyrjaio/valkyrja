@@ -17,7 +17,6 @@ use Valkyrja\Container\Container;
 use Valkyrja\Type\Exceptions\InvalidClassPropertyProvidedException;
 use Valkyrja\Type\Exceptions\InvalidClassProvidedException;
 
-use function count;
 use function explode;
 use function is_a;
 
@@ -31,8 +30,8 @@ class Cls
     /**
      * Validate that a class::name inherits from another class::name.
      *
-     * @param class-string|string $object   The object name to check
-     * @param class-string        $inherits The inherits class name
+     * @param class-string $object   The object name to check
+     * @param class-string $inherits The inherits class name
      *
      * @throws InvalidClassProvidedException
      *
@@ -48,10 +47,8 @@ class Cls
     /**
      * Check if a class::name inherits from another class::name.
      *
-     * @template O
-     *
-     * @param class-string|string $object   The object name to check
-     * @param class-string        $inherits The inherits class name
+     * @param class-string $object   The object name to check
+     * @param class-string $inherits The inherits class name
      *
      * @return bool
      */
@@ -93,7 +90,7 @@ class Cls
     /**
      * Get a class nice name.
      *
-     * @param string $name The class object name
+     * @param class-string $name The class object name
      *
      * @return string
      */
@@ -103,9 +100,9 @@ class Cls
     }
 
     /**
-     * Get a class nice name.
+     * Get a class name without namespace.
      *
-     * @param string $name The class object name
+     * @param class-string $name The class object name
      *
      * @return string
      */
@@ -113,7 +110,7 @@ class Cls
     {
         $parts = explode('\\', $name);
 
-        return $parts[count($parts) - 1];
+        return end($parts);
     }
 
     /**

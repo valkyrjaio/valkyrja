@@ -18,8 +18,8 @@ use Valkyrja\Model\Models\Model;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Enums\CastType;
-use Valkyrja\Type\Cls;
 
+use function assert;
 use function is_string;
 
 /**
@@ -232,7 +232,7 @@ class Parameter extends Model
     public function setEnum(string $enum = null): self
     {
         if ($enum !== null) {
-            Cls::validateInherits($enum, BackedEnum::class);
+            assert(is_a($enum, BackedEnum::class, true));
         }
 
         $this->enum = $enum;

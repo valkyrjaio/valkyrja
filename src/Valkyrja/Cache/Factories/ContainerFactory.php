@@ -19,7 +19,6 @@ use Valkyrja\Cache\Factory as Contract;
 use Valkyrja\Cache\LogAdapter;
 use Valkyrja\Cache\RedisAdapter;
 use Valkyrja\Manager\Factories\ContainerFactory as Factory;
-use Valkyrja\Type\Cls;
 
 /**
  * Class ContainerFactory.
@@ -61,9 +60,9 @@ class ContainerFactory extends Factory implements Contract
     {
         $defaultClass = parent::getAdapterDefaultClass($name);
 
-        if (Cls::inherits($name, RedisAdapter::class)) {
+        if (is_a($name, RedisAdapter::class, true)) {
             $defaultClass = RedisAdapter::class;
-        } elseif (Cls::inherits($name, LogAdapter::class)) {
+        } elseif (is_a($name, LogAdapter::class, true)) {
             $defaultClass = LogAdapter::class;
         }
 

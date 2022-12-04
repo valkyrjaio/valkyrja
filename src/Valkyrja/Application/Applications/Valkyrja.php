@@ -15,20 +15,20 @@ namespace Valkyrja\Application\Applications;
 
 use RuntimeException;
 use Valkyrja\Application\Application;
+use Valkyrja\Application\Env;
 use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config as ConfigModel;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Application\Env;
 use Valkyrja\Event\Events;
+use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Support\Directory;
-use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Type\Arr;
-use Valkyrja\Type\Cls;
 
+use function assert;
 use function constant;
 use function date_default_timezone_set;
 use function define;
@@ -343,7 +343,7 @@ class Valkyrja implements Application
 
         $config ??= self::env('CONFIG_CLASS', Config::class);
 
-        Cls::validateInherits($config, Config::class);
+        assert(is_a($config, Config::class, true));
 
         /** @var class-string<Config> $config */
         $this->withConfig(new $config(null, true));

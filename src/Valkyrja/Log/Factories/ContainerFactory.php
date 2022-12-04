@@ -18,7 +18,6 @@ use Valkyrja\Log\Driver;
 use Valkyrja\Log\Factory as Contract;
 use Valkyrja\Log\PsrAdapter;
 use Valkyrja\Manager\Factories\ContainerFactory as Factory;
-use Valkyrja\Type\Cls;
 
 /**
  * Class ContainerFactory.
@@ -60,7 +59,7 @@ class ContainerFactory extends Factory implements Contract
     {
         $defaultClass = parent::getAdapterDefaultClass($name);
 
-        if (Cls::inherits($name, PsrAdapter::class)) {
+        if (is_a($name, PsrAdapter::class, true)) {
             $defaultClass = PsrAdapter::class;
         }
 

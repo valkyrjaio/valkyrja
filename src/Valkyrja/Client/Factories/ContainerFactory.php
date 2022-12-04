@@ -19,7 +19,6 @@ use Valkyrja\Client\Factory as Contract;
 use Valkyrja\Client\GuzzleAdapter;
 use Valkyrja\Client\LogAdapter;
 use Valkyrja\Manager\Factories\ContainerFactory as Factory;
-use Valkyrja\Type\Cls;
 
 /**
  * Class ContainerFactory.
@@ -61,9 +60,9 @@ class ContainerFactory extends Factory implements Contract
     {
         $defaultClass = parent::getAdapterDefaultClass($name);
 
-        if (Cls::inherits($name, GuzzleAdapter::class)) {
+        if (is_a($name, GuzzleAdapter::class, true)) {
             $defaultClass = GuzzleAdapter::class;
-        } elseif (Cls::inherits($name, LogAdapter::class)) {
+        } elseif (is_a($name, LogAdapter::class, true)) {
             $defaultClass = LogAdapter::class;
         }
 

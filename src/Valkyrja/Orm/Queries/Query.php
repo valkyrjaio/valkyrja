@@ -20,9 +20,9 @@ use Valkyrja\Orm\Exceptions\NotFoundException;
 use Valkyrja\Orm\Query as QueryContract;
 use Valkyrja\Orm\Statement;
 use Valkyrja\Orm\Support\Helpers;
-use Valkyrja\Type\Cls;
 use Valkyrja\Type\Str;
 
+use function assert;
 use function is_array;
 
 /**
@@ -85,7 +85,7 @@ class Query implements QueryContract
      */
     public function entity(string $entity): self
     {
-        Cls::validateInherits($entity, Entity::class);
+        assert(is_a($entity, Entity::class, true));
 
         $this->entity = $entity;
 

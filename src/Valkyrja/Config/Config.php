@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Config;
 
 use ArrayAccess;
+use RuntimeException;
 use Valkyrja\Model\Models\Model;
 
 use function Valkyrja\env;
@@ -92,10 +93,7 @@ abstract class Config extends Model implements ArrayAccess
      */
     public function offsetUnset(mixed $offset): void
     {
-        $this->validateOffset($offset);
-
-        /** @var string $offset */
-        unset($this->{$offset});
+        throw new RuntimeException("Cannot remove offset with name $offset from config.");
     }
 
     /**
@@ -128,13 +126,6 @@ abstract class Config extends Model implements ArrayAccess
     {
         foreach (static::$envKeys as $property => $value) {
             $this->__set($property, env(static::$envKeys[$property]) ?? $this->__get($property));
-        }
-    }
-
-    protected function validateOffset(mixed $offset): void
-    {
-        if (! \is_string($offset)) {
-            throw new \RuntimeException('Invalid offset provided.');
         }
     }
 }

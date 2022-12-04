@@ -25,9 +25,9 @@ use Valkyrja\Orm\QueryBuilder;
 use Valkyrja\Orm\Repository as Contract;
 use Valkyrja\Orm\Retriever;
 use Valkyrja\Orm\SoftDeleteEntity;
-use Valkyrja\Type\Cls;
 use Valkyrja\Type\Str;
 
+use function assert;
 use function get_class;
 
 /**
@@ -98,7 +98,7 @@ class Repository implements Contract
      */
     public function __construct(Orm $manager, Driver $driver, string $entity)
     {
-        Cls::validateInherits($entity, Entity::class);
+        assert(is_a($entity, Entity::class, true));
 
         $this->driver    = $driver;
         $this->persister = $this->driver->getPersister();

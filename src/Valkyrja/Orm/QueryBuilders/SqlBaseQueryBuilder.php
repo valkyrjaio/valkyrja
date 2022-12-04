@@ -17,7 +17,8 @@ use Valkyrja\Orm\Adapter;
 use Valkyrja\Orm\BaseQueryBuilder as Contract;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Orm\Query;
-use Valkyrja\Type\Cls;
+
+use function assert;
 
 /**
  * Abstract Class SqlBaseQueryBuilder.
@@ -72,7 +73,7 @@ abstract class SqlBaseQueryBuilder implements Contract
      */
     public function entity(string $entity, string $alias = null): self
     {
-        Cls::validateInherits($entity, Entity::class);
+        assert(is_a($entity, Entity::class, true));
 
         $this->entity = $entity;
 

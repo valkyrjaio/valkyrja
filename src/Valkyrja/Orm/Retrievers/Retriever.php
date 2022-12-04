@@ -21,7 +21,8 @@ use Valkyrja\Orm\Exceptions\EntityNotFoundException;
 use Valkyrja\Orm\Query;
 use Valkyrja\Orm\QueryBuilder;
 use Valkyrja\Orm\Retriever as Contract;
-use Valkyrja\Type\Cls;
+
+use function assert;
 
 /**
  * Class Retriever
@@ -294,7 +295,7 @@ class Retriever implements Contract
      */
     protected function setQueryProperties(string $entity, array $columns = null): void
     {
-        Cls::validateInherits($entity, Entity::class);
+        assert(is_a($entity, Entity::class, true));
 
         $this->queryBuilder = $this->adapter->createQueryBuilder($entity)->select($columns);
         $this->query        = $this->adapter->createQuery(null, $entity);

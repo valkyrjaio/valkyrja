@@ -20,7 +20,6 @@ use Valkyrja\Broadcast\LogAdapter;
 use Valkyrja\Broadcast\Message;
 use Valkyrja\Broadcast\PusherAdapter;
 use Valkyrja\Manager\Factories\ContainerMessageFactory as Factory;
-use Valkyrja\Type\Cls;
 
 /**
  * Class ContainerFactory.
@@ -76,9 +75,9 @@ class ContainerFactory extends Factory implements Contract
     {
         $defaultClass = parent::getAdapterDefaultClass($name);
 
-        if (Cls::inherits($name, PusherAdapter::class)) {
+        if (is_a($name, PusherAdapter::class, true)) {
             $defaultClass = PusherAdapter::class;
-        } elseif (Cls::inherits($name, LogAdapter::class)) {
+        } elseif (is_a($name, LogAdapter::class, true)) {
             $defaultClass = LogAdapter::class;
         }
 

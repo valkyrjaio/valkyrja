@@ -24,7 +24,6 @@ use ReflectionParameter;
 use ReflectionProperty;
 use UnitEnum;
 use Valkyrja\Reflection\Reflector as Contract;
-use Valkyrja\Type\Cls;
 
 use function is_callable;
 use function spl_object_id;
@@ -146,10 +145,10 @@ class Reflector implements Contract
                 && ! is_callable($name)
                 // The class exists
                 && class_exists($name)
+                // and it isn't an enum
+                && ! is_a($name, UnitEnum::class, true)
                 // It's not built in
                 && ! $type->isBuiltin()
-                // and it isn't an enum
-                && ! Cls::inherits($name, UnitEnum::class)
             ) {
                 // Set the injectable in the array
                 $dependencies[] = $name;

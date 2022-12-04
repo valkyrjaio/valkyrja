@@ -27,8 +27,8 @@ use Valkyrja\Orm\Repository;
 use Valkyrja\Orm\Retriever;
 use Valkyrja\Orm\SoftDeleteEntity;
 use Valkyrja\Orm\Statement;
-use Valkyrja\Type\Cls;
 
+use function assert;
 use function get_class;
 
 /**
@@ -69,49 +69,49 @@ class Orm implements Contract
     /**
      * The default adapter.
      *
-     * @var string
+     * @var class-string<Adapter>
      */
     protected string $defaultAdapter;
 
     /**
      * The default driver.
      *
-     * @var string
+     * @var class-string<Driver>
      */
     protected string $defaultDriver;
 
     /**
      * The default repository.
      *
-     * @var string
+     * @var class-string<Repository>
      */
     protected string $defaultRepository;
 
     /**
      * The default query.
      *
-     * @var string
+     * @var class-string<Query>
      */
     protected string $defaultQuery;
 
     /**
      * The default query builder.
      *
-     * @var string
+     * @var class-string<QueryBuilder>
      */
     protected string $defaultQueryBuilder;
 
     /**
      * The default persister.
      *
-     * @var string
+     * @var class-string<Persister>
      */
     protected string $defaultPersister;
 
     /**
      * The default retriever.
      *
-     * @var string
+     * @var class-string<Retriever>
      */
     protected string $defaultRetriever;
 
@@ -143,13 +143,19 @@ class Orm implements Contract
     {
         // The connection to use
         $name ??= $this->defaultConnection;
+        /** @var array{driver?: class-string<Driver>, adapter?: class-string<Adapter>} $config */
         // The connection config to use
         $config = $this->connections[$name];
         // The driver
-        /** @var class-string<Driver> $driver */
         $driver = $config['driver'] ?? $this->defaultDriver;
+
+        assert(is_a($name, Driver::class, true));
+
         // The adapter to use
         $adapter ??= $config['adapter'] ?? $this->defaultAdapter;
+
+        assert(is_a($adapter, Adapter::class, true));
+
         // The cache key to use
         $cacheKey = $name . $driver . $adapter;
 
@@ -162,6 +168,8 @@ class Orm implements Contract
      */
     public function createAdapter(string $name, array $config): Adapter
     {
+        assert(is_a($name, Adapter::class, true));
+
         // Set the query
         $config['query'] ??= $this->defaultQuery;
         // Set the query builder
@@ -179,6 +187,8 @@ class Orm implements Contract
      */
     public function createQueryBuilder(Adapter $adapter, string $name): QueryBuilder
     {
+        assert(is_a($name, QueryBuilder::class, true));
+
         return $this->factory->createQueryBuilder($adapter, $name);
     }
 
@@ -187,6 +197,8 @@ class Orm implements Contract
      */
     public function createQuery(Adapter $adapter, string $name): Query
     {
+        assert(is_a($name, Query::class, true));
+
         return $this->factory->createQuery($adapter, $name);
     }
 
@@ -195,6 +207,8 @@ class Orm implements Contract
      */
     public function createRetriever(Adapter $adapter, string $name): Retriever
     {
+        assert(is_a($name, Retriever::class, true));
+
         return $this->factory->createRetriever($adapter, $name);
     }
 
@@ -203,6 +217,8 @@ class Orm implements Contract
      */
     public function createPersister(Adapter $adapter, string $name): Persister
     {
+        assert(is_a($name, Persister::class, true));
+
         return $this->factory->createPersister($adapter, $name);
     }
 
@@ -211,12 +227,10 @@ class Orm implements Contract
      */
     public function getRepository(string $entity): Repository
     {
-        Cls::validateInherits($entity, Entity::class);
+        assert(is_a($entity, Entity::class, true));
 
-        /** @var Entity $entityClass */
         $entityClass = $entity;
 
-        /** @var class-string<Repository> $name */
         $name     = $entityClass::getRepository() ?? $this->defaultRepository;
         $cacheKey = $name . $entity;
 

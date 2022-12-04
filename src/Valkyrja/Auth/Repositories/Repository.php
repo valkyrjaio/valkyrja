@@ -27,7 +27,8 @@ use Valkyrja\Auth\User;
 use Valkyrja\Http\Request;
 use Valkyrja\Session\Driver as Session;
 use Valkyrja\Session\Session as SessionManager;
-use Valkyrja\Type\Cls;
+
+use function assert;
 
 /**
  * Class Repository.
@@ -92,7 +93,7 @@ class Repository implements Contract
         protected Config|array $config,
         string $user
     ) {
-        Cls::validateInherits($user, User::class);
+        assert(is_a($user, User::class, true));
 
         $this->session        = $session->use();
         $this->userEntityName = $user;

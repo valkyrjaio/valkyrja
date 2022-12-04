@@ -28,10 +28,10 @@ use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Helpers;
 use Valkyrja\Type\Arr;
-use Valkyrja\Type\Cls;
 use Valkyrja\Type\Str;
 
 use function array_merge;
+use function assert;
 use function is_array;
 use function is_string;
 use function md5;
@@ -492,14 +492,17 @@ class Collection implements Contract
      */
     protected function validateParameterEntity(Route $route, Parameter $parameter): void
     {
-        if (($entity = $parameter->getEntity()) !== null) {
-            Cls::validateInherits($entity, Entity::class);
+        $entity = $parameter->getEntity();
 
-            /** @var class-string<Entity> $entity */
+        if ($entity !== null) {
+            assert(is_a($entity, Entity::class, true));
+
             $this->removeEntityFromDependencies($route, $entity);
 
-            if (($entityColumn = $parameter->getEntityColumn()) !== null) {
-                Cls::validateHasProperty($entity, $entityColumn);
+            $entityColumn = $parameter->getEntityColumn();
+
+            if ($entityColumn !== null) {
+                assert(property_exists($entity, $entityColumn));
             }
         }
     }
@@ -514,7 +517,9 @@ class Collection implements Contract
      */
     protected function removeEntityFromDependencies(Route $route, string $entityName): void
     {
-        if (empty($dependencies = $route->getDependencies())) {
+        $dependencies = $route->getDependencies();
+
+        if (empty($dependencies)) {
             return;
         }
 
@@ -538,9 +543,11 @@ class Collection implements Contract
      */
     protected function validateParameterEnum(Parameter $parameter): void
     {
-        if (($enum = $parameter->getEnum()) !== null) {
-            Cls::validateInherits($enum, BackedEnum::class);
-            /** @var BackedEnum $enum */
+        $enum = $parameter->getEnum();
+
+        if ($enum !== null) {
+            assert(is_a($enum, BackedEnum::class, true));
+
             // Set the regex to the enum cases
             $parameter->setRegex(implode('|', array_column($enum::cases(), 'value')));
             // Ensure the type case was set properly
@@ -585,8 +592,8 @@ class Collection implements Contract
         // Get the replacement for this parameter's name (something like {name} or {name?}
         // Prepend \/ if it optional so we can replace the path slash and set it in the
         // regex below as a non-capture-optional group
-        $nameReplacement =
-            ($isOptional ? Regex::PATH : '') . '{' . $parameter->getName() . ($isOptional ? '?' : '') . '}';
+        $nameReplacement = ($isOptional ? Regex::PATH : '')
+            . '{' . $parameter->getName() . ($isOptional ? '?' : '') . '}';
 
         // Check if the path doesn't contain the parameter's name replacement
         if (! Str::contains($regex, $nameReplacement)) {

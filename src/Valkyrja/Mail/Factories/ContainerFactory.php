@@ -21,7 +21,6 @@ use Valkyrja\Mail\MailgunAdapter;
 use Valkyrja\Mail\Message;
 use Valkyrja\Mail\PHPMailerAdapter;
 use Valkyrja\Manager\Factories\ContainerMessageFactory as Factory;
-use Valkyrja\Type\Cls;
 
 /**
  * Class ContainerFactory.
@@ -77,11 +76,11 @@ class ContainerFactory extends Factory implements Contract
     {
         $defaultClass = parent::getAdapterDefaultClass($name);
 
-        if (Cls::inherits($name, MailgunAdapter::class)) {
+        if (is_a($name, MailgunAdapter::class, true)) {
             $defaultClass = MailgunAdapter::class;
-        } elseif (Cls::inherits($name, PHPMailerAdapter::class)) {
+        } elseif (is_a($name, PHPMailerAdapter::class, true)) {
             $defaultClass = PHPMailerAdapter::class;
-        } elseif (Cls::inherits($name, LogAdapter::class)) {
+        } elseif (is_a($name, LogAdapter::class, true)) {
             $defaultClass = LogAdapter::class;
         }
 

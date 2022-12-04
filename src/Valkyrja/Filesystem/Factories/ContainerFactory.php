@@ -18,7 +18,6 @@ use Valkyrja\Filesystem\Driver;
 use Valkyrja\Filesystem\Factory as Contract;
 use Valkyrja\Filesystem\FlysystemAdapter;
 use Valkyrja\Manager\Factories\ContainerFactory as Factory;
-use Valkyrja\Type\Cls;
 
 /**
  * Class ContainerFactory.
@@ -60,7 +59,7 @@ class ContainerFactory extends Factory implements Contract
     {
         $defaultClass = parent::getAdapterDefaultClass($name);
 
-        if (Cls::inherits($name, FlysystemAdapter::class)) {
+        if (is_a($name, FlysystemAdapter::class, true)) {
             $defaultClass = FlysystemAdapter::class;
         }
 

@@ -22,7 +22,6 @@ use Valkyrja\Routing\Matcher as Contract;
 use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Helpers;
-use Valkyrja\Type\Cls;
 
 use function is_array;
 use function preg_match;
@@ -301,7 +300,7 @@ class Matcher implements Contract
         /** @var class-string<BackedEnum>|null $enum */
         $enum = $parameter->getEnum();
 
-        if ($enum && Cls::inherits($enum, BackedEnum::class)) {
+        if ($enum && is_a($enum, BackedEnum::class, true)) {
             return $enum::from($match);
         }
 

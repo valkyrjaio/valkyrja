@@ -20,7 +20,6 @@ use Valkyrja\Event\Event;
 use Valkyrja\Event\Events as Contract;
 use Valkyrja\Event\Listener;
 use Valkyrja\Event\Models\Listener as ListenerModel;
-use Valkyrja\Type\Cls;
 
 use function is_array;
 
@@ -167,7 +166,7 @@ class Events implements Contract
 
         // If there are arguments and the event is a class, override the arguments with a new instance of the event
         // class with the arguments as parameters
-        if ($arguments !== null && Cls::inherits($event, Event::class)) {
+        if ($arguments !== null && is_a($event, Event::class, true)) {
             $arguments = [new $event(...$arguments)];
         }
 

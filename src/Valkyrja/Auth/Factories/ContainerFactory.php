@@ -60,7 +60,7 @@ class ContainerFactory implements Contract
         return Cls::getDefaultableService(
             $this->container,
             $name,
-            Cls::inherits($name, ORMAdapter::class) ? ORMAdapter::class : Adapter::class,
+            is_a($name, ORMAdapter::class, true) ? ORMAdapter::class : Adapter::class,
             [
                 $config,
             ]
@@ -74,11 +74,11 @@ class ContainerFactory implements Contract
     {
         $defaultClass = Repository::class;
 
-        if (Cls::inherits($name, JWTCryptRepository::class)) {
+        if (is_a($name, JWTCryptRepository::class, true)) {
             $defaultClass = JWTCryptRepository::class;
-        } elseif (Cls::inherits($name, CryptTokenizedRepository::class)) {
+        } elseif (is_a($name, CryptTokenizedRepository::class, true)) {
             $defaultClass = CryptTokenizedRepository::class;
-        } elseif (Cls::inherits($name, JWTRepository::class)) {
+        } elseif (is_a($name, JWTRepository::class, true)) {
             $defaultClass = JWTRepository::class;
         }
 
@@ -116,9 +116,9 @@ class ContainerFactory implements Contract
     {
         $defaultClass = Policy::class;
 
-        if (Cls::inherits($name, EntityRoutePolicy::class)) {
+        if (is_a($name, EntityRoutePolicy::class, true)) {
             $defaultClass = EntityRoutePolicy::class;
-        } elseif (Cls::inherits($name, EntityPolicy::class)) {
+        } elseif (is_a($name, EntityPolicy::class, true)) {
             $defaultClass = EntityPolicy::class;
         }
 

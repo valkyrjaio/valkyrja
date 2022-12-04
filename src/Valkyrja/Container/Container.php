@@ -203,4 +203,41 @@ interface Container extends ArrayAccess, ProvidersAware
      * @return string
      */
     public function getServiceId(string $serviceId, string $context = null, string $member = null): string;
+
+    /**
+     * Get a service from the container.
+     *
+     * @param string $offset The service id
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset): mixed;
+
+    /**
+     * Bind a service to the container.
+     *
+     * @param class-string|string   $offset The service id
+     * @param class-string<Service> $value  The service
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value): void;
+
+    /**
+     * Bind a service to the container.
+     *
+     * @param class-string|string $offset The service id
+     *
+     * @return void
+     */
+    public function offsetUnset($offset): void;
+
+    /**
+     * Check whether a given service exists.
+     *
+     * @param class-string|string $offset The service id
+     *
+     * @return bool
+     */
+    public function offsetExists($offset): bool;
 }
