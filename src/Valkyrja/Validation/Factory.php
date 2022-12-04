@@ -23,9 +23,11 @@ interface Factory
     /**
      * Get a rule set by name.
      *
-     * @param string $name The name of the rules to get
+     * @template T
      *
-     * @return mixed
+     * @param class-string<T> $name The name of the rules to get
+     *
+     * @return T
      */
     public function createRules(string $name): object;
 }

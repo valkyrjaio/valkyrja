@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Factories;
 
 use Valkyrja\Validation\Factory as Contract;
-use Valkyrja\Validation\Rules\Base;
 
 /**
  * Class Factory.
@@ -28,6 +27,6 @@ class Factory implements Contract
      */
     public function createRules(string $name): object
     {
-        return new Base();
+        return new $name();
     }
 }

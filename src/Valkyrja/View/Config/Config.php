@@ -54,7 +54,7 @@ class Config extends Model
     /**
      * The engines.
      *
-     * @var array
+     * @var array<string, class-string>
      */
     public array $engines;
 
@@ -74,14 +74,14 @@ class Config extends Model
      *      $view->partial('@path/partials/partial');
      * </code>
      *
-     * @var array
+     * @var array<string, string>
      */
     public array $paths;
 
     /**
      * The disks.
      *
-     * @var array
+     * @var array<string, array>
      */
     public array $disks;
 }

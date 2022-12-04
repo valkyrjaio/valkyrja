@@ -23,11 +23,13 @@ interface Validator
     /**
      * Get a rule set by name.
      *
-     * @param string|null $name [optional] The name of the rules to get
+     * @template T
      *
-     * @return mixed
+     * @param class-string<T>|null $name [optional] The name of the rules to get
+     *
+     * @return T
      */
-    public function getRules(string $name = null): mixed;
+    public function getRules(string $name = null): object;
 
     /**
      * Validate against set rules.
@@ -39,7 +41,7 @@ interface Validator
     /**
      * Validate a set of rules.
      *
-     * @param array $rules The rules
+     * @param array<string, array{subject: string, rules: array<string, array{arguments: array, message: string}>}> $rules The rules
      *
      * @return bool
      */
@@ -87,7 +89,7 @@ interface Validator
      *      ]
      * </code>
      *
-     * @param array $rules The rules
+     * @param array<string, array{subject: string, rules: array<string, array{arguments: array, message: string}>}> $rules The rules
      *
      * @return void
      */
@@ -96,7 +98,7 @@ interface Validator
     /**
      * Get the error messages.
      *
-     * @return array
+     * @return array<string, string>
      */
     public function getErrorMessages(): array;
 

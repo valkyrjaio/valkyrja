@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Validators;
 
-use Exception;
 use Valkyrja\Validation\Config\Config;
 use Valkyrja\Validation\Constants\Property;
 use Valkyrja\Validation\Constants\Rule;
+use Valkyrja\Validation\Exceptions\ValidationException;
 use Valkyrja\Validation\Factory;
 use Valkyrja\Validation\Validator as Contract;
 
@@ -35,43 +35,54 @@ class Validator implements Contract
     protected static array $rules = [];
 
     /**
+     * The rules map.
+     *
+     * @var array<string, class-string>
+     */
+    protected array $rulesMap = [];
+
+    /**
      * The default rules.
      *
-     * @var string
+     * @var class-string
      */
     protected string $defaultRules;
 
     /**
      * The error messages if validation failed.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected array $errorMessages = [];
 
     /**
      * The validation rules.
      *
-     * @var array|null
+     * @var array<string, array{subject: string, rules: array<string, array{arguments: array, message: string}>}>|null
      */
     protected ?array $validationRules = null;
 
     /**
      * Validator constructor.
      *
-     * @param Factory      $factory
-     * @param Config|array $config
+     * @param Factory $factory
+     * @param Config|array{
+     *     rule: class-string,
+     *     rulesMap: array<string, class-string>
+     * }              $config
      */
     public function __construct(
         protected Factory $factory,
         protected Config|array $config
     ) {
         $this->defaultRules = $config['rule'];
+        $this->rulesMap     = $config['rulesMap'];
     }
 
     /**
      * @inheritDoc
      */
-    public function getRules(string $name = null): mixed
+    public function getRules(string $name = null): object
     {
         $name ??= $this->defaultRules;
 
@@ -134,7 +145,7 @@ class Validator implements Contract
     /**
      * Validate a rule set.
      *
-     * @param array $ruleSet The rule set
+     * @param array<string, array{subject: string, rules: array<string, array{arguments: array, message: string}>}> $ruleSet The rule set
      *
      * @return void
      */
@@ -148,9 +159,9 @@ class Validator implements Contract
     /**
      * Validate a subject item.
      *
-     * @param string $subjectName The subject name
-     * @param mixed  $subject     The subject
-     * @param array  $rules       The rules
+     * @param string                                                  $subjectName The subject name
+     * @param mixed                                                   $subject     The subject
+     * @param array<string, array{arguments: array, message: string}> $rules       The rules
      *
      * @return void
      */
@@ -180,25 +191,25 @@ class Validator implements Contract
     /**
      * Validate a rule.
      *
-     * @param string $subjectName The subject name
-     * @param string $name        The rule name
-     * @param mixed  $subject     The subject
-     * @param array  $rule        The rule
+     * @param string                                   $subjectName The subject name
+     * @param string                                   $name        The rule name
+     * @param mixed                                    $subject     The subject
+     * @param array{arguments: array, message: string} $rule        The rule
      *
      * @return void
      */
     protected function validateRule(string $subjectName, string $name, mixed $subject, array $rule): void
     {
         $arguments    = $rule[Property::ARGUMENTS] ?? [];
-        $rulesName    = $this->config['rulesMap'][$name] ?? null;
+        $rulesName    = $this->rulesMap[$name] ?? null;
         $errorMessage = $rule[Property::MESSAGE] ?? null;
         // Not in try catch to avoid swallowing an error if rule doesn't exist
         $rules = $this->getRules($rulesName);
 
         try {
             $rules->{$name}($subject, ...$arguments);
-        } catch (Exception $exception) {
-            $this->errorMessages[$subjectName] = $errorMessage ?? $exception->getMessage();
+        } catch (ValidationException $validationException) {
+            $this->errorMessages[$subjectName] = $errorMessage ?? $validationException->getMessage();
         }
     }
 }

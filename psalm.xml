@@ -25,6 +25,14 @@
         <!-- As a framework things have to be dynamic -->
         <InvalidClassConstantType errorLevel="suppress" />
         <InvalidStringClass errorLevel="suppress" />
+        <MixedArgument errorLevel="suppress" />
+        <MixedArrayAccess errorLevel="suppress" />
+        <MixedAssignment errorLevel="suppress" />
+        <MixedArrayOffset errorLevel="suppress" />
+        <MixedInferredReturnType errorLevel="suppress" />
+        <MixedOperand errorLevel="suppress" />
+        <MixedMethodCall errorLevel="suppress" />
+        <MixedReturnStatement errorLevel="suppress" />
         <UnresolvableInclude errorLevel="suppress" />
         <UnsafeInstantiation errorLevel="suppress" />
 

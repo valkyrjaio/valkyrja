@@ -37,6 +37,7 @@ class Vlid extends Ulid
     . '([' . self::VALID_CHARACTERS . ']{4})?'
     . '([' . self::VALID_CHARACTERS . ']{4})?';
 
+    /** @var VlidVersion */
     public const VERSION = VlidVersion::V1;
 
     protected const FORMAT = '%013s%01s%04s%04s%04s';

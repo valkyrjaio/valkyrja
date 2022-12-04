@@ -21,7 +21,7 @@ use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\View\Engines\OrkaEngine;
-use Valkyrja\View\Engines\PHPEngine;
+use Valkyrja\View\Engines\PhpEngine;
 use Valkyrja\View\Engines\TwigEngine;
 use Valkyrja\View\Exceptions\InvalidConfigPath;
 use Valkyrja\View\View;
@@ -40,7 +40,7 @@ class ServiceProvider extends Provider
     {
         return [
             View::class        => 'publishView',
-            PHPEngine::class   => 'publishPHPEngine',
+            PhpEngine::class   => 'publishPhpEngine',
             OrkaEngine::class  => 'publishOrkaEngine',
             TwigEngine::class  => 'publishTwigEngine',
             Environment::class => 'publishTwigEnvironment',
@@ -54,7 +54,7 @@ class ServiceProvider extends Provider
     {
         return [
             View::class,
-            PHPEngine::class,
+            PhpEngine::class,
             OrkaEngine::class,
             TwigEngine::class,
             Environment::class,
@@ -72,14 +72,21 @@ class ServiceProvider extends Provider
      */
     public static function publishView(Container $container): void
     {
+        /** @var Config|array $config */
         $config = $container->getSingleton(Config::class);
+        /** @var \Valkyrja\View\Config\Config|array{
+         *     dir: string,
+         *     engine: string,
+         *     engines: array<string, class-string>,
+         *     paths: array<string, string>,
+         *     disks: array<string, array>
+         * } $viewConfig
+         */
+        $viewConfig = $config['view'];
 
         $container->setSingleton(
             View::class,
-            new \Valkyrja\View\Managers\View(
-                $container,
-                $config['view']
-            )
+            new \Valkyrja\View\Managers\View($container, $viewConfig)
         );
     }
 
@@ -90,15 +97,23 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishPHPEngine(Container $container): void
+    public static function publishPhpEngine(Container $container): void
     {
+        /** @var Config|array $config */
         $config = $container->getSingleton(Config::class);
+        /** @var \Valkyrja\View\Config\Config|array{
+         *     dir: string,
+         *     engine: string,
+         *     engines: array<string, class-string>,
+         *     paths: array<string, string>,
+         *     disks: array{php?: array{fileExtension: string}}
+         * } $viewConfig
+         */
+        $viewConfig = $config['view'];
 
         $container->setSingleton(
-            PHPEngine::class,
-            new PHPEngine(
-                $config['view']
-            )
+            PhpEngine::class,
+            new PhpEngine($viewConfig)
         );
     }
 
@@ -111,14 +126,25 @@ class ServiceProvider extends Provider
      */
     public static function publishOrkaEngine(Container $container): void
     {
+        /** @var Config|array $config */
         $config = $container->getSingleton(Config::class);
+        /** @var \Valkyrja\Application\Config\Config|array $appConfig */
+        $appConfig = $config['app'];
+        /** @var bool $debug */
+        $debug = $appConfig['debug'];
+        /** @var \Valkyrja\View\Config\Config|array{
+         *     dir: string,
+         *     engine: string,
+         *     engines: array<string, class-string>,
+         *     paths: array<string, string>,
+         *     disks: array{orka?: array{fileExtension: string}}
+         * } $viewConfig
+         */
+        $viewConfig = $config['view'];
 
         $container->setSingleton(
             OrkaEngine::class,
-            new OrkaEngine(
-                $config['view'],
-                $config['app']['debug']
-            )
+            new OrkaEngine($viewConfig, $debug)
         );
     }
 
@@ -150,15 +176,43 @@ class ServiceProvider extends Provider
      */
     public static function publishTwigEnvironment(Container $container): void
     {
-        $config     = $container->getSingleton(Config::class);
+        /** @var Config|array $config */
+        $config = $container->getSingleton(Config::class);
+        /** @var \Valkyrja\Application\Config\Config|array $appConfig */
+        $appConfig = $config['app'];
+        /** @var bool $debug */
+        $debug = $appConfig['debug'];
+        /** @var \Valkyrja\View\Config\Config|array{
+         *     dir: string,
+         *     engine: string,
+         *     engines: array<string, class-string>,
+         *     paths: array<string, string>,
+         *     disks: array{
+         *          twig: array{
+         *              compiledDir: string,
+         *              paths: string[],
+         *              extensions: class-string<ExtensionInterface>
+         *          }
+         *     }
+         * } $viewConfig
+         */
         $viewConfig = $config['view'];
-        $twigConfig = $viewConfig['disks']['twig'];
+        /** @var array $disks */
+        $disks = $viewConfig['disks'];
+        /** @var array $twigConfig */
+        $twigConfig = $disks['twig'];
+        /** @var array<string, string> $paths */
+        $paths = $twigConfig['paths'];
+        /** @var class-string<ExtensionInterface>[] $extensions */
+        $extensions = $twigConfig['extensions'];
+        /** @var string $compiledDir */
+        $compiledDir = $twigConfig['compiledDir'];
 
         // Get the twig filesystem loader
         $loader = new FilesystemLoader();
 
         // Iterate through the dirs and add each as a path in the twig loader
-        foreach ($viewConfig['paths'] as $namespace => $dir) {
+        foreach ($paths as $namespace => $dir) {
             $loader->addPath($dir, $namespace);
         }
 
@@ -166,15 +220,14 @@ class ServiceProvider extends Provider
         $twig = new Environment(
             $loader,
             [
-                'cache'   => $twigConfig['compiledDir'],
-                'debug'   => $config['app']['debug'],
+                'cache'   => $compiledDir,
+                'debug'   => $debug,
                 'charset' => 'utf-8',
             ]
         );
 
         // Iterate through the extensions
-        foreach ($twigConfig['extensions'] as $extension) {
-            /** @var class-string<ExtensionInterface> $extension */
+        foreach ($extensions as $extension) {
             // And add each extension to the twig environment
             $twig->addExtension(new $extension());
         }

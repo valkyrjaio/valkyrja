@@ -29,8 +29,11 @@ use function preg_replace;
  *
  * @author Melech Mizrachi
  */
-class OrkaEngine extends PHPEngine
+class OrkaEngine extends PhpEngine
 {
+    /**
+     * @var array<string, string>
+     */
     protected static array $replace = [
         // @layout
         '/@layout\s*\(\s*(.*)\s*\)/x'              => '<?php $template->setLayout(${1}); ?>',
@@ -89,8 +92,14 @@ class OrkaEngine extends PHPEngine
     /**
      * OrkaEngine constructor.
      *
-     * @param Config|array $config  The config
-     * @param bool         $isDebug Whether to run in debug mode
+     * @param Config|array{
+     *     dir: string,
+     *     engine: string,
+     *     engines: array<string, class-string>,
+     *     paths: array<string, string>,
+     *     disks: array{orka?: array{fileExtension: string}, php?: array{fileExtension: string}}
+     * }           $config  The config
+     * @param bool $isDebug Whether to run in debug mode
      */
     public function __construct(
         Config|array $config,

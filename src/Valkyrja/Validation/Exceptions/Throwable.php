@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Exceptions;
 
-use Valkyrja\Exception\RuntimeException;
+use Valkyrja\Exception\Throwable as Contract;
 
 /**
- * Class ValidationException.
+ * Interface Throwable.
  *
  * @author Melech Mizrachi
  */
-class ValidationException extends RuntimeException implements Throwable
+interface Throwable extends Contract
 {
 }

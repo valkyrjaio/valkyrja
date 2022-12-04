@@ -63,7 +63,7 @@ class Obj
      *
      * @param object $subject The subject object
      *
-     * @return string[]
+     * @return array<string, mixed>
      */
     public static function getProperties(object $subject): array
     {
@@ -84,6 +84,7 @@ class Obj
         bool $includeProtected = true,
         bool $includePrivate = true
     ): array {
+        /** @var array<string, mixed> $castSubject */
         // The subject cast as an array
         $castSubject = (array) $subject;
         // The array to return

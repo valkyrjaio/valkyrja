@@ -23,9 +23,9 @@ interface View
     /**
      * Make a new View.
      *
-     * @param string|null $name      [optional] The template to set
-     * @param array       $variables [optional] The variables to set
-     * @param string|null $engine    [optional] The engine to use
+     * @param string|null          $name      [optional] The template to set
+     * @param array<string, mixed> $variables [optional] The variables to set
+     * @param string|null          $engine    [optional] The engine to use
      *
      * @return Template
      */
@@ -43,8 +43,8 @@ interface View
     /**
      * Render a template
      *
-     * @param string $name      The name of the template to render
-     * @param array  $variables [optional] The variables to set
+     * @param string               $name      The name of the template to render
+     * @param array<string, mixed> $variables [optional] The variables to set
      *
      * @return string
      */

@@ -37,14 +37,14 @@ class Config extends Model
     /**
      * The default rule.
      *
-     * @var string
+     * @var class-string
      */
     public string $rule;
 
     /**
      * The rules map.
      *
-     * @var string[]
+     * @var array<string, class-string>
      */
     public array $rulesMap;
 }

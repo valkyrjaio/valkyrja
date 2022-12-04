@@ -55,6 +55,13 @@ class View implements Contract
     protected array $variables = [];
 
     /**
+     * The engines.
+     *
+     * @var array<string, class-string<Engine>>
+     */
+    protected array $enginesConfig;
+
+    /**
      * The default engine.
      *
      * @var string
@@ -64,14 +71,21 @@ class View implements Contract
     /**
      * View constructor.
      *
-     * @param Container    $container The container
-     * @param Config|array $config    The config
+     * @param Container $container The container
+     * @param Config|array{
+     *     dir: string,
+     *     engine: string,
+     *     engines: array<string, class-string>,
+     *     paths: array<string, string>,
+     *     disks: array<string, array>
+     * }                $config    The config
      */
     public function __construct(
         protected Container $container,
         protected Config|array $config
     ) {
-        $this->engine = $config['engine'];
+        $this->engine        = $config['engine'];
+        $this->enginesConfig = $config['engines'];
     }
 
     /**
@@ -95,10 +109,10 @@ class View implements Contract
      */
     public function getEngine(string $name = null): Engine
     {
-        $name ??= $this->config['engine'];
+        $name ??= $this->engine;
 
         return self::$engines[$name]
-            ??= $this->container->getSingleton($this->config['engines'][$name]);
+            ??= $this->container->getSingleton($this->enginesConfig[$name]);
     }
 
     /**

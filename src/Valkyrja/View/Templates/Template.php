@@ -53,21 +53,21 @@ class Template implements Contract
     /**
      * The block status.
      *
-     * @var array
+     * @var string[]
      */
     protected array $blockStatus = [];
 
     /**
      * The view blocks.
      *
-     * @var array
+     * @var string[]
      */
     protected array $blocks = [];
 
     /**
      * The view variables.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $variables = [];
 

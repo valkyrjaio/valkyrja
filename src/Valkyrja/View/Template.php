@@ -48,14 +48,14 @@ interface Template
     /**
      * Get the variables.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getVariables(): array;
 
     /**
      * Set the variables.
      *
-     * @param array $variables [optional] The variables to set
+     * @param array<string, mixed> $variables [optional] The variables to set
      *
      * @return static
      */

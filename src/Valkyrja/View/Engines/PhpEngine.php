@@ -29,18 +29,18 @@ use function trim;
 use const EXTR_SKIP;
 
 /**
- * Class PHPEngine.
+ * Class PhpEngine.
  *
  * @author Melech Mizrachi
  */
-class PHPEngine implements Engine
+class PhpEngine implements Engine
 {
     /**
      * The template directory.
      *
      * @var string
      */
-    protected string $templateDir;
+    protected string $dir;
 
     /**
      * The file extension.
@@ -52,19 +52,33 @@ class PHPEngine implements Engine
     /**
      * The view variables.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $variables = [];
 
     /**
-     * PHPEngine constructor.
+     * The paths.
      *
-     * @param Config|array $config The config
+     * @var array<string, string>
+     */
+    protected array $paths;
+
+    /**
+     * PhpEngine constructor.
+     *
+     * @param Config|array{
+     *     dir: string,
+     *     engine: string,
+     *     engines: array<string, class-string>,
+     *     paths: array<string, string>,
+     *     disks: array{php: array{fileExtension: string}}|array<string, array>
+     * } $config The config
      */
     public function __construct(
         protected Config|array $config
     ) {
-        $this->templateDir   = $config['dir'];
+        $this->paths         = $config['paths'];
+        $this->dir           = $config['dir'];
         $this->fileExtension = $config['disks']['php']['fileExtension'] ?? '.phtml';
     }
 
@@ -145,7 +159,7 @@ class PHPEngine implements Engine
         if (str_starts_with($template, '@')) {
             $explodeOn = Directory::DIRECTORY_SEPARATOR;
             $parts     = explode($explodeOn, $template);
-            $path      = $this->config['paths'][$parts[0]] ?? null;
+            $path      = $this->paths[$parts[0]] ?? null;
 
             // If there is no path
             if ($path === null) {
@@ -178,7 +192,7 @@ class PHPEngine implements Engine
      */
     protected function getDir(string $path = null): string
     {
-        return $this->templateDir
+        return $this->dir
             . ($path
                 ? Directory::DIRECTORY_SEPARATOR . $path
                 : '');

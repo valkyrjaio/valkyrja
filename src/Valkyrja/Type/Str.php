@@ -40,14 +40,14 @@ class Str
     /**
      * Studly case conversion cache.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected static array $studlyCache = [];
 
     /**
      * Snake case conversion cache.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected static array $snakeCache = [];
 

@@ -15,7 +15,7 @@ namespace Valkyrja\View\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\View\Engines\OrkaEngine;
-use Valkyrja\View\Engines\PHPEngine;
+use Valkyrja\View\Engines\PhpEngine;
 use Valkyrja\View\Engines\TwigEngine;
 
 /**
@@ -28,7 +28,7 @@ final class ConfigValue
     public const DIR     = '';
     public const ENGINE  = CKP::PHP;
     public const ENGINES = [
-        CKP::PHP  => PHPEngine::class,
+        CKP::PHP  => PhpEngine::class,
         CKP::ORKA => OrkaEngine::class,
         CKP::TWIG => TwigEngine::class,
     ];
@@ -37,7 +37,7 @@ final class ConfigValue
         CKP::PHP  => [
             CKP::FILE_EXTENSION => '.phtml',
         ],
-        CKP::ORKA  => [
+        CKP::ORKA => [
             CKP::FILE_EXTENSION => '.orka.phtml',
         ],
         CKP::TWIG => [
