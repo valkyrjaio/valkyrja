@@ -18,7 +18,7 @@ namespace Valkyrja\ORM\PDOs;
  *
  * @author Melech Mizrachi
  */
-class MySqlPDO extends PDO
+class MySqlPdo extends Pdo
 {
     /**
      * MySqlPDO constructor.

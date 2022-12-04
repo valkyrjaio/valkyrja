@@ -18,6 +18,6 @@ namespace Valkyrja\ORM;
  *
  * @author Melech Mizrachi
  */
-interface PDOAdapter extends Adapter
+interface PdoAdapter extends Adapter
 {
 }

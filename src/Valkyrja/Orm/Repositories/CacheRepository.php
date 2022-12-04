@@ -20,7 +20,7 @@ use Valkyrja\ORM\CacheRepository as Contract;
 use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
-use Valkyrja\ORM\ORM;
+use Valkyrja\ORM\Orm;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\SoftDeleteEntity;
 use Valkyrja\Type\Arr;
@@ -92,12 +92,12 @@ class CacheRepository extends Repository implements Contract
     /**
      * Repository constructor.
      *
-     * @param ORM                  $manager The orm manager
+     * @param Orm                  $manager The orm manager
      * @param Driver               $driver  The driver
      * @param Cache                $cache   The cache service
      * @param class-string<Entity> $entity  The entity class name
      */
-    public function __construct(ORM $manager, Driver $driver, Cache $cache, string $entity)
+    public function __construct(Orm $manager, Driver $driver, Cache $cache, string $entity)
     {
         $this->cache = $cache;
         $this->store = $cache->use();

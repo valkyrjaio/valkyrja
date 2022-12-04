@@ -15,7 +15,7 @@ namespace Valkyrja\Validation\Rules;
 
 use Valkyrja\Container\Container;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\ORM as ORMManager;
+use Valkyrja\ORM\Orm as ORMManager;
 use Valkyrja\Validation\Exceptions\ValidationException;
 
 /**

@@ -16,7 +16,7 @@ namespace Valkyrja\Routing\Middleware;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\ORM;
+use Valkyrja\ORM\Orm;
 use Valkyrja\ORM\Repository;
 use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
@@ -32,9 +32,9 @@ class EntityMiddleware extends Middleware
     /**
      * The orm.
      *
-     * @var ORM
+     * @var Orm
      */
-    protected static ORM $orm;
+    protected static Orm $orm;
 
     /**
      * @inheritDoc
@@ -63,11 +63,11 @@ class EntityMiddleware extends Middleware
     /**
      * Get the ORM service.
      *
-     * @return ORM
+     * @return Orm
      */
-    protected static function getOrm(): ORM
+    protected static function getOrm(): Orm
     {
-        return self::$orm ?? self::getContainer()->getSingleton(ORM::class);
+        return self::$orm ?? self::getContainer()->getSingleton(Orm::class);
     }
 
     /**

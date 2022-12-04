@@ -29,7 +29,7 @@ use Valkyrja\Filesystem\Config\Filesystem;
 use Valkyrja\Jwt\Config\Jwt;
 use Valkyrja\Log\Config\Log;
 use Valkyrja\Mail\Config\Mail;
-use Valkyrja\ORM\Config\ORM;
+use Valkyrja\ORM\Config\Orm;
 use Valkyrja\Path\Config\Path;
 use Valkyrja\Routing\Config\Routing;
 use Valkyrja\Session\Config\Session;
@@ -66,7 +66,7 @@ class Valkyrja extends Model
         $this->jwt        = new Jwt($properties['jwt'] ?? null, true);
         $this->log        = new Log($properties['log'] ?? null, true);
         $this->mail       = new Mail($properties['mail'] ?? null, true);
-        $this->orm        = new ORM($properties['orm'] ?? null, true);
+        $this->orm        = new Orm($properties['orm'] ?? null, true);
         $this->path       = new Path($properties['path'] ?? null, true);
         $this->routing    = new Routing($properties['routing'] ?? null, true);
         $this->session    = new Session($properties['session'] ?? null, true);

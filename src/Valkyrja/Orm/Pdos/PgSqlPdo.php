@@ -20,7 +20,7 @@ use PDO as BasePDO;
  *
  * @author Melech Mizrachi
  */
-class PgSqlPDO extends PDO
+class PgSqlPdo extends Pdo
 {
     /**
      * The default options.

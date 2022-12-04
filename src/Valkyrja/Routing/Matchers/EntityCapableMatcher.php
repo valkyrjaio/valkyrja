@@ -15,7 +15,7 @@ namespace Valkyrja\Routing\Matchers;
 
 use Valkyrja\Container\Container;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\ORM;
+use Valkyrja\ORM\Orm;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Exceptions\InvalidRouteParameter;
@@ -84,7 +84,7 @@ class EntityCapableMatcher extends Matcher
      */
     protected function getEntity(Parameter $parameter, string $entityName, mixed $match): ?Entity
     {
-        $orm = $this->container->getSingleton(ORM::class)->getRepository($entityName);
+        $orm = $this->container->getSingleton(Orm::class)->getRepository($entityName);
 
         $relationships = $parameter->getEntityRelationships() ?? [];
 

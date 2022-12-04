@@ -18,7 +18,7 @@ use Valkyrja\Auth\Config\Config;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
 use Valkyrja\Auth\ORMAdapter as Contract;
 use Valkyrja\Auth\User;
-use Valkyrja\ORM\ORM;
+use Valkyrja\ORM\Orm;
 use Valkyrja\ORM\Repository;
 
 /**
@@ -31,11 +31,11 @@ class ORMAdapter extends Adapter implements Contract
     /**
      * Adapter constructor.
      *
-     * @param ORM          $orm    The orm
+     * @param Orm          $orm    The orm
      * @param Config|array $config The config
      */
     public function __construct(
-        protected ORM $orm,
+        protected Orm $orm,
         Config|array $config
     ) {
         parent::__construct($config);
@@ -148,7 +148,7 @@ class ORMAdapter extends Adapter implements Contract
     /**
      * @inheritDoc
      */
-    public function getOrm(): ORM
+    public function getOrm(): Orm
     {
         return $this->orm;
     }

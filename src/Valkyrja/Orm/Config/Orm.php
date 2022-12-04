@@ -18,15 +18,15 @@ use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\ORM\Config\Config as Model;
 use Valkyrja\ORM\Constants\ConfigValue;
 use Valkyrja\ORM\Drivers\PgSqlDriver;
-use Valkyrja\ORM\PDOs\MySqlPDO;
-use Valkyrja\ORM\PDOs\PgSqlPDO;
+use Valkyrja\ORM\PDOs\MySqlPdo;
+use Valkyrja\ORM\PDOs\PgSqlPdo;
 
 use function Valkyrja\env;
 
 /**
  * Class ORM.
  */
-class ORM extends Model
+class Orm extends Model
 {
     /**
      * @inheritDoc
@@ -45,7 +45,7 @@ class ORM extends Model
                 CKP::PERSISTER     => env(EnvKey::ORM_MYSQL_PERSISTER),
                 CKP::RETRIEVER     => env(EnvKey::ORM_MYSQL_RETRIEVER),
                 CKP::CONFIG        => [
-                    CKP::PDO      => env(EnvKey::ORM_MYSQL_PDO, MySqlPDO::class),
+                    CKP::PDO      => env(EnvKey::ORM_MYSQL_PDO, MySqlPdo::class),
                     CKP::DRIVER   => CKP::MYSQL,
                     CKP::HOST     => env(EnvKey::ORM_MYSQL_HOST, '127.0.0.1'),
                     CKP::PORT     => env(EnvKey::ORM_MYSQL_PORT, '3306'),
@@ -67,7 +67,7 @@ class ORM extends Model
                 CKP::PERSISTER     => env(EnvKey::ORM_PGSQL_PERSISTER),
                 CKP::RETRIEVER     => env(EnvKey::ORM_PGSQL_RETRIEVER),
                 CKP::CONFIG        => [
-                    CKP::PDO           => env(EnvKey::ORM_PGSQL_PDO, PgSqlPDO::class),
+                    CKP::PDO           => env(EnvKey::ORM_PGSQL_PDO, PgSqlPdo::class),
                     CKP::DRIVER        => CKP::PGSQL,
                     CKP::HOST          => env(EnvKey::ORM_PGSQL_HOST, '127.0.0.1'),
                     CKP::PORT          => env(EnvKey::ORM_PGSQL_PORT, '5432'),

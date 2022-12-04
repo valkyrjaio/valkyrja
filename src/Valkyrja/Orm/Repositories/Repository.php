@@ -18,7 +18,7 @@ use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Enums\WhereType;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
-use Valkyrja\ORM\ORM;
+use Valkyrja\ORM\Orm;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
@@ -48,9 +48,9 @@ class Repository implements Contract
     /**
      * The entity manager.
      *
-     * @var ORM
+     * @var Orm
      */
-    protected ORM $orm;
+    protected Orm $orm;
 
     /**
      * The persister.
@@ -90,13 +90,13 @@ class Repository implements Contract
     /**
      * Repository constructor.
      *
-     * @param ORM                  $manager The orm manager
+     * @param Orm                  $manager The orm manager
      * @param Driver               $driver  The driver
      * @param class-string<Entity> $entity  The entity class name
      *
      * @throws InvalidArgumentException
      */
-    public function __construct(ORM $manager, Driver $driver, string $entity)
+    public function __construct(Orm $manager, Driver $driver, string $entity)
     {
         Cls::validateInherits($entity, Entity::class);
 

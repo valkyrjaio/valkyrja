@@ -20,7 +20,7 @@ use PDO as BasePDO;
  *
  * @author Melech Mizrachi
  */
-abstract class PDO extends BasePDO
+abstract class Pdo extends BasePDO
 {
     /**
      * The default options.

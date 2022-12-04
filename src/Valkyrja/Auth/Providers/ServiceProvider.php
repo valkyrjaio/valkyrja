@@ -32,7 +32,7 @@ use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Http\Request;
 use Valkyrja\Jwt\Jwt;
-use Valkyrja\ORM\ORM;
+use Valkyrja\ORM\Orm;
 use Valkyrja\Session\Session;
 
 /**
@@ -153,7 +153,7 @@ class ServiceProvider extends Provider
      */
     public static function publishOrmAdapter(Container $container): void
     {
-        $orm = $container->getSingleton(ORM::class);
+        $orm = $container->getSingleton(Orm::class);
 
         $container->setClosure(
             ORMAdapter::class,

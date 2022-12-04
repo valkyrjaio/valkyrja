@@ -18,6 +18,6 @@ namespace Valkyrja\ORM;
  *
  * @author Melech Mizrachi
  */
-interface PDOStatement extends Statement
+interface PdoStatement extends Statement
 {
 }

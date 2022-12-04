@@ -19,7 +19,7 @@ use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Factory;
 use Valkyrja\ORM\Migration;
-use Valkyrja\ORM\ORM as Contract;
+use Valkyrja\ORM\Orm as Contract;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
@@ -36,7 +36,7 @@ use function get_class;
  *
  * @author Melech Mizrachi
  */
-class ORM implements Contract
+class Orm implements Contract
 {
     /**
      * The drivers.

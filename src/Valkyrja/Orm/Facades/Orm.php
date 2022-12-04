@@ -17,7 +17,7 @@ use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\ORM as Contract;
+use Valkyrja\ORM\Orm as Contract;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
@@ -55,7 +55,7 @@ use Valkyrja\ORM\Statement;
  * @method static void softDelete(SoftDeleteEntity $entity, bool $defer = true)
  * @method static void clear(Entity $entity = null)
  */
-class ORM extends ContainerFacade
+class Orm extends ContainerFacade
 {
     /**
      * @inheritDoc

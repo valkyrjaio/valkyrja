@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\ORM\Adapters\PDOAdapter;
+use Valkyrja\ORM\Adapters\PdoAdapter;
 use Valkyrja\ORM\Drivers\Driver;
 use Valkyrja\ORM\Drivers\PgSqlDriver;
-use Valkyrja\ORM\PDOs\MySqlPDO;
-use Valkyrja\ORM\PDOs\PgSqlPDO;
+use Valkyrja\ORM\PDOs\MySqlPdo;
+use Valkyrja\ORM\PDOs\PgSqlPdo;
 use Valkyrja\ORM\Persisters\Persister;
 use Valkyrja\ORM\Queries\Query;
 use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
@@ -33,7 +33,7 @@ use Valkyrja\ORM\Retrievers\Retriever;
 final class ConfigValue
 {
     public const DEFAULT       = CKP::MYSQL;
-    public const ADAPTER       = PDOAdapter::class;
+    public const ADAPTER       = PdoAdapter::class;
     public const DRIVER        = Driver::class;
     public const QUERY         = Query::class;
     public const QUERY_BUILDER = SqlQueryBuilder::class;
@@ -50,7 +50,7 @@ final class ConfigValue
             CKP::PERSISTER     => null,
             CKP::RETRIEVER     => null,
             CKP::CONFIG        => [
-                CKP::PDO      => MySqlPDO::class,
+                CKP::PDO      => MySqlPdo::class,
                 CKP::DRIVER   => CKP::MYSQL,
                 CKP::HOST     => '127.0.0.1',
                 CKP::PORT     => '3306',
@@ -72,7 +72,7 @@ final class ConfigValue
             CKP::PERSISTER     => null,
             CKP::RETRIEVER     => null,
             CKP::CONFIG        => [
-                CKP::PDO           => PgSqlPDO::class,
+                CKP::PDO           => PgSqlPdo::class,
                 CKP::DRIVER        => CKP::PGSQL,
                 CKP::HOST          => '127.0.0.1',
                 CKP::PORT          => '3306',

@@ -21,7 +21,7 @@ use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Factory as Contract;
 use Valkyrja\ORM\InsertQueryBuilder;
 use Valkyrja\ORM\Migration;
-use Valkyrja\ORM\PDOAdapter;
+use Valkyrja\ORM\PdoAdapter;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
@@ -64,7 +64,7 @@ class ContainerFactory implements Contract
         return Cls::getDefaultableService(
             $this->container,
             $name,
-            Cls::inherits($name, PDOAdapter::class) ? PDOAdapter::class : Adapter::class,
+            Cls::inherits($name, PdoAdapter::class) ? PdoAdapter::class : Adapter::class,
             [
                 $config,
             ]

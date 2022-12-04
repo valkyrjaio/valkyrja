@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Adapters;
 
 use Valkyrja\ORM\Adapter as Contract;
-use Valkyrja\ORM\ORM;
+use Valkyrja\ORM\Orm;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
@@ -30,9 +30,9 @@ abstract class Adapter implements Contract
     /**
      * The ORM service.
      *
-     * @var ORM
+     * @var Orm
      */
-    protected ORM $orm;
+    protected Orm $orm;
 
     /**
      * The entity persister.
@@ -79,10 +79,10 @@ abstract class Adapter implements Contract
     /**
      * Adapter constructor.
      *
-     * @param ORM   $orm    The orm
+     * @param Orm   $orm    The orm
      * @param array $config The config
      */
-    public function __construct(ORM $orm, array $config)
+    public function __construct(Orm $orm, array $config)
     {
         $this->orm               = $orm;
         $this->config            = $config;

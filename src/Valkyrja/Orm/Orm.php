@@ -18,7 +18,7 @@ namespace Valkyrja\ORM;
  *
  * @author Melech Mizrachi
  */
-interface ORM
+interface Orm
 {
     /**
      * Use a connection by name.

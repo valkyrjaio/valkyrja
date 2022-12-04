@@ -15,10 +15,10 @@ namespace Valkyrja\ORM\Adapters;
 
 use PDO;
 use RuntimeException;
-use Valkyrja\ORM\ORM;
-use Valkyrja\ORM\PDOAdapter as Contract;
+use Valkyrja\ORM\Orm;
+use Valkyrja\ORM\PdoAdapter as Contract;
 use Valkyrja\ORM\Statement;
-use Valkyrja\ORM\Statements\PDOStatement;
+use Valkyrja\ORM\Statements\PdoStatement;
 
 use function is_bool;
 
@@ -27,7 +27,7 @@ use function is_bool;
  *
  * @author Melech Mizrachi
  */
-class PDOAdapter extends Adapter implements Contract
+class PdoAdapter extends Adapter implements Contract
 {
     /**
      * The pdo service.
@@ -39,11 +39,11 @@ class PDOAdapter extends Adapter implements Contract
     /**
      * PDOAdapter constructor.
      *
-     * @param ORM   $orm    The orm
+     * @param Orm   $orm    The orm
      * @param PDO   $pdo    The PDO
      * @param array $config The config
      */
-    public function __construct(ORM $orm, PDO $pdo, array $config)
+    public function __construct(Orm $orm, PDO $pdo, array $config)
     {
         $this->pdo = $pdo;
 
@@ -103,7 +103,7 @@ class PDOAdapter extends Adapter implements Contract
             throw new RuntimeException('Statement preparation has failed.');
         }
 
-        return $this->orm->createStatement($this, PDOStatement::class, [$statement]);
+        return $this->orm->createStatement($this, PdoStatement::class, [$statement]);
     }
 
     /**

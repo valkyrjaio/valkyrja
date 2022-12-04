@@ -26,9 +26,9 @@ use Valkyrja\ORM\Factories\ContainerFactory;
 use Valkyrja\ORM\Factory;
 use Valkyrja\ORM\InsertQueryBuilder;
 use Valkyrja\ORM\Migrations\Migration;
-use Valkyrja\ORM\ORM;
-use Valkyrja\ORM\PDOAdapter;
-use Valkyrja\ORM\PDOs\PDO;
+use Valkyrja\ORM\Orm;
+use Valkyrja\ORM\PdoAdapter;
+use Valkyrja\ORM\PDOs\Pdo;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
@@ -52,11 +52,11 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            ORM::class                 => 'publishORM',
+            Orm::class                 => 'publishORM',
             Factory::class             => 'publishFactory',
             Driver::class              => 'publishDriver',
             Adapter::class             => 'publishAdapter',
-            PDOAdapter::class          => 'publishPdoAdapter',
+            PdoAdapter::class          => 'publishPdoAdapter',
             Repository::class          => 'publishRepository',
             CacheRepository::class     => 'publishCacheRepository',
             Persister::class           => 'publishPersister',
@@ -69,7 +69,7 @@ class ServiceProvider extends Provider
             SelectQueryBuilder::class  => 'publishSelectQueryBuilder',
             UpdateQueryBuilder::class  => 'publishUpdateQueryBuilder',
             Statement::class           => 'publishStatement',
-            PDO::class                 => 'publishPDO',
+            Pdo::class                 => 'publishPDO',
             Migration::class           => 'publishMigration',
         ];
     }
@@ -80,11 +80,11 @@ class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            ORM::class,
+            Orm::class,
             Factory::class,
             Driver::class,
             Adapter::class,
-            PDOAdapter::class,
+            PdoAdapter::class,
             Repository::class,
             CacheRepository::class,
             Persister::class,
@@ -96,7 +96,7 @@ class ServiceProvider extends Provider
             SelectQueryBuilder::class,
             UpdateQueryBuilder::class,
             Statement::class,
-            PDO::class,
+            Pdo::class,
             Migration::class,
         ];
     }
@@ -113,8 +113,8 @@ class ServiceProvider extends Provider
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
-            ORM::class,
-            new \Valkyrja\ORM\Managers\ORM(
+            Orm::class,
+            new \Valkyrja\ORM\Managers\Orm(
                 $container->getSingleton(Factory::class),
                 $config['orm']
             )
@@ -168,7 +168,7 @@ class ServiceProvider extends Provider
      */
     public static function publishAdapter(Container $container): void
     {
-        $orm = $container->getSingleton(ORM::class);
+        $orm = $container->getSingleton(Orm::class);
 
         $container->setClosure(
             Adapter::class,
@@ -193,21 +193,21 @@ class ServiceProvider extends Provider
      */
     public static function publishPdoAdapter(Container $container): void
     {
-        $orm = $container->getSingleton(ORM::class);
+        $orm = $container->getSingleton(Orm::class);
 
         $container->setClosure(
-            PDOAdapter::class,
+            PdoAdapter::class,
             /**
-             * @param class-string<PDOAdapter> $name
+             * @param class-string<PdoAdapter> $name
              */
-            static function (string $name, array $config) use ($container, $orm): PDOAdapter {
+            static function (string $name, array $config) use ($container, $orm): PdoAdapter {
                 $pdoConfig = $config['config'];
                 $pdoClass  = $pdoConfig['pdo'] ?? \PDO::class;
 
                 if ($container->has($pdoClass)) {
                     $pdo = $container->get($pdoClass, [$pdoConfig]);
                 } else {
-                    $pdo = $container->get(PDO::class, [$pdoClass, $pdoConfig]);
+                    $pdo = $container->get(Pdo::class, [$pdoClass, $pdoConfig]);
                 }
 
                 return new $name(
@@ -229,11 +229,11 @@ class ServiceProvider extends Provider
     public static function publishPDO(Container $container): void
     {
         $container->setClosure(
-            PDO::class,
+            Pdo::class,
             /**
-             * @param class-string<PDO> $name
+             * @param class-string<Pdo> $name
              */
-            static function (string $name, array $config): PDO {
+            static function (string $name, array $config): Pdo {
                 if ($name === \PDO::class) {
                     // If we got here then that means the developer has opted to use the default PDO
                     // but has not defined a PDO in the service container. The reason for this requirement
@@ -258,7 +258,7 @@ class ServiceProvider extends Provider
      */
     public static function publishRepository(Container $container): void
     {
-        $orm = $container->getSingleton(ORM::class);
+        $orm = $container->getSingleton(Orm::class);
 
         $container->setClosure(
             Repository::class,
@@ -284,7 +284,7 @@ class ServiceProvider extends Provider
      */
     public static function publishCacheRepository(Container $container): void
     {
-        $orm   = $container->getSingleton(ORM::class);
+        $orm   = $container->getSingleton(Orm::class);
         $cache = $container->getSingleton(Cache::class);
 
         $container->setClosure(
@@ -513,7 +513,7 @@ class ServiceProvider extends Provider
             /**
              * @param class-string<Migration> $name
              */
-            static function (string $name, ORM $orm): Migration {
+            static function (string $name, Orm $orm): Migration {
                 return new $name($orm);
             }
         );

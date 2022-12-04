@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Migrations;
 
 use Valkyrja\ORM\Migration as Contract;
-use Valkyrja\ORM\ORM;
+use Valkyrja\ORM\Orm;
 
 /**
  * Abstract Class Migration.
@@ -26,16 +26,16 @@ abstract class Migration implements Contract
     /**
      * The ORM service.
      *
-     * @var ORM
+     * @var Orm
      */
-    protected ORM $orm;
+    protected Orm $orm;
 
     /**
      * Migration constructor.
      *
-     * @param ORM $orm The ORM service
+     * @param Orm $orm The ORM service
      */
-    public function __construct(ORM $orm)
+    public function __construct(Orm $orm)
     {
         $this->orm = $orm;
     }
