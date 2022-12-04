@@ -47,7 +47,7 @@ jobs:
       - name: Make build logs dir
         run: mkdir -p build/logs
 
-      - name: Run test suite
+      - name: Run PHPUnit tests
         run: |
           XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --stderr
 
@@ -59,3 +59,7 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           php vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
+
+      - name: Run Psalm
+        run: |
+          vendor/bin/psalm --no-cache
