@@ -28,7 +28,7 @@ use Valkyrja\Orm\InsertQueryBuilder;
 use Valkyrja\Orm\Migrations\Migration;
 use Valkyrja\Orm\Orm;
 use Valkyrja\Orm\PdoAdapter;
-use Valkyrja\Orm\PDOs\Pdo;
+use Valkyrja\Orm\Pdos\Pdo;
 use Valkyrja\Orm\Persister;
 use Valkyrja\Orm\Query;
 use Valkyrja\Orm\QueryBuilder;

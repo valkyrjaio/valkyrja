@@ -18,8 +18,8 @@ use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\Orm\Config\Config as Model;
 use Valkyrja\Orm\Constants\ConfigValue;
 use Valkyrja\Orm\Drivers\PgSqlDriver;
-use Valkyrja\Orm\PDOs\MySqlPdo;
-use Valkyrja\Orm\PDOs\PgSqlPdo;
+use Valkyrja\Orm\Pdos\MySqlPdo;
+use Valkyrja\Orm\Pdos\PgSqlPdo;
 
 use function Valkyrja\env;
 
