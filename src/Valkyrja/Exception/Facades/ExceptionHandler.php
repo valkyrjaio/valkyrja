@@ -30,9 +30,7 @@ use const E_ALL;
 class ExceptionHandler extends ContainerFacade
 {
     /**
-     * The facade instance.
-     *
-     * @return string|object
+     * @inheritDoc
      */
     public static function instance(): object|string
     {
