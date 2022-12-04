@@ -16,6 +16,7 @@ namespace Valkyrja\View\Managers;
 use Valkyrja\Container\Container;
 use Valkyrja\View\Config\Config;
 use Valkyrja\View\Engine;
+use Valkyrja\View\Factory;
 use Valkyrja\View\Template;
 use Valkyrja\View\View as Contract;
 
@@ -32,6 +33,13 @@ class View implements Contract
      * @var Engine[]
      */
     protected static array $engines = [];
+
+    /**
+     * The templates.
+     *
+     * @var Template[]
+     */
+    protected static array $templates = [];
 
     /**
      * The body content template.
@@ -82,6 +90,7 @@ class View implements Contract
      */
     public function __construct(
         protected Container $container,
+        protected Factory $factory,
         protected Config|array $config
     ) {
         $this->engine        = $config['engine'];
@@ -91,17 +100,9 @@ class View implements Contract
     /**
      * @inheritDoc
      */
-    public function createTemplate(string $name = null, array $variables = [], string $engine = null): Template
+    public function createTemplate(string $name, array $variables = [], string $engine = null): Template
     {
-        $template = \Valkyrja\View\Templates\Template::createTemplate($this->getEngine($engine));
-
-        if (null !== $name) {
-            $template->setName($name);
-        }
-
-        $template->setVariables($variables);
-
-        return $template;
+        return $this->factory->getTemplate($this->getEngine($engine), $name, $variables);
     }
 
     /**
@@ -112,7 +113,7 @@ class View implements Contract
         $name ??= $this->engine;
 
         return self::$engines[$name]
-            ??= $this->container->getSingleton($this->enginesConfig[$name]);
+            ??= $this->factory->getEngine($this->enginesConfig[$name]);
     }
 
     /**

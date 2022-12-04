@@ -21,20 +21,11 @@ namespace Valkyrja\View;
 interface Template
 {
     /**
-     * Create a new template.
-     *
-     * @param Engine $engine The engine
-     *
-     * @return static
-     */
-    public static function createTemplate(Engine $engine): self;
-
-    /**
      * Get the template name.
      *
-     * @return string|null
+     * @return string
      */
-    public function getName(): string|null;
+    public function getName(): string;
 
     /**
      * Set the template name.

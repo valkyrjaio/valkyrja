@@ -608,17 +608,14 @@ function view(): View
 /**
  * Helper function to get a new template.
  *
- * @param string|null $template  [optional] The template to use
- * @param array       $variables [optional] The variables to use
+ * @param string $template  [optional] The template to use
+ * @param array  $variables [optional] The variables to use
  *
  * @return Template
  */
-function template(string $template = null, array $variables = []): Template
+function template(string $template, array $variables = []): Template
 {
-    /** @var View $view */
-    $view = container()->getSingleton(View::class);
-
-    return $view->createTemplate($template, $variables);
+    return view()->createTemplate($template, $variables);
 }
 
 /**

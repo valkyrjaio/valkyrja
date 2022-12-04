@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Templates;
 
-use InvalidArgumentException;
 use Valkyrja\View\Engine;
 use Valkyrja\View\Template as Contract;
 
 use function array_merge;
+use function assert;
 use function htmlentities;
 
 use const ENT_QUOTES;
@@ -39,9 +39,9 @@ class Template implements Contract
     /**
      * The template name.
      *
-     * @var string|null
+     * @var string
      */
-    protected ?string $name = null;
+    protected string $name;
 
     /**
      * The layout template.
@@ -98,15 +98,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
-    public static function createTemplate(Engine $engine): self
-    {
-        return new static($engine);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getName(): string|null
+    public function getName(): string
     {
         return $this->name;
     }
@@ -251,9 +243,7 @@ class Template implements Contract
      */
     public function render(array $variables = []): string
     {
-        if (! $this->name) {
-            throw new InvalidArgumentException('No name has been set, nothing to render!');
-        }
+        assert(isset($this->name));
 
         return $this->renderFile($this->name, $variables, true);
     }

@@ -23,13 +23,13 @@ interface View
     /**
      * Make a new View.
      *
-     * @param string|null          $name      [optional] The template to set
+     * @param string               $name      [optional] The template to set
      * @param array<string, mixed> $variables [optional] The variables to set
      * @param string|null          $engine    [optional] The engine to use
      *
      * @return Template
      */
-    public function createTemplate(string $name = null, array $variables = [], string $engine = null): Template;
+    public function createTemplate(string $name, array $variables = [], string $engine = null): Template;
 
     /**
      * Get a render engine.

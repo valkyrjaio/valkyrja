@@ -20,10 +20,14 @@ use Twig\Loader\FilesystemLoader;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
+use Valkyrja\View\Engine;
 use Valkyrja\View\Engines\OrkaEngine;
 use Valkyrja\View\Engines\PhpEngine;
 use Valkyrja\View\Engines\TwigEngine;
 use Valkyrja\View\Exceptions\InvalidConfigPath;
+use Valkyrja\View\Factories\ContainerFactory;
+use Valkyrja\View\Factory;
+use Valkyrja\View\Template;
 use Valkyrja\View\View;
 
 /**
@@ -40,6 +44,8 @@ class ServiceProvider extends Provider
     {
         return [
             View::class        => 'publishView',
+            Factory::class     => 'publishFactory',
+            Template::class    => 'publishTemplate',
             PhpEngine::class   => 'publishPhpEngine',
             OrkaEngine::class  => 'publishOrkaEngine',
             TwigEngine::class  => 'publishTwigEngine',
@@ -54,6 +60,8 @@ class ServiceProvider extends Provider
     {
         return [
             View::class,
+            Factory::class,
+            Template::class,
             PhpEngine::class,
             OrkaEngine::class,
             TwigEngine::class,
@@ -86,7 +94,43 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             View::class,
-            new \Valkyrja\View\Managers\View($container, $viewConfig)
+            new \Valkyrja\View\Managers\View(
+                $container,
+                $container->getSingleton(Factory::class),
+                $viewConfig
+            )
+        );
+    }
+
+    /**
+     * Publish the factory service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishFactory(Container $container): void
+    {
+        $container->setSingleton(
+            Factory::class,
+            new ContainerFactory($container)
+        );
+    }
+
+    /**
+     * Publish the template service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishTemplate(Container $container): void
+    {
+        $container->setClosure(
+            Template::class,
+            static function (Engine $engine) {
+                return new \Valkyrja\View\Templates\Template($engine);
+            }
         );
     }
 
