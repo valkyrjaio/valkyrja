@@ -26,9 +26,9 @@ use Valkyrja\HttpKernel\Events\RequestTerminating;
 use Valkyrja\HttpKernel\Kernel as Contract;
 use Valkyrja\Log\Logger;
 use Valkyrja\Routing\Config\Config;
+use Valkyrja\Routing\Middleware\MiddlewareAwareTrait;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
-use Valkyrja\Routing\Support\MiddlewareAwareTrait;
 
 use function count;
 use function defined;

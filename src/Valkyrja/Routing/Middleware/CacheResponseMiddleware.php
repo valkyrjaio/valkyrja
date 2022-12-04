@@ -16,7 +16,6 @@ namespace Valkyrja\Routing\Middleware;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Routing\Support\Middleware;
 use Valkyrja\Support\Directory;
 
 use function base64_decode;

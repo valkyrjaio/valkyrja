@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Support;
+namespace Valkyrja\Routing\Actions;
 
 use Valkyrja\Http\Request;
 use Valkyrja\Validation\Validator;

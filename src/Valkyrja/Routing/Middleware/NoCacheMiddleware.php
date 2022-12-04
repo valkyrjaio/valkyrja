@@ -15,7 +15,6 @@ namespace Valkyrja\Routing\Middleware;
 
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Routing\Support\Middleware;
 
 /**
  * Class NoCacheMiddleware.

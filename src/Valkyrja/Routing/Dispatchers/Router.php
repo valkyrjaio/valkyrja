@@ -25,11 +25,11 @@ use Valkyrja\Routing\Config\Config;
 use Valkyrja\Routing\Events\RouteMatched;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Matcher;
+use Valkyrja\Routing\Middleware\Middleware;
+use Valkyrja\Routing\Middleware\MiddlewareAwareTrait;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router as Contract;
 use Valkyrja\Routing\Support\Abort;
-use Valkyrja\Routing\Support\Middleware;
-use Valkyrja\Routing\Support\MiddlewareAwareTrait;
 use Valkyrja\View\Template;
 
 use function is_array;

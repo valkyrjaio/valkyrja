@@ -28,7 +28,7 @@ use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Log\Facades\Logger;
-use Valkyrja\Routing\Support\Middleware;
+use Valkyrja\Routing\Middleware\Middleware;
 use Valkyrja\Routing\Url;
 use Valkyrja\Type\Arr;
 

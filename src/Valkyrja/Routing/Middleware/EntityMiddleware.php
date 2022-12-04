@@ -21,7 +21,6 @@ use Valkyrja\ORM\Repository;
 use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Abort;
-use Valkyrja\Routing\Support\Middleware;
 
 /**
  * Class EntityMiddleware.

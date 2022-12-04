@@ -16,7 +16,7 @@ namespace Valkyrja\Routing\Config;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
-use Valkyrja\Routing\Support\Middleware;
+use Valkyrja\Routing\Middleware\Middleware;
 
 use function is_array;
 
