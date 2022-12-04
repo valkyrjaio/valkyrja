@@ -45,7 +45,7 @@
         <RedundantCast>
             <errorLevel type="suppress">
                 <!-- For some reason Psalm thinks that the return of PDO::lastInsertId() isn't string|false -->
-                <file name="src/Valkyrja/ORM/Adapters/PDOAdapter.php" />
+                <file name="src/Valkyrja/Orm/Adapters/PdoAdapter.php" />
             </errorLevel>
         </RedundantCast>
 
