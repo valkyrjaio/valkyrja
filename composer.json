@@ -20,6 +20,7 @@
     "ext-mbstring" : "*"
   },
   "require-dev"       : {
+    "bmitch/churn-php"            : "^1.7",
     "league/flysystem"            : "^3.0",
     "league/flysystem-aws-s3-v3"  : "^3.0",
     "fakerphp/faker"              : "^1.20",
@@ -32,6 +33,7 @@
     "nexmo/client"                : "^2.4",
     "phpunit/phpcov"              : "^8.2",
     "phpmailer/phpmailer"         : "^6.5",
+    "phpmetrics/phpmetrics"       : "^2.8",
     "phpunit/phpunit"             : "^9.5",
     "php-coveralls/php-coveralls" : "^2.5",
     "predis/predis"               : "^2.0",
@@ -42,9 +44,7 @@
     "ext-curl"                    : "*",
     "ext-pdo"                     : "*",
     "ext-openssl"                 : "*",
-    "ext-sodium"                  : "*",
-    "phpmetrics/phpmetrics": "^2.8",
-    "bmitch/churn-php": "^1.7"
+    "ext-sodium"                  : "*"
   },
   "autoload"          : {
     "psr-4" : {
