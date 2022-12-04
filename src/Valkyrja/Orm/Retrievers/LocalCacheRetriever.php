@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Retrievers;
+namespace Valkyrja\Orm\Retrievers;
 
 use JsonException;
-use Valkyrja\ORM\Constants\Statement;
-use Valkyrja\ORM\Entity;
+use Valkyrja\Orm\Constants\Statement;
+use Valkyrja\Orm\Entity;
 use Valkyrja\Type\Arr;
 
 /**

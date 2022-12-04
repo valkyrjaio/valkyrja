@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Matchers;
 
 use Valkyrja\Container\Container;
-use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Orm;
+use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Orm;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Exceptions\InvalidRouteParameter;

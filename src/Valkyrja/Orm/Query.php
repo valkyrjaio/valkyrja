@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM;
+namespace Valkyrja\Orm;
 
 use stdClass;
-use Valkyrja\ORM\Exceptions\NotFoundException;
+use Valkyrja\Orm\Exceptions\NotFoundException;
 
 /**
  * Interface Query.

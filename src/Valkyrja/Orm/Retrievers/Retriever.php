@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Retrievers;
+namespace Valkyrja\Orm\Retrievers;
 
-use Valkyrja\ORM\Adapter;
-use Valkyrja\ORM\Constants\Statement;
-use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Enums\WhereType;
-use Valkyrja\ORM\Exceptions\EntityNotFoundException;
-use Valkyrja\ORM\Query;
-use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\Retriever as Contract;
+use Valkyrja\Orm\Adapter;
+use Valkyrja\Orm\Constants\Statement;
+use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Enums\WhereType;
+use Valkyrja\Orm\Exceptions\EntityNotFoundException;
+use Valkyrja\Orm\Query;
+use Valkyrja\Orm\QueryBuilder;
+use Valkyrja\Orm\Retriever as Contract;
 use Valkyrja\Type\Cls;
 
 /**

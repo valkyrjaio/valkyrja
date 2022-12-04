@@ -15,7 +15,7 @@ namespace Valkyrja\Api;
 
 use Exception;
 use Valkyrja\Http\JsonResponse;
-use Valkyrja\ORM\Entity;
+use Valkyrja\Orm\Entity;
 
 /**
  * Interface Api.

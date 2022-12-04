@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Drivers;
+namespace Valkyrja\Orm\Drivers;
 
-use Valkyrja\ORM\Adapter;
-use Valkyrja\ORM\Driver as Contract;
-use Valkyrja\ORM\Persister;
-use Valkyrja\ORM\Query;
-use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\Retriever;
-use Valkyrja\ORM\Statement;
+use Valkyrja\Orm\Adapter;
+use Valkyrja\Orm\Driver as Contract;
+use Valkyrja\Orm\Persister;
+use Valkyrja\Orm\Query;
+use Valkyrja\Orm\QueryBuilder;
+use Valkyrja\Orm\Retriever;
+use Valkyrja\Orm\Statement;
 
 /**
  * Class Driver.

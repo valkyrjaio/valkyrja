@@ -28,7 +28,7 @@ use Valkyrja\Routing\Enums\CastType;
 class Entity extends Parameter
 {
     /**
-     * @param class-string<\Valkyrja\ORM\Entity>|null $entity
+     * @param class-string<\Valkyrja\Orm\Entity>|null $entity
      */
     public function __construct(
         string $entity = null,

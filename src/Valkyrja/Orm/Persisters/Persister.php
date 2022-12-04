@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Persisters;
+namespace Valkyrja\Orm\Persisters;
 
 use JsonException;
-use Valkyrja\ORM\Adapter;
-use Valkyrja\ORM\Constants\Statement;
-use Valkyrja\ORM\DatedEntity;
-use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Exceptions\ExecuteException;
-use Valkyrja\ORM\Persister as Contract;
-use Valkyrja\ORM\Query;
-use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\SoftDeleteEntity;
-use Valkyrja\ORM\Support\Helpers;
+use Valkyrja\Orm\Adapter;
+use Valkyrja\Orm\Constants\Statement;
+use Valkyrja\Orm\DatedEntity;
+use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Exceptions\ExecuteException;
+use Valkyrja\Orm\Persister as Contract;
+use Valkyrja\Orm\Query;
+use Valkyrja\Orm\QueryBuilder;
+use Valkyrja\Orm\SoftDeleteEntity;
+use Valkyrja\Orm\Support\Helpers;
 use Valkyrja\Type\Arr;
 
 use function is_array;

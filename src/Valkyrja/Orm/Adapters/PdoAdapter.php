@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Adapters;
+namespace Valkyrja\Orm\Adapters;
 
 use PDO;
 use RuntimeException;
-use Valkyrja\ORM\Orm;
-use Valkyrja\ORM\PdoAdapter as Contract;
-use Valkyrja\ORM\Statement;
-use Valkyrja\ORM\Statements\PdoStatement;
+use Valkyrja\Orm\Orm;
+use Valkyrja\Orm\PdoAdapter as Contract;
+use Valkyrja\Orm\Statement;
+use Valkyrja\Orm\Statements\PdoStatement;
 
 use function is_bool;
 

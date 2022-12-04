@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM;
+namespace Valkyrja\Orm;
 
-use Valkyrja\ORM\Enums\WhereType;
+use Valkyrja\Orm\Enums\WhereType;
 
 /**
  * Interface WhereQueryBuilder.

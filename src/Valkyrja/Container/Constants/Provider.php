@@ -32,7 +32,7 @@ use Valkyrja\Jwt\Providers\ServiceProvider as JWTServiceProvider;
 use Valkyrja\Log\Providers\ServiceProvider as LogServiceProvider;
 use Valkyrja\Mail\Providers\ServiceProvider as MailServiceProvider;
 use Valkyrja\Notification\Providers\ServiceProvider as NotificationServiceProvider;
-use Valkyrja\ORM\Providers\ServiceProvider as ORMServiceProvider;
+use Valkyrja\Orm\Providers\ServiceProvider as ORMServiceProvider;
 use Valkyrja\Path\Providers\ServiceProvider as PathServiceProvider;
 use Valkyrja\Reflection\Providers\ServiceProvider as ReflectionServiceProvider;
 use Valkyrja\Routing\Providers\ServiceProvider as RoutingServiceProvider;

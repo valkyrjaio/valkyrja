@@ -43,7 +43,7 @@ use Valkyrja\Mail\Message as MailMessage;
 use Valkyrja\Notification\NotifiableUser;
 use Valkyrja\Notification\Notification;
 use Valkyrja\Notification\Notifier;
-use Valkyrja\ORM\Orm;
+use Valkyrja\Orm\Orm;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Reflector;

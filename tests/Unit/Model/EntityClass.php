@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Model;
 
-use Valkyrja\ORM\Entities\Entity;
+use Valkyrja\Orm\Entities\Entity;
 
 /**
  * Model class to use to test abstract model.

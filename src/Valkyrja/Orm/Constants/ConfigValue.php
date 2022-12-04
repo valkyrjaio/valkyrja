@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Constants;
+namespace Valkyrja\Orm\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\ORM\Adapters\PdoAdapter;
-use Valkyrja\ORM\Drivers\Driver;
-use Valkyrja\ORM\Drivers\PgSqlDriver;
-use Valkyrja\ORM\PDOs\MySqlPdo;
-use Valkyrja\ORM\PDOs\PgSqlPdo;
-use Valkyrja\ORM\Persisters\Persister;
-use Valkyrja\ORM\Queries\Query;
-use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
-use Valkyrja\ORM\Repositories\Repository;
-use Valkyrja\ORM\Retrievers\Retriever;
+use Valkyrja\Orm\Adapters\PdoAdapter;
+use Valkyrja\Orm\Drivers\Driver;
+use Valkyrja\Orm\Drivers\PgSqlDriver;
+use Valkyrja\Orm\PDOs\MySqlPdo;
+use Valkyrja\Orm\PDOs\PgSqlPdo;
+use Valkyrja\Orm\Persisters\Persister;
+use Valkyrja\Orm\Queries\Query;
+use Valkyrja\Orm\QueryBuilders\SqlQueryBuilder;
+use Valkyrja\Orm\Repositories\Repository;
+use Valkyrja\Orm\Retrievers\Retriever;
 
 /**
  * Constant ConfigValue.

@@ -11,33 +11,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Providers;
+namespace Valkyrja\Orm\Providers;
 
 use RuntimeException;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\ORM\Adapter;
-use Valkyrja\ORM\CacheRepository;
-use Valkyrja\ORM\DeleteQueryBuilder;
-use Valkyrja\ORM\Driver;
-use Valkyrja\ORM\Factories\ContainerFactory;
-use Valkyrja\ORM\Factory;
-use Valkyrja\ORM\InsertQueryBuilder;
-use Valkyrja\ORM\Migrations\Migration;
-use Valkyrja\ORM\Orm;
-use Valkyrja\ORM\PdoAdapter;
-use Valkyrja\ORM\PDOs\Pdo;
-use Valkyrja\ORM\Persister;
-use Valkyrja\ORM\Query;
-use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\Repository;
-use Valkyrja\ORM\Retriever;
-use Valkyrja\ORM\Retrievers\LocalCacheRetriever;
-use Valkyrja\ORM\SelectQueryBuilder;
-use Valkyrja\ORM\Statement;
-use Valkyrja\ORM\UpdateQueryBuilder;
+use Valkyrja\Orm\Adapter;
+use Valkyrja\Orm\CacheRepository;
+use Valkyrja\Orm\DeleteQueryBuilder;
+use Valkyrja\Orm\Driver;
+use Valkyrja\Orm\Factories\ContainerFactory;
+use Valkyrja\Orm\Factory;
+use Valkyrja\Orm\InsertQueryBuilder;
+use Valkyrja\Orm\Migrations\Migration;
+use Valkyrja\Orm\Orm;
+use Valkyrja\Orm\PdoAdapter;
+use Valkyrja\Orm\PDOs\Pdo;
+use Valkyrja\Orm\Persister;
+use Valkyrja\Orm\Query;
+use Valkyrja\Orm\QueryBuilder;
+use Valkyrja\Orm\Repository;
+use Valkyrja\Orm\Retriever;
+use Valkyrja\Orm\Retrievers\LocalCacheRetriever;
+use Valkyrja\Orm\SelectQueryBuilder;
+use Valkyrja\Orm\Statement;
+use Valkyrja\Orm\UpdateQueryBuilder;
 
 /**
  * Class ServiceProvider.
@@ -114,7 +114,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Orm::class,
-            new \Valkyrja\ORM\Managers\Orm(
+            new \Valkyrja\Orm\Managers\Orm(
                 $container->getSingleton(Factory::class),
                 $config['orm']
             )

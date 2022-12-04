@@ -29,7 +29,7 @@ use Valkyrja\Filesystem\Config\Filesystem;
 use Valkyrja\Jwt\Config\Jwt;
 use Valkyrja\Log\Config\Log;
 use Valkyrja\Mail\Config\Mail;
-use Valkyrja\ORM\Config\Orm;
+use Valkyrja\Orm\Config\Orm;
 use Valkyrja\Path\Config\Path;
 use Valkyrja\Routing\Config\Routing;
 use Valkyrja\Session\Config\Session;

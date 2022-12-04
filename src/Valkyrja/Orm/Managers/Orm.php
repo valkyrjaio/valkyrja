@@ -11,22 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Managers;
+namespace Valkyrja\Orm\Managers;
 
-use Valkyrja\ORM\Adapter;
-use Valkyrja\ORM\Config\Config;
-use Valkyrja\ORM\Driver;
-use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Factory;
-use Valkyrja\ORM\Migration;
-use Valkyrja\ORM\Orm as Contract;
-use Valkyrja\ORM\Persister;
-use Valkyrja\ORM\Query;
-use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\Repository;
-use Valkyrja\ORM\Retriever;
-use Valkyrja\ORM\SoftDeleteEntity;
-use Valkyrja\ORM\Statement;
+use Valkyrja\Orm\Adapter;
+use Valkyrja\Orm\Config\Config;
+use Valkyrja\Orm\Driver;
+use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Factory;
+use Valkyrja\Orm\Migration;
+use Valkyrja\Orm\Orm as Contract;
+use Valkyrja\Orm\Persister;
+use Valkyrja\Orm\Query;
+use Valkyrja\Orm\QueryBuilder;
+use Valkyrja\Orm\Repository;
+use Valkyrja\Orm\Retriever;
+use Valkyrja\Orm\SoftDeleteEntity;
+use Valkyrja\Orm\Statement;
 use Valkyrja\Type\Cls;
 
 use function get_class;

@@ -19,7 +19,7 @@ use JsonException;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\ORM\Entity;
+use Valkyrja\Orm\Entity;
 use Valkyrja\Routing\Collection as Contract;
 use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Enums\CastType;

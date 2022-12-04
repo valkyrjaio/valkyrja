@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Drivers;
+namespace Valkyrja\Orm\Drivers;
 
-use Valkyrja\ORM\Adapter;
+use Valkyrja\Orm\Adapter;
 
 /**
  * Class PgSqlDriver.

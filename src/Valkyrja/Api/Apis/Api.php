@@ -23,7 +23,7 @@ use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\ORM\Entity;
+use Valkyrja\Orm\Entity;
 
 use function end;
 use function explode;

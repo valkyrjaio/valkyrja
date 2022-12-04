@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Config;
+namespace Valkyrja\Orm\Config;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
-use Valkyrja\ORM\Config\Config as Model;
-use Valkyrja\ORM\Constants\ConfigValue;
-use Valkyrja\ORM\Drivers\PgSqlDriver;
-use Valkyrja\ORM\PDOs\MySqlPdo;
-use Valkyrja\ORM\PDOs\PgSqlPdo;
+use Valkyrja\Orm\Config\Config as Model;
+use Valkyrja\Orm\Constants\ConfigValue;
+use Valkyrja\Orm\Drivers\PgSqlDriver;
+use Valkyrja\Orm\PDOs\MySqlPdo;
+use Valkyrja\Orm\PDOs\PgSqlPdo;
 
 use function Valkyrja\env;
 

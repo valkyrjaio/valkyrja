@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Repositories;
+namespace Valkyrja\Orm\Repositories;
 
 use JsonException;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Cache\Driver as CacheDriver;
-use Valkyrja\ORM\CacheRepository as Contract;
-use Valkyrja\ORM\Driver;
-use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Exceptions\EntityNotFoundException;
-use Valkyrja\ORM\Orm;
-use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\SoftDeleteEntity;
+use Valkyrja\Orm\CacheRepository as Contract;
+use Valkyrja\Orm\Driver;
+use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Exceptions\EntityNotFoundException;
+use Valkyrja\Orm\Orm;
+use Valkyrja\Orm\QueryBuilder;
+use Valkyrja\Orm\SoftDeleteEntity;
 use Valkyrja\Type\Arr;
 use Valkyrja\Type\Obj;
 
@@ -332,7 +332,7 @@ class CacheRepository extends Repository implements Contract
         $id = spl_object_id($entity);
 
         match ($type) {
-            self::$storeType  => $this->storeEntities[$id]  = $entity,
+            self::$storeType  => $this->storeEntities[$id] = $entity,
             self::$forgetType => $this->forgetEntities[$id] = $entity,
         };
     }

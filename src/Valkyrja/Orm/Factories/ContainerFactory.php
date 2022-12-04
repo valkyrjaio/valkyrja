@@ -11,25 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Factories;
+namespace Valkyrja\Orm\Factories;
 
 use Valkyrja\Container\Container;
-use Valkyrja\ORM\Adapter;
-use Valkyrja\ORM\CacheRepository;
-use Valkyrja\ORM\DeleteQueryBuilder;
-use Valkyrja\ORM\Driver;
-use Valkyrja\ORM\Factory as Contract;
-use Valkyrja\ORM\InsertQueryBuilder;
-use Valkyrja\ORM\Migration;
-use Valkyrja\ORM\PdoAdapter;
-use Valkyrja\ORM\Persister;
-use Valkyrja\ORM\Query;
-use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\Repository;
-use Valkyrja\ORM\Retriever;
-use Valkyrja\ORM\SelectQueryBuilder;
-use Valkyrja\ORM\Statement;
-use Valkyrja\ORM\UpdateQueryBuilder;
+use Valkyrja\Orm\Adapter;
+use Valkyrja\Orm\CacheRepository;
+use Valkyrja\Orm\DeleteQueryBuilder;
+use Valkyrja\Orm\Driver;
+use Valkyrja\Orm\Factory as Contract;
+use Valkyrja\Orm\InsertQueryBuilder;
+use Valkyrja\Orm\Migration;
+use Valkyrja\Orm\PdoAdapter;
+use Valkyrja\Orm\Persister;
+use Valkyrja\Orm\Query;
+use Valkyrja\Orm\QueryBuilder;
+use Valkyrja\Orm\Repository;
+use Valkyrja\Orm\Retriever;
+use Valkyrja\Orm\SelectQueryBuilder;
+use Valkyrja\Orm\Statement;
+use Valkyrja\Orm\UpdateQueryBuilder;
 use Valkyrja\Type\Cls;
 
 /**

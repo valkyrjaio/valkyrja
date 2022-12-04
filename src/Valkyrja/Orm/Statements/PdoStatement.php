@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Statements;
+namespace Valkyrja\Orm\Statements;
 
 use PDO;
 use PDOStatement as Statement;
-use Valkyrja\ORM\PdoStatement as Contract;
+use Valkyrja\Orm\PdoStatement as Contract;
 
 use function is_bool;
 use function is_int;

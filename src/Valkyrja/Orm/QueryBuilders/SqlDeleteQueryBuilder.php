@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\QueryBuilders;
+namespace Valkyrja\Orm\QueryBuilders;
 
-use Valkyrja\ORM\Constants\Statement;
-use Valkyrja\ORM\DeleteQueryBuilder as Contract;
-use Valkyrja\ORM\QueryBuilders\Traits\Join;
-use Valkyrja\ORM\QueryBuilders\Traits\Where;
+use Valkyrja\Orm\Constants\Statement;
+use Valkyrja\Orm\DeleteQueryBuilder as Contract;
+use Valkyrja\Orm\QueryBuilders\Traits\Join;
+use Valkyrja\Orm\QueryBuilders\Traits\Where;
 
 /**
  * Class SqlDeleteQueryBuilder.

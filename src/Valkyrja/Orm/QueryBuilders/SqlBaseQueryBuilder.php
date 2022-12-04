@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\QueryBuilders;
+namespace Valkyrja\Orm\QueryBuilders;
 
-use Valkyrja\ORM\Adapter;
-use Valkyrja\ORM\BaseQueryBuilder as Contract;
-use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Query;
+use Valkyrja\Orm\Adapter;
+use Valkyrja\Orm\BaseQueryBuilder as Contract;
+use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Query;
 use Valkyrja\Type\Cls;
 
 /**

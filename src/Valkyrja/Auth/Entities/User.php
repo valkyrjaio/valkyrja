@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Entities;
 
 use Valkyrja\Auth\User as Contract;
-use Valkyrja\ORM\Entities\Entity;
+use Valkyrja\Orm\Entities\Entity;
 
 /**
  * Entity User.

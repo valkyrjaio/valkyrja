@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Entities;
+namespace Valkyrja\Orm\Entities;
 
 use BackedEnum;
 use JsonException;
-use Valkyrja\Model\Models\CastableModel;
 use Valkyrja\Model\Enums\CastType;
-use Valkyrja\ORM\Entity as Contract;
+use Valkyrja\Model\Models\CastableModel;
+use Valkyrja\Orm\Entity as Contract;
 use Valkyrja\Type\Arr;
 use Valkyrja\Type\Obj;
 

@@ -18,7 +18,7 @@ use Valkyrja\Api\Api as Contract;
 use Valkyrja\Api\Json;
 use Valkyrja\Facade\Facade;
 use Valkyrja\Http\JsonResponse;
-use Valkyrja\ORM\Entity;
+use Valkyrja\Orm\Entity;
 
 use function Valkyrja\container;
 

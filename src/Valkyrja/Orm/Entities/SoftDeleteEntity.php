@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Entities;
+namespace Valkyrja\Orm\Entities;
 
-use Valkyrja\ORM\SoftDeleteEntity as EntityContract;
+use Valkyrja\Orm\SoftDeleteEntity as EntityContract;
 
 /**
  * Class SoftDeleteEntity.

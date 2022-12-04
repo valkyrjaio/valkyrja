@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM;
+namespace Valkyrja\Orm;
 
-use Valkyrja\ORM\Exceptions\EntityNotFoundException;
+use Valkyrja\Orm\Exceptions\EntityNotFoundException;
 
 /**
  * Interface Retriever

@@ -15,7 +15,7 @@ namespace Valkyrja\Routing\Attributes\Parameter;
 
 use Attribute;
 use BackedEnum;
-use Valkyrja\ORM\Entity;
+use Valkyrja\Orm\Entity;
 use Valkyrja\Routing\Attributes\Parameter;
 use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Enums\CastType;

@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Migrations;
+namespace Valkyrja\Orm\Migrations;
 
-use Valkyrja\ORM\Migration as Contract;
-use Valkyrja\ORM\Orm;
+use Valkyrja\Orm\Migration as Contract;
+use Valkyrja\Orm\Orm;
 
 /**
  * Abstract Class Migration.

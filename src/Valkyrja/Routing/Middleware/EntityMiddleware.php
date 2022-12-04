@@ -15,9 +15,9 @@ namespace Valkyrja\Routing\Middleware;
 
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Orm;
-use Valkyrja\ORM\Repository;
+use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Orm;
+use Valkyrja\Orm\Repository;
 use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Abort;

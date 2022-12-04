@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Repositories;
+namespace Valkyrja\Orm\Repositories;
 
 use InvalidArgumentException;
-use Valkyrja\ORM\Driver;
-use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Enums\WhereType;
-use Valkyrja\ORM\Exceptions\InvalidEntityException;
-use Valkyrja\ORM\Orm;
-use Valkyrja\ORM\Persister;
-use Valkyrja\ORM\Query;
-use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\Repository as Contract;
-use Valkyrja\ORM\Retriever;
-use Valkyrja\ORM\SoftDeleteEntity;
+use Valkyrja\Orm\Driver;
+use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Enums\WhereType;
+use Valkyrja\Orm\Exceptions\InvalidEntityException;
+use Valkyrja\Orm\Orm;
+use Valkyrja\Orm\Persister;
+use Valkyrja\Orm\Query;
+use Valkyrja\Orm\QueryBuilder;
+use Valkyrja\Orm\Repository as Contract;
+use Valkyrja\Orm\Retriever;
+use Valkyrja\Orm\SoftDeleteEntity;
 use Valkyrja\Type\Cls;
 use Valkyrja\Type\Str;
 

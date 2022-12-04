@@ -15,7 +15,7 @@ namespace Valkyrja\Routing;
 
 use BackedEnum;
 use Valkyrja\Dispatcher\Dispatch;
-use Valkyrja\ORM\Entity;
+use Valkyrja\Orm\Entity;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Models\Parameter;
 

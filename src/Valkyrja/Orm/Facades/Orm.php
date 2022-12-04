@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Facades;
+namespace Valkyrja\Orm\Facades;
 
 use Valkyrja\Facade\ContainerFacade;
-use Valkyrja\ORM\Adapter;
-use Valkyrja\ORM\Driver;
-use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Orm as Contract;
-use Valkyrja\ORM\Persister;
-use Valkyrja\ORM\Query;
-use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\Repository;
-use Valkyrja\ORM\Retriever;
-use Valkyrja\ORM\SoftDeleteEntity;
-use Valkyrja\ORM\Statement;
+use Valkyrja\Orm\Adapter;
+use Valkyrja\Orm\Driver;
+use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Orm as Contract;
+use Valkyrja\Orm\Persister;
+use Valkyrja\Orm\Query;
+use Valkyrja\Orm\QueryBuilder;
+use Valkyrja\Orm\Repository;
+use Valkyrja\Orm\Retriever;
+use Valkyrja\Orm\SoftDeleteEntity;
+use Valkyrja\Orm\Statement;
 
 /**
  * Class ORM.

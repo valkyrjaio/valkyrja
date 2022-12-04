@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\QueryBuilders;
+namespace Valkyrja\Orm\QueryBuilders;
 
-use Valkyrja\ORM\Constants\Statement;
-use Valkyrja\ORM\QueryBuilders\Traits\Join;
-use Valkyrja\ORM\QueryBuilders\Traits\Set;
-use Valkyrja\ORM\QueryBuilders\Traits\Where;
-use Valkyrja\ORM\UpdateQueryBuilder as Contract;
+use Valkyrja\Orm\Constants\Statement;
+use Valkyrja\Orm\QueryBuilders\Traits\Join;
+use Valkyrja\Orm\QueryBuilders\Traits\Set;
+use Valkyrja\Orm\QueryBuilders\Traits\Where;
+use Valkyrja\Orm\UpdateQueryBuilder as Contract;
 
 /**
  * Class SqlUpdateQueryBuilder.

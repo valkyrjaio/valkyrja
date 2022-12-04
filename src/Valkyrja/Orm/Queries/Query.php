@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Queries;
+namespace Valkyrja\Orm\Queries;
 
 use stdClass;
-use Valkyrja\ORM\Adapter;
-use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Exceptions\NotFoundException;
-use Valkyrja\ORM\Query as QueryContract;
-use Valkyrja\ORM\Statement;
-use Valkyrja\ORM\Support\Helpers;
+use Valkyrja\Orm\Adapter;
+use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Exceptions\NotFoundException;
+use Valkyrja\Orm\Query as QueryContract;
+use Valkyrja\Orm\Statement;
+use Valkyrja\Orm\Support\Helpers;
 use Valkyrja\Type\Cls;
 use Valkyrja\Type\Str;
 

@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Adapters;
+namespace Valkyrja\Orm\Adapters;
 
-use Valkyrja\ORM\Adapter as Contract;
-use Valkyrja\ORM\Orm;
-use Valkyrja\ORM\Persister;
-use Valkyrja\ORM\Query;
-use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\Retriever;
+use Valkyrja\Orm\Adapter as Contract;
+use Valkyrja\Orm\Orm;
+use Valkyrja\Orm\Persister;
+use Valkyrja\Orm\Query;
+use Valkyrja\Orm\QueryBuilder;
+use Valkyrja\Orm\Retriever;
 
 /**
  * Abstract Class Adapter.

@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Adapters;
+namespace Valkyrja\Orm\Adapters;
 
-use Valkyrja\ORM\Statement;
-use Valkyrja\ORM\Statements\NullStatement;
+use Valkyrja\Orm\Statement;
+use Valkyrja\Orm\Statements\NullStatement;
 
 /**
  * Class NullAdapter.

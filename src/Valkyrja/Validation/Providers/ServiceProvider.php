@@ -16,7 +16,7 @@ namespace Valkyrja\Validation\Providers;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\ORM\Orm as ORMManager;
+use Valkyrja\Orm\Orm as ORMManager;
 use Valkyrja\Validation\Factories\ContainerFactory;
 use Valkyrja\Validation\Factory;
 use Valkyrja\Validation\Rules\ORM;

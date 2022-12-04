@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\QueryBuilders\Traits;
+namespace Valkyrja\Orm\QueryBuilders\Traits;
 
-use Valkyrja\ORM\Constants\Operator;
-use Valkyrja\ORM\Constants\Statement;
-use Valkyrja\ORM\Enums\WhereType;
-use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\Support\Helpers;
+use Valkyrja\Orm\Constants\Operator;
+use Valkyrja\Orm\Constants\Statement;
+use Valkyrja\Orm\Enums\WhereType;
+use Valkyrja\Orm\QueryBuilder;
+use Valkyrja\Orm\Support\Helpers;
 
 use function array_keys;
 use function implode;

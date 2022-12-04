@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Attributes\Parameter\Entity;
 
 use Attribute;
-use Valkyrja\ORM\Entity;
+use Valkyrja\Orm\Entity;
 use Valkyrja\Routing\Attributes\Parameter\VlidV4 as Parameter;
 use Valkyrja\Routing\Enums\CastType;
 
