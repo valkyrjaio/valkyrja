@@ -201,7 +201,7 @@ class Collector implements Contract
     protected function with(string $method, mixed $value): self
     {
         // Create a new instance. We do not want the routes to come along for the ride
-        $self = new $this();
+        $self = new static($this->collection, $this->processor);
 
         // Clone the current route so we don't override the current group's route
         $route = clone $this->route;
