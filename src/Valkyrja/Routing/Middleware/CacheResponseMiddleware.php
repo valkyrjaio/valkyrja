@@ -45,7 +45,7 @@ class CacheResponseMiddleware extends Middleware
     {
         $filePath = Directory::cachePath('response/' . static::getHashedPath($request));
 
-        if (is_file($filePath) && ! self::$router->debug()) {
+        if (is_file($filePath) && ! self::getRouter()->debug()) {
             if (time() - filemtime($filePath) > static::getTtl()) {
                 unlink($filePath);
 

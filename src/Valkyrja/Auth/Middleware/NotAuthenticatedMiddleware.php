@@ -54,16 +54,16 @@ class NotAuthenticatedMiddleware extends AuthMiddleware
     protected static function getFailedRegularResponse(): Response
     {
         if ($authenticateUrl = static::getConfig(ConfigKeyPart::NOT_AUTHENTICATE_URL)) {
-            return self::$responseFactory->createRedirectResponse(
+            return self::getResponseFactory()->createRedirectResponse(
                 $authenticateUrl,
                 StatusCode::FOUND
             );
         }
 
         /** @var Url $url */
-        $url = self::$container->getSingleton(Url::class);
+        $url = self::getContainer()->getSingleton(Url::class);
 
-        return self::$responseFactory->createRedirectResponse(
+        return self::getResponseFactory()->createRedirectResponse(
             $url->getUrl((string) static::getConfig(ConfigKeyPart::NOT_AUTHENTICATE_ROUTE, RouteName::DASHBOARD)),
             StatusCode::FOUND
         );

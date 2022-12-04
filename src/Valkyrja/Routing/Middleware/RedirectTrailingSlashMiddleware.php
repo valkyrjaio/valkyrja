@@ -38,7 +38,7 @@ class RedirectTrailingSlashMiddleware extends Middleware
             $query = $request->getUri()->getQuery();
             $uri   = '/' . trim($path, $slash) . ($query ? '?' . $query : '');
             /** @var ResponseFactory $responseFactory */
-            $responseFactory = self::$container->getSingleton(ResponseFactory::class);
+            $responseFactory = self::getContainer()->getSingleton(ResponseFactory::class);
 
             return $responseFactory->createRedirectResponse($uri);
         }

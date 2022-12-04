@@ -52,13 +52,13 @@ class ReAuthenticatedMiddleware extends AuthMiddleware
     protected static function getFailedAuthenticationResponse(Request $request): Response
     {
         if ($request->isXmlHttpRequest()) {
-            return self::$responseFactory->createJsonResponse([], StatusCode::LOCKED);
+            return self::getResponseFactory()->createJsonResponse([], StatusCode::LOCKED);
         }
 
         /** @var Url $url */
-        $url = self::$container->getSingleton(Url::class);
+        $url = self::getContainer()->getSingleton(Url::class);
 
-        return self::$responseFactory->createRedirectResponse(
+        return self::getResponseFactory()->createRedirectResponse(
             $url->getUrl((string) static::getConfig('passwordConfirmRoute', RouteName::PASSWORD_CONFIRM))
         );
     }

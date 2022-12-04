@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Support;
 
 use Valkyrja\Container\Container;
-use Valkyrja\Event\Events;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
@@ -33,38 +32,28 @@ abstract class Middleware
      *
      * @var Container
      */
-    public static Container $container;
-
-    /**
-     * The events.
-     *
-     * @var Events
-     */
-    public static Events $events;
+    private static Container $container;
 
     /**
      * The response factory.
      *
      * @var ResponseFactory
      */
-    public static ResponseFactory $responseFactory;
+    private static ResponseFactory $responseFactory;
 
     /**
      * The router.
      *
      * @var Router
      */
-    public static Router $router;
+    private static Router $router;
 
     /**
      * The matched route.
-     *  NOTE: This will only be instantiated and available to middlewares' before methods that are set to a route, and
-     *  not to global middleware that run on every request. It will be available for all middlewares' after and
-     *  terminate assuming a route was matched
      *
-     * @var Route|null
+     * @var Route
      */
-    public static ?Route $route = null;
+    public static Route $route;
 
     /**
      * Middleware handler for before a request is dispatched.
@@ -106,5 +95,53 @@ abstract class Middleware
     public static function terminate(Request $request, Response $response): void
     {
         // Do stuff after termination (after the response has been sent) here
+    }
+
+    /**
+     * Get the container service.
+     *
+     * @return Container
+     */
+    protected static function getContainer(): Container
+    {
+        return self::$container ??= \Valkyrja\container();
+    }
+
+    /**
+     * Get the response factory service.
+     *
+     * @return ResponseFactory
+     */
+    protected static function getResponseFactory(): ResponseFactory
+    {
+        return self::$responseFactory ??= self::getContainer()->getSingleton(ResponseFactory::class);
+    }
+
+    /**
+     * Get the router service.
+     *
+     * @return Router
+     */
+    protected static function getRouter(): Router
+    {
+        return self::$router ??= self::getContainer()->getSingleton(Router::class);
+    }
+
+    /**
+     * Get the matched route.
+     *
+     *  NOTE: This will only be instantiated and available to middlewares' before methods that are set to a route, and
+     *  not to global middleware that run on every request. It will be available for all middlewares' after and
+     *  terminate assuming a route was matched
+     *
+     * @return Route|null
+     */
+    protected static function getRoute(): ?Route
+    {
+        if (self::getContainer()->isSingleton(Route::class)) {
+            return self::$route ??= self::getContainer()->getSingleton(Route::class);
+        }
+
+        return null;
     }
 }

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Support;
 
 use Valkyrja\Container\Container;
-use Valkyrja\Event\Events;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Routing\Route;
@@ -32,40 +31,83 @@ abstract class Controller
      *
      * @var Container
      */
-    public static Container $container;
-
-    /**
-     * The events.
-     *
-     * @var Events
-     */
-    public static Events $events;
+    private static Container $container;
 
     /**
      * The request.
      *
      * @var Request
      */
-    public static Request $request;
+    private static Request $request;
 
     /**
      * The response factory.
      *
      * @var ResponseFactory
      */
-    public static ResponseFactory $responseFactory;
+    private static ResponseFactory $responseFactory;
 
     /**
      * The router.
      *
      * @var Router
      */
-    public static Router $router;
+    private static Router $router;
 
     /**
      * The route.
      *
      * @var Route
      */
-    public static Route $route;
+    private static Route $route;
+
+    /**
+     * Get the container service.
+     *
+     * @return Container
+     */
+    protected static function getContainer(): Container
+    {
+        return self::$container ??= \Valkyrja\container();
+    }
+
+    /**
+     * The request.
+     *
+     * @return Request
+     */
+    protected static function getRequest(): Request
+    {
+        return self::$request ??= self::getContainer()->getSingleton(Request::class);
+    }
+
+    /**
+     * Get the response factory service.
+     *
+     * @return ResponseFactory
+     */
+    protected static function getResponseFactory(): ResponseFactory
+    {
+        return self::$responseFactory ??= self::getContainer()->getSingleton(ResponseFactory::class);
+    }
+
+    /**
+     * Get the router service.
+     *
+     * @return Router
+     */
+    protected static function getRouter(): Router
+    {
+        return self::$router ??= self::getContainer()->getSingleton(Router::class);
+    }
+
+    /**
+     * Get the matched route.
+     *
+     * @return Route
+     */
+    protected static function getRoute(): Route
+    {
+        return self::$route ??= self::getContainer()->getSingleton(Route::class);
+    }
 }

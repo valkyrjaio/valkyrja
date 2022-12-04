@@ -68,7 +68,7 @@ class EntityMiddleware extends Middleware
      */
     protected static function getOrm(): ORM
     {
-        return self::$orm ?? self::$container->getSingleton(ORM::class);
+        return self::$orm ?? self::getContainer()->getSingleton(ORM::class);
     }
 
     /**
@@ -136,7 +136,7 @@ class EntityMiddleware extends Middleware
         }
 
         // Set the entity with the param name as the service id into the container
-        self::$container->setSingleton($entityName . $index, $entity);
+        self::getContainer()->setSingleton($entityName . $index, $entity);
 
         // Replace the route match with this entity
         $value = $entity;

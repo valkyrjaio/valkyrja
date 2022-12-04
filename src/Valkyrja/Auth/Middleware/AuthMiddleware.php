@@ -44,21 +44,21 @@ abstract class AuthMiddleware extends Middleware
      *
      * @var Auth
      */
-    public static Auth $auth;
+    protected static Auth $auth;
 
     /**
      * The repository.
      *
      * @var Repository
      */
-    public static Repository $repository;
+    protected static Repository $repository;
 
     /**
      * The config.
      *
      * @var Config|array
      */
-    public static Config|array $config;
+    protected static Config|array $config;
 
     /**
      * The adapter to use
@@ -95,7 +95,7 @@ abstract class AuthMiddleware extends Middleware
      */
     protected static function getAuth(): Auth
     {
-        return self::$auth ??= self::$container->getSingleton(Auth::class);
+        return self::$auth ??= self::getContainer()->getSingleton(Auth::class);
     }
 
     /**
@@ -161,14 +161,14 @@ abstract class AuthMiddleware extends Middleware
     protected static function getFailedJsonResponse(): JsonResponse
     {
         /** @var Api $api */
-        $api  = static::$container->getSingleton(Api::class);
+        $api  = static::getContainer()->getSingleton(Api::class);
         $json = $api->jsonFromArray([]);
         $json->setData();
         $json->setMessage(static::$errorMessage);
         $json->setStatusCode(StatusCode::UNAUTHORIZED);
         $json->setStatus(Status::ERROR);
 
-        return self::$responseFactory->createJsonResponse(
+        return self::getResponseFactory()->createJsonResponse(
             $json->asArray(),
             StatusCode::UNAUTHORIZED
         );
@@ -182,16 +182,16 @@ abstract class AuthMiddleware extends Middleware
     protected static function getFailedRegularResponse(): Response
     {
         if ($authenticateUrl = static::getConfig(ConfigKeyPart::AUTHENTICATE_URL)) {
-            return self::$responseFactory->createRedirectResponse(
+            return self::getResponseFactory()->createRedirectResponse(
                 $authenticateUrl,
                 StatusCode::UNAUTHORIZED
             );
         }
 
         /** @var Url $url */
-        $url = self::$container->getSingleton(Url::class);
+        $url = self::getContainer()->getSingleton(Url::class);
 
-        return self::$responseFactory->createRedirectResponse(
+        return self::getResponseFactory()->createRedirectResponse(
             $url->getUrl((string) static::getConfig(ConfigKeyPart::AUTHENTICATE_ROUTE, RouteName::AUTHENTICATE)),
             StatusCode::UNAUTHORIZED
         );

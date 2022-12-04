@@ -44,7 +44,7 @@ class VerifyAuthBroadcastMiddleware extends Middleware
      */
     public static function before(Request $request): Request|Response
     {
-        $container = self::$container;
+        $container = self::getContainer();
         /** @var Auth $auth */
         $auth = $container->getSingleton(Auth::class);
         /** @var Broadcast $broadcaster */

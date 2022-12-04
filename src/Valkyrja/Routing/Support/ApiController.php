@@ -35,16 +35,6 @@ abstract class ApiController extends Controller
     private static Api $api;
 
     /**
-     * Get the Api service.
-     *
-     * @return Api
-     */
-    protected static function getApi(): Api
-    {
-        return self::$api ?? self::$api = self::$container->getSingleton(Api::class);
-    }
-
-    /**
      * Create an Api JsonResponse.
      *
      * @param array         $data       The json data
@@ -72,7 +62,7 @@ abstract class ApiController extends Controller
         $json->setErrors($errors ?? []);
         $json->setWarnings($warnings ?? []);
 
-        return self::$responseFactory->createJsonResponse($json->asArray(), $statusCode);
+        return self::getResponseFactory()->createJsonResponse($json->asArray(), $statusCode);
     }
 
     /**
@@ -95,9 +85,9 @@ abstract class ApiController extends Controller
         array $errors = null,
         array $warnings = null
     ): JsonResponse {
-        $url        = self::$request->getUri()->getPath();
+        $url        = self::getRequest()->getUri()->getPath();
         $logMessage = "$message\nUrl: $url";
-        $logger     = self::$container->getSingleton(Logger::class);
+        $logger     = self::getContainer()->getSingleton(Logger::class);
 
         // Trace code and additional details get added in Logger::exception()
         $logger->exception($exception, $logMessage);
@@ -112,6 +102,16 @@ abstract class ApiController extends Controller
             $errors,
             $warnings
         );
+    }
+
+    /**
+     * Get the Api service.
+     *
+     * @return Api
+     */
+    protected static function getApi(): Api
+    {
+        return self::$api ??= self::getContainer()->getSingleton(Api::class);
     }
 
     /**

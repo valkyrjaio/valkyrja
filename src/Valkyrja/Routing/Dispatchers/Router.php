@@ -28,7 +28,6 @@ use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router as Contract;
 use Valkyrja\Routing\Support\Abort;
-use Valkyrja\Routing\Support\Controller;
 use Valkyrja\Routing\Support\Middleware;
 use Valkyrja\Routing\Support\MiddlewareAwareTrait;
 use Valkyrja\View\Template;
@@ -67,10 +66,6 @@ class Router implements Contract
         protected Config|array $config,
         protected bool $debug = false
     ) {
-        Controller::$container       = Middleware::$container = $container;
-        Controller::$events          = Middleware::$events = $events;
-        Controller::$responseFactory = Middleware::$responseFactory = $responseFactory;
-        Controller::$router          = Middleware::$router = $this;
     }
 
     /**
@@ -197,11 +192,6 @@ class Router implements Contract
         if ($requestAfterMiddleware instanceof Response) {
             return $requestAfterMiddleware;
         }
-
-        // Set the request in the abstract controller
-        Controller::$request = $request;
-        // Set the route in the abstract controller
-        Controller::$route = $route;
 
         // Attempt to dispatch the route using any one of the callable options
         $dispatch = $this->dispatcher->dispatch($route, $route->getMatches());
