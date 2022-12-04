@@ -13,28 +13,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Collections;
 
-use BackedEnum;
 use InvalidArgumentException;
 use JsonException;
-use Valkyrja\Container\Container;
-use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Routing\Collection as Contract;
-use Valkyrja\Routing\Constants\Regex;
-use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
-use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
-use Valkyrja\Routing\Support\Helpers;
-use Valkyrja\Type\Arr;
-use Valkyrja\Type\Str;
 
 use function array_merge;
 use function assert;
 use function is_array;
 use function is_string;
-use function md5;
 
 /**
  * Class Collection.
@@ -72,18 +62,6 @@ class Collection implements Contract
     protected array $named = [];
 
     /**
-     * Collection constructor.
-     *
-     * @param Container  $container
-     * @param Dispatcher $dispatcher
-     */
-    public function __construct(
-        protected Container $container,
-        protected Dispatcher $dispatcher
-    ) {
-    }
-
-    /**
      * @inheritDoc
      *
      * @throws InvalidRoutePath
@@ -93,15 +71,7 @@ class Collection implements Contract
     {
         // Verify the route
         $this->verifyRoute($route);
-        // Verify the dispatch
-        $this->dispatcher->verifyDispatch($route);
 
-        // Set the id to an md5 hash of the route
-        $route->setId(md5(Arr::toString($route->asArray())));
-        // Set the path to the validated cleaned path (/some/path)
-        $route->setPath(Helpers::trimPath($route->getPath()));
-        // Set whether the route is dynamic
-        $route->setDynamic(Str::contains($route->getPath(), '{'));
         // Set the route to its request methods
         $this->setRouteToRequestMethods($route);
         // Set the route to the named
@@ -270,7 +240,9 @@ class Collection implements Contract
 
         // If this is a dynamic route
         if ($route->isDynamic()) {
-            $regex = $this->getRouteRegex($route);
+            $regex = $route->getRegex();
+
+            assert(is_string($regex));
 
             // Set the route in the dynamic routes list
             $this->dynamic[$requestMethod][$regex] = $id;
@@ -279,43 +251,6 @@ class Collection implements Contract
             // Set the route in the static routes list
             $this->static[$requestMethod][$route->getPath()] = $id;
         }
-    }
-
-    /**
-     * Create the regex for a route.
-     *
-     * @param Route $route The route
-     *
-     * @throws InvalidRoutePath
-     *
-     * @return string
-     */
-    protected function getRouteRegex(Route $route): string
-    {
-        // If the regex has already been set then don't do anything
-        if ($regex = $route->getRegex()) {
-            return $regex;
-        }
-
-        // Replace all slashes with \/
-        $regex = Str::replace($route->getPath(), '/', Regex::PATH);
-
-        // Iterate through the route's parameters
-        foreach ($route->getParameters() as $parameter) {
-            // Validate the parameter
-            $this->validateParameterEntity($route, $parameter);
-            $this->validateParameterEnum($parameter);
-            $this->validateParameterInRegex($parameter, $regex);
-
-            $regex = $this->replaceParameterNameInRegex($route, $parameter, $regex);
-        }
-
-        $regex = Regex::START . $regex . Regex::END;
-
-        // Set the regex
-        $route->setRegex($regex);
-
-        return $regex;
     }
 
     /**
@@ -483,31 +418,6 @@ class Collection implements Contract
     }
 
     /**
-     * Validate the parameter entity.
-     *
-     * @param Route     $route     The route
-     * @param Parameter $parameter The parameter
-     *
-     * @return void
-     */
-    protected function validateParameterEntity(Route $route, Parameter $parameter): void
-    {
-        $entity = $parameter->getEntity();
-
-        if ($entity !== null) {
-            assert(is_a($entity, Entity::class, true));
-
-            $this->removeEntityFromDependencies($route, $entity);
-
-            $entityColumn = $parameter->getEntityColumn();
-
-            if ($entityColumn !== null) {
-                assert(property_exists($entity, $entityColumn));
-            }
-        }
-    }
-
-    /**
      * Remove the entity from the route's dependencies list.
      *
      * @param Route                $route      The route
@@ -532,84 +442,5 @@ class Collection implements Contract
         }
 
         $route->setDependencies($updatedDependencies);
-    }
-
-    /**
-     * Validate the parameter enum.
-     *
-     * @param Parameter $parameter The parameter
-     *
-     * @return void
-     */
-    protected function validateParameterEnum(Parameter $parameter): void
-    {
-        $enum = $parameter->getEnum();
-
-        if ($enum !== null) {
-            assert(is_a($enum, BackedEnum::class, true));
-
-            // Set the regex to the enum cases
-            $parameter->setRegex(implode('|', array_column($enum::cases(), 'value')));
-            // Ensure the type case was set properly
-            $parameter->setType(CastType::enum);
-        }
-    }
-
-    /**
-     * Validate the parameter name exists in the regex.
-     *
-     * @param Parameter $parameter The parameter
-     * @param string    $regex     The regex
-     *
-     * @return void
-     */
-    protected function validateParameterInRegex(Parameter $parameter, string $regex): void
-    {
-        // If the parameter is optional or the name has a ? affixed to it
-        if ($parameter->isOptional() || Str::contains($regex, $parameter->getName() . '?')) {
-            // Ensure the parameter is set to optional
-            $parameter->setIsOptional(true);
-        }
-    }
-
-    /**
-     * Replace the parameter name in the route's regex.
-     *
-     * @param Route     $route     The route
-     * @param Parameter $parameter The parameter
-     * @param string    $regex     The regex
-     *
-     * @throws InvalidRoutePath
-     *
-     * @return string
-     */
-    protected function replaceParameterNameInRegex(Route $route, Parameter $parameter, string $regex): string
-    {
-        // Get whether this parameter is optional
-        /** @var bool $isOptional */
-        $isOptional = $parameter->isOptional();
-
-        // Get the replacement for this parameter's name (something like {name} or {name?}
-        // Prepend \/ if it optional so we can replace the path slash and set it in the
-        // regex below as a non-capture-optional group
-        $nameReplacement = ($isOptional ? Regex::PATH : '')
-            . '{' . $parameter->getName() . ($isOptional ? '?' : '') . '}';
-
-        // Check if the path doesn't contain the parameter's name replacement
-        if (! Str::contains($regex, $nameReplacement)) {
-            throw new InvalidRoutePath("{$route->getPath()} is missing $nameReplacement");
-        }
-
-        // If optional we don't want to capture the / before the value
-        $parameterRegex = ($isOptional ? Regex::START_OPTIONAL_CAPTURE_GROUP : '')
-            // Start the actual value's capture group
-            . (! $parameter->shouldCapture() ? Regex::START_NON_CAPTURE_GROUP : Regex::START_CAPTURE_GROUP)
-            // Set the parameter's regex to match the value
-            . $parameter->getRegex()
-            // End the capture group
-            . ($isOptional ? Regex::END_OPTIONAL_CAPTURE_GROUP : Regex::END_CAPTURE_GROUP);
-
-        // Replace the {name} or \/{name?} with the finished regex
-        return Str::replace($regex, $nameReplacement, $parameterRegex);
     }
 }

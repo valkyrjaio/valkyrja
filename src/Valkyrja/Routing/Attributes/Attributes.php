@@ -15,17 +15,26 @@ namespace Valkyrja\Routing\Attributes;
 
 use InvalidArgumentException;
 use ReflectionException;
-use Valkyrja\Attribute\Managers\Attributes;
+use Valkyrja\Attribute\Managers\Attributes as AttributeAttributes;
+use Valkyrja\Reflection\Reflector;
+use Valkyrja\Routing\Attributes as Contract;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
-use Valkyrja\Routing\RouteAttributes as Contract;
+use Valkyrja\Routing\Processor;
 
 /**
- * Class Processor.
+ * Class Attributes.
  *
  * @author Melech Mizrachi
  */
-class RouteAttributes extends Attributes implements Contract
+class Attributes implements Contract
 {
+    public function __construct(
+        protected AttributeAttributes $attributes,
+        protected Reflector $reflector,
+        protected Processor $processor
+    ) {
+    }
+
     /**
      * @inheritDoc
      *
@@ -38,9 +47,9 @@ class RouteAttributes extends Attributes implements Contract
 
         foreach ($classes as $class) {
             /** @var Route[] $classAttributes */
-            $classAttributes = $this->forClass($class, Route::class);
+            $classAttributes = $this->attributes->forClass($class, Route::class);
             /** @var Route[] $memberAttributes */
-            $memberAttributes = $this->forClassMembers($class, Route::class);
+            $memberAttributes = $this->attributes->forClassMembers($class, Route::class);
 
             $finalAttributes = [];
 
@@ -51,11 +60,11 @@ class RouteAttributes extends Attributes implements Contract
                     /** @var Parameter[] $mergedClassParameters */
                     $mergedClassParameters = [
                         ...$classAttribute->getParameters(),
-                        ...$this->forClass($class, Parameter::class),
+                        ...$this->attributes->forClass($class, Parameter::class),
                     ];
                     $mergedClassMiddleware = [
                         ...($classAttribute->getMiddleware() ?? []),
-                        ...array_column($this->forClass($class, Middleware::class), 'name'),
+                        ...array_column($this->attributes->forClass($class, Middleware::class), 'name'),
                     ];
 
                     $classAttribute->setParameters($mergedClassParameters);
@@ -69,11 +78,11 @@ class RouteAttributes extends Attributes implements Contract
                             $routeMiddleware = [];
 
                             if ($property = $routeAttribute->getProperty()) {
-                                $routeParameters = $this->forProperty($class, $property, Parameter::class);
-                                $routeMiddleware = $this->forProperty($class, $property, Middleware::class);
+                                $routeParameters = $this->attributes->forProperty($class, $property, Parameter::class);
+                                $routeMiddleware = $this->attributes->forProperty($class, $property, Middleware::class);
                             } elseif ($method = $routeAttribute->getMethod()) {
-                                $routeParameters = $this->forMethod($class, $method, Parameter::class);
-                                $routeMiddleware = $this->forMethod($class, $method, Middleware::class);
+                                $routeParameters = $this->attributes->forMethod($class, $method, Parameter::class);
+                                $routeMiddleware = $this->attributes->forMethod($class, $method, Middleware::class);
                             }
 
                             /** @var Parameter[] $mergedPropertyParameters */
@@ -137,6 +146,8 @@ class RouteAttributes extends Attributes implements Contract
 
         // Avoid having large arrays in cached routes file
         $route->setMatches();
+
+        $this->processor->route($route);
     }
 
     /**

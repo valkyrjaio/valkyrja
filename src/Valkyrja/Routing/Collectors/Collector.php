@@ -21,6 +21,7 @@ use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Collector as Contract;
 use Valkyrja\Routing\Constants\HandleSplit;
 use Valkyrja\Routing\Models\Route as RouteModel;
+use Valkyrja\Routing\Processor;
 use Valkyrja\Routing\Route;
 use Valkyrja\Type\Str;
 
@@ -51,7 +52,8 @@ class Collector implements Contract
      * @param Collection $collection The collection
      */
     public function __construct(
-        protected Collection $collection
+        protected Collection $collection,
+        protected Processor $processor
     ) {
         // Set the route
         $this->route = new RouteModel();
@@ -408,6 +410,7 @@ class Collector implements Contract
     protected function addRoutesToCollection(): void
     {
         foreach ($this->routes as $route) {
+            $this->processor->route($route);
             $this->collection->add($route);
         }
     }

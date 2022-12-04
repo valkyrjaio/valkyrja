@@ -16,13 +16,12 @@ namespace Valkyrja\Routing\Collections;
 use JsonException;
 use Valkyrja\Config\Config;
 use Valkyrja\Container\Container;
-use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Routing\Annotator;
+use Valkyrja\Routing\Attributes;
 use Valkyrja\Routing\Collector;
 use Valkyrja\Routing\Config\Cache;
 use Valkyrja\Routing\Config\Config as RoutingConfig;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
-use Valkyrja\Routing\RouteAttributes;
 use Valkyrja\Support\Cacheable\Cacheable;
 
 /**
@@ -38,18 +37,15 @@ class CacheableCollection extends Collection
     use Cacheable;
 
     /**
-     * RouteCollection constructor.
+     * CacheableCollection constructor.
      *
      * @param Container           $container
-     * @param Dispatcher          $dispatcher
      * @param RoutingConfig|array $config
      */
     public function __construct(
-        Container $container,
-        Dispatcher $dispatcher,
+        protected Container $container,
         protected RoutingConfig|array $config
     ) {
-        parent::__construct($container, $dispatcher);
     }
 
     /**
@@ -134,8 +130,8 @@ class CacheableCollection extends Collection
      */
     protected function setupAttributes(Config|array $config): void
     {
-        /** @var RouteAttributes $routeAttributes */
-        $routeAttributes = $this->container->getSingleton(RouteAttributes::class);
+        /** @var Attributes $routeAttributes */
+        $routeAttributes = $this->container->getSingleton(Attributes::class);
 
         // Get all the attributes routes from the list of controllers
         // Iterate through the routes

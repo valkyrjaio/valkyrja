@@ -24,12 +24,13 @@ use Valkyrja\Http\Request;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Annotator;
+use Valkyrja\Routing\Attributes;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Collections\CacheableCollection;
 use Valkyrja\Routing\Collector;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Matchers\EntityCapableMatcher;
-use Valkyrja\Routing\RouteAttributes;
+use Valkyrja\Routing\Processor;
 use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Url;
 
@@ -46,13 +47,14 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Annotator::class       => 'publishAnnotator',
-            Router::class          => 'publishRouter',
-            Collector::class       => 'publishCollector',
-            Collection::class      => 'publishCollection',
-            Matcher::class         => 'publishMatcher',
-            Url::class             => 'publishUrl',
-            RouteAttributes::class => 'publishRouteAttributes',
+            Annotator::class  => 'publishAnnotator',
+            Router::class     => 'publishRouter',
+            Collector::class  => 'publishCollector',
+            Collection::class => 'publishCollection',
+            Matcher::class    => 'publishMatcher',
+            Url::class        => 'publishUrl',
+            Attributes::class => 'publishRouteAttributes',
+            Processor::class  => 'publishProcessor',
         ];
     }
 
@@ -68,7 +70,8 @@ class ServiceProvider extends Provider
             Collection::class,
             Matcher::class,
             Url::class,
-            RouteAttributes::class,
+            Attributes::class,
+            Processor::class,
         ];
     }
 
@@ -112,7 +115,8 @@ class ServiceProvider extends Provider
             new \Valkyrja\Routing\Annotators\Annotator(
                 $container->getSingleton(AnnotationAnnotator::class),
                 $container->getSingleton(Filter::class),
-                $container->getSingleton(Reflector::class)
+                $container->getSingleton(Reflector::class),
+                $container->getSingleton(Processor::class)
             )
         );
     }
@@ -129,7 +133,8 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Collector::class,
             new \Valkyrja\Routing\Collectors\Collector(
-                $container->getSingleton(Collection::class)
+                $container->getSingleton(Collection::class),
+                $container->getSingleton(Processor::class)
             )
         );
     }
@@ -149,7 +154,6 @@ class ServiceProvider extends Provider
             Collection::class,
             $collection = new CacheableCollection(
                 $container,
-                $container->getSingleton(Dispatcher::class),
                 $config['routing']
             )
         );
@@ -206,9 +210,28 @@ class ServiceProvider extends Provider
     public static function publishRouteAttributes(Container $container): void
     {
         $container->setSingleton(
-            RouteAttributes::class,
-            new \Valkyrja\Routing\Attributes\RouteAttributes(
-                $container->getSingleton(Reflector::class)
+            Attributes::class,
+            new Attributes\Attributes(
+                $container->getSingleton(\Valkyrja\Attribute\Attributes::class),
+                $container->getSingleton(Reflector::class),
+                $container->getSingleton(Processor::class)
+            )
+        );
+    }
+
+    /**
+     * Publish the processor service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishProcessor(Container $container): void
+    {
+        $container->setSingleton(
+            Processor::class,
+            new \Valkyrja\Routing\Processors\Processor(
+                $container->getSingleton(Dispatcher::class)
             )
         );
     }

@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Routing;
 
 /**
- * Interface RouteAttributes.
+ * Interface Attributes.
  *
  * @author Melech Mizrachi
  */
-interface RouteAttributes
+interface Attributes
 {
     /**
      * Get route attributes.

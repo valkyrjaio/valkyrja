@@ -23,6 +23,7 @@ use Valkyrja\Routing\Annotator as Contract;
 use Valkyrja\Routing\Enums\AnnotationName;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Models\Route as RouteModel;
+use Valkyrja\Routing\Processor;
 use Valkyrja\Routing\Route as RouteContract;
 
 use function array_merge;
@@ -36,38 +37,18 @@ use function trim;
 class Annotator implements Contract
 {
     /**
-     * The annotator.
-     *
-     * @var AnnotationAnnotator
-     */
-    protected AnnotationAnnotator $annotator;
-
-    /**
-     * The filter.
-     *
-     * @var Filter
-     */
-    protected Filter $filter;
-
-    /**
-     * The reflector.
-     *
-     * @var Reflector
-     */
-    protected Reflector $reflector;
-
-    /**
      * ContainerAnnotator constructor.
      *
      * @param AnnotationAnnotator $annotator
      * @param Filter              $filter
      * @param Reflector           $reflector
      */
-    public function __construct(AnnotationAnnotator $annotator, Filter $filter, Reflector $reflector)
-    {
-        $this->annotator = $annotator;
-        $this->filter    = $filter;
-        $this->reflector = $reflector;
+    public function __construct(
+        protected AnnotationAnnotator $annotator,
+        protected Filter $filter,
+        protected Reflector $reflector,
+        protected Processor $processor
+    ) {
     }
 
     /**
@@ -179,7 +160,7 @@ class Annotator implements Contract
     protected function getClassAnnotations(string $class): array
     {
         return $this->filter->filterAnnotationsByTypes(
-            AnnotationName::getValidValues(),
+               AnnotationName::getValidValues(),
             ...$this->annotator->classAnnotations($class)
         );
     }
@@ -195,7 +176,11 @@ class Annotator implements Contract
      */
     protected function getRouteFromAnnotation(Route $route): RouteContract
     {
-        return RouteModel::fromArray($route->asArray());
+        $finalRoute = RouteModel::fromArray($route->asArray());
+
+        $this->processor->route($finalRoute);
+
+        return $finalRoute;
     }
 
     /**
@@ -284,7 +269,7 @@ class Annotator implements Contract
     protected function getClassMemberAnnotations(string $class): array
     {
         return $this->filter->filterAnnotationsByTypes(
-            AnnotationName::getValidValues(),
+               AnnotationName::getValidValues(),
             ...$this->annotator->classMembersAnnotations($class)
         );
     }
