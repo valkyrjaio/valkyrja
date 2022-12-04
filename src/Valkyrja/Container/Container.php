@@ -179,7 +179,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @param class-string<T>|string $serviceId The service id
      *
-     * @return T|mixed
+     * @return T
      */
     public function getSingleton(string $serviceId): mixed;
 
