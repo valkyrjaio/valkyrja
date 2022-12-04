@@ -1,4 +1,5 @@
 /.idea
+/metrics
 /vendor
 composer.lock
 .DS_Store
