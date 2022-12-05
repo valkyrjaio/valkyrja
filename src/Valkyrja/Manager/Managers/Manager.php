@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Manager\Managers;
 
+use Valkyrja\Manager\Adapter;
 use Valkyrja\Manager\Config\Config;
 use Valkyrja\Manager\Driver;
 use Valkyrja\Manager\Factory;
@@ -36,14 +37,14 @@ abstract class Manager implements Contract
     /**
      * The default adapter.
      *
-     * @var string
+     * @var class-string<Adapter>
      */
     protected string $defaultAdapter;
 
     /**
      * The default driver.
      *
-     * @var string
+     * @var class-string<Driver>
      */
     protected string $defaultDriver;
 
@@ -57,7 +58,7 @@ abstract class Manager implements Contract
     /**
      * The configurations.
      *
-     * @var array
+     * @var array<string, array>
      */
     protected array $configurations;
 

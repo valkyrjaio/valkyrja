@@ -37,14 +37,14 @@ abstract class MessageManager extends Manager implements Contract
     /**
      * The default message class.
      *
-     * @var string
+     * @var class-string<Message>
      */
     protected string $defaultMessageClass;
 
     /**
      * The messages config.
      *
-     * @var array[]
+     * @var array<string, array>
      */
     protected array $messages;
 
