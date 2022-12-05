@@ -143,7 +143,9 @@ class CacheRepository extends Repository implements Contract
         if ($results = $this->store->get($cacheKey)) {
             $results = unserialize(base64_decode($results, true), ['allowed_classes' => true]);
 
-            $this->setRelationshipsOnEntities(...$results);
+            if (method_exists($this, 'setRelationshipsOnEntities')) {
+                $this->setRelationshipsOnEntities(...$results);
+            }
 
             return $results;
         }
@@ -152,7 +154,9 @@ class CacheRepository extends Repository implements Contract
 
         $this->cacheResults($cacheKey, $results);
 
-        $this->setRelationshipsOnEntities(...$results);
+        if (method_exists($this, 'setRelationshipsOnEntities')) {
+            $this->setRelationshipsOnEntities(...$results);
+        }
 
         $this->id = null;
 
@@ -332,7 +336,7 @@ class CacheRepository extends Repository implements Contract
         $id = spl_object_id($entity);
 
         match ($type) {
-            self::$storeType  => $this->storeEntities[$id]  = $entity,
+            self::$storeType  => $this->storeEntities[$id] = $entity,
             self::$forgetType => $this->forgetEntities[$id] = $entity,
         };
     }

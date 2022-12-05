@@ -17,6 +17,7 @@ use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Orm\Orm;
+use Valkyrja\Orm\RelationshipRepository;
 use Valkyrja\Orm\Repository;
 use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
@@ -162,21 +163,27 @@ class EntityMiddleware extends Middleware
      */
     protected static function findEntityFromParameter(Parameter $parameter, string $entityName, mixed $value): ?Entity
     {
+        $orm           = static::getOrmRepository($entityName);
         $relationships = $parameter->getEntityRelationships() ?? [];
 
         // If there is a field specified to use
         if ($field = $parameter->getEntityColumn()) {
-            return static::getOrmRepository($entityName)
-                ->find()
-                ->where($field, null, $value)
-                ->withRelationships($relationships)
-                ->getOneOrNull();
+            $find = $orm->find()->where($field, null, $value);
+
+            if (is_a($find, RelationshipRepository::class)) {
+                $find->withRelationships($relationships);
+            }
+
+            return $find->getOneOrNull();
         }
 
-        return static::getOrmRepository($entityName)
-            ->findOne($value)
-            ->withRelationships($relationships)
-            ->getOneOrNull();
+        $find = $orm->findOne($value);
+
+        if (is_a($find, RelationshipRepository::class)) {
+            $find->withRelationships($relationships);
+        }
+
+        return $find->getOneOrNull();
     }
 
     /**

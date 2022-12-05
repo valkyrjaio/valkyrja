@@ -25,7 +25,6 @@ use Valkyrja\Orm\QueryBuilder;
 use Valkyrja\Orm\Repository as Contract;
 use Valkyrja\Orm\Retriever;
 use Valkyrja\Orm\SoftDeleteEntity;
-use Valkyrja\Type\Str;
 
 use function assert;
 use function get_class;
@@ -112,7 +111,6 @@ class Repository implements Contract
     public function find(): self
     {
         $this->retriever = $this->driver->createRetriever()->find($this->entity);
-        $this->resetRelationships();
 
         return $this;
     }
@@ -123,7 +121,6 @@ class Repository implements Contract
     public function findOne(int|string $id): self
     {
         $this->retriever = $this->driver->createRetriever()->findOne($this->entity, $id);
-        $this->resetRelationships();
 
         return $this;
     }
@@ -134,7 +131,6 @@ class Repository implements Contract
     public function count(): self
     {
         $this->retriever = $this->driver->createRetriever()->count($this->entity);
-        $this->resetRelationships();
 
         return $this;
     }
@@ -238,45 +234,9 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function withRelationships(array $relationships = null): self
-    {
-        $this->getRelations  = true;
-        $this->relationships = $relationships;
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function withAllRelationships(): self
-    {
-        $this->getRelations  = true;
-        $this->relationships = $this->entity::getRelationshipProperties();
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function withoutRelationships(): self
-    {
-        $this->resetRelationships();
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getResult(): array
     {
-        $results = $this->retriever->getResult();
-
-        $this->setRelationshipsOnEntities(...$results);
-
-        return $results;
+        return $this->retriever->getResult();
     }
 
     /**
@@ -424,73 +384,6 @@ class Repository implements Contract
                 . get_class($entity)
                 . ' provided instead.'
             );
-        }
-    }
-
-    /**
-     * Reset the relationship properties.
-     *
-     * @return void
-     */
-    protected function resetRelationships(): void
-    {
-        $this->getRelations  = false;
-        $this->relationships = null;
-    }
-
-    /**
-     * Set relationships on the entities from results.
-     *
-     * @param Entity ...$entities The entities to add relationships to
-     *
-     * @return void
-     */
-    protected function setRelationshipsOnEntities(Entity ...$entities): void
-    {
-        $relationships = $this->relationships;
-
-        if (empty($relationships) || ! $this->getRelations || empty($entities)) {
-            return;
-        }
-
-        // Iterate through the rows found
-        foreach ($entities as $entity) {
-            // Get the entity relations
-            $this->setRelationshipsOnEntity($relationships, $entity);
-        }
-    }
-
-    /**
-     * Set relationships on an entity.
-     *
-     * @param array  $relationships The relationships to set
-     * @param Entity $entity        The entity
-     *
-     * @return void
-     */
-    protected function setRelationshipsOnEntity(array $relationships, Entity $entity): void
-    {
-        // Iterate through the rows found
-        foreach ($relationships as $relationship) {
-            // Set the entity relations
-            $this->setRelationship($entity, $relationship);
-        }
-    }
-
-    /**
-     * Set a relationship property.
-     *
-     * @param Entity $entity       The entity
-     * @param string $relationship The relationship to set
-     *
-     * @return void
-     */
-    protected function setRelationship(Entity $entity, string $relationship): void
-    {
-        $methodName = 'set' . Str::toStudlyCase($relationship) . 'Relationship';
-
-        if (method_exists($this, $methodName)) {
-            $this->$methodName($entity);
         }
     }
 }

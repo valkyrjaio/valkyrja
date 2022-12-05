@@ -16,6 +16,7 @@ namespace Valkyrja\Routing\Matchers;
 use Valkyrja\Container\Container;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Orm\Orm;
+use Valkyrja\Orm\RelationshipRepository;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Exceptions\InvalidRouteParameter;
@@ -90,15 +91,22 @@ class EntityCapableMatcher extends Matcher
 
         // If there is a field specified to use
         if ($field = $parameter->getEntityColumn()) {
-            return $orm->find()
-                ->where($field, null, $match)
-                ->withRelationships($relationships)
-                ->getOneOrNull();
+            $find = $orm->find()->where($field, null, $match);
+
+            if (is_a($find, RelationshipRepository::class)) {
+                $find->withRelationships($relationships);
+            }
+
+            return $find->getOneOrNull();
         }
 
-        return $orm->findOne($match)
-            ->withRelationships($relationships)
-            ->getOneOrNull();
+        $find = $orm->findOne($match);
+
+        if (is_a($find, RelationshipRepository::class)) {
+            $find->withRelationships($relationships);
+        }
+
+        return $find->getOneOrNull();
     }
 
     /**

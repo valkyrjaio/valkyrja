@@ -142,29 +142,6 @@ interface Repository
     public function offset(int $offset): self;
 
     /**
-     * Add relationships to include with the results.
-     *
-     * @param array|null $relationships [optional] The relationships to get
-     *
-     * @return static
-     */
-    public function withRelationships(array $relationships = null): self;
-
-    /**
-     * Add all relationships to include with the results.
-     *
-     * @return static
-     */
-    public function withAllRelationships(): self;
-
-    /**
-     * Remove relationships to include with the results.
-     *
-     * @return static
-     */
-    public function withoutRelationships(): self;
-
-    /**
      * Get results.
      *
      * @return Entity[]
