@@ -23,20 +23,16 @@ use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
-use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Support\Directory;
 use Valkyrja\Type\Arr;
 
 use function assert;
 use function constant;
-use function date_default_timezone_set;
 use function define;
 use function defined;
 use function is_file;
 use function microtime;
-
-use const E_ALL;
 
 /**
  * Class Valkyrja.
@@ -121,7 +117,6 @@ class Valkyrja implements Application
 
         $this->publishConfigProviders();
         $this->publishProviders();
-        $this->bootstrapAfterProviders();
 
         return $this;
     }
@@ -306,11 +301,11 @@ class Valkyrja implements Application
      */
     public function offsetGet($offset): mixed
     {
-        if ($offset === 'config') {
+        if ($offset === Config::class) {
             return self::$config;
         }
 
-        if ($offset === 'env') {
+        if ($offset === Env::class) {
             return self::$env;
         }
 
@@ -345,7 +340,6 @@ class Valkyrja implements Application
 
         assert(is_a($config, Config::class, true));
 
-        /** @var class-string<Config> $config */
         $this->withConfig(new $config(null, true));
     }
 
@@ -371,7 +365,6 @@ class Valkyrja implements Application
         self::$config = require $cacheFilePath;
 
         $this->publishProviders();
-        $this->bootstrapAfterProviders();
     }
 
     /**
@@ -403,48 +396,5 @@ class Valkyrja implements Application
             // Config providers are NOT deferred
             $provider::publish($config);
         }
-    }
-
-    /**
-     * Run bootstraps after config bootstrap.
-     *
-     * @return void
-     */
-    protected function bootstrapAfterProviders(): void
-    {
-        // Bootstrap debug capabilities
-        $this->bootstrapExceptionHandler();
-        // Bootstrap the timezone
-        $this->bootstrapTimezone();
-    }
-
-    /**
-     * Bootstrap debug capabilities.
-     *
-     * @return void
-     */
-    protected function bootstrapExceptionHandler(): void
-    {
-        /** @var ExceptionHandler $exceptionHandler */
-        $exceptionHandler = self::$config['app']['exceptionHandler'];
-
-        // Set exception handler in the service container
-        self::$container->setSingleton(ExceptionHandler::class, $exceptionHandler);
-
-        // If debug is on, enable debug handling
-        if ($this->debug()) {
-            // Enable exception handling
-            $exceptionHandler::enable(E_ALL, true);
-        }
-    }
-
-    /**
-     * Bootstrap the timezone.
-     *
-     * @return void
-     */
-    protected function bootstrapTimezone(): void
-    {
-        date_default_timezone_set(self::$config['app']['timezone']);
     }
 }
