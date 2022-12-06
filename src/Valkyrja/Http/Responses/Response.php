@@ -189,7 +189,7 @@ class Response implements Contract
      */
     protected function validateStatusCode(int $code): int
     {
-        if (StatusCode::MIN > $code || $code > StatusCode::MAX) {
+        if (! StatusCode::isValid($code)) {
             throw new InvalidStatusCode(
                 sprintf(
                     'Invalid status code "%d"; must adhere to values set in the %s enum class.',
