@@ -61,10 +61,11 @@ class Uri implements Contract
         protected string $query = '',
         protected string $fragment = ''
     ) {
-        $this->validateScheme($this->scheme);
-        $this->path = $this->validatePath($this->path);
-        $this->validateQuery($this->query);
-        $this->validateFragment($this->fragment);
+        $this->scheme   = $this->filterScheme($scheme);
+        $this->path     = $this->filterPath($path);
+        $this->query    = $this->filterQuery($query);
+        $this->fragment = $this->filterFragment($fragment);
+
         $this->validatePort($this->port);
     }
 
@@ -184,7 +185,7 @@ class Uri implements Contract
      */
     public function withScheme(string $scheme): self
     {
-        $scheme = $this->validateScheme($scheme);
+        $scheme = $this->filterScheme($scheme);
 
         $new = clone $this;
 
@@ -242,7 +243,7 @@ class Uri implements Contract
      */
     public function withPath(string $path): self
     {
-        $path = $this->validatePath($path);
+        $path = $this->filterPath($path);
 
         $new = clone $this;
 
@@ -256,7 +257,7 @@ class Uri implements Contract
      */
     public function withQuery(string $query): self
     {
-        $query = $this->validateQuery($query);
+        $query = $this->filterQuery($query);
 
         $new = clone $this;
 
@@ -270,7 +271,7 @@ class Uri implements Contract
      */
     public function withFragment(string $fragment): self
     {
-        $fragment = $this->validateFragment($fragment);
+        $fragment = $this->filterFragment($fragment);
 
         $new = clone $this;
 
@@ -284,7 +285,7 @@ class Uri implements Contract
      */
     public function __toString(): string
     {
-        if ($this->isValidUriString()) {
+        if ($this->uriString !== null) {
             return (string) $this->uriString;
         }
 

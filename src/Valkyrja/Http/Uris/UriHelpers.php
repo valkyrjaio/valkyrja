@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Uris;
 
-use Valkyrja\Http\Constants\Port as PortEnum;
-use Valkyrja\Http\Constants\Scheme as SchemeEnum;
+use Valkyrja\Http\Constants\Port;
+use Valkyrja\Http\Constants\Scheme;
 use Valkyrja\Http\Exceptions\InvalidPath;
 use Valkyrja\Http\Exceptions\InvalidPort;
 use Valkyrja\Http\Exceptions\InvalidQuery;
@@ -22,7 +22,6 @@ use Valkyrja\Http\Exceptions\InvalidScheme;
 
 use function ltrim;
 use function preg_replace;
-use function sprintf;
 use function strtolower;
 
 /**
@@ -47,11 +46,32 @@ trait UriHelpers
      */
     protected function validatePort(int $port = null): void
     {
-        if ($port !== null && ($port < 1 || $port > 65535)) {
-            throw new InvalidPort(
-                sprintf('Invalid port "%d" specified; must be a valid TCP/UDP port', $port)
-            );
+        if (! Port::isValid($port)) {
+            throw new InvalidPort("Invalid port `%$port` specified; must be a valid TCP/UDP port");
         }
+    }
+
+    /**
+     * Filter a scheme.
+     *
+     * @param string $scheme The scheme
+     *
+     * @throws InvalidScheme
+     *
+     * @return string
+     */
+    protected function filterScheme(string $scheme): string
+    {
+        $scheme = strtolower($scheme);
+        $scheme = (string) preg_replace('#:(//)?$#', '', $scheme);
+
+        if (! $scheme) {
+            return '';
+        }
+
+        $this->validateScheme($scheme);
+
+        return $scheme;
     }
 
     /**
@@ -61,24 +81,31 @@ trait UriHelpers
      *
      * @throws InvalidScheme
      *
+     * @return void
+     */
+    protected function validateScheme(string $scheme): void
+    {
+        if (! Scheme::isValid($scheme)) {
+            throw new InvalidScheme("Invalid scheme `$scheme` specified; must be either `http` or `https`");
+        }
+    }
+
+    /**
+     * Filter a path.
+     *
+     * @param string $path The path
+     *
+     * @throws InvalidPath
+     *
      * @return string
      */
-    protected function validateScheme(string $scheme): string
+    protected function filterPath(string $path): string
     {
-        $scheme = strtolower($scheme);
-        $scheme = (string) preg_replace('#:(//)?$#', '', $scheme);
+        $this->validatePath($path);
 
-        if (! $scheme) {
-            return '';
-        }
+        // TODO: Filter path
 
-        if (SchemeEnum::HTTP !== $scheme && $scheme !== SchemeEnum::HTTPS) {
-            throw new InvalidScheme(
-                sprintf('Invalid scheme "%s" specified; must be either "http" or "https"', $scheme)
-            );
-        }
-
-        return $scheme;
+        return '/' . ltrim($path, '/');
     }
 
     /**
@@ -88,21 +115,35 @@ trait UriHelpers
      *
      * @throws InvalidPath
      *
-     * @return string
+     * @return void
      */
-    protected function validatePath(string $path): string
+    protected function validatePath(string $path): void
     {
         if (str_contains($path, '?')) {
-            throw new InvalidPath('Invalid path provided; must not contain a query string');
+            throw new InvalidPath("Invalid path of `$path` provided; must not contain a query string");
         }
 
         if (str_contains($path, '#')) {
-            throw new InvalidPath('Invalid path provided; must not contain a URI fragment');
+            throw new InvalidPath("Invalid path of `$path` provided; must not contain a URI fragment");
         }
+    }
 
-        // TODO: Filter path
+    /**
+     * Filter a query.
+     *
+     * @param string $query The query
+     *
+     * @throws InvalidQuery
+     *
+     * @return string
+     */
+    protected function filterQuery(string $query): string
+    {
+        $this->validateQuery($query);
 
-        return '/' . ltrim($path, '/');
+        // TODO: Filter query
+
+        return $query;
     }
 
     /**
@@ -112,17 +153,29 @@ trait UriHelpers
      *
      * @throws InvalidQuery
      *
-     * @return string
+     * @return void
      */
-    protected function validateQuery(string $query): string
+    protected function validateQuery(string $query): void
     {
         if (str_contains($query, '#')) {
-            throw new InvalidQuery('Query string must not include a URI fragment');
+            throw new InvalidQuery("Invalid query string of `$query` provided; must not contain a URI fragment");
         }
+    }
 
-        // TODO: Filter query
+    /**
+     * Filter a fragment.
+     *
+     * @param string $fragment The fragment
+     *
+     * @return string
+     */
+    protected function filterFragment(string $fragment): string
+    {
+        $this->validateFragment($fragment);
 
-        return $query;
+        // TODO: Filter fragment
+
+        return $fragment;
     }
 
     /**
@@ -130,13 +183,10 @@ trait UriHelpers
      *
      * @param string $fragment The fragment
      *
-     * @return string
+     * @return void
      */
-    protected function validateFragment(string $fragment): string
+    protected function validateFragment(string $fragment): void
     {
-        // TODO: Filter fragment
-
-        return $fragment;
     }
 
     /**
@@ -164,7 +214,7 @@ trait UriHelpers
      */
     protected function isStandardUnsecurePort(): bool
     {
-        return SchemeEnum::HTTP === $this->scheme && $this->port === PortEnum::HTTP;
+        return Scheme::HTTP === $this->scheme && $this->port === Port::HTTP;
     }
 
     /**
@@ -174,17 +224,7 @@ trait UriHelpers
      */
     protected function isStandardSecurePort(): bool
     {
-        return SchemeEnum::HTTPS === $this->scheme && $this->port === PortEnum::HTTPS;
-    }
-
-    /**
-     * Is valid uri string.
-     *
-     * @return bool
-     */
-    protected function isValidUriString(): bool
-    {
-        return null !== $this->uriString;
+        return Scheme::HTTPS === $this->scheme && $this->port === Port::HTTPS;
     }
 
     /**
