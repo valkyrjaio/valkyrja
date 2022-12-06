@@ -31,10 +31,7 @@ class Container extends Model
     {
         $this->updateProperties(ConfigValue::$defaults);
 
-        $this->providers     = array_merge(
-            ConfigValue::PROVIDERS,
-            []
-        );
+        $this->providers     = array_merge(ConfigValue::PROVIDERS, []);
         $this->devProviders  = array_merge(ConfigValue::DEV_PROVIDERS, []);
         $this->filePath      = servicesPath('default.php');
         $this->cacheFilePath = cachePath('container.php');
