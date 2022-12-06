@@ -26,7 +26,6 @@ use Valkyrja\Http\UploadedFile;
 use Valkyrja\Http\Uri;
 use Valkyrja\Http\Uris\Uri as HttpUri;
 use Valkyrja\Type\Arr;
-use Valkyrja\Type\Str;
 
 /**
  * Class JsonRequest.
@@ -86,7 +85,7 @@ class JsonRequest extends Request implements Contract
 
         if (
             $this->hasHeader(Header::CONTENT_TYPE)
-            && Str::contains($this->getHeaderLine(Header::CONTENT_TYPE), ContentType::APPLICATION_JSON)
+            && str_contains($this->getHeaderLine(Header::CONTENT_TYPE), ContentType::APPLICATION_JSON)
         ) {
             $this->parsedJson = Arr::fromString((string) $body);
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Repositories;
 
 use Valkyrja\Orm\Entity;
-use Valkyrja\Type\Str;
+use Valkyrja\Type\StrCase;
 
 /**
  * Trait RelationshipCapableRepository.
@@ -185,7 +185,7 @@ trait RelationshipCapableRepository
      */
     protected function setRelationship(Entity $entity, string $relationship): void
     {
-        $methodName = 'set' . Str::toStudlyCase($relationship) . 'Relationship';
+        $methodName = 'set' . StrCase::toStudlyCase($relationship) . 'Relationship';
 
         if (method_exists($this, $methodName)) {
             $this->$methodName($entity);

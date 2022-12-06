@@ -222,7 +222,7 @@ class Base
     public function contains(string $subject, string|int ...$needles): void
     {
         foreach ($needles as $needle) {
-            if (! Str::contains($subject, (string) $needle)) {
+            if (! str_contains($subject, (string) $needle)) {
                 throw new ValidationException("$subject must contain $needle");
             }
         }
@@ -241,7 +241,7 @@ class Base
     public function containsAny(string $subject, string|int ...$needles): void
     {
         foreach ($needles as $needle) {
-            if (Str::contains($subject, (string) $needle)) {
+            if (str_contains($subject, (string) $needle)) {
                 return;
             }
         }

@@ -16,7 +16,6 @@ namespace Valkyrja\Routing\Middleware;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\Type\Str;
 
 /**
  * Class RedirectTrailingSlashMiddleware.
@@ -33,7 +32,7 @@ class RedirectTrailingSlashMiddleware extends Middleware
         $slash = '/';
         $path  = $request->getUri()->getPath();
 
-        if ($path !== $slash && Str::endsWith($path, $slash)) {
+        if ($path !== $slash && str_ends_with($path, $slash)) {
             $query = $request->getUri()->getQuery();
             $uri   = '/' . trim($path, $slash) . ($query ? '?' . $query : '');
             /** @var ResponseFactory $responseFactory */

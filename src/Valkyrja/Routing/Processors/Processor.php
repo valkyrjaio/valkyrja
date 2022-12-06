@@ -24,7 +24,6 @@ use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Processor as Contract;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Helpers;
-use Valkyrja\Type\Str;
 
 use function assert;
 
@@ -68,7 +67,7 @@ class Processor implements Contract
         // Set the path to the validated cleaned path (/some/path)
         $route->setPath(Helpers::trimPath($route->getPath()));
         // Set whether the route is dynamic
-        $route->setDynamic(Str::contains($route->getPath(), '{'));
+        $route->setDynamic(str_contains($route->getPath(), '{'));
 
         // If this is a dynamic route
         if ($route->isDynamic()) {
@@ -107,7 +106,7 @@ class Processor implements Contract
         }
 
         // Replace all slashes with \/
-        $regex = Str::replace($route->getPath(), '/', Regex::PATH);
+        $regex = str_replace('/', Regex::PATH, $route->getPath());
 
         // Iterate through the route's parameters
         foreach ($route->getParameters() as $parameter) {
@@ -211,7 +210,7 @@ class Processor implements Contract
     protected function processParameterInRegex(Parameter $parameter, string $regex): void
     {
         // If the parameter is optional or the name has a ? affixed to it
-        if ($parameter->isOptional() || Str::contains($regex, $parameter->getName() . '?')) {
+        if ($parameter->isOptional() || str_contains($regex, $parameter->getName() . '?')) {
             // Ensure the parameter is set to optional
             $parameter->setIsOptional(true);
         }
@@ -241,7 +240,7 @@ class Processor implements Contract
             . '{' . $parameter->getName() . ($isOptional ? '?' : '') . '}';
 
         // Check if the path doesn't contain the parameter's name replacement
-        if (! Str::contains($regex, $nameReplacement)) {
+        if (! str_contains($regex, $nameReplacement)) {
             throw new InvalidRoutePath("{$route->getPath()} is missing $nameReplacement");
         }
 
@@ -255,6 +254,6 @@ class Processor implements Contract
             . ($isOptional ? Regex::END_OPTIONAL_CAPTURE_GROUP : Regex::END_CAPTURE_GROUP);
 
         // Replace the {name} or \/{name?} with the finished regex
-        return Str::replace($regex, $nameReplacement, $parameterRegex);
+        return str_replace($nameReplacement, $parameterRegex, $regex);
     }
 }

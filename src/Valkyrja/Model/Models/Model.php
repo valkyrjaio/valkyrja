@@ -19,7 +19,7 @@ use JsonException;
 use Valkyrja\Model\Model as Contract;
 use Valkyrja\Type\Arr;
 use Valkyrja\Type\Obj;
-use Valkyrja\Type\Str;
+use Valkyrja\Type\StrCase;
 
 use function is_string;
 
@@ -362,7 +362,7 @@ abstract class Model implements Contract
      */
     protected function __getPropertyTypeMethodName(string $property, string $type): string
     {
-        return self::$cachedValidations[static::class . "$type$property"] ??= $type . Str::toStudlyCase($property);
+        return self::$cachedValidations[static::class . "$type$property"] ??= $type . StrCase::toStudlyCase($property);
     }
 
     /**

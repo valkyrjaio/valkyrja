@@ -23,7 +23,6 @@ use Valkyrja\Routing\Constants\HandleSplit;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Processor;
 use Valkyrja\Routing\Route;
-use Valkyrja\Type\Str;
 
 /**
  * Class Collector.
@@ -284,13 +283,13 @@ class Collector implements Contract
      */
     protected function setRouteHandlerFromString(Route $route, string $handler): void
     {
-        if (Str::contains($handler, HandleSplit::DEFAULT)) {
+        if (str_contains($handler, HandleSplit::DEFAULT)) {
             $this->setRouteInstanceHandler($route, $handler);
 
             return;
         }
 
-        if (Str::contains($handler, HandleSplit::STATIC)) {
+        if (str_contains($handler, HandleSplit::STATIC)) {
             $this->setRouteStaticHandler($route, $handler);
             $route->setStatic();
 
@@ -358,7 +357,7 @@ class Collector implements Contract
      */
     protected function setRouteMember(Route $route, string $member): void
     {
-        if (Str::contains($member, '(')) {
+        if (str_contains($member, '(')) {
             $member = str_replace('()', '', $member);
 
             $route->setMethod($member);

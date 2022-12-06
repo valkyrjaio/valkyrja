@@ -51,27 +51,27 @@ class EntityCapableMatcher extends Matcher
     protected function getMatchValueForType(Route $route, Parameter $parameter, CastType $castType, int $index, mixed $match): mixed
     {
         // If this is an entity cast type
-        if ($castType === CastType::entity) {
-            if (! $entityName = $parameter->getEntity()) {
-                throw new InvalidRouteParameter("Entity is missing for casted entity parameter {$parameter->getName()}");
-            }
-
-            // Try to get the entity
-            $entity = $this->getEntity($parameter, $entityName, $match);
-
-            // If no entity is found
-            if ($entity === null) {
-                // Handle entity not found
-                $this->handleEntityNotFound($parameter, $match);
-            }
-
-            // Set the entity with the param name as the service id into the container
-            $this->container->setSingleton($entityName . $index, $entity);
-
-            return $entity;
+        if ($castType !== CastType::entity) {
+            return parent::getMatchValueForType($route, $parameter, $castType, $index, $match);
         }
 
-        return parent::getMatchValueForType($route, $parameter, $castType, $index, $match);
+        if (! $entityName = $parameter->getEntity()) {
+            throw new InvalidRouteParameter("Entity is missing for casted entity parameter {$parameter->getName()}");
+        }
+
+        // Try to get the entity
+        $entity = $this->getEntity($parameter, $entityName, $match);
+
+        // If no entity is found
+        if ($entity === null) {
+            // Handle entity not found
+            $this->handleEntityNotFound($parameter, $match);
+        }
+
+        // Set the entity with the param name as the service id into the container
+        $this->container->setSingleton($entityName . $index, $entity);
+
+        return $entity;
     }
 
     /**

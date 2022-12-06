@@ -18,15 +18,11 @@ use Exception;
 use function base64_encode;
 use function bin2hex;
 use function filter_var;
-use function preg_replace;
 use function random_bytes;
 use function str_replace;
 use function strlen;
-use function strtolower;
-use function strtoupper;
 use function substr;
 use function trim;
-use function ucwords;
 
 use const FILTER_VALIDATE_EMAIL;
 
@@ -38,20 +34,6 @@ use const FILTER_VALIDATE_EMAIL;
 class Str
 {
     /**
-     * Studly case conversion cache.
-     *
-     * @var array<string, string>
-     */
-    protected static array $studlyCache = [];
-
-    /**
-     * Snake case conversion cache.
-     *
-     * @var array<string, string>
-     */
-    protected static array $snakeCache = [];
-
-    /**
      * Check if a string starts with a needle.
      *
      * @param string $subject The subject
@@ -61,7 +43,7 @@ class Str
      */
     public static function startsWith(string $subject, string $needle): bool
     {
-        return $needle !== '' && str_starts_with($subject, $needle);
+        return str_starts_with($subject, $needle);
     }
 
     /**
@@ -87,9 +69,7 @@ class Str
      */
     public static function endsWith(string $subject, string $needle): bool
     {
-        $needleLen = strlen($needle);
-
-        return $needle !== '' && str_starts_with(static::substr($subject, -$needleLen, $needleLen), $needle);
+        return str_ends_with($subject, $needle);
     }
 
     /**
@@ -219,253 +199,6 @@ class Str
     }
 
     /**
-     * Convert a string to title case.
-     *
-     * @param string $subject The subject
-     *
-     * @return string
-     */
-    public static function toTitleCase(string $subject): string
-    {
-        return ucwords($subject);
-    }
-
-    /**
-     * Convert all strings to title case.
-     *
-     * @param string ...$subjects The subjects
-     *
-     * @return array
-     */
-    public static function allToTitleCase(string ...$subjects): array
-    {
-        return static::allTo('toTitleCase', ...$subjects);
-    }
-
-    /**
-     * Convert a string to lower case.
-     *
-     * @param string $subject The subject
-     *
-     * @return string
-     */
-    public static function toLowerCase(string $subject): string
-    {
-        return strtolower($subject);
-    }
-
-    /**
-     * Convert all strings to lower case.
-     *
-     * @param string ...$subjects The subjects
-     *
-     * @return array
-     */
-    public static function allToLowerCase(string ...$subjects): array
-    {
-        return static::allTo('toLowerCase', ...$subjects);
-    }
-
-    /**
-     * Convert a string to upper case.
-     *
-     * @param string $subject The subject
-     *
-     * @return string
-     */
-    public static function toUpperCase(string $subject): string
-    {
-        return strtoupper($subject);
-    }
-
-    /**
-     * Convert all strings to upper case.
-     *
-     * @param string ...$subjects The subjects
-     *
-     * @return array
-     */
-    public static function allToUpperCase(string ...$subjects): array
-    {
-        return static::allTo('toUpperCase', ...$subjects);
-    }
-
-    /**
-     * Convert a string to capitalized.
-     *
-     * @param string      $subject   The subject
-     * @param string|null $delimiter [optional] The delimiter
-     *
-     * @return string
-     */
-    public static function toCapitalized(string $subject, string $delimiter = null): string
-    {
-        if ($delimiter) {
-            return ucwords($subject, $delimiter);
-        }
-
-        return ucwords($subject);
-    }
-
-    /**
-     * Convert all strings to capitalized.
-     *
-     * @param string ...$subjects The subjects
-     *
-     * @return array
-     */
-    public static function allToCapitalized(string ...$subjects): array
-    {
-        return static::allTo('toCapitalized', ...$subjects);
-    }
-
-    /**
-     * Convert a string to capitalized.
-     *
-     * @param string      $subject   The subject
-     * @param string|null $delimiter [optional] The delimiter
-     *
-     * @return string
-     */
-    public static function toCapitalizedWords(string $subject, string $delimiter = null): string
-    {
-        return static::toCapitalized(static::replaceAllWith($subject, ['-', '_'], ' '), $delimiter);
-    }
-
-    /**
-     * Convert all strings to capitalized.
-     *
-     * @param string ...$subjects The subjects
-     *
-     * @return array
-     */
-    public static function allToCapitalizedWords(string ...$subjects): array
-    {
-        return static::allTo('toCapitalizedWords', ...$subjects);
-    }
-
-    /**
-     * Convert a string to snake case.
-     *
-     * @param string $subject The subject
-     *
-     * @return string
-     */
-    public static function toSnakeCase(string $subject): string
-    {
-        $key = $subject;
-
-        if (isset(static::$snakeCache[$key])) {
-            return static::$snakeCache[$key];
-        }
-
-        if (! ctype_lower($subject)) {
-            $subject = preg_replace('/\s+/u', '', ucwords($subject));
-
-            $subject = static::toLowerCase(preg_replace('/(.)(?=[A-Z])/u', '$1_', $subject));
-        }
-
-        return static::$snakeCache[$key] = $subject;
-    }
-
-    /**
-     * Convert all string to snake case.
-     *
-     * @param string ...$subjects The subjects
-     *
-     * @return array
-     */
-    public static function allToSnakeCase(string ...$subjects): array
-    {
-        return static::allTo('toSnakeCase', ...$subjects);
-    }
-
-    /**
-     * Convert a string to slug.
-     *
-     * @param string $subject The subject
-     *
-     * @return string
-     */
-    public static function toSlug(string $subject): string
-    {
-        $key = $subject;
-
-        if (isset(static::$snakeCache[$key])) {
-            return static::$snakeCache[$key];
-        }
-
-        if (! ctype_lower($subject)) {
-            $subject = preg_replace('/\s+/u', '', ucwords($subject));
-
-            $subject = static::toLowerCase(preg_replace('/(.)(?=[A-Z])/u', '$1-', $subject));
-        }
-
-        return static::$snakeCache[$key] = $subject;
-    }
-
-    /**
-     * Convert all string to slug.
-     *
-     * @param string ...$subjects The subjects
-     *
-     * @return array
-     */
-    public static function allToSlug(string ...$subjects): array
-    {
-        return static::allTo('toSlug', ...$subjects);
-    }
-
-    /**
-     * Convert a string to studly case.
-     *
-     * @param string $subject The subject
-     *
-     * @return string
-     */
-    public static function toStudlyCase(string $subject): string
-    {
-        return self::$studlyCache[$subject]
-            ?? (self::$studlyCache[$subject] = static::replace(static::toCapitalizedWords($subject), ' ', ''));
-    }
-
-    /**
-     * Convert all string to studly case.
-     *
-     * @param string ...$subjects The subjects
-     *
-     * @return array
-     */
-    public static function allToStudlyCase(string ...$subjects): array
-    {
-        return static::allTo('toStudlyCase', ...$subjects);
-    }
-
-    /**
-     * Convert a string's first character to upper case.
-     *
-     * @param string $subject The subject
-     *
-     * @return string
-     */
-    public static function ucFirstLetter(string $subject): string
-    {
-        return static::toUpperCase(static::substr($subject, 0, 1)) . static::substr($subject, 1);
-    }
-
-    /**
-     * Convert all strings' first characters to upper case.
-     *
-     * @param string ...$subjects The subjects
-     *
-     * @return array
-     */
-    public static function allUcFirstLetter(string ...$subjects): array
-    {
-        return static::allTo('ucFirstLetter', ...$subjects);
-    }
-
-    /**
      * Get a random string.
      *
      * @param int<1, max> $length [optional] The length
@@ -565,23 +298,6 @@ class Str
     public static function isUppercase(string $subject): bool
     {
         return ctype_upper($subject);
-    }
-
-    /**
-     * Convert all strings to a method output.
-     *
-     * @param string $method      The method to call for each subject
-     * @param string ...$subjects The subjects
-     *
-     * @return array
-     */
-    protected static function allTo(string $method, string ...$subjects): array
-    {
-        foreach ($subjects as $key => $string) {
-            $subjects[$key] = static::$$method($string);
-        }
-
-        return $subjects;
     }
 
     /**
