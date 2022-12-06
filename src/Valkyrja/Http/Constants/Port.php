@@ -20,6 +20,21 @@ namespace Valkyrja\Http\Constants;
  */
 final class Port
 {
+    public const MIN = 1;
+    public const MAX = 65535;
+
     public const HTTP  = 80;
     public const HTTPS = 443;
+
+    /**
+     * Check if a port is valid.
+     *
+     * @param int|null $port [optional] The port
+     *
+     * @return bool
+     */
+    public static function isValid(int $port = null): bool
+    {
+        return $port === null || ($port >= self::MIN && $port <= self::MAX);
+    }
 }

@@ -149,4 +149,16 @@ final class StatusCode
         self::NOT_EXTENDED                    => StatusText::NOT_EXTENDED,
         self::NETWORK_AUTHENTICATION_REQUIRED => StatusText::NETWORK_AUTHENTICATION_REQUIRED,
     ];
+
+    /**
+     * Determine if a status code is valid.
+     *
+     * @param int $code The code
+     *
+     * @return bool
+     */
+    public static function isValid(int $code): bool
+    {
+        return $code >= self::MIN && $code <= self::MAX;
+    }
 }

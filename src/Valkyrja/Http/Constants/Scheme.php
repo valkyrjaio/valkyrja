@@ -23,4 +23,16 @@ final class Scheme
     public const EMPTY = '';
     public const HTTP  = 'http';
     public const HTTPS = 'https';
+
+    /**
+     * Determine if a scheme is valid.
+     *
+     * @param string $scheme The scheme
+     *
+     * @return bool
+     */
+    public static function isValid(string $scheme): bool
+    {
+        return $scheme === self::EMPTY || $scheme === self::HTTP || $scheme === self::HTTPS;
+    }
 }
