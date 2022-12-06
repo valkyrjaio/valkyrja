@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Exceptions;
 
+use Valkyrja\Exception\Throwable as Contract;
+
 /**
- * Class InvalidStatusCode.
+ * Interface Throwable.
  *
  * @author Melech Mizrachi
  */
-class InvalidStatusCode extends InvalidArgumentException
+interface Throwable extends Contract
 {
 }

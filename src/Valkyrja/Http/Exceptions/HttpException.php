@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Exceptions;
 
-use RuntimeException;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Response;
 

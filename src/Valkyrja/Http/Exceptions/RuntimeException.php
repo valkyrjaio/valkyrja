@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Exceptions;
 
 /**
- * Class InvalidStatusCode.
+ * Class RuntimeException.
  *
  * @author Melech Mizrachi
  */
-class InvalidStatusCode extends InvalidArgumentException
+class RuntimeException extends \Valkyrja\Exception\RuntimeException implements Throwable
 {
 }
