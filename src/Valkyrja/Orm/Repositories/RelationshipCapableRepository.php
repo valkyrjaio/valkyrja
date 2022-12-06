@@ -23,7 +23,6 @@ use Valkyrja\Type\Str;
  */
 trait RelationshipCapableRepository
 {
-
     /**
      * The relationships to get with each result.
      *
