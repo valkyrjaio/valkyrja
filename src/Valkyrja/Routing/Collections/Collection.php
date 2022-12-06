@@ -379,10 +379,14 @@ class Collection implements Contract
      */
     protected function ensureRoute(Route|array|string $route = null): ?Route
     {
-        return match (true) {
-            is_string($route) => $this->routes[$route],
-            is_array($route)  => \Valkyrja\Routing\Models\Route::fromArray($route),
-            default           => $route,
-        };
+        if (is_string($route)) {
+            $route = $this->routes[$route];
+        }
+
+        if (is_array($route)) {
+            return \Valkyrja\Routing\Models\Route::fromArray($route);
+        }
+
+        return $route;
     }
 }
