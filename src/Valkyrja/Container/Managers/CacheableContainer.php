@@ -17,6 +17,7 @@ use Valkyrja\Config\Config;
 use Valkyrja\Container\Annotator;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Config\Config as ContainerConfig;
+use Valkyrja\Container\ContextAwareContainer;
 use Valkyrja\Container\Service;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Support\Cacheable\Cacheable;
@@ -133,7 +134,7 @@ class CacheableContainer extends Container
             $id      = $context->getId();
             $service = $context->getService();
 
-            if ($class && $id && $service) {
+            if ($class && $id && $service && $this instanceof ContextAwareContainer) {
                 // Set the service
                 $this->withContext($class, $method)->bind($id, $service);
             }

@@ -81,13 +81,6 @@ class Container implements Contract
     protected ?string $contextId = null;
 
     /**
-     * The context method name.
-     *
-     * @var string|null
-     */
-    protected ?string $contextMember = null;
-
-    /**
      * Container constructor.
      *
      * @param Config|array $config
@@ -97,34 +90,6 @@ class Container implements Contract
         protected Config|array $config,
         protected bool $debug = false
     ) {
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function withContext(string $context, string $member = null): self
-    {
-        $contextContainer = clone $this;
-
-        $contextContainer->context       = $context;
-        $contextContainer->contextMember = $member;
-        $contextContainer->contextId     = $this->getServiceId('', $context, $member);
-
-        return $contextContainer;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function withoutContext(): self
-    {
-        $contextContainer = clone $this;
-
-        $contextContainer->context       = null;
-        $contextContainer->contextMember = null;
-        $contextContainer->contextId     = null;
-
-        return $contextContainer;
     }
 
     /**
@@ -323,20 +288,6 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function getServiceId(string $serviceId, string $context = null, string $member = null): string
-    {
-        if ($context === null) {
-            return $serviceId;
-        }
-
-        // serviceId@context
-        // serviceId@context::method
-        return $serviceId . '@' . $context . ($member ? '::' . $member : '');
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function offsetSet($offset, $value): void
     {
         $this->bind($offset, $value);
@@ -367,22 +318,6 @@ class Container implements Contract
     }
 
     /**
-     * Ensure a provided service is published.
-     *
-     * @param class-string|string $serviceId The service id
-     *
-     * @return void
-     */
-    protected function ensureProvidedServiceIsPublished(string $serviceId): void
-    {
-        // Check if the service id is provided by a service provider and isn't already published
-        if ($this->isProvided($serviceId) && ! $this->isPublished($serviceId)) {
-            // Publish the service provider
-            $this->publishProvided($serviceId);
-        }
-    }
-
-    /**
      * Get an aliased service id if it exists.
      *
      * @param class-string|string $serviceId The service id
@@ -406,7 +341,7 @@ class Container implements Contract
         // Get an aliased service id if it exists
         $serviceId = $this->getServiceIdInternal($serviceId);
 
-        $this->ensureProvidedServiceIsPublished($serviceId);
+        $this->publishUnpublishedProvided($serviceId);
 
         return $serviceId;
     }

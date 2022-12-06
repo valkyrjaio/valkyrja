@@ -15,6 +15,7 @@ namespace Valkyrja\Dispatcher\Dispatchers;
 
 use InvalidArgumentException;
 use Valkyrja\Container\Container;
+use Valkyrja\Container\ContextAwareContainer;
 use Valkyrja\Dispatcher\Constants\Constant;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Dispatcher\Dispatcher as Contract;
@@ -256,7 +257,7 @@ class Dispatcher implements Contract
     protected function isInvalidClassMethod(Dispatch $dispatch): bool
     {
         return $dispatch->isMethod()
-            && ($class  = $dispatch->getClass())
+            && ($class = $dispatch->getClass())
             && ($method = $dispatch->getMethod())
             && ! method_exists($class, $method);
     }
@@ -271,7 +272,7 @@ class Dispatcher implements Contract
     protected function isInvalidClassProperty(Dispatch $dispatch): bool
     {
         return $dispatch->isProperty()
-            && ($class    = $dispatch->getClass())
+            && ($class = $dispatch->getClass())
             && ($property = $dispatch->getProperty())
             && ! property_exists($class, $property);
     }
@@ -390,24 +391,25 @@ class Dispatcher implements Contract
             return $dependenciesInstances;
         }
 
-        $context = $dispatch->getClass() ?? $dispatch->getFunction() ?? '';
+        $context = $dispatch->getClass() ?? $dispatch->getFunction() ?? null;
         $member  = $dispatch->getMethod() ?? $dispatch->getProperty();
 
-        $container        = $this->container;
-        $containerContext = $container->withContext($context, $member);
+        $containerContext = null;
+
+        $container  = $this->container;
+        $hasContext = $context !== null && $container instanceof ContextAwareContainer;
+
+        if ($hasContext) {
+            /** @var ContextAwareContainer $container */
+            $containerContext = $container->withContext($context, $member);
+        }
 
         // Iterate through all the dependencies
         foreach ($dependencies as $dependency) {
-            // If there is a context dependency
-            if ($containerContext->has($dependency)) {
-                // Set the context dependency from the container
-                $dependenciesInstances[] = $containerContext->get($dependency);
-
-                continue;
-            }
-
             // Set the dependency from the container
-            $dependenciesInstances[] = $container->get($dependency);
+            $dependenciesInstances[] = $hasContext && $containerContext->has($dependency)
+                ? $containerContext->get($dependency)
+                : $container->get($dependency);
         }
 
         return $dependenciesInstances;

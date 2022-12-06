@@ -27,23 +27,6 @@ use Valkyrja\Support\Provider\ProvidersAware;
 interface Container extends ArrayAccess, ProvidersAware
 {
     /**
-     * Get a container instance with context.
-     *
-     * @param class-string|string $context The context class or function name
-     * @param string|null         $member  [optional] The context method name
-     *
-     * @return static
-     */
-    public function withContext(string $context, string $member = null): self;
-
-    /**
-     * Get a container instance with no context.
-     *
-     * @return static
-     */
-    public function withoutContext(): self;
-
-    /**
      * Check whether a given service exists.
      *
      * @param class-string|string $serviceId The service id
@@ -192,17 +175,6 @@ interface Container extends ArrayAccess, ProvidersAware
      * @return Service
      */
     public function makeService(string $serviceId, array $arguments = []): Service;
-
-    /**
-     * Get a service id with optional context.
-     *
-     * @param class-string|string $serviceId The service id
-     * @param string|null         $context   [optional] The context class or function name
-     * @param string|null         $member    [optional] The context member name
-     *
-     * @return string
-     */
-    public function getServiceId(string $serviceId, string $context = null, string $member = null): string;
 
     /**
      * Get a service from the container.
