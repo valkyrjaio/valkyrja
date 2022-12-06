@@ -29,6 +29,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
+use Valkyrja\Dispatcher\Validator;
 use Valkyrja\Event\Events;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Support\Provider\Traits\ProvidersAwareTrait;
@@ -85,6 +86,7 @@ class Console implements Contract
     public function __construct(
         protected Container $container,
         protected Dispatcher $dispatcher,
+        protected Validator $validator,
         protected Events $events,
         protected PathParser $pathParser,
         protected Config|array $config,
@@ -109,7 +111,7 @@ class Console implements Contract
     {
         $command->setMethod($command->getMethod() ?? static::RUN_METHOD);
 
-        $this->dispatcher->verifyDispatch($command);
+        $this->validator->dispatch($command);
 
         $this->addParsedCommand($command, $this->pathParser->parse((string) $command->getPath()));
     }

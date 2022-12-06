@@ -56,8 +56,6 @@ class Events implements Contract
     {
         $this->add($event);
 
-        $this->dispatcher->verifyDispatch($listener);
-
         // If this listener has an id
         if (($id = $listener->getId()) !== null) {
             // Use it when setting to allow removal

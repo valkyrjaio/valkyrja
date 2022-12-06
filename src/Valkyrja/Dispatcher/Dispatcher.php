@@ -13,12 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher;
 
-use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
-use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
-use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
-use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
-use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-
 /**
  * Interface Dispatcher.
  *
@@ -26,54 +20,6 @@ use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
  */
 interface Dispatcher
 {
-    /**
-     * Verify the dispatch's dispatch capabilities.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidClosureException
-     *
-     * @return void
-     */
-    public function verifyDispatch(Dispatch $dispatch): void;
-
-    /**
-     * Verify the class and method of a dispatch.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @throws InvalidMethodException
-     *
-     * @return void
-     */
-    public function verifyClassMethod(Dispatch $dispatch): void;
-
-    /**
-     * Verify the class and property of a dispatch.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @throws InvalidPropertyException
-     *
-     * @return void
-     */
-    public function verifyClassProperty(Dispatch $dispatch): void;
-
-    /**
-     * Verify the function of a dispatch.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @throws InvalidFunctionException
-     *
-     * @return void
-     */
-    public function verifyFunction(Dispatch $dispatch): void;
-
     /**
      * Dispatch a class method.
      *

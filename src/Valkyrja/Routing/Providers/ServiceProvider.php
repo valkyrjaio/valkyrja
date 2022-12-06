@@ -19,6 +19,7 @@ use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Dispatcher\Validator;
 use Valkyrja\Event\Events;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\ResponseFactory;
@@ -231,7 +232,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Processor::class,
             new \Valkyrja\Routing\Processors\Processor(
-                $container->getSingleton(Dispatcher::class)
+                $container->getSingleton(Validator::class)
             )
         );
     }

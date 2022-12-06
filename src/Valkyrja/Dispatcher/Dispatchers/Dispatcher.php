@@ -20,13 +20,11 @@ use Valkyrja\Dispatcher\Constants\Constant;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Dispatcher\Dispatcher as Contract;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
-use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Type\Exceptions\InvalidClassProvidedException;
 
-use function is_callable;
 use function is_string;
 
 /**
@@ -37,31 +35,13 @@ use function is_string;
 class Dispatcher implements Contract
 {
     /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
      * Dispatcher constructor.
      *
      * @param Container $container The container
      */
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function verifyDispatch(Dispatch $dispatch): void
-    {
-        $this->verifyNotEmptyDispatch($dispatch);
-        $this->verifyClassMethod($dispatch);
-        $this->verifyClassProperty($dispatch);
-        $this->verifyFunction($dispatch);
+    public function __construct(
+        protected Container $container
+    ) {
     }
 
     /**
@@ -200,84 +180,6 @@ class Dispatcher implements Contract
     }
 
     /**
-     * @inheritDoc
-     */
-    public function verifyClassMethod(Dispatch $dispatch): void
-    {
-        if ($this->isInvalidClassMethod($dispatch)) {
-            throw new InvalidMethodException(
-                'Method does not exist in class : '
-                . ($dispatch->getName() ?? '') . ' '
-                . ($dispatch->getClass() ?? '')
-                . '@'
-                . ($dispatch->getMethod() ?? '')
-            );
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function verifyClassProperty(Dispatch $dispatch): void
-    {
-        if ($this->isInvalidClassProperty($dispatch)) {
-            throw new InvalidPropertyException(
-                'Property does not exist in class : '
-                . ($dispatch->getName() ?? '') . ' '
-                . ($dispatch->getClass() ?? '')
-                . '@'
-                . ($dispatch->getProperty() ?? '')
-            );
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function verifyFunction(Dispatch $dispatch): void
-    {
-        // If a function is set and is not callable
-        if ($this->isInvalidFunction($dispatch)) {
-            // Throw a new invalid function exception
-            throw new InvalidFunctionException(
-                'Function is not callable for : '
-                . ($dispatch->getName() ?? '') . ' '
-                . ($dispatch->getFunction() ?? '')
-            );
-        }
-    }
-
-    /**
-     * Determine if a dispatch's class/method combination is invalid.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @return bool
-     */
-    protected function isInvalidClassMethod(Dispatch $dispatch): bool
-    {
-        return $dispatch->isMethod()
-            && ($class = $dispatch->getClass())
-            && ($method = $dispatch->getMethod())
-            && ! method_exists($class, $method);
-    }
-
-    /**
-     * Determine if a dispatch's class/property combination is invalid.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @return bool
-     */
-    protected function isInvalidClassProperty(Dispatch $dispatch): bool
-    {
-        return $dispatch->isProperty()
-            && ($class = $dispatch->getClass())
-            && ($property = $dispatch->getProperty())
-            && ! property_exists($class, $property);
-    }
-
-    /**
      * Get class from dispatch.
      *
      * @param Dispatch $dispatch The dispatch
@@ -293,55 +195,6 @@ class Dispatcher implements Contract
         }
 
         return $dispatch->isStatic() ? $class : $this->container->get($class);
-    }
-
-    /**
-     * Determine if a dispatch's function is invalid.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @return bool
-     */
-    protected function isInvalidFunction(Dispatch $dispatch): bool
-    {
-        return $dispatch->isFunction() && ! is_callable($dispatch->getFunction());
-    }
-
-    /**
-     * Verify that a dispatch has something to dispatch.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @throws InvalidDispatchCapabilityException
-     *
-     * @return void
-     */
-    protected function verifyNotEmptyDispatch(Dispatch $dispatch): void
-    {
-        // If a function, closure, and class or method are not set
-        if ($this->isEmptyDispatch($dispatch)) {
-            // Throw a new invalid dispatch capability exception
-            throw new InvalidDispatchCapabilityException(
-                'Dispatch capability is not valid for : '
-                . ($dispatch->getName() ?? '')
-            );
-        }
-    }
-
-    /**
-     * Check if a dispatch is empty.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @return bool
-     */
-    protected function isEmptyDispatch(Dispatch $dispatch): bool
-    {
-        return ! $dispatch->getFunction()
-            && ! $dispatch->getClosure()
-            && ! $dispatch->getClass()
-            && ! $dispatch->getMethod()
-            && ! $dispatch->getProperty();
     }
 
     /**

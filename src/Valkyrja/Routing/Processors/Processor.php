@@ -15,7 +15,7 @@ namespace Valkyrja\Routing\Processors;
 
 use BackedEnum;
 use InvalidArgumentException;
-use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Dispatcher\Validator;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Enums\CastType;
@@ -38,10 +38,10 @@ class Processor implements Contract
     /**
      * Processor constructor.
      *
-     * @param Dispatcher $dispatcher
+     * @param Validator $validator
      */
     public function __construct(
-        protected Dispatcher $dispatcher,
+        protected Validator $validator,
     ) {
     }
 
@@ -59,7 +59,7 @@ class Processor implements Contract
         // Verify the route
         $this->verifyRoute($route);
         // Verify the dispatch
-        $this->dispatcher->verifyDispatch($route);
+        $this->validator->dispatch($route);
 
         // Set the id to the spl_object_id of the route
         $route->setId((string) spl_object_id($route));

@@ -25,6 +25,7 @@ use Valkyrja\Console\Output;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Dispatcher\Validator;
 use Valkyrja\Event\Events;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Reflector;
@@ -100,6 +101,7 @@ class ServiceProvider extends Provider
             $console = new CacheableConsole(
                 $container,
                 $container->getSingleton(Dispatcher::class),
+                $container->getSingleton(Validator::class),
                 $container->getSingleton(Events::class),
                 $container->getSingleton(PathParser::class),
                 $config['console'],
