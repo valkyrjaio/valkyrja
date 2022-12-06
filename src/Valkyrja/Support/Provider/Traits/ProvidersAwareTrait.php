@@ -129,6 +129,22 @@ trait ProvidersAwareTrait
     }
 
     /**
+     * Publish an unpublished provided item.
+     *
+     * @param string $itemId The item id
+     *
+     * @return void
+     */
+    protected function publishUnpublishedProvided(string $itemId): void
+    {
+        // Check if the id is provided by a provider and isn't already published
+        if ($this->isProvided($itemId) && ! $this->isPublished($itemId)) {
+            // Publish the provider
+            $this->publishProvided($itemId);
+        }
+    }
+
+    /**
      * Register a deferred provider.
      *
      * @param string   $provider The provider
