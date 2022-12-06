@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Collections;
 
-use InvalidArgumentException;
 use JsonException;
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Orm\Entity;
 use Valkyrja\Routing\Collection as Contract;
-use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Route;
 
 use function array_merge;
@@ -63,14 +60,10 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @throws InvalidRoutePath
-     * @throws JsonException
      */
     public function add(Route $route): void
     {
-        // Verify the route
-        $this->verifyRoute($route);
+        assert($route->getPath());
 
         // Set the route to its request methods
         $this->setRouteToRequestMethods($route);
@@ -191,25 +184,9 @@ class Collection implements Contract
     }
 
     /**
-     * Verify a route.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    protected function verifyRoute(Route $route): void
-    {
-        if (! $route->getPath()) {
-            throw new InvalidArgumentException('Invalid path defined in route.');
-        }
-    }
-
-    /**
      * Set a route to its request methods.
      *
      * @param Route $route The route
-     *
-     * @throws InvalidRoutePath
      *
      * @return void
      */
@@ -226,17 +203,13 @@ class Collection implements Contract
      * @param Route  $route         The route
      * @param string $requestMethod The request method
      *
-     * @throws InvalidRoutePath
-     *
      * @return void
      */
     protected function setRouteToRequestMethod(Route $route, string $requestMethod): void
     {
         $id = $route->getId();
 
-        if ($id === null) {
-            throw new InvalidRoutePath('Invalid route provided.');
-        }
+        assert($id !== null);
 
         // If this is a dynamic route
         if ($route->isDynamic()) {
@@ -406,41 +379,10 @@ class Collection implements Contract
      */
     protected function ensureRoute(Route|array|string $route = null): ?Route
     {
-        if (is_string($route)) {
-            $route = $this->routes[$route];
-        }
-
-        if (is_array($route)) {
-            return \Valkyrja\Routing\Models\Route::fromArray($route);
-        }
-
-        return $route;
-    }
-
-    /**
-     * Remove the entity from the route's dependencies list.
-     *
-     * @param Route                $route      The route
-     * @param class-string<Entity> $entityName The entity class name
-     *
-     * @return void
-     */
-    protected function removeEntityFromDependencies(Route $route, string $entityName): void
-    {
-        $dependencies = $route->getDependencies();
-
-        if (empty($dependencies)) {
-            return;
-        }
-
-        $updatedDependencies = [];
-
-        foreach ($dependencies as $dependency) {
-            if ($dependency !== $entityName) {
-                $updatedDependencies[] = $dependency;
-            }
-        }
-
-        $route->setDependencies($updatedDependencies);
+        return match (true) {
+            is_string($route) => $this->routes[$route],
+            is_array($route)  => \Valkyrja\Routing\Models\Route::fromArray($route),
+            default           => $route,
+        };
     }
 }
