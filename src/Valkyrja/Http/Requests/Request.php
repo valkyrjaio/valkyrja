@@ -13,28 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Requests;
 
-use InvalidArgumentException;
-use JsonException;
-use Valkyrja\Http\Constants\ContentType;
 use Valkyrja\Http\Constants\Header;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Http\Constants\StreamType;
-use Valkyrja\Http\Exceptions\InvalidMethod;
-use Valkyrja\Http\Exceptions\InvalidPath;
-use Valkyrja\Http\Exceptions\InvalidPort;
-use Valkyrja\Http\Exceptions\InvalidProtocolVersion;
-use Valkyrja\Http\Exceptions\InvalidQuery;
-use Valkyrja\Http\Exceptions\InvalidScheme;
-use Valkyrja\Http\Exceptions\InvalidStream;
-use Valkyrja\Http\Exceptions\InvalidUploadedFile;
+use Valkyrja\Http\Exceptions\InvalidArgumentException;
 use Valkyrja\Http\Request as Contract;
 use Valkyrja\Http\Stream;
 use Valkyrja\Http\Streams\Stream as HttpStream;
 use Valkyrja\Http\UploadedFile;
 use Valkyrja\Http\Uri;
 use Valkyrja\Http\Uris\Uri as HttpUri;
-use Valkyrja\Type\Arr;
-use Valkyrja\Type\Str;
 
 /**
  * Class Request.
@@ -49,13 +37,6 @@ class Request extends SimpleRequest implements Contract
      * @var array
      */
     protected array $attributes = [];
-
-    /**
-     * The parsed json.
-     *
-     * @var array
-     */
-    protected array $parsedJson = [];
 
     /**
      * The files.
@@ -79,15 +60,6 @@ class Request extends SimpleRequest implements Contract
      * @param UploadedFile ...$files   [optional] The files
      *
      * @throws InvalidArgumentException
-     * @throws InvalidMethod
-     * @throws InvalidPath
-     * @throws InvalidPort
-     * @throws InvalidProtocolVersion
-     * @throws InvalidQuery
-     * @throws InvalidScheme
-     * @throws InvalidStream
-     * @throws InvalidUploadedFile
-     * @throws JsonException
      */
     public function __construct(
         Uri $uri = new HttpUri(),
@@ -102,17 +74,6 @@ class Request extends SimpleRequest implements Contract
         UploadedFile ...$files
     ) {
         parent::__construct($uri, $method, $body, $headers);
-
-        if (
-            $this->hasHeader(Header::CONTENT_TYPE)
-            && Str::contains($this->getHeaderLine(Header::CONTENT_TYPE), ContentType::APPLICATION_JSON)
-        ) {
-            $this->parsedJson = Arr::fromString((string) $body);
-
-            if (! $parsedBody) {
-                $this->parsedBody = $this->parsedJson;
-            }
-        }
 
         $this->files = $files;
     }
@@ -299,46 +260,6 @@ class Request extends SimpleRequest implements Contract
     public function hasParsedBodyParam(string $name): bool
     {
         return isset($this->parsedBody[$name]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getParsedJson(): array
-    {
-        return $this->parsedJson;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function onlyParsedJson(array $names): array
-    {
-        return $this->onlyParams($this->parsedJson, $names);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function exceptParsedJson(array $names): array
-    {
-        return $this->exceptParams($this->parsedJson, $names);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getParsedJsonParam(string $name, mixed $default = null): mixed
-    {
-        return $this->parsedJson[$name] ?? $default;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function hasParsedJsonParam(string $name): bool
-    {
-        return isset($this->parsedJson[$name]);
     }
 
     /**

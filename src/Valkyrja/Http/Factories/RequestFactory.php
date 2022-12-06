@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Factories;
 
-use JsonException;
 use UnexpectedValueException;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Http\Constants\StreamType;
+use Valkyrja\Http\Requests\JsonRequest;
 use Valkyrja\Http\Requests\Request;
 use Valkyrja\Http\Streams\Stream;
 
@@ -33,29 +33,23 @@ abstract class RequestFactory
 {
     /**
      * Create a request from the supplied superglobal values.
-     * If any argument is not supplied, the corresponding superglobal value will
-     * be used.
-     * The ServerRequest created is then passed to the fromServer() method in
-     * order to marshal the request URI and headers.
      *
-     * @param array|null $server  $_SERVER superglobal
-     * @param array|null $query   $_GET superglobal
-     * @param array|null $body    $_POST superglobal
-     * @param array|null $cookies $_COOKIE superglobal
-     * @param array|null $files   $_FILES superglobal
-     *
-     * @throws JsonException
+     * @param array|null            $server  [optional] $_SERVER superglobal
+     * @param array|null            $query   [optional] $_GET superglobal
+     * @param array|null            $body    [optional] $_POST superglobal
+     * @param array|null            $cookies [optional] $_COOKIE superglobal
+     * @param array|null            $files   [optional] $_FILES superglobal
+     * @param class-string<Request> $class   [optional] The request class to return
      *
      * @return Request
-     *
-     * @see fromServer()
      */
     public static function fromGlobals(
         array $server = null,
         array $query = null,
         array $body = null,
         array $cookies = null,
-        array $files = null
+        array $files = null,
+        string $class = Request::class
     ): Request {
         $files ??= $_FILES;
 
@@ -70,18 +64,39 @@ abstract class RequestFactory
             $cookies = CookieFactory::parseCookieHeader($headers['cookie']);
         }
 
-        return new Request(
-            UriFactory::marshalUriFromServer($server, $headers),
-            $server['REQUEST_METHOD'] ?? RequestMethod::GET,
-            new Stream(StreamType::INPUT),
-            $headers,
-            $server,
-            $cookies ?? $_COOKIE,
-            $query ?? $_GET,
-            $body ?? $_POST,
-            static::getProtocolVersionFromServer($server),
+        return new $class(
+               UriFactory::marshalUriFromServer($server, $headers),
+               $server['REQUEST_METHOD'] ?? RequestMethod::GET,
+               new Stream(StreamType::INPUT),
+               $headers,
+               $server,
+               $cookies ?? $_COOKIE,
+               $query ?? $_GET,
+               $body ?? $_POST,
+               static::getProtocolVersionFromServer($server),
             ...$files,
         );
+    }
+
+    /**
+     * Create a json request.
+     *
+     * @param array|null $server  [optional] $_SERVER superglobal
+     * @param array|null $query   [optional] $_GET superglobal
+     * @param array|null $body    [optional] $_POST superglobal
+     * @param array|null $cookies [optional] $_COOKIE superglobal
+     * @param array|null $files   [optional] $_FILES superglobal
+     *
+     * @return Request
+     */
+    public static function jsonFromGlobals(
+        array $server = null,
+        array $query = null,
+        array $body = null,
+        array $cookies = null,
+        array $files = null
+    ): Request {
+        return self::fromGlobals($server, $query, $body, $cookies, $files, JsonRequest::class);
     }
 
     /**

@@ -13,17 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Requests;
 
-use InvalidArgumentException;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Http\Constants\StreamType;
+use Valkyrja\Http\Exceptions\InvalidArgumentException;
 use Valkyrja\Http\Exceptions\InvalidMethod;
-use Valkyrja\Http\Exceptions\InvalidPath;
-use Valkyrja\Http\Exceptions\InvalidPort;
-use Valkyrja\Http\Exceptions\InvalidProtocolVersion;
-use Valkyrja\Http\Exceptions\InvalidQuery;
 use Valkyrja\Http\Exceptions\InvalidRequestTarget;
-use Valkyrja\Http\Exceptions\InvalidScheme;
-use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\Messages\MessageTrait;
 use Valkyrja\Http\SimpleRequest as SimpleRequestContract;
 use Valkyrja\Http\Stream;
@@ -63,13 +57,6 @@ class SimpleRequest implements SimpleRequestContract
      * @param array  $headers [optional] The headers
      *
      * @throws InvalidArgumentException
-     * @throws InvalidMethod
-     * @throws InvalidPath
-     * @throws InvalidPort
-     * @throws InvalidProtocolVersion
-     * @throws InvalidQuery
-     * @throws InvalidScheme
-     * @throws InvalidStream
      */
     public function __construct(
         protected Uri $uri = new HttpUri(),
