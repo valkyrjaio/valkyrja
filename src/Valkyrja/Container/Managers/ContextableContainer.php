@@ -57,6 +57,8 @@ trait ContextableContainer
 
     /**
      * @inheritDoc
+     *
+     * @return static
      */
     public function withContext(string $context, string $member = null): self
     {
@@ -71,6 +73,8 @@ trait ContextableContainer
 
     /**
      * @inheritDoc
+     *
+     * @return static
      */
     public function withoutContext(): self
     {

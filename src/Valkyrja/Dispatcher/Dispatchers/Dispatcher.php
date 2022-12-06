@@ -257,7 +257,7 @@ class Dispatcher implements Contract
     protected function isInvalidClassMethod(Dispatch $dispatch): bool
     {
         return $dispatch->isMethod()
-            && ($class  = $dispatch->getClass())
+            && ($class = $dispatch->getClass())
             && ($method = $dispatch->getMethod())
             && ! method_exists($class, $method);
     }
@@ -272,7 +272,7 @@ class Dispatcher implements Contract
     protected function isInvalidClassProperty(Dispatch $dispatch): bool
     {
         return $dispatch->isProperty()
-            && ($class    = $dispatch->getClass())
+            && ($class = $dispatch->getClass())
             && ($property = $dispatch->getProperty())
             && ! property_exists($class, $property);
     }
@@ -407,7 +407,7 @@ class Dispatcher implements Contract
         // Iterate through all the dependencies
         foreach ($dependencies as $dependency) {
             // Set the dependency from the container
-            $dependenciesInstances[] = $hasContext && $containerContext->has($dependency)
+            $dependenciesInstances[] = $hasContext && $containerContext?->has($dependency)
                 ? $containerContext->get($dependency)
                 : $container->get($dependency);
         }

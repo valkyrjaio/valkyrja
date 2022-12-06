@@ -20,6 +20,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Client\GuzzleAdapter as Contract;
 use Valkyrja\Http\Constants\RequestMethod;
+use Valkyrja\Http\JsonRequest;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
@@ -191,7 +192,7 @@ class GuzzleAdapter implements Contract
      */
     protected function setGuzzleFormParams(Request $request, array &$options): void
     {
-        if (($body = $request->getParsedBody()) && ! $request->getParsedJson()) {
+        if (($body = $request->getParsedBody()) && ! ($request instanceof JsonRequest && $request->getParsedJson())) {
             $options['form_params'] = $body;
         }
     }

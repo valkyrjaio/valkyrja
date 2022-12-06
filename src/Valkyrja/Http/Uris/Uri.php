@@ -286,7 +286,7 @@ class Uri implements Contract
     public function __toString(): string
     {
         if ($this->uriString !== null) {
-            return (string) $this->uriString;
+            return $this->uriString;
         }
 
         $uri = '';
