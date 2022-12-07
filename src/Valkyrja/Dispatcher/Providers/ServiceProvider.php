@@ -25,7 +25,6 @@ use Valkyrja\Dispatcher\Validator;
  */
 class ServiceProvider extends Provider
 {
-
     /**
      * @inheritDoc
      */
