@@ -71,15 +71,15 @@ class JsonRequest extends Request implements Contract
         UploadedFile ...$files
     ) {
         parent::__construct(
-               $uri,
-               $method,
-               $body,
-               $headers,
-               $server,
-               $cookies,
-               $query,
-               $parsedBody,
-               $protocol,
+            $uri,
+            $method,
+            $body,
+            $headers,
+            $server,
+            $cookies,
+            $query,
+            $parsedBody,
+            $protocol,
             ...$files
         );
 
