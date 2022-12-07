@@ -23,6 +23,7 @@ use Valkyrja\Type\Arr;
 use Valkyrja\Type\Obj;
 
 use function is_array;
+use function is_int;
 use function is_string;
 
 /**
@@ -409,5 +410,17 @@ abstract class Entity extends CastableModel implements Contract
 
         /** @var BackedEnum $value */
         return $value->value;
+    }
+
+    /**
+     * Get whether the value is a valid enum value.
+     *
+     * @param mixed $value The value
+     *
+     * @return bool
+     */
+    protected function __isValidEnumValue(mixed $value): bool
+    {
+        return is_string($value) || is_int($value);
     }
 }

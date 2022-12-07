@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model\Models;
 
-use BackedEnum;
 use Closure;
 use JsonException;
 use Valkyrja\Model\Model as Contract;
@@ -524,13 +523,7 @@ abstract class Model implements Contract
      */
     protected function __getJsonPropertyValue(string $property): mixed
     {
-        $value = $this->__get($property);
-
-        if ($value instanceof BackedEnum) {
-            return $value->value;
-        }
-
-        return $value;
+        return $this->__get($property);
     }
 
     /**

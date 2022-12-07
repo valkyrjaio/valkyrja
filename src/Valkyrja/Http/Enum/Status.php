@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Enums;
 
+use JsonSerializable;
+
 /**
  * Enum Status.
  *
@@ -21,7 +23,7 @@ namespace Valkyrja\Http\Enums;
  * @link   http://www.iana.org/assignments/http-status-codes/
  * - Hypertext Transfer Protocol (HTTP) Status Code Registry
  */
-enum Status
+enum Status implements JsonSerializable
 {
     case CONTINUE;
     case SWITCHING_PROTOCOLS;
@@ -230,5 +232,13 @@ enum Status
             self::NOT_EXTENDED_OBSOLETED          => 'Not Extended',
             self::NETWORK_AUTHENTICATION_REQUIRED => 'Network Authentication Required',
         };
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize(): string
+    {
+        return $this->name;
     }
 }

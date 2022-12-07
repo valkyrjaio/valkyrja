@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model\Enums;
 
+use JsonSerializable;
+
 /**
  * Enum CastType.
  *
  * @author Melech Mizrachi
  */
-enum CastType: string
+enum CastType: string implements JsonSerializable
 {
     case string = 'string';
     case int    = 'int';
@@ -33,4 +35,12 @@ enum CastType: string
     case object = 'object';
     case model  = 'model';
     case enum   = 'enum';
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize(): string
+    {
+        return $this->value;
+    }
 }

@@ -23,7 +23,6 @@ use Valkyrja\Type\Arr;
 use Valkyrja\Type\Obj;
 
 use function is_array;
-use function is_int;
 use function is_object;
 use function is_string;
 
@@ -454,17 +453,5 @@ trait CastableModelTrait
 
         /** @var BackedEnum $type */
         return $type::from($value);
-    }
-
-    /**
-     * Get whether the value is a valid enum value.
-     *
-     * @param mixed $value The value
-     *
-     * @return bool
-     */
-    protected function __isValidEnumValue(mixed $value): bool
-    {
-        return is_string($value) || is_int($value);
     }
 }
