@@ -49,7 +49,7 @@ class Parameter extends Model
      * @param mixed                         $default             [optional] The default value for this parameter
      */
     public function __construct(
-        protected string $name,
+        protected string $name = '',
         protected string $regex = Regex::ANY,
         protected CastType|null $type = null,
         protected string|null $entity = null,
