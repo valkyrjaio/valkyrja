@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Managers;
 
-use Valkyrja\Container\Config\Config;
-
 /**
  * Class ContextableContainer.
  *
@@ -42,18 +40,6 @@ trait ContextableContainer
      * @var string|null
      */
     protected ?string $contextMember = null;
-
-    /**
-     * Container constructor.
-     *
-     * @param Config|array $config
-     * @param bool         $debug
-     */
-    public function __construct(
-        protected Config|array $config,
-        protected bool $debug = false
-    ) {
-    }
 
     /**
      * @inheritDoc
