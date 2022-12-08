@@ -76,9 +76,9 @@ class AppProvider extends Provider
     {
         $container->setSingleton(Application::class, $app);
         $container->setSingleton('env', $app->env());
-        $container->setAlias('env', Env::class);
+        $container->bindAlias('env', Env::class);
         $container->setSingleton(Config::class, $config);
-        $container->setAlias('config', Config::class);
+        $container->bindAlias('config', Config::class);
         $container->setSingleton(Container::class, $container);
     }
 

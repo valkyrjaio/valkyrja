@@ -147,7 +147,7 @@ class CacheableContainer extends Container
 
             if ($name && $id) {
                 // Set the service
-                $this->setAlias($name, $id);
+                $this->bindAlias($name, $id);
             }
         }
     }

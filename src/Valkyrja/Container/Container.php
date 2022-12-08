@@ -46,14 +46,14 @@ interface Container extends ArrayAccess, ProvidersAware
     public function bind(string $serviceId, string $service): self;
 
     /**
-     * Bind a service to a closure in the container.
+     * Bind an alias to the container.
      *
-     * @param class-string|string $serviceId The service id
-     * @param Closure             $closure   The closure
+     * @param string              $alias     The alias
+     * @param class-string|string $serviceId The service id to alias
      *
      * @return static
      */
-    public function bindClosure(string $serviceId, Closure $closure): self;
+    public function bindAlias(string $alias, string $serviceId): self;
 
     /**
      * Bind a singleton to the container.
@@ -64,16 +64,6 @@ interface Container extends ArrayAccess, ProvidersAware
      * @return static
      */
     public function bindSingleton(string $serviceId, string $singleton): self;
-
-    /**
-     * Set an alias in the container.
-     *
-     * @param string              $alias     The alias
-     * @param class-string|string $serviceId The service id to alias
-     *
-     * @return static
-     */
-    public function setAlias(string $alias, string $serviceId): self;
 
     /**
      * Set a closure in the container.
@@ -114,15 +104,6 @@ interface Container extends ArrayAccess, ProvidersAware
     public function isClosure(string $serviceId): bool;
 
     /**
-     * Check whether a given service is a singleton.
-     *
-     * @param class-string|string $serviceId The service id
-     *
-     * @return bool
-     */
-    public function isSingleton(string $serviceId): bool;
-
-    /**
      * Check whether a given service exists.
      *
      * @param class-string|string $serviceId The service id
@@ -130,6 +111,15 @@ interface Container extends ArrayAccess, ProvidersAware
      * @return bool
      */
     public function isService(string $serviceId): bool;
+
+    /**
+     * Check whether a given service is a singleton.
+     *
+     * @param class-string|string $serviceId The service id
+     *
+     * @return bool
+     */
+    public function isSingleton(string $serviceId): bool;
 
     /**
      * Get a service from the container.
@@ -156,6 +146,16 @@ interface Container extends ArrayAccess, ProvidersAware
     public function getClosure(string $serviceId, array $arguments = []): mixed;
 
     /**
+     * Get a service from the container.
+     *
+     * @param class-string<Service>|string $serviceId The service id
+     * @param array                        $arguments [optional] The arguments
+     *
+     * @return Service
+     */
+    public function getService(string $serviceId, array $arguments = []): Service;
+
+    /**
      * Get a singleton from the container.
      *
      * @template T
@@ -165,16 +165,6 @@ interface Container extends ArrayAccess, ProvidersAware
      * @return T
      */
     public function getSingleton(string $serviceId): mixed;
-
-    /**
-     * Make a service.
-     *
-     * @param class-string<Service>|string $serviceId The service id
-     * @param array                        $arguments [optional] The arguments
-     *
-     * @return Service
-     */
-    public function makeService(string $serviceId, array $arguments = []): Service;
 
     /**
      * Get a service from the container.
