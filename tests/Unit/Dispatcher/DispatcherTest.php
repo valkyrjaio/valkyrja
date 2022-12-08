@@ -14,8 +14,7 @@ namespace Valkyrja\Tests\Unit\Dispatcher;
 
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Application\Application;
-use Valkyrja\Container\Config\Config;
-use Valkyrja\Container\Constants\ConfigValue;
+use Valkyrja\Container\Config\Container as Config;
 use Valkyrja\Container\Managers\Container;
 use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
 use Valkyrja\Dispatcher\Models\Dispatch;
@@ -74,7 +73,7 @@ class DispatcherTest extends TestCase
     {
         parent::setUp();
 
-        $this->dispatcher = new Dispatcher(new Container((array) new Config(ConfigValue::$defaults), true));
+        $this->dispatcher = new Dispatcher(new Container(new Config(setup: true), true));
     }
 
     /**
@@ -156,8 +155,10 @@ class DispatcherTest extends TestCase
             ->setMethod('validStaticMethod')
             ->setStatic();
 
-        self::assertEquals(static::validStaticMethod('test'),
-                           $this->dispatcher->dispatchClassMethod($dispatch, ['test']));
+        self::assertEquals(
+            static::validStaticMethod('test'),
+            $this->dispatcher->dispatchClassMethod($dispatch, ['test'])
+        );
     }
 
     /**
