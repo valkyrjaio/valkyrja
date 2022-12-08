@@ -99,7 +99,14 @@ class Optimize extends Commander
         $configCache['event']['useCache']     = true;
         $configCache['routing']['useCache']   = true;
 
-        $asArray  = json_decode(json_encode($configCache, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
+        $asArray = json_decode(json_encode($configCache, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
+
+        foreach ($asArray['container']['providers'] as $key => $provider) {
+            if (in_array($provider, $asArray['container']['cache']['provided'], true)) {
+                unset($asArray['container']['providers'][$key]);
+            }
+        }
+
         $asString = '<?php return ' . var_export(Arr::withoutNull($asArray), true) . ';' . PHP_EOL;
         // $serialized = serialize($configCache);
         // $serialized = preg_replace('/O:\d+:"[^"]++"/', 'O:8:"stdClass"', $serialized);
