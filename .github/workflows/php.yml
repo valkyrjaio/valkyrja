@@ -17,12 +17,18 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ '8.1' ]
+        php: [ '8.1', '8.2' ]
         stability: [ prefer-lowest, prefer-stable ]
 
     name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
 
     steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, intl
+          ini-values: zend.assertions=1
       - name: Checkout code
         uses: actions/checkout@v3
 
