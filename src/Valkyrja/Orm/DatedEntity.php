@@ -21,6 +21,13 @@ namespace Valkyrja\Orm;
 interface DatedEntity extends Entity
 {
     /**
+     * Get the formatted current date/time as a save-able string.
+     *
+     * @return string
+     */
+    public static function getFormattedDate(): string;
+
+    /**
      * Get the date created field.
      *
      * @return string

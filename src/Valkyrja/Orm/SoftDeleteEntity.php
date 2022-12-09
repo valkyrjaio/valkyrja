@@ -21,6 +21,13 @@ namespace Valkyrja\Orm;
 interface SoftDeleteEntity extends Entity
 {
     /**
+     * Get the formatted current date/time as a save-able string.
+     *
+     * @return string
+     */
+    public static function getFormattedDeletedDate(): string;
+
+    /**
      * Get the deleted flag field.
      *
      * @return string

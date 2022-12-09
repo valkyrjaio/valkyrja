@@ -23,7 +23,6 @@ use Valkyrja\Orm\Persister as Contract;
 use Valkyrja\Orm\Query;
 use Valkyrja\Orm\QueryBuilder;
 use Valkyrja\Orm\SoftDeleteEntity;
-use Valkyrja\Orm\Support\Helpers;
 use Valkyrja\Type\Arr;
 
 use function is_array;
@@ -147,7 +146,7 @@ class Persister implements Contract
     public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
     {
         $entity->__set($entity::getIsDeletedField(), true);
-        $entity->__set($entity::getDateDeletedField(), Helpers::getFormattedDate());
+        $entity->__set($entity::getDateDeletedField(), $entity::getFormattedDeletedDate());
 
         $this->save($entity, $defer);
     }
@@ -240,7 +239,7 @@ class Persister implements Contract
      */
     protected function modifyDatedEntityBeforeCreate(DatedEntity $entity): void
     {
-        $date = Helpers::getFormattedDate();
+        $date = $entity::getFormattedDate();
 
         $entity->__set($entity::getDateCreatedField(), $date);
         $entity->__set($entity::getDateModifiedField(), $date);
@@ -269,7 +268,7 @@ class Persister implements Contract
      */
     protected function modifyDatedEntityBeforeSave(DatedEntity $entity): void
     {
-        $entity->__set($entity::getDateModifiedField(), Helpers::getFormattedDate());
+        $entity->__set($entity::getDateModifiedField(), $entity::getFormattedDate());
     }
 
     /**

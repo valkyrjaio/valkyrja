@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Entities;
 
+use Valkyrja\Orm\Support\Helpers;
+
 /**
  * Trait DatedEntityTrait.
  *
@@ -20,6 +22,14 @@ namespace Valkyrja\Orm\Entities;
  */
 trait DatedEntityTrait
 {
+    /**
+     * @inheritDoc
+     */
+    public static function getFormattedDate(): string
+    {
+        return Helpers::getFormattedDate();
+    }
+
     /**
      * @inheritDoc
      */
