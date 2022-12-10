@@ -61,7 +61,7 @@ class Processor implements Contract
         $this->validator->dispatch($route);
 
         // Set the id to the spl_object_id of the route
-        $route->setId((string) spl_object_id($route));
+        // $route->setId((string) spl_object_id($route));
         // Set the id to an md5 hash of the route
         // $route->setId(md5(Arr::toString($route->asArray())));
         // Set the path to the validated cleaned path (/some/path)
@@ -73,6 +73,9 @@ class Processor implements Contract
         if ($route->isDynamic()) {
             $this->modifyRegex($route);
         }
+
+        // Set the id to an md5 hash of the route contents to ensure we have no duplicates
+        $route->setId(md5($route->__toString()));
     }
 
     /**
