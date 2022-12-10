@@ -424,7 +424,7 @@ class Container implements Contract
     protected function getSingletonWithoutChecks(string $serviceId): mixed
     {
         /** @var mixed $instance */
-        $instance = self::$instances[$serviceId] ??= $this->getService($serviceId);
+        $instance = self::$instances[$serviceId] ??= $this->getServiceWithoutChecks($serviceId);
 
         return $instance;
     }
