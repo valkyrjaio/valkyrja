@@ -273,7 +273,7 @@ class Directory
      */
     protected static function __basePath(string $path = null): string
     {
-        if ($path && Str::startsWith($path, static::DIRECTORY_SEPARATOR)) {
+        if ($path && str_starts_with($path, static::DIRECTORY_SEPARATOR)) {
             return $path;
         }
 
