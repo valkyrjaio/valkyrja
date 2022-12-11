@@ -385,22 +385,16 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * @inheritDoc
+     * Remove internal model properties from an array of properties.
+     *
+     * @param array $properties The properties
+     *
+     * @return void
      */
-    protected function __allProperties(bool $includeHidden = false): array
+    protected function __removeInternalProperties(array &$properties): void
     {
-        return $this->__allPropertiesIncludingHidden();
-    }
+        parent::__removeInternalProperties($properties);
 
-    /**
-     * @inheritDoc
-     */
-    public function jsonSerialize(): array
-    {
-        $array = $this->__allPropertiesIncludingHidden();
-
-        unset($array['arguments'], $array['closure']);
-
-        return $array;
+        unset($properties['arguments'], $properties['closure']);
     }
 }

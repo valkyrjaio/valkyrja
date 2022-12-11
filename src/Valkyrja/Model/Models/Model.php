@@ -330,25 +330,11 @@ abstract class Model implements Contract
     /**
      * Get all properties.
      *
-     * @param bool $includeHidden [optional] Whether to include hidden properties
-     *
      * @return array
      */
-    protected function __allProperties(bool $includeHidden = false): array
+    protected function __allProperties(): array
     {
-        return $includeHidden
-            ? $this->__allPropertiesIncludingHidden()
-            : Obj::getAllProperties($this, includePrivate: false);
-    }
-
-    /**
-     * Get all properties regardless of visibility.
-     *
-     * @return array
-     */
-    protected function __allPropertiesIncludingHidden(): array
-    {
-        return get_object_vars($this);
+        return Obj::getAllProperties($this, includePrivate: false);
     }
 
     /**

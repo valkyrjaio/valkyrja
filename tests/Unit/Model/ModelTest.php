@@ -14,7 +14,7 @@ namespace Valkyrja\Tests\Unit\Model;
 
 use JsonException;
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Tests\Classes\Model\Model as Model;
+use Valkyrja\Tests\Classes\Model\Model;
 
 use function json_encode;
 

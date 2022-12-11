@@ -98,11 +98,9 @@ trait Exposable
      *
      * @return array
      */
-    protected function __allProperties(bool $includeHidden = false): array
+    protected function __allProperties(): array
     {
-        return $includeHidden
-            ? $this->__allPropertiesIncludingHidden()
-            : array_merge(Obj::getProperties($this), $this->__exposed);
+        return array_merge(Obj::getProperties($this), $this->__exposed);
     }
 
     /**

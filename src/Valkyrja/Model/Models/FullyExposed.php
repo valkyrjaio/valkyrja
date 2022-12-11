@@ -23,8 +23,8 @@ trait FullyExposed
     /**
      * @inheritDoc
      */
-    protected function __allProperties(bool $includeHidden = false): array
+    protected function __allProperties(): array
     {
-        return $this->__allPropertiesIncludingHidden();
+        return get_object_vars($this);
     }
 }

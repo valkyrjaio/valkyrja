@@ -309,20 +309,4 @@ class Parameter extends Model
 
         return $this;
     }
-
-    /**
-     * @inheritDoc
-     */
-    protected function __allProperties(bool $includeHidden = false): array
-    {
-        return $this->__allPropertiesIncludingHidden();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function jsonSerialize(): array
-    {
-        return $this->__allPropertiesIncludingHidden();
-    }
 }

@@ -137,7 +137,7 @@ abstract class Entity extends Model implements Contract
     {
         $unStorableFields = array_merge(static::getUnStorableFields(), static::getRelationshipProperties());
         // Get the public properties
-        $allProperties = $this->__allProperties(true);
+        $allProperties = $this->__allPropertiesForStorage();
         $castings      = static::getCastings();
 
         $this->__removeInternalProperties($allProperties);
@@ -167,6 +167,16 @@ abstract class Entity extends Model implements Contract
     public function asStorableChangedArray(): array
     {
         return $this->__getChangedProperties($this->asStorableArray());
+    }
+
+    /**
+     * Get all properties for storage.
+     *
+     * @return array
+     */
+    protected function __allPropertiesForStorage(): array
+    {
+        return get_object_vars($this);
     }
 
     /**
