@@ -385,16 +385,12 @@ class Dispatch extends Model implements Contract
     }
 
     /**
-     * Remove internal model properties from an array of properties.
-     *
-     * @param array $properties The properties
-     *
-     * @return void
+     * @inheritDoc
      */
     protected function __removeInternalProperties(array &$properties): void
     {
         parent::__removeInternalProperties($properties);
 
-        unset($properties['arguments'], $properties['closure']);
+        unset($properties['arguments'], $properties['closure'], $properties['matches']);
     }
 }
