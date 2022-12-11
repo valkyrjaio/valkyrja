@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Model;
 
-use JsonException;
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Tests\Classes\Model\Model;
 
@@ -27,6 +26,16 @@ use const JSON_THROW_ON_ERROR;
  */
 class ModelTest extends TestCase
 {
+    protected const PUBLIC    = 'public';
+    protected const PROTECTED = 'protected';
+    protected const PRIVATE   = 'private';
+
+    protected const VALUES = [
+        self::PUBLIC    => self::PUBLIC,
+        self::PROTECTED => self::PROTECTED,
+        self::PRIVATE   => self::PRIVATE,
+    ];
+
     /**
      * The model class.
      *
@@ -35,102 +44,166 @@ class ModelTest extends TestCase
     protected Model $model;
 
     /**
-     * Get the model class to test with.
-     *
-     * @return Model
+     * @inheritDoc
      */
-    protected function getModel(): Model
+    protected function setUp(): void
     {
-        return $this->model ?? $this->model = new Model();
+        $this->model = new Model();
     }
 
-    /**
-     * Test the model's magic __get method.
-     *
-     * @return void
-     */
-    public function testMagicGet(): void
+    public function testHas(): void
     {
-        self::assertEquals(null, $this->getModel()->property);
+        $model = new Model();
+
+        $this->assertTrue($model->hasProperty(self::PUBLIC));
+        $this->assertTrue($model->hasProperty(self::PROTECTED));
+        $this->assertTrue($model->hasProperty(self::PRIVATE));
     }
 
-    /**
-     * Test the model's getter through the magic __get method.
-     *
-     * @return void
-     */
-    public function testMagicGetter(): void
+    public function testGet(): void
     {
-        self::assertEquals(null, $this->getModel()->prop);
+        $model = Model::fromArray(self::VALUES);
+
+        $this->assertEquals(self::PUBLIC, $model->public);
+        $this->assertEquals(self::PROTECTED, $model->protected);
+        $this->assertEquals(self::PRIVATE, $model->private);
     }
 
-    /**
-     * Test the model's magic __set method.
-     *
-     * @return void
-     */
-    public function testMagicSet(): void
+    public function testGetNotSet(): void
     {
-        $value                      = 'test';
-        $this->getModel()->property = $value;
+        $this->expectError();
 
-        self::assertEquals($value, $this->getModel()->property);
+        $model = Model::fromArray([]);
+
+        $this->assertEquals(self::PUBLIC, $model->public);
     }
 
-    /**
-     * Test the model's setter through the magic __set method.
-     *
-     * @return void
-     */
-    public function testMagicSetter(): void
+    public function testIsset(): void
     {
-        $value                  = 'test';
-        $this->getModel()->prop = $value;
+        $model = Model::fromArray([]);
 
-        self::assertEquals($value, $this->getModel()->prop);
+        $this->assertFalse(isset($model->public));
+        $this->assertFalse(isset($model->protected));
+        $this->assertFalse(isset($model->private));
+
+        $model = Model::fromArray(self::VALUES);
+
+        $this->assertTrue(isset($model->public));
+        $this->assertTrue(isset($model->protected));
+        $this->assertTrue(isset($model->private));
     }
 
-    /**
-     * Test the model's magic isset method.
-     *
-     * @return void
-     */
-    public function testMagicIsset(): void
+    public function testSet(): void
     {
-        $this->getModel()->property = 'test';
+        $model = Model::fromArray([]);
 
-        self::assertEquals(true, isset($this->getModel()->property));
+        $model->public    = self::PUBLIC;
+        $model->protected = self::PROTECTED;
+        $model->private   = self::PRIVATE;
+
+        $this->assertEquals(self::PUBLIC, $model->public);
+        $this->assertEquals(self::PROTECTED, $model->protected);
+        $this->assertEquals(self::PRIVATE, $model->private);
     }
 
-    /**
-     * Test the model's isset through magic isset method.
-     *
-     * @return void
-     */
-    public function testMagicIssetMethod(): void
+    public function testWithProperties(): void
     {
-        $this->getModel()->prop = 'test';
+        $model    = Model::fromArray([]);
+        $newModel = $model->withProperties(self::VALUES);
 
-        self::assertEquals(true, isset($this->getModel()->prop));
+        $this->assertFalse(isset($model->public));
+        $this->assertFalse(isset($model->protected));
+        $this->assertFalse(isset($model->private));
+
+        $this->assertTrue(isset($newModel->public));
+        $this->assertTrue(isset($newModel->protected));
+        $this->assertTrue(isset($newModel->private));
     }
 
-    /**
-     * Test the model's json serialization.
-     *
-     * @throws JsonException
-     *
-     * @return void
-     */
+    public function testOriginal(): void
+    {
+        $model = Model::fromArray(self::VALUES);
+        $this->assertEquals(self::VALUES, $model->asOriginalArray());
+        $this->assertEquals(self::PUBLIC, $model->getOriginalPropertyValue(self::PUBLIC));
+        $this->assertEquals(self::PROTECTED, $model->getOriginalPropertyValue(self::PROTECTED));
+        $this->assertEquals(self::PRIVATE, $model->getOriginalPropertyValue(self::PRIVATE));
+
+        $model = Model::fromArray([]);
+        $this->assertEquals([], $model->asOriginalArray());
+        $this->assertNull($model->getOriginalPropertyValue(self::PUBLIC));
+        $this->assertNull($model->getOriginalPropertyValue(self::PROTECTED));
+        $this->assertNull($model->getOriginalPropertyValue(self::PRIVATE));
+        $model->updateProperties(self::VALUES);
+        $this->assertEquals([], $model->asOriginalArray());
+        $this->assertNull($model->getOriginalPropertyValue(self::PUBLIC));
+        $this->assertNull($model->getOriginalPropertyValue(self::PROTECTED));
+        $this->assertNull($model->getOriginalPropertyValue(self::PRIVATE));
+
+        $model = Model::fromArray([]);
+
+        $model->public = self::PUBLIC;
+        $this->assertEquals([], $model->asOriginalArray());
+        $this->assertNull($model->getOriginalPropertyValue(self::PUBLIC));
+        $this->assertNull($model->getOriginalPropertyValue(self::PROTECTED));
+        $this->assertNull($model->getOriginalPropertyValue(self::PRIVATE));
+    }
+
+    public function testChanged(): void
+    {
+        // Public properties should show up if changed
+        $model = Model::fromArray(self::VALUES);
+
+        $model->public = 'test';
+        $this->assertEquals([self::PUBLIC => 'test'], $model->asChangedArray());
+
+        // Protected properties should show up if changed
+        $model = Model::fromArray(self::VALUES);
+
+        $model->protected = 'test';
+        $this->assertEquals([self::PROTECTED => 'test'], $model->asChangedArray());
+
+        // Private properties should not show up
+        $model = Model::fromArray(self::VALUES);
+
+        $model->private = 'test';
+        $this->assertEquals([], $model->asChangedArray());
+
+        // Private properties should not show up, but public and protected should if changed
+        $model = Model::fromArray(self::VALUES);
+
+        $model->public    = 'test';
+        $model->protected = 'test2';
+        $model->private   = 'test3';
+        $this->assertEquals([self::PUBLIC => 'test', self::PROTECTED => 'test2'], $model->asChangedArray());
+
+        // Because public properties aren't tracked unless through methods then they come up as changed
+        $model = Model::fromArray([]);
+
+        $model->public = self::PUBLIC;
+        $this->assertEquals([self::PUBLIC => self::PUBLIC], $model->asChangedArray());
+    }
+
+    public function testAsArray(): void
+    {
+        $model = Model::fromArray([]);
+        $this->assertEquals([], $model->asArray());
+
+        $model = Model::fromArray(self::VALUES);
+        $this->assertEquals([self::PUBLIC => self::PUBLIC, self::PROTECTED => self::PROTECTED], $model->asArray());
+        $this->assertEquals([self::PUBLIC => self::PUBLIC], $model->asArray(self::PUBLIC));
+        $this->assertEquals([self::PROTECTED => self::PROTECTED], $model->asArray(self::PROTECTED));
+        // Private or hidden properties should not be exposable.
+        $this->assertEquals([], $model->asArray(self::PRIVATE));
+    }
+
     public function testJsonSerialize(): void
     {
-        $json = json_encode(
-            [
-                'property' => null,
-                'prop'     => null,
-            ],
-            JSON_THROW_ON_ERROR
-        );
+        $model = Model::fromArray([]);
+        $this->assertEquals('[]', json_encode($model, JSON_THROW_ON_ERROR));
+        $this->assertEquals('[]', (string) $model);
 
-        self::assertEquals($json, json_encode($this->getModel(), JSON_THROW_ON_ERROR));
+        $model = Model::fromArray(self::VALUES);
+        $this->assertEquals('{"public":"public","protected":"protected"}', json_encode($model, JSON_THROW_ON_ERROR));
+        $this->assertEquals('{"public":"public","protected":"protected"}', (string) $model);
     }
 }

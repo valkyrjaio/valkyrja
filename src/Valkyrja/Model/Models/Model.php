@@ -52,7 +52,14 @@ abstract class Model implements Contract
      *
      * @var array
      */
-    protected array $__originalProperties = [];
+    private array $__originalProperties = [];
+
+    /**
+     * Whether the original properties have been set.
+     *
+     * @var bool
+     */
+    private bool $__originalPropertiesSet = false;
 
     /**
      * @inheritDoc
@@ -81,7 +88,7 @@ abstract class Model implements Contract
      */
     public function __get(string $name)
     {
-        $methodName = $this->__getPropertyGetMethodName($name);
+        $methodName = $this->__getPropertyTypeMethodName($name, 'get');
 
         if ($this->__doesPropertyTypeMethodExist($methodName)) {
             return $this->$methodName();
@@ -95,7 +102,7 @@ abstract class Model implements Contract
      */
     public function __set(string $name, mixed $value): void
     {
-        $methodName = $this->__getPropertySetMethodName($name);
+        $methodName = $this->__getPropertyTypeMethodName($name, 'set');
 
         $this->__setOriginalProperty($name, $value);
 
@@ -113,7 +120,7 @@ abstract class Model implements Contract
      */
     public function __isset(string $name): bool
     {
-        $methodName = $this->__getPropertyIssetMethodName($name);
+        $methodName = $this->__getPropertyTypeMethodName($name, 'isset');
 
         if ($this->__doesPropertyTypeMethodExist($methodName)) {
             return $this->$methodName();
@@ -246,42 +253,18 @@ abstract class Model implements Contract
                 $this->__set($property, $value);
             }
         }
+
+        $this->__originalPropertiesSet();
     }
 
     /**
-     * Get a property's isset method name.
+     * Set that original properties have been set.
      *
-     * @param string $property The property
-     *
-     * @return string
+     * @return void
      */
-    protected function __getPropertyGetMethodName(string $property): string
+    protected function __originalPropertiesSet(): void
     {
-        return $this->__getPropertyTypeMethodName($property, 'get');
-    }
-
-    /**
-     * Get a property's isset method name.
-     *
-     * @param string $property The property
-     *
-     * @return string
-     */
-    protected function __getPropertySetMethodName(string $property): string
-    {
-        return $this->__getPropertyTypeMethodName($property, 'set');
-    }
-
-    /**
-     * Get a property's isset method name.
-     *
-     * @param string $property The property
-     *
-     * @return string
-     */
-    protected function __getPropertyIssetMethodName(string $property): string
-    {
-        return $this->__getPropertyTypeMethodName($property, 'isset');
+        $this->__originalPropertiesSet = true;
     }
 
     /**
@@ -294,7 +277,8 @@ abstract class Model implements Contract
      */
     protected function __getPropertyTypeMethodName(string $property, string $type): string
     {
-        return self::$cachedValidations[static::class . "$type$property"] ??= $type . StrCase::toStudlyCase($property);
+        return self::$cachedValidations[static::class . "$type$property"]
+            ??= $type . StrCase::toStudlyCase($property);
     }
 
     /**
@@ -306,10 +290,8 @@ abstract class Model implements Contract
      */
     protected function __doesPropertyTypeMethodExist(string $methodName): bool
     {
-        return self::$cachedExistsValidations[static::class . "exists$methodName"] ??= method_exists(
-            $this,
-            $methodName
-        );
+        return self::$cachedExistsValidations[static::class . "exists$methodName"]
+            ??= method_exists($this, $methodName);
     }
 
     /**
@@ -322,7 +304,7 @@ abstract class Model implements Contract
      */
     protected function __setOriginalProperty(string $name, mixed $value): void
     {
-        if (static::shouldSetOriginalProperties()) {
+        if (! $this->__originalPropertiesSet && static::shouldSetOriginalProperties()) {
             $this->__originalProperties[$name] ??= $value;
         }
     }
@@ -346,7 +328,7 @@ abstract class Model implements Contract
      */
     protected function __removeInternalProperties(array &$properties): void
     {
-        unset($properties['__originalProperties']);
+        unset($properties['__originalProperties'], $properties['__originalPropertiesSet']);
     }
 
     /**

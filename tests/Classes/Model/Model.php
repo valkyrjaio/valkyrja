@@ -21,51 +21,35 @@ use Valkyrja\Model\Models\Model as AbstractModel;
  */
 class Model extends AbstractModel
 {
-    /**
-     * A property to test with.
-     *
-     * @var string|null
-     */
-    public ?string $property = null;
+    public string $public;
+
+    protected string $protected;
+
+    private string $private;
 
     /**
-     * A property to test with using getter/setter.
-     *
-     * @var string|null
+     * @return string
      */
-    protected ?string $prop = null;
-
-    /**
-     * Get the prop.
-     *
-     * @return string|null
-     */
-    public function getProp(): ?string
+    protected function getPrivate(): string
     {
-        return $this->prop;
+        return $this->private;
     }
 
     /**
-     * Determine if the prop is set.
-     *
      * @return bool
      */
-    public function issetProp(): bool
+    protected function issetPrivate(): bool
     {
-        return null !== $this->prop;
+        return isset($this->private);
     }
 
     /**
-     * Set the prop.
+     * @param string $private
      *
-     * @param string $prop The prop
-     *
-     * @return static
+     * @return void
      */
-    public function setProp(string $prop): self
+    protected function setPrivate(string $private): void
     {
-        $this->prop = $prop;
-
-        return $this;
+        $this->private = $private;
     }
 }
