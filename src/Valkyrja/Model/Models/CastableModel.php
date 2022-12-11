@@ -22,5 +22,5 @@ use Valkyrja\Model\CastableModel as Contract;
  */
 abstract class CastableModel extends Model implements Contract
 {
-    use CastableModelTrait;
+    use Castable;
 }

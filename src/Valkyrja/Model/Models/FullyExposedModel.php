@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Model\Models;
 
 /**
- * Class EnhancedEnumModel.
+ * Class FullyExposedModel.
  *
  * @author Melech Mizrachi
  */
-abstract class EnhancedEnumModel extends Model
+abstract class FullyExposedModel extends Model
 {
-    use EnhancedEnumModelTrait;
+    use FullyExposed;
 }

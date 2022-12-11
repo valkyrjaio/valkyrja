@@ -27,11 +27,11 @@ use function is_object;
 use function is_string;
 
 /**
- * Trait CastableTrait.
+ * Trait Castable.
  *
  * @author Melech Mizrachi
  */
-trait CastableModelTrait
+trait Castable
 {
     /**
      * Property castings used for mass property sets to avoid needing individual setters for simple type casting.

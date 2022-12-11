@@ -14,11 +14,17 @@ declare(strict_types=1);
 namespace Valkyrja\Model\Models;
 
 /**
- * Class ExposedProtectedModel.
+ * Trait FullyExposed.
  *
  * @author Melech Mizrachi
  */
-abstract class ExposedProtectedModel extends Model
+trait FullyExposed
 {
-    use ExposedProtectedModelTrait;
+    /**
+     * @inheritDoc
+     */
+    protected function __allProperties(bool $includeHidden = false): array
+    {
+        return $this->__allPropertiesIncludingHidden();
+    }
 }

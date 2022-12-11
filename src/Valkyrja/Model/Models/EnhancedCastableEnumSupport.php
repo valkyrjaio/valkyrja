@@ -18,13 +18,13 @@ use UnitEnum;
 use Valkyrja\Type\Enum\JsonSerializableEnum;
 
 /**
- * Trait EnhancedEnumSupportCastableModelTrait.
+ * Trait EnhancedCastableEnumSupport.
  *
  * @author Melech Mizrachi
  */
-trait EnhancedEnumCastableModelTrait
+trait EnhancedCastableEnumSupport
 {
-    use EnhancedEnumModelTrait;
+    use EnhancedEnumSupport;
 
     /**
      * @inheritDoc

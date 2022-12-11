@@ -17,11 +17,11 @@ use BackedEnum;
 use JsonSerializable;
 
 /**
- * Trait EnhancedEnumSupportEntityTrait.
+ * Trait EnhancedEnumSupport.
  *
  * @author Melech Mizrachi
  */
-trait EnhancedEnumSupportEntityTrait
+trait EnhancedEnumSupport
 {
     /**
      * @inheritDoc

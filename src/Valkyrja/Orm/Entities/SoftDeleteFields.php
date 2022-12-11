@@ -11,20 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Model\Models;
+namespace Valkyrja\Orm\Entities;
 
 /**
- * Trait ExposedModelTrait.
+ * Trait SoftDeleteFields.
  *
  * @author Melech Mizrachi
  */
-trait ExposedModelTrait
+trait SoftDeleteFields
 {
+    use SoftDeletable;
+
     /**
-     * @inheritDoc
+     * The deleted flag.
+     *
+     * @var bool
      */
-    protected function __allProperties(bool $includeHidden = false): array
-    {
-        return $this->__allPropertiesIncludingHidden();
-    }
+    public bool $is_deleted = false;
+
+    /**
+     * The date deleted date.
+     *
+     * @var string|null
+     */
+    public ?string $date_deleted = null;
 }

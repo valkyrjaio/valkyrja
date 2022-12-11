@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Orm;
 
 use Valkyrja\Model\CastableModel;
+use Valkyrja\Model\ExposableModel;
 
 /**
  * Interface Entity.
  *
  * @author Melech Mizrachi
  */
-interface Entity extends CastableModel
+interface Entity extends CastableModel, ExposableModel
 {
     /**
      * Get the table.

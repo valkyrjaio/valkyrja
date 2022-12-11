@@ -19,11 +19,11 @@ use UnitEnum;
 use Valkyrja\Type\Enum\JsonSerializableEnum;
 
 /**
- * Trait EnhancedEnumSupportModelTrait.
+ * Trait EnhancedEnumSupport.
  *
  * @author Melech Mizrachi
  */
-trait EnhancedEnumModelTrait
+trait EnhancedEnumSupport
 {
     /**
      * @inheritDoc

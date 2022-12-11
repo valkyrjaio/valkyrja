@@ -16,11 +16,11 @@ namespace Valkyrja\Orm\Entities;
 use Valkyrja\Orm\Support\Helpers;
 
 /**
- * Trait SoftDeleteEntityTrait.
+ * Trait SoftDeletableEntity.
  *
  * @author Melech Mizrachi
  */
-trait SoftDeleteEntityTrait
+trait SoftDeletable
 {
     /**
      * @inheritDoc

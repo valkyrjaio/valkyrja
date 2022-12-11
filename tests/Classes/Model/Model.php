@@ -10,16 +10,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Model;
+namespace Valkyrja\Tests\Classes\Model;
 
-use Valkyrja\Orm\Entities\Entity;
+use Valkyrja\Model\Models\Model as AbstractModel;
 
 /**
  * Model class to use to test abstract model.
  *
  * @author Melech Mizrachi
  */
-class EntityClass extends Entity
+class Model extends AbstractModel
 {
     /**
      * A property to test with.
@@ -38,7 +38,7 @@ class EntityClass extends Entity
     /**
      * Get the prop.
      *
-     * @return string
+     * @return string|null
      */
     public function getProp(): ?string
     {
@@ -60,9 +60,9 @@ class EntityClass extends Entity
      *
      * @param string $prop The prop
      *
-     * @return EntityClass
+     * @return static
      */
-    public function setProp(string $prop): EntityClass
+    public function setProp(string $prop): self
     {
         $this->prop = $prop;
 

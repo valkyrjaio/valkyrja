@@ -14,11 +14,19 @@ declare(strict_types=1);
 namespace Valkyrja\Model\Models;
 
 /**
- * Class ExposedModel.
+ * Trait UnpackForNewInstance.
  *
  * @author Melech Mizrachi
  */
-abstract class ExposedModel extends Model
+trait UnpackForNewInstance
 {
-    use ExposedModelTrait;
+    /**
+     * @inheritDoc
+     *
+     * @return static
+     */
+    protected static function __getNew(array $properties): self
+    {
+        return new static(...$properties);
+    }
 }

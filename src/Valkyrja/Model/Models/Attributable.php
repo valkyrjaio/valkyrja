@@ -18,11 +18,11 @@ use ReflectionAttribute;
 use Valkyrja\Reflection\Facades\Reflector;
 
 /**
- * Trait AttributedModelTrait.
+ * Trait Attributable.
  *
  * @author Melech Mizrachi
  */
-trait AttributedModelTrait
+trait Attributable
 {
     /**
      * @var array<string, ReflectionAttribute[]>

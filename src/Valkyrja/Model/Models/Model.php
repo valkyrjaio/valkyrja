@@ -13,14 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model\Models;
 
-use Closure;
 use JsonException;
 use Valkyrja\Model\Model as Contract;
 use Valkyrja\Type\Arr;
 use Valkyrja\Type\Obj;
 use Valkyrja\Type\StrCase;
-
-use function is_string;
 
 /**
  * Class Model.
@@ -51,33 +48,11 @@ abstract class Model implements Contract
     protected static bool $shouldSetOriginalProperties = true;
 
     /**
-     * Properties that are exposable.
-     *
-     * @var string[]
-     */
-    protected static array $exposable = [];
-
-    /**
      * The original properties.
      *
      * @var array
      */
     protected array $__originalProperties = [];
-
-    /**
-     * The properties to expose.
-     *
-     * @var array<string, bool>
-     */
-    protected array $__exposed = [];
-
-    /**
-     * @inheritDoc
-     */
-    public static function getExposable(): array
-    {
-        return static::$exposable;
-    }
 
     /**
      * @inheritDoc
@@ -199,25 +174,9 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
-    public function asExposedArray(string ...$properties): array
-    {
-        return $this->__arrayWithExposed('asArray', ...$properties);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function asChangedArray(): array
     {
         return $this->__getChangedProperties($this->asArray());
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function asExposedChangedArray(): array
-    {
-        return $this->__arrayWithExposed('asChangedArray');
     }
 
     /**
@@ -257,32 +216,6 @@ abstract class Model implements Contract
     public function __toString(): string
     {
         return Arr::toString($this->jsonSerialize());
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function expose(string ...$properties): void
-    {
-        foreach ($properties as $property) {
-            $this->__exposed[$property] = true;
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function unexpose(string ...$properties): void
-    {
-        if (empty($properties)) {
-            $this->__exposed = [];
-
-            return;
-        }
-
-        foreach ($properties as $property) {
-            unset($this->__exposed[$property]);
-        }
     }
 
     /**
@@ -405,7 +338,7 @@ abstract class Model implements Contract
     {
         return $includeHidden
             ? $this->__allPropertiesIncludingHidden()
-            : array_merge(Obj::getProperties($this), $this->__exposed);
+            : Obj::getAllProperties($this, includePrivate: false);
     }
 
     /**
@@ -427,7 +360,7 @@ abstract class Model implements Contract
      */
     protected function __removeInternalProperties(array &$properties): void
     {
-        unset($properties['__exposed'], $properties['__originalProperties']);
+        unset($properties['__originalProperties']);
     }
 
     /**
@@ -524,30 +457,5 @@ abstract class Model implements Contract
     protected function __getJsonPropertyValue(string $property): mixed
     {
         return $this->__get($property);
-    }
-
-    /**
-     * Get an array with exposed properties.
-     *
-     * @param Closure|string $callable      The callable
-     * @param string         ...$properties The properties
-     *
-     * @return array
-     */
-    protected function __arrayWithExposed(Closure|string $callable, string ...$properties): array
-    {
-        $exposable = static::getExposable();
-
-        $this->expose(...$exposable);
-
-        if (is_string($callable)) {
-            $array = $this->$callable(...$properties);
-        } else {
-            $array = $callable(...$properties);
-        }
-
-        $this->unexpose(...$exposable);
-
-        return $array;
     }
 }

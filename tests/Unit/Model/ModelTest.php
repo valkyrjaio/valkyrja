@@ -12,7 +12,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Model;
 
+use JsonException;
 use PHPUnit\Framework\TestCase;
+use Valkyrja\Tests\Classes\Model\Model as Model;
 
 use function json_encode;
 
@@ -28,18 +30,18 @@ class ModelTest extends TestCase
     /**
      * The model class.
      *
-     * @var EntityClass
+     * @var Model
      */
-    protected EntityClass $model;
+    protected Model $model;
 
     /**
      * Get the model class to test with.
      *
-     * @return EntityClass
+     * @return Model
      */
-    protected function getModel(): EntityClass
+    protected function getModel(): Model
     {
-        return $this->model ?? $this->model = new EntityClass();
+        return $this->model ?? $this->model = new Model();
     }
 
     /**
@@ -115,6 +117,8 @@ class ModelTest extends TestCase
     /**
      * Test the model's json serialization.
      *
+     * @throws JsonException
+     *
      * @return void
      */
     public function testJsonSerialize(): void
@@ -122,7 +126,9 @@ class ModelTest extends TestCase
         $json = json_encode(
             [
                 'property' => null,
-            ], JSON_THROW_ON_ERROR
+                'prop'     => null,
+            ],
+            JSON_THROW_ON_ERROR
         );
 
         self::assertEquals($json, json_encode($this->getModel(), JSON_THROW_ON_ERROR));

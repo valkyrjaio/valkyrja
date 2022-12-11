@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Model\Models;
 
 /**
- * Trait IndexedModelTrait.
+ * Trait Indexable.
  *
  * @author Melech Mizrachi
  */
-trait IndexedModelTrait
+trait Indexable
 {
     /**
      * @inheritDoc

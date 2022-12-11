@@ -17,6 +17,8 @@ use RuntimeException;
 use Valkyrja\Container\Config\Container as Config;
 use Valkyrja\Container\Managers\Container;
 use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Tests\Classes\Container\Service;
+use Valkyrja\Tests\Classes\Container\Singleton;
 
 /**
  * Test the container service.
@@ -54,7 +56,7 @@ class ContainerTest extends TestCase
     public function testBind(): void
     {
         $container = $this->container;
-        $serviceId = ServiceClass::class;
+        $serviceId = Service::class;
 
         $container->bind($serviceId, $serviceId);
 
@@ -78,7 +80,7 @@ class ContainerTest extends TestCase
     public function testBindAlias(): void
     {
         $container = $this->container;
-        $serviceId = ServiceClass::class;
+        $serviceId = Service::class;
         $alias     = 'alias';
 
         $container->bindAlias($alias, $serviceId);
@@ -103,7 +105,7 @@ class ContainerTest extends TestCase
     public function testBindSingleton(): void
     {
         $container = $this->container;
-        $serviceId = SingletonClass::class;
+        $serviceId = Singleton::class;
 
         $container->bindSingleton($serviceId, $serviceId);
 
@@ -128,7 +130,7 @@ class ContainerTest extends TestCase
     public function testOffsetGetSetAndExists(): void
     {
         $container = $this->container;
-        $serviceId = ServiceClass::class;
+        $serviceId = Service::class;
 
         $container[$serviceId] = $serviceId;
 
@@ -171,7 +173,7 @@ class ContainerTest extends TestCase
     public function testOffsetUnset(): void
     {
         $container = $this->container;
-        $serviceId = ServiceClass::class;
+        $serviceId = Service::class;
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage("Cannot remove service with name $serviceId from the container.");

@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Entities;
 
-use Valkyrja\Orm\DatedEntity as EntityContract;
+use Valkyrja\Orm\DatedEntity as Contract;
 
 /**
  * Class DatedEntity.
  *
  * @author Melech Mizrachi
  */
-class DatedEntity extends Entity implements EntityContract
+abstract class DatedEntity extends Entity implements Contract
 {
-    use DatedEntityFields;
+    use DatedFields;
 }

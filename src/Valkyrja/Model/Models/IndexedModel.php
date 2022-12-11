@@ -22,5 +22,5 @@ use Valkyrja\Model\IndexedModel as Contract;
  */
 abstract class IndexedModel extends Model implements Contract
 {
-    use IndexedModelTrait;
+    use Indexable;
 }

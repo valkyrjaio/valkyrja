@@ -123,11 +123,11 @@ If you would like to treat all properties (regardless of visibility) as exposabl
 namespace App\Models;
 
 use Valkyrja\Model\Models\Model;
-use Valkyrja\Model\Models\ExposedModelTrait;
+use Valkyrja\Model\Models\FullyExposed;
 
 class BasicModel extends Model
 {
-    use ExposedModelTrait;
+    use FullyExposed;
 
     // ...
 }
@@ -138,9 +138,9 @@ Or extend off of `Valkyrja\Model\Models\ExposedModel`.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Models\ExposedModel;
+use Valkyrja\Model\Models\FullyExposedModel;
 
-class BasicModel extends ExposedModel
+class BasicModel extends FullyExposedModel
 {
     // ...
 }
@@ -345,11 +345,11 @@ need to use the `Valkyrja\Model\Models\UnpackingFromArrayModelTrait` trait.
 namespace App\Models;
 
 use Valkyrja\Model\Models\Model;
-use Valkyrja\Model\Models\UnpackingFromArrayModelTrait;
+use Valkyrja\Model\Models\UnpackForNewInstance;
 
 class BasicModel extends Model
 {
-    use UnpackingFromArrayModelTrait;
+    use UnpackForNewInstance;
 
     //
 }
@@ -445,11 +445,11 @@ By default `BackedEnum` is the only supported enum type. If you require support 
 namespace App\Models;
 
 use Valkyrja\Model\Models\Model;
-use Valkyrja\Model\Models\EnhancedEnumModelTrait;
+use Valkyrja\Model\Models\EnhancedEnumSupport;
 
 class BasicModel extends Model
 {
-    use EnhancedEnumModelTrait;
+    use EnhancedEnumSupport;
 
     //
 }
@@ -612,11 +612,11 @@ the `Valkyrja\Model\Models\CastableModelTrait` trait.
 namespace App\Models;
 
 use Valkyrja\Model\Models\Model;
-use Valkyrja\Model\Models\CastableModelTrait;
+use Valkyrja\Model\Models\Castable;
 
 class BasicModel extends Model
 {
-    use CastableModelTrait;
+    use Castable;
 
     // ...
 }
@@ -642,11 +642,11 @@ method instead.
 namespace App\Models;
 
 use Valkyrja\Model\Models\Model;
-use Valkyrja\Model\Models\CastableModelTrait;
+use Valkyrja\Model\Models\Castable;
 
 class BasicModel extends Model
 {
-    use CastableModelTrait;
+    use Castable;
 
     public static function getCastings() : array
     {
@@ -823,11 +823,11 @@ If you chose to use the `Valkyrja\Model\Models\CastableModelTrait` trait you mus
 namespace App\Models;
 
 use Valkyrja\Model\Models\Model;
-use Valkyrja\Model\Models\CastableModelTrait;
+use Valkyrja\Model\Models\Castable;
 
 class BasicModel extends Model
 {
-    use CastableModelTrait;
+    use Castable;
 
     //
 
@@ -906,11 +906,11 @@ By default `BackedEnum` is the only supported enum type. If you require support 
 namespace App\Models;
 
 use Valkyrja\Model\Models\CastableModel;
-use Valkyrja\Model\Models\EnhancedEnumCastableModelTrait;
+use Valkyrja\Model\Models\EnhancedCastableEnumSupport;
 
 class BasicModel extends CastableModel
 {
-    use EnhancedEnumCastableModelTrait;
+    use EnhancedCastableEnumSupport;
 
     // ...
 }
@@ -943,11 +943,11 @@ namespace App\Models;
 
 use Valkyrja\Model\Models\Model;
 use Valkyrja\Model\IndexedModel;
-use Valkyrja\Model\Models\IndexedModelTrait;
+use Valkyrja\Model\Models\Indexable;
 
 class BasicModel extends Model implements IndexedModel
 {
-    use IndexedModelTrait;
+    use Indexable;
 
     // ...
 }

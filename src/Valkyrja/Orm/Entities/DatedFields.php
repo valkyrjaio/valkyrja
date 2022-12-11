@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Entities;
 
 /**
- * Trait DatedEntityFields.
+ * Trait DatedFields.
  *
  * @author Melech Mizrachi
  */
-trait DatedEntityFields
+trait DatedFields
 {
-    use DatedEntityTrait;
+    use Dateable;
 
     /**
      * The date created date.

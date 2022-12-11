@@ -10,17 +10,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Container;
+namespace Valkyrja\Tests\Classes\Container;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Service;
 
 /**
- * Testable Service class.
+ * Testable Singleton class.
  *
  * @author Melech Mizrachi
  */
-class ServiceClass implements Service
+class Singleton implements Service
 {
     public static function make(Container $container, array $arguments = []): Service
     {

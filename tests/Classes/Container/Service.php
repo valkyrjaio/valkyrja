@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -10,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Container;
+namespace Valkyrja\Tests\Classes\Container;
 
 use Valkyrja\Container\Container;
-use Valkyrja\Container\Service;
+use Valkyrja\Container\Service as Contract;
 
 /**
- * Testable Singleton class.
+ * Testable Service class.
  *
  * @author Melech Mizrachi
  */
-class SingletonClass implements Service
+class Service implements Contract
 {
     public static function make(Container $container, array $arguments = []): Service
     {

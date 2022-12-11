@@ -89,15 +89,6 @@ interface IndexedModel extends Model
     public function asIndexedArray(string ...$properties): array;
 
     /**
-     * Get model as an array with exposable properties.
-     *
-     * @param string ...$properties [optional] An array of properties to return
-     *
-     * @return array
-     */
-    public function asIndexedArrayWithExposable(string ...$properties): array;
-
-    /**
      * Get model as an array including only changed properties.
      *
      * @return array

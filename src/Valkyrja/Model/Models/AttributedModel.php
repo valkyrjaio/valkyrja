@@ -22,5 +22,5 @@ use Valkyrja\Model\AttributedModel as Contract;
  */
 abstract class AttributedModel extends Model implements Contract
 {
-    use AttributedModelTrait;
+    use Attributable;
 }

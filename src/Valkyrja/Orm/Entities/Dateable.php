@@ -16,11 +16,11 @@ namespace Valkyrja\Orm\Entities;
 use Valkyrja\Orm\Support\Helpers;
 
 /**
- * Trait DatedEntityTrait.
+ * Trait Dateable.
  *
  * @author Melech Mizrachi
  */
-trait DatedEntityTrait
+trait Dateable
 {
     /**
      * @inheritDoc
