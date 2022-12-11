@@ -41,6 +41,8 @@ trait Exposable
 
     /**
      * @inheritDoc
+     *
+     * @return string[]
      */
     public static function getExposable(): array
     {

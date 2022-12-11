@@ -99,14 +99,6 @@ trait Indexable
     /**
      * @inheritDoc
      */
-    public function asIndexedArrayWithExposable(string ...$properties): array
-    {
-        return static::getIndexedArrayFromMappedArray($this->asExposedArray(...$properties));
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function asChangedIndexedArray(): array
     {
         return static::getIndexedArrayFromMappedArray($this->asChangedArray());
