@@ -25,6 +25,11 @@ use const JSON_THROW_ON_ERROR;
  */
 class ExposableModelTest extends TestCase
 {
+    public function testGetExposable(): void
+    {
+        $this->assertEquals([Model::PRIVATE], ExposableModel::getExposable());
+    }
+
     public function testAsExposed(): void
     {
         $model = ExposableModel::fromArray(Model::VALUES);
@@ -37,6 +42,14 @@ class ExposableModelTest extends TestCase
         $expectedExposed = [Model::PRIVATE => 'test'];
         $this->assertEquals([], $model->asChangedArray());
         $this->assertEquals($expectedExposed, $model->asExposedChangedArray());
+    }
+
+    public function testAsExposedOnly(): void
+    {
+        $model = ExposableModel::fromArray(Model::VALUES);
+
+        $expectedExposed = [Model::PRIVATE => 'test'];
+        $this->assertEquals($expectedExposed, $model->asExposedOnlyArray());
     }
 
     public function testExpose(): void
@@ -83,7 +96,7 @@ class ExposableModelTest extends TestCase
         $expectedExposed = '{"public":"public","protected":"protected","private":"private"}';
         $this->assertEquals($expectedExposed, json_encode($model, JSON_THROW_ON_ERROR));
         $this->assertEquals($expectedExposed, (string) $model);
-        $model->unexpose(Model::PRIVATE);
+        $model->unexpose();
         $this->assertEquals($expected, json_encode($model, JSON_THROW_ON_ERROR));
         $this->assertEquals($expected, (string) $model);
     }

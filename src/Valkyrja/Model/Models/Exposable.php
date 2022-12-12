@@ -67,6 +67,14 @@ trait Exposable
     /**
      * @inheritDoc
      */
+    public function asExposedOnlyArray(): array
+    {
+        return $this->__arrayWithExposed(fn() => $this->__exposed);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function expose(string ...$properties): void
     {
         foreach ($properties as $property) {

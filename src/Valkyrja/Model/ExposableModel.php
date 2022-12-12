@@ -44,6 +44,13 @@ interface ExposableModel extends Model
     public function asExposedChangedArray(): array;
 
     /**
+     * Get model as an array including only exposable properties.
+     *
+     * @return array
+     */
+    public function asExposedOnlyArray(): array;
+
+    /**
      * Expose hidden properties or all properties.
      *
      * @param string ...$properties The properties to expose
