@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -26,47 +27,22 @@ use const JSON_THROW_ON_ERROR;
  */
 class ModelTest extends TestCase
 {
-    protected const PUBLIC    = 'public';
-    protected const PROTECTED = 'protected';
-    protected const PRIVATE   = 'private';
-
-    protected const VALUES = [
-        self::PUBLIC    => self::PUBLIC,
-        self::PROTECTED => self::PROTECTED,
-        self::PRIVATE   => self::PRIVATE,
-    ];
-
-    /**
-     * The model class.
-     *
-     * @var Model
-     */
-    protected Model $model;
-
-    /**
-     * @inheritDoc
-     */
-    protected function setUp(): void
-    {
-        $this->model = new Model();
-    }
-
     public function testHas(): void
     {
         $model = new Model();
 
-        $this->assertTrue($model->hasProperty(self::PUBLIC));
-        $this->assertTrue($model->hasProperty(self::PROTECTED));
-        $this->assertTrue($model->hasProperty(self::PRIVATE));
+        $this->assertTrue($model->hasProperty(Model::PUBLIC));
+        $this->assertTrue($model->hasProperty(Model::PROTECTED));
+        $this->assertTrue($model->hasProperty(Model::PRIVATE));
     }
 
     public function testGet(): void
     {
-        $model = Model::fromArray(self::VALUES);
+        $model = Model::fromArray(Model::VALUES);
 
-        $this->assertEquals(self::PUBLIC, $model->public);
-        $this->assertEquals(self::PROTECTED, $model->protected);
-        $this->assertEquals(self::PRIVATE, $model->private);
+        $this->assertEquals(Model::PUBLIC, $model->public);
+        $this->assertEquals(Model::PROTECTED, $model->protected);
+        $this->assertEquals(Model::PRIVATE, $model->private);
     }
 
     public function testGetNotSet(): void
@@ -75,7 +51,7 @@ class ModelTest extends TestCase
 
         $model = Model::fromArray([]);
 
-        $this->assertEquals(self::PUBLIC, $model->public);
+        $this->assertEquals(Model::PUBLIC, $model->public);
     }
 
     public function testIsset(): void
@@ -86,7 +62,7 @@ class ModelTest extends TestCase
         $this->assertFalse(isset($model->protected));
         $this->assertFalse(isset($model->private));
 
-        $model = Model::fromArray(self::VALUES);
+        $model = Model::fromArray(Model::VALUES);
 
         $this->assertTrue(isset($model->public));
         $this->assertTrue(isset($model->protected));
@@ -97,19 +73,19 @@ class ModelTest extends TestCase
     {
         $model = Model::fromArray([]);
 
-        $model->public    = self::PUBLIC;
-        $model->protected = self::PROTECTED;
-        $model->private   = self::PRIVATE;
+        $model->public    = Model::PUBLIC;
+        $model->protected = Model::PROTECTED;
+        $model->private   = Model::PRIVATE;
 
-        $this->assertEquals(self::PUBLIC, $model->public);
-        $this->assertEquals(self::PROTECTED, $model->protected);
-        $this->assertEquals(self::PRIVATE, $model->private);
+        $this->assertEquals(Model::PUBLIC, $model->public);
+        $this->assertEquals(Model::PROTECTED, $model->protected);
+        $this->assertEquals(Model::PRIVATE, $model->private);
     }
 
     public function testWithProperties(): void
     {
         $model    = Model::fromArray([]);
-        $newModel = $model->withProperties(self::VALUES);
+        $newModel = $model->withProperties(Model::VALUES);
 
         $this->assertFalse(isset($model->public));
         $this->assertFalse(isset($model->protected));
@@ -122,65 +98,65 @@ class ModelTest extends TestCase
 
     public function testOriginal(): void
     {
-        $model = Model::fromArray(self::VALUES);
-        $this->assertEquals(self::VALUES, $model->asOriginalArray());
-        $this->assertEquals(self::PUBLIC, $model->getOriginalPropertyValue(self::PUBLIC));
-        $this->assertEquals(self::PROTECTED, $model->getOriginalPropertyValue(self::PROTECTED));
-        $this->assertEquals(self::PRIVATE, $model->getOriginalPropertyValue(self::PRIVATE));
+        $model = Model::fromArray(Model::VALUES);
+        $this->assertEquals(Model::VALUES, $model->asOriginalArray());
+        $this->assertEquals(Model::PUBLIC, $model->getOriginalPropertyValue(Model::PUBLIC));
+        $this->assertEquals(Model::PROTECTED, $model->getOriginalPropertyValue(Model::PROTECTED));
+        $this->assertEquals(Model::PRIVATE, $model->getOriginalPropertyValue(Model::PRIVATE));
 
         $model = Model::fromArray([]);
         $this->assertEquals([], $model->asOriginalArray());
-        $this->assertNull($model->getOriginalPropertyValue(self::PUBLIC));
-        $this->assertNull($model->getOriginalPropertyValue(self::PROTECTED));
-        $this->assertNull($model->getOriginalPropertyValue(self::PRIVATE));
-        $model->updateProperties(self::VALUES);
+        $this->assertNull($model->getOriginalPropertyValue(Model::PUBLIC));
+        $this->assertNull($model->getOriginalPropertyValue(Model::PROTECTED));
+        $this->assertNull($model->getOriginalPropertyValue(Model::PRIVATE));
+        $model->updateProperties(Model::VALUES);
         $this->assertEquals([], $model->asOriginalArray());
-        $this->assertNull($model->getOriginalPropertyValue(self::PUBLIC));
-        $this->assertNull($model->getOriginalPropertyValue(self::PROTECTED));
-        $this->assertNull($model->getOriginalPropertyValue(self::PRIVATE));
+        $this->assertNull($model->getOriginalPropertyValue(Model::PUBLIC));
+        $this->assertNull($model->getOriginalPropertyValue(Model::PROTECTED));
+        $this->assertNull($model->getOriginalPropertyValue(Model::PRIVATE));
 
         $model = Model::fromArray([]);
 
-        $model->public = self::PUBLIC;
+        $model->public = Model::PUBLIC;
         $this->assertEquals([], $model->asOriginalArray());
-        $this->assertNull($model->getOriginalPropertyValue(self::PUBLIC));
-        $this->assertNull($model->getOriginalPropertyValue(self::PROTECTED));
-        $this->assertNull($model->getOriginalPropertyValue(self::PRIVATE));
+        $this->assertNull($model->getOriginalPropertyValue(Model::PUBLIC));
+        $this->assertNull($model->getOriginalPropertyValue(Model::PROTECTED));
+        $this->assertNull($model->getOriginalPropertyValue(Model::PRIVATE));
     }
 
     public function testChanged(): void
     {
         // Public properties should show up if changed
-        $model = Model::fromArray(self::VALUES);
+        $model = Model::fromArray(Model::VALUES);
 
         $model->public = 'test';
-        $this->assertEquals([self::PUBLIC => 'test'], $model->asChangedArray());
+        $this->assertEquals([Model::PUBLIC => 'test'], $model->asChangedArray());
 
         // Protected properties should show up if changed
-        $model = Model::fromArray(self::VALUES);
+        $model = Model::fromArray(Model::VALUES);
 
         $model->protected = 'test';
-        $this->assertEquals([self::PROTECTED => 'test'], $model->asChangedArray());
+        $this->assertEquals([Model::PROTECTED => 'test'], $model->asChangedArray());
 
         // Private properties should not show up
-        $model = Model::fromArray(self::VALUES);
+        $model = Model::fromArray(Model::VALUES);
 
         $model->private = 'test';
         $this->assertEquals([], $model->asChangedArray());
 
         // Private properties should not show up, but public and protected should if changed
-        $model = Model::fromArray(self::VALUES);
+        $model = Model::fromArray(Model::VALUES);
 
         $model->public    = 'test';
         $model->protected = 'test2';
         $model->private   = 'test3';
-        $this->assertEquals([self::PUBLIC => 'test', self::PROTECTED => 'test2'], $model->asChangedArray());
+        $this->assertEquals([Model::PUBLIC => 'test', Model::PROTECTED => 'test2'], $model->asChangedArray());
 
         // Because public properties aren't tracked unless through methods then they come up as changed
         $model = Model::fromArray([]);
 
-        $model->public = self::PUBLIC;
-        $this->assertEquals([self::PUBLIC => self::PUBLIC], $model->asChangedArray());
+        $model->public = Model::PUBLIC;
+        $this->assertEquals([Model::PUBLIC => Model::PUBLIC], $model->asChangedArray());
     }
 
     public function testAsArray(): void
@@ -188,22 +164,26 @@ class ModelTest extends TestCase
         $model = Model::fromArray([]);
         $this->assertEquals([], $model->asArray());
 
-        $model = Model::fromArray(self::VALUES);
-        $this->assertEquals([self::PUBLIC => self::PUBLIC, self::PROTECTED => self::PROTECTED], $model->asArray());
-        $this->assertEquals([self::PUBLIC => self::PUBLIC], $model->asArray(self::PUBLIC));
-        $this->assertEquals([self::PROTECTED => self::PROTECTED], $model->asArray(self::PROTECTED));
+        $model = Model::fromArray(Model::VALUES);
+        $this->assertEquals([Model::PUBLIC => Model::PUBLIC, Model::PROTECTED => Model::PROTECTED], $model->asArray());
+        $this->assertEquals([Model::PUBLIC => Model::PUBLIC], $model->asArray(Model::PUBLIC));
+        $this->assertEquals([Model::PROTECTED => Model::PROTECTED], $model->asArray(Model::PROTECTED));
         // Private or hidden properties should not be exposable.
-        $this->assertEquals([], $model->asArray(self::PRIVATE));
+        $this->assertEquals([], $model->asArray(Model::PRIVATE));
     }
 
     public function testJsonSerialize(): void
     {
         $model = Model::fromArray([]);
-        $this->assertEquals('[]', json_encode($model, JSON_THROW_ON_ERROR));
-        $this->assertEquals('[]', (string) $model);
 
-        $model = Model::fromArray(self::VALUES);
-        $this->assertEquals('{"public":"public","protected":"protected"}', json_encode($model, JSON_THROW_ON_ERROR));
-        $this->assertEquals('{"public":"public","protected":"protected"}', (string) $model);
+        $expected = '[]';
+        $this->assertEquals($expected, json_encode($model, JSON_THROW_ON_ERROR));
+        $this->assertEquals($expected, (string) $model);
+
+        $model = Model::fromArray(Model::VALUES);
+
+        $expected = '{"public":"public","protected":"protected"}';
+        $this->assertEquals($expected, json_encode($model, JSON_THROW_ON_ERROR));
+        $this->assertEquals($expected, (string) $model);
     }
 }

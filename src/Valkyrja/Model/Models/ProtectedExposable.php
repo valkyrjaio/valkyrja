@@ -13,18 +13,24 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model\Models;
 
+use Valkyrja\Type\Obj;
+
 /**
- * Trait FullyExposed.
+ * Trait ProtectedExposable.
  *
  * @author Melech Mizrachi
  */
-trait FullyExposed
+trait ProtectedExposable
 {
+    use Exposable;
+
     /**
-     * @inheritDoc
+     * Get all properties.
+     *
+     * @return array
      */
     protected function __allProperties(): array
     {
-        return get_object_vars($this);
+        return array_merge(Obj::getProperties($this), $this->__exposed);
     }
 }

@@ -16,7 +16,6 @@ namespace Valkyrja\Model\Models;
 use JsonException;
 use Valkyrja\Model\Model as Contract;
 use Valkyrja\Type\Arr;
-use Valkyrja\Type\Obj;
 use Valkyrja\Type\StrCase;
 
 /**
@@ -316,7 +315,7 @@ abstract class Model implements Contract
      */
     protected function __allProperties(): array
     {
-        return Obj::getAllProperties($this, includePrivate: false);
+        return get_object_vars($this);
     }
 
     /**

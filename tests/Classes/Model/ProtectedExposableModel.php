@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /*
@@ -13,30 +12,31 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Model;
 
+use Valkyrja\Model\ExposableModel as Contract;
 use Valkyrja\Model\Models\Model as AbstractModel;
+use Valkyrja\Model\Models\ProtectedExposable;
 
 /**
- * Model class to use to test abstract model.
+ * Model class to use to test ProtectedExposable model.
  *
  * @author Melech Mizrachi
  *
  * @property string $protected
  */
-class Model extends AbstractModel
+class ProtectedExposableModel extends AbstractModel implements Contract
 {
+    use ProtectedExposable;
     use PrivateProperty;
-
-    public const PUBLIC    = 'public';
-    public const PROTECTED = 'protected';
-    public const PRIVATE   = 'private';
-
-    public const VALUES = [
-        self::PUBLIC    => self::PUBLIC,
-        self::PROTECTED => self::PROTECTED,
-        self::PRIVATE   => self::PRIVATE,
-    ];
 
     public string $public;
 
     protected string $protected;
+
+    public static function getExposable(): array
+    {
+        return [
+            Model::PROTECTED,
+            Model::PRIVATE,
+        ];
+    }
 }

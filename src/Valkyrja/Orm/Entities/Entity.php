@@ -17,8 +17,8 @@ use BackedEnum;
 use JsonException;
 use Valkyrja\Model\Enums\CastType;
 use Valkyrja\Model\Models\Castable;
-use Valkyrja\Model\Models\Exposable;
 use Valkyrja\Model\Models\Model;
+use Valkyrja\Model\Models\ProtectedExposable;
 use Valkyrja\Orm\Entity as Contract;
 use Valkyrja\Orm\Repository;
 use Valkyrja\Type\Arr;
@@ -36,7 +36,7 @@ use function is_string;
 abstract class Entity extends Model implements Contract
 {
     use Castable;
-    use Exposable;
+    use ProtectedExposable;
 
     /**
      * The table name.

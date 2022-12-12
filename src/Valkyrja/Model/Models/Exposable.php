@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Model\Models;
 
 use Closure;
-use Valkyrja\Type\Obj;
 
 use function is_string;
 
@@ -94,13 +93,11 @@ trait Exposable
     /**
      * Get all properties.
      *
-     * @param bool $includeHidden [optional] Whether to include hidden properties
-     *
      * @return array
      */
     protected function __allProperties(): array
     {
-        return array_merge(Obj::getProperties($this), $this->__exposed);
+        return array_merge(parent::__allProperties(), $this->__exposed);
     }
 
     /**
@@ -112,7 +109,9 @@ trait Exposable
      */
     protected function __removeInternalProperties(array &$properties): void
     {
-        unset($properties['__exposed'], $properties['__originalProperties']);
+        parent::__removeInternalProperties($properties);
+
+        unset($properties['__exposed']);
     }
 
     /**
