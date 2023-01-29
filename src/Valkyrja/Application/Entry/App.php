@@ -15,8 +15,8 @@ namespace Valkyrja\Application\Entry;
 
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
-use Valkyrja\Application\Config\Config;
 use Valkyrja\Application\Env;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Http\Factories\RequestFactory;
 use Valkyrja\Http\Request;
 use Valkyrja\Support\Directory;
