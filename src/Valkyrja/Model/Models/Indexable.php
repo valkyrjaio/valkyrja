@@ -62,12 +62,13 @@ trait Indexable
 
     /**
      * @inheritDoc
-     *
-     * @return static
      */
     public static function fromIndexedArray(array $properties): static
     {
-        return static::fromArray(static::getMappedArrayFromIndexedArray($properties));
+        /** @var static $model */
+        $model = static::fromArray(static::getMappedArrayFromIndexedArray($properties));
+
+        return $model;
     }
 
     /**
@@ -80,12 +81,13 @@ trait Indexable
 
     /**
      * @inheritDoc
-     *
-     * @return static
      */
     public function withIndexedProperties(array $properties): static
     {
-        return $this->withProperties(static::getMappedArrayFromIndexedArray($properties));
+        /** @var static $model */
+        $model = $this->withProperties(static::getMappedArrayFromIndexedArray($properties));
+
+        return $model;
     }
 
     /**

@@ -340,7 +340,7 @@ class Parser implements Contract
      */
     protected function determineStaticPropertyValue(mixed $value): mixed
     {
-        [$class, $member] = explode('::', $value, 2);
+        [$class, $member] = explode('::', $value);
         // Check if the class name is a key defined in the reference classes config
         $class = $this->getClassFromAlias($class);
 

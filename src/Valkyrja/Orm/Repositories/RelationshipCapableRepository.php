@@ -39,38 +39,38 @@ trait RelationshipCapableRepository
 
     /**
      * @inheritDoc
-     *
-     * @return static
      */
     public function find(): static
     {
         $this->resetRelationships();
 
-        return parent::find();
+        parent::find();
+
+        return $this;
     }
 
     /**
      * @inheritDoc
-     *
-     * @return static
      */
     public function findOne(int|string $id): static
     {
         $this->resetRelationships();
 
-        return parent::findOne($id);
+        parent::findOne($id);
+
+        return $this;
     }
 
     /**
      * @inheritDoc
-     *
-     * @return static
      */
     public function count(): static
     {
         $this->resetRelationships();
 
-        return parent::count();
+        parent::count();
+
+        return $this;
     }
 
     /**

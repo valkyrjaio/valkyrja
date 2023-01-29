@@ -105,7 +105,7 @@ abstract class UriFactory
         $fragment = '';
 
         if (str_contains($path, '#')) {
-            [$path, $fragment] = explode('#', $path, 2);
+            [$path, $fragment] = explode('#', $path);
         }
 
         return $uri->withPath($path)->withFragment($fragment)->withQuery($query);
