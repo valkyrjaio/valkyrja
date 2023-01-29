@@ -34,7 +34,7 @@ class Env
     public const APP_HTTP_KERNEL       = null;
     public const APP_PROVIDERS         = null;
 
-    /*
+    /**
      * Config env variables.
      */
     public const CONFIG_PROVIDERS       = null;
@@ -130,7 +130,7 @@ class Env
     public const CLIENT_DRIVER  = null;
     public const CLIENT_CLIENTS = null;
 
-    /*
+    /**
      * Console env variables.
      */
     public const CONSOLE_PROVIDERS       = null;
@@ -142,7 +142,7 @@ class Env
     public const CONSOLE_CACHE_FILE_PATH = null;
     public const CONSOLE_USE_CACHE_FILE  = null;
 
-    /*
+    /**
      * Container env variables.
      */
     public const CONTAINER_PROVIDERS        = null;
@@ -154,7 +154,7 @@ class Env
     public const CONTAINER_CACHE_FILE_PATH  = null;
     public const CONTAINER_USE_CACHE_FILE   = null;
 
-    /*
+    /**
      * Crypt env variables.
      */
     public const CRYPT_KEY             = null;
@@ -166,7 +166,7 @@ class Env
     public const CRYPT_DEFAULT_ADAPTER = null;
     public const CRYPT_DEFAULT_DRIVER  = null;
 
-    /*
+    /**
      * Events env variables.
      */
     public const EVENT_USE_ANNOTATIONS = null;
@@ -175,7 +175,7 @@ class Env
     public const EVENT_CACHE_FILE_PATH = null;
     public const EVENTS_USE_CACHE_FILE = null;
 
-    /*
+    /**
      * Filesystem env variables.
      */
     public const FILESYSTEM_DEFAULT                 = null;
@@ -197,7 +197,7 @@ class Env
     public const FILESYSTEM_S3_PREFIX               = null;
     public const FILESYSTEM_S3_OPTIONS              = null;
 
-    /*
+    /**
      * JWT env variables.
      */
     public const JWT_DEFAULT           = null;
@@ -218,7 +218,7 @@ class Env
     public const JWT_EDDSA_PRIVATE_KEY = null;
     public const JWT_EDDSA_PUBLIC_KEY  = null;
 
-    /*
+    /**
      * Logger env variables.
      */
     public const LOG_NAME      = null;
@@ -228,7 +228,7 @@ class Env
     public const LOG_DRIVER    = null;
     public const LOG_LOGGERS   = null;
 
-    /*
+    /**
      * Mail env variables.
      */
     public const MAIL_FROM_ADDRESS          = null;
@@ -256,12 +256,12 @@ class Env
     public const MAIL_MAILGUN_DOMAIN        = null;
     public const MAIL_MAILGUN_API_KEY       = null;
 
-    /*
+    /**
      * Notification env variables.
      */
     public const NOTIFICATION_NOTIFICATIONS = null;
 
-    /*
+    /**
      * ORM env variables.
      */
     public const ORM_DEFAULT             = null;
@@ -310,12 +310,12 @@ class Env
     public const ORM_PGSQL_SSL_ROOT_CERT = null;
     public const ORM_PGSQL_SCHEMA        = null;
 
-    /*
+    /**
      * Path env variables.
      */
     // public const PATH_PATTERNS = null;
 
-    /*
+    /**
      * Routing env variables.
      */
     public const ROUTING_TRAILING_SLASH    = null;
@@ -328,7 +328,7 @@ class Env
     public const ROUTING_CACHE_FILE_PATH   = null;
     public const ROUTING_USE_CACHE_FILE    = null;
 
-    /*
+    /**
      * Session env variables.
      */
     public const SESSION_DEFAULT          = null;
@@ -344,7 +344,7 @@ class Env
     public const SESSION_COOKIE_HTTP_ONLY = null;
     public const SESSION_COOKIE_SAME_SITE = null;
 
-    /*
+    /**
      * SMS env variables.
      */
     public const SMS_ADAPTER        = null;
@@ -359,20 +359,20 @@ class Env
     public const SMS_NEXMO_PASSWORD = null;
     public const SMS_NULL_DRIVER    = null;
 
-    /*
+    /**
      * Storage env variables.
      */
     public const STORAGE_UPLOADS_DIR = null;
     public const STORAGE_LOGS_DIR    = null;
 
-    /*
+    /**
      * Validation env variables.
      */
     public const VALIDATION_RULE      = null;
     public const VALIDATION_RULES     = null;
     public const VALIDATION_RULES_MAP = null;
 
-    /*
+    /**
      * Views env variables.
      */
     public const VIEW_DIR                = null;
