@@ -182,11 +182,15 @@ class Collector implements Contract
      */
     public function redirect(string $path, string $to, array $methods = null, string $name = null): Route
     {
-        return (new RouteModel())
+        $route = new RouteModel();
+
+        $route
+            ->setMethods($methods ?? [RequestMethod::GET, RequestMethod::HEAD])
             ->setPath($path)
             ->setTo($to)
-            ->setName($name)
-            ->setMethods($methods ?? [RequestMethod::GET, RequestMethod::HEAD]);
+            ->setName($name);
+
+        return $route;
     }
 
     /**

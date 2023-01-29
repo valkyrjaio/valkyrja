@@ -74,14 +74,16 @@ trait Provides
      */
     public static function publish(Console $console): void
     {
-        $console->addCommand(
-            (new Command())
-                ->setPath(static::getPath())
-                ->setName(static::getCommand())
-                ->setDescription(static::getShortDescription())
-                ->setClass(static::class)
-                ->setMethod('run')
-        );
+        $command = new Command();
+
+        $command
+            ->setDescription(static::getShortDescription())
+            ->setPath(static::getPath())
+            ->setName(static::getCommand())
+            ->setClass(static::class)
+            ->setMethod('run');
+
+        $console->addCommand($command);
     }
 
     /**
