@@ -329,9 +329,9 @@ class Collector implements Contract
     /**
      * Set the static route handler.
      *
-     * @param Route  $route     The route
-     * @param string $handler   The handler
-     * @param string $delimiter The delimiter
+     * @param Route            $route     The route
+     * @param string           $handler   The handler
+     * @param non-empty-string $delimiter The delimiter
      *
      * @return void
      */

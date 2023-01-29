@@ -257,8 +257,8 @@ REGEX;
     /**
      * Split segments based on ending bracket within the segments.
      *
-     * @param array  $segments    The segments
-     * @param string $deliminator The deliminator
+     * @param array            $segments    The segments
+     * @param non-empty-string $deliminator The deliminator
      *
      * @return array
      */
@@ -286,9 +286,9 @@ REGEX;
     /**
      * Split a segment by deliminator (recursive).
      *
-     * @param array  $segments    The segments
-     * @param string $segment     The segment
-     * @param string $deliminator The deliminator
+     * @param array            $segments    The segments
+     * @param string           $segment     The segment
+     * @param non-empty-string $deliminator The deliminator
      *
      * @return void
      */
