@@ -22,7 +22,7 @@ use Valkyrja\Container\Service;
  */
 class Singleton implements Service
 {
-    public static function make(Container $container, array $arguments = []): Service
+    public static function make(Container $container, array $arguments = []): static
     {
         return new self();
     }
