@@ -63,7 +63,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function withPath(string $path): self
+    public function withPath(string $path): static
     {
         return $this->with('withPath', $path);
     }
@@ -71,7 +71,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function withController(string $controller): self
+    public function withController(string $controller): static
     {
         return $this->with('setClass', $controller);
     }
@@ -79,7 +79,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function withName(string $name): self
+    public function withName(string $name): static
     {
         return $this->with('withName', $name);
     }
@@ -87,7 +87,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function withMiddleware(array $middleware): self
+    public function withMiddleware(array $middleware): static
     {
         return $this->with('withMiddleware', $middleware);
     }
@@ -95,7 +95,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function withSecure(bool $secure = true): self
+    public function withSecure(bool $secure = true): static
     {
         return $this->with('setSecure', $secure);
     }
@@ -103,7 +103,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function group(Closure $group): self
+    public function group(Closure $group): static
     {
         $group($this);
 
@@ -197,7 +197,7 @@ class Collector implements Contract
      *
      * @return static
      */
-    protected function with(string $method, mixed $value): self
+    protected function with(string $method, mixed $value): static
     {
         // Create a new instance. We do not want the routes to come along for the ride
         $self = new static($this->collection, $this->processor);

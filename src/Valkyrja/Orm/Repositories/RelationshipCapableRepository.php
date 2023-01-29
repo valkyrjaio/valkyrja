@@ -42,7 +42,7 @@ trait RelationshipCapableRepository
      *
      * @return static
      */
-    public function find(): self
+    public function find(): static
     {
         $this->resetRelationships();
 
@@ -54,7 +54,7 @@ trait RelationshipCapableRepository
      *
      * @return static
      */
-    public function findOne(int|string $id): self
+    public function findOne(int|string $id): static
     {
         $this->resetRelationships();
 
@@ -66,7 +66,7 @@ trait RelationshipCapableRepository
      *
      * @return static
      */
-    public function count(): self
+    public function count(): static
     {
         $this->resetRelationships();
 
@@ -78,7 +78,7 @@ trait RelationshipCapableRepository
      *
      * @return static
      */
-    public function withRelationships(array $relationships = null): self
+    public function withRelationships(array $relationships = null): static
     {
         $this->getRelations  = true;
         $this->relationships = $relationships;
@@ -91,7 +91,7 @@ trait RelationshipCapableRepository
      *
      * @return static
      */
-    public function withAllRelationships(): self
+    public function withAllRelationships(): static
     {
         $this->getRelations  = true;
         $this->relationships = $this->entity::getRelationshipProperties();
@@ -104,7 +104,7 @@ trait RelationshipCapableRepository
      *
      * @return static
      */
-    public function withoutRelationships(): self
+    public function withoutRelationships(): static
     {
         $this->resetRelationships();
 

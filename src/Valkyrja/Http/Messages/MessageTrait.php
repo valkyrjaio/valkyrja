@@ -73,7 +73,7 @@ trait MessageTrait
      *
      * @return static
      */
-    public function withProtocolVersion(string $version): self
+    public function withProtocolVersion(string $version): static
     {
         $this->validateProtocolVersion($version);
 
@@ -135,7 +135,7 @@ trait MessageTrait
      *
      * @return static
      */
-    public function withHeader(string $name, string ...$values): self
+    public function withHeader(string $name, string ...$values): static
     {
         HeaderSecurity::assertValidName($name);
 
@@ -161,7 +161,7 @@ trait MessageTrait
      *
      * @return static
      */
-    public function withAddedHeader(string $name, string ...$values): self
+    public function withAddedHeader(string $name, string ...$values): static
     {
         HeaderSecurity::assertValidName($name);
 
@@ -183,7 +183,7 @@ trait MessageTrait
      *
      * @return static
      */
-    public function withoutHeader(string $name): self
+    public function withoutHeader(string $name): static
     {
         if (! $this->hasHeader($name)) {
             return clone $this;
@@ -211,7 +211,7 @@ trait MessageTrait
      *
      * @return static
      */
-    public function withBody(Stream $body): self
+    public function withBody(Stream $body): static
     {
         $new = clone $this;
 

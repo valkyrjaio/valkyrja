@@ -109,7 +109,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function bind(string $serviceId, string $service): self
+    public function bind(string $serviceId, string $service): static
     {
         assert(is_a($service, Service::class, true));
 
@@ -123,7 +123,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function bindAlias(string $alias, string $serviceId): self
+    public function bindAlias(string $alias, string $serviceId): static
     {
         $serviceId = $this->getServiceIdInternal($serviceId);
 
@@ -135,7 +135,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function bindSingleton(string $serviceId, string $singleton): self
+    public function bindSingleton(string $serviceId, string $singleton): static
     {
         $serviceId = $this->getServiceIdInternal($serviceId);
 
@@ -149,7 +149,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function setClosure(string $serviceId, Closure $closure): self
+    public function setClosure(string $serviceId, Closure $closure): static
     {
         $serviceId = $this->getServiceIdInternal($serviceId);
 
@@ -162,7 +162,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function setSingleton(string $serviceId, mixed $singleton): self
+    public function setSingleton(string $serviceId, mixed $singleton): static
     {
         $serviceId = $this->getServiceIdInternal($serviceId);
 

@@ -25,7 +25,7 @@ trait JsonSerializableEnumTrait
     /**
      * @inheritDoc
      */
-    public static function fromJson(string|int $value): self
+    public static function fromJson(string|int $value): static
     {
         return static::from($value);
     }
@@ -33,7 +33,7 @@ trait JsonSerializableEnumTrait
     /**
      * @inheritDoc
      */
-    public static function tryFromJson(string|int $value): ?self
+    public static function tryFromJson(string|int $value): ?static
     {
         return static::tryFrom($value);
     }

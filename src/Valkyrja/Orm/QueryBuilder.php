@@ -38,7 +38,7 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function select(array $columns = null): self;
+    public function select(array $columns = null): static;
 
     /**
      * Create an INSERT query statement.
@@ -49,7 +49,7 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function insert(): self;
+    public function insert(): static;
 
     /**
      * Create an UPDATE query statement.
@@ -60,7 +60,7 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function update(): self;
+    public function update(): static;
 
     /**
      * Create an DELETE query statement.
@@ -71,7 +71,7 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function delete(): self;
+    public function delete(): static;
 
     /**
      * Add a value for a column to set.
@@ -92,7 +92,7 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function set(string $column, mixed $value = null): self;
+    public function set(string $column, mixed $value = null): static;
 
     /**
      * Join with another table.
@@ -113,7 +113,7 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
         string $operator = null,
         string $type = null,
         bool $isWhere = null
-    ): self;
+    ): static;
 
     /**
      * Add an groupBy by to the query statement.
@@ -130,7 +130,7 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function groupBy(string $column): self;
+    public function groupBy(string $column): static;
 
     /**
      * Add an order by to the query statement.
@@ -148,7 +148,7 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function orderBy(string $column, string $type = null): self;
+    public function orderBy(string $column, string $type = null): static;
 
     /**
      * Add an order by ascending to the query statement.
@@ -165,7 +165,7 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function orderByAsc(string $column): self;
+    public function orderByAsc(string $column): static;
 
     /**
      * Add an order by descending to the query statement.
@@ -182,7 +182,7 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function orderByDesc(string $column): self;
+    public function orderByDesc(string $column): static;
 
     /**
      * Add limit to the query statement.
@@ -199,7 +199,7 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function limit(int $limit): self;
+    public function limit(int $limit): static;
 
     /**
      * Add offset to the query statement.
@@ -216,5 +216,5 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function offset(int $offset): self;
+    public function offset(int $offset): static;
 }

@@ -69,7 +69,7 @@ class AuthenticatedUsers extends CastableModel implements Contract
     /**
      * @inheritDoc
      */
-    public function setCurrent(User $user): self
+    public function setCurrent(User $user): static
     {
         $this->currentId = $user->__get($user::getIdField());
 
@@ -105,7 +105,7 @@ class AuthenticatedUsers extends CastableModel implements Contract
      *
      * @return static
      */
-    public function add(User $user): self
+    public function add(User $user): static
     {
         $this->users[$user->__get($user::getIdField())] = $user;
 
@@ -119,7 +119,7 @@ class AuthenticatedUsers extends CastableModel implements Contract
      *
      * @return static
      */
-    public function remove(User $user): self
+    public function remove(User $user): static
     {
         $id = $user->__get($user::getIdField());
 

@@ -69,7 +69,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setPath(string $path): self
+    public function setPath(string $path): static
     {
         $this->path = $path;
 
@@ -87,7 +87,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setRegex(string $regex = null): self
+    public function setRegex(string $regex = null): static
     {
         $this->regex = $regex;
 
@@ -105,7 +105,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setParams(array $params = null): self
+    public function setParams(array $params = null): static
     {
         $this->params = $params;
 
@@ -123,7 +123,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setSegments(array $segments = null): self
+    public function setSegments(array $segments = null): static
     {
         $this->segments = $segments;
 
@@ -141,7 +141,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setDescription(string $description = null): self
+    public function setDescription(string $description = null): static
     {
         $this->description = $description;
 

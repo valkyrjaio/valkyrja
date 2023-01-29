@@ -118,7 +118,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setFrom(string $email, string $name = ''): self
+    public function setFrom(string $email, string $name = ''): static
     {
         $this->fromEmail = $email;
         $this->fromName  = $name;
@@ -137,7 +137,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function addRecipient(string $email, string $name = ''): self
+    public function addRecipient(string $email, string $name = ''): static
     {
         $this->recipients[] = [
             'email' => $email,
@@ -158,7 +158,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function addReplyTo(string $email, string $name = ''): self
+    public function addReplyTo(string $email, string $name = ''): static
     {
         $this->replyToRecipients[] = [
             'email' => $email,
@@ -179,7 +179,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function addCopyRecipient(string $email, string $name = ''): self
+    public function addCopyRecipient(string $email, string $name = ''): static
     {
         $this->copyRecipients[] = [
             'email' => $email,
@@ -200,7 +200,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function addBlindCopyRecipient(string $email, string $name = ''): self
+    public function addBlindCopyRecipient(string $email, string $name = ''): static
     {
         $this->blindCopyRecipients[] = [
             'email' => $email,
@@ -221,7 +221,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function addAttachment(string $path, string $name = ''): self
+    public function addAttachment(string $path, string $name = ''): static
     {
         $this->attachments[] = [
             'path' => $path,
@@ -242,7 +242,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setSubject(string $subject): self
+    public function setSubject(string $subject): static
     {
         $this->subject = $subject;
 
@@ -260,7 +260,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setBody(string $body): self
+    public function setBody(string $body): static
     {
         $this->body = $body;
 
@@ -278,7 +278,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setIsHtml(bool $isHtml = true): self
+    public function setIsHtml(bool $isHtml = true): static
     {
         $this->isHtml = $isHtml;
 
@@ -296,7 +296,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setPlainBody(string $plainBody = null): self
+    public function setPlainBody(string $plainBody = null): static
     {
         $this->plainBody = $plainBody;
 

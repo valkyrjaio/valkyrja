@@ -38,7 +38,7 @@ class ApiTokenizedRepository extends Repository implements \Valkyrja\Auth\Tokeni
     /**
      * @inheritDoc
      */
-    public function authenticateFromSession(): self
+    public function authenticateFromSession(): static
     {
         parent::authenticateFromSession();
 
@@ -50,7 +50,7 @@ class ApiTokenizedRepository extends Repository implements \Valkyrja\Auth\Tokeni
     /**
      * @inheritDoc
      */
-    public function setSession(): self
+    public function setSession(): static
     {
         parent::setSession();
 
@@ -70,7 +70,7 @@ class ApiTokenizedRepository extends Repository implements \Valkyrja\Auth\Tokeni
     /**
      * @inheritDoc
      */
-    public function authenticateFromToken(string $token): self
+    public function authenticateFromToken(string $token): static
     {
         $this->token = $token;
 

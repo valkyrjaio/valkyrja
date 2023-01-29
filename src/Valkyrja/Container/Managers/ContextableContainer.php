@@ -46,7 +46,7 @@ trait ContextableContainer
      *
      * @return static
      */
-    public function withContext(string $context, string $member = null): self
+    public function withContext(string $context, string $member = null): static
     {
         $contextContainer = new static($this->config, $this->debug);
 
@@ -62,7 +62,7 @@ trait ContextableContainer
      *
      * @return static
      */
-    public function withoutContext(): self
+    public function withoutContext(): static
     {
         $contextContainer = new static($this->config, $this->debug);
 

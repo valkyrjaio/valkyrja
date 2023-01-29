@@ -152,7 +152,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setId(string $id = null): self
+    public function setId(string $id = null): static
     {
         $this->id = $id;
 
@@ -170,7 +170,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setName(string $name = null): self
+    public function setName(string $name = null): static
     {
         $this->name = $name;
 
@@ -188,7 +188,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setClass(string $class = null): self
+    public function setClass(string $class = null): static
     {
         $this->class   = $class;
         $this->isClass = $class !== null;
@@ -215,7 +215,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setProperty(string $property = null): self
+    public function setProperty(string $property = null): static
     {
         $this->property   = $property;
         $this->isProperty = $property !== null;
@@ -242,7 +242,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setMethod(string $method = null): self
+    public function setMethod(string $method = null): static
     {
         $this->method   = $method;
         $this->isMethod = $method !== null;
@@ -269,7 +269,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setStatic(bool $static = true): self
+    public function setStatic(bool $static = true): static
     {
         $this->static = $static;
 
@@ -287,7 +287,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setFunction(string $function = null): self
+    public function setFunction(string $function = null): static
     {
         $this->function   = $function;
         $this->isFunction = $function !== null;
@@ -314,7 +314,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setClosure(Closure $closure = null): self
+    public function setClosure(Closure $closure = null): static
     {
         $this->closure   = $closure;
         $this->isClosure = $closure !== null;
@@ -341,7 +341,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setMatches(array $matches = null): self
+    public function setMatches(array $matches = null): static
     {
         $this->matches = $matches;
 
@@ -359,7 +359,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setArguments(array $arguments = null): self
+    public function setArguments(array $arguments = null): static
     {
         $this->arguments = $arguments;
 
@@ -377,7 +377,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setDependencies(array $dependencies = null): self
+    public function setDependencies(array $dependencies = null): static
     {
         $this->dependencies = $dependencies;
 

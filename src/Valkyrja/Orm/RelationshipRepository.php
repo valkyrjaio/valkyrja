@@ -27,19 +27,19 @@ interface RelationshipRepository
      *
      * @return static
      */
-    public function withRelationships(array $relationships = null): self;
+    public function withRelationships(array $relationships = null): static;
 
     /**
      * Add all relationships to include with the results.
      *
      * @return static
      */
-    public function withAllRelationships(): self;
+    public function withAllRelationships(): static;
 
     /**
      * Remove relationships to include with the results.
      *
      * @return static
      */
-    public function withoutRelationships(): self;
+    public function withoutRelationships(): static;
 }
