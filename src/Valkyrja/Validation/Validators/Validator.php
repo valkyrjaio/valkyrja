@@ -81,11 +81,17 @@ class Validator implements Contract
 
     /**
      * @inheritDoc
+     * @template T
+     *
+     * @param class-string<T>|null $name [optional] The name of the rules to get
+     *
+     * @return T|object
      */
     public function getRules(string $name = null): object
     {
         $name ??= $this->defaultRules;
 
+        /** @var class-string $name */
         return self::$rules[$name]
             ??= $this->factory->createRules($name);
     }

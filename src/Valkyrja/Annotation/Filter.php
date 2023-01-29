@@ -53,9 +53,9 @@ interface Filter
     /**
      * Get a property's annotations by type.
      *
-     * @param string       $type     The type
-     * @param class-string $class    The class
-     * @param string       $property The property
+     * @param string           $type     The type
+     * @param class-string     $class    The class
+     * @param non-empty-string $property The property
      *
      * @return Annotation[]
      */
@@ -74,9 +74,9 @@ interface Filter
     /**
      * Get a method's annotations by type.
      *
-     * @param string       $type   The type
-     * @param class-string $class  The class
-     * @param string       $method The method
+     * @param string           $type   The type
+     * @param class-string     $class  The class
+     * @param non-empty-string $method The method
      *
      * @return Annotation[]
      */

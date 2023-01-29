@@ -108,7 +108,6 @@ class Annotator implements Contract
      */
     protected function getClassRoutes(array $classes): array
     {
-        /** @var Route[][] $routes */
         $routes = [];
 
         // Iterate through all the classes
@@ -117,6 +116,7 @@ class Annotator implements Contract
             $routes[] = $this->getClassMemberAnnotations($class);
         }
 
+        /** @var array<int, Route[]> $routes */
         return array_merge(...$routes);
     }
 
@@ -137,10 +137,9 @@ class Annotator implements Contract
         }
 
         if ($route->getProperty() === null) {
-            $methodReflection = $this->reflector->getMethodReflection(
-                $class,
-                $route->getMethod() ?? '__construct'
-            );
+            $method = $route->getMethod() ?? '__construct';
+
+            $methodReflection = $this->reflector->getMethodReflection($class, $method);
 
             // Set the dependencies
             $route->setDependencies($this->reflector->getDependencies($methodReflection));
@@ -160,7 +159,7 @@ class Annotator implements Contract
     protected function getClassAnnotations(string $class): array
     {
         return $this->filter->filterAnnotationsByTypes(
-            AnnotationName::getValidValues(),
+               AnnotationName::getValidValues(),
             ...$this->annotator->classAnnotations($class)
         );
     }
@@ -269,7 +268,7 @@ class Annotator implements Contract
     protected function getClassMemberAnnotations(string $class): array
     {
         return $this->filter->filterAnnotationsByTypes(
-            AnnotationName::getValidValues(),
+               AnnotationName::getValidValues(),
             ...$this->annotator->classMembersAnnotations($class)
         );
     }

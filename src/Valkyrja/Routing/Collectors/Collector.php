@@ -344,14 +344,18 @@ class Collector implements Contract
             $route->setClass($class);
         }
 
+        if (empty($member)) {
+            throw new InvalidArgumentException('Invalid handler in route.');
+        }
+
         $this->setRouteMember($route, $member);
     }
 
     /**
      * Set the route handler member.
      *
-     * @param Route  $route  The route
-     * @param string $member The member
+     * @param Route            $route  The route
+     * @param non-empty-string $member The member
      *
      * @return void
      */
@@ -359,6 +363,10 @@ class Collector implements Contract
     {
         if (str_contains($member, '(')) {
             $member = str_replace('()', '', $member);
+
+            if (empty($member)) {
+                throw new InvalidArgumentException('Invalid member handler provided.');
+            }
 
             $route->setMethod($member);
 

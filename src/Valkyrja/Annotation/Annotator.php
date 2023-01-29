@@ -66,8 +66,8 @@ interface Annotator
     /**
      * Get a property's annotations.
      *
-     * @param class-string $class    The class
-     * @param string       $property The property
+     * @param class-string     $class    The class
+     * @param non-empty-string $property The property
      *
      * @return Annotation[]
      */
@@ -85,8 +85,8 @@ interface Annotator
     /**
      * Get a method's annotations.
      *
-     * @param class-string $class  The class
-     * @param string       $method The method
+     * @param class-string     $class  The class
+     * @param non-empty-string $method The method
      *
      * @return Annotation[]
      */

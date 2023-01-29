@@ -44,8 +44,8 @@ interface Reflector
     /**
      * Get a class constant's reflection.
      *
-     * @param class-string $class The class
-     * @param string       $const The constant
+     * @param class-string     $class The class
+     * @param non-empty-string $const The constant
      *
      * @throws ReflectionException
      *
@@ -56,8 +56,8 @@ interface Reflector
     /**
      * Get a class property's reflection.
      *
-     * @param class-string $class    The class
-     * @param string       $property The property
+     * @param class-string     $class    The class
+     * @param non-empty-string $property The property
      *
      * @throws ReflectionException
      *
@@ -68,8 +68,8 @@ interface Reflector
     /**
      * Get a class method's reflection.
      *
-     * @param class-string $class  The class
-     * @param string       $method The method
+     * @param class-string     $class  The class
+     * @param non-empty-string $method The method
      *
      * @throws ReflectionException
      *

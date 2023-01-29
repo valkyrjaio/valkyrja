@@ -27,7 +27,7 @@ interface Validator
      *
      * @param class-string<T>|null $name [optional] The name of the rules to get
      *
-     * @return T
+     * @return T|object
      */
     public function getRules(string $name = null): object;
 

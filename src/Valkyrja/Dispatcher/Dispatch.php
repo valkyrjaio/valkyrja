@@ -81,14 +81,14 @@ interface Dispatch extends Model
     /**
      * Get the property.
      *
-     * @return string|null
+     * @return non-empty-string|null
      */
     public function getProperty(): ?string;
 
     /**
      * Set the property.
      *
-     * @param string|null $property The property
+     * @param non-empty-string|null $property The property
      *
      * @return static
      */
@@ -104,14 +104,14 @@ interface Dispatch extends Model
     /**
      * Get the method.
      *
-     * @return string|null
+     * @return non-empty-string|null
      */
     public function getMethod(): ?string;
 
     /**
      * Set the method.
      *
-     * @param string|null $method The method
+     * @param non-empty-string|null $method The method
      *
      * @return static
      */

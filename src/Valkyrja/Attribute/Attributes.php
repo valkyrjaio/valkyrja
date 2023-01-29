@@ -64,7 +64,7 @@ interface Attributes
      * @template T
      *
      * @param class-string         $class     The class
-     * @param string               $constant  The constant
+     * @param non-empty-string     $constant  The constant
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
      * @return object[]|T[]
@@ -89,7 +89,7 @@ interface Attributes
      * @template T
      *
      * @param class-string         $class     The class
-     * @param string               $property  The property
+     * @param non-empty-string     $property  The property
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
      * @return object[]|T[]
@@ -114,7 +114,7 @@ interface Attributes
      * @template T
      *
      * @param class-string         $class     The class
-     * @param string               $method    The method
+     * @param non-empty-string     $method    The method
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
      * @return object[]|T[]

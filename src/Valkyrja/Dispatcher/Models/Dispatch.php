@@ -60,7 +60,7 @@ class Dispatch extends Model implements Contract
     /**
      * The property.
      *
-     * @var string|null
+     * @var non-empty-string|null
      */
     protected ?string $property;
 
@@ -74,7 +74,7 @@ class Dispatch extends Model implements Contract
     /**
      * The method.
      *
-     * @var string|null
+     * @var non-empty-string|null
      */
     protected ?string $method;
 

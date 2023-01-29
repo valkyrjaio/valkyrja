@@ -41,7 +41,7 @@
     "psr/log"                     : ">=1.1.4",
     "pusher/pusher-php-server"    : "^7.0",
     "twig/twig"                   : "^3.4",
-    "vimeo/psalm"                 : "5.2.0",
+    "vimeo/psalm"                 : "5.4.0",
     "ext-curl"                    : "*",
     "ext-pdo"                     : "*",
     "ext-openssl"                 : "*",
