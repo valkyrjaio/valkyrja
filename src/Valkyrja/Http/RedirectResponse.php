@@ -34,7 +34,7 @@ interface RedirectResponse extends Response
      *
      * @return static
      */
-    public function setUri(string $uri): self;
+    public function setUri(string $uri): static;
 
     /**
      * Set the redirect uri to secure.
@@ -44,7 +44,7 @@ interface RedirectResponse extends Response
      *
      * @return static
      */
-    public function secure(string $path, Request $request): self;
+    public function secure(string $path, Request $request): static;
 
     /**
      * Redirect back to the referer.
@@ -53,7 +53,7 @@ interface RedirectResponse extends Response
      *
      * @return static
      */
-    public function back(Request $request): self;
+    public function back(Request $request): static;
 
     /**
      * Throw this redirect.

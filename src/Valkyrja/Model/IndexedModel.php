@@ -59,7 +59,7 @@ interface IndexedModel extends Model
      *
      * @return static
      */
-    public static function fromIndexedArray(array $properties): self;
+    public static function fromIndexedArray(array $properties): static;
 
     /**
      * Set properties from an array of properties.
@@ -77,7 +77,7 @@ interface IndexedModel extends Model
      *
      * @return static
      */
-    public function withIndexedProperties(array $properties): self;
+    public function withIndexedProperties(array $properties): static;
 
     /**
      * Get model as an array.

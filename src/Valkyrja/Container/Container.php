@@ -43,7 +43,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return static
      */
-    public function bind(string $serviceId, string $service): self;
+    public function bind(string $serviceId, string $service): static;
 
     /**
      * Bind an alias to the container.
@@ -53,7 +53,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return static
      */
-    public function bindAlias(string $alias, string $serviceId): self;
+    public function bindAlias(string $alias, string $serviceId): static;
 
     /**
      * Bind a singleton to the container.
@@ -63,7 +63,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return static
      */
-    public function bindSingleton(string $serviceId, string $singleton): self;
+    public function bindSingleton(string $serviceId, string $singleton): static;
 
     /**
      * Set a closure in the container.
@@ -73,7 +73,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return static
      */
-    public function setClosure(string $serviceId, Closure $closure): self;
+    public function setClosure(string $serviceId, Closure $closure): static;
 
     /**
      * Set a singleton in the container.
@@ -83,7 +83,7 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return static
      */
-    public function setSingleton(string $serviceId, mixed $singleton): self;
+    public function setSingleton(string $serviceId, mixed $singleton): static;
 
     /**
      * Check whether a given service is an alias.

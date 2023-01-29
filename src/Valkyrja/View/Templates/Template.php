@@ -106,7 +106,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -124,7 +124,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
-    public function setVariables(array $variables = []): self
+    public function setVariables(array $variables = []): static
     {
         $this->variables = array_merge($this->variables, $variables);
 
@@ -142,7 +142,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
-    public function setVariable(string $key, $value): self
+    public function setVariable(string $key, $value): static
     {
         $this->variables[$key] = $value;
 
@@ -162,7 +162,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
-    public function setLayout(string $layout = null): self
+    public function setLayout(string $layout = null): static
     {
         // If no layout has been set
         if (null === $layout) {
@@ -184,7 +184,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
-    public function withoutLayout(): self
+    public function withoutLayout(): static
     {
         $this->layout = null;
 

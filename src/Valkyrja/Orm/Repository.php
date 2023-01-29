@@ -29,7 +29,7 @@ interface Repository
      *
      * @return static
      */
-    public function find(): self;
+    public function find(): static;
 
     /**
      * Find a single entity given its id.
@@ -38,14 +38,14 @@ interface Repository
      *
      * @return static
      */
-    public function findOne(int|string $id): self;
+    public function findOne(int|string $id): static;
 
     /**
      * Count all the results of given criteria.
      *
      * @return static
      */
-    public function count(): self;
+    public function count(): static;
 
     /**
      * Set columns.
@@ -54,7 +54,7 @@ interface Repository
      *
      * @return static
      */
-    public function columns(array $columns): self;
+    public function columns(array $columns): static;
 
     /**
      * Add a where condition.
@@ -67,21 +67,21 @@ interface Repository
      *
      * @return static
      */
-    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): self;
+    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): static;
 
     /**
      * Start a where clause in parentheses.
      *
      * @return static
      */
-    public function startWhereGroup(): self;
+    public function startWhereGroup(): static;
 
     /**
      * End a where clause in parentheses.
      *
      * @return static
      */
-    public function endWhereGroup(): self;
+    public function endWhereGroup(): static;
 
     /**
      * Add a where type.
@@ -90,7 +90,7 @@ interface Repository
      *
      * @return static
      */
-    public function whereType(WhereType $type = WhereType::AND): self;
+    public function whereType(WhereType $type = WhereType::AND): static;
 
     /**
      * Join with another table.
@@ -111,7 +111,7 @@ interface Repository
         string $operator = null,
         string $type = null,
         bool $isWhere = null
-    ): self;
+    ): static;
 
     /**
      * Set an order by.
@@ -121,7 +121,7 @@ interface Repository
      *
      * @return static
      */
-    public function orderBy(string $column, string $direction = null): self;
+    public function orderBy(string $column, string $direction = null): static;
 
     /**
      * Set limit.
@@ -130,7 +130,7 @@ interface Repository
      *
      * @return static
      */
-    public function limit(int $limit): self;
+    public function limit(int $limit): static;
 
     /**
      * Set offset.
@@ -139,7 +139,7 @@ interface Repository
      *
      * @return static
      */
-    public function offset(int $offset): self;
+    public function offset(int $offset): static;
 
     /**
      * Get results.

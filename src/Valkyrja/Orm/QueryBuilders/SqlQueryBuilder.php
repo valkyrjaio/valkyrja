@@ -79,7 +79,7 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function select(array $columns = null): self
+    public function select(array $columns = null): static
     {
         $this->type    = Statement::SELECT;
         $this->columns = $columns ?? ['*'];
@@ -90,7 +90,7 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function insert(): self
+    public function insert(): static
     {
         $this->type = Statement::INSERT;
 
@@ -100,7 +100,7 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function update(): self
+    public function update(): static
     {
         $this->type = Statement::UPDATE;
 
@@ -110,7 +110,7 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function delete(): self
+    public function delete(): static
     {
         $this->type = Statement::DELETE;
 
@@ -120,7 +120,7 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function groupBy(string $column): self
+    public function groupBy(string $column): static
     {
         $this->groupBy[] = $column;
 
@@ -130,7 +130,7 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function orderBy(string $column, string $type = null): self
+    public function orderBy(string $column, string $type = null): static
     {
         $this->orderBy[] = $column . ' ' . ((string) $type);
 
@@ -140,7 +140,7 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function orderByAsc(string $column): self
+    public function orderByAsc(string $column): static
     {
         return $this->orderBy($column, OrderBy::ASC);
     }
@@ -148,7 +148,7 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function orderByDesc(string $column): self
+    public function orderByDesc(string $column): static
     {
         return $this->orderBy($column, OrderBy::DESC);
     }
@@ -156,7 +156,7 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function limit(int $limit): self
+    public function limit(int $limit): static
     {
         $this->limit = $limit;
 
@@ -166,7 +166,7 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function offset(int $offset): self
+    public function offset(int $offset): static
     {
         $this->offset = $offset;
 

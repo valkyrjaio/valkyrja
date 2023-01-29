@@ -45,7 +45,7 @@ trait Join
         string $operator = null,
         string $type = null,
         bool $isWhere = null
-    ): self {
+    ): static {
         // The operator defaulting to =
         $operator ??= Operator::EQUALS;
         // WHERE or ON for the join

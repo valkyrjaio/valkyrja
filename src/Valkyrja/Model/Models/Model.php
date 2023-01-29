@@ -63,7 +63,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
-    public static function fromArray(array $properties): self
+    public static function fromArray(array $properties): static
     {
         $model = static::__getNew($properties);
 
@@ -151,7 +151,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
-    public function withProperties(array $properties): self
+    public function withProperties(array $properties): static
     {
         $model = clone $this;
 
@@ -231,7 +231,7 @@ abstract class Model implements Contract
      *
      * @return $this
      */
-    protected static function __getNew(array $properties): self
+    protected static function __getNew(array $properties): static
     {
         return new static();
     }

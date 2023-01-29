@@ -234,7 +234,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function setUser(User $user): self
+    public function setUser(User $user): static
     {
         $this->getRepository()->setUser($user);
 
@@ -252,7 +252,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function setUsers(AuthenticatedUsers $users): self
+    public function setUsers(AuthenticatedUsers $users): static
     {
         $this->getRepository()->setUsers($users);
 
@@ -262,7 +262,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function authenticate(User $user): self
+    public function authenticate(User $user): static
     {
         $this->getRepository()->authenticate($user);
 
@@ -272,7 +272,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function authenticateFromSession(): self
+    public function authenticateFromSession(): static
     {
         $this->getRepository()->authenticateFromSession();
 
@@ -282,7 +282,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function authenticateFromRequest(Request $request): self
+    public function authenticateFromRequest(Request $request): static
     {
         $this->getRepository()->authenticateFromRequest($request);
 
@@ -292,7 +292,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function unAuthenticate(User $user = null): self
+    public function unAuthenticate(User $user = null): static
     {
         $this->getRepository()->unAuthenticate($user);
 
@@ -302,7 +302,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function setSession(): self
+    public function setSession(): static
     {
         $this->getRepository()->setSession();
 
@@ -312,7 +312,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function unsetSession(): self
+    public function unsetSession(): static
     {
         $this->getRepository()->unsetSession();
 
@@ -322,7 +322,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function register(User $user): self
+    public function register(User $user): static
     {
         $this->getRepository()->register($user);
 
@@ -332,7 +332,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function forgot(User $user): self
+    public function forgot(User $user): static
     {
         $this->getRepository()->forgot($user);
 
@@ -342,7 +342,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function reset(string $resetToken, string $password): self
+    public function reset(string $resetToken, string $password): static
     {
         $this->getRepository()->reset($resetToken, $password);
 
@@ -352,7 +352,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function lock(LockableUser $user): self
+    public function lock(LockableUser $user): static
     {
         $this->getRepository()->lock($user);
 
@@ -362,7 +362,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function unlock(LockableUser $user): self
+    public function unlock(LockableUser $user): static
     {
         $this->getRepository()->unlock($user);
 
@@ -372,7 +372,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function confirmPassword(string $password): self
+    public function confirmPassword(string $password): static
     {
         $this->getRepository()->confirmPassword($password);
 

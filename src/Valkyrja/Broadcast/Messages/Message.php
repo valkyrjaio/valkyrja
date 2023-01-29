@@ -61,7 +61,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setChannel(string $channel): self
+    public function setChannel(string $channel): static
     {
         $this->channel = $channel;
 
@@ -79,7 +79,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setEvent(string $event): self
+    public function setEvent(string $event): static
     {
         $this->event = $event;
 
@@ -97,7 +97,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setData(array $data = null): self
+    public function setData(array $data = null): static
     {
         $this->data = $data;
 
@@ -115,7 +115,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setMessage(string $message): self
+    public function setMessage(string $message): static
     {
         $this->message = $message;
 

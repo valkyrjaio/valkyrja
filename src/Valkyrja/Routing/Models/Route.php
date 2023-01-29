@@ -113,7 +113,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setPath(string $path): self
+    public function setPath(string $path): static
     {
         $this->path = $path;
 
@@ -123,7 +123,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function withPath(string $path): self
+    public function withPath(string $path): static
     {
         $route = clone $this;
 
@@ -135,7 +135,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function withName(string $name): self
+    public function withName(string $name): static
     {
         $route = clone $this;
 
@@ -161,7 +161,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setTo(string $to = null): self
+    public function setTo(string $to = null): static
     {
         $this->redirect = $to !== null;
 
@@ -181,7 +181,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setCode(int $code = null): self
+    public function setCode(int $code = null): static
     {
         $this->code = $code;
 
@@ -199,7 +199,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setMethods(array $methods): self
+    public function setMethods(array $methods): static
     {
         // TODO: Change to use Method enum
         if (array_diff($methods, RequestMethod::ANY)) {
@@ -222,7 +222,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setRegex(string $regex = null): self
+    public function setRegex(string $regex = null): static
     {
         $this->regex = $regex;
 
@@ -240,7 +240,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setParameters(array $parameters): self
+    public function setParameters(array $parameters): static
     {
         if (is_array($parameters[0] ?? null)) {
             foreach ($parameters as $key => $parameter) {
@@ -258,7 +258,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setParameter(Parameter $parameter): self
+    public function setParameter(Parameter $parameter): static
     {
         $this->parameters ??= [];
 
@@ -281,7 +281,7 @@ class Route extends Dispatch implements Contract
         bool $isOptional = false,
         bool $shouldCapture = true,
         mixed $default = null
-    ): self {
+    ): static {
         return $this->setParameter(
             new Parameter(
                 name               : $name,
@@ -309,7 +309,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setMiddleware(array $middleware = null): self
+    public function setMiddleware(array $middleware = null): static
     {
         $this->middleware = $middleware;
 
@@ -319,7 +319,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function withMiddleware(array $middleware): self
+    public function withMiddleware(array $middleware): static
     {
         $route = clone $this;
 
@@ -339,7 +339,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setDynamic(bool $dynamic = true): self
+    public function setDynamic(bool $dynamic = true): static
     {
         $this->dynamic = $dynamic;
 
@@ -357,7 +357,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setSecure(bool $secure = true): self
+    public function setSecure(bool $secure = true): static
     {
         $this->secure = $secure;
 
@@ -375,7 +375,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setRedirect(bool $redirect): self
+    public function setRedirect(bool $redirect): static
     {
         $this->redirect = $redirect;
 

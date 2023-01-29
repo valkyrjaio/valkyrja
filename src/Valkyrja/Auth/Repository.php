@@ -46,7 +46,7 @@ interface Repository
      *
      * @return static
      */
-    public function setUser(User $user): self;
+    public function setUser(User $user): static;
 
     /**
      * Get the authenticated users.
@@ -62,7 +62,7 @@ interface Repository
      *
      * @return static
      */
-    public function setUsers(AuthenticatedUsers $users): self;
+    public function setUsers(AuthenticatedUsers $users): static;
 
     /**
      * Authenticate a user with credentials.
@@ -73,7 +73,7 @@ interface Repository
      *
      * @return static
      */
-    public function authenticate(User $user): self;
+    public function authenticate(User $user): static;
 
     /**
      * Authenticate a user from an active session.
@@ -82,7 +82,7 @@ interface Repository
      *
      * @return static
      */
-    public function authenticateFromSession(): self;
+    public function authenticateFromSession(): static;
 
     /**
      * Authenticate a user from a request.
@@ -93,7 +93,7 @@ interface Repository
      *
      * @return static
      */
-    public function authenticateFromRequest(Request $request): self;
+    public function authenticateFromRequest(Request $request): static;
 
     /**
      * Un-authenticate any active users.
@@ -102,21 +102,21 @@ interface Repository
      *
      * @return static
      */
-    public function unAuthenticate(User $user = null): self;
+    public function unAuthenticate(User $user = null): static;
 
     /**
      * Set the authenticated user in the session.
      *
      * @return static
      */
-    public function setSession(): self;
+    public function setSession(): static;
 
     /**
      * Unset the authenticated user from the session.
      *
      * @return static
      */
-    public function unsetSession(): self;
+    public function unsetSession(): static;
 
     /**
      * Register a new user.
@@ -127,7 +127,7 @@ interface Repository
      *
      * @return static
      */
-    public function register(User $user): self;
+    public function register(User $user): static;
 
     /**
      * Forgot password.
@@ -136,7 +136,7 @@ interface Repository
      *
      * @return static
      */
-    public function forgot(User $user): self;
+    public function forgot(User $user): static;
 
     /**
      * Reset a user's password.
@@ -146,7 +146,7 @@ interface Repository
      *
      * @return static
      */
-    public function reset(string $resetToken, string $password): self;
+    public function reset(string $resetToken, string $password): static;
 
     /**
      * Lock a user.
@@ -155,7 +155,7 @@ interface Repository
      *
      * @return static
      */
-    public function lock(LockableUser $user): self;
+    public function lock(LockableUser $user): static;
 
     /**
      * Unlock a user.
@@ -164,7 +164,7 @@ interface Repository
      *
      * @return static
      */
-    public function unlock(LockableUser $user): self;
+    public function unlock(LockableUser $user): static;
 
     /**
      * Confirm the current user's password.
@@ -175,7 +175,7 @@ interface Repository
      *
      * @return static
      */
-    public function confirmPassword(string $password): self;
+    public function confirmPassword(string $password): static;
 
     /**
      * Determine if a re-authentication needs to occur.

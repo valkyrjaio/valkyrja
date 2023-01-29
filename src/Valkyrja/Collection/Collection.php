@@ -28,9 +28,9 @@ interface Collection
      *
      * @param array $collection The collection
      *
-     * @return self
+     * @return static
      */
-    public function setAll(array $collection): self;
+    public function setAll(array $collection): static;
 
     /**
      * Determine if a value exists in the collection.
@@ -113,9 +113,9 @@ interface Collection
      * @param string|int $key   The key
      * @param mixed      $value The value
      *
-     * @return self
+     * @return static
      */
-    public function set(string|int $key, mixed $value): self;
+    public function set(string|int $key, mixed $value): static;
 
     /**
      * Determine if an item is in the collection.
@@ -140,9 +140,9 @@ interface Collection
      *
      * @param string|int $key The key
      *
-     * @return self
+     * @return static
      */
-    public function remove(string|int $key): self;
+    public function remove(string|int $key): static;
 
     /**
      * Convert the collection to a string.

@@ -65,7 +65,7 @@ trait Indexable
      *
      * @return static
      */
-    public static function fromIndexedArray(array $properties): self
+    public static function fromIndexedArray(array $properties): static
     {
         return static::fromArray(static::getMappedArrayFromIndexedArray($properties));
     }
@@ -83,7 +83,7 @@ trait Indexable
      *
      * @return static
      */
-    public function withIndexedProperties(array $properties): self
+    public function withIndexedProperties(array $properties): static
     {
         return $this->withProperties(static::getMappedArrayFromIndexedArray($properties));
     }

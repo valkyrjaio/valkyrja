@@ -40,7 +40,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setPath(string $path): self;
+    public function setPath(string $path): static;
 
     /**
      * Append a path to the existing path.
@@ -49,7 +49,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function withPath(string $path): self;
+    public function withPath(string $path): static;
 
     /**
      * Append a name to the existing name.
@@ -58,7 +58,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function withName(string $name): self;
+    public function withName(string $name): static;
 
     /**
      * Get the redirect path.
@@ -74,7 +74,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setTo(string $to = null): self;
+    public function setTo(string $to = null): static;
 
     /**
      * Get the redirect status code.
@@ -90,7 +90,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setCode(int $code = null): self;
+    public function setCode(int $code = null): static;
 
     /**
      * Get the request methods.
@@ -106,7 +106,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setMethods(array $methods): self;
+    public function setMethods(array $methods): static;
 
     /**
      * Get the regex.
@@ -122,7 +122,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setRegex(string $regex = null): self;
+    public function setRegex(string $regex = null): static;
 
     /**
      * Get the parameters.
@@ -138,7 +138,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setParameters(array $parameters): self;
+    public function setParameters(array $parameters): static;
 
     /**
      * Set a parameter.
@@ -147,7 +147,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setParameter(Parameter $parameter): self;
+    public function setParameter(Parameter $parameter): static;
 
     /**
      * Add a parameter.
@@ -176,7 +176,7 @@ interface Route extends Dispatch
         bool $isOptional = false,
         bool $shouldCapture = true,
         mixed $default = null
-    ): self;
+    ): static;
 
     /**
      * Get the middleware.
@@ -192,7 +192,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setMiddleware(array $middleware = null): self;
+    public function setMiddleware(array $middleware = null): static;
 
     /**
      * Route with added middleware.
@@ -201,7 +201,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function withMiddleware(array $middleware): self;
+    public function withMiddleware(array $middleware): static;
 
     /**
      * Check whether the route is dynamic.
@@ -217,7 +217,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setDynamic(bool $dynamic = true): self;
+    public function setDynamic(bool $dynamic = true): static;
 
     /**
      * Get whether the route is secure.
@@ -233,7 +233,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setSecure(bool $secure = true): self;
+    public function setSecure(bool $secure = true): static;
 
     /**
      * Get whether the route is a redirect.
@@ -249,5 +249,5 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setRedirect(bool $redirect): self;
+    public function setRedirect(bool $redirect): static;
 }

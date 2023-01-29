@@ -42,9 +42,9 @@ interface Cookie extends Model
      *
      * @param string $name The name
      *
-     * @return Cookie
+     * @return static
      */
-    public function setName(string $name): self;
+    public function setName(string $name): static;
 
     /**
      * Get the cookie's value.
@@ -58,9 +58,9 @@ interface Cookie extends Model
      *
      * @param string|null $value The value
      *
-     * @return Cookie
+     * @return static
      */
-    public function setValue(string $value = null): self;
+    public function setValue(string $value = null): static;
 
     /**
      * Get expire time for the cookie.
@@ -74,9 +74,9 @@ interface Cookie extends Model
      *
      * @param int $expire The expire time
      *
-     * @return Cookie
+     * @return static
      */
-    public function setExpire(int $expire): self;
+    public function setExpire(int $expire): static;
 
     /**
      * Get the path the cookie is available to.
@@ -90,9 +90,9 @@ interface Cookie extends Model
      *
      * @param string $path The path
      *
-     * @return Cookie
+     * @return static
      */
-    public function setPath(string $path): self;
+    public function setPath(string $path): static;
 
     /**
      * Get the domain the cookie is available to.
@@ -106,9 +106,9 @@ interface Cookie extends Model
      *
      * @param string|null $domain The domain
      *
-     * @return Cookie
+     * @return static
      */
-    public function setDomain(string $domain = null): self;
+    public function setDomain(string $domain = null): static;
 
     /**
      * Whether the cookie should only be transmitted over a secure HTTPS
@@ -124,9 +124,9 @@ interface Cookie extends Model
      *
      * @param bool $secure
      *
-     * @return Cookie
+     * @return static
      */
-    public function setSecure(bool $secure): self;
+    public function setSecure(bool $secure): static;
 
     /**
      * Whether the cookie will be made accessible only through the HTTP
@@ -141,9 +141,9 @@ interface Cookie extends Model
      *
      * @param bool $httpOnly [optional] The flag
      *
-     * @return Cookie
+     * @return static
      */
-    public function setHttpOnly(bool $httpOnly = false): self;
+    public function setHttpOnly(bool $httpOnly = false): static;
 
     /**
      * Whether the cookie value should be sent with no url encoding.
@@ -157,9 +157,9 @@ interface Cookie extends Model
      *
      * @param bool $raw
      *
-     * @return Cookie
+     * @return static
      */
-    public function setRaw(bool $raw): self;
+    public function setRaw(bool $raw): static;
 
     /**
      * Get whether the cookie will be available for cross-site requests.
@@ -175,7 +175,7 @@ interface Cookie extends Model
      *
      * @throws InvalidSameSiteTypeException
      *
-     * @return Cookie
+     * @return static
      */
-    public function setSameSite(string $sameSite = null): self;
+    public function setSameSite(string $sameSite = null): static;
 }

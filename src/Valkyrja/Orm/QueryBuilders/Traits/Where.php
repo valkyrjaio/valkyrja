@@ -49,7 +49,7 @@ trait Where
      *
      * @return static
      */
-    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): self
+    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): static
     {
         $this->setWhere(
             $this->getWhereString($column, $operator ?? Operator::EQUALS, $value),
@@ -64,7 +64,7 @@ trait Where
      *
      * @return static
      */
-    public function startWhereGroup(): self
+    public function startWhereGroup(): static
     {
         $this->whereGroupStarted = true;
 
@@ -76,7 +76,7 @@ trait Where
      *
      * @return static
      */
-    public function endWhereGroup(): self
+    public function endWhereGroup(): static
     {
         $this->where[] = ')';
 
@@ -88,7 +88,7 @@ trait Where
      *
      * @return static
      */
-    public function whereType(WhereType $type = WhereType::AND): self
+    public function whereType(WhereType $type = WhereType::AND): static
     {
         $this->where[] = $type->value;
 

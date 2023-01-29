@@ -36,7 +36,7 @@ trait Set
      *
      * @return static
      */
-    public function set(string $column, mixed $value = null): self
+    public function set(string $column, mixed $value = null): static
     {
         $this->values[$column] = $value ?? ":$column";
 

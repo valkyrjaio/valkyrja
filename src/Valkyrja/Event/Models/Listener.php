@@ -41,7 +41,7 @@ class Listener extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setEvent(string $event): self
+    public function setEvent(string $event): static
     {
         $this->event = $event;
 

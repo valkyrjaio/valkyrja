@@ -30,7 +30,7 @@ interface Query
      *
      * @return static
      */
-    public function table(string $table): self;
+    public function table(string $table): static;
 
     /**
      * Set the entity to query with.
@@ -39,7 +39,7 @@ interface Query
      *
      * @return static
      */
-    public function entity(string $entity): self;
+    public function entity(string $entity): static;
 
     /**
      * Prepare the query.
@@ -48,7 +48,7 @@ interface Query
      *
      * @return static
      */
-    public function prepare(string $query): self;
+    public function prepare(string $query): static;
 
     /**
      * Bind a value.
@@ -58,7 +58,7 @@ interface Query
      *
      * @return static
      */
-    public function bindValue(string $property, mixed $value): self;
+    public function bindValue(string $property, mixed $value): static;
 
     /**
      * Execute the query.

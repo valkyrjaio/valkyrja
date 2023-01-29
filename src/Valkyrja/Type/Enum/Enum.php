@@ -179,11 +179,11 @@ abstract class Enum
      *
      * @throws RuntimeException
      *
-     * @return Enum
+     * @return static
      *
      * @example `Enum::VALUE();` equivalent to `new Enum(Enum::VALUE);`
      */
-    public static function __callStatic(string $method, array $args = []): self
+    public static function __callStatic(string $method, array $args = []): static
     {
         return new static(constant('static::' . $method));
     }

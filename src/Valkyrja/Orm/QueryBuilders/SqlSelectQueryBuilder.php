@@ -69,7 +69,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function columns(array $columns = null): self
+    public function columns(array $columns = null): static
     {
         $this->columns = $columns ?? ['*'];
 
@@ -79,7 +79,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function groupBy(string $column): self
+    public function groupBy(string $column): static
     {
         $this->groupBy[] = $column;
 
@@ -89,7 +89,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function orderBy(string $column, string $type = null): self
+    public function orderBy(string $column, string $type = null): static
     {
         $this->orderBy[] = $column . ' ' . ((string) $type);
 
@@ -99,7 +99,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function orderByAsc(string $column): self
+    public function orderByAsc(string $column): static
     {
         return $this->orderBy($column, OrderBy::ASC);
     }
@@ -107,7 +107,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function orderByDesc(string $column): self
+    public function orderByDesc(string $column): static
     {
         return $this->orderBy($column, OrderBy::DESC);
     }
@@ -115,7 +115,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function limit(int $limit): self
+    public function limit(int $limit): static
     {
         $this->limit = $limit;
 
@@ -125,7 +125,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function offset(int $offset): self
+    public function offset(int $offset): static
     {
         $this->offset = $offset;
 
