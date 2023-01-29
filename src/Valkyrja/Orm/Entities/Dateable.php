@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Entities;
 
+use Valkyrja\Orm\Constants\DateFormat;
 use Valkyrja\Orm\Support\Helpers;
 
 /**
@@ -25,9 +26,17 @@ trait Dateable
     /**
      * @inheritDoc
      */
+    public static function getDateFormat(): string
+    {
+        return DateFormat::DEFAULT;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public static function getFormattedDate(): string
     {
-        return Helpers::getFormattedDate();
+        return Helpers::getFormattedDate(static::getDateFormat());
     }
 
     /**

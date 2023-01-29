@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Support;
 
-use function date;
+use DateTime;
+use Valkyrja\Orm\Constants\DateFormat;
+
 use function str_replace;
 
 /**
@@ -60,10 +62,13 @@ class Helpers
     /**
      * Get the formatted date.
      *
+     * @param string $format [optional] The format
+     *
      * @return string
      */
-    public static function getFormattedDate(): string
+    public static function getFormattedDate(string $format = DateFormat::DEFAULT): string
     {
-        return date('Y-m-d H:i:s T');
+        return DateTime::createFromFormat('U.u', (string) microtime(true))
+            ->format($format);
     }
 }
