@@ -3,13 +3,12 @@
 declare(strict_types=1);
 
 /*
- *-------------------------------------------------------------------------
- * Composer Auto Loader Assemble!
- *-------------------------------------------------------------------------
+ * This file is part of the Valkyrja Framework package.
  *
- * Autoload all the application namespaces, dependencies, and files using
- * composer to both manage all dependencies as well as register everything
- * for us to use within the application.
-     */
+ * (c) Melech Mizrachi <melechmizrachi@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 require __DIR__ . '/../vendor/autoload.php';
