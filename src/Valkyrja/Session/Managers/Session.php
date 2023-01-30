@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Managers;
 
+use Valkyrja\Manager\Managers\Manager;
 use Valkyrja\Session\Config\Config;
 use Valkyrja\Session\Driver;
 use Valkyrja\Session\Factory;
 use Valkyrja\Session\Session as Contract;
-use Valkyrja\Manager\Managers\Manager;
 
 /**
  * Class Sessions.

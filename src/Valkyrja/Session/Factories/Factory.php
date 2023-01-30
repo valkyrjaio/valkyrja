@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Factories;
 
+use Valkyrja\Manager\Factories\Factory as ManagerFactory;
 use Valkyrja\Session\Adapter;
 use Valkyrja\Session\Driver;
 use Valkyrja\Session\Factory as Contract;
-use Valkyrja\Manager\Factories\Factory as ManagerFactory;
 
 /**
  * Class Factory.

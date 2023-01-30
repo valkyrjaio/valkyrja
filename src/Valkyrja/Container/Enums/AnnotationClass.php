@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Enums;
 
+use Valkyrja\Container\Annotations\Service;
 use Valkyrja\Container\Annotations\Service\Alias;
 use Valkyrja\Container\Annotations\Service\Context;
-use Valkyrja\Container\Annotations\Service;
 use Valkyrja\Type\Enum\Enum;
 
 /**

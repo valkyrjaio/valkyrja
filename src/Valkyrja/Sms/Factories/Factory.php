@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Factories;
 
+use Valkyrja\Manager\Factories\MessageFactory;
 use Valkyrja\Sms\Adapter;
 use Valkyrja\Sms\Driver;
 use Valkyrja\Sms\Factory as Contract;
 use Valkyrja\Sms\Message;
-use Valkyrja\Manager\Factories\MessageFactory;
 
 /**
  * Class Factory.

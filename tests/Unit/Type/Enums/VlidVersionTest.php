@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Enums;
 
-use Valkyrja\Type\Enums\VlidVersion;
 use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Type\Enums\VlidVersion;
 
 class VlidVersionTest extends TestCase
 {

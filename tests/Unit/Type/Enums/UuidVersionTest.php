@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Enums;
 
-use Valkyrja\Type\Enums\UuidVersion;
 use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Type\Enums\UuidVersion;
 
 class UuidVersionTest extends TestCase
 {

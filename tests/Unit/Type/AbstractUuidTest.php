@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type;
 
-use Valkyrja\Type\Enums\UuidVersion;
 use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Type\Enums\UuidVersion;
 
 abstract class AbstractUuidTest extends TestCase
 {

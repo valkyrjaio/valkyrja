@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type;
 
+use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\Exceptions\InvalidUlidException;
 use Valkyrja\Type\Ulid;
-use Valkyrja\Tests\Unit\TestCase;
 
 class UlidTest extends TestCase
 {
