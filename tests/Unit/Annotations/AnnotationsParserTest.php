@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -207,8 +208,10 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetServiceAliasAnnotationFromMap(): void
     {
-        self::assertEquals(true,
-            $this->class->getAnnotationFromMap(AnnotationName::SERVICE_ALIAS) instanceof Service\Alias);
+        self::assertEquals(
+            true,
+            $this->class->getAnnotationFromMap(AnnotationName::SERVICE_ALIAS) instanceof Service\Alias
+        );
     }
 
     /**

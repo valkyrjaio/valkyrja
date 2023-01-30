@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -66,12 +67,12 @@ class OptionTest extends TestCase
     protected function getClass(): Option
     {
         return $this->class ?? $this->class = new Option(
-                $this->name,
-                $this->description,
-                $this->shortcut,
-                null,
-                $this->default
-            );
+            $this->name,
+            $this->description,
+            $this->shortcut,
+            null,
+            $this->default
+        );
     }
 
     /**

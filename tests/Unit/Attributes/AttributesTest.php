@@ -104,10 +104,10 @@ class AttributesTest extends TestCase
 
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE1,
-               self::VALUE2,
-               self::VALUE3,
-               self::THREE,
+            self::VALUE1,
+            self::VALUE2,
+            self::VALUE3,
+            self::THREE,
             ...$attributes
         );
     }
@@ -299,10 +299,10 @@ class AttributesTest extends TestCase
 
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE1,
-               self::VALUE2,
-               self::VALUE3,
-               self::THREE,
+            self::VALUE1,
+            self::VALUE2,
+            self::VALUE3,
+            self::THREE,
             ...$attributes
         );
     }
@@ -327,10 +327,10 @@ class AttributesTest extends TestCase
 
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE4,
-               self::VALUE5,
-               self::VALUE6,
-               self::SIX,
+            self::VALUE4,
+            self::VALUE5,
+            self::VALUE6,
+            self::SIX,
             ...$attributes
         );
 
@@ -345,10 +345,10 @@ class AttributesTest extends TestCase
 
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE7,
-               self::VALUE8,
-               self::VALUE9,
-               self::NINE,
+            self::VALUE7,
+            self::VALUE8,
+            self::VALUE9,
+            self::NINE,
             ...$attributes
         );
     }
@@ -364,10 +364,10 @@ class AttributesTest extends TestCase
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE4,
-               self::VALUE5,
-               self::VALUE6,
-               self::SIX,
+            self::VALUE4,
+            self::VALUE5,
+            self::VALUE6,
+            self::SIX,
             ...$attributes
         );
         $this->setTests($attributes[2], false, self::CONST_NAME);
@@ -384,10 +384,10 @@ class AttributesTest extends TestCase
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE7,
-               self::VALUE8,
-               self::VALUE9,
-               self::NINE,
+            self::VALUE7,
+            self::VALUE8,
+            self::VALUE9,
+            self::NINE,
             ...$attributes
         );
         $this->setTests($attributes[2], false, self::PROTECTED_CONST_NAME);
@@ -404,10 +404,10 @@ class AttributesTest extends TestCase
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE10,
-               self::VALUE11,
-               self::VALUE12,
-               self::TWELVE,
+            self::VALUE10,
+            self::VALUE11,
+            self::VALUE12,
+            self::TWELVE,
             ...$attributes
         );
         $this->setTests($attributes[2], true, self::STATIC_PROPERTY_NAME);
@@ -424,10 +424,10 @@ class AttributesTest extends TestCase
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE13,
-               self::VALUE14,
-               self::VALUE15,
-               self::FIFTEEN,
+            self::VALUE13,
+            self::VALUE14,
+            self::VALUE15,
+            self::FIFTEEN,
             ...$attributes
         );
         $this->setTests($attributes[2], false, self::PROPERTY_NAME);
@@ -444,10 +444,10 @@ class AttributesTest extends TestCase
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE16,
-               self::VALUE17,
-               self::VALUE18,
-               self::EIGHTEEN,
+            self::VALUE16,
+            self::VALUE17,
+            self::VALUE18,
+            self::EIGHTEEN,
             ...$attributes
         );
         $this->setTests($attributes[2], true, self::STATIC_METHOD_NAME);
@@ -464,10 +464,10 @@ class AttributesTest extends TestCase
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE19,
-               self::VALUE20,
-               self::VALUE21,
-               self::TWENTY_ONE,
+            self::VALUE19,
+            self::VALUE20,
+            self::VALUE21,
+            self::TWENTY_ONE,
             ...$attributes
         );
         $this->setTests($attributes[2], false, self::METHOD_NAME);
