@@ -60,15 +60,16 @@ jobs:
 
       - name: Upload Codecov Coverage Report
         uses: codecov/codecov-action@v3
+        if: ${{ matrix.php-version == '8.1' }}
 
       - name: Upload Coveralls Coverage Report
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           php vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
+        if: ${{ matrix.php-version == '8.1' }}
 
       - name: Run Psalm
         run: |
           vendor/bin/psalm --no-cache
-        with:
-          dependency-versions: 8.1
+        if: ${{ matrix.php-version == '8.1' }}
