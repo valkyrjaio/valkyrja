@@ -1,4 +1,4 @@
-name: PHPUnit
+name: Tests
 
 on:
   push:
