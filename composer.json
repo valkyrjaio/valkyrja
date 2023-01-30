@@ -26,6 +26,7 @@
     "fakerphp/faker"              : "^1.20",
     "filp/whoops"                 : "^2.14",
     "firebase/php-jwt"            : "^6.3",
+    "friendsofphp/php-cs-fixer"   : "3.14.3",
     "guzzlehttp/guzzle"           : "^7.5",
     "mailgun/mailgun-php"         : "^3.5",
     "mockery/mockery"             : "^1.5",

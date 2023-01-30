@@ -58,6 +58,10 @@ jobs:
         run: |
           XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --stderr
 
+      - name: Run PHP CS Fixer
+        run: |
+          php -dmemory_limit=-1 ./vendor/bin/php-cs-fixer fix ./ --diff --dry-run
+
       - name: Upload Codecov Coverage Report
         uses: codecov/codecov-action@v3
 
