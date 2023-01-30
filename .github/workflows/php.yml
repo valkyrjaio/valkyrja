@@ -66,3 +66,11 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           php vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
+
+      - name: Run Psalm
+        run: |
+          vendor/bin/psalm --no-cache
+
+      - name: Run PHP CS Fixer
+        run: |
+          php -dmemory_limit=-1 ./vendor/bin/php-cs-fixer fix ./ --diff --dry-run
