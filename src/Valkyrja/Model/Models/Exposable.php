@@ -69,7 +69,7 @@ trait Exposable
      */
     public function asExposedOnlyArray(): array
     {
-        return $this->__arrayWithExposed(fn() => $this->__exposed);
+        return $this->__arrayWithExposed(fn () => $this->__exposed);
     }
 
     /**

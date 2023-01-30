@@ -129,7 +129,7 @@ class Notifier implements Contract
      * @inheritDoc
      */
     public function notify(Notification $notification): void
-        // public function notify(string $notificationName, array $data = []): void
+    // public function notify(string $notificationName, array $data = []): void
     {
         // $notification = $this->getNotification($notificationName, $data);
 
