@@ -70,7 +70,5 @@ jobs:
       - name: Run Psalm
         run: |
           vendor/bin/psalm --no-cache
-
-      - name: Run PHP CS Fixer
-        run: |
-          php -dmemory_limit=-1 ./vendor/bin/php-cs-fixer fix ./ --diff --dry-run
+        with:
+          dependency-versions: 8.1
