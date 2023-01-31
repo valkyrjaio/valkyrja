@@ -130,13 +130,13 @@ class Formatter implements Contract
         $unset = [];
 
         // Check if a foreground was specified
-        if (null !== $this->foreground) {
+        if ($this->foreground !== null) {
             $set[]   = $this->foreground;
             $unset[] = FormatForeground::DEFAULT->value;
         }
 
         // Check if a background was specified
-        if (null !== $this->background) {
+        if ($this->background !== null) {
             $set[]   = $this->background;
             $unset[] = FormatBackground::DEFAULT->value;
         }
@@ -151,7 +151,7 @@ class Formatter implements Contract
         }
 
         // No need to format if there's nothing to set
-        if (0 === count($set)) {
+        if (count($set) === 0) {
             return $message;
         }
 
@@ -168,7 +168,7 @@ class Formatter implements Contract
      */
     protected function setColor(FormatBackground|FormatForeground $color, bool $background = null): void
     {
-        if (null !== $background) {
+        if ($background !== null) {
             $this->background = $color->value;
 
             return;

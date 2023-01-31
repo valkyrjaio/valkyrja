@@ -20,7 +20,6 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 EOF;
 
-
 $finder = PhpCsFixer\Finder::create()
     ->exclude('.github')
     ->exclude('docs')
@@ -38,12 +37,20 @@ return (new PhpCsFixer\Config())
             '@PSR1'                               => true,
             '@PSR2'                               => true,
             '@PSR12'                              => true,
+            // '@Symfony'                            => true,
             'no_unused_imports'                   => true,
             'combine_consecutive_unsets'          => true,
+            'modernize_types_casting'             => true,
             'trailing_comma_in_multiline'         => true,
             'strict_param'                        => true,
             'array_syntax'                        => [
                 'syntax' => 'short',
+            ],
+            'binary_operator_spaces'              => [
+                'operators' => [
+                    '='  => 'align_single_space',
+                    '=>' => 'align_single_space_minimal_by_scope',
+                ],
             ],
             'concat_space'                        => [
                 'spacing' => 'one',
@@ -68,6 +75,11 @@ return (new PhpCsFixer\Config())
             'phpdoc_types_order'                  => [
                 'sort_algorithm'  => 'none',
                 'null_adjustment' => 'always_last',
+            ],
+            'yoda_style'                          => [
+                'equal'            => false,
+                'identical'        => false,
+                'less_and_greater' => false,
             ],
         ]
     )

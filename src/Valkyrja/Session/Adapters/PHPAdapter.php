@@ -102,7 +102,7 @@ class PHPAdapter extends NullAdapter
      */
     public function isActive(): bool
     {
-        return PHP_SESSION_ACTIVE === session_status();
+        return session_status() === PHP_SESSION_ACTIVE;
     }
 
     /**

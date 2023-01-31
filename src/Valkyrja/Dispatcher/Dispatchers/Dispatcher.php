@@ -214,7 +214,7 @@ class Dispatcher implements Contract
         $dependencies = $this->getDependencies($dispatch);
 
         // If there are no arguments
-        if (null === $arguments) {
+        if ($arguments === null) {
             // Return the dependencies only
             return $dependencies;
         }

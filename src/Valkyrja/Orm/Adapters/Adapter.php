@@ -99,11 +99,11 @@ abstract class Adapter implements Contract
     {
         $queryInstance = $this->orm->createQuery($this, $this->queryClass);
 
-        if (null !== $entity) {
+        if ($entity !== null) {
             $queryInstance->entity($entity);
         }
 
-        if (null !== $query) {
+        if ($query !== null) {
             $queryInstance->prepare($query);
         }
 
@@ -117,7 +117,7 @@ abstract class Adapter implements Contract
     {
         $queryBuilder = $this->orm->createQueryBuilder($this, $this->queryBuilderClass);
 
-        if (null !== $entity) {
+        if ($entity !== null) {
             $queryBuilder->entity($entity, $alias);
         }
 

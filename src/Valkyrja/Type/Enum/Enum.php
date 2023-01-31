@@ -112,7 +112,7 @@ abstract class Enum
     public static function getValidValues(): array
     {
         // If the VALUES array has been populated
-        if (null !== static::$VALUES) {
+        if (static::$VALUES !== null) {
             // Use it as the developer took the time to define it
             return static::$VALUES;
         }

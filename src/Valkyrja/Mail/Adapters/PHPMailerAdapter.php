@@ -105,7 +105,7 @@ class PHPMailerAdapter implements Contract
      */
     protected function addPlainBody(string $plainBody = null): void
     {
-        if (null !== $plainBody) {
+        if ($plainBody !== null) {
             $this->phpMailer->AltBody = $plainBody;
         }
     }

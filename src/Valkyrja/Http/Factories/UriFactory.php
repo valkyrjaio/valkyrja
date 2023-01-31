@@ -63,7 +63,7 @@ abstract class UriFactory
         $scheme = 'http';
         $https  = $server['HTTPS'] ?? null;
 
-        if (($https && 'off' !== $https)
+        if (($https && $https !== 'off')
             || self::getHeader('x-forwarded-proto', $headers, false) === 'https'
         ) {
             $scheme = 'https';

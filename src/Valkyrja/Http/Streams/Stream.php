@@ -308,7 +308,7 @@ class Stream implements StreamContract
         $result = stream_get_contents($stream);
 
         // If there was a failure in getting the stream contents
-        if (false === $result) {
+        if ($result === false) {
             // Throw a runtime exception
             throw new StreamException('Error reading from stream');
         }
@@ -330,7 +330,7 @@ class Stream implements StreamContract
         $stream = $this->stream;
 
         // If no key was specified
-        if (null === $key) {
+        if ($key === null) {
             // Return all the meta data
             return stream_get_meta_data($stream);
         }

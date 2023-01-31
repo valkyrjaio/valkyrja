@@ -214,7 +214,7 @@ trait UriHelpers
      */
     protected function isStandardUnsecurePort(): bool
     {
-        return Scheme::HTTP === $this->scheme && $this->port === Port::HTTP;
+        return $this->scheme === Scheme::HTTP && $this->port === Port::HTTP;
     }
 
     /**
@@ -224,7 +224,7 @@ trait UriHelpers
      */
     protected function isStandardSecurePort(): bool
     {
-        return Scheme::HTTPS === $this->scheme && $this->port === Port::HTTPS;
+        return $this->scheme === Scheme::HTTPS && $this->port === Port::HTTPS;
     }
 
     /**
@@ -269,7 +269,7 @@ trait UriHelpers
     protected function addPathToUri(string $uri): string
     {
         if ($path = $this->path) {
-            if ('/' !== $path[0]) {
+            if ($path[0] !== '/') {
                 $path = '/' . $path;
             }
 

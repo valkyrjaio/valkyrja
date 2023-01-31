@@ -123,7 +123,7 @@ class CommandsList extends Commander
             // namespace)  and the namespace for this command doesn't match
             // what was passed then get rid of it so only commands in the
             // namespace are shown.
-            if ($commandNamespace !== $namespace && null !== $namespace) {
+            if ($commandNamespace !== $namespace && $namespace !== null) {
                 unset($commands[$key]);
 
                 continue;
@@ -132,7 +132,7 @@ class CommandsList extends Commander
             $longestLength = max(strlen($name), $longestLength);
 
             // If this is a global namespaced command
-            if ('global' === $commandNamespace) {
+            if ($commandNamespace === 'global') {
                 // Set it in the global commands array so when we show the list
                 // of commands global commands will be at the top
                 $globalCommands[] = $command;

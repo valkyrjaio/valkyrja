@@ -53,7 +53,7 @@ class Entity extends AbstractEntity
      */
     public function issetProp(): bool
     {
-        return null !== $this->prop;
+        return $this->prop !== null;
     }
 
     /**

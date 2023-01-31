@@ -250,7 +250,7 @@ class Retriever implements Contract
     {
         $results = $this->getOneOrNull();
 
-        if (null === $results) {
+        if ($results === null) {
             throw new EntityNotFoundException('Entity Not Found');
         }
 

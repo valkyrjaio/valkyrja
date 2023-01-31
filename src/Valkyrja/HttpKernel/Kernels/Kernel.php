@@ -290,7 +290,7 @@ class Kernel implements Contract
             $route = $this->container->getSingleton(Route::class);
 
             // If the dispatched route has middleware
-            if (null !== $route->getMiddleware()) {
+            if ($route->getMiddleware() !== null) {
                 // Terminate each middleware
                 $this->terminableMiddleware($request, $response, $route->getMiddleware());
             }

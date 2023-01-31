@@ -78,13 +78,13 @@ class NullAdapter implements Contract
         $sessionName = $sessionName ?? $config['name'];
 
         // If a session id is provided
-        if (null !== $sessionId) {
+        if ($sessionId !== null) {
             // Set the id
             $this->setId($sessionId);
         }
 
         // If a session name is provided
-        if (null !== $sessionName) {
+        if ($sessionName !== null) {
             // Set the name
             $this->setName($sessionName);
         }
