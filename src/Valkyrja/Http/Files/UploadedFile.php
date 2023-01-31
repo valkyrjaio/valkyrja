@@ -70,7 +70,7 @@ class UploadedFile implements Contract
     ) {
         // If the error is less than the lowest valued UPLOAD_ERR_* constant
         // Or the error is greater than the highest valued UPLOAD_ERR_* constant
-        if (UPLOAD_ERR_OK > $errorStatus || $errorStatus > UPLOAD_ERR_EXTENSION) {
+        if ($errorStatus < UPLOAD_ERR_OK || $errorStatus > UPLOAD_ERR_EXTENSION) {
             // Throw an invalid argument exception for the error status
             throw new InvalidArgumentException(
                 'Invalid error status for UploadedFile;  must be an UPLOAD_ERR_* constant value.'
@@ -78,7 +78,7 @@ class UploadedFile implements Contract
         }
 
         // If the file is not set and the stream is not set
-        if (null === $file && null === $stream) {
+        if ($file === null && $stream === null) {
             // Throw an invalid argument exception as on or the other is required
             throw new InvalidArgumentException(
                 'Either one of file or stream are required. Neither passed as arguments.'
@@ -92,7 +92,7 @@ class UploadedFile implements Contract
     public function getStream(): Stream
     {
         // If the error status is not OK
-        if (UPLOAD_ERR_OK !== $this->errorStatus) {
+        if ($this->errorStatus !== UPLOAD_ERR_OK) {
             // Throw a runtime exception as there's been an uploaded file error
             throw new UploadedFileException('Cannot retrieve stream due to upload error');
         }
@@ -104,12 +104,12 @@ class UploadedFile implements Contract
         }
 
         // If the stream has been set
-        if (null !== $this->stream) {
+        if ($this->stream !== null) {
             // Return the stream
             return $this->stream;
         }
 
-        if (null === $this->file) {
+        if ($this->file === null) {
             throw new InvalidArgumentException('Either one of file or stream are required. Neither exists.');
         }
 
@@ -125,7 +125,7 @@ class UploadedFile implements Contract
     public function moveTo(string $targetPath): void
     {
         // If the error status is not OK
-        if (UPLOAD_ERR_OK !== $this->errorStatus) {
+        if ($this->errorStatus !== UPLOAD_ERR_OK) {
             // Throw a runtime exception as there's been an uploaded file error
             throw new UploadedFileException('Cannot retrieve stream due to upload error');
         }
@@ -215,7 +215,7 @@ class UploadedFile implements Contract
         $handle = fopen($path, 'wb+');
 
         // If the handler failed to open
-        if (false === $handle) {
+        if ($handle === false) {
             // Throw a runtime exception
             throw new UploadedFileException('Unable to write to designated path');
         }

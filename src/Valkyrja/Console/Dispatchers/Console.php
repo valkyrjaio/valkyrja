@@ -188,7 +188,7 @@ class Console implements Contract
         }
 
         // If a command was not found
-        if (null === $command) {
+        if ($command === null) {
             // Throw a not found exception
             throw new CommandNotFound('The command ' . $path . ' not found.');
         }

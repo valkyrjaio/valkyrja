@@ -151,7 +151,7 @@ class Router implements Contract
         $route = $this->matcher->match($requestUri, $request->getMethod());
 
         // If no route is found
-        if (null === $route) {
+        if ($route === null) {
             // If the route matches for any method
             if ($this->matcher->match($requestUri)) {
                 // Then the route exists but not for the requested method, and so it is not allowed

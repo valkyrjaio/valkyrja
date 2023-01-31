@@ -389,7 +389,7 @@ class Collector implements Contract
      */
     protected function setDependencies(Route $route): void
     {
-        if (null !== $route->getDependencies()) {
+        if ($route->getDependencies() !== null) {
             return;
         }
 

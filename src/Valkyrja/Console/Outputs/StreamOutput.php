@@ -52,7 +52,7 @@ class StreamOutput extends Output implements StreamOutputContract
         $resource = $stream ?? fopen('php://stdout', 'wb');
 
         // If the resource isn't a valid resource or not a stream
-        if (! is_resource($resource) || 'stream' !== get_resource_type($resource)) {
+        if (! is_resource($resource) || get_resource_type($resource) !== 'stream') {
             throw new InvalidArgumentException('Stream is not a valid stream resource.');
         }
 
@@ -71,7 +71,7 @@ class StreamOutput extends Output implements StreamOutputContract
      */
     protected function writeOut(string $message, bool $newLine): void
     {
-        if (false === @fwrite($this->stream, $message) || ($newLine && (false === @fwrite($this->stream, PHP_EOL)))) {
+        if (@fwrite($this->stream, $message) === false || ($newLine && (@fwrite($this->stream, PHP_EOL) === false))) {
             // should never happen
             throw new RuntimeException('Unable to write output.');
         }

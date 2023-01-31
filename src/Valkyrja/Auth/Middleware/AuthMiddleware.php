@@ -110,7 +110,7 @@ abstract class AuthMiddleware extends Middleware
     {
         $config = self::$config ??= static::getAuth()->getConfig();
 
-        if (null !== $key) {
+        if ($key !== null) {
             return Arr::getValueDotNotation($config, $key, $default);
         }
 

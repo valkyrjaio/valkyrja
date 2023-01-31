@@ -103,7 +103,7 @@ class Query implements QueryContract
 
         $this->statement = $this->adapter->prepare($query);
 
-        if (null !== $this->table) {
+        if ($this->table !== null) {
             $this->bindValue('table', $this->table);
         }
 
@@ -183,7 +183,7 @@ class Query implements QueryContract
     {
         $results = $this->getOneOrNull();
 
-        if (null === $results) {
+        if ($results === null) {
             throw new NotFoundException('Result Not Found');
         }
 

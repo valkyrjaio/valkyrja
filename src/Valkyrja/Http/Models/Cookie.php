@@ -180,7 +180,7 @@ class Cookie extends Model implements Contract
             $str .= '; httponly';
         }
 
-        if (null !== $this->sameSite) {
+        if ($this->sameSite !== null) {
             $str .= '; samesite=' . $this->sameSite;
         }
 

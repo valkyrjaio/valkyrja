@@ -76,7 +76,7 @@ class MailgunAdapter implements Contract
         $this->setRecipients($mailgunMessage, 'addBccRecipient', $message->getBlindCopyRecipients());
         $this->addAttachments($mailgunMessage, $message->getAttachments());
 
-        if (null !== $replyTo) {
+        if ($replyTo !== null) {
             $this->setRecipients($mailgunMessage, 'setReplyToAddress', $replyTo);
         }
 

@@ -165,7 +165,7 @@ class Template implements Contract
     public function setLayout(string $layout = null): static
     {
         // If no layout has been set
-        if (null === $layout) {
+        if ($layout === null) {
             // Set to null
             return $this->withoutLayout();
         }
@@ -274,7 +274,7 @@ class Template implements Contract
         $template = $this->renderTemplate($name, $variables);
 
         // Check if a layout has been set
-        if (null === $this->layout || ! $renderLayout) {
+        if ($this->layout === null || ! $renderLayout) {
             return $template;
         }
 
@@ -298,7 +298,7 @@ class Template implements Contract
         $renderedLayout = $this->renderTemplate($layout, $variables);
 
         // Check if the layout has changed
-        if ($this->trackLayoutChanges && $this->hasLayoutChanged && null !== $this->layout) {
+        if ($this->trackLayoutChanges && $this->hasLayoutChanged && $this->layout !== null) {
             // Reset the flag
             $this->hasLayoutChanged = false;
             // Render the new layout

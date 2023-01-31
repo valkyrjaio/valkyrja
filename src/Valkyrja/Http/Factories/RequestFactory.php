@@ -60,7 +60,7 @@ abstract class RequestFactory
             $files = FileFactory::normalizeFiles($files);
         }
 
-        if (null === $cookies && array_key_exists('cookie', $headers)) {
+        if ($cookies === null && array_key_exists('cookie', $headers)) {
             $cookies = CookieFactory::parseCookieHeader($headers['cookie']);
         }
 

@@ -69,7 +69,7 @@ class ORM
         // Set a singleton of the entity in the container for later retrieval
         $this->container->setSingleton($entity, $result);
 
-        if (null !== $result) {
+        if ($result !== null) {
             throw new ValidationException("$subject must be a unique value in $entity for field $field");
         }
     }
@@ -92,7 +92,7 @@ class ORM
         // Set a singleton of the entity in the container for later retrieval
         $this->container->setSingleton($entity, $result);
 
-        if (null === $result) {
+        if ($result === null) {
             throw new ValidationException("$subject must exist in $entity for field $field");
         }
     }

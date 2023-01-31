@@ -34,7 +34,7 @@ class PathGenerator implements Contract
     public function parse(array $segments, array $data = null, array $params = null): string
     {
         // If data was passed but no params
-        if (null === $params && null !== $data) {
+        if ($params === null && $data !== null) {
             throw new InvalidArgumentException('Route params are required when supplying data');
         }
 
@@ -44,14 +44,14 @@ class PathGenerator implements Contract
         $replacements = [];
 
         // If there is data, parse the replacements
-        if (null !== $data) {
+        if ($data !== null) {
             $this->parseData($segments, $data, $params, $replace, $replacements);
         }
 
         // Iterate through the segments
         foreach ($segments as $segment) {
             // No need to do replacements if there was no data
-            if (null !== $data) {
+            if ($data !== null) {
                 // Replace any parameters
                 $segment = str_replace($replace, $replacements, $segment);
             }

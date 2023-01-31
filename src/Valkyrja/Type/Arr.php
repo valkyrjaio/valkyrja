@@ -50,7 +50,7 @@ class Arr
             $value = $value[$item] ?? null;
 
             // If the value is ull then the dot notation doesn't exist in this array so return the default
-            if (null === $value) {
+            if ($value === null) {
                 return $defaultValue;
             }
         }

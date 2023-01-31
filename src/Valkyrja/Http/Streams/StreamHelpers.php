@@ -74,7 +74,7 @@ trait StreamHelpers
         $resource = fopen($stream, $mode);
 
         // If the resource isn't a resource or a stream resource type
-        if (! is_resource($resource) || 'stream' !== get_resource_type($resource)) {
+        if (! is_resource($resource) || get_resource_type($resource) !== 'stream') {
             // Throw a new invalid stream exception
             throw new InvalidStream(
                 'Invalid stream provided; must be a string stream identifier or stream resource'
@@ -164,7 +164,7 @@ trait StreamHelpers
     protected function verifyWriteResult(int|false $result): void
     {
         // If the write was not successful
-        if (false === $result) {
+        if ($result === false) {
             // Throw a runtime exception
             throw new StreamException('Error writing to stream');
         }
@@ -194,7 +194,7 @@ trait StreamHelpers
     protected function verifySeekResult(int $result): void
     {
         // If the result was not a 0, denoting an error occurred
-        if (0 !== $result) {
+        if ($result !== 0) {
             // Throw a new runtime exception
             throw new StreamException('Error seeking within stream');
         }
@@ -237,7 +237,7 @@ trait StreamHelpers
     protected function verifyReadResult(string|false $result): void
     {
         // If there was a failure in reading the stream
-        if (false === $result) {
+        if ($result === false) {
             // Throw a runtime exception
             throw new StreamException('Error reading stream');
         }

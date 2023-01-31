@@ -173,7 +173,7 @@ class Events implements Contract
             // Attempt to dispatch the event listener using any one of the callable options
             $dispatch = $this->dispatcher->dispatch($this->ensureListener($listener), $arguments);
 
-            if (null !== $dispatch) {
+            if ($dispatch !== null) {
                 $responses[] = $dispatch;
             }
         }

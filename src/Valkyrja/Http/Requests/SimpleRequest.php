@@ -82,7 +82,7 @@ class SimpleRequest implements SimpleRequestContract
      */
     public function getRequestTarget(): string
     {
-        if (null !== $this->requestTarget) {
+        if ($this->requestTarget !== null) {
             return $this->requestTarget;
         }
 

@@ -531,7 +531,7 @@ class AttributesTest extends TestCase
         $this->assertEquals($isStatic, $attribute->static);
 
         match ($name) {
-            self::CONST_NAME, self::PROTECTED_CONST_NAME    => function () use ($name, $attribute): void {
+            self::CONST_NAME, self::PROTECTED_CONST_NAME => function () use ($name, $attribute): void {
                 $this->assertEquals($name, $attribute->constant);
                 $this->assertNull($attribute->property);
                 $this->assertNull($attribute->method);
@@ -541,7 +541,7 @@ class AttributesTest extends TestCase
                 $this->assertNull($attribute->constant);
                 $this->assertNull($attribute->method);
             },
-            self::STATIC_METHOD_NAME, self::METHOD_NAME     => function () use ($name, $attribute): void {
+            self::STATIC_METHOD_NAME, self::METHOD_NAME => function () use ($name, $attribute): void {
                 $this->assertEquals($name, $attribute->method);
                 $this->assertNull($attribute->constant);
                 $this->assertNull($attribute->property);

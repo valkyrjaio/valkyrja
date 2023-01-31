@@ -136,12 +136,12 @@ class Valkyrja implements Application
     {
         $env = self::$env;
 
-        if (null === $env) {
+        if ($env === null) {
             return $default;
         }
 
         // If there was no variable requested
-        if (null === $key) {
+        if ($key === null) {
             // Return the env class
             return $env;
         }
@@ -179,7 +179,7 @@ class Valkyrja implements Application
     public function config(string $key = null, mixed $default = null): mixed
     {
         // If no key was specified
-        if (null === $key) {
+        if ($key === null) {
             // Return all the entire config
             return self::$config;
         }
