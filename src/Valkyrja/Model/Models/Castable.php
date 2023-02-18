@@ -21,6 +21,7 @@ use Valkyrja\Model\Enums\CastType;
 use Valkyrja\Model\Model;
 use Valkyrja\Type\Support\Arr;
 use Valkyrja\Type\Support\Obj;
+use Valkyrja\Type\Type;
 
 use function is_array;
 use function is_object;
@@ -58,6 +59,8 @@ trait Castable
      *          'property_name' => [CastType::model, Model::class],
      *          // An property to be cast to an array of models
      *          'property_name' => [CastType::model, [Model::class]],
+     *          // An property to be cast to a Type
+     *          'property_name' => [CastType::type, Type::class],
      *      ]
      * </code>
      *
@@ -171,6 +174,7 @@ trait Castable
             CastType::bool   => $this->__getBoolFromValueType($property, $value),
             CastType::model  => $this->__getModelFromValueType($property, $type[1], $value),
             CastType::enum   => $this->__getEnumFromValueType($property, $type[1], $value),
+            CastType::type   => $this->__getTypeFromValueType($property, $type[1], $value),
             CastType::json   => $this->__getJsonFromValueType($property, $value),
             CastType::array  => $this->__getArrayFromValueType($property, $value),
             CastType::object => $this->__getObjectFromValueType($property, $value),
@@ -350,6 +354,22 @@ trait Castable
                 ]
             )
             : (object) $value;
+    }
+
+    /**
+     * Get the value for a Type type cast.
+     *
+     * @param string             $property The property name
+     * @param class-string<Type> $type     The type of the property
+     * @param mixed              $value    The value
+     *
+     * @return Type|null
+     */
+    protected function __getTypeFromValueType(string $property, string $type, mixed $value): Type|null
+    {
+        return $value !== null && ! ($value instanceof Type)
+            ? new $type($value)
+            : $value;
     }
 
     /**
