@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container;
 
+use AssertionError;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Valkyrja\Container\Config\Container as Config;
@@ -20,6 +21,7 @@ use Valkyrja\Container\Managers\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Tests\Classes\Container\Service;
 use Valkyrja\Tests\Classes\Container\Singleton;
+use Valkyrja\Tests\Traits\ExpectErrorTrait;
 
 /**
  * Test the container service.
@@ -28,6 +30,8 @@ use Valkyrja\Tests\Classes\Container\Singleton;
  */
 class ContainerTest extends TestCase
 {
+    use ExpectErrorTrait;
+
     /**
      * The class to test with.
      *
@@ -47,7 +51,8 @@ class ContainerTest extends TestCase
 
     public function testInvalidBind(): void
     {
-        $this->expectError();
+        $this->expectException(AssertionError::class);
+        $this->expectExceptionMessage('assert(is_a($service, Service::class, true))');
 
         $container = $this->container;
 

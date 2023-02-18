@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Enums;
 
+use Error;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\Enums\UuidVersion;
 
@@ -31,8 +32,8 @@ class UuidVersionTest extends TestCase
 
     public function testV2(): void
     {
-        $this->expectError();
-        $this->expectErrorMessage('Undefined constant ' . UuidVersion::class . '::V2');
+        $this->expectException(Error::class);
+        $this->expectExceptionMessage('Undefined constant ' . UuidVersion::class . '::V2');
 
         UuidVersion::V2;
     }

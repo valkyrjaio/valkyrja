@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Model;
 
+use Error;
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Tests\Classes\Model\Model;
 
@@ -47,7 +48,8 @@ class ModelTest extends TestCase
 
     public function testGetNotSet(): void
     {
-        $this->expectError();
+        $this->expectException(Error::class);
+        $this->expectExceptionMessage('Typed property ' . Model::class . '::$public must not be accessed before initialization');
 
         $model = Model::fromArray([]);
 
