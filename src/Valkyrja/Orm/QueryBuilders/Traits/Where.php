@@ -128,7 +128,7 @@ trait Where
     }
 
     /**
-     * Get a where value
+     * Get a where value.
      *
      * @param string $column
      * @param mixed  $value

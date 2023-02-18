@@ -144,7 +144,7 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      * </code>
      *
      * @param string      $column
-     * @param string|null $type [optional]
+     * @param string|null $type   [optional]
      *
      * @return static
      */

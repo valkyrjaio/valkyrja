@@ -27,17 +27,17 @@ use function Valkyrja\container;
  *
  * @author Melech Mizrachi
  *
- * @method static Json jsonFromException(Exception $exception)
+ * @method static Json         jsonFromException(Exception $exception)
  * @method static JsonResponse jsonResponseFromException(Exception $exception)
- * @method static Json jsonFromObject(object $object)
+ * @method static Json         jsonFromObject(object $object)
  * @method static JsonResponse jsonResponseFromObject(object $object)
- * @method static Json jsonFromObjects(object ...$objects)
+ * @method static Json         jsonFromObjects(object ...$objects)
  * @method static JsonResponse jsonResponseFromObjects(object ...$objects)
- * @method static Json jsonFromArray(array $array)
+ * @method static Json         jsonFromArray(array $array)
  * @method static JsonResponse jsonResponseFromArray(array $array)
- * @method static Json jsonFromEntity(Entity $entity)
+ * @method static Json         jsonFromEntity(Entity $entity)
  * @method static JsonResponse jsonResponseFromEntity(Entity $entity)
- * @method static Json jsonFromEntities(Entity ...$entities)
+ * @method static Json         jsonFromEntities(Entity ...$entities)
  * @method static JsonResponse jsonResponseFromEntities(Entity ...$entities)
  */
 class Api extends Facade

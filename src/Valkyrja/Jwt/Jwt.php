@@ -19,6 +19,7 @@ use Valkyrja\Manager\Manager;
  * Interface Jwt.
  *
  * @author Melech Mizrachi
+ *
  * @extends Manager<Driver, Factory>
  */
 interface Jwt extends Manager

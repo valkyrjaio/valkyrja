@@ -308,7 +308,7 @@ class CacheRepository extends Repository implements Contract
      *
      * @param string $type
      * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param bool   $defer  [optional]
      *
      * @return void
      */

@@ -23,9 +23,9 @@ use Valkyrja\Sms\Sms as Contract;
  *
  * @author Melech Mizrachi
  *
- * @method static Driver useMessenger(string $name = null, string $adapter = null)
+ * @method static Driver  useMessenger(string $name = null, string $adapter = null)
  * @method static Message createMessage(string $name = null)
- * @method static void send(Message $message)
+ * @method static void    send(Message $message)
  */
 class SMS extends ContainerFacade
 {

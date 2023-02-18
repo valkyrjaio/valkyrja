@@ -150,7 +150,7 @@ class Annotator implements Contract
     }
 
     /**
-     * Get class annotations
+     * Get class annotations.
      *
      * @param class-string $class The class
      *
@@ -259,7 +259,7 @@ class Annotator implements Contract
     }
 
     /**
-     * Get class member annotations
+     * Get class member annotations.
      *
      * @param class-string $class The class
      *

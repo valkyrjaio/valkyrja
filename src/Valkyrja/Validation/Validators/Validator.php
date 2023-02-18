@@ -81,6 +81,7 @@ class Validator implements Contract
 
     /**
      * @inheritDoc
+     *
      * @template T
      *
      * @param class-string<T>|null $name [optional] The name of the rules to get

@@ -26,18 +26,18 @@ use Valkyrja\Routing\Router as Contract;
  *
  * @author Melech Mizrachi
  *
- * @method static array getConfig()
+ * @method static array      getConfig()
  * @method static Collection getCollection()
- * @method static Matcher getMatcher()
- * @method static void addRoute(Route $route)
- * @method static Route[] getRoutes()
- * @method static Route getRoute(string $name)
- * @method static bool hasRoute(string $name)
- * @method static string getUrl(string $name, array $data = null, bool $absolute = null)
- * @method static Route getRouteFromRequest(Request $request)
+ * @method static Matcher    getMatcher()
+ * @method static void       addRoute(Route $route)
+ * @method static Route[]    getRoutes()
+ * @method static Route      getRoute(string $name)
+ * @method static bool       hasRoute(string $name)
+ * @method static string     getUrl(string $name, array $data = null, bool $absolute = null)
+ * @method static Route      getRouteFromRequest(Request $request)
  * @method static Route|null getRouteByPath(string $path, string $method = null)
- * @method static bool isInternalUri(string $uri)
- * @method static Response dispatch(Request $request)
+ * @method static bool       isInternalUri(string $uri)
+ * @method static Response   dispatch(Request $request)
  */
 class Router extends ContainerFacade
 {

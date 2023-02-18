@@ -23,6 +23,7 @@ use Valkyrja\Manager\Factories\MessageFactory;
  * Class Factory.
  *
  * @author Melech Mizrachi
+ *
  * @extends MessageFactory<Driver, Adapter, Message>
  */
 class Factory extends MessageFactory implements Contract

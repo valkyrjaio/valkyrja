@@ -23,9 +23,9 @@ use Valkyrja\Mail\Message;
  *
  * @author Melech Mizrachi
  *
- * @method static Driver useMailer(string $name = null, string $adapter = null)
+ * @method static Driver  useMailer(string $name = null, string $adapter = null)
  * @method static Message createMessage(string $name = null)
- * @method static void send(Message $message)
+ * @method static void    send(Message $message)
  */
 class Mail extends ContainerFacade
 {

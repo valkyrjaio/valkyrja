@@ -20,6 +20,7 @@ use Valkyrja\Manager\Manager;
  * Interface Crypt.
  *
  * @author Melech Mizrachi
+ *
  * @extends Manager<Driver, Factory>
  */
 interface Crypt extends Manager

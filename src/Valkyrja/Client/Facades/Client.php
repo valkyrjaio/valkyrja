@@ -23,7 +23,7 @@ use Valkyrja\Http\Response;
  *
  * @author Melech Mizrachi
  *
- * @method static Driver useClient(string $name = null, string $adapter = null)
+ * @method static Driver   useClient(string $name = null, string $adapter = null)
  * @method static Response request(string $method, string $uri, array $options = [])
  * @method static Response get(string $uri, array $options = [])
  * @method static Response post(string $uri, array $options = [])

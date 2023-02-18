@@ -22,9 +22,11 @@ use Valkyrja\Manager\MessageFactory as Contract;
  * Class MessageFactory.
  *
  * @author   Melech Mizrachi
+ *
  * @template Adapter
  * @template Driver
  * @template Message
+ *
  * @implements Contract<Adapter, Driver, Message>
  */
 class MessageFactory extends Factory implements Contract

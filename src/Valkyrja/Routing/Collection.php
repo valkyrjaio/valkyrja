@@ -36,8 +36,8 @@ interface Collection
      * @param string|null $method [optional] The request method
      *
      * @return Route|null
-     *      The route if found or null when no route is
-     *      found for the path combination specified
+     *                    The route if found or null when no route is
+     *                    found for the path combination specified
      */
     public function get(string $path, string $method = null): ?Route;
 
@@ -72,8 +72,8 @@ interface Collection
      * @param string|null $method [optional] The request method
      *
      * @return Route|null
-     *      The route if found or null when no static route is
-     *      found for the path and method combination specified
+     *                    The route if found or null when no static route is
+     *                    found for the path and method combination specified
      */
     public function getStatic(string $path, string $method = null): ?Route;
 
@@ -103,8 +103,8 @@ interface Collection
      * @param string|null $method [optional] The request method
      *
      * @return Route|null
-     *      The route if found or null when no dynamic route is
-     *      found for the path and method combination specified
+     *                    The route if found or null when no dynamic route is
+     *                    found for the path and method combination specified
      */
     public function getDynamic(string $regex, string $method = null): ?Route;
 
@@ -133,8 +133,8 @@ interface Collection
      * @param string $name The name
      *
      * @return Route|null
-     *      The route if found or null when no named route is
-     *      found for the path and method combination specified
+     *                    The route if found or null when no named route is
+     *                    found for the path and method combination specified
      */
     public function getNamed(string $name): ?Route;
 

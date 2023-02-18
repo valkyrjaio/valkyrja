@@ -22,10 +22,12 @@ final class Regex
 {
     /**
      * Annotation name regex.
-     * - Matches something like @Annotation, or @Annotation\Sub
+     * - Matches something like @Annotation, or @Annotation\Sub.
      *
      * @constant string
+     *
      * @description
+     *
      *      @startblock
      *      \(                  Escaped beginning parenthesis
      *      \s*                 Any amount of whitespace
@@ -50,6 +52,7 @@ final class Regex
      *          ?                   Capture as few as possible
      *      )                   End capture
      *      \s*                 Any amount of whitespace
+     *
      *      @endblock
      */
     public const NAME_REGEX = <<<'REGEX'

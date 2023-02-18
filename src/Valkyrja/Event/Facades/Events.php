@@ -23,19 +23,19 @@ use Valkyrja\Facade\ContainerFacade;
  *
  * @author Melech Mizrachi
  *
- * @method static void listen(string $event, Listener $listener)
- * @method static void listenMany(Listener $listener, string ...$events)
- * @method static bool hasListener(string $event, string $listenerId)
- * @method static void removeListener(string $event, string $listenerId)
+ * @method static void       listen(string $event, Listener $listener)
+ * @method static void       listenMany(Listener $listener, string ...$events)
+ * @method static bool       hasListener(string $event, string $listenerId)
+ * @method static void       removeListener(string $event, string $listenerId)
  * @method static Listener[] getListeners(string $event)
- * @method static bool hasListeners(string $event)
- * @method static void add(string $event)
- * @method static bool has(string $event)
- * @method static void remove(string $event)
- * @method static mixed[] trigger(string $event, array $arguments = null)
- * @method static mixed[] event(Event $event)
- * @method static array all()
- * @method static void setEvents(array $events)
+ * @method static bool       hasListeners(string $event)
+ * @method static void       add(string $event)
+ * @method static bool       has(string $event)
+ * @method static void       remove(string $event)
+ * @method static mixed[]    trigger(string $event, array $arguments = null)
+ * @method static mixed[]    event(Event $event)
+ * @method static array      all()
+ * @method static void       setEvents(array $events)
  */
 class Events extends ContainerFacade
 {

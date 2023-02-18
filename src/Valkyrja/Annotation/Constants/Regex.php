@@ -29,9 +29,10 @@ final class Regex
 
     /**
      * Annotation name regex.
-     * - Matches something like @Annotation, or @Annotation\Sub
+     * - Matches something like @Annotation, or @Annotation\Sub.
      *
      * @constant string
+     *
      * @description
      *      (                       Begin capture
      *          [                       Begin any of following:
@@ -49,9 +50,10 @@ REGEX;
 
     /**
      * Arguments regex.
-     * - Matches something like: ("name" = "value", "array" = ["value"])
+     * - Matches something like: ("name" = "value", "array" = ["value"]).
      *
      * @constant string
+     *
      * @description
      * \(                    Match an opening parenthesis
      *      \s*                 Followed by any whitespace
@@ -97,9 +99,10 @@ REGEX;
 
     /**
      * Regex for single docstring line.
-     *  - Matches something like: "int $param Description"
+     *  - Matches something like: "int $param Description".
      *
      * @constant string
+     *
      * @description
      * \s*                      Followed by any whitespace
      * \*?                      Optional asterisk (for multiline)

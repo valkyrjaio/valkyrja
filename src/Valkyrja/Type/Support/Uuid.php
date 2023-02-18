@@ -41,7 +41,7 @@ class Uuid extends Uid
     protected const REGEX_PART = '[0-9A-Fa-f]';
 
     /**
-     * Generate v1 UUID
+     * Generate v1 UUID.
      *
      * Version 1 UUIDs are time-based based. It can take an optional
      * node identifier based on mac address or a unique string id.

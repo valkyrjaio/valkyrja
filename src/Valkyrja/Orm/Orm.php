@@ -215,7 +215,7 @@ interface Orm
      * </code>
      *
      * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param bool   $defer  [optional]
      *
      * @return void
      */
@@ -229,7 +229,7 @@ interface Orm
      * </code>
      *
      * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param bool   $defer  [optional]
      *
      * @return void
      */
@@ -243,7 +243,7 @@ interface Orm
      * </code>
      *
      * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param bool   $defer  [optional]
      *
      * @return void
      */
@@ -257,7 +257,7 @@ interface Orm
      * </code>
      *
      * @param SoftDeleteEntity $entity
-     * @param bool             $defer [optional]
+     * @param bool             $defer  [optional]
      *
      * @return void
      */

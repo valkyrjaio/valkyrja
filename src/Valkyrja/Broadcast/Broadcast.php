@@ -19,6 +19,7 @@ use Valkyrja\Manager\MessageManager as Manager;
  * Interface Broadcast.
  *
  * @author Melech Mizrachi
+ *
  * @extends Manager<Driver, Factory, Message>
  */
 interface Broadcast extends Manager

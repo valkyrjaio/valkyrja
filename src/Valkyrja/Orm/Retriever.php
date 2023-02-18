@@ -16,9 +16,10 @@ namespace Valkyrja\Orm;
 use Valkyrja\Orm\Exceptions\EntityNotFoundException;
 
 /**
- * Interface Retriever
+ * Interface Retriever.
  *
  * @author   Melech Mizrachi
+ *
  * @template Entity
  */
 interface Retriever extends WhereQueryBuilder

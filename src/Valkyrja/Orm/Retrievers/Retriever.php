@@ -25,9 +25,10 @@ use Valkyrja\Orm\Retriever as Contract;
 use function assert;
 
 /**
- * Class Retriever
+ * Class Retriever.
  *
  * @author   Melech Mizrachi
+ *
  * @implements Contract<Entity>
  */
 class Retriever implements Contract

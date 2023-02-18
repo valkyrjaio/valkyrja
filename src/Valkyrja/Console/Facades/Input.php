@@ -22,22 +22,22 @@ use Valkyrja\Facade\ContainerFacade;
  *
  * @author Melech Mizrachi
  *
- * @method static array getArguments()
- * @method static array getShortOptions()
- * @method static array getLongOptions()
- * @method static array getOptions()
- * @method static string getStringArguments()
- * @method static array getRequestArguments()
+ * @method static array       getArguments()
+ * @method static array       getShortOptions()
+ * @method static array       getLongOptions()
+ * @method static array       getOptions()
+ * @method static string      getStringArguments()
+ * @method static array       getRequestArguments()
  * @method static string|null getArgument(string $argument)
- * @method static bool hasArgument(string $argument)
+ * @method static bool        hasArgument(string $argument)
  * @method static string|null getShortOption(string $option)
- * @method static bool hasShortOption(string $option)
+ * @method static bool        hasShortOption(string $option)
  * @method static string|null getLongOption(string $option)
- * @method static bool hasLongOption(string $option)
+ * @method static bool        hasLongOption(string $option)
  * @method static string|null getOption(string $option)
- * @method static bool hasOption(string $option)
- * @method static Option[] getGlobalOptions()
- * @method static string[] getGlobalOptionsFlat()
+ * @method static bool        hasOption(string $option)
+ * @method static Option[]    getGlobalOptions()
+ * @method static string[]    getGlobalOptionsFlat()
  */
 class Input extends ContainerFacade
 {

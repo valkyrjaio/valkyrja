@@ -113,7 +113,7 @@ class ApplicationTest extends TestCase
      */
     public function testConfig(): void
     {
-        self::assertEquals(true, ($this->app->config() instanceof Config));
+        self::assertEquals(true, $this->app->config() instanceof Config);
     }
 
     /**

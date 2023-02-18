@@ -30,7 +30,7 @@ use InvalidArgumentException;
  * For server-side requests, the scheme will typically be discoverable in the
  * server parameters.
  *
- * @link http://tools.ietf.org/html/rfc3986 (the URI specification)
+ * @see http://tools.ietf.org/html/rfc3986 (the URI specification)
  */
 interface Uri
 {

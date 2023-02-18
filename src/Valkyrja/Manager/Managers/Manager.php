@@ -23,6 +23,7 @@ use Valkyrja\Manager\Manager as Contract;
  * Class Manager.
  *
  * @author Melech Mizrachi
+ *
  * @implements Contract<Driver, Factory>
  */
 abstract class Manager implements Contract

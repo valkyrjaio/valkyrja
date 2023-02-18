@@ -21,12 +21,12 @@ use Valkyrja\Validation\Validator as Contract;
  *
  * @author Melech Mizrachi
  *
- * @method static mixed getRules(string $name = null)
- * @method static bool validate()
- * @method static bool validateRules(array ...$rules)
- * @method static void setRules(array ...$rules)
+ * @method static mixed       getRules(string $name = null)
+ * @method static bool        validate()
+ * @method static bool        validateRules(array ...$rules)
+ * @method static void        setRules(array ...$rules)
  * @method static string|null getErrorMessage()
- * @method static void setDefaultErrorMessage(string $defaultErrorMessage)
+ * @method static void        setDefaultErrorMessage(string $defaultErrorMessage)
  */
 class Validator extends ContainerFacade
 {

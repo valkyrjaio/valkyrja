@@ -19,7 +19,7 @@ use Valkyrja\Orm\Entity;
 use Valkyrja\Type\Support\Arr;
 
 /**
- * Class Retriever
+ * Class Retriever.
  *
  * @author   Melech Mizrachi
  */

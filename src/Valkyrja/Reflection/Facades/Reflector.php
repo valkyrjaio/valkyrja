@@ -28,13 +28,13 @@ use Valkyrja\Reflection\Reflector as Contract;
  *
  * @author Melech Mizrachi
  *
- * @method static ReflectionClass getClassReflection(string $class)
+ * @method static ReflectionClass    getClassReflection(string $class)
  * @method static ReflectionProperty getPropertyReflection(string $class, string $property)
- * @method static ReflectionMethod getMethodReflection(string $class, string $method)
+ * @method static ReflectionMethod   getMethodReflection(string $class, string $method)
  * @method static ReflectionFunction getFunctionReflection(string $function)
  * @method static ReflectionFunction getClosureReflection(Closure $closure)
- * @method static string[] getDependencies(ReflectionFunctionAbstract $reflection)
- * @method static string[] getDependenciesFromParameters(ReflectionParameter ...$parameters)
+ * @method static string[]           getDependencies(ReflectionFunctionAbstract $reflection)
+ * @method static string[]           getDependenciesFromParameters(ReflectionParameter ...$parameters)
  */
 class Reflector extends ContainerFacade
 {

@@ -32,7 +32,7 @@ use function spl_object_id;
 use function strtolower;
 
 /**
- * Class Persister
+ * Class Persister.
  *
  * @author Melech Mizrachi
  */

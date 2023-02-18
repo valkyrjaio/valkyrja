@@ -67,6 +67,7 @@ class Config extends Model
      * </code>
      * Then we can do:
      * <code>
+     *
      * @Annotation("name" : "Word::VALUE")
      * </code>
      *

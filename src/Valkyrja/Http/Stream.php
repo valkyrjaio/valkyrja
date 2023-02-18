@@ -97,7 +97,7 @@ interface Stream
     /**
      * Seek to a position in the stream.
      *
-     * @link http://www.php.net/manual/en/function.fseek.php
+     * @see http://www.php.net/manual/en/function.fseek.php
      *
      * @param int $offset Stream offset
      * @param int $whence Specifies how the cursor position will be calculated
@@ -119,7 +119,7 @@ interface Stream
      * If the stream is not seekable, this method will raise an exception;
      * otherwise, it will perform a seek(0).
      *
-     * @link http://www.php.net/manual/en/function.fseek.php
+     * @see http://www.php.net/manual/en/function.fseek.php
      *
      * @throws RuntimeException on failure.
      *
@@ -164,7 +164,7 @@ interface Stream
      * @throws RuntimeException if an error occurs.
      *
      * @return string Returns the data read from the stream, or an empty string
-     *          if no bytes are available.
+     *                if no bytes are available.
      */
     public function read(int $length): string;
 
@@ -172,7 +172,7 @@ interface Stream
      * Returns the remaining contents in a string.
      *
      * @throws RuntimeException if unable to read or an error occurs while
-     *                           reading.
+     *                          reading.
      *
      * @return string
      */
@@ -183,13 +183,13 @@ interface Stream
      * The keys returned are identical to the keys returned from PHP's
      * stream_get_meta_data() function.
      *
-     * @link http://php.net/manual/en/function.stream-get-meta-data.php
+     * @see http://php.net/manual/en/function.stream-get-meta-data.php
      *
      * @param string|null $key Specific metadata to retrieve.
      *
      * @return array|mixed|null Returns an associative array if no key is
-     *          provided. Returns a specific key value if a key is provided
-     *          and the value is found, or null if the key is not found.
+     *                          provided. Returns a specific key value if a key is provided
+     *                          and the value is found, or null if the key is not found.
      */
     public function getMetadata(string $key = null): mixed;
 }

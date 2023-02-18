@@ -23,14 +23,14 @@ use Valkyrja\Routing\Route;
  *
  * @author Melech Mizrachi
  *
- * @method static Route get(string $path, $handler, string $name = null)
- * @method static Route post(string $path, $handler, string $name = null)
- * @method static Route put(string $path, $handler, string $name = null)
- * @method static Route patch(string $path, $handler, string $name = null)
- * @method static Route delete(string $path, $handler, string $name = null)
- * @method static Route head(string $path, $handler, string $name = null)
- * @method static Route any(string $path, $handler, string $name = null)
- * @method static Route redirect(string $path, string $to, array $methods = null, string $name = null)
+ * @method static Route    get(string $path, $handler, string $name = null)
+ * @method static Route    post(string $path, $handler, string $name = null)
+ * @method static Route    put(string $path, $handler, string $name = null)
+ * @method static Route    patch(string $path, $handler, string $name = null)
+ * @method static Route    delete(string $path, $handler, string $name = null)
+ * @method static Route    head(string $path, $handler, string $name = null)
+ * @method static Route    any(string $path, $handler, string $name = null)
+ * @method static Route    redirect(string $path, string $to, array $methods = null, string $name = null)
  * @method static Contract withPath(string $path)
  * @method static Contract withController(string $controller)
  * @method static Contract withName(string $name)

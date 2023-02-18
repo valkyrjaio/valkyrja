@@ -24,7 +24,9 @@ use function in_array;
  * Class Collection.
  *
  * @author   Melech Mizrachi
+ *
  * @template T
+ *
  * @implements Contract<T>
  */
 class Collection implements Contract

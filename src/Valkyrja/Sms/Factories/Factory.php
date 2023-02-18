@@ -23,6 +23,7 @@ use Valkyrja\Sms\Message;
  * Class Factory.
  *
  * @author Melech Mizrachi
+ *
  * @extends MessageFactory<Adapter, Driver, Message>
  */
 class Factory extends MessageFactory implements Contract

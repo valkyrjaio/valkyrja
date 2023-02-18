@@ -20,6 +20,7 @@ use Valkyrja\Orm\Exceptions\EntityNotFoundException;
  * Interface Repository.
  *
  * @author   Melech Mizrachi
+ *
  * @template Entity
  */
 interface Repository

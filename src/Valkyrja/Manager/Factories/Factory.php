@@ -21,6 +21,7 @@ use Valkyrja\Manager\Factory as Contract;
  * Class Factory.
  *
  * @author Melech Mizrachi
+ *
  * @implements Contract<Adapter, Driver>
  */
 class Factory implements Contract

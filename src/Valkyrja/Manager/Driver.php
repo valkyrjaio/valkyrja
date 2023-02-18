@@ -20,7 +20,7 @@ namespace Valkyrja\Manager;
  */
 interface Driver
 {
-    /**
+    /*
      * Get the adapter.
      *
      * @return Adapter

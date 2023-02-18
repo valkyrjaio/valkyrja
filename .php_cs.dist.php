@@ -37,12 +37,15 @@ return (new PhpCsFixer\Config())
             '@PSR1'                               => true,
             '@PSR2'                               => true,
             '@PSR12'                              => true,
-            // '@Symfony'                            => true,
+            '@Symfony'                            => true,
             'no_unused_imports'                   => true,
             'combine_consecutive_unsets'          => true,
             'modernize_types_casting'             => true,
-            'trailing_comma_in_multiline'         => true,
+            'no_superfluous_phpdoc_tags'          => false,
+            'single_line_throw'                   => false,
             'strict_param'                        => true,
+            'trailing_comma_in_multiline'         => true,
+            'unary_operator_spaces'               => false,
             'array_syntax'                        => [
                 'syntax' => 'short',
             ],
@@ -55,15 +58,18 @@ return (new PhpCsFixer\Config())
             'concat_space'                        => [
                 'spacing' => 'one',
             ],
+            'global_namespace_import'             => [
+                'import_classes'   => true,
+                'import_constants' => true,
+                'import_functions' => true,
+            ],
             'header_comment'                      => [
                 'header'       => $header,
                 'comment_type' => 'comment',
                 'location'     => 'after_declare_strict',
             ],
-            'global_namespace_import'             => [
-                'import_classes'   => true,
-                'import_constants' => true,
-                'import_functions' => true,
+            'increment_style'                     => [
+                'style' => 'post',
             ],
             'ordered_imports'                     => [
                 'sort_algorithm' => 'alpha',
@@ -71,6 +77,15 @@ return (new PhpCsFixer\Config())
             ],
             'phpdoc_add_missing_param_annotation' => [
                 'only_untyped' => true,
+            ],
+            'phpdoc_order'                        => [
+                'order' => ['param', 'throws', 'return'],
+            ],
+            'phpdoc_tag_type'                     => [
+                'tags' => ['inheritDoc' => 'annotation'],
+            ],
+            'phpdoc_to_comment'                   => [
+                'ignored_tags' => ['todo', 'var'],
             ],
             'phpdoc_types_order'                  => [
                 'sort_algorithm'  => 'none',

@@ -59,7 +59,7 @@ interface SimpleRequest extends Message
      * immutability of the message, and MUST return an instance that has the
      * changed request target.
      *
-     * @link http://tools.ietf.org/html/rfc7230#section-5.3 (for the various
+     * @see http://tools.ietf.org/html/rfc7230#section-5.3 (for the various
      *     request-target forms allowed in request messages)
      *
      * @param string $requestTarget The request target
@@ -96,7 +96,7 @@ interface SimpleRequest extends Message
      * Retrieves the URI instance.
      * This method MUST return a Uri instance.
      *
-     * @link http://tools.ietf.org/html/rfc3986#section-4.3
+     * @see http://tools.ietf.org/html/rfc3986#section-4.3
      *
      * @return Uri Returns a Uri instance
      *             representing the URI of the request.
@@ -125,7 +125,7 @@ interface SimpleRequest extends Message
      * immutability of the message, and MUST return an instance that has the
      * new Uri instance.
      *
-     * @link http://tools.ietf.org/html/rfc3986#section-4.3
+     * @see http://tools.ietf.org/html/rfc3986#section-4.3
      *
      * @param Uri  $uri          New request URI to use.
      * @param bool $preserveHost Preserve the original state of the Host

@@ -17,9 +17,11 @@ namespace Valkyrja\Manager;
  * Interface MessageFactory.
  *
  * @author   Melech Mizrachi
+ *
  * @template Adapter
  * @template Driver
  * @template Message
+ *
  * @extends Factory<Adapter, Driver>
  */
 interface MessageFactory extends Factory

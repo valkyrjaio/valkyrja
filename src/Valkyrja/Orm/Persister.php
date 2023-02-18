@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm;
 
 /**
- * Interface Persister
+ * Interface Persister.
  *
  * @author Melech Mizrachi
  */

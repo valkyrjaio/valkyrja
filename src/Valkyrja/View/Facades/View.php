@@ -24,8 +24,8 @@ use Valkyrja\View\View as Contract;
  * @author Melech Mizrachi
  *
  * @method static Template createTemplate(string $template = null, array $variables = [], string $engine = null)
- * @method static Engine getEngine(string $name = null)
- * @method static string render(string $name, array $variables = [])
+ * @method static Engine   getEngine(string $name = null)
+ * @method static string   render(string $name, array $variables = [])
  */
 class View extends ContainerFacade
 {

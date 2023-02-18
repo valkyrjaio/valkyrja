@@ -38,8 +38,8 @@ interface Url
      * @param string|null $method [optional] The method type of get
      *
      * @return Route|null
-     *      The route if found or null when no static route is
-     *      found for the path and method combination specified
+     *                    The route if found or null when no static route is
+     *                    found for the path and method combination specified
      */
     public function getRouteByPath(string $path, string $method = null): ?Route;
 

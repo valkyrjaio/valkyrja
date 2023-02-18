@@ -22,7 +22,7 @@ namespace Valkyrja\Http\Constants;
  *
  * @author Melech Mizrachi
  *
- * @link   https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
+ * @see   https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
  */
 final class Header
 {
@@ -43,7 +43,7 @@ final class Header
      *      accept-params    = ";" "q" "=" qvalue *( accept-extension )
      *      accept-extension = ";" token [ "=" ( token | quoted-string ) ].
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1
      */
     public const ACCEPT = 'Accept';
 
@@ -58,7 +58,7 @@ final class Header
      *      Accept-Charset = "Accept-Charset" ":"
      *                       1#( ( charset | "*" )[ ";" "q" "=" qvalue ] ).
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.2
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.2
      */
     public const ACCEPT_CHARSET = 'Accept-Charset';
 
@@ -71,7 +71,7 @@ final class Header
      *                        1#( codings [ ";" "q" "=" qvalue ] )
      *      codings         = ( content-coding | "*" ).
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3
      */
     public const ACCEPT_ENCODING = 'Accept-Encoding';
 
@@ -85,7 +85,7 @@ final class Header
      *                        1#( language-range [ ";" "q" "=" qvalue ] )
      *      language-range  = ( ( 1*8ALPHA *( "-" 1*8ALPHA ) ) | "*" ).
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
      */
     public const ACCEPT_LANGUAGE = 'Accept-Language';
 
@@ -96,7 +96,7 @@ final class Header
      *      Accept-Ranges     = "Accept-Ranges" ":" acceptable-ranges
      *      acceptable-ranges = 1#range-unit | "none".
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.5
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.5
      */
     public const ACCEPT_RANGES = 'Accept-Ranges';
 
@@ -110,7 +110,7 @@ final class Header
      *      Age       = "Age" ":" age-value
      *      age-value = delta-seconds.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.6
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.6
      */
     public const AGE = 'Age';
 
@@ -123,7 +123,7 @@ final class Header
      * present in a 405 (Method Not Allowed) response.
      *      Allow = "Allow" ":" #Method.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.7
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.7
      */
     public const ALLOW = 'Allow';
 
@@ -137,7 +137,7 @@ final class Header
      * the realm of the resource being requested.
      *      Authorization = "Authorization" ":" credentials.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.8
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.8
      */
     public const AUTHORIZATION = 'Authorization';
 
@@ -184,7 +184,7 @@ final class Header
      *          | cache-extension                        ; Section 14.9.6
      *      cache-extension = token [ "=" ( token | quoted-string ) ].
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9
      */
     public const CACHE_CONTROL = 'Cache-Control';
 
@@ -197,7 +197,7 @@ final class Header
      *      Connection       = "Connection" ":" 1#(connection-token)
      *      connection-token = token.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.10
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.10
      */
     public const CONNECTION = 'Connection';
 
@@ -212,7 +212,7 @@ final class Header
      * its underlying media type.
      *      Content-Encoding = "Content-Encoding" ":" 1#content-coding.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.11
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.11
      */
     public const CONTENT_ENCODING = 'Content-Encoding';
 
@@ -224,7 +224,7 @@ final class Header
      * within the entity-body.
      *      Content-Language = "Content-Language" ":" 1#language-tag.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.12
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.12
      */
     public const CONTENT_LANGUAGE = 'Content-Language';
 
@@ -236,7 +236,7 @@ final class Header
      * would have been sent had the request been a GET.
      *      Content-Length = "Content-Length" ":" 1*DIGIT.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.13
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.13
      */
     public const CONTENT_LENGTH = 'Content-Length';
 
@@ -254,7 +254,7 @@ final class Header
      *      Content-Location = "Content-Location" ":"
      *                         ( absoluteURI | relativeURI ).
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.14
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.14
      */
     public const CONTENT_LOCATION = 'Content-Location';
 
@@ -268,7 +268,7 @@ final class Header
      *      Content-MD5 = "Content-MD5" ":" md5-digest
      *      md5-digest  = <base64 of 128 bit MD5 digest as per RFC 1864>.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.15
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.15
      */
     public const CONTENT_MD5 = 'Content-MD5';
 
@@ -286,7 +286,7 @@ final class Header
      *                                | "*"
      *      instance-length         = 1*DIGIT.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.16
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.16
      */
     public const CONTENT_RANGE = 'Content-Range';
 
@@ -297,7 +297,7 @@ final class Header
      * the media type that would have been sent had the request been a GET.
      *      Content-Type   = "Content-Type" ":" media-type.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17
      */
     public const CONTENT_TYPE = 'Content-Type';
 
@@ -309,7 +309,7 @@ final class Header
      * section 3.3.1; it MUST be sent in RFC 1123 [8]-date format.
      *      Date = "Date" ":" HTTP-date.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.18
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.18
      */
     public const DATE = 'Date';
 
@@ -322,7 +322,7 @@ final class Header
      * (see section 13.3.3).
      *      ETag = "ETag" ":" entity-tag.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19
      */
     public const E_TAG = 'ETag';
 
@@ -336,7 +336,7 @@ final class Header
      *                              expect-params ]
      *      expect-params         = ";" token [ "=" ( token | quoted-string ) ].
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.20
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.20
      */
     public const EXPECT = 'Expect';
 
@@ -354,7 +354,7 @@ final class Header
      * in section 3.3.1; it MUST be in RFC 1123 date format:
      *      Expires = "Expires" ":" HTTP-date.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.21
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.21
      */
     public const EXPIRES = 'Expires';
 
@@ -366,7 +366,7 @@ final class Header
      * in RFC 822 [9] as updated by RFC 1123 [8]:
      *      From = "From" ":" mailbox.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.22
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.22
      */
     public const FROM = 'From';
 
@@ -382,7 +382,7 @@ final class Header
      * "/" URL of a server for multiple host names on a single IP address.
      *      Host = "Host" ":" host [ ":" port ] ; Section 3.2.2.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.23
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.23
      */
     public const HOST = 'Host';
 
@@ -400,7 +400,7 @@ final class Header
      * "*" matches any current entity of the resource.
      *      If-Match = "If-Match" ":" ( "*" | 1#entity-tag ).
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.24
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.24
      */
     public const IF_MATCH = 'If-Match';
 
@@ -413,7 +413,7 @@ final class Header
      * will be returned without any message-body.
      *      If-Modified-Since = "If-Modified-Since" ":" HTTP-date.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.25
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.25
      */
     public const IF_MODIFIED_SINCE = 'If-Modified-Since';
 
@@ -432,7 +432,7 @@ final class Header
      * the resource.
      *      If-None-Match = "If-None-Match" ":" ( "*" | 1#entity-tag ).
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.26
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.26
      */
     public const IF_NONE_MATCH = 'If-None-Match';
 
@@ -451,7 +451,7 @@ final class Header
      * entire new entity'.
      *      If-Range = "If-Range" ":" ( entity-tag | HTTP-date ).
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.27
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.27
      */
     public const IF_RANGE = 'If-Range';
 
@@ -467,7 +467,7 @@ final class Header
      * a 412 (Precondition Failed).
      *      If-Unmodified-Since = "If-Unmodified-Since" ":" HTTP-date.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.28
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.28
      */
     public const IF_UNMODIFIED_SINCE = 'If-Unmodified-Since';
 
@@ -477,7 +477,7 @@ final class Header
      * at which the origin server believes the variant was last modified.
      *      Last-Modified = "Last-Modified" ":" HTTP-date.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.29
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.29
      */
     public const LAST_MODIFIED = 'Last-Modified';
 
@@ -492,7 +492,7 @@ final class Header
      * to the resource. The field value consists of a single absolute URI.
      *      Location = "Location" ":" absoluteURI.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.30
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.30
      */
     public const LOCATION = 'Location';
 
@@ -506,7 +506,7 @@ final class Header
      * in mid-chain.
      *      Max-Forwards = "Max-Forwards" ":" 1*DIGIT.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.31
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.31
      */
     public const MAX_FORWARDS = 'Max-Forwards';
 
@@ -521,7 +521,7 @@ final class Header
      *      pragma-directive = "no-cache" | extension-pragma
      *      extension-pragma = token [ "=" ( token | quoted-string ) ].
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.32
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.32
      */
     public const PRAGMA = 'Pragma';
 
@@ -533,7 +533,7 @@ final class Header
      * scheme and parameters applicable to the proxy for this Request-URI.
      *      Proxy-Authenticate = "Proxy-Authenticate" ":" 1#challenge.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.33
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.33
      */
     public const PROXY_AUTHENTICATE = 'Proxy-Authenticate';
 
@@ -546,7 +546,7 @@ final class Header
      * agent for the proxy and/or realm of the resource being requested.
      *      Proxy-Authorization = "Proxy-Authorization" ":" credentials.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.34
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.34
      */
     public const PROXY_AUTHORIZATION = 'Proxy-Authorization';
 
@@ -590,7 +590,7 @@ final class Header
      * which applies to the entity returned as the result of the request:
      *      Range = "Range" ":" ranges-specifier.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.35
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.35
      */
     public const RANGE = 'Range';
 
@@ -607,7 +607,7 @@ final class Header
      * have its own URI, such as input from the user keyboard.
      *      Referer = "Referer" ":" ( absoluteURI | relativeURI ).
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.36
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.36
      */
     public const REFERER = 'Referer';
 
@@ -623,7 +623,7 @@ final class Header
      * response.
      *      Retry-After = "Retry-After" ":" ( HTTP-date | delta-seconds ).
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.37
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.37
      */
     public const RETRY_AFTER = 'Retry-After';
 
@@ -637,7 +637,7 @@ final class Header
      * the application.
      *      Server = "Server" ":" 1*( product | comment ).
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.38
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.38
      */
     public const SERVER = 'Server';
 
@@ -681,7 +681,7 @@ final class Header
      *      httponly-av       = "HttpOnly"
      *      extension-av      = <any CHAR except CTLs or ";">.
      *
-     * @link https://tools.ietf.org/html/rfc6265#section-4.1
+     * @see https://tools.ietf.org/html/rfc6265#section-4.1
      */
     public const SET_COOKIE = 'Set-Cookie';
 
@@ -696,7 +696,7 @@ final class Header
      *      TE        = "TE" ":" #( t-codings )
      *      t-codings = "trailers" | ( transfer-extension [ accept-params ] ).
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.39
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.39
      */
     public const TE = 'TE';
 
@@ -707,7 +707,7 @@ final class Header
      * chunked transfer-coding.
      *      Trailer = "Trailer" ":" 1#field-name.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.40
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.40
      */
     public const TRAILER = 'Trailer';
 
@@ -720,7 +720,7 @@ final class Header
      * property of the message, not of the entity.
      *      Transfer-Encoding = "Transfer-Encoding" ":" 1#transfer-coding.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.41
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.41
      */
     public const TRANSFER_ENCODING = 'Transfer-Encoding';
 
@@ -734,7 +734,7 @@ final class Header
      * are being switched.
      *      Upgrade = "Upgrade" ":" 1#product.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.42
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.42
      */
     public const UPGRADE = 'Upgrade';
 
@@ -752,7 +752,7 @@ final class Header
      * the application.
      *      User-Agent = "User-Agent" ":" 1*( product | comment ).
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.43
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.43
      */
     public const USER_AGENT = 'User-Agent';
 
@@ -770,7 +770,7 @@ final class Header
      * field by caches.
      *      Vary = "Vary" ":" ( "*" | 1#field-name ).
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.44
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.44
      */
     public const VARY = 'Vary';
 
@@ -789,7 +789,7 @@ final class Header
      *      token received-by       = ( host [ ":" port ] ) | pseudonym
      *      pseudonym         = token.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.45
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.45
      */
     public const VIA = 'Via';
 
@@ -812,7 +812,7 @@ final class Header
      *      warn-text     = quoted-string
      *      warn-date     = <"> HTTP-date <">.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.46
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.46
      */
     public const WARNING = 'Warning';
 
@@ -824,7 +824,7 @@ final class Header
      * and parameters applicable to the Request-URI.
      *      WWW-Authenticate = "WWW-Authenticate" ":" 1#challenge.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.47
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.47
      */
     public const WWW_AUTHENTICATE = 'WWW-Authenticate';
 
