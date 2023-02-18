@@ -403,9 +403,9 @@ trait Castable
     /**
      * Get a model from value.
      *
-     * @param string $property The property name
-     * @param string $type     The type of the property
-     * @param mixed  $value    The value
+     * @param string              $property The property name
+     * @param class-string<Model> $type     The type of the property
+     * @param mixed               $value    The value
      *
      * @throws JsonException
      *
@@ -425,7 +425,7 @@ trait Castable
             $value = array_merge($this->$property->asArray(), $value);
         }
 
-        /** @var static $type */
+        /** @var Model $type */
         return $type::fromArray($value);
     }
 
