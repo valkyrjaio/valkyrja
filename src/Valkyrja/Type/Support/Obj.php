@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Type;
+namespace Valkyrja\Type\Support;
 
 use JsonException;
 
@@ -20,6 +20,7 @@ use function explode;
 use function get_object_vars;
 use function json_decode;
 use function json_encode;
+use function Valkyrja\Type\str_contains;
 
 use const JSON_THROW_ON_ERROR;
 

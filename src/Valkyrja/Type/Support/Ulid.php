@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Type;
+namespace Valkyrja\Type\Support;
 
 use DateTimeInterface;
 use Exception;
@@ -20,6 +20,7 @@ use Valkyrja\Type\Exceptions\InvalidUlidException;
 
 use function microtime;
 use function substr;
+use function Valkyrja\Type\strtr;
 
 /**
  * Class Ulid.

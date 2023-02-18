@@ -21,8 +21,8 @@ use Valkyrja\Model\Models\Model;
 use Valkyrja\Model\Models\ProtectedExposable;
 use Valkyrja\Orm\Entity as Contract;
 use Valkyrja\Orm\Repository;
-use Valkyrja\Type\Arr;
-use Valkyrja\Type\Obj;
+use Valkyrja\Type\Support\Arr;
+use Valkyrja\Type\Support\Obj;
 
 use function is_array;
 use function is_int;

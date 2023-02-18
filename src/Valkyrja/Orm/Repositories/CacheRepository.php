@@ -23,8 +23,8 @@ use Valkyrja\Orm\Exceptions\EntityNotFoundException;
 use Valkyrja\Orm\Orm;
 use Valkyrja\Orm\QueryBuilder;
 use Valkyrja\Orm\SoftDeleteEntity;
-use Valkyrja\Type\Arr;
-use Valkyrja\Type\Obj;
+use Valkyrja\Type\Support\Arr;
+use Valkyrja\Type\Support\Obj;
 
 use function get_class;
 use function is_array;

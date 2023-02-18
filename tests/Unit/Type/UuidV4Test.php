@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Type;
 
 use Valkyrja\Type\Enums\UuidVersion;
 use Valkyrja\Type\Exceptions\InvalidUuidV4Exception;
-use Valkyrja\Type\Uuid;
-use Valkyrja\Type\UuidV4;
+use Valkyrja\Type\Support\Uuid;
+use Valkyrja\Type\Support\UuidV4;
 
 class UuidV4Test extends AbstractUuidTest
 {

@@ -23,7 +23,7 @@ use Valkyrja\Orm\Persister as Contract;
 use Valkyrja\Orm\Query;
 use Valkyrja\Orm\QueryBuilder;
 use Valkyrja\Orm\SoftDeleteEntity;
-use Valkyrja\Type\Arr;
+use Valkyrja\Type\Support\Arr;
 
 use function is_array;
 use function is_object;

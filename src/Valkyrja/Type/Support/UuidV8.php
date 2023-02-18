@@ -11,54 +11,42 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Type;
+namespace Valkyrja\Type\Support;
 
 use Exception;
 use Valkyrja\Type\Enums\UuidVersion;
-use Valkyrja\Type\Exceptions\InvalidUuidV4Exception;
-
-use function chr;
-use function ord;
+use Valkyrja\Type\Exceptions\InvalidUuidV8Exception;
 
 /**
- * Class UuidV4.
+ * Class UuidV8.
  *
  * @author Melech Mizrachi
  */
-class UuidV4 extends Uuid
+abstract class UuidV8 extends Uuid
 {
     public const REGEX = self::REGEX_PART . '{8}-'
     . self::REGEX_PART . '{4}-'
-    . '[4]'
+    . '[8]'
     . self::REGEX_PART . '{3}-'
     . self::REGEX_PART . '{4}-'
     . self::REGEX_PART . '{12}';
 
-    public const VERSION = UuidVersion::V4;
+    public const VERSION = UuidVersion::V8;
 
     /**
-     * Generate a v4 UUID.
+     * Generate a v8 UUID.
      *
      * @throws Exception
      *
      * @return string
      */
-    public static function generate(): string
-    {
-        $data = random_bytes(16);
-        // Set version to 0100
-        $data[6] = chr(ord($data[6]) & 0x0F | 0x40);
-        // Set bits 6-7 to 10
-        $data[8] = chr(ord($data[8]) & 0x3F | 0x80);
-
-        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
-    }
+    abstract public static function generate(): string;
 
     /**
      * @inheritDoc
      */
     protected static function throwInvalidException(string $uid): never
     {
-        throw new InvalidUuidV4Exception("Invalid UUID V4 $uid provided.");
+        throw new InvalidUuidV8Exception("Invalid UUID V8 $uid provided.");
     }
 }

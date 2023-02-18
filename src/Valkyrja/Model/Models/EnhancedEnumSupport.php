@@ -16,7 +16,7 @@ namespace Valkyrja\Model\Models;
 use BackedEnum;
 use JsonSerializable;
 use UnitEnum;
-use Valkyrja\Type\Enum\JsonSerializableEnum;
+use Valkyrja\Type\JsonSerializableEnum;
 
 /**
  * Trait EnhancedEnumSupport.

@@ -17,7 +17,7 @@ use JsonException;
 use Valkyrja\Log\Driver as Logger;
 use Valkyrja\Mail\LogAdapter as Contract;
 use Valkyrja\Mail\Message;
-use Valkyrja\Type\Arr;
+use Valkyrja\Type\Support\Arr;
 
 /**
  * Class LogAdapter.

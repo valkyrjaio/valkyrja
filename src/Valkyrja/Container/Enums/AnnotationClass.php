@@ -16,7 +16,7 @@ namespace Valkyrja\Container\Enums;
 use Valkyrja\Container\Annotations\Service;
 use Valkyrja\Container\Annotations\Service\Alias;
 use Valkyrja\Container\Annotations\Service\Context;
-use Valkyrja\Type\Enum\Enum;
+use Valkyrja\Type\Types\Enum;
 
 /**
  * Enum AnnotationClass.

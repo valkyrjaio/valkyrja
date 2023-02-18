@@ -15,11 +15,11 @@ namespace Valkyrja\Tests\Unit\Type;
 
 use Valkyrja\Type\Enums\VlidVersion;
 use Valkyrja\Type\Exceptions\InvalidVlidException;
-use Valkyrja\Type\Vlid;
-use Valkyrja\Type\VlidV1;
-use Valkyrja\Type\VlidV2;
-use Valkyrja\Type\VlidV3;
-use Valkyrja\Type\VlidV4;
+use Valkyrja\Type\Support\Vlid;
+use Valkyrja\Type\Support\VlidV1;
+use Valkyrja\Type\Support\VlidV2;
+use Valkyrja\Type\Support\VlidV3;
+use Valkyrja\Type\Support\VlidV4;
 
 class VlidTest extends AbstractVlidTest
 {

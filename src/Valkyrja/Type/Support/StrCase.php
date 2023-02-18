@@ -11,12 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Type;
+namespace Valkyrja\Type\Support;
 
 use function preg_replace;
 use function strtolower;
 use function strtoupper;
 use function ucwords;
+use function Valkyrja\Type\ctype_lower;
 
 /**
  * Class StrCase.

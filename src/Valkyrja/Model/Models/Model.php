@@ -15,8 +15,8 @@ namespace Valkyrja\Model\Models;
 
 use JsonException;
 use Valkyrja\Model\Model as Contract;
-use Valkyrja\Type\Arr;
-use Valkyrja\Type\StrCase;
+use Valkyrja\Type\Support\Arr;
+use Valkyrja\Type\Support\StrCase;
 
 /**
  * Class Model.

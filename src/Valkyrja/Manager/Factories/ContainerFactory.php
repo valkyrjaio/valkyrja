@@ -17,7 +17,7 @@ use Valkyrja\Container\Container;
 use Valkyrja\Manager\Adapter;
 use Valkyrja\Manager\Driver;
 use Valkyrja\Manager\Factory;
-use Valkyrja\Type\Cls;
+use Valkyrja\Type\Support\Cls;
 
 /**
  * Class ContainerFactory.
