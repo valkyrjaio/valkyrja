@@ -49,6 +49,8 @@ interface CastableModel extends Model
      *          'property_name' => [CastType::model, Model::class],
      *          // An property to be cast to an array of models
      *          'property_name' => [CastType::model, [Model::class]],
+     *          // An property to be cast to a Type
+     *          'property_name' => [CastType::type, Type::class],
      *      ]
      * </code>
      *

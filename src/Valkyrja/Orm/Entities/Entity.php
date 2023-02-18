@@ -23,6 +23,7 @@ use Valkyrja\Orm\Entity as Contract;
 use Valkyrja\Orm\Repository;
 use Valkyrja\Type\Support\Arr;
 use Valkyrja\Type\Support\Obj;
+use Valkyrja\Type\Type;
 
 use function is_array;
 use function is_int;
@@ -224,6 +225,7 @@ abstract class Entity extends Model implements Contract
             CastType::bool   => $this->__getBoolValueForDataStore($property, $value),
             CastType::model  => $this->__getModelValueForDataStore($property, $value),
             CastType::enum   => $this->__getEnumValueForDataStore($property, $value),
+            CastType::type   => $this->__getTypeValueForDataStore($property, $value),
             CastType::array  => $this->__getArrayValueForDataStore($property, $value),
             CastType::json   => $this->__getJsonValueForDataStore($property, $value),
             CastType::object => $this->__getObjectValueForDataStore($property, $value),
@@ -384,6 +386,21 @@ abstract class Entity extends Model implements Contract
         return is_string($value)
             ? $value
             : serialize($value);
+    }
+
+    /**
+     * Get a Type type cast value for data store.
+     *
+     * @param string $property The property name
+     * @param mixed  $value    The value
+     *
+     * @return mixed
+     */
+    protected function __getTypeValueForDataStore(string $property, mixed $value): mixed
+    {
+        return $value instanceof Type
+            ? $value->get()
+            : $value;
     }
 
     /**
