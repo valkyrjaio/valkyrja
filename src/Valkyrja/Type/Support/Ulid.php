@@ -19,8 +19,8 @@ use InvalidArgumentException;
 use Valkyrja\Type\Exceptions\InvalidUlidException;
 
 use function microtime;
+use function strtr;
 use function substr;
-use function Valkyrja\Type\strtr;
 
 /**
  * Class Ulid.
