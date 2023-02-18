@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Repositories;
 
 use Valkyrja\Orm\Entity;
-use Valkyrja\Type\StrCase;
+use Valkyrja\Type\Support\StrCase;
 
 /**
  * Trait RelationshipCapableRepository.

@@ -17,7 +17,7 @@ use Valkyrja\Manager\Adapter;
 use Valkyrja\Manager\Driver;
 use Valkyrja\Manager\Message;
 use Valkyrja\Manager\MessageFactory;
-use Valkyrja\Type\Cls;
+use Valkyrja\Type\Support\Cls;
 
 /**
  * Class ContainerMessageFactory.

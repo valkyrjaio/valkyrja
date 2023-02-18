@@ -11,38 +11,39 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Type;
+namespace Valkyrja\Type\Support;
 
 use Valkyrja\Type\Enums\VlidVersion;
-use Valkyrja\Type\Exceptions\InvalidVlidV2Exception;
+use Valkyrja\Type\Exceptions\InvalidVlidV4Exception;
 
 /**
- * Class VlidV2.
+ * Class VlidV4.
  *
  * Valkyrja Universally Unique Lexicographically Sortable Identifier (VLID)
  * A more precise version of a ULID where time must be down to the microsecond, and  80 bits of randomness is required.
+ * A tiny version of a VLID where much less random bytes is acceptable.
  *
  * @author Melech Mizrachi
  */
-class VlidV2 extends Vlid
+class VlidV4 extends Vlid
 {
     public const REGEX = '[0-7]'
     . '[' . self::VALID_CHARACTERS . ']{12}'
-    . '[2]'
-    . '[' . self::VALID_CHARACTERS . ']{16}';
+    . '[4]'
+    . '[' . self::VALID_CHARACTERS . ']{4}';
 
-    public const VERSION = VlidVersion::V2;
+    public const VERSION = VlidVersion::V4;
 
-    protected const FORMAT = '%013s%01s%04s%04s%04s%04s';
+    protected const FORMAT = '%013s%01s%04s';
 
-    protected const MAX_RANDOM_BYTES = 4;
+    protected const MAX_RANDOM_BYTES = 1;
 
     /**
      * @inheritDoc
      */
     protected static function areAllRandomBytesMax(): bool
     {
-        return Ulid::areAllRandomBytesMax();
+        return static::$randomBytes === [1 => self::MAX_PART];
     }
 
     /**
@@ -50,7 +51,7 @@ class VlidV2 extends Vlid
      */
     protected static function unsetRandomByteParts(array &$randomBytes): void
     {
-        Ulid::unsetRandomByteParts($randomBytes);
+        unset($randomBytes[2], $randomBytes[3], $randomBytes[4], $randomBytes[5]);
     }
 
     /**
@@ -58,6 +59,6 @@ class VlidV2 extends Vlid
      */
     protected static function throwInvalidException(string $uid): never
     {
-        throw new InvalidVlidV2Exception("Invalid VLID V2 $uid provided.");
+        throw new InvalidVlidV4Exception("Invalid VLID V4 $uid provided.");
     }
 }

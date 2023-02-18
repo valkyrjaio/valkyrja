@@ -19,8 +19,8 @@ use UnitEnum;
 use Valkyrja\Model\CastableModel as Contract;
 use Valkyrja\Model\Enums\CastType;
 use Valkyrja\Model\Model;
-use Valkyrja\Type\Arr;
-use Valkyrja\Type\Obj;
+use Valkyrja\Type\Support\Arr;
+use Valkyrja\Type\Support\Obj;
 
 use function is_array;
 use function is_object;

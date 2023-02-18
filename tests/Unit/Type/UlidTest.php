@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type;
 
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\Exceptions\InvalidUlidException;
-use Valkyrja\Type\Ulid;
+use Valkyrja\Type\Support\Ulid;
 
 class UlidTest extends TestCase
 {

@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Type\Enum;
+namespace Valkyrja\Type\Types\Enum;
 
-use Valkyrja\Type\Enum;
+use Valkyrja\Type\Support\Enum;
 
 /**
  * Trait Arrayable.

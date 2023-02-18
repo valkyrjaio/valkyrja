@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Type;
+namespace Valkyrja\Type\Support;
 
 use Exception;
 
@@ -23,6 +23,12 @@ use function str_replace;
 use function strlen;
 use function substr;
 use function trim;
+use function Valkyrja\Type\ctype_alpha;
+use function Valkyrja\Type\ctype_lower;
+use function Valkyrja\Type\ctype_upper;
+use function Valkyrja\Type\str_contains;
+use function Valkyrja\Type\str_ends_with;
+use function Valkyrja\Type\str_starts_with;
 
 use const FILTER_VALIDATE_EMAIL;
 

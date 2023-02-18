@@ -35,6 +35,7 @@ enum CastType: string implements JsonSerializable
     case object = 'object';
     case model  = 'model';
     case enum   = 'enum';
+    case type   = 'type';
 
     /**
      * @inheritDoc

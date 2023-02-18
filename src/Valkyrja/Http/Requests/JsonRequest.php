@@ -25,7 +25,7 @@ use Valkyrja\Http\Streams\Stream as HttpStream;
 use Valkyrja\Http\UploadedFile;
 use Valkyrja\Http\Uri;
 use Valkyrja\Http\Uris\Uri as HttpUri;
-use Valkyrja\Type\Arr;
+use Valkyrja\Type\Support\Arr;
 
 /**
  * Class JsonRequest.

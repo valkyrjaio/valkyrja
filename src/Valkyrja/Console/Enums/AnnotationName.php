@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Enums;
 
-use Valkyrja\Type\Enum\Enum;
+use Valkyrja\Type\Types\Enum;
 
 /**
  * Enum AnnotationName.

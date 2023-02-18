@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Type;
+namespace Valkyrja\Type\Support;
 
 use Valkyrja\Type\Enums\VlidVersion;
 use Valkyrja\Type\Exceptions\InvalidVlidV1Exception;

@@ -21,7 +21,7 @@ use Valkyrja\Console\Support\Provides;
 use Valkyrja\Container\Managers\CacheableContainer;
 use Valkyrja\Event\Dispatchers\CacheableEvents;
 use Valkyrja\Routing\Collections\CacheableCollection;
-use Valkyrja\Type\Arr;
+use Valkyrja\Type\Support\Arr;
 
 use function file_put_contents;
 use function is_file;

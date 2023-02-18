@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Type;
 
 use Valkyrja\Type\Enums\UuidVersion;
 use Valkyrja\Type\Exceptions\InvalidUuidV7Exception;
-use Valkyrja\Type\Uuid;
-use Valkyrja\Type\UuidV7;
+use Valkyrja\Type\Support\Uuid;
+use Valkyrja\Type\Support\UuidV7;
 
 class UuidV7Test extends AbstractUuidTest
 {

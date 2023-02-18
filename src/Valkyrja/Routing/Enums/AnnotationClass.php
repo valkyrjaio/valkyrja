@@ -27,7 +27,7 @@ use Valkyrja\Routing\Annotations\Route\Redirect;
 use Valkyrja\Routing\Annotations\Route\Redirect\Permanent;
 use Valkyrja\Routing\Annotations\Route\Secure;
 use Valkyrja\Routing\Annotations\Route\Trace;
-use Valkyrja\Type\Enum\Enum;
+use Valkyrja\Type\Types\Enum;
 
 /**
  * Enum AnnotationClass.
