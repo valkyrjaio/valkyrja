@@ -19,6 +19,7 @@ use Valkyrja\Manager\Factory as Contract;
  * Interface Factory.
  *
  * @author Melech Mizrachi
+ *
  * @extends Contract<Adapter, Driver>
  */
 interface Factory extends Contract

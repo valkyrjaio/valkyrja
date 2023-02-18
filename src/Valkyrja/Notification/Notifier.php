@@ -21,7 +21,7 @@ namespace Valkyrja\Notification;
 interface Notifier
 {
     /**
-     * Create a new notification
+     * Create a new notification.
      *
      * @param string $name The notification name
      * @param array  $data [optional] The data to add to the notification

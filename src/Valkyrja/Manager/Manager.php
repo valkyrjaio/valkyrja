@@ -17,6 +17,7 @@ namespace Valkyrja\Manager;
  * Interface Manager.
  *
  * @author   Melech Mizrachi
+ *
  * @template Driver
  * @template Factory
  */

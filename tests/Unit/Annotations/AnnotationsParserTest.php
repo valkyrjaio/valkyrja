@@ -32,9 +32,11 @@ use Valkyrja\Routing\Annotations\Route;
  * Test the AnnotationsParser class.
  *
  * @description A description to test with
+ *
  * @author      Melech Mizrachi
  *
  * @param string $param A description test
+ *
  * @Route("path" = "/", "name" = "noAClass::Property")
  */
 class AnnotationsParserTest extends TestCase
@@ -93,6 +95,7 @@ class AnnotationsParserTest extends TestCase
      * Test the getAnnotations method.
      *
      * @throws ReflectionException
+     *
      * @return void
      */
     public function testGetAnnotations(): void

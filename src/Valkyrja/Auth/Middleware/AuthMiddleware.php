@@ -61,7 +61,7 @@ abstract class AuthMiddleware extends Middleware
     protected static Config|array $config;
 
     /**
-     * The adapter to use
+     * The adapter to use.
      *
      * @var class-string<Adapter>|null
      */

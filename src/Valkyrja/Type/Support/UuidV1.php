@@ -43,7 +43,7 @@ class UuidV1 extends Uuid
     public const VERSION = UuidVersion::V1;
 
     /**
-     * Generate v1 UUID
+     * Generate v1 UUID.
      *
      * Version 1 UUIDs are time-based based. It can take an optional
      * node identifier based on mac address or a unique string id.

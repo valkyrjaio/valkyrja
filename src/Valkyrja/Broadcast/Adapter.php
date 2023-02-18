@@ -33,7 +33,7 @@ interface Adapter extends Contract
      * @param string $message The message
      *
      * @throws InvalidArgumentException When $value is neither a string or numeric
-     * @throws JsonException If a malformed message is provided
+     * @throws JsonException            If a malformed message is provided
      *
      * @return bool
      */

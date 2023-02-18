@@ -27,6 +27,7 @@ use Valkyrja\Sms\Sms as Contract;
  * @author Melech Mizrachi
  *
  * @property Factory $factory
+ *
  * @extends Manager<Driver, Factory, Message>
  */
 class Sms extends Manager implements Contract

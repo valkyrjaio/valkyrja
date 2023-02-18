@@ -41,7 +41,7 @@ interface View
     public function getEngine(string $name = null): Engine;
 
     /**
-     * Render a template
+     * Render a template.
      *
      * @param string               $name      The name of the template to render
      * @param array<string, mixed> $variables [optional] The variables to set

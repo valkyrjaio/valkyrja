@@ -68,7 +68,7 @@ class Route extends Dispatch implements Contract
     protected ?string $regex;
 
     /**
-     * The dynamic parameters
+     * The dynamic parameters.
      *
      * @var Parameter[]
      */

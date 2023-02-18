@@ -57,7 +57,7 @@ class UuidV6 extends Uuid
 
         return $timeHigh . $timeMid . $timeLow1[0]
             . '-' . substr($timeLow1, 1)
-            . '-' . '6' . $timeLow2
+            . '-6' . $timeLow2
             . '-' . substr($rest, 0, 4)
             . '-' . substr($rest, 4);
     }

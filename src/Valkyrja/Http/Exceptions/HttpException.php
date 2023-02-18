@@ -47,7 +47,7 @@ class HttpException extends RuntimeException
     /**
      * HttpException constructor.
      *
-     * @link http://php.net/manual/en/exception.construct.php
+     * @see http://php.net/manual/en/exception.construct.php
      *
      * @param int|null      $statusCode [optional] The status code to use
      * @param string|null   $message    [optional] The Exception message to throw

@@ -34,7 +34,7 @@ interface Api
     public function jsonFromException(Exception $exception): Json;
 
     /**
-     * Make a new JSON response from an exception
+     * Make a new JSON response from an exception.
      *
      * @param Exception $exception
      *

@@ -19,6 +19,7 @@ use JsonException;
  * Interface Collection.
  *
  * @author   Melech Mizrachi
+ *
  * @template T
  */
 interface Collection

@@ -20,6 +20,7 @@ use Valkyrja\Manager\Manager;
  * Interface Logger.
  *
  * @author Melech Mizrachi
+ *
  * @extends Manager<Driver, Factory>
  */
 interface Logger extends Manager

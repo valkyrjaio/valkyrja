@@ -21,6 +21,7 @@ use Valkyrja\Manager\Manager;
  * Interface Client.
  *
  * @author Melech Mizrachi
+ *
  * @extends Manager<Driver, Factory>
  */
 interface Client extends Manager

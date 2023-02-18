@@ -39,10 +39,10 @@ interface UploadedFile
      * an exception.
      *
      * @throws RuntimeException in cases when no stream is available or can be
-     *          created.
+     *                          created.
      *
      * @return Stream Stream representation of the
-     *          uploaded file.
+     *                uploaded file.
      */
     public function getStream(): Stream;
 
@@ -75,10 +75,10 @@ interface UploadedFile
      * @param string $targetPath Path to which to move the uploaded file.
      *
      * @throws InvalidArgumentException if the $targetPath specified is
-     *          invalid.
-     * @throws RuntimeException on any error during the move
-     *          operation, or on the second or
-     *          subsequent call to the method.
+     *                                  invalid.
+     * @throws RuntimeException         on any error during the move
+     *                                  operation, or on the second or
+     *                                  subsequent call to the method.
      *
      * @return void
      */
@@ -117,7 +117,7 @@ interface UploadedFile
      * the file in the $_FILES array.
      *
      * @return string|null The filename sent by the client or null if none
-     *          was provided.
+     *                     was provided.
      */
     public function getClientFilename(): ?string;
 
@@ -130,7 +130,7 @@ interface UploadedFile
      * the file in the $_FILES array.
      *
      * @return string|null The media type sent by the client or null if none
-     *          was provided.
+     *                     was provided.
      */
     public function getClientMediaType(): ?string;
 }

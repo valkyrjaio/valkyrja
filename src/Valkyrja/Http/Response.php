@@ -48,8 +48,8 @@ interface Response extends Message
      * immutability of the message, and MUST return an instance that has the
      * updated status and reason phrase.
      *
-     * @link http://tools.ietf.org/html/rfc7231#section-6
-     * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+     * @see http://tools.ietf.org/html/rfc7231#section-6
+     * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      *
      * @param int         $code         The 3-digit integer result code to set.
      * @param string|null $reasonPhrase The reason phrase to use with the
@@ -71,11 +71,11 @@ interface Response extends Message
      * those listed in the IANA HTTP Status Code Registry) for the response's
      * status code.
      *
-     * @link http://tools.ietf.org/html/rfc7231#section-6
-     * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+     * @see http://tools.ietf.org/html/rfc7231#section-6
+     * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      *
      * @return string Reason phrase; must return an empty string if none
-     *          present.
+     *                present.
      */
     public function getReasonPhrase(): string;
 

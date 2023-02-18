@@ -26,9 +26,9 @@ use Valkyrja\Notification\Notifier as Contract;
  * @method static Contract addMailRecipient(string $email, string $name = '')
  * @method static Contract addSmsRecipient(string $phoneNumber)
  * @method static Contract addUserRecipient(NotifiableUser $user)
- * @method static void notify(Notification $notification)
- * @method static void notifyUser(Notification $notification, NotifiableUser $user)
- * @method static void notifyUsers(Notification $notification, NotifiableUser ...$users)
+ * @method static void     notify(Notification $notification)
+ * @method static void     notifyUser(Notification $notification, NotifiableUser $user)
+ * @method static void     notifyUsers(Notification $notification, NotifiableUser ...$users)
  */
 class Notifier extends ContainerFacade
 {

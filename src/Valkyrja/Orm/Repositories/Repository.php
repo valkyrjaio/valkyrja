@@ -33,6 +33,7 @@ use function get_class;
  * Class Repository.
  *
  * @author Melech Mizrachi
+ *
  * @implements Contract<Entity>
  */
 class Repository implements Contract

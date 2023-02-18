@@ -20,7 +20,7 @@ use JsonSerializable;
  *
  * @author Melech Mizrachi
  *
- * @link   http://www.iana.org/assignments/http-status-codes/
+ * @see   http://www.iana.org/assignments/http-status-codes/
  * - Hypertext Transfer Protocol (HTTP) Status Code Registry
  */
 enum Status implements JsonSerializable

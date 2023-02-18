@@ -19,6 +19,7 @@ use Valkyrja\Model\CastableModel;
  * Interface AuthenticatedUsers.
  *
  * @author   Melech Mizrachi
+ *
  * @template User
  */
 interface AuthenticatedUsers extends CastableModel
@@ -74,7 +75,7 @@ interface AuthenticatedUsers extends CastableModel
     public function remove(User $user): static;
 
     /**
-     * Get all the users in the collection
+     * Get all the users in the collection.
      *
      * @return array<int|string, User>
      */

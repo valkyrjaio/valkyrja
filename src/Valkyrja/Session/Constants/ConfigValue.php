@@ -33,7 +33,7 @@ final class ConfigValue
             CKP::DRIVER        => null,
             CKP::ID            => null,
             CKP::NAME          => null,
-            /**
+            /*
              * @example
              *  [
              *      'lifetime' => 600,

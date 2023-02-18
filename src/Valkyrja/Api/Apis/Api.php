@@ -42,7 +42,7 @@ class Api implements Contract
      *
      * @param ResponseFactory $responseFactory
      * @param Config|array    $config
-     * @param bool            $debug [optional]
+     * @param bool            $debug           [optional]
      */
     public function __construct(
         protected ResponseFactory $responseFactory,

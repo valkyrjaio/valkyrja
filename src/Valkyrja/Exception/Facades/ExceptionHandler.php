@@ -24,7 +24,7 @@ use const E_ALL;
  *
  * @author Melech Mizrachi
  *
- * @method static void enable(int $errorReportingLevel = E_ALL, bool $displayErrors = false)
+ * @method static void   enable(int $errorReportingLevel = E_ALL, bool $displayErrors = false)
  * @method static string getTraceCode(Throwable $exception)
  */
 class ExceptionHandler extends ContainerFacade

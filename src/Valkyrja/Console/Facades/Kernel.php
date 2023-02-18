@@ -23,9 +23,9 @@ use Valkyrja\Facade\ContainerFacade;
  *
  * @author Melech Mizrachi
  *
- * @method static int handle(ConsoleInput $input, ConsoleOutput $output)
+ * @method static int  handle(ConsoleInput $input, ConsoleOutput $output)
  * @method static void terminate(ConsoleInput $input, int $exitCode)
- * @method static int run(ConsoleInput $input = null, ConsoleOutput $output = null)
+ * @method static int  run(ConsoleInput $input = null, ConsoleOutput $output = null)
  */
 class Kernel extends ContainerFacade
 {

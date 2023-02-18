@@ -124,7 +124,7 @@ class HelpersTest extends TestCase
      */
     public function testConfig(): void
     {
-        self::assertEquals(true, (\Valkyrja\config() instanceof Config));
+        self::assertEquals(true, \Valkyrja\config() instanceof Config);
     }
 
     /**

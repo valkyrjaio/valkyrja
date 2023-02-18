@@ -24,7 +24,7 @@ use Valkyrja\Jwt\Jwt as Contract;
  *
  * @method static Driver useAlgo(string $algo = null, string $adapter = null)
  * @method static string encode(array $payload)
- * @method static array decode(string $jwt)
+ * @method static array  decode(string $jwt)
  */
 class JWT extends ContainerFacade
 {

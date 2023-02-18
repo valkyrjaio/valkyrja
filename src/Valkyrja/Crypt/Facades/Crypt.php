@@ -23,12 +23,12 @@ use Valkyrja\Facade\ContainerFacade;
  * @author Melech Mizrachi
  *
  * @method static Adapter useCrypt(string $name = null)
- * @method static string encrypt(string $message, string $key = null)
- * @method static string decrypt(string $encrypted, string $key = null)
- * @method static string encryptArray(array $array, string $key = null)
- * @method static array decryptArray(string $encrypted, string $key = null)
- * @method static string encryptObject(object $object, string $key = null)
- * @method static object decryptObject(string $encrypted, string $key = null)
+ * @method static string  encrypt(string $message, string $key = null)
+ * @method static string  decrypt(string $encrypted, string $key = null)
+ * @method static string  encryptArray(array $array, string $key = null)
+ * @method static array   decryptArray(string $encrypted, string $key = null)
+ * @method static string  encryptObject(object $object, string $key = null)
+ * @method static object  decryptObject(string $encrypted, string $key = null)
  */
 class Crypt extends ContainerFacade
 {

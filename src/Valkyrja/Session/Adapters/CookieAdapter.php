@@ -36,7 +36,7 @@ class CookieAdapter extends PHPAdapter
     protected Crypt $crypt;
 
     /**
-     * The request
+     * The request.
      *
      * @var Request
      */

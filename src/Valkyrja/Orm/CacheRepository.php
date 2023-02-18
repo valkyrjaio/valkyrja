@@ -17,6 +17,7 @@ namespace Valkyrja\Orm;
  * Interface CacheRepository.
  *
  * @author Melech Mizrachi
+ *
  * @extends Repository<Entity>
  */
 interface CacheRepository extends Repository

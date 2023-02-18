@@ -20,19 +20,19 @@ use Valkyrja\Facade\ContainerFacade;
  *
  * @author Melech Mizrachi
  *
- * @method static bool has(string $serviceId)
- * @method static bool hasContext(string $serviceId, string $context, string $member = null)
- * @method static void bind(string $serviceId, string $service)
- * @method static void bindSingleton(string $serviceId, string $singleton)
- * @method static void setAlias(string $alias, string $serviceId)
- * @method static void setContext(string $serviceId, string $context, string $member = null)
- * @method static void setSingleton(string $serviceId, $singleton)
- * @method static bool isAlias(string $serviceId)
- * @method static bool isSingleton(string $serviceId)
- * @method static bool isProvided(string $serviceId)
- * @method static mixed get(string $serviceId, array $arguments = [])
- * @method static mixed makeService(string $serviceId, array $arguments = [])
- * @method static mixed getSingleton(string $serviceId)
+ * @method static bool   has(string $serviceId)
+ * @method static bool   hasContext(string $serviceId, string $context, string $member = null)
+ * @method static void   bind(string $serviceId, string $service)
+ * @method static void   bindSingleton(string $serviceId, string $singleton)
+ * @method static void   setAlias(string $alias, string $serviceId)
+ * @method static void   setContext(string $serviceId, string $context, string $member = null)
+ * @method static void   setSingleton(string $serviceId, $singleton)
+ * @method static bool   isAlias(string $serviceId)
+ * @method static bool   isSingleton(string $serviceId)
+ * @method static bool   isProvided(string $serviceId)
+ * @method static mixed  get(string $serviceId, array $arguments = [])
+ * @method static mixed  makeService(string $serviceId, array $arguments = [])
+ * @method static mixed  getSingleton(string $serviceId)
  * @method static string contextServiceId(string $serviceId, string $context, string $member = null)
  */
 class Container extends ContainerFacade

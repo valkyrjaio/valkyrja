@@ -23,7 +23,7 @@ namespace Valkyrja\Http\Constants;
  *
  * @author Melech Mizrachi
  *
- * @link   https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
+ * @see   https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
  */
 final class RequestMethod
 {
@@ -75,7 +75,7 @@ final class RequestMethod
      * request. If no Max-Forwards field is present in the request, then
      * the forwarded request MUST NOT include a Max-Forwards field.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.2
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.2
      */
     public const OPTIONS = 'OPTIONS';
 
@@ -104,7 +104,7 @@ final class RequestMethod
      * requirements for HTTP caching described in section 13.
      * See section 15.1.3 for security considerations when used for forms.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.3
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.3
      */
     public const GET = 'GET';
 
@@ -125,7 +125,7 @@ final class RequestMethod
      * by a change in Content-Length, Content-MD5, ETag or Last-Modified), then
      * the cache MUST treat the cache entry as stale.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.4
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.4
      */
     public const HEAD = 'HEAD';
 
@@ -163,7 +163,7 @@ final class RequestMethod
      * out in section 8.2.
      * See section 15.1.3 for security considerations.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.5
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.5
      */
     public const POST = 'POST';
 
@@ -212,7 +212,7 @@ final class RequestMethod
      * entity-headers in the PUT request SHOULD be applied to the resource
      * created or modified by the PUT.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
      */
     public const PUT = 'PUT';
 
@@ -235,7 +235,7 @@ final class RequestMethod
      * or more currently cached entities, those entries SHOULD be treated as
      * stale. Responses to this method are not cacheable.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.7
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.7
      */
     public const DELETE = 'DELETE';
 
@@ -259,7 +259,7 @@ final class RequestMethod
      * message in the entity-body, with a Content-Type of "message/http".
      * Responses to this method MUST NOT be cached.
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.8
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.8
      */
     public const TRACE = 'TRACE';
 
@@ -268,7 +268,7 @@ final class RequestMethod
      * This specification reserves the method name CONNECT for use with a proxy
      * that can dynamically switch to being a tunnel (e.g. SSL tunneling [44]).
      *
-     * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.9
+     * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.9
      */
     public const CONNECT = 'CONNECT';
 
@@ -283,7 +283,7 @@ final class RequestMethod
      * depending on the patch document type (whether it can logically modify
      * a null resource) and permissions, etc.
      *
-     * @link https://tools.ietf.org/html/rfc5789
+     * @see https://tools.ietf.org/html/rfc5789
      */
     public const PATCH = 'PATCH';
 

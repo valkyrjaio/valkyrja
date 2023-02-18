@@ -174,17 +174,17 @@ class Parser implements Contract
     /**
      * Set a matched annotation.
      *
-     * @param array $matches        The matches
-     *                              [
-     *                              0 => matches,
-     *                              1 => annotation,
-     *                              2 => type,
-     *                              3 => args,
-     *                              4 => var,
-     *                              5 => desc
-     *                              ]
-     * @param int   $index          The index
-     * @param array $annotations    The annotations list
+     * @param array $matches     The matches
+     *                           [
+     *                           0 => matches,
+     *                           1 => annotation,
+     *                           2 => type,
+     *                           3 => args,
+     *                           4 => var,
+     *                           5 => desc
+     *                           ]
+     * @param int   $index       The index
+     * @param array $annotations The annotations list
      *
      * @throws InvalidAnnotationKeyArgument
      * @throws JsonException

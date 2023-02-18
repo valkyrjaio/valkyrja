@@ -20,6 +20,7 @@ use Valkyrja\Session\Exceptions\InvalidCsrfToken;
  * Interface Session.
  *
  * @author Melech Mizrachi
+ *
  * @extends Manager<Driver, Factory>
  */
 interface Session extends Manager

@@ -25,6 +25,7 @@ use Valkyrja\Manager\Factories\ContainerMessageFactory as Factory;
  * Class ContainerFactory.
  *
  * @author Melech Mizrachi
+ *
  * @extends Factory<Adapter, Driver, Message>
  */
 class ContainerFactory extends Factory implements Contract

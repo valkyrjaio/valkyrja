@@ -19,6 +19,7 @@ use Valkyrja\Config\Config;
  * Interface Cacheable.
  *
  * @author   Melech Mizrachi
+ *
  * @template Config
  */
 interface Cacheable

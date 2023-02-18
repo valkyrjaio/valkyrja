@@ -19,6 +19,7 @@ use Valkyrja\Config\Config;
  * Trait Cacheable.
  *
  * @author   Melech Mizrachi
+ *
  * @template Config
  * @template Cache
  */
@@ -53,7 +54,7 @@ trait Cacheable
         $this->beforeSetup($config);
 
         // If the application should use the routes cache file
-        if ($useCache && ($config['useCache'])) {
+        if ($useCache && $config['useCache']) {
             /** @var Config|array $config */
             $this->setupFromCache($config);
 

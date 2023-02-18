@@ -19,6 +19,7 @@ use Valkyrja\Manager\Manager;
  * Interface Cache.
  *
  * @author Melech Mizrachi
+ *
  * @extends Manager<Driver, Factory>
  */
 interface Cache extends Manager

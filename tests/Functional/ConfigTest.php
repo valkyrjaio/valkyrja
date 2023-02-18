@@ -16,9 +16,7 @@ namespace Valkyrja\Tests\Functional;
 use Valkyrja\Tests\Config;
 
 /**
- * Class ConfigTest
- *
- * @package Valkyrja\Tests\Functional
+ * Class ConfigTest.
  */
 class ConfigTest extends Config
 {

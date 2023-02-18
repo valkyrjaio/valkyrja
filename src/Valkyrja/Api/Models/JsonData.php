@@ -45,7 +45,7 @@ class JsonData extends Model implements Contract
     public ?array $items = null;
 
     /**
-     * The items key
+     * The items key.
      *
      * @var string
      */

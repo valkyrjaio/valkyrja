@@ -96,7 +96,6 @@ class Output implements Contract
 
                 break;
             case OutputStyle::RAW:
-
                 break;
             case OutputStyle::PLAIN:
                 $message = strip_tags($this->formatter->format($message));

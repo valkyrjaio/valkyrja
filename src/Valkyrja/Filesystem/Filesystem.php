@@ -20,6 +20,7 @@ use Valkyrja\Manager\Manager;
  * Interface Filesystem.
  *
  * @author Melech Mizrachi
+ *
  * @extends Manager<Driver, Factory>
  */
 interface Filesystem extends Manager

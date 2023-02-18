@@ -85,7 +85,7 @@ interface Collector
      *      get('/', 'Controller::method()')
      *      get('/', 'function()')
      *      get('/', Closure)
-     * </code>
+     * </code>.
      *
      * @param string         $path            The path
      * @param Closure|string $handler         The handler
@@ -105,7 +105,7 @@ interface Collector
      *      post('/', 'Controller::method()')
      *      post('/', 'function()')
      *      post('/', Closure)
-     * </code>
+     * </code>.
      *
      * @param string         $path            The path
      * @param Closure|string $handler         The handler
@@ -125,7 +125,7 @@ interface Collector
      *      put('/', 'Controller::method()')
      *      put('/', 'function()')
      *      put('/', Closure)
-     * </code>
+     * </code>.
      *
      * @param string         $path            The path
      * @param Closure|string $handler         The handler
@@ -145,7 +145,7 @@ interface Collector
      *      patch('/', 'Controller::method()')
      *      patch('/', 'function()')
      *      patch('/', Closure)
-     * </code>
+     * </code>.
      *
      * @param string         $path            The path
      * @param Closure|string $handler         The handler
@@ -165,7 +165,7 @@ interface Collector
      *      delete('/', 'Controller::method()')
      *      delete('/', 'function()')
      *      delete('/', Closure)
-     * </code>
+     * </code>.
      *
      * @param string         $path            The path
      * @param Closure|string $handler         The handler
@@ -185,7 +185,7 @@ interface Collector
      *      head('/', 'Controller::method()')
      *      head('/', 'function()')
      *      head('/', Closure)
-     * </code>
+     * </code>.
      *
      * @param string         $path            The path
      * @param Closure|string $handler         The handler
@@ -205,7 +205,7 @@ interface Collector
      *      any('/', 'Controller::method()')
      *      any('/', 'function()')
      *      any('/', Closure)
-     * </code>
+     * </code>.
      *
      * @param string         $path            The path
      * @param Closure|string $handler         The handler
@@ -220,7 +220,7 @@ interface Collector
      * Helper method to set any request method route.
      * <code>
      *      redirect('/', '/to', ['GET'], 301, true)
-     * </code>
+     * </code>.
      *
      * @param string      $path    The path
      * @param string      $to      The path to redirect to

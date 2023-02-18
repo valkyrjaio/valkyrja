@@ -121,8 +121,8 @@ interface Template
      * @param string $name The name of the block
      *
      * @return bool
-     *  True if the block exists
-     *  False if the block doesn't exist
+     *              True if the block exists
+     *              False if the block doesn't exist
      */
     public function hasBlock(string $name): bool;
 

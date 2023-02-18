@@ -23,9 +23,11 @@ use Valkyrja\Type\Support\Cls;
  * Class ContainerMessageFactory.
  *
  * @author   Melech Mizrachi
+ *
  * @template Adapter
  * @template Driver
  * @template Message
+ *
  * @implements MessageFactory<Adapter, Driver, Message>
  */
 class ContainerMessageFactory extends ContainerFactory implements MessageFactory
