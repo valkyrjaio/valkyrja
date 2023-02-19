@@ -25,7 +25,7 @@ class NullStatement implements Contract
     /**
      * @inheritDoc
      */
-    public function bindValue(string $parameter, $value): bool
+    public function bindValue(string $parameter, mixed $value): bool
     {
         return true;
     }

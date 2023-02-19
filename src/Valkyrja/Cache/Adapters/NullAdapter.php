@@ -98,7 +98,7 @@ class NullAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function forever(string $key, $value): void
+    public function forever(string $key, string $value): void
     {
     }
 
