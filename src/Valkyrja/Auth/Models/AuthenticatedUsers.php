@@ -41,7 +41,7 @@ class AuthenticatedUsers extends CastableModel implements Contract
      *
      * @var string|null
      */
-    protected ?string $currentId = null;
+    protected string|null $currentId = null;
 
     /**
      * The users.
@@ -61,7 +61,7 @@ class AuthenticatedUsers extends CastableModel implements Contract
     /**
      * @inheritDoc
      */
-    public function getCurrent(): ?User
+    public function getCurrent(): User|null
     {
         return $this->users[$this->currentId] ?? null;
     }

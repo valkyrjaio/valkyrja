@@ -37,14 +37,14 @@ class Formatter implements Contract
      *
      * @var int|null
      */
-    protected ?int $foreground = null;
+    protected int|null $foreground = null;
 
     /**
      * The background color.
      *
      * @var int|null
      */
-    protected ?int $background = null;
+    protected int|null $background = null;
 
     /**
      * The options.

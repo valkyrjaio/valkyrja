@@ -30,14 +30,14 @@ class Json extends Model implements Contract
      *
      * @var string|null
      */
-    public ?string $message = null;
+    public string|null $message = null;
 
     /**
      * The data.
      *
      * @var array|null
      */
-    public ?array $data = null;
+    public array|null $data = null;
 
     /**
      * The errors.
@@ -70,7 +70,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getMessage(): ?string
+    public function getMessage(): string|null
     {
         return $this->message;
     }
@@ -144,7 +144,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getData(): ?array
+    public function getData(): array|null
     {
         return $this->data;
     }

@@ -159,7 +159,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public static function getEnv(): ?string
+    public static function getEnv(): string|null
     {
         return self::$env;
     }

@@ -41,14 +41,14 @@ class Route extends Dispatch implements Contract
      *
      * @var string|null
      */
-    protected ?string $to;
+    protected string|null $to;
 
     /**
      * The redirect status code for this route.
      *
      * @var int|null
      */
-    protected ?int $code;
+    protected int|null $code;
 
     /**
      * The request methods for this route.
@@ -65,7 +65,7 @@ class Route extends Dispatch implements Contract
      *
      * @var string|null
      */
-    protected ?string $regex;
+    protected string|null $regex;
 
     /**
      * The dynamic parameters.
@@ -79,7 +79,7 @@ class Route extends Dispatch implements Contract
      *
      * @var array|null
      */
-    protected ?array $middleware;
+    protected array|null $middleware;
 
     /**
      * Whether the route is dynamic.
@@ -153,7 +153,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getTo(): ?string
+    public function getTo(): string|null
     {
         return $this->to ?? null;
     }
@@ -173,7 +173,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getCode(): ?int
+    public function getCode(): int|null
     {
         return $this->code ?? null;
     }
@@ -214,7 +214,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getRegex(): ?string
+    public function getRegex(): string|null
     {
         return $this->regex ?? null;
     }
@@ -301,7 +301,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getMiddleware(): ?array
+    public function getMiddleware(): array|null
     {
         return $this->middleware ?? null;
     }

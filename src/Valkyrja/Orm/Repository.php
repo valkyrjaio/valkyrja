@@ -154,7 +154,7 @@ interface Repository
      *
      * @return Entity|null
      */
-    public function getOneOrNull(): ?Entity;
+    public function getOneOrNull(): Entity|null;
 
     /**
      * Get one or fail.

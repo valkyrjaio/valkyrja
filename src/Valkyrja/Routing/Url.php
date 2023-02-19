@@ -41,7 +41,7 @@ interface Url
      *                    The route if found or null when no static route is
      *                    found for the path and method combination specified
      */
-    public function getRouteByPath(string $path, string $method = null): ?Route;
+    public function getRouteByPath(string $path, string $method = null): Route|null;
 
     /**
      * Determine if a uri is internal.

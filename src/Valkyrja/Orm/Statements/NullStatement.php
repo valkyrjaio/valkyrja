@@ -105,7 +105,7 @@ class NullStatement implements Contract
     /**
      * @inheritDoc
      */
-    public function errorMessage(): ?string
+    public function errorMessage(): string|null
     {
         return null;
     }

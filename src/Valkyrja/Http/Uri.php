@@ -115,7 +115,7 @@ interface Uri
      *
      * @return int|null The URI port
      */
-    public function getPort(): ?int;
+    public function getPort(): int|null;
 
     /**
      * Retrieve the host and port components of the URI.

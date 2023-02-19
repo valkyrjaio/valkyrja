@@ -39,7 +39,7 @@ interface Driver extends Contract
      *
      * @return string|null The contents or null on failure
      */
-    public function read(string $path): ?string;
+    public function read(string $path): string|null;
 
     /**
      * Write a file.
@@ -137,7 +137,7 @@ interface Driver extends Contract
      *
      * @return array|null An array of meta data or null on failure
      */
-    public function metadata(string $path): ?array;
+    public function metadata(string $path): array|null;
 
     /**
      * Get a file's mime type.
@@ -146,7 +146,7 @@ interface Driver extends Contract
      *
      * @return string|null The mime type or null on failure
      */
-    public function mimetype(string $path): ?string;
+    public function mimetype(string $path): string|null;
 
     /**
      * Get a file's size.
@@ -155,7 +155,7 @@ interface Driver extends Contract
      *
      * @return int|null The size in bytes or null on failure
      */
-    public function size(string $path): ?int;
+    public function size(string $path): int|null;
 
     /**
      * Get a file's timestamp.
@@ -164,7 +164,7 @@ interface Driver extends Contract
      *
      * @return int|null The timestamp or null on failure
      */
-    public function timestamp(string $path): ?int;
+    public function timestamp(string $path): int|null;
 
     /**
      * Get a file's visibility.
@@ -174,7 +174,7 @@ interface Driver extends Contract
      * @return string|null The visibility ('public' or 'private') or null on
      *                     failure
      */
-    public function visibility(string $path): ?string;
+    public function visibility(string $path): string|null;
 
     /**
      * Set a file's visibility.

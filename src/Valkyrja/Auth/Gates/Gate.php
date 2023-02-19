@@ -54,7 +54,7 @@ class Gate implements Contract
     /**
      * @inheritDoc
      */
-    public function before(string &$action, string &$policy = null): ?bool
+    public function before(string &$action, string &$policy = null): bool|null
     {
         return null;
     }
@@ -62,7 +62,7 @@ class Gate implements Contract
     /**
      * @inheritDoc
      */
-    public function after(bool $isAuthorized, string $action, string $policy = null): ?bool
+    public function after(bool $isAuthorized, string $action, string $policy = null): bool|null
     {
         return null;
     }

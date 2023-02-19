@@ -63,7 +63,7 @@ class Repository implements Contract
      *
      * @var User|null
      */
-    protected ?User $user = null;
+    protected User|null $user = null;
 
     /**
      * The current authenticated users.

@@ -104,5 +104,5 @@ interface Statement
      *
      * @return string|null
      */
-    public function errorMessage(): ?string;
+    public function errorMessage(): string|null;
 }

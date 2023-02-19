@@ -27,7 +27,7 @@ interface Json extends Model
      *
      * @return string|null
      */
-    public function getMessage(): ?string;
+    public function getMessage(): string|null;
 
     /**
      * Set the message.
@@ -93,7 +93,7 @@ interface Json extends Model
      *
      * @return array|null
      */
-    public function getData(): ?array;
+    public function getData(): array|null;
 
     /**
      * Set the data.

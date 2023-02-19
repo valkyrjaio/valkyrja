@@ -103,7 +103,7 @@ class Config extends Model
      *
      * @var string|null
      */
-    public ?string $authenticateUrl;
+    public string|null $authenticateUrl;
 
     /**
      * The not authenticated route name.
@@ -117,7 +117,7 @@ class Config extends Model
      *
      * @var string|null
      */
-    public ?string $notAuthenticateUrl;
+    public string|null $notAuthenticateUrl;
 
     /**
      * The password confirm route name.

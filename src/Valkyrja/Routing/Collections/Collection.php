@@ -78,7 +78,7 @@ class Collection implements Contract
      *
      * @throws JsonException
      */
-    public function get(string $path, string $method = null): ?Route
+    public function get(string $path, string $method = null): Route|null
     {
         return $this->getStatic($path, $method) ?? $this->getDynamic($path, $method);
     }
@@ -112,7 +112,7 @@ class Collection implements Contract
      *
      * @throws JsonException
      */
-    public function getStatic(string $path, string $method = null): ?Route
+    public function getStatic(string $path, string $method = null): Route|null
     {
         return $this->getOfType($this->static, $path, $method);
     }
@@ -138,7 +138,7 @@ class Collection implements Contract
      *
      * @throws JsonException
      */
-    public function getDynamic(string $regex, string $method = null): ?Route
+    public function getDynamic(string $regex, string $method = null): Route|null
     {
         return $this->getOfType($this->dynamic, $regex, $method);
     }
@@ -162,7 +162,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function getNamed(string $name): ?Route
+    public function getNamed(string $name): Route|null
     {
         return $this->ensureRoute($this->named[$name] ?? null);
     }
@@ -253,7 +253,7 @@ class Collection implements Contract
      *
      * @return Route|null
      */
-    protected function getOfType(array $type, string $path, string $method = null): ?Route
+    protected function getOfType(array $type, string $path, string $method = null): Route|null
     {
         if ($method === null) {
             return $this->getAnyOfType($type, $path);
@@ -272,7 +272,7 @@ class Collection implements Contract
      *
      * @return Route|null
      */
-    protected function getAnyOfType(array $type, string $path): ?Route
+    protected function getAnyOfType(array $type, string $path): Route|null
     {
         return $this->getOfType($type, $path, RequestMethod::GET)
             ?? $this->getOfType($type, $path, RequestMethod::HEAD)
@@ -377,7 +377,7 @@ class Collection implements Contract
      *
      * @return Route|null
      */
-    protected function ensureRoute(Route|array|string $route = null): ?Route
+    protected function ensureRoute(Route|array|string $route = null): Route|null
     {
         if (is_string($route)) {
             $route = $this->routes[$route];

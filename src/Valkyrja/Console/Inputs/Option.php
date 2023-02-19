@@ -34,7 +34,7 @@ class Option
      *
      * @var string|null
      */
-    protected ?string $shortcut = null;
+    protected string|null $shortcut = null;
 
     /**
      * The description.
@@ -48,7 +48,7 @@ class Option
      *
      * @var string|null
      */
-    protected ?string $default = null;
+    protected string|null $default = null;
 
     /**
      * The mode.
@@ -95,7 +95,7 @@ class Option
      *
      * @return string|null
      */
-    public function getShortcut(): ?string
+    public function getShortcut(): string|null
     {
         return $this->shortcut;
     }
@@ -115,7 +115,7 @@ class Option
      *
      * @return string|null
      */
-    public function getDefault(): ?string
+    public function getDefault(): string|null
     {
         return $this->default;
     }

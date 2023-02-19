@@ -234,7 +234,7 @@ class Stream implements StreamContract
     /**
      * @inheritDoc
      */
-    public function getSize(): ?int
+    public function getSize(): int|null
     {
         // If the stream isn't set
         if ($this->isInValidStream()) {

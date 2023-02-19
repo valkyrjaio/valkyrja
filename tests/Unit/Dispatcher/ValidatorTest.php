@@ -55,7 +55,7 @@ class ValidatorTest extends TestCase
      *
      * @var string|null
      */
-    public ?string $validPropertyNull = null;
+    public string|null $validPropertyNull = null;
 
     /**
      * A valid static property.

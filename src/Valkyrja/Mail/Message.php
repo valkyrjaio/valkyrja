@@ -184,7 +184,7 @@ interface Message extends Contract
      *
      * @return string|null
      */
-    public function getPlainBody(): ?string;
+    public function getPlainBody(): string|null;
 
     /**
      * If sending html, add an alternative plain message body for clients without html support.

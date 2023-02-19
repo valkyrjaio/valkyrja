@@ -65,7 +65,7 @@ interface Route extends Dispatch
      *
      * @return string|null
      */
-    public function getTo(): ?string;
+    public function getTo(): string|null;
 
     /**
      * Set the redirect path.
@@ -81,7 +81,7 @@ interface Route extends Dispatch
      *
      * @return int|null
      */
-    public function getCode(): ?int;
+    public function getCode(): int|null;
 
     /**
      * Set the redirect status code.
@@ -113,7 +113,7 @@ interface Route extends Dispatch
      *
      * @return string|null
      */
-    public function getRegex(): ?string;
+    public function getRegex(): string|null;
 
     /**
      * Set the regex.
@@ -183,7 +183,7 @@ interface Route extends Dispatch
      *
      * @return array|null
      */
-    public function getMiddleware(): ?array;
+    public function getMiddleware(): array|null;
 
     /**
      * Set the middleware.

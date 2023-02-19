@@ -48,7 +48,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function read(string $path): ?string
+    public function read(string $path): string|null
     {
         return $this->adapter->read($path);
     }
@@ -128,7 +128,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function metadata(string $path): ?array
+    public function metadata(string $path): array|null
     {
         return $this->adapter->metadata($path);
     }
@@ -136,7 +136,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function mimetype(string $path): ?string
+    public function mimetype(string $path): string|null
     {
         return $this->adapter->mimetype($path);
     }
@@ -144,7 +144,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function size(string $path): ?int
+    public function size(string $path): int|null
     {
         return $this->adapter->size($path);
     }
@@ -152,7 +152,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function timestamp(string $path): ?int
+    public function timestamp(string $path): int|null
     {
         return $this->adapter->timestamp($path);
     }
@@ -160,7 +160,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function visibility(string $path): ?string
+    public function visibility(string $path): string|null
     {
         return $this->adapter->visibility($path);
     }

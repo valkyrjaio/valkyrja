@@ -46,7 +46,7 @@ abstract class SqlBaseQueryBuilder implements Contract
      *
      * @var class-string<Entity>|null
      */
-    protected ?string $entity = null;
+    protected string|null $entity = null;
 
     /**
      * SqlBaseQueryBuilder constructor.

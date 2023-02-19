@@ -52,7 +52,7 @@ class NullAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string $key): ?string
+    public function get(string $key): string|null
     {
         return '';
     }

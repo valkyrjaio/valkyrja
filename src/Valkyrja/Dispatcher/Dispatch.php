@@ -28,7 +28,7 @@ interface Dispatch extends Model
      *
      * @return string|null
      */
-    public function getId(): ?string;
+    public function getId(): string|null;
 
     /**
      * Set the id.
@@ -44,7 +44,7 @@ interface Dispatch extends Model
      *
      * @return string|null
      */
-    public function getName(): ?string;
+    public function getName(): string|null;
 
     /**
      * Set the name.
@@ -60,7 +60,7 @@ interface Dispatch extends Model
      *
      * @return class-string|null
      */
-    public function getClass(): ?string;
+    public function getClass(): string|null;
 
     /**
      * Set the class.
@@ -83,7 +83,7 @@ interface Dispatch extends Model
      *
      * @return non-empty-string|null
      */
-    public function getProperty(): ?string;
+    public function getProperty(): string|null;
 
     /**
      * Set the property.
@@ -106,7 +106,7 @@ interface Dispatch extends Model
      *
      * @return non-empty-string|null
      */
-    public function getMethod(): ?string;
+    public function getMethod(): string|null;
 
     /**
      * Set the method.
@@ -143,7 +143,7 @@ interface Dispatch extends Model
     /**
      * @return callable-string|null
      */
-    public function getFunction(): ?string;
+    public function getFunction(): string|null;
 
     /**
      * Set the function.
@@ -166,7 +166,7 @@ interface Dispatch extends Model
      *
      * @return Closure|null
      */
-    public function getClosure(): ?Closure;
+    public function getClosure(): Closure|null;
 
     /**
      * Set the closure.
@@ -189,7 +189,7 @@ interface Dispatch extends Model
      *
      * @return array|null
      */
-    public function getMatches(): ?array;
+    public function getMatches(): array|null;
 
     /**
      * Set the matches.
@@ -205,7 +205,7 @@ interface Dispatch extends Model
      *
      * @return array|null
      */
-    public function getArguments(): ?array;
+    public function getArguments(): array|null;
 
     /**
      * Set the arguments.
@@ -221,7 +221,7 @@ interface Dispatch extends Model
      *
      * @return array|null
      */
-    public function getDependencies(): ?array;
+    public function getDependencies(): array|null;
 
     /**
      * Set the dependencies.

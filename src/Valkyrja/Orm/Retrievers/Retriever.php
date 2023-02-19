@@ -239,7 +239,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function getOneOrNull(): ?Entity
+    public function getOneOrNull(): Entity|null
     {
         return $this->getResult()[0] ?? null;
     }

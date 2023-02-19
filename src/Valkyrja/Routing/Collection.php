@@ -39,7 +39,7 @@ interface Collection
      *                    The route if found or null when no route is
      *                    found for the path combination specified
      */
-    public function get(string $path, string $method = null): ?Route;
+    public function get(string $path, string $method = null): Route|null;
 
     /**
      * Determine if a route exists.
@@ -75,7 +75,7 @@ interface Collection
      *                    The route if found or null when no static route is
      *                    found for the path and method combination specified
      */
-    public function getStatic(string $path, string $method = null): ?Route;
+    public function getStatic(string $path, string $method = null): Route|null;
 
     /**
      * Determine if a static route exists.
@@ -106,7 +106,7 @@ interface Collection
      *                    The route if found or null when no dynamic route is
      *                    found for the path and method combination specified
      */
-    public function getDynamic(string $regex, string $method = null): ?Route;
+    public function getDynamic(string $regex, string $method = null): Route|null;
 
     /**
      * Determine if a dynamic route exists.
@@ -136,7 +136,7 @@ interface Collection
      *                    The route if found or null when no named route is
      *                    found for the path and method combination specified
      */
-    public function getNamed(string $name): ?Route;
+    public function getNamed(string $name): Route|null;
 
     /**
      * Determine if a named route exists.

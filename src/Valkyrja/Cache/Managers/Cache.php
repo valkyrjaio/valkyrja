@@ -61,7 +61,7 @@ class Cache extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string $key): ?string
+    public function get(string $key): string|null
     {
         return $this->use()->get($key);
     }

@@ -217,7 +217,7 @@ abstract class TokenizedRepository extends Repository implements Contract
      *
      * @return string|null
      */
-    protected function getTokenFromSession(): ?string
+    protected function getTokenFromSession(): string|null
     {
         return $this->session->get($this->userEntityName::getTokenSessionId());
     }

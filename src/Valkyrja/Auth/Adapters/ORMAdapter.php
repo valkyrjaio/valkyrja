@@ -62,7 +62,7 @@ class ORMAdapter extends Adapter implements Contract
     /**
      * @inheritDoc
      */
-    public function retrieve(User $user): ?User
+    public function retrieve(User $user): User|null
     {
         $loginFields = $user::getAuthenticationFields();
         $find        = $this->getUserRepository($user)->find();
@@ -82,7 +82,7 @@ class ORMAdapter extends Adapter implements Contract
     /**
      * @inheritDoc
      */
-    public function retrieveByResetToken(User $user, string $resetToken): ?User
+    public function retrieveByResetToken(User $user, string $resetToken): User|null
     {
         $resetTokenField = $user::getResetTokenField();
 

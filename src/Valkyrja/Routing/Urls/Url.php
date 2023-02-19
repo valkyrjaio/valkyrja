@@ -79,7 +79,7 @@ class Url implements Contract
     /**
      * @inheritDoc
      */
-    public function getRouteByPath(string $path, string $method = null): ?Route
+    public function getRouteByPath(string $path, string $method = null): Route|null
     {
         return $this->router->getMatcher()->match($path, $method ?? RequestMethod::GET);
     }

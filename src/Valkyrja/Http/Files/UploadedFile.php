@@ -170,7 +170,7 @@ class UploadedFile implements Contract
     /**
      * @inheritDoc
      */
-    public function getSize(): ?int
+    public function getSize(): int|null
     {
         return $this->size;
     }
@@ -186,7 +186,7 @@ class UploadedFile implements Contract
     /**
      * @inheritDoc
      */
-    public function getClientFilename(): ?string
+    public function getClientFilename(): string|null
     {
         return $this->fileName;
     }
@@ -194,7 +194,7 @@ class UploadedFile implements Contract
     /**
      * @inheritDoc
      */
-    public function getClientMediaType(): ?string
+    public function getClientMediaType(): string|null
     {
         return $this->mediaType;
     }

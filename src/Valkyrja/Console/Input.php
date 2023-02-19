@@ -71,7 +71,7 @@ interface Input
      *
      * @return string|null
      */
-    public function getArgument(string $argument): ?string;
+    public function getArgument(string $argument): string|null;
 
     /**
      * Determine if an argument exists.
@@ -89,7 +89,7 @@ interface Input
      *
      * @return string|null
      */
-    public function getShortOption(string $option): ?string;
+    public function getShortOption(string $option): string|null;
 
     /**
      * Determine if a short option exists.
@@ -107,7 +107,7 @@ interface Input
      *
      * @return string|null
      */
-    public function getLongOption(string $option): ?string;
+    public function getLongOption(string $option): string|null;
 
     /**
      * Determine if a long option exists.
@@ -125,7 +125,7 @@ interface Input
      *
      * @return string|null
      */
-    public function getOption(string $option): ?string;
+    public function getOption(string $option): string|null;
 
     /**
      * Check if an option exists (long or short).

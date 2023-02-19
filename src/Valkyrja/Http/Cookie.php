@@ -51,7 +51,7 @@ interface Cookie extends Model
      *
      * @return string|null
      */
-    public function getValue(): ?string;
+    public function getValue(): string|null;
 
     /**
      * Set the cookie's value.
@@ -99,7 +99,7 @@ interface Cookie extends Model
      *
      * @return string|null
      */
-    public function getDomain(): ?string;
+    public function getDomain(): string|null;
 
     /**
      * Set the domain the cookie is available to.
@@ -166,7 +166,7 @@ interface Cookie extends Model
      *
      * @return string|null
      */
-    public function getSameSite(): ?string;
+    public function getSameSite(): string|null;
 
     /**
      * Set whether the cookie will be available for cross-site requests.

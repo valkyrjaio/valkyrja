@@ -48,7 +48,7 @@ class Template implements Contract
      *
      * @var string|null
      */
-    protected ?string $layout = null;
+    protected string|null $layout = null;
 
     /**
      * The block status.

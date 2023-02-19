@@ -34,21 +34,21 @@ class Dispatch extends Model implements Contract
      *
      * @var string|null
      */
-    protected ?string $id;
+    protected string|null $id;
 
     /**
      * The name.
      *
      * @var string|null
      */
-    protected ?string $name;
+    protected string|null $name;
 
     /**
      * The class.
      *
      * @var class-string|null
      */
-    protected ?string $class;
+    protected string|null $class;
 
     /**
      * Whether this is a class dispatch.
@@ -62,7 +62,7 @@ class Dispatch extends Model implements Contract
      *
      * @var non-empty-string|null
      */
-    protected ?string $property;
+    protected string|null $property;
 
     /**
      * Whether this is a class/property dispatch.
@@ -76,7 +76,7 @@ class Dispatch extends Model implements Contract
      *
      * @var non-empty-string|null
      */
-    protected ?string $method;
+    protected string|null $method;
 
     /**
      * Whether this is a class/method dispatch.
@@ -97,7 +97,7 @@ class Dispatch extends Model implements Contract
      *
      * @var callable-string|null
      */
-    protected ?string $function;
+    protected string|null $function;
 
     /**
      * Whether this is a function dispatch.
@@ -111,14 +111,14 @@ class Dispatch extends Model implements Contract
      *
      * @var array|null
      */
-    protected ?array $matches;
+    protected array|null $matches;
 
     /**
      * The closure.
      *
      * @var Closure|null
      */
-    protected ?Closure $closure;
+    protected Closure|null $closure;
 
     /**
      * Whether this is a closure dispatch.
@@ -132,19 +132,19 @@ class Dispatch extends Model implements Contract
      *
      * @var string[]|null
      */
-    protected ?array $dependencies;
+    protected array|null $dependencies;
 
     /**
      * The arguments.
      *
      * @var array|null
      */
-    protected ?array $arguments;
+    protected array|null $arguments;
 
     /**
      * @inheritDoc
      */
-    public function getId(): ?string
+    public function getId(): string|null
     {
         return $this->id ?? null;
     }
@@ -162,7 +162,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getName(): ?string
+    public function getName(): string|null
     {
         return $this->name ?? null;
     }
@@ -180,7 +180,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getClass(): ?string
+    public function getClass(): string|null
     {
         return $this->class ?? null;
     }
@@ -207,7 +207,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getProperty(): ?string
+    public function getProperty(): string|null
     {
         return $this->property ?? null;
     }
@@ -234,7 +234,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getMethod(): ?string
+    public function getMethod(): string|null
     {
         return $this->method ?? null;
     }
@@ -279,7 +279,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getFunction(): ?string
+    public function getFunction(): string|null
     {
         return $this->function ?? null;
     }
@@ -306,7 +306,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getClosure(): ?Closure
+    public function getClosure(): Closure|null
     {
         return $this->closure ?? null;
     }
@@ -333,7 +333,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getMatches(): ?array
+    public function getMatches(): array|null
     {
         return $this->matches ?? null;
     }
@@ -351,7 +351,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getArguments(): ?array
+    public function getArguments(): array|null
     {
         return $this->arguments ?? null;
     }
@@ -369,7 +369,7 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getDependencies(): ?array
+    public function getDependencies(): array|null
     {
         return $this->dependencies ?? null;
     }

@@ -100,7 +100,7 @@ abstract class Entity extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public static function getRepository(): ?string
+    public static function getRepository(): string|null
     {
         return static::$repository;
     }
@@ -108,7 +108,7 @@ abstract class Entity extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public static function getConnection(): ?string
+    public static function getConnection(): string|null
     {
         return static::$connection;
     }

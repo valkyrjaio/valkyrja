@@ -27,7 +27,7 @@ interface Command extends Dispatch
      *
      * @return string|null
      */
-    public function getPath(): ?string;
+    public function getPath(): string|null;
 
     /**
      * Set the path.
@@ -43,7 +43,7 @@ interface Command extends Dispatch
      *
      * @return string|null
      */
-    public function getRegex(): ?string;
+    public function getRegex(): string|null;
 
     /**
      * Set the regex.
@@ -59,7 +59,7 @@ interface Command extends Dispatch
      *
      * @return array|null
      */
-    public function getParams(): ?array;
+    public function getParams(): array|null;
 
     /**
      * Set the params.
@@ -75,7 +75,7 @@ interface Command extends Dispatch
      *
      * @return array|null
      */
-    public function getSegments(): ?array;
+    public function getSegments(): array|null;
 
     /**
      * Set the segments.
@@ -91,7 +91,7 @@ interface Command extends Dispatch
      *
      * @return string|null
      */
-    public function getDescription(): ?string;
+    public function getDescription(): string|null;
 
     /**
      * Set the description.

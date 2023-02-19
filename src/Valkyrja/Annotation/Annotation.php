@@ -27,7 +27,7 @@ interface Annotation extends Dispatch
      *
      * @return string|null
      */
-    public function getType(): ?string;
+    public function getType(): string|null;
 
     /**
      * Set the type.

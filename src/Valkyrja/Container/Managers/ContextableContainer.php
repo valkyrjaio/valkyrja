@@ -25,21 +25,21 @@ trait ContextableContainer
      *
      * @var class-string|string|null
      */
-    protected ?string $context = null;
+    protected string|null $context = null;
 
     /**
      * The context id.
      *
      * @var string|null
      */
-    protected ?string $contextId = null;
+    protected string|null $contextId = null;
 
     /**
      * The context method name.
      *
      * @var string|null
      */
-    protected ?string $contextMember = null;
+    protected string|null $contextMember = null;
 
     /**
      * @inheritDoc

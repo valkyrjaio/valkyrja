@@ -27,7 +27,7 @@ interface JsonData extends Model
      *
      * @return object|null
      */
-    public function getItem(): ?object;
+    public function getItem(): object|null;
 
     /**
      * Set the item.
@@ -59,7 +59,7 @@ interface JsonData extends Model
      *
      * @return array|null
      */
-    public function getItems(): ?array;
+    public function getItems(): array|null;
 
     /**
      * Set the items.
@@ -91,7 +91,7 @@ interface JsonData extends Model
      *
      * @return int|null
      */
-    public function getTotal(): ?int;
+    public function getTotal(): int|null;
 
     /**
      * Set the total.
@@ -107,7 +107,7 @@ interface JsonData extends Model
      *
      * @return array|null
      */
-    public function getMessages(): ?array;
+    public function getMessages(): array|null;
 
     /**
      * Set the messages.
@@ -123,7 +123,7 @@ interface JsonData extends Model
      *
      * @return array|null
      */
-    public function getData(): ?array;
+    public function getData(): array|null;
 
     /**
      * Set the data.

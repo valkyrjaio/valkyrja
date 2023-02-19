@@ -91,7 +91,7 @@ abstract class Notification implements Contract
     /**
      * @inheritDoc
      */
-    public function getBroadcastAdapterName(): ?string
+    public function getBroadcastAdapterName(): string|null
     {
         return static::$broadcastAdapter;
     }
@@ -99,7 +99,7 @@ abstract class Notification implements Contract
     /**
      * @inheritDoc
      */
-    public function getBroadcastMessageName(): ?string
+    public function getBroadcastMessageName(): string|null
     {
         return static::$broadcastMessage;
     }
@@ -115,7 +115,7 @@ abstract class Notification implements Contract
     /**
      * @inheritDoc
      */
-    public function getMailAdapterName(): ?string
+    public function getMailAdapterName(): string|null
     {
         return static::$mailAdapter;
     }
@@ -123,7 +123,7 @@ abstract class Notification implements Contract
     /**
      * @inheritDoc
      */
-    public function getMailMessageName(): ?string
+    public function getMailMessageName(): string|null
     {
         return static::$mailMessage;
     }
@@ -139,7 +139,7 @@ abstract class Notification implements Contract
     /**
      * @inheritDoc
      */
-    public function getSmsAdapterName(): ?string
+    public function getSmsAdapterName(): string|null
     {
         return static::$smsAdapter;
     }
@@ -147,7 +147,7 @@ abstract class Notification implements Contract
     /**
      * @inheritDoc
      */
-    public function getSmsMessageName(): ?string
+    public function getSmsMessageName(): string|null
     {
         return static::$smsMessage;
     }

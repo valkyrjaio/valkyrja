@@ -60,7 +60,7 @@ interface Application extends ArrayAccess
      *
      * @return class-string<Env>|null
      */
-    public static function getEnv(): ?string;
+    public static function getEnv(): string|null;
 
     /**
      * Set the environment variables class.

@@ -119,7 +119,7 @@ class Parameter extends Model
      *
      * @return CastType|null
      */
-    public function getType(): ?CastType
+    public function getType(): CastType|null
     {
         return $this->type;
     }
@@ -145,7 +145,7 @@ class Parameter extends Model
      *
      * @return class-string<Entity>|null
      */
-    public function getEntity(): ?string
+    public function getEntity(): string|null
     {
         return $this->entity;
     }
@@ -169,7 +169,7 @@ class Parameter extends Model
      *
      * @return string|null
      */
-    public function getEntityColumn(): ?string
+    public function getEntityColumn(): string|null
     {
         return $this->entityColumn;
     }
@@ -193,7 +193,7 @@ class Parameter extends Model
      *
      * @return string[]|null
      */
-    public function getEntityRelationships(): ?array
+    public function getEntityRelationships(): array|null
     {
         return $this->entityRelationships;
     }
@@ -217,7 +217,7 @@ class Parameter extends Model
      *
      * @return class-string<BackedEnum>|null
      */
-    public function getEnum(): ?string
+    public function getEnum(): string|null
     {
         return $this->enum;
     }

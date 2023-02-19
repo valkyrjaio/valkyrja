@@ -107,5 +107,5 @@ interface Validator
      *
      * @return string|null
      */
-    public function getFirstErrorMessage(): ?string;
+    public function getFirstErrorMessage(): string|null;
 }

@@ -63,7 +63,7 @@ abstract class GatedMiddleware extends AuthorizedMiddleware
      *
      * @return string|null
      */
-    protected static function getGate(): ?string
+    protected static function getGate(): string|null
     {
         return static::$gate;
     }
@@ -88,7 +88,7 @@ abstract class GatedMiddleware extends AuthorizedMiddleware
      *
      * @return string|null
      */
-    protected static function getPolicy(): ?string
+    protected static function getPolicy(): string|null
     {
         return static::$policy;
     }

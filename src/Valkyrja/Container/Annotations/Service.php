@@ -38,7 +38,7 @@ class Service extends Dispatch implements Annotation
      *
      * @var array|null
      */
-    public ?array $defaults;
+    public array|null $defaults;
 
     /**
      * Get whether this is a singleton.
@@ -69,7 +69,7 @@ class Service extends Dispatch implements Annotation
      *
      * @return array|null
      */
-    public function getDefaults(): ?array
+    public function getDefaults(): array|null
     {
         return $this->defaults ?? null;
     }

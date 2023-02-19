@@ -28,7 +28,7 @@ trait RelationshipCapableRepository
      *
      * @var string[]|null
      */
-    protected ?array $relationships = null;
+    protected array|null $relationships = null;
 
     /**
      * Whether to get relations.

@@ -78,7 +78,7 @@ class Repository implements Contract
      *
      * @var string[]|null
      */
-    protected ?array $relationships = null;
+    protected array|null $relationships = null;
 
     /**
      * Whether to get relations.
@@ -243,7 +243,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function getOneOrNull(): ?Entity
+    public function getOneOrNull(): Entity|null
     {
         return $this->getResult()[0] ?? null;
     }

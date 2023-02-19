@@ -83,7 +83,7 @@ class EntityCapableMatcher extends Matcher
      *
      * @return Entity|null
      */
-    protected function getEntity(Parameter $parameter, string $entityName, mixed $match): ?Entity
+    protected function getEntity(Parameter $parameter, string $entityName, mixed $match): Entity|null
     {
         $orm = $this->container->getSingleton(Orm::class)->getRepository($entityName);
 

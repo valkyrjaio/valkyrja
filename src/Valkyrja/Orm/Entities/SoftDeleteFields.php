@@ -34,5 +34,5 @@ trait SoftDeleteFields
      *
      * @var string|null
      */
-    public ?string $date_deleted = null;
+    public string|null $date_deleted = null;
 }

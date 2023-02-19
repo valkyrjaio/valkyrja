@@ -59,7 +59,7 @@ interface Message extends Contract
      *
      * @return array|null
      */
-    public function getData(): ?array;
+    public function getData(): array|null;
 
     /**
      * Set the data to broadcast.

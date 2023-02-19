@@ -36,7 +36,7 @@ interface AuthenticatedUsers extends CastableModel
      *
      * @return User|null
      */
-    public function getCurrent(): ?User;
+    public function getCurrent(): User|null;
 
     /**
      * Set the current user.

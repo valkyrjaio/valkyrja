@@ -57,14 +57,14 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
      *
      * @var int|null
      */
-    protected ?int $limit = null;
+    protected int|null $limit = null;
 
     /**
      * Offset condition for the query statement.
      *
      * @var int|null
      */
-    protected ?int $offset = null;
+    protected int|null $offset = null;
 
     /**
      * @inheritDoc

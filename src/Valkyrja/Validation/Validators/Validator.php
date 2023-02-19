@@ -60,7 +60,7 @@ class Validator implements Contract
      *
      * @var array<string, array{subject: string, rules: array<string, array{arguments: array, message: string}>}>|null
      */
-    protected ?array $validationRules = null;
+    protected array|null $validationRules = null;
 
     /**
      * Validator constructor.
@@ -140,7 +140,7 @@ class Validator implements Contract
     /**
      * @inheritDoc
      */
-    public function getFirstErrorMessage(): ?string
+    public function getFirstErrorMessage(): string|null
     {
         if (! empty($errorMessages = $this->errorMessages)) {
             return $errorMessages[array_key_first($errorMessages)];

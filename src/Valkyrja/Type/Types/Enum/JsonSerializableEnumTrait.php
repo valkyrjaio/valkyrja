@@ -33,7 +33,7 @@ trait JsonSerializableEnumTrait
     /**
      * @inheritDoc
      */
-    public static function tryFromJson(string|int $value): ?static
+    public static function tryFromJson(string|int $value): static|null
     {
         return static::tryFrom($value);
     }

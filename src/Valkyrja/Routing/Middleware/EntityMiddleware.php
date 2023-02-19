@@ -161,7 +161,7 @@ class EntityMiddleware extends Middleware
      *
      * @return Entity|null
      */
-    protected static function findEntityFromParameter(Parameter $parameter, string $entityName, mixed $value): ?Entity
+    protected static function findEntityFromParameter(Parameter $parameter, string $entityName, mixed $value): Entity|null
     {
         $orm           = static::getOrmRepository($entityName);
         $relationships = $parameter->getEntityRelationships() ?? [];

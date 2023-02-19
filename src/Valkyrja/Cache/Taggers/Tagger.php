@@ -84,7 +84,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
-    public function get(string $key): ?string
+    public function get(string $key): string|null
     {
         foreach ($this->tags as $tag) {
             if (isset($this->getKeys($tag)[$key])) {

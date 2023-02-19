@@ -136,7 +136,7 @@ abstract class Middleware
      *
      * @return Route|null
      */
-    protected static function getRoute(): ?Route
+    protected static function getRoute(): Route|null
     {
         if (self::getContainer()->isSingleton(Route::class)) {
             return self::$route ??= self::getContainer()->getSingleton(Route::class);

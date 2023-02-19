@@ -45,7 +45,7 @@ class Cookie extends Model implements Contract
      *
      * @var string|null
      */
-    public ?string $value = null;
+    public string|null $value = null;
 
     /**
      * The cookie expire time.
@@ -66,7 +66,7 @@ class Cookie extends Model implements Contract
      *
      * @var string|null
      */
-    public ?string $domain = null;
+    public string|null $domain = null;
 
     /**
      * Whether the cookie is secure.
@@ -94,7 +94,7 @@ class Cookie extends Model implements Contract
      *
      * @var string|null
      */
-    public ?string $sameSite = null;
+    public string|null $sameSite = null;
 
     /**
      * Cookie constructor.
@@ -218,7 +218,7 @@ class Cookie extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getValue(): ?string
+    public function getValue(): string|null
     {
         return $this->value;
     }
@@ -272,7 +272,7 @@ class Cookie extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getDomain(): ?string
+    public function getDomain(): string|null
     {
         return $this->domain;
     }
@@ -344,7 +344,7 @@ class Cookie extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getSameSite(): ?string
+    public function getSameSite(): string|null
     {
         return $this->sameSite;
     }

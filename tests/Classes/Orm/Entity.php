@@ -27,7 +27,7 @@ class Entity extends AbstractEntity
      *
      * @var string|null
      */
-    public ?string $property = null;
+    public string|null $property = null;
 
     /**
      * A property to test with using getter/setter.

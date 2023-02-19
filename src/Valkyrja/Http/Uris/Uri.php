@@ -34,7 +34,7 @@ class Uri implements Contract
      *
      * @var string|null
      */
-    private ?string $uriString = null;
+    private string|null $uriString = null;
 
     /**
      * UriImpl constructor.
@@ -126,7 +126,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
-    public function getPort(): ?int
+    public function getPort(): int|null
     {
         return $this->isStandardPort() ? null : $this->port;
     }

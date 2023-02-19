@@ -49,7 +49,7 @@ trait TokenizableUserTrait
     /**
      * @inheritDoc
      */
-    public static function asTokenized(): ?string
+    public static function asTokenized(): string|null
     {
         return static::$token;
     }

@@ -28,40 +28,40 @@ class Command extends Dispatch implements Contract
      *
      * @var string|null
      */
-    protected ?string $path = null;
+    protected string|null $path = null;
 
     /**
      * The regex for dynamic routes.
      *
      * @var string|null
      */
-    protected ?string $regex = null;
+    protected string|null $regex = null;
 
     /**
      * Any params for dynamic routes.
      *
      * @var array|null
      */
-    protected ?array $params = null;
+    protected array|null $params = null;
 
     /**
      * Any segments for optional parts of path.
      *
      * @var array|null
      */
-    protected ?array $segments = null;
+    protected array|null $segments = null;
 
     /**
      * The description.
      *
      * @var string|null
      */
-    protected ?string $description = null;
+    protected string|null $description = null;
 
     /**
      * @inheritDoc
      */
-    public function getPath(): ?string
+    public function getPath(): string|null
     {
         return $this->path;
     }
@@ -79,7 +79,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getRegex(): ?string
+    public function getRegex(): string|null
     {
         return $this->regex;
     }
@@ -97,7 +97,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getParams(): ?array
+    public function getParams(): array|null
     {
         return $this->params;
     }
@@ -115,7 +115,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getSegments(): ?array
+    public function getSegments(): array|null
     {
         return $this->segments;
     }
@@ -133,7 +133,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getDescription(): ?string
+    public function getDescription(): string|null
     {
         return $this->description;
     }

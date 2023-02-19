@@ -66,7 +66,7 @@ class LogAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string $key): ?string
+    public function get(string $key): string|null
     {
         $this->logger->info(self::class . " get: $key");
 

@@ -47,7 +47,7 @@ interface Cache extends Manager
      *
      * @return string|null
      */
-    public function get(string $key): ?string;
+    public function get(string $key): string|null;
 
     /**
      * Retrieve multiple items from the cache by key.

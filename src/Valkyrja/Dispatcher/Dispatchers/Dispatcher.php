@@ -85,7 +85,7 @@ class Dispatcher implements Contract
         $response = is_string($class)
             ? $class::$method(...$arguments)
             : (/** @var object $class */
-                $class->$method(...$arguments)
+            $class->$method(...$arguments)
             );
 
         return $response ?? Constant::DISPATCHED;
@@ -205,7 +205,7 @@ class Dispatcher implements Contract
      *
      * @return array|null
      */
-    protected function getArguments(Dispatch $dispatch, array $arguments = null): ?array
+    protected function getArguments(Dispatch $dispatch, array $arguments = null): array|null
     {
         // Get either the arguments passed or from the dispatch model
         $arguments = $arguments ?? $dispatch->getArguments();
@@ -235,7 +235,7 @@ class Dispatcher implements Contract
      *
      * @return array|null
      */
-    protected function getDependencies(Dispatch $dispatch): ?array
+    protected function getDependencies(Dispatch $dispatch): array|null
     {
         $dependenciesInstances = [];
 

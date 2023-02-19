@@ -46,7 +46,7 @@ class SimpleRequest implements SimpleRequestContract
      *
      * @var string|null
      */
-    protected ?string $requestTarget = null;
+    protected string|null $requestTarget = null;
 
     /**
      * SimpleRequest constructor.

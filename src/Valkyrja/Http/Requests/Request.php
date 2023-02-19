@@ -125,7 +125,7 @@ class Request extends SimpleRequest implements Contract
     /**
      * @inheritDoc
      */
-    public function getCookieParam(string $name, string $default = null): ?string
+    public function getCookieParam(string $name, string $default = null): string|null
     {
         return $this->cookies[$name] ?? $default;
     }

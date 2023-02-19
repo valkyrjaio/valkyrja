@@ -28,7 +28,7 @@ class JsonData extends Model implements Contract
      *
      * @var object|null
      */
-    public ?object $item = null;
+    public object|null $item = null;
 
     /**
      * The item key.
@@ -42,7 +42,7 @@ class JsonData extends Model implements Contract
      *
      * @var object[]|null
      */
-    public ?array $items = null;
+    public array|null $items = null;
 
     /**
      * The items key.
@@ -56,33 +56,33 @@ class JsonData extends Model implements Contract
      *
      * @var int|null
      */
-    public ?int $total = null;
+    public int|null $total = null;
 
     /**
      * The message.
      *
      * @var string|null
      */
-    public ?string $message = null;
+    public string|null $message = null;
 
     /**
      * The messages.
      *
      * @var array|null
      */
-    public ?array $messages = null;
+    public array|null $messages = null;
 
     /**
      * The data.
      *
      * @var array|null
      */
-    public ?array $data = null;
+    public array|null $data = null;
 
     /**
      * @inheritDoc
      */
-    public function getItem(): ?object
+    public function getItem(): object|null
     {
         return $this->item;
     }
@@ -118,7 +118,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getItems(): ?array
+    public function getItems(): array|null
     {
         return $this->items;
     }
@@ -154,7 +154,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getTotal(): ?int
+    public function getTotal(): int|null
     {
         return $this->total;
     }
@@ -172,7 +172,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getMessages(): ?array
+    public function getMessages(): array|null
     {
         return $this->messages;
     }
@@ -190,7 +190,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getData(): ?array
+    public function getData(): array|null
     {
         return $this->data;
     }
@@ -208,7 +208,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getMessage(): ?string
+    public function getMessage(): string|null
     {
         return $this->message;
     }

@@ -25,12 +25,12 @@ trait Annotatable
      *
      * @var string|null
      */
-    public ?string $type;
+    public string|null $type;
 
     /**
      * @inheritDoc
      */
-    public function getType(): ?string
+    public function getType(): string|null
     {
         return $this->type ?? null;
     }
