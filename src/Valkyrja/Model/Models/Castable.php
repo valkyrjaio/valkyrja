@@ -158,8 +158,8 @@ trait Castable
      * Get a property's value by the type for a given type cast.
      *
      * @param CastType|array{CastType, array{class-string}|class-string} $type     The cast type
-     * @param string                                                     $property The property name
-     * @param mixed                                                      $value    The property value
+     * @param string $property The property name
+     * @param mixed  $value    The property value
      *
      * @throws JsonException
      *
