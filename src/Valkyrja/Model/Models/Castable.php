@@ -18,6 +18,7 @@ use JsonException;
 use UnitEnum;
 use Valkyrja\Model\CastableModel as Contract;
 use Valkyrja\Model\Enums\CastType;
+use Valkyrja\Model\Exceptions\InvalidArgumentException;
 use Valkyrja\Model\Model;
 use Valkyrja\Type\Support\Arr;
 use Valkyrja\Type\Support\Obj;
@@ -64,7 +65,7 @@ trait Castable
      *      ]
      * </code>
      *
-     * @var array<string, CastType|array{CastType, class-string|class-string[]}>
+     * @var array<string, CastType|array{0:CastType, 1:class-string|array{0:class-string}}>
      */
     protected static array $castings = [];
 
@@ -85,7 +86,7 @@ trait Castable
     /**
      * @inheritDoc
      *
-     * @return array<string, CastType|array{CastType, class-string|class-string[]}>
+     * @return array<string, CastType|array{0:CastType, 1:class-string|array{0:class-string}}>
      */
     public static function getCastings(): array
     {
@@ -156,9 +157,9 @@ trait Castable
     /**
      * Get a property's value by the type for a given type cast.
      *
-     * @param CastType|array $type     The cast type
-     * @param string         $property The property name
-     * @param mixed          $value    The property value
+     * @param CastType|array{CastType, array{class-string}|class-string} $type     The cast type
+     * @param string                                                     $property The property name
+     * @param mixed                                                      $value    The property value
      *
      * @throws JsonException
      *
@@ -166,28 +167,66 @@ trait Castable
      */
     protected function __getPropertyValueByTypeMatch(CastType|array $type, string $property, mixed $value): mixed
     {
-        return match ($this->__getTypeToCheck($type)) {
+        if ($type instanceof CastType) {
+            return $this->__getPropertyValueByTypeMatchForCastType($type, $property, $value);
+        }
+
+        return $this->__getPropertyValueByTypeMatchForArray($type, $property, $value);
+    }
+
+    /**
+     * @param CastType $type     The cast type
+     * @param string   $property The property name
+     * @param mixed    $value    The property value
+     *
+     * @throws JsonException
+     *
+     * @return mixed
+     */
+    protected function __getPropertyValueByTypeMatchForCastType(CastType $type, string $property, mixed $value): mixed
+    {
+        return match ($type) {
             CastType::string => $this->__getStringFromValueType($property, $value),
             CastType::int    => $this->__getIntFromValueType($property, $value),
             CastType::float  => $this->__getFloatFromValueType($property, $value),
             CastType::double => $this->__getDoubleFromValueType($property, $value),
             CastType::bool   => $this->__getBoolFromValueType($property, $value),
-            CastType::model  => $this->__getModelFromValueType($property, $type[1], $value),
-            CastType::enum   => $this->__getEnumFromValueType($property, $type[1], $value),
-            CastType::type   => $this->__getTypeFromValueType($property, $type[1], $value),
             CastType::json   => $this->__getJsonFromValueType($property, $value),
             CastType::array  => $this->__getArrayFromValueType($property, $value),
             CastType::object => $this->__getObjectFromValueType($property, $value),
             CastType::true   => $this->__getTrueFromValueType($property, $value),
             CastType::false  => $this->__getFalseFromValueType($property, $value),
             CastType::null   => $this->__getNullFromValueType($property, $value),
+            default          => throw new InvalidArgumentException("Cast Type `{$type->value}` must use an array"),
+        };
+    }
+
+    /**
+     * @param array  $type     The cast type
+     * @param string $property The property name
+     * @param mixed  $value    The property value
+     *
+     * @throws JsonException
+     *
+     * @return mixed
+     */
+    protected function __getPropertyValueByTypeMatchForArray(array $type, string $property, mixed $value): mixed
+    {
+        /** @var CastType $castType */
+        $castType = $type[0];
+
+        return match ($castType) {
+            CastType::model => $this->__getModelFromValueType($property, $type[1], $value),
+            CastType::enum  => $this->__getEnumFromValueType($property, $type[1], $value),
+            CastType::type  => $this->__getTypeFromValueType($property, $type[1], $value),
+            default         => throw new InvalidArgumentException("Cast Type `{$castType->value}` must not use an array"),
         };
     }
 
     /**
      * Get the type to check. Could be an array for models or enums since the second index will be the enum/model name.
      *
-     * @param CastType|array $type The type
+     * @param CastType|array{0:CastType, 1:class-string|class-string[]} $type The type
      *
      * @return CastType
      */
@@ -375,9 +414,9 @@ trait Castable
     /**
      * Get a model from value given a type not identified prior.
      *
-     * @param string       $property The property name
-     * @param array|string $type     The type of the property
-     * @param mixed        $value    The value
+     * @param string                                           $property The property name
+     * @param array{0:class-string<Model>}|class-string<Model> $type     The type of the property
+     * @param mixed                                            $value    The value
      *
      * @throws JsonException
      *
