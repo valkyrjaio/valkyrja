@@ -244,7 +244,7 @@ class CacheRepository extends Repository implements Contract
     /**
      * @inheritDoc
      *
-     * @param Entity|null $entity The entity instance to remove.
+     * @param Entity|null $entity The entity instance to remove
      */
     public function clear(Entity $entity = null): void
     {

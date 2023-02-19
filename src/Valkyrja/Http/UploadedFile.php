@@ -39,10 +39,10 @@ interface UploadedFile
      * an exception.
      *
      * @throws RuntimeException in cases when no stream is available or can be
-     *                          created.
+     *                          created
      *
      * @return Stream Stream representation of the
-     *                uploaded file.
+     *                uploaded file
      */
     public function getStream(): Stream;
 
@@ -72,13 +72,13 @@ interface UploadedFile
      * @see http://php.net/is_uploaded_file
      * @see http://php.net/move_uploaded_file
      *
-     * @param string $targetPath Path to which to move the uploaded file.
+     * @param string $targetPath Path to which to move the uploaded file
      *
      * @throws InvalidArgumentException if the $targetPath specified is
-     *                                  invalid.
+     *                                  invalid
      * @throws RuntimeException         on any error during the move
      *                                  operation, or on the second or
-     *                                  subsequent call to the method.
+     *                                  subsequent call to the method
      *
      * @return void
      */
@@ -90,7 +90,7 @@ interface UploadedFile
      * the file in the $_FILES array if available, as PHP calculates this based
      * on the actual size transmitted.
      *
-     * @return int|null The file size in bytes or null if unknown.
+     * @return int|null The file size in bytes or null if unknown
      */
     public function getSize(): ?int;
 
@@ -104,7 +104,7 @@ interface UploadedFile
      *
      * @see http://php.net/manual/en/features.file-upload.errors.php
      *
-     * @return int One of PHP's UPLOAD_ERR_XXX constants.
+     * @return int One of PHP's UPLOAD_ERR_XXX constants
      */
     public function getError(): int;
 
@@ -117,7 +117,7 @@ interface UploadedFile
      * the file in the $_FILES array.
      *
      * @return string|null The filename sent by the client or null if none
-     *                     was provided.
+     *                     was provided
      */
     public function getClientFilename(): ?string;
 
@@ -130,7 +130,7 @@ interface UploadedFile
      * the file in the $_FILES array.
      *
      * @return string|null The media type sent by the client or null if none
-     *                     was provided.
+     *                     was provided
      */
     public function getClientMediaType(): ?string;
 }

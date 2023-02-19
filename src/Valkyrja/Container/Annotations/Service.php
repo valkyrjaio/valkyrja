@@ -77,7 +77,7 @@ class Service extends Dispatch implements Annotation
     /**
      * Set defaults.
      *
-     * @param array|null $defaults The defaults.
+     * @param array|null $defaults The defaults
      *
      * @return static
      */

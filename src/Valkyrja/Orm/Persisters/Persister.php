@@ -199,7 +199,7 @@ class Persister implements Contract
     /**
      * Clear a single deferred entity.
      *
-     * @param Entity $entity The entity instance to remove.
+     * @param Entity $entity The entity instance to remove
      *
      * @return void
      */

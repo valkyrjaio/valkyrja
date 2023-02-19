@@ -27,7 +27,7 @@ interface Message
      * The string MUST contain only the HTTP version number (e.g., "1.1",
      * "1.0").
      *
-     * @return string HTTP protocol version.
+     * @return string HTTP protocol version
      */
     public function getProtocolVersion(): string;
 
@@ -64,18 +64,18 @@ interface Message
      *
      * @return string[][] Returns an associative array of the message's
      *                    headers. Each key MUST be a header name, and each
-     *                    value MUST be an array of strings for that header.
+     *                    value MUST be an array of strings for that header
      */
     public function getHeaders(): array;
 
     /**
      * Checks if a header exists by the given case-insensitive name.
      *
-     * @param string $name Case-insensitive header field name.
+     * @param string $name Case-insensitive header field name
      *
      * @return bool Returns true if any header names match the given header
      *              name using a case-insensitive string comparison. Returns
-     *              false if no matching header name is found in the message.
+     *              false if no matching header name is found in the message
      */
     public function hasHeader(string $name): bool;
 
@@ -86,11 +86,11 @@ interface Message
      * If the header does not appear in the message, this method MUST return an
      * empty array.
      *
-     * @param string $name Case-insensitive header field name.
+     * @param string $name Case-insensitive header field name
      *
      * @return string[] An array of string values as provided for the given
      *                  header. If the header does not appear in the message,
-     *                  this method MUST return an empty array.
+     *                  this method MUST return an empty array
      */
     public function getHeader(string $name): array;
 
@@ -105,12 +105,12 @@ interface Message
      * If the header does not appear in the message, this method MUST return
      * an empty string.
      *
-     * @param string $name Case-insensitive header field name.
+     * @param string $name Case-insensitive header field name
      *
      * @return string A string of values as provided for the given header
      *                concatenated together using a comma. If the header does
      *                not appear in the message, this method MUST return an
-     *                empty string.
+     *                empty string
      */
     public function getHeaderLine(string $name): string;
 
@@ -123,10 +123,10 @@ interface Message
      * immutability of the message, and MUST return an instance that has the
      * new and/or updated header and value.
      *
-     * @param string $name      Case-insensitive header field name.
-     * @param string ...$values Header value(s).
+     * @param string $name      Case-insensitive header field name
+     * @param string ...$values Header value(s)
      *
-     * @throws InvalidArgumentException for invalid header names or values.
+     * @throws InvalidArgumentException for invalid header names or values
      *
      * @return static
      */
@@ -142,10 +142,10 @@ interface Message
      * immutability of the message, and MUST return an instance that has the
      * new header and/or value.
      *
-     * @param string $name      Case-insensitive header field name to add.
-     * @param string ...$values Header value(s).
+     * @param string $name      Case-insensitive header field name to add
+     * @param string ...$values Header value(s)
      *
-     * @throws InvalidArgumentException for invalid header names or values.
+     * @throws InvalidArgumentException for invalid header names or values
      *
      * @return static
      */
@@ -158,7 +158,7 @@ interface Message
      * immutability of the message, and MUST return an instance that removes
      * the named header.
      *
-     * @param string $name Case-insensitive header field name to remove.
+     * @param string $name Case-insensitive header field name to remove
      *
      * @return static
      */
@@ -167,7 +167,7 @@ interface Message
     /**
      * Gets the body of the message.
      *
-     * @return Stream Returns the body as a stream.
+     * @return Stream Returns the body as a stream
      */
     public function getBody(): Stream;
 
@@ -178,9 +178,9 @@ interface Message
      * immutability of the message, and MUST return a new instance that has the
      * new body stream.
      *
-     * @param Stream $body Body.
+     * @param Stream $body Body
      *
-     * @throws InvalidArgumentException When the body is not valid.
+     * @throws InvalidArgumentException When the body is not valid
      *
      * @return static
      */

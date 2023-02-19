@@ -101,7 +101,7 @@ interface Request extends SimpleRequest
      * immutability of the message, and MUST return an instance that has the
      * updated cookie values.
      *
-     * @param array $cookies Array of key/value pairs representing cookies.
+     * @param array $cookies Array of key/value pairs representing cookies
      *
      * @return static
      */
@@ -173,7 +173,7 @@ interface Request extends SimpleRequest
      * updated query string arguments.
      *
      * @param array $query Array of query string arguments, typically from
-     *                     $_GET.
+     *                     $_GET
      *
      * @return static
      */
@@ -207,7 +207,7 @@ interface Request extends SimpleRequest
      * instantiation, or MAY be injected via withUploadedFiles().
      *
      * @return UploadedFile[] An array tree of UploadedFileInterface instances; an empty
-     *                        array MUST be returned if no data is present.
+     *                        array MUST be returned if no data is present
      */
     public function getUploadedFiles(): array;
 
@@ -218,9 +218,9 @@ interface Request extends SimpleRequest
      * updated body parameters.
      *
      * @param UploadedFile ...$uploadedFiles An array tree of UploadedFileInterface
-     *                                       instances.
+     *                                       instances
      *
-     * @throws InvalidArgumentException if an invalid structure is provided.
+     * @throws InvalidArgumentException if an invalid structure is provided
      *
      * @return static
      */
@@ -237,7 +237,7 @@ interface Request extends SimpleRequest
      * the absence of body content.
      *
      * @return array The deserialized body parameters, if any.
-     *               These will typically be an array or object.
+     *               These will typically be an array or object
      */
     public function getParsedBody(): array;
 
@@ -277,9 +277,9 @@ interface Request extends SimpleRequest
      * updated body parameters.
      *
      * @param array $data The deserialized body data. This will
-     *                    typically be in an array or object.
+     *                    typically be in an array or object
      *
-     * @throws InvalidArgumentException if an unsupported argument type is provided.
+     * @throws InvalidArgumentException if an unsupported argument type is provided
      *
      * @return static
      */
@@ -313,7 +313,7 @@ interface Request extends SimpleRequest
      * deserializing non-form-encoded message bodies; etc. Attributes
      * will be application and request specific, and CAN be mutable.
      *
-     * @return array Attributes derived from the request.
+     * @return array Attributes derived from the request
      */
     public function getAttributes(): array;
 
@@ -343,8 +343,8 @@ interface Request extends SimpleRequest
      * This method obviates the need for a hasAttribute() method, as it allows
      * specifying a default value to return if the attribute is not found.
      *
-     * @param string     $name    The attribute name.
-     * @param mixed|null $default Default value to return if the attribute does not exist.
+     * @param string     $name    The attribute name
+     * @param mixed|null $default Default value to return if the attribute does not exist
      *
      * @return mixed
      *
@@ -360,8 +360,8 @@ interface Request extends SimpleRequest
      * immutability of the message, and MUST return an instance that has the
      * updated attribute.
      *
-     * @param string $name  The attribute name.
-     * @param mixed  $value The value of the attribute.
+     * @param string $name  The attribute name
+     * @param mixed  $value The value of the attribute
      *
      * @return static
      *
@@ -377,7 +377,7 @@ interface Request extends SimpleRequest
      * immutability of the message, and MUST return an instance that removes
      * the attribute.
      *
-     * @param string $name The attribute name.
+     * @param string $name The attribute name
      *
      * @return static
      *

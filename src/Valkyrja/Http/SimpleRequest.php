@@ -71,7 +71,7 @@ interface SimpleRequest extends Message
     /**
      * Retrieves the HTTP method of the request.
      *
-     * @return string Returns the request method.
+     * @return string Returns the request method
      */
     public function getMethod(): string;
 
@@ -84,9 +84,9 @@ interface SimpleRequest extends Message
      * immutability of the message, and MUST return an instance that has the
      * changed request method.
      *
-     * @param string $method Case-sensitive method.
+     * @param string $method Case-sensitive method
      *
-     * @throws InvalidArgumentException for invalid HTTP methods.
+     * @throws InvalidArgumentException for invalid HTTP methods
      *
      * @return static
      */
@@ -99,7 +99,7 @@ interface SimpleRequest extends Message
      * @see http://tools.ietf.org/html/rfc3986#section-4.3
      *
      * @return Uri Returns a Uri instance
-     *             representing the URI of the request.
+     *             representing the URI of the request
      */
     public function getUri(): Uri;
 
@@ -127,9 +127,9 @@ interface SimpleRequest extends Message
      *
      * @see http://tools.ietf.org/html/rfc3986#section-4.3
      *
-     * @param Uri  $uri          New request URI to use.
+     * @param Uri  $uri          New request URI to use
      * @param bool $preserveHost Preserve the original state of the Host
-     *                           header.
+     *                           header
      *
      * @return static
      */

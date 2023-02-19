@@ -235,7 +235,7 @@ interface Repository
      *      $repository->clear(new Entity())
      * </code>
      *
-     * @param Entity|null $entity The entity instance to remove.
+     * @param Entity|null $entity The entity instance to remove
      *
      * @return void
      */

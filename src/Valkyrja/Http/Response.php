@@ -34,7 +34,7 @@ interface Response extends Message
      * The status code is a 3-digit integer result code of the server's attempt
      * to understand and satisfy the request.
      *
-     * @return int Status code.
+     * @return int Status code
      */
     public function getStatusCode(): int;
 
@@ -51,13 +51,13 @@ interface Response extends Message
      * @see http://tools.ietf.org/html/rfc7231#section-6
      * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      *
-     * @param int         $code         The 3-digit integer result code to set.
+     * @param int         $code         The 3-digit integer result code to set
      * @param string|null $reasonPhrase The reason phrase to use with the
      *                                  provided status code; if none is provided,
      *                                  implementations MAY use the defaults as
-     *                                  suggested in the HTTP specification.
+     *                                  suggested in the HTTP specification
      *
-     * @throws InvalidArgumentException For invalid status code arguments.
+     * @throws InvalidArgumentException For invalid status code arguments
      *
      * @return static
      */
@@ -75,7 +75,7 @@ interface Response extends Message
      * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      *
      * @return string Reason phrase; must return an empty string if none
-     *                present.
+     *                present
      */
     public function getReasonPhrase(): string;
 
@@ -91,7 +91,7 @@ interface Response extends Message
      *
      * @param Cookie $cookie The cookie model
      *
-     * @throws InvalidArgumentException for invalid header names or values.
+     * @throws InvalidArgumentException for invalid header names or values
      *
      * @return static
      */
@@ -109,7 +109,7 @@ interface Response extends Message
      *
      * @param Cookie $cookie The cookie model
      *
-     * @throws InvalidArgumentException for invalid header names or values.
+     * @throws InvalidArgumentException for invalid header names or values
      *
      * @return static
      */

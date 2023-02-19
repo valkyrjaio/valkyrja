@@ -270,7 +270,7 @@ interface Orm
      *      $entityManager->clear(new Entity())
      * </code>
      *
-     * @param Entity|null $entity [optional] The entity instance to remove.
+     * @param Entity|null $entity [optional] The entity instance to remove
      *
      * @return void
      */
