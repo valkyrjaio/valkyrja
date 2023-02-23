@@ -17,6 +17,7 @@ use BackedEnum;
 use UnitEnum;
 
 use function assert;
+use function in_array;
 
 /**
  * Class Enum.
@@ -105,5 +106,31 @@ class Enum
     public static function asReverseArray(string $enum): array
     {
         return array_combine(self::values($enum), self::names($enum));
+    }
+
+    /**
+     * Determine whether a name is valid for a given enum.
+     *
+     * @param class-string<UnitEnum> $enum The enum class name
+     * @param string                 $name The name to check
+     *
+     * @return bool
+     */
+    public static function isValidName(string $enum, string $name): bool
+    {
+        return in_array($name, self::names($enum), true);
+    }
+
+    /**
+     * Determine whether a value is valid for a given enum.
+     *
+     * @param class-string<BackedEnum> $enum  The enum class name
+     * @param string|int               $value The value to check
+     *
+     * @return bool
+     */
+    public static function isValidValue(string $enum, string|int $value): bool
+    {
+        return in_array($value, self::values($enum), true);
     }
 }
