@@ -141,7 +141,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetRegex(): void
     {
-        self::assertEquals(Regex::REGEX, $this->class->getRegex());
+        self::assertSame(Regex::REGEX, $this->class->getRegex());
     }
 
     /**
@@ -151,7 +151,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetAnnotationsMap(): void
     {
-        self::assertEquals(ConfigValue::MAP, $this->class->getAnnotationsMap());
+        self::assertSame(ConfigValue::MAP, $this->class->getAnnotationsMap());
     }
 
     /**

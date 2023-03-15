@@ -136,7 +136,7 @@ class HelpersTest extends TestCase
         try {
             abort();
         } catch (Exception $exception) {
-            self::assertEquals(HttpException::class, $exception::class);
+            self::assertSame(HttpException::class, $exception::class);
         }
     }
 
@@ -150,7 +150,7 @@ class HelpersTest extends TestCase
         try {
             redirectTo();
         } catch (Exception $exception) {
-            self::assertEquals(HttpRedirectException::class, $exception::class);
+            self::assertSame(HttpRedirectException::class, $exception::class);
         }
     }
 
@@ -281,7 +281,7 @@ class HelpersTest extends TestCase
      */
     public function testRouteUrl(): void
     {
-        self::assertEquals('/', routeUrl('welcome'));
+        self::assertSame('/', routeUrl('welcome'));
     }
 
     /**
@@ -391,7 +391,7 @@ class HelpersTest extends TestCase
      */
     public function testBasePath(): void
     {
-        self::assertEquals(Directory::$BASE_PATH, basePath());
+        self::assertSame(Directory::$BASE_PATH, basePath());
     }
 
     /**
@@ -403,7 +403,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . $this->subPath;
 
-        self::assertEquals($expected, basePath($this->subPath));
+        self::assertSame($expected, basePath($this->subPath));
     }
 
     /**
@@ -415,7 +415,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . Directory::DIRECTORY_SEPARATOR . Directory::$APP_PATH;
 
-        self::assertEquals($expected, appPath());
+        self::assertSame($expected, appPath());
     }
 
     /**
@@ -427,7 +427,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . Directory::DIRECTORY_SEPARATOR . Directory::$APP_PATH . $this->subPath;
 
-        self::assertEquals($expected, appPath($this->subPath));
+        self::assertSame($expected, appPath($this->subPath));
     }
 
     /**
@@ -445,7 +445,7 @@ class HelpersTest extends TestCase
             . Directory::DIRECTORY_SEPARATOR
             . Directory::$CACHE_PATH;
 
-        self::assertEquals($expected, cachePath());
+        self::assertSame($expected, cachePath());
     }
 
     /**
@@ -464,7 +464,7 @@ class HelpersTest extends TestCase
             . Directory::$CACHE_PATH
             . $this->subPath;
 
-        self::assertEquals($expected, cachePath($this->subPath));
+        self::assertSame($expected, cachePath($this->subPath));
     }
 
     /**
@@ -476,7 +476,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . Directory::DIRECTORY_SEPARATOR . Directory::$CONFIG_PATH;
 
-        self::assertEquals($expected, configPath());
+        self::assertSame($expected, configPath());
     }
 
     /**
@@ -488,7 +488,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . Directory::DIRECTORY_SEPARATOR . Directory::$CONFIG_PATH . $this->subPath;
 
-        self::assertEquals($expected, configPath($this->subPath));
+        self::assertSame($expected, configPath($this->subPath));
     }
 
     /**
@@ -500,7 +500,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . Directory::DIRECTORY_SEPARATOR . Directory::$PUBLIC_PATH;
 
-        self::assertEquals($expected, publicPath());
+        self::assertSame($expected, publicPath());
     }
 
     /**
@@ -512,7 +512,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . Directory::DIRECTORY_SEPARATOR . Directory::$PUBLIC_PATH . $this->subPath;
 
-        self::assertEquals($expected, publicPath($this->subPath));
+        self::assertSame($expected, publicPath($this->subPath));
     }
 
     /**
@@ -524,7 +524,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . Directory::DIRECTORY_SEPARATOR . Directory::$RESOURCES_PATH;
 
-        self::assertEquals($expected, resourcesPath());
+        self::assertSame($expected, resourcesPath());
     }
 
     /**
@@ -534,10 +534,10 @@ class HelpersTest extends TestCase
      */
     public function testResourcesPathSubPath(): void
     {
-        $expected =
-            Directory::$BASE_PATH . Directory::DIRECTORY_SEPARATOR . Directory::$RESOURCES_PATH . $this->subPath;
+        $expected
+            = Directory::$BASE_PATH . Directory::DIRECTORY_SEPARATOR . Directory::$RESOURCES_PATH . $this->subPath;
 
-        self::assertEquals($expected, resourcesPath($this->subPath));
+        self::assertSame($expected, resourcesPath($this->subPath));
     }
 
     /**
@@ -549,7 +549,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . Directory::DIRECTORY_SEPARATOR . Directory::$STORAGE_PATH;
 
-        self::assertEquals($expected, storagePath());
+        self::assertSame($expected, storagePath());
     }
 
     /**
@@ -561,7 +561,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . Directory::DIRECTORY_SEPARATOR . Directory::$STORAGE_PATH . $this->subPath;
 
-        self::assertEquals($expected, storagePath($this->subPath));
+        self::assertSame($expected, storagePath($this->subPath));
     }
 
     /**
@@ -573,7 +573,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . Directory::DIRECTORY_SEPARATOR . Directory::$TESTS_PATH;
 
-        self::assertEquals($expected, testsPath());
+        self::assertSame($expected, testsPath());
     }
 
     /**
@@ -585,7 +585,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . Directory::DIRECTORY_SEPARATOR . Directory::$TESTS_PATH . $this->subPath;
 
-        self::assertEquals($expected, testsPath($this->subPath));
+        self::assertSame($expected, testsPath($this->subPath));
     }
 
     /**
@@ -597,7 +597,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . Directory::DIRECTORY_SEPARATOR . Directory::$VENDOR_PATH;
 
-        self::assertEquals($expected, vendorPath());
+        self::assertSame($expected, vendorPath());
     }
 
     /**
@@ -609,6 +609,6 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . Directory::DIRECTORY_SEPARATOR . Directory::$VENDOR_PATH . $this->subPath;
 
-        self::assertEquals($expected, vendorPath($this->subPath));
+        self::assertSame($expected, vendorPath($this->subPath));
     }
 }

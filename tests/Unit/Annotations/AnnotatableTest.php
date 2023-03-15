@@ -68,7 +68,7 @@ class AnnotatableTest extends TestCase
     {
         $this->class->setType($this->value);
 
-        self::assertEquals($this->value, $this->class->getType());
+        self::assertSame($this->value, $this->class->getType());
     }
 
     /**
@@ -78,7 +78,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetAnnotationTypeNull(): void
     {
-        self::assertEquals($this->class, $this->class->setType(null));
+        self::assertSame($this->class, $this->class->setType(null));
     }
 
     /**
@@ -88,7 +88,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetAnnotationType(): void
     {
-        self::assertEquals($this->class, $this->class->setType($this->value));
+        self::assertSame($this->class, $this->class->setType($this->value));
     }
 
     /**
@@ -110,7 +110,7 @@ class AnnotatableTest extends TestCase
     {
         $this->class->setId($this->value);
 
-        self::assertEquals($this->value, $this->class->getId());
+        self::assertSame($this->value, $this->class->getId());
     }
 
     /**
@@ -120,7 +120,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetIdNull(): void
     {
-        self::assertEquals($this->class, $this->class->setId(null));
+        self::assertSame($this->class, $this->class->setId(null));
     }
 
     /**
@@ -130,7 +130,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetId(): void
     {
-        self::assertEquals($this->class, $this->class->setId($this->value));
+        self::assertSame($this->class, $this->class->setId($this->value));
     }
 
     /**
@@ -152,7 +152,7 @@ class AnnotatableTest extends TestCase
     {
         $this->class->setName($this->value);
 
-        self::assertEquals($this->value, $this->class->getName());
+        self::assertSame($this->value, $this->class->getName());
     }
 
     /**
@@ -162,7 +162,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetNameNull(): void
     {
-        self::assertEquals($this->class, $this->class->setName(null));
+        self::assertSame($this->class, $this->class->setName(null));
     }
 
     /**
@@ -172,7 +172,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetName(): void
     {
-        self::assertEquals($this->class, $this->class->setName($this->value));
+        self::assertSame($this->class, $this->class->setName($this->value));
     }
 
     /**
@@ -194,7 +194,7 @@ class AnnotatableTest extends TestCase
     {
         $this->class->setClass($this->value);
 
-        self::assertEquals($this->value, $this->class->getClass());
+        self::assertSame($this->value, $this->class->getClass());
     }
 
     /**
@@ -204,7 +204,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetClassNull(): void
     {
-        self::assertEquals($this->class, $this->class->setClass(null));
+        self::assertSame($this->class, $this->class->setClass(null));
     }
 
     /**
@@ -214,7 +214,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetClass(): void
     {
-        self::assertEquals($this->class, $this->class->setClass($this->value));
+        self::assertSame($this->class, $this->class->setClass($this->value));
     }
 
     /**
@@ -236,7 +236,7 @@ class AnnotatableTest extends TestCase
     {
         $this->class->setProperty($this->value);
 
-        self::assertEquals($this->value, $this->class->getProperty());
+        self::assertSame($this->value, $this->class->getProperty());
     }
 
     /**
@@ -246,7 +246,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetPropertyNull(): void
     {
-        self::assertEquals($this->class, $this->class->setProperty(null));
+        self::assertSame($this->class, $this->class->setProperty(null));
     }
 
     /**
@@ -256,7 +256,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetProperty(): void
     {
-        self::assertEquals($this->class, $this->class->setProperty($this->value));
+        self::assertSame($this->class, $this->class->setProperty($this->value));
     }
 
     /**
@@ -278,7 +278,7 @@ class AnnotatableTest extends TestCase
     {
         $this->class->setMethod($this->value);
 
-        self::assertEquals($this->value, $this->class->getMethod());
+        self::assertSame($this->value, $this->class->getMethod());
     }
 
     /**
@@ -288,7 +288,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetMethodNull(): void
     {
-        self::assertEquals($this->class, $this->class->setMethod(null));
+        self::assertSame($this->class, $this->class->setMethod(null));
     }
 
     /**
@@ -298,7 +298,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetMethod(): void
     {
-        self::assertEquals($this->class, $this->class->setMethod($this->value));
+        self::assertSame($this->class, $this->class->setMethod($this->value));
     }
 
     /**
@@ -330,7 +330,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetStatic(): void
     {
-        self::assertEquals($this->class, $this->class->setStatic(true));
+        self::assertSame($this->class, $this->class->setStatic(true));
     }
 
     /**
@@ -352,7 +352,7 @@ class AnnotatableTest extends TestCase
     {
         $this->class->setFunction($this->value);
 
-        self::assertEquals($this->value, $this->class->getFunction());
+        self::assertSame($this->value, $this->class->getFunction());
     }
 
     /**
@@ -362,7 +362,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetFunctionNull(): void
     {
-        self::assertEquals($this->class, $this->class->setFunction(null));
+        self::assertSame($this->class, $this->class->setFunction(null));
     }
 
     /**
@@ -372,7 +372,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetFunction(): void
     {
-        self::assertEquals($this->class, $this->class->setFunction($this->value));
+        self::assertSame($this->class, $this->class->setFunction($this->value));
     }
 
     /**
@@ -394,7 +394,7 @@ class AnnotatableTest extends TestCase
     {
         $this->class->setMatches([$this->value]);
 
-        self::assertEquals([$this->value], $this->class->getMatches());
+        self::assertSame([$this->value], $this->class->getMatches());
     }
 
     /**
@@ -404,7 +404,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetMatchesNull(): void
     {
-        self::assertEquals($this->class, $this->class->setMatches(null));
+        self::assertSame($this->class, $this->class->setMatches(null));
     }
 
     /**
@@ -414,7 +414,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetMatches(): void
     {
-        self::assertEquals($this->class, $this->class->setMatches([$this->value]));
+        self::assertSame($this->class, $this->class->setMatches([$this->value]));
     }
 
     /**
@@ -436,7 +436,7 @@ class AnnotatableTest extends TestCase
     {
         $this->class->setArguments([$this->value]);
 
-        self::assertEquals([$this->value], $this->class->getArguments());
+        self::assertSame([$this->value], $this->class->getArguments());
     }
 
     /**
@@ -446,7 +446,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetArgumentsNull(): void
     {
-        self::assertEquals($this->class, $this->class->setArguments(null));
+        self::assertSame($this->class, $this->class->setArguments(null));
     }
 
     /**
@@ -456,7 +456,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetArguments(): void
     {
-        self::assertEquals($this->class, $this->class->setArguments([$this->value]));
+        self::assertSame($this->class, $this->class->setArguments([$this->value]));
     }
 
     /**
@@ -478,7 +478,7 @@ class AnnotatableTest extends TestCase
     {
         $this->class->setDependencies([$this->value]);
 
-        self::assertEquals([$this->value], $this->class->getDependencies());
+        self::assertSame([$this->value], $this->class->getDependencies());
     }
 
     /**
@@ -488,7 +488,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetDependenciesNull(): void
     {
-        self::assertEquals($this->class, $this->class->setDependencies(null));
+        self::assertSame($this->class, $this->class->setDependencies(null));
     }
 
     /**
@@ -498,6 +498,6 @@ class AnnotatableTest extends TestCase
      */
     public function testSetDependencies(): void
     {
-        self::assertEquals($this->class, $this->class->setDependencies([$this->value]));
+        self::assertSame($this->class, $this->class->setDependencies([$this->value]));
     }
 }

@@ -26,18 +26,18 @@ class VlidV2Test extends AbstractVlidTest
 
     public function testDefaultVersion(): void
     {
-        $this->assertSame(self::VERSION, VlidV2::VERSION);
+        self::assertSame(self::VERSION, VlidV2::VERSION);
     }
 
     public function testGenerate(): void
     {
-        $this->assertTrue(VlidV2::isValid($vlid = VlidV2::generate()));
+        self::assertTrue(VlidV2::isValid($vlid = VlidV2::generate()));
         $this->ensureVersionInGeneratedString(self::VERSION, $vlid);
     }
 
     public function testLowercase(): void
     {
-        $this->assertTrue(VlidV2::isValid($lvlid = VlidV2::generateLowerCase()));
+        self::assertTrue(VlidV2::isValid($lvlid = VlidV2::generateLowerCase()));
         $this->ensureVersionInGeneratedString(self::VERSION, $lvlid);
     }
 
@@ -53,11 +53,11 @@ class VlidV2Test extends AbstractVlidTest
 
     public function testNotValidForOtherVersions(): void
     {
-        $this->assertFalse(VlidV2::isValid(VlidV1::generate()));
-        $this->assertFalse(VlidV2::isValid(VlidV1::generateLowerCase()));
-        $this->assertFalse(VlidV2::isValid(VlidV3::generate()));
-        $this->assertFalse(VlidV2::isValid(VlidV3::generateLowerCase()));
-        $this->assertFalse(VlidV2::isValid(VlidV4::generate()));
-        $this->assertFalse(VlidV2::isValid(VlidV4::generateLowerCase()));
+        self::assertFalse(VlidV2::isValid(VlidV1::generate()));
+        self::assertFalse(VlidV2::isValid(VlidV1::generateLowerCase()));
+        self::assertFalse(VlidV2::isValid(VlidV3::generate()));
+        self::assertFalse(VlidV2::isValid(VlidV3::generateLowerCase()));
+        self::assertFalse(VlidV2::isValid(VlidV4::generate()));
+        self::assertFalse(VlidV2::isValid(VlidV4::generateLowerCase()));
     }
 }

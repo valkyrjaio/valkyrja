@@ -253,15 +253,19 @@ class Attributes implements Contract
             if (isset($properties[Property::CLASS_NAME]) && method_exists($instance, 'setClass')) {
                 $instance->setClass($properties[Property::CLASS_NAME]);
             }
+
             if (isset($properties[Property::CONSTANT]) && method_exists($instance, 'setConstant')) {
                 $instance->setConstant($properties[Property::CONSTANT]);
             }
+
             if (isset($properties[Property::PROPERTY]) && method_exists($instance, 'setProperty')) {
                 $instance->setProperty($properties[Property::PROPERTY]);
             }
+
             if (isset($properties[Property::METHOD]) && method_exists($instance, 'setMethod')) {
                 $instance->setMethod($properties[Property::METHOD]);
             }
+
             if (isset($properties[Property::STATIC]) && method_exists($instance, 'setStatic')) {
                 $instance->setStatic($properties[Property::STATIC]);
             }

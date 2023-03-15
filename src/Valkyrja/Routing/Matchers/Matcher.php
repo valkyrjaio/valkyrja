@@ -134,7 +134,7 @@ class Matcher implements Contract
         }
 
         // If the preg match is successful, we've found our route!
-        /* @var array $matches */
+        /** @var array $matches */
         if (preg_match($regex, $path, $matches)) {
             return $this->applyMatchesToRoute($route, $matches);
         }

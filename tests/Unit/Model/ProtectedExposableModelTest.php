@@ -28,7 +28,7 @@ class ProtectedExposableModelTest extends TestCase
 {
     public function testGetExposable(): void
     {
-        $this->assertEquals([Model::PROTECTED, Model::PRIVATE], ProtectedExposableModel::getExposable());
+        self::assertSame([Model::PROTECTED, Model::PRIVATE], ProtectedExposableModel::getExposable());
     }
 
     public function testAsExposed(): void
@@ -36,13 +36,13 @@ class ProtectedExposableModelTest extends TestCase
         $model = ProtectedExposableModel::fromArray(Model::VALUES);
 
         $expected = [Model::PUBLIC => Model::PUBLIC];
-        $this->assertEquals($expected, $model->asArray());
-        $this->assertEquals(Model::VALUES, $model->asExposedArray());
+        self::assertSame($expected, $model->asArray());
+        self::assertSame(Model::VALUES, $model->asExposedArray());
 
         $model->private  = 'test';
         $expectedExposed = [Model::PRIVATE => 'test'];
-        $this->assertEquals([], $model->asChangedArray());
-        $this->assertEquals($expectedExposed, $model->asExposedChangedArray());
+        self::assertSame([], $model->asChangedArray());
+        self::assertSame($expectedExposed, $model->asExposedChangedArray());
     }
 
     public function testExpose(): void
@@ -50,29 +50,29 @@ class ProtectedExposableModelTest extends TestCase
         $model = ProtectedExposableModel::fromArray(Model::VALUES);
 
         $model->expose(Model::PROTECTED, Model::PRIVATE);
-        $this->assertEquals(Model::VALUES, $model->asArray());
-        $this->assertEquals(Model::VALUES, $model->asExposedArray());
+        self::assertSame(Model::VALUES, $model->asArray());
+        self::assertSame(Model::VALUES, $model->asExposedArray());
 
         // asExposed methods call unexpose and so remove the exposable properties if that array is set
         $model->expose(Model::PROTECTED, Model::PRIVATE);
         $model->protected = 'test';
         $model->private   = 'test2';
         $expected         = [Model::PROTECTED => 'test', Model::PRIVATE => 'test2'];
-        $this->assertEquals($expected, $model->asChangedArray());
-        $this->assertEquals($expected, $model->asExposedChangedArray());
+        self::assertSame($expected, $model->asChangedArray());
+        self::assertSame($expected, $model->asExposedChangedArray());
 
         $model->protected = Model::PROTECTED;
         $model->private   = Model::PRIVATE;
 
         $expected = [Model::PUBLIC => Model::PUBLIC];
-        $this->assertEquals($expected, $model->asArray());
-        $this->assertEquals(Model::VALUES, $model->asExposedArray());
+        self::assertSame($expected, $model->asArray());
+        self::assertSame(Model::VALUES, $model->asExposedArray());
 
         $model->protected = 'test';
         $model->private   = 'test2';
         $expectedExposed  = [Model::PROTECTED => 'test', Model::PRIVATE => 'test2'];
-        $this->assertEquals([], $model->asChangedArray());
-        $this->assertEquals($expectedExposed, $model->asExposedChangedArray());
+        self::assertSame([], $model->asChangedArray());
+        self::assertSame($expectedExposed, $model->asExposedChangedArray());
     }
 
     public function testJsonSerialize(): void
@@ -80,20 +80,20 @@ class ProtectedExposableModelTest extends TestCase
         $model = ProtectedExposableModel::fromArray([]);
 
         $expected = '[]';
-        $this->assertEquals($expected, json_encode($model, JSON_THROW_ON_ERROR));
-        $this->assertEquals($expected, (string) $model);
+        self::assertSame($expected, json_encode($model, JSON_THROW_ON_ERROR));
+        self::assertSame($expected, (string) $model);
 
         $model = ProtectedExposableModel::fromArray(Model::VALUES);
 
         $expected = '{"public":"public"}';
-        $this->assertEquals($expected, json_encode($model, JSON_THROW_ON_ERROR));
-        $this->assertEquals($expected, (string) $model);
+        self::assertSame($expected, json_encode($model, JSON_THROW_ON_ERROR));
+        self::assertSame($expected, (string) $model);
         $model->expose(Model::PROTECTED, Model::PRIVATE);
         $expectedExposed = '{"public":"public","protected":"protected","private":"private"}';
-        $this->assertEquals($expectedExposed, json_encode($model, JSON_THROW_ON_ERROR));
-        $this->assertEquals($expectedExposed, (string) $model);
+        self::assertSame($expectedExposed, json_encode($model, JSON_THROW_ON_ERROR));
+        self::assertSame($expectedExposed, (string) $model);
         $model->unexpose();
-        $this->assertEquals($expected, json_encode($model, JSON_THROW_ON_ERROR));
-        $this->assertEquals($expected, (string) $model);
+        self::assertSame($expected, json_encode($model, JSON_THROW_ON_ERROR));
+        self::assertSame($expected, (string) $model);
     }
 }

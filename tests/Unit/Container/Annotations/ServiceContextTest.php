@@ -68,7 +68,7 @@ class ServiceContextTest extends TestCase
     {
         $this->class->setService($this->value);
 
-        self::assertEquals($this->value, $this->class->getService());
+        self::assertSame($this->value, $this->class->getService());
     }
 
     /**
@@ -78,6 +78,6 @@ class ServiceContextTest extends TestCase
      */
     public function testSetService(): void
     {
-        self::assertEquals($this->class, $this->class->setService($this->value));
+        self::assertSame($this->class, $this->class->setService($this->value));
     }
 }

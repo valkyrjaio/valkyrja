@@ -68,7 +68,7 @@ class DispatchTest extends TestCase
     {
         $this->dispatch->setId($this->value);
 
-        self::assertEquals($this->value, $this->dispatch->getId());
+        self::assertSame($this->value, $this->dispatch->getId());
     }
 
     /**
@@ -114,7 +114,7 @@ class DispatchTest extends TestCase
     {
         $this->dispatch->setName($this->value);
 
-        self::assertEquals($this->value, $this->dispatch->getName());
+        self::assertSame($this->value, $this->dispatch->getName());
     }
 
     /**
@@ -160,7 +160,7 @@ class DispatchTest extends TestCase
     {
         $this->dispatch->setClass($this->value);
 
-        self::assertEquals($this->value, $this->dispatch->getClass());
+        self::assertSame($this->value, $this->dispatch->getClass());
     }
 
     /**
@@ -206,7 +206,7 @@ class DispatchTest extends TestCase
     {
         $this->dispatch->setProperty($this->value);
 
-        self::assertEquals($this->value, $this->dispatch->getProperty());
+        self::assertSame($this->value, $this->dispatch->getProperty());
     }
 
     /**
@@ -252,7 +252,7 @@ class DispatchTest extends TestCase
     {
         $this->dispatch->setMethod($this->value);
 
-        self::assertEquals($this->value, $this->dispatch->getMethod());
+        self::assertSame($this->value, $this->dispatch->getMethod());
     }
 
     /**
@@ -332,7 +332,7 @@ class DispatchTest extends TestCase
     {
         $this->dispatch->setFunction($this->value);
 
-        self::assertEquals($this->value, $this->dispatch->getFunction());
+        self::assertSame($this->value, $this->dispatch->getFunction());
     }
 
     /**
@@ -380,7 +380,7 @@ class DispatchTest extends TestCase
         };
         $this->dispatch->setClosure($value);
 
-        self::assertEquals($value, $this->dispatch->getClosure());
+        self::assertSame($value, $this->dispatch->getClosure());
     }
 
     /**
@@ -429,7 +429,7 @@ class DispatchTest extends TestCase
     {
         $this->dispatch->setMatches([$this->value]);
 
-        self::assertEquals([$this->value], $this->dispatch->getMatches());
+        self::assertSame([$this->value], $this->dispatch->getMatches());
     }
 
     /**
@@ -475,7 +475,7 @@ class DispatchTest extends TestCase
     {
         $this->dispatch->setDependencies([$this->value]);
 
-        self::assertEquals([$this->value], $this->dispatch->getDependencies());
+        self::assertSame([$this->value], $this->dispatch->getDependencies());
     }
 
     /**
@@ -521,7 +521,7 @@ class DispatchTest extends TestCase
     {
         $this->dispatch->setArguments([$this->value]);
 
-        self::assertEquals([$this->value], $this->dispatch->getArguments());
+        self::assertSame([$this->value], $this->dispatch->getArguments());
     }
 
     /**

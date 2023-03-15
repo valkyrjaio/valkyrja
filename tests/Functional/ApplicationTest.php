@@ -103,7 +103,7 @@ class ApplicationTest extends TestCase
      */
     public function testVersion(): void
     {
-        self::assertEquals(Valkyrja::VERSION, $this->app->version());
+        self::assertSame(Valkyrja::VERSION, $this->app->version());
     }
 
     /**
@@ -156,7 +156,7 @@ class ApplicationTest extends TestCase
      */
     public function testGetEnv(): void
     {
-        self::assertEquals(EnvTest::class, $this->app::getEnv());
+        self::assertSame(EnvTest::class, $this->app::getEnv());
     }
 
     /**
@@ -167,7 +167,7 @@ class ApplicationTest extends TestCase
     public function testSetEnv(): void
     {
         $this->app::setEnv(EnvTest::class);
-        $this->assertEquals(EnvTest::class, $this->app::getEnv());
+        self::assertSame(EnvTest::class, $this->app::getEnv());
     }
 
     /**
@@ -177,7 +177,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnvironment(): void
     {
-        self::assertEquals($this->app->config()['app']['env'], $this->app->environment());
+        self::assertSame($this->app->config()['app']['env'], $this->app->environment());
     }
 
     /**
@@ -187,7 +187,7 @@ class ApplicationTest extends TestCase
      */
     public function testDebug(): void
     {
-        self::assertEquals($this->app->config()['app']['debug'], $this->app->debug());
+        self::assertSame($this->app->config()['app']['debug'], $this->app->debug());
     }
 
     /**
@@ -364,7 +364,7 @@ class ApplicationTest extends TestCase
 
         $this->app = $this->app->withConfig($config);
 
-        self::assertEquals(ProviderClass::class, $this->app->config()['providers'][0]);
+        self::assertSame(ProviderClass::class, $this->app->config()['providers'][0]);
 
         $this->app = $this->app->withConfig(new Config());
     }

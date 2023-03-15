@@ -286,7 +286,7 @@ class Kernel implements Contract
     protected function terminateRoute(Request $request, Response $response): void
     {
         try {
-            /* @var Route $route */
+            /** @var Route $route */
             $route = $this->container->getSingleton(Route::class);
 
             // If the dispatched route has middleware

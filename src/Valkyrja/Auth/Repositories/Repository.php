@@ -192,8 +192,8 @@ class Repository implements Contract
             throw new InvalidAuthenticationException('No authentication fields');
         }
 
-        $requestParams[$userClassName::getPasswordField()] =
-            $request->getParsedBodyParam($userClassName::getPasswordField());
+        $requestParams[$userClassName::getPasswordField()]
+            = $request->getParsedBodyParam($userClassName::getPasswordField());
 
         $user = $userClassName::fromArray($requestParams);
 

@@ -68,7 +68,7 @@ class CommandTest extends TestCase
     {
         $this->class->setPath($this->value);
 
-        self::assertEquals($this->value, $this->class->getPath());
+        self::assertSame($this->value, $this->class->getPath());
     }
 
     /**
@@ -78,7 +78,7 @@ class CommandTest extends TestCase
      */
     public function testSetPath(): void
     {
-        self::assertEquals($this->class, $this->class->setPath($this->value));
+        self::assertSame($this->class, $this->class->setPath($this->value));
     }
 
     /**
@@ -100,7 +100,7 @@ class CommandTest extends TestCase
     {
         $this->class->setRegex($this->value);
 
-        self::assertEquals($this->value, $this->class->getRegex());
+        self::assertSame($this->value, $this->class->getRegex());
     }
 
     /**
@@ -110,7 +110,7 @@ class CommandTest extends TestCase
      */
     public function testSetRegexNull(): void
     {
-        self::assertEquals($this->class, $this->class->setRegex(null));
+        self::assertSame($this->class, $this->class->setRegex(null));
     }
 
     /**
@@ -120,7 +120,7 @@ class CommandTest extends TestCase
      */
     public function testSetRegex(): void
     {
-        self::assertEquals($this->class, $this->class->setRegex($this->value));
+        self::assertSame($this->class, $this->class->setRegex($this->value));
     }
 
     /**
@@ -142,7 +142,7 @@ class CommandTest extends TestCase
     {
         $this->class->setParams([$this->value]);
 
-        self::assertEquals([$this->value], $this->class->getParams());
+        self::assertSame([$this->value], $this->class->getParams());
     }
 
     /**
@@ -152,7 +152,7 @@ class CommandTest extends TestCase
      */
     public function testSetParamsNull(): void
     {
-        self::assertEquals($this->class, $this->class->setParams(null));
+        self::assertSame($this->class, $this->class->setParams(null));
     }
 
     /**
@@ -162,7 +162,7 @@ class CommandTest extends TestCase
      */
     public function testSetParams(): void
     {
-        self::assertEquals($this->class, $this->class->setParams([$this->value]));
+        self::assertSame($this->class, $this->class->setParams([$this->value]));
     }
 
     /**
@@ -184,7 +184,7 @@ class CommandTest extends TestCase
     {
         $this->class->setSegments([$this->value]);
 
-        self::assertEquals([$this->value], $this->class->getSegments());
+        self::assertSame([$this->value], $this->class->getSegments());
     }
 
     /**
@@ -194,7 +194,7 @@ class CommandTest extends TestCase
      */
     public function testSetSegmentsNull(): void
     {
-        self::assertEquals($this->class, $this->class->setSegments(null));
+        self::assertSame($this->class, $this->class->setSegments(null));
     }
 
     /**
@@ -204,7 +204,7 @@ class CommandTest extends TestCase
      */
     public function testSetSegments(): void
     {
-        self::assertEquals($this->class, $this->class->setSegments([$this->value]));
+        self::assertSame($this->class, $this->class->setSegments([$this->value]));
     }
 
     /**
@@ -226,7 +226,7 @@ class CommandTest extends TestCase
     {
         $this->class->setDescription($this->value);
 
-        self::assertEquals($this->value, $this->class->getDescription());
+        self::assertSame($this->value, $this->class->getDescription());
     }
 
     /**
@@ -236,7 +236,7 @@ class CommandTest extends TestCase
      */
     public function testSetDescriptionNull(): void
     {
-        self::assertEquals($this->class, $this->class->setDescription(null));
+        self::assertSame($this->class, $this->class->setDescription(null));
     }
 
     /**
@@ -246,6 +246,6 @@ class CommandTest extends TestCase
      */
     public function testSetDescription(): void
     {
-        self::assertEquals($this->class, $this->class->setDescription($this->value));
+        self::assertSame($this->class, $this->class->setDescription($this->value));
     }
 }

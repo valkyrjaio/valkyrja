@@ -48,7 +48,7 @@ class EnumTest extends TestCase
         $enum = $this->getEnum();
         $enum->setValue(EnumClass::FOO);
 
-        self::assertEquals(EnumClass::FOO, $enum->getValue());
+        self::assertSame(EnumClass::FOO, $enum->getValue());
     }
 
     /**
@@ -71,7 +71,7 @@ class EnumTest extends TestCase
         try {
             new EnumClass('invalid value');
         } catch (Exception $exception) {
-            self::assertEquals(InvalidArgumentException::class, $exception::class);
+            self::assertSame(InvalidArgumentException::class, $exception::class);
         }
     }
 
@@ -92,7 +92,7 @@ class EnumTest extends TestCase
      */
     public function testGetValue(): void
     {
-        self::assertEquals(EnumClass::BAR, $this->getEnum()->getValue());
+        self::assertSame(EnumClass::BAR, $this->getEnum()->getValue());
     }
 
     /**
@@ -142,7 +142,7 @@ class EnumTest extends TestCase
      */
     public function testValidValues(): void
     {
-        self::assertEquals(
+        self::assertSame(
             [
                 EnumClass::FOO => EnumClass::FOO,
                 EnumClass::BAR => EnumClass::BAR,
@@ -158,7 +158,7 @@ class EnumTest extends TestCase
      */
     public function testValidValuesReflection(): void
     {
-        self::assertEquals(
+        self::assertSame(
             [],
             array_diff(
                 [
@@ -213,6 +213,6 @@ class EnumTest extends TestCase
      */
     public function testToString(): void
     {
-        self::assertEquals('foo', (string) $this->getEnum());
+        self::assertSame('foo', (string) $this->getEnum());
     }
 }

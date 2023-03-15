@@ -24,22 +24,22 @@ class UuidV1Test extends AbstractUuidTest
 
     public function testDefaultVersion(): void
     {
-        $this->assertSame(self::VERSION, UuidV1::VERSION);
+        self::assertSame(self::VERSION, UuidV1::VERSION);
     }
 
     public function test(): void
     {
-        $this->assertTrue(UuidV1::isValid($uuid = UuidV1::generate()));
+        self::assertTrue(UuidV1::isValid($uuid = UuidV1::generate()));
         $this->ensureVersionInGeneratedString(self::VERSION, $uuid);
-        $this->assertTrue(Uuid::isValid($uuid));
+        self::assertTrue(Uuid::isValid($uuid));
     }
 
     public function testNotValidForOtherTypes(): void
     {
-        $this->assertFalse(UuidV1::isValid(Uuid::v3(Uuid::v1(), 'test')));
-        $this->assertFalse(UuidV1::isValid(Uuid::v4()));
-        $this->assertFalse(UuidV1::isValid(Uuid::v5(Uuid::v1(), 'test')));
-        $this->assertFalse(UuidV1::isValid(Uuid::v6()));
+        self::assertFalse(UuidV1::isValid(Uuid::v3(Uuid::v1(), 'test')));
+        self::assertFalse(UuidV1::isValid(Uuid::v4()));
+        self::assertFalse(UuidV1::isValid(Uuid::v5(Uuid::v1(), 'test')));
+        self::assertFalse(UuidV1::isValid(Uuid::v6()));
     }
 
     public function testNotValidException(): void

@@ -89,7 +89,7 @@ class CollectionTest extends TestCase
      */
     public function testGet(): void
     {
-        self::assertEquals($this->value['foo'], $this->class->get('foo', false));
+        self::assertSame($this->value['foo'], $this->class->get('foo', false));
     }
 
     /**
@@ -109,7 +109,7 @@ class CollectionTest extends TestCase
      */
     public function testGetNonExistentWithDefault(): void
     {
-        self::assertEquals('default', $this->class->get('invalid', 'default'));
+        self::assertSame('default', $this->class->get('invalid', 'default'));
     }
 
     /**
@@ -215,7 +215,7 @@ class CollectionTest extends TestCase
      */
     public function testAll(): void
     {
-        self::assertEquals($this->value, $this->class->all());
+        self::assertSame($this->value, $this->class->all());
     }
 
     /**
@@ -235,7 +235,7 @@ class CollectionTest extends TestCase
      */
     public function testKeys(): void
     {
-        self::assertEquals(array_keys($this->value), $this->class->keys());
+        self::assertSame(array_keys($this->value), $this->class->keys());
     }
 
     /**
@@ -245,7 +245,7 @@ class CollectionTest extends TestCase
      */
     public function testCount(): void
     {
-        self::assertEquals(count($this->value), $this->class->count());
+        self::assertSame(count($this->value), $this->class->count());
     }
 
     /**
@@ -255,7 +255,7 @@ class CollectionTest extends TestCase
      */
     public function testIsEmpty(): void
     {
-        self::assertEquals(empty($this->value), $this->class->isEmpty());
+        self::assertSame(empty($this->value), $this->class->isEmpty());
     }
 
     /**
@@ -267,7 +267,7 @@ class CollectionTest extends TestCase
     {
         $this->class->setAll($this->valueAlt);
 
-        self::assertEquals($this->valueAlt['bar'], $this->class->bar);
+        self::assertSame($this->valueAlt['bar'], $this->class->bar);
     }
 
     /**
@@ -291,7 +291,7 @@ class CollectionTest extends TestCase
     {
         $this->class->setAll($this->valueAlt);
 
-        self::assertEquals('test', $this->class->foo = 'test');
+        self::assertSame('test', $this->class->foo = 'test');
     }
 
     /**
@@ -315,6 +315,6 @@ class CollectionTest extends TestCase
     {
         $this->class->setAll($this->valueAlt);
 
-        self::assertEquals(json_encode($this->valueAlt, JSON_THROW_ON_ERROR), (string) $this->class);
+        self::assertSame(json_encode($this->valueAlt, JSON_THROW_ON_ERROR), (string) $this->class);
     }
 }

@@ -83,7 +83,7 @@ trait MiddlewareAwareTrait
                 // Recurse into that middleware group
                 $modifiedRequest = $this->requestMiddleware($request, $this->getMiddlewareGroup($item));
             } else {
-                /* @var Middleware $item */
+                /** @var Middleware $item */
                 $modifiedRequest = $item::before($request);
             }
 
@@ -120,7 +120,7 @@ trait MiddlewareAwareTrait
                 continue;
             }
 
-            /* @var Middleware $item */
+            /** @var Middleware $item */
             $response = $item::after($request, $response);
         }
 

@@ -68,7 +68,7 @@ class CommandTest extends TestCase
     {
         $this->class->setPath($this->value);
 
-        self::assertEquals($this->value, $this->class->getPath());
+        self::assertSame($this->value, $this->class->getPath());
     }
 
     /**
@@ -102,7 +102,7 @@ class CommandTest extends TestCase
     {
         $this->class->setRegex($this->value);
 
-        self::assertEquals($this->value, $this->class->getRegex());
+        self::assertSame($this->value, $this->class->getRegex());
     }
 
     /**
@@ -148,7 +148,7 @@ class CommandTest extends TestCase
     {
         $this->class->setParams([$this->value]);
 
-        self::assertEquals([$this->value], $this->class->getParams());
+        self::assertSame([$this->value], $this->class->getParams());
     }
 
     /**
@@ -194,7 +194,7 @@ class CommandTest extends TestCase
     {
         $this->class->setSegments([$this->value]);
 
-        self::assertEquals([$this->value], $this->class->getSegments());
+        self::assertSame([$this->value], $this->class->getSegments());
     }
 
     /**
@@ -240,7 +240,7 @@ class CommandTest extends TestCase
     {
         $this->class->setDescription($this->value);
 
-        self::assertEquals($this->value, $this->class->getDescription());
+        self::assertSame($this->value, $this->class->getDescription());
     }
 
     /**

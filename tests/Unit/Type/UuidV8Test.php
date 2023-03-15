@@ -24,16 +24,16 @@ class UuidV8Test extends AbstractUuidTest
 
     public function testDefaultVersion(): void
     {
-        $this->assertSame(self::VERSION, UuidV8::VERSION);
+        self::assertSame(self::VERSION, UuidV8::VERSION);
     }
 
     public function testNotValidForOtherTypes(): void
     {
-        $this->assertFalse(UuidV8::isValid(Uuid::v1()));
-        $this->assertFalse(UuidV8::isValid(Uuid::v3(Uuid::v1(), 'test')));
-        $this->assertFalse(UuidV8::isValid(Uuid::v4()));
-        $this->assertFalse(UuidV8::isValid(Uuid::v5(Uuid::v1(), 'test')));
-        $this->assertFalse(UuidV8::isValid(Uuid::v6()));
+        self::assertFalse(UuidV8::isValid(Uuid::v1()));
+        self::assertFalse(UuidV8::isValid(Uuid::v3(Uuid::v1(), 'test')));
+        self::assertFalse(UuidV8::isValid(Uuid::v4()));
+        self::assertFalse(UuidV8::isValid(Uuid::v5(Uuid::v1(), 'test')));
+        self::assertFalse(UuidV8::isValid(Uuid::v6()));
     }
 
     public function testNotValidException(): void

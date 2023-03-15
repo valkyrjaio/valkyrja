@@ -58,7 +58,7 @@ class ListenerTest extends TestCase
     {
         $this->class->setEvent($this->value);
 
-        self::assertEquals($this->value, $this->class->getEvent());
+        self::assertSame($this->value, $this->class->getEvent());
     }
 
     /**

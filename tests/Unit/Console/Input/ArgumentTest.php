@@ -72,7 +72,7 @@ class ArgumentTest extends TestCase
      */
     public function testGetName(): void
     {
-        self::assertEquals($this->name, $this->getClass()->getName());
+        self::assertSame($this->name, $this->getClass()->getName());
     }
 
     /**
@@ -82,7 +82,7 @@ class ArgumentTest extends TestCase
      */
     public function testGetDescription(): void
     {
-        self::assertEquals($this->description, $this->getClass()->getDescription());
+        self::assertSame($this->description, $this->getClass()->getDescription());
     }
 
     /**
@@ -92,6 +92,6 @@ class ArgumentTest extends TestCase
      */
     public function testGetMode(): void
     {
-        self::assertEquals(ArgumentMode::OPTIONAL, $this->getClass()->getMode());
+        self::assertSame(ArgumentMode::OPTIONAL, $this->getClass()->getMode());
     }
 }

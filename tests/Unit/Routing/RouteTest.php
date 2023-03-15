@@ -59,7 +59,7 @@ class RouteTest extends TestCase
     {
         $this->getRoute()->setPath($this->stringValue);
 
-        self::assertEquals($this->stringValue, $this->getRoute()->getPath());
+        self::assertSame($this->stringValue, $this->getRoute()->getPath());
     }
 
     /**
@@ -69,7 +69,7 @@ class RouteTest extends TestCase
      */
     public function testGetRequestMethodsDefault(): void
     {
-        self::assertEquals(
+        self::assertSame(
             [
                 RequestMethod::GET,
                 RequestMethod::HEAD,
@@ -100,7 +100,7 @@ class RouteTest extends TestCase
         try {
             $this->getRoute()->setMethods(['invalid value']);
         } catch (Exception $exception) {
-            self::assertEquals(InvalidArgumentException::class, $exception::class);
+            self::assertSame(InvalidArgumentException::class, $exception::class);
         }
     }
 
@@ -114,7 +114,7 @@ class RouteTest extends TestCase
         $value = [RequestMethod::POST];
         $this->getRoute()->setMethods($value);
 
-        self::assertEquals($value, $this->getRoute()->getMethods());
+        self::assertSame($value, $this->getRoute()->getMethods());
     }
 
     /**
@@ -160,7 +160,7 @@ class RouteTest extends TestCase
     {
         $this->getRoute()->setRegex($this->stringValue);
 
-        self::assertEquals($this->stringValue, $this->getRoute()->getRegex());
+        self::assertSame($this->stringValue, $this->getRoute()->getRegex());
     }
 
     /**
@@ -206,7 +206,7 @@ class RouteTest extends TestCase
     {
         $this->getRoute()->setMiddleware([$this->stringValue]);
 
-        self::assertEquals([$this->stringValue], $this->getRoute()->getMiddleware());
+        self::assertSame([$this->stringValue], $this->getRoute()->getMiddleware());
     }
 
     /**

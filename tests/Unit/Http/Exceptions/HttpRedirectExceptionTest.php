@@ -57,6 +57,6 @@ class HttpRedirectExceptionTest extends TestCase
      */
     public function testGetUri(): void
     {
-        self::assertEquals('/', $this->getException()->getUri());
+        self::assertSame('/', $this->getException()->getUri());
     }
 }

@@ -21,8 +21,8 @@ class UlidTest extends TestCase
 {
     public function testGenerate(): void
     {
-        $this->assertTrue(Ulid::isValid(Ulid::generate()));
-        $this->assertTrue(Ulid::isValid(Ulid::generateLowerCase()));
+        self::assertTrue(Ulid::isValid(Ulid::generate()));
+        self::assertTrue(Ulid::isValid(Ulid::generateLowerCase()));
     }
 
     public function testNotValidException(): void
