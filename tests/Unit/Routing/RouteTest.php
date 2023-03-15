@@ -19,8 +19,6 @@ use PHPUnit\Framework\TestCase;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Models\Route;
 
-use function get_class;
-
 /**
  * Test the route model.
  *
@@ -89,7 +87,7 @@ class RouteTest extends TestCase
     {
         $set = $this->getRoute()->setMethods([RequestMethod::POST]);
 
-        self::assertEquals(true, $set instanceof Route);
+        self::assertTrue($set instanceof Route);
     }
 
     /**
@@ -102,7 +100,7 @@ class RouteTest extends TestCase
         try {
             $this->getRoute()->setMethods(['invalid value']);
         } catch (Exception $exception) {
-            self::assertEquals(InvalidArgumentException::class, get_class($exception));
+            self::assertEquals(InvalidArgumentException::class, $exception::class);
         }
     }
 
@@ -126,7 +124,7 @@ class RouteTest extends TestCase
      */
     public function testGetRegexDefault(): void
     {
-        self::assertEquals(null, $this->getRoute()->getRegex());
+        self::assertNull($this->getRoute()->getRegex());
     }
 
     /**
@@ -138,7 +136,7 @@ class RouteTest extends TestCase
     {
         $set = $this->getRoute()->setRegex($this->stringValue);
 
-        self::assertEquals(true, $set instanceof Route);
+        self::assertTrue($set instanceof Route);
     }
 
     /**
@@ -150,7 +148,7 @@ class RouteTest extends TestCase
     {
         $set = $this->getRoute()->setRegex(null);
 
-        self::assertEquals(true, $set instanceof Route);
+        self::assertTrue($set instanceof Route);
     }
 
     /**
@@ -172,7 +170,7 @@ class RouteTest extends TestCase
      */
     public function testGetMiddlewareDefault(): void
     {
-        self::assertEquals(null, $this->getRoute()->getMiddleware());
+        self::assertNull($this->getRoute()->getMiddleware());
     }
 
     /**
@@ -184,7 +182,7 @@ class RouteTest extends TestCase
     {
         $set = $this->getRoute()->setMiddleware([$this->stringValue]);
 
-        self::assertEquals(true, $set instanceof Route);
+        self::assertTrue($set instanceof Route);
     }
 
     /**
@@ -196,7 +194,7 @@ class RouteTest extends TestCase
     {
         $set = $this->getRoute()->setMiddleware(null);
 
-        self::assertEquals(true, $set instanceof Route);
+        self::assertTrue($set instanceof Route);
     }
 
     /**
@@ -218,7 +216,7 @@ class RouteTest extends TestCase
      */
     public function testGetDynamicDefault(): void
     {
-        self::assertEquals(false, $this->getRoute()->isDynamic());
+        self::assertFalse($this->getRoute()->isDynamic());
     }
 
     /**
@@ -230,7 +228,7 @@ class RouteTest extends TestCase
     {
         $set = $this->getRoute()->setDynamic(true);
 
-        self::assertEquals(true, $set instanceof Route);
+        self::assertTrue($set instanceof Route);
     }
 
     /**
@@ -242,7 +240,7 @@ class RouteTest extends TestCase
     {
         $this->getRoute()->setDynamic(true);
 
-        self::assertEquals(true, $this->getRoute()->isDynamic());
+        self::assertTrue($this->getRoute()->isDynamic());
     }
 
     /**
@@ -252,7 +250,7 @@ class RouteTest extends TestCase
      */
     public function testGetSecureDefault(): void
     {
-        self::assertEquals(false, $this->getRoute()->isSecure());
+        self::assertFalse($this->getRoute()->isSecure());
     }
 
     /**
@@ -264,7 +262,7 @@ class RouteTest extends TestCase
     {
         $set = $this->getRoute()->setSecure(true);
 
-        self::assertEquals(true, $set instanceof Route);
+        self::assertTrue($set instanceof Route);
     }
 
     /**
@@ -276,6 +274,6 @@ class RouteTest extends TestCase
     {
         $this->getRoute()->setSecure(true);
 
-        self::assertEquals(true, $this->getRoute()->isSecure());
+        self::assertTrue($this->getRoute()->isSecure());
     }
 }

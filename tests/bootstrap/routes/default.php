@@ -14,10 +14,10 @@ declare(strict_types=1);
 use Valkyrja\Routing\Collector;
 
 /** @var Collector $collector */
-$collector->group(static function (Collector $collector) {
+$collector->group(static function (Collector $collector): void {
     $collector->get(
         '/',
-        static function () {
+        static function (): void {
         },
         'welcome'
     );

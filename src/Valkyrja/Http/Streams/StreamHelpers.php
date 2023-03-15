@@ -67,7 +67,7 @@ trait StreamHelpers
     protected function setStream(string $stream, string $mode = null): void
     {
         // Set the mode
-        $mode = $mode ?? 'rb';
+        $mode ??= 'rb';
 
         // Open a new resource stream
         $resource = fopen($stream, $mode);

@@ -26,7 +26,6 @@ use Valkyrja\Orm\SoftDeleteEntity;
 use Valkyrja\Type\Support\Arr;
 use Valkyrja\Type\Support\Obj;
 
-use function get_class;
 use function is_array;
 use function md5;
 use function serialize;
@@ -364,7 +363,7 @@ class CacheRepository extends Repository implements Contract
      */
     protected function getEntityCacheKey(Entity $entity): string
     {
-        return get_class($entity) . $entity->__get($entity::getIdField());
+        return $entity::class . $entity->__get($entity::getIdField());
     }
 
     /**

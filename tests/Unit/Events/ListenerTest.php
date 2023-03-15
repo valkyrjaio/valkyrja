@@ -42,7 +42,7 @@ class ListenerTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -70,6 +70,6 @@ class ListenerTest extends TestCase
     {
         $set = $this->class->setEvent($this->value);
 
-        self::assertEquals(true, $set instanceof Listener);
+        self::assertTrue($set instanceof Listener);
     }
 }

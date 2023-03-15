@@ -18,6 +18,8 @@ use function mb_strtolower;
 use function mb_strtoupper;
 use function mb_substr;
 
+use const MB_CASE_TITLE;
+
 /**
  * Class MbStr.
  *

@@ -83,7 +83,7 @@ class AttributesTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -288,9 +288,9 @@ class AttributesTest extends TestCase
      */
     public function testForFunction(): void
     {
-        #[Attribute(AttributesTest::VALUE1)]
-        #[Attribute(AttributesTest::VALUE2)]
-        #[AttributeChild(AttributesTest::VALUE3, AttributesTest::THREE)]
+        #[Attribute(self::VALUE1)]
+        #[Attribute(self::VALUE2)]
+        #[AttributeChild(self::VALUE3, self::THREE)]
         function testFunction(): void
         {
         }

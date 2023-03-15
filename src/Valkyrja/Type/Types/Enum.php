@@ -21,7 +21,6 @@ use RuntimeException;
 use function array_key_exists;
 use function constant;
 use function defined;
-use function get_class;
 use function in_array;
 use function is_array;
 use function is_object;
@@ -155,7 +154,7 @@ abstract class Enum
         // If the value is not valid
         if (! static::isValid($value)) {
             // Throw an exception
-            throw new InvalidArgumentException(sprintf('Invalid enumeration %s for Enum %s', $value, get_class($this)));
+            throw new InvalidArgumentException(sprintf('Invalid enumeration %s for Enum %s', $value, static::class));
         }
 
         $this->value = $value;

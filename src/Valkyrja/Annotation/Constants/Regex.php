@@ -45,8 +45,8 @@ final class Regex
      *      )                   End capture
      */
     public const NAME_REGEX = <<<'REGEX'
-        ([a-zA-Z0-9\_\\]*)
-REGEX;
+                ([a-zA-Z0-9\_\\]*)
+        REGEX;
 
     /**
      * Arguments regex.
@@ -90,12 +90,12 @@ REGEX;
      * )                    Ending parenthesis for the annotation
      */
     public const ARGUMENTS_REGEX = <<<'REGEX'
-    \(
-        \s*
-            ([a-zA-Z0-9\_\-\\\/\:\{\}\(\)\+\[\]\.\=\,\'\"\*\<\>\|\s]*)
-        \s*
-    \)
-REGEX;
+            \(
+                \s*
+                    ([a-zA-Z0-9\_\-\\\/\:\{\}\(\)\+\[\]\.\=\,\'\"\*\<\>\|\s]*)
+                \s*
+            \)
+        REGEX;
 
     /**
      * Regex for single docstring line.
@@ -126,13 +126,13 @@ REGEX;
      * )?                       End capture (optional capture group)
      */
     public const LINE_REGEX = <<<'REGEX'
-    \s* \*? \s*
-    ([a-zA-Z0-9\\]*)?
-    \s* \*? \s*
-    (?:[\$]([a-zA-Z]*))?
-    \s* \*? \s*
-    ([a-zA-Z0-9\s\*\[\]\=\>\,\$\\]*)?
-REGEX;
+            \s* \*? \s*
+            ([a-zA-Z0-9\\]*)?
+            \s* \*? \s*
+            (?:[\$]([a-zA-Z]*))?
+            \s* \*? \s*
+            ([a-zA-Z0-9\s\*\[\]\=\>\,\$\\]*)?
+        REGEX;
 
     /**
      * The full regex.

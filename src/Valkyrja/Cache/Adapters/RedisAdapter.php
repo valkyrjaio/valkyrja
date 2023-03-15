@@ -97,7 +97,7 @@ class RedisAdapter implements Contract
         $seconds = $minutes * 60;
 
         $this->predis->transaction(
-            function (Client $client) use ($values, $seconds) {
+            function (Client $client) use ($values, $seconds): void {
                 /** @var Client $client */
                 foreach ($values as $key => $value) {
                     $client->setex($this->getKey($key), $seconds, $value);

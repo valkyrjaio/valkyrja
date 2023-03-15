@@ -27,7 +27,6 @@ use Valkyrja\Orm\Retriever;
 use Valkyrja\Orm\SoftDeleteEntity;
 
 use function assert;
-use function get_class;
 
 /**
  * Class Repository.
@@ -382,7 +381,7 @@ class Repository implements Contract
                 'This repository expects entities to be instances of '
                 . $this->entity
                 . '. Entity instanced from '
-                . get_class($entity)
+                . $entity::class
                 . ' provided instead.'
             );
         }

@@ -53,7 +53,7 @@ class ApplicationTest extends TestCase
      */
     public function testConstruct(): void
     {
-        self::assertEquals(true, $this->app instanceof Valkyrja);
+        self::assertTrue($this->app instanceof Valkyrja);
     }
 
     /**
@@ -63,7 +63,7 @@ class ApplicationTest extends TestCase
      */
     public function testApp(): void
     {
-        self::assertEquals(true, Valkyrja::app() instanceof Valkyrja);
+        self::assertTrue(Valkyrja::app() instanceof Valkyrja);
     }
 
     /**
@@ -73,7 +73,7 @@ class ApplicationTest extends TestCase
      */
     public function testContainer(): void
     {
-        self::assertEquals(true, $this->app->container() instanceof Container);
+        self::assertTrue($this->app->container() instanceof Container);
     }
 
     /**
@@ -83,7 +83,7 @@ class ApplicationTest extends TestCase
      */
     public function testDispatcher(): void
     {
-        self::assertEquals(true, $this->app->dispatcher() instanceof Dispatcher);
+        self::assertTrue($this->app->dispatcher() instanceof Dispatcher);
     }
 
     /**
@@ -93,7 +93,7 @@ class ApplicationTest extends TestCase
      */
     public function testEvents(): void
     {
-        self::assertEquals(true, $this->app->events() instanceof Events);
+        self::assertTrue($this->app->events() instanceof Events);
     }
 
     /**
@@ -113,7 +113,7 @@ class ApplicationTest extends TestCase
      */
     public function testConfig(): void
     {
-        self::assertEquals(true, $this->app->config() instanceof Config);
+        self::assertTrue($this->app->config() instanceof Config);
     }
 
     /**
@@ -126,7 +126,7 @@ class ApplicationTest extends TestCase
         $config = new Config();
         $this->app->addConfig($config, 'new');
 
-        self::assertEquals(true, isset($this->app->config()['new']));
+        self::assertTrue(isset($this->app->config()['new']));
     }
 
     /**
@@ -136,7 +136,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnv(): void
     {
-        self::assertEquals(true, is_string($this->app::env()));
+        self::assertTrue(is_string($this->app::env()));
     }
 
     /**
@@ -146,7 +146,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnvValue(): void
     {
-        self::assertEquals(true, $this->app::env('CONSOLE_QUIET'));
+        self::assertTrue($this->app::env('CONSOLE_QUIET'));
     }
 
     /**
@@ -197,7 +197,7 @@ class ApplicationTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        self::assertEquals(true, $this->app[Annotator::class] instanceof Annotator);
+        self::assertTrue($this->app[Annotator::class] instanceof Annotator);
     }
 
     /**
@@ -207,7 +207,7 @@ class ApplicationTest extends TestCase
      */
     public function testClient(): void
     {
-        self::assertEquals(true, $this->app[Client::class] instanceof Client);
+        self::assertTrue($this->app[Client::class] instanceof Client);
     }
 
     /**
@@ -217,7 +217,7 @@ class ApplicationTest extends TestCase
      */
     public function testConsole(): void
     {
-        self::assertEquals(true, $this->app[Console::class] instanceof Console);
+        self::assertTrue($this->app[Console::class] instanceof Console);
     }
 
     /**
@@ -227,7 +227,7 @@ class ApplicationTest extends TestCase
      */
     public function testConsoleKernel(): void
     {
-        self::assertEquals(true, $this->app[ConsoleKernel::class] instanceof ConsoleKernel);
+        self::assertTrue($this->app[ConsoleKernel::class] instanceof ConsoleKernel);
     }
 
     /**
@@ -237,7 +237,7 @@ class ApplicationTest extends TestCase
      */
     public function testFilesystem(): void
     {
-        self::assertEquals(true, $this->app[Filesystem::class] instanceof Filesystem);
+        self::assertTrue($this->app[Filesystem::class] instanceof Filesystem);
     }
 
     /**
@@ -247,7 +247,7 @@ class ApplicationTest extends TestCase
      */
     public function testKernel(): void
     {
-        self::assertEquals(true, $this->app[Kernel::class] instanceof Kernel);
+        self::assertTrue($this->app[Kernel::class] instanceof Kernel);
     }
 
     /**
@@ -257,7 +257,7 @@ class ApplicationTest extends TestCase
      */
     public function testPathGenerator(): void
     {
-        self::assertEquals(true, $this->app[PathGenerator::class] instanceof PathGenerator);
+        self::assertTrue($this->app[PathGenerator::class] instanceof PathGenerator);
     }
 
     /**
@@ -267,7 +267,7 @@ class ApplicationTest extends TestCase
      */
     public function testPathParser(): void
     {
-        self::assertEquals(true, $this->app[PathParser::class] instanceof PathParser);
+        self::assertTrue($this->app[PathParser::class] instanceof PathParser);
     }
 
     /**
@@ -277,7 +277,7 @@ class ApplicationTest extends TestCase
      */
     public function testLogger(): void
     {
-        self::assertEquals(true, $this->app[Logger::class] instanceof Logger);
+        self::assertTrue($this->app[Logger::class] instanceof Logger);
     }
 
     /**
@@ -287,7 +287,7 @@ class ApplicationTest extends TestCase
      */
     public function testRouter(): void
     {
-        self::assertEquals(true, $this->app[Router::class] instanceof Router);
+        self::assertTrue($this->app[Router::class] instanceof Router);
     }
 
     /**
@@ -297,7 +297,7 @@ class ApplicationTest extends TestCase
      */
     public function testResponseBuilder(): void
     {
-        self::assertEquals(true, $this->app[ResponseFactory::class] instanceof ResponseFactory);
+        self::assertTrue($this->app[ResponseFactory::class] instanceof ResponseFactory);
     }
 
     /**
@@ -307,7 +307,7 @@ class ApplicationTest extends TestCase
      */
     public function testSession(): void
     {
-        self::assertEquals(true, $this->app[Session::class] instanceof Session);
+        self::assertTrue($this->app[Session::class] instanceof Session);
     }
 
     /**
@@ -317,7 +317,7 @@ class ApplicationTest extends TestCase
      */
     public function testView(): void
     {
-        self::assertEquals(true, $this->app[View::class] instanceof View);
+        self::assertTrue($this->app[View::class] instanceof View);
     }
 
     /**
@@ -332,7 +332,7 @@ class ApplicationTest extends TestCase
 
         // It shouldn't have used the new config settings and kept the old
         // so debug should still be false
-        self::assertEquals(false, $this->app->debug());
+        self::assertFalse($this->app->debug());
     }
 
     /**
@@ -347,7 +347,7 @@ class ApplicationTest extends TestCase
         $config->app->debug = true;
         $this->app          = $this->app->withConfig($config);
 
-        self::assertEquals(true, $this->app->debug());
+        self::assertTrue($this->app->debug());
     }
 
     /**
@@ -388,7 +388,7 @@ class ApplicationTest extends TestCase
 
         // Because the app will use the config cache the forced changes to the config made above shouldn't
         // take effect and the value for app.debug should still be false.
-        self::assertEquals(false, $this->app->debug());
+        self::assertFalse($this->app->debug());
 
         // Delete the config cache file to avoid headaches later
         unlink($this->app->config(ConfigKey::CONFIG_CACHE_FILE_PATH));

@@ -150,9 +150,7 @@ class ContainerTest extends TestCase
     {
         $container = $this->container;
         $serviceId = self::class;
-        $closure   = static function () {
-            return new self();
-        };
+        $closure   = static fn () => new self();
 
         $container->setClosure($serviceId, $closure);
 

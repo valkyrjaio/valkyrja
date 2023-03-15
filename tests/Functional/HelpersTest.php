@@ -40,7 +40,6 @@ use Valkyrja\Session\Managers\Session;
 use Valkyrja\Support\Directory;
 use Valkyrja\View\Managers\View;
 
-use function get_class;
 use function is_string;
 use function Valkyrja\abort;
 use function Valkyrja\app;
@@ -84,7 +83,7 @@ class HelpersTest extends TestCase
      */
     public function testApp(): void
     {
-        self::assertEquals(true, app() instanceof Valkyrja);
+        self::assertTrue(app() instanceof Valkyrja);
     }
 
     /**
@@ -94,7 +93,7 @@ class HelpersTest extends TestCase
      */
     public function testContainer(): void
     {
-        self::assertEquals(true, \Valkyrja\container() instanceof Container);
+        self::assertTrue(\Valkyrja\container() instanceof Container);
     }
 
     /**
@@ -104,7 +103,7 @@ class HelpersTest extends TestCase
      */
     public function testEvents(): void
     {
-        self::assertEquals(true, \Valkyrja\events() instanceof Events);
+        self::assertTrue(\Valkyrja\events() instanceof Events);
     }
 
     /**
@@ -114,7 +113,7 @@ class HelpersTest extends TestCase
      */
     public function testEnv(): void
     {
-        self::assertEquals(true, is_string(env()));
+        self::assertTrue(is_string(env()));
     }
 
     /**
@@ -124,7 +123,7 @@ class HelpersTest extends TestCase
      */
     public function testConfig(): void
     {
-        self::assertEquals(true, \Valkyrja\config() instanceof Config);
+        self::assertTrue(\Valkyrja\config() instanceof Config);
     }
 
     /**
@@ -137,7 +136,7 @@ class HelpersTest extends TestCase
         try {
             abort();
         } catch (Exception $exception) {
-            self::assertEquals(HttpException::class, get_class($exception));
+            self::assertEquals(HttpException::class, $exception::class);
         }
     }
 
@@ -151,7 +150,7 @@ class HelpersTest extends TestCase
         try {
             redirectTo();
         } catch (Exception $exception) {
-            self::assertEquals(HttpRedirectException::class, get_class($exception));
+            self::assertEquals(HttpRedirectException::class, $exception::class);
         }
     }
 
@@ -162,7 +161,7 @@ class HelpersTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        self::assertEquals(true, \Valkyrja\annotator() instanceof Annotator);
+        self::assertTrue(\Valkyrja\annotator() instanceof Annotator);
     }
 
     /**
@@ -172,7 +171,7 @@ class HelpersTest extends TestCase
      */
     public function testClient(): void
     {
-        self::assertEquals(true, \Valkyrja\client() instanceof Client);
+        self::assertTrue(\Valkyrja\client() instanceof Client);
     }
 
     /**
@@ -182,7 +181,7 @@ class HelpersTest extends TestCase
      */
     public function testConsole(): void
     {
-        self::assertEquals(true, \Valkyrja\console() instanceof Console);
+        self::assertTrue(\Valkyrja\console() instanceof Console);
     }
 
     /**
@@ -192,7 +191,7 @@ class HelpersTest extends TestCase
      */
     public function testConsoleKernel(): void
     {
-        self::assertEquals(true, \Valkyrja\consoleKernel() instanceof ConsoleKernel);
+        self::assertTrue(\Valkyrja\consoleKernel() instanceof ConsoleKernel);
     }
 
     /**
@@ -202,7 +201,7 @@ class HelpersTest extends TestCase
      */
     public function testFilesystem(): void
     {
-        self::assertEquals(true, \Valkyrja\filesystem() instanceof Filesystem);
+        self::assertTrue(\Valkyrja\filesystem() instanceof Filesystem);
     }
 
     /**
@@ -212,7 +211,7 @@ class HelpersTest extends TestCase
      */
     public function testInput(): void
     {
-        self::assertEquals(true, \Valkyrja\input() instanceof Input);
+        self::assertTrue(\Valkyrja\input() instanceof Input);
     }
 
     /**
@@ -222,7 +221,7 @@ class HelpersTest extends TestCase
      */
     public function testKernel(): void
     {
-        self::assertEquals(true, \Valkyrja\kernel() instanceof Kernel);
+        self::assertTrue(\Valkyrja\kernel() instanceof Kernel);
     }
 
     /**
@@ -232,7 +231,7 @@ class HelpersTest extends TestCase
      */
     public function testLogger(): void
     {
-        self::assertEquals(true, logger() instanceof Logger);
+        self::assertTrue(logger() instanceof Logger);
     }
 
     /**
@@ -242,7 +241,7 @@ class HelpersTest extends TestCase
      */
     public function testOutput(): void
     {
-        self::assertEquals(true, \Valkyrja\output() instanceof Output);
+        self::assertTrue(\Valkyrja\output() instanceof Output);
     }
 
     /**
@@ -252,7 +251,7 @@ class HelpersTest extends TestCase
      */
     public function testRequest(): void
     {
-        self::assertEquals(true, \Valkyrja\request() instanceof Request);
+        self::assertTrue(\Valkyrja\request() instanceof Request);
     }
 
     /**
@@ -262,7 +261,7 @@ class HelpersTest extends TestCase
      */
     public function testRouter(): void
     {
-        self::assertEquals(true, \Valkyrja\router() instanceof Router);
+        self::assertTrue(\Valkyrja\router() instanceof Router);
     }
 
     /**
@@ -272,7 +271,7 @@ class HelpersTest extends TestCase
      */
     public function testRoute(): void
     {
-        self::assertEquals(true, \Valkyrja\route('welcome') instanceof Route);
+        self::assertTrue(\Valkyrja\route('welcome') instanceof Route);
     }
 
     /**
@@ -292,7 +291,7 @@ class HelpersTest extends TestCase
      */
     public function testResponse(): void
     {
-        self::assertEquals(true, \Valkyrja\response() instanceof Response);
+        self::assertTrue(\Valkyrja\response() instanceof Response);
     }
 
     /**
@@ -302,7 +301,7 @@ class HelpersTest extends TestCase
      */
     public function testResponseWithArgs(): void
     {
-        self::assertEquals(true, \Valkyrja\response('test') instanceof Response);
+        self::assertTrue(\Valkyrja\response('test') instanceof Response);
     }
 
     /**
@@ -312,7 +311,7 @@ class HelpersTest extends TestCase
      */
     public function testJson(): void
     {
-        self::assertEquals(true, json() instanceof JsonResponse);
+        self::assertTrue(json() instanceof JsonResponse);
     }
 
     /**
@@ -322,7 +321,7 @@ class HelpersTest extends TestCase
      */
     public function testJsonWithArgs(): void
     {
-        self::assertEquals(true, json(['test' => 'value']) instanceof JsonResponse);
+        self::assertTrue(json(['test' => 'value']) instanceof JsonResponse);
     }
 
     /**
@@ -332,7 +331,7 @@ class HelpersTest extends TestCase
      */
     public function testRedirect(): void
     {
-        self::assertEquals(true, redirect() instanceof RedirectResponse);
+        self::assertTrue(redirect() instanceof RedirectResponse);
     }
 
     /**
@@ -342,7 +341,7 @@ class HelpersTest extends TestCase
      */
     public function testRedirectWithArgs(): void
     {
-        self::assertEquals(true, redirect('/') instanceof RedirectResponse);
+        self::assertTrue(redirect('/') instanceof RedirectResponse);
     }
 
     /**
@@ -352,7 +351,7 @@ class HelpersTest extends TestCase
      */
     public function testRedirectRoute(): void
     {
-        self::assertEquals(true, redirectRoute('welcome') instanceof RedirectResponse);
+        self::assertTrue(redirectRoute('welcome') instanceof RedirectResponse);
     }
 
     /**
@@ -362,7 +361,7 @@ class HelpersTest extends TestCase
      */
     public function testResponseBuilder(): void
     {
-        self::assertEquals(true, responseFactory() instanceof ResponseFactory);
+        self::assertTrue(responseFactory() instanceof ResponseFactory);
     }
 
     /**
@@ -372,7 +371,7 @@ class HelpersTest extends TestCase
      */
     public function testSession(): void
     {
-        self::assertEquals(true, \Valkyrja\session() instanceof Session);
+        self::assertTrue(\Valkyrja\session() instanceof Session);
     }
 
     /**
@@ -382,7 +381,7 @@ class HelpersTest extends TestCase
      */
     public function testView(): void
     {
-        self::assertEquals(true, view() instanceof View);
+        self::assertTrue(view() instanceof View);
     }
 
     /**

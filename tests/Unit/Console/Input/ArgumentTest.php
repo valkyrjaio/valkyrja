@@ -62,7 +62,7 @@ class ArgumentTest extends TestCase
      */
     public function testConstruct(): void
     {
-        self::assertEquals(true, $this->getClass() instanceof Argument);
+        self::assertTrue($this->getClass() instanceof Argument);
     }
 
     /**

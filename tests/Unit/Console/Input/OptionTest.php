@@ -82,7 +82,7 @@ class OptionTest extends TestCase
      */
     public function testConstruct(): void
     {
-        self::assertEquals(true, $this->getClass() instanceof Option);
+        self::assertTrue($this->getClass() instanceof Option);
     }
 
     /**

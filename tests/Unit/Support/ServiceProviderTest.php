@@ -33,6 +33,6 @@ class ServiceProviderTest extends TestCase
         /** @var Config $config */
         $config = $this->createMock(Config::class);
 
-        self::assertEquals(null, ProviderClass::publish($config) ?? null);
+        self::assertNull(ProviderClass::publish($config) ?? null);
     }
 }

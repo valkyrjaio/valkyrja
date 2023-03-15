@@ -42,7 +42,7 @@ class ServiceContextTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -56,7 +56,7 @@ class ServiceContextTest extends TestCase
      */
     public function testGetServiceDefault(): void
     {
-        self::assertEquals(null, $this->class->getService());
+        self::assertNull($this->class->getService());
     }
 
     /**

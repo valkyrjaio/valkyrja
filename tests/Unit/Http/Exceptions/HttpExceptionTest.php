@@ -48,7 +48,7 @@ class HttpExceptionTest extends TestCase
      */
     public function testConstruct(): void
     {
-        self::assertEquals(true, $this->getException() instanceof HttpException);
+        self::assertTrue($this->getException() instanceof HttpException);
     }
 
     /**

@@ -113,9 +113,7 @@ class ServiceProvider extends Provider
             /**
              * @param class-string<Driver> $name
              */
-            static function (string $name, Adapter $adapter): Driver {
-                return new $name($adapter);
-            }
+            static fn (string $name, Adapter $adapter): Driver => new $name($adapter)
         );
     }
 

@@ -128,9 +128,7 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Template::class,
-            static function (Engine $engine) {
-                return new \Valkyrja\View\Templates\Template($engine);
-            }
+            static fn (Engine $engine) => new \Valkyrja\View\Templates\Template($engine)
         );
     }
 

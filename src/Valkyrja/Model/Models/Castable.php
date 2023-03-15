@@ -425,9 +425,7 @@ trait Castable
             $type = $type[0];
 
             return array_map(
-                function (array $data) use ($property, $type) {
-                    return $this->__getModelFromValue($property, $type, $data);
-                },
+                fn (array $data) => $this->__getModelFromValue($property, $type, $data),
                 $value
             );
         }
@@ -480,9 +478,7 @@ trait Castable
             $type = $type[0];
 
             return array_map(
-                function (array $data) use ($property, $type) {
-                    return $this->__getEnumFromValue($property, $type, $data);
-                },
+                fn (array $data) => $this->__getEnumFromValue($property, $type, $data),
                 $value
             );
         }

@@ -39,7 +39,7 @@ class PathGenerator implements Contract
         }
 
         $path         = '';
-        $params       = $params ?? [];
+        $params ??= [];
         $replace      = [];
         $replacements = [];
 

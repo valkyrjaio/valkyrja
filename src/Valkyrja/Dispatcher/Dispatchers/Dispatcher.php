@@ -80,12 +80,12 @@ class Dispatcher implements Contract
         }
 
         $class     = $this->getClassFromDispatch($dispatch);
-        $arguments = $arguments ?? [];
+        $arguments ??= [];
         /** @var mixed $response */
         $response = is_string($class)
             ? $class::$method(...$arguments)
             : (/** @var object $class */
-            $class->$method(...$arguments)
+                $class->$method(...$arguments)
             );
 
         return $response ?? Constant::DISPATCHED;
@@ -129,7 +129,7 @@ class Dispatcher implements Contract
         // If the class is the id then this item is not yet set in the
         // service container so it needs a new instance returned
         if ($className === $dispatch->getId()) {
-            $arguments = $arguments ?? [];
+            $arguments ??= [];
             $class     = new $className(...$arguments);
         } else {
             // Get the class through the container
@@ -153,7 +153,7 @@ class Dispatcher implements Contract
             throw new InvalidFunctionException("Expecting a valid callable: $function provided");
         }
 
-        $arguments = $arguments ?? [];
+        $arguments ??= [];
         $response  = $function(...$arguments);
 
         return $response ?? Constant::DISPATCHED;
@@ -173,7 +173,7 @@ class Dispatcher implements Contract
             throw new InvalidClosureException('Expecting a valid closure: Null provided');
         }
 
-        $arguments = $arguments ?? [];
+        $arguments ??= [];
         $response  = $closure(...$arguments);
 
         return $response ?? Constant::DISPATCHED;
@@ -208,7 +208,7 @@ class Dispatcher implements Contract
     protected function getArguments(Dispatch $dispatch, array $arguments = null): array|null
     {
         // Get either the arguments passed or from the dispatch model
-        $arguments = $arguments ?? $dispatch->getArguments();
+        $arguments ??= $dispatch->getArguments();
 
         // Set the listener arguments to a new blank array
         $dependencies = $this->getDependencies($dispatch);

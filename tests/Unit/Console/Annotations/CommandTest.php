@@ -42,7 +42,7 @@ class CommandTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -56,7 +56,7 @@ class CommandTest extends TestCase
      */
     public function testGetPathDefault(): void
     {
-        self::assertEquals(null, $this->class->getPath());
+        self::assertNull($this->class->getPath());
     }
 
     /**
@@ -88,7 +88,7 @@ class CommandTest extends TestCase
      */
     public function testGetRegexDefault(): void
     {
-        self::assertEquals(null, $this->class->getRegex());
+        self::assertNull($this->class->getRegex());
     }
 
     /**
@@ -130,7 +130,7 @@ class CommandTest extends TestCase
      */
     public function testGetParamsDefault(): void
     {
-        self::assertEquals(null, $this->class->getParams());
+        self::assertNull($this->class->getParams());
     }
 
     /**
@@ -172,7 +172,7 @@ class CommandTest extends TestCase
      */
     public function testGetSegmentsDefault(): void
     {
-        self::assertEquals(null, $this->class->getSegments());
+        self::assertNull($this->class->getSegments());
     }
 
     /**
@@ -214,7 +214,7 @@ class CommandTest extends TestCase
      */
     public function testGetDescriptionDefault(): void
     {
-        self::assertEquals(null, $this->class->getDescription());
+        self::assertNull($this->class->getDescription());
     }
 
     /**

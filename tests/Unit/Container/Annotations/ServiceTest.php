@@ -42,7 +42,7 @@ class ServiceTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -56,7 +56,7 @@ class ServiceTest extends TestCase
      */
     public function testIsSingletonDefault(): void
     {
-        self::assertEquals(null, $this->class->isSingleton());
+        self::assertNull($this->class->isSingleton());
     }
 
     /**
@@ -68,7 +68,7 @@ class ServiceTest extends TestCase
     {
         $this->class->setSingleton(true);
 
-        self::assertEquals(true, $this->class->isSingleton());
+        self::assertTrue($this->class->isSingleton());
     }
 
     /**
@@ -88,7 +88,7 @@ class ServiceTest extends TestCase
      */
     public function testGetDefaultsDefault(): void
     {
-        self::assertEquals(null, $this->class->getDefaults());
+        self::assertNull($this->class->getDefaults());
     }
 
     /**

@@ -20,8 +20,6 @@ use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Annotations\Route;
 use Valkyrja\Routing\Attributes\Parameter;
 
-use function get_class;
-
 /**
  * Test the route model.
  *
@@ -119,7 +117,7 @@ class RouteTest extends TestCase
         try {
             $this->getRoute()->setMethods(['invalid value']);
         } catch (Exception $exception) {
-            self::assertEquals(InvalidArgumentException::class, get_class($exception));
+            self::assertEquals(InvalidArgumentException::class, $exception::class);
         }
     }
 
@@ -143,7 +141,7 @@ class RouteTest extends TestCase
      */
     public function testGetRegexDefault(): void
     {
-        self::assertEquals(null, $this->getRoute()->getRegex());
+        self::assertNull($this->getRoute()->getRegex());
     }
 
     /**
@@ -189,7 +187,7 @@ class RouteTest extends TestCase
      */
     public function testGetMiddlewareDefault(): void
     {
-        self::assertEquals(null, $this->getRoute()->getMiddleware());
+        self::assertNull($this->getRoute()->getMiddleware());
     }
 
     /**
@@ -235,7 +233,7 @@ class RouteTest extends TestCase
      */
     public function testGetDynamicDefault(): void
     {
-        self::assertEquals(false, $this->getRoute()->isDynamic());
+        self::assertFalse($this->getRoute()->isDynamic());
     }
 
     /**
@@ -259,7 +257,7 @@ class RouteTest extends TestCase
     {
         $this->getRoute()->setDynamic(true);
 
-        self::assertEquals(true, $this->getRoute()->isDynamic());
+        self::assertTrue($this->getRoute()->isDynamic());
     }
 
     /**
@@ -269,7 +267,7 @@ class RouteTest extends TestCase
      */
     public function testGetSecureDefault(): void
     {
-        self::assertEquals(false, $this->getRoute()->isSecure());
+        self::assertFalse($this->getRoute()->isSecure());
     }
 
     /**
@@ -293,6 +291,6 @@ class RouteTest extends TestCase
     {
         $this->getRoute()->setSecure(true);
 
-        self::assertEquals(true, $this->getRoute()->isSecure());
+        self::assertTrue($this->getRoute()->isSecure());
     }
 }

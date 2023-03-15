@@ -493,9 +493,7 @@ class ServiceProvider extends Provider
             /**
              * @param class-string<Statement> $name
              */
-            static function (string $name, Adapter $adapter, array $data = []): Statement {
-                return new $name(...$data);
-            }
+            static fn (string $name, Adapter $adapter, array $data = []): Statement => new $name(...$data)
         );
     }
 
@@ -513,9 +511,7 @@ class ServiceProvider extends Provider
             /**
              * @param class-string<Migration> $name
              */
-            static function (string $name, Orm $orm): Migration {
-                return new $name($orm);
-            }
+            static fn (string $name, Orm $orm): Migration => new $name($orm)
         );
     }
 }

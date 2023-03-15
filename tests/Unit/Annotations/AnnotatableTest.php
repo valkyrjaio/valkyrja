@@ -42,7 +42,7 @@ class AnnotatableTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -56,7 +56,7 @@ class AnnotatableTest extends TestCase
      */
     public function testGetAnnotationTypeDefault(): void
     {
-        self::assertEquals(null, $this->class->getType());
+        self::assertNull($this->class->getType());
     }
 
     /**
@@ -98,7 +98,7 @@ class AnnotatableTest extends TestCase
      */
     public function testGetIdDefault(): void
     {
-        self::assertEquals(null, $this->class->getId());
+        self::assertNull($this->class->getId());
     }
 
     /**
@@ -140,7 +140,7 @@ class AnnotatableTest extends TestCase
      */
     public function testGetNameDefault(): void
     {
-        self::assertEquals(null, $this->class->getName());
+        self::assertNull($this->class->getName());
     }
 
     /**
@@ -182,7 +182,7 @@ class AnnotatableTest extends TestCase
      */
     public function testGetClassDefault(): void
     {
-        self::assertEquals(null, $this->class->getClass());
+        self::assertNull($this->class->getClass());
     }
 
     /**
@@ -224,7 +224,7 @@ class AnnotatableTest extends TestCase
      */
     public function testGetPropertyDefault(): void
     {
-        self::assertEquals(null, $this->class->getProperty());
+        self::assertNull($this->class->getProperty());
     }
 
     /**
@@ -266,7 +266,7 @@ class AnnotatableTest extends TestCase
      */
     public function testGetMethodDefault(): void
     {
-        self::assertEquals(null, $this->class->getMethod());
+        self::assertNull($this->class->getMethod());
     }
 
     /**
@@ -308,7 +308,7 @@ class AnnotatableTest extends TestCase
      */
     public function testIsStaticDefault(): void
     {
-        self::assertEquals(null, $this->class->isStatic());
+        self::assertNull($this->class->isStatic());
     }
 
     /**
@@ -320,7 +320,7 @@ class AnnotatableTest extends TestCase
     {
         $this->class->setStatic(true);
 
-        self::assertEquals(true, $this->class->isStatic());
+        self::assertTrue($this->class->isStatic());
     }
 
     /**
@@ -340,7 +340,7 @@ class AnnotatableTest extends TestCase
      */
     public function testGetFunctionDefault(): void
     {
-        self::assertEquals(null, $this->class->getFunction());
+        self::assertNull($this->class->getFunction());
     }
 
     /**
@@ -382,7 +382,7 @@ class AnnotatableTest extends TestCase
      */
     public function testGetMatchesDefault(): void
     {
-        self::assertEquals(null, $this->class->getMatches());
+        self::assertNull($this->class->getMatches());
     }
 
     /**
@@ -424,7 +424,7 @@ class AnnotatableTest extends TestCase
      */
     public function testGetArgumentsDefault(): void
     {
-        self::assertEquals(null, $this->class->getArguments());
+        self::assertNull($this->class->getArguments());
     }
 
     /**
@@ -466,7 +466,7 @@ class AnnotatableTest extends TestCase
      */
     public function testGetDependenciesDefault(): void
     {
-        self::assertEquals(null, $this->class->getDependencies());
+        self::assertNull($this->class->getDependencies());
     }
 
     /**
