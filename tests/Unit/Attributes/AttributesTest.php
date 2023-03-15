@@ -104,10 +104,10 @@ class AttributesTest extends TestCase
 
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE1,
-               self::VALUE2,
-               self::VALUE3,
-               self::THREE,
+            self::VALUE1,
+            self::VALUE2,
+            self::VALUE3,
+            self::THREE,
             ...$attributes
         );
     }
@@ -288,9 +288,9 @@ class AttributesTest extends TestCase
      */
     public function testForFunction(): void
     {
-        #[Attribute(AttributesTest::VALUE1)]
-        #[Attribute(AttributesTest::VALUE2)]
-        #[AttributeChild(AttributesTest::VALUE3, AttributesTest::THREE)]
+        #[Attribute(self::VALUE1)]
+        #[Attribute(self::VALUE2)]
+        #[AttributeChild(self::VALUE3, self::THREE)]
         function testFunction(): void
         {
         }
@@ -299,16 +299,16 @@ class AttributesTest extends TestCase
 
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE1,
-               self::VALUE2,
-               self::VALUE3,
-               self::THREE,
+            self::VALUE1,
+            self::VALUE2,
+            self::VALUE3,
+            self::THREE,
             ...$attributes
         );
     }
 
     /**
-     * Test the forFunction() method.
+     * Test the forClosure() method.
      *
      * @throws ReflectionException
      *
@@ -327,10 +327,10 @@ class AttributesTest extends TestCase
 
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE4,
-               self::VALUE5,
-               self::VALUE6,
-               self::SIX,
+            self::VALUE4,
+            self::VALUE5,
+            self::VALUE6,
+            self::SIX,
             ...$attributes
         );
 
@@ -345,10 +345,10 @@ class AttributesTest extends TestCase
 
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE7,
-               self::VALUE8,
-               self::VALUE9,
-               self::NINE,
+            self::VALUE7,
+            self::VALUE8,
+            self::VALUE9,
+            self::NINE,
             ...$attributes
         );
     }
@@ -364,10 +364,10 @@ class AttributesTest extends TestCase
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE4,
-               self::VALUE5,
-               self::VALUE6,
-               self::SIX,
+            self::VALUE4,
+            self::VALUE5,
+            self::VALUE6,
+            self::SIX,
             ...$attributes
         );
         $this->setTests($attributes[2], false, self::CONST_NAME);
@@ -384,10 +384,10 @@ class AttributesTest extends TestCase
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE7,
-               self::VALUE8,
-               self::VALUE9,
-               self::NINE,
+            self::VALUE7,
+            self::VALUE8,
+            self::VALUE9,
+            self::NINE,
             ...$attributes
         );
         $this->setTests($attributes[2], false, self::PROTECTED_CONST_NAME);
@@ -404,10 +404,10 @@ class AttributesTest extends TestCase
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE10,
-               self::VALUE11,
-               self::VALUE12,
-               self::TWELVE,
+            self::VALUE10,
+            self::VALUE11,
+            self::VALUE12,
+            self::TWELVE,
             ...$attributes
         );
         $this->setTests($attributes[2], true, self::STATIC_PROPERTY_NAME);
@@ -424,10 +424,10 @@ class AttributesTest extends TestCase
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE13,
-               self::VALUE14,
-               self::VALUE15,
-               self::FIFTEEN,
+            self::VALUE13,
+            self::VALUE14,
+            self::VALUE15,
+            self::FIFTEEN,
             ...$attributes
         );
         $this->setTests($attributes[2], false, self::PROPERTY_NAME);
@@ -444,10 +444,10 @@ class AttributesTest extends TestCase
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE16,
-               self::VALUE17,
-               self::VALUE18,
-               self::EIGHTEEN,
+            self::VALUE16,
+            self::VALUE17,
+            self::VALUE18,
+            self::EIGHTEEN,
             ...$attributes
         );
         $this->setTests($attributes[2], true, self::STATIC_METHOD_NAME);
@@ -464,10 +464,10 @@ class AttributesTest extends TestCase
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
-               self::VALUE19,
-               self::VALUE20,
-               self::VALUE21,
-               self::TWENTY_ONE,
+            self::VALUE19,
+            self::VALUE20,
+            self::VALUE21,
+            self::TWENTY_ONE,
             ...$attributes
         );
         $this->setTests($attributes[2], false, self::METHOD_NAME);
@@ -530,7 +530,7 @@ class AttributesTest extends TestCase
         self::assertSame(AttributedClass::class, $attribute->class);
 
         match ($name) {
-            self::CONST_NAME, self::PROTECTED_CONST_NAME    => function () use ($name, $attribute): void {
+            self::CONST_NAME, self::PROTECTED_CONST_NAME => function () use ($name, $attribute): void {
                 $this->assertSame($name, $attribute->constant);
                 $this->assertNull($attribute->property);
                 $this->assertNull($attribute->method);
@@ -541,7 +541,7 @@ class AttributesTest extends TestCase
                 $this->assertNull($attribute->constant);
                 $this->assertNull($attribute->method);
             },
-            self::STATIC_METHOD_NAME, self::METHOD_NAME     => function () use ($name, $attribute, $isStatic): void {
+            self::STATIC_METHOD_NAME, self::METHOD_NAME => function () use ($name, $attribute, $isStatic): void {
                 self::assertSame($isStatic, $attribute->static);
                 $this->assertSame($name, $attribute->method);
                 $this->assertNull($attribute->constant);
