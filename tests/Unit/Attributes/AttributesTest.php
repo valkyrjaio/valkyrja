@@ -528,7 +528,6 @@ class AttributesTest extends TestCase
     protected function setTests(AttributeChild $attribute, bool $isStatic, string $name): void
     {
         self::assertSame(AttributedClass::class, $attribute->class);
-        self::assertSame($isStatic, $attribute->static);
 
         match ($name) {
             self::CONST_NAME, self::PROTECTED_CONST_NAME    => function () use ($name, $attribute): void {
@@ -536,12 +535,14 @@ class AttributesTest extends TestCase
                 $this->assertNull($attribute->property);
                 $this->assertNull($attribute->method);
             },
-            self::STATIC_PROPERTY_NAME, self::PROPERTY_NAME => function () use ($name, $attribute): void {
+            self::STATIC_PROPERTY_NAME, self::PROPERTY_NAME => function () use ($name, $attribute, $isStatic): void {
+                self::assertSame($isStatic, $attribute->static);
                 $this->assertSame($name, $attribute->property);
                 $this->assertNull($attribute->constant);
                 $this->assertNull($attribute->method);
             },
-            self::STATIC_METHOD_NAME, self::METHOD_NAME     => function () use ($name, $attribute): void {
+            self::STATIC_METHOD_NAME, self::METHOD_NAME     => function () use ($name, $attribute, $isStatic): void {
+                self::assertSame($isStatic, $attribute->static);
                 $this->assertSame($name, $attribute->method);
                 $this->assertNull($attribute->constant);
                 $this->assertNull($attribute->property);

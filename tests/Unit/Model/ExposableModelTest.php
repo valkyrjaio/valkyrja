@@ -49,6 +49,7 @@ class ExposableModelTest extends TestCase
     {
         $model = ExposableModel::fromArray(Model::VALUES);
 
+        $model->private  = 'test';
         $expectedExposed = [Model::PRIVATE => 'test'];
         self::assertSame($expectedExposed, $model->asExposedOnlyArray());
     }
