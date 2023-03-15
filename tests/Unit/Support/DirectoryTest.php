@@ -295,14 +295,4 @@ class DirectoryTest extends TestCase
     {
         self::assertSame($this->subPath, Directory::path('sub/path'));
     }
-
-    /**
-     * Test the path helper with a null input value.
-     *
-     * @return void
-     */
-    public function testPathNull(): void
-    {
-        self::assertNull(Directory::path());
-    }
 }

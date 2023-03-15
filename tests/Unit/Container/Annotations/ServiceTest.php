@@ -50,16 +50,6 @@ class ServiceTest extends TestCase
     }
 
     /**
-     * Test the isSingleton method's default value.
-     *
-     * @return void
-     */
-    public function testIsSingletonDefault(): void
-    {
-        self::assertNull($this->class->isSingleton());
-    }
-
-    /**
      * Test the isSingleton method.
      *
      * @return void

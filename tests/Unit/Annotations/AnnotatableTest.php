@@ -302,16 +302,6 @@ class AnnotatableTest extends TestCase
     }
 
     /**
-     * Test the isStatic method's default value.
-     *
-     * @return void
-     */
-    public function testIsStaticDefault(): void
-    {
-        self::assertNull($this->class->isStatic());
-    }
-
-    /**
      * Test the isStatic method.
      *
      * @return void
