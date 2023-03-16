@@ -32,16 +32,6 @@ class HttpExceptionTest extends TestCase
     protected HttpException $exception;
 
     /**
-     * Get the exception.
-     *
-     * @return HttpException
-     */
-    protected function getException(): HttpException
-    {
-        return $this->exception ?? $this->exception = new HttpException();
-    }
-
-    /**
      * Test the construction of a new HttpException instance.
      *
      * @return void
@@ -69,5 +59,15 @@ class HttpExceptionTest extends TestCase
     public function testGetHeaders(): void
     {
         self::assertSame([], $this->getException()->getHeaders());
+    }
+
+    /**
+     * Get the exception.
+     *
+     * @return HttpException
+     */
+    protected function getException(): HttpException
+    {
+        return $this->exception ?? $this->exception = new HttpException();
     }
 }

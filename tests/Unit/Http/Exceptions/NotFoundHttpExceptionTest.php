@@ -31,16 +31,6 @@ class NotFoundHttpExceptionTest extends TestCase
     protected NotFoundHttpException $exception;
 
     /**
-     * Get the exception.
-     *
-     * @return NotFoundHttpException
-     */
-    protected function getException(): NotFoundHttpException
-    {
-        return $this->exception ?? $this->exception = new NotFoundHttpException();
-    }
-
-    /**
      * Test the construction of a new NotFoundHttpException instance.
      *
      * @return void
@@ -48,5 +38,15 @@ class NotFoundHttpExceptionTest extends TestCase
     public function testConstruct(): void
     {
         self::assertTrue($this->getException() instanceof NotFoundHttpException);
+    }
+
+    /**
+     * Get the exception.
+     *
+     * @return NotFoundHttpException
+     */
+    protected function getException(): NotFoundHttpException
+    {
+        return $this->exception ?? $this->exception = new NotFoundHttpException();
     }
 }

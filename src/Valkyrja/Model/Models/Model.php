@@ -83,6 +83,18 @@ abstract class Model implements Contract
     }
 
     /**
+     * Get a new instance.
+     *
+     * @param array $properties The properties
+     *
+     * @return $this
+     */
+    protected static function __getNew(array $properties): static
+    {
+        return new static();
+    }
+
+    /**
      * @inheritDoc
      */
     public function __get(string $name)
@@ -222,18 +234,6 @@ abstract class Model implements Contract
     public function __toString(): string
     {
         return Arr::toString($this->jsonSerialize());
-    }
-
-    /**
-     * Get a new instance.
-     *
-     * @param array $properties The properties
-     *
-     * @return $this
-     */
-    protected static function __getNew(array $properties): static
-    {
-        return new static();
     }
 
     /**

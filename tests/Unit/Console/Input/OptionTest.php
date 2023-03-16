@@ -60,22 +60,6 @@ class OptionTest extends TestCase
     protected string $default = 'Default Value';
 
     /**
-     * Get the class to test with.
-     *
-     * @return Option
-     */
-    protected function getClass(): Option
-    {
-        return $this->class ?? $this->class = new Option(
-            $this->name,
-            $this->description,
-            $this->shortcut,
-            null,
-            $this->default
-        );
-    }
-
-    /**
      * Test the construction of a new Option instance.
      *
      * @return void
@@ -133,5 +117,21 @@ class OptionTest extends TestCase
     public function testGetMode(): void
     {
         self::assertSame(OptionMode::NONE, $this->getClass()->getMode());
+    }
+
+    /**
+     * Get the class to test with.
+     *
+     * @return Option
+     */
+    protected function getClass(): Option
+    {
+        return $this->class ?? $this->class = new Option(
+            $this->name,
+            $this->description,
+            $this->shortcut,
+            null,
+            $this->default
+        );
     }
 }

@@ -52,16 +52,6 @@ class EnumTest extends TestCase
     }
 
     /**
-     * Get an enum to test with.
-     *
-     * @return \Valkyrja\Type\Types\Enum
-     */
-    protected function getEnum(): Enum
-    {
-        return new EnumClass(EnumClass::BAR);
-    }
-
-    /**
      * Test the set value method with an invalid value.
      *
      * @return void
@@ -171,16 +161,6 @@ class EnumTest extends TestCase
     }
 
     /**
-     * Get an enum with no default values set to test with.
-     *
-     * @return \Valkyrja\Type\Types\Enum
-     */
-    protected function getEnumEmpty(): Enum
-    {
-        return new EnumClassEmpty(EnumClassEmpty::FOO);
-    }
-
-    /**
      * Test setting an invalid enum value after creating an enum with a valid value.
      *
      * @return void
@@ -214,5 +194,25 @@ class EnumTest extends TestCase
     public function testToString(): void
     {
         self::assertSame('foo', (string) $this->getEnum());
+    }
+
+    /**
+     * Get an enum to test with.
+     *
+     * @return \Valkyrja\Type\Types\Enum
+     */
+    protected function getEnum(): Enum
+    {
+        return new EnumClass(EnumClass::BAR);
+    }
+
+    /**
+     * Get an enum with no default values set to test with.
+     *
+     * @return \Valkyrja\Type\Types\Enum
+     */
+    protected function getEnumEmpty(): Enum
+    {
+        return new EnumClassEmpty(EnumClassEmpty::FOO);
     }
 }

@@ -31,18 +31,11 @@ use function microtime;
 class DispatcherTest extends TestCase
 {
     /**
-     * The class to test with.
-     *
-     * @var Dispatcher
-     */
-    protected Dispatcher $dispatcher;
-
-    /**
-     * The value to test with.
+     * A valid static property.
      *
      * @var string
      */
-    protected string $value = 'test';
+    public static string $validStaticProperty = 'test';
 
     /**
      * A valid property.
@@ -57,13 +50,31 @@ class DispatcherTest extends TestCase
      * @var string|null
      */
     public string|null $validPropertyNull = null;
+    /**
+     * The class to test with.
+     *
+     * @var Dispatcher
+     */
+    protected Dispatcher $dispatcher;
 
     /**
-     * A valid static property.
+     * The value to test with.
      *
      * @var string
      */
-    public static string $validStaticProperty = 'test';
+    protected string $value = 'test';
+
+    /**
+     * A valid static method.
+     *
+     * @param string|null $arg [optional] An argument
+     *
+     * @return string
+     */
+    public static function validStaticMethod(string $arg = null): string
+    {
+        return 'test' . ($arg ?: '');
+    }
 
     /**
      * Setup the test.
@@ -85,18 +96,6 @@ class DispatcherTest extends TestCase
      * @return string
      */
     public function validMethod(string $arg = null): string
-    {
-        return 'test' . ($arg ?: '');
-    }
-
-    /**
-     * A valid static method.
-     *
-     * @param string|null $arg [optional] An argument
-     *
-     * @return string
-     */
-    public static function validStaticMethod(string $arg = null): string
     {
         return 'test' . ($arg ?: '');
     }

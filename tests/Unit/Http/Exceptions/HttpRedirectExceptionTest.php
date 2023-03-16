@@ -31,16 +31,6 @@ class HttpRedirectExceptionTest extends TestCase
     protected HttpRedirectException $exception;
 
     /**
-     * Get the exception.
-     *
-     * @return HttpRedirectException
-     */
-    protected function getException(): HttpRedirectException
-    {
-        return $this->exception ?? $this->exception = new HttpRedirectException();
-    }
-
-    /**
      * Test the construction of a new HttpRedirectException instance.
      *
      * @return void
@@ -58,5 +48,15 @@ class HttpRedirectExceptionTest extends TestCase
     public function testGetUri(): void
     {
         self::assertSame('/', $this->getException()->getUri());
+    }
+
+    /**
+     * Get the exception.
+     *
+     * @return HttpRedirectException
+     */
+    protected function getException(): HttpRedirectException
+    {
+        return $this->exception ?? $this->exception = new HttpRedirectException();
     }
 }

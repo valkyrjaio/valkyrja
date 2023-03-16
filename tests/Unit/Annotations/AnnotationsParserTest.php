@@ -70,6 +70,16 @@ class AnnotationsParserTest extends TestCase
     protected string $value = 'test';
 
     /**
+     * A static method to test with.
+     *
+     * @return string
+     */
+    public static function staticMethod(): string
+    {
+        return 'staticMethod';
+    }
+
+    /**
      * Setup the test.
      *
      * @return void
@@ -79,16 +89,6 @@ class AnnotationsParserTest extends TestCase
         parent::setUp();
 
         $this->class = new Parser((array) new Config(ConfigValue::$defaults, true));
-    }
-
-    /**
-     * A static method to test with.
-     *
-     * @return string
-     */
-    public static function staticMethod(): string
-    {
-        return 'staticMethod';
     }
 
     /**

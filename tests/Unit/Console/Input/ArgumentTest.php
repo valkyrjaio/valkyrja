@@ -46,16 +46,6 @@ class ArgumentTest extends TestCase
     protected string $description = 'Test Description';
 
     /**
-     * Get the class to test with.
-     *
-     * @return Argument
-     */
-    protected function getClass(): Argument
-    {
-        return $this->class ?? $this->class = new Argument($this->name, $this->description);
-    }
-
-    /**
      * Test the construction of a new Argument instance.
      *
      * @return void
@@ -93,5 +83,15 @@ class ArgumentTest extends TestCase
     public function testGetMode(): void
     {
         self::assertSame(ArgumentMode::OPTIONAL, $this->getClass()->getMode());
+    }
+
+    /**
+     * Get the class to test with.
+     *
+     * @return Argument
+     */
+    protected function getClass(): Argument
+    {
+        return $this->class ?? $this->class = new Argument($this->name, $this->description);
     }
 }

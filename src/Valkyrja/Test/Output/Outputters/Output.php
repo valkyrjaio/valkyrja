@@ -33,6 +33,23 @@ abstract class Output implements Contract
     /**
      * @inheritDoc
      */
+    public function full(Results $results): void
+    {
+        $this->title();
+        $this->sectionSpacing();
+        $this->tests($results);
+        $this->sectionSpacing();
+        $this->completed($results);
+        $this->sectionSpacing();
+        $this->meta();
+        $this->sectionSpacing();
+        $this->results($results);
+        $this->issues($results);
+    }
+
+    /**
+     * @inheritDoc
+     */
     abstract public function title(): void;
 
     /**
@@ -64,21 +81,4 @@ abstract class Output implements Contract
      * @inheritDoc
      */
     abstract public function sectionSpacing(): void;
-
-    /**
-     * @inheritDoc
-     */
-    public function full(Results $results): void
-    {
-        $this->title();
-        $this->sectionSpacing();
-        $this->tests($results);
-        $this->sectionSpacing();
-        $this->completed($results);
-        $this->sectionSpacing();
-        $this->meta();
-        $this->sectionSpacing();
-        $this->results($results);
-        $this->issues($results);
-    }
 }

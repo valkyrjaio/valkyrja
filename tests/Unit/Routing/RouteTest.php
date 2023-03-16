@@ -41,16 +41,6 @@ class RouteTest extends TestCase
     protected string $stringValue = 'test';
 
     /**
-     * Get the route model to test with.
-     *
-     * @return Route
-     */
-    protected function getRoute(): Route
-    {
-        return $this->route ?? $this->route = new Route();
-    }
-
-    /**
      * Test the getPath getter method.
      *
      * @return void
@@ -275,5 +265,15 @@ class RouteTest extends TestCase
         $this->getRoute()->setSecure(true);
 
         self::assertTrue($this->getRoute()->isSecure());
+    }
+
+    /**
+     * Get the route model to test with.
+     *
+     * @return Route
+     */
+    protected function getRoute(): Route
+    {
+        return $this->route ?? $this->route = new Route();
     }
 }
