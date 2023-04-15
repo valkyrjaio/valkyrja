@@ -17,7 +17,6 @@ use InvalidArgumentException;
 use RuntimeException;
 use Valkyrja\Http\Constants\ContentType;
 use Valkyrja\Http\Constants\Header;
-use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Constants\StreamType;
 use Valkyrja\Http\Exceptions\InvalidStatusCode;
 use Valkyrja\Http\Exceptions\InvalidStream;
@@ -43,7 +42,11 @@ class HtmlResponse extends Response implements Contract
      * @throws InvalidStatusCode
      * @throws InvalidStream
      */
-    public function __construct(string $html = '', int $statusCode = StatusCode::OK, array $headers = [])
+    public function __construct(
+        string $html = self::DEFAULT_CONTENT,
+        int $statusCode = self::DEFAULT_STATUS_CODE,
+        array $headers = self::DEFAULT_HEADERS
+    )
     {
         $body = new Stream(StreamType::TEMP, 'wb+');
 

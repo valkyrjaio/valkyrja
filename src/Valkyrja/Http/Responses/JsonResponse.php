@@ -18,7 +18,6 @@ use JsonException;
 use RuntimeException;
 use Valkyrja\Http\Constants\ContentType;
 use Valkyrja\Http\Constants\Header;
-use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Constants\StreamType;
 use Valkyrja\Http\Exceptions\InvalidStatusCode;
 use Valkyrja\Http\Exceptions\InvalidStream;
@@ -39,6 +38,10 @@ use const JSON_THROW_ON_ERROR;
  */
 class JsonResponse extends Response implements Contract
 {
+    protected const DEFAULT_DATA = [];
+
+    protected const DEFAULT_ENCODING_OPTIONS = 79;
+
     /**
      * NativeJsonResponse constructor.
      *
@@ -54,10 +57,10 @@ class JsonResponse extends Response implements Contract
      * @throws JsonException
      */
     public function __construct(
-        protected array $data = [],
-        int $statusCode = StatusCode::OK,
-        array $headers = [],
-        protected int $encodingOptions = 79
+        protected array $data = self::DEFAULT_DATA,
+        int $statusCode = self::DEFAULT_STATUS_CODE,
+        array $headers = self::DEFAULT_HEADERS,
+        protected int $encodingOptions = self::DEFAULT_ENCODING_OPTIONS
     ) {
         $body = new Stream(StreamType::TEMP, 'wb+');
         $body->write(json_encode($data, JSON_THROW_ON_ERROR | $this->encodingOptions));
@@ -67,6 +70,21 @@ class JsonResponse extends Response implements Contract
             $body,
             $statusCode,
             $this->injectHeader(Header::CONTENT_TYPE, ContentType::APPLICATION_JSON, $headers)
+        );
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws JsonException
+     */
+    public static function createFromData(array $data = null, int $statusCode = null, array $headers = null): static
+    {
+        return new static(
+            $data ?? static::DEFAULT_DATA,
+            $statusCode ?? static::DEFAULT_STATUS_CODE,
+            $headers ?? static::DEFAULT_HEADERS,
+            static::DEFAULT_ENCODING_OPTIONS
         );
     }
 
