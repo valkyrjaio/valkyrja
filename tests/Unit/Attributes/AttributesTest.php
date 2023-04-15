@@ -320,7 +320,7 @@ class AttributesTest extends TestCase
             #[Attribute(self::VALUE4)]
             #[Attribute(self::VALUE5)]
             #[AttributeChild(self::VALUE6, self::SIX)]
-            function (): void {
+            static function (): void {
             },
             Attribute::class
         );
