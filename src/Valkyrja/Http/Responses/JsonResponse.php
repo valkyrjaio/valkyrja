@@ -38,8 +38,18 @@ use const JSON_THROW_ON_ERROR;
  */
 class JsonResponse extends Response implements Contract
 {
+    /**
+     * The default data to set.
+     *
+     * @var array
+     */
     protected const DEFAULT_DATA = [];
 
+    /**
+     * The default encoding options to use for json_encode.
+     *
+     * @var int
+     */
     protected const DEFAULT_ENCODING_OPTIONS = 79;
 
     /**

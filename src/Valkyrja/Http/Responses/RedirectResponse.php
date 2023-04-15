@@ -29,8 +29,16 @@ use Valkyrja\Http\Request;
  */
 class RedirectResponse extends Response implements Contract
 {
+    /**
+     * The default uri to use.
+     *
+     * @var string
+     */
     protected const DEFAULT_URI = '/';
 
+    /**
+     * @inheritDoc
+     */
     protected const DEFAULT_STATUS_CODE = StatusCode::FOUND;
 
     /**

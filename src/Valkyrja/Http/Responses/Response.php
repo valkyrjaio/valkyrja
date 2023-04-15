@@ -37,10 +37,25 @@ class Response implements Contract
 {
     use MessageTrait;
 
+    /**
+     * The default content to set in the body.
+     *
+     * @var string
+     */
     protected const DEFAULT_CONTENT = '';
 
+    /**
+     * The default status code to set.
+     *
+     * @var int
+     */
     protected const DEFAULT_STATUS_CODE = StatusCode::OK;
 
+    /**
+     * The default headers to set.
+     *
+     * @var array
+     */
     protected const DEFAULT_HEADERS = [];
 
     /**
