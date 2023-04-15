@@ -61,6 +61,7 @@ return (new PhpCsFixer\Config())
             'simplified_null_return'                   => true,
             'simple_to_complex_string_variable'        => true,
             'single_line_throw'                        => false,
+            'static_lambda'                            => true,
             'strict_comparison'                        => true,
             'strict_param'                             => true,
             'trailing_comma_in_multiline'              => true,
