@@ -46,8 +46,7 @@ class TextResponse extends Response implements Contract
         string $text = self::DEFAULT_CONTENT,
         int $statusCode = self::DEFAULT_STATUS_CODE,
         array $headers = self::DEFAULT_HEADERS
-    )
-    {
+    ) {
         $body = new Stream(StreamType::TEMP, 'wb+');
 
         $body->write($text);

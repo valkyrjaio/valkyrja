@@ -46,8 +46,7 @@ class HtmlResponse extends Response implements Contract
         string $html = self::DEFAULT_CONTENT,
         int $statusCode = self::DEFAULT_STATUS_CODE,
         array $headers = self::DEFAULT_HEADERS
-    )
-    {
+    ) {
         $body = new Stream(StreamType::TEMP, 'wb+');
 
         $body->write($html);

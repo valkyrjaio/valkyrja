@@ -48,8 +48,7 @@ class RedirectResponse extends Response implements Contract
         protected string $uri = self::DEFAULT_URI,
         int $statusCode = self::DEFAULT_STATUS_CODE,
         array $headers = self::DEFAULT_HEADERS
-    )
-    {
+    ) {
         parent::__construct(
             statusCode: $statusCode,
             headers   : $this->injectHeader(Header::LOCATION, $uri, $headers, true)
