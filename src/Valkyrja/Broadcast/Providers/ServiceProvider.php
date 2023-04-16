@@ -265,9 +265,7 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Message::class,
-            static function (string $name, array $config): Message {
-                return (new $name())->setChannel($config['channel']);
-            }
+            static fn (string $name, array $config): Message => (new $name())->setChannel($config['channel'])
         );
     }
 }

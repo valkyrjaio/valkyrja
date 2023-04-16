@@ -20,28 +20,28 @@ use JsonSerializable;
  *
  * @author Melech Mizrachi
  */
-enum CastType: string implements JsonSerializable
+enum CastType implements JsonSerializable
 {
-    case string = 'string';
-    case int    = 'int';
-    case float  = 'float';
-    case double = 'double';
-    case bool   = 'bool';
-    case true   = 'true';
-    case false  = 'false';
-    case null   = 'null';
-    case json   = 'json';
-    case array  = 'array';
-    case object = 'object';
-    case model  = 'model';
-    case enum   = 'enum';
-    case type   = 'type';
+    case string;
+    case int;
+    case float;
+    case double;
+    case bool;
+    case true;
+    case false;
+    case null;
+    case json;
+    case array;
+    case object;
+    case model;
+    case enum;
+    case type;
 
     /**
      * @inheritDoc
      */
     public function jsonSerialize(): string
     {
-        return $this->value;
+        return $this->name;
     }
 }

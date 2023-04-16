@@ -20,6 +20,6 @@ abstract class AbstractUuidTest extends TestCase
 {
     protected function ensureVersionInGeneratedString(UuidVersion $version, string $generated): void
     {
-        $this->assertSame((string) $version->value, $generated[14]);
+        self::assertSame((string) $version->value, $generated[14]);
     }
 }

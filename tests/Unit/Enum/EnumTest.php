@@ -19,7 +19,6 @@ use PHPUnit\Framework\TestCase;
 use Valkyrja\Type\Types\Enum;
 
 use function array_diff;
-use function get_class;
 use function method_exists;
 
 /**
@@ -36,7 +35,7 @@ class EnumTest extends TestCase
      */
     public function testSetValueExists(): void
     {
-        self::assertEquals(true, method_exists(Enum::class, 'setValue'));
+        self::assertTrue(method_exists(Enum::class, 'setValue'));
     }
 
     /**
@@ -49,17 +48,7 @@ class EnumTest extends TestCase
         $enum = $this->getEnum();
         $enum->setValue(EnumClass::FOO);
 
-        self::assertEquals(EnumClass::FOO, $enum->getValue());
-    }
-
-    /**
-     * Get an enum to test with.
-     *
-     * @return \Valkyrja\Type\Types\Enum
-     */
-    protected function getEnum(): Enum
-    {
-        return new EnumClass(EnumClass::BAR);
+        self::assertSame(EnumClass::FOO, $enum->getValue());
     }
 
     /**
@@ -72,7 +61,7 @@ class EnumTest extends TestCase
         try {
             new EnumClass('invalid value');
         } catch (Exception $exception) {
-            self::assertEquals(InvalidArgumentException::class, get_class($exception));
+            self::assertSame(InvalidArgumentException::class, $exception::class);
         }
     }
 
@@ -83,7 +72,7 @@ class EnumTest extends TestCase
      */
     public function testGetValueExists(): void
     {
-        self::assertEquals(true, method_exists(Enum::class, 'getValue'));
+        self::assertTrue(method_exists(Enum::class, 'getValue'));
     }
 
     /**
@@ -93,7 +82,7 @@ class EnumTest extends TestCase
      */
     public function testGetValue(): void
     {
-        self::assertEquals(EnumClass::BAR, $this->getEnum()->getValue());
+        self::assertSame(EnumClass::BAR, $this->getEnum()->getValue());
     }
 
     /**
@@ -103,7 +92,7 @@ class EnumTest extends TestCase
      */
     public function testIsValidExists(): void
     {
-        self::assertEquals(true, method_exists(Enum::class, 'isValid'));
+        self::assertTrue(method_exists(Enum::class, 'isValid'));
     }
 
     /**
@@ -113,7 +102,7 @@ class EnumTest extends TestCase
      */
     public function testIsValid(): void
     {
-        self::assertEquals(true, $this->getEnum()->isValid(EnumClass::FOO));
+        self::assertTrue($this->getEnum()->isValid(EnumClass::FOO));
     }
 
     /**
@@ -123,7 +112,7 @@ class EnumTest extends TestCase
      */
     public function testNotValid(): void
     {
-        self::assertEquals(false, $this->getEnum()->isValid('invalid value'));
+        self::assertFalse($this->getEnum()->isValid('invalid value'));
     }
 
     /**
@@ -133,7 +122,7 @@ class EnumTest extends TestCase
      */
     public function testValidValuesExists(): void
     {
-        self::assertEquals(true, method_exists(Enum::class, 'getValidValues'));
+        self::assertTrue(method_exists(Enum::class, 'getValidValues'));
     }
 
     /**
@@ -143,7 +132,7 @@ class EnumTest extends TestCase
      */
     public function testValidValues(): void
     {
-        self::assertEquals(
+        self::assertSame(
             [
                 EnumClass::FOO => EnumClass::FOO,
                 EnumClass::BAR => EnumClass::BAR,
@@ -159,7 +148,7 @@ class EnumTest extends TestCase
      */
     public function testValidValuesReflection(): void
     {
-        self::assertEquals(
+        self::assertSame(
             [],
             array_diff(
                 [
@@ -169,16 +158,6 @@ class EnumTest extends TestCase
                 $this->getEnumEmpty()->getValidValues()
             )
         );
-    }
-
-    /**
-     * Get an enum with no default values set to test with.
-     *
-     * @return \Valkyrja\Type\Types\Enum
-     */
-    protected function getEnumEmpty(): Enum
-    {
-        return new EnumClassEmpty(EnumClassEmpty::FOO);
     }
 
     /**
@@ -193,7 +172,7 @@ class EnumTest extends TestCase
         try {
             $enum->setValue('invalid');
         } catch (Exception $exception) {
-            self::assertEquals(true, $exception instanceof InvalidArgumentException);
+            self::assertTrue($exception instanceof InvalidArgumentException);
         }
     }
 
@@ -204,7 +183,7 @@ class EnumTest extends TestCase
      */
     public function testToStringExists(): void
     {
-        self::assertEquals(true, method_exists(Enum::class, '__toString'));
+        self::assertTrue(method_exists(Enum::class, '__toString'));
     }
 
     /**
@@ -214,6 +193,26 @@ class EnumTest extends TestCase
      */
     public function testToString(): void
     {
-        self::assertEquals('foo', (string) $this->getEnum());
+        self::assertSame('foo', (string) $this->getEnum());
+    }
+
+    /**
+     * Get an enum to test with.
+     *
+     * @return \Valkyrja\Type\Types\Enum
+     */
+    protected function getEnum(): Enum
+    {
+        return new EnumClass(EnumClass::BAR);
+    }
+
+    /**
+     * Get an enum with no default values set to test with.
+     *
+     * @return \Valkyrja\Type\Types\Enum
+     */
+    protected function getEnumEmpty(): Enum
+    {
+        return new EnumClassEmpty(EnumClassEmpty::FOO);
     }
 }

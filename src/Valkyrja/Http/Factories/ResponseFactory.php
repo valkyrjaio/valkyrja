@@ -16,13 +16,10 @@ namespace Valkyrja\Http\Factories;
 use InvalidArgumentException;
 use JsonException;
 use Valkyrja\Container\Container;
-use Valkyrja\Http\Constants\StatusCode;
-use Valkyrja\Http\Constants\StreamType;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory as Contract;
-use Valkyrja\Http\Streams\Stream as HttpStream;
 use Valkyrja\Routing\Url;
 use Valkyrja\View\View;
 
@@ -48,11 +45,11 @@ class ResponseFactory implements Contract
      */
     public function createResponse(string $content = null, int $statusCode = null, array $headers = null): Response
     {
-        $stream = new HttpStream(StreamType::TEMP, 'wb+');
-        $stream->write($content ?? '');
-        $stream->rewind();
-
-        return new \Valkyrja\Http\Responses\Response($stream, $statusCode ?? StatusCode::OK, $headers ?? []);
+        return \Valkyrja\Http\Responses\Response::create(
+            content: $content,
+            statusCode: $statusCode,
+            headers: $headers
+        );
     }
 
     /**
@@ -62,10 +59,10 @@ class ResponseFactory implements Contract
      */
     public function createJsonResponse(array $data = null, int $statusCode = null, array $headers = null): JsonResponse
     {
-        return new \Valkyrja\Http\Responses\JsonResponse(
-            $data ?? [],
-            $statusCode ?? StatusCode::OK,
-            $headers ?? []
+        return \Valkyrja\Http\Responses\JsonResponse::createFromData(
+            data: $data,
+            statusCode: $statusCode,
+            headers: $headers
         );
     }
 
@@ -85,10 +82,10 @@ class ResponseFactory implements Contract
      */
     public function createRedirectResponse(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse
     {
-        return new \Valkyrja\Http\Responses\RedirectResponse(
-            $uri ?? '/',
-            $statusCode ?? StatusCode::OK,
-            $headers ?? []
+        return \Valkyrja\Http\Responses\RedirectResponse::createFromUri(
+            uri: $uri,
+            statusCode: $statusCode,
+            headers: $headers
         );
     }
 

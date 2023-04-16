@@ -313,7 +313,7 @@ trait MessageTrait
     protected function injectHeader(string $header, string $value, array $headers = null, bool $override = false): array
     {
         // The headers
-        $headers = $headers ?? [];
+        $headers ??= [];
         // Normalize the content type header
         $normalized = strtolower($header);
         // The original value for the header (if it exists in the headers array)

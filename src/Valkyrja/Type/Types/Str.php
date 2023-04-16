@@ -106,7 +106,7 @@ class Str extends Type implements Contract
      */
     public function replace(string $replace, string $replacement): static
     {
-        return $this->modify(fn (string $subject): string => Helper::replace($subject, $replace, $replacement));
+        return $this->modify(static fn (string $subject): string => Helper::replace($subject, $replace, $replacement));
     }
 
     /**
@@ -114,7 +114,7 @@ class Str extends Type implements Contract
      */
     public function replaceAll(array $replace, array $replacement): static
     {
-        return $this->modify(fn (string $subject): string => Helper::replaceAll($subject, $replace, $replacement));
+        return $this->modify(static fn (string $subject): string => Helper::replaceAll($subject, $replace, $replacement));
     }
 
     /**
@@ -122,7 +122,7 @@ class Str extends Type implements Contract
      */
     public function replaceAllWith(array $replace, string $replacement): static
     {
-        return $this->modify(fn (string $subject): string => Helper::replaceAllWith($subject, $replace, $replacement));
+        return $this->modify(static fn (string $subject): string => Helper::replaceAllWith($subject, $replace, $replacement));
     }
 
     /**
@@ -130,7 +130,7 @@ class Str extends Type implements Contract
      */
     public function substr(int $start, int $length = null): static
     {
-        return $this->modify(fn (string $subject): string => Helper::substr($subject, $start, $length));
+        return $this->modify(static fn (string $subject): string => Helper::substr($subject, $start, $length));
     }
 
     /**
@@ -138,7 +138,7 @@ class Str extends Type implements Contract
      */
     public function toTitleCase(): static
     {
-        return $this->modify(fn (string $subject): string => StrCase::toTitleCase($subject));
+        return $this->modify(static fn (string $subject): string => StrCase::toTitleCase($subject));
     }
 
     /**
@@ -146,7 +146,7 @@ class Str extends Type implements Contract
      */
     public function toLowerCase(): static
     {
-        return $this->modify(fn (string $subject): string => StrCase::toLowerCase($subject));
+        return $this->modify(static fn (string $subject): string => StrCase::toLowerCase($subject));
     }
 
     /**
@@ -154,7 +154,7 @@ class Str extends Type implements Contract
      */
     public function toUpperCase(): static
     {
-        return $this->modify(fn (string $subject): string => StrCase::toUpperCase($subject));
+        return $this->modify(static fn (string $subject): string => StrCase::toUpperCase($subject));
     }
 
     /**
@@ -162,7 +162,7 @@ class Str extends Type implements Contract
      */
     public function toCapitalized(string $delimiter = null): static
     {
-        return $this->modify(fn (string $subject): string => StrCase::toCapitalized($subject, $delimiter));
+        return $this->modify(static fn (string $subject): string => StrCase::toCapitalized($subject, $delimiter));
     }
 
     /**
@@ -170,7 +170,7 @@ class Str extends Type implements Contract
      */
     public function toCapitalizedWords(string $delimiter = null): static
     {
-        return $this->modify(fn (string $subject): string => StrCase::toCapitalizedWords($subject, $delimiter));
+        return $this->modify(static fn (string $subject): string => StrCase::toCapitalizedWords($subject, $delimiter));
     }
 
     /**
@@ -178,7 +178,7 @@ class Str extends Type implements Contract
      */
     public function toSnakeCase(): static
     {
-        return $this->modify(fn (string $subject): string => StrCase::toSnakeCase($subject));
+        return $this->modify(static fn (string $subject): string => StrCase::toSnakeCase($subject));
     }
 
     /**
@@ -186,7 +186,7 @@ class Str extends Type implements Contract
      */
     public function toSlug(): static
     {
-        return $this->modify(fn (string $subject): string => StrCase::toSlug($subject));
+        return $this->modify(static fn (string $subject): string => StrCase::toSlug($subject));
     }
 
     /**
@@ -194,7 +194,7 @@ class Str extends Type implements Contract
      */
     public function toStudlyCase(): static
     {
-        return $this->modify(fn (string $subject): string => StrCase::toStudlyCase($subject));
+        return $this->modify(static fn (string $subject): string => StrCase::toStudlyCase($subject));
     }
 
     /**
@@ -202,7 +202,7 @@ class Str extends Type implements Contract
      */
     public function ucFirstLetter(): static
     {
-        return $this->modify(fn (string $subject): string => StrCase::ucFirstLetter($subject));
+        return $this->modify(static fn (string $subject): string => StrCase::ucFirstLetter($subject));
     }
 
     /**

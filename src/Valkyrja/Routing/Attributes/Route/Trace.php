@@ -16,6 +16,8 @@ namespace Valkyrja\Routing\Attributes\Route;
 use Attribute;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Attributes\Route;
+use Valkyrja\Routing\Message;
+use Valkyrja\Routing\Models\Parameter;
 
 /**
  * Attribute Trace.
@@ -25,11 +27,16 @@ use Valkyrja\Routing\Attributes\Route;
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class Trace extends Route
 {
+    /**
+     * @param Parameter[]|null $parameters The parameters
+     * @param class-string<Message>[]|null $messages   The messages
+     */
     public function __construct(
         string $path,
         string $name = null,
         array $parameters = null,
         array $middleware = null,
+        array $messages = null,
         bool $secure = null,
         string $to = null,
         int $code = null,
@@ -40,6 +47,7 @@ class Trace extends Route
             methods   : [RequestMethod::TRACE],
             parameters: $parameters,
             middleware: $middleware,
+            messages  : $messages,
             secure    : $secure,
             to        : $to,
             code      : $code,

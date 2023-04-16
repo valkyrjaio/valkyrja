@@ -161,9 +161,7 @@ class Query implements QueryContract
         }
 
         return array_map(
-            static function (array $data) use ($entity): Entity {
-                return $entity::fromArray($data);
-            },
+            static fn (array $data): Entity => $entity::fromArray($data),
             $results
         );
     }

@@ -27,6 +27,19 @@ use Valkyrja\Http\Response;
 class Abort
 {
     /**
+     * Abort with a 400.
+     *
+     * @param array|null    $headers  [optional] The headers
+     * @param Response|null $response [optional] The response to send
+     *
+     * @return never
+     */
+    public static function abort400(array $headers = null, Response $response = null): never
+    {
+        static::abort(StatusCode::BAD_REQUEST, StatusText::BAD_REQUEST, $headers, $response);
+    }
+
+    /**
      * Abort with a 404.
      *
      * @param array|null    $headers  [optional] The headers
@@ -50,6 +63,19 @@ class Abort
     public static function abort405(array $headers = null, Response $response = null): never
     {
         static::abort(StatusCode::METHOD_NOT_ALLOWED, StatusText::METHOD_NOT_ALLOWED, $headers, $response);
+    }
+
+    /**
+     * Abort with a 413.
+     *
+     * @param array|null    $headers  [optional] The headers
+     * @param Response|null $response [optional] The response to send
+     *
+     * @return never
+     */
+    public static function abort413(array $headers = null, Response $response = null): never
+    {
+        static::abort(StatusCode::PAYLOAD_TOO_LARGE, StatusText::PAYLOAD_TOO_LARGE, $headers, $response);
     }
 
     /**

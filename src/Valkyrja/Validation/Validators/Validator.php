@@ -58,7 +58,7 @@ class Validator implements Contract
     /**
      * The validation rules.
      *
-     * @var array<string, array{subject: string, rules: array<string, array{arguments: array, message: string}>}>|null
+     * @var array<string, array{subject: mixed, rules: array<string, array{arguments: array, message?: string}>}>|null
      */
     protected array|null $validationRules = null;
 
@@ -152,7 +152,7 @@ class Validator implements Contract
     /**
      * Validate a rule set.
      *
-     * @param array<string, array{subject: string, rules: array<string, array{arguments: array, message: string}>}> $ruleSet The rule set
+     * @param array<string, array{subject: mixed, rules: array<string, array{arguments: array, message?: string}>}> $ruleSet The rule set
      *
      * @return void
      */
@@ -166,16 +166,16 @@ class Validator implements Contract
     /**
      * Validate a subject item.
      *
-     * @param string                                                  $subjectName The subject name
-     * @param mixed                                                   $subject     The subject
-     * @param array<string, array{arguments: array, message: string}> $rules       The rules
+     * @param string                                                   $subjectName The subject name
+     * @param mixed                                                    $subject     The subject
+     * @param array<string, array{arguments: array, message?: string}> $rules       The rules
      *
      * @return void
      */
     protected function validateSubject(string $subjectName, mixed $subject, array $rules = []): void
     {
         // If this subject is not required and the subject is empty or not passed in
-        if (! isset($rules[Rule::REQUIRED]) && ! $subject) {
+        if (! isset($rules[Rule::REQUIRED]) && ! isset($subject)) {
             // Reset the error messages for this subject to avoid false flags
             unset($this->errorMessages[$subjectName]);
 
@@ -198,10 +198,10 @@ class Validator implements Contract
     /**
      * Validate a rule.
      *
-     * @param string                                   $subjectName The subject name
-     * @param string                                   $name        The rule name
-     * @param mixed                                    $subject     The subject
-     * @param array{arguments: array, message: string} $rule        The rule
+     * @param string                                    $subjectName The subject name
+     * @param string                                    $name        The rule name
+     * @param mixed                                     $subject     The subject
+     * @param array{arguments: array, message?: string} $rule        The rule
      *
      * @return void
      */

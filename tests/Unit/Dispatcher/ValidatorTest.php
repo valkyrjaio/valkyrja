@@ -30,18 +30,11 @@ use Valkyrja\Dispatcher\Validators\Validator;
 class ValidatorTest extends TestCase
 {
     /**
-     * The class to test with.
-     *
-     * @var Validator
-     */
-    protected Validator $validator;
-
-    /**
-     * The value to test with.
+     * A valid static property.
      *
      * @var string
      */
-    protected string $value = 'test';
+    public static string $validStaticProperty = 'test';
 
     /**
      * A valid property.
@@ -56,20 +49,38 @@ class ValidatorTest extends TestCase
      * @var string|null
      */
     public string|null $validPropertyNull = null;
+    /**
+     * The class to test with.
+     *
+     * @var Validator
+     */
+    protected Validator $validator;
 
     /**
-     * A valid static property.
+     * The value to test with.
      *
      * @var string
      */
-    public static string $validStaticProperty = 'test';
+    protected string $value = 'test';
+
+    /**
+     * A valid static method.
+     *
+     * @param string|null $arg [optional] An argument
+     *
+     * @return string
+     */
+    public static function validStaticMethod(string $arg = null): string
+    {
+        return 'test' . ($arg ?: '');
+    }
 
     /**
      * Setup the test.
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -89,18 +100,6 @@ class ValidatorTest extends TestCase
     }
 
     /**
-     * A valid static method.
-     *
-     * @param string|null $arg [optional] An argument
-     *
-     * @return string
-     */
-    public static function validStaticMethod(string $arg = null): string
-    {
-        return 'test' . ($arg ?: '');
-    }
-
-    /**
      * Verify a valid class/method dispatch.
      *
      * @return void
@@ -113,7 +112,7 @@ class ValidatorTest extends TestCase
                 ->setMethod('validMethod')
         ) ?? null;
 
-        self::assertEquals(null, $valid);
+        self::assertNull($valid);
     }
 
     /**
@@ -130,7 +129,7 @@ class ValidatorTest extends TestCase
                     ->setMethod('invalidMethod')
             );
         } catch (Exception $exception) {
-            self::assertEquals(true, $exception instanceof InvalidMethodException);
+            self::assertTrue($exception instanceof InvalidMethodException);
         }
     }
 
@@ -147,7 +146,7 @@ class ValidatorTest extends TestCase
                 ->setProperty('validProperty')
         ) ?? null;
 
-        self::assertEquals(null, $valid);
+        self::assertNull($valid);
     }
 
     /**
@@ -164,7 +163,7 @@ class ValidatorTest extends TestCase
                     ->setProperty('invalidProperty')
             );
         } catch (Exception $exception) {
-            self::assertEquals(true, $exception instanceof InvalidPropertyException);
+            self::assertTrue($exception instanceof InvalidPropertyException);
         }
     }
 
@@ -180,7 +179,7 @@ class ValidatorTest extends TestCase
                 ->setFunction('\Valkyrja\routeUrl')
         ) ?? null;
 
-        self::assertEquals(null, $valid);
+        self::assertNull($valid);
     }
 
     /**
@@ -196,7 +195,7 @@ class ValidatorTest extends TestCase
                     ->setFunction('invalidFunction')
             );
         } catch (Exception $exception) {
-            self::assertEquals(true, $exception instanceof InvalidFunctionException);
+            self::assertTrue($exception instanceof InvalidFunctionException);
         }
     }
 
@@ -210,12 +209,12 @@ class ValidatorTest extends TestCase
         $valid = $this->validator->dispatch(
             (new Dispatch())
                 ->setClosure(
-                    static function () {
+                    static function (): void {
                     }
                 )
         ) ?? null;
 
-        self::assertEquals(null, $valid);
+        self::assertNull($valid);
     }
 
     /**
@@ -230,7 +229,7 @@ class ValidatorTest extends TestCase
                 new Dispatch()
             );
         } catch (Exception $exception) {
-            self::assertEquals(true, $exception instanceof InvalidDispatchCapabilityException);
+            self::assertTrue($exception instanceof InvalidDispatchCapabilityException);
         }
     }
 }

@@ -24,6 +24,6 @@ class TestCase extends PHPUnitTestCase
 {
     protected function isA(string $expected, string $actual): void
     {
-        $this->assertTrue(is_a($actual, $expected, true));
+        self::assertTrue(is_a($actual, $expected, true));
     }
 }

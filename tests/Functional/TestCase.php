@@ -43,7 +43,7 @@ class TestCase extends PHPUnitTestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         Directory::$BASE_PATH      = __DIR__ . '/../..';
         Directory::$BOOTSTRAP_PATH = 'tests/bootstrap';

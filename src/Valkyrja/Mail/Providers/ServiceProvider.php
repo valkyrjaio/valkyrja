@@ -299,9 +299,7 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Message::class,
-            static function (string $name, array $config): Message {
-                return (new $name())->setFrom($config['fromAddress'], $config['fromName']);
-            }
+            static fn (string $name, array $config): Message => (new $name())->setFrom($config['fromAddress'], $config['fromName'])
         );
     }
 }

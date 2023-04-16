@@ -203,9 +203,7 @@ class ServiceProvider extends Provider
             /**
              * @param class-string<Message> $name
              */
-            static function (string $name, array $config): Message {
-                return (new $name())->setFrom($config['fromName']);
-            }
+            static fn (string $name, array $config): Message => (new $name())->setFrom($config['fromName'])
         );
     }
 }

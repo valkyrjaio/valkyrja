@@ -85,13 +85,13 @@ abstract class SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    abstract public function getQueryString(): string;
-
-    /**
-     * @inheritDoc
-     */
     public function createQuery(): Query
     {
         return $this->adapter->createQuery($this->getQueryString(), $this->entity);
     }
+
+    /**
+     * @inheritDoc
+     */
+    abstract public function getQueryString(): string;
 }

@@ -77,6 +77,50 @@ trait Cacheable
     abstract public function getCacheable(): Config;
 
     /**
+     * Set annotations.
+     *
+     * @param Config|array $config
+     *
+     * @return void
+     */
+    protected function setupFromAnnotations(Config|array $config): void
+    {
+        // If annotations are enabled and cacheable should use annotations
+        if ($config['useAnnotations'] ?? true) {
+            /** @var Config|array $config */
+            $this->setupAnnotations($config);
+        }
+    }
+
+    /**
+     * Set attributes.
+     *
+     * @param Config|array $config The config
+     *
+     * @return void
+     */
+    protected function setupFromAttributes(Config|array $config): void
+    {
+        // If attributes are enabled and cacheable should use attributes
+        if ($config['useAttributes'] ?? true) {
+            /** @var Config|array $config */
+            $this->setupAttributes($config);
+        }
+    }
+
+    /**
+     * Require the file path specified in the config.
+     *
+     * @param Config|array $config The config
+     *
+     * @return void
+     */
+    protected function requireFilePath(Config|array $config): void
+    {
+        require $config['filePath'];
+    }
+
+    /**
      * Get the config.
      *
      * @return Config|array
@@ -113,22 +157,6 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param Config|array $config
-     *
-     * @return void
-     */
-    protected function setupFromAnnotations(Config|array $config): void
-    {
-        // If annotations are enabled and cacheable should use annotations
-        if ($config['useAnnotations'] ?? true) {
-            /** @var Config|array $config */
-            $this->setupAnnotations($config);
-        }
-    }
-
-    /**
-     * Set annotations.
-     *
      * @param Config|array $config The config
      *
      * @return void
@@ -142,35 +170,7 @@ trait Cacheable
      *
      * @return void
      */
-    protected function setupFromAttributes(Config|array $config): void
-    {
-        // If attributes are enabled and cacheable should use attributes
-        if ($config['useAttributes'] ?? true) {
-            /** @var Config|array $config */
-            $this->setupAttributes($config);
-        }
-    }
-
-    /**
-     * Set attributes.
-     *
-     * @param Config|array $config The config
-     *
-     * @return void
-     */
     abstract protected function setupAttributes(Config|array $config): void;
-
-    /**
-     * Require the file path specified in the config.
-     *
-     * @param Config|array $config The config
-     *
-     * @return void
-     */
-    protected function requireFilePath(Config|array $config): void
-    {
-        require $config['filePath'];
-    }
 
     /**
      * After setup.

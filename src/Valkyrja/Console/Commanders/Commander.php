@@ -117,7 +117,7 @@ abstract class Commander implements Contract
      */
     protected function usageMessage(string $message = null): void
     {
-        $message = $message ?? $this->usagePath();
+        $message ??= $this->usagePath();
 
         $this->sectionTitleMessage('Usage');
         output()->writeMessage(static::TAB);
@@ -256,7 +256,7 @@ abstract class Commander implements Contract
      */
     protected function sectionMessage(string $name, string $description, int $longestLength = null): void
     {
-        $longestLength = $longestLength ?? 0;
+        $longestLength ??= 0;
         $spacesToAdd   = $longestLength - strlen($name);
 
         output()->getFormatter()->green();

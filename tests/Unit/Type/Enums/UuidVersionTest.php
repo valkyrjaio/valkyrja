@@ -21,13 +21,13 @@ class UuidVersionTest extends TestCase
 {
     public function testTotalCaseCount(): void
     {
-        $this->assertCount(7, UuidVersion::cases());
+        self::assertCount(7, UuidVersion::cases());
     }
 
     public function testV1(): void
     {
-        $this->assertSame('V1', UuidVersion::V1->name);
-        $this->assertSame(1, UuidVersion::V1->value);
+        self::assertSame('V1', UuidVersion::V1->name);
+        self::assertSame(1, UuidVersion::V1->value);
     }
 
     public function testV2(): void
@@ -40,37 +40,37 @@ class UuidVersionTest extends TestCase
 
     public function testV3(): void
     {
-        $this->assertSame('V3', UuidVersion::V3->name);
-        $this->assertSame(3, UuidVersion::V3->value);
+        self::assertSame('V3', UuidVersion::V3->name);
+        self::assertSame(3, UuidVersion::V3->value);
     }
 
     public function testV4(): void
     {
-        $this->assertSame('V4', UuidVersion::V4->name);
-        $this->assertSame(4, UuidVersion::V4->value);
+        self::assertSame('V4', UuidVersion::V4->name);
+        self::assertSame(4, UuidVersion::V4->value);
     }
 
     public function testV5(): void
     {
-        $this->assertSame('V5', UuidVersion::V5->name);
-        $this->assertSame(5, UuidVersion::V5->value);
+        self::assertSame('V5', UuidVersion::V5->name);
+        self::assertSame(5, UuidVersion::V5->value);
     }
 
     public function testV6(): void
     {
-        $this->assertSame('V6', UuidVersion::V6->name);
-        $this->assertSame(6, UuidVersion::V6->value);
+        self::assertSame('V6', UuidVersion::V6->name);
+        self::assertSame(6, UuidVersion::V6->value);
     }
 
     public function testV7(): void
     {
-        $this->assertSame('V7', UuidVersion::V7->name);
-        $this->assertSame(7, UuidVersion::V7->value);
+        self::assertSame('V7', UuidVersion::V7->name);
+        self::assertSame(7, UuidVersion::V7->value);
     }
 
     public function testV8(): void
     {
-        $this->assertSame('V8', UuidVersion::V8->name);
-        $this->assertSame(8, UuidVersion::V8->value);
+        self::assertSame('V8', UuidVersion::V8->name);
+        self::assertSame(8, UuidVersion::V8->value);
     }
 }

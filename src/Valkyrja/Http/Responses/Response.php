@@ -38,6 +38,27 @@ class Response implements Contract
     use MessageTrait;
 
     /**
+     * The default content to set in the body.
+     *
+     * @var string
+     */
+    protected const DEFAULT_CONTENT = '';
+
+    /**
+     * The default status code to set.
+     *
+     * @var int
+     */
+    protected const DEFAULT_STATUS_CODE = StatusCode::OK;
+
+    /**
+     * The default headers to set.
+     *
+     * @var array
+     */
+    protected const DEFAULT_HEADERS = [];
+
+    /**
      * The status phrase.
      *
      * @var string
@@ -57,14 +78,30 @@ class Response implements Contract
      */
     public function __construct(
         Stream $body = new HttpStream(StreamType::INPUT, 'rw'),
-        protected int $statusCode = StatusCode::OK,
-        array $headers = []
+        protected int $statusCode = self::DEFAULT_STATUS_CODE,
+        array $headers = self::DEFAULT_HEADERS
     ) {
         $this->statusCode   = $this->validateStatusCode($statusCode);
         $this->statusPhrase = StatusCode::TEXTS[$this->statusCode];
 
         $this->setBody($body);
         $this->setHeaders($headers);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function create(string $content = null, int $statusCode = null, array $headers = null): static
+    {
+        $stream = new HttpStream(StreamType::TEMP, 'wb+');
+        $stream->write($content ?? static::DEFAULT_CONTENT);
+        $stream->rewind();
+
+        return new static(
+            $stream,
+            $statusCode ?? static::DEFAULT_STATUS_CODE,
+            $headers ?? static::DEFAULT_HEADERS
+        );
     }
 
     /**

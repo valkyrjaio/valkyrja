@@ -29,13 +29,6 @@ use Valkyrja\Type\Support\Cls;
 class ContainerFactory implements Factory
 {
     /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
      * The default driver class.
      *
      * @var string
@@ -48,6 +41,13 @@ class ContainerFactory implements Factory
      * @var string
      */
     protected static string $defaultAdapterClass;
+
+    /**
+     * The container.
+     *
+     * @var Container
+     */
+    protected Container $container;
 
     /**
      * ContainerFactory constructor.

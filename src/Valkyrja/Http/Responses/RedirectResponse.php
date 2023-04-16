@@ -30,6 +30,18 @@ use Valkyrja\Http\Request;
 class RedirectResponse extends Response implements Contract
 {
     /**
+     * The default uri to use.
+     *
+     * @var string
+     */
+    protected const DEFAULT_URI = '/';
+
+    /**
+     * @inheritDoc
+     */
+    protected const DEFAULT_STATUS_CODE = StatusCode::FOUND;
+
+    /**
      * RedirectResponse constructor.
      *
      * @param string $uri        [optional] The uri
@@ -40,11 +52,26 @@ class RedirectResponse extends Response implements Contract
      * @throws InvalidStatusCode
      * @throws InvalidStream
      */
-    public function __construct(protected string $uri = '/', int $statusCode = StatusCode::FOUND, array $headers = [])
-    {
+    public function __construct(
+        protected string $uri = self::DEFAULT_URI,
+        int $statusCode = self::DEFAULT_STATUS_CODE,
+        array $headers = self::DEFAULT_HEADERS
+    ) {
         parent::__construct(
             statusCode: $statusCode,
             headers   : $this->injectHeader(Header::LOCATION, $uri, $headers, true)
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function createFromUri(string $uri = null, int $statusCode = null, array $headers = null): static
+    {
+        return new static(
+            $uri ?? static::DEFAULT_URI,
+            $statusCode ?? static::DEFAULT_STATUS_CODE,
+            $headers ?? static::DEFAULT_HEADERS
         );
     }
 

@@ -53,13 +53,6 @@ trait Provides
     }
 
     /**
-     * The items provided by this provider.
-     *
-     * @return class-string[]
-     */
-    abstract public static function provides(): array;
-
-    /**
      * Publish the provider.
      *
      * @param Container $container The container
@@ -69,4 +62,11 @@ trait Provides
     public static function publish(Container $container): void
     {
     }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return class-string[]
+     */
+    abstract public static function provides(): array;
 }

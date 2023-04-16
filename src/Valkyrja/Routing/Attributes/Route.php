@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Attributes;
 
 use Attribute;
+use Valkyrja\Routing\Message;
+use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Models\Route as Model;
 
 /**
@@ -24,12 +26,17 @@ use Valkyrja\Routing\Models\Route as Model;
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class Route extends Model
 {
+    /**
+     * @param Parameter[]|null $parameters The parameters
+     * @param class-string<Message>[]|null $messages   The messages
+     */
     public function __construct(
         string $path,
         string $name = null,
         array $methods = null,
         array $parameters = null,
         array $middleware = null,
+        array $messages = null,
         bool $secure = null,
         string $to = null,
         int $code = null,
@@ -66,6 +73,10 @@ class Route extends Model
 
         if ($code) {
             $this->code = $code;
+        }
+
+        if ($messages) {
+            $this->setMessages($messages);
         }
     }
 }

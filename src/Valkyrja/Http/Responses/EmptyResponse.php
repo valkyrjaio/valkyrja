@@ -35,7 +35,7 @@ class EmptyResponse extends Response implements Contract
      * @throws InvalidStatusCode
      * @throws InvalidStream
      */
-    public function __construct(array $headers = [])
+    public function __construct(array $headers = self::DEFAULT_HEADERS)
     {
         parent::__construct(
             statusCode: StatusCode::NO_CONTENT,

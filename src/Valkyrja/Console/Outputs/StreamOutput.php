@@ -49,7 +49,7 @@ class StreamOutput extends Output implements StreamOutputContract
         parent::__construct();
 
         // Set the resource
-        $resource = $stream ?? fopen('php://stdout', 'wb');
+        $resource = $stream ?? fopen('php://stdout', 'w');
 
         // If the resource isn't a valid resource or not a stream
         if (! is_resource($resource) || get_resource_type($resource) !== 'stream') {

@@ -44,16 +44,19 @@ abstract class FileFactory
         foreach ($files as $key => $value) {
             if ($value instanceof UploadedFile) {
                 $normalized[$key] = $value;
+
                 continue;
             }
 
             if (is_array($value) && isset($value['tmp_name'])) {
                 $normalized[$key] = self::createUploadedFileFromSpec($value);
+
                 continue;
             }
 
             if (is_array($value)) {
                 $normalized[$key] = self::normalizeFiles($value);
+
                 continue;
             }
 

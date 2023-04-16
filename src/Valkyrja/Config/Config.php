@@ -62,6 +62,17 @@ abstract class Config extends Model implements ArrayAccess
     }
 
     /**
+     * Setup the config.
+     *
+     * @param array|null $properties [optional] The properties to set
+     *
+     * @return void
+     */
+    protected function setup(array $properties = null): void
+    {
+    }
+
+    /**
      * @inheritDoc
      */
     public function offsetExists($offset): bool
@@ -104,17 +115,6 @@ abstract class Config extends Model implements ArrayAccess
     protected function getEnvKeys(): array
     {
         return static::$envKeys;
-    }
-
-    /**
-     * Setup the config.
-     *
-     * @param array|null $properties [optional] The properties to set
-     *
-     * @return void
-     */
-    protected function setup(array $properties = null): void
-    {
     }
 
     /**

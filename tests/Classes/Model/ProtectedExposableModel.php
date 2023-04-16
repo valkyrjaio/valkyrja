@@ -26,8 +26,8 @@ use Valkyrja\Model\Models\ProtectedExposable;
  */
 class ProtectedExposableModel extends AbstractModel implements Contract
 {
-    use ProtectedExposable;
     use PrivateProperty;
+    use ProtectedExposable;
 
     public string $public;
 

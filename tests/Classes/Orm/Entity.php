@@ -63,7 +63,7 @@ class Entity extends AbstractEntity
      *
      * @return Entity
      */
-    public function setProp(string $prop): Entity
+    public function setProp(string $prop): self
     {
         $this->prop = $prop;
 

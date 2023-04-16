@@ -42,21 +42,11 @@ class ServiceTest extends TestCase
      *
      * @return void
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->class = new Service();
-    }
-
-    /**
-     * Test the isSingleton method's default value.
-     *
-     * @return void
-     */
-    public function testIsSingletonDefault(): void
-    {
-        self::assertEquals(null, $this->class->isSingleton());
     }
 
     /**
@@ -68,7 +58,7 @@ class ServiceTest extends TestCase
     {
         $this->class->setSingleton(true);
 
-        self::assertEquals(true, $this->class->isSingleton());
+        self::assertTrue($this->class->isSingleton());
     }
 
     /**
@@ -78,7 +68,7 @@ class ServiceTest extends TestCase
      */
     public function testSetSingleton(): void
     {
-        self::assertEquals($this->class, $this->class->setSingleton(true));
+        self::assertSame($this->class, $this->class->setSingleton(true));
     }
 
     /**
@@ -88,7 +78,7 @@ class ServiceTest extends TestCase
      */
     public function testGetDefaultsDefault(): void
     {
-        self::assertEquals(null, $this->class->getDefaults());
+        self::assertNull($this->class->getDefaults());
     }
 
     /**
@@ -100,7 +90,7 @@ class ServiceTest extends TestCase
     {
         $this->class->setDefaults([$this->value]);
 
-        self::assertEquals([$this->value], $this->class->getDefaults());
+        self::assertSame([$this->value], $this->class->getDefaults());
     }
 
     /**
@@ -110,7 +100,7 @@ class ServiceTest extends TestCase
      */
     public function testSetDefaultsNull(): void
     {
-        self::assertEquals($this->class, $this->class->setDefaults(null));
+        self::assertSame($this->class, $this->class->setDefaults(null));
     }
 
     /**
@@ -120,6 +110,6 @@ class ServiceTest extends TestCase
      */
     public function testSetDefaults(): void
     {
-        self::assertEquals($this->class, $this->class->setDefaults([$this->value]));
+        self::assertSame($this->class, $this->class->setDefaults([$this->value]));
     }
 }

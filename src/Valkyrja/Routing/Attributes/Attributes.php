@@ -19,6 +19,7 @@ use Valkyrja\Attribute\Attributes as AttributeAttributes;
 use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Attributes as Contract;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
+use Valkyrja\Routing\Message as RoutingMessage;
 use Valkyrja\Routing\Processor;
 
 /**
@@ -66,9 +67,23 @@ class Attributes implements Contract
                         ...($classAttribute->getMiddleware() ?? []),
                         ...array_column($this->attributes->forClass($class, Middleware::class), 'name'),
                     ];
+                    /** @var class-string<RoutingMessage>[] $mergedClassMessages */
+                    $mergedClassMessages = [
+                        ...($classAttribute->getMessages() ?? []),
+                        ...array_column($this->attributes->forClass($class, Message::class), 'name'),
+                    ];
+
+                    if (! empty($this->attributes->forClass($class, Secure::class))) {
+                        $classAttribute->setSecure();
+                    }
+
+                    if (! empty($to = array_column($this->attributes->forClass($class, Redirect::class), 'to'))) {
+                        $classAttribute->setTo($to[0]);
+                    }
 
                     $classAttribute->setParameters($mergedClassParameters);
                     $classAttribute->setMiddleware($mergedClassMiddleware);
+                    $classAttribute->setMessages($mergedClassMessages);
 
                     // If the class' members' had attributes
                     if (! empty($memberAttributes)) {
@@ -76,13 +91,22 @@ class Attributes implements Contract
                         foreach ($memberAttributes as $routeAttribute) {
                             $routeParameters = [];
                             $routeMiddleware = [];
+                            $routeMessages   = [];
+                            $routeSecure     = [];
+                            $routeRedirect   = [];
 
                             if ($property = $routeAttribute->getProperty()) {
                                 $routeParameters = $this->attributes->forProperty($class, $property, Parameter::class);
                                 $routeMiddleware = $this->attributes->forProperty($class, $property, Middleware::class);
+                                $routeMessages   = $this->attributes->forProperty($class, $property, Message::class);
+                                $routeSecure     = $this->attributes->forProperty($class, $property, Secure::class);
+                                $routeRedirect   = $this->attributes->forProperty($class, $property, Redirect::class);
                             } elseif ($method = $routeAttribute->getMethod()) {
                                 $routeParameters = $this->attributes->forMethod($class, $method, Parameter::class);
                                 $routeMiddleware = $this->attributes->forMethod($class, $method, Middleware::class);
+                                $routeMessages   = $this->attributes->forMethod($class, $method, Message::class);
+                                $routeSecure     = $this->attributes->forMethod($class, $method, Secure::class);
+                                $routeRedirect   = $this->attributes->forMethod($class, $method, Redirect::class);
                             }
 
                             /** @var Parameter[] $mergedPropertyParameters */
@@ -94,9 +118,23 @@ class Attributes implements Contract
                                 ...($routeAttribute->getMiddleware() ?? []),
                                 ...array_column($routeMiddleware, 'name'),
                             ];
+                            /** @var class-string<RoutingMessage>[] $mergedPropertyMessages */
+                            $mergedPropertyMessages = [
+                                ...($routeAttribute->getMessages() ?? []),
+                                ...array_column($routeMessages, 'name'),
+                            ];
+
+                            if (! empty($routeSecure)) {
+                                $routeAttribute->setSecure();
+                            }
+
+                            if (! empty($to = array_column($routeRedirect, 'to'))) {
+                                $routeAttribute->setTo($to[0]);
+                            }
 
                             $routeAttribute->setParameters($mergedPropertyParameters);
                             $routeAttribute->setMiddleware($mergedPropertyMiddleware);
+                            $routeAttribute->setMessages($mergedPropertyMessages);
 
                             // And set a new route with the controller defined annotation additions
                             $finalAttributes[] = $this->getControllerBuiltRoute($classAttribute, $routeAttribute);
@@ -127,7 +165,6 @@ class Attributes implements Contract
      *
      * @param Route $route
      *
-     * @throws InvalidRoutePath
      * @throws ReflectionException
      *
      * @return void
@@ -187,8 +224,14 @@ class Attributes implements Contract
 
         // If the base is secure
         if ($controllerAttribute->isSecure()) {
-            // Set the route to dynamic
+            // Set the route to secure
             $attribute->setSecure();
+        }
+
+        // If the base has a redirect
+        if ($to = $controllerAttribute->getTo()) {
+            // Set the route's redirect to path
+            $attribute->setTo($to);
         }
 
         // If there is a base middleware collection for this controller
@@ -203,11 +246,23 @@ class Attributes implements Contract
             );
         }
 
+        // If there is a base message collection for this controller
+        if (($controllerMessages = $controllerAttribute->getMessages()) !== null) {
+            // Merge the route's messages and the controller's messages
+            // keeping the controller's messages first
+            $attribute->setMessages(
+                [
+                    ...$controllerMessages,
+                    ...($memberAttribute->getMessages() ?? []),
+                ]
+            );
+        }
+
         // If there is a base parameters collection for this controller
         if (! empty($controllerParameters = $controllerAttribute->getParameters())) {
             // Merge the route's parameters and the controller's parameters
             // keeping the controller's parameters first
-            $attribute->setMiddleware(
+            $attribute->setParameters(
                 [
                     ...$controllerParameters,
                     ...$memberAttribute->getParameters(),

@@ -20,6 +20,6 @@ abstract class AbstractVlidTest extends TestCase
 {
     protected function ensureVersionInGeneratedString(VlidVersion $version, string $generated): void
     {
-        $this->assertSame((string) $version->value, $generated[13]);
+        self::assertSame((string) $version->value, $generated[13]);
     }
 }

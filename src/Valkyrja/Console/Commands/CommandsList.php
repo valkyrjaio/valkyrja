@@ -186,9 +186,7 @@ class CommandsList extends Commander
     {
         usort(
             $commands,
-            static function (Command $item1, Command $item2) {
-                return $item1->getName() <=> $item2->getName();
-            }
+            static fn (Command $item1, Command $item2) => $item1->getName() <=> $item2->getName()
         );
     }
 }

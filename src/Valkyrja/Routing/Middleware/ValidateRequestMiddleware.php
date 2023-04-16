@@ -81,7 +81,7 @@ abstract class ValidateRequestMiddleware extends Middleware
      *
      * @param Request $request The request
      *
-     * @return array
+     * @return array<string, array{subject: mixed, rules: array<string, array{arguments: array, message?: string}>}>
      */
     abstract protected static function getRules(Request $request): array;
 }

@@ -89,41 +89,6 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function setup(string $config = null, bool $force = false): void
-    {
-        // If the application was already setup, no need to do it again
-        if (self::$setup && ! $force) {
-            return;
-        }
-
-        // Avoid re-setting up the app later
-        self::$setup = true;
-        // Set the app static
-        self::$app = $this;
-
-        // Set a global constant for when the framework started
-        define('VALKYRJA_START', microtime(true));
-
-        // Bootstrap debug capabilities
-        $this->bootstrapConfig($config);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function withConfig(Config $config): static
-    {
-        self::$config = $config;
-
-        $this->publishConfigProviders();
-        $this->publishProviders();
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public static function app(): Application
     {
         return self::$app;
@@ -171,6 +136,41 @@ class Valkyrja implements Application
     {
         // Set the env class to use
         self::$env = $env;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setup(string $config = null, bool $force = false): void
+    {
+        // If the application was already setup, no need to do it again
+        if (self::$setup && ! $force) {
+            return;
+        }
+
+        // Avoid re-setting up the app later
+        self::$setup = true;
+        // Set the app static
+        self::$app = $this;
+
+        // Set a global constant for when the framework started
+        define('VALKYRJA_START', microtime(true));
+
+        // Bootstrap debug capabilities
+        $this->bootstrapConfig($config);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withConfig(Config $config): static
+    {
+        self::$config = $config;
+
+        $this->publishConfigProviders();
+        $this->publishProviders();
+
+        return $this;
     }
 
     /**

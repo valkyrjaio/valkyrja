@@ -136,6 +136,7 @@ class Reflector implements Contract
         // Iterate through the method's parameters
         foreach ($parameters as $parameter) {
             $type = $parameter->getType();
+
             if (
                 // The type is a ReflectionNamedType
                 $type instanceof ReflectionNamedType

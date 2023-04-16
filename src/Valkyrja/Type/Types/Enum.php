@@ -21,7 +21,6 @@ use RuntimeException;
 use function array_key_exists;
 use function constant;
 use function defined;
-use function get_class;
 use function in_array;
 use function is_array;
 use function is_object;
@@ -132,46 +131,6 @@ abstract class Enum
     }
 
     /**
-     * Get the enum value.
-     *
-     * @return mixed
-     */
-    public function getValue(): mixed
-    {
-        return $this->value;
-    }
-
-    /**
-     * Set the enum value.
-     *
-     * @param mixed $value The value to set
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return void
-     */
-    public function setValue(mixed $value): void
-    {
-        // If the value is not valid
-        if (! static::isValid($value)) {
-            // Throw an exception
-            throw new InvalidArgumentException(sprintf('Invalid enumeration %s for Enum %s', $value, get_class($this)));
-        }
-
-        $this->value = $value;
-    }
-
-    /**
-     * Get the value of the enum.
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return (string) $this->getValue();
-    }
-
-    /**
      * Handle creating a new enum instance for a given value via static call.
      *
      * @param string $method The method to call
@@ -220,5 +179,45 @@ abstract class Enum
         }
 
         return $validValues;
+    }
+
+    /**
+     * Get the enum value.
+     *
+     * @return mixed
+     */
+    public function getValue(): mixed
+    {
+        return $this->value;
+    }
+
+    /**
+     * Set the enum value.
+     *
+     * @param mixed $value The value to set
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return void
+     */
+    public function setValue(mixed $value): void
+    {
+        // If the value is not valid
+        if (! static::isValid($value)) {
+            // Throw an exception
+            throw new InvalidArgumentException(sprintf('Invalid enumeration %s for Enum %s', $value, static::class));
+        }
+
+        $this->value = $value;
+    }
+
+    /**
+     * Get the value of the enum.
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return (string) $this->getValue();
     }
 }

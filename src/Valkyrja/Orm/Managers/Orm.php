@@ -29,7 +29,6 @@ use Valkyrja\Orm\SoftDeleteEntity;
 use Valkyrja\Orm\Statement;
 
 use function assert;
-use function get_class;
 
 /**
  * Class ORM.
@@ -247,7 +246,7 @@ class Orm implements Contract
      */
     public function getRepositoryFromClass(Entity $entity): Repository
     {
-        return $this->getRepository(get_class($entity));
+        return $this->getRepository($entity::class);
     }
 
     /**

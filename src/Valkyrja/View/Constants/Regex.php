@@ -56,6 +56,6 @@ final class Regex
      *      @endblock
      */
     public const NAME_REGEX = <<<'REGEX'
-        @startblock\(\s*\'([a-zA-Z0-9]*)\'\s*\)\s*([\s\S.]*?)\s*@endblock
-REGEX;
+                @startblock\(\s*\'([a-zA-Z0-9]*)\'\s*\)\s*([\s\S.]*?)\s*@endblock
+        REGEX;
 }

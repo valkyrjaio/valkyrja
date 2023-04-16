@@ -60,6 +60,66 @@ class OptionTest extends TestCase
     protected string $default = 'Default Value';
 
     /**
+     * Test the construction of a new Option instance.
+     *
+     * @return void
+     */
+    public function testConstruct(): void
+    {
+        self::assertTrue($this->getClass() instanceof Option);
+    }
+
+    /**
+     * Test the getName getter method.
+     *
+     * @return void
+     */
+    public function testGetName(): void
+    {
+        self::assertSame($this->name, $this->getClass()->getName());
+    }
+
+    /**
+     * Test the getShortcut getter method.
+     *
+     * @return void
+     */
+    public function testGetShortcut(): void
+    {
+        self::assertSame($this->shortcut, $this->getClass()->getShortcut());
+    }
+
+    /**
+     * Test the getDescription getter method.
+     *
+     * @return void
+     */
+    public function testGetDescription(): void
+    {
+        self::assertSame($this->description, $this->getClass()->getDescription());
+    }
+
+    /**
+     * Test the getDefault getter method.
+     *
+     * @return void
+     */
+    public function testGetDefault(): void
+    {
+        self::assertSame($this->default, $this->getClass()->getDefault());
+    }
+
+    /**
+     * Test the getMode getter method.
+     *
+     * @return void
+     */
+    public function testGetMode(): void
+    {
+        self::assertSame(OptionMode::NONE, $this->getClass()->getMode());
+    }
+
+    /**
      * Get the class to test with.
      *
      * @return Option
@@ -73,65 +133,5 @@ class OptionTest extends TestCase
             null,
             $this->default
         );
-    }
-
-    /**
-     * Test the construction of a new Option instance.
-     *
-     * @return void
-     */
-    public function testConstruct(): void
-    {
-        self::assertEquals(true, $this->getClass() instanceof Option);
-    }
-
-    /**
-     * Test the getName getter method.
-     *
-     * @return void
-     */
-    public function testGetName(): void
-    {
-        self::assertEquals($this->name, $this->getClass()->getName());
-    }
-
-    /**
-     * Test the getShortcut getter method.
-     *
-     * @return void
-     */
-    public function testGetShortcut(): void
-    {
-        self::assertEquals($this->shortcut, $this->getClass()->getShortcut());
-    }
-
-    /**
-     * Test the getDescription getter method.
-     *
-     * @return void
-     */
-    public function testGetDescription(): void
-    {
-        self::assertEquals($this->description, $this->getClass()->getDescription());
-    }
-
-    /**
-     * Test the getDefault getter method.
-     *
-     * @return void
-     */
-    public function testGetDefault(): void
-    {
-        self::assertEquals($this->default, $this->getClass()->getDefault());
-    }
-
-    /**
-     * Test the getMode getter method.
-     *
-     * @return void
-     */
-    public function testGetMode(): void
-    {
-        self::assertEquals(OptionMode::NONE, $this->getClass()->getMode());
     }
 }

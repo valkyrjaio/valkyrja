@@ -27,7 +27,6 @@ use Valkyrja\Orm\Entity;
 
 use function end;
 use function explode;
-use function get_class;
 use function strtolower;
 
 /**
@@ -257,7 +256,7 @@ class Api implements Contract
      */
     protected function getClassNameFromObject(object $object): string
     {
-        $classNameParts = explode('\\', get_class($object));
+        $classNameParts = explode('\\', $object::class);
 
         return strtolower(end($classNameParts));
     }

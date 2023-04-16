@@ -20,30 +20,30 @@ class VlidVersionTest extends TestCase
 {
     public function testTotalCaseCount(): void
     {
-        $this->assertCount(4, VlidVersion::cases());
+        self::assertCount(4, VlidVersion::cases());
     }
 
     public function testV1(): void
     {
-        $this->assertSame('V1', VlidVersion::V1->name);
-        $this->assertSame(1, VlidVersion::V1->value);
+        self::assertSame('V1', VlidVersion::V1->name);
+        self::assertSame(1, VlidVersion::V1->value);
     }
 
     public function testV2(): void
     {
-        $this->assertSame('V2', VlidVersion::V2->name);
-        $this->assertSame(2, VlidVersion::V2->value);
+        self::assertSame('V2', VlidVersion::V2->name);
+        self::assertSame(2, VlidVersion::V2->value);
     }
 
     public function testV3(): void
     {
-        $this->assertSame('V3', VlidVersion::V3->name);
-        $this->assertSame(3, VlidVersion::V3->value);
+        self::assertSame('V3', VlidVersion::V3->name);
+        self::assertSame(3, VlidVersion::V3->value);
     }
 
     public function testV4(): void
     {
-        $this->assertSame('V4', VlidVersion::V4->name);
-        $this->assertSame(4, VlidVersion::V4->value);
+        self::assertSame('V4', VlidVersion::V4->name);
+        self::assertSame(4, VlidVersion::V4->value);
     }
 }

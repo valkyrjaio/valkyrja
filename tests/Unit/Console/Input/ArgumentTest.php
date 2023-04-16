@@ -46,23 +46,13 @@ class ArgumentTest extends TestCase
     protected string $description = 'Test Description';
 
     /**
-     * Get the class to test with.
-     *
-     * @return Argument
-     */
-    protected function getClass(): Argument
-    {
-        return $this->class ?? $this->class = new Argument($this->name, $this->description);
-    }
-
-    /**
      * Test the construction of a new Argument instance.
      *
      * @return void
      */
     public function testConstruct(): void
     {
-        self::assertEquals(true, $this->getClass() instanceof Argument);
+        self::assertTrue($this->getClass() instanceof Argument);
     }
 
     /**
@@ -72,7 +62,7 @@ class ArgumentTest extends TestCase
      */
     public function testGetName(): void
     {
-        self::assertEquals($this->name, $this->getClass()->getName());
+        self::assertSame($this->name, $this->getClass()->getName());
     }
 
     /**
@@ -82,7 +72,7 @@ class ArgumentTest extends TestCase
      */
     public function testGetDescription(): void
     {
-        self::assertEquals($this->description, $this->getClass()->getDescription());
+        self::assertSame($this->description, $this->getClass()->getDescription());
     }
 
     /**
@@ -92,6 +82,16 @@ class ArgumentTest extends TestCase
      */
     public function testGetMode(): void
     {
-        self::assertEquals(ArgumentMode::OPTIONAL, $this->getClass()->getMode());
+        self::assertSame(ArgumentMode::OPTIONAL, $this->getClass()->getMode());
+    }
+
+    /**
+     * Get the class to test with.
+     *
+     * @return Argument
+     */
+    protected function getClass(): Argument
+    {
+        return $this->class ?? $this->class = new Argument($this->name, $this->description);
     }
 }

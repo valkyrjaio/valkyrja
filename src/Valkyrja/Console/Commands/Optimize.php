@@ -24,6 +24,7 @@ use Valkyrja\Routing\Collections\CacheableCollection;
 use Valkyrja\Type\Support\Arr;
 
 use function file_put_contents;
+use function in_array;
 use function is_file;
 use function json_decode;
 use function json_encode;

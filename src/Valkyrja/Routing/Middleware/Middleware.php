@@ -28,6 +28,13 @@ use Valkyrja\Routing\Router;
 abstract class Middleware
 {
     /**
+     * The matched route.
+     *
+     * @var Route
+     */
+    public static Route $route;
+
+    /**
      * The container.
      *
      * @var Container
@@ -47,13 +54,6 @@ abstract class Middleware
      * @var Router
      */
     private static Router $router;
-
-    /**
-     * The matched route.
-     *
-     * @var Route
-     */
-    public static Route $route;
 
     /**
      * Middleware handler for before a request is dispatched.
