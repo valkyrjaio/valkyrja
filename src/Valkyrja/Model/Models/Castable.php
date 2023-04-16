@@ -195,7 +195,7 @@ trait Castable
             CastType::true   => $this->__getTrueFromValueType($property, $value),
             CastType::false  => $this->__getFalseFromValueType($property, $value),
             CastType::null   => $this->__getNullFromValueType($property, $value),
-            default          => throw new InvalidArgumentException("Cast Type `{$type->value}` must use an array"),
+            default          => throw new InvalidArgumentException("Cast Type `{$type->name}` must use an array"),
         };
     }
 
@@ -217,7 +217,7 @@ trait Castable
             CastType::model => $this->__getModelFromValueType($property, $type[1], $value),
             CastType::enum  => $this->__getEnumFromValueType($property, $type[1], $value),
             CastType::type  => $this->__getTypeFromValueType($property, $type[1], $value),
-            default         => throw new InvalidArgumentException("Cast Type `{$castType->value}` must not use an array"),
+            default         => throw new InvalidArgumentException("Cast Type `{$castType->name}` must not use an array"),
         };
     }
 

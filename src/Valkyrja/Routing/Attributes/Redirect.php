@@ -11,32 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Attributes\Route\Redirect;
+namespace Valkyrja\Routing\Attributes;
 
 use Attribute;
-use Valkyrja\Routing\Attributes\Route\Get as Model;
 
 /**
- * Attribute Get.
+ * Attribute Redirect.
  *
  * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
-class Get extends Model
+class Redirect
 {
     public function __construct(
-        string $path,
-        string $to,
-        int $code = null,
-        string $name = null,
-        bool $secure = null,
+        public string $to
     ) {
-        parent::__construct(
-            path  : $path,
-            name  : $name,
-            secure: $secure,
-            to    : $to,
-            code  : $code,
-        );
     }
 }

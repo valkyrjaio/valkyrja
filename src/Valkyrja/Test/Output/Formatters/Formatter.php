@@ -64,11 +64,11 @@ class Formatter implements Contract
             $assert = $test->getAssert();
             $result = $this->getTestSuccess();
 
-            if ($assert->warnings) {
+            if ($assert->getWarnings()) {
                 $result = $this->getTestWarning();
             }
 
-            if ($assert->errors) {
+            if ($assert->getErrors()) {
                 $result = $this->getTestError();
             }
 
@@ -94,7 +94,7 @@ class Formatter implements Contract
         foreach ($tests as $test) {
             $assert = $test->getAssert();
 
-            if ($assert->errors) {
+            if ($assert->getErrors()) {
                 $failed++;
             }
         }
@@ -122,15 +122,15 @@ class Formatter implements Contract
         foreach ($tests as $test) {
             $assert = $test->getAssert();
 
-            $totalAssertions += count($assert->assertions);
+            $totalAssertions += count($assert->getAssertions());
 
-            if ($assert->warnings) {
+            if ($assert->getWarnings()) {
                 $status = $this->getResultsWarning();
 
                 $totalWarnings++;
             }
 
-            if ($assert->errors) {
+            if ($assert->getErrors()) {
                 $status = $this->getResultsError();
 
                 $totalErrors++;
@@ -156,8 +156,8 @@ class Formatter implements Contract
         foreach ($tests as $test) {
             $assert = $test->getAssert();
 
-            if ($assert->errors) {
-                $error    = $assert->errors[0];
+            if ($errors = $assert->getErrors()) {
+                $error    = $errors[0];
                 $issues[] = $this->getIssuesIssue($num, $test, $error);
 
                 $num++;
@@ -238,7 +238,7 @@ class Formatter implements Contract
     /**
      * Get the completed full text formatted.
      */
-    protected function getCompleted(int $count, int $total, int $percentPassed): string
+    protected function getCompleted(int $count, int $total, float|int $percentPassed): string
     {
         return "{$this->getCompletedCount($count)} / {$this->getCompletedTotal($total)}"
             . " ({$this->getCompletedPercentPassed($percentPassed)}%) Completed";
@@ -263,7 +263,7 @@ class Formatter implements Contract
     /**
      * Get the completed's percent passed formatted.
      */
-    protected function getCompletedPercentPassed(int $percentPassed): string
+    protected function getCompletedPercentPassed(float|int $percentPassed): string
     {
         return (string) $percentPassed;
     }

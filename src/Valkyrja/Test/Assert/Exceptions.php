@@ -44,6 +44,8 @@ interface Exceptions extends Asserter
 
     /**
      * Set an expected class name to be thrown.
+     *
+     * @param class-string $className
      */
     public function className(string $className): void;
 

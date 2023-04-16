@@ -110,8 +110,10 @@ class Exceptions extends Asserter implements Contract
      */
     public function verify(Throwable $exception = null): void
     {
-        if ($exception === null && $this->expecting) {
-            $this->errors[] = new AssertFailureException(self::getExpectedErrorMessage());
+        if ($exception === null) {
+            if ($this->expecting) {
+                $this->errors[] = new AssertFailureException(self::getExpectedErrorMessage());
+            }
 
             return;
         }
@@ -127,12 +129,18 @@ class Exceptions extends Asserter implements Contract
             return;
         }
 
+        /*
+         * @psalm-suppress RedundantConditionGivenDocblockType
+         */
         if (isset($this->className) && ($className = $this->className) !== $actualClassName) {
             $this->errors[] = new AssertFailureException(
                 self::getIncorrectClassNameErrorMessage($className, $actualClassName)
             );
         }
 
+        /*
+         * @psalm-suppress RedundantCondition
+         */
         if (isset($this->message) && ($message = $this->message) !== $actualMessage) {
             $this->errors[] = new AssertFailureException(
                 self::getIncorrectMessageErrorMessage($message, $actualMessage)

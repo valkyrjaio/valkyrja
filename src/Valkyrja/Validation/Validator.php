@@ -89,7 +89,7 @@ interface Validator
      *      ]
      * </code>
      *
-     * @param array<string, array{subject: string, rules: array<string, array{arguments: array, message: string}>}> $rules The rules
+     * @param array<string, array{subject: mixed, rules: array<string, array{arguments: array, errorMessage?: string}>}> $rules The rules
      *
      * @return void
      */

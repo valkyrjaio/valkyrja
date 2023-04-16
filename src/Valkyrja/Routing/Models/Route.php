@@ -18,8 +18,10 @@ use Valkyrja\Dispatcher\Models\Dispatch;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Enums\CastType;
+use Valkyrja\Routing\Message;
 use Valkyrja\Routing\Route as Contract;
 
+use function assert;
 use function is_array;
 
 /**
@@ -80,6 +82,13 @@ class Route extends Dispatch implements Contract
      * @var array|null
      */
     protected array|null $middleware;
+
+    /**
+     * The messages for this route.
+     *
+     * @var class-string<Message>[]|null
+     */
+    protected array|null $messages;
 
     /**
      * Whether the route is dynamic.
@@ -331,6 +340,44 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
+    public function getMessages(): array|null
+    {
+        return $this->messages ?? null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setMessages(array $messages = null): static
+    {
+        $this->__setMessages(...$messages);
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withMessages(array $messages): static
+    {
+        $route = clone $this;
+
+        $route->__setMessages(...array_merge($this->messages ?? [], $messages));
+
+        return $route;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withMessage(string $message): static
+    {
+        return $this->withMessages([$message]);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function isDynamic(): bool
     {
         return $this->dynamic;
@@ -392,5 +439,21 @@ class Route extends Dispatch implements Contract
     protected function __setParameters(Parameter ...$parameters): void
     {
         $this->parameters = $parameters;
+    }
+
+    /**
+     * Set the messages.
+     *
+     * @param class-string<Message>[] $messages The messages
+     *
+     * @return void
+     */
+    protected function __setMessages(string ...$messages): void
+    {
+        foreach ($messages as $message) {
+            assert(is_a($message, Message::class, true));
+        }
+
+        $this->messages = $messages;
     }
 }

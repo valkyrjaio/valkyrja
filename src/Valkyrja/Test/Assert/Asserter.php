@@ -20,11 +20,6 @@ use Valkyrja\Test\Exceptions\AssertWarningException;
  * Interface Asserter.
  *
  * @author Melech Mizrachi
- *
- * @property string[]                 $assertions
- * @property AssertFailureException[] $errors
- * @property string[]                 $successes
- * @property AssertWarningException[] $warnings
  */
 interface Asserter
 {

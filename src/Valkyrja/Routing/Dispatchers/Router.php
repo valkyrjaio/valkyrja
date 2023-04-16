@@ -175,16 +175,9 @@ class Router implements Contract
         // Get the route
         $route = $this->getRouteFromRequest($request);
 
-        // Determine if the route is a redirect
-        $this->determineRedirectRoute($route);
-        // Determine if the route is secure and should be redirected
-        $this->determineIsSecureRoute($request, $route);
-        // Set the route in the middleware
-        Middleware::$route = $route;
-        // Trigger an event for route matched
-        $this->events->trigger(RouteMatched::class, [$route, $request]);
-        // Set the found route in the service container
-        $this->container->setSingleton(Route::class, $route);
+        // The route has been matched
+        $this->routeMatched($request, $route);
+
         // Dispatch the route's before request handled middleware
         $requestAfterMiddleware = $this->requestMiddleware($request, $route->getMiddleware() ?? []);
 
@@ -200,6 +193,29 @@ class Router implements Contract
 
         // Dispatch the route's before request handled middleware and return the response
         return $this->routeResponseMiddleware($requestAfterMiddleware, $response, $route);
+    }
+
+    /**
+     * Do various stuff after the route has been matched.
+     *
+     * @param Request $request The request
+     * @param Route   $route   The route
+     *
+     * @return void
+     */
+    protected function routeMatched(Request $request, Route $route): void
+    {
+        // Determine if the route is a redirect
+        $this->determineRedirectRoute($route);
+        // Determine if the route is secure and should be redirected
+        $this->determineIsSecureRoute($request, $route);
+
+        // Set the route in the middleware
+        Middleware::$route = $route;
+        // Trigger an event for route matched
+        $this->events->trigger(RouteMatched::class, [$route, $request]);
+        // Set the found route in the service container
+        $this->container->setSingleton(Route::class, $route);
     }
 
     /**

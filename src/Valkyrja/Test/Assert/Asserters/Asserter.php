@@ -16,6 +16,7 @@ namespace Valkyrja\Test\Assert\Asserters;
 use Valkyrja\Test\Assert\Asserter as Contract;
 use Valkyrja\Test\Assert\Enums\ResultType;
 use Valkyrja\Test\Exceptions\AssertFailureException;
+use Valkyrja\Test\Exceptions\AssertWarningException;
 use Valkyrja\Type\Support\Enum;
 
 /**
@@ -49,7 +50,7 @@ abstract class Asserter implements Contract
     /**
      * The warnings.
      *
-     * @var string[]
+     * @var AssertWarningException[]
      */
     protected array $warnings = [];
 

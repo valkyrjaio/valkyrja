@@ -11,32 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Attributes\Route\Redirect;
+namespace Valkyrja\Routing\Attributes;
 
 use Attribute;
-use Valkyrja\Routing\Attributes\Route\Any as Model;
+use Valkyrja\Routing\Message as RoutingMessage;
 
 /**
- * Attribute Any.
+ * Attribute Message.
  *
  * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
-class Any extends Model
+class Message
 {
+    /**
+     * @param class-string<RoutingMessage> $name
+     */
     public function __construct(
-        string $path,
-        string $to,
-        int $code = null,
-        string $name = null,
-        bool $secure = null,
+        public string $name
     ) {
-        parent::__construct(
-            path  : $path,
-            name  : $name,
-            secure: $secure,
-            to    : $to,
-            code  : $code,
-        );
     }
 }

@@ -11,38 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Middleware;
+namespace Valkyrja\Routing;
 
+use UnitEnum;
 use Valkyrja\Http\Request;
+use Valkyrja\Type\Arrayable;
 
 /**
- * Trait ValidateTypeRequestTrait.
+ * Interface Message.
  *
  * @author Melech Mizrachi
  */
-trait ValidateParamRequestTrait
+interface Message extends UnitEnum, Arrayable
 {
     /**
-     * @inheritDoc
-     *
-     * @return array<string, array{subject: mixed, rules: array<string, array{arguments: array, errorMessage?: string}>}>
-     */
-    protected static function getRules(Request $request): array
-    {
-        $rules = [];
-
-        foreach (static::getParamRules() as $param => $paramRule) {
-            $rules[$param] = [
-                'subject' => static::getParamFromRequest($request, $param),
-                'rules'   => $paramRule,
-            ];
-        }
-
-        return $rules;
-    }
-
-    /**
-     * Get the param validation rules.
+     * Get the validation rules.
      *
      * <code>
      *      $rules = [
@@ -67,17 +50,25 @@ trait ValidateParamRequestTrait
      *      ]
      * </code>
      *
-     * @return array<string, array<string, array{arguments: array, errorMessage?: string}>>
+     * @return array<string, array<string, array{arguments: array, errorMessage?: string}>>|null
      */
-    abstract protected static function getParamRules(): array;
+    public static function getValidationRules(): array|null;
 
     /**
-     * Get a param from the request.
+     * Get the data for a message from a given request.
      *
      * @param Request $request The request
-     * @param string  $param   The param
      *
-     * @return mixed
+     * @return array
      */
-    abstract protected static function getParamFromRequest(Request $request, string $param): mixed;
+    public static function getDataFromRequest(Request $request): array;
+
+    /**
+     * Determine if a request has extra data that was passed that is not defined in the message.
+     *
+     * @param Request $request
+     *
+     * @return bool
+     */
+    public static function determineIfRequestContainsExtraData(Request $request): bool;
 }

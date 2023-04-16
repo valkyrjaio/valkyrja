@@ -204,6 +204,40 @@ interface Route extends Dispatch
     public function withMiddleware(array $middleware): static;
 
     /**
+     * Get the messages.
+     *
+     * @return class-string<Message>[]|null
+     */
+    public function getMessages(): array|null;
+
+    /**
+     * Set the messages.
+     *
+     * @param class-string<Message>[]|null $messages The messages
+     *
+     * @return static
+     */
+    public function setMessages(array $messages = null): static;
+
+    /**
+     * Route with added messages.
+     *
+     * @param class-string<Message>[] $messages The messages
+     *
+     * @return static
+     */
+    public function withMessages(array $messages): static;
+
+    /**
+     * Route with added message.
+     *
+     * @param class-string<Message> $message The message
+     *
+     * @return static
+     */
+    public function withMessage(string $message): static;
+
+    /**
      * Check whether the route is dynamic.
      *
      * @return bool
