@@ -183,7 +183,7 @@ return (new PhpCsFixer\Config())
                 'tags' => ['inheritDoc' => 'annotation'],
             ],
             'phpdoc_to_comment'                        => [
-                'ignored_tags' => ['todo', 'var'],
+                'ignored_tags' => ['todo', 'var', 'psalm-suppress'],
             ],
             'phpdoc_types_order'                       => [
                 'sort_algorithm'  => 'none',

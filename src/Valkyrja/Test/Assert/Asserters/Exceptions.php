@@ -129,7 +129,7 @@ class Exceptions extends Asserter implements Contract
             return;
         }
 
-        /*
+        /**
          * @psalm-suppress RedundantConditionGivenDocblockType
          */
         if (isset($this->className) && ($className = $this->className) !== $actualClassName) {
@@ -138,7 +138,7 @@ class Exceptions extends Asserter implements Contract
             );
         }
 
-        /*
+        /**
          * @psalm-suppress RedundantCondition
          */
         if (isset($this->message) && ($message = $this->message) !== $actualMessage) {
