@@ -129,6 +129,8 @@ trait Castable
                 );
             }
         }
+
+        $this->__originalPropertiesSet();
     }
 
     /**
