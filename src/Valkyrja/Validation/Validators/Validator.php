@@ -175,7 +175,7 @@ class Validator implements Contract
     protected function validateSubject(string $subjectName, mixed $subject, array $rules = []): void
     {
         // If this subject is not required and the subject is empty or not passed in
-        if (! isset($rules[Rule::REQUIRED]) && ! $subject) {
+        if (! isset($rules[Rule::REQUIRED]) && ! isset($subject)) {
             // Reset the error messages for this subject to avoid false flags
             unset($this->errorMessages[$subjectName]);
 
