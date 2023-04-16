@@ -36,7 +36,7 @@ interface Response extends Message
      * @param int|null    $statusCode [optional] The response status code
      * @param array|null  $headers    [optional] An array of response headers
      *
-     * @return Response
+     * @return static
      */
     public static function create(string $content = null, int $statusCode = null, array $headers = null): static;
 
