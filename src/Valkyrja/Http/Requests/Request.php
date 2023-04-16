@@ -339,9 +339,7 @@ class Request extends SimpleRequest implements Contract
         $onlyParams = [];
 
         foreach ($names as $name) {
-            if (isset($params[$name])) {
-                $onlyParams[$name] = $params[$name];
-            }
+            $onlyParams[$name] = $params[$name] ?? null;
         }
 
         return $onlyParams;
@@ -358,9 +356,7 @@ class Request extends SimpleRequest implements Contract
     protected function exceptParams(array $params, array $names): array
     {
         foreach ($names as $name) {
-            if (isset($params[$name])) {
-                unset($params[$name]);
-            }
+            unset($params[$name]);
         }
 
         return $params;
