@@ -17,18 +17,18 @@ use Exception;
 
 use function base64_encode;
 use function bin2hex;
+use function ctype_alpha;
+use function ctype_lower;
+use function ctype_upper;
 use function filter_var;
 use function random_bytes;
+use function str_contains;
+use function str_ends_with;
 use function str_replace;
+use function str_starts_with;
 use function strlen;
 use function substr;
 use function trim;
-use function Valkyrja\Type\ctype_alpha;
-use function Valkyrja\Type\ctype_lower;
-use function Valkyrja\Type\ctype_upper;
-use function Valkyrja\Type\str_contains;
-use function Valkyrja\Type\str_ends_with;
-use function Valkyrja\Type\str_starts_with;
 
 use const FILTER_VALIDATE_EMAIL;
 
