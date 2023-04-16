@@ -58,7 +58,7 @@ class Validator implements Contract
     /**
      * The validation rules.
      *
-     * @var array<string, array{subject: mixed, rules: array<string, array{arguments: array, errorMessage?: string}>}>|null
+     * @var array<string, array{subject: mixed, rules: array<string, array{arguments: array, message?: string}>}>|null
      */
     protected array|null $validationRules = null;
 
@@ -152,7 +152,7 @@ class Validator implements Contract
     /**
      * Validate a rule set.
      *
-     * @param array<string, array{subject: string, rules: array<string, array{arguments: array, message: string}>}> $ruleSet The rule set
+     * @param array<string, array{subject: mixed, rules: array<string, array{arguments: array, message?: string}>}> $ruleSet The rule set
      *
      * @return void
      */
@@ -168,7 +168,7 @@ class Validator implements Contract
      *
      * @param string                                                  $subjectName The subject name
      * @param mixed                                                   $subject     The subject
-     * @param array<string, array{arguments: array, message: string}> $rules       The rules
+     * @param array<string, array{arguments: array, message?: string}> $rules       The rules
      *
      * @return void
      */
@@ -201,7 +201,7 @@ class Validator implements Contract
      * @param string                                   $subjectName The subject name
      * @param string                                   $name        The rule name
      * @param mixed                                    $subject     The subject
-     * @param array{arguments: array, message: string} $rule        The rule
+     * @param array{arguments: array, message?: string} $rule        The rule
      *
      * @return void
      */

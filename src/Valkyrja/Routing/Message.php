@@ -50,7 +50,7 @@ interface Message extends UnitEnum, Arrayable
      *      ]
      * </code>
      *
-     * @return array<string, array<string, array{arguments: array, errorMessage?: string}>>|null
+     * @return array<string, array<string, array{arguments: array, message?: string}>>|null
      */
     public static function getValidationRules(): array|null;
 

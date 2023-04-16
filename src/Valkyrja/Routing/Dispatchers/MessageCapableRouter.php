@@ -171,7 +171,7 @@ class MessageCapableRouter extends Router
 
     /**
      * @param array                                                                        $data         The data
-     * @param array<string, array<string, array{arguments: array, errorMessage?: string}>> $messageRules The message rules
+     * @param array<string, array<string, array{arguments: array, message?: string}>> $messageRules The message rules
      *
      * @return array
      */

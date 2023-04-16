@@ -25,7 +25,7 @@ trait ValidateParamRequestTrait
     /**
      * @inheritDoc
      *
-     * @return array<string, array{subject: mixed, rules: array<string, array{arguments: array, errorMessage?: string}>}>
+     * @return array<string, array{subject: mixed, rules: array<string, array{arguments: array, message?: string}>}>
      */
     protected static function getRules(Request $request): array
     {
@@ -67,7 +67,7 @@ trait ValidateParamRequestTrait
      *      ]
      * </code>
      *
-     * @return array<string, array<string, array{arguments: array, errorMessage?: string}>>
+     * @return array<string, array<string, array{arguments: array, message?: string}>>
      */
     abstract protected static function getParamRules(): array;
 
