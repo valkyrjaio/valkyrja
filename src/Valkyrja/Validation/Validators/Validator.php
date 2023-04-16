@@ -58,7 +58,7 @@ class Validator implements Contract
     /**
      * The validation rules.
      *
-     * @var array<string, array{subject: mixed, rules: array<string, array{arguments: array, message: string}>}>|null
+     * @var array<string, array{subject: mixed, rules: array<string, array{arguments: array, errorMessage?: string}>}>|null
      */
     protected array|null $validationRules = null;
 
