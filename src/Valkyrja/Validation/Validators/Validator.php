@@ -166,8 +166,8 @@ class Validator implements Contract
     /**
      * Validate a subject item.
      *
-     * @param string                                                  $subjectName The subject name
-     * @param mixed                                                   $subject     The subject
+     * @param string                                                   $subjectName The subject name
+     * @param mixed                                                    $subject     The subject
      * @param array<string, array{arguments: array, message?: string}> $rules       The rules
      *
      * @return void
@@ -198,9 +198,9 @@ class Validator implements Contract
     /**
      * Validate a rule.
      *
-     * @param string                                   $subjectName The subject name
-     * @param string                                   $name        The rule name
-     * @param mixed                                    $subject     The subject
+     * @param string                                    $subjectName The subject name
+     * @param string                                    $name        The rule name
+     * @param mixed                                     $subject     The subject
      * @param array{arguments: array, message?: string} $rule        The rule
      *
      * @return void
