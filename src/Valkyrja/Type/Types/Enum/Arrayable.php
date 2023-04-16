@@ -29,7 +29,7 @@ trait Arrayable
      */
     public static function names(): array
     {
-        return Enum::names(self::class);
+        return Enum::names(static::class);
     }
 
     /**
@@ -39,7 +39,7 @@ trait Arrayable
      */
     public static function values(): array
     {
-        return Enum::values(self::class);
+        return Enum::values(static::class);
     }
 
     /**
@@ -49,7 +49,7 @@ trait Arrayable
      */
     public static function asArray(): array
     {
-        return Enum::asArray(self::class);
+        return Enum::asArray(static::class);
     }
 
     /**
@@ -59,6 +59,6 @@ trait Arrayable
      */
     public static function asReverseArray(): array
     {
-        return Enum::asReverseArray(self::class);
+        return Enum::asReverseArray(static::class);
     }
 }
