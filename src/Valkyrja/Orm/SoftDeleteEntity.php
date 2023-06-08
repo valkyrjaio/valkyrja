@@ -35,13 +35,6 @@ interface SoftDeleteEntity extends Entity
     public static function getFormattedDeletedDate(): string;
 
     /**
-     * Get the deleted flag field.
-     *
-     * @return string
-     */
-    public static function getIsDeletedField(): string;
-
-    /**
      * Get the date deleted field.
      *
      * @return string

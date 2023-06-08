@@ -42,14 +42,6 @@ trait SoftDeletable
     /**
      * @inheritDoc
      */
-    public static function getIsDeletedField(): string
-    {
-        return 'is_deleted';
-    }
-
-    /**
-     * @inheritDoc
-     */
     public static function getDateDeletedField(): string
     {
         return 'date_deleted';
