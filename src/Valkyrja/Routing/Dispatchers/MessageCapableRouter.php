@@ -146,7 +146,7 @@ class MessageCapableRouter extends Router
      */
     protected function ensureRequestIsValid(Request $request, string $message): void
     {
-        if (($messageRules = $message::getValidationRules()) === null) {
+        if (($messageRules = $message::getValidationRules()) === null || empty($messageRules)) {
             return;
         }
 
