@@ -31,6 +31,8 @@ class ProtectedExposableModel extends AbstractModel implements Contract
 
     public string $public;
 
+    public string|null $nullable;
+
     protected string $protected;
 
     public static function getExposable(): array

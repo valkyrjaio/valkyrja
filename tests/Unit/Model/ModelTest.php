@@ -167,7 +167,14 @@ class ModelTest extends TestCase
         self::assertSame([], $model->asArray());
 
         $model = Model::fromArray(Model::VALUES);
-        self::assertSame([Model::PUBLIC => Model::PUBLIC, Model::PROTECTED => Model::PROTECTED], $model->asArray());
+        self::assertSame(
+            [
+                Model::PUBLIC => Model::PUBLIC,
+                Model::NULLABLE => null,
+                Model::PROTECTED => Model::PROTECTED,
+            ],
+            $model->asArray()
+        );
         self::assertSame([Model::PUBLIC => Model::PUBLIC], $model->asArray(Model::PUBLIC));
         self::assertSame([Model::PROTECTED => Model::PROTECTED], $model->asArray(Model::PROTECTED));
         // Private or hidden properties should not be exposable.
@@ -184,8 +191,25 @@ class ModelTest extends TestCase
 
         $model = Model::fromArray(Model::VALUES);
 
-        $expected = '{"public":"public","protected":"protected"}';
+        $expected = '{"public":"public","nullable":null,"protected":"protected"}';
         self::assertSame($expected, json_encode($model, JSON_THROW_ON_ERROR));
         self::assertSame($expected, (string) $model);
+    }
+
+    public function testCloning(): void
+    {
+        $model = Model::fromArray([]);
+
+        $cloned = clone $model;
+
+        self::assertEquals($model, $cloned);
+
+        $updatedValue = 'fire';
+        $cloned->public = $updatedValue;
+
+        self::assertNotEquals($model, $cloned);
+        self::assertNotSame($model->asChangedArray(), $cloned->asChangedArray());
+        self::assertEmpty($model->asChangedArray());
+        self::assertSame([Model::PUBLIC => $updatedValue], $cloned->asChangedArray());
     }
 }

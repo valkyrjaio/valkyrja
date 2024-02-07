@@ -29,14 +29,18 @@ class Model extends AbstractModel
     public const PUBLIC    = 'public';
     public const PROTECTED = 'protected';
     public const PRIVATE   = 'private';
+    public const NULLABLE  = 'nullable';
 
     public const VALUES = [
         self::PUBLIC    => self::PUBLIC,
+        self::NULLABLE  => null,
         self::PROTECTED => self::PROTECTED,
         self::PRIVATE   => self::PRIVATE,
     ];
 
     public string $public;
+
+    public string|null $nullable;
 
     protected string $protected;
 }

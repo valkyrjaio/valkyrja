@@ -35,7 +35,11 @@ class ExposableModelTest extends TestCase
     {
         $model = ExposableModel::fromArray(Model::VALUES);
 
-        $expected = [Model::PUBLIC => Model::PUBLIC, Model::PROTECTED => Model::PROTECTED];
+        $expected = [
+            Model::PUBLIC    => Model::PUBLIC,
+            Model::NULLABLE  => null,
+            Model::PROTECTED => Model::PROTECTED,
+        ];
         self::assertSame($expected, $model->asArray());
         self::assertSame(Model::VALUES, $model->asExposedArray());
 
@@ -71,7 +75,11 @@ class ExposableModelTest extends TestCase
 
         $model->private = Model::PRIVATE;
 
-        $expected = [Model::PUBLIC => Model::PUBLIC, Model::PROTECTED => Model::PROTECTED];
+        $expected = [
+            Model::PUBLIC    => Model::PUBLIC,
+            Model::NULLABLE  => null,
+            Model::PROTECTED => Model::PROTECTED,
+        ];
         self::assertSame($expected, $model->asArray());
         self::assertSame(Model::VALUES, $model->asExposedArray());
 
@@ -91,11 +99,11 @@ class ExposableModelTest extends TestCase
 
         $model = ExposableModel::fromArray(Model::VALUES);
 
-        $expected = '{"public":"public","protected":"protected"}';
+        $expected = '{"public":"public","nullable":null,"protected":"protected"}';
         self::assertSame($expected, json_encode($model, JSON_THROW_ON_ERROR));
         self::assertSame($expected, (string) $model);
         $model->expose(Model::PRIVATE);
-        $expectedExposed = '{"public":"public","protected":"protected","private":"private"}';
+        $expectedExposed = '{"public":"public","nullable":null,"protected":"protected","private":"private"}';
         self::assertSame($expectedExposed, json_encode($model, JSON_THROW_ON_ERROR));
         self::assertSame($expectedExposed, (string) $model);
         $model->unexpose();
