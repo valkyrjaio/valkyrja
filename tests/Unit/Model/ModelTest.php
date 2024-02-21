@@ -169,8 +169,8 @@ class ModelTest extends TestCase
         $model = Model::fromArray(Model::VALUES);
         self::assertSame(
             [
-                Model::PUBLIC => Model::PUBLIC,
-                Model::NULLABLE => null,
+                Model::PUBLIC    => Model::PUBLIC,
+                Model::NULLABLE  => null,
                 Model::PROTECTED => Model::PROTECTED,
             ],
             $model->asArray()
@@ -204,7 +204,7 @@ class ModelTest extends TestCase
 
         self::assertEquals($model, $cloned);
 
-        $updatedValue = 'fire';
+        $updatedValue   = 'fire';
         $cloned->public = $updatedValue;
 
         self::assertNotEquals($model, $cloned);

@@ -237,6 +237,14 @@ abstract class Model implements Contract
     }
 
     /**
+     * Clone model.
+     */
+    public function __clone()
+    {
+        $this->__originalPropertiesSet();
+    }
+
+    /**
      * Set properties from an array of properties.
      *
      * @param array $properties The properties to set
@@ -424,13 +432,5 @@ abstract class Model implements Contract
     protected function __getJsonPropertyValue(string $property): mixed
     {
         return $this->__get($property);
-    }
-
-    /**
-     * Clone model.
-     */
-    public function __clone()
-    {
-        $this->__originalPropertiesSet();
     }
 }
