@@ -202,7 +202,7 @@ class ModelTest extends TestCase
 
         $cloned = clone $model;
 
-        self::assertSame($model, $cloned);
+        self::assertSame($model->asChangedArray(), $cloned->asChangedArray());
 
         $updatedValue   = 'fire';
         $cloned->public = $updatedValue;
