@@ -428,10 +428,8 @@ abstract class Model implements Contract
 
     /**
      * Clone model.
-     *
-     * @return void
      */
-    public function __clone(): void
+    public function __clone()
     {
         $this->__originalPropertiesSet();
     }
