@@ -89,7 +89,7 @@ class Dispatcher implements Contract
         $response = is_string($class)
             ? $class::$method(...$arguments)
             : (/** @var object $class */
-            $class->$method(...$arguments)
+                $class->$method(...$arguments)
             );
 
         return $response ?? Constant::DISPATCHED;
@@ -115,7 +115,9 @@ class Dispatcher implements Contract
 
         $class = $this->getClassFromDispatch($dispatch);
         /** @var mixed $response */
-        $response = is_string($class) ? $class::$$property : $class->{$property};
+        $response = is_string($class)
+            ? $class::$$property
+            : $class->{$property};
 
         return $response ?? Constant::DISPATCHED;
     }
