@@ -153,7 +153,7 @@ class UploadedFile implements Contract
         // If the PHP_SAPI value is empty
         // or there is no file
         // or the PHP_SAPI value is set to a CLI environment
-        if (empty($sapi) || ! $this->file || str_starts_with($sapi, 'cli')) {
+        if (empty($sapi) || $this->file === null || $this->file === '' || str_starts_with($sapi, 'cli')) {
             // Non-SAPI environment, or no filename present
             $this->writeStream($targetPath);
         }

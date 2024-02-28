@@ -113,7 +113,7 @@ class PdoAdapter extends Adapter implements Contract
     {
         $name = null;
 
-        if ($this->config['config']['driver'] === 'pgsql' && $table && $idField) {
+        if ($this->config['config']['driver'] === 'pgsql' && $table !== null && $table !== '' && $idField !== null && $idField !== '') {
             $name = "{$table}_{$idField}_seq";
         }
 

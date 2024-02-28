@@ -104,7 +104,7 @@ class Processor implements Contract
     protected function modifyRegex(Route $route): string
     {
         // If the regex has already been set then don't do anything
-        if ($regex = $route->getRegex()) {
+        if (($regex = $route->getRegex()) !== null && $regex !== '') {
             return $regex;
         }
 
@@ -166,7 +166,7 @@ class Processor implements Contract
     {
         $dependencies = $route->getDependencies();
 
-        if (empty($dependencies)) {
+        if ($dependencies === null || $dependencies === []) {
             return;
         }
 

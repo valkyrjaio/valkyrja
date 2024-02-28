@@ -206,7 +206,7 @@ class Json extends Model implements Contract
             'status'     => $this->status,
         ];
 
-        if ($this->message) {
+        if ($this->message !== null && $this->message !== '') {
             $array['message'] = $this->message;
         }
 

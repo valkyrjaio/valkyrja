@@ -95,7 +95,7 @@ class Annotator implements Contract
 
         $classReflection = $this->reflector->getClassReflection($class);
 
-        if (($method = $listener->getMethod()) || $classReflection->hasMethod('__construct')) {
+        if (($method = $listener->getMethod()) !== null || $classReflection->hasMethod('__construct')) {
             $method ??= '__construct';
 
             /** @var non-empty-string $method */

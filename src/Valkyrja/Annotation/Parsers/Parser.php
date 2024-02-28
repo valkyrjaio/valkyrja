@@ -67,7 +67,7 @@ class Parser implements Contract
 
         // If there are any matches iterate through them and create new
         // annotations
-        if ($matches && isset($matches[0], $matches[1])) {
+        if ($matches !== null && $matches !== [] && isset($matches[0], $matches[1])) {
             foreach ($matches[0] as $index => $match) {
                 $this->setAnnotation($matches, $index, $annotations);
             }
@@ -166,7 +166,13 @@ class Parser implements Contract
      */
     protected function getMatches(string $docString): array|null
     {
-        preg_match_all($this->getRegex(), $docString, $matches);
+        $regex = $this->getRegex();
+
+        if ($regex === '') {
+            return [];
+        }
+
+        preg_match_all($regex, $docString, $matches);
 
         return $matches;
     }
@@ -278,7 +284,7 @@ class Parser implements Contract
      */
     protected function cleanPart(string|null $match = null): string|null
     {
-        if (! $match) {
+        if ($match === null || $match === '') {
             return $match;
         }
 

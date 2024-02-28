@@ -15,6 +15,7 @@ namespace Valkyrja\Orm\Statements;
 
 use PDO;
 use PDOStatement as Statement;
+use stdClass;
 use Valkyrja\Orm\PdoStatement as Contract;
 
 use function is_bool;
@@ -99,7 +100,7 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      */
-    public function fetchObject(string $className = 'stdClass'): object
+    public function fetchObject(string $className = stdClass::class): object
     {
         return $this->statement->fetchObject($className);
     }

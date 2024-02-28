@@ -98,8 +98,8 @@ class Validator implements Contract
     protected function isInvalidClassMethod(Dispatch $dispatch): bool
     {
         return $dispatch->isMethod()
-            && ($class  = $dispatch->getClass())
-            && ($method = $dispatch->getMethod())
+            && ($class  = $dispatch->getClass()) !== null
+            && ($method = $dispatch->getMethod()) !== null
             && ! method_exists($class, $method);
     }
 
@@ -113,8 +113,8 @@ class Validator implements Contract
     protected function isInvalidClassProperty(Dispatch $dispatch): bool
     {
         return $dispatch->isProperty()
-            && ($class    = $dispatch->getClass())
-            && ($property = $dispatch->getProperty())
+            && ($class    = $dispatch->getClass()) !== null
+            && ($property = $dispatch->getProperty()) !== null
             && ! property_exists($class, $property);
     }
 
@@ -160,10 +160,10 @@ class Validator implements Contract
      */
     protected function isEmptyDispatch(Dispatch $dispatch): bool
     {
-        return ! $dispatch->getFunction()
-            && ! $dispatch->getClosure()
-            && ! $dispatch->getClass()
-            && ! $dispatch->getMethod()
-            && ! $dispatch->getProperty();
+        return $dispatch->getFunction() === null
+            && $dispatch->getClosure() === null
+            && $dispatch->getClass() === null
+            && $dispatch->getMethod() === null
+            && $dispatch->getProperty() === null;
     }
 }

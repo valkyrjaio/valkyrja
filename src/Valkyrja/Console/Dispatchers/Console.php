@@ -44,7 +44,7 @@ use function preg_match;
 class Console implements Contract
 {
     use ProvidersAwareTrait {
-        register as traitRegister;
+        ProvidersAwareTrait::register as traitRegister;
     }
 
     /**
@@ -303,7 +303,7 @@ class Console implements Contract
         $path  = $command->getPath();
         $regex = $command->getRegex();
 
-        if (! $path || ! $regex) {
+        if ($path === null || $path === '' || $regex === null || $regex === '') {
             throw new InvalidArgumentException('Invalid command provided.');
         }
 

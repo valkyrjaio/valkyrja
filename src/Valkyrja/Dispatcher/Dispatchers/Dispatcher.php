@@ -78,7 +78,7 @@ class Dispatcher implements Contract
             return null;
         }
 
-        if (! $method = $dispatch->getMethod()) {
+        if (($method = $dispatch->getMethod()) === null) {
             throw new InvalidMethodException("Expecting a valid method: $method provided");
         }
 
@@ -109,7 +109,7 @@ class Dispatcher implements Contract
             return null;
         }
 
-        if (! $property = $dispatch->getProperty()) {
+        if (($property = $dispatch->getProperty()) === null) {
             throw new InvalidPropertyException("Expecting a valid property: $property provided");
         }
 
@@ -136,7 +136,7 @@ class Dispatcher implements Contract
             return null;
         }
 
-        if (! $constant = $dispatch->getConstant()) {
+        if (($constant = $dispatch->getConstant()) === null) {
             throw new InvalidClosureException('Expecting a valid constant: Null provided');
         }
 
@@ -163,7 +163,7 @@ class Dispatcher implements Contract
             return null;
         }
 
-        if (! $className = $dispatch->getClass()) {
+        if (($className = $dispatch->getClass()) === null) {
             throw new InvalidClassProvidedException("Expecting a valid class: $className provided");
         }
 
@@ -196,7 +196,7 @@ class Dispatcher implements Contract
             return null;
         }
 
-        if (! $function = $dispatch->getFunction()) {
+        if (($function = $dispatch->getFunction()) === null) {
             throw new InvalidFunctionException("Expecting a valid callable: $function provided");
         }
 
@@ -222,7 +222,7 @@ class Dispatcher implements Contract
             return null;
         }
 
-        if (! $closure = $dispatch->getClosure()) {
+        if (($closure = $dispatch->getClosure()) === null) {
             throw new InvalidClosureException('Expecting a valid closure: Null provided');
         }
 
@@ -247,7 +247,7 @@ class Dispatcher implements Contract
             return null;
         }
 
-        if (! $variable = $dispatch->getVariable()) {
+        if (($variable = $dispatch->getVariable()) === null) {
             throw new InvalidClosureException('Expecting a valid variable: Null provided');
         }
 
@@ -269,7 +269,7 @@ class Dispatcher implements Contract
      */
     protected function getClassFromDispatch(Dispatch $dispatch): mixed
     {
-        if (! $class = $dispatch->getClass()) {
+        if (($class = $dispatch->getClass()) === null) {
             throw new InvalidArgumentException('Invalid class defined in dispatch model.');
         }
 

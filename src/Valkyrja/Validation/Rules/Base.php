@@ -72,7 +72,7 @@ class Base
      */
     public function empty(string|null $subject = null): void
     {
-        if ($subject) {
+        if ($subject !== null && $subject !== '') {
             throw new ValidationException("$subject must be empty");
         }
     }
@@ -362,7 +362,7 @@ class Base
      */
     public function regex(string $subject, string $regex): void
     {
-        if (! preg_match($regex, $subject)) {
+        if ($subject === '' || $regex === '' || ! preg_match($regex, $subject)) {
             throw new ValidationException("$subject must match the given regex $regex");
         }
     }

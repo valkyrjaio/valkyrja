@@ -187,14 +187,14 @@ interface Dispatch extends Model
     /**
      * Get the constant.
      *
-     * @return string|null
+     * @return non-empty-string|null
      */
     public function getConstant(): string|null;
 
     /**
      * Set the constant.
      *
-     * @param string|null $constant The constant
+     * @param non-empty-string|null $constant The constant
      *
      * @return static
      */
@@ -210,14 +210,14 @@ interface Dispatch extends Model
     /**
      * Get the variable.
      *
-     * @return string|null
+     * @return non-empty-string|null
      */
     public function getVariable(): string|null;
 
     /**
      * Set the variable.
      *
-     * @param string|null $variable The variable
+     * @param non-empty-string|null $variable The variable
      *
      * @return static
      */

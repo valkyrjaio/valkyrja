@@ -66,7 +66,7 @@ class CommandsList extends Commander
         $this->optionsSection(...input()->getGlobalOptions());
         $this->sectionDivider();
 
-        $this->sectionTitleMessage('Commands' . ($namespace ? " for the \"$namespace\" namespace" : ''));
+        $this->sectionTitleMessage('Commands' . ($namespace !== null && $namespace !== '' ? " for the \"$namespace\" namespace" : ''));
 
         foreach ($commands as $command) {
             if ($namespace === null) {
@@ -74,7 +74,7 @@ class CommandsList extends Commander
             }
 
             $this->sectionMessage(
-                (! $namespace ? static::TAB : '') . ($command->getName() ?? ''),
+                ($namespace === null || $namespace === '' ? static::TAB : '') . ($command->getName() ?? ''),
                 $command->getDescription() ?? '',
                 $longestLength + 2
             );
@@ -111,13 +111,15 @@ class CommandsList extends Commander
         foreach ($commands as $key => $command) {
             $name = $command->getName();
 
-            if (! $name) {
+            if ($name === null || $name === '') {
                 continue;
             }
 
             $parts            = explode(':', $name);
             $commandName      = $parts[1] ?? null;
-            $commandNamespace = $commandName ? $parts[0] : 'global';
+            $commandNamespace = $commandName !== null && $commandName !== ''
+                ? $parts[0]
+                : 'global';
 
             // If there was a namespace passed to the command (commands
             // namespace)  and the namespace for this command doesn't match
@@ -164,7 +166,9 @@ class CommandsList extends Commander
     {
         $parts          = explode(':', $command->getName() ?? '');
         $commandName    = $parts[1] ?? null;
-        $currentSection = $commandName ? $parts[0] : 'global';
+        $currentSection = $commandName !== null && $commandName !== ''
+            ? $parts[0]
+            : 'global';
 
         if ($previousSection !== $currentSection) {
             output()->getFormatter()->cyan();

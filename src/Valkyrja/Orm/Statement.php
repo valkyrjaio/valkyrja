@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm;
 
+use stdClass;
+
 /**
  * Interface Statement.
  *
@@ -72,11 +74,11 @@ interface Statement
     /**
      * Fetch the results as an object.
      *
-     * @param string $className
+     * @param class-string $className
      *
      * @return object
      */
-    public function fetchObject(string $className = 'stdClass'): object;
+    public function fetchObject(string $className = stdClass::class): object;
 
     /**
      * The number of rows returned.

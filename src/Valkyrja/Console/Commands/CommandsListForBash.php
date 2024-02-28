@@ -49,7 +49,7 @@ class CommandsListForBash extends Commander
     {
         $allCommands = array_keys(console()->getNamedCommands());
 
-        if ($commandTyped) {
+        if ($commandTyped !== null && $commandTyped !== '') {
             $colonAt          = strpos($commandTyped, ':');
             $possibleCommands = [];
 
@@ -58,7 +58,7 @@ class CommandsListForBash extends Commander
                 if (str_starts_with($command, $commandTyped)) {
                     // Colons acts as separators in bash, so return only second
                     // part if colon is in commandTyped.
-                    $possibleCommands[] = $colonAt ? substr($command, $colonAt + 1) : $command;
+                    $possibleCommands[] = $colonAt !== false ? substr($command, $colonAt + 1) : $command;
                 }
             }
         } else {

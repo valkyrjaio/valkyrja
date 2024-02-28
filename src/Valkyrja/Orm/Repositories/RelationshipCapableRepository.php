@@ -147,7 +147,7 @@ trait RelationshipCapableRepository
     {
         $relationships = $this->relationships;
 
-        if (empty($relationships) || ! $this->getRelations || empty($entities)) {
+        if ($relationships === null || $relationships === [] || ! $this->getRelations || $entities === []) {
             return;
         }
 

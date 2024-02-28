@@ -88,7 +88,7 @@ class Directory
      */
     public static function path(string|null $path = null): string
     {
-        return $path && $path[0] !== static::DIRECTORY_SEPARATOR
+        return $path !== null && $path !== '' && $path[0] !== static::DIRECTORY_SEPARATOR
             ? static::DIRECTORY_SEPARATOR . $path
             : $path ?? '';
     }
@@ -271,7 +271,7 @@ class Directory
      */
     protected static function __basePath(string|null $path = null): string
     {
-        if ($path && str_starts_with($path, static::DIRECTORY_SEPARATOR)) {
+        if ($path !== null && $path !== '' && str_starts_with($path, static::DIRECTORY_SEPARATOR)) {
             return $path;
         }
 

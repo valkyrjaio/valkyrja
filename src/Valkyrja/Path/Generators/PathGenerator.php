@@ -57,7 +57,7 @@ class PathGenerator implements Contract
             }
 
             // If parameters were replaced or none to begin with
-            if (! str_contains($segment, '{')) {
+            if (is_string($segment) && ! str_contains($segment, '{')) {
                 // Append this segment
                 $path .= $segment;
             }

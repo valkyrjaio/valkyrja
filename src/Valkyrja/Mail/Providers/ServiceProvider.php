@@ -212,7 +212,7 @@ class ServiceProvider extends Provider
     public static function publishPHPMailer(Container $container): void
     {
         $globalConfig = $container->getSingleton(Config::class);
-        $appDebug     = $globalConfig['app']['debug'] ?? null;
+        $appDebug     = (bool) ($globalConfig['app']['debug'] ?? false);
 
         $container->setClosure(
             PHPMailer::class,

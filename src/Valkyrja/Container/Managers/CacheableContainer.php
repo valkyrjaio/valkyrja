@@ -120,7 +120,7 @@ class CacheableContainer extends Container
             $class = $service->getClass();
             $id    = $service->getId();
 
-            if ($class && $id) {
+            if ($class !== null && $id !== null && $id !== '') {
                 /** @var class-string<Service> $class */
                 // Set the service
                 $this->bind($id, $class);
@@ -134,7 +134,7 @@ class CacheableContainer extends Container
             $id      = $context->getId();
             $service = $context->getService();
 
-            if ($class && $id && $service && $this instanceof ContextAwareContainer) {
+            if ($class !== null && $id !== null && $service && $this instanceof ContextAwareContainer) {
                 // Set the service
                 $this->withContext($class, $method)->bind($id, $service);
             }
@@ -145,7 +145,7 @@ class CacheableContainer extends Container
             $name = $alias->getName();
             $id   = $alias->getId();
 
-            if ($name && $id) {
+            if ($name !== null && $name !== '' && $id !== null && $id !== '') {
                 // Set the service
                 $this->bindAlias($name, $id);
             }

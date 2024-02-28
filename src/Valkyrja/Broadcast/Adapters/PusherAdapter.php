@@ -92,7 +92,7 @@ class PusherAdapter extends NullAdapter implements Contract
     {
         $data = $message->getData();
 
-        if ($data) {
+        if ($data !== null && $data !== []) {
             $message->setMessage(Arr::toString($data));
         }
     }

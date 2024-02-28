@@ -64,7 +64,7 @@ class CacheAdapter extends PHPAdapter
         }
 
         // If the session failed to start
-        if (! session_start() || ! $cachedData = $this->cache->get($this->getCacheSessionId())) {
+        if (! session_start() || ($cachedData = $this->cache->get($this->getCacheSessionId())) === null || $cachedData === '') {
             // Throw a new exception
             throw new SessionStartFailure('The session failed to start!');
         }

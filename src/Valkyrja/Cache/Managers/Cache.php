@@ -25,6 +25,8 @@ use Valkyrja\Manager\Managers\Manager;
  *
  * @author Melech Mizrachi
  *
+ * @extends Manager<Driver, Factory>
+ *
  * @property Factory $factory
  */
 class Cache extends Manager implements Contract

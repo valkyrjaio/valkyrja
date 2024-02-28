@@ -42,7 +42,7 @@ class EntityMiddleware extends Middleware
      */
     public static function before(Request $request): Request|Response
     {
-        if (($route = self::$route ?? null) && $matches = $route->getMatches()) {
+        if (($route = self::$route ?? null) && ($matches = $route->getMatches()) !== null && $matches !== []) {
             static::checkParamsForEntities($route, $matches);
         }
 
@@ -167,7 +167,7 @@ class EntityMiddleware extends Middleware
         $relationships = $parameter->getEntityRelationships() ?? [];
 
         // If there is a field specified to use
-        if ($field = $parameter->getEntityColumn()) {
+        if (($field = $parameter->getEntityColumn()) !== null && $field !== '') {
             $find = $orm->find()->where($field, null, $value);
 
             if (is_a($find, RelationshipRepository::class)) {

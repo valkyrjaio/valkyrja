@@ -306,7 +306,7 @@ class Kernel implements Contract
      */
     protected function finishSession(): void
     {
-        if (session_id()) {
+        if (($sessionId = session_id()) !== false && $sessionId !== '') {
             session_write_close();
         }
     }

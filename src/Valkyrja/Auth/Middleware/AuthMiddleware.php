@@ -181,7 +181,9 @@ abstract class AuthMiddleware extends Middleware
      */
     protected static function getFailedRegularResponse(): Response
     {
-        if ($authenticateUrl = static::getConfig(ConfigKeyPart::AUTHENTICATE_URL)) {
+        $authenticateUrl = static::getConfig(ConfigKeyPart::AUTHENTICATE_URL);
+
+        if ($authenticateUrl !== null && $authenticateUrl !== '') {
             return self::getResponseFactory()->createRedirectResponse(
                 $authenticateUrl,
                 StatusCode::UNAUTHORIZED

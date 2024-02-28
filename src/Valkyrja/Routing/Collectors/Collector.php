@@ -407,11 +407,11 @@ class Collector implements Contract
     {
         $dependencies = [];
 
-        if (($class = $route->getClass()) && ($method = $route->getMethod())) {
+        if (($class = $route->getClass()) !== null && ($method = $route->getMethod()) !== null) {
             $dependencies = Reflector::getDependencies(Reflector::getMethodReflection($class, $method));
-        } elseif ($function = $route->getFunction()) {
+        } elseif (($function = $route->getFunction()) !== null) {
             $dependencies = Reflector::getDependencies(Reflector::getFunctionReflection($function));
-        } elseif ($closure = $route->getClosure()) {
+        } elseif (($closure = $route->getClosure()) !== null) {
             $dependencies = Reflector::getDependencies(Reflector::getClosureReflection($closure));
         }
 

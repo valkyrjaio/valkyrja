@@ -43,39 +43,39 @@ class Route extends Model
     ) {
         $this->path = $path;
 
-        if ($path) {
+        if ($path !== '') {
             $this->name = $path;
         }
 
-        if ($name) {
+        if ($name !== null && $name !== '') {
             $this->name = $name;
         }
 
-        if ($methods) {
+        if ($methods !== null) {
             $this->methods = $methods;
         }
 
-        if ($parameters) {
+        if ($parameters !== null) {
             $this->setParameters($parameters);
         }
 
-        if ($middleware) {
+        if ($middleware !== null) {
             $this->setMiddleware($middleware);
         }
 
-        if ($secure) {
+        if ($secure !== null) {
             $this->secure = $secure;
         }
 
-        if ($to) {
+        if ($to !== null && $to !== '') {
             $this->setTo($to);
         }
 
-        if ($code) {
+        if ($code !== null) {
             $this->code = $code;
         }
 
-        if ($messages) {
+        if ($messages !== null) {
             $this->setMessages($messages);
         }
     }

@@ -164,11 +164,11 @@ class Cookie extends Model implements Contract
                 . '; max-age=' . $maxAge;
         }
 
-        if ($this->path) {
+        if ($this->path !== '') {
             $str .= '; path=' . $this->path;
         }
 
-        if ($this->domain) {
+        if ($this->domain !== null && $this->domain !== '') {
             $str .= '; domain=' . $this->domain;
         }
 

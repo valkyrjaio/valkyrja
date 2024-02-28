@@ -90,7 +90,7 @@ class EntityCapableMatcher extends Matcher
         $relationships = $parameter->getEntityRelationships() ?? [];
 
         // If there is a field specified to use
-        if ($field = $parameter->getEntityColumn()) {
+        if (($field = $parameter->getEntityColumn()) !== null && $field !== '') {
             $find = $orm->find()->where($field, null, $match);
 
             if (is_a($find, RelationshipRepository::class)) {

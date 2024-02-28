@@ -67,6 +67,7 @@ class CacheAll extends Commander
         console()->dispatchCommand($configCache);
 
         if ($sync !== null && app()->debug()) {
+            /** @var string[] $files */
             $files = [
                 config(ConfigKey::CONSOLE_CACHE_FILE_PATH),
                 config(ConfigKey::CONTAINER_CACHE_FILE_PATH),

@@ -54,7 +54,7 @@ class VerifyAuthBroadcastMiddleware extends Middleware
         $broadcastMessage = static::getBroadCastMessageFromRequest($request);
 
         // Ensure a broadcast message exists
-        if (! $broadcastMessage) {
+        if ($broadcastMessage === null) {
             return static::getNoBroadcastMessageResponse($responseFactory);
         }
 

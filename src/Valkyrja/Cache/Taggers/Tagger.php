@@ -282,7 +282,7 @@ class Tagger implements Contract
     {
         $keys = $this->adapter->get($tag);
 
-        if ($keys) {
+        if ($keys !== null && $keys !== '') {
             return json_decode($keys, true, 512, JSON_THROW_ON_ERROR);
         }
 

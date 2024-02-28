@@ -104,7 +104,7 @@ class Validator implements Contract
     {
         $validated = true;
 
-        if ($this->validationRules) {
+        if ($this->validationRules !== null) {
             $validated = $this->validateRules($this->validationRules);
         }
 

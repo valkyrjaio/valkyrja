@@ -193,7 +193,7 @@ class PhpEngine implements Engine
     protected function getDir(string|null $path = null): string
     {
         return $this->dir
-            . ($path
+            . ($path !== null && $path !== ''
                 ? Directory::DIRECTORY_SEPARATOR . $path
                 : '');
     }

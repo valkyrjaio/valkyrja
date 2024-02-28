@@ -79,14 +79,16 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param Config|array $config
+     * @param Config|array{useAnnotations: ?bool} $config
      *
      * @return void
      */
     protected function setupFromAnnotations(Config|array $config): void
     {
+        $useAnnotations = (bool) ($config['useAnnotations'] ?? true);
+
         // If annotations are enabled and cacheable should use annotations
-        if ($config['useAnnotations'] ?? true) {
+        if ($useAnnotations) {
             /** @var Config|array $config */
             $this->setupAnnotations($config);
         }
@@ -95,14 +97,16 @@ trait Cacheable
     /**
      * Set attributes.
      *
-     * @param Config|array $config The config
+     * @param Config|array{useAttributes: ?bool} $config The config
      *
      * @return void
      */
     protected function setupFromAttributes(Config|array $config): void
     {
+        $useAttributes = (bool) ($config['useAttributes'] ?? true);
+
         // If attributes are enabled and cacheable should use attributes
-        if ($config['useAttributes'] ?? true) {
+        if ($useAttributes) {
             /** @var Config|array $config */
             $this->setupAttributes($config);
         }

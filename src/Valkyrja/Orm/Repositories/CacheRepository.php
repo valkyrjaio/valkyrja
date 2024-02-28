@@ -139,7 +139,7 @@ class CacheRepository extends Repository implements Contract
     {
         $cacheKey = $this->getCacheKey();
 
-        if ($results = $this->store->get($cacheKey)) {
+        if (($results = $this->store->get($cacheKey)) !== null && $results !== '') {
             $results = unserialize(base64_decode($results, true), ['allowed_classes' => true]);
 
             if (method_exists($this, 'setRelationshipsOnEntities')) {
@@ -185,7 +185,7 @@ class CacheRepository extends Repository implements Contract
     {
         $cacheKey = $this->getCacheKey();
 
-        if ($results = $this->store->get($cacheKey)) {
+        if (($results = $this->store->get($cacheKey)) !== null && $results !== '') {
             return (int) $results;
         }
 
@@ -415,7 +415,10 @@ class CacheRepository extends Repository implements Contract
      */
     protected function cacheResults(string $cacheKey, Entity|array|int|null $results): void
     {
-        $tags   = $this->id ? [(string) $this->id] : [];
+        $id = $this->id;
+        $tags   = $id !== null && $id !== ''
+            ? [(string) $this->id]
+            : [];
         $tags[] = $this->entity;
 
         if (is_array($results)) {

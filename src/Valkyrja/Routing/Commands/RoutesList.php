@@ -143,7 +143,7 @@ class RoutesList extends Commander
         } elseif (null !== $class = $route->getClass()) {
             $dispatch = $class
                 . ($route->isStatic() ? '::' : '->')
-                . (($method = $route->getMethod())
+                . ((($method = $route->getMethod()) !== null)
                     ? $method . '()'
                     : $route->getProperty() ?? '');
         }

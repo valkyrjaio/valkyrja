@@ -34,7 +34,8 @@ class PgSqlDriver extends Driver
 
         $schema = $config['schema'] ?? null;
 
-        if ($schema && $statement = $this->prepare("set search_path to $schema")) {
+        if ($schema !== null && $schema !== '') {
+            $statement = $this->prepare("set search_path to $schema");
             $statement->execute();
         }
     }

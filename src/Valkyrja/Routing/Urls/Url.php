@@ -66,7 +66,7 @@ class Url implements Contract
         $path = $route->getPath();
 
         // If any data was passed
-        if ($data) {
+        if ($data !== null) {
             // Iterate through the data and replace it in the path
             foreach ($data as $datumName => $datum) {
                 $path = str_replace('{' . $datumName . '}', $datum, $path);

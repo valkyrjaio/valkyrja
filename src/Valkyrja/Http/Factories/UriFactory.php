@@ -61,9 +61,10 @@ abstract class UriFactory
 
         // URI scheme
         $scheme = 'http';
+        /** @var string|null $https */
         $https  = $server['HTTPS'] ?? null;
 
-        if (($https && $https !== 'off')
+        if (($https !== null && $https !== 'off')
             || self::getHeader('x-forwarded-proto', $headers, false) === 'https'
         ) {
             $scheme = 'https';
@@ -188,36 +189,42 @@ abstract class UriFactory
     {
         // IIS7 with URL Rewrite: make sure we get the unencoded url
         // (double slash problem).
+        /** @var string|null $iisUrlRewritten */
         $iisUrlRewritten = $server['IIS_WasUrlRewritten'] ?? null;
+        /** @var string $unencodedUrl */
         $unencodedUrl    = $server['UNENCODED_URL'] ?? '';
 
-        if ($iisUrlRewritten === '1' && ! empty($unencodedUrl)) {
+        if ($iisUrlRewritten === '1' && $unencodedUrl !== '') {
             return $unencodedUrl;
         }
 
+        /** @var string|null $requestUri */
         $requestUri = $server['REQUEST_URI'] ?? null;
 
         // Check this first so IIS will catch.
+        /** @var string|null $httpXRewriteUrl */
         $httpXRewriteUrl = $server['HTTP_X_REWRITE_URL'] ?? null;
 
-        if ($httpXRewriteUrl !== null) {
+        if ($httpXRewriteUrl !== null && $httpXRewriteUrl !== '') {
             $requestUri = $httpXRewriteUrl;
         }
 
         // Check for IIS 7.0 or later with ISAPI_Rewrite
+        /** @var string|null $httpXOriginalUrl */
         $httpXOriginalUrl = $server['HTTP_X_ORIGINAL_URL'] ?? null;
 
-        if ($httpXOriginalUrl !== null) {
+        if ($httpXOriginalUrl !== null && $httpXOriginalUrl !== '') {
             $requestUri = $httpXOriginalUrl;
         }
 
-        if ($requestUri !== null) {
+        if ($requestUri !== null && $requestUri !== '') {
             return preg_replace('#^[^/:]+://[^/]+#', '', $requestUri);
         }
 
+        /** @var string|null $origPathInfo */
         $origPathInfo = $server['ORIG_PATH_INFO'] ?? null;
 
-        if (empty($origPathInfo)) {
+        if ($origPathInfo === null || $origPathInfo === '') {
             return '/';
         }
 

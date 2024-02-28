@@ -95,13 +95,13 @@ class Attributes implements Contract
                             $routeSecure     = [];
                             $routeRedirect   = [];
 
-                            if ($property = $routeAttribute->getProperty()) {
+                            if (($property = $routeAttribute->getProperty()) !== null) {
                                 $routeParameters = $this->attributes->forProperty($class, $property, Parameter::class);
                                 $routeMiddleware = $this->attributes->forProperty($class, $property, Middleware::class);
                                 $routeMessages   = $this->attributes->forProperty($class, $property, Message::class);
                                 $routeSecure     = $this->attributes->forProperty($class, $property, Secure::class);
                                 $routeRedirect   = $this->attributes->forProperty($class, $property, Redirect::class);
-                            } elseif ($method = $routeAttribute->getMethod()) {
+                            } elseif (($method = $routeAttribute->getMethod()) !== null) {
                                 $routeParameters = $this->attributes->forMethod($class, $method, Parameter::class);
                                 $routeMiddleware = $this->attributes->forMethod($class, $method, Middleware::class);
                                 $routeMessages   = $this->attributes->forMethod($class, $method, Message::class);
@@ -213,7 +213,7 @@ class Attributes implements Contract
         // If there is a base name for this controller
         if (($controllerName = $controllerAttribute->getName()) !== null) {
             // Set the name to the base name and route name
-            $attribute->setName($controllerName . (($name = $memberAttribute->getName()) ? '.' . $name : ''));
+            $attribute->setName($controllerName . (($name = $memberAttribute->getName()) !== null ? '.' . $name : ''));
         }
 
         // If the base is dynamic
@@ -229,7 +229,7 @@ class Attributes implements Contract
         }
 
         // If the base has a redirect
-        if ($to = $controllerAttribute->getTo()) {
+        if (($to = $controllerAttribute->getTo()) !== null) {
             // Set the route's redirect to path
             $attribute->setTo($to);
         }

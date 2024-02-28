@@ -122,7 +122,7 @@ class StrCase
      */
     public static function toCapitalized(string $subject, string|null $delimiter = null): string
     {
-        if ($delimiter) {
+        if ($delimiter !== null && $delimiter !== '') {
             return ucwords($subject, $delimiter);
         }
 

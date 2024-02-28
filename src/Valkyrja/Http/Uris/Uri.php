@@ -138,7 +138,7 @@ class Uri implements Contract
     {
         $host = $this->host;
 
-        if ($host && $port = $this->port) {
+        if ($host !== '' && ($port = $this->port) !== null) {
             $host .= ':' . $port;
         }
 
@@ -201,7 +201,7 @@ class Uri implements Contract
     {
         $info = $user;
 
-        if ($password) {
+        if ($password !== null) {
             $info .= ':' . $password;
         }
 

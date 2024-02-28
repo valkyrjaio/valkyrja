@@ -230,15 +230,15 @@ class JsonData extends Model implements Contract
     {
         $data = $this->data ?? [];
 
-        if ($this->messages) {
+        if ($this->messages !== null && $this->messages !== []) {
             $data['messages'] = $this->messages;
         }
 
-        if ($this->item) {
+        if ($this->item !== null) {
             $data[$this->itemKey] = $this->item;
         }
 
-        if ($this->items) {
+        if ($this->items !== null && $this->items !== []) {
             $data[$this->itemsKey] = $this->items;
         }
 

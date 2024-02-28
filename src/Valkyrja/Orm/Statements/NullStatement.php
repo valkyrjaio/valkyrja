@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Statements;
 
+use stdClass;
 use Valkyrja\Orm\Statement as Contract;
 
 /**
@@ -73,7 +74,7 @@ class NullStatement implements Contract
     /**
      * @inheritDoc
      */
-    public function fetchObject(string $className = 'stdClass'): object
+    public function fetchObject(string $className = stdClass::class): object
     {
         return new $className();
     }
