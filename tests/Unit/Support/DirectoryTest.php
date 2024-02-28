@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Support;
 
-use PHPUnit\Framework\TestCase;
 use Valkyrja\Support\Directory;
+use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Directory support class.

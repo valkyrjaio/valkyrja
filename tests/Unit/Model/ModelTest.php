@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Model;
 
 use Error;
-use PHPUnit\Framework\TestCase;
 use Valkyrja\Tests\Classes\Model\Model;
+use Valkyrja\Tests\Unit\TestCase;
 
 use function json_encode;
 

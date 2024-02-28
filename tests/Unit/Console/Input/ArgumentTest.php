@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Console\Input;
 
-use PHPUnit\Framework\TestCase;
 use Valkyrja\Console\Enums\ArgumentMode;
 use Valkyrja\Console\Inputs\Argument;
+use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Argument input class.

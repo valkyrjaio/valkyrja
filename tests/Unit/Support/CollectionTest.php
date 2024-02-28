@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Support;
 
-use PHPUnit\Framework\TestCase;
 use Valkyrja\Collection\Collections\Collection;
+use Valkyrja\Tests\Unit\TestCase;
 
 use function array_keys;
 use function count;

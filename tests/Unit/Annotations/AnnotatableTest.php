@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Annotations;
 
-use PHPUnit\Framework\TestCase;
 use Valkyrja\Annotation\Models\Annotation;
+use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Annotatable trait.

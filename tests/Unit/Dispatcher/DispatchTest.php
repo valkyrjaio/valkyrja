@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Dispatcher;
 
-use PHPUnit\Framework\TestCase;
 use Valkyrja\Dispatcher\Models\Dispatch;
+use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the dispatch model.

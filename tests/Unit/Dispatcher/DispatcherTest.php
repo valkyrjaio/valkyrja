@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Dispatcher;
 
-use PHPUnit\Framework\TestCase;
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Config\Container as Config;
 use Valkyrja\Container\Managers\Container;
 use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
 use Valkyrja\Dispatcher\Models\Dispatch;
+use Valkyrja\Tests\Unit\TestCase;
 
 use function count;
 use function microtime;
@@ -71,7 +71,7 @@ class DispatcherTest extends TestCase
      *
      * @return string
      */
-    public static function validStaticMethod(string $arg = null): string
+    public static function validStaticMethod(?string $arg = null): string
     {
         return 'test' . ($arg ?: '');
     }
@@ -95,7 +95,7 @@ class DispatcherTest extends TestCase
      *
      * @return string
      */
-    public function validMethod(string $arg = null): string
+    public function validMethod(?string $arg = null): string
     {
         return 'test' . ($arg ?: '');
     }

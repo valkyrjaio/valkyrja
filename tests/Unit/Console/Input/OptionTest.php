@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Console\Input;
 
-use PHPUnit\Framework\TestCase;
 use Valkyrja\Console\Enums\OptionMode;
 use Valkyrja\Console\Inputs\Option;
+use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Option input class.

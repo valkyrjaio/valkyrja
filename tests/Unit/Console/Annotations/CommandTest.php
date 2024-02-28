@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Console\Annotations;
 
-use PHPUnit\Framework\TestCase;
 use Valkyrja\Console\Annotations\Command;
+use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the command model.

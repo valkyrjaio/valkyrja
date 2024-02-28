@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Exceptions;
 
-use PHPUnit\Framework\TestCase;
 use Valkyrja\Http\Exceptions\NotFoundHttpException;
+use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the NotFoundHttpException class.

@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Enum;
 
 use Exception;
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
+use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\Types\Enum;
 
 use function array_diff;
@@ -199,7 +199,7 @@ class EnumTest extends TestCase
     /**
      * Get an enum to test with.
      *
-     * @return \Valkyrja\Type\Types\Enum
+     * @return Enum
      */
     protected function getEnum(): Enum
     {
@@ -209,7 +209,7 @@ class EnumTest extends TestCase
     /**
      * Get an enum with no default values set to test with.
      *
-     * @return \Valkyrja\Type\Types\Enum
+     * @return Enum
      */
     protected function getEnumEmpty(): Enum
     {

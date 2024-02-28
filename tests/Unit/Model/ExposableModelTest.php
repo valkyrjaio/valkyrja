@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Model;
 
-use PHPUnit\Framework\TestCase;
 use Valkyrja\Tests\Classes\Model\ExposableModel;
 use Valkyrja\Tests\Classes\Model\Model;
+use Valkyrja\Tests\Unit\TestCase;
 
 use const JSON_THROW_ON_ERROR;
 

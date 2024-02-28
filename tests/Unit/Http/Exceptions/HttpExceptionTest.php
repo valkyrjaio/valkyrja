@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Exceptions;
 
-use PHPUnit\Framework\TestCase;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
+use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the HttpException class.

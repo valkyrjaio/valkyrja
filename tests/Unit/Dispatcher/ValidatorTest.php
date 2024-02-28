@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Dispatcher;
 
 use Exception;
-use PHPUnit\Framework\TestCase;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Dispatcher\Models\Dispatch;
 use Valkyrja\Dispatcher\Validators\Validator;
+use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the dispatcher trait.
@@ -70,7 +70,7 @@ class ValidatorTest extends TestCase
      *
      * @return string
      */
-    public static function validStaticMethod(string $arg = null): string
+    public static function validStaticMethod(?string $arg = null): string
     {
         return 'test' . ($arg ?: '');
     }
@@ -94,7 +94,7 @@ class ValidatorTest extends TestCase
      *
      * @return string
      */
-    public function validMethod(string $arg = null): string
+    public function validMethod(?string $arg = null): string
     {
         return 'test' . ($arg ?: '');
     }

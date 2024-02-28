@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Support;
 
-use PHPUnit\Framework\TestCase;
 use Valkyrja\Config\Config\Config;
+use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the ServiceProvider support class.

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Annotations;
 
-use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
@@ -27,6 +26,7 @@ use Valkyrja\Container\Annotations\Service;
 use Valkyrja\Container\Annotations\Service\Context;
 use Valkyrja\Event\Annotations\Listener;
 use Valkyrja\Routing\Annotations\Route;
+use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the AnnotationsParser class.

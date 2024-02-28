@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Console;
 
-use PHPUnit\Framework\TestCase;
 use Valkyrja\Console\Models\Command;
+use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the command model.

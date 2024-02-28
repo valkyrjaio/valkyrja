@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container;
 
 use AssertionError;
-use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Valkyrja\Container\Config\Container as Config;
 use Valkyrja\Container\Managers\Container;
@@ -22,6 +21,7 @@ use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Tests\Classes\Container\Service;
 use Valkyrja\Tests\Classes\Container\Singleton;
 use Valkyrja\Tests\Traits\ExpectErrorTrait;
+use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the container service.
@@ -62,7 +62,7 @@ class ContainerTest extends TestCase
     public function testBind(): void
     {
         $container = $this->container;
-        $id = Service::class;
+        $id        = Service::class;
 
         $container->bind($id, $id);
 
@@ -86,7 +86,7 @@ class ContainerTest extends TestCase
     public function testBindAlias(): void
     {
         $container = $this->container;
-        $id = Service::class;
+        $id        = Service::class;
         $alias     = 'alias';
 
         $container->bindAlias($alias, $id);
@@ -111,7 +111,7 @@ class ContainerTest extends TestCase
     public function testBindSingleton(): void
     {
         $container = $this->container;
-        $id = Singleton::class;
+        $id        = Singleton::class;
 
         $container->bindSingleton($id, $id);
 
@@ -136,7 +136,7 @@ class ContainerTest extends TestCase
     public function testOffsetGetSetAndExists(): void
     {
         $container = $this->container;
-        $id = Service::class;
+        $id        = Service::class;
 
         $container[$id] = $id;
 
@@ -149,7 +149,7 @@ class ContainerTest extends TestCase
     public function testClosure(): void
     {
         $container = $this->container;
-        $id = self::class;
+        $id        = self::class;
         $closure   = static fn () => new self();
 
         $container->setClosure($id, $closure);
@@ -177,7 +177,7 @@ class ContainerTest extends TestCase
     public function testOffsetUnset(): void
     {
         $container = $this->container;
-        $id = Service::class;
+        $id        = Service::class;
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage("Cannot remove service with name $id from the container.");

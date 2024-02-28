@@ -15,10 +15,10 @@ namespace Valkyrja\Tests\Unit\Routing\Annotations;
 
 use Exception;
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Annotations\Route;
 use Valkyrja\Routing\Attributes\Parameter;
+use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the route model.
