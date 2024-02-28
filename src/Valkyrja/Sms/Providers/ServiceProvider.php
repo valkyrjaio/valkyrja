@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Providers;
 
-use Nexmo\Client as Nexmo;
-use Nexmo\Client\Credentials\Basic;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
@@ -24,8 +22,10 @@ use Valkyrja\Sms\Factories\ContainerFactory;
 use Valkyrja\Sms\Factory;
 use Valkyrja\Sms\LogAdapter;
 use Valkyrja\Sms\Message;
-use Valkyrja\Sms\NexmoAdapter;
+use Valkyrja\Sms\VonageAdapter;
 use Valkyrja\Sms\Sms;
+use Vonage\Client as Vonage;
+use Vonage\Client\Credentials\Basic;
 
 /**
  * Class ServiceProvider.
@@ -44,8 +44,8 @@ class ServiceProvider extends Provider
             Factory::class      => 'publishFactory',
             Adapter::class      => 'publishAdapter',
             LogAdapter::class   => 'publishLogAdapter',
-            NexmoAdapter::class => 'publishNexmoAdapter',
-            Nexmo::class        => 'publishNexmo',
+            VonageAdapter::class => 'publishVonageAdapter',
+            Vonage::class       => 'publishNexmo',
             Message::class      => 'publishMessage',
         ];
     }
@@ -60,8 +60,8 @@ class ServiceProvider extends Provider
             Factory::class,
             Adapter::class,
             LogAdapter::class,
-            NexmoAdapter::class,
-            Nexmo::class,
+            VonageAdapter::class,
+            Vonage::class,
             Message::class,
         ];
     }
@@ -155,16 +155,16 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishNexmoAdapter(Container $container): void
+    public static function publishVonageAdapter(Container $container): void
     {
         $container->setClosure(
-            NexmoAdapter::class,
+            VonageAdapter::class,
             /**
-             * @param class-string<NexmoAdapter> $name
+             * @param class-string<VonageAdapter> $name
              */
-            static function (string $name, array $config) use ($container): NexmoAdapter {
+            static function (string $name, array $config) use ($container): VonageAdapter {
                 return new $name(
-                    $container->get(Nexmo::class, [$config])
+                    $container->get(Vonage::class, [$config])
                 );
             }
         );
@@ -180,9 +180,9 @@ class ServiceProvider extends Provider
     public static function publishNexmo(Container $container): void
     {
         $container->setClosure(
-            Nexmo::class,
-            static function (array $config): Nexmo {
-                return new Nexmo(
+            Vonage::class,
+            static function (array $config): Vonage {
+                return new Vonage(
                     new Basic($config['username'], $config['password'])
                 );
             }

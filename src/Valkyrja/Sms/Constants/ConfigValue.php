@@ -15,7 +15,7 @@ namespace Valkyrja\Sms\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Sms\Adapters\LogAdapter;
-use Valkyrja\Sms\Adapters\NexmoAdapter;
+use Valkyrja\Sms\Adapters\VonageAdapter;
 use Valkyrja\Sms\Adapters\NullAdapter;
 use Valkyrja\Sms\Drivers\Driver;
 use Valkyrja\Sms\Messages\Message;
@@ -29,7 +29,7 @@ final class ConfigValue
 {
     public const DEFAULT         = CKP::NEXMO;
     public const DEFAULT_MESSAGE = CKP::DEFAULT;
-    public const ADAPTER         = NexmoAdapter::class;
+    public const ADAPTER         = VonageAdapter::class;
     public const DRIVER          = Driver::class;
     public const MESSAGE         = Message::class;
     public const MESSENGERS      = [

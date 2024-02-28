@@ -19,7 +19,7 @@ use Valkyrja\Sms\Driver;
 use Valkyrja\Sms\Factory as Contract;
 use Valkyrja\Sms\LogAdapter;
 use Valkyrja\Sms\Message;
-use Valkyrja\Sms\NexmoAdapter;
+use Valkyrja\Sms\VonageAdapter;
 
 /**
  * Class ContainerFactory.
@@ -76,8 +76,8 @@ class ContainerFactory extends Factory implements Contract
     {
         $defaultClass = parent::getAdapterDefaultClass($name);
 
-        if (is_a($name, NexmoAdapter::class, true)) {
-            $defaultClass = NexmoAdapter::class;
+        if (is_a($name, VonageAdapter::class, true)) {
+            $defaultClass = VonageAdapter::class;
         } elseif (is_a($name, LogAdapter::class, true)) {
             $defaultClass = LogAdapter::class;
         }

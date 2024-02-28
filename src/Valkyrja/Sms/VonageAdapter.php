@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Sms;
 
 /**
- * Interface NexmoAdapter.
+ * Interface VonageAdapter.
  *
  * @author Melech Mizrachi
  */
-interface NexmoAdapter extends Adapter
+interface VonageAdapter extends Adapter
 {
 }

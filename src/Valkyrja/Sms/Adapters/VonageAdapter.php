@@ -14,32 +14,32 @@ declare(strict_types=1);
 namespace Valkyrja\Sms\Adapters;
 
 use Exception;
-use Nexmo\Client as Nexmo;
 use Valkyrja\Sms\Message;
-use Valkyrja\Sms\NexmoAdapter as Contract;
+use Valkyrja\Sms\VonageAdapter as Contract;
+use Vonage\Client as Vonage;
 
 /**
- * Class NexmoAdapter.
+ * Class VonageAdapter.
  *
  * @author Melech Mizrachi
  */
-class NexmoAdapter implements Contract
+class VonageAdapter implements Contract
 {
     /**
      * The Nexmo client.
      *
-     * @var Nexmo
+     * @var Vonage
      */
-    protected Nexmo $nexmo;
+    protected Vonage $vonage;
 
     /**
-     * NexmoMessage constructor.
+     * VonageMessage constructor.
      *
-     * @param Nexmo $nexmo The Nexmo client
+     * @param Vonage $vonage The Vonage client
      */
-    public function __construct(Nexmo $nexmo)
+    public function __construct(Vonage $vonage)
     {
-        $this->nexmo = $nexmo;
+        $this->vonage = $vonage;
     }
 
     /**
@@ -49,7 +49,7 @@ class NexmoAdapter implements Contract
      */
     public function send(Message $message): void
     {
-        $this->nexmo->message()->send(
+        $this->vonage->message()->send(
             [
                 'to'   => $message->getTo(),
                 'from' => $message->getFrom(),
