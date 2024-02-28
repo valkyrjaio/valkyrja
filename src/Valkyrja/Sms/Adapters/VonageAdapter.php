@@ -49,6 +49,7 @@ class VonageAdapter implements Contract
      */
     public function send(Message $message): void
     {
+        /** @psalm-suppress UndefinedMagicMethod Method totally exists */
         $this->vonage->message()->send(
             [
                 'to'   => $message->getTo(),
