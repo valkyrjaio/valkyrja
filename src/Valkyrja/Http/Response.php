@@ -38,7 +38,7 @@ interface Response extends Message
      *
      * @return static
      */
-    public static function create(string $content = null, int $statusCode = null, array $headers = null): static;
+    public static function create(string|null $content = null, int|null $statusCode = null, array|null $headers = null): static;
 
     /**
      * Gets the response status code.
@@ -72,7 +72,7 @@ interface Response extends Message
      *
      * @return static
      */
-    public function withStatus(int $code, string $reasonPhrase = null): static;
+    public function withStatus(int $code, string|null $reasonPhrase = null): static;
 
     /**
      * Gets the response reason phrase associated with the status code.

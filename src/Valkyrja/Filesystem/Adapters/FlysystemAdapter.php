@@ -268,7 +268,7 @@ class FlysystemAdapter implements Contract
      *
      * @throws FilesystemException
      */
-    public function listContents(string $directory = null, bool $recursive = false): array
+    public function listContents(string|null $directory = null, bool $recursive = false): array
     {
         return $this->flysystem->listContents($directory ?? '', $recursive)->toArray();
     }

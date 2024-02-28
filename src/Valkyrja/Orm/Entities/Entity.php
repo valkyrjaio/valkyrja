@@ -58,7 +58,7 @@ abstract class Entity extends Model implements Contract
      *
      * @var class-string<Repository>|null
      */
-    protected static ?string $repository = null;
+    protected static string|null $repository = null;
 
     /**
      * A list of hidden fields we can expose for storage.
@@ -79,7 +79,7 @@ abstract class Entity extends Model implements Contract
      *
      * @var string|null
      */
-    protected static ?string $connection = null;
+    protected static string|null $connection = null;
 
     /**
      * @inheritDoc

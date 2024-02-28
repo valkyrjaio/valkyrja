@@ -162,7 +162,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
-    public function setLayout(string $layout = null): static
+    public function setLayout(string|null $layout = null): static
     {
         // If no layout has been set
         if ($layout === null) {

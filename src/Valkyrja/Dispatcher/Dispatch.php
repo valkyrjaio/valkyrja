@@ -37,7 +37,7 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setId(string $id = null): static;
+    public function setId(string|null $id = null): static;
 
     /**
      * Get the name.
@@ -53,7 +53,7 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setName(string $name = null): static;
+    public function setName(string|null $name = null): static;
 
     /**
      * Get the class.
@@ -69,7 +69,7 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setClass(string $class = null): static;
+    public function setClass(string|null $class = null): static;
 
     /**
      * Check whether this is a class dispatch.
@@ -92,7 +92,7 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setProperty(string $property = null): static;
+    public function setProperty(string|null $property = null): static;
 
     /**
      * Check whether this is a class/property dispatch.
@@ -115,7 +115,7 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setMethod(string $method = null): static;
+    public function setMethod(string|null $method = null): static;
 
     /**
      * Check whether this is a class/method dispatch.
@@ -152,7 +152,7 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setFunction(string $function = null): static;
+    public function setFunction(string|null $function = null): static;
 
     /**
      * Check whether this is a function dispatch.
@@ -175,7 +175,7 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setClosure(Closure $closure = null): static;
+    public function setClosure(Closure|null $closure = null): static;
 
     /**
      * Check whether this is a closure dispatch.
@@ -198,7 +198,7 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setMatches(array $matches = null): static;
+    public function setMatches(array|null $matches = null): static;
 
     /**
      * Get the arguments.
@@ -214,7 +214,7 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setArguments(array $arguments = null): static;
+    public function setArguments(array|null $arguments = null): static;
 
     /**
      * Get the dependencies.
@@ -230,5 +230,5 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setDependencies(array $dependencies = null): static;
+    public function setDependencies(array|null $dependencies = null): static;
 }

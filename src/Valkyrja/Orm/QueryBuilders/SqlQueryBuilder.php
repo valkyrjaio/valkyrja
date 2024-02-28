@@ -79,7 +79,7 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function select(array $columns = null): static
+    public function select(array|null $columns = null): static
     {
         $this->type    = Statement::SELECT;
         $this->columns = $columns ?? ['*'];
@@ -130,7 +130,7 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function orderBy(string $column, string $type = null): static
+    public function orderBy(string $column, string|null $type = null): static
     {
         $this->orderBy[] = $column . ' ' . ((string) $type);
 

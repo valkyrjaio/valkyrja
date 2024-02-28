@@ -61,7 +61,7 @@ class SodiumAdapter extends Adapter
      * @throws Exception
      * @throws SodiumException
      */
-    public function encrypt(string $message, string $key = null): string
+    public function encrypt(string $message, string|null $key = null): string
     {
         $key    = $this->getKeyAsBytes($key);
         $nonce  = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
@@ -79,7 +79,7 @@ class SodiumAdapter extends Adapter
      * @throws JsonException
      * @throws SodiumException
      */
-    public function encryptArray(array $array, string $key = null): string
+    public function encryptArray(array $array, string|null $key = null): string
     {
         return $this->encrypt(Arr::toString($array), $key);
     }
@@ -90,7 +90,7 @@ class SodiumAdapter extends Adapter
      * @throws JsonException
      * @throws SodiumException
      */
-    public function encryptObject(object $object, string $key = null): string
+    public function encryptObject(object $object, string|null $key = null): string
     {
         return $this->encrypt(Obj::toString($object), $key);
     }
@@ -100,7 +100,7 @@ class SodiumAdapter extends Adapter
      *
      * @throws SodiumException
      */
-    public function decrypt(string $encrypted, string $key = null): string
+    public function decrypt(string $encrypted, string|null $key = null): string
     {
         $key   = $this->getKeyAsBytes($key);
         $plain = $this->getDecodedPlain($this->getDecoded($encrypted), $key);
@@ -116,7 +116,7 @@ class SodiumAdapter extends Adapter
      * @throws JsonException
      * @throws SodiumException
      */
-    public function decryptArray(string $encrypted, string $key = null): array
+    public function decryptArray(string $encrypted, string|null $key = null): array
     {
         return json_decode($this->decrypt($encrypted, $key), true, 512, JSON_THROW_ON_ERROR);
     }
@@ -127,7 +127,7 @@ class SodiumAdapter extends Adapter
      * @throws JsonException
      * @throws SodiumException
      */
-    public function decryptObject(string $encrypted, string $key = null): object
+    public function decryptObject(string $encrypted, string|null $key = null): object
     {
         return json_decode($this->decrypt($encrypted, $key), false, 512, JSON_THROW_ON_ERROR);
     }
@@ -233,7 +233,7 @@ class SodiumAdapter extends Adapter
      *
      * @return string
      */
-    protected function getDecodedPlain(string $decoded, string $key = null): string
+    protected function getDecodedPlain(string $decoded, string|null $key = null): string
     {
         if ($key === null) {
             throw new CryptException("Invalid ky `$key` provided");
@@ -287,7 +287,7 @@ class SodiumAdapter extends Adapter
      *
      * @return string
      */
-    protected function getKeyAsBytes(string $key = null): string
+    protected function getKeyAsBytes(string|null $key = null): string
     {
         $key ??= $this->key;
 

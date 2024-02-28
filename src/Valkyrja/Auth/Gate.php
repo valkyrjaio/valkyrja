@@ -28,7 +28,7 @@ interface Gate
      *
      * @return bool|null
      */
-    public function before(string &$action, string &$policy = null): bool|null;
+    public function before(string &$action, string|null &$policy = null): bool|null;
 
     /**
      * After authorization check.
@@ -39,7 +39,7 @@ interface Gate
      *
      * @return bool|null
      */
-    public function after(bool $isAuthorized, string $action, string $policy = null): bool|null;
+    public function after(bool $isAuthorized, string $action, string|null $policy = null): bool|null;
 
     /**
      * Check if the authenticated user is authorized.
@@ -49,5 +49,5 @@ interface Gate
      *
      * @return bool
      */
-    public function isAuthorized(string $action, string $policy = null): bool;
+    public function isAuthorized(string $action, string|null $policy = null): bool;
 }

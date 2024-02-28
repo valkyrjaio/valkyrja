@@ -131,7 +131,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setType(CastType|string $type = null): static
+    public function setType(CastType|string|null $type = null): static
     {
         $this->type = is_string($type)
             ? CastType::from($type)
@@ -157,7 +157,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setEntity(string $entity = null): static
+    public function setEntity(string|null $entity = null): static
     {
         $this->entity = $entity;
 
@@ -181,7 +181,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setEntityColumn(string $entityColumn = null): static
+    public function setEntityColumn(string|null $entityColumn = null): static
     {
         $this->entityColumn = $entityColumn;
 
@@ -205,7 +205,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setEntityRelationships(array $entityRelationships = null): static
+    public function setEntityRelationships(array|null $entityRelationships = null): static
     {
         $this->entityRelationships = $entityRelationships;
 
@@ -229,7 +229,7 @@ class Parameter extends Model
      *
      * @return static
      */
-    public function setEnum(string $enum = null): static
+    public function setEnum(string|null $enum = null): static
     {
         if ($enum !== null) {
             assert(is_a($enum, BackedEnum::class, true));

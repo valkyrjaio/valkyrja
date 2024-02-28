@@ -25,7 +25,7 @@ class EnumClass extends Enum
     public const FOO = 'bar';
     public const BAR = 'foo';
 
-    protected static ?array $VALUES = [
+    protected static array|null $VALUES = [
         self::FOO => self::FOO,
         self::BAR => self::BAR,
     ];

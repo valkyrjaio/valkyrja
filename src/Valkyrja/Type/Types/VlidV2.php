@@ -23,7 +23,7 @@ use Valkyrja\Type\VlidV2 as Contract;
  */
 class VlidV2 extends Vlid implements Contract
 {
-    public function __construct(string $subject = null)
+    public function __construct(string|null $subject = null)
     {
         if ($subject !== null) {
             Helper::validate($subject);

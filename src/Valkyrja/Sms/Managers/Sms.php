@@ -57,7 +57,7 @@ class Sms extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function use(string $name = null): Driver
+    public function use(string|null $name = null): Driver
     {
         return parent::use($name);
     }
@@ -65,7 +65,7 @@ class Sms extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function createMessage(string $name = null, array $data = []): Message
+    public function createMessage(string|null $name = null, array $data = []): Message
     {
         return parent::createMessage($name, $data);
     }

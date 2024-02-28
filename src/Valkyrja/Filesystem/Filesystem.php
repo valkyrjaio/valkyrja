@@ -30,7 +30,7 @@ interface Filesystem extends Manager
      *
      * @return Driver
      */
-    public function use(string $name = null): Driver;
+    public function use(string|null $name = null): Driver;
 
     /**
      * Determine whether a path exists.
@@ -239,5 +239,5 @@ interface Filesystem extends Manager
      *
      * @return array
      */
-    public function listContents(string $directory = null, bool $recursive = false): array;
+    public function listContents(string|null $directory = null, bool $recursive = false): array;
 }

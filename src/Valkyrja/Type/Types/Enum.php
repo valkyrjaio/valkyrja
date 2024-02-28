@@ -38,7 +38,7 @@ abstract class Enum
      *
      * @var array|null
      */
-    protected static ?array $VALUES = null;
+    protected static array|null $VALUES = null;
 
     /**
      * The enum cache to avoid more than one reflection class per enum.

@@ -97,7 +97,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setData(array $data = null): static
+    public function setData(array|null $data = null): static
     {
         $this->data = $data;
 

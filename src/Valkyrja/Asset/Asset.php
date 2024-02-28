@@ -28,5 +28,5 @@ interface Asset
      *
      * @return Adapter
      */
-    public function getBundle(string $bundle, string $adapter = null): Adapter;
+    public function getBundle(string $bundle, string|null $adapter = null): Adapter;
 }

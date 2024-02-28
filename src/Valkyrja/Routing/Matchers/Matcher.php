@@ -56,7 +56,7 @@ class Matcher implements Contract
      * @throws InvalidRoutePath
      * @throws InvalidRouteParameter
      */
-    public function match(string $path, string $method = null): Route|null
+    public function match(string $path, string|null $method = null): Route|null
     {
         $path = Helpers::trimPath($path);
 
@@ -70,7 +70,7 @@ class Matcher implements Contract
     /**
      * @inheritDoc
      */
-    public function matchStatic(string $path, string $method = null): Route|null
+    public function matchStatic(string $path, string|null $method = null): Route|null
     {
         $route = $this->collection->getStatic($path, $method);
 
@@ -87,7 +87,7 @@ class Matcher implements Contract
      * @throws InvalidRoutePath
      * @throws InvalidRouteParameter
      */
-    public function matchDynamic(string $path, string $method = null): Route|null
+    public function matchDynamic(string $path, string|null $method = null): Route|null
     {
         return $this->matchDynamicFromArray($this->collection->allDynamic($method), $path);
     }

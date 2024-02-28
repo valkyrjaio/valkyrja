@@ -31,7 +31,7 @@ class PathGenerator implements Contract
     /**
      * @inheritDoc
      */
-    public function parse(array $segments, array $data = null, array $params = null): string
+    public function parse(array $segments, array|null $data = null, array|null $params = null): string
     {
         // If data was passed but no params
         if ($params === null && $data !== null) {

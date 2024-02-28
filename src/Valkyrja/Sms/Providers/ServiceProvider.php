@@ -22,8 +22,8 @@ use Valkyrja\Sms\Factories\ContainerFactory;
 use Valkyrja\Sms\Factory;
 use Valkyrja\Sms\LogAdapter;
 use Valkyrja\Sms\Message;
-use Valkyrja\Sms\VonageAdapter;
 use Valkyrja\Sms\Sms;
+use Valkyrja\Sms\VonageAdapter;
 use Vonage\Client as Vonage;
 use Vonage\Client\Credentials\Basic;
 

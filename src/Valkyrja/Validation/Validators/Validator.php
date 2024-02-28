@@ -88,7 +88,7 @@ class Validator implements Contract
      *
      * @return T|object
      */
-    public function getRules(string $name = null): object
+    public function getRules(string|null $name = null): object
     {
         $name ??= $this->defaultRules;
 

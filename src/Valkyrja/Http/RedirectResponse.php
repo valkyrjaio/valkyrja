@@ -29,7 +29,7 @@ interface RedirectResponse extends Response
      *
      * @return static
      */
-    public static function createFromUri(string $uri = null, int $statusCode = null, array $headers = null): static;
+    public static function createFromUri(string|null $uri = null, int|null $statusCode = null, array|null $headers = null): static;
 
     /**
      * Get the uri.

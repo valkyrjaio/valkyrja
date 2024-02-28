@@ -43,7 +43,7 @@ class MbStr extends Str
      *
      * @return string
      */
-    public static function substr(string $subject, int $start, int $length = null): string
+    public static function substr(string $subject, int $start, int|null $length = null): string
     {
         return mb_substr($subject, $start, $length, static::$charset);
     }

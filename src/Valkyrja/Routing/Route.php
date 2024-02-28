@@ -74,7 +74,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setTo(string $to = null): static;
+    public function setTo(string|null $to = null): static;
 
     /**
      * Get the redirect status code.
@@ -90,7 +90,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setCode(int $code = null): static;
+    public function setCode(int|null $code = null): static;
 
     /**
      * Get the request methods.
@@ -122,7 +122,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setRegex(string $regex = null): static;
+    public function setRegex(string|null $regex = null): static;
 
     /**
      * Get the parameters.
@@ -167,12 +167,12 @@ interface Route extends Dispatch
      */
     public function addParameter(
         string $name,
-        string $regex = null,
-        CastType $type = null,
-        string $entity = null,
-        string $entityColumn = null,
-        array $entityRelationships = null,
-        string $enum = null,
+        string|null $regex = null,
+        CastType|null $type = null,
+        string|null $entity = null,
+        string|null $entityColumn = null,
+        array|null $entityRelationships = null,
+        string|null $enum = null,
         bool $isOptional = false,
         bool $shouldCapture = true,
         mixed $default = null
@@ -192,7 +192,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setMiddleware(array $middleware = null): static;
+    public function setMiddleware(array|null $middleware = null): static;
 
     /**
      * Route with added middleware.
@@ -217,7 +217,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setMessages(array $messages = null): static;
+    public function setMessages(array|null $messages = null): static;
 
     /**
      * Route with added messages.

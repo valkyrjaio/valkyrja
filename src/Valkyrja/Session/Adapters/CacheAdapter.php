@@ -43,7 +43,7 @@ class CacheAdapter extends PHPAdapter
      * @param string|null $sessionId   [optional] The session id
      * @param string|null $sessionName [optional] The session name
      */
-    public function __construct(Cache $cache, array $config, string $sessionId = null, string $sessionName = null)
+    public function __construct(Cache $cache, array $config, string|null $sessionId = null, string|null $sessionName = null)
     {
         parent::__construct($config, $sessionId, $sessionName);
 

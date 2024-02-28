@@ -60,7 +60,7 @@ class ORM
      *
      * @return void
      */
-    public function ormUnique(mixed $subject, string $entity, string $field = null): void
+    public function ormUnique(mixed $subject, string $entity, string|null $field = null): void
     {
         $field ??= $entity::getIdField();
         // Check for a result
@@ -83,7 +83,7 @@ class ORM
      *
      * @return void
      */
-    public function ormExists(mixed $subject, string $entity, string $field = null): void
+    public function ormExists(mixed $subject, string $entity, string|null $field = null): void
     {
         $field ??= $entity::getIdField();
         // Check for a result

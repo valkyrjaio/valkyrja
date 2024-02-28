@@ -29,7 +29,7 @@ interface ResponseFactory
      *
      * @return Response
      */
-    public function createResponse(string $content = null, int $statusCode = null, array $headers = null): Response;
+    public function createResponse(string|null $content = null, int|null $statusCode = null, array|null $headers = null): Response;
 
     /**
      * Create a JSON response.
@@ -40,7 +40,7 @@ interface ResponseFactory
      *
      * @return JsonResponse
      */
-    public function createJsonResponse(array $data = null, int $statusCode = null, array $headers = null): JsonResponse;
+    public function createJsonResponse(array|null $data = null, int|null $statusCode = null, array|null $headers = null): JsonResponse;
 
     /**
      * Create a JSONP response.
@@ -52,7 +52,7 @@ interface ResponseFactory
      *
      * @return JsonResponse
      */
-    public function createJsonpResponse(string $callback, array $data = null, int $statusCode = null, array $headers = null): JsonResponse;
+    public function createJsonpResponse(string $callback, array|null $data = null, int|null $statusCode = null, array|null $headers = null): JsonResponse;
 
     /**
      * Create a redirect response.
@@ -63,7 +63,7 @@ interface ResponseFactory
      *
      * @return RedirectResponse
      */
-    public function createRedirectResponse(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse;
+    public function createRedirectResponse(string|null $uri = null, int|null $statusCode = null, array|null $headers = null): RedirectResponse;
 
     /**
      * Redirect to a named route response builder.
@@ -75,7 +75,7 @@ interface ResponseFactory
      *
      * @return RedirectResponse
      */
-    public function route(string $name, array $data = null, int $statusCode = null, array $headers = null): RedirectResponse;
+    public function route(string $name, array|null $data = null, int|null $statusCode = null, array|null $headers = null): RedirectResponse;
 
     /**
      * View response builder.
@@ -87,5 +87,5 @@ interface ResponseFactory
      *
      * @return Response
      */
-    public function view(string $template, array $data = null, int $statusCode = null, array $headers = null): Response;
+    public function view(string $template, array|null $data = null, int|null $statusCode = null, array|null $headers = null): Response;
 }

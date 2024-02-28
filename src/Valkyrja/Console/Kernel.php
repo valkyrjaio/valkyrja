@@ -54,5 +54,5 @@ interface Kernel
      *
      * @return int
      */
-    public function run(Input $input = null, Output $output = null): int;
+    public function run(Input|null $input = null, Output|null $output = null): int;
 }

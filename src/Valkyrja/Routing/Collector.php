@@ -94,7 +94,7 @@ interface Collector
      *
      * @return Route
      */
-    public function get(string $path, Closure|string $handler, string $name = null, bool $setDependencies = false): Route;
+    public function get(string $path, Closure|string $handler, string|null $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set a POST route.
@@ -114,7 +114,7 @@ interface Collector
      *
      * @return Route
      */
-    public function post(string $path, Closure|string $handler, string $name = null, bool $setDependencies = false): Route;
+    public function post(string $path, Closure|string $handler, string|null $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set a PUT route.
@@ -134,7 +134,7 @@ interface Collector
      *
      * @return Route
      */
-    public function put(string $path, Closure|string $handler, string $name = null, bool $setDependencies = false): Route;
+    public function put(string $path, Closure|string $handler, string|null $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set a PATCH route.
@@ -154,7 +154,7 @@ interface Collector
      *
      * @return Route
      */
-    public function patch(string $path, Closure|string $handler, string $name = null, bool $setDependencies = false): Route;
+    public function patch(string $path, Closure|string $handler, string|null $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set a DELETE route.
@@ -174,7 +174,7 @@ interface Collector
      *
      * @return Route
      */
-    public function delete(string $path, Closure|string $handler, string $name = null, bool $setDependencies = false): Route;
+    public function delete(string $path, Closure|string $handler, string|null $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set a HEAD route.
@@ -194,7 +194,7 @@ interface Collector
      *
      * @return Route
      */
-    public function head(string $path, Closure|string $handler, string $name = null, bool $setDependencies = false): Route;
+    public function head(string $path, Closure|string $handler, string|null $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set any request method route.
@@ -214,7 +214,7 @@ interface Collector
      *
      * @return Route
      */
-    public function any(string $path, Closure|string $handler, string $name = null, bool $setDependencies = false): Route;
+    public function any(string $path, Closure|string $handler, string|null $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set any request method route.
@@ -229,5 +229,5 @@ interface Collector
      *
      * @return Route
      */
-    public function redirect(string $path, string $to, array $methods = null, string $name = null): Route;
+    public function redirect(string $path, string $to, array|null $methods = null, string|null $name = null): Route;
 }

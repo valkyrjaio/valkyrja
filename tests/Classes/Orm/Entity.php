@@ -34,14 +34,14 @@ class Entity extends AbstractEntity
      *
      * @var string|null
      */
-    protected ?string $prop = null;
+    protected string|null $prop = null;
 
     /**
      * Get the prop.
      *
-     * @return string
+     * @return string|null
      */
-    public function getProp(): ?string
+    public function getProp(): string|null
     {
         return $this->prop;
     }

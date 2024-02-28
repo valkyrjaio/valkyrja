@@ -78,7 +78,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setMessage(string $message = null): static
+    public function setMessage(string|null $message = null): static
     {
         $this->message = $message;
 
@@ -152,7 +152,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setData(array $data = null): static
+    public function setData(array|null $data = null): static
     {
         $this->data = $data;
 

@@ -22,7 +22,7 @@ class Time
 {
     protected static int|null $frozenTime = null;
 
-    public static function freeze(int $time = null): void
+    public static function freeze(int|null $time = null): void
     {
         static::$frozenTime = $time ?? static::time();
     }

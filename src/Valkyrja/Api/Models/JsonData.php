@@ -90,7 +90,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setItem(object $item = null): static
+    public function setItem(object|null $item = null): static
     {
         $this->item = $item;
 
@@ -126,7 +126,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setItems(array $items = null): static
+    public function setItems(array|null $items = null): static
     {
         $this->items = $items;
 
@@ -162,7 +162,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setTotal(int $total = null): static
+    public function setTotal(int|null $total = null): static
     {
         $this->total = $total;
 
@@ -180,7 +180,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setMessages(array $messages = null): static
+    public function setMessages(array|null $messages = null): static
     {
         $this->messages = $messages;
 
@@ -198,7 +198,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setData(array $data = null): static
+    public function setData(array|null $data = null): static
     {
         $this->data = $data;
 
@@ -216,7 +216,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setMessage(string $message = null): static
+    public function setMessage(string|null $message = null): static
     {
         $this->message = $message;
 

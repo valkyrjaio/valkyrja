@@ -53,7 +53,7 @@ class Valkyrja implements Application
      *
      * @var class-string<Env>|null
      */
-    protected static ?string $env = null;
+    protected static string|null $env = null;
 
     /**
      * Application config.
@@ -81,7 +81,7 @@ class Valkyrja implements Application
      *
      * @param class-string<Config>|null $config [optional] The config class to use
      */
-    public function __construct(string $config = null)
+    public function __construct(string|null $config = null)
     {
         $this->setup($config);
     }
@@ -97,7 +97,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public static function env(string $key = null, $default = null): mixed
+    public static function env(string|null $key = null, $default = null): mixed
     {
         $env = self::$env;
 
@@ -141,7 +141,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function setup(string $config = null, bool $force = false): void
+    public function setup(string|null $config = null, bool $force = false): void
     {
         // If the application was already setup, no need to do it again
         if (self::$setup && ! $force) {
@@ -176,7 +176,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function config(string $key = null, mixed $default = null): mixed
+    public function config(string|null $key = null, mixed $default = null): mixed
     {
         // If no key was specified
         if ($key === null) {
@@ -323,7 +323,7 @@ class Valkyrja implements Application
      *
      * @return void
      */
-    protected function bootstrapConfig(string $config = null): void
+    protected function bootstrapConfig(string|null $config = null): void
     {
         // Get the cache file
         $cacheFilePath = $this->getCacheFilePath();

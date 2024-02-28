@@ -42,7 +42,7 @@ final class FormatOption extends Enum
         self::CONCEAL    => 28,
     ];
 
-    protected static ?array $VALUES = [
+    protected static array|null $VALUES = [
         self::BOLD       => self::BOLD,
         self::UNDERSCORE => self::UNDERSCORE,
         self::BLINK      => self::BLINK,

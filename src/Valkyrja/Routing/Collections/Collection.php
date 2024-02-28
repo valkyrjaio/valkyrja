@@ -78,7 +78,7 @@ class Collection implements Contract
      *
      * @throws JsonException
      */
-    public function get(string $path, string $method = null): Route|null
+    public function get(string $path, string|null $method = null): Route|null
     {
         return $this->getStatic($path, $method) ?? $this->getDynamic($path, $method);
     }
@@ -86,7 +86,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function isset(string $path, string $method = null): bool
+    public function isset(string $path, string|null $method = null): bool
     {
         return $this->hasStatic($path, $method) || $this->hasDynamic($path, $method);
     }
@@ -112,7 +112,7 @@ class Collection implements Contract
      *
      * @throws JsonException
      */
-    public function getStatic(string $path, string $method = null): Route|null
+    public function getStatic(string $path, string|null $method = null): Route|null
     {
         return $this->getOfType($this->static, $path, $method);
     }
@@ -120,7 +120,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function hasStatic(string $path, string $method = null): bool
+    public function hasStatic(string $path, string|null $method = null): bool
     {
         return $this->hasOfType($this->static, $path, $method);
     }
@@ -128,7 +128,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function allStatic(string $method = null): array
+    public function allStatic(string|null $method = null): array
     {
         return $this->allOfType($this->static, $method);
     }
@@ -138,7 +138,7 @@ class Collection implements Contract
      *
      * @throws JsonException
      */
-    public function getDynamic(string $regex, string $method = null): Route|null
+    public function getDynamic(string $regex, string|null $method = null): Route|null
     {
         return $this->getOfType($this->dynamic, $regex, $method);
     }
@@ -146,7 +146,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function hasDynamic(string $regex, string $method = null): bool
+    public function hasDynamic(string $regex, string|null $method = null): bool
     {
         return $this->hasOfType($this->dynamic, $regex, $method);
     }
@@ -154,7 +154,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function allDynamic(string $method = null): array
+    public function allDynamic(string|null $method = null): array
     {
         return $this->allOfType($this->dynamic, $method);
     }
@@ -253,7 +253,7 @@ class Collection implements Contract
      *
      * @return Route|null
      */
-    protected function getOfType(array $type, string $path, string $method = null): Route|null
+    protected function getOfType(array $type, string $path, string|null $method = null): Route|null
     {
         if ($method === null) {
             return $this->getAnyOfType($type, $path);
@@ -291,7 +291,7 @@ class Collection implements Contract
      *
      * @return bool
      */
-    protected function hasOfType(array $type, string $path, string $method = null): bool
+    protected function hasOfType(array $type, string $path, string|null $method = null): bool
     {
         if ($method === null) {
             return $this->hasAnyOfType($type, $path);
@@ -327,7 +327,7 @@ class Collection implements Contract
      *
      * @return array<string, Route>
      */
-    protected function allOfType(array $type, string $method = null): array
+    protected function allOfType(array $type, string|null $method = null): array
     {
         if ($method === null) {
             return $this->ensureMethodRoutes($type);
@@ -377,7 +377,7 @@ class Collection implements Contract
      *
      * @return Route|null
      */
-    protected function ensureRoute(Route|array|string $route = null): Route|null
+    protected function ensureRoute(Route|array|string|null $route = null): Route|null
     {
         if (is_string($route)) {
             $route = $this->routes[$route];

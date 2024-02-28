@@ -30,10 +30,10 @@ class Ulid extends Parameter
      * @param class-string<Entity>|null $entity
      */
     public function __construct(
-        string $entity = null,
-        string $entityColumn = null,
-        array $entityRelationships = null,
-        string $name = null,
+        string|null $entity = null,
+        string|null $entityColumn = null,
+        array|null $entityRelationships = null,
+        string|null $name = null,
         bool $isOptional = false,
         bool $shouldCapture = true,
         mixed $default = null,

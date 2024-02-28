@@ -55,10 +55,10 @@ class HttpException extends RuntimeException
      * @param Response|null $response   [optional] The Response to send
      */
     public function __construct(
-        int $statusCode = null,
-        string $message = null,
-        array $headers = null,
-        Response $response = null
+        int|null $statusCode = null,
+        string|null $message = null,
+        array|null $headers = null,
+        Response|null $response = null
     ) {
         $this->statusCode = $statusCode ?? StatusCode::INTERNAL_SERVER_ERROR;
         $this->headers    = $headers ?? [];

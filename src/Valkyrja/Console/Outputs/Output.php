@@ -75,7 +75,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
-    public function write(array $messages, bool $newLine = null, OutputStyle $outputStyle = null): void
+    public function write(array $messages, bool|null $newLine = null, OutputStyle|null $outputStyle = null): void
     {
         foreach ($messages as $message) {
             $this->writeMessage($message, $newLine, $outputStyle);
@@ -85,7 +85,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
-    public function writeMessage(string $message, bool $newLine = null, OutputStyle $outputStyle = null): void
+    public function writeMessage(string $message, bool|null $newLine = null, OutputStyle|null $outputStyle = null): void
     {
         $newLine ??= false;
         $outputStyleType = $outputStyle?->value ?? OutputStyle::NORMAL;

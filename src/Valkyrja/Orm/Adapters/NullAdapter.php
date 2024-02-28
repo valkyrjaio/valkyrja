@@ -73,7 +73,7 @@ class NullAdapter extends Adapter
     /**
      * @inheritDoc
      */
-    public function lastInsertId(string $table = null, string $idField = null): string
+    public function lastInsertId(string|null $table = null, string|null $idField = null): string
     {
         return '';
     }

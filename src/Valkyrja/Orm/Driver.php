@@ -72,7 +72,7 @@ interface Driver
      *
      * @return string
      */
-    public function lastInsertId(string $table = null, string $idField = null): string;
+    public function lastInsertId(string|null $table = null, string|null $idField = null): string;
 
     /**
      * Create a new query instance.
@@ -82,7 +82,7 @@ interface Driver
      *
      * @return Query
      */
-    public function createQuery(string $query = null, string $entity = null): Query;
+    public function createQuery(string|null $query = null, string|null $entity = null): Query;
 
     /**
      * Create a new query builder instance.
@@ -92,7 +92,7 @@ interface Driver
      *
      * @return QueryBuilder
      */
-    public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder;
+    public function createQueryBuilder(string|null $entity = null, string|null $alias = null): QueryBuilder;
 
     /**
      * Create a new retriever instance.

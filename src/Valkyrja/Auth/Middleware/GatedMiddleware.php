@@ -30,21 +30,21 @@ abstract class GatedMiddleware extends AuthorizedMiddleware
      *
      * @var class-string<Gate>|null
      */
-    protected static ?string $gate = null;
+    protected static string|null $gate = null;
 
     /**
      * The policy to check against.
      *
      * @var class-string<Policy>|null
      */
-    protected static ?string $policy = null;
+    protected static string|null $policy = null;
 
     /**
      * The action to check for.
      *
      * @var string|null
      */
-    protected static ?string $action = null;
+    protected static string|null $action = null;
 
     /**
      * @inheritDoc

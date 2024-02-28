@@ -68,7 +68,7 @@ interface Repository
      *
      * @return static
      */
-    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): static;
+    public function where(string $column, string|null $operator = null, mixed $value = null, bool $setType = true): static;
 
     /**
      * Start a where clause in parentheses.
@@ -109,9 +109,9 @@ interface Repository
         string $table,
         string $column1,
         string $column2,
-        string $operator = null,
-        string $type = null,
-        bool $isWhere = null
+        string|null $operator = null,
+        string|null $type = null,
+        bool|null $isWhere = null
     ): static;
 
     /**
@@ -122,7 +122,7 @@ interface Repository
      *
      * @return static
      */
-    public function orderBy(string $column, string $direction = null): static;
+    public function orderBy(string $column, string|null $direction = null): static;
 
     /**
      * Set limit.
@@ -239,7 +239,7 @@ interface Repository
      *
      * @return void
      */
-    public function clear(Entity $entity = null): void;
+    public function clear(Entity|null $entity = null): void;
 
     /**
      * Persist all entities.
@@ -255,7 +255,7 @@ interface Repository
      *
      * @return QueryBuilder
      */
-    public function createQueryBuilder(string $alias = null): QueryBuilder;
+    public function createQueryBuilder(string|null $alias = null): QueryBuilder;
 
     /**
      * Create a new query.

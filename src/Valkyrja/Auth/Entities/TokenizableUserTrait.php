@@ -28,7 +28,7 @@ trait TokenizableUserTrait
      *
      * @var string|null
      */
-    protected static ?string $token = null;
+    protected static string|null $token = null;
 
     /**
      * @inheritDoc

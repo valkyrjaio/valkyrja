@@ -29,7 +29,7 @@ class NotFoundHttpException extends HttpException
      * @param string|null $message    [optional] The Exception message to throw
      * @param array|null  $headers    [optional] The headers to send
      */
-    public function __construct(int $statusCode = null, string $message = null, array $headers = null)
+    public function __construct(int|null $statusCode = null, string|null $message = null, array|null $headers = null)
     {
         parent::__construct($statusCode ?? StatusCode::NOT_FOUND, $message, $headers);
     }

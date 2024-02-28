@@ -28,18 +28,18 @@ use Valkyrja\Routing\Models\Parameter;
 class Options extends Route
 {
     /**
-     * @param Parameter[]|null $parameters The parameters
+     * @param Parameter[]|null             $parameters The parameters
      * @param class-string<Message>[]|null $messages   The messages
      */
     public function __construct(
         string $path,
-        string $name = null,
-        array $parameters = null,
-        array $middleware = null,
-        array $messages = null,
-        bool $secure = null,
-        string $to = null,
-        int $code = null,
+        string|null $name = null,
+        array|null $parameters = null,
+        array|null $middleware = null,
+        array|null $messages = null,
+        bool|null $secure = null,
+        string|null $to = null,
+        int|null $code = null,
     ) {
         parent::__construct(
             path      : $path,

@@ -50,7 +50,7 @@ class Stream implements StreamContract
      *
      * @throws InvalidStream
      */
-    public function __construct(string $stream, string $mode = null)
+    public function __construct(string $stream, string|null $mode = null)
     {
         $this->setStream($stream, $mode);
     }
@@ -226,7 +226,7 @@ class Stream implements StreamContract
     /**
      * @inheritDoc
      */
-    public function attach(string $stream, string $mode = null): void
+    public function attach(string $stream, string|null $mode = null): void
     {
         $this->setStream($stream, $mode);
     }
@@ -319,7 +319,7 @@ class Stream implements StreamContract
     /**
      * @inheritDoc
      */
-    public function getMetadata(string $key = null): mixed
+    public function getMetadata(string|null $key = null): mixed
     {
         // Ensure the stream is valid
         if ($this->isInValidStream()) {

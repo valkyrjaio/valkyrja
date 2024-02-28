@@ -45,7 +45,7 @@ class RedisAdapter implements Contract
      * @param Client      $client The predis client
      * @param string|null $prefix The prefix
      */
-    public function __construct(Client $client, string $prefix = null)
+    public function __construct(Client $client, string|null $prefix = null)
     {
         $this->predis = $client;
         $this->prefix = $prefix ?? '';

@@ -69,9 +69,9 @@ class Option
     public function __construct(
         string $name,
         string $description,
-        string $shortcut = null,
-        OptionMode $mode = null,
-        string $default = null
+        string|null $shortcut = null,
+        OptionMode|null $mode = null,
+        string|null $default = null
     ) {
         $this->name        = $name;
         $this->shortcut    = $shortcut;

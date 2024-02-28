@@ -82,7 +82,7 @@ abstract class Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function use(string $name = null): Driver
+    public function use(string|null $name = null): Driver
     {
         // The configuration name to use
         $name ??= $this->defaultConfiguration;

@@ -69,7 +69,7 @@ trait MiddlewareAwareTrait
      *
      * @return Request|Response
      */
-    public function requestMiddleware(Request $request, array $middleware = null): Response|Request
+    public function requestMiddleware(Request $request, array|null $middleware = null): Response|Request
     {
         // Set the middleware to any middleware passed or the base middleware
         $middleware ??= static::$middleware;
@@ -105,7 +105,7 @@ trait MiddlewareAwareTrait
      *
      * @return Response
      */
-    public function responseMiddleware(Request $request, Response $response, array $middleware = null): Response
+    public function responseMiddleware(Request $request, Response $response, array|null $middleware = null): Response
     {
         // Set the middleware to any middleware passed or the base middleware
         $middleware ??= static::$middleware;
@@ -136,7 +136,7 @@ trait MiddlewareAwareTrait
      *
      * @return void
      */
-    public function terminableMiddleware(Request $request, Response $response, array $middleware = null): void
+    public function terminableMiddleware(Request $request, Response $response, array|null $middleware = null): void
     {
         // Set the middleware to any middleware passed or the base middleware
         $middleware ??= static::$middleware;

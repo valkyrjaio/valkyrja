@@ -15,8 +15,8 @@ namespace Valkyrja\Sms\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Sms\Adapters\LogAdapter;
-use Valkyrja\Sms\Adapters\VonageAdapter;
 use Valkyrja\Sms\Adapters\NullAdapter;
+use Valkyrja\Sms\Adapters\VonageAdapter;
 use Valkyrja\Sms\Drivers\Driver;
 use Valkyrja\Sms\Messages\Message;
 

@@ -41,7 +41,7 @@ interface Auth
      *
      * @return Adapter
      */
-    public function getAdapter(string $name = null): Adapter;
+    public function getAdapter(string|null $name = null): Adapter;
 
     /**
      * Get a repository by user entity name.
@@ -51,7 +51,7 @@ interface Auth
      *
      * @return Repository
      */
-    public function getRepository(string $user = null, string $adapter = null): Repository;
+    public function getRepository(string|null $user = null, string|null $adapter = null): Repository;
 
     /**
      * Get a gate by name.
@@ -62,7 +62,7 @@ interface Auth
      *
      * @return Gate
      */
-    public function getGate(string $name = null, string $user = null, string $adapter = null): Gate;
+    public function getGate(string|null $name = null, string|null $user = null, string|null $adapter = null): Gate;
 
     /**
      * Get a policy by name.
@@ -73,7 +73,7 @@ interface Auth
      *
      * @return Policy
      */
-    public function getPolicy(string $name = null, string $user = null, string $adapter = null): Policy;
+    public function getPolicy(string|null $name = null, string|null $user = null, string|null $adapter = null): Policy;
 
     /**
      * Get the factory.
@@ -93,7 +93,7 @@ interface Auth
      *
      * @return Request
      */
-    public function requestWithAuthToken(Request $request, string $user = null, string $adapter = null): Request;
+    public function requestWithAuthToken(Request $request, string|null $user = null, string|null $adapter = null): Request;
 
     /**
      * Get a request without auth token header.
@@ -181,7 +181,7 @@ interface Auth
      *
      * @return static
      */
-    public function unAuthenticate(User $user = null): static;
+    public function unAuthenticate(User|null $user = null): static;
 
     /**
      * Set the authenticated user in the session.

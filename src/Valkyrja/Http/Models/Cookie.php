@@ -117,14 +117,14 @@ class Cookie extends Model implements Contract
      */
     public function __construct(
         string $name,
-        string $value = null,
-        int $expire = null,
-        string $path = null,
-        string $domain = null,
-        bool $secure = null,
-        bool $httpOnly = null,
-        bool $raw = null,
-        string $sameSite = null
+        string|null $value = null,
+        int|null $expire = null,
+        string|null $path = null,
+        string|null $domain = null,
+        bool|null $secure = null,
+        bool|null $httpOnly = null,
+        bool|null $raw = null,
+        string|null $sameSite = null
     ) {
         $this->name     = $name;
         $this->value    = $value;
@@ -226,7 +226,7 @@ class Cookie extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setValue(string $value = null): static
+    public function setValue(string|null $value = null): static
     {
         $this->value = $value;
 
@@ -280,7 +280,7 @@ class Cookie extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setDomain(string $domain = null): static
+    public function setDomain(string|null $domain = null): static
     {
         $this->domain = $domain;
 
@@ -352,7 +352,7 @@ class Cookie extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setSameSite(string $sameSite = null): static
+    public function setSameSite(string|null $sameSite = null): static
     {
         if (! in_array($sameSite, [SameSite::LAX, SameSite::STRICT, null], true)) {
             throw new InvalidSameSiteTypeException(

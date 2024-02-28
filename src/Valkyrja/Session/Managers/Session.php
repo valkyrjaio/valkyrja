@@ -42,7 +42,7 @@ class Session extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function use(string $name = null): Driver
+    public function use(string|null $name = null): Driver
     {
         return parent::use($name);
     }

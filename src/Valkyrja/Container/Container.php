@@ -39,8 +39,8 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     /**
      * Bind a service to the container.
      *
-     * @param class-string|string   $id The service id
-     * @param class-string<Service> $service   The service
+     * @param class-string|string   $id      The service id
+     * @param class-string<Service> $service The service
      *
      * @return static
      */
@@ -49,8 +49,8 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     /**
      * Bind an alias to the container.
      *
-     * @param string              $alias     The alias
-     * @param class-string|string $id The service id to alias
+     * @param string              $alias The alias
+     * @param class-string|string $id    The service id to alias
      *
      * @return static
      */
@@ -59,7 +59,7 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     /**
      * Bind a singleton to the container.
      *
-     * @param class-string|string   $id The service id
+     * @param class-string|string   $id        The service id
      * @param class-string<Service> $singleton The singleton service
      *
      * @return static
@@ -69,8 +69,8 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     /**
      * Set a closure in the container.
      *
-     * @param class-string|string $id The service id
-     * @param Closure             $closure   The closure
+     * @param class-string|string $id      The service id
+     * @param Closure             $closure The closure
      *
      * @return static
      */
@@ -79,7 +79,7 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     /**
      * Set a singleton in the container.
      *
-     * @param class-string|string $id The service id
+     * @param class-string|string $id        The service id
      * @param mixed               $singleton The singleton
      *
      * @return static
@@ -127,7 +127,7 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
      *
      * @template T
      *
-     * @param class-string<T>|string $id The service id
+     * @param class-string<T>|string $id        The service id
      * @param array                  $arguments [optional] The arguments
      *
      * @return T|mixed
@@ -139,7 +139,7 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
      *
      * @template T
      *
-     * @param class-string<T>|string $id The service id
+     * @param class-string<T>|string $id        The service id
      * @param array                  $arguments [optional] The arguments
      *
      * @return T|mixed
@@ -149,7 +149,7 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     /**
      * Get a service from the container.
      *
-     * @param class-string<Service>|string $id The service id
+     * @param class-string<Service>|string $id        The service id
      * @param array                        $arguments [optional] The arguments
      *
      * @return Service

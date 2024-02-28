@@ -45,7 +45,7 @@ class Filesystem extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function use(string $name = null): Driver
+    public function use(string|null $name = null): Driver
     {
         return parent::use($name);
     }
@@ -221,7 +221,7 @@ class Filesystem extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function listContents(string $directory = null, bool $recursive = false): array
+    public function listContents(string|null $directory = null, bool $recursive = false): array
     {
         return $this->use()->listContents($directory, $recursive);
     }

@@ -36,7 +36,7 @@ class NullAdapter implements Contract
      *
      * @param string|null $prefix [optional] The prefix
      */
-    public function __construct(string $prefix = null)
+    public function __construct(string|null $prefix = null)
     {
         $this->prefix = $prefix ?? '';
     }

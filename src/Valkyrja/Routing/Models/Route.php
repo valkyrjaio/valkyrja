@@ -170,7 +170,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setTo(string $to = null): static
+    public function setTo(string|null $to = null): static
     {
         $this->redirect = $to !== null;
 
@@ -190,7 +190,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setCode(int $code = null): static
+    public function setCode(int|null $code = null): static
     {
         $this->code = $code;
 
@@ -231,7 +231,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setRegex(string $regex = null): static
+    public function setRegex(string|null $regex = null): static
     {
         $this->regex = $regex;
 
@@ -281,12 +281,12 @@ class Route extends Dispatch implements Contract
      */
     public function addParameter(
         string $name,
-        string $regex = null,
-        CastType $type = null,
-        string $entity = null,
-        string $entityColumn = null,
-        array $entityRelationships = null,
-        string $enum = null,
+        string|null $regex = null,
+        CastType|null $type = null,
+        string|null $entity = null,
+        string|null $entityColumn = null,
+        array|null $entityRelationships = null,
+        string|null $enum = null,
         bool $isOptional = false,
         bool $shouldCapture = true,
         mixed $default = null
@@ -318,7 +318,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setMiddleware(array $middleware = null): static
+    public function setMiddleware(array|null $middleware = null): static
     {
         $this->middleware = $middleware;
 
@@ -348,7 +348,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setMessages(array $messages = null): static
+    public function setMessages(array|null $messages = null): static
     {
         $this->__setMessages(...$messages);
 

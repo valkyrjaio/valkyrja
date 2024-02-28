@@ -26,7 +26,7 @@ trait FormatterColors
     /**
      * @inheritDoc
      */
-    public function black(bool $background = null): void
+    public function black(bool|null $background = null): void
     {
         $this->setColor($background ? FormatBackground::BLACK : FormatForeground::BLACK, $background);
     }
@@ -34,7 +34,7 @@ trait FormatterColors
     /**
      * @inheritDoc
      */
-    public function red(bool $background = null): void
+    public function red(bool|null $background = null): void
     {
         $this->setColor($background ? FormatBackground::RED : FormatForeground::RED, $background);
     }
@@ -42,7 +42,7 @@ trait FormatterColors
     /**
      * @inheritDoc
      */
-    public function green(bool $background = null): void
+    public function green(bool|null $background = null): void
     {
         $this->setColor($background ? FormatBackground::GREEN : FormatForeground::GREEN, $background);
     }
@@ -50,7 +50,7 @@ trait FormatterColors
     /**
      * @inheritDoc
      */
-    public function yellow(bool $background = null): void
+    public function yellow(bool|null $background = null): void
     {
         $this->setColor($background ? FormatBackground::YELLOW : FormatForeground::YELLOW, $background);
     }
@@ -58,7 +58,7 @@ trait FormatterColors
     /**
      * @inheritDoc
      */
-    public function blue(bool $background = null): void
+    public function blue(bool|null $background = null): void
     {
         $this->setColor($background ? FormatBackground::BLUE : FormatForeground::BLUE, $background);
     }
@@ -66,7 +66,7 @@ trait FormatterColors
     /**
      * @inheritDoc
      */
-    public function magenta(bool $background = null): void
+    public function magenta(bool|null $background = null): void
     {
         $this->setColor($background ? FormatBackground::MAGENTA : FormatForeground::MAGENTA, $background);
     }
@@ -74,7 +74,7 @@ trait FormatterColors
     /**
      * @inheritDoc
      */
-    public function cyan(bool $background = null): void
+    public function cyan(bool|null $background = null): void
     {
         $this->setColor($background ? FormatBackground::CYAN : FormatForeground::CYAN, $background);
     }
@@ -82,7 +82,7 @@ trait FormatterColors
     /**
      * @inheritDoc
      */
-    public function white(bool $background = null): void
+    public function white(bool|null $background = null): void
     {
         $this->setColor($background ? FormatBackground::WHITE : FormatForeground::WHITE, $background);
     }
@@ -95,5 +95,5 @@ trait FormatterColors
      *
      * @return void
      */
-    abstract protected function setColor(FormatBackground $color, bool $background = null): void;
+    abstract protected function setColor(FormatBackground $color, bool|null $background = null): void;
 }

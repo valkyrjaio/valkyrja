@@ -71,7 +71,7 @@ class DispatcherTest extends TestCase
      *
      * @return string
      */
-    public static function validStaticMethod(?string $arg = null): string
+    public static function validStaticMethod(string|null $arg = null): string
     {
         return 'test' . ($arg ?: '');
     }
@@ -95,7 +95,7 @@ class DispatcherTest extends TestCase
      *
      * @return string
      */
-    public function validMethod(?string $arg = null): string
+    public function validMethod(string|null $arg = null): string
     {
         return 'test' . ($arg ?: '');
     }

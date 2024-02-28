@@ -115,7 +115,7 @@ abstract class Commander implements Contract
      *
      * @return void
      */
-    protected function usageMessage(string $message = null): void
+    protected function usageMessage(string|null $message = null): void
     {
         $message ??= $this->usagePath();
 
@@ -254,7 +254,7 @@ abstract class Commander implements Contract
      *
      * @return void
      */
-    protected function sectionMessage(string $name, string $description, int $longestLength = null): void
+    protected function sectionMessage(string $name, string $description, int|null $longestLength = null): void
     {
         $longestLength ??= 0;
         $spacesToAdd   = $longestLength - strlen($name);

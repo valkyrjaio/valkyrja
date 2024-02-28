@@ -29,7 +29,7 @@ interface JsonResponse extends Response
      *
      * @return static
      */
-    public static function createFromData(array $data = null, int $statusCode = null, array $headers = null): static;
+    public static function createFromData(array|null $data = null, int|null $statusCode = null, array|null $headers = null): static;
 
     /**
      * With callback.

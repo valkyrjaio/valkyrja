@@ -48,11 +48,11 @@ abstract class ApiController extends Controller
      */
     public static function createApiJsonResponse(
         array $data = [],
-        string $message = null,
-        string $status = null,
-        int $statusCode = null,
-        array $errors = null,
-        array $warnings = null
+        string|null $message = null,
+        string|null $status = null,
+        int|null $statusCode = null,
+        array|null $errors = null,
+        array|null $warnings = null
     ): JsonResponse {
         $json = self::getApi()->jsonFromArray($data);
 
@@ -79,11 +79,11 @@ abstract class ApiController extends Controller
      */
     public static function getExceptionResponse(
         Throwable $exception,
-        string $message = null,
-        string $status = null,
-        int $statusCode = null,
-        array $errors = null,
-        array $warnings = null
+        string|null $message = null,
+        string|null $status = null,
+        int|null $statusCode = null,
+        array|null $errors = null,
+        array|null $warnings = null
     ): JsonResponse {
         $url        = self::getRequest()->getUri()->getPath();
         $logMessage = "$message\nUrl: $url";

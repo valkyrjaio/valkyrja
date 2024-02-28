@@ -91,7 +91,7 @@ class Response implements Contract
     /**
      * @inheritDoc
      */
-    public static function create(string $content = null, int $statusCode = null, array $headers = null): static
+    public static function create(string|null $content = null, int|null $statusCode = null, array|null $headers = null): static
     {
         $stream = new HttpStream(StreamType::TEMP, 'wb+');
         $stream->write($content ?? static::DEFAULT_CONTENT);
@@ -115,7 +115,7 @@ class Response implements Contract
     /**
      * @inheritDoc
      */
-    public function withStatus(int $code, string $reasonPhrase = null): static
+    public function withStatus(int $code, string|null $reasonPhrase = null): static
     {
         $new = clone $this;
 

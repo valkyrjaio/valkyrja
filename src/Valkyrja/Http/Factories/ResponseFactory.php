@@ -43,7 +43,7 @@ class ResponseFactory implements Contract
     /**
      * @inheritDoc
      */
-    public function createResponse(string $content = null, int $statusCode = null, array $headers = null): Response
+    public function createResponse(string|null $content = null, int|null $statusCode = null, array|null $headers = null): Response
     {
         return \Valkyrja\Http\Responses\Response::create(
             content: $content,
@@ -57,7 +57,7 @@ class ResponseFactory implements Contract
      *
      * @throws JsonException
      */
-    public function createJsonResponse(array $data = null, int $statusCode = null, array $headers = null): JsonResponse
+    public function createJsonResponse(array|null $data = null, int|null $statusCode = null, array|null $headers = null): JsonResponse
     {
         return \Valkyrja\Http\Responses\JsonResponse::createFromData(
             data: $data,
@@ -72,7 +72,7 @@ class ResponseFactory implements Contract
      * @throws InvalidArgumentException
      * @throws JsonException
      */
-    public function createJsonpResponse(string $callback, array $data = null, int $statusCode = null, array $headers = null): JsonResponse
+    public function createJsonpResponse(string $callback, array|null $data = null, int|null $statusCode = null, array|null $headers = null): JsonResponse
     {
         return $this->createJsonResponse($data, $statusCode, $headers)->withCallback($callback);
     }
@@ -80,7 +80,7 @@ class ResponseFactory implements Contract
     /**
      * @inheritDoc
      */
-    public function createRedirectResponse(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse
+    public function createRedirectResponse(string|null $uri = null, int|null $statusCode = null, array|null $headers = null): RedirectResponse
     {
         return \Valkyrja\Http\Responses\RedirectResponse::createFromUri(
             uri: $uri,
@@ -92,7 +92,7 @@ class ResponseFactory implements Contract
     /**
      * @inheritDoc
      */
-    public function route(string $name, array $data = null, int $statusCode = null, array $headers = null): RedirectResponse
+    public function route(string $name, array|null $data = null, int|null $statusCode = null, array|null $headers = null): RedirectResponse
     {
         /** @var Url $url */
         $url = $this->container->getSingleton(Url::class);
@@ -106,7 +106,7 @@ class ResponseFactory implements Contract
     /**
      * @inheritDoc
      */
-    public function view(string $template, array $data = null, int $statusCode = null, array $headers = null): Response
+    public function view(string $template, array|null $data = null, int|null $statusCode = null, array|null $headers = null): Response
     {
         /** @var View $view */
         $view = $this->container->getSingleton(View::class);

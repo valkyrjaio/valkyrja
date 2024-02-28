@@ -193,5 +193,5 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function setPlainBody(string $plainBody = null): static;
+    public function setPlainBody(string|null $plainBody = null): static;
 }

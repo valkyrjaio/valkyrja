@@ -253,7 +253,7 @@ interface Uri
      *
      * @return static A new instance with the specified user information
      */
-    public function withUserInfo(string $user, string $password = null): static;
+    public function withUserInfo(string $user, string|null $password = null): static;
 
     /**
      * Return an instance with the specified host.
@@ -285,7 +285,7 @@ interface Uri
      *
      * @return static A new instance with the specified port
      */
-    public function withPort(int $port = null): static;
+    public function withPort(int|null $port = null): static;
 
     /**
      * Return an instance with the specified path.

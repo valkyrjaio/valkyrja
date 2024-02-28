@@ -68,7 +68,7 @@ interface Message extends Contract
      *
      * @return static
      */
-    public function setData(array $data = null): static;
+    public function setData(array|null $data = null): static;
 
     /**
      * Get the message to broadcast.

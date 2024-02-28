@@ -62,7 +62,7 @@ class Directory
      *
      * @return string
      */
-    public static function appPath(string $path = null): string
+    public static function appPath(string|null $path = null): string
     {
         return static::__basePath(static::$APP_PATH . static::path($path));
     }
@@ -74,7 +74,7 @@ class Directory
      *
      * @return string
      */
-    public static function basePath(string $path = null): string
+    public static function basePath(string|null $path = null): string
     {
         return static::$BASE_PATH . static::path($path);
     }
@@ -86,7 +86,7 @@ class Directory
      *
      * @return string
      */
-    public static function path(string $path = null): string
+    public static function path(string|null $path = null): string
     {
         return $path && $path[0] !== static::DIRECTORY_SEPARATOR
             ? static::DIRECTORY_SEPARATOR . $path
@@ -100,7 +100,7 @@ class Directory
      *
      * @return string
      */
-    public static function bootstrapPath(string $path = null): string
+    public static function bootstrapPath(string|null $path = null): string
     {
         return static::__basePath(static::$BOOTSTRAP_PATH . static::path($path));
     }
@@ -112,7 +112,7 @@ class Directory
      *
      * @return string
      */
-    public static function commandsPath(string $path = null): string
+    public static function commandsPath(string|null $path = null): string
     {
         return static::bootstrapPath(static::$COMMANDS_PATH . static::path($path));
     }
@@ -124,7 +124,7 @@ class Directory
      *
      * @return string
      */
-    public static function eventsPath(string $path = null): string
+    public static function eventsPath(string|null $path = null): string
     {
         return static::bootstrapPath(static::$EVENTS_PATH . static::path($path));
     }
@@ -136,7 +136,7 @@ class Directory
      *
      * @return string
      */
-    public static function routesPath(string $path = null): string
+    public static function routesPath(string|null $path = null): string
     {
         return static::bootstrapPath(static::$ROUTES_PATH . static::path($path));
     }
@@ -148,7 +148,7 @@ class Directory
      *
      * @return string
      */
-    public static function servicesPath(string $path = null): string
+    public static function servicesPath(string|null $path = null): string
     {
         return static::bootstrapPath(static::$SERVICES_PATH . static::path($path));
     }
@@ -160,7 +160,7 @@ class Directory
      *
      * @return string
      */
-    public static function configPath(string $path = null): string
+    public static function configPath(string|null $path = null): string
     {
         return static::__basePath(static::$CONFIG_PATH . static::path($path));
     }
@@ -172,7 +172,7 @@ class Directory
      *
      * @return string
      */
-    public static function envPath(string $path = null): string
+    public static function envPath(string|null $path = null): string
     {
         return static::__basePath(static::$ENV_PATH . static::path($path));
     }
@@ -184,7 +184,7 @@ class Directory
      *
      * @return string
      */
-    public static function publicPath(string $path = null): string
+    public static function publicPath(string|null $path = null): string
     {
         return static::__basePath(static::$PUBLIC_PATH . static::path($path));
     }
@@ -196,7 +196,7 @@ class Directory
      *
      * @return string
      */
-    public static function resourcesPath(string $path = null): string
+    public static function resourcesPath(string|null $path = null): string
     {
         return static::__basePath(static::$RESOURCES_PATH . static::path($path));
     }
@@ -208,7 +208,7 @@ class Directory
      *
      * @return string
      */
-    public static function storagePath(string $path = null): string
+    public static function storagePath(string|null $path = null): string
     {
         return static::__basePath(static::$STORAGE_PATH . static::path($path));
     }
@@ -220,7 +220,7 @@ class Directory
      *
      * @return string
      */
-    public static function frameworkStoragePath(string $path = null): string
+    public static function frameworkStoragePath(string|null $path = null): string
     {
         return static::storagePath(static::$FRAMEWORK_STORAGE_PATH . static::path($path));
     }
@@ -232,7 +232,7 @@ class Directory
      *
      * @return string
      */
-    public static function cachePath(string $path = null): string
+    public static function cachePath(string|null $path = null): string
     {
         return static::frameworkStoragePath(static::$CACHE_PATH . static::path($path));
     }
@@ -244,7 +244,7 @@ class Directory
      *
      * @return string
      */
-    public static function testsPath(string $path = null): string
+    public static function testsPath(string|null $path = null): string
     {
         return static::__basePath(static::$TESTS_PATH . static::path($path));
     }
@@ -256,7 +256,7 @@ class Directory
      *
      * @return string
      */
-    public static function vendorPath(string $path = null): string
+    public static function vendorPath(string|null $path = null): string
     {
         return static::__basePath(static::$VENDOR_PATH . static::path($path));
     }
@@ -269,7 +269,7 @@ class Directory
      *
      * @return string
      */
-    protected static function __basePath(string $path = null): string
+    protected static function __basePath(string|null $path = null): string
     {
         if ($path && str_starts_with($path, static::DIRECTORY_SEPARATOR)) {
             return $path;

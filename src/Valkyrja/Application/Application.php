@@ -53,7 +53,7 @@ interface Application extends ArrayAccess
      *
      * @return mixed
      */
-    public static function env(string $key = null, mixed $default = null): mixed;
+    public static function env(string|null $key = null, mixed $default = null): mixed;
 
     /**
      * Get environment variables.
@@ -79,7 +79,7 @@ interface Application extends ArrayAccess
      *
      * @return void
      */
-    public function setup(string $config = null, bool $force = false): void;
+    public function setup(string|null $config = null, bool $force = false): void;
 
     /**
      * Add to the global config array.
@@ -98,7 +98,7 @@ interface Application extends ArrayAccess
      *
      * @return mixed
      */
-    public function config(string $key = null, mixed $default = null): mixed;
+    public function config(string|null $key = null, mixed $default = null): mixed;
 
     /**
      * Add to the global config array.

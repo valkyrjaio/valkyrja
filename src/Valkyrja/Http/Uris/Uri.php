@@ -197,7 +197,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
-    public function withUserInfo(string $user, string $password = null): static
+    public function withUserInfo(string $user, string|null $password = null): static
     {
         $info = $user;
 
@@ -227,7 +227,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
-    public function withPort(int $port = null): static
+    public function withPort(int|null $port = null): static
     {
         $this->validatePort($port);
 

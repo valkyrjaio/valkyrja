@@ -41,7 +41,7 @@ class JwtRepository extends TokenizedRepository implements Contract
      * JWTRepository constructor.
      *
      * @param Adapter            $adapter The adapter
-     * @param JWTManager         $jwt     The JWT service
+     * @param JwtManager         $jwt     The JWT service
      * @param Session            $session The session service
      * @param Config|array       $config  The config
      * @param class-string<User> $user    The user class

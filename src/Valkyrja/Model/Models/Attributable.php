@@ -36,7 +36,7 @@ trait Attributable
      *
      * @return ReflectionAttribute[]
      */
-    public static function getAttributes(string $name = null): array
+    public static function getAttributes(string|null $name = null): array
     {
         return self::$attributes[static::class . ($name ?? '')]
             ??= Reflector::getClassReflection(static::class)->getAttributes($name);

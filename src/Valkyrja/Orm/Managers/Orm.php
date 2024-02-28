@@ -138,7 +138,7 @@ class Orm implements Contract
     /**
      * @inheritDoc
      */
-    public function useConnection(string $name = null, string $adapter = null): Driver
+    public function useConnection(string|null $name = null, string|null $adapter = null): Driver
     {
         // The connection to use
         $name ??= $this->defaultConnection;
@@ -308,7 +308,7 @@ class Orm implements Contract
     /**
      * @inheritDoc
      */
-    public function lastInsertId(string $table = null, string $idField = null): string
+    public function lastInsertId(string|null $table = null, string|null $idField = null): string
     {
         return $this->useConnection()->lastInsertId($table, $idField);
     }
@@ -372,7 +372,7 @@ class Orm implements Contract
     /**
      * @inheritDoc
      */
-    public function clear(Entity $entity = null): void
+    public function clear(Entity|null $entity = null): void
     {
         if ($entity !== null) {
             $this->getRepositoryFromClass($entity)->clear($entity);

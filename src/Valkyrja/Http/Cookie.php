@@ -60,7 +60,7 @@ interface Cookie extends Model
      *
      * @return static
      */
-    public function setValue(string $value = null): static;
+    public function setValue(string|null $value = null): static;
 
     /**
      * Get expire time for the cookie.
@@ -108,7 +108,7 @@ interface Cookie extends Model
      *
      * @return static
      */
-    public function setDomain(string $domain = null): static;
+    public function setDomain(string|null $domain = null): static;
 
     /**
      * Whether the cookie should only be transmitted over a secure HTTPS
@@ -177,5 +177,5 @@ interface Cookie extends Model
      *
      * @return static
      */
-    public function setSameSite(string $sameSite = null): static;
+    public function setSameSite(string|null $sameSite = null): static;
 }

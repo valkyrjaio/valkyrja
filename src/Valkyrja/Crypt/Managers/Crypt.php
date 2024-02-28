@@ -44,7 +44,7 @@ class Crypt extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function use(string $name = null): Driver
+    public function use(string|null $name = null): Driver
     {
         return parent::use($name);
     }
@@ -60,7 +60,7 @@ class Crypt extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function encrypt(string $message, string $key = null): string
+    public function encrypt(string $message, string|null $key = null): string
     {
         return $this->use()->encrypt($message, $key);
     }
@@ -68,7 +68,7 @@ class Crypt extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function decrypt(string $encrypted, string $key = null): string
+    public function decrypt(string $encrypted, string|null $key = null): string
     {
         return $this->use()->decrypt($encrypted, $key);
     }
@@ -76,7 +76,7 @@ class Crypt extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function encryptArray(array $array, string $key = null): string
+    public function encryptArray(array $array, string|null $key = null): string
     {
         return $this->use()->encryptArray($array, $key);
     }
@@ -84,7 +84,7 @@ class Crypt extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function decryptArray(string $encrypted, string $key = null): array
+    public function decryptArray(string $encrypted, string|null $key = null): array
     {
         return $this->use()->decryptArray($encrypted, $key);
     }
@@ -92,7 +92,7 @@ class Crypt extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function encryptObject(object $object, string $key = null): string
+    public function encryptObject(object $object, string|null $key = null): string
     {
         return $this->use()->encryptObject($object, $key);
     }
@@ -100,7 +100,7 @@ class Crypt extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function decryptObject(string $encrypted, string $key = null): object
+    public function decryptObject(string $encrypted, string|null $key = null): object
     {
         return $this->use()->decryptObject($encrypted, $key);
     }

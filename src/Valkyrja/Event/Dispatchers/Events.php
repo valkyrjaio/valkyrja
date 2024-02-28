@@ -152,7 +152,7 @@ class Events implements Contract
      *
      * @throws JsonException
      */
-    public function trigger(string $event, array $arguments = null): array
+    public function trigger(string $event, array|null $arguments = null): array
     {
         // The responses
         $responses = [];

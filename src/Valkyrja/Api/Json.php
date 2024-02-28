@@ -36,7 +36,7 @@ interface Json extends Model
      *
      * @return static
      */
-    public function setMessage(string $message = null): static;
+    public function setMessage(string|null $message = null): static;
 
     /**
      * Get the errors.
@@ -102,7 +102,7 @@ interface Json extends Model
      *
      * @return static
      */
-    public function setData(array $data = null): static;
+    public function setData(array|null $data = null): static;
 
     /**
      * Get the status code.

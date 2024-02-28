@@ -116,7 +116,7 @@ interface Request extends SimpleRequest
      *
      * @return string|null
      */
-    public function getCookieParam(string $name, string $default = null): string|null;
+    public function getCookieParam(string $name, string|null $default = null): string|null;
 
     /**
      * Determine if a specific cookie exists.

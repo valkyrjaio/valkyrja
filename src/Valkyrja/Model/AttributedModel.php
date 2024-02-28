@@ -30,5 +30,5 @@ interface AttributedModel extends Model
      *
      * @return ReflectionAttribute[]
      */
-    public static function getAttributes(string $name = null): array;
+    public static function getAttributes(string|null $name = null): array;
 }

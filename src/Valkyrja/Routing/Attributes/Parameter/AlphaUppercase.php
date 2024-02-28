@@ -34,12 +34,12 @@ class AlphaUppercase extends Parameter
      * @param class-string<BackedEnum>|null $enum
      */
     public function __construct(
-        string $name = null,
-        CastType $type = null,
-        string $entity = null,
-        string $entityColumn = null,
-        array $entityRelationships = null,
-        string $enum = null,
+        string|null $name = null,
+        CastType|null $type = null,
+        string|null $entity = null,
+        string|null $entityColumn = null,
+        array|null $entityRelationships = null,
+        string|null $enum = null,
         bool $isOptional = false,
         bool $shouldCapture = true,
         mixed $default = null,

@@ -119,7 +119,7 @@ class CacheRepository extends Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): static
+    public function where(string $column, string|null $operator = null, mixed $value = null, bool $setType = true): static
     {
         if (! ($value instanceof QueryBuilder) && $column === $this->entity::getIdField()) {
             $this->id = $value;
@@ -245,7 +245,7 @@ class CacheRepository extends Repository implements Contract
      *
      * @param Entity|null $entity The entity instance to remove
      */
-    public function clear(Entity $entity = null): void
+    public function clear(Entity|null $entity = null): void
     {
         parent::clear($entity);
 

@@ -54,7 +54,7 @@ class UuidV1 extends Uuid
      *
      * @return string
      */
-    public static function generate(string $node = null): string
+    public static function generate(string|null $node = null): string
     {
         $node ??= random_bytes(16);
         // nano second time (only micro second precision) since start of UTC

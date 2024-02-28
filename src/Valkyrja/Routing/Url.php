@@ -29,7 +29,7 @@ interface Url
      *
      * @return string
      */
-    public function getUrl(string $name, array $data = null, bool $absolute = null): string;
+    public function getUrl(string $name, array|null $data = null, bool|null $absolute = null): string;
 
     /**
      * Get a route by path.
@@ -41,7 +41,7 @@ interface Url
      *                    The route if found or null when no static route is
      *                    found for the path and method combination specified
      */
-    public function getRouteByPath(string $path, string $method = null): Route|null;
+    public function getRouteByPath(string $path, string|null $method = null): Route|null;
 
     /**
      * Determine if a uri is internal.

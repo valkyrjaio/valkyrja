@@ -49,7 +49,7 @@ class Valkyrja extends Model
     /**
      * @inheritDoc
      */
-    protected function setup(array $properties = null): void
+    protected function setup(array|null $properties = null): void
     {
         $this->annotation = new Annotation($properties['annotation'] ?? null, true);
         $this->api        = new Api($properties['api'] ?? null, true);

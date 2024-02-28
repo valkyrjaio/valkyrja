@@ -54,7 +54,7 @@ class Vlid extends Ulid
      *
      * @return string
      */
-    final public static function v1(DateTimeInterface $dateTime = null, bool $lowerCase = false): string
+    final public static function v1(DateTimeInterface|null $dateTime = null, bool $lowerCase = false): string
     {
         return VlidV1::generate($dateTime, $lowerCase);
     }
@@ -69,7 +69,7 @@ class Vlid extends Ulid
      *
      * @return string
      */
-    final public static function v2(DateTimeInterface $dateTime = null, bool $lowerCase = false): string
+    final public static function v2(DateTimeInterface|null $dateTime = null, bool $lowerCase = false): string
     {
         return VlidV2::generate($dateTime, $lowerCase);
     }
@@ -84,7 +84,7 @@ class Vlid extends Ulid
      *
      * @return string
      */
-    final public static function v3(DateTimeInterface $dateTime = null, bool $lowerCase = false): string
+    final public static function v3(DateTimeInterface|null $dateTime = null, bool $lowerCase = false): string
     {
         return VlidV3::generate($dateTime, $lowerCase);
     }
@@ -99,7 +99,7 @@ class Vlid extends Ulid
      *
      * @return string
      */
-    final public static function v4(DateTimeInterface $dateTime = null, bool $lowerCase = false): string
+    final public static function v4(DateTimeInterface|null $dateTime = null, bool $lowerCase = false): string
     {
         return VlidV4::generate($dateTime, $lowerCase);
     }

@@ -78,7 +78,7 @@ trait RelationshipCapableRepository
      *
      * @return static
      */
-    public function withRelationships(array $relationships = null): static
+    public function withRelationships(array|null $relationships = null): static
     {
         $this->getRelations  = true;
         $this->relationships = $relationships;

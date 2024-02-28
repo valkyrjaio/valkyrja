@@ -249,7 +249,7 @@ abstract class TokenizedRepository extends Repository implements Contract
      *
      * @return static
      */
-    protected function storeToken(string $token = null): static
+    protected function storeToken(string|null $token = null): static
     {
         $this->session->set($this->user::getTokenSessionId(), $token ?? $this->getToken());
 

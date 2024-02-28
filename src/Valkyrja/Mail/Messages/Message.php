@@ -296,7 +296,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setPlainBody(string $plainBody = null): static
+    public function setPlainBody(string|null $plainBody = null): static
     {
         $this->plainBody = $plainBody;
 

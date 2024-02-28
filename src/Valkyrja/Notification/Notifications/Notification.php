@@ -31,7 +31,7 @@ abstract class Notification implements Contract
      *
      * @var string|null
      */
-    protected static ?string $broadcastAdapter = null;
+    protected static string|null $broadcastAdapter = null;
 
     /**
      * The broadcast message to use for this notification.
@@ -39,7 +39,7 @@ abstract class Notification implements Contract
      *
      * @var string|null
      */
-    protected static ?string $broadcastMessage = null;
+    protected static string|null $broadcastMessage = null;
 
     /**
      * @var bool
@@ -52,7 +52,7 @@ abstract class Notification implements Contract
      *
      * @var string|null
      */
-    protected static ?string $mailAdapter = null;
+    protected static string|null $mailAdapter = null;
 
     /**
      * The mail message to use for this notification.
@@ -60,7 +60,7 @@ abstract class Notification implements Contract
      *
      * @var string|null
      */
-    protected static ?string $mailMessage = null;
+    protected static string|null $mailMessage = null;
 
     /**
      * @var bool
@@ -73,7 +73,7 @@ abstract class Notification implements Contract
      *
      * @var string|null
      */
-    protected static ?string $smsAdapter = null;
+    protected static string|null $smsAdapter = null;
 
     /**
      * The SMS message to use for this notification.
@@ -81,7 +81,7 @@ abstract class Notification implements Contract
      *
      * @var string|null
      */
-    protected static ?string $smsMessage = null;
+    protected static string|null $smsMessage = null;
 
     /**
      * @var bool

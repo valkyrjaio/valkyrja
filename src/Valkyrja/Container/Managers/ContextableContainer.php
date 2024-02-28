@@ -46,7 +46,7 @@ trait ContextableContainer
      *
      * @return static
      */
-    public function withContext(string $context, string $member = null): static
+    public function withContext(string $context, string|null $member = null): static
     {
         $contextContainer = new static($this->config, $this->debug);
 
@@ -76,13 +76,13 @@ trait ContextableContainer
     /**
      * Get a service id with optional context.
      *
-     * @param class-string|string $id The service id
-     * @param string|null         $context   [optional] The context class or function name
-     * @param string|null         $member    [optional] The context member name
+     * @param class-string|string $id      The service id
+     * @param string|null         $context [optional] The context class or function name
+     * @param string|null         $member  [optional] The context member name
      *
      * @return string
      */
-    protected function getServiceId(string $id, string $context = null, string $member = null): string
+    protected function getServiceId(string $id, string|null $context = null, string|null $member = null): string
     {
         if ($context === null) {
             return $id;

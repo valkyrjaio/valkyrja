@@ -44,8 +44,8 @@ abstract class Pdo extends BasePDO
      */
     public function __construct(
         array $config,
-        string $driver = null,
-        string $dsn = null
+        string|null $driver = null,
+        string|null $dsn = null
     ) {
         $config['dsn'] = ($driver ?? 'mysql')
             . ":dbname={$config['db']}"

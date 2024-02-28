@@ -74,7 +74,7 @@ abstract class MessageManager extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function createMessage(string $name = null, array $data = []): Message
+    public function createMessage(string|null $name = null, array $data = []): Message
     {
         // The name of the message to use
         $name ??= $this->defaultMessage;

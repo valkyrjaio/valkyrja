@@ -31,11 +31,11 @@ class Entity extends Parameter
      * @param class-string<\Valkyrja\Orm\Entity>|null $entity
      */
     public function __construct(
-        string $entity = null,
-        string $entityColumn = null,
-        array $entityRelationships = null,
-        string $name = null,
-        string $regex = null,
+        string|null $entity = null,
+        string|null $entityColumn = null,
+        array|null $entityRelationships = null,
+        string|null $name = null,
+        string|null $regex = null,
         bool $isOptional = false,
         bool $shouldCapture = true,
         mixed $default = null,

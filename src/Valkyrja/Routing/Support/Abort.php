@@ -34,7 +34,7 @@ class Abort
      *
      * @return never
      */
-    public static function abort400(array $headers = null, Response $response = null): never
+    public static function abort400(array|null $headers = null, Response|null $response = null): never
     {
         static::abort(StatusCode::BAD_REQUEST, StatusText::BAD_REQUEST, $headers, $response);
     }
@@ -47,7 +47,7 @@ class Abort
      *
      * @return never
      */
-    public static function abort404(array $headers = null, Response $response = null): never
+    public static function abort404(array|null $headers = null, Response|null $response = null): never
     {
         static::abort(StatusCode::NOT_FOUND, StatusText::NOT_FOUND, $headers, $response);
     }
@@ -60,7 +60,7 @@ class Abort
      *
      * @return never
      */
-    public static function abort405(array $headers = null, Response $response = null): never
+    public static function abort405(array|null $headers = null, Response|null $response = null): never
     {
         static::abort(StatusCode::METHOD_NOT_ALLOWED, StatusText::METHOD_NOT_ALLOWED, $headers, $response);
     }
@@ -73,7 +73,7 @@ class Abort
      *
      * @return never
      */
-    public static function abort413(array $headers = null, Response $response = null): never
+    public static function abort413(array|null $headers = null, Response|null $response = null): never
     {
         static::abort(StatusCode::PAYLOAD_TOO_LARGE, StatusText::PAYLOAD_TOO_LARGE, $headers, $response);
     }
@@ -89,10 +89,10 @@ class Abort
      * @return never
      */
     public static function abort(
-        int $statusCode = null,
-        string $message = null,
-        array $headers = null,
-        Response $response = null
+        int|null $statusCode = null,
+        string|null $message = null,
+        array|null $headers = null,
+        Response|null $response = null
     ): never {
         throw new HttpException($statusCode, $message, $headers, $response);
     }
@@ -120,7 +120,7 @@ class Abort
      *
      * @return never
      */
-    public static function redirect(string $uri = null, int $statusCode = null, array $headers = null): never
+    public static function redirect(string|null $uri = null, int|null $statusCode = null, array|null $headers = null): never
     {
         throw new HttpRedirectException($statusCode, $uri, $headers);
     }

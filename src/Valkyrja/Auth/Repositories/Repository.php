@@ -203,7 +203,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function unAuthenticate(User $user = null): static
+    public function unAuthenticate(User|null $user = null): static
     {
         if ($this->isAuthenticated) {
             $this->resetAfterUnAuthentication($user);
@@ -436,7 +436,7 @@ class Repository implements Contract
      *
      * @return void
      */
-    protected function resetAfterUnAuthentication(User $user = null): void
+    protected function resetAfterUnAuthentication(User|null $user = null): void
     {
         $this->isAuthenticated = false;
 

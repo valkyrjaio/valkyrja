@@ -70,7 +70,7 @@ class Base
      *
      * @return void
      */
-    public function empty(string $subject = null): void
+    public function empty(string|null $subject = null): void
     {
         if ($subject) {
             throw new ValidationException("$subject must be empty");

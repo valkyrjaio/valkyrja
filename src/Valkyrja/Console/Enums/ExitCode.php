@@ -30,7 +30,7 @@ final class ExitCode extends Enum
     public const FAILURE   = 1;
     public const AUTO_EXIT = 255;
 
-    protected static ?array $VALUES = [
+    protected static array|null $VALUES = [
         self::SUCCESS   => self::SUCCESS,
         self::FAILURE   => self::FAILURE,
         self::AUTO_EXIT => self::AUTO_EXIT,

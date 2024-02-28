@@ -32,7 +32,7 @@ interface Attributes
      *
      * @return object[]|T[]
      */
-    public function forClass(string $class, string $attribute = null, int $flags = null): array;
+    public function forClass(string $class, string|null $attribute = null, int|null $flags = null): array;
 
     /**
      * Get a class' members' attributes.
@@ -44,7 +44,7 @@ interface Attributes
      *
      * @return object[]|T[]
      */
-    public function forClassMembers(string $class, string $attribute = null, int $flags = null): array;
+    public function forClassMembers(string $class, string|null $attribute = null, int|null $flags = null): array;
 
     /**
      * Get a class' and class' members' attributes.
@@ -56,7 +56,7 @@ interface Attributes
      *
      * @return object[]|T[]
      */
-    public function forClassAndMembers(string $class, string $attribute = null, int $flags = null): array;
+    public function forClassAndMembers(string $class, string|null $attribute = null, int|null $flags = null): array;
 
     /**
      * Get a class' constant's attributes.
@@ -69,7 +69,7 @@ interface Attributes
      *
      * @return object[]|T[]
      */
-    public function forConstant(string $class, string $constant, string $attribute = null, int $flags = null): array;
+    public function forConstant(string $class, string $constant, string|null $attribute = null, int|null $flags = null): array;
 
     /**
      * Get a class' constants' attributes.
@@ -81,7 +81,7 @@ interface Attributes
      *
      * @return object[]|T[]
      */
-    public function forConstants(string $class, string $attribute = null, int $flags = null): array;
+    public function forConstants(string $class, string|null $attribute = null, int|null $flags = null): array;
 
     /**
      * Get a property's attributes.
@@ -94,7 +94,7 @@ interface Attributes
      *
      * @return object[]|T[]
      */
-    public function forProperty(string $class, string $property, string $attribute = null, int $flags = null): array;
+    public function forProperty(string $class, string $property, string|null $attribute = null, int|null $flags = null): array;
 
     /**
      * Get a class' properties' attributes.
@@ -106,7 +106,7 @@ interface Attributes
      *
      * @return object[]|T[]
      */
-    public function forProperties(string $class, string $attribute = null, int $flags = null): array;
+    public function forProperties(string $class, string|null $attribute = null, int|null $flags = null): array;
 
     /**
      * Get a method's attributes.
@@ -119,7 +119,7 @@ interface Attributes
      *
      * @return object[]|T[]
      */
-    public function forMethod(string $class, string $method, string $attribute = null, int $flags = null): array;
+    public function forMethod(string $class, string $method, string|null $attribute = null, int|null $flags = null): array;
 
     /**
      * Get a class' methods' attributes.
@@ -131,7 +131,7 @@ interface Attributes
      *
      * @return object[]|T[]
      */
-    public function forMethods(string $class, string $attribute = null, int $flags = null): array;
+    public function forMethods(string $class, string|null $attribute = null, int|null $flags = null): array;
 
     /**
      * Get a function's attributes.
@@ -143,7 +143,7 @@ interface Attributes
      *
      * @return object[]|T[]
      */
-    public function forFunction(string $function, string $attribute = null, int $flags = null): array;
+    public function forFunction(string $function, string|null $attribute = null, int|null $flags = null): array;
 
     /**
      * Get a closure's attributes.
@@ -155,5 +155,5 @@ interface Attributes
      *
      * @return object[]|T[]
      */
-    public function forClosure(Closure $closure, string $attribute = null, int $flags = null): array;
+    public function forClosure(Closure $closure, string|null $attribute = null, int|null $flags = null): array;
 }

@@ -34,12 +34,12 @@ class Optional extends Parameter
      */
     public function __construct(
         string $name,
-        string $regex = null,
-        CastType $type = null,
-        string $entity = null,
-        string $entityColumn = null,
-        array $entityRelationships = null,
-        string $enum = null,
+        string|null $regex = null,
+        CastType|null $type = null,
+        string|null $entity = null,
+        string|null $entityColumn = null,
+        array|null $entityRelationships = null,
+        string|null $enum = null,
         bool $shouldCapture = true,
         mixed $default = null,
     ) {

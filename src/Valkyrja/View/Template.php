@@ -87,7 +87,7 @@ interface Template
      *
      * @return static
      */
-    public function setLayout(string $layout = null): static;
+    public function setLayout(string|null $layout = null): static;
 
     /**
      * Set no layout for this view.

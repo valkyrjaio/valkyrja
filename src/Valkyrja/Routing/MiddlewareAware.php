@@ -49,7 +49,7 @@ interface MiddlewareAware
      *
      * @return Request|Response
      */
-    public function requestMiddleware(Request $request, array $middleware = null): Response|Request;
+    public function requestMiddleware(Request $request, array|null $middleware = null): Response|Request;
 
     /**
      * Dispatch after request processed middleware.
@@ -60,7 +60,7 @@ interface MiddlewareAware
      *
      * @return Response
      */
-    public function responseMiddleware(Request $request, Response $response, array $middleware = null): Response;
+    public function responseMiddleware(Request $request, Response $response, array|null $middleware = null): Response;
 
     /**
      * Dispatch terminable middleware.
@@ -71,5 +71,5 @@ interface MiddlewareAware
      *
      * @return void
      */
-    public function terminableMiddleware(Request $request, Response $response, array $middleware = null): void;
+    public function terminableMiddleware(Request $request, Response $response, array|null $middleware = null): void;
 }

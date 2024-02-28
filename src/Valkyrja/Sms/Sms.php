@@ -29,14 +29,14 @@ interface Sms extends Manager
      *
      * @return Driver
      */
-    public function use(string $name = null): Driver;
+    public function use(string|null $name = null): Driver;
 
     /**
      * @inheritDoc
      *
      * @return Message
      */
-    public function createMessage(string $name = null, array $data = []): Message;
+    public function createMessage(string|null $name = null, array $data = []): Message;
 
     /**
      * Send a message.

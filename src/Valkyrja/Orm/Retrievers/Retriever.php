@@ -118,7 +118,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): static
+    public function where(string $column, string|null $operator = null, mixed $value = null, bool $setType = true): static
     {
         $this->queryBuilder->where($column, $operator, $value, $setType);
 
@@ -174,9 +174,9 @@ class Retriever implements Contract
         string $table,
         string $column1,
         string $column2,
-        string $operator = null,
-        string $type = null,
-        bool $isWhere = null
+        string|null $operator = null,
+        string|null $type = null,
+        bool|null $isWhere = null
     ): static {
         $this->queryBuilder->join($table, $column1, $column2, $operator, $type, $isWhere);
 
@@ -196,7 +196,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function orderBy(string $column, string $type = null): static
+    public function orderBy(string $column, string|null $type = null): static
     {
         $this->queryBuilder->orderBy($column, $type);
 
@@ -294,7 +294,7 @@ class Retriever implements Contract
      *
      * @return void
      */
-    protected function setQueryProperties(string $entity, array $columns = null): void
+    protected function setQueryProperties(string $entity, array|null $columns = null): void
     {
         assert(is_a($entity, Entity::class, true));
 

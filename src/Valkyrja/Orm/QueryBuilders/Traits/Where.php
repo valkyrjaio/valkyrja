@@ -49,7 +49,7 @@ trait Where
      *
      * @return static
      */
-    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): static
+    public function where(string $column, string|null $operator = null, mixed $value = null, bool $setType = true): static
     {
         $this->setWhere(
             $this->getWhereString($column, $operator ?? Operator::EQUALS, $value),

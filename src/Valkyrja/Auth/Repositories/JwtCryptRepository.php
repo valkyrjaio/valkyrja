@@ -41,7 +41,7 @@ class JwtCryptRepository extends CryptTokenizedRepository implements Contract
      * JWTCryptRepository constructor.
      *
      * @param Adapter            $adapter The adapter
-     * @param JWTManager         $jwt     The JWT service
+     * @param JwtManager         $jwt     The JWT service
      * @param Crypt              $crypt   The crypt service
      * @param Session            $session The session service
      * @param Config|array       $config  The config

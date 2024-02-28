@@ -40,7 +40,7 @@ trait Annotatable
      *
      * @return static
      */
-    public function setType(string $type = null): static
+    public function setType(string|null $type = null): static
     {
         $this->type = $type;
 

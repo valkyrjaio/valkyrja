@@ -81,7 +81,7 @@ class Service extends Dispatch implements Annotation
      *
      * @return static
      */
-    public function setDefaults(array $defaults = null): static
+    public function setDefaults(array|null $defaults = null): static
     {
         $this->defaults = $defaults;
 

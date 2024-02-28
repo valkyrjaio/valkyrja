@@ -210,9 +210,9 @@ class Config extends Model
     /**
      * The SMS module config.
      *
-     * @var SMS
+     * @var Sms
      */
-    public SMS $sms;
+    public Sms $sms;
 
     /**
      * The validation module config.

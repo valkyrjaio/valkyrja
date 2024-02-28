@@ -47,7 +47,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
-    public function dispatch(Dispatch $dispatch, array $arguments = null): mixed
+    public function dispatch(Dispatch $dispatch, array|null $arguments = null): mixed
     {
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments);
@@ -68,7 +68,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
-    public function dispatchClassMethod(Dispatch $dispatch, array $arguments = null): mixed
+    public function dispatchClassMethod(Dispatch $dispatch, array|null $arguments = null): mixed
     {
         // Ensure a class and method exist before continuing
         if (! $dispatch->isMethod()) {
@@ -115,7 +115,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
-    public function dispatchClass(Dispatch $dispatch, array $arguments = null): mixed
+    public function dispatchClass(Dispatch $dispatch, array|null $arguments = null): mixed
     {
         // Ensure a class exists before continuing
         if (! $dispatch->isClass()) {
@@ -142,7 +142,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
-    public function dispatchFunction(Dispatch $dispatch, array $arguments = null): mixed
+    public function dispatchFunction(Dispatch $dispatch, array|null $arguments = null): mixed
     {
         // Ensure a function exists before continuing
         if (! $dispatch->isFunction()) {
@@ -162,7 +162,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
-    public function dispatchClosure(Dispatch $dispatch, array $arguments = null): mixed
+    public function dispatchClosure(Dispatch $dispatch, array|null $arguments = null): mixed
     {
         // Ensure a closure exists before continuing
         if (! $dispatch->isClosure()) {
@@ -205,7 +205,7 @@ class Dispatcher implements Contract
      *
      * @return array|null
      */
-    protected function getArguments(Dispatch $dispatch, array $arguments = null): array|null
+    protected function getArguments(Dispatch $dispatch, array|null $arguments = null): array|null
     {
         // Get either the arguments passed or from the dispatch model
         $arguments ??= $dispatch->getArguments();

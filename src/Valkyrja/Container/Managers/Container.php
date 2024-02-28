@@ -402,7 +402,7 @@ class Container implements Contract
     /**
      * Get a service bound to a closure from the container without trying to get an alias or ensuring published.
      *
-     * @param class-string|string $id The service id
+     * @param class-string|string $id        The service id
      * @param array               $arguments [optional] The arguments
      *
      * @return mixed
@@ -432,7 +432,7 @@ class Container implements Contract
     /**
      * Get a service from the container without trying to get an alias or ensuring published.
      *
-     * @param class-string<Service>|string $id The service id
+     * @param class-string<Service>|string $id        The service id
      * @param array                        $arguments [optional] The arguments
      *
      * @return Service

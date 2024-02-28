@@ -148,7 +148,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function where(string $column, string $operator = null, mixed $value = null, bool $setType = true): static
+    public function where(string $column, string|null $operator = null, mixed $value = null, bool $setType = true): static
     {
         $this->retriever->where($column, $operator, $value, $setType);
 
@@ -192,9 +192,9 @@ class Repository implements Contract
         string $table,
         string $column1,
         string $column2,
-        string $operator = null,
-        string $type = null,
-        bool $isWhere = null
+        string|null $operator = null,
+        string|null $type = null,
+        bool|null $isWhere = null
     ): static {
         $this->retriever->join($table, $column1, $column2, $operator, $type, $isWhere);
 
@@ -204,7 +204,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function orderBy(string $column, string $direction = null): static
+    public function orderBy(string $column, string|null $direction = null): static
     {
         $this->retriever->orderBy($column, $direction);
 
@@ -316,7 +316,7 @@ class Repository implements Contract
      *
      * @throws InvalidEntityException
      */
-    public function clear(Entity $entity = null): void
+    public function clear(Entity|null $entity = null): void
     {
         if ($entity !== null) {
             $this->validateEntity($entity);
@@ -336,7 +336,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function createQueryBuilder(string $alias = null): QueryBuilder
+    public function createQueryBuilder(string|null $alias = null): QueryBuilder
     {
         return $this->driver->createQueryBuilder($this->entity, $alias);
     }
