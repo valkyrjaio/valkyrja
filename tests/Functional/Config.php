@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional;
 
-use Valkyrja\Tests\Config;
+use Valkyrja\Tests\Config as BaseConfig;
 
 /**
- * Class ConfigTest.
+ * Class Config.
  */
-class ConfigTest extends Config
+class Config extends BaseConfig
 {
     /**
      * ConfigTest constructor.

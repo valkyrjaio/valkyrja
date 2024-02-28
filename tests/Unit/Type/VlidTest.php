@@ -21,7 +21,7 @@ use Valkyrja\Type\Support\VlidV2;
 use Valkyrja\Type\Support\VlidV3;
 use Valkyrja\Type\Support\VlidV4;
 
-class VlidTest extends AbstractVlidTest
+class VlidTest extends AbstractVlidTestCase
 {
     public function testDefaultVersion(): void
     {

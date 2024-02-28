@@ -18,7 +18,7 @@ use Valkyrja\Type\Exceptions\InvalidUuidV8Exception;
 use Valkyrja\Type\Support\Uuid;
 use Valkyrja\Type\Support\UuidV8;
 
-class UuidV8Test extends AbstractUuidTest
+class UuidV8Test extends AbstractUuidTestCase
 {
     protected const VERSION = UuidVersion::V8;
 

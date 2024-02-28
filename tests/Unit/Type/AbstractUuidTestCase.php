@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type;
 
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Enums\VlidVersion;
+use Valkyrja\Type\Enums\UuidVersion;
 
-abstract class AbstractVlidTest extends TestCase
+abstract class AbstractUuidTestCase extends TestCase
 {
-    protected function ensureVersionInGeneratedString(VlidVersion $version, string $generated): void
+    protected function ensureVersionInGeneratedString(UuidVersion $version, string $generated): void
     {
-        self::assertSame((string) $version->value, $generated[13]);
+        self::assertSame((string) $version->value, $generated[14]);
     }
 }

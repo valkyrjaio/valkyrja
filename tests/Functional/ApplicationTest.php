@@ -32,7 +32,7 @@ use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
 use Valkyrja\Tests\Config;
-use Valkyrja\Tests\EnvTest;
+use Valkyrja\Tests\Env;
 use Valkyrja\Tests\Unit\Support\ProviderClass;
 use Valkyrja\View\View;
 
@@ -156,7 +156,7 @@ class ApplicationTest extends TestCase
      */
     public function testGetEnv(): void
     {
-        self::assertSame(EnvTest::class, $this->app::getEnv());
+        self::assertSame(Env::class, $this->app::getEnv());
     }
 
     /**
@@ -166,8 +166,8 @@ class ApplicationTest extends TestCase
      */
     public function testSetEnv(): void
     {
-        $this->app::setEnv(EnvTest::class);
-        self::assertSame(EnvTest::class, $this->app::getEnv());
+        $this->app::setEnv(Env::class);
+        self::assertSame(Env::class, $this->app::getEnv());
     }
 
     /**
@@ -328,7 +328,7 @@ class ApplicationTest extends TestCase
     public function testSetupTwice(): void
     {
         // Try to re-setup the application without forcing
-        $this->app->setup(ConfigTest::class);
+        $this->app->setup(Config::class);
 
         // It shouldn't have used the new config settings and kept the old
         // so debug should still be false
@@ -384,7 +384,7 @@ class ApplicationTest extends TestCase
         $console->dispatchCommand($configCacheCommand);
 
         // Resetup the app with the new config and force
-        $this->app->setup(ConfigTest::class);
+        $this->app->setup(Config::class);
 
         // Because the app will use the config cache the forced changes to the config made above shouldn't
         // take effect and the value for app.debug should still be false.

@@ -22,7 +22,7 @@ use Valkyrja\Type\Support\UuidV4;
 use Valkyrja\Type\Support\UuidV5;
 use Valkyrja\Type\Support\UuidV6;
 
-class UuidTest extends AbstractUuidTest
+class UuidTest extends AbstractUuidTestCase
 {
     public function testDefaultVersion(): void
     {

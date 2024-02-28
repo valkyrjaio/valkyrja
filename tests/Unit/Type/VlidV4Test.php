@@ -20,7 +20,7 @@ use Valkyrja\Type\Support\VlidV2;
 use Valkyrja\Type\Support\VlidV3;
 use Valkyrja\Type\Support\VlidV4;
 
-class VlidV4Test extends AbstractVlidTest
+class VlidV4Test extends AbstractVlidTestCase
 {
     protected const VERSION = VlidVersion::V4;
 

@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Tests;
 
 /**
- * Class EnvTest.
+ * Class Env.
  *
  * @author Melech Mizrachi
  */
-class EnvTest
+class Env
 {
     public const CONSOLE_QUIET             = true;
     public const CONFIG_CACHE_FILE_PATH    = __DIR__ . '/bootstrap/cache.php';
