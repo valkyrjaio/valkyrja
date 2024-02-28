@@ -185,6 +185,52 @@ interface Dispatch extends Model
     public function isClosure(): bool;
 
     /**
+     * Get the constant.
+     *
+     * @return string|null
+     */
+    public function getConstant(): string|null;
+
+    /**
+     * Set the constant.
+     *
+     * @param string|null $constant The constant
+     *
+     * @return static
+     */
+    public function setConstant(string|null $constant = null): static;
+
+    /**
+     * Check whether this is a constant dispatch.
+     *
+     * @return bool
+     */
+    public function isConstant(): bool;
+
+    /**
+     * Get the variable.
+     *
+     * @return string|null
+     */
+    public function getVariable(): string|null;
+
+    /**
+     * Set the variable.
+     *
+     * @param string|null $variable The variable
+     *
+     * @return static
+     */
+    public function setVariable(string|null $variable = null): static;
+
+    /**
+     * Check whether this is a variable dispatch.
+     *
+     * @return bool
+     */
+    public function isVariable(): bool;
+
+    /**
      * Get the matches.
      *
      * @return array|null

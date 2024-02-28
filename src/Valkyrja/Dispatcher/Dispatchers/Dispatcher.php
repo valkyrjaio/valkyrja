@@ -49,16 +49,14 @@ class Dispatcher implements Contract
      */
     public function dispatch(Dispatch $dispatch, array|null $arguments = null): mixed
     {
-        // Get the arguments with dependencies
-        $arguments = $this->getArguments($dispatch, $arguments);
-
         // Attempt to dispatch the dispatch
         $response = $this->dispatchClassMethod($dispatch, $arguments)
             ?? $this->dispatchClassProperty($dispatch)
+            ?? $this->dispatchConstant($dispatch)
             ?? $this->dispatchClass($dispatch, $arguments)
             ?? $this->dispatchFunction($dispatch, $arguments)
-            ?? $this->dispatchClosure($dispatch, $arguments);
-        // TODO: Add Constant and Variable ability
+            ?? $this->dispatchClosure($dispatch, $arguments)
+            ?? $this->dispatchVariable($dispatch);
 
         // If the response was initially null and we added the dispatched text to avoid calling each subsequent
         // dispatcher thereafter so let's reset it to null
@@ -66,9 +64,14 @@ class Dispatcher implements Contract
     }
 
     /**
-     * @inheritDoc
+     * Dispatch a class method.
+     *
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments The arguments
+     *
+     * @return mixed
      */
-    public function dispatchClassMethod(Dispatch $dispatch, array|null $arguments = null): mixed
+    protected function dispatchClassMethod(Dispatch $dispatch, array|null $arguments = null): mixed
     {
         // Ensure a class and method exist before continuing
         if (! $dispatch->isMethod()) {
@@ -79,22 +82,27 @@ class Dispatcher implements Contract
             throw new InvalidMethodException("Expecting a valid method: $method provided");
         }
 
+        // Get the arguments with dependencies
+        $arguments = $this->getArguments($dispatch, $arguments) ?? [];
         $class     = $this->getClassFromDispatch($dispatch);
-        $arguments ??= [];
         /** @var mixed $response */
         $response = is_string($class)
             ? $class::$method(...$arguments)
             : (/** @var object $class */
-                $class->$method(...$arguments)
+            $class->$method(...$arguments)
             );
 
         return $response ?? Constant::DISPATCHED;
     }
 
     /**
-     * @inheritDoc
+     * Dispatch a class property.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return mixed
      */
-    public function dispatchClassProperty(Dispatch $dispatch): mixed
+    protected function dispatchClassProperty(Dispatch $dispatch): mixed
     {
         // Ensure a class and property exist before continuing
         if (! $dispatch->isProperty()) {
@@ -113,9 +121,40 @@ class Dispatcher implements Contract
     }
 
     /**
-     * @inheritDoc
+     * Dispatch a constant.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return mixed
      */
-    public function dispatchClass(Dispatch $dispatch, array|null $arguments = null): mixed
+    protected function dispatchConstant(Dispatch $dispatch): mixed
+    {
+        // Ensure a constant exists before continuing
+        if (! $dispatch->isConstant()) {
+            return null;
+        }
+
+        if (! $constant = $dispatch->getConstant()) {
+            throw new InvalidClosureException('Expecting a valid constant: Null provided');
+        }
+
+        $constant = ($class = $dispatch->getClass())
+            ? $class . '::' . $constant
+            : $constant;
+        $response = constant($constant);
+
+        return $response ?? Constant::DISPATCHED;
+    }
+
+    /**
+     * Dispatch a class.
+     *
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments The arguments
+     *
+     * @return mixed
+     */
+    protected function dispatchClass(Dispatch $dispatch, array|null $arguments = null): mixed
     {
         // Ensure a class exists before continuing
         if (! $dispatch->isClass()) {
@@ -126,23 +165,29 @@ class Dispatcher implements Contract
             throw new InvalidClassProvidedException("Expecting a valid class: $className provided");
         }
 
+        // Get the arguments with dependencies
+        $arguments = $this->getArguments($dispatch, $arguments) ?? [];
         // If the class is the id then this item is not yet set in the
         // service container so it needs a new instance returned
         if ($className === $dispatch->getId()) {
-            $arguments ??= [];
-            $class     = new $className(...$arguments);
+            $class = new $className(...$arguments);
         } else {
             // Get the class through the container
-            $class = $this->container->get($className, $arguments ?? []);
+            $class = $this->container->get($className, $arguments);
         }
 
         return $class ?? Constant::DISPATCHED;
     }
 
     /**
-     * @inheritDoc
+     * Dispatch a function.
+     *
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments The arguments
+     *
+     * @return mixed
      */
-    public function dispatchFunction(Dispatch $dispatch, array|null $arguments = null): mixed
+    protected function dispatchFunction(Dispatch $dispatch, array|null $arguments = null): mixed
     {
         // Ensure a function exists before continuing
         if (! $dispatch->isFunction()) {
@@ -153,16 +198,22 @@ class Dispatcher implements Contract
             throw new InvalidFunctionException("Expecting a valid callable: $function provided");
         }
 
-        $arguments ??= [];
+        // Get the arguments with dependencies
+        $arguments = $this->getArguments($dispatch, $arguments) ?? [];
         $response  = $function(...$arguments);
 
         return $response ?? Constant::DISPATCHED;
     }
 
     /**
-     * @inheritDoc
+     * Dispatch a closure.
+     *
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments The arguments
+     *
+     * @return mixed
      */
-    public function dispatchClosure(Dispatch $dispatch, array|null $arguments = null): mixed
+    protected function dispatchClosure(Dispatch $dispatch, array|null $arguments = null): mixed
     {
         // Ensure a closure exists before continuing
         if (! $dispatch->isClosure()) {
@@ -173,8 +224,34 @@ class Dispatcher implements Contract
             throw new InvalidClosureException('Expecting a valid closure: Null provided');
         }
 
-        $arguments ??= [];
+        // Get the arguments with dependencies
+        $arguments = $this->getArguments($dispatch, $arguments) ?? [];
         $response  = $closure(...$arguments);
+
+        return $response ?? Constant::DISPATCHED;
+    }
+
+    /**
+     * Dispatch a variable.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return mixed
+     */
+    protected function dispatchVariable(Dispatch $dispatch): mixed
+    {
+        // Ensure a variable exists before continuing
+        if (! $dispatch->isVariable()) {
+            return null;
+        }
+
+        if (! $variable = $dispatch->getVariable()) {
+            throw new InvalidClosureException('Expecting a valid variable: Null provided');
+        }
+
+        global $$variable;
+
+        $response = $$variable;
 
         return $response ?? Constant::DISPATCHED;
     }

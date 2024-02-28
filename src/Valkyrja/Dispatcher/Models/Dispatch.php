@@ -128,6 +128,34 @@ class Dispatch extends Model implements Contract
     protected bool $isClosure;
 
     /**
+     * The constant.
+     *
+     * @var string|null
+     */
+    protected string|null $constant;
+
+    /**
+     * Whether this is a constant dispatch.
+     *
+     * @var bool
+     */
+    protected bool $isConstant;
+
+    /**
+     * The variable.
+     *
+     * @var string|null
+     */
+    protected string|null $variable;
+
+    /**
+     * Whether this is a variable dispatch.
+     *
+     * @var bool
+     */
+    protected bool $isVariable;
+
+    /**
      * The dependencies.
      *
      * @var string[]|null
@@ -328,6 +356,60 @@ class Dispatch extends Model implements Contract
     public function isClosure(): bool
     {
         return $this->isClosure ?? false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getConstant(): string|null
+    {
+        return $this->constant ?? null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setConstant(string|null $constant = null): static
+    {
+        $this->constant   = $constant;
+        $this->isConstant = $constant !== null;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isConstant(): bool
+    {
+        return $this->isConstant ?? false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getVariable(): string|null
+    {
+        return $this->variable ?? null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setVariable(string|null $variable = null): static
+    {
+        $this->variable   = $variable;
+        $this->isVariable = $variable !== null;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isVariable(): bool
+    {
+        return $this->isVariable ?? false;
     }
 
     /**

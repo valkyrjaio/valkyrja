@@ -23,6 +23,8 @@ use Valkyrja\Tests\Unit\TestCase;
 use function count;
 use function microtime;
 
+use const PHP_VERSION;
+
 /**
  * Test the dispatcher trait.
  *
@@ -31,11 +33,39 @@ use function microtime;
 class DispatcherTest extends TestCase
 {
     /**
+     * A valid constant.
+     *
+     * @var string
+     */
+    public const VALID_CONSTANT = 'test';
+
+    /**
      * A valid static property.
      *
      * @var string
      */
     public static string $validStaticProperty = 'test';
+
+    /**
+     * The config to test with.
+     *
+     * @var Config
+     */
+    protected Config $config;
+
+    /**
+     * The container to test with.
+     *
+     * @var Container
+     */
+    protected Container $container;
+
+    /**
+     * The class to test with.
+     *
+     * @var Dispatcher
+     */
+    protected Dispatcher $dispatcher;
 
     /**
      * A valid property.
@@ -50,12 +80,6 @@ class DispatcherTest extends TestCase
      * @var string|null
      */
     public string|null $validPropertyNull = null;
-    /**
-     * The class to test with.
-     *
-     * @var Dispatcher
-     */
-    protected Dispatcher $dispatcher;
 
     /**
      * The value to test with.
@@ -85,7 +109,11 @@ class DispatcherTest extends TestCase
     {
         parent::setUp();
 
-        $this->dispatcher = new Dispatcher(new Container(new Config(setup: true), true));
+        $this->config     = new Config(setup: true);
+        $this->container  = new Container($this->config, true);
+        $this->dispatcher = new Dispatcher($this->container);
+
+        $this->container->setSingleton(self::class, new self('test'));
     }
 
     /**
@@ -108,10 +136,10 @@ class DispatcherTest extends TestCase
     public function testDispatchClassMethod(): void
     {
         $dispatch = (new Dispatch())
-            ->setClass(static::class)
+            ->setClass(self::class)
             ->setMethod('validMethod');
 
-        self::assertSame($this->validMethod(), $this->dispatcher->dispatchClassMethod($dispatch));
+        self::assertSame($this->validMethod(), $this->dispatcher->dispatch($dispatch));
     }
 
     /**
@@ -122,10 +150,10 @@ class DispatcherTest extends TestCase
     public function testDispatchClassMethodWithArgs(): void
     {
         $dispatch = (new Dispatch())
-            ->setClass(static::class)
+            ->setClass(self::class)
             ->setMethod('validMethod');
 
-        self::assertSame($this->validMethod('test'), $this->dispatcher->dispatchClassMethod($dispatch, ['test']));
+        self::assertSame($this->validMethod('test'), $this->dispatcher->dispatch($dispatch, ['test']));
     }
 
     /**
@@ -136,11 +164,11 @@ class DispatcherTest extends TestCase
     public function testDispatchClassMethodStatic(): void
     {
         $dispatch = (new Dispatch())
-            ->setClass(static::class)
+            ->setClass(self::class)
             ->setMethod('validStaticMethod')
             ->setStatic();
 
-        self::assertSame(static::validStaticMethod(), $this->dispatcher->dispatchClassMethod($dispatch));
+        self::assertSame(self::validStaticMethod(), $this->dispatcher->dispatch($dispatch));
     }
 
     /**
@@ -151,13 +179,13 @@ class DispatcherTest extends TestCase
     public function testDispatchClassMethodStaticWithArgs(): void
     {
         $dispatch = (new Dispatch())
-            ->setClass(static::class)
+            ->setClass(self::class)
             ->setMethod('validStaticMethod')
             ->setStatic();
 
         self::assertSame(
-            static::validStaticMethod('test'),
-            $this->dispatcher->dispatchClassMethod($dispatch, ['test'])
+            self::validStaticMethod('test'),
+            $this->dispatcher->dispatch($dispatch, ['test'])
         );
     }
 
@@ -169,10 +197,10 @@ class DispatcherTest extends TestCase
     public function testDispatchClassProperty(): void
     {
         $dispatch = (new Dispatch())
-            ->setClass(static::class)
+            ->setClass(self::class)
             ->setProperty('validProperty');
 
-        self::assertSame($this->validProperty, $this->dispatcher->dispatchClassProperty($dispatch));
+        self::assertSame($this->validProperty, $this->dispatcher->dispatch($dispatch));
     }
 
     /**
@@ -183,11 +211,11 @@ class DispatcherTest extends TestCase
     public function testDispatchClassPropertyStatic(): void
     {
         $dispatch = (new Dispatch())
-            ->setClass(static::class)
+            ->setClass(self::class)
             ->setProperty('validStaticProperty')
             ->setStatic();
 
-        self::assertSame(static::$validStaticProperty, $this->dispatcher->dispatchClassProperty($dispatch));
+        self::assertSame(self::$validStaticProperty, $this->dispatcher->dispatch($dispatch));
     }
 
     /**
@@ -198,10 +226,11 @@ class DispatcherTest extends TestCase
     public function testDispatchClass(): void
     {
         $dispatch = (new Dispatch())
-            ->setClass(static::class)
-            ->setId(static::class);
+            ->setClass(self::class)
+            ->setId(self::class)
+            ->setArguments(['test']);
 
-        self::assertInstanceOf(static::class, $this->dispatcher->dispatchClass($dispatch));
+        self::assertInstanceOf(self::class, $this->dispatcher->dispatch($dispatch));
     }
 
     /**
@@ -219,7 +248,7 @@ class DispatcherTest extends TestCase
 
         self::assertInstanceOf(
             InvalidDispatcherClass::class,
-            $this->dispatcher->dispatchClass(
+            $this->dispatcher->dispatch(
                 $dispatch,
                 [
                     $app,
@@ -236,9 +265,9 @@ class DispatcherTest extends TestCase
     public function testDispatchClassFromContainer(): void
     {
         $dispatch = (new Dispatch())
-            ->setClass(static::class);
+            ->setClass(self::class);
 
-        self::assertInstanceOf(static::class, $this->dispatcher->dispatchClass($dispatch));
+        self::assertInstanceOf(self::class, $this->dispatcher->dispatch($dispatch));
     }
 
     /**
@@ -251,7 +280,7 @@ class DispatcherTest extends TestCase
         $dispatch = (new Dispatch())
             ->setFunction('microtime');
 
-        self::assertTrue(microtime() <= $this->dispatcher->dispatchFunction($dispatch));
+        self::assertTrue(microtime() <= $this->dispatcher->dispatch($dispatch));
     }
 
     /**
@@ -265,7 +294,7 @@ class DispatcherTest extends TestCase
         $dispatch = (new Dispatch())
             ->setFunction('count');
 
-        self::assertSame(count($array), $this->dispatcher->dispatchFunction($dispatch, [$array]));
+        self::assertSame(count($array), $this->dispatcher->dispatch($dispatch, [$array]));
     }
 
     /**
@@ -280,7 +309,7 @@ class DispatcherTest extends TestCase
                 static fn () => 'test'
             );
 
-        self::assertSame('test', $this->dispatcher->dispatchClosure($dispatch));
+        self::assertSame('test', $this->dispatcher->dispatch($dispatch));
     }
 
     /**
@@ -296,7 +325,47 @@ class DispatcherTest extends TestCase
                 static fn (array $array) => count($array)
             );
 
-        self::assertSame(count($array), $this->dispatcher->dispatchClosure($dispatch, [$array]));
+        self::assertSame(count($array), $this->dispatcher->dispatch($dispatch, [$array]));
+    }
+
+    /**
+     * Test the dispatchConstant method for a global constant.
+     *
+     * @return void
+     */
+    public function testDispatchGlobalConstant(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setConstant('PHP_VERSION');
+
+        self::assertSame(PHP_VERSION, $this->dispatcher->dispatch($dispatch));
+    }
+
+    /**
+     * Test the dispatchConstant method for a class constant.
+     *
+     * @return void
+     */
+    public function testDispatchClassConstant(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setClass(self::class)
+            ->setConstant('VALID_CONSTANT');
+
+        self::assertSame(self::VALID_CONSTANT, $this->dispatcher->dispatch($dispatch));
+    }
+
+    /**
+     * Test the dispatchVariable method for a global variable.
+     *
+     * @return void
+     */
+    public function testDispatchVariable(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setVariable('_GET');
+
+        self::assertSame($_GET, $this->dispatcher->dispatch($dispatch));
     }
 
     /**
@@ -319,7 +388,7 @@ class DispatcherTest extends TestCase
     public function testDispatchCallableNullDispatchReturn(): void
     {
         $dispatch = (new Dispatch())
-            ->setClass(static::class)
+            ->setClass(self::class)
             ->setProperty('validPropertyNull');
 
         self::assertNull($this->dispatcher->dispatch($dispatch));
@@ -359,7 +428,7 @@ class DispatcherTest extends TestCase
     public function testDispatchCallableWithDependencies(): void
     {
         $dispatch = (new Dispatch())
-            ->setDependencies([static::class]);
+            ->setDependencies([self::class]);
 
         self::assertNull($this->dispatcher->dispatch($dispatch));
     }
@@ -373,7 +442,7 @@ class DispatcherTest extends TestCase
     {
         $dispatch = (new Dispatch())
             ->setStatic()
-            ->setDependencies([static::class]);
+            ->setDependencies([self::class]);
 
         self::assertNull($this->dispatcher->dispatch($dispatch));
     }

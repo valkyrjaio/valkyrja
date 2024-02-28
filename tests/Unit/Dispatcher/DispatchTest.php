@@ -401,6 +401,98 @@ class DispatchTest extends TestCase
     }
 
     /**
+     * Test the getConstant constant's default value.
+     *
+     * @return void
+     */
+    public function testGetConstantDefault(): void
+    {
+        self::assertNull($this->dispatch->getConstant());
+    }
+
+    /**
+     * Test the getConstant constant.
+     *
+     * @return void
+     */
+    public function testGetConstant(): void
+    {
+        $this->dispatch->setConstant($this->value);
+
+        self::assertSame($this->value, $this->dispatch->getConstant());
+    }
+
+    /**
+     * Test the setConstant constant with null value.
+     *
+     * @return void
+     */
+    public function testSetConstantNull(): void
+    {
+        $set = $this->dispatch->setConstant(null);
+
+        self::assertTrue($set instanceof Dispatch);
+    }
+
+    /**
+     * Test the setConstant constant.
+     *
+     * @return void
+     */
+    public function testSetConstant(): void
+    {
+        $set = $this->dispatch->setConstant($this->value);
+
+        self::assertTrue($set instanceof Dispatch);
+    }
+
+    /**
+     * Test the getVariable variable's default value.
+     *
+     * @return void
+     */
+    public function testGetVariableDefault(): void
+    {
+        self::assertNull($this->dispatch->getVariable());
+    }
+
+    /**
+     * Test the getVariable variable.
+     *
+     * @return void
+     */
+    public function testGetVariable(): void
+    {
+        $this->dispatch->setVariable($this->value);
+
+        self::assertSame($this->value, $this->dispatch->getVariable());
+    }
+
+    /**
+     * Test the setVariable variable with null value.
+     *
+     * @return void
+     */
+    public function testSetVariableNull(): void
+    {
+        $set = $this->dispatch->setVariable(null);
+
+        self::assertTrue($set instanceof Dispatch);
+    }
+
+    /**
+     * Test the setVariable variable.
+     *
+     * @return void
+     */
+    public function testSetVariable(): void
+    {
+        $set = $this->dispatch->setVariable($this->value);
+
+        self::assertTrue($set instanceof Dispatch);
+    }
+
+    /**
      * Test the getMatches method's default value.
      *
      * @return void

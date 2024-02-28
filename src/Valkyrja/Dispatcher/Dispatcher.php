@@ -21,55 +21,6 @@ namespace Valkyrja\Dispatcher;
 interface Dispatcher
 {
     /**
-     * Dispatch a class method.
-     *
-     * @param Dispatch   $dispatch  The dispatch
-     * @param array|null $arguments The arguments
-     *
-     * @return mixed
-     */
-    public function dispatchClassMethod(Dispatch $dispatch, array|null $arguments = null): mixed;
-
-    /**
-     * Dispatch a class property.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @return mixed
-     */
-    public function dispatchClassProperty(Dispatch $dispatch): mixed;
-
-    /**
-     * Dispatch a class.
-     *
-     * @param Dispatch   $dispatch  The dispatch
-     * @param array|null $arguments The arguments
-     *
-     * @return mixed
-     */
-    public function dispatchClass(Dispatch $dispatch, array|null $arguments = null): mixed;
-
-    /**
-     * Dispatch a function.
-     *
-     * @param Dispatch   $dispatch  The dispatch
-     * @param array|null $arguments The arguments
-     *
-     * @return mixed
-     */
-    public function dispatchFunction(Dispatch $dispatch, array|null $arguments = null): mixed;
-
-    /**
-     * Dispatch a closure.
-     *
-     * @param Dispatch   $dispatch  The dispatch
-     * @param array|null $arguments The arguments
-     *
-     * @return mixed
-     */
-    public function dispatchClosure(Dispatch $dispatch, array|null $arguments = null): mixed;
-
-    /**
      * Dispatch a callable.
      *
      * @param Dispatch   $dispatch  The dispatch
