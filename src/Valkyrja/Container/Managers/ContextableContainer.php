@@ -76,55 +76,55 @@ trait ContextableContainer
     /**
      * Get a service id with optional context.
      *
-     * @param class-string|string $serviceId The service id
+     * @param class-string|string $id The service id
      * @param string|null         $context   [optional] The context class or function name
      * @param string|null         $member    [optional] The context member name
      *
      * @return string
      */
-    protected function getServiceId(string $serviceId, string $context = null, string $member = null): string
+    protected function getServiceId(string $id, string $context = null, string $member = null): string
     {
         if ($context === null) {
-            return $serviceId;
+            return $id;
         }
 
-        return $serviceId . $context . ($member ?? '');
+        return $id . $context . ($member ?? '');
     }
 
     /**
      * Get a service id and ensure that it is published if it is provided.
      *
-     * @param class-string|string $serviceId The service id
+     * @param class-string|string $id The service id
      *
      * @return string
      */
-    protected function getServiceIdAndEnsurePublished(string $serviceId): string
+    protected function getServiceIdAndEnsurePublished(string $id): string
     {
         // Get an aliased service id if it exists
-        $serviceId = $this->getServiceIdInternal($serviceId);
+        $id = $this->getServiceIdInternal($id);
 
-        $this->publishUnpublishedProvided($serviceId);
+        $this->publishUnpublishedProvided($id);
 
-        return $serviceId;
+        return $id;
     }
 
     /**
      * Get the context service id.
      *
-     * @param class-string|string $serviceId The service id
+     * @param class-string|string $id The service id
      *
      * @return string
      */
-    protected function getServiceIdInternal(string $serviceId): string
+    protected function getServiceIdInternal(string $id): string
     {
-        $serviceId = $this->getAliasedServiceId($serviceId);
+        $id = $this->getAliasedServiceId($id);
 
         if ($this->context === null) {
-            return $serviceId;
+            return $id;
         }
 
         // serviceId@context
         // serviceId@context::method
-        return $serviceId . ($this->contextId ?? '');
+        return $id . ($this->contextId ?? '');
     }
 }

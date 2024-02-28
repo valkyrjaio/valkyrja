@@ -62,129 +62,129 @@ class ContainerTest extends TestCase
     public function testBind(): void
     {
         $container = $this->container;
-        $serviceId = Service::class;
+        $id = Service::class;
 
-        $container->bind($serviceId, $serviceId);
+        $container->bind($id, $id);
 
-        self::assertTrue($container->has($serviceId));
-        self::assertTrue($container->isService($serviceId));
+        self::assertTrue($container->has($id));
+        self::assertTrue($container->isService($id));
 
-        self::assertFalse($container->isAlias($serviceId));
-        self::assertFalse($container->isClosure($serviceId));
-        self::assertFalse($container->isSingleton($serviceId));
-        self::assertFalse($container->isProvided($serviceId));
-        self::assertFalse($container->isPublished($serviceId));
+        self::assertFalse($container->isAlias($id));
+        self::assertFalse($container->isClosure($id));
+        self::assertFalse($container->isSingleton($id));
+        self::assertFalse($container->isProvided($id));
+        self::assertFalse($container->isPublished($id));
 
-        self::assertInstanceOf($serviceId, $service = $container->get($serviceId));
+        self::assertInstanceOf($id, $service = $container->get($id));
         // A bound service should return a new instance each time it is retrieved
-        self::assertNotSame($service, $container->get($serviceId));
+        self::assertNotSame($service, $container->get($id));
 
-        self::assertInstanceOf($serviceId, $container->getService($serviceId));
-        self::assertNotSame($service, $container->getService($serviceId));
+        self::assertInstanceOf($id, $container->getService($id));
+        self::assertNotSame($service, $container->getService($id));
     }
 
     public function testBindAlias(): void
     {
         $container = $this->container;
-        $serviceId = Service::class;
+        $id = Service::class;
         $alias     = 'alias';
 
-        $container->bindAlias($alias, $serviceId);
+        $container->bindAlias($alias, $id);
 
         self::assertTrue($container->has($alias));
         self::assertTrue($container->isAlias($alias));
         self::assertTrue($container->isService($alias));
 
-        self::assertFalse($container->isClosure($serviceId));
-        self::assertFalse($container->isSingleton($serviceId));
-        self::assertFalse($container->isProvided($serviceId));
-        self::assertFalse($container->isPublished($serviceId));
+        self::assertFalse($container->isClosure($id));
+        self::assertFalse($container->isSingleton($id));
+        self::assertFalse($container->isProvided($id));
+        self::assertFalse($container->isPublished($id));
 
-        self::assertInstanceOf($serviceId, $service = $container->get($alias));
+        self::assertInstanceOf($id, $service = $container->get($alias));
         // A bound service should return a new instance each time it is retrieved
         self::assertNotSame($service, $container->get($alias));
 
-        self::assertInstanceOf($serviceId, $container->getService($alias));
+        self::assertInstanceOf($id, $container->getService($alias));
         self::assertNotSame($service, $container->getService($alias));
     }
 
     public function testBindSingleton(): void
     {
         $container = $this->container;
-        $serviceId = Singleton::class;
+        $id = Singleton::class;
 
-        $container->bindSingleton($serviceId, $serviceId);
+        $container->bindSingleton($id, $id);
 
-        self::assertTrue($container->has($serviceId));
-        self::assertTrue($container->isSingleton($serviceId));
+        self::assertTrue($container->has($id));
+        self::assertTrue($container->isSingleton($id));
         // A singleton is a service when bound
-        self::assertTrue($container->isService($serviceId));
+        self::assertTrue($container->isService($id));
 
-        self::assertFalse($container->isAlias($serviceId));
-        self::assertFalse($container->isClosure($serviceId));
-        self::assertFalse($container->isProvided($serviceId));
-        self::assertFalse($container->isPublished($serviceId));
+        self::assertFalse($container->isAlias($id));
+        self::assertFalse($container->isClosure($id));
+        self::assertFalse($container->isProvided($id));
+        self::assertFalse($container->isPublished($id));
 
-        self::assertInstanceOf($serviceId, $service = $container->get($serviceId));
+        self::assertInstanceOf($id, $service = $container->get($id));
         // A bound singleton should return the same instance each time it is retrieved
-        self::assertSame($service, $container->get($serviceId));
+        self::assertSame($service, $container->get($id));
 
-        self::assertInstanceOf($serviceId, $container->getSingleton($serviceId));
-        self::assertSame($service, $container->getSingleton($serviceId));
+        self::assertInstanceOf($id, $container->getSingleton($id));
+        self::assertSame($service, $container->getSingleton($id));
     }
 
     public function testOffsetGetSetAndExists(): void
     {
         $container = $this->container;
-        $serviceId = Service::class;
+        $id = Service::class;
 
-        $container[$serviceId] = $serviceId;
+        $container[$id] = $id;
 
-        self::assertTrue(isset($container[$serviceId]));
-        self::assertInstanceOf($serviceId, $service = $container[$serviceId]);
+        self::assertTrue(isset($container[$id]));
+        self::assertInstanceOf($id, $service = $container[$id]);
         // A bound service should return a new instance each time it is gotten
-        self::assertNotSame($service, $container[$serviceId]);
+        self::assertNotSame($service, $container[$id]);
     }
 
     public function testClosure(): void
     {
         $container = $this->container;
-        $serviceId = self::class;
+        $id = self::class;
         $closure   = static fn () => new self();
 
-        $container->setClosure($serviceId, $closure);
+        $container->setClosure($id, $closure);
 
-        self::assertTrue($container->has($serviceId));
-        self::assertTrue($container->isClosure($serviceId));
+        self::assertTrue($container->has($id));
+        self::assertTrue($container->isClosure($id));
         // Set methods will automatically set the service id to published
         // Bounding is a deferment technique, whilst setting is not-deferred and hence should be used through providers
-        self::assertTrue($container->isPublished($serviceId));
+        self::assertTrue($container->isPublished($id));
 
-        self::assertFalse($container->isAlias($serviceId));
-        self::assertFalse($container->isSingleton($serviceId));
-        self::assertFalse($container->isService($serviceId));
-        self::assertFalse($container->isProvided($serviceId));
+        self::assertFalse($container->isAlias($id));
+        self::assertFalse($container->isSingleton($id));
+        self::assertFalse($container->isService($id));
+        self::assertFalse($container->isProvided($id));
 
-        self::assertInstanceOf($serviceId, $service = $container->get($serviceId));
+        self::assertInstanceOf($id, $service = $container->get($id));
         // A bound service should return a new instance each time it is retrieved
         // Of course an application can choose to return the same instance each time, but why not use a singleton then?
-        self::assertNotSame($service, $container->get($serviceId));
+        self::assertNotSame($service, $container->get($id));
 
-        self::assertInstanceOf($serviceId, $container->getClosure($serviceId));
-        self::assertNotSame($service, $container->getClosure($serviceId));
+        self::assertInstanceOf($id, $container->getClosure($id));
+        self::assertNotSame($service, $container->getClosure($id));
     }
 
     public function testOffsetUnset(): void
     {
         $container = $this->container;
-        $serviceId = Service::class;
+        $id = Service::class;
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage("Cannot remove service with name $serviceId from the container.");
+        $this->expectExceptionMessage("Cannot remove service with name $id from the container.");
 
-        $container[$serviceId] = $serviceId;
+        $container[$id] = $id;
 
-        unset($container[$serviceId]);
+        unset($container[$id]);
     }
 
     public function testProvided(): void
