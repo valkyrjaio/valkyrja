@@ -51,7 +51,10 @@ class ContainerFactory extends Factory implements Contract
      */
     public function createDriver(string $name, string $adapter, array $config): Driver
     {
-        return parent::createDriver($name, $adapter, $config);
+        /** @var Driver $driver */
+        $driver = parent::createDriver($name, $adapter, $config);
+
+        return $driver;
     }
 
     /**
@@ -59,7 +62,10 @@ class ContainerFactory extends Factory implements Contract
      */
     public function createAdapter(string $name, array $config): Adapter
     {
-        return parent::createAdapter($name, $config);
+        /** @var Adapter $adapter */
+        $adapter = parent::createAdapter($name, $config);
+
+        return $adapter;
     }
 
     /**
@@ -67,7 +73,11 @@ class ContainerFactory extends Factory implements Contract
      */
     public function createMessage(string $name, array $config, array $data = []): Message
     {
-        return parent::createMessage($name, $config, $data);
+
+/** @var Message $message */
+        $message = parent::createMessage($name, $config, $data);
+
+        return $message;
     }
 
     /**

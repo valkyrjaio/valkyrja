@@ -26,6 +26,8 @@ use Valkyrja\Manager\Managers\Manager;
  *
  * @author Melech Mizrachi
  *
+ * @extends Manager<Driver, Factory>
+ *
  * @property Factory $factory
  */
 class Client extends Manager implements Contract
@@ -48,7 +50,10 @@ class Client extends Manager implements Contract
      */
     public function use(string|null $name = null): Driver
     {
-        return parent::use($name);
+        /** @var Driver $driver */
+        $driver = parent::use($name);
+
+        return $driver;
     }
 
     /**

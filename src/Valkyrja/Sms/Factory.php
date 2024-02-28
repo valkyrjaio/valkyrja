@@ -18,6 +18,10 @@ use Valkyrja\Manager\MessageFactory as Contract;
 /**
  * Interface Factory.
  *
+ * @template Adapter
+ * @template Driver
+ * @template Message
+ *
  * @author Melech Mizrachi
  *
  * @extends Contract<Adapter, Driver, Message>

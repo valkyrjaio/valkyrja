@@ -22,6 +22,9 @@ use Valkyrja\Manager\Manager as Contract;
 /**
  * Class Manager.
  *
+ * @template Driver
+ * @template Factory
+ *
  * @author Melech Mizrachi
  *
  * @implements Contract<Driver, Factory>
