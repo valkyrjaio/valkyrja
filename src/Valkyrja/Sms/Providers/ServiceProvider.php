@@ -40,13 +40,13 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Sms::class          => 'publishSMS',
-            Factory::class      => 'publishFactory',
-            Adapter::class      => 'publishAdapter',
-            LogAdapter::class   => 'publishLogAdapter',
+            Sms::class           => 'publishSMS',
+            Factory::class       => 'publishFactory',
+            Adapter::class       => 'publishAdapter',
+            LogAdapter::class    => 'publishLogAdapter',
             VonageAdapter::class => 'publishVonageAdapter',
-            Vonage::class       => 'publishNexmo',
-            Message::class      => 'publishMessage',
+            Vonage::class        => 'publishVonage',
+            Message::class       => 'publishMessage',
         ];
     }
 
@@ -149,7 +149,7 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish a nexmo adapter service.
+     * Publish a Vonage adapter service.
      *
      * @param Container $container The container
      *
@@ -171,13 +171,13 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish a nexmo service.
+     * Publish a Vonage service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishNexmo(Container $container): void
+    public static function publishVonage(Container $container): void
     {
         $container->setClosure(
             Vonage::class,
