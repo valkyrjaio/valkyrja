@@ -130,7 +130,7 @@ class Dispatch extends Model implements Contract
     /**
      * The constant.
      *
-     * @var string|null
+     * @var non-empty-string|null
      */
     protected string|null $constant;
 
@@ -144,7 +144,7 @@ class Dispatch extends Model implements Contract
     /**
      * The variable.
      *
-     * @var string|null
+     * @var non-empty-string|null
      */
     protected string|null $variable;
 
