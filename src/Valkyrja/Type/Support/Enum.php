@@ -78,7 +78,10 @@ class Enum
         assert(is_a($enum, UnitEnum::class, true));
 
         if (is_a($enum, BackedEnum::class, true)) {
-            return self::$cache[$cacheName] = array_column($enum::cases(), 'value');
+            /** @var int[]|string[] $values */
+            $values = array_column($enum::cases(), 'value');
+
+            return self::$cache[$cacheName] = $values;
         }
 
         return self::$cache[$cacheName] = self::names($enum);

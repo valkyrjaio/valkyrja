@@ -25,7 +25,7 @@ use Valkyrja\Type\Enums\Type;
 class Intersection
 {
     /**
-     * @var array<int, self|Union|Type>
+     * @var array<array-key, self|Union|Type>
      */
     public array $types = [];
 

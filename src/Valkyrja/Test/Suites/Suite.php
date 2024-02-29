@@ -47,6 +47,8 @@ class Suite implements Contract
 
     /**
      * Get the server arguments.
+     *
+     * @return string[]
      */
     protected function getServerArgs(): array
     {

@@ -25,6 +25,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Type\Exceptions\InvalidClassProvidedException;
 
+use function constant;
 use function is_string;
 
 /**
@@ -169,6 +170,7 @@ class Dispatcher implements Contract
 
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments) ?? [];
+
         // If the class is the id then this item is not yet set in the
         // service container so it needs a new instance returned
         if ($className === $dispatch->getId()) {

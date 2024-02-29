@@ -72,11 +72,16 @@ interface Str extends Type
 
     /**
      * Replace any portion of a string with any replacement.
+     *
+     * @param string[] $replace
+     * @param string[] $replacement
      */
     public function replaceAll(array $replace, array $replacement): static;
 
     /**
      * Replace all portions of a string with a replacement.
+     *
+     * @param string[] $replace
      */
     public function replaceAllWith(array $replace, string $replacement): static;
 

@@ -47,6 +47,20 @@ class DispatcherTest extends TestCase
     public static string $validStaticProperty = 'test';
 
     /**
+     * A valid property.
+     *
+     * @var string
+     */
+    public string $validProperty = 'test';
+
+    /**
+     * A valid property with null value.
+     *
+     * @var string|null
+     */
+    public string|null $validPropertyNull = null;
+
+    /**
      * The config to test with.
      *
      * @var Config
@@ -66,20 +80,6 @@ class DispatcherTest extends TestCase
      * @var Dispatcher
      */
     protected Dispatcher $dispatcher;
-
-    /**
-     * A valid property.
-     *
-     * @var string
-     */
-    public string $validProperty = 'test';
-
-    /**
-     * A valid property with null value.
-     *
-     * @var string|null
-     */
-    public string|null $validPropertyNull = null;
 
     /**
      * The value to test with.

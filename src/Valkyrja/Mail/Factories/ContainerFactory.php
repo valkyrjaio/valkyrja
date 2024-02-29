@@ -73,8 +73,7 @@ class ContainerFactory extends Factory implements Contract
      */
     public function createMessage(string $name, array $config, array $data = []): Message
     {
-
-/** @var Message $message */
+        /** @var Message $message */
         $message = parent::createMessage($name, $config, $data);
 
         return $message;

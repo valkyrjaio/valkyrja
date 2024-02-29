@@ -18,6 +18,7 @@ use Valkyrja\Path\PathGenerator as Contract;
 
 use function implode;
 use function is_array;
+use function is_string;
 use function preg_match;
 use function str_replace;
 

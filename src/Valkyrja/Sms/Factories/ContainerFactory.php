@@ -27,6 +27,7 @@ use Valkyrja\Sms\VonageAdapter;
  * @author Melech Mizrachi
  *
  * @extends Factory<Adapter, Driver, Message>
+ *
  * @implements Contract<Adapter, Driver, Message>
  */
 class ContainerFactory extends Factory implements Contract
