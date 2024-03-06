@@ -216,7 +216,7 @@ class Stream implements StreamContract
      */
     public function detach()
     {
-        $resource = $this->stream;
+        $resource = $this->stream ?? null;
 
         $this->stream = null;
 
