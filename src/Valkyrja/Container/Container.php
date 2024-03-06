@@ -187,7 +187,7 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     public function offsetSet($offset, $value): void;
 
     /**
-     * Bind a service to the container.
+     * Unbind a service to the container.
      *
      * @param class-string|string $offset The service id
      *
