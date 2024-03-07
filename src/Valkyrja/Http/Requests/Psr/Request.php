@@ -93,7 +93,9 @@ class Request implements RequestInterface
     {
         $new = clone $this;
 
-        $new->request = $this->request->withHeader($name, $value);
+        $value = is_array($value) ? $value : [$value];
+
+        $new->request = $this->request->withHeader($name, ...$value);
 
         return $new;
     }
@@ -105,7 +107,9 @@ class Request implements RequestInterface
     {
         $new = clone $this;
 
-        $new->request = $this->request->withAddedHeader($name, $value);
+        $value = is_array($value) ? $value : [$value];
+
+        $new->request = $this->request->withAddedHeader($name, ...$value);
 
         return $new;
     }

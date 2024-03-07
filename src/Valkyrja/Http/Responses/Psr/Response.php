@@ -90,7 +90,9 @@ class Response implements ResponseInterface
     {
         $new = clone $this;
 
-        $new->response = $this->response->withHeader($name, $value);
+        $value = is_array($value) ? $value : [$value];
+
+        $new->response = $this->response->withHeader($name, ...$value);
 
         return $new;
     }
@@ -102,7 +104,9 @@ class Response implements ResponseInterface
     {
         $new = clone $this;
 
-        $new->response = $this->response->withAddedHeader($name, $value);
+        $value = is_array($value) ? $value : [$value];
+
+        $new->response = $this->response->withAddedHeader($name, ...$value);
 
         return $new;
     }
@@ -137,13 +141,16 @@ class Response implements ResponseInterface
         $new = clone $this;
 
         $mode = '';
+
         if ($body->isReadable()) {
             $mode = 'r';
         }
+
         if ($body->isWritable()) {
             $mode .= 'w';
         }
-        $stream        = new ValkyrjaStream($body->getContents(), $mode . 'b');
+
+        $stream        = new ValkyrjaStream($body->getContents(), "{$mode}b");
         $new->response = $this->response->withBody($stream);
 
         return $new;

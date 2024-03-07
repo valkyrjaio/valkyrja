@@ -14,7 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Requests\Psr;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UploadedFileInterface;
+use Valkyrja\Http\Files\Psr\UploadedFile;
+use Valkyrja\Http\Files\UploadedFile as ValkyrjaUploadedFile;
 use Valkyrja\Http\Request as ValkyrjaRequest;
+use Valkyrja\Http\Streams\Stream as ValkyrjaStream;
 
 /**
  * Class ServerRequest.
@@ -83,7 +87,15 @@ class ServerRequest extends Request implements ServerRequestInterface
      */
     public function getUploadedFiles(): array
     {
-        return $this->request->getUploadedFiles();
+        $valkyrjaUploadedFiles = $this->request->getUploadedFiles();
+
+        $uploadedFiles = [];
+
+        foreach ($valkyrjaUploadedFiles as $valkyrjaUploadedFile) {
+            $uploadedFiles[] = new UploadedFile($valkyrjaUploadedFile);
+        }
+
+        return $uploadedFiles;
     }
 
     /**
@@ -93,7 +105,34 @@ class ServerRequest extends Request implements ServerRequestInterface
     {
         $new = clone $this;
 
-        $new->request = $this->request->withUploadedFiles($uploadedFiles);
+        $valkyrjaUploadedFiles = [];
+
+        /** @var UploadedFileInterface[] $uploadedFiles */
+        foreach ($uploadedFiles as $uploadedFile) {
+            $stream = $uploadedFile->getStream();
+            $mode   = '';
+
+            if ($stream->isReadable()) {
+                $mode = 'r';
+            }
+
+            if ($stream->isWritable()) {
+                $mode .= 'w';
+            }
+
+            $valkyrjaStream = new ValkyrjaStream($stream->getContents(), "{$mode}b");
+
+            $valkyrjaUploadedFiles[] = new ValkyrjaUploadedFile(
+                $uploadedFile->getSize() ?? 0,
+                $uploadedFile->getError(),
+                null,
+                $valkyrjaStream,
+                $uploadedFile->getClientFilename(),
+                $uploadedFile->getClientMediaType(),
+            );
+        }
+
+        $new->request = $this->request->withUploadedFiles(...$valkyrjaUploadedFiles);
 
         return $new;
     }
@@ -113,7 +152,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     {
         $new = clone $this;
 
-        $new->request = $this->request->withParsedBody($data);
+        $new->request = $this->request->withParsedBody($data !== null ? (array) $data : []);
 
         return $new;
     }
