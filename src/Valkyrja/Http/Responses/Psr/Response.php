@@ -143,7 +143,7 @@ class Response implements ResponseInterface
         if ($body->isWritable()) {
             $mode .= 'w';
         }
-        $stream = new ValkyrjaStream($body->getContents(), $mode . 'b');
+        $stream        = new ValkyrjaStream($body->getContents(), $mode . 'b');
         $new->response = $this->response->withBody($stream);
 
         return $new;

@@ -146,7 +146,7 @@ class Request implements RequestInterface
         if ($body->isWritable()) {
             $mode .= 'w';
         }
-        $stream = new ValkyrjaStream($body->getContents(), $mode . 'b');
+        $stream       = new ValkyrjaStream($body->getContents(), $mode . 'b');
         $new->request = $this->request->withBody($stream);
 
         return $new;
@@ -209,7 +209,7 @@ class Request implements RequestInterface
     {
         $new = clone $this;
 
-        $uri = new ValkyrjaUri($uri->__toString());
+        $uri          = new ValkyrjaUri($uri->__toString());
         $new->request = $this->request->withUri($uri, $preserveHost);
 
         return $new;
