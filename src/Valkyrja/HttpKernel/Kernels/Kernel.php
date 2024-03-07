@@ -323,7 +323,7 @@ class Kernel implements Contract
             // Use it to finish the request
             fastcgi_finish_request();
         } // Otherwise if this isn't a cli request
-        elseif ('cli' !== PHP_SAPI) {
+        elseif (! in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
             // Use an internal method to finish the request
             $this->closeOutputBuffers(0, true);
         }
