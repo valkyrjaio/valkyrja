@@ -23,7 +23,7 @@ use Valkyrja\Support\Provider\ProvidersAware;
  *
  * @author Melech Mizrachi
  *
- * @extends ArrayAccess<string, mixed>
+ * @extends ArrayAccess<class-string|string, mixed>
  */
 interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
 {
