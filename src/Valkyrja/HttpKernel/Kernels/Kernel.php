@@ -322,6 +322,11 @@ class Kernel implements Contract
         if (function_exists('fastcgi_finish_request')) {
             // Use it to finish the request
             fastcgi_finish_request();
+        }
+        // If litespeed is enabled
+        elseif (function_exists('litespeed_finish_request')) {
+            // Use it to finish the request
+            litespeed_finish_request();
         } // Otherwise if this isn't a cli request
         elseif (! in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
             // Use an internal method to finish the request
