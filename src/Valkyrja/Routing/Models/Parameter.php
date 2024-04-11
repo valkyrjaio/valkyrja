@@ -129,10 +129,10 @@ class Parameter extends Model
             $cast = ($column !== null)
                 ? new EntityCast(
                     $type,
-                    column       : $column,
+                    column: $column,
                     relationships: $relationships,
-                    convert      : $convert,
-                    isArray      : $isArray
+                    convert: $convert,
+                    isArray: $isArray
                 )
                 : new Cast(
                     $type,
