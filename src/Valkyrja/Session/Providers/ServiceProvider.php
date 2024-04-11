@@ -42,13 +42,13 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Session::class       => 'publishSession',
-            Factory::class       => 'publishFactory',
-            Driver::class        => 'publishDriver',
-            Adapter::class       => 'publishAdapter',
-            CacheAdapter::class  => 'publishCacheAdapter',
-            CookieAdapter::class => 'publishCookieAdapter',
-            LogAdapter::class    => 'publishLogAdapter',
+            Session::class       => [self::class, 'publishSession'],
+            Factory::class       => [self::class, 'publishFactory'],
+            Driver::class        => [self::class, 'publishDriver'],
+            Adapter::class       => [self::class, 'publishAdapter'],
+            CacheAdapter::class  => [self::class, 'publishCacheAdapter'],
+            CookieAdapter::class => [self::class, 'publishCookieAdapter'],
+            LogAdapter::class    => [self::class, 'publishLogAdapter'],
         ];
     }
 

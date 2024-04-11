@@ -36,8 +36,8 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Notifier::class => 'publishNotifier',
-            Factory::class  => 'publishFactory',
+            Notifier::class => [self::class, 'publishNotifier'],
+            Factory::class  => [self::class, 'publishFactory',],
         ];
     }
 

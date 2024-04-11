@@ -35,10 +35,10 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Jwt::class     => 'publishJWT',
-            Factory::class => 'publishFactory',
-            Driver::class  => 'publishDriver',
-            Adapter::class => 'publishAdapter',
+            Jwt::class     => [self::class, 'publishJWT'],
+            Factory::class => [self::class, 'publishFactory'],
+            Driver::class  => [self::class, 'publishDriver'],
+            Adapter::class => [self::class, 'publishAdapter'],
         ];
     }
 

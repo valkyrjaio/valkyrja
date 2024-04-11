@@ -44,16 +44,16 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Mail::class             => 'publishMail',
-            Factory::class          => 'publishFactory',
-            Driver::class           => 'publishDriver',
-            Adapter::class          => 'publishAdapter',
-            LogAdapter::class       => 'publishLogAdapter',
-            PHPMailerAdapter::class => 'publishPHPMailerAdapter',
-            MailgunAdapter::class   => 'publishMailgunAdapter',
-            PHPMailer::class        => 'publishPHPMailer',
-            Mailgun::class          => 'publishMailgun',
-            Message::class          => 'publishMessage',
+            Mail::class             => [self::class, 'publishMail'],
+            Factory::class          => [self::class, 'publishFactory'],
+            Driver::class           => [self::class, 'publishDriver'],
+            Adapter::class          => [self::class, 'publishAdapter'],
+            LogAdapter::class       => [self::class, 'publishLogAdapter'],
+            PHPMailerAdapter::class => [self::class, 'publishPHPMailerAdapter'],
+            MailgunAdapter::class   => [self::class, 'publishMailgunAdapter'],
+            PHPMailer::class        => [self::class, 'publishPHPMailer'],
+            Mailgun::class          => [self::class, 'publishMailgun'],
+            Message::class          => [self::class, 'publishMessage'],
         ];
     }
 
@@ -299,7 +299,10 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Message::class,
-            static fn (string $name, array $config): Message => (new $name())->setFrom($config['fromAddress'], $config['fromName'])
+            static fn (string $name, array $config): Message => (new $name())->setFrom(
+                $config['fromAddress'],
+                $config['fromName']
+            )
         );
     }
 }

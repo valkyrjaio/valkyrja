@@ -43,13 +43,13 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            View::class        => 'publishView',
-            Factory::class     => 'publishFactory',
-            Template::class    => 'publishTemplate',
-            PhpEngine::class   => 'publishPhpEngine',
-            OrkaEngine::class  => 'publishOrkaEngine',
-            TwigEngine::class  => 'publishTwigEngine',
-            Environment::class => 'publishTwigEnvironment',
+            View::class        => [self::class, 'publishView'],
+            Factory::class     => [self::class, 'publishFactory'],
+            Template::class    => [self::class, 'publishTemplate'],
+            PhpEngine::class   => [self::class, 'publishPhpEngine'],
+            OrkaEngine::class  => [self::class, 'publishOrkaEngine'],
+            TwigEngine::class  => [self::class, 'publishTwigEngine'],
+            Environment::class => [self::class, 'publishTwigEnvironment'],
         ];
     }
 

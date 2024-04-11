@@ -32,7 +32,7 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Api::class => 'publishApi',
+            Api::class => [self::class, 'publishApi'],
         ];
     }
 

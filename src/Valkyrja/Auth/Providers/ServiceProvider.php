@@ -48,18 +48,18 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Auth::class                     => 'publishAuth',
-            Factory::class                  => 'publishFactory',
-            Gate::class                     => 'publishGate',
-            Repository::class               => 'publishRepository',
-            CryptTokenizedRepository::class => 'publishCryptTokenizedRepository',
-            JWTRepository::class            => 'publishJWTRepository',
-            JWTCryptRepository::class       => 'publishJWTCryptRepository',
-            Adapter::class                  => 'publishAdapter',
-            ORMAdapter::class               => 'publishOrmAdapter',
-            Policy::class                   => 'publishPolicy',
-            EntityPolicy::class             => 'publishEntityPolicy',
-            EntityRoutePolicy::class        => 'publishEntityRoutePolicy',
+            Auth::class                     => [self::class, 'publishAuth'],
+            Factory::class                  => [self::class, 'publishFactory'],
+            Gate::class                     => [self::class, 'publishGate'],
+            Repository::class               => [self::class, 'publishRepository'],
+            CryptTokenizedRepository::class => [self::class, 'publishCryptTokenizedRepository'],
+            JWTRepository::class            => [self::class, 'publishJWTRepository'],
+            JWTCryptRepository::class       => [self::class, 'publishJWTCryptRepository'],
+            Adapter::class                  => [self::class, 'publishAdapter'],
+            ORMAdapter::class               => [self::class, 'publishOrmAdapter'],
+            Policy::class                   => [self::class, 'publishPolicy'],
+            EntityPolicy::class             => [self::class, 'publishEntityPolicy'],
+            EntityRoutePolicy::class        => [self::class, 'publishEntityRoutePolicy'],
         ];
     }
 
@@ -274,7 +274,8 @@ class ServiceProvider extends Provider
             /**
              * @param class-string<Repository> $name
              */
-            static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container): Repository {
+            static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container
+            ): Repository {
                 return new $name(
                     $adapter,
                     $container->getSingleton(Session::class),
@@ -299,7 +300,8 @@ class ServiceProvider extends Provider
             /**
              * @param class-string<CryptTokenizedRepository> $name
              */
-            static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container): CryptTokenizedRepository {
+            static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container
+            ): CryptTokenizedRepository {
                 return new $name(
                     $adapter,
                     $container->getSingleton(Crypt::class),
@@ -325,7 +327,8 @@ class ServiceProvider extends Provider
             /**
              * @param class-string<JWTCryptRepository> $name
              */
-            static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container): JWTCryptRepository {
+            static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container
+            ): JWTCryptRepository {
                 return new $name(
                     $adapter,
                     $container->getSingleton(Jwt::class),
@@ -352,7 +355,8 @@ class ServiceProvider extends Provider
             /**
              * @param class-string<JWTRepository> $name
              */
-            static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container): JWTRepository {
+            static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container
+            ): JWTRepository {
                 return new $name(
                     $adapter,
                     $container->getSingleton(Jwt::class),

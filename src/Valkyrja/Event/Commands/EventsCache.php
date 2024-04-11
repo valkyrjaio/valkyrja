@@ -17,7 +17,7 @@ use JsonException;
 use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\Provides;
-use Valkyrja\Event\Dispatchers\CacheableEvents;
+use Valkyrja\Event\Collections\CacheableCollection as CacheableEvents;
 use Valkyrja\Type\Support\Arr;
 
 use function file_put_contents;

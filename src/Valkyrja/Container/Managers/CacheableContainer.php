@@ -81,11 +81,11 @@ class CacheableContainer extends Container
     {
         $cache = $config['cache'] ?? require $config['cacheFilePath'];
 
-        self::$aliases        = $cache['aliases'];
-        self::$provided       = $cache['provided'];
-        self::$providedMethod = $cache['providedMethod'];
-        self::$services       = $cache['services'];
-        self::$singletons     = $cache['singletons'];
+        self::$aliases          = $cache['aliases'];
+        self::$provided         = $cache['provided'];
+        self::$providedCallback = $cache['providedMethod'];
+        self::$services         = $cache['services'];
+        self::$singletons       = $cache['singletons'];
 
         // Setup service providers
         $this->setupServiceProviders($config);
@@ -96,12 +96,12 @@ class CacheableContainer extends Container
      */
     protected function setupNotCached(Config|array $config): void
     {
-        self::$aliases        = [];
-        self::$registered     = [];
-        self::$provided       = [];
-        self::$providedMethod = [];
-        self::$services       = [];
-        self::$singletons     = [];
+        self::$aliases          = [];
+        self::$registered       = [];
+        self::$provided         = [];
+        self::$providedCallback = [];
+        self::$services         = [];
+        self::$singletons       = [];
 
         // Setup service providers
         $this->setupServiceProviders($config);
@@ -198,12 +198,12 @@ class CacheableContainer extends Container
      */
     protected function getCacheModel(): Cache
     {
-        $config                 = new Cache();
-        $config->aliases        = self::$aliases;
-        $config->provided       = self::$provided;
-        $config->providedMethod = self::$providedMethod;
-        $config->services       = self::$services;
-        $config->singletons     = self::$singletons;
+        $config                   = new Cache();
+        $config->aliases          = self::$aliases;
+        $config->provided         = self::$provided;
+        $config->providedCallback = self::$providedCallback;
+        $config->services         = self::$services;
+        $config->singletons       = self::$singletons;
 
         return $config;
     }

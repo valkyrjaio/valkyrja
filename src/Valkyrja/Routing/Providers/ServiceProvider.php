@@ -47,14 +47,14 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Annotator::class  => 'publishAnnotator',
-            Router::class     => 'publishRouter',
-            Collector::class  => 'publishCollector',
-            Collection::class => 'publishCollection',
-            Matcher::class    => 'publishMatcher',
-            Url::class        => 'publishUrl',
-            Attributes::class => 'publishRouteAttributes',
-            Processor::class  => 'publishProcessor',
+            Annotator::class  => [self::class, 'publishAnnotator'],
+            Router::class     => [self::class, 'publishRouter'],
+            Collector::class  => [self::class, 'publishCollector'],
+            Collection::class => [self::class, 'publishCollection'],
+            Matcher::class    => [self::class, 'publishMatcher'],
+            Url::class        => [self::class, 'publishUrl'],
+            Attributes::class => [self::class, 'publishRouteAttributes'],
+            Processor::class  => [self::class, 'publishProcessor'],
         ];
     }
 

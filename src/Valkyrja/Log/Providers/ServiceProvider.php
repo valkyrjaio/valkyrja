@@ -44,12 +44,12 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Logger::class          => 'publishLogger',
-            Factory::class         => 'publishFactory',
-            Driver::class          => 'publishDriver',
-            Adapter::class         => 'publishAdapter',
-            PsrAdapter::class      => 'publishPsrAdapter',
-            LoggerInterface::class => 'publishLoggerInterface',
+            Logger::class          => [self::class, 'publishLogger'],
+            Factory::class         => [self::class, 'publishFactory'],
+            Driver::class          => [self::class, 'publishDriver'],
+            Adapter::class         => [self::class, 'publishAdapter'],
+            PsrAdapter::class      => [self::class, 'publishPsrAdapter'],
+            LoggerInterface::class => [self::class, 'publishLoggerInterface'],
         ];
     }
 

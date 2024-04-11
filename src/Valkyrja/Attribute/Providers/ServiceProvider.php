@@ -31,7 +31,7 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Attributes::class => 'publishAttributes',
+            Attributes::class => [self::class, 'publishAttributes'],
         ];
     }
 

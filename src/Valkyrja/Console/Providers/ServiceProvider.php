@@ -43,12 +43,12 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Annotator::class => 'publishAnnotator',
-            Console::class   => 'publishConsole',
-            Formatter::class => 'publishFormatter',
-            Input::class     => 'publishInput',
-            Kernel::class    => 'publishKernel',
-            Output::class    => 'publishOutput',
+            Annotator::class => [self::class, 'publishAnnotator'],
+            Console::class   => [self::class, 'publishConsole'],
+            Formatter::class => [self::class, 'publishFormatter'],
+            Input::class     => [self::class, 'publishInput'],
+            Kernel::class    => [self::class, 'publishKernel'],
+            Output::class    => [self::class, 'publishOutput'],
         ];
     }
 

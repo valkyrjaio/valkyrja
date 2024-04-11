@@ -33,7 +33,7 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Kernel::class => 'publishKernel',
+            Kernel::class => [self::class, 'publishKernel'],
         ];
     }
 

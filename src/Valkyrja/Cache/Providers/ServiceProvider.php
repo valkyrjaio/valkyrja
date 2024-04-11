@@ -39,12 +39,12 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Cache::class        => 'publishCache',
-            Factory::class      => 'publishFactory',
-            Driver::class       => 'publishDriver',
-            Adapter::class      => 'publishAdapter',
-            LogAdapter::class   => 'publishLogAdapter',
-            RedisAdapter::class => 'publishRedisAdapter',
+            Cache::class        => [self::class, 'publishCache'],
+            Factory::class      => [self::class, 'publishFactory'],
+            Driver::class       => [self::class, 'publishDriver'],
+            Adapter::class      => [self::class, 'publishAdapter'],
+            LogAdapter::class   => [self::class, 'publishLogAdapter'],
+            RedisAdapter::class => [self::class, 'publishRedisAdapter'],
         ];
     }
 

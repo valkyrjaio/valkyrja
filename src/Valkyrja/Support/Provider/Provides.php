@@ -32,15 +32,15 @@ interface Provides
      *
      * <code>
      *      [
-     *          Provided::class => 'publish',
-     *          Provided::class => 'publishProvidedClass',
+     *          Provided::class => [self::class, 'publish'],
+     *          Provided::class => [self::class, 'publishProvidedClass'],
      *      ]
      *
      * ...
      *      public static function publishProvidedClass(Application $app): void
      * </code>
      *
-     * @return string[]
+     * @return array<class-string, callable>
      */
     public static function publishers(): array;
 

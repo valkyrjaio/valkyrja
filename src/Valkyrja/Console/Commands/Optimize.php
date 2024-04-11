@@ -19,7 +19,7 @@ use Valkyrja\Console\Dispatchers\CacheableConsole;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Container\Managers\CacheableContainer;
-use Valkyrja\Event\Dispatchers\CacheableEvents;
+use Valkyrja\Event\Collections\CacheableCollection as CacheableEvents;
 use Valkyrja\Routing\Collections\CacheableCollection;
 use Valkyrja\Type\Support\Arr;
 

@@ -40,10 +40,10 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Annotator::class  => 'publishAnnotator',
-            Attributes::class => 'publishAttributes',
-            Dispatcher::class => 'publishDispatcher',
-            Collection::class => 'publishCollection',
+            Annotator::class  => [self::class, 'publishAnnotator'],
+            Attributes::class => [self::class, 'publishAttributes'],
+            Dispatcher::class => [self::class, 'publishDispatcher'],
+            Collection::class => [self::class, 'publishCollection'],
         ];
     }
 

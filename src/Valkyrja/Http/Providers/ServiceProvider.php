@@ -30,7 +30,7 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            ResponseFactory::class => 'publishResponseFactory',
+            ResponseFactory::class => [self::class, 'publishResponseFactory'],
         ];
     }
 

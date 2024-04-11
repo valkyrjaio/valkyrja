@@ -40,13 +40,13 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Filesystem::class            => 'publishFilesystem',
-            Factory::class               => 'publishFactory',
-            Driver::class                => 'publishDriver',
-            Adapter::class               => 'publishAdapter',
-            FlysystemAdapter::class      => 'publishFlysystemAdapter',
-            FlysystemLocalAdapter::class => 'publishFlysystemLocalAdapter',
-            FlysystemAwsS3Adapter::class => 'publishFlysystemAwsS3Adapter',
+            Filesystem::class            => [self::class, 'publishFilesystem'],
+            Factory::class               => [self::class, 'publishFactory'],
+            Driver::class                => [self::class, 'publishDriver'],
+            Adapter::class               => [self::class, 'publishAdapter'],
+            FlysystemAdapter::class      => [self::class, 'publishFlysystemAdapter'],
+            FlysystemLocalAdapter::class => [self::class, 'publishFlysystemLocalAdapter'],
+            FlysystemAwsS3Adapter::class => [self::class, 'publishFlysystemAwsS3Adapter'],
         ];
     }
 
@@ -215,9 +215,9 @@ class ServiceProvider extends Provider
                 ];
 
                 return new FlysystemAwsS3Adapter(
-                    client : new AwsS3Client($clientConfig),
-                    bucket : $config['bucket'],
-                    prefix : $config['prefix'],
+                    client:  new AwsS3Client($clientConfig),
+                    bucket:  $config['bucket'],
+                    prefix:  $config['prefix'],
                     options: $config['options']
                 );
             }

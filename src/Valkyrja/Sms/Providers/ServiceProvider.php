@@ -40,13 +40,13 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Sms::class           => 'publishSMS',
-            Factory::class       => 'publishFactory',
-            Adapter::class       => 'publishAdapter',
-            LogAdapter::class    => 'publishLogAdapter',
-            VonageAdapter::class => 'publishVonageAdapter',
-            Vonage::class        => 'publishVonage',
-            Message::class       => 'publishMessage',
+            Sms::class           => [self::class, 'publishSMS'],
+            Factory::class       => [self::class, 'publishFactory'],
+            Adapter::class       => [self::class, 'publishAdapter'],
+            LogAdapter::class    => [self::class, 'publishLogAdapter'],
+            VonageAdapter::class => [self::class, 'publishVonageAdapter'],
+            Vonage::class        => [self::class, 'publishVonage'],
+            Message::class       => [self::class, 'publishMessage'],
         ];
     }
 

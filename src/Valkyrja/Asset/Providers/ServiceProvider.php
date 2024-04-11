@@ -15,6 +15,7 @@ namespace Valkyrja\Asset\Providers;
 
 use Valkyrja\Asset\Adapters\DefaultAdapter;
 use Valkyrja\Asset\Asset;
+use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 
 /**
@@ -30,8 +31,8 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            DefaultAdapter::class => 'publishDefaultAdapter',
-            Asset::class          => 'publishAsset',
+            DefaultAdapter::class => [self::class, 'publishDefaultAdapter'],
+            Asset::class          => [self::class, 'publishAsset'],
         ];
     }
 
@@ -44,5 +45,19 @@ class ServiceProvider extends Provider
             DefaultAdapter::class,
             Asset::class,
         ];
+    }
+
+    /**
+     * Provider the default adapter service.
+     */
+    public static function publishDefaultAdapter(Container $container): void
+    {
+    }
+
+    /**
+     * Provider the Asset service.
+     */
+    public static function publishAsset(Container $container): void
+    {
     }
 }

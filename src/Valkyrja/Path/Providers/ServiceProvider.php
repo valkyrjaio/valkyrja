@@ -32,8 +32,8 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            PathGenerator::class => 'publishGenerator',
-            PathParser::class    => 'publishParser',
+            PathGenerator::class => [self::class, 'publishGenerator'],
+            PathParser::class    => [self::class, 'publishParser'],
         ];
     }
 

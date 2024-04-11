@@ -34,9 +34,9 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Annotator::class => 'publishAnnotator',
-            Filter::class    => 'publishFilter',
-            Parser::class    => 'publishParser',
+            Annotator::class => [self::class, 'publishAnnotator'],
+            Filter::class    => [self::class, 'publishFilter'],
+            Parser::class    => [self::class, 'publishParser'],
         ];
     }
 

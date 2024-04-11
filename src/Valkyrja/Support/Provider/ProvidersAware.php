@@ -23,8 +23,8 @@ interface ProvidersAware
     /**
      * Register a provider.
      *
-     * @param string $provider The provider
-     * @param bool   $force    [optional] Whether to force regardless of deferred status
+     * @param class-string $provider The provider
+     * @param bool         $force    [optional] Whether to force regardless of deferred status
      *
      * @return void
      */
@@ -51,7 +51,7 @@ interface ProvidersAware
     /**
      * Determine whether a provider has been registered.
      *
-     * @param string $provider The provider
+     * @param class-string $provider The provider
      *
      * @return bool
      */

@@ -40,12 +40,12 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Client::class        => 'publishClient',
-            Factory::class       => 'publishFactory',
-            Driver::class        => 'publishDriver',
-            GuzzleAdapter::class => 'publishGuzzleAdapter',
-            LogAdapter::class    => 'publishLogAdapter',
-            Adapter::class       => 'publishAdapter',
+            Client::class        => [self::class, 'publishClient'],
+            Factory::class       => [self::class, 'publishFactory'],
+            Driver::class        => [self::class, 'publishDriver'],
+            GuzzleAdapter::class => [self::class, 'publishGuzzleAdapter'],
+            LogAdapter::class    => [self::class, 'publishLogAdapter'],
+            Adapter::class       => [self::class, 'publishAdapter'],
         ];
     }
 

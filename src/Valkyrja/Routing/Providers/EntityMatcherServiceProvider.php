@@ -32,7 +32,7 @@ class EntityMatcherServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Matcher::class => 'publishMatcher',
+            Matcher::class => [self::class, 'publishMatcher'],
         ];
     }
 

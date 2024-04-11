@@ -45,15 +45,15 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Broadcast::class          => 'publishBroadcaster',
-            Factory::class            => 'publishFactory',
-            Driver::class             => 'publishDriver',
-            Adapter::class            => 'publishAdapter',
-            CryptPusherAdapter::class => 'publishCryptPusherAdapter',
-            LogAdapter::class         => 'publishLogAdapter',
-            Pusher::class             => 'publishPusher',
-            PusherAdapter::class      => 'publishPusherAdapter',
-            Message::class            => 'publishMessage',
+            Broadcast::class          => [self::class, 'publishBroadcaster'],
+            Factory::class            => [self::class, 'publishFactory'],
+            Driver::class             => [self::class, 'publishDriver'],
+            Adapter::class            => [self::class, 'publishAdapter'],
+            CryptPusherAdapter::class => [self::class, 'publishCryptPusherAdapter'],
+            LogAdapter::class         => [self::class, 'publishLogAdapter'],
+            Pusher::class             => [self::class, 'publishPusher'],
+            PusherAdapter::class      => [self::class, 'publishPusherAdapter'],
+            Message::class            => [self::class, 'publishMessage'],
         ];
     }
 

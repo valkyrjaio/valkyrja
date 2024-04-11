@@ -38,7 +38,7 @@ class MessageRouterServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Router::class => 'publishRouter',
+            Router::class => [self::class, 'publishRouter'],
         ];
     }
 

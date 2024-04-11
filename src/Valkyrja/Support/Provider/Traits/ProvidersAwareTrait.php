@@ -32,9 +32,9 @@ trait ProvidersAwareTrait
     /**
      * The custom publish handler for items provided by providers that are deferred.
      *
-     * @var array<string, string>
+     * @var array<string, callable>
      */
-    protected static array $providedMethod = [];
+    protected static array $providedCallback = [];
 
     /**
      * The items provided by providers that are published.
@@ -46,7 +46,7 @@ trait ProvidersAwareTrait
     /**
      * The registered providers.
      *
-     * @var array<string, bool>
+     * @var array<class-string, bool>
      */
     protected static array $registered = [];
 
@@ -59,6 +59,8 @@ trait ProvidersAwareTrait
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $provider The provider
      */
     public function register(string $provider, bool $force = false): void
     {
@@ -119,10 +121,11 @@ trait ProvidersAwareTrait
         // The provider for this provided item
         $provider = self::$provided[$itemId];
         // The publish method for this provided item in the provider
-        $publishMethod = self::$providedMethod[$itemId] ?? static::$defaultPublishMethod;
+        $publishCallback = self::$providedCallback[$itemId]
+            ?? [$provider, static::$defaultPublishMethod];
 
         // Publish the service provider
-        $provider::$publishMethod($this);
+        $publishCallback($this);
 
         // Set published cache only after the success of a publish (in case of error)
         self::$published[$itemId] = true;
@@ -147,21 +150,22 @@ trait ProvidersAwareTrait
     /**
      * Register a deferred provider.
      *
-     * @param string   $provider The provider
-     * @param string[] $provides The provided items
+     * @param class-string $provider The provider
+     * @param string[]     $provides The provided items
      *
      * @return void
      */
     protected function registerDeferred(string $provider, string ...$provides): void
     {
         /** @var Provides $providerClass */
-        $providerClass  = $provider;
-        $publishMethods = $providerClass::publishers();
+        $providerClass   = $provider;
+        $publishCallback = $providerClass::publishers();
 
         // Add the services to the service providers list
         foreach ($provides as $provided) {
-            self::$provided[$provided]       = $provider;
-            self::$providedMethod[$provided] = $publishMethods[$provided] ?? static::$defaultPublishMethod;
+            self::$provided[$provided]         = $provider;
+            self::$providedCallback[$provided] = $publishCallback[$provided]
+                ?? [$provider, static::$defaultPublishMethod,];
         }
 
         // The provider is now registered

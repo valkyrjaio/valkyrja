@@ -32,7 +32,7 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Annotator::class => 'publishAnnotator',
+            Annotator::class => [self::class, 'publishAnnotator'],
         ];
     }
 

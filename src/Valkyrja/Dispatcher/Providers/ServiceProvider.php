@@ -31,8 +31,8 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Dispatcher::class => 'publishDispatcher',
-            Validator::class  => 'publishValidator',
+            Dispatcher::class => [self::class, 'publishDispatcher'],
+            Validator::class  => [self::class, 'publishValidator'],
         ];
     }
 

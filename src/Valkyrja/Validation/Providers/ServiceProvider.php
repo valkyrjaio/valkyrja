@@ -35,9 +35,9 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Validator::class => 'publishValidator',
-            Factory::class   => 'publishFactory',
-            ORM::class       => 'publishOrmRules',
+            Validator::class => [self::class, 'publishValidator'],
+            Factory::class   => [self::class, 'publishFactory'],
+            ORM::class       => [self::class, 'publishOrmRules'],
         ];
     }
 
