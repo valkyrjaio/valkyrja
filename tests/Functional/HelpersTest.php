@@ -23,7 +23,7 @@ use Valkyrja\Console\Inputs\Input;
 use Valkyrja\Console\Kernels\Kernel as ConsoleKernel;
 use Valkyrja\Console\Outputs\Output;
 use Valkyrja\Container\Managers\Container;
-use Valkyrja\Event\Dispatchers\Events;
+use Valkyrja\Event\Dispatchers\Dispatcher as Events;
 use Valkyrja\Filesystem\Managers\Filesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
@@ -35,6 +35,7 @@ use Valkyrja\Http\Responses\Response;
 use Valkyrja\HttpKernel\Kernels\Kernel;
 use Valkyrja\Log\Managers\Logger;
 use Valkyrja\Routing\Dispatchers\Router;
+use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Route;
 use Valkyrja\Session\Managers\Session;
 use Valkyrja\Support\Directory;
@@ -266,6 +267,8 @@ class HelpersTest extends TestCase
 
     /**
      * Test the route() helper method.
+     *
+     * @throws InvalidRouteName
      *
      * @return void
      */

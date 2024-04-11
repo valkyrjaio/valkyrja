@@ -16,7 +16,7 @@ namespace Valkyrja\Routing\Dispatchers;
 use InvalidArgumentException;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Event\Events;
+use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
@@ -57,14 +57,14 @@ class Router implements Contract
      * @param bool            $debug
      */
     public function __construct(
-        protected Collection $collection,
-        protected Container $container,
-        protected Dispatcher $dispatcher,
-        protected Events $events,
-        protected Matcher $matcher,
+        protected Collection      $collection,
+        protected Container       $container,
+        protected Dispatcher      $dispatcher,
+        protected Events          $events,
+        protected Matcher         $matcher,
         protected ResponseFactory $responseFactory,
-        protected Config|array $config,
-        protected bool $debug = false
+        protected Config|array    $config,
+        protected bool            $debug = false
     ) {
     }
 
@@ -213,7 +213,7 @@ class Router implements Contract
         // Set the route in the middleware
         Middleware::$route = $route;
         // Trigger an event for route matched
-        $this->events->trigger(RouteMatched::class, [$route, $request]);
+        $this->events->dispatchByIdIfHasListeners(RouteMatched::class, [$route, $request]);
         // Set the found route in the service container
         $this->container->setSingleton(Route::class, $route);
     }

@@ -11,28 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Event\Config;
-
-use Valkyrja\Config\Config as Model;
+namespace Valkyrja\Event;
 
 /**
- * Class Cache.
+ * Interface Attributes.
  *
  * @author Melech Mizrachi
  */
-class Cache extends Model
+interface Attributes
 {
     /**
-     * The events.
+     * Get the listeners.
      *
-     * @var array
-     */
-    public array $events;
-
-    /**
-     * The listeners.
+     * @param class-string ...$classes The classes
      *
-     * @var array
+     * @return Listener[]
      */
-    public array $listeners;
+    public function getListeners(string ...$classes): array;
 }

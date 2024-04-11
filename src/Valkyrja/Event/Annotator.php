@@ -21,11 +21,11 @@ namespace Valkyrja\Event;
 interface Annotator
 {
     /**
-     * Get the events.
+     * Get the listeners.
      *
      * @param class-string ...$classes The classes
      *
-     * @return list<Listener>
+     * @return Listener[]
      */
     public function getListeners(string ...$classes): array;
 }

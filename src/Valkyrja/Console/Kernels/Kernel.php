@@ -22,7 +22,7 @@ use Valkyrja\Console\Input;
 use Valkyrja\Console\Kernel as Contract;
 use Valkyrja\Console\Output;
 use Valkyrja\Container\Container;
-use Valkyrja\Event\Events;
+use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Log\Logger;
 
 use function Valkyrja\dd;
@@ -87,7 +87,10 @@ class Kernel implements Contract
             $exitCode = ExitCode::FAILURE;
         }
 
-        $this->events->trigger(ConsoleKernelHandled::class, [new ConsoleKernelHandled($input, $exitCode)]);
+        $this->events->dispatchByIdIfHasListeners(
+            ConsoleKernelHandled::class,
+            [$input, $exitCode]
+        );
 
         return $exitCode;
     }
@@ -97,7 +100,10 @@ class Kernel implements Contract
      */
     public function terminate(Input $input, int $exitCode): void
     {
-        $this->events->trigger(ConsoleKernelTerminate::class, [new ConsoleKernelTerminate($input, $exitCode)]);
+        $this->events->dispatchByIdIfHasListeners(
+            ConsoleKernelTerminate::class,
+            [$input, $exitCode]
+        );
     }
 
     /**

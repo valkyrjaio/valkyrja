@@ -26,7 +26,7 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Dispatcher\Validator;
-use Valkyrja\Event\Events;
+use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Reflector;
 

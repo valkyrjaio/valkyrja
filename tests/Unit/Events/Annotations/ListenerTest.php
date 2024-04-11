@@ -56,9 +56,9 @@ class ListenerTest extends TestCase
      */
     public function testGetEvent(): void
     {
-        $this->class->setEvent($this->value);
+        $this->class->setEventId($this->value);
 
-        self::assertSame($this->value, $this->class->getEvent());
+        self::assertSame($this->value, $this->class->getEventId());
     }
 
     /**
@@ -68,6 +68,6 @@ class ListenerTest extends TestCase
      */
     public function testSetEvent(): void
     {
-        self::assertSame($this->class, $this->class->setEvent($this->value));
+        self::assertSame($this->class, $this->class->setEventId($this->value));
     }
 }

@@ -11,28 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Event\Config;
+namespace Valkyrja\Console\Events;
 
-use Valkyrja\Config\Config as Model;
+use Valkyrja\Console\Command;
 
 /**
- * Class Cache.
+ * Class CommandDispatched.
  *
  * @author Melech Mizrachi
  */
-class Cache extends Model
+class CommandDispatched
 {
-    /**
-     * The events.
-     *
-     * @var array
-     */
-    public array $events;
-
-    /**
-     * The listeners.
-     *
-     * @var array
-     */
-    public array $listeners;
+    public function __construct(
+        public Command $command,
+        public int     $exitCode
+    ) {
+    }
 }

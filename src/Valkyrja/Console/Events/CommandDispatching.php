@@ -11,17 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Enum;
+namespace Valkyrja\Console\Events;
 
-use Valkyrja\Type\Types\Enum;
+use Valkyrja\Console\Command;
 
 /**
- * Test implementation of the enum abstract with no default values array set.
+ * Class CommandDispatching.
  *
  * @author Melech Mizrachi
  */
-class EnumClassEmpty extends Enum
+class CommandDispatching
 {
-    public const FOO = 'bar';
-    public const BAR = 'foo';
+    public function __construct(
+        public Command $command,
+    ) {
+    }
 }

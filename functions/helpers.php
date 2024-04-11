@@ -27,7 +27,7 @@ use Valkyrja\Console\Output;
 use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Event\Events;
+use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
@@ -86,9 +86,9 @@ function app(): Application
  * @return never
  */
 function abort(
-    int|null $statusCode = null,
-    string|null $message = null,
-    array|null $headers = null,
+    int|null      $statusCode = null,
+    string|null   $message = null,
+    array|null    $headers = null,
     Response|null $response = null
 ): never {
     Abort::abort($statusCode, $message, $headers, $response);
@@ -526,9 +526,9 @@ function redirect(string|null $uri = null, int|null $statusCode = null, array|nu
  * @return RedirectResponse
  */
 function redirectRoute(
-    string $route,
+    string     $route,
     array|null $parameters = null,
-    int|null $statusCode = null,
+    int|null   $statusCode = null,
     array|null $headers = null
 ): RedirectResponse {
     return responseFactory()->route($route, $parameters, $statusCode, $headers);
@@ -547,8 +547,8 @@ function redirectRoute(
  */
 function redirectTo(
     string|null $uri = null,
-    int|null $statusCode = null,
-    array|null $headers = null
+    int|null    $statusCode = null,
+    array|null  $headers = null
 ): never {
     Abort::redirect($uri, $statusCode, $headers);
 }

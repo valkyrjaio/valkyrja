@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Functional;
 
 use Valkyrja\Annotation\Annotator;
+use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Commands\ConfigCache;
@@ -22,7 +23,7 @@ use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Managers\Container;
 use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
-use Valkyrja\Event\Dispatchers\Events;
+use Valkyrja\Event\Dispatchers\Dispatcher as Events;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\HttpKernel\Kernel;
@@ -103,7 +104,7 @@ class ApplicationTest extends TestCase
      */
     public function testVersion(): void
     {
-        self::assertSame(Valkyrja::VERSION, $this->app->version());
+        self::assertSame(Application::VERSION, $this->app->version());
     }
 
     /**

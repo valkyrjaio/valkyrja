@@ -11,28 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Event\Config;
-
-use Valkyrja\Config\Config as Model;
+namespace Valkyrja\Event;
 
 /**
- * Class Cache.
+ * Interface DispatchCollectableEvent.
  *
  * @author Melech Mizrachi
  */
-class Cache extends Model
+interface DispatchCollectableEvent
 {
     /**
-     * The events.
-     *
-     * @var array
+     * Add a dispatch.
      */
-    public array $events;
+    public function addDispatch(mixed $dispatch): void;
 
     /**
-     * The listeners.
-     *
-     * @var array
+     * Get the dispatches.
      */
-    public array $listeners;
+    public function getDispatches(): array;
 }

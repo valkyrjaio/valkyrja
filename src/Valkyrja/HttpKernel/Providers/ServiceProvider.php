@@ -16,7 +16,7 @@ namespace Valkyrja\HttpKernel\Providers;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Event\Events;
+use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Routing\Router;
 

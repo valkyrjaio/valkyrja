@@ -18,6 +18,8 @@ use Valkyrja\Config\Constants\ConfigKeyPart;
 use Valkyrja\Console\Command;
 use Valkyrja\Console\Config\Config;
 use Valkyrja\Console\Console as Contract;
+use Valkyrja\Console\Events\CommandDispatched;
+use Valkyrja\Console\Events\CommandDispatching;
 use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Console\Input;
 use Valkyrja\Console\Output;
@@ -30,7 +32,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Dispatcher\Validator;
-use Valkyrja\Event\Events;
+use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Support\Provider\Traits\ProvidersAwareTrait;
 
@@ -78,19 +80,20 @@ class Console implements Contract
      *
      * @param Container    $container
      * @param Dispatcher   $dispatcher
+     * @param Validator    $validator
      * @param Events       $events
      * @param PathParser   $pathParser
      * @param Config|array $config
      * @param bool         $debug
      */
     public function __construct(
-        protected Container $container,
-        protected Dispatcher $dispatcher,
-        protected Validator $validator,
-        protected Events $events,
-        protected PathParser $pathParser,
+        protected Container    $container,
+        protected Dispatcher   $dispatcher,
+        protected Validator    $validator,
+        protected Events       $events,
+        protected PathParser   $pathParser,
         protected Config|array $config,
-        protected bool $debug = false
+        protected bool         $debug = false
     ) {
     }
 
@@ -220,15 +223,16 @@ class Console implements Contract
     public function dispatchCommand(Command $command): int
     {
         // Trigger an event before dispatching
-        $this->events->trigger('Command.dispatching', [$command]);
+        $this->events->dispatchByIdIfHasListeners(CommandDispatching::class, [$command]);
 
         // Dispatch the command
-        $dispatch = $this->dispatcher->dispatch($command, $command->getMatches());
+        /** @var int $exitCode */
+        $exitCode = $this->dispatcher->dispatch($command, $command->getMatches());
 
         // Trigger an event after dispatching
-        $this->events->trigger('Command.dispatched', [$command, $dispatch]);
+        $this->events->dispatchByIdIfHasListeners(CommandDispatched::class, [$command, $exitCode]);
 
-        return $dispatch;
+        return $exitCode;
     }
 
     /**

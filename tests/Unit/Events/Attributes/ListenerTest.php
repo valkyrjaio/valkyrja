@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Events;
+namespace Valkyrja\Tests\Unit\Events\Attributes;
 
-use Valkyrja\Event\Models\Listener;
+use Valkyrja\Event\Attributes\Listener;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
- * Test the listener model.
+ * Test the listener attribute.
  *
  * @author Melech Mizrachi
  */
@@ -44,7 +44,7 @@ class ListenerTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new Listener();
+        $this->class = new Listener(self::VALUE);
     }
 
     /**
@@ -54,9 +54,12 @@ class ListenerTest extends TestCase
      */
     public function testEventId(): void
     {
-        $set = $this->class->setEventId(self::VALUE);
-
         self::assertSame(self::VALUE, $this->class->getEventId());
+
+        $newValue = TestCase::class;
+        $set = $this->class->setEventId($newValue);
+
+        self::assertSame($newValue, $this->class->getEventId());
         // Assertion to ensure the interface doesn't change unexpectedly
         self::assertTrue($set instanceof Listener);
     }

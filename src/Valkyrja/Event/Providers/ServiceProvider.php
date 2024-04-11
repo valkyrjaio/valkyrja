@@ -14,13 +14,17 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Providers;
 
 use Valkyrja\Annotation\Filter;
+use Valkyrja\Attribute\Attributes as AttributeAttributes;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Dispatcher\Dispatcher as DispatchDispatcher;
 use Valkyrja\Event\Annotator;
-use Valkyrja\Event\Dispatchers\CacheableEvents;
-use Valkyrja\Event\Events;
+use Valkyrja\Event\Attributes;
+use Valkyrja\Event\Collection;
+use Valkyrja\Event\Collections\CacheableCollection as EventCollection;
+use Valkyrja\Event\Dispatcher;
+use Valkyrja\Event\Dispatchers\Dispatcher as EventDispatcher;
 use Valkyrja\Reflection\Reflector;
 
 /**
@@ -36,8 +40,10 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Annotator::class => 'publishAnnotator',
-            Events::class    => 'publishEvents',
+            Annotator::class  => 'publishAnnotator',
+            Attributes::class => 'publishAttributes',
+            Dispatcher::class => 'publishDispatcher',
+            Collection::class => 'publishCollection',
         ];
     }
 
@@ -48,7 +54,9 @@ class ServiceProvider extends Provider
     {
         return [
             Annotator::class,
-            Events::class,
+            Attributes::class,
+            Dispatcher::class,
+            Collection::class,
         ];
     }
 
@@ -71,25 +79,60 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the events service.
+     * Publish the attributes service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishEvents(Container $container): void
+    public static function publishAttributes(Container $container): void
+    {
+        $container->setSingleton(
+            Attributes::class,
+            new Attributes\Attributes(
+                $container->getSingleton(AttributeAttributes::class),
+                $container->getSingleton(Reflector::class)
+            )
+        );
+    }
+
+    /**
+     * Publish the dispatcher service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishDispatcher(Container $container): void
+    {
+        $container->setSingleton(
+            Dispatcher::class,
+            new EventDispatcher(
+                $container->getSingleton(Collection::class),
+                $container->getSingleton(DispatchDispatcher::class),
+            )
+        );
+    }
+
+    /**
+     * Publish the collection service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishCollection(Container $container): void
     {
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
-            Events::class,
-            $events = new CacheableEvents(
-                $container,
-                $container->getSingleton(Dispatcher::class),
+            Collection::class,
+            $collection = new EventCollection(
+                $container->getSingleton(Container::class),
                 $config['event']
             )
         );
 
-        $events->setup();
+        $collection->setup();
     }
 }

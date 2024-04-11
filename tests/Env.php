@@ -18,8 +18,9 @@ namespace Valkyrja\Tests;
  *
  * @author Melech Mizrachi
  */
-class Env
+class Env extends \Valkyrja\Application\Env
 {
+    public const APP_DEBUG                 = false;
     public const CONSOLE_QUIET             = true;
     public const CONFIG_CACHE_FILE_PATH    = __DIR__ . '/bootstrap/cache.php';
     public const CONSOLE_FILE_PATH         = __DIR__ . '/bootstrap/commands/default.php';

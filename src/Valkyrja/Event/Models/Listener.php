@@ -26,24 +26,24 @@ class Listener extends Dispatch implements Contract
     /**
      * The event to listen to.
      *
-     * @var string
+     * @var class-string
      */
-    protected string $event;
+    protected string $eventId;
 
     /**
      * @inheritDoc
      */
-    public function getEvent(): string
+    public function getEventId(): string
     {
-        return $this->event;
+        return $this->eventId;
     }
 
     /**
      * @inheritDoc
      */
-    public function setEvent(string $event): static
+    public function setEventId(string $eventId): static
     {
-        $this->event = $event;
+        $this->eventId = $eventId;
 
         return $this;
     }

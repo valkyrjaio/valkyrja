@@ -20,7 +20,7 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Dispatcher\Validator;
-use Valkyrja\Event\Events;
+use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Reflection\Reflector;

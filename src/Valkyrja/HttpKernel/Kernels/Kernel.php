@@ -15,7 +15,7 @@ namespace Valkyrja\HttpKernel\Kernels;
 
 use Throwable;
 use Valkyrja\Container\Container;
-use Valkyrja\Event\Events;
+use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Request;
@@ -72,11 +72,11 @@ class Kernel implements Contract
      * @param bool         $debug     [optional] Whether to run in debug
      */
     public function __construct(
-        protected Container $container,
-        protected Events $events,
-        protected Router $router,
+        protected Container    $container,
+        protected Events       $events,
+        protected Router       $router,
         protected Config|array $config,
-        protected bool $debug = false
+        protected bool         $debug = false
     ) {
         self::$middleware       = $config['middleware'];
         self::$middlewareGroups = $config['middlewareGroups'];
@@ -106,7 +106,7 @@ class Kernel implements Contract
         // Set the returned response in the container
         $this->container->setSingleton(Response::class, $response);
         // Trigger an event for the request having been handled
-        $this->events->trigger(RequestHandled::class, [$request, $response]);
+        $this->events->dispatchByIdIfHasListeners(RequestHandled::class, [$request, $response]);
 
         return $response;
     }
@@ -131,7 +131,7 @@ class Kernel implements Contract
     {
         try {
             // Trigger an event for the request being terminated
-            $this->events->trigger(RequestTerminating::class, [$request, $response]);
+            $this->events->dispatchByIdIfHasListeners(RequestTerminating::class, [$request, $response]);
             // Dispatch the terminable middleware
             $this->terminableMiddleware($request, $response);
         } catch (Throwable $exception) {
@@ -211,11 +211,11 @@ class Kernel implements Contract
         }
 
         return $this->getResponseFactory()
-            ->view(
-                "$this->errorsTemplateDir/500",
-                null,
-                StatusCode::INTERNAL_SERVER_ERROR
-            );
+                    ->view(
+                        "$this->errorsTemplateDir/500",
+                        null,
+                        StatusCode::INTERNAL_SERVER_ERROR
+                    );
     }
 
     /**
@@ -322,8 +322,7 @@ class Kernel implements Contract
         if (function_exists('fastcgi_finish_request')) {
             // Use it to finish the request
             fastcgi_finish_request();
-        }
-        // If litespeed is enabled
+        } // If litespeed is enabled
         elseif (function_exists('litespeed_finish_request')) {
             // Use it to finish the request
             litespeed_finish_request();

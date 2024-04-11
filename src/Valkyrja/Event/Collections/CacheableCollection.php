@@ -11,22 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Event\Dispatchers;
+namespace Valkyrja\Event\Collections;
 
 use Valkyrja\Config\Config;
 use Valkyrja\Container\Container;
-use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Annotator;
+use Valkyrja\Event\Attributes;
 use Valkyrja\Event\Config\Cache;
 use Valkyrja\Event\Config\Config as EventConfig;
 use Valkyrja\Support\Cacheable\Cacheable;
 
 /**
- * Class CacheableEvents.
+ * Class CacheableCollection.
  *
  * @author Melech Mizrachi
  */
-class CacheableEvents extends Events
+class CacheableCollection extends Collection
 {
     /**
      * @use Cacheable<EventConfig, Cache>
@@ -34,15 +34,15 @@ class CacheableEvents extends Events
     use Cacheable;
 
     /**
-     * Events constructor.
+     * CacheableCollection constructor.
      *
-     * @param Container         $container  The container
-     * @param Dispatcher        $dispatcher The dispatcher
-     * @param EventConfig|array $config     The config
+     * @param Container         $container
+     * @param EventConfig|array $config
      */
-    public function __construct(protected Container $container, Dispatcher $dispatcher, EventConfig|array $config)
-    {
-        parent::__construct($dispatcher, $config);
+    public function __construct(
+        protected Container         $container,
+        protected EventConfig|array $config
+    ) {
     }
 
     /**
@@ -52,8 +52,13 @@ class CacheableEvents extends Events
     {
         $this->setup(true, false);
 
-        $config         = new Cache();
-        $config->events = self::$events;
+        $config            = new Cache();
+        $config->events    = $this->events;
+        $config->listeners = [];
+
+        foreach ($this->listeners as $id => $listener) {
+            $config->listeners[$id] = $listener->asArray();
+        }
 
         return $config;
     }
@@ -78,7 +83,7 @@ class CacheableEvents extends Events
      */
     protected function setupNotCached(Config|array $config): void
     {
-        self::$events = [];
+        $this->events = [];
     }
 
     /**
@@ -88,7 +93,8 @@ class CacheableEvents extends Events
     {
         $cache = $config['cache'] ?? require $config['cacheFilePath'];
 
-        self::$events = $cache['events'];
+        $this->events    = $cache['events'];
+        $this->listeners = $cache['listeners'];
     }
 
     /**
@@ -103,7 +109,7 @@ class CacheableEvents extends Events
         // Iterate through the listeners
         foreach ($containerAnnotations->getListeners(...$config['listeners']) as $listener) {
             // Set the service
-            $this->listen($listener->getEventId(), $listener);
+            $this->addListener($listener);
         }
     }
 
@@ -112,6 +118,15 @@ class CacheableEvents extends Events
      */
     protected function setupAttributes(Config|array $config): void
     {
+        /** @var Attributes $listenerAttributes */
+        $listenerAttributes = $this->container->getSingleton(Attributes::class);
+
+        // Get all the annotated listeners from the list of classes
+        // Iterate through the listeners
+        foreach ($listenerAttributes->getListeners(...$config['listeners']) as $listener) {
+            // Set the route
+            $this->addListener($listener);
+        }
     }
 
     /**
@@ -126,7 +141,7 @@ class CacheableEvents extends Events
      */
     protected function requireFilePath(Config|array $config): void
     {
-        $events = $this;
+        $collection = $this;
 
         require $config['filePath'];
     }
