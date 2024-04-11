@@ -20,6 +20,7 @@ use Valkyrja\Type\Support\Arr;
 use Valkyrja\Type\Support\StrCase;
 
 use function array_filter;
+use function array_walk;
 use function in_array;
 use function is_array;
 use function is_string;
@@ -295,13 +296,15 @@ abstract class Model implements Contract
      */
     protected function internalSetProperties(array $properties): void
     {
-        // Iterate through the properties
-        foreach ($properties as $property => $value) {
-            if ($this->hasProperty($property)) {
-                // Set the property
-                $this->__set($property, $value);
+        array_walk(
+            $properties,
+            function (mixed $value, string $property): void {
+                if ($this->hasProperty($property)) {
+                    // Set the property
+                    $this->__set($property, $value);
+                }
             }
-        }
+        );
 
         $this->internalOriginalPropertiesSet();
     }
