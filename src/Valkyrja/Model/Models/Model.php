@@ -22,8 +22,10 @@ use Valkyrja\Type\Support\StrCase;
 use function array_filter;
 use function in_array;
 use function is_string;
+use function json_encode;
 
 use const ARRAY_FILTER_USE_BOTH;
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Class Model.
@@ -86,12 +88,12 @@ abstract class Model implements Contract
      */
     public static function fromValue(mixed $value): static
     {
+        if (! is_array($value) && ! is_string($value)) {
+            $value = json_encode($value, JSON_THROW_ON_ERROR);
+        }
+
         if (is_string($value)) {
             $value = Arr::fromString($value);
-        } elseif ($value instanceof Contract) {
-            $value = $value->asArray();
-        } else {
-            $value = (array) $value;
         }
 
         /** @var array<string, mixed> $value */
@@ -226,9 +228,7 @@ abstract class Model implements Contract
 
         $allProperties = $this->internalCheckOnlyProperties($allProperties, $properties);
 
-        $this->internalSetPropertyValues($allProperties, [$this, '__get']);
-
-        return $allProperties;
+        return $this->internalSetPropertyValues($allProperties, [$this, '__get']);
     }
 
     /**
@@ -263,9 +263,8 @@ abstract class Model implements Contract
         $allProperties = $this->internalGetAllProperties();
 
         $this->internalRemoveInternalProperties($allProperties);
-        $this->internalSetPropertyValues($allProperties, [$this, 'internalGetJsonPropertyValue']);
 
-        return $allProperties;
+        return $this->internalSetPropertyValues($allProperties, [$this, 'internalGetJsonPropertyValue']);
     }
 
     /**
@@ -443,11 +442,14 @@ abstract class Model implements Contract
      * @param array<string, mixed> $properties The properties
      * @param callable             $callable   The callable
      *
-     * @return void
+     * @return array<string, mixed>
      */
-    protected function internalSetPropertyValues(array &$properties, callable $callable): void
+    protected function internalSetPropertyValues(array $properties, callable $callable): array
     {
         array_walk($properties, fn (mixed &$value, string $property): mixed => $value = $callable($property));
+
+        /** @var array<string, mixed> $properties */
+        return $properties;
     }
 
     /**
