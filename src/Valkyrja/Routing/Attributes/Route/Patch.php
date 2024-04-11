@@ -16,6 +16,7 @@ namespace Valkyrja\Routing\Attributes\Route;
 use Attribute;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Attributes\Route;
+use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Message;
 use Valkyrja\Routing\Models\Parameter;
 
@@ -28,8 +29,11 @@ use Valkyrja\Routing\Models\Parameter;
 class Patch extends Route
 {
     /**
+     * @param non-empty-string             $path       The path
      * @param Parameter[]|null             $parameters The parameters
      * @param class-string<Message>[]|null $messages   The messages
+     *
+     * @throws InvalidRoutePath
      */
     public function __construct(
         string $path,

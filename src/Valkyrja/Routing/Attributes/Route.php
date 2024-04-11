@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Attributes;
 
 use Attribute;
+use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Message;
 use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Models\Route as Model;
@@ -27,8 +28,11 @@ use Valkyrja\Routing\Models\Route as Model;
 class Route extends Model
 {
     /**
+     * @param non-empty-string             $path       The path
      * @param Parameter[]|null             $parameters The parameters
      * @param class-string<Message>[]|null $messages   The messages
+     *
+     * @throws InvalidRoutePath
      */
     public function __construct(
         string $path,
@@ -43,12 +47,15 @@ class Route extends Model
     ) {
         $this->path = $path;
 
-        if ($path !== '') {
-            $this->name = $path;
+        /** @psalm-suppress TypeDoesNotContainType Not everyone will use Psalm :) */
+        if ($path === '') {
+            throw new InvalidRoutePath("Path must be a non-empty-string.");
         }
 
         if ($name !== null && $name !== '') {
             $this->name = $name;
+        } else {
+            $this->name = $path;
         }
 
         if ($methods !== null) {
@@ -59,24 +66,16 @@ class Route extends Model
             $this->setParameters($parameters);
         }
 
-        if ($middleware !== null) {
-            $this->setMiddleware($middleware);
-        }
-
         if ($secure !== null) {
             $this->secure = $secure;
         }
 
-        if ($to !== null && $to !== '') {
+        if ($to !== '') {
             $this->setTo($to);
         }
 
-        if ($code !== null) {
-            $this->code = $code;
-        }
-
-        if ($messages !== null) {
-            $this->setMessages($messages);
-        }
+        $this->setMiddleware($middleware);
+        $this->setCode($code);
+        $this->setMessages($messages);
     }
 }
