@@ -31,7 +31,7 @@ abstract class ValidateJsonParamsRequestMiddleware extends ValidateRequestMiddle
      */
     protected static function getParamFromRequest(JsonRequest|Request $request, string $param): mixed
     {
-        if (! is_a($request, JsonRequest::class)) {
+        if (! $request instanceof JsonRequest) {
             throw new RuntimeException('Json Request is required for this to work.');
         }
 
