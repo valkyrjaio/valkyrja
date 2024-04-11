@@ -172,10 +172,6 @@ class Route extends Dispatch implements Contract
      */
     public function setTo(string|null $to = null): static
     {
-        if ($to === null && ! isset($this->to)) {
-            return $this;
-        }
-
         $this->redirect = $to !== null;
 
         $this->to = $to;
@@ -196,10 +192,6 @@ class Route extends Dispatch implements Contract
      */
     public function setCode(int|null $code = null): static
     {
-        if ($code === null && ! isset($this->code)) {
-            return $this;
-        }
-
         $this->code = $code;
 
         return $this;
@@ -241,10 +233,6 @@ class Route extends Dispatch implements Contract
      */
     public function setRegex(string|null $regex = null): static
     {
-        if ($regex === null && ! isset($this->regex)) {
-            return $this;
-        }
-
         $this->regex = $regex;
 
         return $this;
@@ -327,10 +315,6 @@ class Route extends Dispatch implements Contract
      */
     public function setMiddleware(array|null $middleware = null): static
     {
-        if ($middleware === null && ! isset($this->middleware)) {
-            return $this;
-        }
-
         $this->middleware = $middleware;
 
         return $this;
@@ -361,10 +345,6 @@ class Route extends Dispatch implements Contract
      */
     public function setMessages(array|null $messages = null): static
     {
-        if ($messages === null && ! isset($this->messages)) {
-            return $this;
-        }
-
         $this->__setMessages(...$messages);
 
         return $this;
