@@ -19,7 +19,11 @@ use Valkyrja\Model\Model as Contract;
 use Valkyrja\Type\Support\Arr;
 use Valkyrja\Type\Support\StrCase;
 
+use function array_filter;
+use function in_array;
 use function is_string;
+
+use const ARRAY_FILTER_USE_BOTH;
 
 /**
  * Class Model.
@@ -404,19 +408,13 @@ abstract class Model implements Contract
      */
     protected function internalOnlyProperties(array $allProperties, array $properties): array
     {
-        $onlyProperties = [];
-
-        // Iterate through the list and set only those properties if the property exists in the allProperties array
-        // NOTE: The allProperties array will already have gone through logic to get exposable properties, so only
-        //       if the property exists in this array should we return it in the onlyProperties array.
-        foreach ($properties as $onlyProperty) {
-            if (isset($allProperties[$onlyProperty])) {
-                $onlyProperties[$onlyProperty] = true;
-            }
-        }
-
-        // Return the properties requested
-        return $onlyProperties;
+        return array_filter(
+            $allProperties,
+            function (mixed $value, string $property) use ($properties) {
+                return in_array($property, $properties, true);
+            },
+            ARRAY_FILTER_USE_BOTH
+        );
     }
 
     /**
@@ -428,23 +426,15 @@ abstract class Model implements Contract
      */
     protected function internalGetChangedProperties(array $properties): array
     {
-        // The original properties set on the model
-        $originalProperties = $this->internalOriginalProperties;
-        // The changed properties
-        /** @var array<string, mixed> $changed */
-        $changed = [];
+        return array_filter(
+            $properties,
+            function (mixed $value, string $property) {
+                $originalProperty = $this->internalOriginalProperties[$property] ?? null;
 
-        // Iterate through the model's properties
-        foreach ($properties as $property => $value) {
-            $originalProperty = $originalProperties[$property] ?? null;
-
-            // Determine if the property changed
-            if ($originalProperty !== $value) {
-                $changed[$property] = $value;
-            }
-        }
-
-        return $changed;
+                return $originalProperty !== $value;
+            },
+            ARRAY_FILTER_USE_BOTH
+        );
     }
 
     /**
@@ -457,9 +447,7 @@ abstract class Model implements Contract
      */
     protected function internalSetPropertyValues(array &$properties, callable $callable): void
     {
-        foreach ($properties as $property => $value) {
-            $properties[$property] = $callable($property);
-        }
+        array_walk($properties, fn (mixed &$value, string $property): mixed => $value = $callable($property));
     }
 
     /**
