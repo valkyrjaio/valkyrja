@@ -21,6 +21,7 @@ use Valkyrja\Type\Support\StrCase;
 
 use function array_filter;
 use function in_array;
+use function is_array;
 use function is_string;
 use function json_encode;
 
@@ -409,9 +410,7 @@ abstract class Model implements Contract
     {
         return array_filter(
             $allProperties,
-            function (mixed $value, string $property) use ($properties) {
-                return in_array($property, $properties, true);
-            },
+            static fn (mixed $value, string $property) => in_array($property, $properties, true),
             ARRAY_FILTER_USE_BOTH
         );
     }
@@ -446,7 +445,7 @@ abstract class Model implements Contract
      */
     protected function internalSetPropertyValues(array $properties, callable $callable): array
     {
-        array_walk($properties, fn (mixed &$value, string $property): mixed => $value = $callable($property));
+        array_walk($properties, static fn (mixed &$value, string $property): mixed => $value = $callable($property));
 
         /** @var array<string, mixed> $properties */
         return $properties;
