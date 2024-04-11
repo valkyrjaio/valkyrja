@@ -32,6 +32,7 @@ final class ConfigValue
     public const CACHE_FILE_PATH    = '';
     public const USE_CACHE_FILE     = false;
 
+    /** @var array<string, mixed> */
     public static array $defaults = [
         CKP::MIDDLEWARE         => self::MIDDLEWARE,
         CKP::MIDDLEWARE_GROUPS  => self::MIDDLEWARE_GROUPS,

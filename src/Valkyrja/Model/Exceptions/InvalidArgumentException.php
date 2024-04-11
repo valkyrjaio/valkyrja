@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model\Exceptions;
 
+use Valkyrja\Exception\InvalidArgumentException as Exception;
+
 /**
  * Class InvalidArgumentException.
  *
  * @author Melech Mizrachi
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class InvalidArgumentException extends Exception
 {
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model\Models;
 
+use UnitEnum;
 use Valkyrja\Routing\Message;
 
 use function assert;
@@ -31,14 +32,13 @@ trait MessageCapable
     {
         assert(is_a($message, Message::class, true));
 
-        $arr           = [];
-        $messageValues = $message::values();
-        $messageNames  = $message::names();
+        $arr = [];
+        /** @var UnitEnum[] $cases */
+        $cases = $message::cases();
 
         // Convert the data from message value keyed to name keyed
-        foreach ($messageValues as $key => $messageValue) {
-            $messageName       = $messageNames[$key];
-            $arr[$messageName] = $data[$messageValue];
+        foreach ($cases as $case) {
+            $arr[$case->name] = $data[$case->value ?? $case->name];
         }
 
         /** @var static $model */
@@ -54,17 +54,16 @@ trait MessageCapable
     {
         assert(is_a($message, Message::class, true));
 
-        $messageArray  = [];
-        $asArray       = $this->asArray(...$properties);
-        $messageNames  = $message::names();
-        $messageValues = $message::values();
+        $arr     = [];
+        $asArray = $this->asArray(...$properties);
+        /** @var UnitEnum[] $cases */
+        $cases = $message::cases();
 
         // Convert the data from name keyed to message value keyed
-        foreach ($messageNames as $key => $messageName) {
-            $messageValue                = $messageValues[$key];
-            $messageArray[$messageValue] = $asArray[$messageName];
+        foreach ($cases as $case) {
+            $arr[$case->name] = $asArray[$case->value ?? $case->name];
         }
 
-        return $messageArray;
+        return $arr;
     }
 }

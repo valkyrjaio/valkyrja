@@ -20,9 +20,15 @@ use Valkyrja\Type\Type as Contract;
  * Class Type.
  *
  * @author Melech Mizrachi
+ *
+ * @implements Contract<mixed>
+ * @template T
  */
 abstract class Type implements Contract
 {
+    /**
+     * @param T $subject
+     */
     public function __construct(
         protected mixed $subject,
     ) {
@@ -31,7 +37,17 @@ abstract class Type implements Contract
     /**
      * @inheritDoc
      */
-    public function get(): mixed
+    public static function fromValue(mixed $value): static
+    {
+        return new static($value);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @return T
+     */
+    public function asValue(): mixed
     {
         return $this->subject;
     }
@@ -39,52 +55,21 @@ abstract class Type implements Contract
     /**
      * @inheritDoc
      */
+    abstract public function asFlatValue(): string|int|float|bool|null;
+
+    /**
+     * @inheritDoc
+     */
     public function modify(Closure $closure): static
     {
-        $new = clone $this;
-
-        $new->subject = $closure($new->subject);
-
-        return $new;
+        return static::fromValue($closure($this->subject));
     }
 
     /**
      * @inheritDoc
      */
-    public function asArray(): array
+    public function jsonSerialize(): mixed
     {
-        return [$this->subject];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function asBool(): bool
-    {
-        return (bool) $this->subject;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function asInt(): int
-    {
-        return (int) $this->subject;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function asString(): string
-    {
-        return (string) $this->subject;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function __toString(): string
-    {
-        return $this->asString();
+        return $this->asValue();
     }
 }

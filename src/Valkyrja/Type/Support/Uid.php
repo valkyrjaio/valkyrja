@@ -22,6 +22,7 @@ use Valkyrja\Type\Exceptions\InvalidUlidException;
  */
 abstract class Uid
 {
+    /** @var string */
     public const REGEX = '\w+';
 
     // abstract public static function generate(): string;

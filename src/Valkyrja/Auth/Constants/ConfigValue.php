@@ -41,6 +41,7 @@ final class ConfigValue
     public const PASSWORD_CONFIRM_ROUTE = RouteName::PASSWORD_CONFIRM;
     public const USE_SESSION            = true;
 
+    /** @var array<string, mixed> */
     public static array $defaults = [
         CKP::ADAPTER                => self::ADAPTER,
         CKP::USER_ENTITY            => self::USER_ENTITY,

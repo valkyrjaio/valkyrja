@@ -27,6 +27,7 @@ use function substr;
  */
 class UuidV6 extends Uuid
 {
+    /** @var string */
     public const REGEX = self::REGEX_PART . '{8}-'
     . self::REGEX_PART . '{4}-'
     . '[6]'
@@ -34,6 +35,7 @@ class UuidV6 extends Uuid
     . self::REGEX_PART . '{4}-'
     . self::REGEX_PART . '{12}';
 
+    /** @var UuidVersion */
     public const VERSION = UuidVersion::V6;
 
     /**

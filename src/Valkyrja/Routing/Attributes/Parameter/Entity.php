@@ -17,7 +17,7 @@ use Attribute;
 use Valkyrja\Routing\Attributes\Parameter;
 use Valkyrja\Routing\Constants\ParameterName;
 use Valkyrja\Routing\Constants\Regex;
-use Valkyrja\Routing\Enums\CastType;
+use Valkyrja\Routing\Data\EntityCast;
 
 /**
  * Attribute Entity.
@@ -27,13 +27,8 @@ use Valkyrja\Routing\Enums\CastType;
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class Entity extends Parameter
 {
-    /**
-     * @param class-string<\Valkyrja\Orm\Entity>|null $entity
-     */
     public function __construct(
-        string|null $entity = null,
-        string|null $entityColumn = null,
-        array|null $entityRelationships = null,
+        EntityCast|null $cast = null,
         string|null $name = null,
         string|null $regex = null,
         bool $isOptional = false,
@@ -41,15 +36,12 @@ class Entity extends Parameter
         mixed $default = null,
     ) {
         parent::__construct(
-            name               : $name ?? ParameterName::ID,
-            regex              : $regex ?? Regex::ANY,
-            type               : CastType::entity,
-            entity             : $entity,
-            entityColumn       : $entityColumn,
-            entityRelationships: $entityRelationships,
-            isOptional         : $isOptional,
-            shouldCapture      : $shouldCapture,
-            default            : $default,
+            name         : $name ?? ParameterName::ID,
+            regex        : $regex ?? Regex::ANY,
+            cast         : $cast,
+            isOptional   : $isOptional,
+            shouldCapture: $shouldCapture,
+            default      : $default,
         );
     }
 }

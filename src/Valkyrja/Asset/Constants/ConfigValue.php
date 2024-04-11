@@ -36,6 +36,7 @@ final class ConfigValue
         ],
     ];
 
+    /** @var array<string, mixed> */
     public static array $defaults = [
         CKP::DEFAULT  => self::DEFAULT,
         CKP::ADAPTERS => self::ADAPTERS,

@@ -46,6 +46,7 @@ final class ConfigValue
         ],
     ];
 
+    /** @var array<string, mixed> */
     public static array $defaults = [
         CKP::DIR     => self::DIR,
         CKP::ENGINE  => self::ENGINE,

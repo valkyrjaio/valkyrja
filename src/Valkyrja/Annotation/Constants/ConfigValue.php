@@ -79,6 +79,7 @@ final class ConfigValue
         Alias::STATUS_CODE    => AliasClass::STATUS_CODE,
     ];
 
+    /** @var array<string, mixed> */
     public static array $defaults = [
         CKP::ENABLED => self::ENABLED,
         CKP::MAP     => self::MAP,

@@ -22,6 +22,8 @@ trait Indexable
 {
     /**
      * @inheritDoc
+     *
+     * @return array<string, int>
      */
     public static function getIndexes(): array
     {
@@ -30,6 +32,8 @@ trait Indexable
 
     /**
      * @inheritDoc
+     *
+     * @return array<string, mixed>
      */
     public static function getMappedArrayFromIndexedArray(array $properties = []): array
     {
@@ -46,6 +50,8 @@ trait Indexable
 
     /**
      * @inheritDoc
+     *
+     * @return array<int, mixed>
      */
     public static function getIndexedArrayFromMappedArray(array $properties = []): array
     {
@@ -92,6 +98,8 @@ trait Indexable
 
     /**
      * @inheritDoc
+     *
+     * @return array<int, mixed>
      */
     public function asIndexedArray(string ...$properties): array
     {
@@ -100,6 +108,8 @@ trait Indexable
 
     /**
      * @inheritDoc
+     *
+     * @return array<int, mixed>
      */
     public function asChangedIndexedArray(): array
     {
@@ -108,6 +118,8 @@ trait Indexable
 
     /**
      * @inheritDoc
+     *
+     * @return array<int, mixed>
      */
     public function asOriginalIndexedArray(): array
     {

@@ -82,7 +82,7 @@ class Formatter implements Contract
      */
     public function setOption(FormatOption $option): void
     {
-        $this->options[$option->getValue()] = $option->getValue();
+        $this->options[$option->value] = $option->value;
     }
 
     /**
@@ -90,7 +90,7 @@ class Formatter implements Contract
      */
     public function hasOption(FormatOption $option): bool
     {
-        return isset($this->options[$option->getValue()]);
+        return isset($this->options[$option->value]);
     }
 
     /**
@@ -99,7 +99,7 @@ class Formatter implements Contract
     public function removeOption(FormatOption $option): void
     {
         if ($this->hasOption($option)) {
-            unset($this->options[$option->getValue()]);
+            unset($this->options[$option->value]);
         }
     }
 
@@ -180,12 +180,12 @@ class Formatter implements Contract
     /**
      * Set an option by its number value.
      *
-     * @param int $option The option
+     * @param FormatOption $option The option
      *
      * @return void
      */
-    protected function setOptionNum(int $option): void
+    protected function setOptionNum(FormatOption $option): void
     {
-        $this->options[$option] = $option;
+        $this->options[$option->value] = $option->value;
     }
 }

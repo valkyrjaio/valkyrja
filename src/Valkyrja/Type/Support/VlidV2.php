@@ -26,23 +26,33 @@ use Valkyrja\Type\Exceptions\InvalidVlidV2Exception;
  */
 class VlidV2 extends Vlid
 {
+    /** @var string */
     public const REGEX = '[0-7]'
     . '[' . self::VALID_CHARACTERS . ']{12}'
     . '[2]'
     . '[' . self::VALID_CHARACTERS . ']{16}';
 
+    /** @var VlidVersion */
     public const VERSION = VlidVersion::V2;
 
+    /** @var string */
     protected const FORMAT = '%013s%01s%04s%04s%04s%04s';
 
+    /** @var int */
     protected const MAX_RANDOM_BYTES = 4;
+
+    /** @var string */
+    protected static string $time = '';
+
+    /** @var array */
+    protected static array $randomBytes = [];
 
     /**
      * @inheritDoc
      */
     protected static function areAllRandomBytesMax(): bool
     {
-        return Ulid::areAllRandomBytesMax();
+        return static::$randomBytes === [1 => static::MAX_PART, static::MAX_PART, static::MAX_PART, static::MAX_PART];
     }
 
     /**
@@ -50,7 +60,7 @@ class VlidV2 extends Vlid
      */
     protected static function unsetRandomByteParts(array &$randomBytes): void
     {
-        Ulid::unsetRandomByteParts($randomBytes);
+        unset($randomBytes[5]);
     }
 
     /**

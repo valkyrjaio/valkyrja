@@ -50,6 +50,7 @@ final class ConfigValue
         Rule::ORM_EXISTS   => ORM::class,
     ];
 
+    /** @var array<string, mixed> */
     public static array $defaults = [
         CKP::RULE      => self::RULE,
         CKP::RULES_MAP => self::RULES_MAP,

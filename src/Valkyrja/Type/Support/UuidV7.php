@@ -24,6 +24,7 @@ use Valkyrja\Type\Exceptions\InvalidUuidV7Exception;
  */
 abstract class UuidV7 extends Uuid
 {
+    /** @var string */
     public const REGEX = self::REGEX_PART . '{8}-'
     . self::REGEX_PART . '{4}-'
     . '[7]'
@@ -31,6 +32,7 @@ abstract class UuidV7 extends Uuid
     . self::REGEX_PART . '{4}-'
     . self::REGEX_PART . '{12}';
 
+    /** @var UuidVersion */
     public const VERSION = UuidVersion::V7;
 
     /**

@@ -20,7 +20,7 @@ use function explode;
 use function get_object_vars;
 use function json_decode;
 use function json_encode;
-use function Valkyrja\Type\str_contains;
+use function str_contains;
 
 use const JSON_THROW_ON_ERROR;
 
@@ -60,6 +60,31 @@ class Obj
     }
 
     /**
+     * Convert an object to a serialized string.
+     *
+     * @param object $subject The subject object
+     *
+     * @return string
+     */
+    public static function toSerializedString(object $subject): string
+    {
+        return serialize($subject);
+    }
+
+    /**
+     * Un-convert an object from a serialized string.
+     *
+     * @param string         $subject        The subject object as a string
+     * @param class-string[] $allowedClasses The allowed classes to be unserialized
+     *
+     * @return object
+     */
+    public static function fromSerializedString(string $subject, array $allowedClasses = []): object
+    {
+        return unserialize($subject, ['allowed_classes' => $allowedClasses]);
+    }
+
+    /**
      * Get the object's publicly accessible properties.
      *
      * @param object $subject The subject object
@@ -82,8 +107,8 @@ class Obj
      */
     public static function getAllProperties(
         object $subject,
-        bool $includeProtected = true,
-        bool $includePrivate = true
+        bool   $includeProtected = true,
+        bool   $includePrivate = true
     ): array {
         /** @var array<string, mixed> $castSubject */
         // The subject cast as an array

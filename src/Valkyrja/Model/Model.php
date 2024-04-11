@@ -13,19 +13,21 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model;
 
-use JsonSerializable;
+use Valkyrja\Type\Type;
 
 /**
  * Interface Model.
  *
  * @author Melech Mizrachi
+ *
+ * @extends Type<static>
  */
-interface Model extends JsonSerializable
+interface Model extends Type
 {
     /**
      * Set properties from an array of properties.
      *
-     * @param array $properties The properties
+     * @param array<string, mixed> $properties The properties
      *
      * @return static
      */
@@ -71,7 +73,7 @@ interface Model extends JsonSerializable
     /**
      * Set properties from an array of properties.
      *
-     * @param array $properties The properties
+     * @param array<string, mixed> $properties The properties
      *
      * @return void
      */
@@ -80,25 +82,35 @@ interface Model extends JsonSerializable
     /**
      * Get a new model with new properties.
      *
-     * @param array $properties The properties to modify
+     * @param array<string, mixed> $properties The properties to modify
      *
      * @return static
      */
     public function withProperties(array $properties): static;
 
     /**
+     * @inheritDoc
+     */
+    public function asValue(): static;
+
+    /**
+     * @inheritDoc
+     */
+    public function asFlatValue(): string;
+
+    /**
      * Get model as an array.
      *
      * @param string ...$properties [optional] An array of properties to return
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function asArray(string ...$properties): array;
 
     /**
      * Get model as an array including only changed properties.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function asChangedArray(): array;
 
@@ -114,14 +126,14 @@ interface Model extends JsonSerializable
     /**
      * Get all original properties.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function asOriginalArray(): array;
 
     /**
      * Serialize properties for json_encode.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function jsonSerialize(): array;
 

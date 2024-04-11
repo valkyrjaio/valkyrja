@@ -24,6 +24,7 @@ final class ConfigValue
 {
     public const NOTIFICATIONS = [];
 
+    /** @var array<string, mixed> */
     public static array $defaults = [
         CKP::NOTIFICATIONS => self::NOTIFICATIONS,
     ];

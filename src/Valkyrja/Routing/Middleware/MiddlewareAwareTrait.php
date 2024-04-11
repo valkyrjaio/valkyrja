@@ -33,7 +33,7 @@ trait MiddlewareAwareTrait
     /**
      * The collection of middleware groups.
      *
-     * @var array[]
+     * @var string[][]
      */
     protected static array $middlewareGroups = [];
 

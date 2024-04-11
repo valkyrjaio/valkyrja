@@ -27,9 +27,9 @@ trait ProtectedExposable
     /**
      * Get all properties.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    protected function __allProperties(): array
+    protected function internalGetAllProperties(): array
     {
         return array_merge(Obj::getProperties($this), $this->__exposed);
     }

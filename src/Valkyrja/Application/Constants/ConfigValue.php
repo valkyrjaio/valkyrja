@@ -38,6 +38,7 @@ final class ConfigValue
         ContainerAppProvider::class,
     ];
 
+    /** @var array<string, mixed> */
     public static array $defaults = [
         CKP::ENV               => self::ENV,
         CKP::DEBUG             => self::DEBUG,

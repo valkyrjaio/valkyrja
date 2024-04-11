@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Matchers;
 
 use Valkyrja\Container\Container;
+use Valkyrja\Model\Data\Cast;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Orm\Orm;
 use Valkyrja\Orm\RelationshipRepository;
 use Valkyrja\Routing\Collection;
-use Valkyrja\Routing\Enums\CastType;
+use Valkyrja\Routing\Data\EntityCast;
 use Valkyrja\Routing\Exceptions\InvalidRouteParameter;
 use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
@@ -48,16 +49,14 @@ class EntityCapableMatcher extends Matcher
      *
      * @throws InvalidRouteParameter
      */
-    protected function getMatchValueForType(Route $route, Parameter $parameter, CastType $castType, int $index, mixed $match): mixed
+    protected function castMatchValue(Route $route, Parameter $parameter, Cast $cast, int $index, mixed $match): mixed
     {
-        // If this is an entity cast type
-        if ($castType !== CastType::entity) {
-            return parent::getMatchValueForType($route, $parameter, $castType, $index, $match);
+        // If this is not an entity cast type
+        if (! is_a($cast->type, Entity::class, true)) {
+            return parent::castMatchValue($route, $parameter, $cast, $index, $match);
         }
 
-        if (! $entityName = $parameter->getEntity()) {
-            throw new InvalidRouteParameter("Entity is missing for casted entity parameter {$parameter->getName()}");
-        }
+        $entityName = $cast->type;
 
         // Try to get the entity
         $entity = $this->getEntity($parameter, $entityName, $match);
@@ -85,12 +84,18 @@ class EntityCapableMatcher extends Matcher
      */
     protected function getEntity(Parameter $parameter, string $entityName, mixed $match): Entity|null
     {
-        $orm = $this->container->getSingleton(Orm::class)->getRepository($entityName);
+        $cast          = $parameter->getCast();
+        $orm           = $this->container->getSingleton(Orm::class)->getRepository($entityName);
+        $field         = null;
+        $relationships = [];
 
-        $relationships = $parameter->getEntityRelationships() ?? [];
+        if ($cast instanceof EntityCast) {
+            $relationships = $cast->relationships ?? [];
+            $field         = $cast->column;
+        }
 
         // If there is a field specified to use
-        if (($field = $parameter->getEntityColumn()) !== null && $field !== '') {
+        if ($field !== null && $field !== '') {
             $find = $orm->find()->where($field, null, $match);
 
             if (is_a($find, RelationshipRepository::class)) {

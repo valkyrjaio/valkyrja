@@ -15,6 +15,7 @@ namespace Valkyrja\Routing;
 
 use BackedEnum;
 use Valkyrja\Dispatcher\Dispatch;
+use Valkyrja\Model\Data\Cast;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Models\Parameter;
@@ -127,14 +128,14 @@ interface Route extends Dispatch
     /**
      * Get the parameters.
      *
-     * @return Parameter[]
+     * @return array<int, Parameter>
      */
     public function getParameters(): array;
 
     /**
      * Set the parameters.
      *
-     * @param Parameter[]|array $parameters The parameters
+     * @param array<int, Parameter>|array<array-key, array<string, mixed>> $parameters The parameters
      *
      * @return static
      */
@@ -166,16 +167,12 @@ interface Route extends Dispatch
      * @return static
      */
     public function addParameter(
-        string $name,
+        string      $name,
         string|null $regex = null,
-        CastType|null $type = null,
-        string|null $entity = null,
-        string|null $entityColumn = null,
-        array|null $entityRelationships = null,
-        string|null $enum = null,
-        bool $isOptional = false,
-        bool $shouldCapture = true,
-        mixed $default = null
+        Cast|null   $cast = null,
+        bool        $isOptional = false,
+        bool        $shouldCapture = true,
+        mixed       $default = null
     ): static;
 
     /**

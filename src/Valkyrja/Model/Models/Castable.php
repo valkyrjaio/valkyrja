@@ -13,20 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model\Models;
 
-use BackedEnum;
-use JsonException;
-use UnitEnum;
-use Valkyrja\Model\CastableModel as Contract;
-use Valkyrja\Model\Enums\CastType;
-use Valkyrja\Model\Exceptions\InvalidArgumentException;
-use Valkyrja\Model\Model;
-use Valkyrja\Type\Support\Arr;
-use Valkyrja\Type\Support\Obj;
+use Valkyrja\Model\Data\Cast;
 use Valkyrja\Type\Type;
-
-use function is_array;
-use function is_object;
-use function is_string;
 
 /**
  * Trait Castable.
@@ -36,85 +24,41 @@ use function is_string;
 trait Castable
 {
     /**
-     * Property castings used for mass property sets to avoid needing individual setters for simple type casting.
+     * Local cache for castings.
      *
      * <code>
-     *      [
-     *          // An property to be json_decoded to an array
-     *          'property_name' => CastType::array,
-     *          // An property to be unserialized to an object
-     *          'property_name' => CastType::object,
-     *          // An property to be json_decoded to an object
-     *          'property_name' => CastType::json,
-     *          // An property to be cast to an string
-     *          'property_name' => CastType::string,
-     *          // An property to be cast to an int
-     *          'property_name' => CastType::int,
-     *          // An property to be cast to an float
-     *          'property_name' => CastType::float,
-     *          // An property to be cast to an bool
-     *          'property_name' => CastType::bool,
-     *          // An property to be cast to an enum
-     *          'property_name' => [CastType::enum, Enum::class],
-     *          // An property to be cast to a model
-     *          'property_name' => [CastType::model, Model::class],
-     *          // An property to be cast to an array of models
-     *          'property_name' => [CastType::model, [Model::class]],
-     *          // An property to be cast to a Type
-     *          'property_name' => [CastType::type, Type::class],
+     *      static::class => [
+     *           // An property to be cast to a type
+     *           'property_name' => new Cast(Type::class),
+     *           // An property to be cast to an array of types
+     *           'property_name' => new Cast(Type::class, isArray: true),
      *      ]
      * </code>
      *
-     * @var array<string, CastType|array{0:CastType, 1:class-string|array{0:class-string}}>
+     * @var array<string, array<string, Cast>>
      */
-    protected static array $castings = [];
-
-    /**
-     * Allowed classes for serialization of object type properties.
-     *
-     * <code>
-     *      [
-     *          // An array of allowed classes for serialization for object types
-     *          'property_name' => [ClassName::class],
-     *      ]
-     * </code>
-     *
-     * @var array<string, class-string[]>
-     */
-    protected static array $castingsAllowedClasses = [];
+    private static array $castings = [];
 
     /**
      * @inheritDoc
      *
-     * @return array<string, CastType|array{0:CastType, 1:class-string|array{0:class-string}}>
+     * @return array<string, Cast>
      */
     public static function getCastings(): array
     {
-        return static::$castings;
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @return array<string, class-string[]>
-     */
-    public static function getCastingsAllowedClasses(): array
-    {
-        return static::$castingsAllowedClasses;
+        return [];
     }
 
     /**
      * Set properties from an array of properties.
      *
-     * @param array $properties The properties to set
-     *
-     * @throws JsonException
+     * @param array<string, mixed> $properties The properties to set
      *
      * @return void
      */
-    protected function __setProperties(array $properties): void
+    protected function internalSetProperties(array $properties): void
     {
-        $castings    = static::getCastings();
+        $castings    = $this->internalGetCastings();
         $hasCastings = self::$cachedExistsValidations[static::class . 'hasCastings'] ??= ! empty($castings);
 
         // Iterate through the properties
@@ -124,387 +68,94 @@ trait Castable
                 $this->__set(
                     $property,
                     $hasCastings
-                        ? $this->__getPropertyValueByType($castings, $property, $value)
+                        ? $this->internalCheckAndCastPropertyValue($castings, $property, $value)
                         : $value
                 );
             }
         }
 
-        $this->__originalPropertiesSet();
+        $this->internalOriginalPropertiesSet();
     }
 
     /**
      * Get a property's value by the type (if type is set).
      *
-     * @param array  $castings The castings
-     * @param string $property The property name
-     * @param mixed  $value    The property value
-     *
-     * @throws JsonException
+     * @param array<string, Cast> $castings The castings
+     * @param string              $property The property name
+     * @param mixed               $value    The property value
      *
      * @return mixed
      */
-    protected function __getPropertyValueByType(array $castings, string $property, mixed $value): mixed
+    protected function internalCheckAndCastPropertyValue(array $castings, string $property, mixed $value): mixed
     {
         // If there is no type specified or the value is null just return the value
         // Castings assignment is set in the if specifically to avoid an assignment
         // if the value is null, which would be an unneeded assigned variable
-        if ($value === null || ($type = $castings[$property] ?? null) === null) {
+        if ($value === null || ($cast = $castings[$property] ?? null) === null) {
             return $value;
         }
 
-        return $this->__getPropertyValueByTypeMatch($type, $property, $value);
-    }
-
-    /**
-     * Get a property's value by the type for a given type cast.
-     *
-     * @param CastType|array{CastType, array{class-string}|class-string} $type The cast type
-     *
-     * @throws JsonException
-     */
-    protected function __getPropertyValueByTypeMatch(CastType|array $type, string $property, mixed $value): mixed
-    {
-        if ($type instanceof CastType) {
-            return $this->__getPropertyValueByTypeMatchForCastType($type, $property, $value);
-        }
-
-        return $this->__getPropertyValueByTypeMatchForArray($type, $property, $value);
-    }
-
-    /**
-     * @param CastType $type     The cast type
-     * @param string   $property The property name
-     * @param mixed    $value    The property value
-     *
-     * @throws JsonException
-     *
-     * @return mixed
-     */
-    protected function __getPropertyValueByTypeMatchForCastType(CastType $type, string $property, mixed $value): mixed
-    {
-        return match ($type) {
-            CastType::string => $this->__getStringFromValueType($property, $value),
-            CastType::int    => $this->__getIntFromValueType($property, $value),
-            CastType::float  => $this->__getFloatFromValueType($property, $value),
-            CastType::double => $this->__getDoubleFromValueType($property, $value),
-            CastType::bool   => $this->__getBoolFromValueType($property, $value),
-            CastType::json   => $this->__getJsonFromValueType($property, $value),
-            CastType::array  => $this->__getArrayFromValueType($property, $value),
-            CastType::object => $this->__getObjectFromValueType($property, $value),
-            CastType::true   => $this->__getTrueFromValueType($property, $value),
-            CastType::false  => $this->__getFalseFromValueType($property, $value),
-            CastType::null   => $this->__getNullFromValueType($property, $value),
-            default          => throw new InvalidArgumentException("Cast Type `{$type->name}` must use an array"),
-        };
-    }
-
-    /**
-     * @param array  $type     The cast type
-     * @param string $property The property name
-     * @param mixed  $value    The property value
-     *
-     * @throws JsonException
-     *
-     * @return mixed
-     */
-    protected function __getPropertyValueByTypeMatchForArray(array $type, string $property, mixed $value): mixed
-    {
-        /** @var CastType $castType */
-        $castType = $type[0];
-
-        return match ($castType) {
-            CastType::model => $this->__getModelFromValueType($property, $type[1], $value),
-            CastType::enum  => $this->__getEnumFromValueType($property, $type[1], $value),
-            CastType::type  => $this->__getTypeFromValueType($property, $type[1], $value),
-            default         => throw new InvalidArgumentException("Cast Type `{$castType->name}` must not use an array"),
-        };
-    }
-
-    /**
-     * Get the type to check. Could be an array for models or enums since the second index will be the enum/model name.
-     *
-     * @param CastType|array{0:CastType, 1:class-string|class-string[]} $type The type
-     *
-     * @return CastType
-     */
-    protected function __getTypeToCheck(CastType|array $type): CastType
-    {
-        return $type instanceof CastType
-            ? $type
-            : $type[0];
-    }
-
-    /**
-     * Get the value for a string type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @return string
-     */
-    protected function __getStringFromValueType(string $property, mixed $value): string
-    {
-        return (string) $value;
-    }
-
-    /**
-     * Get the value for a int type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @return int
-     */
-    protected function __getIntFromValueType(string $property, mixed $value): int
-    {
-        return (int) $value;
-    }
-
-    /**
-     * Get the value for a float type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @return float
-     */
-    protected function __getFloatFromValueType(string $property, mixed $value): float
-    {
-        return (float) $value;
-    }
-
-    /**
-     * Get the value for a double type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @return float
-     */
-    protected function __getDoubleFromValueType(string $property, mixed $value): float
-    {
-        return (float) $value;
-    }
-
-    /**
-     * Get the value for a bool type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @return bool
-     */
-    protected function __getBoolFromValueType(string $property, mixed $value): bool
-    {
-        return (bool) $value;
-    }
-
-    /**
-     * Get the value for a true type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @return true
-     */
-    protected function __getTrueFromValueType(string $property, mixed $value): bool
-    {
-        return true;
-    }
-
-    /**
-     * Get the value for a false type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @return false
-     */
-    protected function __getFalseFromValueType(string $property, mixed $value): bool
-    {
-        return false;
-    }
-
-    /**
-     * Get the value for a null type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @return null
-     */
-    protected function __getNullFromValueType(string $property, mixed $value): mixed
-    {
-        return null;
-    }
-
-    /**
-     * Get the value for a json type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @throws JsonException
-     *
-     * @return object
-     */
-    protected function __getJsonFromValueType(string $property, mixed $value): object
-    {
-        return is_string($value)
-            ? Obj::fromString($value)
-            : (object) $value;
-    }
-
-    /**
-     * Get the value for a array type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @throws JsonException
-     *
-     * @return array
-     */
-    protected function __getArrayFromValueType(string $property, mixed $value): array
-    {
-        return is_string($value)
-            ? Arr::fromString($value)
-            : (array) $value;
-    }
-
-    /**
-     * Get the value for a object type cast.
-     *
-     * @param string $property The property name
-     * @param mixed  $value    The value
-     *
-     * @return object
-     */
-    protected function __getObjectFromValueType(string $property, mixed $value): object
-    {
-        return is_string($value)
-            ? unserialize(
-                $value,
-                [
-                    'allowed_classes' => static::getCastingsAllowedClasses()[$property] ?? false,
-                ]
-            )
-            : (object) $value;
-    }
-
-    /**
-     * Get the value for a Type type cast.
-     *
-     * @param string             $property The property name
-     * @param class-string<Type> $type     The type of the property
-     * @param mixed              $value    The value
-     *
-     * @return Type|null
-     */
-    protected function __getTypeFromValueType(string $property, string $type, mixed $value): Type|null
-    {
-        return $value !== null && ! ($value instanceof Type)
-            ? new $type($value)
-            : $value;
-    }
-
-    /**
-     * Get a model from value given a type not identified prior.
-     *
-     * @param string                                           $property The property name
-     * @param array{0:class-string<Model>}|class-string<Model> $type     The type of the property
-     * @param mixed                                            $value    The value
-     *
-     * @throws JsonException
-     *
-     * @return Model|Model[]
-     */
-    protected function __getModelFromValueType(string $property, array|string $type, mixed $value): Model|array
-    {
-        // An array would indicate an array of models
-        if (is_array($type)) {
-            $type = $type[0];
-
+        // An array would indicate an array of types
+        if ($cast->isArray) {
             return array_map(
-                fn (array $data) => $this->__getModelFromValue($property, $type, $data),
+                fn (mixed $data) => $this->internalCastPropertyValue($cast, $data),
                 $value
             );
         }
 
-        return $this->__getModelFromValue($property, $type, $value);
+        return $this->internalCastPropertyValue($cast, $value);
     }
 
     /**
-     * Get a model from value.
+     * Get a type from value given a type not identified prior.
      *
-     * @param string              $property The property name
-     * @param class-string<Model> $type     The type of the property
-     * @param mixed               $value    The value
+     * @param Cast  $cast  The cast for the property
+     * @param mixed $value The value
      *
-     * @throws JsonException
-     *
-     * @return Model
+     * @return mixed|array|null
      */
-    protected function __getModelFromValue(string $property, string $type, mixed $value): Model
+    protected function internalCastPropertyValue(Cast $cast, mixed $value): mixed
     {
-        if (is_string($value)) {
-            $value = Arr::fromString($value);
-        } elseif ($value instanceof Contract) {
-            $value = $value->jsonSerialize();
-        } elseif (is_object($value) || is_array($value)) {
-            $value = (array) $value;
+        if ($value === null) {
+            return null;
         }
 
-        if (isset($this->$property) && $this->$property instanceof Contract) {
-            $value = array_merge($this->$property->asArray(), $value);
+        /** @var class-string<Type> $type */
+        $type = $cast->type;
+
+        $typeInstance = ($value instanceof $type)
+            ? $value
+            : $type::fromValue($value);
+        $typeInstance = $this->internalModifyCastPropertyValue($typeInstance);
+
+        // Convert specifically stated types
+        if ($cast->convert) {
+            return $typeInstance->asValue();
         }
 
-        /** @var Model $type */
-        return $type::fromArray($value);
+        return $typeInstance;
     }
 
     /**
-     * Get an enum from value given a type not identified prior.
+     * Modify the type before returning it.
      *
-     * @param string       $property The property name
-     * @param array|string $type     The type of the property
-     * @param mixed        $value    The value
+     * @param Type $type The type
      *
-     * @return UnitEnum|UnitEnum[]
+     * @return Type
      */
-    protected function __getEnumFromValueType(string $property, array|string $type, mixed $value): UnitEnum|array
+    protected function internalModifyCastPropertyValue(Type $type): Type
     {
-        // An array would indicate an array of enums
-        if (is_array($type)) {
-            $type = $type[0];
-
-            return array_map(
-                fn (array $data) => $this->__getEnumFromValue($property, $type, $data),
-                $value
-            );
-        }
-
-        return $this->__getEnumFromValue($property, $type, $value);
+        return $type;
     }
 
     /**
-     * Get an enum from value.
+     * Get the castings for the Model.
      *
-     * @param string $property The property name
-     * @param string $type     The type of the property
-     * @param mixed  $value    The value
-     *
-     * @return UnitEnum
+     * @return array<string, Cast>
      */
-    protected function __getEnumFromValue(string $property, string $type, mixed $value): UnitEnum
+    protected function internalGetCastings(): array
     {
-        // If it's already an enum just send it along the way
-        if ($value instanceof BackedEnum) {
-            return $value;
-        }
-
-        /** @var BackedEnum $type */
-        return $type::from($value);
+        return self::$castings[static::class]
+            ??= static::getCastings();
     }
 }

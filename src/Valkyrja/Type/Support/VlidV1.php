@@ -27,14 +27,23 @@ use Valkyrja\Type\Exceptions\InvalidVlidV1Exception;
  */
 class VlidV1 extends Vlid
 {
+    /** @var string */
     public const REGEX = '[0-7]'
     . '[' . self::VALID_CHARACTERS . ']{12}'
     . '[1]'
     . '[' . self::VALID_CHARACTERS . ']{12}';
 
+    /** @var VlidVersion */
     public const VERSION = VlidVersion::V1;
 
+    /** @var string */
     protected const FORMAT = '%013s%01s%04s%04s%04s';
+
+    /** @var string */
+    protected static string $time = '';
+
+    /** @var array */
+    protected static array $randomBytes = [];
 
     /**
      * @inheritDoc

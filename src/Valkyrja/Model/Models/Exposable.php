@@ -53,7 +53,7 @@ trait Exposable
      */
     public function asExposedArray(string ...$properties): array
     {
-        return $this->__arrayWithExposed('asArray', ...$properties);
+        return $this->internalArrayWithExposed('asArray', ...$properties);
     }
 
     /**
@@ -61,7 +61,7 @@ trait Exposable
      */
     public function asExposedChangedArray(): array
     {
-        return $this->__arrayWithExposed('asChangedArray');
+        return $this->internalArrayWithExposed('asChangedArray');
     }
 
     /**
@@ -69,7 +69,7 @@ trait Exposable
      */
     public function asExposedOnlyArray(): array
     {
-        return $this->__arrayWithExposed('asArray', ...static::getExposable());
+        return $this->internalArrayWithExposed('asArray', ...static::getExposable());
     }
 
     /**
@@ -101,23 +101,23 @@ trait Exposable
     /**
      * Get all properties.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    protected function __allProperties(): array
+    protected function internalGetAllProperties(): array
     {
-        return array_merge(parent::__allProperties(), $this->__exposed);
+        return array_merge(parent::internalGetAllProperties(), $this->__exposed);
     }
 
     /**
      * Remove internal model properties from an array of properties.
      *
-     * @param array $properties The properties
+     * @param array<string, mixed> $properties The properties
      *
      * @return void
      */
-    protected function __removeInternalProperties(array &$properties): void
+    protected function internalRemoveInternalProperties(array &$properties): void
     {
-        parent::__removeInternalProperties($properties);
+        parent::internalRemoveInternalProperties($properties);
 
         unset($properties['__exposed']);
     }
@@ -128,9 +128,9 @@ trait Exposable
      * @param Closure|string $callable      The callable
      * @param string         ...$properties The properties
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    protected function __arrayWithExposed(Closure|string $callable, string ...$properties): array
+    protected function internalArrayWithExposed(Closure|string $callable, string ...$properties): array
     {
         $exposable = static::getExposable();
 

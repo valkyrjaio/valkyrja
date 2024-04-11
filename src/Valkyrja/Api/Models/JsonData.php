@@ -68,14 +68,14 @@ class JsonData extends Model implements Contract
     /**
      * The messages.
      *
-     * @var array|null
+     * @var string[]|null
      */
     public array|null $messages = null;
 
     /**
      * The data.
      *
-     * @var array|null
+     * @var array<string, mixed>|null
      */
     public array|null $data = null;
 

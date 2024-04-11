@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Enums;
 
-use Valkyrja\Type\Types\Enum;
-
 /**
  * Enum AnnotationName.
  *
  * @author Melech Mizrachi
  */
-final class AnnotationName extends Enum
+final class AnnotationName
 {
     public const SERVICE         = 'Service';
     public const SERVICE_ALIAS   = 'Service\\Alias';

@@ -27,14 +27,13 @@ use Valkyrja\Routing\Annotations\Route\Redirect;
 use Valkyrja\Routing\Annotations\Route\Redirect\Permanent;
 use Valkyrja\Routing\Annotations\Route\Secure;
 use Valkyrja\Routing\Annotations\Route\Trace;
-use Valkyrja\Type\Types\Enum;
 
 /**
  * Enum AnnotationClass.
  *
  * @author Melech Mizrachi
  */
-final class AnnotationClass extends Enum
+final class AnnotationClass
 {
     public const ROUTE                            = Route::class;
     public const ROUTE_ANY                        = Any::class;

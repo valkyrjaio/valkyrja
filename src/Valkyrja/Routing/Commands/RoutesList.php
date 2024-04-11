@@ -16,7 +16,6 @@ namespace Valkyrja\Routing\Commands;
 use InvalidArgumentException;
 use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\FormatForeground;
-use Valkyrja\Console\Enums\FormatOption;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Routing\Route;
 
@@ -45,7 +44,7 @@ class RoutesList extends Commander
     public const SHORT_DESCRIPTION = 'List all routes';
     public const DESCRIPTION       = '';
 
-    protected const INVERT_FORMAT = "\e[" . FormatOption::INVERSE . 'm';
+    protected const INVERT_FORMAT = "\e[7m";
     protected const END_FORMAT    = "\e[0m";
 
     /**

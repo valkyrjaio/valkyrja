@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model\Models;
 
+use Closure;
 use JsonException;
 use Valkyrja\Model\Model as Contract;
 use Valkyrja\Type\Support\Arr;
 use Valkyrja\Type\Support\StrCase;
+
+use function is_string;
 
 /**
  * Class Model.
@@ -49,27 +52,46 @@ abstract class Model implements Contract
     /**
      * The original properties.
      *
-     * @var array
+     * @var array<string, mixed>
      */
-    private array $__originalProperties = [];
+    private array $internalOriginalProperties = [];
 
     /**
      * Whether the original properties have been set.
      *
      * @var bool
      */
-    private bool $__originalPropertiesSet = false;
+    private bool $internalOriginalPropertiesSet = false;
 
     /**
      * @inheritDoc
      */
     public static function fromArray(array $properties): static
     {
-        $model = static::__getNew($properties);
+        $model = new static();
 
-        $model->__setProperties($properties);
+        $model->internalSetProperties($properties);
 
         return $model;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws JsonException
+     */
+    public static function fromValue(mixed $value): static
+    {
+        if (is_string($value)) {
+            $value = Arr::fromString($value);
+        } elseif ($value instanceof Contract) {
+            $value = $value->asArray();
+        } else {
+            $value = (array) $value;
+        }
+
+        /** @var array<string, mixed> $value */
+        return static::fromArray($value);
     }
 
     /**
@@ -83,25 +105,13 @@ abstract class Model implements Contract
     }
 
     /**
-     * Get a new instance.
-     *
-     * @param array $properties The properties
-     *
-     * @return $this
-     */
-    protected static function __getNew(array $properties): static
-    {
-        return new static();
-    }
-
-    /**
      * @inheritDoc
      */
     public function __get(string $name)
     {
-        $methodName = $this->__getPropertyTypeMethodName($name, 'get');
+        $methodName = $this->internalGetPropertyTypeMethodName($name, 'get');
 
-        if ($this->__doesPropertyTypeMethodExist($methodName)) {
+        if ($this->internalDoesPropertyTypeMethodExist($methodName)) {
             return $this->$methodName();
         }
 
@@ -113,11 +123,11 @@ abstract class Model implements Contract
      */
     public function __set(string $name, mixed $value): void
     {
-        $methodName = $this->__getPropertyTypeMethodName($name, 'set');
+        $methodName = $this->internalGetPropertyTypeMethodName($name, 'set');
 
-        $this->__setOriginalProperty($name, $value);
+        $this->internalSetOriginalProperty($name, $value);
 
-        if ($this->__doesPropertyTypeMethodExist($methodName)) {
+        if ($this->internalDoesPropertyTypeMethodExist($methodName)) {
             $this->$methodName($value);
 
             return;
@@ -131,9 +141,9 @@ abstract class Model implements Contract
      */
     public function __isset(string $name): bool
     {
-        $methodName = $this->__getPropertyTypeMethodName($name, 'isset');
+        $methodName = $this->internalGetPropertyTypeMethodName($name, 'isset');
 
-        if ($this->__doesPropertyTypeMethodExist($methodName)) {
+        if ($this->internalDoesPropertyTypeMethodExist($methodName)) {
             return $this->$methodName();
         }
 
@@ -157,7 +167,7 @@ abstract class Model implements Contract
      */
     public function updateProperties(array $properties): void
     {
-        $this->__setProperties($properties);
+        $this->internalSetProperties($properties);
     }
 
     /**
@@ -167,9 +177,37 @@ abstract class Model implements Contract
     {
         $model = clone $this;
 
-        $model->__setProperties($properties);
+        $model->internalSetProperties($properties);
 
         return $model;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function modify(Closure $closure): static
+    {
+        $new = clone $this;
+
+        return $closure($new);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function asValue(): static
+    {
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws JsonException
+     */
+    public function asFlatValue(): string
+    {
+        return $this->__toString();
     }
 
     /**
@@ -178,13 +216,13 @@ abstract class Model implements Contract
     public function asArray(string ...$properties): array
     {
         // Get the public properties
-        $allProperties = $this->__allProperties();
+        $allProperties = $this->internalGetAllProperties();
 
-        $this->__removeInternalProperties($allProperties);
+        $this->internalRemoveInternalProperties($allProperties);
 
-        $allProperties = $this->__checkOnlyProperties($allProperties, $properties);
+        $allProperties = $this->internalCheckOnlyProperties($allProperties, $properties);
 
-        $this->__setPropertyValues($allProperties, '__get');
+        $this->internalSetPropertyValues($allProperties, [$this, '__get']);
 
         return $allProperties;
     }
@@ -194,7 +232,7 @@ abstract class Model implements Contract
      */
     public function asChangedArray(): array
     {
-        return $this->__getChangedProperties($this->asArray());
+        return $this->internalGetChangedProperties($this->asArray());
     }
 
     /**
@@ -202,7 +240,7 @@ abstract class Model implements Contract
      */
     public function getOriginalPropertyValue(string $name): mixed
     {
-        return $this->__originalProperties[$name] ?? null;
+        return $this->internalOriginalProperties[$name] ?? null;
     }
 
     /**
@@ -210,7 +248,7 @@ abstract class Model implements Contract
      */
     public function asOriginalArray(): array
     {
-        return $this->__originalProperties;
+        return $this->internalOriginalProperties;
     }
 
     /**
@@ -218,10 +256,10 @@ abstract class Model implements Contract
      */
     public function jsonSerialize(): array
     {
-        $allProperties = $this->__allProperties();
+        $allProperties = $this->internalGetAllProperties();
 
-        $this->__removeInternalProperties($allProperties);
-        $this->__setPropertyValues($allProperties, '__getJsonPropertyValue');
+        $this->internalRemoveInternalProperties($allProperties);
+        $this->internalSetPropertyValues($allProperties, [$this, 'internalGetJsonPropertyValue']);
 
         return $allProperties;
     }
@@ -241,17 +279,17 @@ abstract class Model implements Contract
      */
     public function __clone()
     {
-        $this->__originalPropertiesSet();
+        $this->internalOriginalPropertiesSet();
     }
 
     /**
      * Set properties from an array of properties.
      *
-     * @param array $properties The properties to set
+     * @param array<string, mixed> $properties The properties to set
      *
      * @return void
      */
-    protected function __setProperties(array $properties): void
+    protected function internalSetProperties(array $properties): void
     {
         // Iterate through the properties
         foreach ($properties as $property => $value) {
@@ -261,7 +299,7 @@ abstract class Model implements Contract
             }
         }
 
-        $this->__originalPropertiesSet();
+        $this->internalOriginalPropertiesSet();
     }
 
     /**
@@ -269,9 +307,9 @@ abstract class Model implements Contract
      *
      * @return void
      */
-    protected function __originalPropertiesSet(): void
+    protected function internalOriginalPropertiesSet(): void
     {
-        $this->__originalPropertiesSet = true;
+        $this->internalOriginalPropertiesSet = true;
     }
 
     /**
@@ -282,7 +320,7 @@ abstract class Model implements Contract
      *
      * @return string
      */
-    protected function __getPropertyTypeMethodName(string $property, string $type): string
+    protected function internalGetPropertyTypeMethodName(string $property, string $type): string
     {
         return self::$cachedValidations[static::class . "$type$property"]
             ??= $type . StrCase::toStudlyCase($property);
@@ -295,7 +333,7 @@ abstract class Model implements Contract
      *
      * @return bool
      */
-    protected function __doesPropertyTypeMethodExist(string $methodName): bool
+    protected function internalDoesPropertyTypeMethodExist(string $methodName): bool
     {
         return self::$cachedExistsValidations[static::class . "exists$methodName"]
             ??= method_exists($this, $methodName);
@@ -309,47 +347,48 @@ abstract class Model implements Contract
      *
      * @return void
      */
-    protected function __setOriginalProperty(string $name, mixed $value): void
+    protected function internalSetOriginalProperty(string $name, mixed $value): void
     {
-        if (! $this->__originalPropertiesSet && static::shouldSetOriginalProperties()) {
-            $this->__originalProperties[$name] ??= $value;
+        if (! $this->internalOriginalPropertiesSet && static::shouldSetOriginalProperties()) {
+            $this->internalOriginalProperties[$name] ??= $value;
         }
     }
 
     /**
      * Get all properties.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    protected function __allProperties(): array
+    protected function internalGetAllProperties(): array
     {
+        /** @var array<string, mixed> */
         return get_object_vars($this);
     }
 
     /**
      * Remove internal model properties from an array of properties.
      *
-     * @param array $properties The properties
+     * @param array<string, mixed> $properties The properties
      *
      * @return void
      */
-    protected function __removeInternalProperties(array &$properties): void
+    protected function internalRemoveInternalProperties(array &$properties): void
     {
-        unset($properties['__originalProperties'], $properties['__originalPropertiesSet']);
+        unset($properties['internalOriginalProperties'], $properties['internalOriginalPropertiesSet']);
     }
 
     /**
      * Check if an array of all properties should be filtered by another list of properties.
      *
-     * @param array $properties     The properties
-     * @param array $onlyProperties A list of properties to return
+     * @param array<string, mixed> $properties     The properties
+     * @param string[]             $onlyProperties A list of properties to return
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    protected function __checkOnlyProperties(array $properties, array $onlyProperties): array
+    protected function internalCheckOnlyProperties(array $properties, array $onlyProperties): array
     {
         if (! empty($onlyProperties)) {
-            return $this->__onlyProperties($properties, $onlyProperties);
+            return $this->internalOnlyProperties($properties, $onlyProperties);
         }
 
         return $properties;
@@ -358,12 +397,12 @@ abstract class Model implements Contract
     /**
      * Get an array subset of properties to return from a given list out of the returnable properties.
      *
-     * @param array $allProperties All the properties returnable
-     * @param array $properties    The properties we wish to return
+     * @param array<string, mixed> $allProperties All the properties returnable
+     * @param string[]             $properties    The properties we wish to return
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    protected function __onlyProperties(array $allProperties, array $properties): array
+    protected function internalOnlyProperties(array $allProperties, array $properties): array
     {
         $onlyProperties = [];
 
@@ -383,15 +422,16 @@ abstract class Model implements Contract
     /**
      * Get the changed properties given an array of properties.
      *
-     * @param array $properties The properties to check the original properties against
+     * @param array<string, mixed> $properties The properties to check the original properties against
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    protected function __getChangedProperties(array $properties): array
+    protected function internalGetChangedProperties(array $properties): array
     {
         // The original properties set on the model
-        $originalProperties = $this->__originalProperties;
+        $originalProperties = $this->internalOriginalProperties;
         // The changed properties
+        /** @var array<string, mixed> $changed */
         $changed = [];
 
         // Iterate through the model's properties
@@ -410,15 +450,15 @@ abstract class Model implements Contract
     /**
      * Set property values.
      *
-     * @param array  $properties The properties
-     * @param string $method     The method name
+     * @param array<string, mixed> $properties The properties
+     * @param callable             $callable   The callable
      *
      * @return void
      */
-    protected function __setPropertyValues(array &$properties, string $method): void
+    protected function internalSetPropertyValues(array &$properties, callable $callable): void
     {
         foreach ($properties as $property => $value) {
-            $properties[$property] = $this->$method($property);
+            $properties[$property] = $callable($property);
         }
     }
 
@@ -429,7 +469,7 @@ abstract class Model implements Contract
      *
      * @return mixed
      */
-    protected function __getJsonPropertyValue(string $property): mixed
+    protected function internalGetJsonPropertyValue(string $property): mixed
     {
         return $this->__get($property);
     }

@@ -9,6 +9,7 @@
 >
     <projectFiles>
         <directory name="src" />
+        <!--<directory name="tests" />-->
 
         <ignoreFiles>
             <directory name="vendor" />
@@ -28,6 +29,7 @@
         <ReservedWord errorLevel="suppress" />
 
         <!-- As a framework things have to be dynamic -->
+        <DuplicateClass errorLevel="suppress" />
         <InvalidClassConstantType errorLevel="suppress" />
         <InvalidStringClass errorLevel="suppress" />
         <MixedArgument errorLevel="suppress" />

@@ -34,6 +34,7 @@ final class ConfigValue
         PathPattern::ALPHA_NUM_UNDERSCORE => '(\w+)',
     ];
 
+    /** @var array<string, mixed> */
     public static array $defaults = [
         CKP::PATTERNS => self::PATTERNS,
     ];

@@ -16,8 +16,8 @@ namespace Valkyrja\Routing\Models;
 use InvalidArgumentException;
 use Valkyrja\Dispatcher\Models\Dispatch;
 use Valkyrja\Http\Constants\RequestMethod;
+use Valkyrja\Model\Data\Cast;
 use Valkyrja\Routing\Constants\Regex;
-use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Message;
 use Valkyrja\Routing\Route as Contract;
 
@@ -72,7 +72,7 @@ class Route extends Dispatch implements Contract
     /**
      * The dynamic parameters.
      *
-     * @var Parameter[]
+     * @var array<int, Parameter>
      */
     protected array $parameters;
 
@@ -172,6 +172,10 @@ class Route extends Dispatch implements Contract
      */
     public function setTo(string|null $to = null): static
     {
+        if ($to === null && ! isset($this->to)) {
+            return $this;
+        }
+
         $this->redirect = $to !== null;
 
         $this->to = $to;
@@ -192,6 +196,10 @@ class Route extends Dispatch implements Contract
      */
     public function setCode(int|null $code = null): static
     {
+        if ($code === null && ! isset($this->code)) {
+            return $this;
+        }
+
         $this->code = $code;
 
         return $this;
@@ -233,6 +241,10 @@ class Route extends Dispatch implements Contract
      */
     public function setRegex(string|null $regex = null): static
     {
+        if ($regex === null && ! isset($this->regex)) {
+            return $this;
+        }
+
         $this->regex = $regex;
 
         return $this;
@@ -251,13 +263,17 @@ class Route extends Dispatch implements Contract
      */
     public function setParameters(array $parameters): static
     {
+        // If this is an array of arrays vs an array of Parameter models
         if (is_array($parameters[0] ?? null)) {
             foreach ($parameters as $key => $parameter) {
                 if (is_array($parameter)) {
+                    // Convert each array to a Parameter model
                     $parameters[$key] = Parameter::fromArray($parameter);
                 }
             }
         }
+
+        /** @var Parameter[] $parameters */
 
         $this->__setParameters(...$parameters);
 
@@ -280,29 +296,21 @@ class Route extends Dispatch implements Contract
      * @inheritDoc
      */
     public function addParameter(
-        string $name,
+        string      $name,
         string|null $regex = null,
-        CastType|null $type = null,
-        string|null $entity = null,
-        string|null $entityColumn = null,
-        array|null $entityRelationships = null,
-        string|null $enum = null,
-        bool $isOptional = false,
-        bool $shouldCapture = true,
-        mixed $default = null
+        Cast|null   $cast = null,
+        bool        $isOptional = false,
+        bool        $shouldCapture = true,
+        mixed       $default = null
     ): static {
         return $this->setParameter(
             new Parameter(
-                name               : $name,
-                regex              : $regex ?? Regex::ANY,
-                type               : $type,
-                entity             : $entity,
-                entityColumn       : $entityColumn,
-                entityRelationships: $entityRelationships,
-                enum               : $enum,
-                isOptional         : $isOptional,
-                shouldCapture      : $shouldCapture,
-                default            : $default
+                name:          $name,
+                regex:         $regex ?? Regex::ANY,
+                cast:          $cast,
+                isOptional:    $isOptional,
+                shouldCapture: $shouldCapture,
+                default:       $default
             )
         );
     }
@@ -320,6 +328,10 @@ class Route extends Dispatch implements Contract
      */
     public function setMiddleware(array|null $middleware = null): static
     {
+        if ($middleware === null && ! isset($this->middleware)) {
+            return $this;
+        }
+
         $this->middleware = $middleware;
 
         return $this;
@@ -350,6 +362,10 @@ class Route extends Dispatch implements Contract
      */
     public function setMessages(array|null $messages = null): static
     {
+        if ($messages === null && ! isset($this->messages)) {
+            return $this;
+        }
+
         $this->__setMessages(...$messages);
 
         return $this;
@@ -432,7 +448,7 @@ class Route extends Dispatch implements Contract
     /**
      * Set the parameters.
      *
-     * @param Parameter[] $parameters The parameters
+     * @param array<int, Parameter> $parameters The parameters
      *
      * @return void
      */

@@ -29,6 +29,7 @@ use Valkyrja\Type\Exceptions\InvalidVlidException;
  */
 class Vlid extends Ulid
 {
+    /** @var string */
     public const REGEX = '[0-7]'
     . '[' . self::VALID_CHARACTERS . ']{12}'
     . '[1-4]'
@@ -40,9 +41,17 @@ class Vlid extends Ulid
     /** @var VlidVersion */
     public const VERSION = VlidVersion::V1;
 
+    /** @var string */
     protected const FORMAT = '%013s%01s%04s%04s%04s';
 
+    /** @var int */
     protected const MAX_RANDOM_BYTES = 3;
+
+    /** @var string */
+    protected static string $time = '';
+
+    /** @var array */
+    protected static array $randomBytes = [];
 
     /**
      * Generate a VLID v1.

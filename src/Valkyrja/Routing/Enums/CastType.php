@@ -14,6 +14,19 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Enums;
 
 use JsonSerializable;
+use Valkyrja\Type\Types\ArrayT;
+use Valkyrja\Type\Types\BoolT;
+use Valkyrja\Type\Types\DoubleT;
+use Valkyrja\Type\Types\FalseT;
+use Valkyrja\Type\Types\FloatT;
+use Valkyrja\Type\Types\IntT;
+use Valkyrja\Type\Types\JsonObject;
+use Valkyrja\Type\Types\Json;
+use Valkyrja\Type\Types\NullT;
+use Valkyrja\Type\Types\ObjectT;
+use Valkyrja\Type\Types\SerializedObject;
+use Valkyrja\Type\Types\StringT;
+use Valkyrja\Type\Types\TrueT;
 
 /**
  * Enum CastType.
@@ -22,12 +35,19 @@ use JsonSerializable;
  */
 enum CastType: string implements JsonSerializable
 {
-    case string = 'string';
-    case int    = 'int';
-    case float  = 'float';
-    case bool   = 'bool';
-    case enum   = 'enum';
-    case entity = 'entity';
+    case string            = StringT::class;
+    case int               = IntT::class;
+    case float             = FloatT::class;
+    case double            = DoubleT::class;
+    case bool              = BoolT::class;
+    case array             = ArrayT::class;
+    case object            = ObjectT::class;
+    case serialized_object = SerializedObject::class;
+    case json              = Json::class;
+    case json_object       = JsonObject::class;
+    case true              = TrueT::class;
+    case false             = FalseT::class;
+    case null              = NullT::class;
 
     /**
      * @inheritDoc

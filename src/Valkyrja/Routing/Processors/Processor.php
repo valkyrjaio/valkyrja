@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Processors;
 
-use BackedEnum;
 use InvalidArgumentException;
 use Valkyrja\Dispatcher\Validator;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Routing\Constants\Regex;
-use Valkyrja\Routing\Enums\CastType;
+use Valkyrja\Routing\Data\EntityCast;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Processor as Contract;
@@ -115,7 +114,6 @@ class Processor implements Contract
         foreach ($route->getParameters() as $parameter) {
             // Validate the parameter
             $this->processParameterEntity($route, $parameter);
-            $this->processParameterEnum($parameter);
             $this->processParameterInRegex($parameter, $regex);
 
             $regex = $this->replaceParameterNameInRegex($route, $parameter, $regex);
@@ -139,14 +137,17 @@ class Processor implements Contract
      */
     protected function processParameterEntity(Route $route, Parameter $parameter): void
     {
-        $entity = $parameter->getEntity();
+        $cast   = $parameter->getCast();
+        $entity = $cast->type ?? null;
 
-        if ($entity !== null) {
-            assert(is_a($entity, Entity::class, true));
-
+        if ($entity !== null && is_a($entity, Entity::class, true)) {
             $this->removeEntityFromDependencies($route, $entity);
 
-            $entityColumn = $parameter->getEntityColumn();
+            if (! $cast instanceof EntityCast) {
+                return;
+            }
+
+            $entityColumn = $cast->column;
 
             if ($entityColumn !== null) {
                 assert(property_exists($entity, $entityColumn));
@@ -179,27 +180,6 @@ class Processor implements Contract
         }
 
         $route->setDependencies($updatedDependencies);
-    }
-
-    /**
-     * Validate the parameter enum.
-     *
-     * @param Parameter $parameter The parameter
-     *
-     * @return void
-     */
-    protected function processParameterEnum(Parameter $parameter): void
-    {
-        $enum = $parameter->getEnum();
-
-        if ($enum !== null) {
-            assert(is_a($enum, BackedEnum::class, true));
-
-            // Set the regex to the enum cases
-            $parameter->setRegex(implode('|', array_column($enum::cases(), 'value')));
-            // Ensure the type case was set properly
-            $parameter->setType(CastType::enum);
-        }
     }
 
     /**

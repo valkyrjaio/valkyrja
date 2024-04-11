@@ -14,46 +14,38 @@ declare(strict_types=1);
 namespace Valkyrja\Type;
 
 use Closure;
+use JsonSerializable;
 
 /**
  * Interface Type.
  *
  * @author Melech Mizrachi
+ *
+ * @template T
  */
-interface Type
+interface Type extends JsonSerializable
 {
     /**
-     * Get the value.
+     * Get a new Type given a value.
      */
-    public function get(): mixed;
+    public static function fromValue(mixed $value): static;
+
+    /**
+     * Get the value.
+     *
+     * @return T
+     */
+    public function asValue(): mixed;
+
+    /**
+     * Get the flattened value.
+     */
+    public function asFlatValue(): string|int|float|bool|null;
 
     /**
      * Modify the subject and return a new instance to maintain immutability.
+     *
+     * @param Closure(T): T $closure The closure
      */
     public function modify(Closure $closure): static;
-
-    /**
-     * Get the type as an array.
-     */
-    public function asArray(): array;
-
-    /**
-     * Get the type as a bool.
-     */
-    public function asBool(): bool;
-
-    /**
-     * Get the type as an int.
-     */
-    public function asInt(): int;
-
-    /**
-     * Get the type as a string.
-     */
-    public function asString(): string;
-
-    /**
-     * Get the type as a string.
-     */
-    public function __toString(): string;
 }

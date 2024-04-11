@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Models;
 
 use Valkyrja\Auth\AuthenticatedUsers as Contract;
+use Valkyrja\Auth\Entities\User as UserClass;
 use Valkyrja\Auth\User;
-use Valkyrja\Model\Enums\CastType;
+use Valkyrja\Model\Data\ArrayCast;
 use Valkyrja\Model\Models\CastableModel;
 
 /**
@@ -27,15 +28,6 @@ use Valkyrja\Model\Models\CastableModel;
  */
 class AuthenticatedUsers extends CastableModel implements Contract
 {
-    /**
-     * @inheritDoc
-     *
-     * @var array<string, CastType|array{0:CastType, 1:class-string|array{0:class-string}}>
-     */
-    protected static array $castings = [
-        'users' => [CastType::model, [\Valkyrja\Auth\Entities\User::class]],
-    ];
-
     /**
      * The current user's id.
      *
@@ -49,6 +41,13 @@ class AuthenticatedUsers extends CastableModel implements Contract
      * @var array<int|string, User>
      */
     protected array $users = [];
+
+    public static function getCastings(): array
+    {
+        return [
+            'users' => new ArrayCast(UserClass::class),
+        ];
+    }
 
     /**
      * @inheritDoc

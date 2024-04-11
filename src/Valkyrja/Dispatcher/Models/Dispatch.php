@@ -182,6 +182,10 @@ class Dispatch extends Model implements Contract
      */
     public function setId(string|null $id = null): static
     {
+        if ($id === null && ! isset($this->id)) {
+            return $this;
+        }
+
         $this->id = $id;
 
         return $this;
@@ -200,6 +204,10 @@ class Dispatch extends Model implements Contract
      */
     public function setName(string|null $name = null): static
     {
+        if ($name === null && ! isset($this->name)) {
+            return $this;
+        }
+
         $this->name = $name;
 
         return $this;
@@ -218,6 +226,10 @@ class Dispatch extends Model implements Contract
      */
     public function setClass(string|null $class = null): static
     {
+        if ($class === null && ! isset($this->class)) {
+            return $this;
+        }
+
         $this->class   = $class;
         $this->isClass = $class !== null;
 
@@ -245,6 +257,10 @@ class Dispatch extends Model implements Contract
      */
     public function setProperty(string|null $property = null): static
     {
+        if ($property === null && ! isset($this->property)) {
+            return $this;
+        }
+
         $this->property   = $property;
         $this->isProperty = $property !== null;
 
@@ -272,6 +288,10 @@ class Dispatch extends Model implements Contract
      */
     public function setMethod(string|null $method = null): static
     {
+        if ($method === null && ! isset($this->method)) {
+            return $this;
+        }
+
         $this->method   = $method;
         $this->isMethod = $method !== null;
 
@@ -317,6 +337,10 @@ class Dispatch extends Model implements Contract
      */
     public function setFunction(string|null $function = null): static
     {
+        if ($function === null && ! isset($this->function)) {
+            return $this;
+        }
+
         $this->function   = $function;
         $this->isFunction = $function !== null;
 
@@ -344,6 +368,10 @@ class Dispatch extends Model implements Contract
      */
     public function setClosure(Closure|null $closure = null): static
     {
+        if ($closure === null && ! isset($this->closure)) {
+            return $this;
+        }
+
         $this->closure   = $closure;
         $this->isClosure = $closure !== null;
 
@@ -371,6 +399,10 @@ class Dispatch extends Model implements Contract
      */
     public function setConstant(string|null $constant = null): static
     {
+        if ($constant === null && ! isset($this->constant)) {
+            return $this;
+        }
+
         $this->constant   = $constant;
         $this->isConstant = $constant !== null;
 
@@ -398,6 +430,10 @@ class Dispatch extends Model implements Contract
      */
     public function setVariable(string|null $variable = null): static
     {
+        if ($variable === null && ! isset($this->variable)) {
+            return $this;
+        }
+
         $this->variable   = $variable;
         $this->isVariable = $variable !== null;
 
@@ -425,6 +461,10 @@ class Dispatch extends Model implements Contract
      */
     public function setMatches(array|null $matches = null): static
     {
+        if ($matches === null && ! isset($this->matches)) {
+            return $this;
+        }
+
         $this->matches = $matches;
 
         return $this;
@@ -443,6 +483,10 @@ class Dispatch extends Model implements Contract
      */
     public function setArguments(array|null $arguments = null): static
     {
+        if ($arguments === null && ! isset($this->arguments)) {
+            return $this;
+        }
+
         $this->arguments = $arguments;
 
         return $this;
@@ -461,6 +505,10 @@ class Dispatch extends Model implements Contract
      */
     public function setDependencies(array|null $dependencies = null): static
     {
+        if ($dependencies === null && ! isset($this->dependencies)) {
+            return $this;
+        }
+
         $this->dependencies = $dependencies;
 
         return $this;
@@ -469,10 +517,15 @@ class Dispatch extends Model implements Contract
     /**
      * @inheritDoc
      */
-    protected function __removeInternalProperties(array &$properties): void
+    protected function internalRemoveInternalProperties(array &$properties): void
     {
-        parent::__removeInternalProperties($properties);
+        parent::internalRemoveInternalProperties($properties);
 
+        // Removing arguments because they are specific to the current dispatch call,
+        // and different arguments might be used for different calls.
+        // Removing closure because that cannot be cached properly
+        // Removing matches as that is specific to the current call,
+        // and different matches might be used for different calls.
         unset($properties['arguments'], $properties['closure'], $properties['matches']);
     }
 }

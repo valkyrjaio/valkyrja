@@ -28,6 +28,14 @@ use const JSON_THROW_ON_ERROR;
  */
 class ModelTest extends TestCase
 {
+    public function testClone(): void
+    {
+        $test = new Model();
+        $test2 = clone $test;
+
+        self::assertNotSame($test2, $test);
+    }
+
     public function testHas(): void
     {
         $model = new Model();

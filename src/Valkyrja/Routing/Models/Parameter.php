@@ -13,14 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Models;
 
-use BackedEnum;
+use Valkyrja\Model\Data\Cast;
 use Valkyrja\Model\Models\Model;
-use Valkyrja\Orm\Entity;
 use Valkyrja\Routing\Constants\Regex;
-use Valkyrja\Routing\Enums\CastType;
-
-use function assert;
-use function is_string;
+use Valkyrja\Routing\Data\EntityCast;
 
 /**
  * Class Parameter.
@@ -37,33 +33,21 @@ class Parameter extends Model
     /**
      * Parameter constructor.
      *
-     * @param string                        $name                The name
-     * @param string                        $regex               The regex
-     * @param CastType|null                 $type                [optional] The cast type
-     * @param class-string<Entity>|null     $entity              [optional] The entity class name
-     * @param string|null                   $entityColumn        [optional] The entity column
-     * @param array|null                    $entityRelationships [optional] The entity relationships to get
-     * @param class-string<BackedEnum>|null $enum                [optional] The enum type
-     * @param bool                          $isOptional          [optional] Whether this parameter is optional
-     * @param bool                          $shouldCapture       [optional] Whether this parameter should be captured
-     * @param mixed                         $default             [optional] The default value for this parameter
+     * @param string    $name          The name
+     * @param string    $regex         The regex
+     * @param Cast|null $cast          [optional] The casting if any
+     * @param bool      $isOptional    [optional] Whether this parameter is optional
+     * @param bool      $shouldCapture [optional] Whether this parameter should be captured
+     * @param mixed     $default       [optional] The default value for this parameter
      */
     public function __construct(
         protected string $name = '',
         protected string $regex = Regex::ANY,
-        protected CastType|null $type = null,
-        protected string|null $entity = null,
-        protected string|null $entityColumn = null,
-        protected array|null $entityRelationships = null,
-        protected string|null $enum = null,
+        protected Cast|null $cast = null,
         protected bool $isOptional = false,
         protected bool $shouldCapture = true,
         protected mixed $default = null,
     ) {
-        $this->setEntity($entity);
-        $this->setEntityColumn($entityColumn);
-        $this->setEntityRelationships($entityRelationships);
-        $this->setEnum($enum);
     }
 
     /**
@@ -115,127 +99,47 @@ class Parameter extends Model
     }
 
     /**
-     * Get the type.
+     * Get the cast.
      *
-     * @return CastType|null
+     * @return Cast|null
      */
-    public function getType(): CastType|null
+    public function getCast(): ?Cast
     {
-        return $this->type;
+        return $this->cast;
     }
 
     /**
-     * Set the type.
+     * Set the cast.
      *
-     * @param CastType|string|null $type The type
+     * @param Cast|array|null $cast The cast
      *
      * @return static
      */
-    public function setType(CastType|string|null $type = null): static
+    public function setCast(Cast|array|null $cast = null): static
     {
-        $this->type = is_string($type)
-            ? CastType::from($type)
-            : $type;
+        if (is_array($cast)) {
+            $type          = $cast['type'];
+            $isArray       = $cast['isArray'] ?? false;
+            $convert       = $cast['convert'] ?? true;
+            $column        = $cast['column'] ?? null;
+            $relationships = $cast['relationships'] ?? null;
 
-        return $this;
-    }
-
-    /**
-     * Get the entity class.
-     *
-     * @return class-string<Entity>|null
-     */
-    public function getEntity(): string|null
-    {
-        return $this->entity;
-    }
-
-    /**
-     * Set the entity class name.
-     *
-     * @param class-string<Entity>|null $entity The entity class name
-     *
-     * @return static
-     */
-    public function setEntity(string|null $entity = null): static
-    {
-        $this->entity = $entity;
-
-        return $this;
-    }
-
-    /**
-     * Get the entity column associated with the parameter value.
-     *
-     * @return string|null
-     */
-    public function getEntityColumn(): string|null
-    {
-        return $this->entityColumn;
-    }
-
-    /**
-     * Set the entity column associated with the parameter value.
-     *
-     * @param string|null $entityColumn The entity column associated with the parameter value
-     *
-     * @return static
-     */
-    public function setEntityColumn(string|null $entityColumn = null): static
-    {
-        $this->entityColumn = $entityColumn;
-
-        return $this;
-    }
-
-    /**
-     * Get the entity relationships.
-     *
-     * @return string[]|null
-     */
-    public function getEntityRelationships(): array|null
-    {
-        return $this->entityRelationships;
-    }
-
-    /**
-     * Set the entity relationships.
-     *
-     * @param string[]|null $entityRelationships The entity relationships
-     *
-     * @return static
-     */
-    public function setEntityRelationships(array|null $entityRelationships = null): static
-    {
-        $this->entityRelationships = $entityRelationships;
-
-        return $this;
-    }
-
-    /**
-     * Get the enum class name.
-     *
-     * @return class-string<BackedEnum>|null
-     */
-    public function getEnum(): string|null
-    {
-        return $this->enum;
-    }
-
-    /**
-     * Set the enum class name.
-     *
-     * @param class-string<BackedEnum>|null $enum The enum class name
-     *
-     * @return static
-     */
-    public function setEnum(string|null $enum = null): static
-    {
-        if ($enum !== null) {
-            assert(is_a($enum, BackedEnum::class, true));
+            $cast = ($column !== null)
+                ? new EntityCast(
+                                   $type,
+                    column       : $column,
+                    relationships: $relationships,
+                    convert      : $convert,
+                    isArray      : $isArray
+                )
+                : new Cast(
+                    $type,
+                    $convert,
+                    $isArray
+                );
         }
 
-        $this->enum = $enum;
+        $this->cast = $cast;
 
         return $this;
     }
@@ -301,9 +205,11 @@ class Parameter extends Model
     /**
      * Set the default value.
      *
-     * @return mixed
+     * @param mixed $default The default value
+     *
+     * @return static
      */
-    public function setDefault(mixed $default): static
+    public function setDefault(mixed $default = null): static
     {
         $this->default = $default;
 

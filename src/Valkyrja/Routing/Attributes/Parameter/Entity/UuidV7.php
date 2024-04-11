@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Attributes\Parameter\Entity;
 
 use Attribute;
-use Valkyrja\Orm\Entity;
 use Valkyrja\Routing\Attributes\Parameter\UuidV7 as Parameter;
-use Valkyrja\Routing\Enums\CastType;
+use Valkyrja\Routing\Data\EntityCast;
 
 /**
  * Attribute UuidV7.
@@ -26,27 +25,19 @@ use Valkyrja\Routing\Enums\CastType;
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class UuidV7 extends Parameter
 {
-    /**
-     * @param class-string<Entity>|null $entity
-     */
     public function __construct(
-        string|null $entity = null,
-        string|null $entityColumn = null,
-        array|null $entityRelationships = null,
+        EntityCast|null $cast = null,
         string|null $name = null,
         bool $isOptional = false,
         bool $shouldCapture = true,
         mixed $default = null,
     ) {
         parent::__construct(
-            name               : $name,
-            type               : CastType::entity,
-            entity             : $entity,
-            entityColumn       : $entityColumn,
-            entityRelationships: $entityRelationships,
-            isOptional         : $isOptional,
-            shouldCapture      : $shouldCapture,
-            default            : $default,
+            name         : $name,
+            cast         : $cast,
+            isOptional   : $isOptional,
+            shouldCapture: $shouldCapture,
+            default      : $default,
         );
     }
 }

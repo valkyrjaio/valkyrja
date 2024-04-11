@@ -19,6 +19,7 @@ use Valkyrja\Orm\Entity;
 use Valkyrja\Orm\Orm;
 use Valkyrja\Orm\RelationshipRepository;
 use Valkyrja\Orm\Repository;
+use Valkyrja\Routing\Data\EntityCast;
 use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Abort;
@@ -108,11 +109,10 @@ class EntityMiddleware extends Middleware
      */
     protected static function checkParameterForEntity(int $index, Parameter $parameter, array &$dependencies, array &$matches): void
     {
-        if (($entityName = $parameter->getEntity()) === null) {
-            return;
+        if (is_a($entityName = $parameter->getCast()->type ?? null, Entity::class, true)) {
+            static::findAndSetEntityFromParameter($index, $parameter, $entityName, $dependencies, $matches[$index]);
         }
 
-        static::findAndSetEntityFromParameter($index, $parameter, $entityName, $dependencies, $matches[$index]);
     }
 
     /**
@@ -163,11 +163,18 @@ class EntityMiddleware extends Middleware
      */
     protected static function findEntityFromParameter(Parameter $parameter, string $entityName, mixed $value): Entity|null
     {
+        $cast          = $parameter->getCast();
         $orm           = static::getOrmRepository($entityName);
-        $relationships = $parameter->getEntityRelationships() ?? [];
+        $field         = null;
+        $relationships = [];
+
+        if ($cast instanceof EntityCast) {
+            $relationships = $cast->relationships ?? [];
+            $field         = $cast->column;
+        }
 
         // If there is a field specified to use
-        if (($field = $parameter->getEntityColumn()) !== null && $field !== '') {
+        if ($field !== null && $field !== '') {
             $find = $orm->find()->where($field, null, $value);
 
             if (is_a($find, RelationshipRepository::class)) {

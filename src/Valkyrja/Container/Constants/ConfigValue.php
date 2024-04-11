@@ -60,6 +60,7 @@ final class ConfigValue
     public const CACHE_FILE_PATH  = '';
     public const USE_CACHE_FILE   = false;
 
+    /** @var array<string, mixed> */
     public static array $defaults = [
         CKP::ALIASES          => self::ALIASES,
         CKP::SERVICES         => self::SERVICES,

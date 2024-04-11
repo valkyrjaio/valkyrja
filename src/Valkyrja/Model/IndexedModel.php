@@ -30,32 +30,32 @@ interface IndexedModel extends Model
      *  ]
      * </code>
      *
-     * @return array
+     * @return array<string, int>
      */
     public static function getIndexes(): array;
 
     /**
      * Get a mapped array from a given indexed array of properties.
      *
-     * @param array $properties The properties
+     * @param array<int, mixed> $properties The properties
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public static function getMappedArrayFromIndexedArray(array $properties = []): array;
 
     /**
      * Get an indexed array from a given mapped array of properties.
      *
-     * @param array $properties The properties
+     * @param array<string, mixed> $properties The properties
      *
-     * @return array
+     * @return array<int, mixed>
      */
     public static function getIndexedArrayFromMappedArray(array $properties = []): array;
 
     /**
      * Set properties from an array of properties.
      *
-     * @param array $properties The properties
+     * @param array<int, mixed> $properties The properties
      *
      * @return static
      */
@@ -64,7 +64,7 @@ interface IndexedModel extends Model
     /**
      * Set properties from an array of properties.
      *
-     * @param array $properties The properties
+     * @param array<int, mixed> $properties The properties
      *
      * @return void
      */
@@ -73,7 +73,7 @@ interface IndexedModel extends Model
     /**
      * Get a new model with new properties.
      *
-     * @param array $properties The properties to modify
+     * @param array<int, mixed> $properties The properties to modify
      *
      * @return static
      */
@@ -84,21 +84,21 @@ interface IndexedModel extends Model
      *
      * @param string ...$properties [optional] An array of properties to return
      *
-     * @return array
+     * @return array<int, mixed>
      */
     public function asIndexedArray(string ...$properties): array;
 
     /**
      * Get model as an array including only changed properties.
      *
-     * @return array
+     * @return array<int, mixed>
      */
     public function asChangedIndexedArray(): array;
 
     /**
      * Get all original properties.
      *
-     * @return array
+     * @return array<int, mixed>
      */
     public function asOriginalIndexedArray(): array;
 }

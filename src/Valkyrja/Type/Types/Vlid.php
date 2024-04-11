@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Types;
 
+use Exception;
 use Valkyrja\Type\Support\Vlid as Helper;
 use Valkyrja\Type\Vlid as Contract;
 
@@ -20,9 +21,14 @@ use Valkyrja\Type\Vlid as Contract;
  * Class Vlid.
  *
  * @author Melech Mizrachi
+ *
+ * @extends Type<string>
  */
 class Vlid extends Type implements Contract
 {
+    /**
+     * @throws Exception
+     */
     public function __construct(string|null $subject = null)
     {
         if ($subject !== null) {
@@ -35,8 +41,16 @@ class Vlid extends Type implements Contract
     /**
      * @inheritDoc
      */
-    public function get(): string
+    public function asValue(): string
     {
-        return parent::get();
+        return $this->subject;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function asFlatValue(): string
+    {
+        return $this->asValue();
     }
 }

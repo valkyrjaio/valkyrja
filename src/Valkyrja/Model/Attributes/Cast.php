@@ -14,18 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Model\Attributes;
 
 use Attribute;
-use Valkyrja\Model\Enums\CastType;
+use Valkyrja\Model\Data\Cast as Data;
 
 /**
  * Attribute Cast.
  *
  * @author Melech Mizrachi
  */
-#[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
-class Cast
+#[Attribute(Attribute::TARGET_PROPERTY)]
+class Cast extends Data
 {
-    public function __construct(
-        public CastType|string|array $type,
-    ) {
-    }
 }

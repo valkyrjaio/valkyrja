@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Enums;
 
-use Valkyrja\Type\Types\Enum;
-
 /**
  * Enum ExitCode.
  *
@@ -24,7 +22,7 @@ use Valkyrja\Type\Types\Enum;
  * @method static ExitCode FAILURE()
  * @method static ExitCode AUTO_EXIT()
  */
-final class ExitCode extends Enum
+final class ExitCode
 {
     public const SUCCESS   = 0;
     public const FAILURE   = 1;

@@ -535,6 +535,8 @@ class Formatter implements Contract
 
     /**
      * Get the issues full text formatted.
+     *
+     * @param string[] $issues The issues
      */
     protected function getIssues(array $issues): string
     {

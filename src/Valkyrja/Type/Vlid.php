@@ -17,11 +17,18 @@ namespace Valkyrja\Type;
  * Interface Vlid.
  *
  * @author Melech Mizrachi
+ *
+ * @extends Type<string>
  */
 interface Vlid extends Type
 {
     /**
      * @inheritDoc
      */
-    public function get(): string;
+    public function asValue(): string;
+
+    /**
+     * @inheritDoc
+     */
+    public function asFlatValue(): string;
 }

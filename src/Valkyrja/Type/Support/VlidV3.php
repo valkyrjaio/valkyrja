@@ -27,16 +27,26 @@ use Valkyrja\Type\Exceptions\InvalidVlidV3Exception;
  */
 class VlidV3 extends Vlid
 {
+    /** @var string */
     public const REGEX = '[0-7]'
     . '[' . self::VALID_CHARACTERS . ']{12}'
     . '[3]'
     . '[' . self::VALID_CHARACTERS . ']{8}';
 
+    /** @var VlidVersion */
     public const VERSION = VlidVersion::V3;
 
+    /** @var string */
     protected const FORMAT = '%013s%01s%04s%04s';
 
+    /** @var int */
     protected const MAX_RANDOM_BYTES = 2;
+
+    /** @var string */
+    protected static string $time = '';
+
+    /** @var array */
+    protected static array $randomBytes = [];
 
     /**
      * @inheritDoc

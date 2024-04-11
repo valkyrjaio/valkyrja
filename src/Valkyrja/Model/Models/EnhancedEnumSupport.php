@@ -58,7 +58,7 @@ trait EnhancedEnumSupport
      *
      * @return mixed
      */
-    protected function __getJsonPropertyValue(string $property): mixed
+    protected function internalGetJsonPropertyValue(string $property): mixed
     {
         $value = $this->__get($property);
 

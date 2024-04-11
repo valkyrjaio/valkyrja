@@ -13,211 +13,87 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Types;
 
-use Exception;
-use InvalidArgumentException;
-use ReflectionClass;
-use RuntimeException;
-
-use function array_key_exists;
-use function constant;
-use function defined;
-use function in_array;
-use function is_array;
-use function is_object;
-use function sprintf;
+use BackedEnum;
+use Closure;
+use UnitEnum;
+use Valkyrja\Model\Exceptions\InvalidArgumentException;
+use Valkyrja\Model\Exceptions\RuntimeException;
 
 /**
- * Abstract Class Enum.
+ * Trait Enum.
  *
  * @author Melech Mizrachi
  */
-abstract class Enum
+trait Enum
 {
     /**
-     * The allowable enum values.
-     *
-     * @var array|null
+     * Get a new Type given a value.
      */
-    protected static array|null $VALUES = null;
-
-    /**
-     * The enum cache to avoid more than one reflection class per enum.
-     *
-     * @var array
-     */
-    protected static array $cache = [];
-
-    /**
-     * The value of this enum.
-     *
-     * @var string
-     */
-    protected string $value;
-
-    /**
-     * Enum constructor.
-     *
-     * @param mixed $value The value to set
-     *
-     * @throws InvalidArgumentException
-     */
-    public function __construct(mixed $value)
+    public static function fromValue(mixed $value): static
     {
-        $this->setValue($value);
-    }
-
-    /**
-     * Check if the set value on this enum is a valid value for the enum.
-     *
-     * @param mixed $value The value to check
-     *
-     * @return bool
-     */
-    public static function isValid(mixed $value): bool
-    {
-        if (is_array($value) || is_object($value)) {
-            return false;
+        if ($value instanceof static) {
+            return $value;
         }
 
-        // Get the valid values to compare with
-        $validValues = static::getValidValues();
+        /** @var class-string<UnitEnum>|class-string<BackedEnum> $class */
+        $class = static::class;
 
-        // If the value isset in the valid values array and the value matches
-        // the value to check
-        // ?? Why is this here ??
-        // As is known by all isset is faster than in_array. We want to
-        // capitalize on that with some enums by making the const VALUES
-        // array a key value pair of the value itself so that we've
-        // essentially got value => value for each item in the const VALUES
-        // array. This way we can take advantage of the quickness of isset over
-        // in_array. However, because not all enums may do this we need to
-        // ensure if the value isset as the key in the array that it also
-        // matches as the value of that item in the array, otherwise we'll
-        // get false positives where its a normal array of 0 => value, 1 =>
-        // value and we check for 0 being a valid value where it may very
-        // well not be valid at all.
-        if (isset($validValues[$value]) && $validValues[$value] === $value) {
-            return true;
+        // Need to check BackedEnum first because all Enums are UnitEnum
+        if (is_a($class, BackedEnum::class, true)) {
+            /** @var static $case Get Psalm working and understanding that the static is what gets returned here */
+            $case = $class::from($value);
+
+            return $case;
         }
 
-        return in_array($value, $validValues, true);
-    }
-
-    /**
-     * Get the valid values for this enum.
-     *
-     * @return array
-     */
-    public static function getValidValues(): array
-    {
-        // If the VALUES array has been populated
-        if (static::$VALUES !== null) {
-            // Use it as the developer took the time to define it
-            return static::$VALUES;
-        }
-
-        // Get the class name that was called
-        $className = static::class;
-
-        // If the called enum isn't yet cached
-        // and the values aren't already set (to avoid a reflection class)
-        if (! array_key_exists($className, self::$cache)) {
-            // Set the cache to avoid a reflection class creation on each new
-            // instance of the enum
-            self::$cache[$className] = static::reflectionValidValues();
-        }
-
-        return self::$cache[$className] ?? [];
-    }
-
-    /**
-     * Handle creating a new enum instance for a given value via static call.
-     *
-     * @param string $method The method to call
-     * @param array  $args   [optional] The argument
-     *
-     * @throws RuntimeException
-     *
-     * @return static
-     *
-     * @example `Enum::VALUE();` equivalent to `new Enum(Enum::VALUE);`
-     */
-    public static function __callStatic(string $method, array $args = []): static
-    {
-        return new static(constant('static::' . $method));
-    }
-
-    /**
-     * Get the reflection valid values.
-     *
-     * @return array
-     */
-    protected static function reflectionValidValues(): array
-    {
-        try {
-            // Get a reflection class of the enum
-            $values = (new ReflectionClass(static::class))->getConstants();
-        } // Catch any exceptions
-        catch (Exception) {
-            $values = [];
-        }
-
-        $validValues = [];
-
-        // Iterate through the values
-        foreach ($values as $key => $value) {
-            // If this value is defined in this abstract Enum (self)
-            if (defined(self::class . '::' . $key)) {
-                // Unset it from the list as its not a valid Enum value, but
-                // rather a value the Enum class needs (like self::VALUES)
-                unset($values[$key]);
-
-                continue;
+        // Fallback to iterating over all the cases and find a match
+        foreach ($class::cases() as $case) {
+            if ($case->name === $value) {
+                /** @var static $case Get Psalm working and understanding that the static is what gets returned here */
+                return $case;
             }
-
-            $validValues[$value] = $value;
         }
 
-        return $validValues;
+        throw new InvalidArgumentException("Invalid value `{$value}` provided for enum {$class}");
     }
 
     /**
-     * Get the enum value.
+     * @inheritDoc
      *
-     * @return mixed
+     * @psalm-suppress ImplementedReturnTypeMismatch The inherited return type 'static' for Valkyrja\Type\Type::asValue is different to the implemented return type for Valkyrja\Type\Types\Enum::asvalue 'Valkyrja\Enum&static'
      */
-    public function getValue(): mixed
+    public function asValue(): static
     {
-        return $this->value;
+        return $this;
     }
 
     /**
-     * Set the enum value.
-     *
-     * @param mixed $value The value to set
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function setValue(mixed $value): void
+    public function asFlatValue(): string|int
     {
-        // If the value is not valid
-        if (! static::isValid($value)) {
-            // Throw an exception
-            throw new InvalidArgumentException(sprintf('Invalid enumeration %s for Enum %s', $value, static::class));
+        // Need to check BackedEnum first because all Enums are UnitEnum
+        if ($this instanceof BackedEnum) {
+            return $this->value;
         }
 
-        $this->value = $value;
+        // Fallback to UnitEnum name property
+        return $this->name;
     }
 
     /**
-     * Get the value of the enum.
-     *
-     * @return string
+     * @inheritDoc
      */
-    public function __toString(): string
+    public function modify(Closure $closure): static
     {
-        return (string) $this->getValue();
+        throw new RuntimeException('Cannot modify an enum.');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize(): string|int
+    {
+        return $this->asFlatValue();
     }
 }

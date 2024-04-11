@@ -36,16 +36,21 @@ class Arr
      *
      * @param ArrayAccess|iterable $subject      The subject to search
      * @param string               $key          The dot notation to search for
-     * @param mixed|null           $defaultValue The default value
+     * @param mixed|null           $defaultValue [optional] The default value
+     * @param non-empty-string     $separator    [optional] The separator
      *
      * @return mixed
      */
-    public static function getValueDotNotation(ArrayAccess|iterable $subject, string $key, mixed $defaultValue = null): mixed
-    {
+    public static function getValueDotNotation(
+        ArrayAccess|iterable $subject,
+        string $key,
+        mixed $defaultValue = null,
+        string $separator = ConfigKeyPart::SEP
+    ): mixed {
         $value = $subject;
 
         // Explode the keys on period and iterate through the keys
-        foreach (explode(ConfigKeyPart::SEP, $key) as $item) {
+        foreach (explode($separator, $key) as $item) {
             // Trying to get the item from the current value or set the default
             $value = $value[$item] ?? null;
 

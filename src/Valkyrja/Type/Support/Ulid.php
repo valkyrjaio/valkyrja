@@ -31,14 +31,19 @@ use function substr;
  */
 class Ulid extends Uid
 {
+    /** @var string */
     public const VALID_CHARACTERS = '0123456789ABCDEFGHJKMNPQRSTVWXYZabcdefghjkmnpqrstvwxyz';
 
+    /** @var string */
     public const REGEX = '[0-7][' . self::VALID_CHARACTERS . ']{25}';
 
+    /** @var int */
     public const MAX_PART = 0xFFFFF;
 
+    /** @var int */
     protected const MAX_RANDOM_BYTES = 4;
 
+    /** @var string */
     protected const FORMAT = '%010s%04s%04s%04s%04s';
 
     /**
@@ -184,7 +189,7 @@ class Ulid extends Uid
      */
     protected static function areAllRandomBytesMax(): bool
     {
-        return static::$randomBytes === [1 => self::MAX_PART, self::MAX_PART, self::MAX_PART, self::MAX_PART];
+        return static::$randomBytes === [1 => static::MAX_PART, static::MAX_PART, static::MAX_PART, static::MAX_PART];
     }
 
     /**
@@ -232,9 +237,9 @@ class Ulid extends Uid
         static::processRandomizedByteParts($randomBytes);
 
         // Set the random bytes for later reference
-        self::$randomBytes = $randomBytes;
+        static::$randomBytes = $randomBytes;
         // Set the time for later reference
-        self::$time = $time;
+        static::$time = $time;
     }
 
     /**

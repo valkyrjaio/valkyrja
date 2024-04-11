@@ -78,7 +78,7 @@ interface Entity extends CastableModel, ExposableModel
      *
      * @param string ...$properties [optional] An array of properties to return
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function asStorableArray(string ...$properties): array;
 

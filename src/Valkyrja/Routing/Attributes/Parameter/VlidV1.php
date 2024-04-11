@@ -14,12 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Attributes\Parameter;
 
 use Attribute;
-use BackedEnum;
-use Valkyrja\Orm\Entity;
+use Valkyrja\Model\Data\Cast;
 use Valkyrja\Routing\Attributes\Parameter;
 use Valkyrja\Routing\Constants\ParameterName;
 use Valkyrja\Routing\Constants\Regex;
-use Valkyrja\Routing\Enums\CastType;
 
 /**
  * Attribute VlidV1.
@@ -29,32 +27,20 @@ use Valkyrja\Routing\Enums\CastType;
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class VlidV1 extends Parameter
 {
-    /**
-     * @param class-string<Entity>|null     $entity
-     * @param class-string<BackedEnum>|null $enum
-     */
     public function __construct(
         string|null $name = null,
-        CastType|null $type = null,
-        string|null $entity = null,
-        string|null $entityColumn = null,
-        array|null $entityRelationships = null,
-        string|null $enum = null,
+        Cast|null $cast = null,
         bool $isOptional = false,
         bool $shouldCapture = true,
         mixed $default = null,
     ) {
         parent::__construct(
-            name               : $name ?? ParameterName::VLID_V1,
-            regex              : Regex::VLID_V1,
-            type               : $type,
-            entity             : $entity,
-            entityColumn       : $entityColumn,
-            entityRelationships: $entityRelationships,
-            enum               : $enum,
-            isOptional         : $isOptional,
-            shouldCapture      : $shouldCapture,
-            default            : $default,
+            name         : $name ?? ParameterName::VLID_V1,
+            regex        : Regex::VLID_V1,
+            cast         : $cast,
+            isOptional   : $isOptional,
+            shouldCapture: $shouldCapture,
+            default      : $default,
         );
     }
 }

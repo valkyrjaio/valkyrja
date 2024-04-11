@@ -16,14 +16,13 @@ namespace Valkyrja\Container\Enums;
 use Valkyrja\Container\Annotations\Service;
 use Valkyrja\Container\Annotations\Service\Alias;
 use Valkyrja\Container\Annotations\Service\Context;
-use Valkyrja\Type\Types\Enum;
 
 /**
  * Enum AnnotationClass.
  *
  * @author Melech Mizrachi
  */
-final class AnnotationClass extends Enum
+final class AnnotationClass
 {
     public const SERVICE         = Service::class;
     public const SERVICE_ALIAS   = Alias::class;

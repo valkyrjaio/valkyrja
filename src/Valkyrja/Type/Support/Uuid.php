@@ -30,14 +30,17 @@ use function strlen;
  */
 class Uuid extends Uid
 {
+    /** @var string */
     public const REGEX = self::REGEX_PART . '{8}-'
     . self::REGEX_PART . '{4}-'
     . self::REGEX_PART . '{4}-'
     . self::REGEX_PART . '{4}-'
     . self::REGEX_PART . '{12}';
 
+    /** @var UuidVersion */
     public const VERSION = UuidVersion::V1;
 
+    /** @var string */
     protected const REGEX_PART = '[0-9A-Fa-f]';
 
     /**

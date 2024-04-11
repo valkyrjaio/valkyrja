@@ -24,6 +24,7 @@ final class ConfigValue
     public const CACHE_FILE_PATH = '';
     public const USER_CACHE      = false;
 
+    /** @var array<string, mixed> */
     public static array $defaults = [
         'providers'     => self::PROVIDERS,
         'cacheFilePath' => self::CACHE_FILE_PATH,

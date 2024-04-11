@@ -27,6 +27,7 @@ use function ord;
  */
 class UuidV4 extends Uuid
 {
+    /** @var string */
     public const REGEX = self::REGEX_PART . '{8}-'
     . self::REGEX_PART . '{4}-'
     . '[4]'
@@ -34,6 +35,7 @@ class UuidV4 extends Uuid
     . self::REGEX_PART . '{4}-'
     . self::REGEX_PART . '{12}';
 
+    /** @var UuidVersion */
     public const VERSION = UuidVersion::V4;
 
     /**
