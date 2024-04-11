@@ -47,7 +47,7 @@ class Cache extends Model
     /**
      * The provided services' publish methods.
      *
-     * @var array<class-string, callable>
+     * @var array<string, callable>
      */
     public array $providedCallback;
 
