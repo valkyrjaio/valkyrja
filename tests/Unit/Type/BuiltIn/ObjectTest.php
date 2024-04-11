@@ -21,7 +21,7 @@ class ObjectTest extends TestCase
 {
     public function testValue(): void
     {
-        $value = new class {
+        $value = new class() {
         };
         $type  = new ObjectT($value);
 
@@ -33,7 +33,7 @@ class ObjectTest extends TestCase
      */
     public function testFromValue(): void
     {
-        $value         = new class {
+        $value         = new class() {
         };
         $typeFromValue = ObjectT::fromValue($value);
 
@@ -45,7 +45,7 @@ class ObjectTest extends TestCase
      */
     public function testAsFlatValue(): void
     {
-        $value = new class {
+        $value = new class() {
         };
         $type  = new ObjectT($value);
 
@@ -54,14 +54,14 @@ class ObjectTest extends TestCase
 
     public function testModify(): void
     {
-        $value = new class {
+        $value = new class() {
             public string $foo = 'test';
         };
         $type  = new ObjectT($value);
         // The new value
         $newValue = 'bar';
 
-        $modified = $type->modify(function (object $subject) use ($newValue): object {
+        $modified = $type->modify(static function (object $subject) use ($newValue): object {
             $subject->foo = $newValue;
 
             return $subject;
@@ -76,7 +76,7 @@ class ObjectTest extends TestCase
 
     public function testJsonSerialize(): void
     {
-        $value = new class {
+        $value = new class() {
             public string $pie = 'pie';
         };
         $type  = new ObjectT($value);

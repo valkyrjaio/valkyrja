@@ -30,7 +30,7 @@ class ModelTest extends TestCase
 {
     public function testClone(): void
     {
-        $test = new Model();
+        $test  = new Model();
         $test2 = clone $test;
 
         self::assertNotSame($test2, $test);

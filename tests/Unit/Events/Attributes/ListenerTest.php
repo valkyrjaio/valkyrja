@@ -57,7 +57,7 @@ class ListenerTest extends TestCase
         self::assertSame(self::VALUE, $this->class->getEventId());
 
         $newValue = TestCase::class;
-        $set = $this->class->setEventId($newValue);
+        $set      = $this->class->setEventId($newValue);
 
         self::assertSame($newValue, $this->class->getEventId());
         // Assertion to ensure the interface doesn't change unexpectedly

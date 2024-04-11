@@ -22,6 +22,8 @@ use Valkyrja\Http\Streams\Stream as ValkyrjaStream;
 use Valkyrja\Http\Uris\Psr\Uri;
 use Valkyrja\Http\Uris\Uri as ValkyrjaUri;
 
+use function is_array;
+
 /**
  * Class Request.
  *
@@ -144,9 +146,11 @@ class Request implements RequestInterface
         $new = clone $this;
 
         $mode = '';
+
         if ($body->isReadable()) {
             $mode = 'r';
         }
+
         if ($body->isWritable()) {
             $mode .= 'w';
         }

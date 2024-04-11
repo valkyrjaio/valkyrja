@@ -34,7 +34,7 @@ class DoubleT extends Type implements Contract
      */
     public static function fromValue(mixed $value): static
     {
-        return new static((double) $value);
+        return new static((float) $value);
     }
 
     /**

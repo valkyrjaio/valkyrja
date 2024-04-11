@@ -18,7 +18,7 @@ use ReflectionException;
 use Valkyrja\Attribute\Attributes as AttributeAttributes;
 use Valkyrja\Event\Attributes as Contract;
 use Valkyrja\Event\Attributes\Listener as Attribute;
-use Valkyrja\Event\Listener as Listener;
+use Valkyrja\Event\Listener;
 use Valkyrja\Event\Models\Listener as Model;
 use Valkyrja\Reflection\Reflector;
 
@@ -48,6 +48,7 @@ class Attributes implements Contract
         foreach ($classes as $class) {
             /** @var Attribute[] $attributes */
             $attributes = $this->attributes->forClassAndMembers($class, Attribute::class);
+
             // Get all the attributes for each class and iterate through them
             /** @var Attribute $attribute */
             foreach ($attributes as $key => $attribute) {

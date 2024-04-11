@@ -47,7 +47,7 @@ class BoolTest extends TestCase
         // The new value
         $newValue = false;
 
-        $modified = $type->modify(fn (bool $subject): bool => $newValue);
+        $modified = $type->modify(static fn (bool $subject): bool => $newValue);
 
         // Original should be unmodified
         self::assertSame(self::VALUE, $type->asValue());

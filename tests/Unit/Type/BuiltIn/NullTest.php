@@ -47,7 +47,7 @@ class NullTest extends TestCase
         // The new value
         $newValue = 'anything';
 
-        $modified = $type->modify(fn (mixed $subject): string => $newValue);
+        $modified = $type->modify(static fn (mixed $subject): string => $newValue);
 
         // Original should be unmodified
         self::assertSame(self::VALUE, $type->asValue());

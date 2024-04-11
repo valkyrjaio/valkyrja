@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Types;
 
 use JsonException;
-use Valkyrja\Type\Support\Arr as Helper;
 use Valkyrja\Type\ArrayT as Contract;
+use Valkyrja\Type\Support\Arr as Helper;
+
+use function is_string;
 
 /**
  * Class ArrayT.

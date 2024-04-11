@@ -49,7 +49,7 @@ class Route extends Model
 
         /** @psalm-suppress TypeDoesNotContainType Not everyone will use Psalm :) */
         if ($path === '') {
-            throw new InvalidRoutePath("Path must be a non-empty-string.");
+            throw new InvalidRoutePath('Path must be a non-empty-string.');
         }
 
         if ($name !== null && $name !== '') {

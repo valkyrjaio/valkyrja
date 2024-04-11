@@ -47,7 +47,7 @@ class StringTest extends TestCase
         // The new value
         $newValue = 'bar';
 
-        $modified = $type->modify(fn (string $subject): string => $newValue);
+        $modified = $type->modify(static fn (string $subject): string => $newValue);
 
         // Original should be unmodified
         self::assertSame(self::VALUE, $type->asValue());

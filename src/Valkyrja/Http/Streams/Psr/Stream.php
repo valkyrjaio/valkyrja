@@ -16,6 +16,8 @@ namespace Valkyrja\Http\Streams\Psr;
 use Psr\Http\Message\StreamInterface;
 use Valkyrja\Http\Stream as ValkyrjaStream;
 
+use const SEEK_SET;
+
 /**
  * Class Stream.
  *

@@ -112,7 +112,6 @@ class EntityMiddleware extends Middleware
         if (is_a($entityName = $parameter->getCast()->type ?? null, Entity::class, true)) {
             static::findAndSetEntityFromParameter($index, $parameter, $entityName, $dependencies, $matches[$index]);
         }
-
     }
 
     /**

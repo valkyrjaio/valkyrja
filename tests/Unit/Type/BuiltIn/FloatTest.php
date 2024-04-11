@@ -47,7 +47,7 @@ class FloatTest extends TestCase
         // The new value
         $newValue = 2.46;
 
-        $modified = $type->modify(fn (float $subject): float => $newValue);
+        $modified = $type->modify(static fn (float $subject): float => $newValue);
 
         // Original should be unmodified
         self::assertSame(self::VALUE, $type->asValue());

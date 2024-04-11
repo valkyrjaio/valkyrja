@@ -18,6 +18,8 @@ use Valkyrja\Model\Models\Model;
 use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Data\EntityCast;
 
+use function is_array;
+
 /**
  * Class Parameter.
  *

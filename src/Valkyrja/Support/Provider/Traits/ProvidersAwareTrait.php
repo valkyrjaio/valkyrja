@@ -165,7 +165,7 @@ trait ProvidersAwareTrait
         foreach ($provides as $provided) {
             self::$provided[$provided]         = $provider;
             self::$providedCallback[$provided] = $publishCallback[$provided]
-                ?? [$provider, static::$defaultPublishMethod,];
+                ?? [$provider, static::$defaultPublishMethod];
         }
 
         // The provider is now registered

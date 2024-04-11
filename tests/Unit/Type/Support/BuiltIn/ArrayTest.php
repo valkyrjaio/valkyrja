@@ -66,7 +66,7 @@ class ArrayTest extends TestCase
 
     public function testWithoutNull(): void
     {
-        $arrWithNull = self::VALUE;
+        $arrWithNull         = self::VALUE;
         $arrWithNull['null'] = null;
 
         self::assertArrayHasKey('null', $arrWithNull);
@@ -80,7 +80,7 @@ class ArrayTest extends TestCase
 
     public function testNewWithoutNull(): void
     {
-        $arrWithNull = self::VALUE;
+        $arrWithNull         = self::VALUE;
         $arrWithNull['null'] = null;
 
         self::assertArrayHasKey('null', $arrWithNull);

@@ -33,7 +33,7 @@ class SerializedObjectTest extends TestCase
      */
     public function testFromValue(): void
     {
-        $value = new Model();
+        $value         = new Model();
         $typeFromValue = SerializedObject::fromValue($value);
 
         self::assertSame($typeFromValue->asValue(), $value);
@@ -60,7 +60,7 @@ class SerializedObjectTest extends TestCase
         // The new value
         $newValue = 'bar';
 
-        $modified = $type->modify(function (Model $subject) use ($newValue): Model {
+        $modified = $type->modify(static function (Model $subject) use ($newValue): Model {
             $subject->public = $newValue;
 
             return $subject;

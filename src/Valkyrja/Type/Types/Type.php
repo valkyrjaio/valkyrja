@@ -22,6 +22,7 @@ use Valkyrja\Type\Type as Contract;
  * @author Melech Mizrachi
  *
  * @implements Contract<mixed>
+ *
  * @template T
  */
 abstract class Type implements Contract
@@ -55,11 +56,6 @@ abstract class Type implements Contract
     /**
      * @inheritDoc
      */
-    abstract public function asFlatValue(): string|int|float|bool|null;
-
-    /**
-     * @inheritDoc
-     */
     public function modify(Closure $closure): static
     {
         return static::fromValue($closure($this->subject));
@@ -72,4 +68,9 @@ abstract class Type implements Contract
     {
         return $this->asValue();
     }
+
+    /**
+     * @inheritDoc
+     */
+    abstract public function asFlatValue(): string|int|float|bool|null;
 }

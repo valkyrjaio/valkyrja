@@ -15,8 +15,10 @@ namespace Valkyrja\Type\Types;
 
 use Closure;
 use JsonException;
-use Valkyrja\Type\Support\Obj as Helper;
 use Valkyrja\Type\SerializedObject as Contract;
+use Valkyrja\Type\Support\Obj as Helper;
+
+use function is_string;
 
 /**
  * Class SerializedObject.

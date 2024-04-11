@@ -31,5 +31,4 @@ interface FloatT extends Type
      * @inheritDoc
      */
     public function asFlatValue(): float;
-
 }

@@ -274,7 +274,6 @@ class Route extends Dispatch implements Contract
         }
 
         /** @var Parameter[] $parameters */
-
         $this->__setParameters(...$parameters);
 
         return $this;

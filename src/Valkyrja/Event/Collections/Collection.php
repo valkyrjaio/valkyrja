@@ -17,6 +17,9 @@ use Valkyrja\Event\Collection as Contract;
 use Valkyrja\Event\Listener;
 use Valkyrja\Event\Models\Listener as Model;
 
+use function is_array;
+use function is_object;
+
 /**
  * Class Collection.
  *
@@ -77,8 +80,7 @@ class Collection implements Contract
         $listenerId = $this->getIdFromListener($listener);
         $eventId    = $listener->getEventId();
 
-        unset($this->events[$eventId][$listenerId]);
-        unset($this->listeners[$listenerId]);
+        unset($this->events[$eventId][$listenerId], $this->listeners[$listenerId]);
     }
 
     /**

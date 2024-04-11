@@ -37,7 +37,7 @@ class ServiceProvider extends Provider
     {
         return [
             Notifier::class => [self::class, 'publishNotifier'],
-            Factory::class  => [self::class, 'publishFactory',],
+            Factory::class  => [self::class, 'publishFactory'],
         ];
     }
 

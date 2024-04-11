@@ -159,7 +159,7 @@ class Annotator implements Contract
     protected function getClassAnnotations(string $class): array
     {
         return $this->filter->filterAnnotationsByTypes(
-               $this->reflector->getClassReflection(AnnotationName::class)->getConstants(),
+            $this->reflector->getClassReflection(AnnotationName::class)->getConstants(),
             ...$this->annotator->classAnnotations($class)
         );
     }
@@ -268,7 +268,7 @@ class Annotator implements Contract
     protected function getClassMemberAnnotations(string $class): array
     {
         return $this->filter->filterAnnotationsByTypes(
-               $this->reflector->getClassReflection(AnnotationName::class)->getConstants(),
+            $this->reflector->getClassReflection(AnnotationName::class)->getConstants(),
             ...$this->annotator->classMembersAnnotations($class)
         );
     }

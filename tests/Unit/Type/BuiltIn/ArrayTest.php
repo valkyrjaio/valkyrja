@@ -63,10 +63,10 @@ class ArrayTest extends TestCase
      */
     public function testModify(): void
     {
-        $type = new ArrayT(self::VALUE);
+        $type     = new ArrayT(self::VALUE);
         $newValue = 'fire';
 
-        $modified = $type->modify(function (array $subject) use ($newValue): array {
+        $modified = $type->modify(static function (array $subject) use ($newValue): array {
             $subject[] = $newValue;
 
             return $subject;

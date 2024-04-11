@@ -47,7 +47,7 @@ class IntIdTest extends TestCase
         // The new value
         $newValue = 2;
 
-        $modified = $type->modify(fn (int $subject): int => $newValue);
+        $modified = $type->modify(static fn (int $subject): int => $newValue);
 
         // Original should be unmodified
         self::assertSame(self::VALUE, $type->asValue());

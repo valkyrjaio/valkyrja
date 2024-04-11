@@ -23,6 +23,7 @@ use Valkyrja\Type\Uuid as Contract;
  * @author Melech Mizrachi
  *
  * @extends Type<string>
+ *
  * @implements Contract<string>
  */
 class Uuid extends Type implements Contract

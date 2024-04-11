@@ -143,7 +143,7 @@ interface Collection extends ArrayAccess, ListenerProviderInterface
     public function offsetSet(mixed $offset, mixed $value): void;
 
     /**
-     * Remove all listeners for an event
+     * Remove all listeners for an event.
      *
      * @param class-string|object $offset The event id
      *

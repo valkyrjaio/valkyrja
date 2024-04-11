@@ -18,7 +18,7 @@ use Valkyrja\Type\Types\Id;
 
 class IdTest extends TestCase
 {
-    protected const INT_VALUE = 1;
+    protected const INT_VALUE    = 1;
     protected const STRING_VALUE = 'id';
 
     public function testIntValue(): void
@@ -69,7 +69,7 @@ class IdTest extends TestCase
         // The new value
         $newValue = 2;
 
-        $modified = $type->modify(fn (int $subject): int => $newValue);
+        $modified = $type->modify(static fn (int $subject): int => $newValue);
 
         // Original should be unmodified
         self::assertSame(self::INT_VALUE, $type->asValue());
@@ -83,7 +83,7 @@ class IdTest extends TestCase
         // The new value
         $newValue = 'id2';
 
-        $modified = $type->modify(fn (string $subject): string => $newValue);
+        $modified = $type->modify(static fn (string $subject): string => $newValue);
 
         // Original should be unmodified
         self::assertSame(self::STRING_VALUE, $type->asValue());

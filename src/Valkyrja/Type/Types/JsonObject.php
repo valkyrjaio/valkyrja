@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Types;
 
 use JsonException;
-use Valkyrja\Type\Support\Obj as Helper;
 use Valkyrja\Type\JsonObject as Contract;
+use Valkyrja\Type\Support\Obj as Helper;
+
+use function is_string;
 
 /**
  * Class JsonObject.

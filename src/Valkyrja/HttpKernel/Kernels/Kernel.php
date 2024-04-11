@@ -33,6 +33,7 @@ use Valkyrja\Routing\Router;
 use function count;
 use function defined;
 use function function_exists;
+use function in_array;
 
 use const PHP_OUTPUT_HANDLER_CLEANABLE;
 use const PHP_OUTPUT_HANDLER_FLUSHABLE;

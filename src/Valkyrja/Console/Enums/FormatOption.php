@@ -20,11 +20,11 @@ namespace Valkyrja\Console\Enums;
  */
 enum FormatOption: int
 {
-    case BOLD       = 1;
-    case UNDERSCORE = 4;
-    case BLINK      = 5;
-    case INVERSE    = 7;
-    case CONCEAL    = 8;
+    case BOLD            = 1;
+    case UNDERSCORE      = 4;
+    case BLINK           = 5;
+    case INVERSE         = 7;
+    case CONCEAL         = 8;
     public const DEFAULT = [
         1 => 22,
         4 => 24,

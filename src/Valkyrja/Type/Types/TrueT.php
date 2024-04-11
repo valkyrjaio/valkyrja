@@ -24,7 +24,7 @@ use Valkyrja\Type\TrueT as Contract;
  */
 class TrueT extends Type implements Contract
 {
-    public function __construct(bool $subject = null)
+    public function __construct(?bool $subject = null)
     {
         parent::__construct(true);
     }

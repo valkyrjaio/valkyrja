@@ -19,6 +19,8 @@ use Valkyrja\Http\Response as ValkyrjaResponse;
 use Valkyrja\Http\Streams\Psr\Stream;
 use Valkyrja\Http\Streams\Stream as ValkyrjaStream;
 
+use function is_array;
+
 /**
  * Class Response.
  *

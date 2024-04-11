@@ -17,6 +17,8 @@ use JsonSerializable;
 use Valkyrja\Model\Enums\CastType;
 use Valkyrja\Type\Type;
 
+use function assert;
+
 /**
  * Data Cast.
  *

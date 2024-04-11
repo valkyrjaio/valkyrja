@@ -14,13 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Attributes\Parameter;
 
 use Attribute;
-use BackedEnum;
 use Valkyrja\Model\Data\Cast;
-use Valkyrja\Orm\Entity;
 use Valkyrja\Routing\Attributes\Parameter;
 use Valkyrja\Routing\Constants\ParameterName;
 use Valkyrja\Routing\Constants\Regex;
-use Valkyrja\Routing\Enums\CastType;
 
 /**
  * Attribute VlidV4.

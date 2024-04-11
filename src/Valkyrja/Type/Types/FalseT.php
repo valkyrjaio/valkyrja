@@ -24,7 +24,7 @@ use Valkyrja\Type\FalseT as Contract;
  */
 class FalseT extends Type implements Contract
 {
-    public function __construct(bool $subject = null)
+    public function __construct(bool|null $subject = null)
     {
         parent::__construct(false);
     }
