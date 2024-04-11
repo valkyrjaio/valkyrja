@@ -40,7 +40,7 @@ class CacheableCollection extends Collection
      * @param EventConfig|array $config
      */
     public function __construct(
-        protected Container         $container,
+        protected Container $container,
         protected EventConfig|array $config
     ) {
     }

@@ -28,7 +28,7 @@ use Valkyrja\Event\Listener;
 class Dispatcher implements Contract
 {
     public function __construct(
-        protected Collection         $collection,
+        protected Collection $collection,
         protected DispatchDispatcher $dispatcher,
     ) {
     }

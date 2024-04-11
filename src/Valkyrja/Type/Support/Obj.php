@@ -107,8 +107,8 @@ class Obj
      */
     public static function getAllProperties(
         object $subject,
-        bool   $includeProtected = true,
-        bool   $includePrivate = true
+        bool $includeProtected = true,
+        bool $includePrivate = true
     ): array {
         /** @var array<string, mixed> $castSubject */
         // The subject cast as an array

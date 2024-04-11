@@ -215,9 +215,9 @@ class ServiceProvider extends Provider
                 ];
 
                 return new FlysystemAwsS3Adapter(
-                    client:  new AwsS3Client($clientConfig),
-                    bucket:  $config['bucket'],
-                    prefix:  $config['prefix'],
+                    client: new AwsS3Client($clientConfig),
+                    bucket: $config['bucket'],
+                    prefix: $config['prefix'],
                     options: $config['options']
                 );
             }

@@ -87,13 +87,13 @@ class Console implements Contract
      * @param bool         $debug
      */
     public function __construct(
-        protected Container    $container,
-        protected Dispatcher   $dispatcher,
-        protected Validator    $validator,
-        protected Events       $events,
-        protected PathParser   $pathParser,
+        protected Container $container,
+        protected Dispatcher $dispatcher,
+        protected Validator $validator,
+        protected Events $events,
+        protected PathParser $pathParser,
         protected Config|array $config,
-        protected bool         $debug = false
+        protected bool $debug = false
     ) {
     }
 

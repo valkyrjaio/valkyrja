@@ -223,10 +223,10 @@ class Matcher implements Contract
      */
     protected function updateMatchValueWithDefault(
         Parameter $parameter,
-        array     &$matches,
-        int       $index,
-        mixed     &$match,
-        int       $lastIndex
+        array &$matches,
+        int $index,
+        mixed &$match,
+        int $lastIndex
     ): void {
         // If there is no match (middle of regex optional group)
         if (! $match) {
@@ -253,11 +253,11 @@ class Matcher implements Contract
      * @return void
      */
     protected function checkAndCastMatchValue(
-        Route     $route,
+        Route $route,
         Parameter $parameter,
-        array     &$matches,
-        int       $index,
-        mixed     $match
+        array &$matches,
+        int $index,
+        mixed $match
     ): void {
         if ($cast = $parameter->getCast()) {
             $matches[$index] = $this->castMatchValue($route, $parameter, $cast, $index, $match);

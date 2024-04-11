@@ -24,7 +24,7 @@ use Valkyrja\Session\Drivers\Driver;
  */
 final class ConfigValue
 {
-    public const DEFAULT  = CKP::DEFAULT;
+    public const DEFAULT  = 'default';
     public const ADAPTER  = PHPAdapter::class;
     public const DRIVER   = Driver::class;
     public const SESSIONS = [

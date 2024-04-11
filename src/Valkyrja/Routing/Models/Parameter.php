@@ -128,7 +128,7 @@ class Parameter extends Model
 
             $cast = ($column !== null)
                 ? new EntityCast(
-                                   $type,
+                    $type,
                     column       : $column,
                     relationships: $relationships,
                     convert      : $convert,

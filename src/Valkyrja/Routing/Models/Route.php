@@ -295,21 +295,21 @@ class Route extends Dispatch implements Contract
      * @inheritDoc
      */
     public function addParameter(
-        string      $name,
+        string $name,
         string|null $regex = null,
-        Cast|null   $cast = null,
-        bool        $isOptional = false,
-        bool        $shouldCapture = true,
-        mixed       $default = null
+        Cast|null $cast = null,
+        bool $isOptional = false,
+        bool $shouldCapture = true,
+        mixed $default = null
     ): static {
         return $this->setParameter(
             new Parameter(
-                name:          $name,
-                regex:         $regex ?? Regex::ANY,
-                cast:          $cast,
-                isOptional:    $isOptional,
+                name: $name,
+                regex: $regex ?? Regex::ANY,
+                cast: $cast,
+                isOptional: $isOptional,
                 shouldCapture: $shouldCapture,
-                default:       $default
+                default: $default
             )
         );
     }

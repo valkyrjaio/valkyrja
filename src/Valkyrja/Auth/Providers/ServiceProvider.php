@@ -274,7 +274,13 @@ class ServiceProvider extends Provider
             /**
              * @param class-string<Repository> $name
              */
-            static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container
+            static function (
+                string $name,
+                Adapter $adapter,
+                string $user,
+                Config|array $config
+            ) use (
+                $container
             ): Repository {
                 return new $name(
                     $adapter,
@@ -300,7 +306,13 @@ class ServiceProvider extends Provider
             /**
              * @param class-string<CryptTokenizedRepository> $name
              */
-            static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container
+            static function (
+                string $name,
+                Adapter $adapter,
+                string $user,
+                Config|array $config
+            ) use (
+                $container
             ): CryptTokenizedRepository {
                 return new $name(
                     $adapter,
@@ -327,7 +339,13 @@ class ServiceProvider extends Provider
             /**
              * @param class-string<JWTCryptRepository> $name
              */
-            static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container
+            static function (
+                string $name,
+                Adapter $adapter,
+                string $user,
+                Config|array $config
+            ) use (
+                $container
             ): JWTCryptRepository {
                 return new $name(
                     $adapter,
@@ -355,7 +373,13 @@ class ServiceProvider extends Provider
             /**
              * @param class-string<JWTRepository> $name
              */
-            static function (string $name, Adapter $adapter, string $user, Config|array $config) use ($container
+            static function (
+                string $name,
+                Adapter $adapter,
+                string $user,
+                Config|array $config
+            ) use (
+                $container
             ): JWTRepository {
                 return new $name(
                     $adapter,

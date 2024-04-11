@@ -57,14 +57,14 @@ class Router implements Contract
      * @param bool            $debug
      */
     public function __construct(
-        protected Collection      $collection,
-        protected Container       $container,
-        protected Dispatcher      $dispatcher,
-        protected Events          $events,
-        protected Matcher         $matcher,
+        protected Collection $collection,
+        protected Container $container,
+        protected Dispatcher $dispatcher,
+        protected Events $events,
+        protected Matcher $matcher,
         protected ResponseFactory $responseFactory,
-        protected Config|array    $config,
-        protected bool            $debug = false
+        protected Config|array $config,
+        protected bool $debug = false
     ) {
     }
 

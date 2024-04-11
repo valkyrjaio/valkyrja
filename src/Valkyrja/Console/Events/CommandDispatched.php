@@ -24,7 +24,7 @@ class CommandDispatched
 {
     public function __construct(
         public Command $command,
-        public int     $exitCode
+        public int $exitCode
     ) {
     }
 }

@@ -73,11 +73,11 @@ class Kernel implements Contract
      * @param bool         $debug     [optional] Whether to run in debug
      */
     public function __construct(
-        protected Container    $container,
-        protected Events       $events,
-        protected Router       $router,
+        protected Container $container,
+        protected Events $events,
+        protected Router $router,
         protected Config|array $config,
-        protected bool         $debug = false
+        protected bool $debug = false
     ) {
         self::$middleware       = $config['middleware'];
         self::$middlewareGroups = $config['middlewareGroups'];

@@ -67,7 +67,7 @@ class Collection implements Contract
         $listenerId = $this->getIdFromListener($listener);
         $eventId    = $listener->getEventId();
 
-        $this->events[$eventId]              ??= [];
+        $this->events[$eventId] ??= [];
         $this->events[$eventId][$listenerId] = $listenerId;
         $this->listeners[$listenerId]        = $listener;
     }

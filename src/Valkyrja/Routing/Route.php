@@ -167,12 +167,12 @@ interface Route extends Dispatch
      * @return static
      */
     public function addParameter(
-        string      $name,
+        string $name,
         string|null $regex = null,
-        Cast|null   $cast = null,
-        bool        $isOptional = false,
-        bool        $shouldCapture = true,
-        mixed       $default = null
+        Cast|null $cast = null,
+        bool $isOptional = false,
+        bool $shouldCapture = true,
+        mixed $default = null
     ): static;
 
     /**

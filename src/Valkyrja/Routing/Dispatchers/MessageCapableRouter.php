@@ -40,24 +40,24 @@ class MessageCapableRouter extends Router
      */
     public function __construct(
         protected Validator $validator,
-        Collection          $collection,
-        Container           $container,
-        Dispatcher          $dispatcher,
-        Events              $events,
-        Matcher             $matcher,
-        ResponseFactory     $responseFactory,
-        Config|array        $config,
-        bool                $debug = false
+        Collection $collection,
+        Container $container,
+        Dispatcher $dispatcher,
+        Events $events,
+        Matcher $matcher,
+        ResponseFactory $responseFactory,
+        Config|array $config,
+        bool $debug = false
     ) {
         parent::__construct(
-            collection:      $collection,
-            container:       $container,
-            dispatcher:      $dispatcher,
-            events:          $events,
-            matcher:         $matcher,
+            collection: $collection,
+            container: $container,
+            dispatcher: $dispatcher,
+            events: $events,
+            matcher: $matcher,
             responseFactory: $responseFactory,
-            config:          $config,
-            debug:           $debug
+            config: $config,
+            debug: $debug
         );
     }
 

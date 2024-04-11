@@ -23,7 +23,7 @@ use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
  */
 final class ConfigValue
 {
-    public const DEFAULT  = CKP::DEFAULT;
+    public const DEFAULT  = 'default';
     public const ADAPTERS = [
         CKP::DEFAULT => DefaultAdapter::class,
     ];
