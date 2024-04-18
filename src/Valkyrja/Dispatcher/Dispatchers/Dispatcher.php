@@ -90,7 +90,7 @@ class Dispatcher implements Contract
         $response = is_string($class)
             ? $class::$method(...$arguments)
             : (/** @var object $class */
-                $class->$method(...$arguments)
+            $class->$method(...$arguments)
             );
 
         return $response ?? Constant::DISPATCHED;
@@ -345,16 +345,6 @@ class Dispatcher implements Contract
                 ? $containerContext->get($dependency)
                 : $container->get($dependency);
         }
-
-        var_dump(
-            $dependenciesInstances === $map = array_map(
-                static fn (string $dependency): mixed => $hasContext && $containerContext?->has($dependency)
-                    ? $containerContext->get($dependency)
-                    : $container->get($dependency),
-                $dependencies
-            ),
-            $map
-        );
 
         return $dependenciesInstances;
     }
