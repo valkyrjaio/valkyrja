@@ -17,6 +17,8 @@ use ArrayAccess;
 use RuntimeException;
 use Valkyrja\Application\Env;
 
+use function defined;
+
 /**
  * Abstract Class Config.
  *
@@ -93,7 +95,7 @@ abstract class DataConfig implements ArrayAccess
     {
         foreach (static::$envKeys as $property => $value) {
             if (defined("$env::$value")) {
-                $this->$property = $env::{$value} ?? $this->$property;
+                $this->$property = constant("$env::$value") ?? $this->$property;
             }
         }
     }
