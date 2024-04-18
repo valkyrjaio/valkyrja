@@ -1,0 +1,24 @@
+repos:
+  - repo: local
+    hooks:
+      - id: psalm
+        name: Psalm
+        description: Run Psalm to statically analyze a PHP code base.
+        entry: pre-commit-hooks/psalm.sh
+        language: script
+        files: \.php$
+        pass_filenames: true
+      - id: php-cs-fixer
+        name: PHP CS Fixer
+        description: Run PHP CS Fixer to lint code
+        entry: pre-commit-hooks/php-cs-fixer.sh
+        language: script
+        files: \.php$
+        pass_filenames: true
+      - id: phpunit
+        name: PHPUnit
+        description: Run PHPUnit to test site code
+        entry: pre-commit-hooks/phpunit.sh
+        language: script
+        files: \.php$
+        pass_filenames: true
