@@ -36,8 +36,8 @@ return (new PhpCsFixer\Config())
         [
             '@PHP80Migration:risky'                    => true,
             '@PHP81Migration'                          => true,
-            '@PER'                                     => true,
-            '@PER:risky'                               => true,
+            '@PER-CS'                                  => true,
+            '@PER-CS:risky'                            => true,
             '@Symfony'                                 => true,
             '@Symfony:risky'                           => true,
             'no_unused_imports'                        => true,
