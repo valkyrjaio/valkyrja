@@ -24,8 +24,8 @@ use Valkyrja\Type\Types\Enum\JsonSerializable;
  */
 enum Arrayable implements ArrayableEnum, JsonSerializableEnum
 {
-    use \Valkyrja\Type\Types\Enum\Arrayable;
     use JsonSerializable;
+    use \Valkyrja\Type\Types\Enum\Arrayable;
 
     case spade;
     case heart;

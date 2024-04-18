@@ -20,6 +20,8 @@ use Valkyrja\Model\Models\CastableModel as AbstractModel;
 
 use function json_encode;
 
+use const JSON_THROW_ON_ERROR;
+
 /**
  * Model class to use to test Castable model.
  *
@@ -31,7 +33,7 @@ class EmptyCastableModel extends AbstractModel
     {
         parent::internalSetProperties(
             $properties,
-            function (string $property, mixed $value, Cast|null $cast): mixed {
+            static function (string $property, mixed $value, Cast|null $cast): mixed {
                 throw new RuntimeException(json_encode([$property, $value, $cast], JSON_THROW_ON_ERROR));
             }
         );

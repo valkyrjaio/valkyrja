@@ -322,7 +322,7 @@ class Dispatcher implements Contract
 
         // If there are dependencies
         if (($dependencies = $dispatch->getDependencies()) === null) {
-            return $dependenciesInstances;
+            return [];
         }
 
         $context = $dispatch->getClass() ?? $dispatch->getFunction() ?? null;
@@ -345,6 +345,16 @@ class Dispatcher implements Contract
                 ? $containerContext->get($dependency)
                 : $container->get($dependency);
         }
+
+        var_dump(
+            $dependenciesInstances === $map = array_map(
+                static fn (string $dependency): mixed => $hasContext && $containerContext?->has($dependency)
+                    ? $containerContext->get($dependency)
+                    : $container->get($dependency),
+                $dependencies
+            ),
+            $map
+        );
 
         return $dependenciesInstances;
     }

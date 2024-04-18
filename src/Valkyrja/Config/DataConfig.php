@@ -17,6 +17,7 @@ use ArrayAccess;
 use RuntimeException;
 use Valkyrja\Application\Env;
 
+use function constant;
 use function defined;
 
 /**

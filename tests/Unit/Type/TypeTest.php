@@ -37,7 +37,7 @@ class TypeTest extends TestCase
         $value        = 'test';
         $newValue     = 'test2';
         $type         = Type::fromValue($value);
-        $typeModified = $type->modify(fn ($value) => $newValue);
+        $typeModified = $type->modify(static fn ($value) => $newValue);
 
         self::assertSame($value, $type->asValue());
         self::assertSame($value, $type->asFlatValue());
@@ -53,7 +53,7 @@ class TypeTest extends TestCase
         $value        = 45;
         $newValue     = 43;
         $type         = Type::fromValue($value);
-        $typeModified = $type->modify(fn ($value) => $newValue);
+        $typeModified = $type->modify(static fn ($value) => $newValue);
 
         self::assertSame($value, $type->asValue());
         self::assertSame($value, $type->asFlatValue());
@@ -69,7 +69,7 @@ class TypeTest extends TestCase
         $value        = 4.75;
         $newValue     = 52.32;
         $type         = Type::fromValue($value);
-        $typeModified = $type->modify(fn ($value) => $newValue);
+        $typeModified = $type->modify(static fn ($value) => $newValue);
 
         self::assertSame($value, $type->asValue());
         self::assertSame($value, $type->asFlatValue());
@@ -85,7 +85,7 @@ class TypeTest extends TestCase
         $value        = true;
         $newValue     = false;
         $type         = Type::fromValue($value);
-        $typeModified = $type->modify(fn ($value) => $newValue);
+        $typeModified = $type->modify(static fn ($value) => $newValue);
 
         self::assertSame($value, $type->asValue());
         self::assertSame($value, $type->asFlatValue());

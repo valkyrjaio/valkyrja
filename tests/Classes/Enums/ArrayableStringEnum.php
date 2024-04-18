@@ -24,9 +24,9 @@ use Valkyrja\Type\Types\Enum\JsonSerializable;
  */
 enum ArrayableStringEnum: string implements ArrayableEnum, JsonSerializableEnum
 {
-    use \Valkyrja\Type\Types\Enum\Arrayable;
     use JsonSerializable;
+    use \Valkyrja\Type\Types\Enum\Arrayable;
 
-    case foo = 'bar';
+    case foo   = 'bar';
     case lorem = 'ipsum';
 }

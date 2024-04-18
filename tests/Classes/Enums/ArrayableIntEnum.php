@@ -24,9 +24,9 @@ use Valkyrja\Type\Types\Enum\JsonSerializable;
  */
 enum ArrayableIntEnum: int implements ArrayableEnum, JsonSerializableEnum
 {
-    use \Valkyrja\Type\Types\Enum\Arrayable;
     use JsonSerializable;
+    use \Valkyrja\Type\Types\Enum\Arrayable;
 
-    case first = 1;
+    case first  = 1;
     case second = 2;
 }

@@ -34,8 +34,8 @@ class OriginalArrayCastTest extends TestCase
         $data  = new OriginalArrayCast($value);
 
         self::assertSame($value, $data->type);
-        self::assertSame(false, $data->convert);
-        self::assertSame(true, $data->isArray);
+        self::assertFalse($data->convert);
+        self::assertTrue($data->isArray);
     }
 
     public function testCastType(): void
@@ -44,8 +44,8 @@ class OriginalArrayCastTest extends TestCase
         $data  = new OriginalArrayCast($value);
 
         self::assertSame($value->value, $data->type);
-        self::assertSame(false, $data->convert);
-        self::assertSame(true, $data->isArray);
+        self::assertFalse($data->convert);
+        self::assertTrue($data->isArray);
     }
 
     public function testJsonSerialize(): void

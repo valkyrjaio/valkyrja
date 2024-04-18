@@ -34,8 +34,8 @@ class ArrayCastTest extends TestCase
         $data  = new ArrayCast($value);
 
         self::assertSame($value, $data->type);
-        self::assertSame(true, $data->convert);
-        self::assertSame(true, $data->isArray);
+        self::assertTrue($data->convert);
+        self::assertTrue($data->isArray);
     }
 
     public function testStringNoConvert(): void
@@ -44,8 +44,8 @@ class ArrayCastTest extends TestCase
         $data  = new ArrayCast($value, false);
 
         self::assertSame($value, $data->type);
-        self::assertSame(false, $data->convert);
-        self::assertSame(true, $data->isArray);
+        self::assertFalse($data->convert);
+        self::assertTrue($data->isArray);
     }
 
     public function testType(): void
@@ -54,8 +54,8 @@ class ArrayCastTest extends TestCase
         $data  = new ArrayCast($value);
 
         self::assertSame($value->value, $data->type);
-        self::assertSame(true, $data->convert);
-        self::assertSame(true, $data->isArray);
+        self::assertTrue($data->convert);
+        self::assertTrue($data->isArray);
     }
 
     public function testTypeNoConvert(): void
@@ -64,8 +64,8 @@ class ArrayCastTest extends TestCase
         $data  = new ArrayCast($value, false);
 
         self::assertSame($value->value, $data->type);
-        self::assertSame(false, $data->convert);
-        self::assertSame(true, $data->isArray);
+        self::assertFalse($data->convert);
+        self::assertTrue($data->isArray);
     }
 
     public function testJsonSerialize(): void

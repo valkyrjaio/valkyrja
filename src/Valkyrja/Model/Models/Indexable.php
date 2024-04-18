@@ -92,6 +92,7 @@ trait Indexable
 
         foreach ($properties as $name => $value) {
             $index = $indexes[$name] ?? null;
+
             if ($index !== null) {
                 $indexedArray[$index] = $value;
             }

@@ -34,8 +34,8 @@ class CastTest extends TestCase
         $data  = new Cast($value);
 
         self::assertSame($value, $data->type);
-        self::assertSame(true, $data->convert);
-        self::assertSame(false, $data->isArray);
+        self::assertTrue($data->convert);
+        self::assertFalse($data->isArray);
     }
 
     public function testCastType(): void
@@ -44,8 +44,8 @@ class CastTest extends TestCase
         $data  = new Cast($value);
 
         self::assertSame($value->value, $data->type);
-        self::assertSame(true, $data->convert);
-        self::assertSame(false, $data->isArray);
+        self::assertTrue($data->convert);
+        self::assertFalse($data->isArray);
     }
 
     public function testNoConvert(): void
@@ -54,8 +54,8 @@ class CastTest extends TestCase
         $data  = new Cast($value, convert: false);
 
         self::assertSame($value, $data->type);
-        self::assertSame(false, $data->convert);
-        self::assertSame(false, $data->isArray);
+        self::assertFalse($data->convert);
+        self::assertFalse($data->isArray);
     }
 
     public function testArray(): void
@@ -64,8 +64,8 @@ class CastTest extends TestCase
         $data  = new Cast($value, isArray: true);
 
         self::assertSame($value, $data->type);
-        self::assertSame(true, $data->convert);
-        self::assertSame(true, $data->isArray);
+        self::assertTrue($data->convert);
+        self::assertTrue($data->isArray);
     }
 
     public function testJsonSerialize(): void
