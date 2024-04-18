@@ -117,6 +117,8 @@ class Cls
      * Get a service that can be defaulted whereby the default class exists in the container and has the same
      *  constructor parameters as the service to return.
      *
+     * Note: Must be used on a closure service.
+     *
      * @template T
      * @template D
      *
@@ -127,8 +129,12 @@ class Cls
      *
      * @return T|D
      */
-    public static function getDefaultableService(Container $container, string $class, string $defaultClass, array $arguments = []): object
-    {
+    public static function getDefaultableService(
+        Container $container,
+        string $class,
+        string $defaultClass,
+        array $arguments = []
+    ): object {
         if ($container->has($class)) {
             return $container->get(
                 $class,

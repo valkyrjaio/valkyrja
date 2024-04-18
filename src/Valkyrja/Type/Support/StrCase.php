@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Support;
 
+use function ctype_lower;
 use function preg_replace;
 use function strtolower;
 use function strtoupper;
 use function ucwords;
-use function Valkyrja\Type\ctype_lower;
 
 /**
  * Class StrCase.
@@ -32,6 +32,13 @@ class StrCase
      * @var array<string, string>
      */
     protected static array $studlyCache = [];
+
+    /**
+     * Slug case conversion cache.
+     *
+     * @var array<string, string>
+     */
+    protected static array $slugCache = [];
 
     /**
      * Snake case conversion cache.
@@ -182,7 +189,7 @@ class StrCase
         }
 
         if (! ctype_lower($subject)) {
-            $subject = preg_replace('/\s+/u', '', ucwords($subject));
+            $subject = preg_replace('/\s+/u', '', static::toCapitalizedWords($subject));
 
             $subject = static::toLowerCase(preg_replace('/(.)(?=[A-Z])/u', '$1_', $subject));
         }
@@ -213,17 +220,17 @@ class StrCase
     {
         $key = $subject;
 
-        if (isset(static::$snakeCache[$key])) {
-            return static::$snakeCache[$key];
+        if (isset(static::$slugCache[$key])) {
+            return static::$slugCache[$key];
         }
 
         if (! ctype_lower($subject)) {
-            $subject = preg_replace('/\s+/u', '', ucwords($subject));
+            $subject = preg_replace('/\s+/u', '', static::toCapitalizedWords($subject));
 
             $subject = static::toLowerCase(preg_replace('/(.)(?=[A-Z])/u', '$1-', $subject));
         }
 
-        return static::$snakeCache[$key] = $subject;
+        return static::$slugCache[$key] = $subject;
     }
 
     /**
@@ -298,7 +305,7 @@ class StrCase
     protected static function allTo(string $method, string ...$subjects): array
     {
         foreach ($subjects as $key => $string) {
-            $subjects[$key] = static::$$method($string);
+            $subjects[$key] = static::$method($string);
         }
 
         return $subjects;

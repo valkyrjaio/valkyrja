@@ -18,6 +18,8 @@ use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\Support\Uuid as Helper;
 use Valkyrja\Type\Types\Uuid as Id;
 
+use function json_encode;
+
 class UuidTest extends TestCase
 {
     /**
@@ -68,5 +70,44 @@ class UuidTest extends TestCase
         $id = new Id(Helper::v6());
 
         self::assertTrue(Helper::isValid($id->asValue()));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testAsFlatValue(): void
+    {
+        $id = new Id(Helper::v1());
+
+        self::assertTrue(Helper::isValid($id->asFlatValue()));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testModify(): void
+    {
+        $value    = Helper::v1();
+        $type     = new Id($value);
+        $newValue = Helper::v1();
+
+        $modified = $type->modify(static fn (string $subject): string => $newValue);
+
+        self::assertNotSame($type->asValue(), $modified->asValue());
+        // Original should be unmodified
+        self::assertSame($value, $type->asValue());
+        // New should be modified
+        self::assertSame($newValue, $modified->asValue());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testIntJsonSerialize(): void
+    {
+        $value = Helper::v1();
+        $type  = new Id($value);
+
+        self::assertSame(json_encode($value), json_encode($type));
     }
 }

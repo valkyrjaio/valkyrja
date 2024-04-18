@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Support;
 
 use JsonException;
+use stdClass;
 
 use function count;
 use function explode;
@@ -74,14 +75,20 @@ class Obj
     /**
      * Un-convert an object from a serialized string.
      *
-     * @param string         $subject        The subject object as a string
-     * @param class-string[] $allowedClasses The allowed classes to be unserialized
+     * @param string              $subject        The subject object as a string
+     * @param class-string[]|null $allowedClasses The allowed classes to be unserialized
      *
      * @return object
      */
-    public static function fromSerializedString(string $subject, array $allowedClasses = []): object
+    public static function fromSerializedString(string $subject, array|null $allowedClasses = [stdClass::class]): object
     {
-        return unserialize($subject, ['allowed_classes' => $allowedClasses]);
+        $options = [];
+
+        if ($allowedClasses !== null) {
+            $options['allowed_classes'] = $allowedClasses;
+        }
+
+        return unserialize($subject, $options);
     }
 
     /**

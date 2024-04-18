@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests;
 
 /**
- * Class Env hi.
+ * Class Env.
  *
  * @author Melech Mizrachi
  */

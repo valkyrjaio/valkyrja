@@ -13,10 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Model;
 
+use JsonException;
+use RuntimeException;
+use Valkyrja\Model\CastableModel as Contract;
+use Valkyrja\Model\Model as ModelContract;
 use Valkyrja\Tests\Classes\Enums\Enum;
 use Valkyrja\Tests\Classes\Enums\IntEnum;
 use Valkyrja\Tests\Classes\Enums\StringEnum;
 use Valkyrja\Tests\Classes\Model\CastableModel;
+use Valkyrja\Tests\Classes\Model\EmptyCastableModel;
 use Valkyrja\Tests\Classes\Model\Model;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\Types\ArrayT;
@@ -33,6 +38,12 @@ use Valkyrja\Type\Types\SerializedObject;
 use Valkyrja\Type\Types\StringT;
 use Valkyrja\Type\Types\TrueT;
 
+use function json_decode;
+use function json_encode;
+use function method_exists;
+
+use const JSON_THROW_ON_ERROR;
+
 /**
  * Test the castable model.
  *
@@ -40,6 +51,15 @@ use Valkyrja\Type\Types\TrueT;
  */
 class CastableModelTest extends TestCase
 {
+    public function testContract(): void
+    {
+        self::assertTrue(method_exists(Contract::class, 'getCastings'));
+        self::isA(ModelContract::class, Contract::class);
+    }
+
+    /**
+     * @throws JsonException
+     */
     public function testArrayCast(): void
     {
         $value = ['test'];
@@ -49,7 +69,7 @@ class CastableModelTest extends TestCase
         // Test an ArrayT object directly
         $this->propertyTest(CastableModel::ARRAY_PROPERTY, new ArrayT($value), $value);
         // Test a stringified array
-        $this->propertyTest(CastableModel::ARRAY_PROPERTY, json_encode($value), $value);
+        $this->propertyTest(CastableModel::ARRAY_PROPERTY, json_encode($value, JSON_THROW_ON_ERROR), $value);
         // Test an array of arrays
         $this->propertyTest(CastableModel::ARRAY_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of ArrayT objects
@@ -57,7 +77,7 @@ class CastableModelTest extends TestCase
         // Test an array of stringified arrays
         $this->propertyTest(
             CastableModel::ARRAY_ARRAY_PROPERTY,
-            [json_encode($value), json_encode($value)],
+            [json_encode($value, JSON_THROW_ON_ERROR), json_encode($value, JSON_THROW_ON_ERROR)],
             [$value, $value]
         );
     }
@@ -209,6 +229,9 @@ class CastableModelTest extends TestCase
         $this->propertyTest(CastableModel::STRING_ARRAY_PROPERTY, [(bool) $value], ['']);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testObjectCast(): void
     {
         $value = new class() {
@@ -221,7 +244,12 @@ class CastableModelTest extends TestCase
         $this->propertyTest(CastableModel::OBJECT_PROPERTY, new ObjectT($value), $value);
 
         // Test a stringified object
-        $model = $this->propertyTest(CastableModel::OBJECT_PROPERTY, json_encode($value), $value, true);
+        $model = $this->propertyTest(
+            CastableModel::OBJECT_PROPERTY,
+            json_encode($value, JSON_THROW_ON_ERROR),
+            $value,
+            true
+        );
         self::assertIsObject($model->object);
         self::assertObjectHasProperty('test', $model->object);
 
@@ -233,7 +261,7 @@ class CastableModelTest extends TestCase
         // Test an array of stringified objects
         $model = $this->propertyTest(
             CastableModel::OBJECT_ARRAY_PROPERTY,
-            [json_encode($value), json_encode($value)],
+            [json_encode($value, JSON_THROW_ON_ERROR), json_encode($value, JSON_THROW_ON_ERROR)],
             [$value, $value],
             true
         );
@@ -272,6 +300,9 @@ class CastableModelTest extends TestCase
         self::assertIsObject($model->serializedObjectArray[1] ?? null);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testJsonCast(): void
     {
         $value = ['test'];
@@ -281,7 +312,7 @@ class CastableModelTest extends TestCase
         // Test a JsonT object directly
         $this->propertyTest(CastableModel::JSON_PROPERTY, new Json($value), $value);
         // Test a stringified json array
-        $this->propertyTest(CastableModel::JSON_PROPERTY, json_encode($value), $value);
+        $this->propertyTest(CastableModel::JSON_PROPERTY, json_encode($value, JSON_THROW_ON_ERROR), $value);
         // Test an array of json arrays
         $this->propertyTest(CastableModel::JSON_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of JsonT objects
@@ -289,11 +320,14 @@ class CastableModelTest extends TestCase
         // Test an array of stringified json arrays
         $this->propertyTest(
             CastableModel::JSON_ARRAY_PROPERTY,
-            [json_encode($value), json_encode($value)],
+            [json_encode($value, JSON_THROW_ON_ERROR), json_encode($value, JSON_THROW_ON_ERROR)],
             [$value, $value]
         );
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testJsonObjectCast(): void
     {
         $value = new class() {
@@ -306,7 +340,12 @@ class CastableModelTest extends TestCase
         $this->propertyTest(CastableModel::JSON_OBJECT_PROPERTY, new JsonObject($value), $value);
 
         // Test a stringified object
-        $model = $this->propertyTest(CastableModel::JSON_OBJECT_PROPERTY, json_encode($value), $value, true);
+        $model = $this->propertyTest(
+            CastableModel::JSON_OBJECT_PROPERTY,
+            json_encode($value, JSON_THROW_ON_ERROR),
+            $value,
+            true
+        );
         self::assertIsObject($model->jsonObject);
         self::assertObjectHasProperty('test', $model->jsonObject);
 
@@ -318,7 +357,7 @@ class CastableModelTest extends TestCase
         // Test an array of stringified objects
         $model = $this->propertyTest(
             CastableModel::JSON_OBJECT_ARRAY_PROPERTY,
-            [json_encode($value), json_encode($value)],
+            [json_encode($value, JSON_THROW_ON_ERROR), json_encode($value, JSON_THROW_ON_ERROR)],
             [$value, $value],
             true
         );
@@ -347,7 +386,12 @@ class CastableModelTest extends TestCase
         // Test an array
         $this->propertyTest(CastableModel::TRUE_PROPERTY, [], true);
         // Test an object
-        $this->propertyTest(CastableModel::TRUE_PROPERTY, new class() {}, true);
+        $this->propertyTest(
+            CastableModel::TRUE_PROPERTY,
+            new class() {
+            },
+            true
+        );
         // Test an array of true
         $this->propertyTest(CastableModel::TRUE_ARRAY_PROPERTY, [true], [true]);
         // Test an array of TrueT objects
@@ -363,7 +407,10 @@ class CastableModelTest extends TestCase
         // Test an array of arrays
         $this->propertyTest(CastableModel::TRUE_ARRAY_PROPERTY, [[]], [true]);
         // Test an array of objects
-        $this->propertyTest(CastableModel::TRUE_ARRAY_PROPERTY, [new class() {}], [true]);
+        $this->propertyTest(CastableModel::TRUE_ARRAY_PROPERTY, [
+            new class() {
+            },
+        ], [true]);
     }
 
     public function testFalseCast(): void
@@ -385,7 +432,12 @@ class CastableModelTest extends TestCase
         // Test an array
         $this->propertyTest(CastableModel::FALSE_PROPERTY, [], false);
         // Test an object
-        $this->propertyTest(CastableModel::FALSE_PROPERTY, new class() {}, false);
+        $this->propertyTest(
+            CastableModel::FALSE_PROPERTY,
+            new class() {
+            },
+            false
+        );
         // Test an array of false
         $this->propertyTest(CastableModel::FALSE_ARRAY_PROPERTY, [false], [false]);
         // Test an array of FalseT objects
@@ -401,7 +453,10 @@ class CastableModelTest extends TestCase
         // Test an array of arrays
         $this->propertyTest(CastableModel::FALSE_ARRAY_PROPERTY, [[]], [false]);
         // Test an array of objects
-        $this->propertyTest(CastableModel::FALSE_ARRAY_PROPERTY, [new class() {}], [false]);
+        $this->propertyTest(CastableModel::FALSE_ARRAY_PROPERTY, [
+            new class() {
+            },
+        ], [false]);
     }
 
     public function testNullCast(): void
@@ -424,7 +479,12 @@ class CastableModelTest extends TestCase
         // Test an array
         $this->propertyTest(CastableModel::NULL_PROPERTY, [], $value);
         // Test an object
-        $this->propertyTest(CastableModel::NULL_PROPERTY, new class() {}, $value);
+        $this->propertyTest(
+            CastableModel::NULL_PROPERTY,
+            new class() {
+            },
+            $value
+        );
         // Test an array of null
         $this->propertyTest(CastableModel::NULL_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of NullT objects
@@ -440,9 +500,15 @@ class CastableModelTest extends TestCase
         // Test an array of arrays
         $this->propertyTest(CastableModel::NULL_ARRAY_PROPERTY, [[]], [$value]);
         // Test an array of objects
-        $this->propertyTest(CastableModel::NULL_ARRAY_PROPERTY, [new class() {}], [$value]);
+        $this->propertyTest(CastableModel::NULL_ARRAY_PROPERTY, [
+            new class() {
+            },
+        ], [$value]);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testModelCast(): void
     {
         $value = new Model();
@@ -455,7 +521,12 @@ class CastableModelTest extends TestCase
         self::assertIsObject($model->model);
 
         // Test an json encoded model
-        $model = $this->propertyTest(CastableModel::MODEL_PROPERTY, json_encode($model), $value, true);
+        $model = $this->propertyTest(
+            CastableModel::MODEL_PROPERTY,
+            json_encode($model, JSON_THROW_ON_ERROR),
+            $value,
+            true
+        );
         self::assertIsObject($model->model);
 
         // Test an array of models
@@ -474,7 +545,7 @@ class CastableModelTest extends TestCase
         // Test an array of json encoded models
         $model = $this->propertyTest(
             CastableModel::MODEL_ARRAY_PROPERTY,
-            [json_encode($value), json_encode($value)],
+            [json_encode($value, JSON_THROW_ON_ERROR), json_encode($value, JSON_THROW_ON_ERROR)],
             [$value, $value],
             true
         );
@@ -482,10 +553,13 @@ class CastableModelTest extends TestCase
         self::assertIsObject($model->modelArray[1] ?? null);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testEnumCast(): void
     {
         $value   = Enum::club;
-        $decoded = json_decode(json_encode($value));
+        $decoded = json_decode(json_encode($value, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
 
         // Test an Enum
         $this->propertyTest(CastableModel::ENUM_PROPERTY, $value, $value);
@@ -509,10 +583,13 @@ class CastableModelTest extends TestCase
         );
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testStringEnumCast(): void
     {
         $value   = StringEnum::foo;
-        $decoded = json_decode(json_encode($value));
+        $decoded = json_decode(json_encode($value, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
 
         // Test an Enum
         $this->propertyTest(CastableModel::STRING_ENUM_PROPERTY, $value, $value);
@@ -536,10 +613,13 @@ class CastableModelTest extends TestCase
         );
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testIntEnumCast(): void
     {
         $value   = IntEnum::first;
-        $decoded = json_decode(json_encode($value));
+        $decoded = json_decode(json_encode($value, JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
 
         // Test an Enum
         $this->propertyTest(CastableModel::INT_ENUM_PROPERTY, $value, $value);
@@ -563,6 +643,21 @@ class CastableModelTest extends TestCase
         );
     }
 
+    public function testDefaultEmptyCastings(): void
+    {
+        $model = new EmptyCastableModel();
+
+        self::assertEmpty(EmptyCastableModel::getCastings());
+        self::assertEmpty($model::getCastings());
+    }
+
+    public function testModifyValueClosure(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        EmptyCastableModel::fromArray(['pie' => 'yes']);
+    }
+
     /**
      * Test a property.
      *
@@ -573,8 +668,12 @@ class CastableModelTest extends TestCase
      *
      * @return CastableModel
      */
-    protected function propertyTest(string $property, mixed $testValue, mixed $expectedValue, bool $skipTest = false): CastableModel
-    {
+    protected function propertyTest(
+        string $property,
+        mixed $testValue,
+        mixed $expectedValue,
+        bool $skipTest = false
+    ): CastableModel {
         $model = CastableModel::fromArray(
             [
                 $property => $testValue,

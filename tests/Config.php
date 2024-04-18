@@ -23,6 +23,8 @@ use Valkyrja\Config\Constants\ConfigValue;
  */
 class Config extends Valkyrja
 {
+    public Config $new;
+
     public function __construct()
     {
         parent::__construct(ConfigValue::$defaults, true);

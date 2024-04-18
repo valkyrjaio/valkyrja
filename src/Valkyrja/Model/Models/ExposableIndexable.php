@@ -25,6 +25,8 @@ trait ExposableIndexable
 
     /**
      * @inheritDoc
+     *
+     * @param string ...$properties [optional] An array of properties to return
      */
     public function asExposedIndexedArray(string ...$properties): array
     {

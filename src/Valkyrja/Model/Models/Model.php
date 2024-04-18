@@ -76,7 +76,7 @@ abstract class Model implements Contract
      */
     public static function fromArray(array $properties): static
     {
-        $model = new static();
+        $model = static::internalGetNew($properties);
 
         $model->internalSetProperties($properties);
 
@@ -100,6 +100,18 @@ abstract class Model implements Contract
 
         /** @var array<string, mixed> $value */
         return static::fromArray($value);
+    }
+
+    /**
+     * Get a new static instance.
+     *
+     * @param array<string, mixed> $properties The properties
+     *
+     * @return static
+     */
+    protected static function internalGetNew(array $properties): static
+    {
+        return new static();
     }
 
     /**
@@ -159,6 +171,41 @@ abstract class Model implements Contract
     }
 
     /**
+     * @inheritDoc
+     */
+    public function offsetExists($offset): bool
+    {
+        /** @var string $offset */
+        return isset($this->{$offset});
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetGet($offset): mixed
+    {
+        /** @var string $offset */
+        return $this->__get($offset);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetSet($offset, $value): void
+    {
+        /** @var string $offset */
+        $this->__set($offset, $value);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetUnset(mixed $offset): void
+    {
+        unset($this->{$offset});
+    }
+
+    /**
      * Determine whether the model has a property.
      *
      * @param string $property The property
@@ -193,7 +240,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
-    public function modify(Closure $closure): static
+    public function modify(callable $closure): static
     {
         $new = clone $this;
 
@@ -220,6 +267,10 @@ abstract class Model implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param string ...$properties [optional] An array of properties to return
+     *
+     * @return array<string, mixed>
      */
     public function asArray(string ...$properties): array
     {
@@ -284,29 +335,48 @@ abstract class Model implements Contract
      */
     public function __clone()
     {
-        $this->internalOriginalPropertiesSet();
+        $this->internalSetOriginalPropertiesSetProperty();
     }
 
     /**
      * Set properties from an array of properties.
      *
-     * @param array<string, mixed> $properties The properties to set
+     * @param array<string, mixed>               $properties  The properties to set
+     * @param Closure(string, mixed): mixed|null $modifyValue [optional] The closure to modify the value before setting
      *
      * @return void
      */
-    protected function internalSetProperties(array $properties): void
+    protected function internalSetProperties(array $properties, ?Closure $modifyValue = null): void
     {
         array_walk(
             $properties,
-            function (mixed $value, string $property): void {
-                if ($this->hasProperty($property)) {
-                    // Set the property
-                    $this->__set($property, $value);
-                }
+            function (mixed $value, string $property) use ($modifyValue): void {
+                $this->internalSetIfPropertyExists(
+                    $property,
+                    $modifyValue !== null
+                        ? $modifyValue($property, $value)
+                        : $value
+                );
             }
         );
 
-        $this->internalOriginalPropertiesSet();
+        $this->internalSetOriginalPropertiesSetProperty();
+    }
+
+    /**
+     * Set a property if it exists.
+     *
+     * @param string $property The property
+     * @param mixed  $value    The value
+     *
+     * @return void
+     */
+    protected function internalSetIfPropertyExists(string $property, mixed $value): void
+    {
+        if ($this->hasProperty($property)) {
+            // Set the property
+            $this->__set($property, $value);
+        }
     }
 
     /**
@@ -314,7 +384,7 @@ abstract class Model implements Contract
      *
      * @return void
      */
-    protected function internalOriginalPropertiesSet(): void
+    protected function internalSetOriginalPropertiesSetProperty(): void
     {
         $this->internalOriginalPropertiesSet = true;
     }

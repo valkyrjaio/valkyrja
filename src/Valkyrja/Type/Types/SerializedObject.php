@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Types;
 
-use Closure;
 use JsonException;
 use Valkyrja\Type\SerializedObject as Contract;
 use Valkyrja\Type\Support\Obj as Helper;
@@ -85,7 +84,7 @@ class SerializedObject extends Type implements Contract
      *
      * @throws JsonException
      */
-    public function modify(Closure $closure): static
+    public function modify(callable $closure): static
     {
         return static::fromValue($closure(clone $this->subject));
     }

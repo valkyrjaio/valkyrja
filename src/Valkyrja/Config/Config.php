@@ -108,16 +108,6 @@ abstract class Config extends Model implements ArrayAccess
     }
 
     /**
-     * Get the env keys.
-     *
-     * @return string[]
-     */
-    protected function getEnvKeys(): array
-    {
-        return static::$envKeys;
-    }
-
-    /**
      * Set properties from env.
      *
      * @return void
@@ -125,7 +115,7 @@ abstract class Config extends Model implements ArrayAccess
     protected function setPropertiesFromEnv(): void
     {
         foreach (static::$envKeys as $property => $value) {
-            $this->__set($property, env(static::$envKeys[$property]) ?? $this->__get($property));
+            $this->__set($property, env($value) ?? $this->__get($property));
         }
     }
 }

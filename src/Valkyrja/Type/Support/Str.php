@@ -318,7 +318,7 @@ class Str
     protected static function withAny(string $method, string $subject, string ...$needles): bool
     {
         foreach ($needles as $needle) {
-            if (static::$$method($subject, $needle)) {
+            if (static::$method($subject, $needle)) {
                 return true;
             }
         }

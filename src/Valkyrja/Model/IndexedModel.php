@@ -25,14 +25,28 @@ interface IndexedModel extends Model
      *
      * <code>
      *  [
-     *      'propertyName' => 0,
-     *      'otherPropertyName' => 1,
+     *      'property_name' => 0,
+     *      'other_property_name' => 1,
      *  ]
      * </code>
      *
      * @return array<string, int>
      */
     public static function getIndexes(): array;
+
+    /**
+     * Get the reversed index map for all properties in the model.
+     *
+     * <code>
+     *  [
+     *      'property_name' => 0,
+     *      'other_property_name' => 1,
+     *  ]
+     * </code>
+     *
+     * @return array<int, string>
+     */
+    public static function getReversedIndexes(): array;
 
     /**
      * Get a mapped array from a given indexed array of properties.

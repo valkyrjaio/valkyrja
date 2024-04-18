@@ -127,7 +127,7 @@ class ApplicationTest extends TestCase
         $config = new Config();
         $this->app->addConfig($config, 'new');
 
-        self::assertTrue(isset($this->app->config()['new']));
+        self::assertSame($config, $this->app->config()['new'] ?? null);
     }
 
     /**

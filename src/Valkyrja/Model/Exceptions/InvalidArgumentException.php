@@ -20,6 +20,6 @@ use Valkyrja\Exception\InvalidArgumentException as Exception;
  *
  * @author Melech Mizrachi
  */
-class InvalidArgumentException extends Exception
+class InvalidArgumentException extends Exception implements Throwable
 {
 }

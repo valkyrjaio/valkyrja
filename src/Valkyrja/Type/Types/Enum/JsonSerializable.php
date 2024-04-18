@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Types\Enum;
 
-use UnitEnum;
+use BackedEnum;
 
 /**
  * Trait JsonSerializable.
@@ -27,10 +27,10 @@ trait JsonSerializable
      */
     public function jsonSerialize(): string|int
     {
-        if ($this instanceof UnitEnum) {
-            return $this->name;
+        if ($this instanceof BackedEnum) {
+            return $this->value;
         }
 
-        return $this->value;
+        return $this->name;
     }
 }

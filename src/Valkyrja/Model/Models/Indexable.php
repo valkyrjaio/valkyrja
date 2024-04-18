@@ -21,6 +21,20 @@ namespace Valkyrja\Model\Models;
 trait Indexable
 {
     /**
+     * Local cache for reversed indexes.
+     *
+     * <code>
+     *      static::class => [
+     *           0 => 'property_name',
+     *           1 => 'other_property_name',
+     *      ]
+     * </code>
+     *
+     * @var array<string, array<int, string>>
+     */
+    protected static array $indexes = [];
+
+    /**
      * @inheritDoc
      *
      * @return array<string, int>
@@ -33,17 +47,35 @@ trait Indexable
     /**
      * @inheritDoc
      *
+     * @return array<int, string>
+     */
+    public static function getReversedIndexes(): array
+    {
+        return self::$indexes[static::class]
+            ??= array_flip(static::getIndexes());
+    }
+
+    /**
+     * @inheritDoc
+     *
      * @return array<string, mixed>
      */
     public static function getMappedArrayFromIndexedArray(array $properties = []): array
     {
         $mappedProperties = [];
+        $indexes          = static::getIndexes();
+        $reversedIndexes  = static::getReversedIndexes();
 
-        foreach (static::getIndexes() as $name => $index) {
-            if (isset($properties[$index])) {
-                $mappedProperties[$name] = $properties[$index];
+        foreach ($properties as $index => $value) {
+            $name = $reversedIndexes[$index] ?? null;
+
+            if ($name !== null) {
+                $mappedProperties[$name] = $value;
             }
         }
+
+        // Sort the array by index
+        uksort($mappedProperties, static fn (string $a, string $b): int => $indexes[$a] <=> $indexes[$b]);
 
         return $mappedProperties;
     }
@@ -56,12 +88,17 @@ trait Indexable
     public static function getIndexedArrayFromMappedArray(array $properties = []): array
     {
         $indexedArray = [];
+        $indexes      = static::getIndexes();
 
-        foreach (static::getIndexes() as $name => $index) {
-            if (isset($properties[$name])) {
-                $indexedArray[$index] = $properties[$name];
+        foreach ($properties as $name => $value) {
+            $index = $indexes[$name] ?? null;
+            if ($index !== null) {
+                $indexedArray[$index] = $value;
             }
         }
+
+        // Sort the array by index
+        ksort($indexedArray);
 
         return $indexedArray;
     }
@@ -98,6 +135,8 @@ trait Indexable
 
     /**
      * @inheritDoc
+     *
+     * @param string ...$properties [optional] An array of properties to return
      *
      * @return array<int, mixed>
      */

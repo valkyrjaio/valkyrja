@@ -30,6 +30,6 @@ class OriginalArrayCast extends Cast
      */
     public function __construct(CastType|string $type)
     {
-        parent::__construct($type, true, true);
+        parent::__construct($type, false, true);
     }
 }

@@ -25,7 +25,7 @@ trait UnpackForNewInstance
      *
      * @return static
      */
-    protected static function __getNew(array $properties): static
+    protected static function internalGetNew(array $properties): static
     {
         return new static(...$properties);
     }

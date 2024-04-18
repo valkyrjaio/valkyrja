@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model;
 
+use ArrayAccess;
 use Valkyrja\Type\Type;
 
 /**
@@ -20,9 +21,10 @@ use Valkyrja\Type\Type;
  *
  * @author Melech Mizrachi
  *
+ * @extends ArrayAccess<string, mixed>
  * @extends Type<static>
  */
-interface Model extends Type
+interface Model extends ArrayAccess, Type
 {
     /**
      * Set properties from an array of properties.

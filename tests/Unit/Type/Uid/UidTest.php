@@ -13,16 +13,62 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Uid;
 
+use Exception;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\Support\Uid as Helper;
 use Valkyrja\Type\Types\Uid;
 
+use function json_encode;
+
 class UidTest extends TestCase
 {
-    public function testValidation(): void
+    public function testConstruct(): void
     {
         $id = new Uid('abc123');
 
         self::assertTrue(Helper::isValid($id->asValue()));
+    }
+
+    public function testFromValue(): void
+    {
+        $id = Uid::fromValue('abc123');
+
+        self::assertTrue(Helper::isValid($id->asValue()));
+    }
+
+    public function testAsFlatValue(): void
+    {
+        $id = new Uid('abc123');
+
+        self::assertTrue(Helper::isValid($id->asFlatValue()));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testModify(): void
+    {
+        $value    = 'abc123';
+        $type     = new Uid($value);
+        $newValue = 'def456';
+
+        $modified = $type->modify(static fn (string $subject): string => $newValue);
+
+        self::assertNotSame($type->asValue(), $modified->asValue());
+        // Original should be unmodified
+        self::assertSame($value, $type->asValue());
+        // New should be modified
+        self::assertSame($newValue, $modified->asValue());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testIntJsonSerialize(): void
+    {
+        $value = 'abc123';
+        $type  = new Uid($value);
+
+        self::assertSame(json_encode($value), json_encode($type));
     }
 }

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Model;
 
-use Valkyrja\Model\CastableModel as Contract;
 use Valkyrja\Model\Data\ArrayCast;
 use Valkyrja\Model\Data\Cast;
 use Valkyrja\Model\Data\OriginalArrayCast;
@@ -25,13 +24,13 @@ use Valkyrja\Tests\Classes\Enums\IntEnum;
 use Valkyrja\Tests\Classes\Enums\StringEnum;
 
 /**
- * Model class to use to test Exposable model.
+ * Model class to use to test Castable model.
  *
  * @author Melech Mizrachi
  *
  * @property string $protected
  */
-class CastableModel extends AbstractModel implements Contract
+class CastableModel extends AbstractModel
 {
     public const ARRAY_PROPERTY                   = 'array';
     public const ARRAY_ARRAY_PROPERTY             = 'arrayArray';

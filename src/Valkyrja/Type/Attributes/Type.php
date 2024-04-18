@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Attributes;
 
 use Attribute;
-use Valkyrja\Type\Enums\Type as TypeEnum;
+use Valkyrja\Type\Type as TypeContract;
 
 /**
  * Attribute Type.
@@ -25,7 +25,7 @@ use Valkyrja\Type\Enums\Type as TypeEnum;
 class Type
 {
     public function __construct(
-        public TypeEnum $type
+        public TypeContract $type
     ) {
     }
 }

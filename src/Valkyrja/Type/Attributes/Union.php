@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Attributes;
 
 use Attribute;
-use Valkyrja\Type\Enums\Type;
+use Valkyrja\Type\Type as TypeContract;
 
 /**
  * Attribute Union.
@@ -25,11 +25,11 @@ use Valkyrja\Type\Enums\Type;
 class Union
 {
     /**
-     * @var array<array-key, Intersection|self|Type>
+     * @var array<int, Intersection|self|TypeContract>
      */
     public array $types = [];
 
-    public function __construct(Type|Intersection|self ...$types)
+    public function __construct(TypeContract|Intersection|self ...$types)
     {
         $this->types = $types;
     }

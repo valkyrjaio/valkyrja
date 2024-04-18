@@ -21,7 +21,10 @@ use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Message;
 use Valkyrja\Routing\Route as Contract;
 
+use function array_map;
+use function array_walk;
 use function assert;
+use function is_a;
 use function is_array;
 
 /**
@@ -253,16 +256,16 @@ class Route extends Dispatch implements Contract
     {
         // If this is an array of arrays vs an array of Parameter models
         if (is_array($parameters[0] ?? null)) {
-            foreach ($parameters as $key => $parameter) {
-                if (is_array($parameter)) {
-                    // Convert each array to a Parameter model
-                    $parameters[$key] = Parameter::fromArray($parameter);
-                }
-            }
+            $parameters = array_map(
+                static fn (Parameter|array $parameter) => is_array($parameter)
+                    ? Parameter::fromArray($parameter)
+                    : $parameter,
+                $parameters
+            );
         }
 
         /** @var Parameter[] $parameters */
-        $this->__setParameters(...$parameters);
+        $this->internalSetParameters(...$parameters);
 
         return $this;
     }
@@ -345,7 +348,7 @@ class Route extends Dispatch implements Contract
      */
     public function setMessages(array|null $messages = null): static
     {
-        $this->__setMessages(...$messages);
+        $this->internalSetMessages(...$messages);
 
         return $this;
     }
@@ -357,7 +360,7 @@ class Route extends Dispatch implements Contract
     {
         $route = clone $this;
 
-        $route->__setMessages(...array_merge($this->messages ?? [], $messages));
+        $route->internalSetMessages(...array_merge($this->messages ?? [], $messages));
 
         return $route;
     }
@@ -431,7 +434,7 @@ class Route extends Dispatch implements Contract
      *
      * @return void
      */
-    protected function __setParameters(Parameter ...$parameters): void
+    protected function internalSetParameters(Parameter ...$parameters): void
     {
         $this->parameters = $parameters;
     }
@@ -443,11 +446,9 @@ class Route extends Dispatch implements Contract
      *
      * @return void
      */
-    protected function __setMessages(string ...$messages): void
+    protected function internalSetMessages(string ...$messages): void
     {
-        foreach ($messages as $message) {
-            assert(is_a($message, Message::class, true));
-        }
+        array_walk($messages, static fn (string $message) => assert(is_a($message, Message::class, true)));
 
         $this->messages = $messages;
     }

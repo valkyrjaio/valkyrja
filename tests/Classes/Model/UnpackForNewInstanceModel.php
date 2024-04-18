@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Model;
 
 use Valkyrja\Model\Models\Model as AbstractModel;
+use Valkyrja\Model\Models\UnpackForNewInstance;
 
 /**
  * Model class to use to test UnpackForNewInstance model.
@@ -25,6 +26,7 @@ use Valkyrja\Model\Models\Model as AbstractModel;
 class UnpackForNewInstanceModel extends AbstractModel
 {
     use PrivateProperty;
+    use UnpackForNewInstance;
 
     public function __construct(
         public string $public,

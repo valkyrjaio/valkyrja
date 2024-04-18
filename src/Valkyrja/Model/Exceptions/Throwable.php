@@ -11,16 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Model\Models;
+namespace Valkyrja\Model\Exceptions;
 
-use Valkyrja\Model\MessageCapableModel as Contract;
+use Valkyrja\Exception\Throwable as Contract;
 
 /**
- * Class MessageCapableModel.
+ * Class Throwable.
  *
  * @author Melech Mizrachi
  */
-abstract class MessageCapableModel extends Model implements Contract
+interface Throwable extends Contract
 {
-    use MessageCapable;
 }

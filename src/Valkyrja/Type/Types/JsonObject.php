@@ -64,4 +64,14 @@ class JsonObject extends Type implements Contract
     {
         return Helper::toString($this->subject);
     }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws JsonException
+     */
+    public function modify(callable $closure): static
+    {
+        return static::fromValue($closure(clone $this->subject));
+    }
 }

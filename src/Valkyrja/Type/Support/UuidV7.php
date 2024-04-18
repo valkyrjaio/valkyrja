@@ -17,6 +17,9 @@ use Exception;
 use Valkyrja\Type\Enums\UuidVersion;
 use Valkyrja\Type\Exceptions\InvalidUuidV7Exception;
 
+use function str_replace;
+use function substr;
+
 /**
  * Class UuidV7.
  *
@@ -38,11 +41,28 @@ abstract class UuidV7 extends Uuid
     /**
      * Generate a v7 UUID.
      *
+     * @param string|null $node
+     *
      * @throws Exception
      *
      * @return string
      */
-    abstract public static function generate(): string;
+    public static function generate(string|null $node = null): string
+    {
+        $uuid     = self::v1($node);
+        $uuid     = str_replace('-', '', $uuid);
+        $timeLow1 = substr($uuid, 0, 5);
+        $timeLow2 = substr($uuid, 5, 3);
+        $timeMid  = substr($uuid, 8, 4);
+        $timeHigh = substr($uuid, 13, 3);
+        $rest     = substr($uuid, 16);
+
+        return $timeHigh . $timeMid . $timeLow1[0]
+            . '-' . substr($timeLow1, 1)
+            . '-7' . $timeLow2
+            . '-' . substr($rest, 0, 4)
+            . '-' . substr($rest, 4);
+    }
 
     /**
      * @inheritDoc

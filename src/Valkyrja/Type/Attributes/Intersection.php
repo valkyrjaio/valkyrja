@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Attributes;
 
 use Attribute;
-use Valkyrja\Type\Enums\Type;
+use Valkyrja\Type\Type as TypeContract;
 
 /**
  * Attribute Intersection.
@@ -25,11 +25,11 @@ use Valkyrja\Type\Enums\Type;
 class Intersection
 {
     /**
-     * @var array<array-key, self|Union|Type>
+     * @var array<int, self|Union|TypeContract>
      */
     public array $types = [];
 
-    public function __construct(Type|Union|self ...$types)
+    public function __construct(TypeContract|Union|self ...$types)
     {
         $this->types = $types;
     }

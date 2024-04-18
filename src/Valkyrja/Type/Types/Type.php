@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Types;
 
-use Closure;
 use Valkyrja\Type\Type as Contract;
 
 /**
@@ -56,7 +55,7 @@ abstract class Type implements Contract
     /**
      * @inheritDoc
      */
-    public function modify(Closure $closure): static
+    public function modify(callable $closure): static
     {
         return static::fromValue($closure($this->subject));
     }

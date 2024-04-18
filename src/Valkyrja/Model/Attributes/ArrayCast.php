@@ -28,8 +28,8 @@ class ArrayCast extends Cast
     /**
      * @param CastType|class-string<Type> $type The type
      */
-    public function __construct(CastType|string $type, public bool $isArray = false)
+    public function __construct(CastType|string $type, bool $convert = true)
     {
-        parent::__construct($type, false, $isArray);
+        parent::__construct($type, $convert, true);
     }
 }

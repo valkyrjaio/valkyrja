@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type;
 
-use Closure;
 use JsonSerializable;
 
 /**
@@ -45,7 +44,7 @@ interface Type extends JsonSerializable
     /**
      * Modify the subject and return a new instance to maintain immutability.
      *
-     * @param Closure(T): T $closure The closure
+     * @param callable(T): T $closure The closure
      */
-    public function modify(Closure $closure): static;
+    public function modify(callable $closure): static;
 }

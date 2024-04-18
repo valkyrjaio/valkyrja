@@ -13,25 +13,42 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Model;
 
+use JsonException;
+use Valkyrja\Model\ExposableModel as Contract;
+use Valkyrja\Model\Model as ModelContract;
 use Valkyrja\Tests\Classes\Model\ExposableModel;
 use Valkyrja\Tests\Classes\Model\Model;
+use Valkyrja\Tests\Classes\Model\SimpleExposableModel;
 use Valkyrja\Tests\Unit\TestCase;
+
+use function method_exists;
 
 use const JSON_THROW_ON_ERROR;
 
 /**
- * Test the FullyExposed model.
+ * Test the Exposable model.
  *
  * @author Melech Mizrachi
  */
 class ExposableModelTest extends TestCase
 {
+    public function testContract(): void
+    {
+        self::assertTrue(method_exists(Contract::class, 'getExposable'));
+        self::assertTrue(method_exists(Contract::class, 'asExposedArray'));
+        self::assertTrue(method_exists(Contract::class, 'asExposedChangedArray'));
+        self::assertTrue(method_exists(Contract::class, 'asExposedOnlyArray'));
+        self::assertTrue(method_exists(Contract::class, 'expose'));
+        self::isA(ModelContract::class, Contract::class);
+    }
+
     public function testGetExposable(): void
     {
         self::assertSame([Model::PRIVATE], ExposableModel::getExposable());
+        self::assertSame([], SimpleExposableModel::getExposable());
     }
 
-    public function testAsExposed(): void
+    public function testAsExposedArray(): void
     {
         $model = ExposableModel::fromArray(Model::VALUES);
 
@@ -42,6 +59,11 @@ class ExposableModelTest extends TestCase
         ];
         self::assertSame($expected, $model->asArray());
         self::assertSame(Model::VALUES, $model->asExposedArray());
+    }
+
+    public function testAsExposedChangedArray(): void
+    {
+        $model = ExposableModel::fromArray(Model::VALUES);
 
         $model->private  = 'test';
         $expectedExposed = [Model::PRIVATE => 'test'];
@@ -49,7 +71,7 @@ class ExposableModelTest extends TestCase
         self::assertSame($expectedExposed, $model->asExposedChangedArray());
     }
 
-    public function testAsExposedOnly(): void
+    public function testAsExposedOnlyArray(): void
     {
         $model = ExposableModel::fromArray(Model::VALUES);
 
@@ -89,6 +111,9 @@ class ExposableModelTest extends TestCase
         self::assertSame($expectedExposed, $model->asExposedChangedArray());
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testJsonSerialize(): void
     {
         $model = ExposableModel::fromArray([]);

@@ -22,6 +22,10 @@ use PHPUnit\Framework\TestCase as PHPUnitTestCase;
  */
 class TestCase extends PHPUnitTestCase
 {
+    /**
+     * @param class-string $expected The class inherited
+     * @param class-string $actual   The class to test
+     */
     protected function isA(string $expected, string $actual): void
     {
         self::assertTrue(is_a($actual, $expected, true));

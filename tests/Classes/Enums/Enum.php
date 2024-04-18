@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Classes\Enums;
 use Valkyrja\Type\Enum as Contract;
 
 /**
- * Model class to use to test enums.
+ * Enum class to use to test enums.
  *
  * @author Melech Mizrachi
  */

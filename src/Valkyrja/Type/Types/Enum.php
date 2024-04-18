@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Types;
 
 use BackedEnum;
-use Closure;
 use UnitEnum;
-use Valkyrja\Model\Exceptions\InvalidArgumentException;
-use Valkyrja\Model\Exceptions\RuntimeException;
+use Valkyrja\Type\Exceptions\InvalidArgumentException;
+use Valkyrja\Type\Exceptions\RuntimeException;
 
 /**
  * Trait Enum.
@@ -54,7 +53,7 @@ trait Enum
             }
         }
 
-        throw new InvalidArgumentException("Invalid value `{$value}` provided for enum {$class}");
+        throw new InvalidArgumentException("Invalid value `$value` provided for enum $class");
     }
 
     /**
@@ -84,7 +83,7 @@ trait Enum
     /**
      * @inheritDoc
      */
-    public function modify(Closure $closure): static
+    public function modify(callable $closure): static
     {
         throw new RuntimeException('Cannot modify an enum.');
     }

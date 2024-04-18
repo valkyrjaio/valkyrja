@@ -24,24 +24,6 @@ use UnitEnum;
 interface JsonSerializableEnum extends JsonSerializable, UnitEnum
 {
     /**
-     * Create from json.
-     *
-     * @param string|int $value The value
-     *
-     * @return static
-     */
-    public static function fromJson(string|int $value): static;
-
-    /**
-     * Try to create from json.
-     *
-     * @param string|int $value The value
-     *
-     * @return static|null
-     */
-    public static function tryFromJson(string|int $value): static|null;
-
-    /**
      * Json serialize.
      *
      * @return string|int

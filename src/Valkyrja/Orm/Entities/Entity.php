@@ -23,6 +23,8 @@ use Valkyrja\Orm\Repository;
 use Valkyrja\Type\Support\Arr;
 use Valkyrja\Type\Type;
 
+use function array_walk;
+
 /**
  * Class Entity.
  *
@@ -126,7 +128,11 @@ abstract class Entity extends Model implements Contract
     /**
      * @inheritDoc
      *
+     * @param string ...$properties [optional] An array of properties to return
+     *
      * @throws JsonException
+     *
+     * @return array<string, mixed>
      */
     public function asStorableArray(string ...$properties): array
     {
@@ -140,19 +146,9 @@ abstract class Entity extends Model implements Contract
         /** @var array<string, mixed> $allProperties */
         $allProperties = $this->internalCheckOnlyProperties($allProperties, $properties);
 
-        // Iterate through all the un-storable fields
-        foreach ($unStorableFields as $unStorableHiddenField) {
-            // Remove the un-storable field to the all properties array
-            unset($allProperties[$unStorableHiddenField]);
-        }
+        $this->internalRemoveUnStorableFields($allProperties, $unStorableFields);
 
-        // Iterate through the properties to return
-        foreach ($allProperties as $property => $value) {
-            // Get the value
-            $allProperties[$property] = $this->internalGetPropertyValueForDataStore($castings, $property);
-        }
-
-        return $allProperties;
+        return $this->internalGetPropertyValuesForDataStore($allProperties, $castings);
     }
 
     /**
@@ -174,6 +170,44 @@ abstract class Entity extends Model implements Contract
     {
         /** @var array<string, mixed> */
         return get_object_vars($this);
+    }
+
+    /**
+     * Remove un-storable entity properties from an array of properties.
+     *
+     * @param array<string, mixed> $allProperties    The properties
+     * @param string[]             $unStorableFields The un-storable fields
+     *
+     * @return void
+     */
+    protected function internalRemoveUnStorableFields(array &$allProperties, array $unStorableFields): void
+    {
+        array_walk($unStorableFields, static function (string $unStorableHiddenField) use (&$allProperties): void {
+            // Remove the un-storable field to the all properties array
+            unset($allProperties[$unStorableHiddenField]);
+        });
+    }
+
+    /**
+     * Get property values for data store.
+     *
+     * @param array<string, mixed> $allProperties The properties
+     * @param array<string, Cast>  $castings      The castings
+     *
+     * @throws JsonException
+     *
+     * @return array<string, mixed>
+     */
+    protected function internalGetPropertyValuesForDataStore(array $allProperties, array $castings): array
+    {
+        array_walk(
+            $allProperties,
+            fn (mixed &$value, string $property): mixed => $value
+                = $this->internalGetPropertyValueForDataStore($castings, $property)
+        );
+
+        /** @var array<string, mixed> $allProperties */
+        return $allProperties;
     }
 
     /**

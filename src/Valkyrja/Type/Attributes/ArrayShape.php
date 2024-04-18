@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Attributes;
 
 use Attribute;
+use Valkyrja\Type\Type as TypeContract;
 
 /**
  * Attribute ArrayShape.
@@ -24,7 +25,7 @@ use Attribute;
 class ArrayShape
 {
     /**
-     * @param array<string|int, Type|Union|Intersection> $shape
+     * @param array<string|int, TypeContract|Union|Intersection> $shape
      */
     public function __construct(
         public array $shape = [],

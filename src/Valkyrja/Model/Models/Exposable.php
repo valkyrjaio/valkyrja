@@ -13,10 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model\Models;
 
-use Closure;
-
-use function is_string;
-
 /**
  * Trait Exposable.
  *
@@ -50,10 +46,12 @@ trait Exposable
 
     /**
      * @inheritDoc
+     *
+     * @param string ...$properties [optional] An array of properties to return
      */
     public function asExposedArray(string ...$properties): array
     {
-        return $this->internalArrayWithExposed('asArray', ...$properties);
+        return $this->internalArrayWithExposed([$this, 'asArray'], ...$properties);
     }
 
     /**
@@ -61,7 +59,7 @@ trait Exposable
      */
     public function asExposedChangedArray(): array
     {
-        return $this->internalArrayWithExposed('asChangedArray');
+        return $this->internalArrayWithExposed([$this, 'asChangedArray']);
     }
 
     /**
@@ -69,11 +67,13 @@ trait Exposable
      */
     public function asExposedOnlyArray(): array
     {
-        return $this->internalArrayWithExposed('asArray', ...static::getExposable());
+        return $this->internalArrayWithExposed([$this, 'asArray'], ...static::getExposable());
     }
 
     /**
      * @inheritDoc
+     *
+     * @param string ...$properties The properties to expose
      */
     public function expose(string ...$properties): void
     {
@@ -84,6 +84,8 @@ trait Exposable
 
     /**
      * @inheritDoc
+     *
+     * @param string ...$properties [optional] The properties to unexpose
      */
     public function unexpose(string ...$properties): void
     {
@@ -125,22 +127,18 @@ trait Exposable
     /**
      * Get an array with exposed properties.
      *
-     * @param Closure|string $callable      The callable
-     * @param string         ...$properties The properties
+     * @param callable(string ...$properties): array<string, mixed> $callable      The callable
+     * @param string                                                ...$properties The properties
      *
      * @return array<string, mixed>
      */
-    protected function internalArrayWithExposed(Closure|string $callable, string ...$properties): array
+    protected function internalArrayWithExposed(callable $callable, string ...$properties): array
     {
         $exposable = static::getExposable();
 
         $this->expose(...$exposable);
 
-        if (is_string($callable)) {
-            $array = $this->$callable(...$properties);
-        } else {
-            $array = $callable(...$properties);
-        }
+        $array = $callable(...$properties);
 
         $this->unexpose(...$exposable);
 

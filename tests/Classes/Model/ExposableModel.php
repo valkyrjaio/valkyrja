@@ -35,6 +35,9 @@ class ExposableModel extends AbstractModel implements Contract
 
     protected string $protected;
 
+    /**
+     * @inheritDoc
+     */
     public static function getExposable(): array
     {
         return [

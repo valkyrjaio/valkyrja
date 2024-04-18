@@ -11,16 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Model\Models;
+namespace Valkyrja\Type\Exceptions;
 
-use Valkyrja\Model\AttributedModel as Contract;
+use Valkyrja\Exception\RuntimeException as Exception;
 
 /**
- * Class AttributedModel.
+ * Class RuntimeException.
  *
  * @author Melech Mizrachi
  */
-abstract class AttributedModel extends Model implements Contract
+class RuntimeException extends Exception implements Throwable
 {
-    use Attributable;
 }

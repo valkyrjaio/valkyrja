@@ -16,7 +16,7 @@ namespace Valkyrja\Type\Exceptions;
 use Valkyrja\Exception\Throwable as Contract;
 
 /**
- * Class TypeThrowable.
+ * Class Throwable.
  *
  * @author Melech Mizrachi
  */

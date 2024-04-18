@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model\Models;
 
+use Closure;
 use Valkyrja\Model\Data\Cast;
 use Valkyrja\Type\Type;
 
@@ -50,48 +51,40 @@ trait Castable
     }
 
     /**
-     * Set properties from an array of properties.
+     * @inheritDoc
      *
-     * @param array<string, mixed> $properties The properties to set
-     *
-     * @return void
+     * @param array<string, mixed>                          $properties  The properties to set
+     * @param Closure(string, mixed, Cast|null): mixed|null $modifyValue [optional] The closure to modify the value before setting
      */
-    protected function internalSetProperties(array $properties): void
+    protected function internalSetProperties(array $properties, ?Closure $modifyValue = null): void
     {
-        $castings    = $this->internalGetCastings();
-        $hasCastings = self::$cachedExistsValidations[static::class . 'hasCastings'] ??= ! empty($castings);
+        $castings = $this->internalGetCastings();
 
-        // Iterate through the properties
-        foreach ($properties as $property => $value) {
-            if ($this->hasProperty($property)) {
-                // Set the property
-                $this->__set(
-                    $property,
-                    $hasCastings
-                        ? $this->internalCheckAndCastPropertyValue($castings, $property, $value)
-                        : $value
-                );
-            }
-        }
-
-        $this->internalOriginalPropertiesSet();
+        parent::internalSetProperties(
+            $properties,
+            fn (string $property, mixed $value): mixed => $modifyValue !== null
+                ? $modifyValue($property, $value, $castings[$property] ?? null)
+                : $this->internalCheckAndCastPropertyValue(
+                    $castings[$property] ?? null,
+                    $value
+                )
+        );
     }
 
     /**
-     * Get a property's value by the type (if type is set).
+     * Check and cast a property's value.
      *
-     * @param array<string, Cast> $castings The castings
-     * @param string              $property The property name
-     * @param mixed               $value    The property value
+     * @param Cast|null $cast  The cast
+     * @param mixed     $value The property value
      *
      * @return mixed
      */
-    protected function internalCheckAndCastPropertyValue(array $castings, string $property, mixed $value): mixed
+    protected function internalCheckAndCastPropertyValue(Cast|null $cast, mixed $value): mixed
     {
         // If there is no type specified or the value is null just return the value
-        // Castings assignment is set in the if specifically to avoid an assignment
+        // cast assignment is set in the if specifically to avoid an assignment
         // if the value is null, which would be an unneeded assigned variable
-        if ($value === null || ($cast = $castings[$property] ?? null) === null) {
+        if ($value === null || $cast === null) {
             return $value;
         }
 
@@ -107,7 +100,7 @@ trait Castable
     }
 
     /**
-     * Get a type from value given a type not identified prior.
+     * Cast a property's value.
      *
      * @param Cast  $cast  The cast for the property
      * @param mixed $value The value
@@ -137,7 +130,7 @@ trait Castable
     }
 
     /**
-     * Modify the type before returning it.
+     * Modify the cast value before returning it.
      *
      * @param Type $type The type
      *
