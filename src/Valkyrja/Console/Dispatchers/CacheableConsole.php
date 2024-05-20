@@ -49,7 +49,7 @@ class CacheableConsole extends Console
         $config->commands      = base64_encode(serialize(self::$commands));
         $config->paths         = self::$paths;
         $config->namedCommands = self::$namedCommands;
-        $config->provided      = self::$provided;
+        $config->provided      = $this->provided;
 
         return $config;
     }
@@ -86,7 +86,7 @@ class CacheableConsole extends Console
         );
         self::$paths         = $cache['paths'];
         self::$namedCommands = $cache['namedCommands'];
-        self::$provided      = $cache['provided'];
+        $this->provided      = $cache['provided'];
     }
 
     /**

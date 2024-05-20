@@ -27,35 +27,35 @@ trait ProvidersAwareTrait
      *
      * @var array<string, string>
      */
-    protected static array $provided = [];
+    protected array $provided = [];
 
     /**
      * The custom publish handler for items provided by providers that are deferred.
      *
      * @var array<string, callable>
      */
-    protected static array $providedCallback = [];
+    protected array $providedCallback = [];
 
     /**
      * The items provided by providers that are published.
      *
      * @var array<string, bool>
      */
-    protected static array $published = [];
+    protected array $published = [];
 
     /**
      * The registered providers.
      *
      * @var array<class-string, bool>
      */
-    protected static array $registered = [];
+    protected array $registered = [];
 
     /**
      * The default publish method.
      *
      * @var string
      */
-    protected static string $defaultPublishMethod = 'publish';
+    protected string $defaultPublishMethod = 'publish';
 
     /**
      * @inheritDoc
@@ -83,10 +83,10 @@ trait ProvidersAwareTrait
         }
 
         // Publish the service provider
-        $providerClass::{static::$defaultPublishMethod}($this);
+        $providerClass::{$this->defaultPublishMethod}($this);
 
         // The provider is now registered
-        self::$registered[$provider] = true;
+        $this->registered[$provider] = true;
     }
 
     /**
@@ -94,7 +94,7 @@ trait ProvidersAwareTrait
      */
     public function isProvided(string $itemId): bool
     {
-        return isset(self::$provided[$itemId]);
+        return isset($this->provided[$itemId]);
     }
 
     /**
@@ -102,7 +102,7 @@ trait ProvidersAwareTrait
      */
     public function isPublished(string $itemId): bool
     {
-        return isset(self::$published[$itemId]);
+        return isset($this->published[$itemId]);
     }
 
     /**
@@ -110,7 +110,7 @@ trait ProvidersAwareTrait
      */
     public function isRegistered(string $provider): bool
     {
-        return isset(self::$registered[$provider]);
+        return isset($this->registered[$provider]);
     }
 
     /**
@@ -119,16 +119,16 @@ trait ProvidersAwareTrait
     public function publishProvided(string $itemId): void
     {
         // The provider for this provided item
-        $provider = self::$provided[$itemId];
+        $provider = $this->provided[$itemId];
         // The publish method for this provided item in the provider
-        $publishCallback = self::$providedCallback[$itemId]
+        $publishCallback = $this->providedCallback[$itemId]
             ?? [$provider, static::$defaultPublishMethod];
 
         // Publish the service provider
         $publishCallback($this);
 
         // Set published cache only after the success of a publish (in case of error)
-        self::$published[$itemId] = true;
+        $this->published[$itemId] = true;
     }
 
     /**
@@ -163,12 +163,12 @@ trait ProvidersAwareTrait
 
         // Add the services to the service providers list
         foreach ($provides as $provided) {
-            self::$provided[$provided]         = $provider;
-            self::$providedCallback[$provided] = $publishCallback[$provided]
-                ?? [$provider, static::$defaultPublishMethod];
+            $this->provided[$provided]         = $provider;
+            $this->providedCallback[$provided] = $publishCallback[$provided]
+                ?? [$provider, $this->defaultPublishMethod];
         }
 
         // The provider is now registered
-        self::$registered[$provider] = true;
+        $this->registered[$provider] = true;
     }
 }

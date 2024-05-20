@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Dispatcher;
 
+use Valkyrja\Dispatcher\Dispatch as Contract;
 use Valkyrja\Dispatcher\Models\Dispatch;
+use Valkyrja\Model\Model;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -47,6 +49,44 @@ class DispatchTest extends TestCase
         parent::setUp();
 
         $this->dispatch = new Dispatch();
+    }
+
+    public function testContract(): void
+    {
+        self::assertMethodExists(Contract::class, 'getId');
+        self::assertMethodExists(Contract::class, 'setId');
+        self::assertMethodExists(Contract::class, 'getName');
+        self::assertMethodExists(Contract::class, 'setName');
+        self::assertMethodExists(Contract::class, 'getClass');
+        self::assertMethodExists(Contract::class, 'setClass');
+        self::assertMethodExists(Contract::class, 'isClass');
+        self::assertMethodExists(Contract::class, 'getProperty');
+        self::assertMethodExists(Contract::class, 'setProperty');
+        self::assertMethodExists(Contract::class, 'isProperty');
+        self::assertMethodExists(Contract::class, 'getMethod');
+        self::assertMethodExists(Contract::class, 'setMethod');
+        self::assertMethodExists(Contract::class, 'isMethod');
+        self::assertMethodExists(Contract::class, 'isStatic');
+        self::assertMethodExists(Contract::class, 'setStatic');
+        self::assertMethodExists(Contract::class, 'getFunction');
+        self::assertMethodExists(Contract::class, 'setFunction');
+        self::assertMethodExists(Contract::class, 'isFunction');
+        self::assertMethodExists(Contract::class, 'getClosure');
+        self::assertMethodExists(Contract::class, 'setClosure');
+        self::assertMethodExists(Contract::class, 'isClosure');
+        self::assertMethodExists(Contract::class, 'getConstant');
+        self::assertMethodExists(Contract::class, 'setConstant');
+        self::assertMethodExists(Contract::class, 'isConstant');
+        self::assertMethodExists(Contract::class, 'getVariable');
+        self::assertMethodExists(Contract::class, 'setVariable');
+        self::assertMethodExists(Contract::class, 'isVariable');
+        self::assertMethodExists(Contract::class, 'getMatches');
+        self::assertMethodExists(Contract::class, 'setMatches');
+        self::assertMethodExists(Contract::class, 'getArguments');
+        self::assertMethodExists(Contract::class, 'setArguments');
+        self::assertMethodExists(Contract::class, 'getDependencies');
+        self::assertMethodExists(Contract::class, 'setDependencies');
+        self::assertIsA(Model::class, Contract::class);
     }
 
     /**
@@ -231,6 +271,8 @@ class DispatchTest extends TestCase
         $set = $this->dispatch->setProperty($this->value);
 
         self::assertTrue($set instanceof Dispatch);
+        self::assertSame($this->value, $this->dispatch->getProperty());
+        self::assertTrue($this->dispatch->isProperty());
     }
 
     /**
@@ -277,6 +319,8 @@ class DispatchTest extends TestCase
         $set = $this->dispatch->setMethod($this->value);
 
         self::assertTrue($set instanceof Dispatch);
+        self::assertSame($this->value, $this->dispatch->getMethod());
+        self::assertTrue($this->dispatch->isMethod());
     }
 
     /**
@@ -347,6 +391,8 @@ class DispatchTest extends TestCase
         $set = $this->dispatch->setFunction($this->value);
 
         self::assertTrue($set instanceof Dispatch);
+        self::assertSame($this->value, $this->dispatch->getFunction());
+        self::assertTrue($this->dispatch->isFunction());
     }
 
     /**
@@ -393,11 +439,13 @@ class DispatchTest extends TestCase
     public function testSetClosure(): void
     {
         $set = $this->dispatch->setClosure(
-            static function (): void {
+            $value = static function (): void {
             }
         );
 
         self::assertTrue($set instanceof Dispatch);
+        self::assertSame($value, $this->dispatch->getClosure());
+        self::assertTrue($this->dispatch->isClosure());
     }
 
     /**
@@ -444,6 +492,8 @@ class DispatchTest extends TestCase
         $set = $this->dispatch->setConstant($this->value);
 
         self::assertTrue($set instanceof Dispatch);
+        self::assertSame($this->value, $this->dispatch->getConstant());
+        self::assertTrue($this->dispatch->isConstant());
     }
 
     /**
@@ -490,6 +540,8 @@ class DispatchTest extends TestCase
         $set = $this->dispatch->setVariable($this->value);
 
         self::assertTrue($set instanceof Dispatch);
+        self::assertSame($this->value, $this->dispatch->getVariable());
+        self::assertTrue($this->dispatch->isVariable());
     }
 
     /**

@@ -22,6 +22,8 @@ use Valkyrja\Container\Service;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Support\Cacheable\Cacheable;
 
+use function array_map;
+
 /**
  * Class CacheableContainer.
  *
@@ -81,11 +83,12 @@ class CacheableContainer extends Container
     {
         $cache = $config['cache'] ?? require $config['cacheFilePath'];
 
-        self::$aliases          = $cache['aliases'];
-        self::$provided         = $cache['provided'];
-        self::$providedCallback = $cache['providedMethod'];
-        self::$services         = $cache['services'];
-        self::$singletons       = $cache['singletons'];
+        $this->aliases          = $cache['aliases'];
+        $this->provided         = $cache['provided'];
+        $this->providedCallback = $cache['providedCallback'];
+        $this->services         = $cache['services'];
+        $this->singletons       = $cache['singletons'];
+        $this->registered       = [];
 
         // Setup service providers
         $this->setupServiceProviders($config);
@@ -96,12 +99,12 @@ class CacheableContainer extends Container
      */
     protected function setupNotCached(Config|array $config): void
     {
-        self::$aliases          = [];
-        self::$registered       = [];
-        self::$provided         = [];
-        self::$providedCallback = [];
-        self::$services         = [];
-        self::$singletons       = [];
+        $this->aliases          = [];
+        $this->registered       = [];
+        $this->provided         = [];
+        $this->providedCallback = [];
+        $this->services         = [];
+        $this->singletons       = [];
 
         // Setup service providers
         $this->setupServiceProviders($config);
@@ -168,20 +171,22 @@ class CacheableContainer extends Container
      */
     protected function setupServiceProviders(Config|array $config): void
     {
-        // Iterate through all the providers
-        foreach ($config['providers'] as $provider) {
-            $this->register($provider);
-        }
+        array_map(
+        /** @param class-string $provider */
+            fn (string $provider) => $this->register($provider),
+            $config['providers']
+        );
 
         // If this is not a dev environment
         if (! $this->debug) {
             return;
         }
 
-        // Iterate through all the providers
-        foreach ($config['devProviders'] as $devProvider) {
-            $this->register($devProvider);
-        }
+        array_map(
+        /** @param class-string $provider */
+            fn (string $provider) => $this->register($provider),
+            $config['devProviders']
+        );
     }
 
     /**
@@ -199,11 +204,11 @@ class CacheableContainer extends Container
     protected function getCacheModel(): Cache
     {
         $config                   = new Cache();
-        $config->aliases          = self::$aliases;
-        $config->provided         = self::$provided;
-        $config->providedCallback = self::$providedCallback;
-        $config->services         = self::$services;
-        $config->singletons       = self::$singletons;
+        $config->aliases          = $this->aliases;
+        $config->provided         = $this->provided;
+        $config->providedCallback = $this->providedCallback;
+        $config->services         = $this->services;
+        $config->singletons       = $this->singletons;
 
         return $config;
     }

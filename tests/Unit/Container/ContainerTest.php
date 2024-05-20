@@ -23,6 +23,8 @@ use Valkyrja\Tests\Classes\Container\Singleton;
 use Valkyrja\Tests\Traits\ExpectErrorTrait;
 use Valkyrja\Tests\Unit\TestCase;
 
+use function array_map;
+
 /**
  * Test the container service.
  *
@@ -40,13 +42,21 @@ class ContainerTest extends TestCase
     protected Container $container;
 
     /**
+     * The config to test with.
+     *
+     * @var Config
+     */
+    protected Config $config;
+
+    /**
      * @inheritDoc
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->container = new Container(new Config(setup: true));
+        $this->config    = $config = new Config(setup: true);
+        $this->container = new Container($config);
     }
 
     public function testInvalidBind(): void
@@ -89,6 +99,7 @@ class ContainerTest extends TestCase
         $id        = Service::class;
         $alias     = 'alias';
 
+        $container->bind($id, $id);
         $container->bindAlias($alias, $id);
 
         self::assertTrue($container->has($alias));
@@ -190,6 +201,12 @@ class ContainerTest extends TestCase
     public function testProvided(): void
     {
         $container = $this->container;
+
+        array_map(
+        /** @param class-string $provider */
+            static fn (string $provider) => $container->register($provider),
+            $this->config->providers
+        );
 
         self::assertTrue($container->has(Dispatcher::class));
     }

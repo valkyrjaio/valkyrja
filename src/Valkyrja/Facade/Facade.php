@@ -15,7 +15,6 @@ namespace Valkyrja\Facade;
 
 use RuntimeException;
 use Valkyrja\Facade\Exceptions\InvalidArgumentException;
-use Valkyrja\Facade\Exceptions\InvalidClassStringUsageException;
 
 use function in_array;
 use function is_object;
@@ -51,18 +50,12 @@ abstract class Facade
     /**
      * Set the instance.
      *
-     * @param object|class-string $instance The instance
+     * @param object $instance The instance
      *
      * @return void
      */
-    public static function setInstance(object|string $instance): void
+    public static function setInstance(object $instance): void
     {
-        if (! is_object($instance)) {
-            throw new InvalidClassStringUsageException(
-                "Please use the ContainerFacade if you would like to simply pass a class name of $instance"
-            );
-        }
-
         self::$instances[static::class] = $instance;
     }
 

@@ -55,6 +55,8 @@ abstract class ContainerFacade extends Facade
 
     /**
      * @inheritDoc
+     *
+     * @param object|class-string $instance The instance
      */
     public static function setInstance(object|string $instance): void
     {

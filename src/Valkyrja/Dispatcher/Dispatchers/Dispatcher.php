@@ -19,12 +19,8 @@ use Valkyrja\Container\ContextAwareContainer;
 use Valkyrja\Dispatcher\Constants\Constant;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Dispatcher\Dispatcher as Contract;
-use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
-use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
-use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
-use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-use Valkyrja\Type\Exceptions\InvalidClassProvidedException;
 
+use function array_map;
 use function constant;
 use function is_string;
 
@@ -79,10 +75,8 @@ class Dispatcher implements Contract
             return null;
         }
 
-        if (($method = $dispatch->getMethod()) === null) {
-            throw new InvalidMethodException("Expecting a valid method: $method provided");
-        }
-
+        /** @var string $method */
+        $method = $dispatch->getMethod();
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments) ?? [];
         $class     = $this->getClassFromDispatch($dispatch);
@@ -90,7 +84,7 @@ class Dispatcher implements Contract
         $response = is_string($class)
             ? $class::$method(...$arguments)
             : (/** @var object $class */
-                $class->$method(...$arguments)
+            $class->$method(...$arguments)
             );
 
         return $response ?? Constant::DISPATCHED;
@@ -110,11 +104,9 @@ class Dispatcher implements Contract
             return null;
         }
 
-        if (($property = $dispatch->getProperty()) === null) {
-            throw new InvalidPropertyException("Expecting a valid property: $property provided");
-        }
-
-        $class = $this->getClassFromDispatch($dispatch);
+        /** @var string $property */
+        $property = $dispatch->getProperty();
+        $class    = $this->getClassFromDispatch($dispatch);
         /** @var mixed $response */
         $response = is_string($class)
             ? $class::$$property
@@ -137,10 +129,8 @@ class Dispatcher implements Contract
             return null;
         }
 
-        if (($constant = $dispatch->getConstant()) === null) {
-            throw new InvalidClosureException('Expecting a valid constant: Null provided');
-        }
-
+        /** @var string $constant */
+        $constant = $dispatch->getConstant();
         $constant = ($class = $dispatch->getClass())
             ? $class . '::' . $constant
             : $constant;
@@ -164,10 +154,8 @@ class Dispatcher implements Contract
             return null;
         }
 
-        if (($className = $dispatch->getClass()) === null) {
-            throw new InvalidClassProvidedException("Expecting a valid class: $className provided");
-        }
-
+        /** @var class-string $className */
+        $className = $dispatch->getClass();
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments) ?? [];
 
@@ -198,10 +186,8 @@ class Dispatcher implements Contract
             return null;
         }
 
-        if (($function = $dispatch->getFunction()) === null) {
-            throw new InvalidFunctionException("Expecting a valid callable: $function provided");
-        }
-
+        /** @var callable-string $function */
+        $function = $dispatch->getFunction();
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments) ?? [];
         $response  = $function(...$arguments);
@@ -224,10 +210,8 @@ class Dispatcher implements Contract
             return null;
         }
 
-        if (($closure = $dispatch->getClosure()) === null) {
-            throw new InvalidClosureException('Expecting a valid closure: Null provided');
-        }
-
+        /** @var callable $closure */
+        $closure = $dispatch->getClosure();
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments) ?? [];
         $response  = $closure(...$arguments);
@@ -249,9 +233,8 @@ class Dispatcher implements Contract
             return null;
         }
 
-        if (($variable = $dispatch->getVariable()) === null) {
-            throw new InvalidClosureException('Expecting a valid variable: Null provided');
-        }
+        /** @var string $variable */
+        $variable = $dispatch->getVariable();
 
         global $$variable;
 
@@ -318,8 +301,6 @@ class Dispatcher implements Contract
      */
     protected function getDependencies(Dispatch $dispatch): array|null
     {
-        $dependenciesInstances = [];
-
         // If there are dependencies
         if (($dependencies = $dispatch->getDependencies()) === null) {
             return [];
@@ -338,15 +319,12 @@ class Dispatcher implements Contract
             $containerContext = $container->withContext($context, $member);
         }
 
-        // Iterate through all the dependencies
-        foreach ($dependencies as $dependency) {
-            // Set the dependency from the container
-            $dependenciesInstances[] = $hasContext && $containerContext?->has($dependency)
+        return array_map(
+            static fn (string $dependency): mixed => $hasContext && $containerContext?->has($dependency)
                 ? $containerContext->get($dependency)
-                : $container->get($dependency);
-        }
-
-        return $dependenciesInstances;
+                : $container->get($dependency),
+            $dependencies
+        );
     }
 
     /**

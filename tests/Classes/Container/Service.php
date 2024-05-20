@@ -23,8 +23,18 @@ use Valkyrja\Container\Service as Contract;
  */
 class Service implements Contract
 {
+    public function __construct(
+        public Container $container,
+    ) {
+    }
+
     public static function make(Container $container, array $arguments = []): static
     {
-        return new self();
+        return new self($container);
+    }
+
+    public function getContainer(): Container
+    {
+        return $this->container;
     }
 }

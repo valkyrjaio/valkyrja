@@ -30,7 +30,7 @@ trait Cacheable
      *
      * @var bool
      */
-    protected static bool $setup = false;
+    protected bool $setup = false;
 
     /**
      * Setup the service.
@@ -43,11 +43,11 @@ trait Cacheable
     public function setup(bool $force = false, bool $useCache = true): void
     {
         // If route's have already been setup, no need to do it again
-        if (self::$setup && ! $force) {
+        if ($this->setup && ! $force) {
             return;
         }
 
-        self::$setup = true;
+        $this->setup = true;
         // The cacheable config
         $config = $this->getConfig();
 

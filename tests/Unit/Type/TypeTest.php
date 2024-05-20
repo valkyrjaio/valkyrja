@@ -19,17 +19,16 @@ use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\Type as Contract;
 
 use function json_encode;
-use function method_exists;
 
 class TypeTest extends TestCase
 {
     public function testContract(): void
     {
-        self::assertTrue(method_exists(Contract::class, 'fromValue'));
-        self::assertTrue(method_exists(Contract::class, 'asValue'));
-        self::assertTrue(method_exists(Contract::class, 'asFlatValue'));
-        self::assertTrue(method_exists(Contract::class, 'modify'));
-        self::isA(JsonSerializable::class, Contract::class);
+        self::assertMethodExists(Contract::class, 'fromValue');
+        self::assertMethodExists(Contract::class, 'asValue');
+        self::assertMethodExists(Contract::class, 'asFlatValue');
+        self::assertMethodExists(Contract::class, 'modify');
+        self::assertIsA(JsonSerializable::class, Contract::class);
     }
 
     public function testString(): void

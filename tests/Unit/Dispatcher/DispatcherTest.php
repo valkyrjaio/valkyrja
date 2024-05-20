@@ -13,14 +13,20 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Dispatcher;
 
+use InvalidArgumentException;
+use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Config\Container as Config;
 use Valkyrja\Container\Managers\Container;
+use Valkyrja\Container\Managers\ContextAwareContainer;
+use Valkyrja\Dispatcher\Dispatcher as Contract;
 use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
 use Valkyrja\Dispatcher\Models\Dispatch;
+use Valkyrja\Tests\Classes\Container\Service;
 use Valkyrja\Tests\Unit\TestCase;
 
 use function count;
+use function method_exists;
 use function microtime;
 
 use const PHP_VERSION;
@@ -88,6 +94,11 @@ class DispatcherTest extends TestCase
      */
     protected string $value = 'test';
 
+    public function testContract(): void
+    {
+        self::assertTrue(method_exists(Contract::class, 'dispatch'));
+    }
+
     /**
      * A valid static method.
      *
@@ -97,7 +108,7 @@ class DispatcherTest extends TestCase
      */
     public static function validStaticMethod(string|null $arg = null): string
     {
-        return 'test' . ($arg ?: '');
+        return 'test' . ($arg !== null ?: '');
     }
 
     /**
@@ -113,7 +124,7 @@ class DispatcherTest extends TestCase
         $this->container  = new Container($this->config, true);
         $this->dispatcher = new Dispatcher($this->container);
 
-        $this->container->setSingleton(self::class, new self('test'));
+        $this->container->setSingleton(self::class, $this);
     }
 
     /**
@@ -125,7 +136,7 @@ class DispatcherTest extends TestCase
      */
     public function validMethod(string|null $arg = null): string
     {
-        return 'test' . ($arg ?: '');
+        return 'test' . ($arg !== null ?: '');
     }
 
     /**
@@ -154,6 +165,41 @@ class DispatcherTest extends TestCase
             ->setMethod('validMethod');
 
         self::assertSame($this->validMethod('test'), $this->dispatcher->dispatch($dispatch, ['test']));
+    }
+
+    /**
+     * Test the dispatchClassMethod method with arguments with a dispatch.
+     *
+     * @return void
+     */
+    public function testDispatchClassMethodWithDispatchArg(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setClass(self::class)
+            ->setMethod('validMethod');
+
+        self::assertSame(
+            $this->validMethod($this->validMethod()),
+            $this->dispatcher->dispatch($dispatch, [$dispatch])
+        );
+    }
+
+    /**
+     * Test the dispatchClassMethod method with arguments with a dispatch.
+     *
+     * @return void
+     */
+    public function testDispatchClassMethodWithNoClassException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $dispatch = (new Dispatch())
+            ->setMethod('validMethod');
+
+        self::assertSame(
+            $this->validMethod(),
+            $this->dispatcher->dispatch($dispatch)
+        );
     }
 
     /**
@@ -190,6 +236,43 @@ class DispatcherTest extends TestCase
     }
 
     /**
+     * Test the dispatchClassMethod method with a static dispatch and arguments with a dispatch.
+     *
+     * @return void
+     */
+    public function testDispatchClassMethodStaticWithDispatchArg(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setClass(self::class)
+            ->setMethod('validStaticMethod')
+            ->setStatic();
+
+        self::assertSame(
+            self::validStaticMethod(self::validStaticMethod()),
+            $this->dispatcher->dispatch($dispatch, [$dispatch])
+        );
+    }
+
+    /**
+     * Test the dispatchClassMethod method with arguments with a dispatch.
+     *
+     * @return void
+     */
+    public function testDispatchClassMethodStaticWithNoClassException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $dispatch = (new Dispatch())
+            ->setMethod('validMethod')
+            ->setStatic();
+
+        self::assertSame(
+            self::validStaticMethod(),
+            $this->dispatcher->dispatch($dispatch)
+        );
+    }
+
+    /**
      * Test the dispatchClassProperty method.
      *
      * @return void
@@ -204,6 +287,21 @@ class DispatcherTest extends TestCase
     }
 
     /**
+     * Test the dispatchClassProperty method.
+     *
+     * @return void
+     */
+    public function testDispatchClassPropertyWithNoClassException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $dispatch = (new Dispatch())
+            ->setProperty('validProperty');
+
+        self::assertSame($this->validProperty, $this->dispatcher->dispatch($dispatch));
+    }
+
+    /**
      * Test the dispatchClassProperty method with a static dispatch.
      *
      * @return void
@@ -212,6 +310,22 @@ class DispatcherTest extends TestCase
     {
         $dispatch = (new Dispatch())
             ->setClass(self::class)
+            ->setProperty('validStaticProperty')
+            ->setStatic();
+
+        self::assertSame(self::$validStaticProperty, $this->dispatcher->dispatch($dispatch));
+    }
+
+    /**
+     * Test the dispatchClassProperty method with a static dispatch.
+     *
+     * @return void
+     */
+    public function testDispatchClassPropertyStaticWithNoClassException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $dispatch = (new Dispatch())
             ->setProperty('validStaticProperty')
             ->setStatic();
 
@@ -235,6 +349,8 @@ class DispatcherTest extends TestCase
 
     /**
      * Test the dispatchClass method with arguments.
+     *
+     * @throws Exception
      *
      * @return void
      */
@@ -445,5 +561,55 @@ class DispatcherTest extends TestCase
             ->setDependencies([self::class]);
 
         self::assertNull($this->dispatcher->dispatch($dispatch));
+    }
+
+    public function testDependencies(): void
+    {
+        $container  = new ContextAwareContainer($this->config, true);
+        $container2 = new ContextAwareContainer($this->config, true);
+        $dispatcher = new Dispatcher($container);
+
+        $container->bind(Service::class, Service::class);
+        $container->setSingleton(Container::class, $container);
+
+        $dispatch = (new Dispatch())
+            ->setClass(Service::class)
+            ->setDependencies([Container::class]);
+
+        $result = $dispatcher->dispatch($dispatch);
+
+        self::assertInstanceOf(Service::class, $result);
+
+        $dispatch = (new Dispatch())
+            ->setClass(Service::class)
+            ->setMethod('make')
+            ->setDependencies([Container::class]);
+
+        $result = $dispatcher->dispatch($dispatch);
+
+        self::assertInstanceOf(Service::class, $result);
+
+        $dispatch = (new Dispatch())
+            ->setClass(Service::class)
+            ->setMethod('getContainer')
+            ->setDependencies([Container::class]);
+
+        $result = $dispatcher->dispatch($dispatch);
+
+        self::assertSame($container, $result);
+
+        $container
+            ->withContext(Service::class, 'make')
+            ->setSingleton(Container::class, $container2);
+
+        $dispatch = (new Dispatch())
+            ->setClass(Service::class)
+            ->setMethod('make')
+            ->setDependencies([Container::class]);
+
+        /** @var Service $result */
+        $result = $dispatcher->dispatch($dispatch);
+
+        self::assertSame($container2, $result->getContainer());
     }
 }

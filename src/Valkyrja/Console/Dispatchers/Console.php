@@ -241,7 +241,7 @@ class Console implements Contract
     public function all(): array
     {
         // Iterate through all the command providers to set any deferred commands
-        foreach (self::$provided as $provided => $provider) {
+        foreach ($this->provided as $provided => $provider) {
             // Initialize the provided command
             $this->publishProvided($provided);
         }
