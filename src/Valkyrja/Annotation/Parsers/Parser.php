@@ -21,7 +21,7 @@ use Valkyrja\Annotation\Constants\Regex;
 use Valkyrja\Annotation\Exceptions\InvalidAnnotationKeyArgument;
 use Valkyrja\Annotation\Models\Annotation as AnnotationModel;
 use Valkyrja\Annotation\Parser as Contract;
-use Valkyrja\Type\Support\Arr;
+use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function array_key_exists;
 use function constant;

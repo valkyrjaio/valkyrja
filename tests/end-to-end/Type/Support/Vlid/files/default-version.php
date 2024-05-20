@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../../../../../bootstrap.php';
 
-use Valkyrja\Type\Enums\VlidVersion;
-use Valkyrja\Type\Support\Vlid;
+use Valkyrja\Type\Vlid\Enum\Version;
+use Valkyrja\Type\Vlid\Support\Vlid;
 
-assert(VlidVersion::V1 === Vlid::VERSION);
+assert(Version::V1 === Vlid::VERSION);

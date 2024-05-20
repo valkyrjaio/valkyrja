@@ -15,7 +15,7 @@ namespace Valkyrja\Model\Models;
 
 use Closure;
 use Valkyrja\Model\Data\Cast;
-use Valkyrja\Type\Type;
+use Valkyrja\Type\Contract\Type;
 
 /**
  * Trait Castable.

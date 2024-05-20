@@ -20,7 +20,7 @@ use Pusher\Pusher;
 use Pusher\PusherException;
 use Valkyrja\Broadcast\Message;
 use Valkyrja\Broadcast\PusherAdapter as Contract;
-use Valkyrja\Type\Support\Arr;
+use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
  * Class PusherAdapter.

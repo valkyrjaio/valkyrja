@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Model\Data;
 
 use Valkyrja\Model\Enums\CastType;
-use Valkyrja\Type\Type;
+use Valkyrja\Type\Contract\Type;
 
 /**
  * Data ArrayCast.

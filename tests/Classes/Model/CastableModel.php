@@ -19,9 +19,9 @@ use Valkyrja\Model\Data\OriginalArrayCast;
 use Valkyrja\Model\Data\OriginalCast;
 use Valkyrja\Model\Enums\CastType;
 use Valkyrja\Model\Models\CastableModel as AbstractModel;
-use Valkyrja\Tests\Classes\Enums\Enum;
-use Valkyrja\Tests\Classes\Enums\IntEnum;
-use Valkyrja\Tests\Classes\Enums\StringEnum;
+use Valkyrja\Tests\Classes\Enum\Enum;
+use Valkyrja\Tests\Classes\Enum\IntEnum;
+use Valkyrja\Tests\Classes\Enum\StringEnum;
 
 /**
  * Model class to use to test Castable model.

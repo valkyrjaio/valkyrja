@@ -16,7 +16,7 @@ namespace Valkyrja\Session\Adapters;
 use JsonException;
 use Valkyrja\Cache\Driver as Cache;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
-use Valkyrja\Type\Support\Arr;
+use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function headers_sent;
 use function session_start;

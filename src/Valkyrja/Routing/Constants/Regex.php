@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Constants;
 
-use Valkyrja\Type\Support\Ulid;
-use Valkyrja\Type\Support\Uuid;
-use Valkyrja\Type\Support\UuidV1;
-use Valkyrja\Type\Support\UuidV3;
-use Valkyrja\Type\Support\UuidV4;
-use Valkyrja\Type\Support\UuidV5;
-use Valkyrja\Type\Support\UuidV6;
-use Valkyrja\Type\Support\UuidV7;
-use Valkyrja\Type\Support\UuidV8;
-use Valkyrja\Type\Support\Vlid;
-use Valkyrja\Type\Support\VlidV1;
-use Valkyrja\Type\Support\VlidV2;
-use Valkyrja\Type\Support\VlidV3;
-use Valkyrja\Type\Support\VlidV4;
+use Valkyrja\Type\Ulid\Support\Ulid;
+use Valkyrja\Type\Uuid\Support\Uuid;
+use Valkyrja\Type\Uuid\Support\UuidV1;
+use Valkyrja\Type\Uuid\Support\UuidV3;
+use Valkyrja\Type\Uuid\Support\UuidV4;
+use Valkyrja\Type\Uuid\Support\UuidV5;
+use Valkyrja\Type\Uuid\Support\UuidV6;
+use Valkyrja\Type\Uuid\Support\UuidV7;
+use Valkyrja\Type\Uuid\Support\UuidV8;
+use Valkyrja\Type\Vlid\Support\Vlid;
+use Valkyrja\Type\Vlid\Support\VlidV1;
+use Valkyrja\Type\Vlid\Support\VlidV2;
+use Valkyrja\Type\Vlid\Support\VlidV3;
+use Valkyrja\Type\Vlid\Support\VlidV4;
 
 /**
  * Constant Regex.

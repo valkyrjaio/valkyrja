@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model\Models;
 
-use Valkyrja\Type\Support\Obj;
+use Valkyrja\Type\BuiltIn\Support\Obj;
 
 /**
  * Trait ProtectedExposable.

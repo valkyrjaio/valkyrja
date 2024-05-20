@@ -15,7 +15,7 @@ namespace Valkyrja\Routing\Data;
 
 use Valkyrja\Model\Data\Cast;
 use Valkyrja\Model\Enums\CastType;
-use Valkyrja\Type\Type;
+use Valkyrja\Type\Contract\Type;
 
 /**
  * Data EntityCast.

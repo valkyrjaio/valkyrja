@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Id;
 
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Types\IntId;
+use Valkyrja\Type\Id\IntId;
 
 class IntIdTest extends TestCase
 {

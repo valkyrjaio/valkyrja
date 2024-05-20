@@ -17,7 +17,7 @@ use Valkyrja\Model\Attributes\ArrayCast;
 use Valkyrja\Model\Attributes\Cast;
 use Valkyrja\Model\Enums\CastType;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Types\StringT;
+use Valkyrja\Type\BuiltIn\StringT;
 
 use function json_encode;
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\BuiltIn;
 
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Types\DoubleT;
+use Valkyrja\Type\BuiltIn\DoubleT;
 
 class DoubleTest extends TestCase
 {

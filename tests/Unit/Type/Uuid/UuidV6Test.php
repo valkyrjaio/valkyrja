@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Type\Uuid;
 
 use Exception;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Support\UuidV6 as Helper;
-use Valkyrja\Type\Types\UuidV6 as Id;
+use Valkyrja\Type\Uuid\Support\UuidV6 as Helper;
+use Valkyrja\Type\Uuid\UuidV6 as Id;
 
 use function json_encode;
 

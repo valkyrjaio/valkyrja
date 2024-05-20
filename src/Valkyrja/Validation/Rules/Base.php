@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Rules;
 
-use Valkyrja\Type\Support\Integer;
-use Valkyrja\Type\Support\Str;
+use Valkyrja\Type\BuiltIn\Support\Integer;
+use Valkyrja\Type\BuiltIn\Support\Str;
 use Valkyrja\Validation\Exceptions\ValidationException;
 
 use function in_array;

@@ -18,7 +18,7 @@ use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Container\Managers\CacheableContainer;
-use Valkyrja\Type\Support\Arr;
+use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function file_put_contents;
 use function Valkyrja\config;

@@ -17,7 +17,7 @@ use Valkyrja\Test\Assert\Asserter as Contract;
 use Valkyrja\Test\Assert\Enums\ResultType;
 use Valkyrja\Test\Exceptions\AssertFailureException;
 use Valkyrja\Test\Exceptions\AssertWarningException;
-use Valkyrja\Type\Support\Enum;
+use Valkyrja\Type\BuiltIn\Enum\Support\Enum;
 
 /**
  * Class Asserter.

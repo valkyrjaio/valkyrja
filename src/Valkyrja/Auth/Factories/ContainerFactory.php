@@ -26,7 +26,7 @@ use Valkyrja\Auth\ORMAdapter;
 use Valkyrja\Auth\Policy;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Container\Container;
-use Valkyrja\Type\Support\Cls;
+use Valkyrja\Type\BuiltIn\Support\Cls;
 
 /**
  * Class ContainerFactory.

@@ -15,14 +15,14 @@ namespace Valkyrja\Routing;
 
 use UnitEnum;
 use Valkyrja\Http\Request;
-use Valkyrja\Type\ArrayableEnum;
+use Valkyrja\Type\BuiltIn\Enum\Contract\Arrayable;
 
 /**
  * Interface Message.
  *
  * @author Melech Mizrachi
  */
-interface Message extends UnitEnum, ArrayableEnum
+interface Message extends UnitEnum, Arrayable
 {
     /**
      * Get the validation rules.

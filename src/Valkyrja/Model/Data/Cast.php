@@ -15,7 +15,7 @@ namespace Valkyrja\Model\Data;
 
 use JsonSerializable;
 use Valkyrja\Model\Enums\CastType;
-use Valkyrja\Type\Type;
+use Valkyrja\Type\Contract\Type;
 
 use function assert;
 

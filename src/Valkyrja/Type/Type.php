@@ -13,38 +13,63 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type;
 
-use JsonSerializable;
+use Valkyrja\Type\Contract\Type as Contract;
 
 /**
- * Interface Type.
+ * Class Type.
  *
  * @author Melech Mizrachi
  *
+ * @implements Contract<mixed>
+ *
  * @template T
  */
-interface Type extends JsonSerializable
+abstract class Type implements Contract
 {
     /**
-     * Get a new Type given a value.
+     * @param T $subject
      */
-    public static function fromValue(mixed $value): static;
+    public function __construct(
+        protected mixed $subject,
+    ) {
+    }
 
     /**
-     * Get the value.
+     * @inheritDoc
+     */
+    public static function fromValue(mixed $value): static
+    {
+        return new static($value);
+    }
+
+    /**
+     * @inheritDoc
      *
      * @return T
      */
-    public function asValue(): mixed;
+    public function asValue(): mixed
+    {
+        return $this->subject;
+    }
 
     /**
-     * Get the flattened value.
+     * @inheritDoc
      */
-    public function asFlatValue(): string|int|float|bool|null;
+    public function modify(callable $closure): static
+    {
+        return static::fromValue($closure($this->subject));
+    }
 
     /**
-     * Modify the subject and return a new instance to maintain immutability.
-     *
-     * @param callable(T): T $closure The closure
+     * @inheritDoc
      */
-    public function modify(callable $closure): static;
+    public function jsonSerialize(): mixed
+    {
+        return $this->asValue();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    abstract public function asFlatValue(): string|int|float|bool|null;
 }

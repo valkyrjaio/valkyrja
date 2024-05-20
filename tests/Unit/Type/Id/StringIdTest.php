@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Id;
 
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Types\StringId;
+use Valkyrja\Type\Id\StringId;
 
 class StringIdTest extends TestCase
 {

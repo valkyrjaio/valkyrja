@@ -20,8 +20,8 @@ use Valkyrja\Model\Models\Model;
 use Valkyrja\Model\Models\ProtectedExposable;
 use Valkyrja\Orm\Entity as Contract;
 use Valkyrja\Orm\Repository;
-use Valkyrja\Type\Support\Arr;
-use Valkyrja\Type\Type;
+use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Contract\Type;
 
 use function array_walk;
 

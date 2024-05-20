@@ -25,7 +25,7 @@ use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Support\Directory;
-use Valkyrja\Type\Support\Arr;
+use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function assert;
 use function constant;

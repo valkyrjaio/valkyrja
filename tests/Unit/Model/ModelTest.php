@@ -19,8 +19,8 @@ use JsonException;
 use Valkyrja\Model\Model as Contract;
 use Valkyrja\Tests\Classes\Model\Model;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Support\Arr;
-use Valkyrja\Type\Type;
+use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Contract\Type;
 
 use function json_encode;
 use function method_exists;

@@ -14,19 +14,19 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Enums;
 
 use JsonSerializable;
-use Valkyrja\Type\Types\ArrayT;
-use Valkyrja\Type\Types\BoolT;
-use Valkyrja\Type\Types\DoubleT;
-use Valkyrja\Type\Types\FalseT;
-use Valkyrja\Type\Types\FloatT;
-use Valkyrja\Type\Types\IntT;
-use Valkyrja\Type\Types\Json;
-use Valkyrja\Type\Types\JsonObject;
-use Valkyrja\Type\Types\NullT;
-use Valkyrja\Type\Types\ObjectT;
-use Valkyrja\Type\Types\SerializedObject;
-use Valkyrja\Type\Types\StringT;
-use Valkyrja\Type\Types\TrueT;
+use Valkyrja\Type\BuiltIn\ArrayT;
+use Valkyrja\Type\BuiltIn\BoolT;
+use Valkyrja\Type\BuiltIn\DoubleT;
+use Valkyrja\Type\BuiltIn\FalseT;
+use Valkyrja\Type\BuiltIn\FloatT;
+use Valkyrja\Type\BuiltIn\IntT;
+use Valkyrja\Type\BuiltIn\NullT;
+use Valkyrja\Type\BuiltIn\ObjectT;
+use Valkyrja\Type\BuiltIn\SerializedObject;
+use Valkyrja\Type\BuiltIn\StringT;
+use Valkyrja\Type\BuiltIn\TrueT;
+use Valkyrja\Type\Json\Json;
+use Valkyrja\Type\Json\JsonObject;
 
 /**
  * Enum CastType.
@@ -35,19 +35,19 @@ use Valkyrja\Type\Types\TrueT;
  */
 enum CastType: string implements JsonSerializable
 {
-    case string            = StringT::class;
-    case int               = IntT::class;
-    case float             = FloatT::class;
-    case double            = DoubleT::class;
-    case bool              = BoolT::class;
-    case array             = ArrayT::class;
-    case object            = ObjectT::class;
+    case string = StringT::class;
+    case int = IntT::class;
+    case float = FloatT::class;
+    case double = DoubleT::class;
+    case bool = BoolT::class;
+    case array = ArrayT::class;
+    case object = ObjectT::class;
     case serialized_object = SerializedObject::class;
-    case json              = Json::class;
-    case json_object       = JsonObject::class;
-    case true              = TrueT::class;
-    case false             = FalseT::class;
-    case null              = NullT::class;
+    case json = Json::class;
+    case json_object = JsonObject::class;
+    case true = TrueT::class;
+    case false = FalseT::class;
+    case null = NullT::class;
 
     /**
      * @inheritDoc

@@ -20,7 +20,7 @@ use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Log\Driver as Logger;
-use Valkyrja\Type\Support\Obj;
+use Valkyrja\Type\BuiltIn\Support\Obj;
 
 /**
  * Class LogAdapter.

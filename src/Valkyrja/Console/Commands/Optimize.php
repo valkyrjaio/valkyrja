@@ -21,7 +21,7 @@ use Valkyrja\Console\Support\Provides;
 use Valkyrja\Container\Managers\CacheableContainer;
 use Valkyrja\Event\Collections\CacheableCollection as CacheableEvents;
 use Valkyrja\Routing\Collections\CacheableCollection;
-use Valkyrja\Type\Support\Arr;
+use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function file_put_contents;
 use function in_array;

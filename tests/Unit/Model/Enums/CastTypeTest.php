@@ -15,19 +15,19 @@ namespace Valkyrja\Tests\Unit\Model\Enums;
 
 use Valkyrja\Model\Enums\CastType;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Types\ArrayT;
-use Valkyrja\Type\Types\BoolT;
-use Valkyrja\Type\Types\DoubleT;
-use Valkyrja\Type\Types\FalseT;
-use Valkyrja\Type\Types\FloatT;
-use Valkyrja\Type\Types\IntT;
-use Valkyrja\Type\Types\Json;
-use Valkyrja\Type\Types\JsonObject;
-use Valkyrja\Type\Types\NullT;
-use Valkyrja\Type\Types\ObjectT;
-use Valkyrja\Type\Types\SerializedObject;
-use Valkyrja\Type\Types\StringT;
-use Valkyrja\Type\Types\TrueT;
+use Valkyrja\Type\BuiltIn\ArrayT;
+use Valkyrja\Type\BuiltIn\BoolT;
+use Valkyrja\Type\BuiltIn\DoubleT;
+use Valkyrja\Type\BuiltIn\FalseT;
+use Valkyrja\Type\BuiltIn\FloatT;
+use Valkyrja\Type\BuiltIn\IntT;
+use Valkyrja\Type\BuiltIn\NullT;
+use Valkyrja\Type\BuiltIn\ObjectT;
+use Valkyrja\Type\BuiltIn\SerializedObject;
+use Valkyrja\Type\BuiltIn\StringT;
+use Valkyrja\Type\BuiltIn\TrueT;
+use Valkyrja\Type\Json\Json;
+use Valkyrja\Type\Json\JsonObject;
 
 use function json_encode;
 

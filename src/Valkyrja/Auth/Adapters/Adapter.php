@@ -17,7 +17,7 @@ use Exception;
 use Valkyrja\Auth\Adapter as Contract;
 use Valkyrja\Auth\Config\Config;
 use Valkyrja\Auth\User;
-use Valkyrja\Type\Support\Str;
+use Valkyrja\Type\BuiltIn\Support\Str;
 
 use const PASSWORD_DEFAULT;
 

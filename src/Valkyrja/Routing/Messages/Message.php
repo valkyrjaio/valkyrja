@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Messages;
 
 use Valkyrja\Http\Request;
-use Valkyrja\Type\Types\Enum\Arrayable;
+use Valkyrja\Type\Enum\Arrayable;
 
 /**
  * Trait Message.

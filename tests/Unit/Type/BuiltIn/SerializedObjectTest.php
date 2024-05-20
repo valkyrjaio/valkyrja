@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\BuiltIn;
 use JsonException;
 use Valkyrja\Tests\Classes\Model\Model;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Types\SerializedObject;
+use Valkyrja\Type\BuiltIn\SerializedObject;
 
 class SerializedObjectTest extends TestCase
 {

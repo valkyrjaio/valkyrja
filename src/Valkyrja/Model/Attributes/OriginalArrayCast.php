@@ -15,7 +15,7 @@ namespace Valkyrja\Model\Attributes;
 
 use Attribute;
 use Valkyrja\Model\Enums\CastType;
-use Valkyrja\Type\Type;
+use Valkyrja\Type\Contract\Type;
 
 /**
  * Attribute Cast.

@@ -16,8 +16,8 @@ namespace Valkyrja\Model\Models;
 use Closure;
 use JsonException;
 use Valkyrja\Model\Model as Contract;
-use Valkyrja\Type\Support\Arr;
-use Valkyrja\Type\Support\StrCase;
+use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\BuiltIn\Support\StrCase;
 
 use function array_filter;
 use function array_walk;

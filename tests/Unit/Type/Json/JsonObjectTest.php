@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Json;
 
 use JsonException;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Types\JsonObject;
+use Valkyrja\Type\Json\JsonObject;
 
 use function json_encode;
 

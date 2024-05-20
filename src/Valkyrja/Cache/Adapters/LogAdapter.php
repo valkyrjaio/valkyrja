@@ -18,7 +18,7 @@ use Valkyrja\Cache\LogAdapter as Contract;
 use Valkyrja\Cache\Tagger;
 use Valkyrja\Cache\Taggers\Tagger as TagClass;
 use Valkyrja\Log\Driver as Logger;
-use Valkyrja\Type\Support\Arr;
+use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
  * Class LogAdapter.

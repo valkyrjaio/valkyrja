@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Model;
 
 use ArrayAccess;
-use Valkyrja\Type\Type;
+use Valkyrja\Type\Contract\Type;
 
 /**
  * Interface Model.

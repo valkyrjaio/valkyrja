@@ -24,7 +24,7 @@ use Valkyrja\Test\Assert\Enums\AsserterName;
 use Valkyrja\Test\Assert\Enums\ResultType;
 use Valkyrja\Test\Assert\Exceptions;
 use Valkyrja\Test\Assert\Str;
-use Valkyrja\Type\Support\Enum;
+use Valkyrja\Type\BuiltIn\Enum\Support\Enum;
 
 /**
  * Class Assert.
@@ -128,9 +128,9 @@ class Assert extends AbstractAsserter implements Contract
         if (Enum::isValidName(ResultType::class, $name)) {
             return match ($name) {
                 ResultType::assertions->name => $this->getAssertions(),
-                ResultType::errors->name     => $this->getErrors(),
-                ResultType::successes->name  => $this->getSuccesses(),
-                ResultType::warnings->name   => $this->getWarnings(),
+                ResultType::errors->name => $this->getErrors(),
+                ResultType::successes->name => $this->getSuccesses(),
+                ResultType::warnings->name => $this->getWarnings(),
             };
         }
 
