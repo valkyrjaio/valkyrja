@@ -15,10 +15,10 @@ namespace Valkyrja\Routing;
 
 use BackedEnum;
 use Valkyrja\Dispatcher\Dispatch;
-use Valkyrja\Model\Data\Cast;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Models\Parameter;
+use Valkyrja\Type\Model\Data\Cast;
 
 /**
  * Interface Route.

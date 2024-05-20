@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Classes\Model;
 
 use Closure;
 use RuntimeException;
-use Valkyrja\Model\Data\Cast;
-use Valkyrja\Model\Models\CastableModel as AbstractModel;
+use Valkyrja\Type\Model\CastableModel as AbstractModel;
+use Valkyrja\Type\Model\Data\Cast;
 
 use function json_encode;
 

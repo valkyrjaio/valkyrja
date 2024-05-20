@@ -16,10 +16,10 @@ namespace Valkyrja\Routing\Models;
 use InvalidArgumentException;
 use Valkyrja\Dispatcher\Models\Dispatch;
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Model\Data\Cast;
 use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Message;
 use Valkyrja\Routing\Route as Contract;
+use Valkyrja\Type\Model\Data\Cast;
 
 use function array_map;
 use function array_walk;

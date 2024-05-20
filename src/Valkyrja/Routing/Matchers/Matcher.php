@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Matchers;
 
-use Valkyrja\Model\Data\Cast;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Exceptions\InvalidRouteParameter;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
@@ -22,6 +21,7 @@ use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Helpers;
 use Valkyrja\Type\Contract\Type;
+use Valkyrja\Type\Model\Data\Cast;
 
 use function is_array;
 use function preg_match;

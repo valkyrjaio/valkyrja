@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Models;
 
-use Valkyrja\Model\Models\Model;
+use Valkyrja\Type\Model\Model;
 
 /**
  * Class EdDsaKey.

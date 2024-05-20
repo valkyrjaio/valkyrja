@@ -17,7 +17,7 @@ use DateTimeInterface;
 use Valkyrja\Http\Constants\SameSite;
 use Valkyrja\Http\Cookie as Contract;
 use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
-use Valkyrja\Model\Models\Model;
+use Valkyrja\Type\Model\Model;
 
 use function gmdate;
 use function in_array;

@@ -32,9 +32,9 @@ use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
+use Valkyrja\Tests\Classes\Config\ProviderClass;
 use Valkyrja\Tests\Config;
 use Valkyrja\Tests\Env;
-use Valkyrja\Tests\Unit\Support\ProviderClass;
 use Valkyrja\View\View;
 
 use function is_string;

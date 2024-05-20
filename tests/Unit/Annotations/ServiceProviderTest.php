@@ -22,7 +22,7 @@ use Valkyrja\Annotation\Parser as ParserContract;
 use Valkyrja\Annotation\Parsers\Parser;
 use Valkyrja\Annotation\Providers\ServiceProvider;
 use Valkyrja\Reflection\Reflector;
-use Valkyrja\Tests\Unit\Provider\ServiceProviderTestCase;
+use Valkyrja\Tests\Unit\Container\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

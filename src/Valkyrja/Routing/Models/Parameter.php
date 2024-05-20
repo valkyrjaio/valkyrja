@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Models;
 
-use Valkyrja\Model\Data\Cast;
-use Valkyrja\Model\Models\Model;
 use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Data\EntityCast;
+use Valkyrja\Type\Model\Data\Cast;
+use Valkyrja\Type\Model\Model;
 
 use function is_array;
 

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Matchers;
 
 use Valkyrja\Container\Container;
-use Valkyrja\Model\Data\Cast;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Orm\Orm;
 use Valkyrja\Orm\RelationshipRepository;
@@ -24,6 +23,7 @@ use Valkyrja\Routing\Exceptions\InvalidRouteParameter;
 use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Abort;
+use Valkyrja\Type\Model\Data\Cast;
 
 /**
  * Class EntityCapableMatcher.

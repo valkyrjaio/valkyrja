@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Attributes\Parameter;
 
 use Attribute;
-use Valkyrja\Model\Data\Cast;
 use Valkyrja\Routing\Attributes\Parameter;
 use Valkyrja\Routing\Constants\ParameterName;
 use Valkyrja\Routing\Constants\Regex;
+use Valkyrja\Type\Model\Data\Cast;
 
 /**
  * Attribute UuidV5.
@@ -35,12 +35,12 @@ class UuidV5 extends Parameter
         mixed $default = null,
     ) {
         parent::__construct(
-            name         : $name ?? ParameterName::UUID_V5,
-            regex        : Regex::UUID_V5,
-            cast         : $cast,
-            isOptional   : $isOptional,
+            name: $name ?? ParameterName::UUID_V5,
+            regex: Regex::UUID_V5,
+            cast: $cast,
+            isOptional: $isOptional,
             shouldCapture: $shouldCapture,
-            default      : $default,
+            default: $default,
         );
     }
 }

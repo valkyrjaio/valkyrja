@@ -16,7 +16,7 @@ namespace Valkyrja\Api\Models;
 use Valkyrja\Api\Constants\Status;
 use Valkyrja\Api\Json as Contract;
 use Valkyrja\Http\Constants\StatusCode;
-use Valkyrja\Model\Models\Model;
+use Valkyrja\Type\Model\Model;
 
 /**
  * Class Json.

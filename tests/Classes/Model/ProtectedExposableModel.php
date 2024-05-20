@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Model;
 
-use Valkyrja\Model\ExposableModel as Contract;
-use Valkyrja\Model\Models\Model as AbstractModel;
-use Valkyrja\Model\Models\ProtectedExposable;
+use Valkyrja\Type\Model\Contract\ExposableModel as Contract;
+use Valkyrja\Type\Model\Model as AbstractModel;
+use Valkyrja\Type\Model\ProtectedExposable;
 
 /**
  * Model class to use to test ProtectedExposable model.

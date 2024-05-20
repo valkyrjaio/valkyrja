@@ -16,12 +16,12 @@ namespace Valkyrja\Tests\Unit\Type\BuiltIn\Support;
 use stdClass;
 use Valkyrja\Container\Config\Config;
 use Valkyrja\Container\Managers\Container;
-use Valkyrja\Model\Model as ModelContract;
 use Valkyrja\Tests\Classes\Model\Model;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Exception\InvalidClassPropertyProvidedException;
 use Valkyrja\Type\BuiltIn\Exception\InvalidClassProvidedException;
 use Valkyrja\Type\BuiltIn\Support\Cls as Helper;
+use Valkyrja\Type\Model\Contract\Model as ModelContract;
 
 class ClassTest extends TestCase
 {

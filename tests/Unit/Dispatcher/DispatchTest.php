@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Dispatcher;
 
 use Valkyrja\Dispatcher\Dispatch as Contract;
 use Valkyrja\Dispatcher\Models\Dispatch;
-use Valkyrja\Model\Model;
 use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Type\Model\Contract\Model;
 
 /**
  * Test the dispatch model.

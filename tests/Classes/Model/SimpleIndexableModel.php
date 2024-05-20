@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Model;
 
-use Valkyrja\Model\IndexedModel as Contract;
-use Valkyrja\Model\Models\Indexable;
-use Valkyrja\Model\Models\Model as AbstractModel;
+use Valkyrja\Type\Model\Contract\IndexedModel as Contract;
+use Valkyrja\Type\Model\Indexable;
+use Valkyrja\Type\Model\Model as AbstractModel;
 
 /**
  * Model class to use to test Indexable model directly.

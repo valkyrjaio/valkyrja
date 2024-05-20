@@ -15,7 +15,7 @@ namespace Valkyrja\Config;
 
 use ArrayAccess;
 use RuntimeException;
-use Valkyrja\Model\Models\Model;
+use Valkyrja\Type\Model\Model;
 
 use function Valkyrja\env;
 

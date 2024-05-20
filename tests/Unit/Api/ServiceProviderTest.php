@@ -18,7 +18,7 @@ use Valkyrja\Api\Api as Contract;
 use Valkyrja\Api\Apis\Api;
 use Valkyrja\Api\Providers\ServiceProvider;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\Tests\Unit\Provider\ServiceProviderTestCase;
+use Valkyrja\Tests\Unit\Container\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm;
 
-use Valkyrja\Model\CastableModel;
-use Valkyrja\Model\ExposableModel;
+use Valkyrja\Type\Model\Contract\CastableModel;
+use Valkyrja\Type\Model\Contract\ExposableModel;
 
 /**
  * Interface Entity.

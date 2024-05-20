@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api;
 
-use Valkyrja\Model\Model;
+use Valkyrja\Type\Model\Contract\Model;
 
 /**
  * Interface Json.

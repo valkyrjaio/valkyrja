@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Dispatcher;
 
 use Closure;
-use Valkyrja\Model\Model;
+use Valkyrja\Type\Model\Contract\Model;
 
 /**
  * Interface Dispatch.

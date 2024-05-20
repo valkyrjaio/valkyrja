@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Entities;
 
 use JsonException;
-use Valkyrja\Model\Data\Cast;
-use Valkyrja\Model\Models\Castable;
-use Valkyrja\Model\Models\Model;
-use Valkyrja\Model\Models\ProtectedExposable;
 use Valkyrja\Orm\Entity as Contract;
 use Valkyrja\Orm\Repository;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\Contract\Type;
+use Valkyrja\Type\Model\Castable;
+use Valkyrja\Type\Model\Data\Cast;
+use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\ProtectedExposable;
 
 use function array_walk;
 

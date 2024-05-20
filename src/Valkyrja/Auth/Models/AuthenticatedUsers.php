@@ -16,8 +16,8 @@ namespace Valkyrja\Auth\Models;
 use Valkyrja\Auth\AuthenticatedUsers as Contract;
 use Valkyrja\Auth\Entities\User as UserClass;
 use Valkyrja\Auth\User;
-use Valkyrja\Model\Data\ArrayCast;
-use Valkyrja\Model\Models\CastableModel;
+use Valkyrja\Type\Model\CastableModel;
+use Valkyrja\Type\Model\Data\ArrayCast;
 
 /**
  * Class Collection.

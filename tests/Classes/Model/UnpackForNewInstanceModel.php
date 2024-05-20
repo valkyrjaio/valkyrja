@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Model;
 
-use Valkyrja\Model\Models\Model as AbstractModel;
-use Valkyrja\Model\Models\UnpackForNewInstance;
+use Valkyrja\Type\Model\Model as AbstractModel;
+use Valkyrja\Type\Model\UnpackForNewInstance;
 
 /**
  * Model class to use to test UnpackForNewInstance model.

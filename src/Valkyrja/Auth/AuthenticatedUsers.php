@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth;
 
-use Valkyrja\Model\CastableModel;
+use Valkyrja\Type\Model\Contract\CastableModel;
 
 /**
  * Interface AuthenticatedUsers.

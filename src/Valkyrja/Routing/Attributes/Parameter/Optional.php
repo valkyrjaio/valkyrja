@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Attributes\Parameter;
 
 use Attribute;
-use Valkyrja\Model\Data\Cast;
 use Valkyrja\Routing\Attributes\Parameter;
 use Valkyrja\Routing\Constants\Regex;
+use Valkyrja\Type\Model\Data\Cast;
 
 /**
  * Attribute Parameter.
@@ -34,11 +34,11 @@ class Optional extends Parameter
         mixed $default = null,
     ) {
         parent::__construct(
-            name         : $name,
-            regex        : $regex ?? Regex::ANY,
-            cast         : $cast,
+            name: $name,
+            regex: $regex ?? Regex::ANY,
+            cast: $cast,
             shouldCapture: $shouldCapture,
-            default      : $default,
+            default: $default,
         );
     }
 }

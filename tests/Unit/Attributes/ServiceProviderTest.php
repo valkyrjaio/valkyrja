@@ -18,7 +18,7 @@ use Valkyrja\Attribute\Attributes as Contract;
 use Valkyrja\Attribute\Managers\Attributes;
 use Valkyrja\Attribute\Providers\ServiceProvider;
 use Valkyrja\Reflection\Reflector;
-use Valkyrja\Tests\Unit\Provider\ServiceProviderTestCase;
+use Valkyrja\Tests\Unit\Container\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.

@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Attributes\Parameter;
 
 use Attribute;
-use Valkyrja\Model\Data\Cast;
 use Valkyrja\Routing\Attributes\Parameter;
 use Valkyrja\Routing\Constants\ParameterName;
 use Valkyrja\Routing\Constants\Regex;
+use Valkyrja\Type\Model\Data\Cast;
 
 /**
  * Attribute VlidV2.
@@ -35,12 +35,12 @@ class VlidV2 extends Parameter
         mixed $default = null,
     ) {
         parent::__construct(
-            name         : $name ?? ParameterName::VLID_V2,
-            regex        : Regex::VLID_V2,
-            cast         : $cast,
-            isOptional   : $isOptional,
+            name: $name ?? ParameterName::VLID_V2,
+            regex: Regex::VLID_V2,
+            cast: $cast,
+            isOptional: $isOptional,
             shouldCapture: $shouldCapture,
-            default      : $default,
+            default: $default,
         );
     }
 }
