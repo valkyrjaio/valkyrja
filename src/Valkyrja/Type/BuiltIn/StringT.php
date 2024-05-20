@@ -133,7 +133,8 @@ class StringT extends Type implements Contract
      */
     public function replaceAll(array $replace, array $replacement): static
     {
-        return $this->modify(static fn (string $subject): string => Helper::replaceAll($subject, $replace, $replacement)
+        return $this->modify(
+            static fn (string $subject): string => Helper::replaceAll($subject, $replace, $replacement)
         );
     }
 

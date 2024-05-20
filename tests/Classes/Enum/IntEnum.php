@@ -25,6 +25,6 @@ enum IntEnum: int implements Contract
 {
     use Enum;
 
-    case first = 1;
+    case first  = 1;
     case second = 2;
 }

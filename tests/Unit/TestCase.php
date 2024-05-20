@@ -28,15 +28,6 @@ use function trait_exists;
  */
 class TestCase extends PHPUnitTestCase
 {
-    /**
-     * @param class-string $expected The class inherited
-     * @param class-string $actual   The class to test
-     */
-    protected function isA(string $expected, string $actual): void
-    {
-        self::assertTrue(is_a($actual, $expected, true));
-    }
-
     protected static function assertIsA(string $expected, string $actual): void
     {
         self::assertTrue(is_a($actual, $expected, true));
@@ -67,5 +58,14 @@ class TestCase extends PHPUnitTestCase
     protected static function assertTraitExists(string $trait): void
     {
         self::assertTrue(trait_exists($trait));
+    }
+
+    /**
+     * @param class-string $expected The class inherited
+     * @param class-string $actual   The class to test
+     */
+    protected function isA(string $expected, string $actual): void
+    {
+        self::assertTrue(is_a($actual, $expected, true));
     }
 }

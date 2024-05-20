@@ -34,9 +34,14 @@ abstract class FacadeTestCase extends TestCase
     protected Container $container;
 
     /**
+     * @return string[][]
+     */
+    abstract public static function methods(): array;
+
+    /**
      * @throws Exception
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -59,9 +64,4 @@ abstract class FacadeTestCase extends TestCase
     {
         self::assertIsCallable([static::$facade::instance(), $method]);
     }
-
-    /**
-     * @return string[][]
-     */
-    abstract public static function methods(): array;
 }

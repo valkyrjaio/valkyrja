@@ -94,11 +94,6 @@ class DispatcherTest extends TestCase
      */
     protected string $value = 'test';
 
-    public function testContract(): void
-    {
-        self::assertTrue(method_exists(Contract::class, 'dispatch'));
-    }
-
     /**
      * A valid static method.
      *
@@ -125,6 +120,11 @@ class DispatcherTest extends TestCase
         $this->dispatcher = new Dispatcher($this->container);
 
         $this->container->setSingleton(self::class, $this);
+    }
+
+    public function testContract(): void
+    {
+        self::assertTrue(method_exists(Contract::class, 'dispatch'));
     }
 
     /**

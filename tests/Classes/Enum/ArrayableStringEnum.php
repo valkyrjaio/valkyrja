@@ -28,6 +28,6 @@ enum ArrayableStringEnum: string implements ArrayableContract, JsonSerializableC
     use Arrayable;
     use JsonSerializable;
 
-    case foo = 'bar';
+    case foo   = 'bar';
     case lorem = 'ipsum';
 }

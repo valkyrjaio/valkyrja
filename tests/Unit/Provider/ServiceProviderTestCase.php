@@ -35,7 +35,32 @@ class ServiceProviderTestCase extends TestCase
 
     protected Container $container;
 
-    public function setUp(): void
+    public static function publishersDataProvider(): array
+    {
+        return array_map(static fn ($item) => [$item], static::getPublishers());
+    }
+
+    public static function providesDataProvider(): array
+    {
+        return array_map(static fn ($item) => [$item], static::getProvides());
+    }
+
+    protected static function getPublishers(): array
+    {
+        return static::$provider::publishers();
+    }
+
+    protected static function getProvides(): array
+    {
+        return static::$provider::provides();
+    }
+
+    protected static function assertValidProvided(string $provided): void
+    {
+        self::assertInterfaceExists($provided);
+    }
+
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -60,30 +85,5 @@ class ServiceProviderTestCase extends TestCase
     public function testPublishers(array $callable): void
     {
         self::assertIsCallable($callable);
-    }
-
-    public static function publishersDataProvider(): array
-    {
-        return array_map(static fn ($item) => [$item], static::getPublishers());
-    }
-
-    public static function providesDataProvider(): array
-    {
-        return array_map(static fn ($item) => [$item], static::getProvides());
-    }
-
-    protected static function getPublishers(): array
-    {
-        return static::$provider::publishers();
-    }
-
-    protected static function getProvides(): array
-    {
-        return static::$provider::provides();
-    }
-
-    protected static function assertValidProvided(string $provided): void
-    {
-        self::assertInterfaceExists($provided);
     }
 }

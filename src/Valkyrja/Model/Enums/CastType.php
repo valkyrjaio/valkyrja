@@ -35,19 +35,19 @@ use Valkyrja\Type\Json\JsonObject;
  */
 enum CastType: string implements JsonSerializable
 {
-    case string = StringT::class;
-    case int = IntT::class;
-    case float = FloatT::class;
-    case double = DoubleT::class;
-    case bool = BoolT::class;
-    case array = ArrayT::class;
-    case object = ObjectT::class;
+    case string            = StringT::class;
+    case int               = IntT::class;
+    case float             = FloatT::class;
+    case double            = DoubleT::class;
+    case bool              = BoolT::class;
+    case array             = ArrayT::class;
+    case object            = ObjectT::class;
     case serialized_object = SerializedObject::class;
-    case json = Json::class;
-    case json_object = JsonObject::class;
-    case true = TrueT::class;
-    case false = FalseT::class;
-    case null = NullT::class;
+    case json              = Json::class;
+    case json_object       = JsonObject::class;
+    case true              = TrueT::class;
+    case false             = FalseT::class;
+    case null              = NullT::class;
 
     /**
      * @inheritDoc

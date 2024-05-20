@@ -128,9 +128,9 @@ class Assert extends AbstractAsserter implements Contract
         if (Enum::isValidName(ResultType::class, $name)) {
             return match ($name) {
                 ResultType::assertions->name => $this->getAssertions(),
-                ResultType::errors->name => $this->getErrors(),
-                ResultType::successes->name => $this->getSuccesses(),
-                ResultType::warnings->name => $this->getWarnings(),
+                ResultType::errors->name     => $this->getErrors(),
+                ResultType::successes->name  => $this->getSuccesses(),
+                ResultType::warnings->name   => $this->getWarnings(),
             };
         }
 

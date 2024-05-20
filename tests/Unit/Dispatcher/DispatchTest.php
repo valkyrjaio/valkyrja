@@ -28,7 +28,7 @@ class DispatchTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Dispatcher\Dispatch
+     * @var Contract
      */
     protected Dispatch $dispatch;
 

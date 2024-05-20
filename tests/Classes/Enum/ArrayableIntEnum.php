@@ -28,6 +28,6 @@ enum ArrayableIntEnum: int implements ArrayableContract, JsonSerializableContrac
     use Arrayable;
     use JsonSerializable;
 
-    case first = 1;
+    case first  = 1;
     case second = 2;
 }
