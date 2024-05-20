@@ -94,6 +94,8 @@ class Container implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param class-string<Service> $service The service
      */
     public function bind(string $id, string $service): static
     {
@@ -120,6 +122,8 @@ class Container implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param class-string<Service> $singleton The singleton service
      */
     public function bindSingleton(string $id, string $singleton): static
     {

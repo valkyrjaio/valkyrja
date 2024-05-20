@@ -80,7 +80,7 @@ class Request extends ContainerFacade
     /**
      * @inheritDoc
      */
-    public static function instance(): object|string
+    public static function instance(): object
     {
         return self::getContainer()->getSingleton(Contract::class);
     }

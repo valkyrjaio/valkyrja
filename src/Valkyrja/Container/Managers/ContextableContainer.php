@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Managers;
 
 use Closure;
+use Valkyrja\Container\Container as Contract;
 use Valkyrja\Container\Service;
 
 /**
@@ -32,24 +33,18 @@ trait ContextableContainer
 
     /**
      * The context id.
-     *
-     * @var string|null
      */
     protected string|null $contextId = null;
 
     /**
      * The context method name.
-     *
-     * @var string|null
      */
     protected string|null $contextMember = null;
 
     /**
      * The context container name.
-     *
-     * @var self|null
      */
-    protected self|null $contextContainer = null;
+    protected Contract|null $contextContainer = null;
 
     /**
      * @inheritDoc
@@ -89,16 +84,22 @@ trait ContextableContainer
 
     /**
      * @inheritDoc
+     *
+     * @param class-string<Service> $service The service
      */
     public function bind(string $id, string $service): static
     {
         if ($this->contextContainer !== null) {
             $id = $this->getServiceIdInternal($id);
 
-            return $this->contextContainer->bind($id, $service);
+            $this->contextContainer->bind($id, $service);
+
+            return $this;
         }
 
-        return parent::bind($id, $service);
+        parent::bind($id, $service);
+
+        return $this;
     }
 
     /**
@@ -109,24 +110,34 @@ trait ContextableContainer
         if ($this->contextContainer !== null) {
             $id = $this->getServiceIdInternal($id);
 
-            return $this->contextContainer->bindAlias($alias, $id);
+            $this->contextContainer->bindAlias($alias, $id);
+
+            return $this;
         }
 
-        return parent::bindAlias($alias, $id);
+        parent::bindAlias($alias, $id);
+
+        return $this;
     }
 
     /**
      * @inheritDoc
+     *
+     * @param class-string<Service> $singleton The singleton service
      */
     public function bindSingleton(string $id, string $singleton): static
     {
         if ($this->contextContainer !== null) {
             $id = $this->getServiceIdInternal($id);
 
-            return $this->contextContainer->bindSingleton($id, $singleton);
+            $this->contextContainer->bindSingleton($id, $singleton);
+
+            return $this;
         }
 
-        return parent::bindSingleton($id, $singleton);
+        parent::bindSingleton($id, $singleton);
+
+        return $this;
     }
 
     /**
@@ -137,10 +148,14 @@ trait ContextableContainer
         if ($this->contextContainer !== null) {
             $id = $this->getServiceIdInternal($id);
 
-            return $this->contextContainer->setClosure($id, $closure);
+            $this->contextContainer->setClosure($id, $closure);
+
+            return $this;
         }
 
-        return parent::setClosure($id, $closure);
+        parent::setClosure($id, $closure);
+
+        return $this;
     }
 
     /**
@@ -151,10 +166,14 @@ trait ContextableContainer
         if ($this->contextContainer !== null) {
             $id = $this->getServiceIdInternal($id);
 
-            return $this->contextContainer->setSingleton($id, $singleton);
+            $this->contextContainer->setSingleton($id, $singleton);
+
+            return $this;
         }
 
-        return parent::setSingleton($id, $singleton);
+        parent::setSingleton($id, $singleton);
+
+        return $this;
     }
 
     /**

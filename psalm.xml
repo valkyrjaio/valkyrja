@@ -45,7 +45,7 @@
 
         <NoValue>
             <errorLevel type="suppress">
-                <file name="src/Valkyrja/Type/Support/StrCase.php" />
+                <file name="src/Valkyrja/Type/BuiltIn/Support/StrCase.php" />
             </errorLevel>
         </NoValue>
 

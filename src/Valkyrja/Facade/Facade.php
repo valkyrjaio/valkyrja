@@ -113,7 +113,7 @@ abstract class Facade
     /**
      * The facade instance.
      *
-     * @return object|class-string
+     * @return object
      */
-    abstract protected static function instance(): object|string;
+    abstract protected static function instance(): object;
 }

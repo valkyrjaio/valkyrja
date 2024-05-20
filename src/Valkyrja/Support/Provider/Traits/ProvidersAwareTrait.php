@@ -122,7 +122,7 @@ trait ProvidersAwareTrait
         $provider = $this->provided[$itemId];
         // The publish method for this provided item in the provider
         $publishCallback = $this->providedCallback[$itemId]
-            ?? [$provider, static::$defaultPublishMethod];
+            ?? [$provider, $this->defaultPublishMethod];
 
         // Publish the service provider
         $publishCallback($this);
