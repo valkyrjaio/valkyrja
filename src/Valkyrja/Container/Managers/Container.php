@@ -18,7 +18,7 @@ use RuntimeException;
 use Valkyrja\Container\Config\Config;
 use Valkyrja\Container\Container as Contract;
 use Valkyrja\Container\Service;
-use Valkyrja\Support\Provider\Traits\ProvidersAwareTrait;
+use Valkyrja\Support\Provider\ProvidersAwareTrait;
 
 use function assert;
 

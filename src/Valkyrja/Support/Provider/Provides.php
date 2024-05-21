@@ -14,42 +14,48 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Provider;
 
 /**
- * Interface Provides.
+ * Trait Provides.
  *
  * @author Melech Mizrachi
  */
-interface Provides
+trait Provides
 {
     /**
      * Whether this provider is deferred.
      *
      * @return bool
      */
-    public static function deferred(): bool;
+    public static function deferred(): bool
+    {
+        return true;
+    }
 
     /**
      * The items provided by this provider.
      *
      * <code>
      *      [
-     *          Provided::class => [self::class, 'publish'],
-     *          Provided::class => [self::class, 'publishProvidedClass'],
+     *          Provided::class => 'publish',
+     *          Provided::class => 'publishProvidedClass',
      *      ]
      *
      * ...
      *      public static function publishProvidedClass(Application $app): void
      * </code>
      *
-     * @return array<class-string, callable>
+     * @return string[]
      */
-    public static function publishers(): array;
+    public static function publishers(): array
+    {
+        return [];
+    }
 
     /**
      * The items provided by this provider.
      *
      * @return array
      */
-    public static function provides(): array;
+    abstract public static function provides(): array;
 
     /**
      * Publish the provider.
@@ -58,5 +64,5 @@ interface Provides
      *
      * @return void
      */
-    public static function publish(object $providerAware): void;
+    abstract public static function publish(object $providerAware): void;
 }

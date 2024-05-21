@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console;
 
 use Valkyrja\Console\Exceptions\CommandNotFound;
-use Valkyrja\Support\Provider\ProvidersAware;
+use Valkyrja\Support\Provider\Contract\ProvidersAware;
 
 /**
  * Interface Console.

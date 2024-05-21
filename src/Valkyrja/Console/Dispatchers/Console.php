@@ -34,7 +34,7 @@ use Valkyrja\Dispatcher\Exception\InvalidPropertyException;
 use Valkyrja\Dispatcher\Validator\Contract\Validator;
 use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Path\PathParser;
-use Valkyrja\Support\Provider\Traits\ProvidersAwareTrait;
+use Valkyrja\Support\Provider\ProvidersAwareTrait;
 
 use function preg_match;
 

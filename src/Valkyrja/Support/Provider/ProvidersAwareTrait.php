@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Provider\Traits;
+namespace Valkyrja\Support\Provider;
 
-use Valkyrja\Support\Provider\Provides;
+use;
 
 /**
  * Trait AllowsProviders.
@@ -71,7 +71,7 @@ trait ProvidersAwareTrait
 
         // Helpers::validateClass($provider, Provides::class);
 
-        /** @var Provides $providerClass */
+        /** @var \Valkyrja\Support\Provider\Provides $providerClass */
         $providerClass = $provider;
 
         // If the service provider is deferred
@@ -157,7 +157,7 @@ trait ProvidersAwareTrait
      */
     protected function registerDeferred(string $provider, string ...$provides): void
     {
-        /** @var Provides $providerClass */
+        /** @var \Valkyrja\Support\Provider\Provides $providerClass */
         $providerClass   = $provider;
         $publishCallback = $providerClass::publishers();
 

@@ -11,51 +11,45 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Provider\Traits;
+namespace Valkyrja\Support\Provider\Contract;
 
 /**
- * Trait Provides.
+ * Interface Provides.
  *
  * @author Melech Mizrachi
  */
-trait Provides
+interface Provides
 {
     /**
      * Whether this provider is deferred.
      *
      * @return bool
      */
-    public static function deferred(): bool
-    {
-        return true;
-    }
+    public static function deferred(): bool;
 
     /**
      * The items provided by this provider.
      *
      * <code>
      *      [
-     *          Provided::class => 'publish',
-     *          Provided::class => 'publishProvidedClass',
+     *          Provided::class => [self::class, 'publish'],
+     *          Provided::class => [self::class, 'publishProvidedClass'],
      *      ]
      *
      * ...
      *      public static function publishProvidedClass(Application $app): void
      * </code>
      *
-     * @return string[]
+     * @return array<class-string, callable>
      */
-    public static function publishers(): array
-    {
-        return [];
-    }
+    public static function publishers(): array;
 
     /**
      * The items provided by this provider.
      *
      * @return array
      */
-    abstract public static function provides(): array;
+    public static function provides(): array;
 
     /**
      * Publish the provider.
@@ -64,5 +58,5 @@ trait Provides
      *
      * @return void
      */
-    abstract public static function publish(object $providerAware): void;
+    public static function publish(object $providerAware): void;
 }
