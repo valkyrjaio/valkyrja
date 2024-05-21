@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Manager;
 
 use Valkyrja\Manager\Adapter\Contract\Adapter;
-use Valkyrja\Manager\Config\Config;
 use Valkyrja\Manager\Contract\Manager as Contract;
 use Valkyrja\Manager\Drivers\Contract\Driver;
 use Valkyrja\Manager\Factories\Contract\Factory;

@@ -11,42 +11,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Manager\Config;
-
-use Valkyrja\Config\Config as Model;
+namespace Valkyrja\Manager;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class MessageConfig extends Config
 {
     /**
-     * The default configuration.
+     * The default message.
      *
      * @var string
      */
-    public string $default;
+    public string $defaultMessage;
 
     /**
-     * The default adapter.
+     * The default message class.
      *
      * @var string
      */
-    public string $adapter;
+    public string $message;
 
     /**
-     * The default driver.
-     *
-     * @var string
-     */
-    public string $driver;
-
-    /**
-     * The configurations.
+     * The messages.
      *
      * @var array[]
      */
-    public array $configurations;
+    public array $messages;
 }

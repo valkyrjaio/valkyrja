@@ -15,7 +15,7 @@ namespace Valkyrja\Session\Config;
 
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constant\EnvKey;
-use Valkyrja\Manager\Config\Config as Model;
+use Valkyrja\Manager\Config as Model;
 
 /**
  * Class Config.
