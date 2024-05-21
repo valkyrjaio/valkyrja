@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Facade;
 
 use RuntimeException;
-use Valkyrja\Facade\Exceptions\InvalidArgumentException;
+use Valkyrja\Facade\Exception\InvalidArgumentException;
 
 use function in_array;
 use function is_object;

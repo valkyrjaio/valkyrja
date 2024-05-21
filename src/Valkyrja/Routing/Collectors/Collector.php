@@ -115,8 +115,12 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string $path, Closure|string $handler, string|null $name = null, bool $setDependencies = true): Route
-    {
+    public function get(
+        string $path,
+        Closure|string $handler,
+        string|null $name = null,
+        bool $setDependencies = true
+    ): Route {
         return $this->makeRoute(
             [
                 RequestMethod::GET,
@@ -132,48 +136,72 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function post(string $path, Closure|string $handler, string|null $name = null, bool $setDependencies = true): Route
-    {
+    public function post(
+        string $path,
+        Closure|string $handler,
+        string|null $name = null,
+        bool $setDependencies = true
+    ): Route {
         return $this->makeRoute([RequestMethod::POST], $path, $handler, $name, $setDependencies);
     }
 
     /**
      * @inheritDoc
      */
-    public function put(string $path, Closure|string $handler, string|null $name = null, bool $setDependencies = true): Route
-    {
+    public function put(
+        string $path,
+        Closure|string $handler,
+        string|null $name = null,
+        bool $setDependencies = true
+    ): Route {
         return $this->makeRoute([RequestMethod::PUT], $path, $handler, $name, $setDependencies);
     }
 
     /**
      * @inheritDoc
      */
-    public function patch(string $path, Closure|string $handler, string|null $name = null, bool $setDependencies = true): Route
-    {
+    public function patch(
+        string $path,
+        Closure|string $handler,
+        string|null $name = null,
+        bool $setDependencies = true
+    ): Route {
         return $this->makeRoute([RequestMethod::PATCH], $path, $handler, $name, $setDependencies);
     }
 
     /**
      * @inheritDoc
      */
-    public function delete(string $path, Closure|string $handler, string|null $name = null, bool $setDependencies = true): Route
-    {
+    public function delete(
+        string $path,
+        Closure|string $handler,
+        string|null $name = null,
+        bool $setDependencies = true
+    ): Route {
         return $this->makeRoute([RequestMethod::DELETE], $path, $handler, $name, $setDependencies);
     }
 
     /**
      * @inheritDoc
      */
-    public function head(string $path, Closure|string $handler, string|null $name = null, bool $setDependencies = true): Route
-    {
+    public function head(
+        string $path,
+        Closure|string $handler,
+        string|null $name = null,
+        bool $setDependencies = true
+    ): Route {
         return $this->makeRoute([RequestMethod::HEAD], $path, $handler, $name, $setDependencies);
     }
 
     /**
      * @inheritDoc
      */
-    public function any(string $path, Closure|string $handler, string|null $name = null, bool $setDependencies = true): Route
-    {
+    public function any(
+        string $path,
+        Closure|string $handler,
+        string|null $name = null,
+        bool $setDependencies = true
+    ): Route {
         return $this->makeRoute(RequestMethod::ANY, $path, $handler, $name, $setDependencies);
     }
 
