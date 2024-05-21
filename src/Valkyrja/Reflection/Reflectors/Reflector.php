@@ -23,7 +23,7 @@ use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionProperty;
 use UnitEnum;
-use Valkyrja\Reflection\Reflector as Contract;
+use Valkyrja\Reflection\Contract\Reflector as Contract;
 
 use function is_callable;
 use function spl_object_id;

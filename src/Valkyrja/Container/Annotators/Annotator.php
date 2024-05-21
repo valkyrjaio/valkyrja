@@ -18,7 +18,7 @@ use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Filter;
 use Valkyrja\Container\Annotator as Contract;
 use Valkyrja\Container\Enums\AnnotationName;
-use Valkyrja\Reflection\Reflector;
+use Valkyrja\Reflection\Contract\Reflector;
 
 /**
  * Class ContainerAnnotator.

@@ -20,7 +20,7 @@ use Valkyrja\Event\Annotations\Listener;
 use Valkyrja\Event\Annotator as Contract;
 use Valkyrja\Event\Listener as ListenerContract;
 use Valkyrja\Event\Models\Listener as ListenerModel;
-use Valkyrja\Reflection\Reflector;
+use Valkyrja\Reflection\Contract\Reflector;
 
 /**
  * Class ListenerAnnotator.

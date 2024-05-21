@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Reflection\Providers;
+namespace Valkyrja\Reflection\Provider;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Reflection\Reflector;
+use Valkyrja\Reflection\Contract\Reflector;
 
 /**
  * Class ServiceProvider.

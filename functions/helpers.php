@@ -46,7 +46,7 @@ use Valkyrja\Notification\Notifier;
 use Valkyrja\Orm\Orm;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
-use Valkyrja\Reflection\Reflector;
+use Valkyrja\Reflection\Contract\Reflector;
 use Valkyrja\Routing\Collector;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Route;

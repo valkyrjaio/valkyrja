@@ -16,7 +16,7 @@ namespace Valkyrja\Routing\Attributes;
 use InvalidArgumentException;
 use ReflectionException;
 use Valkyrja\Attribute\Attributes as AttributeAttributes;
-use Valkyrja\Reflection\Reflector;
+use Valkyrja\Reflection\Contract\Reflector;
 use Valkyrja\Routing\Attributes as Contract;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Message as RoutingMessage;

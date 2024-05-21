@@ -28,7 +28,7 @@ use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Dispatcher\Validator\Contract\Validator;
 use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Path\PathParser;
-use Valkyrja\Reflection\Reflector;
+use Valkyrja\Reflection\Contract\Reflector;
 
 /**
  * Class ServiceProvider.

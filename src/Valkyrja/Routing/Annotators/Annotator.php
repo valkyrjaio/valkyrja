@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use ReflectionException;
 use Valkyrja\Annotation\Annotator as AnnotationAnnotator;
 use Valkyrja\Annotation\Filter;
-use Valkyrja\Reflection\Reflector;
+use Valkyrja\Reflection\Contract\Reflector;
 use Valkyrja\Routing\Annotations\Route;
 use Valkyrja\Routing\Annotator as Contract;
 use Valkyrja\Routing\Enums\AnnotationName;

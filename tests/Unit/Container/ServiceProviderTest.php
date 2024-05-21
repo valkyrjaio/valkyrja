@@ -18,7 +18,7 @@ use Valkyrja\Annotation\Filter;
 use Valkyrja\Container\Annotator as Contract;
 use Valkyrja\Container\Annotators\Annotator;
 use Valkyrja\Container\Providers\ServiceProvider;
-use Valkyrja\Reflection\Reflector;
+use Valkyrja\Reflection\Contract\Reflector;
 
 /**
  * Test the ServiceProvider.

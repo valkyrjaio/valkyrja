@@ -18,7 +18,7 @@ use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Annotator as Contract;
 use Valkyrja\Annotation\Constants\Property;
 use Valkyrja\Annotation\Parser;
-use Valkyrja\Reflection\Reflector;
+use Valkyrja\Reflection\Contract\Reflector;
 
 use function array_merge;
 

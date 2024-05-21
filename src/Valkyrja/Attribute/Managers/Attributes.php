@@ -21,7 +21,7 @@ use ReflectionMethod;
 use ReflectionProperty;
 use Valkyrja\Attribute\Attributes as Contract;
 use Valkyrja\Dispatcher\Constant\Property;
-use Valkyrja\Reflection\Reflector;
+use Valkyrja\Reflection\Contract\Reflector;
 
 /**
  * Class Attributes.

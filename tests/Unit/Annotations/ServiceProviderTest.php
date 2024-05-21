@@ -21,7 +21,7 @@ use Valkyrja\Annotation\Filters\Filter;
 use Valkyrja\Annotation\Parser as ParserContract;
 use Valkyrja\Annotation\Parsers\Parser;
 use Valkyrja\Annotation\Providers\ServiceProvider;
-use Valkyrja\Reflection\Reflector;
+use Valkyrja\Reflection\Contract\Reflector;
 use Valkyrja\Tests\Unit\Container\ServiceProviderTestCase;
 
 /**

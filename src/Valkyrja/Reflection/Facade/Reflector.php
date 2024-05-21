@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Reflection\Facades;
+namespace Valkyrja\Reflection\Facade;
 
 use Closure;
 use ReflectionClass;
@@ -21,7 +21,7 @@ use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
 use Valkyrja\Facade\ContainerFacade;
-use Valkyrja\Reflection\Reflector as Contract;
+use Valkyrja\Reflection\Contract\Reflector as Contract;
 
 /**
  * Class Reflector.

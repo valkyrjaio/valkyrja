@@ -23,7 +23,7 @@ use Valkyrja\Dispatcher\Validator\Contract\Validator;
 use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\Reflection\Reflector;
+use Valkyrja\Reflection\Contract\Reflector;
 use Valkyrja\Routing\Annotator;
 use Valkyrja\Routing\Attributes;
 use Valkyrja\Routing\Collection;

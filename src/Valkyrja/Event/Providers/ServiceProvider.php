@@ -25,7 +25,7 @@ use Valkyrja\Event\Collection;
 use Valkyrja\Event\Collections\CacheableCollection as EventCollection;
 use Valkyrja\Event\Dispatcher;
 use Valkyrja\Event\Dispatchers\Dispatcher as EventDispatcher;
-use Valkyrja\Reflection\Reflector;
+use Valkyrja\Reflection\Contract\Reflector;
 
 /**
  * Class ServiceProvider.

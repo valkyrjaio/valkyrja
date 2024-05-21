@@ -17,7 +17,7 @@ use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Attribute\Attributes as Contract;
 use Valkyrja\Attribute\Managers\Attributes;
 use Valkyrja\Attribute\Providers\ServiceProvider;
-use Valkyrja\Reflection\Reflector;
+use Valkyrja\Reflection\Contract\Reflector;
 use Valkyrja\Tests\Unit\Container\ServiceProviderTestCase;
 
 /**

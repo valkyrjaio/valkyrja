@@ -20,7 +20,7 @@ use Valkyrja\Event\Attributes as Contract;
 use Valkyrja\Event\Attributes\Listener as Attribute;
 use Valkyrja\Event\Listener;
 use Valkyrja\Event\Models\Listener as Model;
-use Valkyrja\Reflection\Reflector;
+use Valkyrja\Reflection\Contract\Reflector;
 
 /**
  * Class Attributes.

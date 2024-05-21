@@ -20,7 +20,7 @@ use Valkyrja\Console\Annotations\Command;
 use Valkyrja\Console\Annotator as Contract;
 use Valkyrja\Console\Command as CommandContract;
 use Valkyrja\Console\Models\Command as CommandModel;
-use Valkyrja\Reflection\Reflector;
+use Valkyrja\Reflection\Contract\Reflector;
 
 /**
  * Class CommandAnnotator.
