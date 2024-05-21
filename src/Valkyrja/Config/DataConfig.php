@@ -15,7 +15,6 @@ namespace Valkyrja\Config;
 
 use ArrayAccess;
 use RuntimeException;
-use Valkyrja\Application\Env;
 
 use function constant;
 use function defined;
@@ -39,7 +38,7 @@ abstract class DataConfig implements ArrayAccess
     /**
      * Create config from Env.
      *
-     * @param class-string<Env> $env The env
+     * @param class-string $env The env
      */
     public static function fromEnv(string $env): static
     {
@@ -90,7 +89,7 @@ abstract class DataConfig implements ArrayAccess
     /**
      * Set properties from env.
      *
-     * @param class-string<Env> $env The env
+     * @param class-string $env The env
      */
     protected function setPropertiesFromEnv(string $env): void
     {

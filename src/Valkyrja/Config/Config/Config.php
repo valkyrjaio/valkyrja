@@ -23,7 +23,7 @@ use Valkyrja\Cache\Config\Config as Cache;
 use Valkyrja\Client\Config\Config as Client;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Config\Constant\EnvKey;
+use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Support\Provider;
 use Valkyrja\Console\Config\Config as Console;
 use Valkyrja\Container\Config\Config as Container;
