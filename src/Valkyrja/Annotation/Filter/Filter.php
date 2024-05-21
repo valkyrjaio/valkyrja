@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Filter;
 
-use Valkyrja\Annotation\Contract\Annotator;
+use Valkyrja\Annotation\Contract\Annotations;
 use Valkyrja\Annotation\Filter\Contract\Filter as Contract;
 use Valkyrja\Annotation\Model\Contract\Annotation;
 
@@ -29,16 +29,16 @@ class Filter implements Contract
     /**
      * The annotations.
      *
-     * @var Annotator
+     * @var Annotations
      */
-    protected Annotator $annotator;
+    protected Annotations $annotator;
 
     /**
      * Filter constructor.
      *
-     * @param Annotator $annotator
+     * @param Annotations $annotator
      */
-    public function __construct(Annotator $annotator)
+    public function __construct(Annotations $annotator)
     {
         $this->annotator = $annotator;
     }
@@ -48,7 +48,7 @@ class Filter implements Contract
      */
     public function classAnnotationsByType(string $type, string $class): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->annotator->classAnnotations($class));
+        return $this->filterAnnotationsByType($type, ...$this->annotator->forClass($class));
     }
 
     /**
@@ -56,7 +56,7 @@ class Filter implements Contract
      */
     public function classMembersAnnotationsByType(string $type, string $class): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->annotator->classMembersAnnotations($class));
+        return $this->filterAnnotationsByType($type, ...$this->annotator->forClassMembers($class));
     }
 
     /**
@@ -64,7 +64,7 @@ class Filter implements Contract
      */
     public function classAndMembersAnnotationsByType(string $type, string $class): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->annotator->classAndMembersAnnotations($class));
+        return $this->filterAnnotationsByType($type, ...$this->annotator->forClassAndMembers($class));
     }
 
     /**
@@ -72,7 +72,7 @@ class Filter implements Contract
      */
     public function propertyAnnotationsByType(string $type, string $class, string $property): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->annotator->propertyAnnotations($class, $property));
+        return $this->filterAnnotationsByType($type, ...$this->annotator->forClassProperty($class, $property));
     }
 
     /**
@@ -80,7 +80,7 @@ class Filter implements Contract
      */
     public function propertiesAnnotationsByType(string $type, string $class): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->annotator->propertiesAnnotations($class));
+        return $this->filterAnnotationsByType($type, ...$this->annotator->forClassProperties($class));
     }
 
     /**
@@ -88,7 +88,7 @@ class Filter implements Contract
      */
     public function methodAnnotationsByType(string $type, string $class, string $method): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->annotator->methodAnnotations($class, $method));
+        return $this->filterAnnotationsByType($type, ...$this->annotator->forClassMethod($class, $method));
     }
 
     /**
@@ -96,7 +96,7 @@ class Filter implements Contract
      */
     public function methodsAnnotationsByType(string $type, string $class): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->annotator->methodsAnnotations($class));
+        return $this->filterAnnotationsByType($type, ...$this->annotator->forClassMethods($class));
     }
 
     /**
@@ -104,7 +104,7 @@ class Filter implements Contract
      */
     public function functionAnnotationsByType(string $type, string $function): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->annotator->functionAnnotations($function));
+        return $this->filterAnnotationsByType($type, ...$this->annotator->forFunction($function));
     }
 
     /**

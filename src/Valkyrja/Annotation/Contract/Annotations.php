@@ -17,11 +17,11 @@ use Valkyrja\Annotation\Model\Contract\Annotation;
 use Valkyrja\Annotation\Parser\Contract\Parser;
 
 /**
- * Interface Annotator.
+ * Interface Annotations.
  *
  * @author Melech Mizrachi
  */
-interface Annotator
+interface Annotations
 {
     /**
      * Get the parser.
@@ -46,7 +46,7 @@ interface Annotator
      *
      * @return Annotation[]
      */
-    public function classAnnotations(string $class): array;
+    public function forClass(string $class): array;
 
     /**
      * Get a class's members' annotations.
@@ -55,7 +55,7 @@ interface Annotator
      *
      * @return Annotation[]
      */
-    public function classMembersAnnotations(string $class): array;
+    public function forClassMembers(string $class): array;
 
     /**
      * Get a class's and class's members' annotations.
@@ -64,7 +64,7 @@ interface Annotator
      *
      * @return Annotation[]
      */
-    public function classAndMembersAnnotations(string $class): array;
+    public function forClassAndMembers(string $class): array;
 
     /**
      * Get a property's annotations.
@@ -74,7 +74,7 @@ interface Annotator
      *
      * @return Annotation[]
      */
-    public function propertyAnnotations(string $class, string $property): array;
+    public function forClassProperty(string $class, string $property): array;
 
     /**
      * Get a class's properties' annotations.
@@ -83,7 +83,7 @@ interface Annotator
      *
      * @return Annotation[]
      */
-    public function propertiesAnnotations(string $class): array;
+    public function forClassProperties(string $class): array;
 
     /**
      * Get a method's annotations.
@@ -93,7 +93,7 @@ interface Annotator
      *
      * @return Annotation[]
      */
-    public function methodAnnotations(string $class, string $method): array;
+    public function forClassMethod(string $class, string $method): array;
 
     /**
      * Get a class's methods' annotations.
@@ -102,7 +102,7 @@ interface Annotator
      *
      * @return Annotation[]
      */
-    public function methodsAnnotations(string $class): array;
+    public function forClassMethods(string $class): array;
 
     /**
      * Get a function's annotations.
@@ -111,5 +111,5 @@ interface Annotator
      *
      * @return Annotation[]
      */
-    public function functionAnnotations(string $function): array;
+    public function forFunction(string $function): array;
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Provider;
 
-use Valkyrja\Annotation\Contract\Annotator;
+use Valkyrja\Annotation\Contract\Annotations;
 use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Annotation\Parser\Contract\Parser;
 use Valkyrja\Config\Config\Config;
@@ -34,9 +34,9 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Annotator::class => [self::class, 'publishAnnotator'],
-            Filter::class    => [self::class, 'publishFilter'],
-            Parser::class    => [self::class, 'publishParser'],
+            Annotations::class => [self::class, 'publishAnnotator'],
+            Filter::class      => [self::class, 'publishFilter'],
+            Parser::class      => [self::class, 'publishParser'],
         ];
     }
 
@@ -46,7 +46,7 @@ class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Annotator::class,
+            Annotations::class,
             Filter::class,
             Parser::class,
         ];
@@ -62,8 +62,8 @@ class ServiceProvider extends Provider
     public static function publishAnnotator(Container $container): void
     {
         $container->setSingleton(
-            Annotator::class,
-            new \Valkyrja\Annotation\Annotators\Annotator(
+            Annotations::class,
+            new \Valkyrja\Annotation\Annotations(
                 $container->getSingleton(Parser::class),
                 $container->getSingleton(Reflection::class)
             )
@@ -82,7 +82,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Filter::class,
             new \Valkyrja\Annotation\Filter\Filter(
-                $container->getSingleton(Annotator::class)
+                $container->getSingleton(Annotations::class)
             )
         );
     }

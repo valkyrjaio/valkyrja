@@ -17,7 +17,7 @@ use ReflectionClass;
 use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionProperty;
-use Valkyrja\Annotation\Contract\Annotator as Contract;
+use Valkyrja\Annotation\Contract\Annotations as Contract;
 use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Annotation\Model\Contract\Annotation;
 use Valkyrja\Annotation\Parser\Contract\Parser;

@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Annotations\Facades;
 
-use Valkyrja\Annotation\Contract\Annotator as Contract;
+use Valkyrja\Annotation\Contract\Annotations as Contract;
 use Valkyrja\Annotation\Facade\Annotator as Facade;
 use Valkyrja\Tests\Unit\Facade\FacadeTestCase;
 
 /**
- * Test the Annotator Facade service.
+ * Test the Annotation Facade service.
  *
  * @author Melech Mizrachi
  */
-class AnnotatorTest extends FacadeTestCase
+class AnnotationTest extends FacadeTestCase
 {
     /** @inheritDoc */
     protected static string $contract = Contract::class;
@@ -37,14 +37,14 @@ class AnnotatorTest extends FacadeTestCase
         return [
             ['getParser'],
             ['setParser'],
-            ['classAnnotations'],
-            ['classMembersAnnotations'],
-            ['classAndMembersAnnotations'],
-            ['propertyAnnotations'],
-            ['propertiesAnnotations'],
-            ['methodAnnotations'],
-            ['methodsAnnotations'],
-            ['functionAnnotations'],
+            ['forClass'],
+            ['forClassMembers'],
+            ['forClassAndMembers'],
+            ['forClassProperty'],
+            ['forClassProperties'],
+            ['forClassMethod'],
+            ['forClassMethods'],
+            ['forFunction'],
         ];
     }
 }

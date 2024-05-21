@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotation\Annotators;
+namespace Valkyrja\Annotation;
 
 use ReflectionException;
 use Valkyrja\Annotation\Constant\Property;
-use Valkyrja\Annotation\Contract\Annotator as Contract;
+use Valkyrja\Annotation\Contract\Annotations as Contract;
 use Valkyrja\Annotation\Model\Contract\Annotation;
 use Valkyrja\Annotation\Parser\Contract\Parser;
 use Valkyrja\Reflection\Contract\Reflection;
@@ -27,7 +27,7 @@ use function array_merge;
  *
  * @author Melech Mizrachi
  */
-class Annotator implements Contract
+class Annotations implements Contract
 {
     /**
      * Cache index constants.
@@ -85,7 +85,7 @@ class Annotator implements Contract
      *
      * @throws ReflectionException
      */
-    public function classAnnotations(string $class): array
+    public function forClass(string $class): array
     {
         $index = static::CLASS_CACHE . $class;
 
@@ -103,14 +103,14 @@ class Annotator implements Contract
      *
      * @throws ReflectionException
      */
-    public function classMembersAnnotations(string $class): array
+    public function forClassMembers(string $class): array
     {
         $index = static::CLASS_MEMBERS_CACHE . $class;
 
         return self::$annotations[$index]
             ??= array_merge(
-            $this->propertiesAnnotations($class),
-            $this->methodsAnnotations($class)
+            $this->forClassProperties($class),
+            $this->forClassMethods($class)
         );
     }
 
@@ -119,14 +119,14 @@ class Annotator implements Contract
      *
      * @throws ReflectionException
      */
-    public function classAndMembersAnnotations(string $class): array
+    public function forClassAndMembers(string $class): array
     {
         $index = static::CLASS_AND_MEMBERS_CACHE . $class;
 
         return self::$annotations[$index]
             ??= array_merge(
-            $this->classAnnotations($class),
-            $this->classMembersAnnotations($class)
+            $this->forClass($class),
+            $this->forClassMembers($class)
         );
     }
 
@@ -135,7 +135,7 @@ class Annotator implements Contract
      *
      * @throws ReflectionException
      */
-    public function propertyAnnotations(string $class, string $property): array
+    public function forClassProperty(string $class, string $property): array
     {
         $index      = static::PROPERTY_CACHE . $class . $property;
         $reflection = $this->reflection->forClassProperty($class, $property);
@@ -156,7 +156,7 @@ class Annotator implements Contract
      *
      * @throws ReflectionException
      */
-    public function propertiesAnnotations(string $class): array
+    public function forClassProperties(string $class): array
     {
         $index = static::PROPERTIES_CACHE . $class;
 
@@ -173,7 +173,7 @@ class Annotator implements Contract
             // Set the property's reflection class in the cache
             self::$reflections[$index] = $property;
             // Set the annotations in the list
-            $annotations[] = $this->propertyAnnotations($class, $property->getName());
+            $annotations[] = $this->forClassProperty($class, $property->getName());
         }
 
         return self::$annotations[$index] = array_merge(...$annotations);
@@ -184,7 +184,7 @@ class Annotator implements Contract
      *
      * @throws ReflectionException
      */
-    public function methodAnnotations(string $class, string $method): array
+    public function forClassMethod(string $class, string $method): array
     {
         $index      = static::METHOD_CACHE . $class . $method;
         $reflection = $this->reflection->forClassMethod($class, $method);
@@ -205,7 +205,7 @@ class Annotator implements Contract
      *
      * @throws ReflectionException
      */
-    public function methodsAnnotations(string $class): array
+    public function forClassMethods(string $class): array
     {
         $index = static::METHODS_CACHE . $class;
 
@@ -222,7 +222,7 @@ class Annotator implements Contract
             // Set the method's reflection class in the cache
             self::$reflections[$index] = $method;
             // Set the annotations in the list
-            $annotations[] = $this->methodAnnotations($class, $method->getName());
+            $annotations[] = $this->forClassMethod($class, $method->getName());
         }
 
         return self::$annotations[$index] = array_merge(...$annotations);
@@ -233,7 +233,7 @@ class Annotator implements Contract
      *
      * @throws ReflectionException
      */
-    public function functionAnnotations(string $function): array
+    public function forFunction(string $function): array
     {
         $index = static::FUNCTION_CACHE . $function;
 

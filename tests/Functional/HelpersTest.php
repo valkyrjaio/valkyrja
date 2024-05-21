@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Functional;
 
 use Exception;
-use Valkyrja\Annotation\Annotators\Annotator;
+use Valkyrja\Annotation\Annotations;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Config;
@@ -162,7 +162,7 @@ class HelpersTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        self::assertTrue(\Valkyrja\annotator() instanceof Annotator);
+        self::assertTrue(\Valkyrja\annotator() instanceof Annotations);
     }
 
     /**

@@ -15,7 +15,7 @@ namespace Valkyrja\Routing\Annotators;
 
 use InvalidArgumentException;
 use ReflectionException;
-use Valkyrja\Annotation\Contract\Annotator as AnnotationAnnotator;
+use Valkyrja\Annotation\Contract\Annotations as AnnotationAnnotator;
 use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Routing\Annotations\Route;
@@ -156,7 +156,7 @@ class Annotator implements Contract
     {
         return $this->filter->filterAnnotationsByTypes(
             $this->reflection->forClass(AnnotationName::class)->getConstants(),
-            ...$this->annotator->classAnnotations($class)
+            ...$this->annotator->forClass($class)
         );
     }
 
@@ -265,7 +265,7 @@ class Annotator implements Contract
     {
         return $this->filter->filterAnnotationsByTypes(
             $this->reflection->forClass(AnnotationName::class)->getConstants(),
-            ...$this->annotator->classMembersAnnotations($class)
+            ...$this->annotator->forClassMembers($class)
         );
     }
 }

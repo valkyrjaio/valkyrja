@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Annotations;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Annotation\Annotators\Annotator;
-use Valkyrja\Annotation\Contract\Annotator as Contract;
+use Valkyrja\Annotation\Annotations;
+use Valkyrja\Annotation\Contract\Annotations as Contract;
 use Valkyrja\Annotation\Filter\Contract\Filter as FilterContract;
 use Valkyrja\Annotation\Filter\Filter;
 use Valkyrja\Annotation\Parser\Contract\Parser as ParserContract;
@@ -44,7 +44,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishAnnotator($this->container);
 
-        self::assertInstanceOf(Annotator::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(Annotations::class, $this->container->getSingleton(Contract::class));
     }
 
     /**

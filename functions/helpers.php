@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja;
 
-use Valkyrja\Annotation\Contract\Annotator;
+use Valkyrja\Annotation\Contract\Annotations;
 use Valkyrja\Api\Api;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
@@ -111,11 +111,11 @@ function abortResponse(Response $response): never
 /**
  * Return the annotator instance from the container.
  *
- * @return Annotator
+ * @return Annotations
  */
-function annotator(): Annotator
+function annotator(): Annotations
 {
-    return container()->getSingleton(Annotator::class);
+    return container()->getSingleton(Annotations::class);
 }
 
 /**

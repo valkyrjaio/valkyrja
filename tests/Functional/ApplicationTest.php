@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional;
 
-use Valkyrja\Annotation\Contract\Annotator;
+use Valkyrja\Annotation\Contract\Annotations;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
@@ -198,7 +198,7 @@ class ApplicationTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        self::assertTrue($this->app[Annotator::class] instanceof Annotator);
+        self::assertTrue($this->app[Annotations::class] instanceof Annotations);
     }
 
     /**
