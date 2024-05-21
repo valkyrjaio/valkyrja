@@ -43,7 +43,7 @@ class Attributes implements Contract
      * @param Reflector $reflector [optional] The reflector service
      */
     public function __construct(
-        protected Reflector $reflector = new \Valkyrja\Reflection\Reflectors\Reflector(),
+        protected Reflector $reflector = new \Valkyrja\Reflection\Reflector(),
     ) {
     }
 
@@ -94,8 +94,12 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
-    public function forConstant(string $class, string $constant, string|null $attribute = null, int|null $flags = null): array
-    {
+    public function forConstant(
+        string $class,
+        string $constant,
+        string|null $attribute = null,
+        int|null $flags = null
+    ): array {
         return $this->forClassMember($attribute, $flags, $this->reflector->getClassConstReflection($class, $constant));
     }
 
@@ -118,8 +122,12 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
-    public function forProperty(string $class, string $property, string|null $attribute = null, int|null $flags = null): array
-    {
+    public function forProperty(
+        string $class,
+        string $property,
+        string|null $attribute = null,
+        int|null $flags = null
+    ): array {
         return $this->forClassMember($attribute, $flags, $this->reflector->getPropertyReflection($class, $property));
     }
 
@@ -142,8 +150,12 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
-    public function forMethod(string $class, string $method, string|null $attribute = null, int|null $flags = null): array
-    {
+    public function forMethod(
+        string $class,
+        string $method,
+        string|null $attribute = null,
+        int|null $flags = null
+    ): array {
         return $this->forClassMember($attribute, $flags, $this->reflector->getMethodReflection($class, $method));
     }
 
@@ -173,7 +185,7 @@ class Attributes implements Contract
                 Property::FUNCTION => $function,
             ],
             ...$this->reflector->getFunctionReflection($function)
-                   ->getAttributes($attribute, $flags ?? static::$defaultFlags)
+                               ->getAttributes($attribute, $flags ?? static::$defaultFlags)
         );
     }
 
@@ -189,7 +201,7 @@ class Attributes implements Contract
                 Property::CLOSURE => $closure,
             ],
             ...$this->reflector->getClosureReflection($closure)
-                   ->getAttributes($attribute, $flags ?? static::$defaultFlags)
+                               ->getAttributes($attribute, $flags ?? static::$defaultFlags)
         );
     }
 

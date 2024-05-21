@@ -55,7 +55,7 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Reflector::class,
-            new \Valkyrja\Reflection\Reflectors\Reflector()
+            new \Valkyrja\Reflection\Reflector()
         );
     }
 }

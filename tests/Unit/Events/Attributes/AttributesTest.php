@@ -17,7 +17,7 @@ use ReflectionException;
 use Valkyrja\Attribute\Managers\Attributes as AttributesAttributes;
 use Valkyrja\Event\Attributes\Attributes;
 use Valkyrja\Event\Listener;
-use Valkyrja\Reflection\Reflectors\Reflector;
+use Valkyrja\Reflection\Reflector;
 use Valkyrja\Tests\Unit\Events\Attributes\Classes\AttributedClass;
 use Valkyrja\Tests\Unit\Events\Attributes\Classes\AttributedClass2;
 use Valkyrja\Tests\Unit\TestCase;
