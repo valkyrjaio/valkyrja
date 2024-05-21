@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Managers;
 
-use Valkyrja\Manager\Managers\MessageManager as Manager;
+use Valkyrja\Manager\MessageManager as Manager;
 use Valkyrja\Sms\Adapter;
 use Valkyrja\Sms\Config\Config;
 use Valkyrja\Sms\Driver;

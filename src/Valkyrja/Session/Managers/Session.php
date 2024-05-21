@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Managers;
 
-use Valkyrja\Manager\Managers\Manager;
+use Valkyrja\Manager\Manager;
 use Valkyrja\Session\Config\Config;
 use Valkyrja\Session\Driver;
 use Valkyrja\Session\Factory;

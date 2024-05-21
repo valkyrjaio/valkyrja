@@ -17,7 +17,7 @@ use Valkyrja\Jwt\Config\Config;
 use Valkyrja\Jwt\Driver;
 use Valkyrja\Jwt\Factory;
 use Valkyrja\Jwt\Jwt as Contract;
-use Valkyrja\Manager\Managers\Manager;
+use Valkyrja\Manager\Manager;
 
 /**
  * Class Jwt.

@@ -18,7 +18,7 @@ use Valkyrja\Filesystem\Driver;
 use Valkyrja\Filesystem\Enums\Visibility;
 use Valkyrja\Filesystem\Factory;
 use Valkyrja\Filesystem\Filesystem as Contract;
-use Valkyrja\Manager\Managers\Manager;
+use Valkyrja\Manager\Manager;
 
 /**
  * Class Filesystem.

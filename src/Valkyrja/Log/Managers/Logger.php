@@ -18,7 +18,7 @@ use Valkyrja\Log\Config\Config;
 use Valkyrja\Log\Driver;
 use Valkyrja\Log\Factory;
 use Valkyrja\Log\Logger as Contract;
-use Valkyrja\Manager\Managers\Manager;
+use Valkyrja\Manager\Manager;
 
 /**
  * Class Logger.

@@ -19,7 +19,7 @@ use Valkyrja\Client\Driver;
 use Valkyrja\Client\Factory;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Manager\Managers\Manager;
+use Valkyrja\Manager\Manager;
 
 /**
  * Class Client.
