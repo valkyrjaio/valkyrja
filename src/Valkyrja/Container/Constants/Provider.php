@@ -23,7 +23,7 @@ use Valkyrja\Client\Providers\ServiceProvider as ClientServiceProvider;
 use Valkyrja\Console\Providers\ServiceProvider as ConsoleServiceProvider;
 use Valkyrja\Container\Providers\ServiceProvider as ContainerServiceProvider;
 use Valkyrja\Crypt\Providers\ServiceProvider as CryptServiceProvider;
-use Valkyrja\Dispatcher\Providers\ServiceProvider as DispatcherServiceProvider;
+use Valkyrja\Dispatcher\Provider\ServiceProvider as DispatcherServiceProvider;
 use Valkyrja\Event\Providers\ServiceProvider as EventServiceProvider;
 use Valkyrja\Filesystem\Providers\ServiceProvider as FilesystemServiceProvider;
 use Valkyrja\Http\Providers\ServiceProvider as HttpServiceProvider;
