@@ -15,7 +15,7 @@ namespace Valkyrja\Path\Parser;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Valkyrja\Path\Config\Config;
+use Valkyrja\Path\Config;
 use Valkyrja\Path\Parser\Contract\Parser as Contract;
 
 use function explode;
