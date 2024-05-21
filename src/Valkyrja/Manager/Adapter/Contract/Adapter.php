@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Manager;
+namespace Valkyrja\Manager\Adapter\Contract;
 
 /**
- * Interface Message.
+ * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-interface Message
+interface Adapter
 {
 }

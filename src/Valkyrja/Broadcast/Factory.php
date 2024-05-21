@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast;
 
-use Valkyrja\Manager\MessageFactory as Contract;
+use Valkyrja\Manager\Factories\Contract\MessageFactory as Contract;
 
 /**
  * Interface Factory.

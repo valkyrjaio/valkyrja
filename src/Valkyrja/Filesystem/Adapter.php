@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem;
 
 use Valkyrja\Filesystem\Enums\Visibility;
-use Valkyrja\Manager\Adapter as Contract;
+use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 
 /**
  * Interface Adapter.

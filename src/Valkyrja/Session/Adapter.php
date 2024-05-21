@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session;
 
-use Valkyrja\Manager\Adapter as Contract;
+use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 use Valkyrja\Session\Exceptions\InvalidCsrfToken;
 
 /**

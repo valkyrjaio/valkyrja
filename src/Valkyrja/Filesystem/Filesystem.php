@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem;
 
 use Valkyrja\Filesystem\Enums\Visibility;
-use Valkyrja\Manager\Manager;
+use Valkyrja\Manager\Contract\Manager;
 
 /**
  * Interface Filesystem.

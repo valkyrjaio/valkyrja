@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Log;
 
 use Throwable;
-use Valkyrja\Manager\Manager;
+use Valkyrja\Manager\Contract\Manager;
 
 /**
  * Interface Logger.

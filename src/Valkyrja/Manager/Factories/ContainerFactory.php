@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Manager\Factories;
 
 use Valkyrja\Container\Container;
-use Valkyrja\Manager\Adapter;
-use Valkyrja\Manager\Driver;
-use Valkyrja\Manager\Factory;
+use Valkyrja\Manager\Adapter\Contract\Adapter;
+use Valkyrja\Manager\Drivers\Contract\Driver;
+use Valkyrja\Manager\Factories\Contract\Factory;
 use Valkyrja\Type\BuiltIn\Support\Cls;
 
 /**

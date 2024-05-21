@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms;
 
-use Valkyrja\Manager\MessageManager as Manager;
+use Valkyrja\Manager\Contract\MessageManager as Manager;
 
 /**
  * Interface Sms.

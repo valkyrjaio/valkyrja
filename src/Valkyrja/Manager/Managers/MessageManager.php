@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Manager\Managers;
 
 use Valkyrja\Manager\Config\MessageConfig;
-use Valkyrja\Manager\Driver;
-use Valkyrja\Manager\Message;
-use Valkyrja\Manager\MessageFactory as Factory;
-use Valkyrja\Manager\MessageManager as Contract;
+use Valkyrja\Manager\Contract\MessageManager as Contract;
+use Valkyrja\Manager\Drivers\Contract\Driver;
+use Valkyrja\Manager\Factories\Contract\MessageFactory as Factory;
+use Valkyrja\Manager\Message\Contract\Message;
 
 /**
  * Class MessageManager.

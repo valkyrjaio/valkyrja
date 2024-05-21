@@ -11,19 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Manager;
+namespace Valkyrja\Manager\Message\Contract;
 
 /**
- * Interface Driver.
+ * Interface Message.
  *
  * @author Melech Mizrachi
  */
-interface Driver
+interface Message
 {
-    /*
-     * Get the adapter.
-     *
-     * @return Adapter
-     */
-    // public function getAdapter(): Adapter;
 }

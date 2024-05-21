@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client;
 
-use Valkyrja\Manager\Factory as Contract;
+use Valkyrja\Manager\Factories\Contract\Factory as Contract;
 
 /**
  * Interface Factory.

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache;
 
-use Valkyrja\Manager\Manager;
+use Valkyrja\Manager\Contract\Manager;
 
 /**
  * Interface Cache.

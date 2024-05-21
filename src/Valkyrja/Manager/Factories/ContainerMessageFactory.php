@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Manager\Factories;
 
-use Valkyrja\Manager\Adapter;
-use Valkyrja\Manager\Driver;
-use Valkyrja\Manager\Message;
-use Valkyrja\Manager\MessageFactory;
+use Valkyrja\Manager\Adapter\Contract\Adapter;
+use Valkyrja\Manager\Drivers\Contract\Driver;
+use Valkyrja\Manager\Factories\Contract\MessageFactory;
+use Valkyrja\Manager\Message\Contract\Message;
 use Valkyrja\Type\BuiltIn\Support\Cls;
 
 /**

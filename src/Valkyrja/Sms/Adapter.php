@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms;
 
-use Valkyrja\Manager\Adapter as Contract;
+use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 
 /**
  * Interface Adapter.

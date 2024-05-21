@@ -11,7 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Manager;
+namespace Valkyrja\Manager\Factories\Contract;
+
+use Valkyrja\Manager\Message\Contract\Message;
 
 /**
  * Interface MessageFactory.

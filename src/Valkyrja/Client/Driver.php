@@ -15,7 +15,7 @@ namespace Valkyrja\Client;
 
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Manager\Driver as Contract;
+use Valkyrja\Manager\Drivers\Contract\Driver as Contract;
 
 /**
  * Interface Driver.
