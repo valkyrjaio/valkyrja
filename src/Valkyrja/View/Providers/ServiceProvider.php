@@ -170,7 +170,7 @@ class ServiceProvider extends Provider
     {
         /** @var Config|array $config */
         $config = $container->getSingleton(Config::class);
-        /** @var \Valkyrja\Application\Config\Config|array $appConfig */
+        /** @var \Valkyrja\Application\Config|array $appConfig */
         $appConfig = $config['app'];
         /** @var bool $debug */
         $debug = $appConfig['debug'];
@@ -220,7 +220,7 @@ class ServiceProvider extends Provider
     {
         /** @var Config|array $config */
         $config = $container->getSingleton(Config::class);
-        /** @var \Valkyrja\Application\Config\Config|array $appConfig */
+        /** @var \Valkyrja\Application\Config|array $appConfig */
         $appConfig = $config['app'];
         /** @var bool $debug */
         $debug = $appConfig['debug'];

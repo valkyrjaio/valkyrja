@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Application\Config;
+namespace Valkyrja\Application;
 
 use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config as Model;
