@@ -15,7 +15,7 @@ namespace Valkyrja\Container\Constants;
 
 use Valkyrja\Annotation\Providers\ServiceProvider as AnnotationServiceProvider;
 use Valkyrja\Api\Providers\ServiceProvider as ApiServiceProvider;
-use Valkyrja\Attribute\Providers\ServiceProvider as AttributesServiceProvider;
+use Valkyrja\Attribute\Provider\ServiceProvider as AttributesServiceProvider;
 use Valkyrja\Auth\Providers\ServiceProvider as AuthServiceProvider;
 use Valkyrja\Broadcast\Providers\ServiceProvider as BroadcastServiceProvider;
 use Valkyrja\Cache\Providers\ServiceProvider as CacheServiceProvider;

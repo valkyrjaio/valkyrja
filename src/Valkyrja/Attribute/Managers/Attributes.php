@@ -19,7 +19,7 @@ use ReflectionClassConstant;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
-use Valkyrja\Attribute\Attributes as Contract;
+use Valkyrja\Attribute\Contract\Attributes as Contract;
 use Valkyrja\Dispatcher\Constant\Property;
 use Valkyrja\Reflection\Contract\Reflection;
 
@@ -39,9 +39,11 @@ class Attributes implements Contract
 
     /**
      * Attributes constructor.
+     *
+     * @param Reflector $reflector [optional] The reflector service
      */
     public function __construct(
-        protected Reflection $reflection = new \Valkyrja\Reflection\Reflection(),
+        protected Reflection $reflector = new \Valkyrja\Reflection\Reflection(),
     ) {
     }
 
@@ -56,7 +58,7 @@ class Attributes implements Contract
             [
                 Property::CLASS_NAME => $class,
             ],
-            ...$this->reflection->forClass($class)->getAttributes($attribute, $flags ?? static::$defaultFlags)
+            ...$this->reflector->getClassReflection($class)->getAttributes($attribute, $flags ?? static::$defaultFlags)
         );
     }
 
@@ -98,7 +100,7 @@ class Attributes implements Contract
         string|null $attribute = null,
         int|null $flags = null
     ): array {
-        return $this->forClassMember($attribute, $flags, $this->reflection->forClassConstant($class, $constant));
+        return $this->forClassMember($attribute, $flags, $this->reflector->getClassConstReflection($class, $constant));
     }
 
     /**
@@ -111,7 +113,7 @@ class Attributes implements Contract
         return $this->forClassMember(
             $attribute,
             $flags,
-            ...$this->reflection->forClass($class)->getReflectionConstants()
+            ...$this->reflector->getClassReflection($class)->getReflectionConstants()
         );
     }
 
@@ -126,7 +128,7 @@ class Attributes implements Contract
         string|null $attribute = null,
         int|null $flags = null
     ): array {
-        return $this->forClassMember($attribute, $flags, $this->reflection->forClassProperty($class, $property));
+        return $this->forClassMember($attribute, $flags, $this->reflector->getPropertyReflection($class, $property));
     }
 
     /**
@@ -139,7 +141,7 @@ class Attributes implements Contract
         return $this->forClassMember(
             $attribute,
             $flags,
-            ...$this->reflection->forClass($class)->getProperties()
+            ...$this->reflector->getClassReflection($class)->getProperties()
         );
     }
 
@@ -154,7 +156,7 @@ class Attributes implements Contract
         string|null $attribute = null,
         int|null $flags = null
     ): array {
-        return $this->forClassMember($attribute, $flags, $this->reflection->forClassMethod($class, $method));
+        return $this->forClassMember($attribute, $flags, $this->reflector->getMethodReflection($class, $method));
     }
 
     /**
@@ -167,7 +169,7 @@ class Attributes implements Contract
         return $this->forClassMember(
             $attribute,
             $flags,
-            ...$this->reflection->forClass($class)->getMethods()
+            ...$this->reflector->getClassReflection($class)->getMethods()
         );
     }
 
@@ -182,7 +184,8 @@ class Attributes implements Contract
             [
                 Property::FUNCTION => $function,
             ],
-            ...$this->reflection->forFunction($function)->getAttributes($attribute, $flags ?? static::$defaultFlags)
+            ...$this->reflector->getFunctionReflection($function)
+                               ->getAttributes($attribute, $flags ?? static::$defaultFlags)
         );
     }
 
@@ -197,7 +200,8 @@ class Attributes implements Contract
             [
                 Property::CLOSURE => $closure,
             ],
-            ...$this->reflection->forClosure($closure)->getAttributes($attribute, $flags ?? static::$defaultFlags)
+            ...$this->reflector->getClosureReflection($closure)
+                               ->getAttributes($attribute, $flags ?? static::$defaultFlags)
         );
     }
 

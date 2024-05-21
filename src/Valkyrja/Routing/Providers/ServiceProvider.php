@@ -134,8 +134,7 @@ class ServiceProvider extends Provider
             Collector::class,
             new \Valkyrja\Routing\Collectors\Collector(
                 $container->getSingleton(Collection::class),
-                $container->getSingleton(Processor::class),
-                $container->getSingleton(Reflection::class)
+                $container->getSingleton(Processor::class)
             )
         );
     }
@@ -212,7 +211,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Attributes::class,
             new Attributes\Attributes(
-                $container->getSingleton(\Valkyrja\Attribute\Attributes::class),
+                $container->getSingleton(\Valkyrja\Attribute\Contract\Attributes::class),
                 $container->getSingleton(Reflection::class),
                 $container->getSingleton(Processor::class)
             )

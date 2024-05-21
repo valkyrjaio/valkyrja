@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Attributes;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Attribute\Attributes as Contract;
+use Valkyrja\Attribute\Contract\Attributes as Contract;
 use Valkyrja\Attribute\Managers\Attributes;
-use Valkyrja\Attribute\Providers\ServiceProvider;
+use Valkyrja\Attribute\Provider\ServiceProvider;
 use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Tests\Unit\Container\ServiceProviderTestCase;
 

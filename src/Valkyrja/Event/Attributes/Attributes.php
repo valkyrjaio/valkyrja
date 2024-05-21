@@ -15,7 +15,7 @@ namespace Valkyrja\Event\Attributes;
 
 use InvalidArgumentException;
 use ReflectionException;
-use Valkyrja\Attribute\Attributes as AttributeAttributes;
+use Valkyrja\Attribute\Contract\Attributes as AttributeAttributes;
 use Valkyrja\Event\Attributes as Contract;
 use Valkyrja\Event\Attributes\Listener as Attribute;
 use Valkyrja\Event\Listener;
@@ -31,7 +31,7 @@ class Attributes implements Contract
 {
     public function __construct(
         protected AttributeAttributes $attributes,
-        protected Reflection $reflection,
+        protected Reflection $reflector,
     ) {
     }
 
@@ -85,17 +85,17 @@ class Attributes implements Contract
             throw new InvalidArgumentException('Invalid class defined in listener attribute.');
         }
 
-        $classReflection = $this->reflection->forClass($class);
+        $classReflection = $this->reflector->getClassReflection($class);
 
         if (($method = $attribute->getMethod()) !== null || $classReflection->hasMethod('__construct')) {
             $method ??= '__construct';
 
             $attribute->setMethod($method);
             /** @var non-empty-string $method */
-            $methodReflection = $this->reflection->forClassMethod($class, $method);
+            $methodReflection = $this->reflector->getMethodReflection($class, $method);
 
             // Set the dependencies
-            $attribute->setDependencies($this->reflection->getDependencies($methodReflection));
+            $attribute->setDependencies($this->reflector->getDependencies($methodReflection));
         }
 
         $attribute->setMatches();

@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Attribute\Providers;
+namespace Valkyrja\Attribute\Provider;
 
-use Valkyrja\Attribute\Attributes;
+use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Reflection\Contract\Reflection;

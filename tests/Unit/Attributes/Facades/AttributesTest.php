@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Attributes\Facades;
 
-use Valkyrja\Attribute\Attributes as Contract;
-use Valkyrja\Attribute\Facades\Attributes as Facade;
+use Valkyrja\Attribute\Contract\Attributes as Contract;
+use Valkyrja\Attribute\Facade\Attributes as Facade;
 use Valkyrja\Tests\Unit\Facade\FacadeTestCase;
 
 /**

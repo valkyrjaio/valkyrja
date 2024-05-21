@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Attribute\Facades;
+namespace Valkyrja\Attribute\Facade;
 
-use Valkyrja\Attribute\Attributes as Contract;
+use Valkyrja\Attribute\Contract\Attributes as Contract;
 use Valkyrja\Facade\ContainerFacade;
 
 /**

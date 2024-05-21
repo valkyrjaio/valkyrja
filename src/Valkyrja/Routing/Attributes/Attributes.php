@@ -15,9 +15,10 @@ namespace Valkyrja\Routing\Attributes;
 
 use InvalidArgumentException;
 use ReflectionException;
-use Valkyrja\Attribute\Attributes as AttributeAttributes;
+use Valkyrja\Attribute\Contract\Attributes as AttributeAttributes;
 use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Routing\Attributes as Contract;
+use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Message as RoutingMessage;
 use Valkyrja\Routing\Processor;
 
@@ -30,7 +31,7 @@ class Attributes implements Contract
 {
     public function __construct(
         protected AttributeAttributes $attributes,
-        protected Reflection $reflection,
+        protected Reflection $reflector,
         protected Processor $processor
     ) {
     }
@@ -38,6 +39,7 @@ class Attributes implements Contract
     /**
      * @inheritDoc
      *
+     * @throws InvalidRoutePath
      * @throws ReflectionException
      */
     public function getRoutes(string ...$classes): array
@@ -173,9 +175,9 @@ class Attributes implements Contract
         }
 
         if (($method = $route->getMethod()) !== null) {
-            $methodReflection = $this->reflection->forClassMethod($class, $method);
+            $methodReflection = $this->reflector->getMethodReflection($class, $method);
             // Set the dependencies
-            $route->setDependencies($this->reflection->getDependencies($methodReflection));
+            $route->setDependencies($this->reflector->getDependencies($methodReflection));
         }
 
         // Avoid having large arrays in cached routes file
