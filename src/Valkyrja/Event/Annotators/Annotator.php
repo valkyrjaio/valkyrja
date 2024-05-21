@@ -20,7 +20,7 @@ use Valkyrja\Event\Annotations\Listener;
 use Valkyrja\Event\Annotator as Contract;
 use Valkyrja\Event\Listener as ListenerContract;
 use Valkyrja\Event\Models\Listener as ListenerModel;
-use Valkyrja\Reflection\Contract\Reflector;
+use Valkyrja\Reflection\Contract\Reflection;
 
 /**
  * Class ListenerAnnotator.
@@ -39,17 +39,17 @@ class Annotator implements Contract
     /**
      * The reflector.
      *
-     * @var Reflector
+     * @var Reflection
      */
-    protected Reflector $reflector;
+    protected Reflection $reflector;
 
     /**
      * ContainerAnnotator constructor.
      *
-     * @param Filter    $filter
-     * @param Reflector $reflector
+     * @param Filter     $filter
+     * @param Reflection $reflector
      */
-    public function __construct(Filter $filter, Reflector $reflector)
+    public function __construct(Filter $filter, Reflection $reflector)
     {
         $this->filter    = $filter;
         $this->reflector = $reflector;

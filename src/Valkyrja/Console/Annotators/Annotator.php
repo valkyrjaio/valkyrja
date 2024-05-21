@@ -20,7 +20,7 @@ use Valkyrja\Console\Annotations\Command;
 use Valkyrja\Console\Annotator as Contract;
 use Valkyrja\Console\Command as CommandContract;
 use Valkyrja\Console\Models\Command as CommandModel;
-use Valkyrja\Reflection\Contract\Reflector;
+use Valkyrja\Reflection\Contract\Reflection;
 
 /**
  * Class CommandAnnotator.
@@ -39,17 +39,17 @@ class Annotator implements Contract
     /**
      * The reflector.
      *
-     * @var Reflector
+     * @var Reflection
      */
-    protected Reflector $reflector;
+    protected Reflection $reflector;
 
     /**
      * ContainerAnnotator constructor.
      *
-     * @param Filter    $filter
-     * @param Reflector $reflector
+     * @param Filter     $filter
+     * @param Reflection $reflector
      */
-    public function __construct(Filter $filter, Reflector $reflector)
+    public function __construct(Filter $filter, Reflection $reflector)
     {
         $this->filter    = $filter;
         $this->reflector = $reflector;

@@ -19,7 +19,7 @@ use Valkyrja\Annotation\Parser;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Reflection\Contract\Reflector;
+use Valkyrja\Reflection\Contract\Reflection;
 
 /**
  * Class ServiceProvider.
@@ -65,7 +65,7 @@ class ServiceProvider extends Provider
             Annotator::class,
             new \Valkyrja\Annotation\Annotators\Annotator(
                 $container->getSingleton(Parser::class),
-                $container->getSingleton(Reflector::class)
+                $container->getSingleton(Reflection::class)
             )
         );
     }

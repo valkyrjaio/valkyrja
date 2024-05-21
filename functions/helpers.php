@@ -46,7 +46,7 @@ use Valkyrja\Notification\Notifier;
 use Valkyrja\Orm\Orm;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
-use Valkyrja\Reflection\Contract\Reflector;
+use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Routing\Collector;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Route;
@@ -388,11 +388,11 @@ function output(): Output
 /**
  * Get reflector.
  *
- * @return Reflector
+ * @return Reflection
  */
-function reflector(): Reflector
+function reflector(): Reflection
 {
-    return container()->getSingleton(Reflector::class);
+    return container()->getSingleton(Reflection::class);
 }
 
 /**

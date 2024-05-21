@@ -18,7 +18,7 @@ use Valkyrja\Annotation\Filter;
 use Valkyrja\Container\Annotator as Contract;
 use Valkyrja\Container\Annotators\Annotator;
 use Valkyrja\Container\Providers\ServiceProvider;
-use Valkyrja\Reflection\Contract\Reflector;
+use Valkyrja\Reflection\Contract\Reflection;
 
 /**
  * Test the ServiceProvider.
@@ -35,7 +35,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishAnnotator(): void
     {
-        $this->container->setSingleton(Reflector::class, $this->createMock(Reflector::class));
+        $this->container->setSingleton(Reflection::class, $this->createMock(Reflection::class));
         $this->container->setSingleton(Filter::class, $this->createMock(Filter::class));
 
         ServiceProvider::publishAnnotator($this->container);

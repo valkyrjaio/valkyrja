@@ -23,17 +23,17 @@ use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionProperty;
 use UnitEnum;
-use Valkyrja\Reflection\Contract\Reflector as Contract;
+use Valkyrja\Reflection\Contract\Reflection as Contract;
 
 use function is_callable;
 use function spl_object_id;
 
 /**
- * Class Reflector.
+ * Class Reflection.
  *
  * @author Melech Mizrachi
  */
-class Reflector implements Contract
+class Reflection implements Contract
 {
     /**
      * Cache index constants.
@@ -54,7 +54,7 @@ class Reflector implements Contract
     /**
      * @inheritDoc
      */
-    public function getClassReflection(string $class): ReflectionClass
+    public function forClass(string $class): ReflectionClass
     {
         $index = static::CLASS_CACHE . $class;
 
@@ -65,40 +65,40 @@ class Reflector implements Contract
     /**
      * @inheritDoc
      */
-    public function getClassConstReflection(string $class, string $const): ReflectionClassConstant
+    public function forClassConstant(string $class, string $const): ReflectionClassConstant
     {
         $index = static::PROPERTY_CACHE . $class . $const;
 
         return self::$reflections[$index]
-            ??= $this->getClassReflection($class)->getReflectionConstant($const);
+            ??= $this->forClass($class)->getReflectionConstant($const);
     }
 
     /**
      * @inheritDoc
      */
-    public function getPropertyReflection(string $class, string $property): ReflectionProperty
+    public function forClassProperty(string $class, string $property): ReflectionProperty
     {
         $index = static::PROPERTY_CACHE . $class . $property;
 
         return self::$reflections[$index]
-            ??= $this->getClassReflection($class)->getProperty($property);
+            ??= $this->forClass($class)->getProperty($property);
     }
 
     /**
      * @inheritDoc
      */
-    public function getMethodReflection(string $class, string $method): ReflectionMethod
+    public function forClassMethod(string $class, string $method): ReflectionMethod
     {
         $index = static::METHOD_CACHE . $class . $method;
 
         return self::$reflections[$index]
-            ??= $this->getClassReflection($class)->getMethod($method);
+            ??= $this->forClass($class)->getMethod($method);
     }
 
     /**
      * @inheritDoc
      */
-    public function getFunctionReflection(string $function): ReflectionFunction
+    public function forFunction(string $function): ReflectionFunction
     {
         $index = static::FUNCTION_CACHE . $function;
 
@@ -109,7 +109,7 @@ class Reflector implements Contract
     /**
      * @inheritDoc
      */
-    public function getClosureReflection(Closure $closure): ReflectionFunction
+    public function forClosure(Closure $closure): ReflectionFunction
     {
         $index = static::CLOSURE_CACHE . spl_object_id($closure);
 

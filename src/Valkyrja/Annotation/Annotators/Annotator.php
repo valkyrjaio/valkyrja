@@ -18,7 +18,7 @@ use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Annotator as Contract;
 use Valkyrja\Annotation\Constants\Property;
 use Valkyrja\Annotation\Parser;
-use Valkyrja\Reflection\Contract\Reflector;
+use Valkyrja\Reflection\Contract\Reflection;
 
 use function array_merge;
 
@@ -65,17 +65,17 @@ class Annotator implements Contract
     /**
      * The reflector.
      *
-     * @var Reflector
+     * @var Reflection
      */
-    protected Reflector $reflector;
+    protected Reflection $reflector;
 
     /**
      * Annotations constructor.
      *
-     * @param Parser    $parser
-     * @param Reflector $reflector
+     * @param Parser     $parser
+     * @param Reflection $reflector
      */
-    public function __construct(Parser $parser, Reflector $reflector)
+    public function __construct(Parser $parser, Reflection $reflector)
     {
         $this->reflector = $reflector;
         $this->parser    = $parser;

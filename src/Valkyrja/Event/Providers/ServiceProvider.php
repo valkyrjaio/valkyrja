@@ -25,7 +25,7 @@ use Valkyrja\Event\Collection;
 use Valkyrja\Event\Collections\CacheableCollection as EventCollection;
 use Valkyrja\Event\Dispatcher;
 use Valkyrja\Event\Dispatchers\Dispatcher as EventDispatcher;
-use Valkyrja\Reflection\Contract\Reflector;
+use Valkyrja\Reflection\Contract\Reflection;
 
 /**
  * Class ServiceProvider.
@@ -73,7 +73,7 @@ class ServiceProvider extends Provider
             Annotator::class,
             new \Valkyrja\Event\Annotators\Annotator(
                 $container->getSingleton(Filter::class),
-                $container->getSingleton(Reflector::class)
+                $container->getSingleton(Reflection::class)
             )
         );
     }
@@ -91,7 +91,7 @@ class ServiceProvider extends Provider
             Attributes::class,
             new Attributes\Attributes(
                 $container->getSingleton(AttributeAttributes::class),
-                $container->getSingleton(Reflector::class)
+                $container->getSingleton(Reflection::class)
             )
         );
     }

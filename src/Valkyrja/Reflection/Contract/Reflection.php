@@ -24,11 +24,11 @@ use ReflectionParameter;
 use ReflectionProperty;
 
 /**
- * Interface Reflector.
+ * Interface Reflection.
  *
  * @author Melech Mizrachi
  */
-interface Reflector
+interface Reflection
 {
     /**
      * Get a class's reflection.
@@ -39,7 +39,7 @@ interface Reflector
      *
      * @return ReflectionClass
      */
-    public function getClassReflection(string $class): ReflectionClass;
+    public function forClass(string $class): ReflectionClass;
 
     /**
      * Get a class constant's reflection.
@@ -51,7 +51,7 @@ interface Reflector
      *
      * @return ReflectionClassConstant
      */
-    public function getClassConstReflection(string $class, string $const): ReflectionClassConstant;
+    public function forClassConstant(string $class, string $const): ReflectionClassConstant;
 
     /**
      * Get a class property's reflection.
@@ -63,7 +63,7 @@ interface Reflector
      *
      * @return ReflectionProperty
      */
-    public function getPropertyReflection(string $class, string $property): ReflectionProperty;
+    public function forClassProperty(string $class, string $property): ReflectionProperty;
 
     /**
      * Get a class method's reflection.
@@ -75,7 +75,7 @@ interface Reflector
      *
      * @return ReflectionMethod
      */
-    public function getMethodReflection(string $class, string $method): ReflectionMethod;
+    public function forClassMethod(string $class, string $method): ReflectionMethod;
 
     /**
      * Get a function's reflection.
@@ -86,7 +86,7 @@ interface Reflector
      *
      * @return ReflectionFunction
      */
-    public function getFunctionReflection(string $function): ReflectionFunction;
+    public function forFunction(string $function): ReflectionFunction;
 
     /**
      * Get a closure's reflection.
@@ -97,7 +97,7 @@ interface Reflector
      *
      * @return ReflectionFunction
      */
-    public function getClosureReflection(Closure $closure): ReflectionFunction;
+    public function forClosure(Closure $closure): ReflectionFunction;
 
     /**
      * Get dependencies from a reflection.

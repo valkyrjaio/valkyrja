@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use ReflectionException;
 use Valkyrja\Annotation\Annotator as AnnotationAnnotator;
 use Valkyrja\Annotation\Filter;
-use Valkyrja\Reflection\Contract\Reflector;
+use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Routing\Annotations\Route;
 use Valkyrja\Routing\Annotator as Contract;
 use Valkyrja\Routing\Enums\AnnotationName;
@@ -46,7 +46,7 @@ class Annotator implements Contract
     public function __construct(
         protected AnnotationAnnotator $annotator,
         protected Filter $filter,
-        protected Reflector $reflector,
+        protected Reflection $reflector,
         protected Processor $processor
     ) {
     }

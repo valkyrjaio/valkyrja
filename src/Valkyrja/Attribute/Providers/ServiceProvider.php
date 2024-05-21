@@ -16,7 +16,7 @@ namespace Valkyrja\Attribute\Providers;
 use Valkyrja\Attribute\Attributes;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Reflection\Contract\Reflector;
+use Valkyrja\Reflection\Contract\Reflection;
 
 /**
  * Class ServiceProvider.
@@ -57,7 +57,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Attributes::class,
             new \Valkyrja\Attribute\Managers\Attributes(
-                $container->getSingleton(Reflector::class),
+                $container->getSingleton(Reflection::class),
             )
         );
     }

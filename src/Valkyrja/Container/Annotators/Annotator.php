@@ -18,7 +18,7 @@ use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Filter;
 use Valkyrja\Container\Annotator as Contract;
 use Valkyrja\Container\Enums\AnnotationName;
-use Valkyrja\Reflection\Contract\Reflector;
+use Valkyrja\Reflection\Contract\Reflection;
 
 /**
  * Class ContainerAnnotator.
@@ -37,17 +37,17 @@ class Annotator implements Contract
     /**
      * The reflector.
      *
-     * @var Reflector
+     * @var Reflection
      */
-    protected Reflector $reflector;
+    protected Reflection $reflector;
 
     /**
      * ContainerAnnotator constructor.
      *
-     * @param Filter    $filter
-     * @param Reflector $reflector
+     * @param Filter     $filter
+     * @param Reflection $reflector
      */
-    public function __construct(Filter $filter, Reflector $reflector)
+    public function __construct(Filter $filter, Reflection $reflector)
     {
         $this->filter    = $filter;
         $this->reflector = $reflector;

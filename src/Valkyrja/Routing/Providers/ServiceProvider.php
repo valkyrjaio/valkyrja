@@ -23,7 +23,7 @@ use Valkyrja\Dispatcher\Validator\Contract\Validator;
 use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\Reflection\Contract\Reflector;
+use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Routing\Annotator;
 use Valkyrja\Routing\Attributes;
 use Valkyrja\Routing\Collection;
@@ -115,7 +115,7 @@ class ServiceProvider extends Provider
             new \Valkyrja\Routing\Annotators\Annotator(
                 $container->getSingleton(AnnotationAnnotator::class),
                 $container->getSingleton(Filter::class),
-                $container->getSingleton(Reflector::class),
+                $container->getSingleton(Reflection::class),
                 $container->getSingleton(Processor::class)
             )
         );
@@ -212,7 +212,7 @@ class ServiceProvider extends Provider
             Attributes::class,
             new Attributes\Attributes(
                 $container->getSingleton(\Valkyrja\Attribute\Attributes::class),
-                $container->getSingleton(Reflector::class),
+                $container->getSingleton(Reflection::class),
                 $container->getSingleton(Processor::class)
             )
         );

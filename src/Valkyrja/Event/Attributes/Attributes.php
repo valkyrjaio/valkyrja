@@ -20,7 +20,7 @@ use Valkyrja\Event\Attributes as Contract;
 use Valkyrja\Event\Attributes\Listener as Attribute;
 use Valkyrja\Event\Listener;
 use Valkyrja\Event\Models\Listener as Model;
-use Valkyrja\Reflection\Contract\Reflector;
+use Valkyrja\Reflection\Contract\Reflection;
 
 /**
  * Class Attributes.
@@ -31,7 +31,7 @@ class Attributes implements Contract
 {
     public function __construct(
         protected AttributeAttributes $attributes,
-        protected Reflector $reflector,
+        protected Reflection $reflector,
     ) {
     }
 

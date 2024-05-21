@@ -16,7 +16,7 @@ namespace Valkyrja\Routing\Collectors;
 use Closure;
 use InvalidArgumentException;
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Reflection\Facade\Reflector;
+use Valkyrja\Reflection\Facade\Reflection;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Collector as Contract;
 use Valkyrja\Routing\Constants\HandleSplit;
@@ -408,11 +408,11 @@ class Collector implements Contract
         $dependencies = [];
 
         if (($class = $route->getClass()) !== null && ($method = $route->getMethod()) !== null) {
-            $dependencies = Reflector::getDependencies(Reflector::getMethodReflection($class, $method));
+            $dependencies = Reflection::getDependencies(Reflection::getMethodReflection($class, $method));
         } elseif (($function = $route->getFunction()) !== null) {
-            $dependencies = Reflector::getDependencies(Reflector::getFunctionReflection($function));
+            $dependencies = Reflection::getDependencies(Reflection::getFunctionReflection($function));
         } elseif (($closure = $route->getClosure()) !== null) {
-            $dependencies = Reflector::getDependencies(Reflector::getClosureReflection($closure));
+            $dependencies = Reflection::getDependencies(Reflection::getClosureReflection($closure));
         }
 
         return $dependencies;

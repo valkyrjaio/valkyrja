@@ -17,7 +17,7 @@ use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Attribute\Attributes as Contract;
 use Valkyrja\Attribute\Managers\Attributes;
 use Valkyrja\Attribute\Providers\ServiceProvider;
-use Valkyrja\Reflection\Contract\Reflector;
+use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Tests\Unit\Container\ServiceProviderTestCase;
 
 /**
@@ -35,7 +35,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishAttributes(): void
     {
-        $this->container->setSingleton(Reflector::class, $this->createMock(Reflector::class));
+        $this->container->setSingleton(Reflection::class, $this->createMock(Reflection::class));
 
         ServiceProvider::publishAttributes($this->container);
 

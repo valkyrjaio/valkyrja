@@ -21,7 +21,7 @@ use ReflectionMethod;
 use ReflectionProperty;
 use Valkyrja\Attribute\Attributes as Contract;
 use Valkyrja\Dispatcher\Constant\Property;
-use Valkyrja\Reflection\Contract\Reflector;
+use Valkyrja\Reflection\Contract\Reflection;
 
 /**
  * Class Attributes.
@@ -40,10 +40,10 @@ class Attributes implements Contract
     /**
      * Attributes constructor.
      *
-     * @param Reflector $reflector [optional] The reflector service
+     * @param Reflection $reflector [optional] The reflector service
      */
     public function __construct(
-        protected Reflector $reflector = new \Valkyrja\Reflection\Reflector(),
+        protected Reflection $reflector = new \Valkyrja\Reflection\Reflection(),
     ) {
     }
 

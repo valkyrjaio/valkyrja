@@ -16,7 +16,7 @@ namespace Valkyrja\Routing\Attributes;
 use InvalidArgumentException;
 use ReflectionException;
 use Valkyrja\Attribute\Attributes as AttributeAttributes;
-use Valkyrja\Reflection\Contract\Reflector;
+use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Routing\Attributes as Contract;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Message as RoutingMessage;
@@ -31,7 +31,7 @@ class Attributes implements Contract
 {
     public function __construct(
         protected AttributeAttributes $attributes,
-        protected Reflector $reflector,
+        protected Reflection $reflector,
         protected Processor $processor
     ) {
     }
@@ -140,7 +140,6 @@ class Attributes implements Contract
                             $finalAttributes[] = $this->getControllerBuiltRoute($classAttribute, $routeAttribute);
                         }
                     }
-
                     // Figure out if there should be an else that automatically sets routes from the class attributes
                 }
             } else {
