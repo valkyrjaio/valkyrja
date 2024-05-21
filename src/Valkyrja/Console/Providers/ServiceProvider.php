@@ -27,7 +27,7 @@ use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Dispatcher\Validator\Contract\Validator;
 use Valkyrja\Event\Dispatcher as Events;
-use Valkyrja\Path\PathParser;
+use Valkyrja\Path\Parser\Contract\Parser;
 use Valkyrja\Reflection\Contract\Reflection;
 
 /**
@@ -103,7 +103,7 @@ class ServiceProvider extends Provider
                 $container->getSingleton(Dispatcher::class),
                 $container->getSingleton(Validator::class),
                 $container->getSingleton(Events::class),
-                $container->getSingleton(PathParser::class),
+                $container->getSingleton(Parser::class),
                 $config['console'],
                 $config['app']['debug'],
             )

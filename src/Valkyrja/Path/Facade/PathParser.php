@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Path\Facades;
+namespace Valkyrja\Path\Facade;
 
 use Valkyrja\Facade\ContainerFacade;
-use Valkyrja\Path\PathGenerator as Contract;
+use Valkyrja\Path\Parser\Contract\Parser as Contract;
 
 /**
- * Class PathGenerator.
+ * Class PathParser.
  *
  * @author Melech Mizrachi
  *
- * @method static string parse(array $segments, array $data = null, array $params = null)
+ * @method static array parse(string $path)
  */
-class PathGenerator extends ContainerFacade
+class PathParser extends ContainerFacade
 {
     /**
      * @inheritDoc

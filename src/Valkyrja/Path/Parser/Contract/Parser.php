@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Path;
+namespace Valkyrja\Path\Parser\Contract;
 
 /**
- * Interface PathParser.
+ * Interface Parser.
  *
  * @author Melech Mizrachi
  */
-interface PathParser
+interface Parser
 {
     /**
      * Parse a path and get its parts.

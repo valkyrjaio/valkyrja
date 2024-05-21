@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Path\Config;
 
 use Valkyrja\Path\Config\Config as Model;
-use Valkyrja\Path\Constants\ConfigValue;
+use Valkyrja\Path\Constant\ConfigValue;
 
 /**
  * Class Path.

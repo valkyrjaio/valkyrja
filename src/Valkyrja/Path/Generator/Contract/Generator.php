@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Path;
+namespace Valkyrja\Path\Generator\Contract;
 
 /**
- * Interface PathGenerator.
+ * Interface Generator.
  *
  * @author Melech Mizrachi
  */
-interface PathGenerator
+interface Generator
 {
     /**
      * Parse segments, data, and params into a path.

@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Path\Parsers;
+namespace Valkyrja\Path\Parser;
 
 use InvalidArgumentException;
 use RuntimeException;
 use Valkyrja\Path\Config\Config;
-use Valkyrja\Path\PathParser as Contract;
+use Valkyrja\Path\Parser\Contract\Parser as Contract;
 
 use function explode;
 use function is_array;
@@ -30,7 +30,7 @@ use function substr_count;
  *
  * @author Melech Mizrachi
  */
-class PathParser implements Contract
+class Parser implements Contract
 {
     /**
      * The variable regex.

@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Path\Generators;
+namespace Valkyrja\Path\Generator;
 
 use InvalidArgumentException;
-use Valkyrja\Path\PathGenerator as Contract;
+use Valkyrja\Path\Generator\Contract\Generator as Contract;
 
 use function implode;
 use function is_array;
@@ -27,7 +27,7 @@ use function str_replace;
  *
  * @author Melech Mizrachi
  */
-class PathGenerator implements Contract
+class Generator implements Contract
 {
     /**
      * @inheritDoc
@@ -40,7 +40,7 @@ class PathGenerator implements Contract
         }
 
         $path         = '';
-        $params ??= [];
+        $params       ??= [];
         $replace      = [];
         $replacements = [];
 

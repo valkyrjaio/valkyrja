@@ -44,8 +44,8 @@ use Valkyrja\Notification\NotifiableUser;
 use Valkyrja\Notification\Notification;
 use Valkyrja\Notification\Notifier;
 use Valkyrja\Orm\Orm;
-use Valkyrja\Path\PathGenerator;
-use Valkyrja\Path\PathParser;
+use Valkyrja\Path\Generator\Contract\Generator;
+use Valkyrja\Path\Parser\Contract\Parser;
 use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Routing\Collector;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
@@ -348,21 +348,21 @@ function notifyUsers(Notification $notification, NotifiableUser ...$users): void
 /**
  * Get path generator.
  *
- * @return PathGenerator
+ * @return Generator
  */
-function pathGenerator(): PathGenerator
+function pathGenerator(): Generator
 {
-    return container()->getSingleton(PathGenerator::class);
+    return container()->getSingleton(Generator::class);
 }
 
 /**
  * Get path parser.
  *
- * @return PathParser
+ * @return Parser
  */
-function pathParser(): PathParser
+function pathParser(): Parser
 {
-    return container()->getSingleton(PathParser::class);
+    return container()->getSingleton(Parser::class);
 }
 
 /**

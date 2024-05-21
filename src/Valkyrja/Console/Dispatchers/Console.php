@@ -33,7 +33,7 @@ use Valkyrja\Dispatcher\Exception\InvalidMethodException;
 use Valkyrja\Dispatcher\Exception\InvalidPropertyException;
 use Valkyrja\Dispatcher\Validator\Contract\Validator;
 use Valkyrja\Event\Dispatcher as Events;
-use Valkyrja\Path\PathParser;
+use Valkyrja\Path\Parser\Contract\Parser;
 use Valkyrja\Support\Provider\ProvidersAwareTrait;
 
 use function preg_match;
@@ -82,7 +82,7 @@ class Console implements Contract
      * @param Dispatcher   $dispatcher
      * @param Validator    $validator
      * @param Events       $events
-     * @param PathParser   $pathParser
+     * @param Parser       $pathParser
      * @param Config|array $config
      * @param bool         $debug
      */
@@ -91,7 +91,7 @@ class Console implements Contract
         protected Dispatcher $dispatcher,
         protected Validator $validator,
         protected Events $events,
-        protected PathParser $pathParser,
+        protected Parser $pathParser,
         protected Config|array $config,
         protected bool $debug = false
     ) {

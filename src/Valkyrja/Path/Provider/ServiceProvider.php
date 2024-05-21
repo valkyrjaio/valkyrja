@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Path\Providers;
+namespace Valkyrja\Path\Provider;
 
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Path\PathGenerator;
-use Valkyrja\Path\PathParser;
+use Valkyrja\Path\Generator\Contract\Generator;
+use Valkyrja\Path\Parser\Contract\Parser;
 
 /**
  * Class ServiceProvider.
@@ -32,8 +32,8 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            PathGenerator::class => [self::class, 'publishGenerator'],
-            PathParser::class    => [self::class, 'publishParser'],
+            Generator::class => [self::class, 'publishGenerator'],
+            Parser::class    => [self::class, 'publishParser'],
         ];
     }
 
@@ -43,8 +43,8 @@ class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            PathGenerator::class,
-            PathParser::class,
+            Generator::class,
+            Parser::class,
         ];
     }
 
@@ -58,8 +58,8 @@ class ServiceProvider extends Provider
     public static function publishGenerator(Container $container): void
     {
         $container->setSingleton(
-            PathGenerator::class,
-            new \Valkyrja\Path\Generators\PathGenerator()
+            Generator::class,
+            new \Valkyrja\Path\Generator\Generator()
         );
     }
 
@@ -75,8 +75,8 @@ class ServiceProvider extends Provider
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
-            PathParser::class,
-            new \Valkyrja\Path\Parsers\PathParser(
+            Parser::class,
+            new \Valkyrja\Path\Parser\Parser(
                 $config['path']
             )
         );

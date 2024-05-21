@@ -28,8 +28,8 @@ use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Log\Logger;
-use Valkyrja\Path\PathGenerator;
-use Valkyrja\Path\PathParser;
+use Valkyrja\Path\Generator\Contract\Generator;
+use Valkyrja\Path\Parser\Contract\Parser;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
 use Valkyrja\Tests\Classes\Config\ProviderClass;
@@ -258,7 +258,7 @@ class ApplicationTest extends TestCase
      */
     public function testPathGenerator(): void
     {
-        self::assertTrue($this->app[PathGenerator::class] instanceof PathGenerator);
+        self::assertTrue($this->app[Generator::class] instanceof Generator);
     }
 
     /**
@@ -268,7 +268,7 @@ class ApplicationTest extends TestCase
      */
     public function testPathParser(): void
     {
-        self::assertTrue($this->app[PathParser::class] instanceof PathParser);
+        self::assertTrue($this->app[Parser::class] instanceof Parser);
     }
 
     /**

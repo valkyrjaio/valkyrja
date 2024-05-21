@@ -33,7 +33,7 @@ use Valkyrja\Log\Providers\ServiceProvider as LogServiceProvider;
 use Valkyrja\Mail\Providers\ServiceProvider as MailServiceProvider;
 use Valkyrja\Notification\Providers\ServiceProvider as NotificationServiceProvider;
 use Valkyrja\Orm\Providers\ServiceProvider as ORMServiceProvider;
-use Valkyrja\Path\Providers\ServiceProvider as PathServiceProvider;
+use Valkyrja\Path\Provider\ServiceProvider as PathServiceProvider;
 use Valkyrja\Reflection\Provider\ServiceProvider as ReflectionServiceProvider;
 use Valkyrja\Routing\Providers\ServiceProvider as RoutingServiceProvider;
 use Valkyrja\Session\Providers\ServiceProvider as SessionServiceProvider;
