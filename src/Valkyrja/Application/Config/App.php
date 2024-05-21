@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Config;
 
 use Valkyrja\Application\Config\Config as Model;
-use Valkyrja\Application\Constants\ConfigValue;
+use Valkyrja\Application\Constant\ConfigValue;
 
 /**
  * Class App.

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Commanders;
 
-use Valkyrja\Application\Application;
+use Valkyrja\Application\Contract\Application;
 use Valkyrja\Console\Commander as Contract;
 use Valkyrja\Console\Enums\ArgumentMode;
 use Valkyrja\Console\Enums\ExitCode;

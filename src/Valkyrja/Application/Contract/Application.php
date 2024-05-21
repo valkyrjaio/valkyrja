@@ -11,9 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Application;
+namespace Valkyrja\Application\Contract;
 
 use ArrayAccess;
+use Valkyrja\Application\Env;
 use Valkyrja\Config\Config as ConfigModel;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Console\Kernel as ConsoleKernel;

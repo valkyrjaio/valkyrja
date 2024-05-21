@@ -15,8 +15,8 @@ namespace Valkyrja;
 
 use Valkyrja\Annotation\Contract\Annotations;
 use Valkyrja\Api\Api;
-use Valkyrja\Application\Application;
-use Valkyrja\Application\Applications\Valkyrja;
+use Valkyrja\Application\Contract\Application;
+use Valkyrja\Application\Valkyrja;
 use Valkyrja\Auth\Auth;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Client\Client;

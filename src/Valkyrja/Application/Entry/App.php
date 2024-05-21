@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Entry;
 
-use Valkyrja\Application\Application;
-use Valkyrja\Application\Applications\Valkyrja;
+use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Env;
+use Valkyrja\Application\Valkyrja;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Http\Factories\RequestFactory;
 use Valkyrja\Http\Request;

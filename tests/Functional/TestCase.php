@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Functional;
 
 use JsonException;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Valkyrja\Application\Applications\Valkyrja;
+use Valkyrja\Application\Valkyrja;
 use Valkyrja\Http\Factories\RequestFactory;
 use Valkyrja\Http\Request;
 use Valkyrja\Support\Directory;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Providers;
 
-use Valkyrja\Application\Application;
+use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Env;
 use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config\Config;
@@ -91,8 +91,11 @@ class AppProvider extends Provider
      *
      * @return void
      */
-    protected static function bootstrapExceptionHandler(Application $app, Container $container, Config|array $config): void
-    {
+    protected static function bootstrapExceptionHandler(
+        Application $app,
+        Container $container,
+        Config|array $config
+    ): void {
         /** @var ExceptionHandler $exceptionHandler */
         $exceptionHandler = $config['app']['exceptionHandler'];
 

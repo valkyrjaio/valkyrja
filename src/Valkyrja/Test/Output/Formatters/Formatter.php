@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Output\Formatters;
 
-use Valkyrja\Application\Application;
+use Valkyrja\Application\Contract\Application;
 use Valkyrja\Test\Exceptions\AssertFailureException;
 use Valkyrja\Test\Output\Formatter as Contract;
 use Valkyrja\Test\Output\Results;
@@ -295,8 +295,14 @@ class Formatter implements Contract
     /**
      * Get the results full text formatted.
      */
-    protected function getResults(string $status, int $totalTests, int $totalAssertions, int $totalSkipped, int $totalWarnings, int $totalErrors): string
-    {
+    protected function getResults(
+        string $status,
+        int $totalTests,
+        int $totalAssertions,
+        int $totalSkipped,
+        int $totalWarnings,
+        int $totalErrors
+    ): string {
         return $status
             . ' ('
             . $this->getResultsTotalTests($totalTests)

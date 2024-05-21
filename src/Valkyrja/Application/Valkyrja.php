@@ -11,11 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Application\Applications;
+namespace Valkyrja\Application;
 
 use RuntimeException;
-use Valkyrja\Application\Application;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config as ConfigModel;
 use Valkyrja\Config\Config\Config;

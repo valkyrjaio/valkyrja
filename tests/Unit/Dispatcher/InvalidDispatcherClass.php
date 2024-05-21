@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Dispatcher;
 
-use Valkyrja\Application\Application;
+use Valkyrja\Application\Contract\Application;
 
 /**
  * Invalid dispatcher class to test with.

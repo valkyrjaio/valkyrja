@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Application\Constants;
+namespace Valkyrja\Application\Constant;
 
-use Valkyrja\Application\Application;
+use Valkyrja\Application\Contract\Application;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Container\Providers\AppProvider as ContainerAppProvider;
 use Valkyrja\Exception\Classes\ExceptionHandler;

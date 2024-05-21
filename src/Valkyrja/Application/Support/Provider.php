@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Support;
 
-use Valkyrja\Application\Application;
+use Valkyrja\Application\Contract\Application;
 
 /**
  * Abstract Class Provider.

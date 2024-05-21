@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Functional;
 
 use Exception;
 use Valkyrja\Annotation\Annotations;
-use Valkyrja\Application\Applications\Valkyrja;
+use Valkyrja\Application\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Config;
 use Valkyrja\Console\Dispatchers\Console;

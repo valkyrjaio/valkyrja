@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Functional;
 
 use Valkyrja\Annotation\Contract\Annotations;
-use Valkyrja\Application\Application;
-use Valkyrja\Application\Applications\Valkyrja;
+use Valkyrja\Application\Contract\Application;
+use Valkyrja\Application\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Commands\ConfigCache;
 use Valkyrja\Config\Constants\ConfigKey;
