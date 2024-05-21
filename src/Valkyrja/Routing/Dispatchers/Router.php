@@ -15,7 +15,7 @@ namespace Valkyrja\Routing\Dispatchers;
 
 use InvalidArgumentException;
 use Valkyrja\Container\Container;
-use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;

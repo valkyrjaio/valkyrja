@@ -18,7 +18,7 @@ use Valkyrja\Attribute\Attributes as AttributeAttributes;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Dispatcher\Dispatcher as DispatchDispatcher;
+use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
 use Valkyrja\Event\Annotator;
 use Valkyrja\Event\Attributes;
 use Valkyrja\Event\Collection;

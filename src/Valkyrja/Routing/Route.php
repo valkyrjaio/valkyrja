@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing;
 
 use BackedEnum;
-use Valkyrja\Dispatcher\Dispatch;
+use Valkyrja\Dispatcher\Model\Contract\Dispatch;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Routing\Enums\CastType;
 use Valkyrja\Routing\Models\Parameter;

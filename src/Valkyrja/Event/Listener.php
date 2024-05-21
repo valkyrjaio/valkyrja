@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event;
 
-use Valkyrja\Dispatcher\Dispatch;
+use Valkyrja\Dispatcher\Model\Contract\Dispatch;
 
 /**
  * Interface Listener.

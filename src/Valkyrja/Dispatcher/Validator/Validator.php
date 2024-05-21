@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Dispatcher\Validators;
+namespace Valkyrja\Dispatcher\Validator;
 
-use Valkyrja\Dispatcher\Dispatch;
-use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
-use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
-use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
-use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-use Valkyrja\Dispatcher\Validator as Contract;
+use Valkyrja\Dispatcher\Exception\InvalidDispatchCapabilityException;
+use Valkyrja\Dispatcher\Exception\InvalidFunctionException;
+use Valkyrja\Dispatcher\Exception\InvalidMethodException;
+use Valkyrja\Dispatcher\Exception\InvalidPropertyException;
+use Valkyrja\Dispatcher\Model\Contract\Dispatch;
+use Valkyrja\Dispatcher\Validator\Contract\Validator as Contract;
 
 use function is_callable;
 

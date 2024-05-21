@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Dispatcher\Exceptions;
+namespace Valkyrja\Dispatcher\Exception;
 
 use InvalidArgumentException;
 
 /**
- * Class InvalidClosureException.
+ * Class InvalidPropertyException.
  *
  * @author Melech Mizrachi
  */
-class InvalidClosureException extends InvalidArgumentException
+class InvalidPropertyException extends InvalidArgumentException
 {
 }

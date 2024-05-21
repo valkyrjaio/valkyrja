@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Constants;
 
-use Valkyrja\Dispatcher\Constants\Property as DispatchProperty;
+use Valkyrja\Dispatcher\Constant\Property as DispatchProperty;
 
 /**
  * Constant Property.

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console;
 
-use Valkyrja\Dispatcher\Dispatch;
+use Valkyrja\Dispatcher\Model\Contract\Dispatch;
 
 /**
  * Interface Command.

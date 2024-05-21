@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Dispatcher\Facades;
 
-use Valkyrja\Dispatcher\Dispatcher as Contract;
-use Valkyrja\Dispatcher\Facades\Dispatcher as Facade;
+use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
+use Valkyrja\Dispatcher\Facade\Dispatcher as Facade;
 use Valkyrja\Tests\Unit\Facade\FacadeTestCase;
 
 /**

@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Dispatcher\Models;
+namespace Valkyrja\Dispatcher\Model;
 
 use Closure;
-use Valkyrja\Dispatcher\Dispatch as Contract;
+use Valkyrja\Dispatcher\Model\Contract\Dispatch as Contract;
 use Valkyrja\Type\Model\Model;
 
 /**

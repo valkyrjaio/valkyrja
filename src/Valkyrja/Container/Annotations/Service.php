@@ -15,7 +15,7 @@ namespace Valkyrja\Container\Annotations;
 
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Models\Annotatable;
-use Valkyrja\Dispatcher\Models\Dispatch;
+use Valkyrja\Dispatcher\Model\Dispatch;
 
 /**
  * Class Service.

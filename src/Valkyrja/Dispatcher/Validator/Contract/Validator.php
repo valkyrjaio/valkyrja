@@ -11,13 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Dispatcher;
+namespace Valkyrja\Dispatcher\Validator\Contract;
 
-use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
-use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
-use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
-use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
-use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
+use Valkyrja\Dispatcher\Exception\InvalidClosureException;
+use Valkyrja\Dispatcher\Exception\InvalidDispatchCapabilityException;
+use Valkyrja\Dispatcher\Exception\InvalidFunctionException;
+use Valkyrja\Dispatcher\Exception\InvalidMethodException;
+use Valkyrja\Dispatcher\Exception\InvalidPropertyException;
+use Valkyrja\Dispatcher\Model\Contract\Dispatch;
 
 /**
  * Interface Validator.

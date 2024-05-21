@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Dispatchers;
 
 use Psr\EventDispatcher\StoppableEventInterface;
-use Valkyrja\Dispatcher\Dispatcher as DispatchDispatcher;
+use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
 use Valkyrja\Event\Collection;
 use Valkyrja\Event\DispatchCollectableEvent;
 use Valkyrja\Event\Dispatcher as Contract;

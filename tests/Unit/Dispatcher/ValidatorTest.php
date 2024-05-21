@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Dispatcher;
 
 use Exception;
-use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
-use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
-use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
-use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-use Valkyrja\Dispatcher\Models\Dispatch;
-use Valkyrja\Dispatcher\Validators\Validator;
+use Valkyrja\Dispatcher\Exception\InvalidDispatchCapabilityException;
+use Valkyrja\Dispatcher\Exception\InvalidFunctionException;
+use Valkyrja\Dispatcher\Exception\InvalidMethodException;
+use Valkyrja\Dispatcher\Exception\InvalidPropertyException;
+use Valkyrja\Dispatcher\Model\Dispatch;
+use Valkyrja\Dispatcher\Validator\Validator;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

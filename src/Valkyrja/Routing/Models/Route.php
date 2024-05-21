@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Models;
 
 use InvalidArgumentException;
-use Valkyrja\Dispatcher\Models\Dispatch;
+use Valkyrja\Dispatcher\Model\Dispatch;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Message;

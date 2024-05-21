@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Annotation\Models;
 
 use Valkyrja\Annotation\Annotation as Contract;
-use Valkyrja\Dispatcher\Models\Dispatch;
+use Valkyrja\Dispatcher\Model\Dispatch;
 
 /**
  * Class Annotation.

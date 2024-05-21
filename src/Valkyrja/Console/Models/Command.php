@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Models;
 
 use Valkyrja\Console\Command as Contract;
-use Valkyrja\Dispatcher\Models\Dispatch;
+use Valkyrja\Dispatcher\Model\Dispatch;
 
 /**
  * Class Command.

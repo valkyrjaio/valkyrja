@@ -15,8 +15,8 @@ namespace Valkyrja\Dispatcher\Providers;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Dispatcher\Validator;
+use Valkyrja\Dispatcher\Contract\Dispatcher;
+use Valkyrja\Dispatcher\Validator\Contract\Validator;
 
 /**
  * Class ServiceProvider.
@@ -75,7 +75,7 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Validator::class,
-            new \Valkyrja\Dispatcher\Validators\Validator()
+            new \Valkyrja\Dispatcher\Validator\Validator()
         );
     }
 }

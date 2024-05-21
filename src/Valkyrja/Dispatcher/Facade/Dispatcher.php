@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Dispatcher\Facades;
+namespace Valkyrja\Dispatcher\Facade;
 
-use Valkyrja\Dispatcher\Dispatch;
-use Valkyrja\Dispatcher\Dispatcher as Contract;
+use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
+use Valkyrja\Dispatcher\Model\Contract\Dispatch;
 use Valkyrja\Facade\ContainerFacade;
 
 /**

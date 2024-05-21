@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Dispatcher;
 
-use Valkyrja\Dispatcher\Dispatch as Contract;
-use Valkyrja\Dispatcher\Models\Dispatch;
+use Valkyrja\Dispatcher\Model\Contract\Dispatch as Contract;
+use Valkyrja\Dispatcher\Model\Dispatch;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\Model\Contract\Model;
 

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Dispatcher;
+namespace Valkyrja\Dispatcher\Model\Contract;
 
 use Closure;
 use Valkyrja\Type\Model\Contract\Model;

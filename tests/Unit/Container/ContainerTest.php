@@ -17,7 +17,7 @@ use AssertionError;
 use RuntimeException;
 use Valkyrja\Container\Config\Container as Config;
 use Valkyrja\Container\Managers\Container;
-use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Tests\Classes\Container\Service;
 use Valkyrja\Tests\Classes\Container\Singleton;
 use Valkyrja\Tests\Traits\ExpectErrorTrait;

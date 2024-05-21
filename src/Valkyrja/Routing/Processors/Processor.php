@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Processors;
 
 use InvalidArgumentException;
-use Valkyrja\Dispatcher\Validator;
+use Valkyrja\Dispatcher\Validator\Contract\Validator;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Data\EntityCast;

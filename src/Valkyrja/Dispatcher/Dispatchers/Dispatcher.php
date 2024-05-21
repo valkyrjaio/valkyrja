@@ -16,9 +16,9 @@ namespace Valkyrja\Dispatcher\Dispatchers;
 use InvalidArgumentException;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\ContextAwareContainer;
-use Valkyrja\Dispatcher\Constants\Constant;
-use Valkyrja\Dispatcher\Dispatch;
-use Valkyrja\Dispatcher\Dispatcher as Contract;
+use Valkyrja\Dispatcher\Constant\Constant;
+use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
+use Valkyrja\Dispatcher\Model\Contract\Dispatch;
 
 use function array_map;
 use function constant;

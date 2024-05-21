@@ -16,7 +16,7 @@ namespace Valkyrja\Routing\Providers;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Routing\Collection;

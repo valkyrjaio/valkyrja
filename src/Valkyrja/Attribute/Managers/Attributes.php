@@ -20,7 +20,7 @@ use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
 use Valkyrja\Attribute\Attributes as Contract;
-use Valkyrja\Dispatcher\Constants\Property;
+use Valkyrja\Dispatcher\Constant\Property;
 use Valkyrja\Reflection\Reflector;
 
 /**

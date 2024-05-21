@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Dispatcher\Exceptions;
+namespace Valkyrja\Dispatcher\Exception;
 
 use InvalidArgumentException;
 
 /**
- * Class InvalidFunctionException.
+ * Class InvalidDispatchCapabilityException.
  *
  * @author Melech Mizrachi
  */
-class InvalidFunctionException extends InvalidArgumentException
+class InvalidDispatchCapabilityException extends InvalidArgumentException
 {
 }
