@@ -56,7 +56,7 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Attributes::class,
-            new \Valkyrja\Attribute\Managers\Attributes(
+            new \Valkyrja\Attribute\Attributes(
                 $container->getSingleton(Reflection::class),
             )
         );

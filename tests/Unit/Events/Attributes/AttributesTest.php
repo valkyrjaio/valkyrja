@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Events\Attributes;
 
 use ReflectionException;
-use Valkyrja\Attribute\Managers\Attributes as AttributesAttributes;
+use Valkyrja\Attribute\Attributes as AttributesAttributes;
 use Valkyrja\Event\Attributes\Attributes;
 use Valkyrja\Event\Listener;
 use Valkyrja\Reflection\Reflection;

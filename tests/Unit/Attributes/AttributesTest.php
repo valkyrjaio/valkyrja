@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Attributes;
 
 use ReflectionException;
-use Valkyrja\Attribute\Managers\Attributes;
+use Valkyrja\Attribute\Attributes;
 use Valkyrja\Tests\Unit\Attributes\Classes\Attribute;
 use Valkyrja\Tests\Unit\Attributes\Classes\AttributeChild;
 use Valkyrja\Tests\Unit\Attributes\Classes\AttributedClass;
