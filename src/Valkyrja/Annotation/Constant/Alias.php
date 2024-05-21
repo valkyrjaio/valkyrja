@@ -11,18 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotation\Constants;
-
-use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Http\Constants\StatusCode;
+namespace Valkyrja\Annotation\Constant;
 
 /**
- * Constant AliasClass.
+ * Constant Alias.
  *
  * @author Melech Mizrachi
  */
-final class AliasClass
+final class Alias
 {
-    public const REQUEST_METHOD = RequestMethod::class;
-    public const STATUS_CODE    = StatusCode::class;
+    public const REQUEST_METHOD = 'RequestMethod';
+    public const STATUS_CODE    = 'StatusCode';
 }

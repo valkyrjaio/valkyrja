@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotation\Providers;
+namespace Valkyrja\Annotation\Provider;
 
-use Valkyrja\Annotation\Annotator;
-use Valkyrja\Annotation\Filter;
-use Valkyrja\Annotation\Parser;
+use Valkyrja\Annotation\Contract\Annotator;
+use Valkyrja\Annotation\Filter\Contract\Filter;
+use Valkyrja\Annotation\Parser\Contract\Parser;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
@@ -81,7 +81,7 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Filter::class,
-            new \Valkyrja\Annotation\Filters\Filter(
+            new \Valkyrja\Annotation\Filter\Filter(
                 $container->getSingleton(Annotator::class)
             )
         );
@@ -100,7 +100,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Parser::class,
-            new \Valkyrja\Annotation\Parsers\Parser(
+            new \Valkyrja\Annotation\Parser\Parser(
                 $config['annotation']
             )
         );

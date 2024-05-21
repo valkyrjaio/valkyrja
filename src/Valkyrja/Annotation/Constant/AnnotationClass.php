@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotation\Constants;
+namespace Valkyrja\Annotation\Constant;
 
 use Valkyrja\Console\Enums\AnnotationClass as ConsoleAnnotationClass;
 use Valkyrja\Container\Enums\AnnotationClass as ContainerAnnotationClass;

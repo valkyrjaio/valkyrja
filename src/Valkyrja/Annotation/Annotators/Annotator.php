@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Annotation\Annotators;
 
 use ReflectionException;
-use Valkyrja\Annotation\Annotation;
-use Valkyrja\Annotation\Annotator as Contract;
-use Valkyrja\Annotation\Constants\Property;
-use Valkyrja\Annotation\Parser;
+use Valkyrja\Annotation\Constant\Property;
+use Valkyrja\Annotation\Contract\Annotator as Contract;
+use Valkyrja\Annotation\Model\Contract\Annotation;
+use Valkyrja\Annotation\Parser\Contract\Parser;
 use Valkyrja\Reflection\Contract\Reflection;
 
 use function array_merge;

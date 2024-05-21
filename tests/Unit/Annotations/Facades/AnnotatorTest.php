@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Annotations\Facades;
 
-use Valkyrja\Annotation\Annotator as Contract;
-use Valkyrja\Annotation\Facades\Annotator as Facade;
+use Valkyrja\Annotation\Contract\Annotator as Contract;
+use Valkyrja\Annotation\Facade\Annotator as Facade;
 use Valkyrja\Tests\Unit\Facade\FacadeTestCase;
 
 /**

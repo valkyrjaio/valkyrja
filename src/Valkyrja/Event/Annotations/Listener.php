@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Annotations;
 
-use Valkyrja\Annotation\Annotation;
-use Valkyrja\Annotation\Models\Annotatable;
+use Valkyrja\Annotation\Model\Annotatable;
+use Valkyrja\Annotation\Model\Contract\Annotation;
 
 /**
  * Class Listener.

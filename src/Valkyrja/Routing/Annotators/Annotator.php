@@ -15,8 +15,8 @@ namespace Valkyrja\Routing\Annotators;
 
 use InvalidArgumentException;
 use ReflectionException;
-use Valkyrja\Annotation\Annotator as AnnotationAnnotator;
-use Valkyrja\Annotation\Filter;
+use Valkyrja\Annotation\Contract\Annotator as AnnotationAnnotator;
+use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Routing\Annotations\Route;
 use Valkyrja\Routing\Annotator as Contract;

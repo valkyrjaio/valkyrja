@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Annotation\Config;
 
 use Valkyrja\Annotation\Config\Config as Model;
-use Valkyrja\Annotation\Constants\ConfigValue;
+use Valkyrja\Annotation\Constant\ConfigValue;
 
 /**
  * Class Annotation.

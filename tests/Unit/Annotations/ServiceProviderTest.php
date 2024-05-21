@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Annotations;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Annotation\Annotator as Contract;
 use Valkyrja\Annotation\Annotators\Annotator;
-use Valkyrja\Annotation\Filter as FilterContract;
-use Valkyrja\Annotation\Filters\Filter;
-use Valkyrja\Annotation\Parser as ParserContract;
-use Valkyrja\Annotation\Parsers\Parser;
-use Valkyrja\Annotation\Providers\ServiceProvider;
+use Valkyrja\Annotation\Contract\Annotator as Contract;
+use Valkyrja\Annotation\Filter\Contract\Filter as FilterContract;
+use Valkyrja\Annotation\Filter\Filter;
+use Valkyrja\Annotation\Parser\Contract\Parser as ParserContract;
+use Valkyrja\Annotation\Parser\Parser;
+use Valkyrja\Annotation\Provider\ServiceProvider;
 use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Tests\Unit\Container\ServiceProviderTestCase;
 

@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotation\Filters;
+namespace Valkyrja\Annotation\Filter;
 
-use Valkyrja\Annotation\Annotation;
-use Valkyrja\Annotation\Annotator;
-use Valkyrja\Annotation\Filter as Contract;
+use Valkyrja\Annotation\Contract\Annotator;
+use Valkyrja\Annotation\Filter\Contract\Filter as Contract;
+use Valkyrja\Annotation\Model\Contract\Annotation;
 
 use function in_array;
 

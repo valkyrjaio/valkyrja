@@ -15,7 +15,7 @@ namespace Valkyrja\Event\Annotators;
 
 use InvalidArgumentException;
 use ReflectionException;
-use Valkyrja\Annotation\Filter;
+use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Event\Annotations\Listener;
 use Valkyrja\Event\Annotator as Contract;
 use Valkyrja\Event\Listener as ListenerContract;

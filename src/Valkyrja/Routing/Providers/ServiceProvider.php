@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Providers;
 
-use Valkyrja\Annotation\Annotator as AnnotationAnnotator;
-use Valkyrja\Annotation\Filter;
+use Valkyrja\Annotation\Contract\Annotator as AnnotationAnnotator;
+use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;

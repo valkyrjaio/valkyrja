@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Providers;
 
-use Valkyrja\Annotation\Filter;
+use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Container\Annotator;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Annotations;
 
-use Valkyrja\Annotation\Models\Annotation;
+use Valkyrja\Annotation\Model\Annotation;
 
 /**
  * Annotatable trait class used for unit testing.

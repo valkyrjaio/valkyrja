@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotation\Parsers;
+namespace Valkyrja\Annotation\Parser;
 
 use JsonException;
-use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Config\Config;
-use Valkyrja\Annotation\Constants\Part;
-use Valkyrja\Annotation\Constants\Regex;
-use Valkyrja\Annotation\Exceptions\InvalidAnnotationKeyArgument;
-use Valkyrja\Annotation\Models\Annotation as AnnotationModel;
-use Valkyrja\Annotation\Parser as Contract;
+use Valkyrja\Annotation\Constant\Part;
+use Valkyrja\Annotation\Constant\Regex;
+use Valkyrja\Annotation\Exception\InvalidAnnotationKeyArgument;
+use Valkyrja\Annotation\Model\Annotation as AnnotationModel;
+use Valkyrja\Annotation\Model\Contract\Annotation;
+use Valkyrja\Annotation\Parser\Contract\Parser as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function array_key_exists;

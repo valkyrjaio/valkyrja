@@ -11,18 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotation\Constants;
+namespace Valkyrja\Annotation\Model;
+
+use Valkyrja\Annotation\Model\Contract\Annotation as Contract;
+use Valkyrja\Dispatcher\Model\Dispatch;
 
 /**
- * Constant Part.
+ * Class Annotation.
  *
  * @author Melech Mizrachi
  */
-final class Part
+class Annotation extends Dispatch implements Contract
 {
-    public const TYPE          = Property::TYPE;
-    public const PROPERTIES    = Property::PROPERTIES;
-    public const VARIABLE_TYPE = 'variableType';
-    public const VARIABLE      = 'variable';
-    public const DESCRIPTION   = 'description';
+    use Annotatable;
 }

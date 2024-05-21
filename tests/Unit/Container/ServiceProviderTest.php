@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Annotation\Filter;
+use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Container\Annotator as Contract;
 use Valkyrja\Container\Annotators\Annotator;
 use Valkyrja\Container\Providers\ServiceProvider;

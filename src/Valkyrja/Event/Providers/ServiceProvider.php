@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Providers;
 
-use Valkyrja\Annotation\Filter;
+use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Attribute\Contract\Attributes as AttributeAttributes;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;

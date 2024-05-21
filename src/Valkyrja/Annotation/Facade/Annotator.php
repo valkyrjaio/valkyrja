@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotation\Facades;
+namespace Valkyrja\Annotation\Facade;
 
 use ReflectionClass;
 use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionProperty;
-use Valkyrja\Annotation\Annotation;
-use Valkyrja\Annotation\Annotator as Contract;
-use Valkyrja\Annotation\Filter;
-use Valkyrja\Annotation\Parser;
+use Valkyrja\Annotation\Contract\Annotator as Contract;
+use Valkyrja\Annotation\Filter\Contract\Filter;
+use Valkyrja\Annotation\Model\Contract\Annotation;
+use Valkyrja\Annotation\Parser\Contract\Parser;
 use Valkyrja\Facade\ContainerFacade;
 
 /**

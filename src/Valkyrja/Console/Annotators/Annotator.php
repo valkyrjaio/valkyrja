@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Annotators;
 
 use ReflectionException;
-use Valkyrja\Annotation\Annotation;
-use Valkyrja\Annotation\Filter;
+use Valkyrja\Annotation\Filter\Contract\Filter;
+use Valkyrja\Annotation\Model\Contract\Annotation;
 use Valkyrja\Console\Annotations\Command;
 use Valkyrja\Console\Annotator as Contract;
 use Valkyrja\Console\Command as CommandContract;

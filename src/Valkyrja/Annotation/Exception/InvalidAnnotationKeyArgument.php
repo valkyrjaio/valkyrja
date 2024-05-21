@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotation\Constants;
+namespace Valkyrja\Annotation\Exception;
+
+use InvalidArgumentException;
 
 /**
- * Constant Alias.
+ * Class InvalidAnnotationKeyArgument.
  *
  * @author Melech Mizrachi
  */
-final class Alias
+class InvalidAnnotationKeyArgument extends InvalidArgumentException
 {
-    public const REQUEST_METHOD = 'RequestMethod';
-    public const STATUS_CODE    = 'StatusCode';
 }

@@ -15,12 +15,12 @@ namespace Valkyrja\Tests\Unit\Annotations;
 
 use ReflectionClass;
 use ReflectionException;
-use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Config\Config;
-use Valkyrja\Annotation\Constants\AnnotationName;
-use Valkyrja\Annotation\Constants\ConfigValue;
-use Valkyrja\Annotation\Constants\Regex;
-use Valkyrja\Annotation\Parsers\Parser;
+use Valkyrja\Annotation\Constant\AnnotationName;
+use Valkyrja\Annotation\Constant\ConfigValue;
+use Valkyrja\Annotation\Constant\Regex;
+use Valkyrja\Annotation\Model\Contract\Annotation;
+use Valkyrja\Annotation\Parser\Parser;
 use Valkyrja\Console\Annotations\Command;
 use Valkyrja\Container\Annotations\Service;
 use Valkyrja\Container\Annotations\Service\Context;

@@ -11,7 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotation;
+namespace Valkyrja\Annotation\Filter\Contract;
+
+use Valkyrja\Annotation\Model\Contract\Annotation;
 
 /**
  * Interface AnnotationsFilter.

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional;
 
-use Valkyrja\Annotation\Annotator;
+use Valkyrja\Annotation\Contract\Annotator;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
