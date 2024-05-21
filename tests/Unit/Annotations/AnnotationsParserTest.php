@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Annotations;
 
 use ReflectionClass;
 use ReflectionException;
-use Valkyrja\Annotation\Config\Config;
+use Valkyrja\Annotation\Config;
 use Valkyrja\Annotation\Constant\AnnotationName;
 use Valkyrja\Annotation\Constant\ConfigValue;
 use Valkyrja\Annotation\Constant\Regex;

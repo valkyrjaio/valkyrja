@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Annotation\Parser;
 
 use JsonException;
-use Valkyrja\Annotation\Config\Config;
+use Valkyrja\Annotation\Config;
 use Valkyrja\Annotation\Constant\Part;
 use Valkyrja\Annotation\Constant\Regex;
 use Valkyrja\Annotation\Exception\InvalidAnnotationKeyArgument;

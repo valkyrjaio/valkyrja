@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Config;
 
-use Valkyrja\Annotation\Config\Config as Annotation;
+use Valkyrja\Annotation\Config as Annotation;
 use Valkyrja\Api\Config\Config as Api;
 use Valkyrja\Application\Config\Config as App;
 use Valkyrja\Asset\Config\Config as Asset;

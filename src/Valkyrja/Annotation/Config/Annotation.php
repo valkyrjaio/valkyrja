@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Config;
 
-use Valkyrja\Annotation\Config\Config as Model;
+use Valkyrja\Annotation\Config as Model;
 use Valkyrja\Annotation\Constant\ConfigValue;
 
 /**
