@@ -39,11 +39,9 @@ class Attributes implements Contract
 
     /**
      * Attributes constructor.
-     *
-     * @param Reflection $reflector [optional] The reflector service
      */
     public function __construct(
-        protected Reflection $reflector = new \Valkyrja\Reflection\Reflection(),
+        protected Reflection $reflection = new \Valkyrja\Reflection\Reflection(),
     ) {
     }
 
@@ -58,7 +56,7 @@ class Attributes implements Contract
             [
                 Property::CLASS_NAME => $class,
             ],
-            ...$this->reflector->getClassReflection($class)->getAttributes($attribute, $flags ?? static::$defaultFlags)
+            ...$this->reflection->forClass($class)->getAttributes($attribute, $flags ?? static::$defaultFlags)
         );
     }
 
@@ -100,7 +98,7 @@ class Attributes implements Contract
         string|null $attribute = null,
         int|null $flags = null
     ): array {
-        return $this->forClassMember($attribute, $flags, $this->reflector->getClassConstReflection($class, $constant));
+        return $this->forClassMember($attribute, $flags, $this->reflection->forClassConstant($class, $constant));
     }
 
     /**
@@ -113,7 +111,7 @@ class Attributes implements Contract
         return $this->forClassMember(
             $attribute,
             $flags,
-            ...$this->reflector->getClassReflection($class)->getReflectionConstants()
+            ...$this->reflection->forClass($class)->getReflectionConstants()
         );
     }
 
@@ -128,7 +126,7 @@ class Attributes implements Contract
         string|null $attribute = null,
         int|null $flags = null
     ): array {
-        return $this->forClassMember($attribute, $flags, $this->reflector->getPropertyReflection($class, $property));
+        return $this->forClassMember($attribute, $flags, $this->reflection->forClassProperty($class, $property));
     }
 
     /**
@@ -141,7 +139,7 @@ class Attributes implements Contract
         return $this->forClassMember(
             $attribute,
             $flags,
-            ...$this->reflector->getClassReflection($class)->getProperties()
+            ...$this->reflection->forClass($class)->getProperties()
         );
     }
 
@@ -156,7 +154,7 @@ class Attributes implements Contract
         string|null $attribute = null,
         int|null $flags = null
     ): array {
-        return $this->forClassMember($attribute, $flags, $this->reflector->getMethodReflection($class, $method));
+        return $this->forClassMember($attribute, $flags, $this->reflection->forClassMethod($class, $method));
     }
 
     /**
@@ -169,7 +167,7 @@ class Attributes implements Contract
         return $this->forClassMember(
             $attribute,
             $flags,
-            ...$this->reflector->getClassReflection($class)->getMethods()
+            ...$this->reflection->forClass($class)->getMethods()
         );
     }
 
@@ -184,8 +182,7 @@ class Attributes implements Contract
             [
                 Property::FUNCTION => $function,
             ],
-            ...$this->reflector->getFunctionReflection($function)
-                               ->getAttributes($attribute, $flags ?? static::$defaultFlags)
+            ...$this->reflection->forFunction($function)->getAttributes($attribute, $flags ?? static::$defaultFlags)
         );
     }
 
@@ -200,8 +197,7 @@ class Attributes implements Contract
             [
                 Property::CLOSURE => $closure,
             ],
-            ...$this->reflector->getClosureReflection($closure)
-                               ->getAttributes($attribute, $flags ?? static::$defaultFlags)
+            ...$this->reflection->forClosure($closure)->getAttributes($attribute, $flags ?? static::$defaultFlags)
         );
     }
 

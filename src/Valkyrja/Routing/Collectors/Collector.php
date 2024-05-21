@@ -16,7 +16,7 @@ namespace Valkyrja\Routing\Collectors;
 use Closure;
 use InvalidArgumentException;
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Reflection\Facade\Reflection;
+use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Collector as Contract;
 use Valkyrja\Routing\Constants\HandleSplit;
@@ -52,7 +52,8 @@ class Collector implements Contract
      */
     public function __construct(
         protected Collection $collection,
-        protected Processor $processor
+        protected Processor $processor,
+        protected Reflection $reflection
     ) {
         // Set the route
         $this->route = new RouteModel();
@@ -232,7 +233,7 @@ class Collector implements Contract
     protected function with(string $method, mixed $value): static
     {
         // Create a new instance. We do not want the routes to come along for the ride
-        $self = new static($this->collection, $this->processor);
+        $self = new static($this->collection, $this->processor, $this->reflection);
 
         // Clone the current route so we don't override the current group's route
         $route = clone $this->route;
@@ -436,11 +437,11 @@ class Collector implements Contract
         $dependencies = [];
 
         if (($class = $route->getClass()) !== null && ($method = $route->getMethod()) !== null) {
-            $dependencies = Reflection::getDependencies(Reflection::getMethodReflection($class, $method));
+            $dependencies = $this->reflection->getDependencies($this->reflection->forClassMethod($class, $method));
         } elseif (($function = $route->getFunction()) !== null) {
-            $dependencies = Reflection::getDependencies(Reflection::getFunctionReflection($function));
+            $dependencies = $this->reflection->getDependencies($this->reflection->forFunction($function));
         } elseif (($closure = $route->getClosure()) !== null) {
-            $dependencies = Reflection::getDependencies(Reflection::getClosureReflection($closure));
+            $dependencies = $this->reflection->getDependencies($this->reflection->forClosure($closure));
         }
 
         return $dependencies;

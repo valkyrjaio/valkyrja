@@ -56,29 +56,12 @@ class Annotator implements Contract
     protected static array $annotations = [];
 
     /**
-     * The parser.
-     *
-     * @var Parser
-     */
-    protected Parser $parser;
-
-    /**
-     * The reflector.
-     *
-     * @var Reflection
-     */
-    protected Reflection $reflector;
-
-    /**
      * Annotations constructor.
-     *
-     * @param Parser     $parser
-     * @param Reflection $reflector
      */
-    public function __construct(Parser $parser, Reflection $reflector)
-    {
-        $this->reflector = $reflector;
-        $this->parser    = $parser;
+    public function __construct(
+        protected Parser $parser,
+        protected Reflection $reflection
+    ) {
     }
 
     /**
@@ -111,7 +94,7 @@ class Annotator implements Contract
             [
                 Property::CLASS_NAME => $class,
             ],
-            ...$this->parser->getAnnotations((string) $this->reflector->getClassReflection($class)->getDocComment())
+            ...$this->parser->getAnnotations((string) $this->reflection->forClass($class)->getDocComment())
         );
     }
 
@@ -155,7 +138,7 @@ class Annotator implements Contract
     public function propertyAnnotations(string $class, string $property): array
     {
         $index      = static::PROPERTY_CACHE . $class . $property;
-        $reflection = $this->reflector->getPropertyReflection($class, $property);
+        $reflection = $this->reflection->forClassProperty($class, $property);
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
@@ -185,7 +168,7 @@ class Annotator implements Contract
 
         // Get the class's reflection
         // Iterate through the properties
-        foreach ($this->reflector->getClassReflection($class)->getProperties() as $property) {
+        foreach ($this->reflection->forClass($class)->getProperties() as $property) {
             $index = static::METHOD_CACHE . $class . $property->getName();
             // Set the property's reflection class in the cache
             self::$reflections[$index] = $property;
@@ -204,7 +187,7 @@ class Annotator implements Contract
     public function methodAnnotations(string $class, string $method): array
     {
         $index      = static::METHOD_CACHE . $class . $method;
-        $reflection = $this->reflector->getMethodReflection($class, $method);
+        $reflection = $this->reflection->forClassMethod($class, $method);
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
@@ -234,7 +217,7 @@ class Annotator implements Contract
 
         // Get the class's reflection
         // Iterate through the methods
-        foreach ($this->reflector->getClassReflection($class)->getMethods() as $method) {
+        foreach ($this->reflection->forClass($class)->getMethods() as $method) {
             $index = static::METHOD_CACHE . $class . $method->getName();
             // Set the method's reflection class in the cache
             self::$reflections[$index] = $method;
@@ -260,7 +243,7 @@ class Annotator implements Contract
                 Property::FUNCTION => $function,
             ],
             ...$this->parser->getAnnotations(
-            (string) $this->reflector->getFunctionReflection($function)->getDocComment()
+            (string) $this->reflection->forFunction($function)->getDocComment()
         )
         );
     }

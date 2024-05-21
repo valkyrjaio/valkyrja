@@ -31,7 +31,7 @@ class Attributes implements Contract
 {
     public function __construct(
         protected AttributeAttributes $attributes,
-        protected Reflection $reflector,
+        protected Reflection $reflection,
     ) {
     }
 
@@ -85,17 +85,17 @@ class Attributes implements Contract
             throw new InvalidArgumentException('Invalid class defined in listener attribute.');
         }
 
-        $classReflection = $this->reflector->getClassReflection($class);
+        $classReflection = $this->reflection->forClass($class);
 
         if (($method = $attribute->getMethod()) !== null || $classReflection->hasMethod('__construct')) {
             $method ??= '__construct';
 
             $attribute->setMethod($method);
             /** @var non-empty-string $method */
-            $methodReflection = $this->reflector->getMethodReflection($class, $method);
+            $methodReflection = $this->reflection->forClassMethod($class, $method);
 
             // Set the dependencies
-            $attribute->setDependencies($this->reflector->getDependencies($methodReflection));
+            $attribute->setDependencies($this->reflection->getDependencies($methodReflection));
         }
 
         $attribute->setMatches();

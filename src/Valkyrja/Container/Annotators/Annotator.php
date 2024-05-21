@@ -28,29 +28,12 @@ use Valkyrja\Reflection\Contract\Reflection;
 class Annotator implements Contract
 {
     /**
-     * The filter.
-     *
-     * @var Filter
-     */
-    protected Filter $filter;
-
-    /**
-     * The reflector.
-     *
-     * @var Reflection
-     */
-    protected Reflection $reflector;
-
-    /**
      * ContainerAnnotator constructor.
-     *
-     * @param Filter     $filter
-     * @param Reflection $reflector
      */
-    public function __construct(Filter $filter, Reflection $reflector)
-    {
-        $this->filter    = $filter;
-        $this->reflector = $reflector;
+    public function __construct(
+        protected Filter $filter,
+        protected Reflection $reflection
+    ) {
     }
 
     /**
@@ -126,13 +109,13 @@ class Annotator implements Contract
         $property = $annotation->getProperty();
 
         if ($class && $property === null) {
-            $reflection = $this->reflector->getMethodReflection(
+            $reflection = $this->reflection->forClassMethod(
                 $class,
                 $annotation->getMethod() ?? '__construct'
             );
 
             // Set the dependencies
-            $annotation->setDependencies($this->reflector->getDependencies($reflection));
+            $annotation->setDependencies($this->reflection->getDependencies($reflection));
         }
 
         $annotation->setMatches();

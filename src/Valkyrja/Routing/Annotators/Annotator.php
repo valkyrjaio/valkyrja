@@ -38,15 +38,11 @@ class Annotator implements Contract
 {
     /**
      * ContainerAnnotator constructor.
-     *
-     * @param AnnotationAnnotator $annotator
-     * @param Filter              $filter
-     * @param Reflector           $reflector
      */
     public function __construct(
         protected AnnotationAnnotator $annotator,
         protected Filter $filter,
-        protected Reflection $reflector,
+        protected Reflection $reflection,
         protected Processor $processor
     ) {
     }
@@ -139,10 +135,10 @@ class Annotator implements Contract
         if ($route->getProperty() === null) {
             $method = $route->getMethod() ?? '__construct';
 
-            $methodReflection = $this->reflector->getMethodReflection($class, $method);
+            $methodReflection = $this->reflection->forClassMethod($class, $method);
 
             // Set the dependencies
-            $route->setDependencies($this->reflector->getDependencies($methodReflection));
+            $route->setDependencies($this->reflection->getDependencies($methodReflection));
         }
 
         // Avoid having large arrays in cached routes file
@@ -159,7 +155,7 @@ class Annotator implements Contract
     protected function getClassAnnotations(string $class): array
     {
         return $this->filter->filterAnnotationsByTypes(
-            $this->reflector->getClassReflection(AnnotationName::class)->getConstants(),
+            $this->reflection->forClass(AnnotationName::class)->getConstants(),
             ...$this->annotator->classAnnotations($class)
         );
     }
@@ -268,7 +264,7 @@ class Annotator implements Contract
     protected function getClassMemberAnnotations(string $class): array
     {
         return $this->filter->filterAnnotationsByTypes(
-            $this->reflector->getClassReflection(AnnotationName::class)->getConstants(),
+            $this->reflection->forClass(AnnotationName::class)->getConstants(),
             ...$this->annotator->classMembersAnnotations($class)
         );
     }

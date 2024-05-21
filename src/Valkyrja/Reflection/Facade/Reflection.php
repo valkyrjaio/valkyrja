@@ -28,11 +28,11 @@ use Valkyrja\Reflection\Contract\Reflection as Contract;
  *
  * @author Melech Mizrachi
  *
- * @method static ReflectionClass    getClassReflection(string $class)
- * @method static ReflectionProperty getPropertyReflection(string $class, string $property)
- * @method static ReflectionMethod   getMethodReflection(string $class, string $method)
- * @method static ReflectionFunction getFunctionReflection(string $function)
- * @method static ReflectionFunction getClosureReflection(Closure $closure)
+ * @method static ReflectionClass    forClass(string $class)
+ * @method static ReflectionProperty forClassProperty(string $class, string $property)
+ * @method static ReflectionMethod   forClassMethod(string $class, string $method)
+ * @method static ReflectionFunction forFunction(string $function)
+ * @method static ReflectionFunction forClosure(Closure $closure)
  * @method static string[]           getDependencies(ReflectionFunctionAbstract $reflection)
  * @method static string[]           getDependenciesFromParameters(ReflectionParameter ...$parameters)
  */

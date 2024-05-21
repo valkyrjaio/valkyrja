@@ -30,7 +30,7 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Reflection::class => [self::class, 'publishReflector'],
+            Reflection::class => [self::class, 'publishReflection'],
         ];
     }
 
@@ -45,13 +45,13 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the reflector service.
+     * Publish the reflection service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishReflector(Container $container): void
+    public static function publishReflection(Container $container): void
     {
         $container->setSingleton(
             Reflection::class,
