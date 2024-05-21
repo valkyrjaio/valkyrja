@@ -22,7 +22,7 @@ use Valkyrja\Config\Constants\ConfigKey;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Managers\Container;
-use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
+use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Dispatchers\Dispatcher as Events;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\ResponseFactory;

@@ -20,7 +20,7 @@ use Valkyrja\Container\Config\Container as Config;
 use Valkyrja\Container\Managers\Container;
 use Valkyrja\Container\Managers\ContextAwareContainer;
 use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
-use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
+use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Dispatcher\Model\Dispatch;
 use Valkyrja\Tests\Classes\Container\Service;
 use Valkyrja\Tests\Unit\TestCase;
