@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Config;
 
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Application\Constant\EnvKey;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Session\Config\Config as Model;
 use Valkyrja\Session\Constants\ConfigValue;
 

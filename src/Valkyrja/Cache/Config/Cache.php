@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Config;
 
+use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Cache\Adapters\LogAdapter;
 use Valkyrja\Cache\Adapters\NullAdapter;
 use Valkyrja\Cache\Config\Config as Model;
 use Valkyrja\Cache\Constants\ConfigValue;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Application\Constant\EnvKey;
 
 use function Valkyrja\env;
 

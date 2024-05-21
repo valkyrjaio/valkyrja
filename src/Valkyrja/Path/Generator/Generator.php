@@ -40,7 +40,7 @@ class Generator implements Contract
         }
 
         $path         = '';
-        $params       ??= [];
+        $params ??= [];
         $replace      = [];
         $replacements = [];
 

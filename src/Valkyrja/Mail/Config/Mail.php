@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Config;
 
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Application\Constant\EnvKey;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Mail\Adapters\LogAdapter;
 use Valkyrja\Mail\Adapters\MailgunAdapter;
 use Valkyrja\Mail\Adapters\NullAdapter;

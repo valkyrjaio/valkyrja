@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Config;
 
+use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Container\Support\Provider;
 
 use function is_array;

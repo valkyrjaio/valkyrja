@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Asset\Config;
 
+use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Asset\Config\Config as Model;
 use Valkyrja\Asset\Constants\ConfigValue;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Application\Constant\EnvKey;
 
 use function Valkyrja\env;
 
