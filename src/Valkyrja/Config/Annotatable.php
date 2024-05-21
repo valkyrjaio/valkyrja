@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Config\Traits;
+namespace Valkyrja\Config;
 
 /**
  * Trait Annotatable.

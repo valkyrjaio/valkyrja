@@ -19,7 +19,7 @@ use Valkyrja\Broadcast\Adapters\NullAdapter;
 use Valkyrja\Broadcast\Adapters\PusherAdapter;
 use Valkyrja\Broadcast\Drivers\Driver;
 use Valkyrja\Broadcast\Messages\Message;
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 
 /**
  * Constant ConfigValue.

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Config;
 
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\EnvKey;
 use Valkyrja\Sms\Adapters\LogAdapter;
 use Valkyrja\Sms\Adapters\NullAdapter;
 use Valkyrja\Sms\Config\Config as Model;

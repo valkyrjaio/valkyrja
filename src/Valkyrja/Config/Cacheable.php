@@ -11,9 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Config\Traits;
-
-use Valkyrja\Config\Config;
+namespace Valkyrja\Config;
 
 /**
  * Trait Cacheable.

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Middleware;
 
 use Valkyrja\Auth\Constants\RouteName;
-use Valkyrja\Config\Constants\ConfigKeyPart;
+use Valkyrja\Config\Constant\ConfigKeyPart;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log\Constants;
 
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Log\Adapters\PsrAdapter;
 use Valkyrja\Log\Drivers\Driver;
 

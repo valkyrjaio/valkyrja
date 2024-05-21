@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Constants;
 
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Sms\Adapters\LogAdapter;
 use Valkyrja\Sms\Adapters\NullAdapter;
 use Valkyrja\Sms\Adapters\VonageAdapter;

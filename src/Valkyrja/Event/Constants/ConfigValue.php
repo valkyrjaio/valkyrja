@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Constants;
 
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 
 /**
  * Enum ConfigValue.

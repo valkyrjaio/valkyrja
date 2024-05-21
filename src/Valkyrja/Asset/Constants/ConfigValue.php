@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Asset\Constants;
 
 use Valkyrja\Asset\Adapters\DefaultAdapter;
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 
 /**
  * Constant ConfigValue.

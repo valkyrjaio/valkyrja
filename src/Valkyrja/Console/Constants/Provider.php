@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Constants;
 
-use Valkyrja\Config\Commands\ConfigCache;
-use Valkyrja\Config\Commands\ConfigClear;
+use Valkyrja\Config\Command\ConfigCache;
+use Valkyrja\Config\Command\ConfigClear;
 use Valkyrja\Console\Commands\CacheAll;
 use Valkyrja\Console\Commands\ClearCache;
 use Valkyrja\Console\Commands\CommandsList;

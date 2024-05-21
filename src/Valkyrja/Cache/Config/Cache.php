@@ -17,8 +17,8 @@ use Valkyrja\Cache\Adapters\LogAdapter;
 use Valkyrja\Cache\Adapters\NullAdapter;
 use Valkyrja\Cache\Config\Config as Model;
 use Valkyrja\Cache\Constants\ConfigValue;
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\EnvKey;
 
 use function Valkyrja\env;
 

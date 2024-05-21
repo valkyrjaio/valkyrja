@@ -15,7 +15,7 @@ namespace Valkyrja\Filesystem\Constants;
 
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
 use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Filesystem\Adapters\FlysystemAdapter;
 use Valkyrja\Filesystem\Drivers\Driver;
 

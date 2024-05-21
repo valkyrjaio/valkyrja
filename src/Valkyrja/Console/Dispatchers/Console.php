@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Dispatchers;
 
 use InvalidArgumentException;
-use Valkyrja\Config\Constants\ConfigKeyPart;
+use Valkyrja\Config\Constant\ConfigKeyPart;
 use Valkyrja\Console\Command;
 use Valkyrja\Console\Config\Config;
 use Valkyrja\Console\Console as Contract;

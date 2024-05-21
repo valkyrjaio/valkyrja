@@ -16,8 +16,8 @@ namespace Valkyrja\Api\Config;
 use Valkyrja\Api\Json;
 use Valkyrja\Api\JsonData;
 use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\EnvKey;
 
 /**
  * Class Config.

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Constants;
 
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\View\Engines\OrkaEngine;
 use Valkyrja\View\Engines\PhpEngine;
 use Valkyrja\View\Engines\TwigEngine;

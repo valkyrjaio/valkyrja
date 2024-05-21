@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Config;
 
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\EnvKey;
 use Valkyrja\Jwt\Adapters\Firebase\EdDsaAdapter;
 use Valkyrja\Jwt\Adapters\Firebase\HsAdapter;
 use Valkyrja\Jwt\Adapters\Firebase\RsAdapter;

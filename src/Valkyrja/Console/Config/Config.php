@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Config;
 
 use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\EnvKey;
 use Valkyrja\Console\Commander;
 
 use function is_array;

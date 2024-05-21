@@ -18,7 +18,7 @@ use Valkyrja\Auth\Entities\User;
 use Valkyrja\Auth\Gates\Gate;
 use Valkyrja\Auth\Policies\UserPermissiblePolicy;
 use Valkyrja\Auth\Repositories\Repository;
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 
 /**
  * Constant ConfigValue.

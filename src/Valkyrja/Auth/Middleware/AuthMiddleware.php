@@ -22,7 +22,7 @@ use Valkyrja\Auth\Config\Config;
 use Valkyrja\Auth\Constants\RouteName;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Auth\User;
-use Valkyrja\Config\Constants\ConfigKeyPart;
+use Valkyrja\Config\Constant\ConfigKeyPart;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Request;

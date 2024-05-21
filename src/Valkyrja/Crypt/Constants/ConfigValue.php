@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Constants;
 
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Crypt\Adapters\SodiumAdapter;
 use Valkyrja\Crypt\Drivers\Driver;
 

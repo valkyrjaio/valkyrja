@@ -15,7 +15,7 @@ namespace Valkyrja\Cache\Constants;
 
 use Valkyrja\Cache\Adapters\RedisAdapter;
 use Valkyrja\Cache\Drivers\Driver;
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 
 /**
  * Constant ConfigValue.

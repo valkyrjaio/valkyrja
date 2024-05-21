@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests;
 
 use Valkyrja\Config\Config\Valkyrja;
-use Valkyrja\Config\Constants\ConfigValue;
+use Valkyrja\Config\Constant\ConfigValue;
 
 /**
  * Class Config.

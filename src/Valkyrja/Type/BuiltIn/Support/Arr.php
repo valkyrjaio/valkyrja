@@ -15,7 +15,7 @@ namespace Valkyrja\Type\BuiltIn\Support;
 
 use ArrayAccess;
 use JsonException;
-use Valkyrja\Config\Constants\ConfigKeyPart;
+use Valkyrja\Config\Constant\ConfigKeyPart;
 
 use function explode;
 use function is_array;

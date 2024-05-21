@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Config\Commands;
+namespace Valkyrja\Config\Command;
 
 use JsonException;
 use Valkyrja\Console\Commanders\Commander;

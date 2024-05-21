@@ -15,7 +15,7 @@ namespace Valkyrja\Client\Constants;
 
 use Valkyrja\Client\Adapters\GuzzleAdapter;
 use Valkyrja\Client\Drivers\Driver;
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 
 /**
  * Constant ConfigValue.

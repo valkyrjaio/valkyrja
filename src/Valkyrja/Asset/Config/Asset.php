@@ -15,8 +15,8 @@ namespace Valkyrja\Asset\Config;
 
 use Valkyrja\Asset\Config\Config as Model;
 use Valkyrja\Asset\Constants\ConfigValue;
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\EnvKey;
 
 use function Valkyrja\env;
 

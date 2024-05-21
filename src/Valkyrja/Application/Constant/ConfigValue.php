@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Constant;
 
 use Valkyrja\Application\Contract\Application;
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Container\Providers\AppProvider as ContainerAppProvider;
 use Valkyrja\Exception\Classes\ExceptionHandler;
 use Valkyrja\HttpKernel\Kernels\Kernel;

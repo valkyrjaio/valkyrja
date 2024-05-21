@@ -15,7 +15,7 @@ namespace Valkyrja\Api\Constants;
 
 use Valkyrja\Api\Models\Json;
 use Valkyrja\Api\Models\JsonData;
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 
 /**
  * Constant ConfigValue.

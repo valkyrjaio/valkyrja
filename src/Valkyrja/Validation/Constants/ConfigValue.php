@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Constants;
 
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Validation\Rules\Base;
 use Valkyrja\Validation\Rules\ORM;
 

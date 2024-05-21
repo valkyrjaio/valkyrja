@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Commands;
 
-use Valkyrja\Config\Commands\ConfigCache;
-use Valkyrja\Config\Constants\ConfigKey;
+use Valkyrja\Config\Command\ConfigCache;
+use Valkyrja\Config\Constant\ConfigKey;
 use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Inputs\Option;

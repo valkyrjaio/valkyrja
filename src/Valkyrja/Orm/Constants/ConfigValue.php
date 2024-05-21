@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Constants;
 
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Orm\Adapters\PdoAdapter;
 use Valkyrja\Orm\Drivers\Driver;
 use Valkyrja\Orm\Drivers\PgSqlDriver;
