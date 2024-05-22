@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem\Constants;
+namespace Valkyrja\Filesystem\Constant;
 
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
 use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Filesystem\Adapters\FlysystemAdapter;
-use Valkyrja\Filesystem\Drivers\Driver;
+use Valkyrja\Filesystem\Adapter\FlysystemAdapter;
+use Valkyrja\Filesystem\Driver\Driver;
 
 /**
  * Constant ConfigValue.

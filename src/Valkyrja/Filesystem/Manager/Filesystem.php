@@ -11,30 +11,48 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem\Drivers;
+namespace Valkyrja\Filesystem\Manager;
 
-use Valkyrja\Filesystem\Adapter;
-use Valkyrja\Filesystem\Driver as Contract;
-use Valkyrja\Filesystem\Enums\Visibility;
-use Valkyrja\Manager\Drivers\Driver as ParentDriver;
+use Valkyrja\Filesystem\Config;
+use Valkyrja\Filesystem\Contract\Filesystem as Contract;
+use Valkyrja\Filesystem\Driver\Contract\Driver;
+use Valkyrja\Filesystem\Enum\Visibility;
+use Valkyrja\Filesystem\Factory\Contract\Factory;
+use Valkyrja\Manager\Manager;
 
 /**
- * Class Driver.
+ * Class Filesystem.
  *
  * @author Melech Mizrachi
  *
- * @property Adapter $adapter
+ * @extends Manager<Driver, Factory>
+ *
+ * @property Factory $factory
  */
-class Driver extends ParentDriver implements Contract
+class Filesystem extends Manager implements Contract
 {
     /**
-     * Driver constructor.
+     * Filesystem constructor.
      *
-     * @param Adapter $adapter The adapter
+     * @param Factory      $factory The factory
+     * @param Config|array $config  The config
      */
-    public function __construct(Adapter $adapter)
+    public function __construct(Factory $factory, Config|array $config)
     {
-        parent::__construct($adapter);
+        parent::__construct($factory, $config);
+
+        $this->configurations = $config['disks'];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function use(string|null $name = null): Driver
+    {
+        /** @var Driver $driver */
+        $driver = parent::use($name);
+
+        return $driver;
     }
 
     /**
@@ -42,7 +60,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function exists(string $path): bool
     {
-        return $this->adapter->exists($path);
+        return $this->use()->exists($path);
     }
 
     /**
@@ -50,7 +68,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function read(string $path): string|null
     {
-        return $this->adapter->read($path);
+        return $this->use()->read($path);
     }
 
     /**
@@ -58,7 +76,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function write(string $path, string $contents): bool
     {
-        return $this->adapter->write($path, $contents);
+        return $this->use()->write($path, $contents);
     }
 
     /**
@@ -66,7 +84,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function writeStream(string $path, $resource): bool
     {
-        return $this->adapter->writeStream($path, $resource);
+        return $this->use()->writeStream($path, $resource);
     }
 
     /**
@@ -74,7 +92,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function update(string $path, string $contents): bool
     {
-        return $this->adapter->update($path, $contents);
+        return $this->use()->update($path, $contents);
     }
 
     /**
@@ -82,7 +100,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function updateStream(string $path, $resource): bool
     {
-        return $this->adapter->updateStream($path, $resource);
+        return $this->use()->updateStream($path, $resource);
     }
 
     /**
@@ -90,7 +108,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function put(string $path, string $contents): bool
     {
-        return $this->adapter->put($path, $contents);
+        return $this->use()->put($path, $contents);
     }
 
     /**
@@ -98,7 +116,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function putStream(string $path, $resource): bool
     {
-        return $this->adapter->putStream($path, $resource);
+        return $this->use()->putStream($path, $resource);
     }
 
     /**
@@ -106,7 +124,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function rename(string $path, string $newPath): bool
     {
-        return $this->adapter->rename($path, $newPath);
+        return $this->use()->rename($path, $newPath);
     }
 
     /**
@@ -114,7 +132,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function copy(string $path, string $newPath): bool
     {
-        return $this->adapter->copy($path, $newPath);
+        return $this->use()->copy($path, $newPath);
     }
 
     /**
@@ -122,7 +140,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function delete(string $path): bool
     {
-        return $this->adapter->delete($path);
+        return $this->use()->delete($path);
     }
 
     /**
@@ -130,7 +148,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function metadata(string $path): array|null
     {
-        return $this->adapter->metadata($path);
+        return $this->use()->metadata($path);
     }
 
     /**
@@ -138,7 +156,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function mimetype(string $path): string|null
     {
-        return $this->adapter->mimetype($path);
+        return $this->use()->mimetype($path);
     }
 
     /**
@@ -146,7 +164,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function size(string $path): int|null
     {
-        return $this->adapter->size($path);
+        return $this->use()->size($path);
     }
 
     /**
@@ -154,7 +172,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function timestamp(string $path): int|null
     {
-        return $this->adapter->timestamp($path);
+        return $this->use()->timestamp($path);
     }
 
     /**
@@ -162,7 +180,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function visibility(string $path): string|null
     {
-        return $this->adapter->visibility($path);
+        return $this->use()->visibility($path);
     }
 
     /**
@@ -170,7 +188,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function setVisibility(string $path, Visibility $visibility): bool
     {
-        return $this->adapter->setVisibility($path, $visibility);
+        return $this->use()->setVisibility($path, $visibility);
     }
 
     /**
@@ -178,7 +196,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function setVisibilityPublic(string $path): bool
     {
-        return $this->adapter->setVisibilityPublic($path);
+        return $this->use()->setVisibilityPublic($path);
     }
 
     /**
@@ -186,7 +204,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function setVisibilityPrivate(string $path): bool
     {
-        return $this->adapter->setVisibilityPrivate($path);
+        return $this->use()->setVisibilityPrivate($path);
     }
 
     /**
@@ -194,7 +212,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function createDir(string $path): bool
     {
-        return $this->adapter->createDir($path);
+        return $this->use()->createDir($path);
     }
 
     /**
@@ -202,7 +220,7 @@ class Driver extends ParentDriver implements Contract
      */
     public function deleteDir(string $path): bool
     {
-        return $this->adapter->deleteDir($path);
+        return $this->use()->deleteDir($path);
     }
 
     /**
@@ -210,6 +228,6 @@ class Driver extends ParentDriver implements Contract
      */
     public function listContents(string|null $directory = null, bool $recursive = false): array
     {
-        return $this->adapter->listContents($directory, $recursive);
+        return $this->use()->listContents($directory, $recursive);
     }
 }

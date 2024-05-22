@@ -11,48 +11,30 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem\Managers;
+namespace Valkyrja\Filesystem\Driver;
 
-use Valkyrja\Filesystem\Config\Config;
-use Valkyrja\Filesystem\Driver;
-use Valkyrja\Filesystem\Enums\Visibility;
-use Valkyrja\Filesystem\Factory;
-use Valkyrja\Filesystem\Filesystem as Contract;
-use Valkyrja\Manager\Manager;
+use Valkyrja\Filesystem\Adapter\Contract\Adapter;
+use Valkyrja\Filesystem\Driver\Contract\Driver as Contract;
+use Valkyrja\Filesystem\Enum\Visibility;
+use Valkyrja\Manager\Drivers\Driver as ParentDriver;
 
 /**
- * Class Filesystem.
+ * Class Driver.
  *
  * @author Melech Mizrachi
  *
- * @extends Manager<Driver, Factory>
- *
- * @property Factory $factory
+ * @property Adapter $adapter
  */
-class Filesystem extends Manager implements Contract
+class Driver extends ParentDriver implements Contract
 {
     /**
-     * Filesystem constructor.
+     * Driver constructor.
      *
-     * @param Factory      $factory The factory
-     * @param Config|array $config  The config
+     * @param Adapter $adapter The adapter
      */
-    public function __construct(Factory $factory, Config|array $config)
+    public function __construct(Adapter $adapter)
     {
-        parent::__construct($factory, $config);
-
-        $this->configurations = $config['disks'];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function use(string|null $name = null): Driver
-    {
-        /** @var Driver $driver */
-        $driver = parent::use($name);
-
-        return $driver;
+        parent::__construct($adapter);
     }
 
     /**
@@ -60,7 +42,7 @@ class Filesystem extends Manager implements Contract
      */
     public function exists(string $path): bool
     {
-        return $this->use()->exists($path);
+        return $this->adapter->exists($path);
     }
 
     /**
@@ -68,7 +50,7 @@ class Filesystem extends Manager implements Contract
      */
     public function read(string $path): string|null
     {
-        return $this->use()->read($path);
+        return $this->adapter->read($path);
     }
 
     /**
@@ -76,7 +58,7 @@ class Filesystem extends Manager implements Contract
      */
     public function write(string $path, string $contents): bool
     {
-        return $this->use()->write($path, $contents);
+        return $this->adapter->write($path, $contents);
     }
 
     /**
@@ -84,7 +66,7 @@ class Filesystem extends Manager implements Contract
      */
     public function writeStream(string $path, $resource): bool
     {
-        return $this->use()->writeStream($path, $resource);
+        return $this->adapter->writeStream($path, $resource);
     }
 
     /**
@@ -92,7 +74,7 @@ class Filesystem extends Manager implements Contract
      */
     public function update(string $path, string $contents): bool
     {
-        return $this->use()->update($path, $contents);
+        return $this->adapter->update($path, $contents);
     }
 
     /**
@@ -100,7 +82,7 @@ class Filesystem extends Manager implements Contract
      */
     public function updateStream(string $path, $resource): bool
     {
-        return $this->use()->updateStream($path, $resource);
+        return $this->adapter->updateStream($path, $resource);
     }
 
     /**
@@ -108,7 +90,7 @@ class Filesystem extends Manager implements Contract
      */
     public function put(string $path, string $contents): bool
     {
-        return $this->use()->put($path, $contents);
+        return $this->adapter->put($path, $contents);
     }
 
     /**
@@ -116,7 +98,7 @@ class Filesystem extends Manager implements Contract
      */
     public function putStream(string $path, $resource): bool
     {
-        return $this->use()->putStream($path, $resource);
+        return $this->adapter->putStream($path, $resource);
     }
 
     /**
@@ -124,7 +106,7 @@ class Filesystem extends Manager implements Contract
      */
     public function rename(string $path, string $newPath): bool
     {
-        return $this->use()->rename($path, $newPath);
+        return $this->adapter->rename($path, $newPath);
     }
 
     /**
@@ -132,7 +114,7 @@ class Filesystem extends Manager implements Contract
      */
     public function copy(string $path, string $newPath): bool
     {
-        return $this->use()->copy($path, $newPath);
+        return $this->adapter->copy($path, $newPath);
     }
 
     /**
@@ -140,7 +122,7 @@ class Filesystem extends Manager implements Contract
      */
     public function delete(string $path): bool
     {
-        return $this->use()->delete($path);
+        return $this->adapter->delete($path);
     }
 
     /**
@@ -148,7 +130,7 @@ class Filesystem extends Manager implements Contract
      */
     public function metadata(string $path): array|null
     {
-        return $this->use()->metadata($path);
+        return $this->adapter->metadata($path);
     }
 
     /**
@@ -156,7 +138,7 @@ class Filesystem extends Manager implements Contract
      */
     public function mimetype(string $path): string|null
     {
-        return $this->use()->mimetype($path);
+        return $this->adapter->mimetype($path);
     }
 
     /**
@@ -164,7 +146,7 @@ class Filesystem extends Manager implements Contract
      */
     public function size(string $path): int|null
     {
-        return $this->use()->size($path);
+        return $this->adapter->size($path);
     }
 
     /**
@@ -172,7 +154,7 @@ class Filesystem extends Manager implements Contract
      */
     public function timestamp(string $path): int|null
     {
-        return $this->use()->timestamp($path);
+        return $this->adapter->timestamp($path);
     }
 
     /**
@@ -180,7 +162,7 @@ class Filesystem extends Manager implements Contract
      */
     public function visibility(string $path): string|null
     {
-        return $this->use()->visibility($path);
+        return $this->adapter->visibility($path);
     }
 
     /**
@@ -188,7 +170,7 @@ class Filesystem extends Manager implements Contract
      */
     public function setVisibility(string $path, Visibility $visibility): bool
     {
-        return $this->use()->setVisibility($path, $visibility);
+        return $this->adapter->setVisibility($path, $visibility);
     }
 
     /**
@@ -196,7 +178,7 @@ class Filesystem extends Manager implements Contract
      */
     public function setVisibilityPublic(string $path): bool
     {
-        return $this->use()->setVisibilityPublic($path);
+        return $this->adapter->setVisibilityPublic($path);
     }
 
     /**
@@ -204,7 +186,7 @@ class Filesystem extends Manager implements Contract
      */
     public function setVisibilityPrivate(string $path): bool
     {
-        return $this->use()->setVisibilityPrivate($path);
+        return $this->adapter->setVisibilityPrivate($path);
     }
 
     /**
@@ -212,7 +194,7 @@ class Filesystem extends Manager implements Contract
      */
     public function createDir(string $path): bool
     {
-        return $this->use()->createDir($path);
+        return $this->adapter->createDir($path);
     }
 
     /**
@@ -220,7 +202,7 @@ class Filesystem extends Manager implements Contract
      */
     public function deleteDir(string $path): bool
     {
-        return $this->use()->deleteDir($path);
+        return $this->adapter->deleteDir($path);
     }
 
     /**
@@ -228,6 +210,6 @@ class Filesystem extends Manager implements Contract
      */
     public function listContents(string|null $directory = null, bool $recursive = false): array
     {
-        return $this->use()->listContents($directory, $recursive);
+        return $this->adapter->listContents($directory, $recursive);
     }
 }

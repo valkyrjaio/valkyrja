@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem\Factories;
+namespace Valkyrja\Filesystem\Factory;
 
-use Valkyrja\Filesystem\Adapter;
-use Valkyrja\Filesystem\Driver;
-use Valkyrja\Filesystem\Factory as Contract;
+use Valkyrja\Filesystem\Adapter\Contract\Adapter;
+use Valkyrja\Filesystem\Driver\Contract\Driver;
+use Valkyrja\Filesystem\Factory\Contract\Factory as Contract;
 use Valkyrja\Manager\Factories\Factory as ManagerFactory;
 
 /**

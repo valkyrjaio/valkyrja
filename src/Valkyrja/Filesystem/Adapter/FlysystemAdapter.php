@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem\Adapters;
+namespace Valkyrja\Filesystem\Adapter;
 
 use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemOperator as FlysystemInterface;
-use Valkyrja\Filesystem\Enums\Visibility;
-use Valkyrja\Filesystem\FlysystemAdapter as Contract;
+use Valkyrja\Filesystem\Adapter\Contract\FlysystemAdapter as Contract;
+use Valkyrja\Filesystem\Enum\Visibility;
 
 /**
  * Class FlysystemAdapter.

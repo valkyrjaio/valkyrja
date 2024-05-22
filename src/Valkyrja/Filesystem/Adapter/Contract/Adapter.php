@@ -11,27 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem;
+namespace Valkyrja\Filesystem\Adapter\Contract;
 
-use Valkyrja\Filesystem\Enums\Visibility;
-use Valkyrja\Manager\Contract\Manager;
+use Valkyrja\Filesystem\Enum\Visibility;
+use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 
 /**
- * Interface Filesystem.
+ * Interface Adapter.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Driver, Factory>
  */
-interface Filesystem extends Manager
+interface Adapter extends Contract
 {
-    /**
-     * @inheritDoc
-     *
-     * @return Driver
-     */
-    public function use(string|null $name = null): Driver;
-
     /**
      * Determine whether a path exists.
      *

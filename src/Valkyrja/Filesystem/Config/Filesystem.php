@@ -17,8 +17,8 @@ use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
 use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
 use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Filesystem\Config\Config as Model;
-use Valkyrja\Filesystem\Constants\ConfigValue;
+use Valkyrja\Filesystem\Config as Model;
+use Valkyrja\Filesystem\Constant\ConfigValue;
 
 use function Valkyrja\env;
 use function Valkyrja\storagePath;

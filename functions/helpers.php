@@ -28,7 +28,7 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Contract\Dispatcher as Events;
-use Valkyrja\Filesystem\Filesystem;
+use Valkyrja\Filesystem\Contract\Filesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\JsonResponse;

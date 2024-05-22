@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem\Facades;
+namespace Valkyrja\Filesystem\Facade;
 
 use Valkyrja\Facade\ContainerFacade;
-use Valkyrja\Filesystem\Driver;
-use Valkyrja\Filesystem\Enums\Visibility;
-use Valkyrja\Filesystem\Filesystem as Contract;
+use Valkyrja\Filesystem\Contract\Filesystem as Contract;
+use Valkyrja\Filesystem\Driver\Contract\Driver;
+use Valkyrja\Filesystem\Enum\Visibility;
 
 /**
  * Class Filesystem.

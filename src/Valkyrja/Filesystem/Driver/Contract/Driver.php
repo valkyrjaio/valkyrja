@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem;
+namespace Valkyrja\Filesystem\Driver\Contract;
 
-use Valkyrja\Filesystem\Enums\Visibility;
-use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
+use Valkyrja\Filesystem\Enum\Visibility;
+use Valkyrja\Manager\Drivers\Contract\Driver as Contract;
 
 /**
- * Interface Adapter.
+ * Interface Driver.
  *
  * @author Melech Mizrachi
  */
-interface Adapter extends Contract
+interface Driver extends Contract
 {
     /**
      * Determine whether a path exists.

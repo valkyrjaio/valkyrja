@@ -11,8 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem;
+namespace Valkyrja\Filesystem\Factory\Contract;
 
+use Valkyrja\Filesystem\Adapter\Contract\Adapter;
+use Valkyrja\Filesystem\Driver\Contract\Driver;
 use Valkyrja\Manager\Factories\Contract\Factory as Contract;
 
 /**

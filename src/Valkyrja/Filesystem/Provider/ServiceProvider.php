@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem\Providers;
+namespace Valkyrja\Filesystem\Provider;
 
 use Aws\S3\S3Client as AwsS3Client;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
@@ -20,12 +20,12 @@ use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Filesystem\Adapter;
-use Valkyrja\Filesystem\Driver;
-use Valkyrja\Filesystem\Factories\ContainerFactory;
-use Valkyrja\Filesystem\Factory;
-use Valkyrja\Filesystem\Filesystem;
-use Valkyrja\Filesystem\FlysystemAdapter;
+use Valkyrja\Filesystem\Adapter\Contract\Adapter;
+use Valkyrja\Filesystem\Adapter\Contract\FlysystemAdapter;
+use Valkyrja\Filesystem\Contract\Filesystem;
+use Valkyrja\Filesystem\Driver\Contract\Driver;
+use Valkyrja\Filesystem\Factory\ContainerFactory;
+use Valkyrja\Filesystem\Factory\Contract\Factory;
 
 /**
  * Class ServiceProvider.
@@ -79,7 +79,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Filesystem::class,
-            new \Valkyrja\Filesystem\Managers\Filesystem(
+            new \Valkyrja\Filesystem\Manager\Filesystem(
                 $container->getSingleton(Factory::class),
                 $config['filesystem']
             )

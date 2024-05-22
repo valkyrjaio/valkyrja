@@ -11,15 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem\Enums;
+namespace Valkyrja\Filesystem\Adapter\Contract;
 
 /**
- * Enum Visibility.
+ * Interface FlysystemAdapter.
  *
  * @author Melech Mizrachi
  */
-enum Visibility: string
+interface FlysystemAdapter extends Adapter
 {
-    case PUBLIC  = 'public';
-    case PRIVATE = 'private';
 }
