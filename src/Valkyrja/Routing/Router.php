@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Dispatchers;
+namespace Valkyrja\Routing;
 
 use InvalidArgumentException;
 use Valkyrja\Container\Contract\Container;
@@ -21,7 +21,6 @@ use Valkyrja\Http\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Routing\Collection\Contract\Collection;
-use Valkyrja\Routing\Config;
 use Valkyrja\Routing\Contract\Router as Contract;
 use Valkyrja\Routing\Event\RouteMatched;
 use Valkyrja\Routing\Exception\InvalidRouteName;

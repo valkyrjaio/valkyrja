@@ -88,7 +88,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Router::class,
-            new \Valkyrja\Routing\Dispatchers\Router(
+            new \Valkyrja\Routing\Router(
                 $container->getSingleton(Collection::class),
                 $container->getSingleton(Container::class),
                 $container->getSingleton(Dispatcher::class),

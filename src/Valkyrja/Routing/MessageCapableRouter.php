@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Dispatchers;
+namespace Valkyrja\Routing;
 
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
@@ -19,7 +19,6 @@ use Valkyrja\Event\Contract\Dispatcher as Events;
 use Valkyrja\Http\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Routing\Collection\Contract\Collection;
-use Valkyrja\Routing\Config;
 use Valkyrja\Routing\Matcher\Contract\Matcher;
 use Valkyrja\Routing\Message\Contract\Message;
 use Valkyrja\Routing\Model\Contract\Route;

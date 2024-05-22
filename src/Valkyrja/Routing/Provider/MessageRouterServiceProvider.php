@@ -21,8 +21,8 @@ use Valkyrja\Event\Contract\Dispatcher as Events;
 use Valkyrja\Http\Factory\Contract\ResponseFactory;
 use Valkyrja\Routing\Collection\Contract\Collection;
 use Valkyrja\Routing\Contract\Router;
-use Valkyrja\Routing\Dispatchers\MessageCapableRouter;
 use Valkyrja\Routing\Matcher\Contract\Matcher;
+use Valkyrja\Routing\MessageCapableRouter;
 use Valkyrja\Validation\Contract\Validation;
 
 /**
