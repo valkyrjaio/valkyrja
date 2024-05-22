@@ -11,10 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Managers;
+namespace Valkyrja\View;
 
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\View\Config;
 use Valkyrja\View\Contract\View as Contract;
 use Valkyrja\View\Engine\Contract\Engine;
 use Valkyrja\View\Factory\Contract\Factory;

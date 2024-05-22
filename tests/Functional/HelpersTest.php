@@ -39,7 +39,7 @@ use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Route;
 use Valkyrja\Session\Session;
 use Valkyrja\Support\Directory;
-use Valkyrja\View\Managers\View;
+use Valkyrja\View\View;
 
 use function is_string;
 use function Valkyrja\abort;
