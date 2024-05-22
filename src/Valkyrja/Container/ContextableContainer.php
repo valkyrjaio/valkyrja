@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container;
 
-use;
 use Closure;
 use Valkyrja\Container\Contract\Container as Contract;
 use Valkyrja\Container\Contract\Service;
