@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification\Entities;
+namespace Valkyrja\Notification\Entity;
 
-use Valkyrja\Notification\Constants\UserField;
+use Valkyrja\Notification\Constant\UserField;
 
 /**
  * Trait NotifiableUserTrait.

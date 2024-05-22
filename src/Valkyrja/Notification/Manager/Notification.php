@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification\Managers;
+namespace Valkyrja\Notification\Manager;
 
 use Valkyrja\Broadcast\Contract\Broadcast;
 use Valkyrja\Mail\Contract\Mail;
-use Valkyrja\Notification\Config\Config;
-use Valkyrja\Notification\Factory;
-use Valkyrja\Notification\NotifiableUser;
-use Valkyrja\Notification\Notification;
-use Valkyrja\Notification\Notifier as Contract;
+use Valkyrja\Notification\Config;
+use Valkyrja\Notification\Contract\Notification as Contract;
+use Valkyrja\Notification\Data\Contract\Notify;
+use Valkyrja\Notification\Entity\Contract\NotifiableUser;
+use Valkyrja\Notification\Factory\Contract\Factory;
 use Valkyrja\Sms\Sms;
 
 /**
- * Class Notifier.
+ * Class Notification.
  *
  * @author Melech Mizrachi
  */
-class Notifier implements Contract
+class Notification implements Contract
 {
     /**
      * The mail recipients.
@@ -71,7 +71,7 @@ class Notifier implements Contract
     /**
      * @inheritDoc
      */
-    public function createNotification(string $name, array $data = []): Notification
+    public function createNotification(string $name, array $data = []): Notify
     {
         return $this->factory->createNotification($name, $data);
     }
@@ -128,21 +128,21 @@ class Notifier implements Contract
     /**
      * @inheritDoc
      */
-    public function notify(Notification $notification): void
+    public function notify(Notify $notify): void
         // public function notify(string $notificationName, array $data = []): void
     {
         // $notification = $this->getNotification($notificationName, $data);
 
-        if ($notification->shouldSendBroadcastMessage()) {
-            $this->notifyByBroadcast($notification);
+        if ($notify->shouldSendBroadcastMessage()) {
+            $this->notifyByBroadcast($notify);
         }
 
-        if ($notification->shouldSendMailMessage()) {
-            $this->notifyByMail($notification);
+        if ($notify->shouldSendMailMessage()) {
+            $this->notifyByMail($notify);
         }
 
-        if ($notification->shouldSendSmsMessage()) {
-            $this->notifyBySms($notification);
+        if ($notify->shouldSendSmsMessage()) {
+            $this->notifyBySms($notify);
         }
 
         $this->resetRecipients();
@@ -151,22 +151,22 @@ class Notifier implements Contract
     /**
      * @inheritDoc
      */
-    public function notifyUser(Notification $notification, NotifiableUser $user): void
+    public function notifyUser(Notify $notify, NotifiableUser $user): void
     {
         $this->addUserRecipient($user);
-        $this->notify($notification);
+        $this->notify($notify);
     }
 
     /**
      * @inheritDoc
      */
-    public function notifyUsers(Notification $notification, NotifiableUser ...$users): void
+    public function notifyUsers(Notify $notify, NotifiableUser ...$users): void
     {
         foreach ($users as $user) {
             $this->addUserRecipient($user);
         }
 
-        $this->notify($notification);
+        $this->notify($notify);
     }
 
     /**
@@ -234,21 +234,21 @@ class Notifier implements Contract
     /**
      * Send a notification by broadcast.
      *
-     * @param Notification $notification The notification
+     * @param Notify $notify The notification
      *
      * @return void
      */
-    protected function notifyByBroadcast(Notification $notification): void
+    protected function notifyByBroadcast(Notify $notify): void
     {
         $broadcast        = $this->broadcast;
-        $broadcastAdapter = $broadcast->use($notification->getBroadcastAdapterName());
-        $broadcastMessage = $notification->getBroadcastMessageName();
+        $broadcastAdapter = $broadcast->use($notify->getBroadcastAdapterName());
+        $broadcastMessage = $notify->getBroadcastMessageName();
 
         foreach ($this->broadcastEvents as $broadcastEvent) {
             $message = $broadcast->createMessage($broadcastMessage);
 
             $message->setEvent($broadcastEvent['event']);
-            $notification->broadcast($message);
+            $notify->broadcast($message);
 
             $broadcastAdapter->send($message);
         }
@@ -257,21 +257,21 @@ class Notifier implements Contract
     /**
      * Send a notification by mail.
      *
-     * @param Notification $notification The notification
+     * @param Notify $notify The notification
      *
      * @return void
      */
-    protected function notifyByMail(Notification $notification): void
+    protected function notifyByMail(Notify $notify): void
     {
         $mail        = $this->mail;
-        $mailAdapter = $mail->use($notification->getMailAdapterName());
-        $mailMessage = $notification->getMailMessageName();
+        $mailAdapter = $mail->use($notify->getMailAdapterName());
+        $mailMessage = $notify->getMailMessageName();
 
         foreach ($this->mailRecipients as $mailRecipient) {
             $message = $mail->createMessage($mailMessage);
 
             $message->addRecipient($mailRecipient['email'], $mailRecipient['name']);
-            $notification->mail($message);
+            $notify->mail($message);
 
             $mailAdapter->send($message);
         }
@@ -280,21 +280,21 @@ class Notifier implements Contract
     /**
      * Send a notification by SMS.
      *
-     * @param Notification $notification The notification
+     * @param Notify $notify The notification
      *
      * @return void
      */
-    protected function notifyBySms(Notification $notification): void
+    protected function notifyBySms(Notify $notify): void
     {
         $sms        = $this->sms;
-        $smsAdapter = $sms->use($notification->getSmsAdapterName());
-        $smsMessage = $notification->getSmsMessageName();
+        $smsAdapter = $sms->use($notify->getSmsAdapterName());
+        $smsMessage = $notify->getSmsMessageName();
 
         foreach ($this->smsRecipients as $smsRecipient) {
             $message = $sms->createMessage($smsMessage);
 
             $message->setTo($smsRecipient['to']);
-            $notification->sms($message);
+            $notify->sms($message);
 
             $smsAdapter->send($message);
         }

@@ -11,22 +11,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification;
+namespace Valkyrja\Notification\Entity;
 
 /**
- * Interface Factory.
+ * Trait NotifiableUserFields.
  *
  * @author Melech Mizrachi
  */
-interface Factory
+trait NotifiableUserFields
 {
     /**
-     * Create a new notification.
+     * The name.
      *
-     * @param string $name The notification name
-     * @param array  $data [optional] The data to add to the notification
-     *
-     * @return Notification
+     * @var string
      */
-    public function createNotification(string $name, array $data = []): Notification;
+    public string $name;
+
+    /**
+     * The phone number.
+     *
+     * @var string
+     */
+    public string $phone_number;
+
+    /**
+     * The secret id.
+     *
+     * @var string
+     */
+    public string $secret_id;
 }

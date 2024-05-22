@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification\Entities;
+namespace Valkyrja\Notification\Entity;
 
 use Valkyrja\Auth\Entity\MailableUserFields;
 use Valkyrja\Auth\Entity\MailableUserTrait;
 use Valkyrja\Auth\Entity\User;
-use Valkyrja\Notification\NotifiableUser as Contract;
+use Valkyrja\Notification\Entity\Contract\NotifiableUser as Contract;
 
 /**
  * Entity NotifiableUser.

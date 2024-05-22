@@ -31,7 +31,7 @@ use Valkyrja\HttpKernel\Provider\ServiceProvider as HttpKernelServiceProvider;
 use Valkyrja\Jwt\Provider\ServiceProvider as JWTServiceProvider;
 use Valkyrja\Log\Provider\ServiceProvider as LogServiceProvider;
 use Valkyrja\Mail\Provider\ServiceProvider as MailServiceProvider;
-use Valkyrja\Notification\Providers\ServiceProvider as NotificationServiceProvider;
+use Valkyrja\Notification\Provider\ServiceProvider as NotificationServiceProvider;
 use Valkyrja\Orm\Providers\ServiceProvider as ORMServiceProvider;
 use Valkyrja\Path\Provider\ServiceProvider as PathServiceProvider;
 use Valkyrja\Reflection\Provider\ServiceProvider as ReflectionServiceProvider;

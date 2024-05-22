@@ -40,9 +40,9 @@ use Valkyrja\HttpKernel\Contract\Kernel;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Mail\Contract\Mail;
 use Valkyrja\Mail\Message\Contract\Message as MailMessage;
-use Valkyrja\Notification\NotifiableUser;
-use Valkyrja\Notification\Notification;
-use Valkyrja\Notification\Notifier;
+use Valkyrja\Notification\Contract\Notification;
+use Valkyrja\Notification\Data\Contract\Notify;
+use Valkyrja\Notification\Entity\Contract\NotifiableUser;
 use Valkyrja\Orm\Orm;
 use Valkyrja\Path\Generator\Contract\Generator;
 use Valkyrja\Path\Parser\Contract\Parser;
@@ -312,22 +312,22 @@ function mailMessage(string|null $name = null): MailMessage
 /**
  * Get notification manager.
  *
- * @return Notifier
+ * @return Notification
  */
-function notifier(): Notifier
+function notifier(): Notification
 {
-    return container()->getSingleton(Notifier::class);
+    return container()->getSingleton(Notification::class);
 }
 
 /**
  * Notify a user.
  *
- * @param Notification   $notification The notification
+ * @param Notify         $notification The notification
  * @param NotifiableUser $user         The user
  *
  * @return void
  */
-function notifyUser(Notification $notification, NotifiableUser $user): void
+function notifyUser(Notify $notification, NotifiableUser $user): void
 {
     \Valkyrja\notifier()->notifyUser($notification, $user);
 }
@@ -335,12 +335,12 @@ function notifyUser(Notification $notification, NotifiableUser $user): void
 /**
  * Notify users.
  *
- * @param Notification     $notification The notification
+ * @param Notify           $notification The notification
  * @param NotifiableUser[] $users        The users
  *
  * @return void
  */
-function notifyUsers(Notification $notification, NotifiableUser ...$users): void
+function notifyUsers(Notify $notification, NotifiableUser ...$users): void
 {
     \Valkyrja\notifier()->notifyUsers($notification, ...$users);
 }

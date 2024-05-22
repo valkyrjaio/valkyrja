@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification\Constants;
+namespace Valkyrja\Notification\Constant;
 
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 

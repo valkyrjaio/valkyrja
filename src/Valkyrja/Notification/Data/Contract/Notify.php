@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification;
+namespace Valkyrja\Notification\Data\Contract;
 
 use Valkyrja\Broadcast\Message\Contract\Message as BroadcastMessage;
 use Valkyrja\Mail\Message\Contract\Message as MailMessage;
 use Valkyrja\Sms\Message as SMSMessage;
 
 /**
- * Interface Notification.
+ * Interface Notify.
  *
  * @author Melech Mizrachi
  */
-interface Notification
+interface Notify
 {
     /**
      * Get the broadcast adapter's name to use for this notification.

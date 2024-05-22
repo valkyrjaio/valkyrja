@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification\Providers;
+namespace Valkyrja\Notification\Provider;
 
 use Valkyrja\Broadcast\Contract\Broadcast;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Mail\Contract\Mail;
-use Valkyrja\Notification\Factories\ContainerFactory;
-use Valkyrja\Notification\Factory;
-use Valkyrja\Notification\Notifier;
+use Valkyrja\Notification\Contract\Notification;
+use Valkyrja\Notification\Factory\ContainerFactory;
+use Valkyrja\Notification\Factory\Contract\Factory;
 use Valkyrja\Sms\Sms;
 
 /**
@@ -36,8 +36,8 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Notifier::class => [self::class, 'publishNotifier'],
-            Factory::class  => [self::class, 'publishFactory'],
+            Notification::class => [self::class, 'publishNotifier'],
+            Factory::class      => [self::class, 'publishFactory'],
         ];
     }
 
@@ -47,7 +47,7 @@ class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Notifier::class,
+            Notification::class,
             Factory::class,
         ];
     }
@@ -64,8 +64,8 @@ class ServiceProvider extends Provider
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
-            Notifier::class,
-            new \Valkyrja\Notification\Managers\Notifier(
+            Notification::class,
+            new \Valkyrja\Notification\Manager\Notification(
                 $container->getSingleton(Factory::class),
                 $container->getSingleton(Broadcast::class),
                 $container->getSingleton(Mail::class),

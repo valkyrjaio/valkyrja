@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification;
+namespace Valkyrja\Notification\Entity\Contract;
 
 use Valkyrja\Auth\Entity\Contract\MailableUser;
 

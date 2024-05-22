@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification\Config;
 
-use Valkyrja\Notification\Config\Config as Model;
-use Valkyrja\Notification\Constants\ConfigValue;
+use Valkyrja\Notification\Config as Model;
+use Valkyrja\Notification\Constant\ConfigValue;
 
 /**
  * Class Notification.

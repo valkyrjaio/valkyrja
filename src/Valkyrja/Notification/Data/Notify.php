@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification\Notifications;
+namespace Valkyrja\Notification\Data;
 
 use Valkyrja\Broadcast\Message\Contract\Message as BroadcastMessage;
 use Valkyrja\Mail\Message\Contract\Message as MailMessage;
-use Valkyrja\Notification\Notification as Contract;
+use Valkyrja\Notification\Data\Contract\Notify as Contract;
 use Valkyrja\Sms\Message as SMSMessage;
 
 /**
- * Abstract Class Notification.
+ * Abstract Class Notify.
  *
  * @author Melech Mizrachi
  */
-abstract class Notification implements Contract
+abstract class Notify implements Contract
 {
     /**
      * The broadcast adapter to use for this notification.

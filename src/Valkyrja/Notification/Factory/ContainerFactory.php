@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification\Factories;
+namespace Valkyrja\Notification\Factory;
 
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Notification\Factory;
-use Valkyrja\Notification\Notification;
+use Valkyrja\Notification\Factory\Contract\Factory;
+use Valkyrja\Notification\Data\Contract\Notify;
 
 /**
  * Class ContainerFactory.
@@ -44,7 +44,7 @@ class ContainerFactory implements Factory
     /**
      * @inheritDoc
      */
-    public function createNotification(string $name, array $data = []): Notification
+    public function createNotification(string $name, array $data = []): Notify
     {
         return $this->container->get(
             $this->config['notifications'][$name] ?? $name,

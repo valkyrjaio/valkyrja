@@ -11,14 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification;
+namespace Valkyrja\Notification\Contract;
+
+use Valkyrja\Notification\Data\Contract\Notify;
+use Valkyrja\Notification\Entity\Contract\NotifiableUser;
 
 /**
- * Interface Notifier.
+ * Interface Notification.
  *
  * @author Melech Mizrachi
  */
-interface Notifier
+interface Notification
 {
     /**
      * Create a new notification.
@@ -26,9 +29,9 @@ interface Notifier
      * @param string $name The notification name
      * @param array  $data [optional] The data to add to the notification
      *
-     * @return Notification
+     * @return Notify
      */
-    public function createNotification(string $name, array $data = []): Notification;
+    public function createNotification(string $name, array $data = []): Notify;
 
     /**
      * Add a mail recipient to send a notification to.
@@ -70,29 +73,29 @@ interface Notifier
     /**
      * Send a notification to recipients.
      *
-     * @param Notification $notification The notification to send
+     * @param Notify $notify The notification to send
      *
      * @return void
      */
-    public function notify(Notification $notification): void;
+    public function notify(Notify $notify): void;
 
     /**
      * Send a notification to a user.
      *
-     * @param Notification   $notification The notification to send
-     * @param NotifiableUser $user         The user to notify
+     * @param Notify         $notify The notification to send
+     * @param NotifiableUser $user   The user to notify
      *
      * @return void
      */
-    public function notifyUser(Notification $notification, NotifiableUser $user): void;
+    public function notifyUser(Notify $notify, NotifiableUser $user): void;
 
     /**
      * Send a notification to users.
      *
-     * @param Notification     $notification The notification to send
-     * @param NotifiableUser[] $users        The users to notify
+     * @param Notify           $notify The notification to send
+     * @param NotifiableUser[] $users  The users to notify
      *
      * @return void
      */
-    public function notifyUsers(Notification $notification, NotifiableUser ...$users): void;
+    public function notifyUsers(Notify $notify, NotifiableUser ...$users): void;
 }
