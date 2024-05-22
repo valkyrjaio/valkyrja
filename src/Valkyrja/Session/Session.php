@@ -11,10 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Managers;
+namespace Valkyrja\Session;
 
 use Valkyrja\Manager\Manager;
-use Valkyrja\Session\Config;
 use Valkyrja\Session\Contract\Session as Contract;
 use Valkyrja\Session\Driver\Contract\Driver;
 use Valkyrja\Session\Factory\Contract\Factory;

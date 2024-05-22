@@ -81,7 +81,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Session::class,
-            new \Valkyrja\Session\Managers\Session(
+            new \Valkyrja\Session\Session(
                 $container->getSingleton(Factory::class),
                 $config['session']
             )

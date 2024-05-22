@@ -37,7 +37,7 @@ use Valkyrja\Log\Logger;
 use Valkyrja\Routing\Dispatchers\Router;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Route;
-use Valkyrja\Session\Managers\Session;
+use Valkyrja\Session\Session;
 use Valkyrja\Support\Directory;
 use Valkyrja\View\Managers\View;
 
