@@ -11,16 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Jwt\Model;
-
-use Valkyrja\Type\Model\Model;
+namespace Valkyrja\Jwt\Data;
 
 /**
  * Class EdDsaKey.
  *
  * @author Melech Mizrachi
  */
-class EdDsaKey extends Model
+class EdDsaKey
 {
     /**
      * The private key.

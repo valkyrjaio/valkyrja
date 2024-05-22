@@ -68,7 +68,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Jwt::class,
-            new \Valkyrja\Jwt\Managers\Jwt(
+            new \Valkyrja\Jwt\Jwt(
                 $container->getSingleton(Factory::class),
                 $config['jwt']
             )
