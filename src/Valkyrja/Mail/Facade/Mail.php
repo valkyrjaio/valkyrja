@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Facades;
+namespace Valkyrja\Mail\Facade;
 
 use Valkyrja\Facade\ContainerFacade;
-use Valkyrja\Mail\Driver;
-use Valkyrja\Mail\Mail as Contract;
-use Valkyrja\Mail\Message;
+use Valkyrja\Mail\Contract\Mail as Contract;
+use Valkyrja\Mail\Driver\Contract\Driver;
+use Valkyrja\Mail\Message\Contract\Message;
 
 /**
  * Class Mail.

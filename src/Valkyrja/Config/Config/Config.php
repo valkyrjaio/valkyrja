@@ -32,7 +32,7 @@ use Valkyrja\Event\Config as Event;
 use Valkyrja\Filesystem\Config as Filesystem;
 use Valkyrja\Jwt\Config as Jwt;
 use Valkyrja\Log\Config as Log;
-use Valkyrja\Mail\Config\Config as Mail;
+use Valkyrja\Mail\Config as Mail;
 use Valkyrja\Notification\Config\Config as Notification;
 use Valkyrja\Orm\Config\Config as ORM;
 use Valkyrja\Path\Config as Path;

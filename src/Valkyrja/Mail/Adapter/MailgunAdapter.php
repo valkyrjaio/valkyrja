@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Adapters;
+namespace Valkyrja\Mail\Adapter;
 
 use Mailgun\Mailgun;
 use Mailgun\Message\BatchMessage;
 use Mailgun\Message\Exceptions\MissingRequiredParameter;
-use Valkyrja\Mail\MailgunAdapter as Contract;
-use Valkyrja\Mail\Message;
+use Valkyrja\Mail\Adapter\Contract\MailgunAdapter as Contract;
+use Valkyrja\Mail\Message\Contract\Message;
 
 /**
  * Class MailGunAdapter.

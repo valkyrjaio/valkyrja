@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Adapters;
+namespace Valkyrja\Mail\Adapter;
 
 use JsonException;
 use Valkyrja\Log\Driver\Contract\Driver as Logger;
-use Valkyrja\Mail\LogAdapter as Contract;
-use Valkyrja\Mail\Message;
+use Valkyrja\Mail\Adapter\Contract\LogAdapter as Contract;
+use Valkyrja\Mail\Message\Contract\Message;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**

@@ -11,8 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail;
+namespace Valkyrja\Mail\Factory\Contract;
 
+use Valkyrja\Mail\Adapter\Contract\Adapter;
+use Valkyrja\Mail\Driver\Contract\Driver;
+use Valkyrja\Mail\Message\Contract\Message;
 use Valkyrja\Manager\Factories\Contract\MessageFactory as Contract;
 
 /**

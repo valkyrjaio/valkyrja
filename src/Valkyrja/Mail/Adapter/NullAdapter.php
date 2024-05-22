@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Adapters;
+namespace Valkyrja\Mail\Adapter;
 
-use Valkyrja\Mail\Adapter as Contract;
-use Valkyrja\Mail\Message;
+use Valkyrja\Mail\Adapter\Contract\Adapter as Contract;
+use Valkyrja\Mail\Message\Contract\Message;
 
 /**
  * Class NullAdapter.

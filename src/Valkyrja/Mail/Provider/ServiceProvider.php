@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Providers;
+namespace Valkyrja\Mail\Provider;
 
 use GuzzleHttp\Client;
 use Mailgun\HttpClient\HttpClientConfigurator;
@@ -21,15 +21,15 @@ use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Mail\Adapter;
-use Valkyrja\Mail\Driver;
-use Valkyrja\Mail\Factories\ContainerFactory;
-use Valkyrja\Mail\Factory;
-use Valkyrja\Mail\LogAdapter;
-use Valkyrja\Mail\Mail;
-use Valkyrja\Mail\MailgunAdapter;
-use Valkyrja\Mail\Message;
-use Valkyrja\Mail\PHPMailerAdapter;
+use Valkyrja\Mail\Adapter\Contract\Adapter;
+use Valkyrja\Mail\Adapter\Contract\LogAdapter;
+use Valkyrja\Mail\Adapter\Contract\MailgunAdapter;
+use Valkyrja\Mail\Adapter\Contract\PHPMailerAdapter;
+use Valkyrja\Mail\Contract\Mail;
+use Valkyrja\Mail\Driver\Contract\Driver;
+use Valkyrja\Mail\Factory\ContainerFactory;
+use Valkyrja\Mail\Factory\Contract\Factory;
+use Valkyrja\Mail\Message\Contract\Message;
 
 /**
  * Class ServiceProvider.
@@ -89,7 +89,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Mail::class,
-            new \Valkyrja\Mail\Managers\Mail(
+            new \Valkyrja\Mail\Manager\Mail(
                 $container->getSingleton(Factory::class),
                 $config['mail']
             )

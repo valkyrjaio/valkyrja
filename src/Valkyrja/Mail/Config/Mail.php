@@ -15,12 +15,12 @@ namespace Valkyrja\Mail\Config;
 
 use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Mail\Adapters\LogAdapter;
-use Valkyrja\Mail\Adapters\MailgunAdapter;
-use Valkyrja\Mail\Adapters\NullAdapter;
-use Valkyrja\Mail\Adapters\PHPMailerAdapter;
-use Valkyrja\Mail\Config\Config as Model;
-use Valkyrja\Mail\Constants\ConfigValue;
+use Valkyrja\Mail\Adapter\LogAdapter;
+use Valkyrja\Mail\Adapter\MailgunAdapter;
+use Valkyrja\Mail\Adapter\NullAdapter;
+use Valkyrja\Mail\Adapter\PHPMailerAdapter;
+use Valkyrja\Mail\Config as Model;
+use Valkyrja\Mail\Constant\ConfigValue;
 
 use function Valkyrja\env;
 

@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Factories;
+namespace Valkyrja\Mail\Factory;
 
-use Valkyrja\Mail\Adapter;
-use Valkyrja\Mail\Driver;
-use Valkyrja\Mail\Factory as Contract;
-use Valkyrja\Mail\LogAdapter;
-use Valkyrja\Mail\MailgunAdapter;
-use Valkyrja\Mail\Message;
-use Valkyrja\Mail\PHPMailerAdapter;
+use Valkyrja\Mail\Adapter\Contract\Adapter;
+use Valkyrja\Mail\Adapter\Contract\LogAdapter;
+use Valkyrja\Mail\Adapter\Contract\MailgunAdapter;
+use Valkyrja\Mail\Adapter\Contract\PHPMailerAdapter;
+use Valkyrja\Mail\Driver\Contract\Driver;
+use Valkyrja\Mail\Factory\Contract\Factory as Contract;
+use Valkyrja\Mail\Message\Contract\Message;
 use Valkyrja\Manager\Factories\ContainerMessageFactory as Factory;
 
 /**

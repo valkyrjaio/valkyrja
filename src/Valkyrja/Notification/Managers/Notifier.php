@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Notification\Managers;
 
 use Valkyrja\Broadcast\Contract\Broadcast;
-use Valkyrja\Mail\Mail;
+use Valkyrja\Mail\Contract\Mail;
 use Valkyrja\Notification\Config\Config;
 use Valkyrja\Notification\Factory;
 use Valkyrja\Notification\NotifiableUser;

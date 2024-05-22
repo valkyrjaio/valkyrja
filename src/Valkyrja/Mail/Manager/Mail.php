@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Managers;
+namespace Valkyrja\Mail\Manager;
 
-use Valkyrja\Mail\Config\Config;
-use Valkyrja\Mail\Driver;
-use Valkyrja\Mail\Factory;
-use Valkyrja\Mail\Mail as Contract;
-use Valkyrja\Mail\Message;
+use Valkyrja\Mail\Config;
+use Valkyrja\Mail\Contract\Mail as Contract;
+use Valkyrja\Mail\Driver\Contract\Driver;
+use Valkyrja\Mail\Factory\Contract\Factory;
+use Valkyrja\Mail\Message\Contract\Message;
 use Valkyrja\Manager\MessageManager as Manager;
 
 /**

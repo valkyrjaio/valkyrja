@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Constants;
+namespace Valkyrja\Mail\Constant;
 
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Mail\Adapters\LogAdapter;
-use Valkyrja\Mail\Adapters\MailgunAdapter;
-use Valkyrja\Mail\Adapters\NullAdapter;
-use Valkyrja\Mail\Adapters\PHPMailerAdapter;
-use Valkyrja\Mail\Drivers\Driver;
-use Valkyrja\Mail\Messages\Message;
+use Valkyrja\Mail\Adapter\LogAdapter;
+use Valkyrja\Mail\Adapter\MailgunAdapter;
+use Valkyrja\Mail\Adapter\NullAdapter;
+use Valkyrja\Mail\Adapter\PHPMailerAdapter;
+use Valkyrja\Mail\Driver\Driver;
+use Valkyrja\Mail\Message\Message;
 
 /**
  * Constant ConfigValue.

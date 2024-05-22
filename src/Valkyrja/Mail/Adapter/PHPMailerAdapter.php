@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Adapters;
+namespace Valkyrja\Mail\Adapter;
 
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
-use Valkyrja\Mail\Message;
-use Valkyrja\Mail\PHPMailerAdapter as Contract;
+use Valkyrja\Mail\Adapter\Contract\PHPMailerAdapter as Contract;
+use Valkyrja\Mail\Message\Contract\Message;
 
 /**
  * Class PHPMailerAdapter.

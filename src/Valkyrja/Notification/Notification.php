@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Notification;
 
 use Valkyrja\Broadcast\Message\Contract\Message as BroadcastMessage;
-use Valkyrja\Mail\Message as MailMessage;
+use Valkyrja\Mail\Message\Contract\Message as MailMessage;
 use Valkyrja\Sms\Message as SMSMessage;
 
 /**

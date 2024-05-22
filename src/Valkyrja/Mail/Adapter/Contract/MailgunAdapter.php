@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail;
+namespace Valkyrja\Mail\Adapter\Contract;
 
 /**
- * Interface PHPMailerAdapter.
+ * Interface MailgunAdapter.
  *
  * @author Melech Mizrachi
  */
-interface PHPMailerAdapter extends Adapter
+interface MailgunAdapter extends Adapter
 {
 }
