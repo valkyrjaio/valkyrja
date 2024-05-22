@@ -65,7 +65,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Notification::class,
-            new \Valkyrja\Notification\Manager\Notification(
+            new \Valkyrja\Notification\Notification(
                 $container->getSingleton(Factory::class),
                 $container->getSingleton(Broadcast::class),
                 $container->getSingleton(Mail::class),

@@ -11,11 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification\Manager;
+namespace Valkyrja\Notification;
 
 use Valkyrja\Broadcast\Contract\Broadcast;
 use Valkyrja\Mail\Contract\Mail;
-use Valkyrja\Notification\Config;
 use Valkyrja\Notification\Contract\Notification as Contract;
 use Valkyrja\Notification\Data\Contract\Notify;
 use Valkyrja\Notification\Entity\Contract\NotifiableUser;
