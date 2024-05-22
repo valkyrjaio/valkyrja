@@ -11,9 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem\Manager;
+namespace Valkyrja\Filesystem;
 
-use Valkyrja\Filesystem\Config;
 use Valkyrja\Filesystem\Contract\Filesystem as Contract;
 use Valkyrja\Filesystem\Driver\Contract\Driver;
 use Valkyrja\Filesystem\Enum\Visibility;

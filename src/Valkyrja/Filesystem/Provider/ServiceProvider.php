@@ -79,7 +79,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Filesystem::class,
-            new \Valkyrja\Filesystem\Manager\Filesystem(
+            new \Valkyrja\Filesystem\Filesystem(
                 $container->getSingleton(Factory::class),
                 $config['filesystem']
             )
