@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast;
+namespace Valkyrja\Broadcast\Message\Contract;
 
 use Valkyrja\Manager\Message\Contract\Message as Contract;
 

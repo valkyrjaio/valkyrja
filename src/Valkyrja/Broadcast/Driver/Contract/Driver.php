@@ -11,10 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast;
+namespace Valkyrja\Broadcast\Driver\Contract;
 
 use InvalidArgumentException;
 use JsonException;
+use Valkyrja\Broadcast\Message\Contract\Message;
 use Valkyrja\Manager\Drivers\Contract\Driver as Contract;
 
 /**

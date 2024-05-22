@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast\Adapters;
+namespace Valkyrja\Broadcast\Adapter;
 
 use JsonException;
-use Valkyrja\Broadcast\Message;
+use Valkyrja\Broadcast\Message\Contract\Message;
 use Valkyrja\Log\Driver as Logger;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 

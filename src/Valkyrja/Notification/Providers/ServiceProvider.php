@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification\Providers;
 
-use Valkyrja\Broadcast\Broadcast;
+use Valkyrja\Broadcast\Contract\Broadcast;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;

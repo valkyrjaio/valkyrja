@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast\Providers;
+namespace Valkyrja\Broadcast\Provider;
 
 use Pusher\Pusher;
-use Valkyrja\Broadcast\Adapter;
-use Valkyrja\Broadcast\Adapters\CryptPusherAdapter;
-use Valkyrja\Broadcast\Broadcast;
-use Valkyrja\Broadcast\Driver;
-use Valkyrja\Broadcast\Factories\ContainerFactory;
-use Valkyrja\Broadcast\Factory;
-use Valkyrja\Broadcast\LogAdapter;
-use Valkyrja\Broadcast\Message;
-use Valkyrja\Broadcast\PusherAdapter;
+use Valkyrja\Broadcast\Adapter\Contract\Adapter;
+use Valkyrja\Broadcast\Adapter\Contract\LogAdapter;
+use Valkyrja\Broadcast\Adapter\Contract\PusherAdapter;
+use Valkyrja\Broadcast\Adapter\CryptPusherAdapter;
+use Valkyrja\Broadcast\Contract\Broadcast;
+use Valkyrja\Broadcast\Driver\Contract\Driver;
+use Valkyrja\Broadcast\Factory\ContainerFactory;
+use Valkyrja\Broadcast\Factory\Contract\Factory;
+use Valkyrja\Broadcast\Message\Contract\Message;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;

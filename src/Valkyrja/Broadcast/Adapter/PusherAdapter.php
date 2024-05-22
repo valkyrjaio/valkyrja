@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast\Adapters;
+namespace Valkyrja\Broadcast\Adapter;
 
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
 use Pusher\ApiErrorException;
 use Pusher\Pusher;
 use Pusher\PusherException;
-use Valkyrja\Broadcast\Message;
-use Valkyrja\Broadcast\PusherAdapter as Contract;
+use Valkyrja\Broadcast\Adapter\Contract\PusherAdapter as Contract;
+use Valkyrja\Broadcast\Message\Contract\Message;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**

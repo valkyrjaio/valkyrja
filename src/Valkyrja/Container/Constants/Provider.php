@@ -17,7 +17,7 @@ use Valkyrja\Annotation\Provider\ServiceProvider as AnnotationServiceProvider;
 use Valkyrja\Api\Provider\ServiceProvider as ApiServiceProvider;
 use Valkyrja\Attribute\Provider\ServiceProvider as AttributesServiceProvider;
 use Valkyrja\Auth\Provider\ServiceProvider as AuthServiceProvider;
-use Valkyrja\Broadcast\Providers\ServiceProvider as BroadcastServiceProvider;
+use Valkyrja\Broadcast\Provider\ServiceProvider as BroadcastServiceProvider;
 use Valkyrja\Cache\Providers\ServiceProvider as CacheServiceProvider;
 use Valkyrja\Client\Providers\ServiceProvider as ClientServiceProvider;
 use Valkyrja\Console\Providers\ServiceProvider as ConsoleServiceProvider;

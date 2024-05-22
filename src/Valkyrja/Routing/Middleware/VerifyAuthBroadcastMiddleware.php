@@ -16,7 +16,7 @@ namespace Valkyrja\Routing\Middleware;
 use JsonException;
 use Valkyrja\Auth\Contract\Auth;
 use Valkyrja\Auth\Entity\Contract\User;
-use Valkyrja\Broadcast\Broadcast;
+use Valkyrja\Broadcast\Contract\Broadcast;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;

@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast\Factories;
+namespace Valkyrja\Broadcast\Factory;
 
-use Valkyrja\Broadcast\Adapter;
-use Valkyrja\Broadcast\Driver;
-use Valkyrja\Broadcast\Factory as Contract;
-use Valkyrja\Broadcast\LogAdapter;
-use Valkyrja\Broadcast\Message;
-use Valkyrja\Broadcast\PusherAdapter;
+use Valkyrja\Broadcast\Adapter\Contract\Adapter;
+use Valkyrja\Broadcast\Adapter\Contract\LogAdapter;
+use Valkyrja\Broadcast\Adapter\Contract\PusherAdapter;
+use Valkyrja\Broadcast\Driver\Contract\Driver;
+use Valkyrja\Broadcast\Factory\Contract\Factory as Contract;
+use Valkyrja\Broadcast\Message\Contract\Message;
 use Valkyrja\Manager\Factories\ContainerMessageFactory as Factory;
 
 /**

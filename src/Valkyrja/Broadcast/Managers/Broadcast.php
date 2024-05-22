@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Managers;
 
-use Valkyrja\Broadcast\Broadcast as Contract;
-use Valkyrja\Broadcast\Config\Config;
-use Valkyrja\Broadcast\Driver;
-use Valkyrja\Broadcast\Factory;
-use Valkyrja\Broadcast\Message;
+use Valkyrja\Broadcast\Config;
+use Valkyrja\Broadcast\Contract\Broadcast as Contract;
+use Valkyrja\Broadcast\Driver\Contract\Driver;
+use Valkyrja\Broadcast\Factory\Contract\Factory;
+use Valkyrja\Broadcast\Message\Contract\Message;
 use Valkyrja\Manager\MessageManager as Manager;
 
 /**

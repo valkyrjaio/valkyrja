@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast\Config;
 
 use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Broadcast\Adapters\CryptPusherAdapter;
-use Valkyrja\Broadcast\Adapters\LogAdapter;
-use Valkyrja\Broadcast\Adapters\NullAdapter;
-use Valkyrja\Broadcast\Config\Config as Model;
-use Valkyrja\Broadcast\Constants\ConfigValue;
+use Valkyrja\Broadcast\Adapter\CryptPusherAdapter;
+use Valkyrja\Broadcast\Adapter\LogAdapter;
+use Valkyrja\Broadcast\Adapter\NullAdapter;
+use Valkyrja\Broadcast\Config as Model;
+use Valkyrja\Broadcast\Constant\ConfigValue;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 
 use function Valkyrja\env;

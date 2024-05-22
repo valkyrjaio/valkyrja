@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification\Managers;
 
-use Valkyrja\Broadcast\Broadcast;
+use Valkyrja\Broadcast\Contract\Broadcast;
 use Valkyrja\Mail\Mail;
 use Valkyrja\Notification\Config\Config;
 use Valkyrja\Notification\Factory;
@@ -129,7 +129,7 @@ class Notifier implements Contract
      * @inheritDoc
      */
     public function notify(Notification $notification): void
-    // public function notify(string $notificationName, array $data = []): void
+        // public function notify(string $notificationName, array $data = []): void
     {
         // $notification = $this->getNotification($notificationName, $data);
 

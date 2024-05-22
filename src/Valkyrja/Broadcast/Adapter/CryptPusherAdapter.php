@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast\Adapters;
+namespace Valkyrja\Broadcast\Adapter;
 
 use Pusher\Pusher;
-use Valkyrja\Broadcast\Message;
+use Valkyrja\Broadcast\Message\Contract\Message;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Driver as CryptDriver;
 use Valkyrja\Crypt\Exceptions\CryptException;

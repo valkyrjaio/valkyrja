@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast\Constants;
+namespace Valkyrja\Broadcast\Constant;
 
-use Valkyrja\Broadcast\Adapters\CryptPusherAdapter;
-use Valkyrja\Broadcast\Adapters\LogAdapter;
-use Valkyrja\Broadcast\Adapters\NullAdapter;
-use Valkyrja\Broadcast\Adapters\PusherAdapter;
-use Valkyrja\Broadcast\Drivers\Driver;
-use Valkyrja\Broadcast\Messages\Message;
+use Valkyrja\Broadcast\Adapter\CryptPusherAdapter;
+use Valkyrja\Broadcast\Adapter\LogAdapter;
+use Valkyrja\Broadcast\Adapter\NullAdapter;
+use Valkyrja\Broadcast\Adapter\PusherAdapter;
+use Valkyrja\Broadcast\Driver\Driver;
+use Valkyrja\Broadcast\Message\Message;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 
 /**
