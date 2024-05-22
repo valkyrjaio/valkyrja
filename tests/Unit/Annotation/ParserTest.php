@@ -39,11 +39,11 @@ use Valkyrja\Tests\Unit\TestCase;
  *
  * @Route("path" = "/", "name" = "noAClass::Property")
  *
- * @Route("path" = "/constant", "name" = "\\Valkyrja\\Tests\\Unit\\Annotations\\ParserTest::CONSTANT")
+ * @Route("path" = "/constant", "name" = "\\Valkyrja\\Tests\\Unit\\Annotation\\ParserTest::CONSTANT")
  *
- * @Route("path" = "/property", "name" = "\\Valkyrja\\Tests\\Unit\\Annotations\\ParserTest::property")
+ * @Route("path" = "/property", "name" = "\\Valkyrja\\Tests\\Unit\\Annotation\\ParserTest::property")
  *
- * @Route("path" = "/method", "name" = "\\Valkyrja\\Tests\\Unit\\Annotations\\ParserTest::staticMethod", "code" = 1)
+ * @Route("path" = "/method", "name" = "\\Valkyrja\\Tests\\Unit\\Annotation\\ParserTest::staticMethod", "code" = 1)
  */
 class ParserTest extends TestCase
 {

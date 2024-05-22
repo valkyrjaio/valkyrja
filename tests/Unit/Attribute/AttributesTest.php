@@ -295,7 +295,7 @@ class AttributesTest extends TestCase
         {
         }
 
-        $attributes = $this->attributes->forFunction('\Valkyrja\Tests\Unit\Attributes\testFunction', Attribute::class);
+        $attributes = $this->attributes->forFunction('\Valkyrja\Tests\Unit\Attribute\testFunction', Attribute::class);
 
         $this->baseTests(...$attributes);
         $this->valueTests(
