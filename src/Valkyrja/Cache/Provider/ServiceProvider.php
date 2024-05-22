@@ -76,7 +76,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Cache::class,
-            new \Valkyrja\Cache\Managers\Cache(
+            new \Valkyrja\Cache\Cache(
                 $container->getSingleton(Factory::class),
                 $config['cache']
             )

@@ -105,9 +105,9 @@ class Config extends Model
     /**
      * The cache module config.
      *
-     * @var \Valkyrja\Cache\Cache
+     * @var Cache
      */
-    public \Valkyrja\Cache\Cache $cache;
+    public Cache $cache;
 
     /**
      * The client module config.
