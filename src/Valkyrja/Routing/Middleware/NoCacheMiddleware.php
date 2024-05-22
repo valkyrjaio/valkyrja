@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Middleware;
 
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 
 /**
  * Class NoCacheMiddleware.
@@ -26,7 +26,7 @@ class NoCacheMiddleware extends Middleware
     /**
      * @inheritDoc
      */
-    public static function after(Request $request, Response $response): Response
+    public static function after(ServerRequest $request, Response $response): Response
     {
         return $response
             ->withHeader('Expires', 'Sun, 01 Jan 2014 00:00:00 GMT')

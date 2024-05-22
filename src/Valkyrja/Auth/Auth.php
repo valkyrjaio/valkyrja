@@ -26,8 +26,8 @@ use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Policy\Contract\Policy;
 use Valkyrja\Auth\Repository\Contract\Repository;
 use Valkyrja\Auth\Repository\Contract\TokenizedRepository;
-use Valkyrja\Http\Constants\Header;
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Constant\Header;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 
 /**
  * Class Auth.
@@ -102,13 +102,13 @@ class Auth implements Contract
     /**
      * Auth constructor.
      *
-     * @param Factory      $factory The factory
-     * @param Request      $request The request
-     * @param Config|array $config  The config
+     * @param Factory       $factory The factory
+     * @param ServerRequest $request The request
+     * @param Config|array  $config  The config
      */
     public function __construct(
         protected Factory $factory,
-        protected Request $request,
+        protected ServerRequest $request,
         protected Config|array $config
     ) {
         $this->defaultAdapter    = $config['adapter'];
@@ -187,10 +187,10 @@ class Auth implements Contract
      * @inheritDoc
      */
     public function requestWithAuthToken(
-        Request $request,
+        ServerRequest $request,
         string|null $user = null,
         string|null $adapter = null
-    ): Request {
+    ): ServerRequest {
         $repository = $this->getRepository($user, $adapter);
 
         if (! ($repository instanceof TokenizedRepository)) {
@@ -212,7 +212,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function requestWithoutAuthToken(Request $request): Request
+    public function requestWithoutAuthToken(ServerRequest $request): ServerRequest
     {
         return $request->withoutHeader(Header::AUTHORIZATION);
     }
@@ -284,7 +284,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function authenticateFromRequest(Request $request): static
+    public function authenticateFromRequest(ServerRequest $request): static
     {
         $this->getRepository()->authenticateFromRequest($request);
 

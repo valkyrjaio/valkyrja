@@ -29,13 +29,13 @@ use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Contract\Dispatcher as Events;
 use Valkyrja\Filesystem\Contract\Filesystem;
-use Valkyrja\Http\Exceptions\HttpException;
-use Valkyrja\Http\Exceptions\HttpRedirectException;
-use Valkyrja\Http\JsonResponse;
-use Valkyrja\Http\RedirectResponse;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Http\Exception\HttpException;
+use Valkyrja\Http\Exception\HttpRedirectException;
+use Valkyrja\Http\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\JsonResponse;
+use Valkyrja\Http\Response\Contract\RedirectResponse;
+use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\HttpKernel\Contract\Kernel;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Mail\Contract\Mail;
@@ -398,11 +398,11 @@ function reflector(): Reflection
 /**
  * Get request.
  *
- * @return Request
+ * @return ServerRequest
  */
-function request(): Request
+function request(): ServerRequest
 {
-    return container()->getSingleton(Request::class);
+    return container()->getSingleton(ServerRequest::class);
 }
 
 /**

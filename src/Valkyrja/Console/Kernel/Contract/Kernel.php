@@ -15,7 +15,7 @@ namespace Valkyrja\Console\Kernel\Contract;
 
 use Valkyrja\Console\Input\Contract\Input;
 use Valkyrja\Console\Output\Contract\Output;
-use Valkyrja\Http\Exceptions\HttpException;
+use Valkyrja\Http\Exception\HttpException;
 
 /**
  * Interface ConsoleKernel.

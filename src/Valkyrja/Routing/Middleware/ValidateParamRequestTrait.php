@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Middleware;
 
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 
 /**
  * Trait ValidateTypeRequestTrait.
@@ -27,7 +27,7 @@ trait ValidateParamRequestTrait
      *
      * @return array<string, array{subject: mixed, rules: array<string, array{arguments: array, message?: string}>}>
      */
-    protected static function getRules(Request $request): array
+    protected static function getRules(ServerRequest $request): array
     {
         $rules = [];
 
@@ -74,10 +74,10 @@ trait ValidateParamRequestTrait
     /**
      * Get a param from the request.
      *
-     * @param Request $request The request
-     * @param string  $param   The param
+     * @param ServerRequest $request The request
+     * @param string        $param   The param
      *
      * @return mixed
      */
-    abstract protected static function getParamFromRequest(Request $request, string $param): mixed;
+    abstract protected static function getParamFromRequest(ServerRequest $request, string $param): mixed;
 }

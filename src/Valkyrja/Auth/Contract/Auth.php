@@ -26,7 +26,7 @@ use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Policy\Contract\Policy;
 use Valkyrja\Auth\Repository\Contract\Repository;
 use Valkyrja\Crypt\Exception\CryptException;
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 
 /**
  * Interface Auth.
@@ -93,28 +93,28 @@ interface Auth
     /**
      * Get a request with auth token header.
      *
-     * @param Request                    $request The request
+     * @param ServerRequest              $request The request
      * @param class-string<User>|null    $user    [optional] The user
      * @param class-string<Adapter>|null $adapter [optional] The adapter
      *
      * @throws CryptException
      *
-     * @return Request
+     * @return ServerRequest
      */
     public function requestWithAuthToken(
-        Request $request,
+        ServerRequest $request,
         string|null $user = null,
         string|null $adapter = null
-    ): Request;
+    ): ServerRequest;
 
     /**
      * Get a request without auth token header.
      *
-     * @param Request $request The request
+     * @param ServerRequest $request The request
      *
-     * @return Request
+     * @return ServerRequest
      */
-    public function requestWithoutAuthToken(Request $request): Request;
+    public function requestWithoutAuthToken(ServerRequest $request): ServerRequest;
 
     /**
      * Determine if a user is authenticated.
@@ -178,13 +178,13 @@ interface Auth
     /**
      * Authenticate a user from a request.
      *
-     * @param Request $request The request
+     * @param ServerRequest $request The request
      *
      * @throws InvalidAuthenticationException
      *
      * @return static
      */
-    public function authenticateFromRequest(Request $request): static;
+    public function authenticateFromRequest(ServerRequest $request): static;
 
     /**
      * Un-authenticate any active users.

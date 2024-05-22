@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Urls;
 
-use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Constant\RequestMethod;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Routing\Config\Config;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Route;
@@ -36,12 +36,12 @@ class Url implements Contract
     /**
      * Router constructor.
      *
-     * @param Request      $request The request
-     * @param Router       $router  The router
-     * @param Config|array $config  The routing config
+     * @param ServerRequest $request The request
+     * @param Router        $router  The router
+     * @param Config|array  $config  The routing config
      */
     public function __construct(
-        protected Request $request,
+        protected ServerRequest $request,
         protected Router $router,
         protected Config|array $config
     ) {

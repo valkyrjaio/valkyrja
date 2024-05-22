@@ -19,11 +19,11 @@ use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Client\Adapter\Contract\GuzzleAdapter as Contract;
-use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Http\JsonRequest;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Http\Constant\RequestMethod;
+use Valkyrja\Http\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\JsonServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 
 /**
  * Class GuzzleAdapter.
@@ -51,7 +51,7 @@ class GuzzleAdapter implements Contract
      *
      * @throws GuzzleException
      */
-    public function request(Request $request): Response
+    public function request(ServerRequest $request): Response
     {
         return $this->fromPsr7($this->getGuzzleResponse($request));
     }
@@ -61,7 +61,7 @@ class GuzzleAdapter implements Contract
      *
      * @throws GuzzleException
      */
-    public function get(Request $request): Response
+    public function get(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::GET));
     }
@@ -71,7 +71,7 @@ class GuzzleAdapter implements Contract
      *
      * @throws GuzzleException
      */
-    public function post(Request $request): Response
+    public function post(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::GET));
     }
@@ -81,7 +81,7 @@ class GuzzleAdapter implements Contract
      *
      * @throws GuzzleException
      */
-    public function head(Request $request): Response
+    public function head(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::GET));
     }
@@ -91,7 +91,7 @@ class GuzzleAdapter implements Contract
      *
      * @throws GuzzleException
      */
-    public function put(Request $request): Response
+    public function put(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::GET));
     }
@@ -101,7 +101,7 @@ class GuzzleAdapter implements Contract
      *
      * @throws GuzzleException
      */
-    public function patch(Request $request): Response
+    public function patch(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::GET));
     }
@@ -111,7 +111,7 @@ class GuzzleAdapter implements Contract
      *
      * @throws GuzzleException
      */
-    public function delete(Request $request): Response
+    public function delete(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::GET));
     }
@@ -119,13 +119,13 @@ class GuzzleAdapter implements Contract
     /**
      * Get a Guzzle response from a Valkyrja request.
      *
-     * @param Request $request The request
+     * @param ServerRequest $request The request
      *
      * @throws GuzzleException
      *
      * @return ResponseInterface
      */
-    protected function getGuzzleResponse(Request $request): ResponseInterface
+    protected function getGuzzleResponse(ServerRequest $request): ResponseInterface
     {
         $options = $this->config['options'] ?? [];
 
@@ -140,12 +140,12 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle headers.
      *
-     * @param Request  $request The request
-     * @param array   &$options The options
+     * @param ServerRequest $request The request
+     * @param array   &$options      The options
      *
      * @return void
      */
-    protected function setGuzzleHeaders(Request $request, array &$options): void
+    protected function setGuzzleHeaders(ServerRequest $request, array &$options): void
     {
         if ($headers = $request->getHeaders()) {
             $options['headers'] = [];
@@ -159,12 +159,12 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle cookies.
      *
-     * @param Request  $request The request
-     * @param array   &$options The options
+     * @param ServerRequest $request The request
+     * @param array   &$options      The options
      *
      * @return void
      */
-    protected function setGuzzleCookies(Request $request, array &$options): void
+    protected function setGuzzleCookies(ServerRequest $request, array &$options): void
     {
         if ($cookies = $request->getCookieParams()) {
             $jar = new CookieJar();
@@ -185,14 +185,14 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle form params.
      *
-     * @param Request  $request The request
-     * @param array   &$options The options
+     * @param ServerRequest $request The request
+     * @param array   &$options      The options
      *
      * @return void
      */
-    protected function setGuzzleFormParams(Request $request, array &$options): void
+    protected function setGuzzleFormParams(ServerRequest $request, array &$options): void
     {
-        if (($body = $request->getParsedBody()) && ! ($request instanceof JsonRequest && $request->getParsedJson())) {
+        if (($body = $request->getParsedBody()) && ! ($request instanceof JsonServerRequest && $request->getParsedJson())) {
             $options['form_params'] = $body;
         }
     }
@@ -200,12 +200,12 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle body.
      *
-     * @param Request  $request The request
-     * @param array   &$options The options
+     * @param ServerRequest $request The request
+     * @param array   &$options      The options
      *
      * @return void
      */
-    protected function setGuzzleBody(Request $request, array &$options): void
+    protected function setGuzzleBody(ServerRequest $request, array &$options): void
     {
         $body = $request->getBody();
         $body->rewind();

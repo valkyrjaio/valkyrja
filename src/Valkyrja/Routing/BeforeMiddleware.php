@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing;
 
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 
 /**
  * Interface BeforeMiddleware.
@@ -26,9 +26,9 @@ interface BeforeMiddleware
     /**
      * Middleware handler for before a request is dispatched.
      *
-     * @param Request $request The request
+     * @param ServerRequest $request The request
      *
-     * @return Request|Response
+     * @return ServerRequest|Response
      */
-    public static function before(Request $request): Request|Response;
+    public static function before(ServerRequest $request): ServerRequest|Response;
 }

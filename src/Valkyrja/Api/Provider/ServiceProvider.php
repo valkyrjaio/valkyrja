@@ -17,7 +17,7 @@ use Valkyrja\Api\Contract\Api;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Http\Factory\Contract\ResponseFactory;
 
 /**
  * Class ServiceProvider.

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Middleware;
 
 use Valkyrja\Auth\Facade\Auth;
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 
 use function md5;
 
@@ -28,7 +28,7 @@ class AuthUniqueCacheResponseMiddleware extends CacheResponseMiddleware
     /**
      * @inheritDoc
      */
-    protected static function getHashedPath(Request $request): string
+    protected static function getHashedPath(ServerRequest $request): string
     {
         $userPart = '';
 

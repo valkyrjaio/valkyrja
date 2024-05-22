@@ -16,8 +16,8 @@ namespace Valkyrja\Tests\Functional;
 use JsonException;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Valkyrja\Application\Valkyrja;
-use Valkyrja\Http\Factories\RequestFactory;
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Factory\RequestFactory;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Support\Directory;
 use Valkyrja\Tests\Config;
 use Valkyrja\Tests\Env;
@@ -52,6 +52,6 @@ class TestCase extends PHPUnitTestCase
         Valkyrja::setEnv(Env::class);
 
         $this->app = new Valkyrja(Config::class);
-        $this->app->container()->setSingleton(Request::class, RequestFactory::fromGlobals());
+        $this->app->container()->setSingleton(ServerRequest::class, RequestFactory::fromGlobals());
     }
 }

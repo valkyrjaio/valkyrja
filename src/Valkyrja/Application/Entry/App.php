@@ -17,8 +17,8 @@ use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Env;
 use Valkyrja\Application\Valkyrja;
 use Valkyrja\Config\Config\Config;
-use Valkyrja\Http\Factories\RequestFactory;
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Factory\RequestFactory;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Support\Directory;
 
 use function define;
@@ -150,9 +150,9 @@ abstract class App
     /**
      * Get the request.
      *
-     * @return Request
+     * @return ServerRequest
      */
-    protected static function getRequest(): Request
+    protected static function getRequest(): ServerRequest
     {
         return RequestFactory::fromGlobals();
     }

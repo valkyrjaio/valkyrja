@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\HttpKernel\Contract;
 
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Routing\MiddlewareAware;
 
 /**
@@ -27,11 +27,11 @@ interface Kernel extends MiddlewareAware
     /**
      * Handle a request.
      *
-     * @param Request $request The request
+     * @param ServerRequest $request The request
      *
      * @return Response
      */
-    public function handle(Request $request): Response;
+    public function handle(ServerRequest $request): Response;
 
     /**
      * Send the response.
@@ -45,19 +45,19 @@ interface Kernel extends MiddlewareAware
     /**
      * Terminate the kernel request.
      *
-     * @param Request  $request  The request
-     * @param Response $response The response
+     * @param ServerRequest $request  The request
+     * @param Response      $response The response
      *
      * @return void
      */
-    public function terminate(Request $request, Response $response): void;
+    public function terminate(ServerRequest $request, Response $response): void;
 
     /**
      * Run the kernel.
      *
-     * @param Request $request The request
+     * @param ServerRequest $request The request
      *
      * @return void
      */
-    public function run(Request $request): void;
+    public function run(ServerRequest $request): void;
 }

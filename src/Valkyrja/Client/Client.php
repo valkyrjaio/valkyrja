@@ -16,8 +16,8 @@ namespace Valkyrja\Client;
 use Valkyrja\Client\Contract\Client as Contract;
 use Valkyrja\Client\Driver\Contract\Driver;
 use Valkyrja\Client\Factory\Contract\Factory;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Manager\Manager;
 
 /**
@@ -58,7 +58,7 @@ class Client extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function request(Request $request): Response
+    public function request(ServerRequest $request): Response
     {
         return $this->use()->request($request);
     }
@@ -66,7 +66,7 @@ class Client extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function get(Request $request): Response
+    public function get(ServerRequest $request): Response
     {
         return $this->use()->get($request);
     }
@@ -74,7 +74,7 @@ class Client extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function post(Request $request): Response
+    public function post(ServerRequest $request): Response
     {
         return $this->use()->post($request);
     }
@@ -82,7 +82,7 @@ class Client extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function head(Request $request): Response
+    public function head(ServerRequest $request): Response
     {
         return $this->use()->head($request);
     }
@@ -90,7 +90,7 @@ class Client extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function put(Request $request): Response
+    public function put(ServerRequest $request): Response
     {
         return $this->use()->put($request);
     }
@@ -98,7 +98,7 @@ class Client extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function patch(Request $request): Response
+    public function patch(ServerRequest $request): Response
     {
         return $this->use()->patch($request);
     }
@@ -106,7 +106,7 @@ class Client extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function delete(Request $request): Response
+    public function delete(ServerRequest $request): Response
     {
         return $this->use()->delete($request);
     }

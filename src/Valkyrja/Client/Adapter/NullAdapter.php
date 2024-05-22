@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Client\Adapter;
 
 use Valkyrja\Client\Adapter\Contract\Adapter as Contract;
-use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Http\Constant\RequestMethod;
+use Valkyrja\Http\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 
 /**
  * Class NullAdapter.
@@ -55,7 +55,7 @@ class NullAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function request(Request $request): Response
+    public function request(ServerRequest $request): Response
     {
         return $this->responseFactory->createResponse();
     }
@@ -63,7 +63,7 @@ class NullAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function get(Request $request): Response
+    public function get(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::GET));
     }
@@ -71,7 +71,7 @@ class NullAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function post(Request $request): Response
+    public function post(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::GET));
     }
@@ -79,7 +79,7 @@ class NullAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function head(Request $request): Response
+    public function head(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::GET));
     }
@@ -87,7 +87,7 @@ class NullAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function put(Request $request): Response
+    public function put(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::GET));
     }
@@ -95,7 +95,7 @@ class NullAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function patch(Request $request): Response
+    public function patch(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::GET));
     }
@@ -103,7 +103,7 @@ class NullAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function delete(Request $request): Response
+    public function delete(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::GET));
     }

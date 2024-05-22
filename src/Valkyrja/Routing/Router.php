@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing;
 
-use Valkyrja\Http\Exceptions\HttpException;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Exception\HttpException;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Routing\Config\Config;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 
@@ -93,20 +93,20 @@ interface Router extends MiddlewareAware
     /**
      * Get a route from a request.
      *
-     * @param Request $request The request
+     * @param ServerRequest $request The request
      *
      * @throws HttpException
      *
      * @return Route
      */
-    public function getRouteFromRequest(Request $request): Route;
+    public function getRouteFromRequest(ServerRequest $request): Route;
 
     /**
      * Dispatch the route and find a match.
      *
-     * @param Request $request The request
+     * @param ServerRequest $request The request
      *
      * @return Response
      */
-    public function dispatch(Request $request): Response;
+    public function dispatch(ServerRequest $request): Response;
 }

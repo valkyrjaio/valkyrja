@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Annotations\Route\Redirect;
 
-use Valkyrja\Http\Constants\StatusCode;
+use Valkyrja\Http\Constant\StatusCode;
 use Valkyrja\Routing\Annotations\Route\Redirect as ParentClass;
 
 /**

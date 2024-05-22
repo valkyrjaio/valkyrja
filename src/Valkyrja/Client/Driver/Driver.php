@@ -15,8 +15,8 @@ namespace Valkyrja\Client\Driver;
 
 use Valkyrja\Client\Adapter\Contract\Adapter;
 use Valkyrja\Client\Driver\Contract\Driver as Contract;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Manager\Drivers\Driver as ParentDriver;
 
 /**
@@ -41,7 +41,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function request(Request $request): Response
+    public function request(ServerRequest $request): Response
     {
         return $this->adapter->request($request);
     }
@@ -49,7 +49,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function get(Request $request): Response
+    public function get(ServerRequest $request): Response
     {
         return $this->adapter->get($request);
     }
@@ -57,7 +57,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function post(Request $request): Response
+    public function post(ServerRequest $request): Response
     {
         return $this->adapter->post($request);
     }
@@ -65,7 +65,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function head(Request $request): Response
+    public function head(ServerRequest $request): Response
     {
         return $this->adapter->head($request);
     }
@@ -73,7 +73,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function put(Request $request): Response
+    public function put(ServerRequest $request): Response
     {
         return $this->adapter->put($request);
     }
@@ -81,7 +81,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function patch(Request $request): Response
+    public function patch(ServerRequest $request): Response
     {
         return $this->adapter->patch($request);
     }
@@ -89,7 +89,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function delete(Request $request): Response
+    public function delete(ServerRequest $request): Response
     {
         return $this->adapter->delete($request);
     }

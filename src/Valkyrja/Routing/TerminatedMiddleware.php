@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing;
 
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 
 /**
  * Interface TerminatedMiddleware.
@@ -26,10 +26,10 @@ interface TerminatedMiddleware
     /**
      * Middleware handler ran when the application has terminated.
      *
-     * @param Request  $request  The request
-     * @param Response $response The response
+     * @param ServerRequest $request  The request
+     * @param Response      $response The response
      *
      * @return void
      */
-    public static function terminated(Request $request, Response $response): void;
+    public static function terminated(ServerRequest $request, Response $response): void;
 }

@@ -18,7 +18,7 @@ use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Contract\Crypt;
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Session\Adapter;
 use Valkyrja\Session\Adapters\CookieAdapter;
@@ -207,7 +207,7 @@ class ServiceProvider extends Provider
     public static function publishCookieAdapter(Container $container): void
     {
         $crypt   = $container->getSingleton(Crypt::class);
-        $request = $container->getSingleton(Request::class);
+        $request = $container->getSingleton(ServerRequest::class);
 
         $container->setClosure(
             CookieAdapter::class,

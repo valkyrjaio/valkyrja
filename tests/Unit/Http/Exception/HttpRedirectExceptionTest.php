@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Exception;
 
-use Valkyrja\Http\Exceptions\HttpRedirectException;
+use Valkyrja\Http\Exception\HttpRedirectException;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

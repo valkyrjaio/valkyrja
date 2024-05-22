@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing;
 
 use UnitEnum;
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Type\BuiltIn\Enum\Contract\Arrayable;
 
 /**
@@ -57,18 +57,18 @@ interface Message extends UnitEnum, Arrayable
     /**
      * Get the data for a message from a given request.
      *
-     * @param Request $request The request
+     * @param ServerRequest $request The request
      *
      * @return array
      */
-    public static function getDataFromRequest(Request $request): array;
+    public static function getDataFromRequest(ServerRequest $request): array;
 
     /**
      * Determine if a request has extra data that was passed that is not defined in the message.
      *
-     * @param Request $request
+     * @param ServerRequest $request
      *
      * @return bool
      */
-    public static function determineIfRequestContainsExtraData(Request $request): bool;
+    public static function determineIfRequestContainsExtraData(ServerRequest $request): bool;
 }

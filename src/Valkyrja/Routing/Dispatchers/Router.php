@@ -17,9 +17,9 @@ use InvalidArgumentException;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Contract\Dispatcher as Events;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Http\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Config\Config;
 use Valkyrja\Routing\Events\RouteMatched;
@@ -143,7 +143,7 @@ class Router implements Contract
      *
      * @throws InvalidArgumentException
      */
-    public function getRouteFromRequest(Request $request): Route
+    public function getRouteFromRequest(ServerRequest $request): Route
     {
         // Decode the request uri
         $requestUri = rawurldecode($request->getUri()->getPath());
@@ -170,7 +170,7 @@ class Router implements Contract
      *
      * @throws InvalidArgumentException
      */
-    public function dispatch(Request $request): Response
+    public function dispatch(ServerRequest $request): Response
     {
         // Get the route
         $route = $this->getRouteFromRequest($request);
@@ -198,12 +198,12 @@ class Router implements Contract
     /**
      * Do various stuff after the route has been matched.
      *
-     * @param Request $request The request
-     * @param Route   $route   The route
+     * @param ServerRequest $request The request
+     * @param Route         $route   The route
      *
      * @return void
      */
-    protected function routeMatched(Request $request, Route $route): void
+    protected function routeMatched(ServerRequest $request, Route $route): void
     {
         // Determine if the route is a redirect
         $this->determineRedirectRoute($route);
@@ -237,12 +237,12 @@ class Router implements Contract
     /**
      * Determine if the route should be secure.
      *
-     * @param Request $request The request
-     * @param Route   $route   The route
+     * @param ServerRequest $request The request
+     * @param Route         $route   The route
      *
      * @return void
      */
-    protected function determineIsSecureRoute(Request $request, Route $route): void
+    protected function determineIsSecureRoute(ServerRequest $request, Route $route): void
     {
         // If the route is secure and the current request is not secure
         if ($route->isSecure() && ! $request->getUri()->isSecure()) {
@@ -282,13 +282,13 @@ class Router implements Contract
     /**
      * Dispatch a route's after request handled middleware.
      *
-     * @param Request  $request  The request
-     * @param Response $response The response
-     * @param Route    $route    The route
+     * @param ServerRequest $request  The request
+     * @param Response      $response The response
+     * @param Route         $route    The route
      *
      * @return Response
      */
-    protected function routeResponseMiddleware(Request $request, Response $response, Route $route): Response
+    protected function routeResponseMiddleware(ServerRequest $request, Response $response, Route $route): Response
     {
         return $this->responseMiddleware($request, $response, $route->getMiddleware() ?? []);
     }

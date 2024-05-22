@@ -25,7 +25,7 @@ use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Filesystem\Contract\Filesystem;
-use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Http\Factory\Contract\ResponseFactory;
 use Valkyrja\HttpKernel\Contract\Kernel;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Path\Generator\Contract\Generator;

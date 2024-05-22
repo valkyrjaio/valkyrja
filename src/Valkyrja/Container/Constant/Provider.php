@@ -26,7 +26,7 @@ use Valkyrja\Crypt\Provider\ServiceProvider as CryptServiceProvider;
 use Valkyrja\Dispatcher\Provider\ServiceProvider as DispatcherServiceProvider;
 use Valkyrja\Event\Provider\ServiceProvider as EventServiceProvider;
 use Valkyrja\Filesystem\Provider\ServiceProvider as FilesystemServiceProvider;
-use Valkyrja\Http\Providers\ServiceProvider as HttpServiceProvider;
+use Valkyrja\Http\Provider\ServiceProvider as HttpServiceProvider;
 use Valkyrja\HttpKernel\Provider\ServiceProvider as HttpKernelServiceProvider;
 use Valkyrja\Jwt\Provider\ServiceProvider as JWTServiceProvider;
 use Valkyrja\Log\Provider\ServiceProvider as LogServiceProvider;

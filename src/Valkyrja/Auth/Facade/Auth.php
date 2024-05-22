@@ -21,7 +21,7 @@ use Valkyrja\Auth\Gate\Contract\Gate;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\Repository;
 use Valkyrja\Facade\ContainerFacade;
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 
 /**
  * Class Auth.
@@ -39,7 +39,7 @@ use Valkyrja\Http\Request;
  * @method static AuthenticatedUsers getUsers()
  * @method static Contract           authenticate(User $user)
  * @method static Contract           authenticateFromSession()
- * @method static Contract           authenticateFromRequest(Request $request)
+ * @method static Contract           authenticateFromRequest(ServerRequest $request)
  * @method static Contract           unAuthenticate()
  * @method static Contract           setSession()
  * @method static Contract           unsetSession()

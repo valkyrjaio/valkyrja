@@ -20,7 +20,7 @@ use Valkyrja\Auth\Exception\InvalidAuthenticationException;
 use Valkyrja\Auth\Exception\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\Exception\InvalidRegistrationException;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 
 /**
  * Interface Repository.
@@ -91,13 +91,13 @@ interface Repository
     /**
      * Authenticate a user from a request.
      *
-     * @param Request $request The request
+     * @param ServerRequest $request The request
      *
      * @throws InvalidAuthenticationException
      *
      * @return static
      */
-    public function authenticateFromRequest(Request $request): static;
+    public function authenticateFromRequest(ServerRequest $request): static;
 
     /**
      * Un-authenticate any active users.

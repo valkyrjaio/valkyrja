@@ -18,10 +18,10 @@ use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Contract\Api as Contract;
 use Valkyrja\Api\Model\Contract\Json;
 use Valkyrja\Api\Model\Contract\JsonData;
-use Valkyrja\Http\Constants\StatusCode;
-use Valkyrja\Http\Exceptions\HttpException;
-use Valkyrja\Http\JsonResponse;
-use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Http\Constant\StatusCode;
+use Valkyrja\Http\Exception\HttpException;
+use Valkyrja\Http\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Response\Contract\JsonResponse;
 use Valkyrja\Orm\Entity;
 
 use function end;

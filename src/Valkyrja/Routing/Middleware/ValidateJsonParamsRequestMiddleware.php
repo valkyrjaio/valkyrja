@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Middleware;
 
 use RuntimeException;
-use Valkyrja\Http\JsonRequest;
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\JsonServerRequest;
 
 /**
  * Class ValidateParsedBodyRequestMiddleware.
@@ -29,9 +29,9 @@ abstract class ValidateJsonParamsRequestMiddleware extends ValidateRequestMiddle
     /**
      * @inheritDoc
      */
-    protected static function getParamFromRequest(JsonRequest|Request $request, string $param): mixed
+    protected static function getParamFromRequest(JsonServerRequest|ServerRequest $request, string $param): mixed
     {
-        if (! $request instanceof JsonRequest) {
+        if (! $request instanceof JsonServerRequest) {
             throw new RuntimeException('Json Request is required for this to work.');
         }
 

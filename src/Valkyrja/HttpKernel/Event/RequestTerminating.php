@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\HttpKernel\Event;
 
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 
 /**
  * Class RequestTerminating.
@@ -26,9 +26,9 @@ class RequestTerminating
     /**
      * The request.
      *
-     * @var Request
+     * @var ServerRequest
      */
-    public Request $request;
+    public ServerRequest $request;
 
     /**
      * The response.
@@ -40,10 +40,10 @@ class RequestTerminating
     /**
      * RequestTerminating constructor.
      *
-     * @param Request  $request
-     * @param Response $response
+     * @param ServerRequest $request
+     * @param Response      $response
      */
-    public function __construct(Request $request, Response $response)
+    public function __construct(ServerRequest $request, Response $response)
     {
         $this->request  = $request;
         $this->response = $response;

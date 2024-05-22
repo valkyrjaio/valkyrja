@@ -16,7 +16,7 @@ namespace Valkyrja\Client\Facades;
 use Valkyrja\Client\Contract\Client as Contract;
 use Valkyrja\Client\Driver\Contract\Driver;
 use Valkyrja\Facade\ContainerFacade;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Response\Contract\Response;
 
 /**
  * Class Client.

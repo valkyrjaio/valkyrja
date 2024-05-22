@@ -23,10 +23,10 @@ use Valkyrja\Auth\Contract\Auth;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Repository\Contract\Repository;
 use Valkyrja\Config\Constant\ConfigKeyPart;
-use Valkyrja\Http\Constants\StatusCode;
-use Valkyrja\Http\JsonResponse;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Constant\StatusCode;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\JsonResponse;
+use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Log\Facade\Logger;
 use Valkyrja\Routing\Middleware\Middleware;
 use Valkyrja\Routing\Url;
@@ -140,11 +140,11 @@ abstract class AuthMiddleware extends Middleware
     /**
      * Get the failed response.
      *
-     * @param Request $request The request
+     * @param ServerRequest $request The request
      *
      * @return Response
      */
-    protected static function getFailedResponse(Request $request): Response
+    protected static function getFailedResponse(ServerRequest $request): Response
     {
         if (static::$forceJson || $request->isXmlHttpRequest()) {
             return static::getFailedJsonResponse();

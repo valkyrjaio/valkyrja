@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Middleware;
 
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 
 /**
  * Trait MiddlewareAwareTrait.
@@ -64,12 +64,12 @@ trait MiddlewareAwareTrait
     /**
      * Dispatch middleware.
      *
-     * @param Request    $request    The request
-     * @param array|null $middleware [optional] The middleware to dispatch
+     * @param ServerRequest $request    The request
+     * @param array|null    $middleware [optional] The middleware to dispatch
      *
-     * @return Request|Response
+     * @return ServerRequest|Response
      */
-    public function requestMiddleware(Request $request, array|null $middleware = null): Response|Request
+    public function requestMiddleware(ServerRequest $request, array|null $middleware = null): Response|ServerRequest
     {
         // Set the middleware to any middleware passed or the base middleware
         $middleware ??= static::$middleware;
@@ -99,13 +99,13 @@ trait MiddlewareAwareTrait
     /**
      * Dispatch after request processed middleware.
      *
-     * @param Request    $request    The request
-     * @param Response   $response   The response
-     * @param array|null $middleware [optional] The middleware to dispatch
+     * @param ServerRequest $request    The request
+     * @param Response      $response   The response
+     * @param array|null    $middleware [optional] The middleware to dispatch
      *
      * @return Response
      */
-    public function responseMiddleware(Request $request, Response $response, array|null $middleware = null): Response
+    public function responseMiddleware(ServerRequest $request, Response $response, array|null $middleware = null): Response
     {
         // Set the middleware to any middleware passed or the base middleware
         $middleware ??= static::$middleware;
@@ -130,13 +130,13 @@ trait MiddlewareAwareTrait
     /**
      * Dispatch terminable middleware.
      *
-     * @param Request    $request    The request
-     * @param Response   $response   The response
-     * @param array|null $middleware [optional] The middleware to dispatch
+     * @param ServerRequest $request    The request
+     * @param Response      $response   The response
+     * @param array|null    $middleware [optional] The middleware to dispatch
      *
      * @return void
      */
-    public function terminableMiddleware(Request $request, Response $response, array|null $middleware = null): void
+    public function terminableMiddleware(ServerRequest $request, Response $response, array|null $middleware = null): void
     {
         // Set the middleware to any middleware passed or the base middleware
         $middleware ??= static::$middleware;

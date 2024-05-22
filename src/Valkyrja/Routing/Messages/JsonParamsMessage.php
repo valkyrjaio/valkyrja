@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Messages;
 
 use RuntimeException;
-use Valkyrja\Http\JsonRequest;
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\JsonServerRequest;
 
 /**
  * Trait JsonParamsMessage.
@@ -29,7 +29,7 @@ trait JsonParamsMessage
     /**
      * @inheritDoc
      */
-    protected static function getOnlyParamsFromRequest(JsonRequest|Request $request, int|string ...$values): array
+    protected static function getOnlyParamsFromRequest(JsonServerRequest|ServerRequest $request, int|string ...$values): array
     {
         static::ensureJsonRequest($request);
 
@@ -39,7 +39,7 @@ trait JsonParamsMessage
     /**
      * @inheritDoc
      */
-    protected static function getExceptParamsFromRequest(JsonRequest|Request $request, int|string ...$values): array
+    protected static function getExceptParamsFromRequest(JsonServerRequest|ServerRequest $request, int|string ...$values): array
     {
         static::ensureJsonRequest($request);
 
@@ -49,13 +49,13 @@ trait JsonParamsMessage
     /**
      * Ensure the request is a JsonRequest.
      *
-     * @param JsonRequest|Request $request The request
+     * @param JsonServerRequest|ServerRequest $request The request
      *
      * @return void
      */
-    protected static function ensureJsonRequest(JsonRequest|Request $request): void
+    protected static function ensureJsonRequest(JsonServerRequest|ServerRequest $request): void
     {
-        if (! is_a($request, JsonRequest::class)) {
+        if (! is_a($request, JsonServerRequest::class)) {
             throw new RuntimeException('Json Request is required for this to work.');
         }
     }

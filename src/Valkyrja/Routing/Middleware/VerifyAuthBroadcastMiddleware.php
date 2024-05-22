@@ -17,10 +17,10 @@ use JsonException;
 use Valkyrja\Auth\Contract\Auth;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Broadcast\Contract\Broadcast;
-use Valkyrja\Http\Constants\StatusCode;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Http\Constant\StatusCode;
+use Valkyrja\Http\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 
 /**
  * Class VerifyAuthBroadcastMiddleware.
@@ -41,7 +41,7 @@ class VerifyAuthBroadcastMiddleware extends Middleware
      *
      * @throws JsonException
      */
-    public static function before(Request $request): Request|Response
+    public static function before(ServerRequest $request): ServerRequest|Response
     {
         $container = self::getContainer();
         /** @var Auth $auth */
@@ -74,11 +74,11 @@ class VerifyAuthBroadcastMiddleware extends Middleware
     /**
      * Get the broadcast message from the request.
      *
-     * @param Request $request The request
+     * @param ServerRequest $request The request
      *
      * @return string|null
      */
-    protected static function getBroadCastMessageFromRequest(Request $request): string|null
+    protected static function getBroadCastMessageFromRequest(ServerRequest $request): string|null
     {
         // Here we default to pulling the broadcast message from the body to avoid having the message appear in
         // plain text in the query string for a normal GET request (either in logs, or elsewhere). Ideally

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Exception;
 
-use Valkyrja\Http\Constants\StatusCode;
-use Valkyrja\Http\Exceptions\HttpException;
+use Valkyrja\Http\Constant\StatusCode;
+use Valkyrja\Http\Exception\HttpException;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Middleware;
 
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Orm\Orm;
 use Valkyrja\Orm\RelationshipRepository;
@@ -41,7 +41,7 @@ class EntityMiddleware extends Middleware
     /**
      * @inheritDoc
      */
-    public static function before(Request $request): Request|Response
+    public static function before(ServerRequest $request): ServerRequest|Response
     {
         if (($route = self::$route ?? null) && ($matches = $route->getMatches()) !== null && $matches !== []) {
             static::checkParamsForEntities($route, $matches);

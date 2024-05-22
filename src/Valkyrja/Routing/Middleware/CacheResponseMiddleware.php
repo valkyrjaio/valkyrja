@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Middleware;
 
-use Valkyrja\Http\Constants\StatusCode;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Constant\StatusCode;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Support\Directory;
 
 use function base64_decode;
@@ -40,7 +40,7 @@ class CacheResponseMiddleware extends Middleware
     /**
      * @inheritDoc
      */
-    public static function before(Request $request): Request|Response
+    public static function before(ServerRequest $request): ServerRequest|Response
     {
         $filePath = Directory::cachePath('response/' . static::getHashedPath($request));
 
@@ -73,7 +73,7 @@ class CacheResponseMiddleware extends Middleware
     /**
      * @inheritDoc
      */
-    public static function terminate(Request $request, Response $response): void
+    public static function terminate(ServerRequest $request, Response $response): void
     {
         file_put_contents(
             Directory::cachePath('response/' . static::getHashedPath($request)),
@@ -94,11 +94,11 @@ class CacheResponseMiddleware extends Middleware
     /**
      * Get a hashed version of the request path.
      *
-     * @param Request $request
+     * @param ServerRequest $request
      *
      * @return string
      */
-    protected static function getHashedPath(Request $request): string
+    protected static function getHashedPath(ServerRequest $request): string
     {
         return md5($request->getUri()->getPath());
     }

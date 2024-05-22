@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing;
 
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 
 /**
  * Interface ExceptionMiddleware.
@@ -26,10 +26,10 @@ interface ExceptionMiddleware
     /**
      * Middleware handler for after an exception has been captured during dispatch.
      *
-     * @param Request  $request  The request
-     * @param Response $response The response
+     * @param ServerRequest $request  The request
+     * @param Response      $response The response
      *
      * @return Response
      */
-    public static function exception(Request $request, Response $response): Response;
+    public static function exception(ServerRequest $request, Response $response): Response;
 }

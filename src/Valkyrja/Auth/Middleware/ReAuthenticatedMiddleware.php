@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Middleware;
 
 use Valkyrja\Auth\Constant\RouteName;
-use Valkyrja\Http\Constants\StatusCode;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Constant\StatusCode;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Routing\Url;
 
 /**
@@ -29,11 +29,11 @@ class ReAuthenticatedMiddleware extends AuthMiddleware
     /**
      * Middleware handler for before a request is dispatched.
      *
-     * @param Request $request The request
+     * @param ServerRequest $request The request
      *
-     * @return Request|Response
+     * @return ServerRequest|Response
      */
-    public static function before(Request $request): Request|Response
+    public static function before(ServerRequest $request): ServerRequest|Response
     {
         if (static::getRepository()->isReAuthenticationRequired()) {
             return static::getFailedAuthenticationResponse($request);
@@ -45,11 +45,11 @@ class ReAuthenticatedMiddleware extends AuthMiddleware
     /**
      * Get the failed authentication response.
      *
-     * @param Request $request The request
+     * @param ServerRequest $request The request
      *
      * @return Response
      */
-    protected static function getFailedAuthenticationResponse(Request $request): Response
+    protected static function getFailedAuthenticationResponse(ServerRequest $request): Response
     {
         if ($request->isXmlHttpRequest()) {
             return self::getResponseFactory()->createJsonResponse([], StatusCode::LOCKED);

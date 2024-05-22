@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Middleware;
 
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 
 /**
  * Class ValidateParsedBodyRequestMiddleware.
@@ -27,7 +27,7 @@ abstract class ValidateParsedBodyParamsRequestMiddleware extends ValidateRequest
     /**
      * @inheritDoc
      */
-    protected static function getParamFromRequest(Request $request, string $param): mixed
+    protected static function getParamFromRequest(ServerRequest $request, string $param): mixed
     {
         return $request->getParsedBodyParam($param);
     }

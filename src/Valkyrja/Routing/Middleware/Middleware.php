@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Middleware;
 
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Http\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 
@@ -58,11 +58,11 @@ abstract class Middleware
     /**
      * Middleware handler for before a request is dispatched.
      *
-     * @param Request $request The request
+     * @param ServerRequest $request The request
      *
-     * @return Request|Response
+     * @return ServerRequest|Response
      */
-    public static function before(Request $request): Request|Response
+    public static function before(ServerRequest $request): ServerRequest|Response
     {
         // Do logic using the request before it is processed by the controller action, here
 
@@ -72,12 +72,12 @@ abstract class Middleware
     /**
      * Middleware handler for after a request is dispatched.
      *
-     * @param Request  $request  The request
-     * @param Response $response The response
+     * @param ServerRequest $request  The request
+     * @param Response      $response The response
      *
      * @return Response
      */
-    public static function after(Request $request, Response $response): Response
+    public static function after(ServerRequest $request, Response $response): Response
     {
         // Modify the response after its been processed by the controller action, here
 
@@ -87,12 +87,12 @@ abstract class Middleware
     /**
      * Middleware handler run when the application is terminating.
      *
-     * @param Request  $request  The request
-     * @param Response $response The response
+     * @param ServerRequest $request  The request
+     * @param Response      $response The response
      *
      * @return void
      */
-    public static function terminate(Request $request, Response $response): void
+    public static function terminate(ServerRequest $request, Response $response): void
     {
         // Do stuff after termination (after the response has been sent) here
     }

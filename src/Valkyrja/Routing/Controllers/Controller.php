@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Controllers;
 
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Http\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 
@@ -36,9 +36,9 @@ abstract class Controller
     /**
      * The request.
      *
-     * @var Request
+     * @var ServerRequest
      */
-    private static Request $request;
+    private static ServerRequest $request;
 
     /**
      * The response factory.
@@ -74,11 +74,11 @@ abstract class Controller
     /**
      * The request.
      *
-     * @return Request
+     * @return ServerRequest
      */
-    protected static function getRequest(): Request
+    protected static function getRequest(): ServerRequest
     {
-        return self::$request ??= self::getContainer()->getSingleton(Request::class);
+        return self::$request ??= self::getContainer()->getSingleton(ServerRequest::class);
     }
 
     /**

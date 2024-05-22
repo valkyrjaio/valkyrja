@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Constant;
 
-use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Http\Constants\StatusCode;
+use Valkyrja\Http\Constant\RequestMethod;
+use Valkyrja\Http\Constant\StatusCode;
 
 /**
  * Constant AliasClass.

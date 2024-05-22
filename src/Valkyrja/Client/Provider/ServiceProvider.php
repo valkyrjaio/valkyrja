@@ -24,7 +24,7 @@ use Valkyrja\Client\Factory\Contract\Factory;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Http\Factory\Contract\ResponseFactory;
 use Valkyrja\Log\Contract\Logger;
 
 /**

@@ -16,11 +16,11 @@ namespace Valkyrja\HttpKernel;
 use Throwable;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Event\Contract\Dispatcher as Events;
-use Valkyrja\Http\Constants\StatusCode;
-use Valkyrja\Http\Exceptions\HttpException;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Http\Constant\StatusCode;
+use Valkyrja\Http\Exception\HttpException;
+use Valkyrja\Http\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\HttpKernel\Contract\Kernel as Contract;
 use Valkyrja\HttpKernel\Event\RequestHandled;
 use Valkyrja\HttpKernel\Event\RequestTerminating;
@@ -53,9 +53,9 @@ class Kernel implements Contract
     /**
      * The request.
      *
-     * @var Request
+     * @var ServerRequest
      */
-    protected Request $request;
+    protected ServerRequest $request;
 
     /**
      * The errors template directory.
@@ -89,7 +89,7 @@ class Kernel implements Contract
      *
      * @throws Throwable
      */
-    public function handle(Request $request): Response
+    public function handle(ServerRequest $request): Response
     {
         $this->request = $request;
 
@@ -129,7 +129,7 @@ class Kernel implements Contract
     /**
      * @inheritDoc
      */
-    public function terminate(Request $request, Response $response): void
+    public function terminate(ServerRequest $request, Response $response): void
     {
         try {
             // Trigger an event for the request being terminated
@@ -152,7 +152,7 @@ class Kernel implements Contract
      *
      * @throws Throwable
      */
-    public function run(Request $request): void
+    public function run(ServerRequest $request): void
     {
         // Handle the request, dispatch the after request middleware
         $response = $this->handle($request);
@@ -166,14 +166,14 @@ class Kernel implements Contract
     /**
      * Dispatch the request via the router.
      *
-     * @param Request $request The request
+     * @param ServerRequest $request The request
      *
      * @return Response
      */
-    protected function dispatchRouter(Request $request): Response
+    protected function dispatchRouter(ServerRequest $request): Response
     {
         // Set the request object in the container
-        $this->container->setSingleton(Request::class, $request);
+        $this->container->setSingleton(ServerRequest::class, $request);
 
         // Dispatch the before request handled middleware
         $requestAfterMiddleware = $this->requestMiddleware($request);
@@ -184,7 +184,7 @@ class Kernel implements Contract
         }
 
         // Set the returned request in the container
-        $this->container->setSingleton(Request::class, $requestAfterMiddleware);
+        $this->container->setSingleton(ServerRequest::class, $requestAfterMiddleware);
 
         return $this->router->dispatch($requestAfterMiddleware);
     }
@@ -280,12 +280,12 @@ class Kernel implements Contract
     /**
      * Terminate a route's middleware.
      *
-     * @param Request  $request  The request
-     * @param Response $response The response
+     * @param ServerRequest $request  The request
+     * @param Response      $response The response
      *
      * @return void
      */
-    protected function terminateRoute(Request $request, Response $response): void
+    protected function terminateRoute(ServerRequest $request, Response $response): void
     {
         try {
             /** @var Route $route */

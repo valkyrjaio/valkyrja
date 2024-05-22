@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Messages;
 
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Type\Enum\Arrayable;
 
 /**
@@ -28,7 +28,7 @@ trait Message
     /**
      * @inheritDoc
      */
-    public static function getDataFromRequest(Request $request): array
+    public static function getDataFromRequest(ServerRequest $request): array
     {
         return static::getOnlyParamsFromRequest($request, ...static::values());
     }
@@ -36,7 +36,7 @@ trait Message
     /**
      * @inheritDoc
      */
-    public static function determineIfRequestContainsExtraData(Request $request): bool
+    public static function determineIfRequestContainsExtraData(ServerRequest $request): bool
     {
         return ! empty(static::getExceptParamsFromRequest($request, ...static::values()));
     }
@@ -52,20 +52,20 @@ trait Message
     /**
      * Get only the specified request params.
      *
-     * @param Request    $request   The request
-     * @param int|string ...$values The values
+     * @param ServerRequest $request   The request
+     * @param int|string    ...$values The values
      *
      * @return array
      */
-    abstract protected static function getOnlyParamsFromRequest(Request $request, int|string ...$values): array;
+    abstract protected static function getOnlyParamsFromRequest(ServerRequest $request, int|string ...$values): array;
 
     /**
      * Get all request params except the ones specified.
      *
-     * @param Request    $request   The request
-     * @param int|string ...$values The values
+     * @param ServerRequest $request   The request
+     * @param int|string    ...$values The values
      *
      * @return array
      */
-    abstract protected static function getExceptParamsFromRequest(Request $request, int|string ...$values): array;
+    abstract protected static function getExceptParamsFromRequest(ServerRequest $request, int|string ...$values): array;
 }

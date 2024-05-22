@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Facades;
 
 use Valkyrja\Facade\ContainerFacade;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
@@ -34,10 +34,10 @@ use Valkyrja\Routing\Router as Contract;
  * @method static Route      getRoute(string $name)
  * @method static bool       hasRoute(string $name)
  * @method static string     getUrl(string $name, array $data = null, bool $absolute = null)
- * @method static Route      getRouteFromRequest(Request $request)
+ * @method static Route      getRouteFromRequest(ServerRequest $request)
  * @method static Route|null getRouteByPath(string $path, string $method = null)
  * @method static bool       isInternalUri(string $uri)
- * @method static Response   dispatch(Request $request)
+ * @method static Response   dispatch(ServerRequest $request)
  */
 class Router extends ContainerFacade
 {

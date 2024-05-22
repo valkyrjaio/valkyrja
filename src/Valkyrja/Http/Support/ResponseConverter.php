@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Support;
 
 use Psr\Http\Message\ResponseInterface;
-use Valkyrja\Http\Facades\ResponseFactory;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Facade\ResponseFactory;
+use Valkyrja\Http\Response\Contract\Response;
 
 /**
  * Class ResponseConverter.

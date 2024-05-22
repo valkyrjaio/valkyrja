@@ -15,10 +15,10 @@ namespace Valkyrja\Client\Adapter;
 
 use JsonException;
 use Valkyrja\Client\Adapter\Contract\LogAdapter as Contract;
-use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Http\Constant\RequestMethod;
+use Valkyrja\Http\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Log\Driver\Contract\Driver as Logger;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 
@@ -69,7 +69,7 @@ class LogAdapter implements Contract
      *
      * @throws JsonException
      */
-    public function request(Request $request): Response
+    public function request(ServerRequest $request): Response
     {
         $optionsString = Obj::toString($request);
 
@@ -85,7 +85,7 @@ class LogAdapter implements Contract
      *
      * @throws JsonException
      */
-    public function get(Request $request): Response
+    public function get(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::GET));
     }
@@ -95,7 +95,7 @@ class LogAdapter implements Contract
      *
      * @throws JsonException
      */
-    public function post(Request $request): Response
+    public function post(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::POST));
     }
@@ -105,7 +105,7 @@ class LogAdapter implements Contract
      *
      * @throws JsonException
      */
-    public function head(Request $request): Response
+    public function head(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::HEAD));
     }
@@ -115,7 +115,7 @@ class LogAdapter implements Contract
      *
      * @throws JsonException
      */
-    public function put(Request $request): Response
+    public function put(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::PUT));
     }
@@ -125,7 +125,7 @@ class LogAdapter implements Contract
      *
      * @throws JsonException
      */
-    public function patch(Request $request): Response
+    public function patch(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::PATCH));
     }
@@ -135,7 +135,7 @@ class LogAdapter implements Contract
      *
      * @throws JsonException
      */
-    public function delete(Request $request): Response
+    public function delete(ServerRequest $request): Response
     {
         return $this->request($request->withMethod(RequestMethod::DELETE));
     }

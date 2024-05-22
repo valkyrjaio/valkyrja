@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Attributes\Route;
 
 use Attribute;
-use Valkyrja\Http\Constants\RequestMethod;
+use Valkyrja\Http\Constant\RequestMethod;
 use Valkyrja\Routing\Attributes\Route;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Message;

@@ -15,8 +15,8 @@ namespace Valkyrja\Auth\Middleware;
 
 use Exception;
 use Valkyrja\Auth\Entity\Contract\User;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 
 /**
  * Abstract Class AuthorizedMiddleware.
@@ -28,7 +28,7 @@ abstract class AuthorizedMiddleware extends AuthMiddleware
     /**
      * @inheritDoc
      */
-    public static function before(Request $request): Request|Response
+    public static function before(ServerRequest $request): ServerRequest|Response
     {
         try {
             // Check if the user is authorized
@@ -46,10 +46,10 @@ abstract class AuthorizedMiddleware extends AuthMiddleware
     /**
      * Check if the authenticated user is authorized.
      *
-     * @param Request $request The request
-     * @param User    $user    The authenticated user
+     * @param ServerRequest $request The request
+     * @param User          $user    The authenticated user
      *
      * @return bool
      */
-    abstract protected static function checkAuthorized(Request $request, User $user): bool;
+    abstract protected static function checkAuthorized(ServerRequest $request, User $user): bool;
 }

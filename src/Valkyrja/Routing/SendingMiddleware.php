@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing;
 
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 
 /**
  * Interface SendingMiddleware.
@@ -26,10 +26,10 @@ interface SendingMiddleware
     /**
      * Middleware handler for before a response has been sent.
      *
-     * @param Request  $request  The request
-     * @param Response $response The response
+     * @param ServerRequest $request  The request
+     * @param Response      $response The response
      *
      * @return Response
      */
-    public static function sending(Request $request, Response $response): Response;
+    public static function sending(ServerRequest $request, Response $response): Response;
 }

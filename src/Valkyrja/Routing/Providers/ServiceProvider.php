@@ -21,8 +21,8 @@ use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Dispatcher\Validator\Contract\Validator;
 use Valkyrja\Event\Contract\Dispatcher as Events;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Http\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Routing\Annotator;
 use Valkyrja\Routing\Attributes;
@@ -193,7 +193,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Url::class,
             new \Valkyrja\Routing\Urls\Url(
-                $container->getSingleton(Request::class),
+                $container->getSingleton(ServerRequest::class),
                 $container->getSingleton(Router::class),
                 $config['routing']
             )

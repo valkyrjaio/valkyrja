@@ -24,7 +24,7 @@ use Valkyrja\Auth\Exception\InvalidCurrentAuthenticationException;
 use Valkyrja\Auth\Exception\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\Repository as Contract;
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Session\Driver as Session;
 use Valkyrja\Session\Session as SessionManager;
 
@@ -182,7 +182,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function authenticateFromRequest(Request $request): static
+    public function authenticateFromRequest(ServerRequest $request): static
     {
         /** @var class-string<User> $userClassName */
         $userClassName = $this->userEntityName;

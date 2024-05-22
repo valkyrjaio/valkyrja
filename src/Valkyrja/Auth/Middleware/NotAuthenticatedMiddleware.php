@@ -15,9 +15,9 @@ namespace Valkyrja\Auth\Middleware;
 
 use Valkyrja\Auth\Constant\RouteName;
 use Valkyrja\Config\Constant\ConfigKeyPart;
-use Valkyrja\Http\Constants\StatusCode;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Constant\StatusCode;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Routing\Url;
 
 /**
@@ -37,7 +37,7 @@ class NotAuthenticatedMiddleware extends AuthMiddleware
     /**
      * @inheritDoc
      */
-    public static function before(Request $request): Request|Response
+    public static function before(ServerRequest $request): ServerRequest|Response
     {
         $repository = static::getRepository();
 

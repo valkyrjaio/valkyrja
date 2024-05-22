@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Messages;
 
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 
 /**
  * Trait ParsedBodyParamsMessage.
@@ -27,7 +27,7 @@ trait ParsedBodyParamsMessage
     /**
      * @inheritDoc
      */
-    protected static function getOnlyParamsFromRequest(Request $request, int|string ...$values): array
+    protected static function getOnlyParamsFromRequest(ServerRequest $request, int|string ...$values): array
     {
         return $request->onlyParsedBody($values);
     }
@@ -35,7 +35,7 @@ trait ParsedBodyParamsMessage
     /**
      * @inheritDoc
      */
-    protected static function getExceptParamsFromRequest(Request $request, int|string ...$values): array
+    protected static function getExceptParamsFromRequest(ServerRequest $request, int|string ...$values): array
     {
         return $request->exceptParsedBody($values);
     }

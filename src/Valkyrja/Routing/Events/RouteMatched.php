@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Events;
 
 use Valkyrja\Event\Constant\Event;
-use Valkyrja\Http\Request;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Routing\Route;
 
 /**
@@ -34,17 +34,17 @@ class RouteMatched implements Event
     /**
      * The request.
      *
-     * @var Request
+     * @var ServerRequest
      */
-    public Request $request;
+    public ServerRequest $request;
 
     /**
      * RouteMatched constructor.
      *
-     * @param Route   $route   The route
-     * @param Request $request The request
+     * @param Route         $route   The route
+     * @param ServerRequest $request The request
      */
-    public function __construct(Route $route, Request $request)
+    public function __construct(Route $route, ServerRequest $request)
     {
         $this->route   = $route;
         $this->request = $request;

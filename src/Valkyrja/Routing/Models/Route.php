@@ -15,7 +15,7 @@ namespace Valkyrja\Routing\Models;
 
 use InvalidArgumentException;
 use Valkyrja\Dispatcher\Model\Dispatch;
-use Valkyrja\Http\Constants\RequestMethod;
+use Valkyrja\Http\Constant\RequestMethod;
 use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Message;
 use Valkyrja\Routing\Route as Contract;

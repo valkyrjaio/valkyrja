@@ -16,8 +16,8 @@ namespace Valkyrja\Routing\Dispatchers;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Contract\Dispatcher as Events;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Http\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Config\Config;
 use Valkyrja\Routing\Matcher;
@@ -64,7 +64,7 @@ class MessageCapableRouter extends Router
     /**
      * @inheritDoc
      */
-    public function getRouteFromRequest(Request $request): Route
+    public function getRouteFromRequest(ServerRequest $request): Route
     {
         $route = parent::getRouteFromRequest($request);
 
@@ -101,24 +101,24 @@ class MessageCapableRouter extends Router
     }
 
     /**
-     * @param Request               $request The request
+     * @param ServerRequest         $request The request
      * @param class-string<Message> $message The message class name
      *
      * @return void
      */
-    protected function ensureRequestConformsToMessage(Request $request, string $message): void
+    protected function ensureRequestConformsToMessage(ServerRequest $request, string $message): void
     {
         $this->ensureRequestHasNoExtraData($request, $message);
         $this->ensureRequestIsValid($request, $message);
     }
 
     /**
-     * @param Request               $request The request
+     * @param ServerRequest         $request The request
      * @param class-string<Message> $message The message class name
      *
      * @return void
      */
-    protected function ensureRequestHasNoExtraData(Request $request, string $message): void
+    protected function ensureRequestHasNoExtraData(ServerRequest $request, string $message): void
     {
         // If there is extra data
         if ($message::determineIfRequestContainsExtraData($request)) {
@@ -128,23 +128,23 @@ class MessageCapableRouter extends Router
     }
 
     /**
-     * @param Request               $request The request
+     * @param ServerRequest         $request The request
      * @param class-string<Message> $message The message class name
      *
      * @return void
      */
-    protected function abortDueToExtraData(Request $request, string $message): void
+    protected function abortDueToExtraData(ServerRequest $request, string $message): void
     {
         Abort::abort413();
     }
 
     /**
-     * @param Request               $request The request
+     * @param ServerRequest         $request The request
      * @param class-string<Message> $message The message class name
      *
      * @return void
      */
-    protected function ensureRequestIsValid(Request $request, string $message): void
+    protected function ensureRequestIsValid(ServerRequest $request, string $message): void
     {
         if (($messageRules = $message::getValidationRules()) === null || empty($messageRules)) {
             return;
@@ -159,12 +159,12 @@ class MessageCapableRouter extends Router
     }
 
     /**
-     * @param Request               $request The request
+     * @param ServerRequest         $request The request
      * @param class-string<Message> $message The message class name
      *
      * @return void
      */
-    protected function abortDueToValidationErrors(Request $request, string $message): void
+    protected function abortDueToValidationErrors(ServerRequest $request, string $message): void
     {
         Abort::abort400();
     }

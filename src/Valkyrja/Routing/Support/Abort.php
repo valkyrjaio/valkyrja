@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Support;
 
-use Valkyrja\Http\Constants\StatusCode;
-use Valkyrja\Http\Constants\StatusText;
-use Valkyrja\Http\Exceptions\HttpException;
-use Valkyrja\Http\Exceptions\HttpRedirectException;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Constant\StatusCode;
+use Valkyrja\Http\Constant\StatusText;
+use Valkyrja\Http\Exception\HttpException;
+use Valkyrja\Http\Exception\HttpRedirectException;
+use Valkyrja\Http\Response\Contract\Response;
 
 /**
  * Class Abort.

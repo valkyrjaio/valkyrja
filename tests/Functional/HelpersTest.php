@@ -25,13 +25,13 @@ use Valkyrja\Console\Output\Output;
 use Valkyrja\Container\Container;
 use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Filesystem\Filesystem;
-use Valkyrja\Http\Exceptions\HttpException;
-use Valkyrja\Http\Exceptions\HttpRedirectException;
-use Valkyrja\Http\Factories\ResponseFactory;
-use Valkyrja\Http\Requests\Request;
-use Valkyrja\Http\Responses\JsonResponse;
-use Valkyrja\Http\Responses\RedirectResponse;
-use Valkyrja\Http\Responses\Response;
+use Valkyrja\Http\Exception\HttpException;
+use Valkyrja\Http\Exception\HttpRedirectException;
+use Valkyrja\Http\Factory\ResponseFactory;
+use Valkyrja\Http\Request\ServerRequest;
+use Valkyrja\Http\Response\JsonResponse;
+use Valkyrja\Http\Response\RedirectResponse;
+use Valkyrja\Http\Response\Response;
 use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Log\Logger;
 use Valkyrja\Routing\Dispatchers\Router;
@@ -252,7 +252,7 @@ class HelpersTest extends TestCase
      */
     public function testRequest(): void
     {
-        self::assertTrue(\Valkyrja\request() instanceof Request);
+        self::assertTrue(\Valkyrja\request() instanceof ServerRequest);
     }
 
     /**

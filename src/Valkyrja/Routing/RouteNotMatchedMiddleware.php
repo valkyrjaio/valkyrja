@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing;
 
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Response\Contract\Response;
 
 /**
  * Interface RouteNotMatchedMiddleware.
@@ -26,10 +26,10 @@ interface RouteNotMatchedMiddleware
     /**
      * Middleware handler for after a route has not been matched.
      *
-     * @param Request  $request  The request
-     * @param Response $response The response
+     * @param ServerRequest $request  The request
+     * @param Response      $response The response
      *
      * @return Response
      */
-    public static function routeNotMatched(Request $request, Response $response): Response;
+    public static function routeNotMatched(ServerRequest $request, Response $response): Response;
 }
