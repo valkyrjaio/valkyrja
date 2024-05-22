@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Api\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Api\Apis\Api;
+use Valkyrja\Api\Api;
 use Valkyrja\Api\Contract\Api as Contract;
 use Valkyrja\Api\Provider\ServiceProvider;
 use Valkyrja\Http\ResponseFactory;

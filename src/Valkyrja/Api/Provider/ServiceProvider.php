@@ -59,7 +59,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Api::class,
-            new \Valkyrja\Api\Apis\Api(
+            new \Valkyrja\Api\Api(
                 $container->getSingleton(ResponseFactory::class),
                 $config['api'],
                 $config['app']['debug']

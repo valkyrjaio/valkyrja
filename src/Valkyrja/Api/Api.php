@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Api\Apis;
+namespace Valkyrja\Api;
 
 use Exception;
 use Valkyrja\Api\Config\Config;
