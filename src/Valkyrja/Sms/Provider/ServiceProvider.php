@@ -79,7 +79,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Sms::class,
-            new \Valkyrja\Sms\Manager\Sms(
+            new \Valkyrja\Sms\Sms(
                 $container->getSingleton(Factory::class),
                 $config['sms']
             )
