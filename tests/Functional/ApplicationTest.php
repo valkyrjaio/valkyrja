@@ -21,7 +21,7 @@ use Valkyrja\Config\Command\ConfigCache;
 use Valkyrja\Config\Constant\ConfigKey;
 use Valkyrja\Console\Contract\Console;
 use Valkyrja\Console\Kernel\Contract\Kernel as ConsoleKernel;
-use Valkyrja\Container\Managers\Container;
+use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Dispatchers\Dispatcher as Events;
 use Valkyrja\Filesystem\Filesystem;

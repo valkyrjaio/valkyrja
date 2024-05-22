@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Container;
 
 use ReflectionClass;
 use Valkyrja\Container\Config;
-use Valkyrja\Container\Managers\Container;
+use Valkyrja\Container\Container;
 use Valkyrja\Tests\Classes\Container\Provides;
 use Valkyrja\Tests\Unit\TestCase;
 

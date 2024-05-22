@@ -15,10 +15,10 @@ namespace Valkyrja\Tests\Unit\Container;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Container\Annotation\Contract\Annotations;
+use Valkyrja\Container\CacheableContainer;
 use Valkyrja\Container\Config;
 use Valkyrja\Container\Config\Container as ContainerConfig;
 use Valkyrja\Container\Constant\Provider;
-use Valkyrja\Container\Managers\CacheableContainer;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

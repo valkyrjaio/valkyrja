@@ -22,7 +22,7 @@ use Valkyrja\Console\Console;
 use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Kernel\Kernel as ConsoleKernel;
 use Valkyrja\Console\Output\Output;
-use Valkyrja\Container\Managers\Container;
+use Valkyrja\Container\Container;
 use Valkyrja\Event\Dispatchers\Dispatcher as Events;
 use Valkyrja\Filesystem\Managers\Filesystem;
 use Valkyrja\Http\Exceptions\HttpException;

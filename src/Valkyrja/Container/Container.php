@@ -11,11 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Managers;
+namespace Valkyrja\Container;
 
 use Closure;
 use RuntimeException;
-use Valkyrja\Container\Config;
 use Valkyrja\Container\Contract\Container as Contract;
 use Valkyrja\Container\Contract\Service;
 use Valkyrja\Support\Provider\ProvidersAwareTrait;

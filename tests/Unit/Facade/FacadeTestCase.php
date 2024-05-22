@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Facade;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Container\Config;
-use Valkyrja\Container\Managers\Container;
+use Valkyrja\Container\Container;
 use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Tests\Unit\TestCase;
 
