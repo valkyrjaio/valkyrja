@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Asset\Managers;
+namespace Valkyrja\Asset;
 
 use Valkyrja\Asset\Adapter\Contract\Adapter;
 use Valkyrja\Asset\Contract\Asset as Contract;
