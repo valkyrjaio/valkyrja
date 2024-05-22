@@ -157,6 +157,30 @@ class DirectoryTest extends TestCase
     }
 
     /**
+     * Test the envPath directory helper method.
+     *
+     * @return void
+     */
+    public function testEnvPath(): void
+    {
+        $expected = $this->basePath . Directory::DIRECTORY_SEPARATOR . Directory::$ENV_PATH;
+
+        self::assertSame($expected, Directory::envPath());
+    }
+
+    /**
+     * Test the envPath directory helper method with a sub path.
+     *
+     * @return void
+     */
+    public function testEnvPathSubPath(): void
+    {
+        $expected = $this->basePath . Directory::DIRECTORY_SEPARATOR . Directory::$ENV_PATH . $this->subPath;
+
+        self::assertSame($expected, Directory::envPath($this->subPath));
+    }
+
+    /**
      * Test the publicPath directory helper method.
      *
      * @return void
