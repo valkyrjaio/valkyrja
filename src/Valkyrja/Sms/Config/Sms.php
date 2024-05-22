@@ -15,10 +15,10 @@ namespace Valkyrja\Sms\Config;
 
 use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Sms\Adapters\LogAdapter;
-use Valkyrja\Sms\Adapters\NullAdapter;
-use Valkyrja\Sms\Config\Config as Model;
-use Valkyrja\Sms\Constants\ConfigValue;
+use Valkyrja\Sms\Adapter\LogAdapter;
+use Valkyrja\Sms\Adapter\NullAdapter;
+use Valkyrja\Sms\Config as Model;
+use Valkyrja\Sms\Constant\ConfigValue;
 
 use function Valkyrja\env;
 

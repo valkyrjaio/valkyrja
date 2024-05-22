@@ -21,7 +21,7 @@ use Valkyrja\Mail\Contract\Mail;
 use Valkyrja\Notification\Contract\Notification;
 use Valkyrja\Notification\Factory\ContainerFactory;
 use Valkyrja\Notification\Factory\Contract\Factory;
-use Valkyrja\Sms\Sms;
+use Valkyrja\Sms\Contract\Sms;
 
 /**
  * Class ServiceProvider.

@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Sms\Adapters;
+namespace Valkyrja\Sms\Adapter;
 
 use Exception;
-use Valkyrja\Sms\Message;
-use Valkyrja\Sms\VonageAdapter as Contract;
+use Valkyrja\Sms\Adapter\Contract\VonageAdapter as Contract;
+use Valkyrja\Sms\Message\Contract\Message;
 use Vonage\Client as Vonage;
 
 /**

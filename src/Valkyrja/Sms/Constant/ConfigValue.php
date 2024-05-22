@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Sms\Constants;
+namespace Valkyrja\Sms\Constant;
 
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Sms\Adapters\LogAdapter;
-use Valkyrja\Sms\Adapters\NullAdapter;
-use Valkyrja\Sms\Adapters\VonageAdapter;
-use Valkyrja\Sms\Drivers\Driver;
-use Valkyrja\Sms\Messages\Message;
+use Valkyrja\Sms\Adapter\LogAdapter;
+use Valkyrja\Sms\Adapter\NullAdapter;
+use Valkyrja\Sms\Adapter\VonageAdapter;
+use Valkyrja\Sms\Driver\Driver;
+use Valkyrja\Sms\Message\Message;
 
 /**
  * Constant ConfigValue.

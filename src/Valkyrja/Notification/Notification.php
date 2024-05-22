@@ -19,7 +19,7 @@ use Valkyrja\Notification\Contract\Notification as Contract;
 use Valkyrja\Notification\Data\Contract\Notify;
 use Valkyrja\Notification\Entity\Contract\NotifiableUser;
 use Valkyrja\Notification\Factory\Contract\Factory;
-use Valkyrja\Sms\Sms;
+use Valkyrja\Sms\Contract\Sms;
 
 /**
  * Class Notification.

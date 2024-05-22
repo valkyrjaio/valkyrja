@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Sms\Drivers;
+namespace Valkyrja\Sms\Driver;
 
 use Valkyrja\Manager\Drivers\Driver as ParentDriver;
-use Valkyrja\Sms\Adapter;
-use Valkyrja\Sms\Driver as Contract;
-use Valkyrja\Sms\Message;
+use Valkyrja\Sms\Adapter\Contract\Adapter;
+use Valkyrja\Sms\Driver\Contract\Driver as Contract;
+use Valkyrja\Sms\Message\Contract\Message;
 
 /**
  * Class Driver.

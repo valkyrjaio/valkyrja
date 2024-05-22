@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Sms;
+namespace Valkyrja\Sms\Adapter\Contract;
 
 /**
- * Interface VonageAdapter.
+ * Interface LogAdapter.
  *
  * @author Melech Mizrachi
  */
-interface VonageAdapter extends Adapter
+interface LogAdapter extends Adapter
 {
 }

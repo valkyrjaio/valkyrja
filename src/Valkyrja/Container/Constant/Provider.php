@@ -37,7 +37,7 @@ use Valkyrja\Path\Provider\ServiceProvider as PathServiceProvider;
 use Valkyrja\Reflection\Provider\ServiceProvider as ReflectionServiceProvider;
 use Valkyrja\Routing\Providers\ServiceProvider as RoutingServiceProvider;
 use Valkyrja\Session\Provider\ServiceProvider as SessionServiceProvider;
-use Valkyrja\Sms\Providers\ServiceProvider as SMSServiceProvider;
+use Valkyrja\Sms\Provider\ServiceProvider as SMSServiceProvider;
 use Valkyrja\Validation\Providers\ServiceProvider as ValidationServiceProvider;
 use Valkyrja\View\Providers\ServiceProvider as ViewServiceProvider;
 

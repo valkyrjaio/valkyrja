@@ -15,7 +15,7 @@ namespace Valkyrja\Notification\Data\Contract;
 
 use Valkyrja\Broadcast\Message\Contract\Message as BroadcastMessage;
 use Valkyrja\Mail\Message\Contract\Message as MailMessage;
-use Valkyrja\Sms\Message as SMSMessage;
+use Valkyrja\Sms\Message\Contract\Message as SMSMessage;
 
 /**
  * Interface Notify.

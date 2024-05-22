@@ -11,33 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Sms;
+namespace Valkyrja\Sms\Adapter\Contract;
 
-use Valkyrja\Manager\Contract\MessageManager as Manager;
+use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
+use Valkyrja\Sms\Message\Contract\Message;
 
 /**
- * Interface Sms.
+ * Interface Adapter.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Driver, Factory, Message>
  */
-interface Sms extends Manager
+interface Adapter extends Contract
 {
-    /**
-     * @inheritDoc
-     *
-     * @return Driver
-     */
-    public function use(string|null $name = null): Driver;
-
-    /**
-     * @inheritDoc
-     *
-     * @return Message
-     */
-    public function createMessage(string|null $name = null, array $data = []): Message;
-
     /**
      * Send a message.
      *

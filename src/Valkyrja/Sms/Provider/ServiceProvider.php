@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Sms\Providers;
+namespace Valkyrja\Sms\Provider;
 
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Sms\Adapter;
-use Valkyrja\Sms\Factories\ContainerFactory;
-use Valkyrja\Sms\Factory;
-use Valkyrja\Sms\LogAdapter;
-use Valkyrja\Sms\Message;
-use Valkyrja\Sms\Sms;
-use Valkyrja\Sms\VonageAdapter;
+use Valkyrja\Sms\Adapter\Contract\Adapter;
+use Valkyrja\Sms\Adapter\Contract\LogAdapter;
+use Valkyrja\Sms\Adapter\Contract\VonageAdapter;
+use Valkyrja\Sms\Contract\Sms;
+use Valkyrja\Sms\Factory\ContainerFactory;
+use Valkyrja\Sms\Factory\Contract\Factory;
+use Valkyrja\Sms\Message\Contract\Message;
 use Vonage\Client as Vonage;
 use Vonage\Client\Credentials\Basic;
 
@@ -79,7 +79,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Sms::class,
-            new \Valkyrja\Sms\Managers\Sms(
+            new \Valkyrja\Sms\Manager\Sms(
                 $container->getSingleton(Factory::class),
                 $config['sms']
             )

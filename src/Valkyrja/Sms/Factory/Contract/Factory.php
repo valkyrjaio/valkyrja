@@ -11,9 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Sms;
+namespace Valkyrja\Sms\Factory\Contract;
 
 use Valkyrja\Manager\Factories\Contract\MessageFactory as Contract;
+use Valkyrja\Sms\Adapter\Contract\Adapter;
+use Valkyrja\Sms\Driver\Contract\Driver;
+use Valkyrja\Sms\Message\Contract\Message;
 
 /**
  * Interface Factory.
