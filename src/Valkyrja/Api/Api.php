@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Api;
 
 use Exception;
-use Valkyrja\Api\Config\Config;
 use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Contract\Api as Contract;
 use Valkyrja\Api\Model\Contract\Json;

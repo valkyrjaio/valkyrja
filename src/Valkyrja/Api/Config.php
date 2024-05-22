@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Api\Config;
+namespace Valkyrja\Api;
 
 use Valkyrja\Api\Model\Contract\Json;
 use Valkyrja\Api\Model\Contract\JsonData;

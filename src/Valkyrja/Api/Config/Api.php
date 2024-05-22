@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api\Config;
 
-use Valkyrja\Api\Config\Config as Model;
+use Valkyrja\Api\Config as Model;
 use Valkyrja\Api\Constant\ConfigValue;
 
 /**
