@@ -20,7 +20,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Log\Logger;
+use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Mail\Adapter;
 use Valkyrja\Mail\Driver;
 use Valkyrja\Mail\Factories\ContainerFactory;

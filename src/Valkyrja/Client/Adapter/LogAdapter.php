@@ -19,7 +19,7 @@ use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\Log\Driver as Logger;
+use Valkyrja\Log\Driver\Contract\Driver as Logger;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 
 /**

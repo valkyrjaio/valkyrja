@@ -29,7 +29,7 @@ use Valkyrja\Filesystem\Provider\ServiceProvider as FilesystemServiceProvider;
 use Valkyrja\Http\Providers\ServiceProvider as HttpServiceProvider;
 use Valkyrja\HttpKernel\Provider\ServiceProvider as HttpKernelServiceProvider;
 use Valkyrja\Jwt\Provider\ServiceProvider as JWTServiceProvider;
-use Valkyrja\Log\Providers\ServiceProvider as LogServiceProvider;
+use Valkyrja\Log\Provider\ServiceProvider as LogServiceProvider;
 use Valkyrja\Mail\Providers\ServiceProvider as MailServiceProvider;
 use Valkyrja\Notification\Providers\ServiceProvider as NotificationServiceProvider;
 use Valkyrja\Orm\Providers\ServiceProvider as ORMServiceProvider;

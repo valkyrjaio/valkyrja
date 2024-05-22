@@ -25,7 +25,7 @@ use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\Log\Logger;
+use Valkyrja\Log\Contract\Logger;
 
 /**
  * Class ServiceProvider.

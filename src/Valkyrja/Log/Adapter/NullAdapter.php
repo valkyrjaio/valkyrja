@@ -11,30 +11,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Log\Drivers;
+namespace Valkyrja\Log\Adapter;
 
 use Throwable;
-use Valkyrja\Log\Adapter;
-use Valkyrja\Log\Driver as Contract;
-use Valkyrja\Manager\Drivers\Driver as ParentDriver;
+use Valkyrja\Log\Adapter\Contract\Adapter as Contract;
 
 /**
- * Class Driver.
+ * Class NullAdapter.
  *
  * @author Melech Mizrachi
- *
- * @property Adapter $adapter
  */
-class Driver extends ParentDriver implements Contract
+class NullAdapter implements Contract
 {
     /**
-     * Driver constructor.
+     * The config.
      *
-     * @param Adapter $adapter The adapter
+     * @var array
      */
-    public function __construct(Adapter $adapter)
+    protected array $config;
+
+    /**
+     * NullAdapter constructor.
+     *
+     * @param array $config The config
+     */
+    public function __construct(array $config)
     {
-        parent::__construct($adapter);
+        $this->config = $config;
     }
 
     /**
@@ -42,7 +45,6 @@ class Driver extends ParentDriver implements Contract
      */
     public function debug(string $message, array $context = []): void
     {
-        $this->adapter->debug($message, $context);
     }
 
     /**
@@ -50,7 +52,6 @@ class Driver extends ParentDriver implements Contract
      */
     public function info(string $message, array $context = []): void
     {
-        $this->adapter->info($message, $context);
     }
 
     /**
@@ -58,7 +59,6 @@ class Driver extends ParentDriver implements Contract
      */
     public function notice(string $message, array $context = []): void
     {
-        $this->adapter->notice($message, $context);
     }
 
     /**
@@ -66,7 +66,6 @@ class Driver extends ParentDriver implements Contract
      */
     public function warning(string $message, array $context = []): void
     {
-        $this->adapter->warning($message, $context);
     }
 
     /**
@@ -74,7 +73,6 @@ class Driver extends ParentDriver implements Contract
      */
     public function error(string $message, array $context = []): void
     {
-        $this->adapter->error($message, $context);
     }
 
     /**
@@ -82,7 +80,6 @@ class Driver extends ParentDriver implements Contract
      */
     public function critical(string $message, array $context = []): void
     {
-        $this->adapter->critical($message, $context);
     }
 
     /**
@@ -90,7 +87,6 @@ class Driver extends ParentDriver implements Contract
      */
     public function alert(string $message, array $context = []): void
     {
-        $this->adapter->alert($message, $context);
     }
 
     /**
@@ -98,7 +94,6 @@ class Driver extends ParentDriver implements Contract
      */
     public function emergency(string $message, array $context = []): void
     {
-        $this->adapter->emergency($message, $context);
     }
 
     /**
@@ -106,7 +101,6 @@ class Driver extends ParentDriver implements Contract
      */
     public function log(string $level, string $message, array $context = []): void
     {
-        $this->adapter->log($level, $message, $context);
     }
 
     /**
@@ -114,6 +108,5 @@ class Driver extends ParentDriver implements Contract
      */
     public function exception(Throwable $exception, string $message, array $context = []): void
     {
-        $this->adapter->exception($exception, $message);
     }
 }

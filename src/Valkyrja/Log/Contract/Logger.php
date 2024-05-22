@@ -11,18 +11,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Log;
+namespace Valkyrja\Log\Contract;
 
 use Throwable;
-use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
+use Valkyrja\Log\Driver\Contract\Driver;
+use Valkyrja\Log\Factory\Contract\Factory;
+use Valkyrja\Manager\Contract\Manager;
 
 /**
- * Interface Adapter.
+ * Interface Logger.
  *
  * @author Melech Mizrachi
+ *
+ * @extends Manager<Driver, Factory>
  */
-interface Adapter extends Contract
+interface Logger extends Manager
 {
+    /**
+     * @inheritDoc
+     *
+     * @return Driver
+     */
+    public function use(string|null $name = null): Driver;
+
     /**
      * Log a debug message.
      *

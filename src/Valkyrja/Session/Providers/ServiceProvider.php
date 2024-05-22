@@ -19,7 +19,7 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Http\Request;
-use Valkyrja\Log\Logger;
+use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Session\Adapter;
 use Valkyrja\Session\Adapters\CookieAdapter;
 use Valkyrja\Session\CacheAdapter;

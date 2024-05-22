@@ -15,8 +15,8 @@ namespace Valkyrja\Log\Config;
 
 use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Log\Config\Config as Model;
-use Valkyrja\Log\Constants\ConfigValue;
+use Valkyrja\Log\Config as Model;
+use Valkyrja\Log\Constant\ConfigValue;
 
 use function Valkyrja\env;
 use function Valkyrja\storagePath;

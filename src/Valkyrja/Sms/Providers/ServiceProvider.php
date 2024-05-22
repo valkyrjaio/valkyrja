@@ -16,7 +16,7 @@ namespace Valkyrja\Sms\Providers;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Log\Logger;
+use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Sms\Adapter;
 use Valkyrja\Sms\Factories\ContainerFactory;
 use Valkyrja\Sms\Factory;

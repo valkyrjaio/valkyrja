@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Log;
+namespace Valkyrja\Log\Adapter\Contract;
 
 use Throwable;
-use Valkyrja\Manager\Drivers\Contract\Driver as Contract;
+use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 
 /**
- * Interface Driver.
+ * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-interface Driver extends Contract
+interface Adapter extends Contract
 {
     /**
      * Log a debug message.

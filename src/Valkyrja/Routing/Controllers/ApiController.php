@@ -18,7 +18,7 @@ use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Contract\Api;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\JsonResponse;
-use Valkyrja\Log\Logger;
+use Valkyrja\Log\Contract\Logger;
 
 /**
  * Abstract Class ApiController.

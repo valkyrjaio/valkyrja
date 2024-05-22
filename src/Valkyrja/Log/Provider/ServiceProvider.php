@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Log\Providers;
+namespace Valkyrja\Log\Provider;
 
 use Exception;
 use Monolog\Formatter\LineFormatter;
@@ -21,13 +21,13 @@ use Psr\Log\LoggerInterface;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Log\Adapter;
-use Valkyrja\Log\Constants\LogLevel;
-use Valkyrja\Log\Driver;
-use Valkyrja\Log\Factories\ContainerFactory;
-use Valkyrja\Log\Factory;
-use Valkyrja\Log\Logger;
-use Valkyrja\Log\PsrAdapter;
+use Valkyrja\Log\Adapter\Contract\Adapter;
+use Valkyrja\Log\Adapter\Contract\PsrAdapter;
+use Valkyrja\Log\Constant\LogLevel;
+use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Driver\Contract\Driver;
+use Valkyrja\Log\Factory\ContainerFactory;
+use Valkyrja\Log\Factory\Contract\Factory;
 
 use function date;
 
@@ -90,7 +90,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Logger::class,
-            new \Valkyrja\Log\Managers\Logger(
+            new \Valkyrja\Log\Manager\Logger(
                 $container->getSingleton(Factory::class),
                 $config['log']
             )

@@ -24,7 +24,7 @@ use Valkyrja\Http\ResponseFactory;
 use Valkyrja\HttpKernel\Contract\Kernel as Contract;
 use Valkyrja\HttpKernel\Event\RequestHandled;
 use Valkyrja\HttpKernel\Event\RequestTerminating;
-use Valkyrja\Log\Logger;
+use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Routing\Config\Config;
 use Valkyrja\Routing\Middleware\MiddlewareAwareTrait;
 use Valkyrja\Routing\Route;

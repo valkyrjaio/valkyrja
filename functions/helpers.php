@@ -37,7 +37,7 @@ use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\HttpKernel\Contract\Kernel;
-use Valkyrja\Log\Logger;
+use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Mail\Mail;
 use Valkyrja\Mail\Message as MailMessage;
 use Valkyrja\Notification\NotifiableUser;

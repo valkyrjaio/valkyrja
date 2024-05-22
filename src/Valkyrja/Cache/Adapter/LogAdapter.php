@@ -17,7 +17,7 @@ use JsonException;
 use Valkyrja\Cache\Adapter\Contract\LogAdapter as Contract;
 use Valkyrja\Cache\Tagger\Contract\Tagger;
 use Valkyrja\Cache\Tagger\Tagger as TagClass;
-use Valkyrja\Log\Driver as Logger;
+use Valkyrja\Log\Driver\Contract\Driver as Logger;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**

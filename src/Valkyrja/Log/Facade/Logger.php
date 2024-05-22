@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Log\Facades;
+namespace Valkyrja\Log\Facade;
 
 use Throwable;
 use Valkyrja\Facade\ContainerFacade;
-use Valkyrja\Log\Driver;
-use Valkyrja\Log\Logger as Contract;
+use Valkyrja\Log\Contract\Logger as Contract;
+use Valkyrja\Log\Driver\Contract\Driver;
 
 /**
  * Class Logger.

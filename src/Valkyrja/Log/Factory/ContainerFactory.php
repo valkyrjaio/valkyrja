@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Log\Factories;
+namespace Valkyrja\Log\Factory;
 
-use Valkyrja\Log\Adapter;
-use Valkyrja\Log\Driver;
-use Valkyrja\Log\Factory as Contract;
-use Valkyrja\Log\PsrAdapter;
+use Valkyrja\Log\Adapter\Contract\Adapter;
+use Valkyrja\Log\Adapter\Contract\PsrAdapter;
+use Valkyrja\Log\Driver\Contract\Driver;
+use Valkyrja\Log\Factory\Contract\Factory as Contract;
 use Valkyrja\Manager\Factories\ContainerFactory as Factory;
 
 /**
