@@ -90,7 +90,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Logger::class,
-            new \Valkyrja\Log\Manager\Logger(
+            new \Valkyrja\Log\Logger(
                 $container->getSingleton(Factory::class),
                 $config['log']
             )

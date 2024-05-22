@@ -11,10 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Log\Manager;
+namespace Valkyrja\Log;
 
 use Throwable;
-use Valkyrja\Log\Config;
 use Valkyrja\Log\Contract\Logger as Contract;
 use Valkyrja\Log\Driver\Contract\Driver;
 use Valkyrja\Log\Factory\Contract\Factory;
