@@ -32,7 +32,7 @@ use Valkyrja\Http\Requests\Request;
 use Valkyrja\Http\Responses\JsonResponse;
 use Valkyrja\Http\Responses\RedirectResponse;
 use Valkyrja\Http\Responses\Response;
-use Valkyrja\HttpKernel\Kernels\Kernel;
+use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Log\Managers\Logger;
 use Valkyrja\Routing\Dispatchers\Router;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
