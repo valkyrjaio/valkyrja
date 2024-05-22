@@ -97,7 +97,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Auth::class,
-            new \Valkyrja\Auth\Managers\Auth(
+            new \Valkyrja\Auth\Auth(
                 $container->getSingleton(Factory::class),
                 $container->getSingleton(Request::class),
                 $config['auth']

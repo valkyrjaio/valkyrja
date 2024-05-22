@@ -11,10 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth\Managers;
+namespace Valkyrja\Auth;
 
 use Valkyrja\Auth\Adapter\Contract\Adapter;
-use Valkyrja\Auth\Config;
 use Valkyrja\Auth\Constant\HeaderValue;
 use Valkyrja\Auth\Contract\Auth as Contract;
 use Valkyrja\Auth\Entity\Contract\LockableUser;
