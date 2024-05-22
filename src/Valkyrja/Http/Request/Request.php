@@ -18,7 +18,7 @@ use Valkyrja\Http\Constant\StreamType;
 use Valkyrja\Http\Exception\InvalidArgumentException;
 use Valkyrja\Http\Exception\InvalidMethod;
 use Valkyrja\Http\Exception\InvalidRequestTarget;
-use Valkyrja\Http\MessageTrait;
+use Valkyrja\Http\Message;
 use Valkyrja\Http\Request\Contract\Request as SimpleRequestContract;
 use Valkyrja\Http\Stream\Contract\Stream;
 use Valkyrja\Http\Stream\Stream as HttpStream;
@@ -36,7 +36,7 @@ use function sprintf;
  */
 class Request implements SimpleRequestContract
 {
-    use MessageTrait;
+    use Message;
 
     public static string $HOST_NAME      = 'Host';
     public static string $HOST_NAME_NORM = 'host';

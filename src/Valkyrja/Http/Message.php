@@ -30,7 +30,7 @@ use function strtolower;
  *
  * @author Melech Mizrachi
  */
-trait MessageTrait
+trait Message
 {
     /**
      * The headers with normalized header names.
@@ -310,8 +310,12 @@ trait MessageTrait
      *
      * @return array
      */
-    protected function injectHeader(string $header, string $value, array|null $headers = null, bool $override = false): array
-    {
+    protected function injectHeader(
+        string $header,
+        string $value,
+        array|null $headers = null,
+        bool $override = false
+    ): array {
         // The headers
         $headers ??= [];
         // Normalize the content type header

@@ -19,7 +19,7 @@ use Valkyrja\Http\Constant\StatusCode;
 use Valkyrja\Http\Constant\StreamType;
 use Valkyrja\Http\Exception\InvalidStatusCode;
 use Valkyrja\Http\Exception\InvalidStream;
-use Valkyrja\Http\MessageTrait;
+use Valkyrja\Http\Message;
 use Valkyrja\Http\Model\Contract\Cookie;
 use Valkyrja\Http\Response\Contract\Response as Contract;
 use Valkyrja\Http\Stream\Contract\Stream;
@@ -35,7 +35,7 @@ use function sprintf;
  */
 class Response implements Contract
 {
-    use MessageTrait;
+    use Message;
 
     /**
      * The default content to set in the body.
@@ -91,8 +91,11 @@ class Response implements Contract
     /**
      * @inheritDoc
      */
-    public static function create(string|null $content = null, int|null $statusCode = null, array|null $headers = null): static
-    {
+    public static function create(
+        string|null $content = null,
+        int|null $statusCode = null,
+        array|null $headers = null
+    ): static {
         $stream = new HttpStream(StreamType::TEMP, 'wb+');
         $stream->write($content ?? static::DEFAULT_CONTENT);
         $stream->rewind();
