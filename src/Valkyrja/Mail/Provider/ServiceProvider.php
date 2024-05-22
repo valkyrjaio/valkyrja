@@ -89,7 +89,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Mail::class,
-            new \Valkyrja\Mail\Manager\Mail(
+            new \Valkyrja\Mail\Mail(
                 $container->getSingleton(Factory::class),
                 $config['mail']
             )

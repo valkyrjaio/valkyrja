@@ -11,9 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Manager;
+namespace Valkyrja\Mail;
 
-use Valkyrja\Mail\Config;
 use Valkyrja\Mail\Contract\Mail as Contract;
 use Valkyrja\Mail\Driver\Contract\Driver;
 use Valkyrja\Mail\Factory\Contract\Factory;
