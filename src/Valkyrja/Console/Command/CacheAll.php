@@ -21,7 +21,7 @@ use Valkyrja\Console\Input\Option;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Container\Command\ContainerCache;
 use Valkyrja\Event\Command\EventsCache;
-use Valkyrja\Routing\Commands\RoutesCache;
+use Valkyrja\Routing\Command\RoutesCache;
 
 use function copy;
 use function str_replace;

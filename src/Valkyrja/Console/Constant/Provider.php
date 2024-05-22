@@ -23,8 +23,8 @@ use Valkyrja\Console\Command\ConsoleCache;
 use Valkyrja\Console\Command\Optimize;
 use Valkyrja\Container\Command\ContainerCache;
 use Valkyrja\Event\Command\EventsCache;
-use Valkyrja\Routing\Commands\RoutesCache;
-use Valkyrja\Routing\Commands\RoutesList;
+use Valkyrja\Routing\Command\RoutesCache;
+use Valkyrja\Routing\Command\RoutesList;
 
 /**
  * Constant Provider.

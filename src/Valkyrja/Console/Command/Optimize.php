@@ -20,7 +20,7 @@ use Valkyrja\Console\Enum\ExitCode;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Container\CacheableContainer;
 use Valkyrja\Event\Collection\CacheableCollection as CacheableEvents;
-use Valkyrja\Routing\Collections\CacheableCollection;
+use Valkyrja\Routing\Collection\CacheableCollection;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function file_put_contents;

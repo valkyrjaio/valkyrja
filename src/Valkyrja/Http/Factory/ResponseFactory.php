@@ -20,7 +20,7 @@ use Valkyrja\Http\Factory\Contract\ResponseFactory as Contract;
 use Valkyrja\Http\Response\Contract\JsonResponse;
 use Valkyrja\Http\Response\Contract\RedirectResponse;
 use Valkyrja\Http\Response\Contract\Response;
-use Valkyrja\Routing\Url;
+use Valkyrja\Routing\Url\Contract\Url;
 use Valkyrja\View\Contract\View;
 
 /**

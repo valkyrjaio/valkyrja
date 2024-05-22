@@ -18,7 +18,7 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Event\Contract\Dispatcher as Events;
 use Valkyrja\HttpKernel\Contract\Kernel;
-use Valkyrja\Routing\Router;
+use Valkyrja\Routing\Contract\Router;
 
 /**
  * Class ServiceProvider.

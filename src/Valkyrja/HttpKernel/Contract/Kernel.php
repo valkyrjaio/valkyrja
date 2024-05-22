@@ -15,7 +15,7 @@ namespace Valkyrja\HttpKernel\Contract;
 
 use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Http\Response\Contract\Response;
-use Valkyrja\Routing\MiddlewareAware;
+use Valkyrja\Routing\Middleware\Contract\MiddlewareAware;
 
 /**
  * Interface Kernel.

@@ -25,10 +25,10 @@ use Valkyrja\HttpKernel\Contract\Kernel as Contract;
 use Valkyrja\HttpKernel\Event\RequestHandled;
 use Valkyrja\HttpKernel\Event\RequestTerminating;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Routing\Config\Config;
+use Valkyrja\Routing\Config;
+use Valkyrja\Routing\Contract\Router;
 use Valkyrja\Routing\Middleware\MiddlewareAwareTrait;
-use Valkyrja\Routing\Route;
-use Valkyrja\Routing\Router;
+use Valkyrja\Routing\Model\Contract\Route;
 
 use function count;
 use function defined;

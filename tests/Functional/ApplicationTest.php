@@ -30,7 +30,7 @@ use Valkyrja\HttpKernel\Contract\Kernel;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Path\Generator\Contract\Generator;
 use Valkyrja\Path\Parser\Contract\Parser;
-use Valkyrja\Routing\Router;
+use Valkyrja\Routing\Contract\Router;
 use Valkyrja\Session\Contract\Session;
 use Valkyrja\Tests\Classes\Config\ProviderClass;
 use Valkyrja\Tests\Config;

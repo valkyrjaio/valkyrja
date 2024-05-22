@@ -29,7 +29,7 @@ use Valkyrja\Http\Response\Contract\JsonResponse;
 use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Log\Facade\Logger;
 use Valkyrja\Routing\Middleware\Middleware;
-use Valkyrja\Routing\Url;
+use Valkyrja\Routing\Url\Contract\Url;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**

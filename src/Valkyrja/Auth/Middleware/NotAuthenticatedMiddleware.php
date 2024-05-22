@@ -18,7 +18,7 @@ use Valkyrja\Config\Constant\ConfigKeyPart;
 use Valkyrja\Http\Constant\StatusCode;
 use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Http\Response\Contract\Response;
-use Valkyrja\Routing\Url;
+use Valkyrja\Routing\Url\Contract\Url;
 
 /**
  * Class NotAuthenticatedMiddleware.

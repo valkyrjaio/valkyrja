@@ -17,8 +17,8 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Http\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Http\Response\Contract\Response;
-use Valkyrja\Routing\Route;
-use Valkyrja\Routing\Router;
+use Valkyrja\Routing\Contract\Router;
+use Valkyrja\Routing\Model\Contract\Route;
 
 /**
  * Abstract Class Middleware.

@@ -36,10 +36,11 @@ use Valkyrja\Mail\Config as Mail;
 use Valkyrja\Notification\Config as Notification;
 use Valkyrja\Orm\Config\Config as ORM;
 use Valkyrja\Path\Config as Path;
-use Valkyrja\Routing\Config\Config as Routing;
+use Valkyrja\Routing\Config as Routing;
 use Valkyrja\Session\Config as Session;
 use Valkyrja\Sms\Config as Sms;
 use Valkyrja\Validation\Config as Validation;
+use Valkyrja\View\Config as View;
 
 /**
  * Class Config.
@@ -223,9 +224,9 @@ class Config extends Model
     /**
      * The view module config.
      *
-     * @var \Valkyrja\View\Contract\View
+     * @var View
      */
-    public \Valkyrja\View\Contract\View $view;
+    public View $view;
 
     /**
      * Array of config providers.

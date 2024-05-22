@@ -20,8 +20,8 @@ use Valkyrja\Orm\Orm;
 use Valkyrja\Orm\RelationshipRepository;
 use Valkyrja\Orm\Repository;
 use Valkyrja\Routing\Data\EntityCast;
-use Valkyrja\Routing\Models\Parameter;
-use Valkyrja\Routing\Route;
+use Valkyrja\Routing\Model\Contract\Route;
+use Valkyrja\Routing\Model\Parameter;
 use Valkyrja\Routing\Support\Abort;
 
 /**
@@ -107,8 +107,12 @@ class EntityMiddleware extends Middleware
      *
      * @return void
      */
-    protected static function checkParameterForEntity(int $index, Parameter $parameter, array &$dependencies, array &$matches): void
-    {
+    protected static function checkParameterForEntity(
+        int $index,
+        Parameter $parameter,
+        array &$dependencies,
+        array &$matches
+    ): void {
         if (is_a($entityName = $parameter->getCast()->type ?? null, Entity::class, true)) {
             static::findAndSetEntityFromParameter($index, $parameter, $entityName, $dependencies, $matches[$index]);
         }
@@ -125,8 +129,13 @@ class EntityMiddleware extends Middleware
      *
      * @return void
      */
-    protected static function findAndSetEntityFromParameter(int $index, Parameter $parameter, string $entityName, array &$dependencies, mixed &$value): void
-    {
+    protected static function findAndSetEntityFromParameter(
+        int $index,
+        Parameter $parameter,
+        string $entityName,
+        array &$dependencies,
+        mixed &$value
+    ): void {
         // Attempt to get the entity from the ORM repository
         $entity = static::findEntityFromParameter($parameter, $entityName, $value);
 
@@ -160,8 +169,11 @@ class EntityMiddleware extends Middleware
      *
      * @return Entity|null
      */
-    protected static function findEntityFromParameter(Parameter $parameter, string $entityName, mixed $value): Entity|null
-    {
+    protected static function findEntityFromParameter(
+        Parameter $parameter,
+        string $entityName,
+        mixed $value
+    ): Entity|null {
         $cast          = $parameter->getCast();
         $orm           = static::getOrmRepository($entityName);
         $field         = null;

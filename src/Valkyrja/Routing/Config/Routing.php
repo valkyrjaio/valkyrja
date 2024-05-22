@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Config;
 
-use Valkyrja\Routing\Config\Config as Model;
-use Valkyrja\Routing\Constants\ConfigValue;
+use Valkyrja\Routing\Config as Model;
+use Valkyrja\Routing\Constant\ConfigValue;
 
 use function Valkyrja\cachePath;
 use function Valkyrja\routesPath;

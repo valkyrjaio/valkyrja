@@ -1,0 +1,146 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Valkyrja Framework package.
+ *
+ * (c) Melech Mizrachi <melechmizrachi@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Valkyrja\Routing\Url;
+
+use Valkyrja\Http\Constant\RequestMethod;
+use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Routing\Config;
+use Valkyrja\Routing\Contract\Router;
+use Valkyrja\Routing\Exception\InvalidRouteName;
+use Valkyrja\Routing\Model\Contract\Route;
+use Valkyrja\Routing\Url\Contract\Url as Contract;
+
+use function str_replace;
+use function strlen;
+use function strpos;
+use function substr;
+
+/**
+ * Class Url.
+ *
+ * @author Melech Mizrachi
+ */
+class Url implements Contract
+{
+    /**
+     * Router constructor.
+     *
+     * @param ServerRequest $request The request
+     * @param Router        $router  The router
+     * @param Config|array  $config  The routing config
+     */
+    public function __construct(
+        protected ServerRequest $request,
+        protected Router $router,
+        protected Config|array $config
+    ) {
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws InvalidRouteName
+     */
+    public function getUrl(string $name, array|null $data = null, bool|null $absolute = null): string
+    {
+        // Get the matching route
+        $route = $this->router->getRoute($name);
+        // Set the host to use if this is an absolute url
+        // or the config is set to always use absolute urls
+        // or the route is secure (needs https:// appended)
+        $host = $absolute || $route->isSecure() || $this->config['useAbsoluteUrls']
+            ? $this->routeHost($route)
+            : '';
+        // Get the path from the generator
+        $path = $route->getPath();
+
+        // If any data was passed
+        if ($data !== null) {
+            // Iterate through the data and replace it in the path
+            foreach ($data as $datumName => $datum) {
+                $path = str_replace('{' . $datumName . '}', $datum, $path);
+            }
+        }
+
+        return $host . $this->validateRouteUrl($path);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRouteByPath(string $path, string|null $method = null): Route|null
+    {
+        return $this->router->getMatcher()->match($path, $method ?? RequestMethod::GET);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isInternalUri(string $uri): bool
+    {
+        // Replace the scheme if it exists
+        $uri = str_replace(['http://', 'https://'], '', $uri);
+
+        // Get the host of the uri
+        $host = substr($uri, 0, (int) strpos($uri, '/'));
+
+        // If the host does not match the current request uri's host
+        if ($host && $host !== $this->request->getUri()->getHost()) {
+            // Return false immediately
+            return false;
+        }
+
+        // Get only the path (full string from the first slash to the end of the path)
+        $uri = substr($uri, (int) strpos($uri, '/'), strlen($uri));
+
+        // Try to match the route
+        $route = $this->getRouteByPath($uri);
+
+        return $route !== null;
+    }
+
+    /**
+     * Get a route's host.
+     *
+     * @param Route $route The route
+     *
+     * @return string
+     */
+    protected function routeHost(Route $route): string
+    {
+        return 'http'
+            . ($route->isSecure() ? 's' : '')
+            . '://'
+            . $this->request->getUri()->getHostPort();
+    }
+
+    /**
+     * Validate the route url.
+     *
+     * @param string $path The path
+     *
+     * @return string
+     */
+    protected function validateRouteUrl(string $path): string
+    {
+        // If the last character is not a slash and the config is set to
+        // ensure trailing slash
+        if ($path[-1] !== '/' && $this->config['useTrailingSlash']) {
+            // add a trailing slash
+            $path .= '/';
+        }
+
+        return $path;
+    }
+}

@@ -18,11 +18,11 @@ use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Contract\Dispatcher as Events;
 use Valkyrja\Http\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Request\Contract\ServerRequest;
-use Valkyrja\Routing\Collection;
-use Valkyrja\Routing\Config\Config;
-use Valkyrja\Routing\Matcher;
-use Valkyrja\Routing\Message;
-use Valkyrja\Routing\Route;
+use Valkyrja\Routing\Collection\Contract\Collection;
+use Valkyrja\Routing\Config;
+use Valkyrja\Routing\Matcher\Contract\Matcher;
+use Valkyrja\Routing\Message\Contract\Message;
+use Valkyrja\Routing\Model\Contract\Route;
 use Valkyrja\Routing\Support\Abort;
 use Valkyrja\Validation\Contract\Validation;
 

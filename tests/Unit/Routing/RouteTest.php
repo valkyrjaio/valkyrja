@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Routing;
 use Exception;
 use InvalidArgumentException;
 use Valkyrja\Http\Constant\RequestMethod;
-use Valkyrja\Routing\Models\Route;
+use Valkyrja\Routing\Model\Route;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
