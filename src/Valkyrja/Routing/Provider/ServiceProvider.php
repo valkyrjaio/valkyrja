@@ -25,7 +25,7 @@ use Valkyrja\Http\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Routing\Annotation\Contract\Annotation;
-use Valkyrja\Routing\Attribute;
+use Valkyrja\Routing\Attribute\Contract\Attributes;
 use Valkyrja\Routing\Collection\CacheableCollection;
 use Valkyrja\Routing\Collection\Contract\Collection;
 use Valkyrja\Routing\Collector\Contract\Collector;
@@ -211,7 +211,7 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Attributes::class,
-            new Attribute\Attributes(
+            new \Valkyrja\Routing\Attribute\Attributes(
                 $container->getSingleton(\Valkyrja\Attribute\Contract\Attributes::class),
                 $container->getSingleton(Reflection::class),
                 $container->getSingleton(Processor::class)
