@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Asset\Managers;
 
-use Valkyrja\Asset\Adapter;
-use Valkyrja\Asset\Asset as Contract;
+use Valkyrja\Asset\Adapter\Contract\Adapter;
+use Valkyrja\Asset\Contract\Asset as Contract;
 
 /**
  * Class Asset.

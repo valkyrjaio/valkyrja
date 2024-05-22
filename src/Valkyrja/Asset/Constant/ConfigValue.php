@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Asset\Constants;
+namespace Valkyrja\Asset\Constant;
 
-use Valkyrja\Asset\Adapters\DefaultAdapter;
+use Valkyrja\Asset\Adapter\DefaultAdapter;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 
 /**

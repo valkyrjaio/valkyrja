@@ -11,7 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Asset;
+namespace Valkyrja\Asset\Contract;
+
+use Valkyrja\Asset\Adapter\Contract\Adapter;
 
 /**
  * Interface Asset.

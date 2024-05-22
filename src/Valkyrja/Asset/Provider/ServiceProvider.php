@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Asset\Providers;
+namespace Valkyrja\Asset\Provider;
 
-use Valkyrja\Asset\Adapters\DefaultAdapter;
-use Valkyrja\Asset\Asset;
+use Valkyrja\Asset\Adapter\DefaultAdapter;
+use Valkyrja\Asset\Contract\Asset;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 

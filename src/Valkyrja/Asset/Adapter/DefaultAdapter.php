@@ -11,13 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Asset;
+namespace Valkyrja\Asset\Adapter;
+
+use Valkyrja\Asset\Adapter\Contract\Adapter as Contract;
 
 /**
- * Interface Bundle.
+ * Class Bundle.
  *
  * @author Melech Mizrachi
  */
-interface Adapter
+class DefaultAdapter implements Contract
 {
 }
