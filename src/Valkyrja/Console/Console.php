@@ -11,11 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console\Dispatchers;
+namespace Valkyrja\Console;
 
 use InvalidArgumentException;
 use Valkyrja\Config\Constant\ConfigKeyPart;
-use Valkyrja\Console\Config;
 use Valkyrja\Console\Contract\Console as Contract;
 use Valkyrja\Console\Event\CommandDispatched;
 use Valkyrja\Console\Event\CommandDispatching;

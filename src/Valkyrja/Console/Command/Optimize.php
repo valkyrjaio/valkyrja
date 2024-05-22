@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Command;
 
 use JsonException;
+use Valkyrja\Console\CacheableConsole;
 use Valkyrja\Console\Commander\Commander;
-use Valkyrja\Console\Dispatchers\CacheableConsole;
 use Valkyrja\Console\Enum\ExitCode;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Container\Managers\CacheableContainer;

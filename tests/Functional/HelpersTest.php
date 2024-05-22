@@ -18,7 +18,7 @@ use Valkyrja\Annotation\Annotations;
 use Valkyrja\Application\Valkyrja;
 use Valkyrja\Client\Contract\Client;
 use Valkyrja\Config\Config;
-use Valkyrja\Console\Dispatchers\Console;
+use Valkyrja\Console\Console;
 use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Kernel\Kernel as ConsoleKernel;
 use Valkyrja\Console\Output\Output;
