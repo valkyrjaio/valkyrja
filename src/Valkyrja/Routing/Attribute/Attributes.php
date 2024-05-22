@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use ReflectionException;
 use Valkyrja\Attribute\Contract\Attributes as AttributeAttributes;
 use Valkyrja\Reflection\Contract\Reflection;
-use Valkyrja\Routing\Attribute as Contract;
+use Valkyrja\Routing\Attribute\Contract\Attributes as Contract;
 use Valkyrja\Routing\Message\Contract\Message as RoutingMessage;
 use Valkyrja\Routing\Processor\Contract\Processor;
 

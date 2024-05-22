@@ -16,11 +16,11 @@ namespace Valkyrja\Routing\Annotation\Contract;
 use Valkyrja\Routing\Model\Contract\Route;
 
 /**
- * Interface Annotation.
+ * Interface Annotations.
  *
  * @author Melech Mizrachi
  */
-interface Annotation
+interface Annotations
 {
     /**
      * Get routes.

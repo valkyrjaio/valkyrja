@@ -18,7 +18,7 @@ use ReflectionException;
 use Valkyrja\Annotation\Contract\Annotations as AnnotationAnnotator;
 use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Reflection\Contract\Reflection;
-use Valkyrja\Routing\Annotation\Contract\Annotation as Contract;
+use Valkyrja\Routing\Annotation\Contract\Annotations as Contract;
 use Valkyrja\Routing\Enum\AnnotationName;
 use Valkyrja\Routing\Exception\InvalidRoutePath;
 use Valkyrja\Routing\Model\Contract\Route as RouteContract;
@@ -29,11 +29,11 @@ use function array_merge;
 use function trim;
 
 /**
- * Class Annotation.
+ * Class Annotations.
  *
  * @author Melech Mizrachi
  */
-class Annotation implements Contract
+class Annotations implements Contract
 {
     /**
      * ContainerAnnotator constructor.

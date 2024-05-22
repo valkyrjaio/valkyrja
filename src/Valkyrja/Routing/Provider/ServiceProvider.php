@@ -24,7 +24,7 @@ use Valkyrja\Event\Contract\Dispatcher as Events;
 use Valkyrja\Http\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Reflection\Contract\Reflection;
-use Valkyrja\Routing\Annotation\Contract\Annotation;
+use Valkyrja\Routing\Annotation\Contract\Annotations;
 use Valkyrja\Routing\Attribute\Contract\Attributes;
 use Valkyrja\Routing\Collection\CacheableCollection;
 use Valkyrja\Routing\Collection\Contract\Collection;
@@ -47,14 +47,14 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Annotation::class => [self::class, 'publishAnnotator'],
-            Router::class     => [self::class, 'publishRouter'],
-            Collector::class  => [self::class, 'publishCollector'],
-            Collection::class => [self::class, 'publishCollection'],
-            Matcher::class    => [self::class, 'publishMatcher'],
-            Url::class        => [self::class, 'publishUrl'],
-            Attributes::class => [self::class, 'publishRouteAttributes'],
-            Processor::class  => [self::class, 'publishProcessor'],
+            Annotations::class => [self::class, 'publishAnnotator'],
+            Router::class      => [self::class, 'publishRouter'],
+            Collector::class   => [self::class, 'publishCollector'],
+            Collection::class  => [self::class, 'publishCollection'],
+            Matcher::class     => [self::class, 'publishMatcher'],
+            Url::class         => [self::class, 'publishUrl'],
+            Attributes::class  => [self::class, 'publishRouteAttributes'],
+            Processor::class   => [self::class, 'publishProcessor'],
         ];
     }
 
@@ -64,7 +64,7 @@ class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Annotation::class,
+            Annotations::class,
             Router::class,
             Collector::class,
             Collection::class,
@@ -111,8 +111,8 @@ class ServiceProvider extends Provider
     public static function publishAnnotator(Container $container): void
     {
         $container->setSingleton(
-            Annotation::class,
-            new \Valkyrja\Routing\Annotation\Annotation(
+            Annotations::class,
+            new \Valkyrja\Routing\Annotation\Annotations(
                 $container->getSingleton(AnnotationAnnotator::class),
                 $container->getSingleton(Filter::class),
                 $container->getSingleton(Reflection::class),

@@ -16,7 +16,8 @@ namespace Valkyrja\Routing\Collection;
 use JsonException;
 use Valkyrja\Config\Config;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Routing\Annotation\Contract\Annotation;
+use Valkyrja\Routing\Annotation\Contract\Annotations;
+use Valkyrja\Routing\Attribute\Contract\Attributes;
 use Valkyrja\Routing\Collector\Contract\Collector;
 use Valkyrja\Routing\Config as RoutingConfig;
 use Valkyrja\Routing\Config\Cache;
@@ -110,8 +111,8 @@ class CacheableCollection extends Collection
      */
     protected function setupAnnotations(Config|array $config): void
     {
-        /** @var Annotator $routeAnnotations */
-        $routeAnnotations = $this->container->getSingleton(Annotation::class);
+        /** @var Annotations $routeAnnotations */
+        $routeAnnotations = $this->container->getSingleton(Annotations::class);
 
         // Get all the annotated routes from the list of controllers
         // Iterate through the routes
