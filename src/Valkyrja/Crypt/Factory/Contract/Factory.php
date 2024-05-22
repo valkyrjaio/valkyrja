@@ -11,8 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt;
+namespace Valkyrja\Crypt\Factory\Contract;
 
+use Valkyrja\Crypt\Adapter\Contract\Adapter;
+use Valkyrja\Crypt\Driver\Contract\Driver;
 use Valkyrja\Manager\Factories\Contract\Factory as Contract;
 
 /**

@@ -29,7 +29,7 @@ use Valkyrja\Auth\Repository\Contract\JWTRepository;
 use Valkyrja\Auth\Repository\Contract\Repository;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Crypt\Crypt;
+use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Http\Request;
 use Valkyrja\Jwt\Jwt;
 use Valkyrja\Orm\Orm;

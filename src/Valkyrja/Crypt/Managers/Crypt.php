@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Managers;
 
-use Valkyrja\Crypt\Config\Config;
-use Valkyrja\Crypt\Crypt as Contract;
-use Valkyrja\Crypt\Driver;
-use Valkyrja\Crypt\Factory;
+use Valkyrja\Crypt\Config;
+use Valkyrja\Crypt\Contract\Crypt as Contract;
+use Valkyrja\Crypt\Driver\Contract\Driver;
+use Valkyrja\Crypt\Factory\Contract\Factory;
 use Valkyrja\Manager\Manager;
 
 /**

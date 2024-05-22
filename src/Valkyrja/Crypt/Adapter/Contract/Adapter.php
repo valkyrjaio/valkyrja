@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt;
+namespace Valkyrja\Crypt\Adapter\Contract;
 
-use Valkyrja\Crypt\Exceptions\CryptException;
+use Valkyrja\Crypt\Exception\CryptException;
 use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 
 /**

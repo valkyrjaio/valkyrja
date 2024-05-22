@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt\Providers;
+namespace Valkyrja\Crypt\Provider;
 
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Crypt\Adapter;
-use Valkyrja\Crypt\Crypt;
-use Valkyrja\Crypt\Driver;
-use Valkyrja\Crypt\Factories\ContainerFactory;
-use Valkyrja\Crypt\Factory;
+use Valkyrja\Crypt\Adapter\Contract\Adapter;
+use Valkyrja\Crypt\Contract\Crypt;
+use Valkyrja\Crypt\Driver\Contract\Driver;
+use Valkyrja\Crypt\Factory\ContainerFactory;
+use Valkyrja\Crypt\Factory\Contract\Factory;
 
 /**
  * Class ServiceProvider.

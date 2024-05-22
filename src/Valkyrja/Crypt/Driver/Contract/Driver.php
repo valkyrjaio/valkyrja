@@ -11,27 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt;
+namespace Valkyrja\Crypt\Driver\Contract;
 
-use Valkyrja\Crypt\Exceptions\CryptException;
-use Valkyrja\Manager\Contract\Manager;
+use Valkyrja\Crypt\Exception\CryptException;
+use Valkyrja\Manager\Drivers\Contract\Driver as Contract;
 
 /**
- * Interface Crypt.
+ * Interface Driver.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Driver, Factory>
  */
-interface Crypt extends Manager
+interface Driver extends Contract
 {
-    /**
-     * @inheritDoc
-     *
-     * @return Driver
-     */
-    public function use(string|null $name = null): Driver;
-
     /**
      * Determine if an encrypted message is valid.
      *
@@ -54,18 +45,6 @@ interface Crypt extends Manager
     public function encrypt(string $message, string|null $key = null): string;
 
     /**
-     * Decrypt a message.
-     *
-     * @param string      $encrypted The encrypted message to decrypt
-     * @param string|null $key       The encryption key
-     *
-     * @throws CryptException On any failure
-     *
-     * @return string
-     */
-    public function decrypt(string $encrypted, string|null $key = null): string;
-
-    /**
      * Encrypt an array.
      *
      * @param array       $array The array to encrypt
@@ -78,18 +57,6 @@ interface Crypt extends Manager
     public function encryptArray(array $array, string|null $key = null): string;
 
     /**
-     * Decrypt a message originally encrypted from an array.
-     *
-     * @param string      $encrypted The encrypted message
-     * @param string|null $key       The encryption key
-     *
-     * @throws CryptException On any failure
-     *
-     * @return array
-     */
-    public function decryptArray(string $encrypted, string|null $key = null): array;
-
-    /**
      * Encrypt a json array.
      *
      * @param object      $object The object to encrypt
@@ -100,6 +67,30 @@ interface Crypt extends Manager
      * @return string
      */
     public function encryptObject(object $object, string|null $key = null): string;
+
+    /**
+     * Decrypt a message.
+     *
+     * @param string      $encrypted The encrypted message to decrypt
+     * @param string|null $key       The encryption key
+     *
+     * @throws CryptException On any failure
+     *
+     * @return string
+     */
+    public function decrypt(string $encrypted, string|null $key = null): string;
+
+    /**
+     * Decrypt a message originally encrypted from an array.
+     *
+     * @param string      $encrypted The encrypted message
+     * @param string|null $key       The encryption key
+     *
+     * @throws CryptException On any failure
+     *
+     * @return array
+     */
+    public function decryptArray(string $encrypted, string|null $key = null): array;
 
     /**
      * Decrypt a message originally encrypted from an object.

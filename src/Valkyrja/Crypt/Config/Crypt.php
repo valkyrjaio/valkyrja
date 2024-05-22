@@ -15,8 +15,8 @@ namespace Valkyrja\Crypt\Config;
 
 use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Crypt\Config\Config as Model;
-use Valkyrja\Crypt\Constants\ConfigValue;
+use Valkyrja\Crypt\Config as Model;
+use Valkyrja\Crypt\Constant\ConfigValue;
 
 use function Valkyrja\env;
 

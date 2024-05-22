@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Adapters;
 
-use Valkyrja\Crypt\Crypt;
-use Valkyrja\Crypt\Exceptions\CryptException;
+use Valkyrja\Crypt\Contract\Crypt;
+use Valkyrja\Crypt\Exception\CryptException;
 use Valkyrja\Http\Request;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 

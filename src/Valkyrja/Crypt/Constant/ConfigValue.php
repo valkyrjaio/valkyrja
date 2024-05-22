@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt\Constants;
+namespace Valkyrja\Crypt\Constant;
 
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Crypt\Adapters\SodiumAdapter;
-use Valkyrja\Crypt\Drivers\Driver;
+use Valkyrja\Crypt\Adapter\SodiumAdapter;
+use Valkyrja\Crypt\Driver\Driver;
 
 /**
  * Constant ConfigValue.

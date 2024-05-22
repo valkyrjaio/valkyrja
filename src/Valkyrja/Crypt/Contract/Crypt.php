@@ -11,18 +11,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt;
+namespace Valkyrja\Crypt\Contract;
 
-use Valkyrja\Crypt\Exceptions\CryptException;
-use Valkyrja\Manager\Drivers\Contract\Driver as Contract;
+use Valkyrja\Crypt\Driver\Contract\Driver;
+use Valkyrja\Crypt\Exception\CryptException;
+use Valkyrja\Crypt\Factory\Contract\Factory;
+use Valkyrja\Manager\Contract\Manager;
 
 /**
- * Interface Driver.
+ * Interface Crypt.
  *
  * @author Melech Mizrachi
+ *
+ * @extends Manager<Driver, Factory>
  */
-interface Driver extends Contract
+interface Crypt extends Manager
 {
+    /**
+     * @inheritDoc
+     *
+     * @return Driver
+     */
+    public function use(string|null $name = null): Driver;
+
     /**
      * Determine if an encrypted message is valid.
      *
@@ -45,30 +56,6 @@ interface Driver extends Contract
     public function encrypt(string $message, string|null $key = null): string;
 
     /**
-     * Encrypt an array.
-     *
-     * @param array       $array The array to encrypt
-     * @param string|null $key   The encryption key
-     *
-     * @throws CryptException On any failure
-     *
-     * @return string
-     */
-    public function encryptArray(array $array, string|null $key = null): string;
-
-    /**
-     * Encrypt a json array.
-     *
-     * @param object      $object The object to encrypt
-     * @param string|null $key    The encryption key
-     *
-     * @throws CryptException On any failure
-     *
-     * @return string
-     */
-    public function encryptObject(object $object, string|null $key = null): string;
-
-    /**
      * Decrypt a message.
      *
      * @param string      $encrypted The encrypted message to decrypt
@@ -81,6 +68,18 @@ interface Driver extends Contract
     public function decrypt(string $encrypted, string|null $key = null): string;
 
     /**
+     * Encrypt an array.
+     *
+     * @param array       $array The array to encrypt
+     * @param string|null $key   The encryption key
+     *
+     * @throws CryptException On any failure
+     *
+     * @return string
+     */
+    public function encryptArray(array $array, string|null $key = null): string;
+
+    /**
      * Decrypt a message originally encrypted from an array.
      *
      * @param string      $encrypted The encrypted message
@@ -91,6 +90,18 @@ interface Driver extends Contract
      * @return array
      */
     public function decryptArray(string $encrypted, string|null $key = null): array;
+
+    /**
+     * Encrypt a json array.
+     *
+     * @param object      $object The object to encrypt
+     * @param string|null $key    The encryption key
+     *
+     * @throws CryptException On any failure
+     *
+     * @return string
+     */
+    public function encryptObject(object $object, string|null $key = null): string;
 
     /**
      * Decrypt a message originally encrypted from an object.

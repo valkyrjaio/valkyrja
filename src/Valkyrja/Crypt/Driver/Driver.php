@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt\Drivers;
+namespace Valkyrja\Crypt\Driver;
 
-use Valkyrja\Crypt\Adapter;
-use Valkyrja\Crypt\Driver as Contract;
+use Valkyrja\Crypt\Adapter\Contract\Adapter;
+use Valkyrja\Crypt\Driver\Contract\Driver as Contract;
 use Valkyrja\Manager\Drivers\Driver as ParentDriver;
 
 /**

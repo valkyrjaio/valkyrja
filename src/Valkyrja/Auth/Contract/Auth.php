@@ -25,7 +25,7 @@ use Valkyrja\Auth\Gate\Contract\Gate;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Policy\Contract\Policy;
 use Valkyrja\Auth\Repository\Contract\Repository;
-use Valkyrja\Crypt\Exceptions\CryptException;
+use Valkyrja\Crypt\Exception\CryptException;
 use Valkyrja\Http\Request;
 
 /**

@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt\Adapters;
+namespace Valkyrja\Crypt\Adapter;
 
-use Valkyrja\Crypt\Adapter as Contract;
+use Valkyrja\Crypt\Adapter\Contract\Adapter as Contract;
 
 /**
  * Abstract Class Adapter.

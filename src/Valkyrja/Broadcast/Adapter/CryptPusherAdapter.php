@@ -15,9 +15,9 @@ namespace Valkyrja\Broadcast\Adapter;
 
 use Pusher\Pusher;
 use Valkyrja\Broadcast\Message\Contract\Message;
-use Valkyrja\Crypt\Crypt;
-use Valkyrja\Crypt\Driver as CryptDriver;
-use Valkyrja\Crypt\Exceptions\CryptException;
+use Valkyrja\Crypt\Contract\Crypt;
+use Valkyrja\Crypt\Driver\Contract\Driver as CryptDriver;
+use Valkyrja\Crypt\Exception\CryptException;
 
 /**
  * Class CryptPusherAdapter.

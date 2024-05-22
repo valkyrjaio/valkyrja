@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt\Facades;
+namespace Valkyrja\Crypt\Facade;
 
-use Valkyrja\Crypt\Adapter;
-use Valkyrja\Crypt\Crypt as Contract;
+use Valkyrja\Crypt\Adapter\Contract\Adapter;
+use Valkyrja\Crypt\Contract\Crypt as Contract;
 use Valkyrja\Facade\ContainerFacade;
 
 /**

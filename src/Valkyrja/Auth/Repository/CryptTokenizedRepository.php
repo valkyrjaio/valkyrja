@@ -18,9 +18,9 @@ use Valkyrja\Auth\Config;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\CryptTokenizedRepository as Contract;
-use Valkyrja\Crypt\Crypt as CryptManager;
-use Valkyrja\Crypt\Driver as Crypt;
-use Valkyrja\Crypt\Exceptions\CryptException;
+use Valkyrja\Crypt\Contract\Crypt as CryptManager;
+use Valkyrja\Crypt\Driver\Contract\Driver as Crypt;
+use Valkyrja\Crypt\Exception\CryptException;
 use Valkyrja\Session\Session;
 
 /**

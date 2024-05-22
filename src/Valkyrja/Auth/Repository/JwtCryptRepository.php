@@ -18,7 +18,7 @@ use Valkyrja\Auth\Config;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\JWTCryptRepository as Contract;
-use Valkyrja\Crypt\Crypt;
+use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Jwt\Driver as Jwt;
 use Valkyrja\Jwt\Jwt as JwtManager;
 use Valkyrja\Session\Session;

@@ -27,7 +27,7 @@ use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Config\Support\Provider;
 use Valkyrja\Console\Config as Console;
 use Valkyrja\Container\Config as Container;
-use Valkyrja\Crypt\Config\Config as Crypt;
+use Valkyrja\Crypt\Config as Crypt;
 use Valkyrja\Event\Config\Config as Event;
 use Valkyrja\Filesystem\Config\Config as Filesystem;
 use Valkyrja\Jwt\Config\Config as Jwt;
