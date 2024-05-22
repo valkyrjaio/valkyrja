@@ -66,7 +66,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Validation::class,
-            new \Valkyrja\Validation\Validator\Validation(
+            new \Valkyrja\Validation\Validation(
                 $container->getSingleton(Factory::class),
                 $config['validation']
             )

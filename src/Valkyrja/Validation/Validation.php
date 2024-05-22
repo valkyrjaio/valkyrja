@@ -11,9 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Validator;
+namespace Valkyrja\Validation;
 
-use Valkyrja\Validation\Config;
 use Valkyrja\Validation\Constant\Property;
 use Valkyrja\Validation\Constant\Rule;
 use Valkyrja\Validation\Contract\Validation as Contract;
