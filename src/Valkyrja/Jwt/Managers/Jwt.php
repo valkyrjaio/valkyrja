@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Managers;
 
-use Valkyrja\Jwt\Config\Config;
-use Valkyrja\Jwt\Driver;
-use Valkyrja\Jwt\Factory;
-use Valkyrja\Jwt\Jwt as Contract;
+use Valkyrja\Jwt\Config;
+use Valkyrja\Jwt\Contract\Jwt as Contract;
+use Valkyrja\Jwt\Driver\Contract\Driver;
+use Valkyrja\Jwt\Factory\Contract\Factory;
 use Valkyrja\Manager\Manager;
 
 /**

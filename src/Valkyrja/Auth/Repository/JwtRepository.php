@@ -19,8 +19,8 @@ use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Exception\TokenizationException;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\JWTRepository as Contract;
-use Valkyrja\Jwt\Driver as Jwt;
-use Valkyrja\Jwt\Jwt as JwtManager;
+use Valkyrja\Jwt\Contract\Jwt as JwtManager;
+use Valkyrja\Jwt\Driver\Contract\Driver as Jwt;
 use Valkyrja\Session\Session;
 
 /**

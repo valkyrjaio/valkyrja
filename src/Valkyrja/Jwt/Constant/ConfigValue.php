@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Jwt\Constants;
+namespace Valkyrja\Jwt\Constant;
 
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Jwt\Adapters\Firebase\EdDsaAdapter;
-use Valkyrja\Jwt\Adapters\Firebase\HsAdapter;
-use Valkyrja\Jwt\Adapters\Firebase\RsAdapter;
-use Valkyrja\Jwt\Adapters\FirebaseAdapter;
-use Valkyrja\Jwt\Drivers\Driver;
+use Valkyrja\Jwt\Adapter\Firebase\EdDsaAdapter;
+use Valkyrja\Jwt\Adapter\Firebase\HsAdapter;
+use Valkyrja\Jwt\Adapter\Firebase\RsAdapter;
+use Valkyrja\Jwt\Adapter\FirebaseAdapter;
+use Valkyrja\Jwt\Driver\Driver;
 
 /**
  * Constant ConfigValue.

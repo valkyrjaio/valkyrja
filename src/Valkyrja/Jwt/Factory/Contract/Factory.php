@@ -11,8 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Jwt;
+namespace Valkyrja\Jwt\Factory\Contract;
 
+use Valkyrja\Jwt\Adapter\Contract\Adapter;
+use Valkyrja\Jwt\Driver\Contract\Driver;
 use Valkyrja\Manager\Factories\Contract\Factory as Contract;
 
 /**

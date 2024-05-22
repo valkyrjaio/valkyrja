@@ -31,7 +31,7 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Http\Request;
-use Valkyrja\Jwt\Jwt;
+use Valkyrja\Jwt\Contract\Jwt;
 use Valkyrja\Orm\Orm;
 use Valkyrja\Session\Session;
 

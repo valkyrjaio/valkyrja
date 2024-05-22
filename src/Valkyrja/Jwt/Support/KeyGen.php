@@ -15,7 +15,7 @@ namespace Valkyrja\Jwt\Support;
 
 use OpenSSLAsymmetricKey;
 use SodiumException;
-use Valkyrja\Jwt\Models\EdDsaKey;
+use Valkyrja\Jwt\Model\EdDsaKey;
 
 /**
  * Class KeyGen.

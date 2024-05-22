@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Jwt\Models;
+namespace Valkyrja\Jwt\Model;
 
 use Valkyrja\Type\Model\Model;
 

@@ -15,12 +15,12 @@ namespace Valkyrja\Jwt\Config;
 
 use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Jwt\Adapters\Firebase\EdDsaAdapter;
-use Valkyrja\Jwt\Adapters\Firebase\HsAdapter;
-use Valkyrja\Jwt\Adapters\Firebase\RsAdapter;
-use Valkyrja\Jwt\Config\Config as Model;
-use Valkyrja\Jwt\Constants\Algo;
-use Valkyrja\Jwt\Constants\ConfigValue;
+use Valkyrja\Jwt\Adapter\Firebase\EdDsaAdapter;
+use Valkyrja\Jwt\Adapter\Firebase\HsAdapter;
+use Valkyrja\Jwt\Adapter\Firebase\RsAdapter;
+use Valkyrja\Jwt\Config as Model;
+use Valkyrja\Jwt\Constant\Algo;
+use Valkyrja\Jwt\Constant\ConfigValue;
 
 use function Valkyrja\env;
 

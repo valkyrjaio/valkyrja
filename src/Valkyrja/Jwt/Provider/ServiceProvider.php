@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Jwt\Providers;
+namespace Valkyrja\Jwt\Provider;
 
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Jwt\Adapter;
-use Valkyrja\Jwt\Driver;
-use Valkyrja\Jwt\Factories\ContainerFactory;
-use Valkyrja\Jwt\Factory;
-use Valkyrja\Jwt\Jwt;
+use Valkyrja\Jwt\Adapter\Contract\Adapter;
+use Valkyrja\Jwt\Contract\Jwt;
+use Valkyrja\Jwt\Driver\Contract\Driver;
+use Valkyrja\Jwt\Factory\ContainerFactory;
+use Valkyrja\Jwt\Factory\Contract\Factory;
 
 /**
  * Class ServiceProvider.

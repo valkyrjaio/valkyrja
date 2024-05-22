@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Jwt\Adapters;
+namespace Valkyrja\Jwt\Adapter;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use OpenSSLAsymmetricKey;
-use Valkyrja\Jwt\Adapter as Contract;
+use Valkyrja\Jwt\Adapter\Contract\Adapter as Contract;
 
 /**
  * Abstract Class FirebaseAdapter.

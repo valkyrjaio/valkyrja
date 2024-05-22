@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Jwt\Adapters\Firebase;
+namespace Valkyrja\Jwt\Adapter\Firebase;
 
 use OpenSSLAsymmetricKey;
 use RuntimeException;
-use Valkyrja\Jwt\Adapters\FirebaseAdapter;
+use Valkyrja\Jwt\Adapter\FirebaseAdapter;
 use Valkyrja\Jwt\Support\KeyGen;
 
 /**
@@ -39,7 +39,7 @@ class RsAdapter extends FirebaseAdapter
      */
     protected function setDecodeKey(): void
     {
-        $this->decodeKey    = $this->config['publicKey']
+        $this->decodeKey = $this->config['publicKey']
             ?? (($encodeKey = $this->encodeKey) instanceof OpenSSLAsymmetricKey
                 ? KeyGen::opensslPublicKey($encodeKey)
                 : throw new RuntimeException('When using KeyGen you must use a keyPath and passphrase'));

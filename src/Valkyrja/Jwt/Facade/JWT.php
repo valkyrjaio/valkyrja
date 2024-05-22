@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Jwt\Facades;
+namespace Valkyrja\Jwt\Facade;
 
 use Valkyrja\Facade\ContainerFacade;
-use Valkyrja\Jwt\Driver;
-use Valkyrja\Jwt\Jwt as Contract;
+use Valkyrja\Jwt\Contract\Jwt as Contract;
+use Valkyrja\Jwt\Driver\Contract\Driver;
 
 /**
  * Class JWT.

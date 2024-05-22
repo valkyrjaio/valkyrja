@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Jwt\Adapters\Firebase;
+namespace Valkyrja\Jwt\Adapter\Firebase;
 
-use Valkyrja\Jwt\Adapters\FirebaseAdapter;
+use Valkyrja\Jwt\Adapter\FirebaseAdapter;
 
 /**
- * Class HsAdapter.
+ * Class EdDsaAdapter.
  *
  * @author Melech Mizrachi
  */
-class HsAdapter extends FirebaseAdapter
+class EdDsaAdapter extends FirebaseAdapter
 {
     /**
      * @inheritDoc
      */
     protected function setEncodeKey(): void
     {
-        $this->encodeKey = $this->config['key'];
+        $this->encodeKey = $this->config['privateKey'];
     }
 
     /**
@@ -35,6 +35,6 @@ class HsAdapter extends FirebaseAdapter
      */
     protected function setDecodeKey(): void
     {
-        $this->decodeKey = $this->config['key'];
+        $this->decodeKey = $this->config['publicKey'];
     }
 }

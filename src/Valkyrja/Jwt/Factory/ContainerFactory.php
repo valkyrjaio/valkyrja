@@ -11,20 +11,30 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Jwt\Factories;
+namespace Valkyrja\Jwt\Factory;
 
-use Valkyrja\Jwt\Adapter;
-use Valkyrja\Jwt\Driver;
-use Valkyrja\Jwt\Factory as Contract;
-use Valkyrja\Manager\Factories\Factory as ManagerFactory;
+use Valkyrja\Jwt\Adapter\Contract\Adapter;
+use Valkyrja\Jwt\Driver\Contract\Driver;
+use Valkyrja\Jwt\Factory\Contract\Factory as Contract;
+use Valkyrja\Manager\Factories\ContainerFactory as Factory;
 
 /**
- * Class Factory.
+ * Class ContainerFactory.
  *
  * @author Melech Mizrachi
  */
-class Factory extends ManagerFactory implements Contract
+class ContainerFactory extends Factory implements Contract
 {
+    /**
+     * @inheritDoc
+     */
+    protected static string $defaultDriverClass = Driver::class;
+
+    /**
+     * @inheritDoc
+     */
+    protected static string $defaultAdapterClass = Adapter::class;
+
     /**
      * @inheritDoc
      */

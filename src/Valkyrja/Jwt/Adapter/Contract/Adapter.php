@@ -11,26 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Jwt;
+namespace Valkyrja\Jwt\Adapter\Contract;
 
-use Valkyrja\Manager\Contract\Manager;
+use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 
 /**
- * Interface Jwt.
+ * Interface Adapter.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Driver, Factory>
  */
-interface Jwt extends Manager
+interface Adapter extends Contract
 {
-    /**
-     * @inheritDoc
-     *
-     * @return Driver
-     */
-    public function use(string|null $name = null): Driver;
-
     /**
      * Encode a payload array into a JWT string.
      *

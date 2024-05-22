@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Jwt\Drivers;
+namespace Valkyrja\Jwt\Driver;
 
-use Valkyrja\Jwt\Adapter;
-use Valkyrja\Jwt\Driver as Contract;
+use Valkyrja\Jwt\Adapter\Contract\Adapter;
+use Valkyrja\Jwt\Driver\Contract\Driver as Contract;
 use Valkyrja\Manager\Drivers\Driver as ParentDriver;
 
 /**
