@@ -11,15 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Test\Exceptions;
-
-use Valkyrja\Exception\RuntimeException;
+namespace Valkyrja\Test\Suite\Contract;
 
 /**
- * Exception AssertFailureException.
+ * Interface Suite.
  *
  * @author Melech Mizrachi
  */
-class AssertFailureException extends RuntimeException
+interface Suite
 {
+    /**
+     * Run the suite.
+     *
+     * @param string[]|null $args The arguments
+     */
+    public function run(array|null $args = null): void;
 }

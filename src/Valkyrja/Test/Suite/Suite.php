@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Test\Suites;
+namespace Valkyrja\Test\Suite;
 
-use Valkyrja\Test\Enums\Argument;
+use Valkyrja\Test\Enum\Argument;
 use Valkyrja\Test\Output\Output;
 use Valkyrja\Test\Output\Outputters\EchoOutput;
 use Valkyrja\Test\Output\Results;
-use Valkyrja\Test\Suite as Contract;
+use Valkyrja\Test\Suite\Contract\Suite as Contract;
 
 /**
  * Class Suite.
@@ -37,7 +37,7 @@ class Suite implements Contract
      */
     public function run(array|null $args = null): void
     {
-        $args ??= $this->getServerArgs();
+        $args    ??= $this->getServerArgs();
         $results = $this->results;
         $files   = $this->getFilesFromArgs($args);
 

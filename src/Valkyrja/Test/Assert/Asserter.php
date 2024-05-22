@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Assert;
 
-use Valkyrja\Test\Exceptions\AssertFailureException;
-use Valkyrja\Test\Exceptions\AssertWarningException;
+use Valkyrja\Test\Exception\AssertFailureException;
+use Valkyrja\Test\Exception\AssertWarningException;
 
 /**
  * Interface Asserter.

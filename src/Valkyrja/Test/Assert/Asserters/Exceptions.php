@@ -15,7 +15,7 @@ namespace Valkyrja\Test\Assert\Asserters;
 
 use Throwable;
 use Valkyrja\Test\Assert\Exceptions as Contract;
-use Valkyrja\Test\Exceptions\AssertFailureException;
+use Valkyrja\Test\Exception\AssertFailureException;
 
 /**
  * Class Exceptions.

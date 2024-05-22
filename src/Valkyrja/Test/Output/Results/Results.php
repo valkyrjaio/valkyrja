@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Output\Results;
 
+use Valkyrja\Test\Contract\Test;
 use Valkyrja\Test\Output\Results as Contract;
-use Valkyrja\Test\Test;
 
 /**
  * Class Results.

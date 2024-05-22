@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Output;
 
-use Valkyrja\Test\Test;
+use Valkyrja\Test\Contract\Test;
 
 /**
  * Interface Results.

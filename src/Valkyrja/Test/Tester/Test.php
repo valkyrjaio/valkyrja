@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Test\Testers;
+namespace Valkyrja\Test\Tester;
 
 use Closure;
 use Throwable;
 use Valkyrja\Test\Assert\Assert;
+use Valkyrja\Test\Contract\Test as Contract;
 use Valkyrja\Test\Output\Output;
 use Valkyrja\Test\Output\Results\Results;
-use Valkyrja\Test\Test as Contract;
 
 /**
  * Class Test.

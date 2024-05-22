@@ -11,23 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Test\Attributes;
-
-use Attribute;
+namespace Valkyrja\Test\Enum;
 
 /**
- * Attribute DataProvider.
+ * Enum Argument.
  *
  * @author Melech Mizrachi
  */
-#[Attribute(Attribute::IS_REPEATABLE)]
-class DataProvider
+enum Argument
 {
-    public array $data;
-
-    public function __construct(
-        mixed ...$data,
-    ) {
-        $this->data = $data;
-    }
+    case file;
+    case dir;
 }

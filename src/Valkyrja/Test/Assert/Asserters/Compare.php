@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Test\Assert\Asserters;
 
 use Valkyrja\Test\Assert\Compare as Contract;
-use Valkyrja\Test\Exceptions\AssertFailureException;
+use Valkyrja\Test\Exception\AssertFailureException;
 
 /**
  * Class Compare.

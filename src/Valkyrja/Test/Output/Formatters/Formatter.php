@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Test\Output\Formatters;
 
 use Valkyrja\Application\Contract\Application;
-use Valkyrja\Test\Exceptions\AssertFailureException;
+use Valkyrja\Test\Contract\Test;
+use Valkyrja\Test\Exception\AssertFailureException;
 use Valkyrja\Test\Output\Formatter as Contract;
 use Valkyrja\Test\Output\Results;
-use Valkyrja\Test\Test;
 
 use function count;
 use function strlen;
