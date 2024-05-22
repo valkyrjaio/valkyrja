@@ -16,7 +16,7 @@ namespace Valkyrja\Event\Attribute;
 use InvalidArgumentException;
 use ReflectionException;
 use Valkyrja\Attribute\Contract\Attributes as AttributeAttributes;
-use Valkyrja\Event\Attribute as Contract;
+use Valkyrja\Event\Attribute\Contract\Attributes as Contract;
 use Valkyrja\Event\Attribute\Listener as Attribute;
 use Valkyrja\Event\Model\Contract\Listener;
 use Valkyrja\Event\Model\Listener as Model;

@@ -20,7 +20,7 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
 use Valkyrja\Event\Annotation\Contract\Annotations;
-use Valkyrja\Event\Attribute;
+use Valkyrja\Event\Attribute\Contract\Attributes;
 use Valkyrja\Event\Collection\CacheableCollection as EventCollection;
 use Valkyrja\Event\Collection\Contract\Collection;
 use Valkyrja\Event\Contract\Dispatcher;
@@ -89,7 +89,7 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Attributes::class,
-            new Attribute\Attributes(
+            new \Valkyrja\Event\Attribute\Attributes(
                 $container->getSingleton(AttributeAttributes::class),
                 $container->getSingleton(Reflection::class)
             )
