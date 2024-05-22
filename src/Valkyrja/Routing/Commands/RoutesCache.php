@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Commands;
 
 use JsonException;
-use Valkyrja\Console\Commanders\Commander;
-use Valkyrja\Console\Enums\ExitCode;
+use Valkyrja\Console\Commander\Commander;
+use Valkyrja\Console\Enum\ExitCode;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Routing\Collections\CacheableCollection;
 use Valkyrja\Type\BuiltIn\Support\Arr;

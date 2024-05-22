@@ -21,7 +21,7 @@ use Valkyrja\Annotation\Constant\ConfigValue;
 use Valkyrja\Annotation\Constant\Regex;
 use Valkyrja\Annotation\Model\Contract\Annotation;
 use Valkyrja\Annotation\Parser\Parser;
-use Valkyrja\Console\Annotations\Command;
+use Valkyrja\Console\Annotation\Command;
 use Valkyrja\Container\Annotations\Service;
 use Valkyrja\Container\Annotations\Service\Context;
 use Valkyrja\Event\Annotations\Listener;

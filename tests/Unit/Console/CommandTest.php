@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Console;
 
-use Valkyrja\Console\Models\Command;
+use Valkyrja\Console\Model\Command;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -26,7 +26,7 @@ class CommandTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Console\Command
+     * @var \Valkyrja\Console\Model\Contract\Command
      */
     protected $class;
 

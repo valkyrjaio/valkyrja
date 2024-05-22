@@ -20,7 +20,7 @@ use Valkyrja\Auth\Provider\ServiceProvider as AuthServiceProvider;
 use Valkyrja\Broadcast\Provider\ServiceProvider as BroadcastServiceProvider;
 use Valkyrja\Cache\Provider\ServiceProvider as CacheServiceProvider;
 use Valkyrja\Client\Provider\ServiceProvider as ClientServiceProvider;
-use Valkyrja\Console\Providers\ServiceProvider as ConsoleServiceProvider;
+use Valkyrja\Console\Provider\ServiceProvider as ConsoleServiceProvider;
 use Valkyrja\Container\Providers\ServiceProvider as ContainerServiceProvider;
 use Valkyrja\Crypt\Providers\ServiceProvider as CryptServiceProvider;
 use Valkyrja\Dispatcher\Provider\ServiceProvider as DispatcherServiceProvider;

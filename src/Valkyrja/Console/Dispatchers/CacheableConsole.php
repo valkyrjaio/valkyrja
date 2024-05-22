@@ -15,10 +15,10 @@ namespace Valkyrja\Console\Dispatchers;
 
 use ReflectionException;
 use Valkyrja\Config\Config;
-use Valkyrja\Console\Annotator;
-use Valkyrja\Console\Command;
+use Valkyrja\Console\Annotation\Contract\Annotations;
+use Valkyrja\Console\Config as ConsoleConfig;
 use Valkyrja\Console\Config\Cache;
-use Valkyrja\Console\Config\Config as ConsoleConfig;
+use Valkyrja\Console\Model\Contract\Command;
 use Valkyrja\Support\Cacheable\Cacheable;
 
 use function base64_decode;
@@ -109,8 +109,8 @@ class CacheableConsole extends Console
      */
     protected function setupAnnotations(Config|array $config): void
     {
-        /** @var Annotator $commandAnnotations */
-        $commandAnnotations = $this->container->getSingleton(Annotator::class);
+        /** @var Annotations $commandAnnotations */
+        $commandAnnotations = $this->container->getSingleton(Annotations::class);
 
         // Get all the annotated commands from the list of handlers
         // Iterate through the commands

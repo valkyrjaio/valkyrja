@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Console\Input;
 
-use Valkyrja\Console\Enums\OptionMode;
-use Valkyrja\Console\Inputs\Option;
+use Valkyrja\Console\Enum\OptionMode;
+use Valkyrja\Console\Input\Option;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

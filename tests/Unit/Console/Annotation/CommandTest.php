@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Console\Annotation;
 
-use Valkyrja\Console\Annotations\Command;
+use Valkyrja\Console\Annotation\Command;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

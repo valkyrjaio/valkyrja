@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Constant;
 
-use Valkyrja\Console\Enums\AnnotationName as ConsoleAnnotation;
+use Valkyrja\Console\Enum\AnnotationName as ConsoleAnnotation;
 use Valkyrja\Container\Enums\AnnotationName as ContainerAnnotation;
 use Valkyrja\Event\Enums\AnnotationName as EventAnnotation;
 use Valkyrja\Routing\Enums\AnnotationName as RoutingAnnotation;

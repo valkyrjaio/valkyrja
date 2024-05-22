@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Command;
 
-use Valkyrja\Console\Commanders\Commander;
+use Valkyrja\Console\Commander\Commander;
 use Valkyrja\Console\Support\Provides;
 
 use function is_file;

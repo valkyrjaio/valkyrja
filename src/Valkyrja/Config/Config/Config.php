@@ -25,7 +25,7 @@ use Valkyrja\Client\Config as Client;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Config\Support\Provider;
-use Valkyrja\Console\Config\Config as Console;
+use Valkyrja\Console\Config as Console;
 use Valkyrja\Container\Config\Config as Container;
 use Valkyrja\Crypt\Config\Config as Crypt;
 use Valkyrja\Event\Config\Config as Event;

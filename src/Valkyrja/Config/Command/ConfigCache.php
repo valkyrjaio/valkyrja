@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Command;
 
 use JsonException;
-use Valkyrja\Console\Commanders\Commander;
+use Valkyrja\Console\Commander\Commander;
 use Valkyrja\Console\Support\Provides;
 
 use function file_put_contents;

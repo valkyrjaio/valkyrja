@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Config;
 
-use Valkyrja\Console\Config\Config as Model;
-use Valkyrja\Console\Constants\ConfigValue;
+use Valkyrja\Console\Config as Model;
+use Valkyrja\Console\Constant\ConfigValue;
 
 use function Valkyrja\cachePath;
 use function Valkyrja\commandsPath;

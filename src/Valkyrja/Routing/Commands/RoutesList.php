@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Commands;
 
 use InvalidArgumentException;
-use Valkyrja\Console\Commanders\Commander;
-use Valkyrja\Console\Enums\FormatForeground;
+use Valkyrja\Console\Commander\Commander;
+use Valkyrja\Console\Enum\FormatForeground;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Routing\Route;
 

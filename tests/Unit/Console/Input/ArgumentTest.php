@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Console\Input;
 
-use Valkyrja\Console\Enums\ArgumentMode;
-use Valkyrja\Console\Inputs\Argument;
+use Valkyrja\Console\Enum\ArgumentMode;
+use Valkyrja\Console\Input\Argument;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

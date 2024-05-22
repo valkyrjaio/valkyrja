@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Support;
 
-use Valkyrja\Console\Console;
-use Valkyrja\Console\Models\Command;
+use Valkyrja\Console\Contract\Console;
+use Valkyrja\Console\Model\Command;
 
 /**
  * Trait Provides.
