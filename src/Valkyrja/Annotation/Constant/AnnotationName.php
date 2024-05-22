@@ -15,7 +15,7 @@ namespace Valkyrja\Annotation\Constant;
 
 use Valkyrja\Console\Enum\AnnotationName as ConsoleAnnotation;
 use Valkyrja\Container\Enum\AnnotationName as ContainerAnnotation;
-use Valkyrja\Event\Enums\AnnotationName as EventAnnotation;
+use Valkyrja\Event\Enum\AnnotationName as EventAnnotation;
 use Valkyrja\Routing\Enums\AnnotationName as RoutingAnnotation;
 
 /**

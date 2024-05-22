@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Config;
 
-use Valkyrja\Event\Config\Config as Model;
-use Valkyrja\Event\Constants\ConfigValue;
+use Valkyrja\Event\Config as Model;
+use Valkyrja\Event\Constant\ConfigValue;
 
 use function Valkyrja\cachePath;
 use function Valkyrja\eventsPath;

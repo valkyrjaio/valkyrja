@@ -22,7 +22,7 @@ use Valkyrja\Console\Command\CommandsListForBash;
 use Valkyrja\Console\Command\ConsoleCache;
 use Valkyrja\Console\Command\Optimize;
 use Valkyrja\Container\Command\ContainerCache;
-use Valkyrja\Event\Commands\EventsCache;
+use Valkyrja\Event\Command\EventsCache;
 use Valkyrja\Routing\Commands\RoutesCache;
 use Valkyrja\Routing\Commands\RoutesList;
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event\Annotation;
 
-use Valkyrja\Event\Annotations\Listener;
+use Valkyrja\Event\Annotation\Listener;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

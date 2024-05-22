@@ -15,7 +15,7 @@ namespace Valkyrja\HttpKernel\Kernels;
 
 use Throwable;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Event\Dispatcher as Events;
+use Valkyrja\Event\Contract\Dispatcher as Events;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Request;

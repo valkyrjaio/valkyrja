@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event;
 
-use Valkyrja\Event\Models\Listener;
+use Valkyrja\Event\Model\Listener;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

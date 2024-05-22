@@ -20,7 +20,7 @@ use Valkyrja\Console\Enum\ExitCode;
 use Valkyrja\Console\Input\Option;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Container\Command\ContainerCache;
-use Valkyrja\Event\Commands\EventsCache;
+use Valkyrja\Event\Command\EventsCache;
 use Valkyrja\Routing\Commands\RoutesCache;
 
 use function copy;

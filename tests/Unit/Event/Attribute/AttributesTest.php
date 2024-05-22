@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Event\Attribute;
 
 use ReflectionException;
 use Valkyrja\Attribute\Attributes as AttributesAttributes;
-use Valkyrja\Event\Attributes\Attributes;
-use Valkyrja\Event\Listener;
+use Valkyrja\Event\Attribute\Attributes;
+use Valkyrja\Event\Model\Contract\Listener;
 use Valkyrja\Reflection\Reflection;
 use Valkyrja\Tests\Classes\Event\Attribute\AttributedClass;
 use Valkyrja\Tests\Classes\Event\Attribute\AttributedClass2;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Event;
 
-use Valkyrja\Event\Event;
+use Valkyrja\Event\Constant\Event;
 
 /**
  * Class ServiceMake.

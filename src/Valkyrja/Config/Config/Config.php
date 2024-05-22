@@ -28,7 +28,7 @@ use Valkyrja\Config\Support\Provider;
 use Valkyrja\Console\Config as Console;
 use Valkyrja\Container\Config as Container;
 use Valkyrja\Crypt\Config as Crypt;
-use Valkyrja\Event\Config\Config as Event;
+use Valkyrja\Event\Config as Event;
 use Valkyrja\Filesystem\Config\Config as Filesystem;
 use Valkyrja\Jwt\Config\Config as Jwt;
 use Valkyrja\Log\Config\Config as Log;

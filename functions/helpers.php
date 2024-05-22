@@ -27,7 +27,7 @@ use Valkyrja\Console\Output\Contract\Output;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
-use Valkyrja\Event\Dispatcher as Events;
+use Valkyrja\Event\Contract\Dispatcher as Events;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;

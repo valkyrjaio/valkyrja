@@ -26,7 +26,7 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Dispatcher\Validator\Contract\Validator;
-use Valkyrja\Event\Dispatcher as Events;
+use Valkyrja\Event\Contract\Dispatcher as Events;
 use Valkyrja\Path\Parser\Contract\Parser;
 use Valkyrja\Reflection\Contract\Reflection;
 

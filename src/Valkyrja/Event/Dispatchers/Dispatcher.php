@@ -15,10 +15,10 @@ namespace Valkyrja\Event\Dispatchers;
 
 use Psr\EventDispatcher\StoppableEventInterface;
 use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
-use Valkyrja\Event\Collection;
-use Valkyrja\Event\DispatchCollectableEvent;
-use Valkyrja\Event\Dispatcher as Contract;
-use Valkyrja\Event\Listener;
+use Valkyrja\Event\Collection\Contract\Collection;
+use Valkyrja\Event\Constant\DispatchCollectableEvent;
+use Valkyrja\Event\Contract\Dispatcher as Contract;
+use Valkyrja\Event\Model\Contract\Listener;
 
 /**
  * Class Dispatcher.

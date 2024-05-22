@@ -22,7 +22,7 @@ use Valkyrja\Console\Input\Contract\Input;
 use Valkyrja\Console\Kernel\Contract\Kernel as Contract;
 use Valkyrja\Console\Output\Contract\Output;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Event\Dispatcher as Events;
+use Valkyrja\Event\Contract\Dispatcher as Events;
 use Valkyrja\Log\Logger;
 
 use function Valkyrja\dd;

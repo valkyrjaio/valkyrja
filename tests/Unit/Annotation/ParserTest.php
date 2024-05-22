@@ -24,7 +24,7 @@ use Valkyrja\Annotation\Parser\Parser;
 use Valkyrja\Console\Annotation\Command;
 use Valkyrja\Container\Annotation\Service;
 use Valkyrja\Container\Annotation\Service\Context;
-use Valkyrja\Event\Annotations\Listener;
+use Valkyrja\Event\Annotation\Listener;
 use Valkyrja\Routing\Annotations\Route;
 use Valkyrja\Tests\Unit\TestCase;
 

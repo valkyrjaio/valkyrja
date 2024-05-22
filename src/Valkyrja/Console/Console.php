@@ -31,7 +31,7 @@ use Valkyrja\Dispatcher\Exception\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exception\InvalidMethodException;
 use Valkyrja\Dispatcher\Exception\InvalidPropertyException;
 use Valkyrja\Dispatcher\Validator\Contract\Validator;
-use Valkyrja\Event\Dispatcher as Events;
+use Valkyrja\Event\Contract\Dispatcher as Events;
 use Valkyrja\Path\Parser\Contract\Parser;
 use Valkyrja\Support\Provider\ProvidersAwareTrait;
 

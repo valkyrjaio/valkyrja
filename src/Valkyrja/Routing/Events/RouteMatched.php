@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Events;
 
-use Valkyrja\Event\Event;
+use Valkyrja\Event\Constant\Event;
 use Valkyrja\Http\Request;
 use Valkyrja\Routing\Route;
 
