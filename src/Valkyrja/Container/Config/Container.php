@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Config;
 
-use Valkyrja\Container\Config\Config as Model;
-use Valkyrja\Container\Constants\ConfigValue;
+use Valkyrja\Container\Config as Model;
+use Valkyrja\Container\Constant\ConfigValue;
 
 use function Valkyrja\cachePath;
 use function Valkyrja\servicesPath;

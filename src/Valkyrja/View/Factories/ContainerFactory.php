@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Factories;
 
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\View\Engine;
 use Valkyrja\View\Factory as Contract;
 use Valkyrja\View\Template;

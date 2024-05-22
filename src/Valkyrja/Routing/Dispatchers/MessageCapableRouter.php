@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Dispatchers;
 
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Http\Request;

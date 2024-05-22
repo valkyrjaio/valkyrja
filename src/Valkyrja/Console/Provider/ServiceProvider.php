@@ -22,7 +22,7 @@ use Valkyrja\Console\Formatter\Contract\Formatter;
 use Valkyrja\Console\Input\Contract\Input;
 use Valkyrja\Console\Kernel\Contract\Kernel;
 use Valkyrja\Console\Output\Contract\Output;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Dispatcher\Validator\Contract\Validator;

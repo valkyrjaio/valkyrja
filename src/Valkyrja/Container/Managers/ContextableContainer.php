@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Managers;
 
 use Closure;
-use Valkyrja\Container\Container as Contract;
-use Valkyrja\Container\Service;
+use Valkyrja\Container\Contract\Container as Contract;
+use Valkyrja\Container\Contract\Service;
 
 /**
  * Class ContextableContainer.

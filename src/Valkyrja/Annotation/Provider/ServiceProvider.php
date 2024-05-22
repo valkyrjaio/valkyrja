@@ -17,7 +17,7 @@ use Valkyrja\Annotation\Contract\Annotations;
 use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Annotation\Parser\Contract\Parser;
 use Valkyrja\Config\Config\Config;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Reflection\Contract\Reflection;
 

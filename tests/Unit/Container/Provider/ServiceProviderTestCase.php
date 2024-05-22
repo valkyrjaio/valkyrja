@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container\Provider;
 
 use Valkyrja\Config\Config\Valkyrja;
-use Valkyrja\Container\Config\Config;
+use Valkyrja\Container\Config;
 use Valkyrja\Container\Managers\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Tests\Unit\TestCase;

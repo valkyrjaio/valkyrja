@@ -15,7 +15,7 @@ namespace Valkyrja\Notification\Providers;
 
 use Valkyrja\Broadcast\Contract\Broadcast;
 use Valkyrja\Config\Config\Config;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Mail\Mail;
 use Valkyrja\Notification\Factories\ContainerFactory;

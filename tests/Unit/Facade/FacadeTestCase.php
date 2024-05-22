@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Facade;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Container\Config\Config;
+use Valkyrja\Container\Config;
 use Valkyrja\Container\Managers\Container;
 use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Tests\Unit\TestCase;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Path\Provider;
 
 use Valkyrja\Config\Config\Config;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Path\Generator\Contract\Generator;
 use Valkyrja\Path\Parser\Contract\Parser;

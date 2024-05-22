@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Dispatcher;
 
 use InvalidArgumentException;
-use Valkyrja\Container\Container;
-use Valkyrja\Container\ContextAwareContainer;
+use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Contract\ContextAwareContainer;
 use Valkyrja\Dispatcher\Constant\Constant;
 use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
 use Valkyrja\Dispatcher\Model\Contract\Dispatch;
@@ -84,7 +84,7 @@ class Dispatcher implements Contract
         $response = is_string($class)
             ? $class::$method(...$arguments)
             : (/** @var object $class */
-                $class->$method(...$arguments)
+            $class->$method(...$arguments)
             );
 
         return $response ?? Constant::DISPATCHED;

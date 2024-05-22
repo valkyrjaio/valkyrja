@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Config;
 
 use Valkyrja\Config\Config as Model;
-use Valkyrja\Container\Service;
+use Valkyrja\Container\Contract\Service;
 
 /**
  * Class Cache.

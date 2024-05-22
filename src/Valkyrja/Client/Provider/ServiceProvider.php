@@ -22,7 +22,7 @@ use Valkyrja\Client\Driver\Contract\Driver;
 use Valkyrja\Client\Factory\ContainerFactory;
 use Valkyrja\Client\Factory\Contract\Factory;
 use Valkyrja\Config\Config\Config;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Log\Logger;

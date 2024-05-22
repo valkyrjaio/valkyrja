@@ -16,7 +16,7 @@ namespace Valkyrja\Orm\Providers;
 use RuntimeException;
 use Valkyrja\Cache\Contract\Cache;
 use Valkyrja\Config\Config\Config;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Orm\Adapter;
 use Valkyrja\Orm\CacheRepository;

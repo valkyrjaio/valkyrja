@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Managers;
 
-use Valkyrja\Container\ContextAwareContainer as Contract;
+use Valkyrja\Container\Contract\ContextAwareContainer as Contract;
 
 /**
  * Class ContextContainer.

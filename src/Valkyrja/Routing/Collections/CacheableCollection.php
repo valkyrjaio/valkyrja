@@ -15,7 +15,7 @@ namespace Valkyrja\Routing\Collections;
 
 use JsonException;
 use Valkyrja\Config\Config;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Routing\Annotator;
 use Valkyrja\Routing\Attributes;
 use Valkyrja\Routing\Collector;

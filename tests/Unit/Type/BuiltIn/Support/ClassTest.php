@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\BuiltIn\Support;
 
 use stdClass;
-use Valkyrja\Container\Config\Config;
+use Valkyrja\Container\Config;
 use Valkyrja\Container\Managers\Container;
 use Valkyrja\Tests\Classes\Model\Model;
 use Valkyrja\Tests\Unit\TestCase;

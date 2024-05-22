@@ -18,7 +18,7 @@ use Valkyrja\Application\Env;
 use Valkyrja\Config\Config as ConfigModel;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Console\Kernel\Contract\Kernel as ConsoleKernel;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\HttpKernel\Kernel;

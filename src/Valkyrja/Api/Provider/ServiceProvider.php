@@ -15,7 +15,7 @@ namespace Valkyrja\Api\Provider;
 
 use Valkyrja\Api\Contract\Api;
 use Valkyrja\Config\Config\Config;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\ResponseFactory;
 

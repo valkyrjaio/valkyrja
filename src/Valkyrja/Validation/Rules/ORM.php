@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Rules;
 
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Orm\Orm as ORMManager;
 use Valkyrja\Validation\Exceptions\ValidationException;

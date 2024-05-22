@@ -24,7 +24,7 @@ use Valkyrja\Console\Contract\Console;
 use Valkyrja\Console\Input\Contract\Input;
 use Valkyrja\Console\Kernel\Contract\Kernel as ConsoleKernel;
 use Valkyrja\Console\Output\Contract\Output;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Dispatcher as Events;

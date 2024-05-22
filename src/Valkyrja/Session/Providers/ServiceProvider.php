@@ -15,7 +15,7 @@ namespace Valkyrja\Session\Providers;
 
 use Valkyrja\Cache\Contract\Cache;
 use Valkyrja\Config\Config\Config;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Http\Request;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher\Provider;
 
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Dispatcher\Validator\Contract\Validator;

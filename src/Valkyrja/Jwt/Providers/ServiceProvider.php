@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Jwt\Providers;
 
 use Valkyrja\Config\Config\Config;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Jwt\Adapter;
 use Valkyrja\Jwt\Driver;

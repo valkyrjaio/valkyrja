@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Facade;
 
-use Valkyrja\Container\Container as Contract;
-use Valkyrja\Container\Facades\Container as Facade;
+use Valkyrja\Container\Contract\Container as Contract;
+use Valkyrja\Container\Facade\Container as Facade;
 use Valkyrja\Tests\Unit\Facade\FacadeTestCase;
 
 /**

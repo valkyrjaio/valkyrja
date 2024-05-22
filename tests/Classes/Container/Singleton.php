@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Container;
 
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Service;
+use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Contract\Service;
 
 /**
  * Testable Singleton class.

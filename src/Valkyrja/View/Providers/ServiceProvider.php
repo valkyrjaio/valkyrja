@@ -18,7 +18,7 @@ use Twig\Error\LoaderError;
 use Twig\Extension\ExtensionInterface;
 use Twig\Loader\FilesystemLoader;
 use Valkyrja\Config\Config\Config;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\View\Engine;
 use Valkyrja\View\Engines\OrkaEngine;

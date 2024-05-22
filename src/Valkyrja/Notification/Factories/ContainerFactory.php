@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification\Factories;
 
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Notification\Factory;
 use Valkyrja\Notification\Notification;
 

@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Managers;
 
 use Valkyrja\Config\Config;
-use Valkyrja\Container\Annotator;
+use Valkyrja\Container\Annotation\Contract\Annotations;
+use Valkyrja\Container\Config as ContainerConfig;
 use Valkyrja\Container\Config\Cache;
-use Valkyrja\Container\Config\Config as ContainerConfig;
-use Valkyrja\Container\ContextAwareContainer;
-use Valkyrja\Container\Service;
+use Valkyrja\Container\Contract\ContextAwareContainer;
+use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Support\Cacheable\Cacheable;
 
@@ -115,8 +115,8 @@ class CacheableContainer extends Container
      */
     protected function setupAnnotations(Config|array $config): void
     {
-        /** @var Annotator $containerAnnotations */
-        $containerAnnotations = $this->getSingleton(Annotator::class);
+        /** @var Annotations $containerAnnotations */
+        $containerAnnotations = $this->getSingleton(Annotations::class);
 
         // Get all the annotated services from the list of controllers and iterate through the services
         foreach ($containerAnnotations->getServices(...$config['services']) as $service) {
@@ -172,7 +172,7 @@ class CacheableContainer extends Container
     protected function setupServiceProviders(Config|array $config): void
     {
         array_map(
-            /** @param class-string $provider */
+        /** @param class-string $provider */
             fn (string $provider) => $this->register($provider),
             $config['providers']
         );
@@ -183,7 +183,7 @@ class CacheableContainer extends Container
         }
 
         array_map(
-            /** @param class-string $provider */
+        /** @param class-string $provider */
             fn (string $provider) => $this->register($provider),
             $config['devProviders']
         );

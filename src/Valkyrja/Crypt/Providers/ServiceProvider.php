@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt\Providers;
 
 use Valkyrja\Config\Config\Config;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Adapter;
 use Valkyrja\Crypt\Crypt;

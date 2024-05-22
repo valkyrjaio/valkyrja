@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Matchers;
 
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Orm\Orm;
 use Valkyrja\Orm\RelationshipRepository;

@@ -27,7 +27,7 @@ use Valkyrja\Auth\Repository\Contract\CryptTokenizedRepository;
 use Valkyrja\Auth\Repository\Contract\JWTCryptRepository;
 use Valkyrja\Auth\Repository\Contract\JWTRepository;
 use Valkyrja\Auth\Repository\Contract\Repository;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Http\Request;

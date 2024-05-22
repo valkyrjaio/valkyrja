@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container;
 
-use Valkyrja\Container\Config\Config;
+use Valkyrja\Container\Config;
 use Valkyrja\Container\Managers\Container;
 use Valkyrja\Container\Managers\ContextAwareContainer;
 use Valkyrja\Tests\Classes\Container\Service;

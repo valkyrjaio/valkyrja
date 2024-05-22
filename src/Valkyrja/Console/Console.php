@@ -23,7 +23,7 @@ use Valkyrja\Console\Input\Contract\Input;
 use Valkyrja\Console\Model\Contract\Command;
 use Valkyrja\Console\Output\Contract\Output;
 use Valkyrja\Console\Support\Provider;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Dispatcher\Exception\InvalidClosureException;
 use Valkyrja\Dispatcher\Exception\InvalidDispatchCapabilityException;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Manager\Factories;
 
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Manager\Adapter\Contract\Adapter;
 use Valkyrja\Manager\Drivers\Contract\Driver;
 use Valkyrja\Manager\Factories\Contract\Factory;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Attribute\Provider;
 
 use Valkyrja\Attribute\Contract\Attributes;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Reflection\Contract\Reflection;
 

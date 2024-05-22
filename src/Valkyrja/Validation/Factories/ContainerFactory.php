@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Factories;
 
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Validation\Factory;
 
 /**

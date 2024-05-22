@@ -16,7 +16,7 @@ namespace Valkyrja\Event\Providers;
 use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Attribute\Contract\Attributes as AttributeAttributes;
 use Valkyrja\Config\Config\Config;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
 use Valkyrja\Event\Annotator;

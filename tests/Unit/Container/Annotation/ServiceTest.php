@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Annotation;
 
-use Valkyrja\Container\Annotations\Service;
+use Valkyrja\Container\Annotation\Service;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

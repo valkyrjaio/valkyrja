@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Factories;
 
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Orm\Adapter;
 use Valkyrja\Orm\CacheRepository;
 use Valkyrja\Orm\DeleteQueryBuilder;

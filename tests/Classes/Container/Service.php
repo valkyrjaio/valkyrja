@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Container;
 
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Service as Contract;
+use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Contract\Service as Contract;
 
 /**
  * Testable Service class.
