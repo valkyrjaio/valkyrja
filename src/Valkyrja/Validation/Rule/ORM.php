@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Rules;
+namespace Valkyrja\Validation\Rule;
 
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Orm\Entity;
 use Valkyrja\Orm\Orm as ORMManager;
-use Valkyrja\Validation\Exceptions\ValidationException;
+use Valkyrja\Validation\Exception\ValidationException;
 
 /**
  * Class ORM.

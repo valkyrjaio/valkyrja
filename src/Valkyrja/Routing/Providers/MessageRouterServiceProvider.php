@@ -23,7 +23,7 @@ use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Dispatchers\MessageCapableRouter;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Router;
-use Valkyrja\Validation\Validator;
+use Valkyrja\Validation\Contract\Validation;
 
 /**
  * Class MessageRouterServiceProvider.
@@ -66,7 +66,7 @@ class MessageRouterServiceProvider extends Provider
         $container->setSingleton(
             Router::class,
             new MessageCapableRouter(
-                $container->getSingleton(Validator::class),
+                $container->getSingleton(Validation::class),
                 $container->getSingleton(Collection::class),
                 $container->getSingleton(Container::class),
                 $container->getSingleton(Dispatcher::class),

@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Factories;
+namespace Valkyrja\Validation\Factory;
 
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Validation\Factory;
+use Valkyrja\Validation\Factory\Contract\Factory;
 
 /**
  * Class ContainerFactory.

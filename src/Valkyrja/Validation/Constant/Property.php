@@ -11,23 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation;
+namespace Valkyrja\Validation\Constant;
 
 /**
- * Interface Factory.
+ * Constant Property.
  *
  * @author Melech Mizrachi
  */
-interface Factory
+final class Property
 {
-    /**
-     * Get a rule set by name.
-     *
-     * @template T
-     *
-     * @param class-string<T> $name The name of the rules to get
-     *
-     * @return T
-     */
-    public function createRules(string $name): object;
+    public const SUBJECT   = 'subject';
+    public const RULES     = 'rules';
+    public const ARGUMENTS = 'arguments';
+    public const MESSAGE   = 'message';
 }

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Exceptions;
+namespace Valkyrja\Validation\Exception;
 
 use Valkyrja\Exception\Throwable as Contract;
 

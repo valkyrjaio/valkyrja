@@ -39,7 +39,7 @@ use Valkyrja\Path\Config as Path;
 use Valkyrja\Routing\Config\Config as Routing;
 use Valkyrja\Session\Config as Session;
 use Valkyrja\Sms\Config as Sms;
-use Valkyrja\Validation\Config\Config as Validation;
+use Valkyrja\Validation\Config as Validation;
 use Valkyrja\View\Config\Config as View;
 
 /**

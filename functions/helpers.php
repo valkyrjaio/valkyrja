@@ -57,7 +57,7 @@ use Valkyrja\Session\Contract\Session;
 use Valkyrja\Sms\Contract\Sms;
 use Valkyrja\Sms\Message\Contract\Message as SmsMessage;
 use Valkyrja\Support\Directory;
-use Valkyrja\Validation\Validator;
+use Valkyrja\Validation\Contract\Validation;
 use Valkyrja\View\Template;
 use Valkyrja\View\View;
 
@@ -588,11 +588,11 @@ function smsMessage(string|null $name = null): SmsMessage
 /**
  * Get validator.
  *
- * @return Validator
+ * @return Validation
  */
-function validator(): Validator
+function validator(): Validation
 {
-    return container()->getSingleton(Validator::class);
+    return container()->getSingleton(Validation::class);
 }
 
 /**

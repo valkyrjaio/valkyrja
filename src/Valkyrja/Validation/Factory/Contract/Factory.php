@@ -11,22 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Factories;
-
-use Valkyrja\Validation\Factory as Contract;
+namespace Valkyrja\Validation\Factory\Contract;
 
 /**
- * Class Factory.
+ * Interface Factory.
  *
  * @author Melech Mizrachi
  */
-class Factory implements Contract
+interface Factory
 {
     /**
-     * @inheritDoc
+     * Get a rule set by name.
+     *
+     * @template T
+     *
+     * @param class-string<T> $name The name of the rules to get
+     *
+     * @return T
      */
-    public function createRules(string $name): object
-    {
-        return new $name();
-    }
+    public function createRules(string $name): object;
 }

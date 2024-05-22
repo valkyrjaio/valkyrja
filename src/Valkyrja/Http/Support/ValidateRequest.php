@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Support;
 
 use Valkyrja\Http\Request\Contract\ServerRequest;
-use Valkyrja\Validation\Validator;
+use Valkyrja\Validation\Contract\Validation;
 
 /**
  * Abstract Class ValidateRequest.
@@ -27,11 +27,11 @@ abstract class ValidateRequest
      * ValidateRequest constructor.
      *
      * @param ServerRequest $request   The request
-     * @param Validator     $validator The validator
+     * @param Validation    $validator The validator
      */
     public function __construct(
         protected ServerRequest $request,
-        protected Validator $validator
+        protected Validation $validator
     ) {
     }
 
@@ -60,9 +60,9 @@ abstract class ValidateRequest
     /**
      * Get the validator.
      *
-     * @return Validator
+     * @return Validation
      */
-    public function getValidator(): Validator
+    public function getValidator(): Validation
     {
         return $this->validator;
     }

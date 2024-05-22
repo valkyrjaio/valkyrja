@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Config;
 
-use Valkyrja\Validation\Config\Config as Model;
-use Valkyrja\Validation\Constants\ConfigValue;
+use Valkyrja\Validation\Config as Model;
+use Valkyrja\Validation\Constant\ConfigValue;
 
 /**
  * Class Validation.

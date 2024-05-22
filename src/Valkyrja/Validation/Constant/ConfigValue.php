@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Constants;
+namespace Valkyrja\Validation\Constant;
 
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Validation\Rules\Base;
-use Valkyrja\Validation\Rules\ORM;
+use Valkyrja\Validation\Rule\Base;
+use Valkyrja\Validation\Rule\ORM;
 
 /**
  * Constant ConfigValue.

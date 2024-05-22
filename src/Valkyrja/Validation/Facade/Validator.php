@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Facades;
+namespace Valkyrja\Validation\Facade;
 
 use Valkyrja\Facade\ContainerFacade;
-use Valkyrja\Validation\Validator as Contract;
+use Valkyrja\Validation\Contract\Validation as Contract;
 
 /**
  * Class Validator.

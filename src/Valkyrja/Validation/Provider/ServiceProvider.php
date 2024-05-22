@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Providers;
+namespace Valkyrja\Validation\Provider;
 
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Orm\Orm as ORMManager;
-use Valkyrja\Validation\Factories\ContainerFactory;
-use Valkyrja\Validation\Factory;
-use Valkyrja\Validation\Rules\ORM;
-use Valkyrja\Validation\Validator;
+use Valkyrja\Validation\Contract\Validation;
+use Valkyrja\Validation\Factory\ContainerFactory;
+use Valkyrja\Validation\Factory\Contract\Factory;
+use Valkyrja\Validation\Rule\ORM;
 
 /**
  * Class ServiceProvider.
@@ -35,9 +35,9 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Validator::class => [self::class, 'publishValidator'],
-            Factory::class   => [self::class, 'publishFactory'],
-            ORM::class       => [self::class, 'publishOrmRules'],
+            Validation::class => [self::class, 'publishValidator'],
+            Factory::class    => [self::class, 'publishFactory'],
+            ORM::class        => [self::class, 'publishOrmRules'],
         ];
     }
 
@@ -47,7 +47,7 @@ class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Validator::class,
+            Validation::class,
             Factory::class,
             ORM::class,
         ];
@@ -65,8 +65,8 @@ class ServiceProvider extends Provider
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
-            Validator::class,
-            new \Valkyrja\Validation\Validators\Validator(
+            Validation::class,
+            new \Valkyrja\Validation\Validator\Validation(
                 $container->getSingleton(Factory::class),
                 $config['validation']
             )

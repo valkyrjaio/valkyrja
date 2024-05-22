@@ -11,21 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Validators;
+namespace Valkyrja\Validation\Validator;
 
-use Valkyrja\Validation\Config\Config;
-use Valkyrja\Validation\Constants\Property;
-use Valkyrja\Validation\Constants\Rule;
-use Valkyrja\Validation\Exceptions\ValidationException;
-use Valkyrja\Validation\Factory;
-use Valkyrja\Validation\Validator as Contract;
+use Valkyrja\Validation\Config;
+use Valkyrja\Validation\Constant\Property;
+use Valkyrja\Validation\Constant\Rule;
+use Valkyrja\Validation\Contract\Validation as Contract;
+use Valkyrja\Validation\Exception\ValidationException;
+use Valkyrja\Validation\Factory\Contract\Factory;
 
 /**
- * Class Validator.
+ * Class Validation.
  *
  * @author Melech Mizrachi
  */
-class Validator implements Contract
+class Validation implements Contract
 {
     /**
      * The rules.

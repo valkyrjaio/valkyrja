@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Rules;
+namespace Valkyrja\Validation\Rule;
 
 use Valkyrja\Type\BuiltIn\Support\Integer;
 use Valkyrja\Type\BuiltIn\Support\Str;
-use Valkyrja\Validation\Exceptions\ValidationException;
+use Valkyrja\Validation\Exception\ValidationException;
 
 use function in_array;
 use function is_bool;

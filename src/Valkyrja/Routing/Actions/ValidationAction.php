@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Actions;
 
 use Valkyrja\Http\Request\Contract\ServerRequest;
-use Valkyrja\Validation\Validator;
+use Valkyrja\Validation\Contract\Validation;
 
 /**
  * Abstract Class ValidationAction.
@@ -33,17 +33,17 @@ abstract class ValidationAction
     /**
      * The validator.
      *
-     * @var Validator
+     * @var Validation
      */
-    protected Validator $validator;
+    protected Validation $validator;
 
     /**
      * Action constructor.
      *
      * @param ServerRequest $request   The request
-     * @param Validator     $validator The validator
+     * @param Validation    $validator The validator
      */
-    public function __construct(ServerRequest $request, Validator $validator)
+    public function __construct(ServerRequest $request, Validation $validator)
     {
         $this->request   = $request;
         $this->validator = $validator;

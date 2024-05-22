@@ -24,7 +24,7 @@ use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Message;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Abort;
-use Valkyrja\Validation\Validator;
+use Valkyrja\Validation\Contract\Validation;
 
 use function assert;
 
@@ -39,7 +39,7 @@ class MessageCapableRouter extends Router
      * MessageCapableRouter constructor.
      */
     public function __construct(
-        protected Validator $validator,
+        protected Validation $validator,
         Collection $collection,
         Container $container,
         Dispatcher $dispatcher,

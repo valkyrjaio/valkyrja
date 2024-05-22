@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation;
+namespace Valkyrja\Validation\Contract;
 
 /**
- * Interface Validator.
+ * Interface Validation.
  *
  * @author Melech Mizrachi
  */
-interface Validator
+interface Validation
 {
     /**
      * Get a rule set by name.

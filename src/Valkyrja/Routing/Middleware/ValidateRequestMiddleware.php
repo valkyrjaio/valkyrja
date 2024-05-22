@@ -15,7 +15,7 @@ namespace Valkyrja\Routing\Middleware;
 
 use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Http\Response\Contract\Response;
-use Valkyrja\Validation\Validator;
+use Valkyrja\Validation\Contract\Validation;
 
 /**
  * Class ValidateRequestMiddleware.
@@ -29,8 +29,8 @@ abstract class ValidateRequestMiddleware extends Middleware
      */
     public static function before(ServerRequest $request): ServerRequest|Response
     {
-        /** @var Validator $validator */
-        $validator = self::getContainer()->getSingleton(Validator::class);
+        /** @var Validation $validator */
+        $validator = self::getContainer()->getSingleton(Validation::class);
         $validator->setRules(static::getRules($request));
 
         if (! $validator->validate()) {
@@ -44,11 +44,11 @@ abstract class ValidateRequestMiddleware extends Middleware
      * Get the response on validation failure.
      *
      * @param ServerRequest $request   The request
-     * @param Validator     $validator The validator
+     * @param Validation    $validator The validator
      *
      * @return Response
      */
-    abstract protected static function getResponse(ServerRequest $request, Validator $validator): Response;
+    abstract protected static function getResponse(ServerRequest $request, Validation $validator): Response;
 
     /**
      * Get the validation rules.

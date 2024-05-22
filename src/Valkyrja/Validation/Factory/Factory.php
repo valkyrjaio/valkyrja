@@ -11,15 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Exceptions;
+namespace Valkyrja\Validation\Factory;
 
-use Valkyrja\Exception\RuntimeException;
+use Valkyrja\Validation\Factory\Contract\Factory as Contract;
 
 /**
- * Class ValidationException.
+ * Class Factory.
  *
  * @author Melech Mizrachi
  */
-class ValidationException extends RuntimeException implements Throwable
+class Factory implements Contract
 {
+    /**
+     * @inheritDoc
+     */
+    public function createRules(string $name): object
+    {
+        return new $name();
+    }
 }

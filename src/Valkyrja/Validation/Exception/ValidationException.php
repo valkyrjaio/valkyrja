@@ -11,17 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Constants;
+namespace Valkyrja\Validation\Exception;
+
+use Valkyrja\Exception\RuntimeException;
 
 /**
- * Constant Property.
+ * Class ValidationException.
  *
  * @author Melech Mizrachi
  */
-final class Property
+class ValidationException extends RuntimeException implements Throwable
 {
-    public const SUBJECT   = 'subject';
-    public const RULES     = 'rules';
-    public const ARGUMENTS = 'arguments';
-    public const MESSAGE   = 'message';
 }
