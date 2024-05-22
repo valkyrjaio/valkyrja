@@ -17,7 +17,7 @@ use Valkyrja\Annotation\Config as Annotation;
 use Valkyrja\Api\Config as Api;
 use Valkyrja\Application\Config as App;
 use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Asset\Config\Config as Asset;
+use Valkyrja\Asset\Config as Asset;
 use Valkyrja\Auth\Config\Config as Auth;
 use Valkyrja\Broadcast\Config\Config as Broadcast;
 use Valkyrja\Cache\Config\Config as Cache;
