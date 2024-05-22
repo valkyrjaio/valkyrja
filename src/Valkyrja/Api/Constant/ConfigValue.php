@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Api\Constants;
+namespace Valkyrja\Api\Constant;
 
-use Valkyrja\Api\Models\Json;
-use Valkyrja\Api\Models\JsonData;
+use Valkyrja\Api\Model\Json;
+use Valkyrja\Api\Model\JsonData;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 
 /**

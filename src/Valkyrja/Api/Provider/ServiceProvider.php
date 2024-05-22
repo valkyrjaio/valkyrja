@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Api\Providers;
+namespace Valkyrja\Api\Provider;
 
-use Valkyrja\Api\Api;
+use Valkyrja\Api\Contract\Api;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;

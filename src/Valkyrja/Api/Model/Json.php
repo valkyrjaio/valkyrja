@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Api\Models;
+namespace Valkyrja\Api\Model;
 
-use Valkyrja\Api\Constants\Status;
-use Valkyrja\Api\Json as Contract;
+use Valkyrja\Api\Constant\Status;
+use Valkyrja\Api\Model\Contract\Json as Contract;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Type\Model\Model;
 

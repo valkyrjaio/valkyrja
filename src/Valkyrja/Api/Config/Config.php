@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api\Config;
 
-use Valkyrja\Api\Json;
-use Valkyrja\Api\JsonData;
+use Valkyrja\Api\Model\Contract\Json;
+use Valkyrja\Api\Model\Contract\JsonData;
 use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;

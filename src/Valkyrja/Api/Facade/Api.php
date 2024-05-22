@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Api\Facades;
+namespace Valkyrja\Api\Facade;
 
 use Exception;
-use Valkyrja\Api\Api as Contract;
-use Valkyrja\Api\Json;
+use Valkyrja\Api\Contract\Api as Contract;
+use Valkyrja\Api\Model\Contract\Json;
 use Valkyrja\Facade\Facade;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Orm\Entity;

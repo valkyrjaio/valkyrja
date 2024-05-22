@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Middleware;
 
 use Exception;
-use Valkyrja\Api\Api;
-use Valkyrja\Api\Constants\Status;
+use Valkyrja\Api\Constant\Status;
+use Valkyrja\Api\Contract\Api;
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth;
 use Valkyrja\Auth\Config\Config;

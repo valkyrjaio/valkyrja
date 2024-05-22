@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja;
 
 use Valkyrja\Annotation\Contract\Annotations;
-use Valkyrja\Api\Api;
+use Valkyrja\Api\Contract\Api;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Valkyrja;
 use Valkyrja\Auth\Auth;

@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Api\Apis;
 
 use Exception;
-use Valkyrja\Api\Api as Contract;
 use Valkyrja\Api\Config\Config;
-use Valkyrja\Api\Constants\Status;
-use Valkyrja\Api\Json;
-use Valkyrja\Api\JsonData;
+use Valkyrja\Api\Constant\Status;
+use Valkyrja\Api\Contract\Api as Contract;
+use Valkyrja\Api\Model\Contract\Json;
+use Valkyrja\Api\Model\Contract\JsonData;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\JsonResponse;
@@ -41,7 +41,7 @@ class Api implements Contract
      *
      * @param ResponseFactory $responseFactory
      * @param Config|array    $config
-     * @param bool            $debug           [optional]
+     * @param bool            $debug [optional]
      */
     public function __construct(
         protected ResponseFactory $responseFactory,
