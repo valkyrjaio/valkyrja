@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Client\Contract;
 
 use Valkyrja\Client\Driver\Contract\Driver;
+use Valkyrja\Client\Factory\Contract\Factory;
 use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Manager\Contract\Manager;

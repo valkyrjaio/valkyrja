@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entity\Contract;
 
+use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
+use Valkyrja\Auth\Repository\Contract\Repository;
 use Valkyrja\Orm\Entity;
 
 /**

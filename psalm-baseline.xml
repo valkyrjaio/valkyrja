@@ -5,7 +5,7 @@
             <code>transaction</code>
         </TooManyArguments>
     </file>
-    <file src="src/Valkyrja/Http/Factories/FileFactory.php">
+    <file src="src/Valkyrja/Http/Factory/FileFactory.php">
         <InvalidArrayOffset occurrences="1">
             <code>$normalizedFiles[$key]</code>
         </InvalidArrayOffset>

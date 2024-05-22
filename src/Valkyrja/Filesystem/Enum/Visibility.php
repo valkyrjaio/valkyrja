@@ -20,6 +20,6 @@ namespace Valkyrja\Filesystem\Enum;
  */
 enum Visibility: string
 {
-    case PUBLIC = 'public';
+    case PUBLIC  = 'public';
     case PRIVATE = 'private';
 }

@@ -38,11 +38,8 @@ use Valkyrja\Tests\Unit\TestCase;
  * @param string $param A description test
  *
  * @Route("path" = "/", "name" = "noAClass::Property")
- *
  * @Route("path" = "/constant", "name" = "\\Valkyrja\\Tests\\Unit\\Annotation\\ParserTest::CONSTANT")
- *
  * @Route("path" = "/property", "name" = "\\Valkyrja\\Tests\\Unit\\Annotation\\ParserTest::property")
- *
  * @Route("path" = "/method", "name" = "\\Valkyrja\\Tests\\Unit\\Annotation\\ParserTest::staticMethod", "code" = 1)
  */
 class ParserTest extends TestCase
@@ -117,19 +114,19 @@ class ParserTest extends TestCase
 
         self::assertCount(7, $annotations);
 
-        self::assertEquals('description', $annotations[0]->getType());
-        self::assertEquals('author', $annotations[1]->getType());
-        self::assertEquals('param', $annotations[2]->getType());
-        self::assertEquals('Route', $annotations[3]->getType());
-        self::assertEquals('noAClass::Property', $annotations[3]->getName());
-        self::assertEquals('Route', $annotations[4]->getType());
-        self::assertEquals(self::CONSTANT, $annotations[4]->getName());
-        self::assertEquals('Route', $annotations[5]->getType());
-        self::assertEquals(self::$property, $annotations[5]->getName());
-        self::assertEquals('Route', $annotations[6]->getType());
+        self::assertSame('description', $annotations[0]->getType());
+        self::assertSame('author', $annotations[1]->getType());
+        self::assertSame('param', $annotations[2]->getType());
+        self::assertSame('Route', $annotations[3]->getType());
+        self::assertSame('noAClass::Property', $annotations[3]->getName());
+        self::assertSame('Route', $annotations[4]->getType());
+        self::assertSame(self::CONSTANT, $annotations[4]->getName());
+        self::assertSame('Route', $annotations[5]->getType());
+        self::assertSame(self::$property, $annotations[5]->getName());
+        self::assertSame('Route', $annotations[6]->getType());
         self::assertInstanceOf(Route::class, $annotations[6]);
-        self::assertEquals(self::staticMethod(), $annotations[6]->getName());
-        self::assertEquals(1, $annotations[6]->getCode());
+        self::assertSame(self::staticMethod(), $annotations[6]->getName());
+        self::assertSame(1, $annotations[6]->getCode());
     }
 
     /**

@@ -172,7 +172,7 @@ class CacheableContainer extends Container
     protected function setupServiceProviders(Config|array $config): void
     {
         array_map(
-        /** @param class-string $provider */
+            /** @param class-string $provider */
             fn (string $provider) => $this->register($provider),
             $config['providers']
         );
@@ -183,7 +183,7 @@ class CacheableContainer extends Container
         }
 
         array_map(
-        /** @param class-string $provider */
+            /** @param class-string $provider */
             fn (string $provider) => $this->register($provider),
             $config['devProviders']
         );

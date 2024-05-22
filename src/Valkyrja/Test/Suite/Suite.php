@@ -37,7 +37,7 @@ class Suite implements Contract
      */
     public function run(array|null $args = null): void
     {
-        $args    ??= $this->getServerArgs();
+        $args ??= $this->getServerArgs();
         $results = $this->results;
         $files   = $this->getFilesFromArgs($args);
 

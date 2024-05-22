@@ -16,6 +16,7 @@ namespace Valkyrja\Session\Contract;
 use Valkyrja\Manager\Contract\Manager;
 use Valkyrja\Session\Driver\Contract\Driver;
 use Valkyrja\Session\Exception\InvalidCsrfToken;
+use Valkyrja\Session\Factory\Contract\Factory;
 
 /**
  * Interface Session.

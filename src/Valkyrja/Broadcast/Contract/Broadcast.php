@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast\Contract;
 
 use Valkyrja\Broadcast\Driver\Contract\Driver;
+use Valkyrja\Broadcast\Factory\Contract\Factory;
 use Valkyrja\Broadcast\Message\Contract\Message;
 use Valkyrja\Manager\Contract\MessageManager as Manager;
 

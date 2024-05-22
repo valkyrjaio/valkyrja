@@ -84,7 +84,7 @@ class Dispatcher implements Contract
         $response = is_string($class)
             ? $class::$method(...$arguments)
             : (/** @var object $class */
-            $class->$method(...$arguments)
+                $class->$method(...$arguments)
             );
 
         return $response ?? Constant::DISPATCHED;

@@ -74,7 +74,7 @@ class NullAdapter implements Contract
     {
         $this->config = $config;
 
-        $sessionId   ??= $config['id'];
+        $sessionId ??= $config['id'];
         $sessionName ??= $config['name'];
 
         // If a session id is provided
