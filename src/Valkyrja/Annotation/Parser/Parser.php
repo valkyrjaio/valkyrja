@@ -168,10 +168,6 @@ class Parser implements Contract
     {
         $regex = $this->getRegex();
 
-        if ($regex === '') {
-            return [];
-        }
-
         preg_match_all($regex, $docString, $matches);
 
         return $matches;
