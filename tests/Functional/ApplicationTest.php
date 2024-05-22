@@ -31,7 +31,7 @@ use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Path\Generator\Contract\Generator;
 use Valkyrja\Path\Parser\Contract\Parser;
 use Valkyrja\Routing\Router;
-use Valkyrja\Session\Session;
+use Valkyrja\Session\Contract\Session;
 use Valkyrja\Tests\Classes\Config\ProviderClass;
 use Valkyrja\Tests\Config;
 use Valkyrja\Tests\Env;

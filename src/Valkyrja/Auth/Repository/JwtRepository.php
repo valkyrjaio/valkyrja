@@ -21,7 +21,7 @@ use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\JWTRepository as Contract;
 use Valkyrja\Jwt\Contract\Jwt as JwtManager;
 use Valkyrja\Jwt\Driver\Contract\Driver as Jwt;
-use Valkyrja\Session\Session;
+use Valkyrja\Session\Contract\Session;
 
 /**
  * Class JwtRepository.

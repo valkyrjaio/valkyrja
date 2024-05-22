@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Factories;
+namespace Valkyrja\Session\Factory;
 
 use Valkyrja\Manager\Factories\ContainerFactory as Factory;
-use Valkyrja\Session\Adapter;
-use Valkyrja\Session\CacheAdapter;
-use Valkyrja\Session\Driver;
-use Valkyrja\Session\Factory as Contract;
-use Valkyrja\Session\LogAdapter;
+use Valkyrja\Session\Adapter\Contract\Adapter;
+use Valkyrja\Session\Adapter\Contract\CacheAdapter;
+use Valkyrja\Session\Adapter\Contract\LogAdapter;
+use Valkyrja\Session\Driver\Contract\Driver;
+use Valkyrja\Session\Factory\Contract\Factory as Contract;
 
 /**
  * Class ContainerFactory.

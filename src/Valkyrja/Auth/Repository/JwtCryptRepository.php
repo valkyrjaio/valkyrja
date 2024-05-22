@@ -21,7 +21,7 @@ use Valkyrja\Auth\Repository\Contract\JWTCryptRepository as Contract;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Jwt\Contract\Jwt as JwtManager;
 use Valkyrja\Jwt\Driver\Contract\Driver as Jwt;
-use Valkyrja\Session\Session;
+use Valkyrja\Session\Contract\Session;
 
 /**
  * Class JwtCryptRepository.

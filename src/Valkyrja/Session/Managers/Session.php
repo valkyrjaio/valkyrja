@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Managers;
 
 use Valkyrja\Manager\Manager;
-use Valkyrja\Session\Config\Config;
-use Valkyrja\Session\Driver;
-use Valkyrja\Session\Factory;
-use Valkyrja\Session\Session as Contract;
+use Valkyrja\Session\Config;
+use Valkyrja\Session\Contract\Session as Contract;
+use Valkyrja\Session\Driver\Contract\Driver;
+use Valkyrja\Session\Factory\Contract\Factory;
 
 /**
  * Class Sessions.

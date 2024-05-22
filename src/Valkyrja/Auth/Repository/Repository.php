@@ -25,8 +25,8 @@ use Valkyrja\Auth\Exception\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\Repository as Contract;
 use Valkyrja\Http\Request\Contract\ServerRequest;
-use Valkyrja\Session\Driver as Session;
-use Valkyrja\Session\Session as SessionManager;
+use Valkyrja\Session\Contract\Session as SessionManager;
+use Valkyrja\Session\Driver\Contract\Driver as Session;
 
 use function assert;
 

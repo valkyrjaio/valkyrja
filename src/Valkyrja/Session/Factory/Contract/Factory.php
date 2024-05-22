@@ -11,9 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session;
+namespace Valkyrja\Session\Factory\Contract;
 
 use Valkyrja\Manager\Factories\Contract\Factory as Contract;
+use Valkyrja\Session\Adapter\Contract\Adapter;
+use Valkyrja\Session\Driver\Contract\Driver;
 
 /**
  * Interface Factory.

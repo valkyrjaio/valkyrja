@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Adapters;
 
-use Valkyrja\Session\Exceptions\InvalidSessionId;
-use Valkyrja\Session\Exceptions\SessionStartFailure;
+use Valkyrja\Session\Exception\InvalidSessionId;
+use Valkyrja\Session\Exception\SessionStartFailure;
 
 use function headers_sent;
 use function preg_match;

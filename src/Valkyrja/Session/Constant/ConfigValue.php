@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Constants;
+namespace Valkyrja\Session\Constant;
 
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Session\Adapters\PHPAdapter;
-use Valkyrja\Session\Drivers\Driver;
+use Valkyrja\Session\Driver\Driver;
 
 /**
  * Constant ConfigValue.

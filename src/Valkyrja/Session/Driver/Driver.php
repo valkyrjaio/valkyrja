@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Drivers;
+namespace Valkyrja\Session\Driver;
 
 use Valkyrja\Manager\Drivers\Driver as ParentDriver;
-use Valkyrja\Session\Adapter;
-use Valkyrja\Session\Driver as Contract;
+use Valkyrja\Session\Adapter\Contract\Adapter;
+use Valkyrja\Session\Driver\Contract\Driver as Contract;
 
 /**
  * Class Driver.

@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Exceptions;
+namespace Valkyrja\Session\Exception;
 
-use InvalidArgumentException;
+use RuntimeException;
 
 /**
- * Class InvalidCsrfToken.
+ * Class SessionStartFailure.
  *
  * @author Melech Mizrachi
  */
-class InvalidCsrfToken extends InvalidArgumentException
+class SessionStartFailure extends RuntimeException
 {
 }

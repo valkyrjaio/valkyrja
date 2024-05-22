@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Adapters;
 
 use Exception;
-use Valkyrja\Session\Adapter as Contract;
-use Valkyrja\Session\Exceptions\InvalidCsrfToken;
-use Valkyrja\Session\Exceptions\InvalidSessionId;
-use Valkyrja\Session\Exceptions\SessionStartFailure;
+use Valkyrja\Session\Adapter\Contract\Adapter as Contract;
+use Valkyrja\Session\Exception\InvalidCsrfToken;
+use Valkyrja\Session\Exception\InvalidSessionId;
+use Valkyrja\Session\Exception\SessionStartFailure;
 
 use function bin2hex;
 use function hash_equals;
@@ -74,7 +74,7 @@ class NullAdapter implements Contract
     {
         $this->config = $config;
 
-        $sessionId ??= $config['id'];
+        $sessionId   ??= $config['id'];
         $sessionName ??= $config['name'];
 
         // If a session id is provided

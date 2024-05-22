@@ -21,7 +21,7 @@ use Valkyrja\Auth\Repository\Contract\CryptTokenizedRepository as Contract;
 use Valkyrja\Crypt\Contract\Crypt as CryptManager;
 use Valkyrja\Crypt\Driver\Contract\Driver as Crypt;
 use Valkyrja\Crypt\Exception\CryptException;
-use Valkyrja\Session\Session;
+use Valkyrja\Session\Contract\Session;
 
 /**
  * Class CryptTokenizedRepository.

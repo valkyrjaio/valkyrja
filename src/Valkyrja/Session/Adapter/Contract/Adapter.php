@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session;
+namespace Valkyrja\Session\Adapter\Contract;
 
-use Valkyrja\Manager\Drivers\Contract\Driver as Contract;
-use Valkyrja\Session\Exceptions\InvalidCsrfToken;
+use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
+use Valkyrja\Session\Exception\InvalidCsrfToken;
 
 /**
- * Interface Driver.
+ * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-interface Driver extends Contract
+interface Adapter extends Contract
 {
     /**
      * Start the session.

@@ -13,61 +13,51 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Adapters;
 
-use Valkyrja\Crypt\Contract\Crypt;
-use Valkyrja\Crypt\Exception\CryptException;
-use Valkyrja\Http\Request\Contract\ServerRequest;
-use Valkyrja\Session\Exceptions\SessionStartFailure;
+use JsonException;
+use Valkyrja\Cache\Driver\Contract\Driver as Cache;
+use Valkyrja\Session\Exception\SessionStartFailure;
+use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function headers_sent;
 use function session_start;
 
 /**
- * Class CookieAdapter.
+ * Class CacheAdapter.
  *
  * @author Melech Mizrachi
  */
-class CookieAdapter extends PHPAdapter
+class CacheAdapter extends PHPAdapter
 {
     /**
-     * The crypt.
+     * The cache.
      *
-     * @var Crypt
+     * @var Cache
      */
-    protected Crypt $crypt;
+    protected Cache $cache;
 
     /**
-     * The request.
+     * CacheAdapter constructor.
      *
-     * @var ServerRequest
-     */
-    protected ServerRequest $request;
-
-    /**
-     * CookieAdapter constructor.
-     *
-     * @param Crypt         $crypt       The crypt
-     * @param ServerRequest $request     The request
-     * @param array         $config      The config
-     * @param string|null   $sessionId   [optional] The session id
-     * @param string|null   $sessionName [optional] The session name
+     * @param Cache       $cache       The cache
+     * @param array       $config      The config
+     * @param string|null $sessionId   [optional] The session id
+     * @param string|null $sessionName [optional] The session name
      */
     public function __construct(
-        Crypt $crypt,
-        ServerRequest $request,
+        Cache $cache,
         array $config,
         string|null $sessionId = null,
         string|null $sessionName = null
     ) {
         parent::__construct($config, $sessionId, $sessionName);
 
-        $this->crypt   = $crypt;
-        $this->request = $request;
+        $this->cache = $cache;
     }
 
     /**
      * @inheritDoc
      *
-     * @throws CryptException
+     * @throws JsonException
      */
     public function start(): void
     {
@@ -78,35 +68,33 @@ class CookieAdapter extends PHPAdapter
         }
 
         // If the session failed to start
-        if (! session_start()) {
+        if (! session_start() || ($cachedData = $this->cache->get(
+                $this->getCacheSessionId()
+            )) === null || $cachedData === '') {
             // Throw a new exception
             throw new SessionStartFailure('The session failed to start!');
         }
 
-        $dataString = $this->request->getCookieParam($this->getId());
-
         // Set the data
-        $this->data = $dataString !== null && $dataString !== ''
-            ? $this->crypt->decryptArray($dataString)
-            : [];
+        $this->data = Arr::fromString($cachedData);
     }
 
     /**
      * @inheritDoc
      *
-     * @throws CryptException
+     * @throws JsonException
      */
     public function set(string $id, $value): void
     {
         $this->data[$id] = $value;
 
-        $this->updateCookieSession();
+        $this->updateCacheSession();
     }
 
     /**
      * @inheritDoc
      *
-     * @throws CryptException
+     * @throws JsonException
      */
     public function remove(string $id): bool
     {
@@ -116,7 +104,7 @@ class CookieAdapter extends PHPAdapter
 
         unset($this->data[$id]);
 
-        $this->updateCookieSession();
+        $this->updateCacheSession();
 
         return true;
     }
@@ -124,44 +112,46 @@ class CookieAdapter extends PHPAdapter
     /**
      * @inheritDoc
      *
-     * @throws CryptException
+     * @throws JsonException
      */
     public function clear(): void
     {
         parent::clear();
 
-        $this->updateCookieSession();
+        $this->updateCacheSession();
     }
 
     /**
      * @inheritDoc
      *
-     * @throws CryptException
+     * @throws JsonException
      */
     public function destroy(): void
     {
         parent::destroy();
 
-        $this->updateCookieSession();
+        $this->updateCacheSession();
+    }
+
+    /**
+     * Get the cache session id.
+     *
+     * @return string
+     */
+    protected function getCacheSessionId(): string
+    {
+        return $this->getId() . '_session';
     }
 
     /**
      * Update the cache session.
      *
-     * @throws CryptException
+     * @throws JsonException
      *
      * @return void
      */
-    protected function updateCookieSession(): void
+    protected function updateCacheSession(): void
     {
-        setcookie(
-            $this->getId(),
-            $this->crypt->encryptArray($this->data),
-            0,
-            '/',
-            '',
-            false,
-            true
-        );
+        $this->cache->forever($this->getCacheSessionId(), Arr::toString($this->data));
     }
 }

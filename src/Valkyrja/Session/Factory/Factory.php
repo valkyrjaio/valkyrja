@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Factories;
+namespace Valkyrja\Session\Factory;
 
 use Valkyrja\Manager\Factories\Factory as ManagerFactory;
-use Valkyrja\Session\Adapter;
-use Valkyrja\Session\Driver;
-use Valkyrja\Session\Factory as Contract;
+use Valkyrja\Session\Adapter\Contract\Adapter;
+use Valkyrja\Session\Driver\Contract\Driver;
+use Valkyrja\Session\Factory\Contract\Factory as Contract;
 
 /**
  * Class Factory.

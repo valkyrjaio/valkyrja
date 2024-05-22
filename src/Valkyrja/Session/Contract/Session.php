@@ -11,10 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session;
+namespace Valkyrja\Session\Contract;
 
 use Valkyrja\Manager\Contract\Manager;
-use Valkyrja\Session\Exceptions\InvalidCsrfToken;
+use Valkyrja\Session\Driver\Contract\Driver;
+use Valkyrja\Session\Exception\InvalidCsrfToken;
 
 /**
  * Interface Session.

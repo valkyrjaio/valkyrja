@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Facades;
+namespace Valkyrja\Session\Facade;
 
 use Valkyrja\Facade\ContainerFacade;
-use Valkyrja\Session\Driver as SessionContract;
-use Valkyrja\Session\Session as Contract;
+use Valkyrja\Session\Contract\Session as Contract;
+use Valkyrja\Session\Driver\Contract\Driver as SessionContract;
 
 /**
  * Class Session.

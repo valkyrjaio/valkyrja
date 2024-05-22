@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Providers;
+namespace Valkyrja\Session\Provider;
 
 use Valkyrja\Cache\Contract\Cache;
 use Valkyrja\Config\Config\Config;
@@ -20,14 +20,14 @@ use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Http\Request\Contract\ServerRequest;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Session\Adapter;
+use Valkyrja\Session\Adapter\Contract\Adapter;
+use Valkyrja\Session\Adapter\Contract\CacheAdapter;
+use Valkyrja\Session\Adapter\Contract\LogAdapter;
 use Valkyrja\Session\Adapters\CookieAdapter;
-use Valkyrja\Session\CacheAdapter;
-use Valkyrja\Session\Driver;
-use Valkyrja\Session\Factories\ContainerFactory;
-use Valkyrja\Session\Factory;
-use Valkyrja\Session\LogAdapter;
-use Valkyrja\Session\Session;
+use Valkyrja\Session\Contract\Session;
+use Valkyrja\Session\Driver\Contract\Driver;
+use Valkyrja\Session\Factory\ContainerFactory;
+use Valkyrja\Session\Factory\Contract\Factory;
 
 /**
  * Class ServiceProvider.
