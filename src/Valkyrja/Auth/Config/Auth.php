@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Config;
 
-use Valkyrja\Auth\Config\Config as Model;
-use Valkyrja\Auth\Constants\ConfigValue;
+use Valkyrja\Auth\Config as Model;
+use Valkyrja\Auth\Constant\ConfigValue;
 
 /**
  * Class Auth.

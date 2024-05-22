@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Middleware;
 
 use Exception;
-use Valkyrja\Auth\User;
+use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Middleware;
 
-use Valkyrja\Auth\Gate;
-use Valkyrja\Auth\Policy;
-use Valkyrja\Auth\User;
+use Valkyrja\Auth\Entity\Contract\User;
+use Valkyrja\Auth\Gate\Contract\Gate;
+use Valkyrja\Auth\Policy\Contract\Policy;
 use Valkyrja\Http\Request;
 
 /**
@@ -52,10 +52,10 @@ abstract class GatedMiddleware extends AuthorizedMiddleware
     protected static function checkAuthorized(Request $request, User $user): bool
     {
         return self::getAuth()->getGate(static::$gate, static::$userEntity, static::$adapterName)
-            ->isAuthorized(
-                static::getAction($request),
-                static::$policy
-            );
+                   ->isAuthorized(
+                       static::getAction($request),
+                       static::$policy
+                   );
     }
 
     /**

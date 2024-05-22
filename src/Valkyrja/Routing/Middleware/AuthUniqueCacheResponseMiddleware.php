@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Middleware;
 
-use Valkyrja\Auth\Facades\Auth;
+use Valkyrja\Auth\Facade\Auth;
 use Valkyrja\Http\Request;
 
 use function md5;

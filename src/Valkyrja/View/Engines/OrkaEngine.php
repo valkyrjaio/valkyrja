@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Engines;
 
-use Valkyrja\Auth\Facades\Auth;
+use Valkyrja\Auth\Facade\Auth;
 use Valkyrja\Support\Directory;
 use Valkyrja\View\Config\Config;
 

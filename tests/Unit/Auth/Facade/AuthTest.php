@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Auth\Facade;
 
-use Valkyrja\Auth\Auth as Contract;
-use Valkyrja\Auth\Facades\Auth as Facade;
+use Valkyrja\Auth\Contract\Auth as Contract;
+use Valkyrja\Auth\Facade\Auth as Facade;
 use Valkyrja\Tests\Unit\Facade\FacadeTestCase;
 
 /**

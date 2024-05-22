@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Middleware;
 
 use JsonException;
-use Valkyrja\Auth\Auth;
-use Valkyrja\Auth\User;
+use Valkyrja\Auth\Contract\Auth;
+use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Broadcast\Broadcast;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Request;

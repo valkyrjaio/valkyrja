@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification;
 
-use Valkyrja\Auth\MailableUser;
+use Valkyrja\Auth\Entity\Contract\MailableUser;
 
 /**
  * Interface NotifiableUser.

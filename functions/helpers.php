@@ -17,7 +17,7 @@ use Valkyrja\Annotation\Contract\Annotations;
 use Valkyrja\Api\Contract\Api;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Valkyrja;
-use Valkyrja\Auth\Auth;
+use Valkyrja\Auth\Contract\Auth;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\Console;

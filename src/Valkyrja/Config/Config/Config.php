@@ -18,7 +18,7 @@ use Valkyrja\Api\Config as Api;
 use Valkyrja\Application\Config as App;
 use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Asset\Config as Asset;
-use Valkyrja\Auth\Config\Config as Auth;
+use Valkyrja\Auth\Config as Auth;
 use Valkyrja\Broadcast\Config\Config as Broadcast;
 use Valkyrja\Cache\Config\Config as Cache;
 use Valkyrja\Client\Config\Config as Client;

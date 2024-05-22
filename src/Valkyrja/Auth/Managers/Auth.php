@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Managers;
 
-use Valkyrja\Auth\Adapter;
-use Valkyrja\Auth\Auth as Contract;
-use Valkyrja\Auth\AuthenticatedUsers;
-use Valkyrja\Auth\Config\Config;
-use Valkyrja\Auth\Constants\HeaderValue;
-use Valkyrja\Auth\Exceptions\AuthRuntimeException;
-use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
-use Valkyrja\Auth\Factory;
-use Valkyrja\Auth\Gate;
-use Valkyrja\Auth\LockableUser;
-use Valkyrja\Auth\Policy;
-use Valkyrja\Auth\Repository;
-use Valkyrja\Auth\TokenizedRepository;
-use Valkyrja\Auth\User;
+use Valkyrja\Auth\Adapter\Contract\Adapter;
+use Valkyrja\Auth\Config;
+use Valkyrja\Auth\Constant\HeaderValue;
+use Valkyrja\Auth\Contract\Auth as Contract;
+use Valkyrja\Auth\Entity\Contract\LockableUser;
+use Valkyrja\Auth\Entity\Contract\User;
+use Valkyrja\Auth\Exception\AuthRuntimeException;
+use Valkyrja\Auth\Exception\InvalidAuthenticationException;
+use Valkyrja\Auth\Factory\Contract\Factory;
+use Valkyrja\Auth\Gate\Contract\Gate;
+use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
+use Valkyrja\Auth\Policy\Contract\Policy;
+use Valkyrja\Auth\Repository\Contract\Repository;
+use Valkyrja\Auth\Repository\Contract\TokenizedRepository;
 use Valkyrja\Http\Constants\Header;
 use Valkyrja\Http\Request;
 
@@ -187,8 +187,11 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function requestWithAuthToken(Request $request, string|null $user = null, string|null $adapter = null): Request
-    {
+    public function requestWithAuthToken(
+        Request $request,
+        string|null $user = null,
+        string|null $adapter = null
+    ): Request {
         $repository = $this->getRepository($user, $adapter);
 
         if (! ($repository instanceof TokenizedRepository)) {
