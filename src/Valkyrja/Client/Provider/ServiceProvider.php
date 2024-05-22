@@ -77,7 +77,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Client::class,
-            new \Valkyrja\Client\Manager\Client(
+            new \Valkyrja\Client\Client(
                 $container->getSingleton(Factory::class),
                 $config['client']
             )

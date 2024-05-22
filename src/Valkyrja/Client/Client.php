@@ -11,9 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Client\Manager;
+namespace Valkyrja\Client;
 
-use Valkyrja\Client\Config;
 use Valkyrja\Client\Contract\Client as Contract;
 use Valkyrja\Client\Driver\Contract\Driver;
 use Valkyrja\Client\Factory\Contract\Factory;
