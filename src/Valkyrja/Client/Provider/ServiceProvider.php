@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Client\Providers;
+namespace Valkyrja\Client\Provider;
 
 use GuzzleHttp\Client as Guzzle;
-use Valkyrja\Client\Adapter;
-use Valkyrja\Client\Client;
-use Valkyrja\Client\Driver;
-use Valkyrja\Client\Factories\ContainerFactory;
-use Valkyrja\Client\Factory;
-use Valkyrja\Client\GuzzleAdapter;
-use Valkyrja\Client\LogAdapter;
+use Valkyrja\Client\Adapter\Contract\Adapter;
+use Valkyrja\Client\Adapter\Contract\GuzzleAdapter;
+use Valkyrja\Client\Adapter\Contract\LogAdapter;
+use Valkyrja\Client\Contract\Client;
+use Valkyrja\Client\Driver\Contract\Driver;
+use Valkyrja\Client\Factory\ContainerFactory;
+use Valkyrja\Client\Factory\Contract\Factory;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
@@ -77,7 +77,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Client::class,
-            new \Valkyrja\Client\Managers\Client(
+            new \Valkyrja\Client\Manager\Client(
                 $container->getSingleton(Factory::class),
                 $config['client']
             )

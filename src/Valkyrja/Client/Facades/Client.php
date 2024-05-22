@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client\Facades;
 
-use Valkyrja\Client\Client as Contract;
-use Valkyrja\Client\Driver;
+use Valkyrja\Client\Contract\Client as Contract;
+use Valkyrja\Client\Driver\Contract\Driver;
 use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Http\Response;
 

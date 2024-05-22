@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Client;
+namespace Valkyrja\Client\Adapter\Contract;
 
 /**
- * Interface GuzzleAdapter.
+ * Interface LogAdapter.
  *
  * @author Melech Mizrachi
  */
-interface GuzzleAdapter extends Adapter
+interface LogAdapter extends Adapter
 {
 }

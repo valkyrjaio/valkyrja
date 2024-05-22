@@ -21,7 +21,7 @@ use Valkyrja\Asset\Config as Asset;
 use Valkyrja\Auth\Config as Auth;
 use Valkyrja\Broadcast\Config as Broadcast;
 use Valkyrja\Cache\Config as Cache;
-use Valkyrja\Client\Config\Config as Client;
+use Valkyrja\Client\Config as Client;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Config\Support\Provider;

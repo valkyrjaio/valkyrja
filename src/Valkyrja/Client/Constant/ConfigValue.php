@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Client\Constants;
+namespace Valkyrja\Client\Constant;
 
-use Valkyrja\Client\Adapters\GuzzleAdapter;
-use Valkyrja\Client\Drivers\Driver;
+use Valkyrja\Client\Adapter\GuzzleAdapter;
+use Valkyrja\Client\Driver\Driver;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 
 /**

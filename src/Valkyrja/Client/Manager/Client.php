@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Client\Managers;
+namespace Valkyrja\Client\Manager;
 
-use Valkyrja\Client\Client as Contract;
-use Valkyrja\Client\Config\Config;
-use Valkyrja\Client\Driver;
-use Valkyrja\Client\Factory;
+use Valkyrja\Client\Config;
+use Valkyrja\Client\Contract\Client as Contract;
+use Valkyrja\Client\Driver\Contract\Driver;
+use Valkyrja\Client\Factory\Contract\Factory;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Manager\Manager;

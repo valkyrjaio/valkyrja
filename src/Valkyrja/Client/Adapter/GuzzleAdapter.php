@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Client\Adapters;
+namespace Valkyrja\Client\Adapter;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
-use Valkyrja\Client\GuzzleAdapter as Contract;
+use Valkyrja\Client\Adapter\Contract\GuzzleAdapter as Contract;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Http\JsonRequest;
 use Valkyrja\Http\Request;
@@ -140,7 +140,7 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle headers.
      *
-     * @param Request $request  The request
+     * @param Request  $request The request
      * @param array   &$options The options
      *
      * @return void
@@ -159,7 +159,7 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle cookies.
      *
-     * @param Request $request  The request
+     * @param Request  $request The request
      * @param array   &$options The options
      *
      * @return void
@@ -185,7 +185,7 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle form params.
      *
-     * @param Request $request  The request
+     * @param Request  $request The request
      * @param array   &$options The options
      *
      * @return void
@@ -200,7 +200,7 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle body.
      *
-     * @param Request $request  The request
+     * @param Request  $request The request
      * @param array   &$options The options
      *
      * @return void

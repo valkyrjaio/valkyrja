@@ -19,7 +19,7 @@ use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Valkyrja;
 use Valkyrja\Auth\Contract\Auth;
 use Valkyrja\Cache\Contract\Cache;
-use Valkyrja\Client\Client;
+use Valkyrja\Client\Contract\Client;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Input;
 use Valkyrja\Console\Kernel as ConsoleKernel;

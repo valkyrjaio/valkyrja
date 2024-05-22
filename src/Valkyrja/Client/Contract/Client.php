@@ -11,8 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Client;
+namespace Valkyrja\Client\Contract;
 
+use Valkyrja\Client\Driver\Contract\Driver;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Manager\Contract\Manager;

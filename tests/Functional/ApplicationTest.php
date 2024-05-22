@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Functional;
 use Valkyrja\Annotation\Contract\Annotations;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Valkyrja;
-use Valkyrja\Client\Client;
+use Valkyrja\Client\Contract\Client;
 use Valkyrja\Config\Command\ConfigCache;
 use Valkyrja\Config\Constant\ConfigKey;
 use Valkyrja\Console\Console;

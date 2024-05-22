@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client\Config;
 
-use Valkyrja\Client\Config\Config as Model;
-use Valkyrja\Client\Constants\ConfigValue;
+use Valkyrja\Client\Config as Model;
+use Valkyrja\Client\Constant\ConfigValue;
 
 /**
  * Class Client.

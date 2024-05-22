@@ -11,31 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Client\Adapters;
+namespace Valkyrja\Client\Adapter;
 
-use JsonException;
-use Valkyrja\Client\LogAdapter as Contract;
+use Valkyrja\Client\Adapter\Contract\Adapter as Contract;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\Log\Driver as Logger;
-use Valkyrja\Type\BuiltIn\Support\Obj;
 
 /**
- * Class LogAdapter.
+ * Class NullAdapter.
  *
  * @author Melech Mizrachi
  */
-class LogAdapter implements Contract
+class NullAdapter implements Contract
 {
-    /**
-     * The logger.
-     *
-     * @var Logger
-     */
-    protected Logger $logger;
-
     /**
      * The response factory.
      *
@@ -44,46 +34,34 @@ class LogAdapter implements Contract
     protected ResponseFactory $responseFactory;
 
     /**
-     * The client config.
+     * The config.
      *
      * @var array
      */
     protected array $config;
 
     /**
-     * LogAdapter constructor.
+     * NullAdapter constructor.
      *
-     * @param Logger          $logger          The logger
      * @param ResponseFactory $responseFactory The response factory
      * @param array           $config          The config
      */
-    public function __construct(Logger $logger, ResponseFactory $responseFactory, array $config)
+    public function __construct(ResponseFactory $responseFactory, array $config)
     {
-        $this->logger          = $logger;
         $this->responseFactory = $responseFactory;
         $this->config          = $config;
     }
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function request(Request $request): Response
     {
-        $optionsString = Obj::toString($request);
-
-        $this->logger->info(
-            static::class . " request: {$request->getMethod()}, uri {$request->getUri()->__toString()}, options $optionsString"
-        );
-
         return $this->responseFactory->createResponse();
     }
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function get(Request $request): Response
     {
@@ -92,51 +70,41 @@ class LogAdapter implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function post(Request $request): Response
     {
-        return $this->request($request->withMethod(RequestMethod::POST));
+        return $this->request($request->withMethod(RequestMethod::GET));
     }
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function head(Request $request): Response
     {
-        return $this->request($request->withMethod(RequestMethod::HEAD));
+        return $this->request($request->withMethod(RequestMethod::GET));
     }
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function put(Request $request): Response
     {
-        return $this->request($request->withMethod(RequestMethod::PUT));
+        return $this->request($request->withMethod(RequestMethod::GET));
     }
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function patch(Request $request): Response
     {
-        return $this->request($request->withMethod(RequestMethod::PATCH));
+        return $this->request($request->withMethod(RequestMethod::GET));
     }
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function delete(Request $request): Response
     {
-        return $this->request($request->withMethod(RequestMethod::DELETE));
+        return $this->request($request->withMethod(RequestMethod::GET));
     }
 }

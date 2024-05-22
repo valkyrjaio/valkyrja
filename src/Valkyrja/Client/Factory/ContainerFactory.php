@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Client\Factories;
+namespace Valkyrja\Client\Factory;
 
-use Valkyrja\Client\Adapter;
-use Valkyrja\Client\Driver;
-use Valkyrja\Client\Factory as Contract;
-use Valkyrja\Client\GuzzleAdapter;
-use Valkyrja\Client\LogAdapter;
+use Valkyrja\Client\Adapter\Contract\Adapter;
+use Valkyrja\Client\Adapter\Contract\GuzzleAdapter;
+use Valkyrja\Client\Adapter\Contract\LogAdapter;
+use Valkyrja\Client\Driver\Contract\Driver;
+use Valkyrja\Client\Factory\Contract\Factory as Contract;
 use Valkyrja\Manager\Factories\ContainerFactory as Factory;
 
 /**
