@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpKernel\Providers;
+namespace Valkyrja\HttpKernel\Provider;
 
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Event\Contract\Dispatcher as Events;
-use Valkyrja\HttpKernel\Kernel;
+use Valkyrja\HttpKernel\Contract\Kernel;
 use Valkyrja\Routing\Router;
 
 /**

@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpKernel\Events;
+namespace Valkyrja\HttpKernel\Event;
 
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 
 /**
- * Class RequestHandled.
+ * Class RequestTerminating.
  *
  * @author Melech Mizrachi
  */
-class RequestHandled
+class RequestTerminating
 {
     /**
      * The request.
@@ -38,7 +38,7 @@ class RequestHandled
     public Response $response;
 
     /**
-     * HttpKernelHandled constructor.
+     * RequestTerminating constructor.
      *
      * @param Request  $request
      * @param Response $response
