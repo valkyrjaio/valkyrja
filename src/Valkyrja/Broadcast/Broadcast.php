@@ -11,9 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast\Managers;
+namespace Valkyrja\Broadcast;
 
-use Valkyrja\Broadcast\Config;
 use Valkyrja\Broadcast\Contract\Broadcast as Contract;
 use Valkyrja\Broadcast\Driver\Contract\Driver;
 use Valkyrja\Broadcast\Factory\Contract\Factory;

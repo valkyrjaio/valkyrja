@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Config;
 
 use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Cache\Adapters\LogAdapter;
-use Valkyrja\Cache\Adapters\NullAdapter;
-use Valkyrja\Cache\Config\Config as Model;
-use Valkyrja\Cache\Constants\ConfigValue;
+use Valkyrja\Cache\Adapter\LogAdapter;
+use Valkyrja\Cache\Adapter\NullAdapter;
+use Valkyrja\Cache\Config as Model;
+use Valkyrja\Cache\Constant\ConfigValue;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 
 use function Valkyrja\env;

@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache\Constants;
+namespace Valkyrja\Cache\Constant;
 
-use Valkyrja\Cache\Adapters\RedisAdapter;
-use Valkyrja\Cache\Drivers\Driver;
+use Valkyrja\Cache\Adapter\RedisAdapter;
+use Valkyrja\Cache\Driver\Driver;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 
 /**

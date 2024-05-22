@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Repositories;
 
 use JsonException;
-use Valkyrja\Cache\Cache;
-use Valkyrja\Cache\Driver as CacheDriver;
+use Valkyrja\Cache\Contract\Cache;
+use Valkyrja\Cache\Driver\Contract\Driver as CacheDriver;
 use Valkyrja\Orm\CacheRepository as Contract;
 use Valkyrja\Orm\Driver;
 use Valkyrja\Orm\Entity;
@@ -119,8 +119,12 @@ class CacheRepository extends Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function where(string $column, string|null $operator = null, mixed $value = null, bool $setType = true): static
-    {
+    public function where(
+        string $column,
+        string|null $operator = null,
+        mixed $value = null,
+        bool $setType = true
+    ): static {
         if (! ($value instanceof QueryBuilder) && $column === $this->entity::getIdField()) {
             $this->id = $value;
         }
@@ -307,7 +311,7 @@ class CacheRepository extends Repository implements Contract
      *
      * @param string $type
      * @param Entity $entity
-     * @param bool   $defer  [optional]
+     * @param bool   $defer [optional]
      *
      * @return void
      */
@@ -335,7 +339,7 @@ class CacheRepository extends Repository implements Contract
         $id = spl_object_id($entity);
 
         match ($type) {
-            self::$storeType  => $this->storeEntities[$id]  = $entity,
+            self::$storeType => $this->storeEntities[$id] = $entity,
             self::$forgetType => $this->forgetEntities[$id] = $entity,
         };
     }

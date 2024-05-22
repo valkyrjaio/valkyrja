@@ -11,26 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache;
+namespace Valkyrja\Cache\Adapter\Contract;
 
-use Valkyrja\Manager\Contract\Manager;
+use Valkyrja\Cache\Tagger\Contract\Tagger;
+use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 
 /**
- * Interface Cache.
+ * Interface Adapter.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Driver, Factory>
  */
-interface Cache extends Manager
+interface Adapter extends Contract
 {
-    /**
-     * @inheritDoc
-     *
-     * @return Driver
-     */
-    public function use(string|null $name = null): Driver;
-
     /**
      * Determine if an item exists in the cache.
      *

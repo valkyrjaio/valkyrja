@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Managers;
 
-use Valkyrja\Cache\Cache as Contract;
-use Valkyrja\Cache\Config\Config;
-use Valkyrja\Cache\Driver;
-use Valkyrja\Cache\Factory;
-use Valkyrja\Cache\Tagger;
+use Valkyrja\Cache\Config;
+use Valkyrja\Cache\Contract\Cache as Contract;
+use Valkyrja\Cache\Driver\Contract\Driver;
+use Valkyrja\Cache\Factory\Contract\Factory;
+use Valkyrja\Cache\Tagger\Contract\Tagger;
 use Valkyrja\Manager\Manager;
 
 /**

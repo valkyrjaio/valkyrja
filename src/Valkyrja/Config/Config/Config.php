@@ -20,7 +20,7 @@ use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Asset\Config as Asset;
 use Valkyrja\Auth\Config as Auth;
 use Valkyrja\Broadcast\Config as Broadcast;
-use Valkyrja\Cache\Config\Config as Cache;
+use Valkyrja\Cache\Config as Cache;
 use Valkyrja\Client\Config\Config as Client;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
@@ -105,9 +105,9 @@ class Config extends Model
     /**
      * The cache module config.
      *
-     * @var Cache
+     * @var \Valkyrja\Cache\Cache
      */
-    public Cache $cache;
+    public \Valkyrja\Cache\Cache $cache;
 
     /**
      * The client module config.

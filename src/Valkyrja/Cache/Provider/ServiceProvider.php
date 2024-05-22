@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache\Providers;
+namespace Valkyrja\Cache\Provider;
 
 use Predis\Client;
-use Valkyrja\Cache\Adapter;
-use Valkyrja\Cache\Cache;
-use Valkyrja\Cache\Driver;
-use Valkyrja\Cache\Factories\ContainerFactory;
-use Valkyrja\Cache\Factory;
-use Valkyrja\Cache\LogAdapter;
-use Valkyrja\Cache\RedisAdapter;
+use Valkyrja\Cache\Adapter\Contract\Adapter;
+use Valkyrja\Cache\Adapter\Contract\LogAdapter;
+use Valkyrja\Cache\Adapter\Contract\RedisAdapter;
+use Valkyrja\Cache\Contract\Cache;
+use Valkyrja\Cache\Driver\Contract\Driver;
+use Valkyrja\Cache\Factory\ContainerFactory;
+use Valkyrja\Cache\Factory\Contract\Factory;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;

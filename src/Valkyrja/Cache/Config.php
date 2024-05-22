@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache\Config;
+namespace Valkyrja\Cache;
 
 use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;

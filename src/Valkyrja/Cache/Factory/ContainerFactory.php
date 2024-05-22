@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache\Factories;
+namespace Valkyrja\Cache\Factory;
 
-use Valkyrja\Cache\Adapter;
-use Valkyrja\Cache\Driver;
-use Valkyrja\Cache\Factory as Contract;
-use Valkyrja\Cache\LogAdapter;
-use Valkyrja\Cache\RedisAdapter;
+use Valkyrja\Cache\Adapter\Contract\Adapter;
+use Valkyrja\Cache\Adapter\Contract\LogAdapter;
+use Valkyrja\Cache\Adapter\Contract\RedisAdapter;
+use Valkyrja\Cache\Driver\Contract\Driver;
+use Valkyrja\Cache\Factory\Contract\Factory as Contract;
 use Valkyrja\Manager\Factories\ContainerFactory as Factory;
 
 /**

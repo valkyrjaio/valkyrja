@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache\Drivers;
+namespace Valkyrja\Cache\Driver;
 
-use Valkyrja\Cache\Adapter;
-use Valkyrja\Cache\Driver as Contract;
-use Valkyrja\Cache\Tagger;
+use Valkyrja\Cache\Adapter\Contract\Adapter;
+use Valkyrja\Cache\Driver\Contract\Driver as Contract;
+use Valkyrja\Cache\Tagger\Contract\Tagger;
 use Valkyrja\Manager\Drivers\Driver as ParentDriver;
 
 /**

@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache\Taggers;
+namespace Valkyrja\Cache\Tagger;
 
 use JsonException;
-use Valkyrja\Cache\Adapter;
-use Valkyrja\Cache\Tagger as Contract;
+use Valkyrja\Cache\Adapter\Contract\Adapter;
+use Valkyrja\Cache\Tagger\Contract\Tagger as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function json_decode;

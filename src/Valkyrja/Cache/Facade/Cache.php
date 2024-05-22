@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache\Facades;
+namespace Valkyrja\Cache\Facade;
 
-use Valkyrja\Cache\Cache as Contract;
-use Valkyrja\Cache\Driver;
+use Valkyrja\Cache\Contract\Cache as Contract;
+use Valkyrja\Cache\Driver\Contract\Driver;
 use Valkyrja\Facade\ContainerFacade;
 
 /**

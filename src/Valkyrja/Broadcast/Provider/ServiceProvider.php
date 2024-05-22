@@ -88,7 +88,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Broadcast::class,
-            new \Valkyrja\Broadcast\Managers\Broadcast(
+            new \Valkyrja\Broadcast\Broadcast(
                 $container->getSingleton(Factory::class),
                 $config['client']
             )

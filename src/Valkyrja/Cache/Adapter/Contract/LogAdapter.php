@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache;
+namespace Valkyrja\Cache\Adapter\Contract;
 
 /**
- * Interface RedisAdapter.
+ * Interface LogAdapter.
  *
  * @author Melech Mizrachi
  */
-interface RedisAdapter extends Adapter
+interface LogAdapter extends Adapter
 {
 }

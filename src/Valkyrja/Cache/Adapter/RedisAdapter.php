@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache\Adapters;
+namespace Valkyrja\Cache\Adapter;
 
 use Predis\Client;
-use Valkyrja\Cache\RedisAdapter as Contract;
-use Valkyrja\Cache\Tagger;
-use Valkyrja\Cache\Taggers\Tagger as TagClass;
+use Valkyrja\Cache\Adapter\Contract\RedisAdapter as Contract;
+use Valkyrja\Cache\Tagger\Contract\Tagger;
+use Valkyrja\Cache\Tagger\Tagger as TagClass;
 
 /**
  * Class RedisAdapter.

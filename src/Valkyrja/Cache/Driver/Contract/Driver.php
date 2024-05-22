@@ -11,25 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache;
+namespace Valkyrja\Cache\Driver\Contract;
+
+use Valkyrja\Cache\Tagger\Contract\Tagger;
+use Valkyrja\Manager\Drivers\Contract\Driver as Contract;
 
 /**
- * Interface Tagger.
+ * Interface Driver.
  *
  * @author Melech Mizrachi
  */
-interface Tagger
+interface Driver extends Contract
 {
-    /**
-     * Make a new Tag Store.
-     *
-     * @param Adapter $store
-     * @param string  ...$tags
-     *
-     * @return static
-     */
-    public static function make(Adapter $store, string ...$tags): static;
-
     /**
      * Determine if an item exists in the cache.
      *
@@ -137,38 +130,18 @@ interface Tagger
     public function flush(): bool;
 
     /**
-     * Tag a key.
+     * Get the cache key prefix.
      *
-     * @param string $key
-     *
-     * @return static
+     * @return string
      */
-    public function tag(string $key): static;
+    public function getPrefix(): string;
 
     /**
-     * Untag a key.
+     * Get the tagger.
      *
-     * @param string $key
+     * @param string ...$tags
      *
-     * @return static
+     * @return Tagger
      */
-    public function untag(string $key): static;
-
-    /**
-     * Tag many keys.
-     *
-     * @param string ...$keys
-     *
-     * @return static
-     */
-    public function tagMany(string ...$keys): static;
-
-    /**
-     * Untag many keys.
-     *
-     * @param string ...$keys
-     *
-     * @return static
-     */
-    public function untagMany(string ...$keys): static;
+    public function getTagger(string ...$tags): Tagger;
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Providers;
 
 use RuntimeException;
-use Valkyrja\Cache\Cache;
+use Valkyrja\Cache\Contract\Cache;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;

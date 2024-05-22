@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Adapters;
 
 use JsonException;
-use Valkyrja\Cache\Driver as Cache;
+use Valkyrja\Cache\Driver\Contract\Driver as Cache;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
@@ -43,8 +43,12 @@ class CacheAdapter extends PHPAdapter
      * @param string|null $sessionId   [optional] The session id
      * @param string|null $sessionName [optional] The session name
      */
-    public function __construct(Cache $cache, array $config, string|null $sessionId = null, string|null $sessionName = null)
-    {
+    public function __construct(
+        Cache $cache,
+        array $config,
+        string|null $sessionId = null,
+        string|null $sessionName = null
+    ) {
         parent::__construct($config, $sessionId, $sessionName);
 
         $this->cache = $cache;
@@ -64,7 +68,9 @@ class CacheAdapter extends PHPAdapter
         }
 
         // If the session failed to start
-        if (! session_start() || ($cachedData = $this->cache->get($this->getCacheSessionId())) === null || $cachedData === '') {
+        if (! session_start() || ($cachedData = $this->cache->get(
+                $this->getCacheSessionId()
+            )) === null || $cachedData === '') {
             // Throw a new exception
             throw new SessionStartFailure('The session failed to start!');
         }
