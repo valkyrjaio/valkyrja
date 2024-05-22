@@ -19,7 +19,7 @@ use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\CacheableContainer;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Exception\ExceptionHandler;
+use Valkyrja\Exception\Contract\ExceptionHandler;
 
 use const E_ALL;
 

@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Exception\Facades;
+namespace Valkyrja\Exception\Facade;
 
 use Throwable;
-use Valkyrja\Exception\ExceptionHandler as Contract;
+use Valkyrja\Exception\Contract\ExceptionHandler as Contract;
 use Valkyrja\Facade\ContainerFacade;
 
 use const E_ALL;

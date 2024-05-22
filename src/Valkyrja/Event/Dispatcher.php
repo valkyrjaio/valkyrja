@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Event\Dispatchers;
+namespace Valkyrja\Event;
 
 use Psr\EventDispatcher\StoppableEventInterface;
 use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;

@@ -23,7 +23,7 @@ use Valkyrja\Console\Contract\Console;
 use Valkyrja\Console\Kernel\Contract\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Event\Dispatchers\Dispatcher as Events;
+use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\HttpKernel\Kernel;

@@ -24,7 +24,7 @@ use Valkyrja\Event\Attribute;
 use Valkyrja\Event\Collection\CacheableCollection as EventCollection;
 use Valkyrja\Event\Collection\Contract\Collection;
 use Valkyrja\Event\Contract\Dispatcher;
-use Valkyrja\Event\Dispatchers\Dispatcher as EventDispatcher;
+use Valkyrja\Event\Dispatcher as EventDispatcher;
 use Valkyrja\Reflection\Contract\Reflection;
 
 /**
