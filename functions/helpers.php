@@ -58,8 +58,8 @@ use Valkyrja\Sms\Contract\Sms;
 use Valkyrja\Sms\Message\Contract\Message as SmsMessage;
 use Valkyrja\Support\Directory;
 use Valkyrja\Validation\Contract\Validation;
-use Valkyrja\View\Template;
-use Valkyrja\View\View;
+use Valkyrja\View\Contract\View;
+use Valkyrja\View\Template\Contract\Template;
 
 use function var_dump;
 

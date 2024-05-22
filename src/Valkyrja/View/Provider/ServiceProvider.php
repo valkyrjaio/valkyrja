@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Providers;
+namespace Valkyrja\View\Provider;
 
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -20,15 +20,15 @@ use Twig\Loader\FilesystemLoader;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\View\Engine;
-use Valkyrja\View\Engines\OrkaEngine;
-use Valkyrja\View\Engines\PhpEngine;
-use Valkyrja\View\Engines\TwigEngine;
-use Valkyrja\View\Exceptions\InvalidConfigPath;
-use Valkyrja\View\Factories\ContainerFactory;
-use Valkyrja\View\Factory;
-use Valkyrja\View\Template;
-use Valkyrja\View\View;
+use Valkyrja\View\Contract\View;
+use Valkyrja\View\Engine\Contract\Engine;
+use Valkyrja\View\Engine\OrkaEngine;
+use Valkyrja\View\Engine\PhpEngine;
+use Valkyrja\View\Engine\TwigEngine;
+use Valkyrja\View\Exception\InvalidConfigPath;
+use Valkyrja\View\Factory\ContainerFactory;
+use Valkyrja\View\Factory\Contract\Factory;
+use Valkyrja\View\Template\Contract\Template;
 
 /**
  * Class ServiceProvider.
@@ -82,7 +82,7 @@ class ServiceProvider extends Provider
     {
         /** @var Config|array $config */
         $config = $container->getSingleton(Config::class);
-        /** @var \Valkyrja\View\Config\Config|array{
+        /** @var \Valkyrja\View\Config|array{
          *     dir: string,
          *     engine: string,
          *     engines: array<string, class-string>,
@@ -128,7 +128,7 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Template::class,
-            static fn (Engine $engine) => new \Valkyrja\View\Templates\Template($engine)
+            static fn (Engine $engine) => new \Valkyrja\View\Template\Template($engine)
         );
     }
 
@@ -143,7 +143,7 @@ class ServiceProvider extends Provider
     {
         /** @var Config|array $config */
         $config = $container->getSingleton(Config::class);
-        /** @var \Valkyrja\View\Config\Config|array{
+        /** @var \Valkyrja\View\Config|array{
          *     dir: string,
          *     engine: string,
          *     engines: array<string, class-string>,
@@ -174,7 +174,7 @@ class ServiceProvider extends Provider
         $appConfig = $config['app'];
         /** @var bool $debug */
         $debug = $appConfig['debug'];
-        /** @var \Valkyrja\View\Config\Config|array{
+        /** @var \Valkyrja\View\Config|array{
          *     dir: string,
          *     engine: string,
          *     engines: array<string, class-string>,
@@ -224,7 +224,7 @@ class ServiceProvider extends Provider
         $appConfig = $config['app'];
         /** @var bool $debug */
         $debug = $appConfig['debug'];
-        /** @var \Valkyrja\View\Config\Config|array{
+        /** @var \Valkyrja\View\Config|array{
          *     dir: string,
          *     engine: string,
          *     engines: array<string, class-string>,

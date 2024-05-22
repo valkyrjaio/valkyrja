@@ -21,7 +21,7 @@ use Valkyrja\Http\Response\Contract\JsonResponse;
 use Valkyrja\Http\Response\Contract\RedirectResponse;
 use Valkyrja\Http\Response\Contract\Response;
 use Valkyrja\Routing\Url;
-use Valkyrja\View\View;
+use Valkyrja\View\Contract\View;
 
 /**
  * Class ResponseFactory.

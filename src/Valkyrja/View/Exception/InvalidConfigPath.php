@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View;
+namespace Valkyrja\View\Exception;
 
-use Valkyrja\Type\Model\Contract\Model;
+use InvalidArgumentException;
 
 /**
- * Interface Page.
+ * Class InvalidConfigPath.
  *
  * @author Melech Mizrachi
  */
-interface Page extends Model
+class InvalidConfigPath extends InvalidArgumentException
 {
 }

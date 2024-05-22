@@ -35,7 +35,7 @@ use Valkyrja\Session\Contract\Session;
 use Valkyrja\Tests\Classes\Config\ProviderClass;
 use Valkyrja\Tests\Config;
 use Valkyrja\Tests\Env;
-use Valkyrja\View\View;
+use Valkyrja\View\Contract\View;
 
 use function is_string;
 use function unlink;

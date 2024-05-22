@@ -11,22 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Factories;
+namespace Valkyrja\View\Factory;
 
-use Valkyrja\View\Config\Config;
-use Valkyrja\View\Engine;
-use Valkyrja\View\Factory as Contract;
-use Valkyrja\View\Template;
+use Valkyrja\Container\Contract\Container;
+use Valkyrja\View\Engine\Contract\Engine;
+use Valkyrja\View\Factory\Contract\Factory as Contract;
+use Valkyrja\View\Template\Contract\Template;
 
 /**
  * Class Factory.
  *
  * @author Melech Mizrachi
  */
-class Factory implements Contract
+class ContainerFactory implements Contract
 {
     public function __construct(
-        protected Config|array $config,
+        protected Container $container,
     ) {
     }
 
@@ -35,7 +35,7 @@ class Factory implements Contract
      */
     public function getTemplate(Engine $engine, string $name, array $variables = []): Template
     {
-        $template = new \Valkyrja\View\Templates\Template($engine);
+        $template = $this->container->get(Template::class, [$engine]);
 
         $template->setName($name);
         $template->setVariables($variables);
@@ -48,6 +48,6 @@ class Factory implements Contract
      */
     public function getEngine(string $name): Engine
     {
-        return new $name($this->config);
+        return $this->container->getSingleton($name);
     }
 }

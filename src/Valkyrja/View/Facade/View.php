@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Facades;
+namespace Valkyrja\View\Facade;
 
 use Valkyrja\Facade\ContainerFacade;
-use Valkyrja\View\Engine;
-use Valkyrja\View\Template;
-use Valkyrja\View\View as Contract;
+use Valkyrja\View\Contract\View as Contract;
+use Valkyrja\View\Engine\Contract\Engine;
+use Valkyrja\View\Template\Contract\Template;
 
 /**
  * Class View.

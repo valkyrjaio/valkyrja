@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\View\Managers;
 
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\View\Config\Config;
-use Valkyrja\View\Engine;
-use Valkyrja\View\Factory;
-use Valkyrja\View\Template;
-use Valkyrja\View\View as Contract;
+use Valkyrja\View\Config;
+use Valkyrja\View\Contract\View as Contract;
+use Valkyrja\View\Engine\Contract\Engine;
+use Valkyrja\View\Factory\Contract\Factory;
+use Valkyrja\View\Template\Contract\Template;
 
 /**
  * Class View.

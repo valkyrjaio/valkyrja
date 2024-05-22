@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Templates;
+namespace Valkyrja\View\Template;
 
-use Valkyrja\View\Engine;
-use Valkyrja\View\Template as Contract;
+use Valkyrja\View\Engine\Contract\Engine;
+use Valkyrja\View\Template\Contract\Template as Contract;
 
 use function array_merge;
 use function assert;

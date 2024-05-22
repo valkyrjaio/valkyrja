@@ -40,7 +40,6 @@ use Valkyrja\Routing\Config\Config as Routing;
 use Valkyrja\Session\Config as Session;
 use Valkyrja\Sms\Config as Sms;
 use Valkyrja\Validation\Config as Validation;
-use Valkyrja\View\Config\Config as View;
 
 /**
  * Class Config.
@@ -224,9 +223,9 @@ class Config extends Model
     /**
      * The view module config.
      *
-     * @var View
+     * @var \Valkyrja\View\Contract\View
      */
-    public View $view;
+    public \Valkyrja\View\Contract\View $view;
 
     /**
      * Array of config providers.

@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Engines;
+namespace Valkyrja\View\Engine;
 
 use RuntimeException;
 use Valkyrja\Support\Directory;
-use Valkyrja\View\Config\Config;
-use Valkyrja\View\Engine;
-use Valkyrja\View\Exceptions\InvalidConfigPath;
+use Valkyrja\View\Config;
+use Valkyrja\View\Engine\Contract\Engine;
+use Valkyrja\View\Exception\InvalidConfigPath;
 
 use function explode;
 use function extract;

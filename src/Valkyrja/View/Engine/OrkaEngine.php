@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Engines;
+namespace Valkyrja\View\Engine;
 
 use Valkyrja\Auth\Facade\Auth;
 use Valkyrja\Support\Directory;
-use Valkyrja\View\Config\Config;
+use Valkyrja\View\Config;
 
 use function array_keys;
 use function file_get_contents;

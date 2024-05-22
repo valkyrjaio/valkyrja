@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Constants;
+namespace Valkyrja\View\Constant;
 
 /**
  * Constant Regex.
@@ -28,7 +28,7 @@ final class Regex
      *
      * @description
      *
-     *      @startblock
+     * @startblock
      *      \(                  Escaped beginning parenthesis
      *      \s*                 Any amount of whitespace
      *      \'                  Escaped single quote
@@ -53,7 +53,7 @@ final class Regex
      *      )                   End capture
      *      \s*                 Any amount of whitespace
      *
-     *      @endblock
+     * @endblock
      */
     public const NAME_REGEX = <<<'REGEX'
                 @startblock\(\s*\'([a-zA-Z0-9]*)\'\s*\)\s*([\s\S.]*?)\s*@endblock

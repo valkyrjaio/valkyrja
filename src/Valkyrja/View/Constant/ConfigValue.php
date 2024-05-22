@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Constants;
+namespace Valkyrja\View\Constant;
 
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\View\Engines\OrkaEngine;
-use Valkyrja\View\Engines\PhpEngine;
-use Valkyrja\View\Engines\TwigEngine;
+use Valkyrja\View\Engine\OrkaEngine;
+use Valkyrja\View\Engine\PhpEngine;
+use Valkyrja\View\Engine\TwigEngine;
 
 /**
  * Constant ConfigValue.

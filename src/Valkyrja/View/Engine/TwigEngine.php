@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Engines;
+namespace Valkyrja\View\Engine;
 
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use Valkyrja\View\Engine;
+use Valkyrja\View\Engine\Contract\Engine;
 
 /**
  * Class TwigEngine.

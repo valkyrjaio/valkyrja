@@ -30,7 +30,7 @@ use Valkyrja\Routing\Middleware\MiddlewareAwareTrait;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router as Contract;
 use Valkyrja\Routing\Support\Abort;
-use Valkyrja\View\Template;
+use Valkyrja\View\Template\Contract\Template;
 
 use function is_array;
 use function rawurldecode;
