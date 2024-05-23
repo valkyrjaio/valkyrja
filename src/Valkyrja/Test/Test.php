@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test;
 
-use Closure;
 use Throwable;
 use Valkyrja\Test\Assert\Assert;
 use Valkyrja\Test\Contract\Test as Contract;
@@ -62,13 +61,13 @@ class Test implements Contract
     /**
      * @inheritDoc
      */
-    public function run(Closure $closure, array $data = []): void
+    public function run(callable $callable, array $data = []): void
     {
         $assert    = $this->assert;
         $exception = null;
 
         try {
-            $closure($assert, ...$data);
+            $callable($assert, ...$data);
         } catch (Throwable $exception) {
         }
 

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Contract;
 
-use Closure;
 use Valkyrja\Test\Assert\Assert;
 
 /**
@@ -41,5 +40,5 @@ interface Test
     /**
      * Run the test.
      */
-    public function run(Closure $closure, array $data = []): void;
+    public function run(callable $callable, array $data = []): void;
 }
