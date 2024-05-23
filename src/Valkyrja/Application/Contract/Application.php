@@ -21,7 +21,7 @@ use Valkyrja\Console\Kernel\Contract\Kernel as ConsoleKernel;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Contract\Dispatcher as Events;
-use Valkyrja\HttpKernel\Contract\Kernel;
+use Valkyrja\Http\Server\Contract\RequestHandler;
 
 /**
  * Interface Application.
@@ -151,9 +151,9 @@ interface Application extends ArrayAccess
     /**
      * Get the kernel instance from the container.
      *
-     * @return Kernel
+     * @return RequestHandler
      */
-    public function kernel(): Kernel;
+    public function kernel(): RequestHandler;
 
     /**
      * Whether the application is running in debug mode or not.

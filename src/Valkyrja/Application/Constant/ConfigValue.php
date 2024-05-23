@@ -17,7 +17,7 @@ use Valkyrja\Application\Contract\Application;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Container\Provider\AppProvider as ContainerAppProvider;
 use Valkyrja\Exception\ExceptionHandler;
-use Valkyrja\HttpKernel\Kernel;
+use Valkyrja\Http\Server\RequestHandler;
 
 /**
  * Constant ConfigValue.
@@ -33,7 +33,7 @@ final class ConfigValue
     public const VERSION           = Application::VERSION;
     public const KEY               = 'some_secret_app_key';
     public const EXCEPTION_HANDLER = ExceptionHandler::class;
-    public const HTTP_KERNEL       = Kernel::class;
+    public const HTTP_KERNEL       = RequestHandler::class;
     public const PROVIDERS         = [
         ContainerAppProvider::class,
     ];

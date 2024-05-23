@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Message;
 
 use RuntimeException;
-use Valkyrja\Http\Request\Contract\ServerRequest;
-use Valkyrja\Http\Response\Contract\JsonServerRequest;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Response\Contract\JsonServerRequest;
 
 /**
  * Trait JsonParamsMessage.

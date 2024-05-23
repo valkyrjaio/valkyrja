@@ -20,7 +20,7 @@ use Valkyrja\Auth\Exception\InvalidAuthenticationException;
 use Valkyrja\Auth\Exception\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\Exception\InvalidRegistrationException;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
-use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 
 /**
  * Interface Repository.

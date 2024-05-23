@@ -22,7 +22,7 @@ use Valkyrja\Console\Kernel\Contract\Kernel as ConsoleKernel;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Contract\Dispatcher as Events;
-use Valkyrja\HttpKernel\Contract\Kernel;
+use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Support\Directory;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
@@ -240,9 +240,9 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function kernel(): Kernel
+    public function kernel(): RequestHandler
     {
-        return self::$container->getSingleton(Kernel::class);
+        return self::$container->getSingleton(RequestHandler::class);
     }
 
     /**

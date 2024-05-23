@@ -15,8 +15,8 @@ namespace Valkyrja\Client\Driver;
 
 use Valkyrja\Client\Adapter\Contract\Adapter;
 use Valkyrja\Client\Driver\Contract\Driver as Contract;
-use Valkyrja\Http\Request\Contract\ServerRequest;
-use Valkyrja\Http\Response\Contract\Response;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Manager\Drivers\Driver as ParentDriver;
 
 /**

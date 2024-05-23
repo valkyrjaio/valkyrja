@@ -15,7 +15,7 @@ namespace Valkyrja\Routing\Collector;
 
 use Closure;
 use InvalidArgumentException;
-use Valkyrja\Http\Constant\RequestMethod;
+use Valkyrja\Http\Message\Constant\RequestMethod;
 use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Routing\Collection\Contract\Collection;
 use Valkyrja\Routing\Collector\Contract\Collector as Contract;

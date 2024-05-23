@@ -17,8 +17,8 @@ use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Env;
 use Valkyrja\Application\Valkyrja;
 use Valkyrja\Config\Config\Config;
-use Valkyrja\Http\Factory\RequestFactory;
-use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Factory\RequestFactory;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Support\Directory;
 
 use function define;

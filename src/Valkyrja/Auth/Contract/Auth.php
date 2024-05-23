@@ -26,7 +26,7 @@ use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Policy\Contract\Policy;
 use Valkyrja\Auth\Repository\Contract\Repository;
 use Valkyrja\Crypt\Exception\CryptException;
-use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 
 /**
  * Interface Auth.

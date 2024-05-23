@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Contract;
 
-use Valkyrja\Http\Exception\HttpException;
-use Valkyrja\Http\Request\Contract\ServerRequest;
-use Valkyrja\Http\Response\Contract\Response;
+use Valkyrja\Http\Message\Exception\HttpException;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Routing\Collection\Contract\Collection;
 use Valkyrja\Routing\Config;
 use Valkyrja\Routing\Exception\InvalidRouteName;

@@ -17,7 +17,7 @@ use Exception;
 use Valkyrja\Api\Contract\Api as Contract;
 use Valkyrja\Api\Model\Contract\Json;
 use Valkyrja\Facade\Facade;
-use Valkyrja\Http\Response\Contract\JsonResponse;
+use Valkyrja\Http\Message\Response\Contract\JsonResponse;
 use Valkyrja\Orm\Entity;
 
 use function Valkyrja\container;

@@ -18,7 +18,7 @@ use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Contract\Crypt;
-use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Session\Adapter\Contract\Adapter;
 use Valkyrja\Session\Adapter\Contract\CacheAdapter;

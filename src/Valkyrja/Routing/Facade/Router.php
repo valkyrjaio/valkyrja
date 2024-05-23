@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Facade;
 
 use Valkyrja\Facade\ContainerFacade;
-use Valkyrja\Http\Request\Contract\ServerRequest;
-use Valkyrja\Http\Response\Contract\Response;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Routing\Collection\Contract\Collection;
 use Valkyrja\Routing\Contract\Router as Contract;
 use Valkyrja\Routing\Matcher\Contract\Matcher;

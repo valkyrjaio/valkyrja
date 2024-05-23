@@ -16,8 +16,8 @@ namespace Valkyrja\Routing\Controller;
 use Throwable;
 use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Contract\Api;
-use Valkyrja\Http\Constant\StatusCode;
-use Valkyrja\Http\Response\Contract\JsonResponse;
+use Valkyrja\Http\Message\Constant\StatusCode;
+use Valkyrja\Http\Message\Response\Contract\JsonResponse;
 use Valkyrja\Log\Contract\Logger;
 
 /**

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Event;
 
 use Valkyrja\Event\Constant\Event;
-use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Routing\Model\Contract\Route;
 
 /**

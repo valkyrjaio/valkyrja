@@ -15,8 +15,8 @@ namespace Valkyrja\Auth\Middleware;
 
 use Exception;
 use Valkyrja\Auth\Entity\Contract\User;
-use Valkyrja\Http\Request\Contract\ServerRequest;
-use Valkyrja\Http\Response\Contract\Response;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Response\Contract\Response;
 
 /**
  * Abstract Class AuthorizedMiddleware.

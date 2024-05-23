@@ -16,7 +16,7 @@ namespace Valkyrja\Auth\Middleware;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Gate\Contract\Gate;
 use Valkyrja\Auth\Policy\Contract\Policy;
-use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 
 /**
  * Abstract Class GatedMiddleware.

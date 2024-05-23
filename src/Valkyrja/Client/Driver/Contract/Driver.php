@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client\Driver\Contract;
 
-use Valkyrja\Http\Request\Contract\ServerRequest;
-use Valkyrja\Http\Response\Contract\Response;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Manager\Drivers\Contract\Driver as Contract;
 
 /**

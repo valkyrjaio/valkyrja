@@ -19,11 +19,11 @@ use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Client\Adapter\Contract\GuzzleAdapter as Contract;
-use Valkyrja\Http\Constant\RequestMethod;
-use Valkyrja\Http\Factory\Contract\ResponseFactory;
-use Valkyrja\Http\Request\Contract\ServerRequest;
-use Valkyrja\Http\Response\Contract\JsonServerRequest;
-use Valkyrja\Http\Response\Contract\Response;
+use Valkyrja\Http\Message\Constant\RequestMethod;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Response\Contract\JsonServerRequest;
+use Valkyrja\Http\Message\Response\Contract\Response;
 
 /**
  * Class GuzzleAdapter.

@@ -29,14 +29,14 @@ use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Contract\Dispatcher as Events;
 use Valkyrja\Filesystem\Contract\Filesystem;
-use Valkyrja\Http\Exception\HttpException;
-use Valkyrja\Http\Exception\HttpRedirectException;
-use Valkyrja\Http\Factory\Contract\ResponseFactory;
-use Valkyrja\Http\Request\Contract\ServerRequest;
-use Valkyrja\Http\Response\Contract\JsonResponse;
-use Valkyrja\Http\Response\Contract\RedirectResponse;
-use Valkyrja\Http\Response\Contract\Response;
-use Valkyrja\HttpKernel\Contract\Kernel;
+use Valkyrja\Http\Message\Exception\HttpException;
+use Valkyrja\Http\Message\Exception\HttpRedirectException;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Response\Contract\JsonResponse;
+use Valkyrja\Http\Message\Response\Contract\RedirectResponse;
+use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Mail\Contract\Mail;
 use Valkyrja\Mail\Message\Contract\Message as MailMessage;
@@ -250,11 +250,11 @@ function input(): Input
 /**
  * Get kernel.
  *
- * @return Kernel
+ * @return RequestHandler
  */
-function kernel(): Kernel
+function kernel(): RequestHandler
 {
-    return container()->getSingleton(Kernel::class);
+    return container()->getSingleton(RequestHandler::class);
 }
 
 /**

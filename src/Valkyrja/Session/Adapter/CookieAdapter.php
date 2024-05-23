@@ -15,7 +15,7 @@ namespace Valkyrja\Session\Adapters;
 
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Crypt\Exception\CryptException;
-use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Session\Exception\SessionStartFailure;
 
 use function headers_sent;

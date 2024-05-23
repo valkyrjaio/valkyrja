@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Client\Adapter;
 
 use Valkyrja\Client\Adapter\Contract\Adapter as Contract;
-use Valkyrja\Http\Constant\RequestMethod;
-use Valkyrja\Http\Factory\Contract\ResponseFactory;
-use Valkyrja\Http\Request\Contract\ServerRequest;
-use Valkyrja\Http\Response\Contract\Response;
+use Valkyrja\Http\Message\Constant\RequestMethod;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Response\Contract\Response;
 
 /**
  * Class NullAdapter.

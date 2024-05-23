@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Exception;
 
-use Valkyrja\Http\Exception\NotFoundHttpException;
+use Valkyrja\Http\Message\Exception\NotFoundHttpException;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

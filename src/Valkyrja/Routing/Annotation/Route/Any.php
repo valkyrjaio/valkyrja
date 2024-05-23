@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Annotation\Route;
 
-use Valkyrja\Http\Constant\RequestMethod;
+use Valkyrja\Http\Message\Constant\RequestMethod;
 use Valkyrja\Routing\Annotation\Route;
 
 /**

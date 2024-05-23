@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Message\Contract;
 
 use UnitEnum;
-use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Type\BuiltIn\Enum\Contract\Arrayable;
 
 /**

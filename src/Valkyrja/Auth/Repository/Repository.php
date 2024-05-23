@@ -24,7 +24,7 @@ use Valkyrja\Auth\Exception\InvalidCurrentAuthenticationException;
 use Valkyrja\Auth\Exception\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\Repository as Contract;
-use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Session\Contract\Session as SessionManager;
 use Valkyrja\Session\Driver\Contract\Driver as Session;
 

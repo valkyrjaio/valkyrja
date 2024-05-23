@@ -18,7 +18,7 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Contract\Dispatcher as Events;
-use Valkyrja\Http\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Routing\Collection\Contract\Collection;
 use Valkyrja\Routing\Contract\Router;
 use Valkyrja\Routing\Matcher\Contract\Matcher;

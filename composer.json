@@ -15,12 +15,13 @@
     }
   ],
   "require"           : {
-    "php"                  : ">=8.1",
-    "ext-json"             : "*",
-    "ext-mbstring"         : "*",
-    "psr/container"        : "^2.0.2",
-    "psr/event-dispatcher" : "^1.0",
-    "psr/http-message"     : "^2.0"
+    "php"                     : ">=8.1",
+    "ext-json"                : "*",
+    "ext-mbstring"            : "*",
+    "psr/container"           : "^2.0.2",
+    "psr/event-dispatcher"    : "^1.0",
+    "psr/http-message"        : "^2.0",
+    "psr/http-server-handler" : "^1.0"
   },
   "require-dev"       : {
     "bmitch/churn-php"            : "^1.7.1",
@@ -82,8 +83,8 @@
     "ext-redis"                  : "Required to use the default Cache store (^4.0|^5.0).",
     "ext-sodium"                 : "Required to use the default Crypt adapters and/or JWT EdDSA Algorithm (*)"
   },
-  "scripts": {
-    "psalm": "vendor/bin/psalm --config=psalm.xml"
+  "scripts"           : {
+    "psalm" : "vendor/bin/psalm --config=psalm.xml"
   },
   "minimum-stability" : "dev",
   "prefer-stable"     : true,

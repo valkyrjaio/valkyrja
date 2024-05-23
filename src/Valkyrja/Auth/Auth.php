@@ -26,8 +26,8 @@ use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Policy\Contract\Policy;
 use Valkyrja\Auth\Repository\Contract\Repository;
 use Valkyrja\Auth\Repository\Contract\TokenizedRepository;
-use Valkyrja\Http\Constant\Header;
-use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Constant\Header;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 
 /**
  * Class Auth.

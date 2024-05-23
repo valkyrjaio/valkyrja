@@ -25,14 +25,14 @@ use Valkyrja\Console\Output\Output;
 use Valkyrja\Container\Container;
 use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Filesystem\Filesystem;
-use Valkyrja\Http\Exception\HttpException;
-use Valkyrja\Http\Exception\HttpRedirectException;
-use Valkyrja\Http\Factory\ResponseFactory;
-use Valkyrja\Http\Request\ServerRequest;
-use Valkyrja\Http\Response\JsonResponse;
-use Valkyrja\Http\Response\RedirectResponse;
-use Valkyrja\Http\Response\Response;
-use Valkyrja\HttpKernel\Kernel;
+use Valkyrja\Http\Message\Exception\HttpException;
+use Valkyrja\Http\Message\Exception\HttpRedirectException;
+use Valkyrja\Http\Message\Factory\ResponseFactory;
+use Valkyrja\Http\Message\Request\ServerRequest;
+use Valkyrja\Http\Message\Response\JsonResponse;
+use Valkyrja\Http\Message\Response\RedirectResponse;
+use Valkyrja\Http\Message\Response\Response;
+use Valkyrja\Http\Server\RequestHandler;
 use Valkyrja\Log\Logger;
 use Valkyrja\Routing\Exception\InvalidRouteName;
 use Valkyrja\Routing\Model\Contract\Route;
@@ -222,7 +222,7 @@ class HelpersTest extends TestCase
      */
     public function testKernel(): void
     {
-        self::assertTrue(\Valkyrja\kernel() instanceof Kernel);
+        self::assertTrue(\Valkyrja\kernel() instanceof RequestHandler);
     }
 
     /**

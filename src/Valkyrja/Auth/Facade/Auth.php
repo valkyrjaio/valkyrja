@@ -21,7 +21,7 @@ use Valkyrja\Auth\Gate\Contract\Gate;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\Repository;
 use Valkyrja\Facade\ContainerFacade;
-use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 
 /**
  * Class Auth.

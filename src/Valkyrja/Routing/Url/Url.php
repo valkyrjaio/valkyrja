@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Url;
 
-use Valkyrja\Http\Constant\RequestMethod;
-use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Constant\RequestMethod;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Routing\Config;
 use Valkyrja\Routing\Contract\Router;
 use Valkyrja\Routing\Exception\InvalidRouteName;

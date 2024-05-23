@@ -24,8 +24,8 @@ use Valkyrja\Auth\Exception\MissingTokenizableUserRequiredFieldsException;
 use Valkyrja\Auth\Exception\TokenizationException;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\TokenizedRepository as Contract;
-use Valkyrja\Http\Constant\Header;
-use Valkyrja\Http\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Constant\Header;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 
 /**
  * Abstract Class TokenizedRepository.

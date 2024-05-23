@@ -25,8 +25,8 @@ use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Filesystem\Contract\Filesystem;
-use Valkyrja\Http\Factory\Contract\ResponseFactory;
-use Valkyrja\HttpKernel\Contract\Kernel;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Path\Generator\Contract\Generator;
 use Valkyrja\Path\Parser\Contract\Parser;
@@ -248,7 +248,7 @@ class ApplicationTest extends TestCase
      */
     public function testKernel(): void
     {
-        self::assertTrue($this->app[Kernel::class] instanceof Kernel);
+        self::assertTrue($this->app[RequestHandler::class] instanceof RequestHandler);
     }
 
     /**

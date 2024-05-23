@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Collection;
 
 use JsonException;
-use Valkyrja\Http\Constant\RequestMethod;
+use Valkyrja\Http\Message\Constant\RequestMethod;
 use Valkyrja\Routing\Collection\Contract\Collection as Contract;
 use Valkyrja\Routing\Model\Contract\Route;
 
