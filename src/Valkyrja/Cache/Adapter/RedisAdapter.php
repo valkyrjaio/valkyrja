@@ -64,7 +64,7 @@ class RedisAdapter implements Contract
      */
     public function get(string $key): string|null
     {
-        return $this->predis->get($this->getKey($key)) ?: null;
+        return $this->predis->get($this->getKey($key));
     }
 
     /**
