@@ -122,6 +122,33 @@ interface Attributes
     public function forMethod(string $class, string $method, string|null $attribute = null, int|null $flags = null): array;
 
     /**
+     * Get a method's parameters' attributes.
+     *
+     * @template T
+     *
+     * @param class-string         $class     The class
+     * @param non-empty-string     $method    The method
+     * @param class-string<T>|null $attribute [optional] The attribute to return
+     *
+     * @return object[]|T[]
+     */
+    public function forMethodParameters(string $class, string $method, string|null $attribute = null, int|null $flags = null): array;
+
+    /**
+     * Get a method's parameters' attributes.
+     *
+     * @template T
+     *
+     * @param class-string         $class     The class
+     * @param non-empty-string     $method    The method
+     * @param non-empty-string     $parameter The parameter
+     * @param class-string<T>|null $attribute [optional] The attribute to return
+     *
+     * @return object[]|T[]
+     */
+    public function forMethodParameter(string $class, string $method, string $parameter, string|null $attribute = null, int|null $flags = null): array;
+
+    /**
      * Get a class' methods' attributes.
      *
      * @template T
@@ -146,6 +173,18 @@ interface Attributes
     public function forFunction(string $function, string|null $attribute = null, int|null $flags = null): array;
 
     /**
+     * Get a function's parameters' attributes.
+     *
+     * @template T
+     *
+     * @param callable-string      $function  The function
+     * @param class-string<T>|null $attribute [optional] The attribute to return
+     *
+     * @return object[]|T[]
+     */
+    public function forFunctionParameters(string $function, string|null $attribute = null, int|null $flags = null): array;
+
+    /**
      * Get a closure's attributes.
      *
      * @template T
@@ -156,4 +195,16 @@ interface Attributes
      * @return object[]|T[]
      */
     public function forClosure(Closure $closure, string|null $attribute = null, int|null $flags = null): array;
+
+    /**
+     * Get a closure's parameters' attributes.
+     *
+     * @template T
+     *
+     * @param Closure              $closure   The closure
+     * @param class-string<T>|null $attribute [optional] The attribute to return
+     *
+     * @return object[]|T[]
+     */
+    public function forClosureParameters(Closure $closure, string|null $attribute = null, int|null $flags = null): array;
 }

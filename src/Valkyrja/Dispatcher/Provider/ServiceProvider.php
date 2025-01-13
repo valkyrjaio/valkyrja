@@ -59,7 +59,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Dispatcher::class,
             new \Valkyrja\Dispatcher\Dispatcher(
-                $container
+                container: $container
             )
         );
     }

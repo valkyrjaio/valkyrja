@@ -15,7 +15,7 @@ namespace Valkyrja\Crypt\Driver;
 
 use Valkyrja\Crypt\Adapter\Contract\Adapter;
 use Valkyrja\Crypt\Driver\Contract\Driver as Contract;
-use Valkyrja\Manager\Drivers\Driver as ParentDriver;
+use Valkyrja\Manager\Driver\Driver as ParentDriver;
 
 /**
  * Class Driver.

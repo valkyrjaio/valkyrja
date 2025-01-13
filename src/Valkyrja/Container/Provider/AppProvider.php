@@ -19,7 +19,8 @@ use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\CacheableContainer;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Exception\Contract\ExceptionHandler;
+use Valkyrja\Exception\Contract\ErrorHandler as ErrorHandlerContract;
+use Valkyrja\Exception\ErrorHandler;
 
 use const E_ALL;
 
@@ -46,7 +47,7 @@ class AppProvider extends Provider
         static::bootstrapContainer($app, $container);
         static::bootstrapServices($app, $container, $config);
         // Bootstrap debug capabilities
-        static::bootstrapExceptionHandler($app, $container, $config);
+        static::bootstrapErrorHandler($app, $container, $config);
         // Bootstrap the timezone
         static::bootstrapTimezone($config);
     }
@@ -83,7 +84,7 @@ class AppProvider extends Provider
     }
 
     /**
-     * Bootstrap exception handler.
+     * Bootstrap error handler.
      *
      * @param Application  $app       The application
      * @param Container    $container The container
@@ -91,21 +92,22 @@ class AppProvider extends Provider
      *
      * @return void
      */
-    protected static function bootstrapExceptionHandler(
+    protected static function bootstrapErrorHandler(
         Application $app,
         Container $container,
         Config|array $config
     ): void {
-        /** @var ExceptionHandler $exceptionHandler */
-        $exceptionHandler = $config['app']['exceptionHandler'];
+        /** @var ErrorHandlerContract $errorHandler */
+        $errorHandler = $config['app']['errorHandler']
+            ?? ErrorHandler::class;
 
-        // Set exception handler in the service container
-        $container->setSingleton(ExceptionHandler::class, $exceptionHandler);
+        // Set error handler in the service container
+        $container->setSingleton(ErrorHandlerContract::class, $errorHandler);
 
         // If debug is on, enable debug handling
         if ($app->debug()) {
-            // Enable exception handling
-            $exceptionHandler::enable(E_ALL, true);
+            // Enable error handling
+            $errorHandler::enable(E_ALL, true);
         }
     }
 

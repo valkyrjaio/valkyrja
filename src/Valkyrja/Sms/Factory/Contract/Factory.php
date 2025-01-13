@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Factory\Contract;
 
-use Valkyrja\Manager\Factories\Contract\MessageFactory as Contract;
+use Valkyrja\Manager\Factory\Contract\MessageFactory as Contract;
 use Valkyrja\Sms\Adapter\Contract\Adapter;
 use Valkyrja\Sms\Driver\Contract\Driver;
 use Valkyrja\Sms\Message\Contract\Message;

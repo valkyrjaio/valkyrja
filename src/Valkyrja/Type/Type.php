@@ -32,6 +32,7 @@ abstract class Type implements Contract
     public function __construct(
         protected mixed $subject,
     ) {
+        // $this->validateSubject();
     }
 
     /**

@@ -1,0 +1,104 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Valkyrja Framework package.
+ *
+ * (c) Melech Mizrachi <melechmizrachi@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Valkyrja\Http\Message\Header\Value\Component;
+
+use Valkyrja\Http\Message\Header\Value\Component\Contract\Component as Contract;
+
+use function explode;
+
+class Component implements Contract
+{
+    /**
+     * Deliminator to use for token and text.
+     *
+     * @var non-empty-string
+     */
+    protected const DELIMINATOR = '=';
+
+    public function __construct(
+        protected string $token,
+        protected string|null $text = null
+    ) {
+    }
+
+    public static function fromValue(string $value): static
+    {
+        $token = $value;
+        $text  = null;
+
+        if (str_contains($value, static::DELIMINATOR)) {
+            [$token, $text] = explode(static::DELIMINATOR, $value);
+        }
+
+        return new static(token: $token, text: $text);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withToken(string $token): static
+    {
+        $new = clone $this;
+
+        $new->token = $token;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getText(): ?string
+    {
+        return $this->text ?? null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withText(?string $text = null): static
+    {
+        $new = clone $this;
+
+        $new->text = $text;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize(): string
+    {
+        return $this->__toString();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function __toString(): string
+    {
+        return $this->token !== '' && $this->text !== null && $this->text !== ''
+            ? "$this->token=$this->text"
+            : $this->token;
+    }
+}

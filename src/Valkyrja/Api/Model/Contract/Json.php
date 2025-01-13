@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api\Model\Contract;
 
+use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Type\Model\Contract\Model;
 
 /**
@@ -107,18 +108,18 @@ interface Json extends Model
     /**
      * Get the status code.
      *
-     * @return int
+     * @return StatusCode
      */
-    public function getStatusCode(): int;
+    public function getStatusCode(): StatusCode;
 
     /**
      * Set the status code.
      *
-     * @param int $statusCode
+     * @param StatusCode $statusCode
      *
      * @return static
      */
-    public function setStatusCode(int $statusCode): static;
+    public function setStatusCode(StatusCode $statusCode): static;
 
     /**
      * Get the status.

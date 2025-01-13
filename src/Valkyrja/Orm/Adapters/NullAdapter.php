@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Adapters;
 
 use Valkyrja\Orm\Statement;
-use Valkyrja\Orm\Statements\NullStatement;
+use Valkyrja\Orm\Statement\NullStatement;
 
 /**
  * Class NullAdapter.

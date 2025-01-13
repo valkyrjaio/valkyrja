@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Response\Contract;
 
+use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Uri\Contract\Uri;
 
 /**
  * Interface RedirectResponse.
@@ -25,29 +27,33 @@ interface RedirectResponse extends Response
     /**
      * Create a redirect response.
      *
-     * @param string|null $uri        [optional] The uri to redirect to
-     * @param int|null    $statusCode [optional] The response status code
-     * @param array|null  $headers    [optional] An array of response headers
+     * @param Uri|null        $uri        [optional] The uri to redirect to
+     * @param StatusCode|null $statusCode [optional] The response status code
+     * @param array|null      $headers    [optional] An array of response headers
      *
      * @return static
      */
-    public static function createFromUri(string|null $uri = null, int|null $statusCode = null, array|null $headers = null): static;
+    public static function createFromUri(
+        Uri|null $uri = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
+    ): static;
 
     /**
      * Get the uri.
      *
-     * @return string
+     * @return Uri
      */
-    public function getUri(): string;
+    public function getUri(): Uri;
 
     /**
      * Set the uri.
      *
-     * @param string $uri The uri
+     * @param Uri $uri The uri
      *
      * @return static
      */
-    public function setUri(string $uri): static;
+    public function withUri(Uri $uri): static;
 
     /**
      * Set the redirect uri to secure.

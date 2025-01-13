@@ -24,7 +24,7 @@ use Valkyrja\Auth\Exception\MissingTokenizableUserRequiredFieldsException;
 use Valkyrja\Auth\Exception\TokenizationException;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\TokenizedRepository as Contract;
-use Valkyrja\Http\Message\Constant\Header;
+use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 
 /**
@@ -233,7 +233,7 @@ abstract class TokenizedRepository extends Repository implements Contract
      */
     protected function getTokenFromRequest(ServerRequest $request): string
     {
-        [$bearer, $token] = explode(' ', $request->getHeaderLine(Header::AUTHORIZATION));
+        [$bearer, $token] = explode(' ', $request->getHeaderLine(HeaderName::AUTHORIZATION));
 
         if ($bearer !== HeaderValue::BEARER || ! $token) {
             throw new InvalidAuthenticationException('Invalid token structure.');

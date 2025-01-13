@@ -18,7 +18,7 @@ use RuntimeException;
 use Valkyrja\Orm\Orm;
 use Valkyrja\Orm\PdoAdapter as Contract;
 use Valkyrja\Orm\Statement;
-use Valkyrja\Orm\Statements\PdoStatement;
+use Valkyrja\Orm\Statement\PdoStatement;
 
 use function is_bool;
 

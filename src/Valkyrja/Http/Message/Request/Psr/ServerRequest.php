@@ -15,10 +15,9 @@ namespace Valkyrja\Http\Message\Request\Psr;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use Valkyrja\Http\Message\Factory\UploadedFileFactory;
 use Valkyrja\Http\Message\File\Psr\UploadedFile;
-use Valkyrja\Http\Message\File\UploadedFile as ValkyrjaUploadedFile;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest as ValkyrjaRequest;
-use Valkyrja\Http\Message\Stream\Stream as ValkyrjaStream;
 
 /**
  * Class ServerRequest.
@@ -105,34 +104,10 @@ class ServerRequest extends Request implements ServerRequestInterface
     {
         $new = clone $this;
 
-        $valkyrjaUploadedFiles = [];
-
         /** @var UploadedFileInterface[] $uploadedFiles */
-        foreach ($uploadedFiles as $uploadedFile) {
-            $stream = $uploadedFile->getStream();
-            $mode   = '';
-
-            if ($stream->isReadable()) {
-                $mode = 'r';
-            }
-
-            if ($stream->isWritable()) {
-                $mode .= 'w';
-            }
-
-            $valkyrjaStream = new ValkyrjaStream($stream->getContents(), "{$mode}b");
-
-            $valkyrjaUploadedFiles[] = new ValkyrjaUploadedFile(
-                $uploadedFile->getSize() ?? 0,
-                $uploadedFile->getError(),
-                null,
-                $valkyrjaStream,
-                $uploadedFile->getClientFilename(),
-                $uploadedFile->getClientMediaType(),
-            );
-        }
-
-        $new->request = $this->request->withUploadedFiles(...$valkyrjaUploadedFiles);
+        $new->request = $this->request->withUploadedFiles(
+            UploadedFileFactory::fromPsrArray(...$uploadedFiles)
+        );
 
         return $new;
     }
@@ -140,7 +115,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * @inheritDoc
      */
-    public function getParsedBody()
+    public function getParsedBody(): object|array|null
     {
         return $this->request->getParsedBody();
     }

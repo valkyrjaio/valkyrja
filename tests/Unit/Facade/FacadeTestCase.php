@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Facade;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Container\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Facade\ContainerFacade;
 use Valkyrja\Tests\Unit\TestCase;
@@ -36,7 +36,7 @@ abstract class FacadeTestCase extends TestCase
     /**
      * @return string[][]
      */
-    abstract public static function methods(): array;
+    abstract public static function methodsProvider(): array;
 
     /**
      * @throws Exception
@@ -45,7 +45,7 @@ abstract class FacadeTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->container = $container = new Container(new Config());
+        $this->container = $container = new Container();
 
         ContainerFacade::setContainer($container);
 
@@ -57,9 +57,7 @@ abstract class FacadeTestCase extends TestCase
         self::assertInstanceOf(static::$contract, static::$facade::instance());
     }
 
-    /**
-     * @dataProvider methods
-     */
+    #[DataProvider('methodsProvider')]
     public function testMethods(string $method): void
     {
         self::assertIsCallable([static::$facade::instance(), $method]);

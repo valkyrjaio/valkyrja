@@ -25,6 +25,8 @@ use ReflectionProperty;
 use UnitEnum;
 use Valkyrja\Reflection\Contract\Reflection as Contract;
 
+use function class_exists;
+use function interface_exists;
 use function is_callable;
 use function spl_object_id;
 
@@ -144,8 +146,8 @@ class Reflection implements Contract
                 && ($name = $type->getName())
                 // The name is not a callable
                 && ! is_callable($name)
-                // The class exists
-                && class_exists($name)
+                // The class or interface exists
+                && (class_exists($name) || interface_exists($name))
                 // and it isn't an enum
                 && ! is_a($name, UnitEnum::class, true)
                 // It's not built in

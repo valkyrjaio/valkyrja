@@ -58,6 +58,8 @@ trait Indexable
     /**
      * @inheritDoc
      *
+     * @param array<int, mixed> $properties The properties
+     *
      * @return array<string, mixed>
      */
     public static function getMappedArrayFromIndexedArray(array $properties = []): array
@@ -83,6 +85,8 @@ trait Indexable
     /**
      * @inheritDoc
      *
+     * @param array<string, mixed> $properties The properties
+     *
      * @return array<int, mixed>
      */
     public static function getIndexedArrayFromMappedArray(array $properties = []): array
@@ -106,6 +110,8 @@ trait Indexable
 
     /**
      * @inheritDoc
+     *
+     * @param array<int, mixed> $properties The properties
      */
     public static function fromIndexedArray(array $properties): static
     {
@@ -117,6 +123,8 @@ trait Indexable
 
     /**
      * @inheritDoc
+     *
+     * @param array<int, mixed> $properties The properties
      */
     public function updateIndexedProperties(array $properties): void
     {
@@ -125,6 +133,8 @@ trait Indexable
 
     /**
      * @inheritDoc
+     *
+     * @param array<int, mixed> $properties The properties to modify
      */
     public function withIndexedProperties(array $properties): static
     {

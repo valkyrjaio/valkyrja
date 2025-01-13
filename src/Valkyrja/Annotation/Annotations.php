@@ -23,7 +23,7 @@ use Valkyrja\Reflection\Contract\Reflection;
 use function array_merge;
 
 /**
- * Class Annotator.
+ * Class Annotations.
  *
  * @author Melech Mizrachi
  */
@@ -40,13 +40,6 @@ class Annotations implements Contract
     protected const METHOD_CACHE            = 'method';
     protected const METHODS_CACHE           = 'methods';
     protected const FUNCTION_CACHE          = 'function';
-
-    /**
-     * Cached reflection classes.
-     *
-     * @var array
-     */
-    protected static array $reflections = [];
 
     /**
      * Cached annotations.
@@ -169,9 +162,6 @@ class Annotations implements Contract
         // Get the class's reflection
         // Iterate through the properties
         foreach ($this->reflection->forClass($class)->getProperties() as $property) {
-            $index = static::METHOD_CACHE . $class . $property->getName();
-            // Set the property's reflection class in the cache
-            self::$reflections[$index] = $property;
             // Set the annotations in the list
             $annotations[] = $this->forClassProperty($class, $property->getName());
         }
@@ -218,9 +208,6 @@ class Annotations implements Contract
         // Get the class's reflection
         // Iterate through the methods
         foreach ($this->reflection->forClass($class)->getMethods() as $method) {
-            $index = static::METHOD_CACHE . $class . $method->getName();
-            // Set the method's reflection class in the cache
-            self::$reflections[$index] = $method;
             // Set the annotations in the list
             $annotations[] = $this->forClassMethod($class, $method->getName());
         }

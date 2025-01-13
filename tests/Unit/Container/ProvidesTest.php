@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container;
 
 use ReflectionClass;
-use Valkyrja\Container\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Tests\Classes\Container\Provides;
 use Valkyrja\Tests\Unit\TestCase;
@@ -43,7 +42,7 @@ class ProvidesTest extends TestCase
 
     public function testPublish(): void
     {
-        $container = new Container(new Config());
+        $container = new Container();
 
         Provides::publish($container);
 

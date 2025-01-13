@@ -15,7 +15,7 @@ namespace Valkyrja\Api\Model;
 
 use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Model\Contract\Json as Contract;
-use Valkyrja\Http\Message\Constant\StatusCode;
+use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Type\Model\Model;
 
 /**
@@ -56,9 +56,9 @@ class Json extends Model implements Contract
     /**
      * The status code.
      *
-     * @var int
+     * @var StatusCode
      */
-    public int $statusCode = StatusCode::OK;
+    public StatusCode $statusCode = StatusCode::OK;
 
     /**
      * The status.
@@ -162,7 +162,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getStatusCode(): int
+    public function getStatusCode(): StatusCode
     {
         return $this->statusCode;
     }
@@ -170,7 +170,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setStatusCode(int $statusCode): static
+    public function setStatusCode(StatusCode $statusCode): static
     {
         $this->statusCode = $statusCode;
 

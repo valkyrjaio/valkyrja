@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Mail\Driver\Contract;
 
 use Valkyrja\Mail\Message\Contract\Message;
-use Valkyrja\Manager\Drivers\Contract\Driver as Contract;
+use Valkyrja\Manager\Driver\Contract\Driver as Contract;
 
 /**
  * Interface Driver.

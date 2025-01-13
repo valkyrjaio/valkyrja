@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm;
 
 use stdClass;
-use Valkyrja\Orm\Exceptions\NotFoundException;
+use Valkyrja\Orm\Exception\NotFoundException;
 
 /**
  * Interface Query.

@@ -13,12 +13,17 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\File;
 
-use InvalidArgumentException;
-use RuntimeException;
-use Valkyrja\Http\Message\Exception\InvalidStream;
-use Valkyrja\Http\Message\Exception\UploadedFileException;
+use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\File\Contract\UploadedFile as Contract;
+use Valkyrja\Http\Message\File\Enum\UploadError;
+use Valkyrja\Http\Message\File\Exception\AlreadyMovedException;
+use Valkyrja\Http\Message\File\Exception\InvalidDirectoryException;
+use Valkyrja\Http\Message\File\Exception\InvalidUploadedFileException;
+use Valkyrja\Http\Message\File\Exception\MoveFailureException;
+use Valkyrja\Http\Message\File\Exception\UnableToWriteFileException;
+use Valkyrja\Http\Message\File\Exception\UploadErrorException;
 use Valkyrja\Http\Message\Stream\Contract\Stream;
+use Valkyrja\Http\Message\Stream\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Stream\Stream as HttpStream;
 
 use function dirname;
@@ -26,13 +31,13 @@ use function fclose;
 use function fopen;
 use function fwrite;
 use function is_dir;
+use function is_file;
 use function is_writable;
 use function move_uploaded_file;
-use function sprintf;
+use function str_starts_with;
+use function unlink;
 
 use const PHP_SAPI;
-use const UPLOAD_ERR_EXTENSION;
-use const UPLOAD_ERR_OK;
 
 /**
  * Class UploadedFile.
@@ -46,43 +51,32 @@ class UploadedFile implements Contract
      *
      * @var bool
      */
-    protected bool $moved = false;
+    protected bool $hasBeenMoved = false;
 
     /**
-     * NativeUploadedFile constructor.
+     * UploadedFile constructor.
      *
-     * @param int         $size        The file size
-     * @param int         $errorStatus The error status
-     * @param string|null $file        [optional] The file
-     * @param Stream|null $stream      [optional] The stream
+     * @param string|null $file        [optional] The file if not passed stream is required
+     * @param Stream|null $stream      [optional] The stream if not passed file is required
+     * @param UploadError $uploadError [optional] The upload error
+     * @param int|null    $size        [optional] The file size
      * @param string|null $fileName    [optional] The file name
      * @param string|null $mediaType   [optional] The file media type
      *
      * @throws InvalidArgumentException
      */
     public function __construct(
-        protected int $size,
-        protected int $errorStatus,
         protected string|null $file = null,
         protected Stream|null $stream = null,
+        protected UploadError $uploadError = UploadError::OK,
+        protected int|null $size = null,
         protected string|null $fileName = null,
         protected string|null $mediaType = null
     ) {
-        // If the error is less than the lowest valued UPLOAD_ERR_* constant
-        // Or the error is greater than the highest valued UPLOAD_ERR_* constant
-        if ($errorStatus < UPLOAD_ERR_OK || $errorStatus > UPLOAD_ERR_EXTENSION) {
-            // Throw an invalid argument exception for the error status
-            throw new InvalidArgumentException(
-                'Invalid error status for UploadedFile;  must be an UPLOAD_ERR_* constant value.'
-            );
-        }
-
         // If the file is not set and the stream is not set
-        if ($file === null && $stream === null) {
+        if ($uploadError === UploadError::OK && $file === null && $stream === null) {
             // Throw an invalid argument exception as on or the other is required
-            throw new InvalidArgumentException(
-                'Either one of file or stream are required. Neither passed as arguments.'
-            );
+            throw new InvalidUploadedFileException('One of file or stream are required');
         }
     }
 
@@ -92,15 +86,15 @@ class UploadedFile implements Contract
     public function getStream(): Stream
     {
         // If the error status is not OK
-        if ($this->errorStatus !== UPLOAD_ERR_OK) {
+        if ($this->uploadError !== UploadError::OK) {
             // Throw a runtime exception as there's been an uploaded file error
-            throw new UploadedFileException('Cannot retrieve stream due to upload error');
+            throw new UploadErrorException($this->uploadError);
         }
 
         // If the file has already been moved
-        if ($this->moved) {
+        if ($this->hasBeenMoved) {
             // Throw a runtime exception as subsequent moves are not allowed in PSR-7
-            throw new UploadedFileException('Cannot retrieve stream after it has already been moved');
+            throw new AlreadyMovedException('Cannot retrieve stream after it has already been moved');
         }
 
         // If the stream has been set
@@ -109,8 +103,9 @@ class UploadedFile implements Contract
             return $this->stream;
         }
 
+        // This should be impossible, but here just in case __construct is overridden
         if ($this->file === null) {
-            throw new InvalidArgumentException('Either one of file or stream are required. Neither exists.');
+            throw new InvalidUploadedFileException('One of file or stream are required');
         }
 
         // Set the stream as a new native stream
@@ -125,46 +120,47 @@ class UploadedFile implements Contract
     public function moveTo(string $targetPath): void
     {
         // If the error status is not OK
-        if ($this->errorStatus !== UPLOAD_ERR_OK) {
+        if ($this->uploadError !== UploadError::OK) {
             // Throw a runtime exception as there's been an uploaded file error
-            throw new UploadedFileException('Cannot retrieve stream due to upload error');
+            throw new UploadErrorException($this->uploadError);
         }
 
         // If the file has already been moved
-        if ($this->moved) {
+        if ($this->hasBeenMoved) {
             // Throw a runtime exception as subsequent moves are not allowed
             // in PSR-7
-            throw new UploadedFileException('Cannot move file after it has already been moved');
+            throw new AlreadyMovedException('Cannot move file after it has already been moved');
         }
 
-        $targetDirectory = dirname($targetPath);
+        $targetDirectory = $this->getDirectoryName($targetPath);
 
         // If the target directory is not a directory
         // or the target directory is not writable
-        if (! is_dir($targetDirectory) || ! is_writable($targetDirectory)) {
+        if (! $this->isDir($targetDirectory) || ! $this->isWritable($targetDirectory)) {
             // Throw a runtime exception
-            throw new UploadedFileException(
-                sprintf('The target directory `%s` does not exists or is not writable', $targetDirectory)
+            throw new InvalidDirectoryException(
+                "The target directory `$targetDirectory` does not exists or is not writable"
             );
         }
 
-        $sapi = PHP_SAPI;
-
-        // If the PHP_SAPI value is empty
-        // or there is no file
-        // or the PHP_SAPI value is set to a CLI environment
-        if (empty($sapi) || $this->file === null || $this->file === '' || str_starts_with($sapi, 'cli')) {
+        if ($this->shouldWriteStream()) {
             // Non-SAPI environment, or no filename present
             $this->writeStream($targetPath);
+
+            $this->stream?->close();
+
+            if ($this->file !== null && is_file($this->file)) {
+                $this->deleteFile($this->file);
+            }
         }
         // Otherwise try to use the move_uploaded_file function
         // and if the move_uploaded_file function call failed
-        elseif (! move_uploaded_file($this->file, $targetPath)) {
+        elseif (! $this->moveUploadedFile($this->file ?? '', $targetPath)) {
             // Throw a runtime exception
-            throw new UploadedFileException('Error occurred while moving uploaded file');
+            throw new MoveFailureException('Error occurred while moving uploaded file');
         }
 
-        $this->moved = true;
+        $this->hasBeenMoved = true;
     }
 
     /**
@@ -178,9 +174,9 @@ class UploadedFile implements Contract
     /**
      * @inheritDoc
      */
-    public function getError(): int
+    public function getError(): UploadError
     {
-        return $this->errorStatus;
+        return $this->uploadError;
     }
 
     /**
@@ -204,20 +200,19 @@ class UploadedFile implements Contract
      *
      * @param string $path The path to write the stream to
      *
-     * @throws InvalidStream
-     * @throws RuntimeException
+     * @throws InvalidStreamException
      *
      * @return void
      */
     protected function writeStream(string $path): void
     {
         // Attempt to open the path specified
-        $handle = fopen($path, 'wb+');
+        $handle = $this->openStream($path);
 
         // If the handler failed to open
         if ($handle === false) {
             // Throw a runtime exception
-            throw new UploadedFileException('Unable to write to designated path');
+            throw new UnableToWriteFileException('Unable to write to designated path');
         }
 
         // Get the stream
@@ -225,13 +220,135 @@ class UploadedFile implements Contract
         // Rewind the stream
         $stream->rewind();
 
-        // While the end of file hasn't been reached
+        // While the end of the stream hasn't been reached
         while (! $stream->eof()) {
             // Write the stream's contents to the handler
-            fwrite($handle, $stream->read(4096));
+            $this->writeToStream($handle, $stream->read(4096));
         }
 
-        // Close the file path
-        fclose($handle);
+        // Close the path
+        $this->closeStream($handle);
+    }
+
+    /**
+     * Get the PHP_SAPI value.
+     *
+     * @return string
+     */
+    protected function getPhpSapi(): string
+    {
+        return PHP_SAPI;
+    }
+
+    /**
+     * Determine if a new stream should be opened to move the file.
+     *
+     * @return bool
+     */
+    protected function shouldWriteStream(): bool
+    {
+        $sapi = $this->getPhpSapi();
+
+        // If the PHP_SAPI value is empty
+        // or there is no file
+        // or the PHP_SAPI value is set to a CLI environment
+        return empty($sapi)
+            || $this->file === null
+            || $this->file === ''
+            || str_starts_with($sapi, 'cli')
+            || str_starts_with($sapi, 'phpdbg');
+    }
+
+    /**
+     * Get the directory name for a given path.
+     *
+     * @param string $path The path
+     *
+     * @return string
+     */
+    protected function getDirectoryName(string $path): string
+    {
+        return dirname($path);
+    }
+
+    /**
+     * Open a stream.
+     *
+     * @return resource|false
+     */
+    protected function openStream(string $filename)
+    {
+        return fopen($filename, 'wb+');
+    }
+
+    /**
+     * Write a stream.
+     *
+     * @param resource $stream The stream
+     */
+    protected function writeToStream($stream, string $data): int|false
+    {
+        return fwrite($stream, $data);
+    }
+
+    /**
+     * Close a stream.
+     *
+     * @param resource $stream The stream
+     *
+     * @return bool
+     */
+    protected function closeStream($stream): bool
+    {
+        return fclose($stream);
+    }
+
+    /**
+     * Determine if a filename is a directory.
+     *
+     * @param string $filename The file
+     *
+     * @return bool
+     */
+    protected function isDir(string $filename): bool
+    {
+        return is_dir($filename);
+    }
+
+    /**
+     * Determine if a file is writable.
+     *
+     * @param string $filename The file
+     *
+     * @return bool
+     */
+    protected function isWritable(string $filename): bool
+    {
+        return is_writable($filename);
+    }
+
+    /**
+     * Move an uploaded file.
+     *
+     * @param string $from Path to move from
+     * @param string $to   Path to move to
+     *
+     * @return bool
+     */
+    protected function moveUploadedFile(string $from, string $to): bool
+    {
+        return move_uploaded_file($from, $to);
+    }
+
+    /**
+     * Delete a file.
+     *
+     * @param string $filename
+     *
+     * @return bool
+     */
+    protected function deleteFile(string $filename): bool
+    {
+        return unlink($filename);
     }
 }

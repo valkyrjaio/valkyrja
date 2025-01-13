@@ -26,15 +26,15 @@ use Valkyrja\Container\Config\Container;
 use Valkyrja\Crypt\Config\Crypt;
 use Valkyrja\Event\Config\Event;
 use Valkyrja\Filesystem\Config\Filesystem;
+use Valkyrja\Http\Config\Http;
+use Valkyrja\Http\Routing\Config\Routing;
 use Valkyrja\Jwt\Config\Jwt;
 use Valkyrja\Log\Config\Log;
 use Valkyrja\Mail\Config\Mail;
 use Valkyrja\Orm\Config\Orm;
 use Valkyrja\Path\Config\Path;
-use Valkyrja\Routing\Config\Routing;
 use Valkyrja\Session\Config\Session;
 use Valkyrja\Sms\Config\Sms;
-use Valkyrja\Validation\Config\Validation;
 use Valkyrja\View\Config\View;
 
 use function Valkyrja\cachePath;
@@ -63,6 +63,7 @@ class Valkyrja extends Model
         $this->crypt      = new Crypt($properties['crypt'] ?? null, true);
         $this->event      = new Event($properties['event'] ?? null, true);
         $this->filesystem = new Filesystem($properties['filesystem'] ?? null, true);
+        $this->http       = new Http($properties['http'] ?? null, true);
         $this->jwt        = new Jwt($properties['jwt'] ?? null, true);
         $this->log        = new Log($properties['log'] ?? null, true);
         $this->mail       = new Mail($properties['mail'] ?? null, true);
@@ -71,7 +72,6 @@ class Valkyrja extends Model
         $this->routing    = new Routing($properties['routing'] ?? null, true);
         $this->session    = new Session($properties['session'] ?? null, true);
         $this->sms        = new Sms($properties['sms'] ?? null, true);
-        $this->validation = new Validation($properties['validation'] ?? null, true);
         $this->view       = new View($properties['view'] ?? null, true);
 
         $this->providers     = [];

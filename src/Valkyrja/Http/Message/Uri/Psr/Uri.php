@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Message\Uri\Psr;
 
 use Psr\Http\Message\UriInterface;
 use Valkyrja\Http\Message\Uri\Contract\Uri as ValkyrjaUri;
+use Valkyrja\Http\Message\Uri\Enum\Scheme;
 
 /**
  * Class Uri.
@@ -33,7 +34,7 @@ class Uri implements UriInterface
      */
     public function getScheme(): string
     {
-        return $this->uri->getScheme();
+        return $this->uri->getScheme()->value;
     }
 
     /**
@@ -99,7 +100,7 @@ class Uri implements UriInterface
     {
         $new = clone $this;
 
-        $new->uri = $this->uri->withScheme($scheme);
+        $new->uri = $this->uri->withScheme(Scheme::from($scheme));
 
         return $new;
     }

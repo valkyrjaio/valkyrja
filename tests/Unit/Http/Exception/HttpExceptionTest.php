@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Exception;
 
-use Valkyrja\Http\Message\Constant\StatusCode;
+use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Exception\HttpException;
+use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -24,50 +25,51 @@ use Valkyrja\Tests\Unit\TestCase;
  */
 class HttpExceptionTest extends TestCase
 {
-    /**
-     * The exception.
-     *
-     * @var HttpException
-     */
-    protected HttpException $exception;
-
-    /**
-     * Test the construction of a new HttpException instance.
-     *
-     * @return void
-     */
     public function testConstruct(): void
     {
-        self::assertTrue($this->getException() instanceof HttpException);
+        $exception = new HttpException();
+
+        self::assertSame(StatusCode::INTERNAL_SERVER_ERROR, $exception->getStatusCode());
+        self::assertEmpty($exception->getHeaders());
+        self::assertNull($exception->getResponse());
     }
 
-    /**
-     * Test the getStatusCode method.
-     *
-     * @return void
-     */
     public function testGetStatusCode(): void
     {
-        self::assertSame(StatusCode::INTERNAL_SERVER_ERROR, $this->getException()->getStatusCode());
+        $exception = new HttpException(statusCode: StatusCode::SERVICE_UNAVAILABLE);
+
+        self::assertSame(StatusCode::SERVICE_UNAVAILABLE, $exception->getStatusCode());
     }
 
-    /**
-     * Test the getHeaders method.
-     *
-     * @return void
-     */
     public function testGetHeaders(): void
     {
-        self::assertSame([], $this->getException()->getHeaders());
+        $exception = new HttpException(headers: $headers = ['test' => ['foo', 'bar']]);
+
+        self::assertSame($headers, $exception->getHeaders());
     }
 
-    /**
-     * Get the exception.
-     *
-     * @return HttpException
-     */
-    protected function getException(): HttpException
+    public function testGetMessage(): void
     {
-        return $this->exception ?? $this->exception = new HttpException();
+        $exception = new HttpException(message: $message = 'test');
+
+        self::assertSame($message, $exception->getMessage());
+    }
+
+    public function testGetResponse(): void
+    {
+        $response  = new Response(statusCode: StatusCode::INTERNAL_SERVER_ERROR);
+        $exception = new HttpException(response: $response);
+
+        self::assertNotSame($response, $exception->getResponse());
+        self::assertSame($response->getStatusCode(), $exception->getResponse()?->getStatusCode());
+    }
+
+    public function testGetResponseWithNoStatusCode(): void
+    {
+        $response  = new Response();
+        $exception = new HttpException(response: $response);
+
+        self::assertNotSame($response, $exception->getResponse());
+        self::assertSame($response->getStatusCode(), $exception->getResponse()?->getStatusCode());
     }
 }

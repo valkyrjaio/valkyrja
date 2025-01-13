@@ -15,7 +15,7 @@ namespace Valkyrja\Client\Adapter;
 
 use JsonException;
 use Valkyrja\Client\Adapter\Contract\LogAdapter as Contract;
-use Valkyrja\Http\Message\Constant\RequestMethod;
+use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
@@ -74,7 +74,7 @@ class LogAdapter implements Contract
         $optionsString = Obj::toString($request);
 
         $this->logger->info(
-            static::class . " request: {$request->getMethod()}, uri {$request->getUri()->__toString()}, options $optionsString"
+            static::class . " request: {$request->getMethod()->value}, uri {$request->getUri()->__toString()}, options $optionsString"
         );
 
         return $this->responseFactory->createResponse();

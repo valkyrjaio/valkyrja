@@ -15,10 +15,12 @@ namespace Valkyrja\Auth\Middleware;
 
 use Valkyrja\Auth\Constant\RouteName;
 use Valkyrja\Config\Constant\ConfigKeyPart;
-use Valkyrja\Http\Message\Constant\StatusCode;
+use Valkyrja\Container\Contract\Container;
+use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Routing\Url\Contract\Url;
+use Valkyrja\Http\Routing\Url\Contract\Url;
 
 /**
  * Class NotAuthenticatedMiddleware.
@@ -53,19 +55,24 @@ class NotAuthenticatedMiddleware extends AuthMiddleware
      */
     protected static function getFailedRegularResponse(): Response
     {
+        /** @var Container $container */
+        $container = null;
+        /** @var ResponseFactory $responseFactory */
+        $responseFactory = null;
+
         $authenticateUrl = static::getConfig(ConfigKeyPart::NOT_AUTHENTICATE_URL);
 
         if ($authenticateUrl !== null && $authenticateUrl !== '') {
-            return self::getResponseFactory()->createRedirectResponse(
+            return $responseFactory->createRedirectResponse(
                 $authenticateUrl,
                 StatusCode::FOUND
             );
         }
 
         /** @var Url $url */
-        $url = self::getContainer()->getSingleton(Url::class);
+        $url = $container->getSingleton(Url::class);
 
-        return self::getResponseFactory()->createRedirectResponse(
+        return $responseFactory->createRedirectResponse(
             $url->getUrl((string) static::getConfig(ConfigKeyPart::NOT_AUTHENTICATE_ROUTE, RouteName::DASHBOARD)),
             StatusCode::FOUND
         );

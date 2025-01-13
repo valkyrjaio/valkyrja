@@ -18,6 +18,6 @@ namespace Valkyrja\Http\Message\Exception;
  *
  * @author Melech Mizrachi
  */
-class InvalidArgumentException extends \Valkyrja\Exception\InvalidArgumentException implements Throwable
+class InvalidArgumentException extends \Valkyrja\Http\Exception\InvalidArgumentException implements Throwable
 {
 }

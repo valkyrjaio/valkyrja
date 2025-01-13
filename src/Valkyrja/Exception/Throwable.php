@@ -20,4 +20,8 @@ namespace Valkyrja\Exception;
  */
 interface Throwable extends \Throwable
 {
+    /**
+     * Get trace code unique to the exception being thrown.
+     */
+    public function getTraceCode(): string;
 }

@@ -36,6 +36,14 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\JsonResponse;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponse;
 use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Uri\Contract\Uri;
+use Valkyrja\Http\Routing\Collector\Contract\Collector;
+use Valkyrja\Http\Routing\Contract\Router;
+use Valkyrja\Http\Routing\Exception\InvalidRouteNameException;
+use Valkyrja\Http\Routing\Factory\Contract\ResponseFactory as RouteResponseFactory;
+use Valkyrja\Http\Routing\Model\Contract\Route;
+use Valkyrja\Http\Routing\Support\Abort;
+use Valkyrja\Http\Routing\Url\Contract\Url;
 use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Mail\Contract\Mail;
@@ -47,18 +55,12 @@ use Valkyrja\Orm\Orm;
 use Valkyrja\Path\Generator\Contract\Generator;
 use Valkyrja\Path\Parser\Contract\Parser;
 use Valkyrja\Reflection\Contract\Reflection;
-use Valkyrja\Routing\Collector\Contract\Collector;
-use Valkyrja\Routing\Contract\Router;
-use Valkyrja\Routing\Exception\InvalidRouteName;
-use Valkyrja\Routing\Model\Contract\Route;
-use Valkyrja\Routing\Support\Abort;
-use Valkyrja\Routing\Url\Contract\Url;
 use Valkyrja\Session\Contract\Session;
 use Valkyrja\Sms\Contract\Sms;
 use Valkyrja\Sms\Message\Contract\Message as SmsMessage;
 use Valkyrja\Support\Directory;
-use Valkyrja\Validation\Contract\Validation;
 use Valkyrja\View\Contract\View;
+use Valkyrja\View\Factory\Contract\ResponseFactory as ViewResponseFactory;
 use Valkyrja\View\Template\Contract\Template;
 
 use function var_dump;
@@ -440,7 +442,7 @@ function url(): Url
  *
  * @param string $name The name of the route to get
  *
- * @throws InvalidRouteName
+ * @throws InvalidRouteNameException
  *
  * @return Route
  */
@@ -471,6 +473,26 @@ function routeUrl(string $name, array|null $data = null, bool|null $absolute = n
 function responseFactory(): ResponseFactory
 {
     return container()->getSingleton(ResponseFactory::class);
+}
+
+/**
+ * Get the router response builder.
+ *
+ * @return RouteResponseFactory
+ */
+function routeResponseFactory(): RouteResponseFactory
+{
+    return container()->getSingleton(RouteResponseFactory::class);
+}
+
+/**
+ * Get the view response builder.
+ *
+ * @return ViewResponseFactory
+ */
+function viewResponseFactory(): ViewResponseFactory
+{
+    return container()->getSingleton(ViewResponseFactory::class);
 }
 
 /**
@@ -531,22 +553,22 @@ function redirectRoute(
     int|null $statusCode = null,
     array|null $headers = null
 ): RedirectResponse {
-    return responseFactory()->route($route, $parameters, $statusCode, $headers);
+    return routeResponseFactory()->createRouteRedirectResponse($route, $parameters, $statusCode, $headers);
 }
 
 /**
  * Redirect to a given uri, and abort the application.
  *
- * @param string|null $uri        [optional] The URI to redirect to
- * @param int|null    $statusCode [optional] The response status code
- * @param array|null  $headers    [optional] An array of response headers
+ * @param Uri|null   $uri        [optional] The URI to redirect to
+ * @param int|null   $statusCode [optional] The response status code
+ * @param array|null $headers    [optional] An array of response headers
  *
  * @throws HttpRedirectException
  *
  * @return never
  */
 function redirectTo(
-    string|null $uri = null,
+    Uri|null $uri = null,
     int|null $statusCode = null,
     array|null $headers = null
 ): never {
@@ -583,16 +605,6 @@ function sms(): Sms
 function smsMessage(string|null $name = null): SmsMessage
 {
     return \Valkyrja\sms()->createMessage($name);
-}
-
-/**
- * Get validator.
- *
- * @return Validation
- */
-function validator(): Validation
-{
-    return container()->getSingleton(Validation::class);
 }
 
 /**

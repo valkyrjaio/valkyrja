@@ -13,19 +13,26 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Request;
 
-use Valkyrja\Http\Message\Constant\Header;
-use Valkyrja\Http\Message\Constant\RequestMethod;
-use Valkyrja\Http\Message\Constant\StreamType;
+use Valkyrja\Http\Message\Constant\HeaderName;
+use Valkyrja\Http\Message\Enum\ProtocolVersion;
+use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\File\Contract\UploadedFile;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest as Contract;
 use Valkyrja\Http\Message\Stream\Contract\Stream;
+use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream as HttpStream;
 use Valkyrja\Http\Message\Uri\Contract\Uri;
 use Valkyrja\Http\Message\Uri\Uri as HttpUri;
 
+use function array_filter;
+use function array_key_exists;
+use function in_array;
+
+use const ARRAY_FILTER_USE_KEY;
+
 /**
- * Class Request.
+ * Class ServerRequest.
  *
  * @author Melech Mizrachi
  */
@@ -34,48 +41,41 @@ class ServerRequest extends Request implements Contract
     /**
      * The attributes.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $attributes = [];
 
     /**
-     * The files.
+     * ServerRequest constructor.
      *
-     * @var array
-     */
-    protected array $files = [];
-
-    /**
-     * Request constructor.
-     *
-     * @param Uri          $uri        [optional] The uri
-     * @param string       $method     [optional] The method
-     * @param Stream       $body       [optional] The body stream
-     * @param array        $headers    [optional] The headers
-     * @param array        $server     [optional] The server
-     * @param array        $cookies    [optional] The cookies
-     * @param array        $query      [optional] The query string
-     * @param array        $parsedBody [optional] The parsed body
-     * @param string       $protocol   [optional] The protocol version
-     * @param UploadedFile ...$files   [optional] The files
+     * @param Uri                        $uri        [optional] The uri
+     * @param RequestMethod              $method     [optional] The method
+     * @param Stream                     $body       [optional] The body stream
+     * @param array<string, string[]>    $headers    [optional] The headers
+     * @param array<string, mixed>       $server     [optional] The server
+     * @param array<string, string|null> $cookies    [optional] The cookies
+     * @param array                      $query      [optional] The query string
+     * @param array                      $parsedBody [optional] The parsed body
+     * @param ProtocolVersion            $protocol   [optional] The protocol version
+     * @param UploadedFile[]|array       $files      [optional] The files
      *
      * @throws InvalidArgumentException
      */
     public function __construct(
         Uri $uri = new HttpUri(),
-        string $method = RequestMethod::GET,
-        Stream $body = new HttpStream(StreamType::INPUT),
+        RequestMethod $method = RequestMethod::GET,
+        Stream $body = new HttpStream(stream: PhpWrapper::input),
         array $headers = [],
         protected array $server = [],
         protected array $cookies = [],
         protected array $query = [],
         protected array $parsedBody = [],
-        protected string $protocol = '1.1',
-        UploadedFile ...$files
+        ProtocolVersion $protocol = ProtocolVersion::V1_1,
+        protected array $files = []
     ) {
-        parent::__construct($uri, $method, $body, $headers);
+        $this->protocolVersion = $protocol;
 
-        $this->files = $files;
+        parent::__construct($uri, $method, $body, $headers);
     }
 
     /**
@@ -99,7 +99,8 @@ class ServerRequest extends Request implements Contract
      */
     public function hasServerParam(string $name): bool
     {
-        return isset($this->server[$name]);
+        return isset($this->server[$name])
+            || array_key_exists($name, $this->server);
     }
 
     /**
@@ -125,6 +126,18 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    public function withAddedCookieParam(string $name, string|null $value = null): static
+    {
+        $new = clone $this;
+
+        $new->cookies[$name] = $value;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getCookieParam(string $name, string|null $default = null): string|null
     {
         return $this->cookies[$name] ?? $default;
@@ -135,7 +148,8 @@ class ServerRequest extends Request implements Contract
      */
     public function hasCookieParam(string $name): bool
     {
-        return isset($this->cookies[$name]);
+        return isset($this->cookies[$name])
+            || array_key_exists($name, $this->cookies);
     }
 
     /**
@@ -149,17 +163,17 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
-    public function onlyQueryParams(array $names): array
+    public function onlyQueryParams(string|int ...$names): array
     {
-        return $this->onlyParams($this->query, $names);
+        return $this->onlyParams($this->query, ...$names);
     }
 
     /**
      * @inheritDoc
      */
-    public function exceptQueryParams(array $names): array
+    public function exceptQueryParams(string|int ...$names): array
     {
-        return $this->exceptParams($this->query, $names);
+        return $this->exceptParams($this->query, ...$names);
     }
 
     /**
@@ -177,7 +191,19 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
-    public function getQueryParam(string $name, mixed $default = null): mixed
+    public function withAddedQueryParam(string|int $name, mixed $value): static
+    {
+        $new = clone $this;
+
+        $new->query[$name] = $value;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getQueryParam(string|int $name, mixed $default = null): mixed
     {
         return $this->query[$name] ?? $default;
     }
@@ -185,9 +211,10 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
-    public function hasQueryParam(string $name): bool
+    public function hasQueryParam(string|int $name): bool
     {
-        return isset($this->query[$name]);
+        return isset($this->query[$name])
+            || array_key_exists($name, $this->query);
     }
 
     /**
@@ -201,11 +228,23 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
-    public function withUploadedFiles(UploadedFile ...$uploadedFiles): static
+    public function withUploadedFiles(array $uploadedFiles): static
     {
         $new = clone $this;
 
         $new->files = $uploadedFiles;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withAddedUploadedFile(UploadedFile $uploadedFile): static
+    {
+        $new = clone $this;
+
+        $new->files[] = $uploadedFile;
 
         return $new;
     }
@@ -221,17 +260,17 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
-    public function onlyParsedBody(array $names): array
+    public function onlyParsedBody(string|int ...$names): array
     {
-        return $this->onlyParams($this->parsedBody, $names);
+        return $this->onlyParams($this->parsedBody, ...$names);
     }
 
     /**
      * @inheritDoc
      */
-    public function exceptParsedBody(array $names): array
+    public function exceptParsedBody(string|int ...$names): array
     {
-        return $this->exceptParams($this->parsedBody, $names);
+        return $this->exceptParams($this->parsedBody, ...$names);
     }
 
     /**
@@ -249,7 +288,19 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
-    public function getParsedBodyParam(string $name, mixed $default = null): mixed
+    public function withAddedParsedBodyParam(string|int $name, mixed $value): static
+    {
+        $new = clone $this;
+
+        $new->parsedBody[$name] = $value;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getParsedBodyParam(string|int $name, mixed $default = null): mixed
     {
         return $this->parsedBody[$name] ?? $default;
     }
@@ -257,9 +308,10 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
-    public function hasParsedBodyParam(string $name): bool
+    public function hasParsedBodyParam(string|int $name): bool
     {
-        return isset($this->parsedBody[$name]);
+        return isset($this->parsedBody[$name])
+            || array_key_exists($name, $this->parsedBody);
     }
 
     /**
@@ -273,17 +325,17 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
-    public function onlyAttributes(array $names): array
+    public function onlyAttributes(string ...$names): array
     {
-        return $this->onlyParams($this->attributes, $names);
+        return $this->onlyParams($this->attributes, ...$names);
     }
 
     /**
      * @inheritDoc
      */
-    public function exceptAttributes(array $names): array
+    public function exceptAttributes(string ...$names): array
     {
-        return $this->exceptParams($this->attributes, $names);
+        return $this->exceptParams($this->attributes, ...$names);
     }
 
     /**
@@ -323,42 +375,40 @@ class ServerRequest extends Request implements Contract
      */
     public function isXmlHttpRequest(): bool
     {
-        return $this->getHeaderLine(Header::X_REQUESTED_WITH) === 'XMLHttpRequest';
+        return $this->getHeaderLine(HeaderName::X_REQUESTED_WITH) === 'XMLHttpRequest';
     }
 
     /**
      * Retrieve only the specified params.
      *
-     * @param array    $params The params to sort through
-     * @param string[] $names  The query param names to retrieve
+     * @param array          $params The params to sort through
+     * @param string[]|int[] $names  The query param names to retrieve
      *
      * @return array
      */
-    protected function onlyParams(array $params, array $names): array
+    protected function onlyParams(array $params, string|int ...$names): array
     {
-        $onlyParams = [];
-
-        foreach ($names as $name) {
-            $onlyParams[$name] = $params[$name] ?? null;
-        }
-
-        return $onlyParams;
+        return array_filter(
+            $params,
+            static fn (string|int $name): bool => in_array($name, $names, true),
+            ARRAY_FILTER_USE_KEY
+        );
     }
 
     /**
      * Retrieve all params except the ones specified.
      *
-     * @param array    $params The params to sort through
-     * @param string[] $names  The query param names to not retrieve
+     * @param array          $params The params to sort through
+     * @param string[]|int[] $names  The query param names to not retrieve
      *
      * @return array
      */
-    protected function exceptParams(array $params, array $names): array
+    protected function exceptParams(array $params, string|int ...$names): array
     {
-        foreach ($names as $name) {
-            unset($params[$name]);
-        }
-
-        return $params;
+        return array_filter(
+            $params,
+            static fn (string|int $name): bool => ! in_array($name, $names, true),
+            ARRAY_FILTER_USE_KEY
+        );
     }
 }

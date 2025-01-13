@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Routing\Collector\Contract\Collector;
+use Valkyrja\Http\Routing\Collector\Contract\Collector;
 
 /** @var Collector $collector */
 $collector->group(static function (Collector $collector): void {

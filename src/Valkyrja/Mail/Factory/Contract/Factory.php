@@ -16,7 +16,7 @@ namespace Valkyrja\Mail\Factory\Contract;
 use Valkyrja\Mail\Adapter\Contract\Adapter;
 use Valkyrja\Mail\Driver\Contract\Driver;
 use Valkyrja\Mail\Message\Contract\Message;
-use Valkyrja\Manager\Factories\Contract\MessageFactory as Contract;
+use Valkyrja\Manager\Factory\Contract\MessageFactory as Contract;
 
 /**
  * Interface Factory.

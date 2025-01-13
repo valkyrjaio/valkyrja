@@ -18,7 +18,7 @@ use Valkyrja\Cache\Adapter\Contract\LogAdapter;
 use Valkyrja\Cache\Adapter\Contract\RedisAdapter;
 use Valkyrja\Cache\Driver\Contract\Driver;
 use Valkyrja\Cache\Factory\Contract\Factory as Contract;
-use Valkyrja\Manager\Factories\ContainerFactory as Factory;
+use Valkyrja\Manager\Factory\ContainerFactory as Factory;
 
 /**
  * Class ContainerFactory.

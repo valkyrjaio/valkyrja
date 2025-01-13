@@ -50,7 +50,7 @@ class FlysystemAdapter implements Contract
      *
      * @throws FilesystemException
      */
-    public function read(string $path): string|null
+    public function read(string $path): string
     {
         return $this->flysystem->read($path);
     }
@@ -271,5 +271,13 @@ class FlysystemAdapter implements Contract
     public function listContents(string|null $directory = null, bool $recursive = false): array
     {
         return $this->flysystem->listContents($directory ?? '', $recursive)->toArray();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getFlysystem(): FlysystemInterface
+    {
+        return $this->flysystem;
     }
 }

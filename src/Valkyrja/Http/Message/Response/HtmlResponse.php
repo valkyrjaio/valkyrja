@@ -16,11 +16,10 @@ namespace Valkyrja\Http\Message\Response;
 use InvalidArgumentException;
 use RuntimeException;
 use Valkyrja\Http\Message\Constant\ContentType;
-use Valkyrja\Http\Message\Constant\Header;
-use Valkyrja\Http\Message\Constant\StreamType;
-use Valkyrja\Http\Message\Exception\InvalidStatusCode;
-use Valkyrja\Http\Message\Exception\InvalidStream;
+use Valkyrja\Http\Message\Constant\HeaderName;
+use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Response\Contract\HtmlResponse as Contract;
+use Valkyrja\Http\Message\Stream\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Stream\Stream;
 
 /**
@@ -31,31 +30,30 @@ use Valkyrja\Http\Message\Stream\Stream;
 class HtmlResponse extends Response implements Contract
 {
     /**
-     * NativeHtmlResponse constructor.
+     * HtmlResponse constructor.
      *
-     * @param string $html       The html
-     * @param int    $statusCode [optional] The status
-     * @param array  $headers    [optional] The headers
+     * @param string                  $xml        The html
+     * @param StatusCode              $statusCode [optional] The status
+     * @param array<string, string[]> $headers    [optional] The headers
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
-     * @throws InvalidStatusCode
-     * @throws InvalidStream
+     * @throws InvalidStreamException
      */
     public function __construct(
-        string $html = self::DEFAULT_CONTENT,
-        int $statusCode = self::DEFAULT_STATUS_CODE,
+        string $xml = self::DEFAULT_CONTENT,
+        StatusCode $statusCode = self::DEFAULT_STATUS_CODE,
         array $headers = self::DEFAULT_HEADERS
     ) {
-        $body = new Stream(StreamType::TEMP, 'wb+');
+        $body = new Stream();
 
-        $body->write($html);
+        $body->write($xml);
         $body->rewind();
 
         parent::__construct(
             $body,
             $statusCode,
-            $this->injectHeader(Header::CONTENT_TYPE, ContentType::TEXT_HTML_UTF8, $headers)
+            $this->injectHeader(HeaderName::CONTENT_TYPE, ContentType::TEXT_HTML_UTF8, $headers, true)
         );
     }
 }

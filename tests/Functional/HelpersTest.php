@@ -32,11 +32,11 @@ use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\JsonResponse;
 use Valkyrja\Http\Message\Response\RedirectResponse;
 use Valkyrja\Http\Message\Response\Response;
+use Valkyrja\Http\Routing\Exception\InvalidRouteNameException;
+use Valkyrja\Http\Routing\Model\Contract\Route;
+use Valkyrja\Http\Routing\Router;
 use Valkyrja\Http\Server\RequestHandler;
 use Valkyrja\Log\Logger;
-use Valkyrja\Routing\Exception\InvalidRouteName;
-use Valkyrja\Routing\Model\Contract\Route;
-use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
 use Valkyrja\Support\Directory;
 use Valkyrja\View\View;
@@ -268,7 +268,7 @@ class HelpersTest extends TestCase
     /**
      * Test the route() helper method.
      *
-     * @throws InvalidRouteName
+     * @throws InvalidRouteNameException
      *
      * @return void
      */

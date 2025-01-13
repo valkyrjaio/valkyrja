@@ -37,7 +37,7 @@ interface ProvidersAware
      *
      * @return bool
      */
-    public function isProvided(string $itemId): bool;
+    public function isDeferred(string $itemId): bool;
 
     /**
      * Check whether a given item is published.

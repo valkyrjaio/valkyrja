@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Driver;
 
-use Valkyrja\Manager\Drivers\Driver as ParentDriver;
+use Valkyrja\Manager\Driver\Driver as ParentDriver;
 use Valkyrja\Sms\Adapter\Contract\Adapter;
 use Valkyrja\Sms\Driver\Contract\Driver as Contract;
 use Valkyrja\Sms\Message\Contract\Message;

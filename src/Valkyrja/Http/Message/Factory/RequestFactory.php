@@ -14,18 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Factory;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\UploadedFileInterface;
 use UnexpectedValueException;
-use Valkyrja\Http\Message\Constant\RequestMethod;
-use Valkyrja\Http\Message\Constant\StreamType;
-use Valkyrja\Http\Message\File\UploadedFile;
+use Valkyrja\Http\Message\Enum\ProtocolVersion;
+use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
+use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Http\Message\Uri\Uri;
 
 use function array_key_exists;
-use function array_walk;
 use function preg_match;
 use function sprintf;
 
@@ -56,30 +53,37 @@ abstract class RequestFactory
         array|null $files = null,
         string $class = ServerRequest::class
     ): ServerRequest {
-        $files ??= $_FILES;
+        $files  ??= $_FILES;
+        $server ??= $_SERVER;
+        $query  ??= $_GET;
+        $body   ??= $_POST;
 
-        $server  = ServerFactory::normalizeServer($server ?? $_SERVER);
+        $server['REQUEST_METHOD'] ??= RequestMethod::GET->value;
+
+        $server  = ServerFactory::normalizeServer($server);
         $headers = HeaderFactory::marshalHeaders($server);
 
         if (! empty($files)) {
-            $files = FileFactory::normalizeFiles($files);
+            $files = UploadedFileFactory::normalizeFiles($files);
         }
 
         if ($cookies === null && array_key_exists('cookie', $headers)) {
             $cookies = CookieFactory::parseCookieHeader($headers['cookie']);
         }
 
+        $cookies ??= $_COOKIE;
+
         return new $class(
-            UriFactory::marshalUriFromServer($server, $headers),
-            $server['REQUEST_METHOD'] ?? RequestMethod::GET,
-            new Stream(StreamType::INPUT),
-            $headers,
-            $server,
-            $cookies ?? $_COOKIE,
-            $query ?? $_GET,
-            $body ?? $_POST,
-            static::getProtocolVersionFromServer($server),
-            ...$files,
+            uri: UriFactory::marshalUriFromServer($server, $headers),
+            method: RequestMethod::from($server['REQUEST_METHOD']),
+            body: new Stream(stream: PhpWrapper::input),
+            headers: $headers,
+            server: $server,
+            cookies: $cookies,
+            query: $query,
+            parsedBody: $body,
+            protocol: static::getProtocolVersionFromServer($server),
+            files: $files,
         );
     }
 
@@ -101,7 +105,14 @@ abstract class RequestFactory
         array|null $cookies = null,
         array|null $files = null
     ): ServerRequest {
-        return self::fromGlobals($server, $query, $body, $cookies, $files, JsonServerRequest::class);
+        return self::fromGlobals(
+            server: $server,
+            query: $query,
+            body: $body,
+            cookies: $cookies,
+            files: $files,
+            class: JsonServerRequest::class
+        );
     }
 
     /**
@@ -109,41 +120,23 @@ abstract class RequestFactory
      */
     public static function fromPsr(ServerRequestInterface $psrRequest): ServerRequest
     {
-        $psrUri = $psrRequest->getUri();
-        $uri    = new Uri(
-            scheme: $psrUri->getScheme(),
-            userInfo: $psrUri->getUserInfo(),
-            host: $psrUri->getHost(),
-            port: $psrUri->getPort(),
-            path: $psrUri->getPath(),
-            query: $psrUri->getQuery(),
-            fragment: $psrUri->getFragment(),
-        );
+        $uri = UriFactory::fromPsr($psrRequest->getUri());
 
-        $psrBody = $psrRequest->getBody();
-        $body    = new Stream($psrBody->getContents());
+        $body = StreamFactory::fromPsr($psrRequest->getBody());
 
-        $files = $psrRequest->getUploadedFiles();
-
-        array_walk($files, fn (UploadedFileInterface $file) => new UploadedFile(
-            size: (int) $file->getSize(),
-            errorStatus: $file->getError(),
-            stream: new Stream($file->getStream()->getContents()),
-            fileName: $file->getClientFilename(),
-            mediaType: $file->getClientMediaType(),
-        ));
+        $files = UploadedFileFactory::fromPsrArray(...$psrRequest->getUploadedFiles());
 
         return new ServerRequest(
-            $uri,
-            $psrRequest->getMethod(),
-            $body,
-            $psrRequest->getHeaders(),
-            $psrRequest->getServerParams(),
-            $psrRequest->getCookieParams(),
-            $psrRequest->getQueryParams(),
-            (array) $psrRequest->getParsedBody(),
-            $psrRequest->getProtocolVersion(),
-            ...$files
+            uri: $uri,
+            method: RequestMethod::from($psrRequest->getMethod()),
+            body: $body,
+            headers: $psrRequest->getHeaders(),
+            server: $psrRequest->getServerParams(),
+            cookies: $psrRequest->getCookieParams(),
+            query: $psrRequest->getQueryParams(),
+            parsedBody: (array) $psrRequest->getParsedBody(),
+            protocol: ProtocolVersion::from($psrRequest->getProtocolVersion()),
+            files: $files
         );
     }
 
@@ -154,14 +147,14 @@ abstract class RequestFactory
      *
      * @throws UnexpectedValueException
      *
-     * @return string
+     * @return ProtocolVersion
      */
-    protected static function getProtocolVersionFromServer(array $server): string
+    protected static function getProtocolVersionFromServer(array $server): ProtocolVersion
     {
         $serverProtocol = $server['SERVER_PROTOCOL'] ?? null;
 
         if ($serverProtocol === null) {
-            return '1.1';
+            return ProtocolVersion::V1_1;
         }
 
         if (! preg_match('#^(HTTP/)?(?P<version>[1-9]\d*(?:\.\d)?)$#', $serverProtocol, $matches)) {
@@ -173,6 +166,6 @@ abstract class RequestFactory
             );
         }
 
-        return $matches['version'];
+        return ProtocolVersion::from($matches['version']);
     }
 }

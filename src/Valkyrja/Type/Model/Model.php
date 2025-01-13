@@ -25,6 +25,7 @@ use function in_array;
 use function is_array;
 use function is_string;
 use function json_encode;
+use function property_exists;
 
 use const ARRAY_FILTER_USE_BOTH;
 use const JSON_THROW_ON_ERROR;

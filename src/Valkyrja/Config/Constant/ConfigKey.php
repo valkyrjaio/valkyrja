@@ -34,7 +34,7 @@ final class ConfigKey
     public const APP_VERSION              = 'app.version';
     public const APP_KEY                  = 'app.key';
     public const APP_HTTP_EXCEPTION_CLASS = 'app.httpExceptionClass';
-    public const APP_EXCEPTION_HANDLER    = 'app.exceptionHandler';
+    public const APP_ERROR_HANDLER        = 'app.errorHandler';
     public const APP_PROVIDERS            = 'app.providers';
 
     public const ANNOTATIONS_ENABLED   = 'annotation.enabled';

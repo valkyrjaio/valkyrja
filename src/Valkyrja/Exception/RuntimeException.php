@@ -20,4 +20,11 @@ namespace Valkyrja\Exception;
  */
 class RuntimeException extends \RuntimeException implements Throwable
 {
+    /**
+     * @inheritDoc
+     */
+    public function getTraceCode(): string
+    {
+        return ErrorHandler::getTraceCode($this);
+    }
 }

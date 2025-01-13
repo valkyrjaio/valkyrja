@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\BuiltIn\Support;
 
 use stdClass;
-use Valkyrja\Container\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Tests\Classes\Model\Model;
 use Valkyrja\Tests\Unit\TestCase;
@@ -66,7 +65,7 @@ class ClassTest extends TestCase
     public function testGetDefaultableServiceWithClassNotInContainer(): void
     {
         $publicValue = 'test';
-        $container   = new Container(new Config());
+        $container   = new Container();
         $container->setClosure(
             ModelContract::class,
             /** @param class-string<ModelContract> $name */
@@ -88,7 +87,7 @@ class ClassTest extends TestCase
     {
         $publicValue    = 'test';
         $protectedValue = 'fromModelClosure';
-        $container      = new Container(new Config());
+        $container      = new Container();
         $container->setClosure(
             ModelContract::class,
             /** @param class-string<ModelContract> $name */

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt\Driver\Contract;
 
 use Valkyrja\Crypt\Exception\CryptException;
-use Valkyrja\Manager\Drivers\Contract\Driver as Contract;
+use Valkyrja\Manager\Driver\Contract\Driver as Contract;
 
 /**
  * Interface Driver.

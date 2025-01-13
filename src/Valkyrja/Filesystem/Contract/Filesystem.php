@@ -48,9 +48,9 @@ interface Filesystem extends Manager
      *
      * @param string $path The path
      *
-     * @return string|null The contents or null on failure
+     * @return string The contents
      */
-    public function read(string $path): string|null;
+    public function read(string $path): string;
 
     /**
      * Write a file.

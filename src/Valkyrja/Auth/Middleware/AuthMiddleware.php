@@ -23,13 +23,14 @@ use Valkyrja\Auth\Contract\Auth;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Repository\Contract\Repository;
 use Valkyrja\Config\Constant\ConfigKeyPart;
-use Valkyrja\Http\Message\Constant\StatusCode;
+use Valkyrja\Container\Contract\Container;
+use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\JsonResponse;
 use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Routing\Url\Contract\Url;
 use Valkyrja\Log\Facade\Logger;
-use Valkyrja\Routing\Middleware\Middleware;
-use Valkyrja\Routing\Url\Contract\Url;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
@@ -37,7 +38,7 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
  *
  * @author Melech Mizrachi
  */
-abstract class AuthMiddleware extends Middleware
+abstract class AuthMiddleware
 {
     /**
      * The auth service.
@@ -95,7 +96,11 @@ abstract class AuthMiddleware extends Middleware
      */
     protected static function getAuth(): Auth
     {
-        return self::$auth ??= self::getContainer()->getSingleton(Auth::class);
+        /** @var Container $container */
+        $container = null;
+
+        return self::$auth
+            ??= $container->getSingleton(Auth::class);
     }
 
     /**
@@ -160,15 +165,19 @@ abstract class AuthMiddleware extends Middleware
      */
     protected static function getFailedJsonResponse(): JsonResponse
     {
+        /** @var Container $container */
+        $container = null;
+        /** @var ResponseFactory $responseFactory */
+        $responseFactory = null;
         /** @var Api $api */
-        $api  = static::getContainer()->getSingleton(Api::class);
+        $api  = $container->getSingleton(Api::class);
         $json = $api->jsonFromArray([]);
         $json->setData();
         $json->setMessage(static::$errorMessage);
         $json->setStatusCode(StatusCode::UNAUTHORIZED);
         $json->setStatus(Status::ERROR);
 
-        return self::getResponseFactory()->createJsonResponse(
+        return $responseFactory->createJsonResponse(
             $json->asArray(),
             StatusCode::UNAUTHORIZED
         );
@@ -181,19 +190,23 @@ abstract class AuthMiddleware extends Middleware
      */
     protected static function getFailedRegularResponse(): Response
     {
+        /** @var Container $container */
+        $container = null;
+        /** @var ResponseFactory $responseFactory */
+        $responseFactory = null;
         $authenticateUrl = static::getConfig(ConfigKeyPart::AUTHENTICATE_URL);
 
         if ($authenticateUrl !== null && $authenticateUrl !== '') {
-            return self::getResponseFactory()->createRedirectResponse(
+            return $responseFactory->createRedirectResponse(
                 $authenticateUrl,
                 StatusCode::UNAUTHORIZED
             );
         }
 
         /** @var Url $url */
-        $url = self::getContainer()->getSingleton(Url::class);
+        $url = $container->getSingleton(Url::class);
 
-        return self::getResponseFactory()->createRedirectResponse(
+        return $responseFactory->createRedirectResponse(
             $url->getUrl((string) static::getConfig(ConfigKeyPart::AUTHENTICATE_ROUTE, RouteName::AUTHENTICATE)),
             StatusCode::UNAUTHORIZED
         );

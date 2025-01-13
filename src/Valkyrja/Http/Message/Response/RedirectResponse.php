@@ -13,14 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Response;
 
-use InvalidArgumentException;
-use Valkyrja\Http\Message\Constant\Header;
-use Valkyrja\Http\Message\Constant\StatusCode;
+use Valkyrja\Http\Message\Constant\HeaderName;
+use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Exception\HttpRedirectException;
-use Valkyrja\Http\Message\Exception\InvalidStatusCode;
-use Valkyrja\Http\Message\Exception\InvalidStream;
+use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponse as Contract;
+use Valkyrja\Http\Message\Stream\Exception\InvalidStreamException;
+use Valkyrja\Http\Message\Uri\Contract\Uri as UriContract;
+use Valkyrja\Http\Message\Uri\Enum\Scheme;
+use Valkyrja\Http\Message\Uri\Uri;
 
 /**
  * Class RedirectResponse.
@@ -44,32 +46,40 @@ class RedirectResponse extends Response implements Contract
     /**
      * RedirectResponse constructor.
      *
-     * @param string $uri        [optional] The uri
-     * @param int    $statusCode [optional] The status
-     * @param array  $headers    [optional] The headers
+     * @param UriContract             $uri        [optional] The uri
+     * @param StatusCode              $statusCode [optional] The status
+     * @param array<string, string[]> $headers    [optional] The headers
      *
      * @throws InvalidArgumentException
-     * @throws InvalidStatusCode
-     * @throws InvalidStream
+     * @throws InvalidStreamException
      */
     public function __construct(
-        protected string $uri = self::DEFAULT_URI,
-        int $statusCode = self::DEFAULT_STATUS_CODE,
+        protected UriContract $uri = new Uri(path: self::DEFAULT_URI),
+        StatusCode $statusCode = self::DEFAULT_STATUS_CODE,
         array $headers = self::DEFAULT_HEADERS
     ) {
+        if (! $statusCode->isRedirect()) {
+            throw new InvalidArgumentException(
+                "Invalid redirect status code $statusCode->value used."
+            );
+        }
+
         parent::__construct(
             statusCode: $statusCode,
-            headers   : $this->injectHeader(Header::LOCATION, $uri, $headers, true)
+            headers: $this->injectHeader(HeaderName::LOCATION, (string) $uri, $headers, true)
         );
     }
 
     /**
      * @inheritDoc
      */
-    public static function createFromUri(string|null $uri = null, int|null $statusCode = null, array|null $headers = null): static
-    {
+    public static function createFromUri(
+        UriContract|null $uri = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
+    ): static {
         return new static(
-            $uri ?? static::DEFAULT_URI,
+            $uri ?? new Uri(path: static::DEFAULT_URI),
             $statusCode ?? static::DEFAULT_STATUS_CODE,
             $headers ?? static::DEFAULT_HEADERS
         );
@@ -78,7 +88,7 @@ class RedirectResponse extends Response implements Contract
     /**
      * @inheritDoc
      */
-    public function getUri(): string
+    public function getUri(): UriContract
     {
         return $this->uri;
     }
@@ -86,13 +96,14 @@ class RedirectResponse extends Response implements Contract
     /**
      * @inheritDoc
      */
-    public function setUri(string $uri): static
+    public function withUri(UriContract $uri): static
     {
-        // Set the uri
-        $this->uri = $uri;
-
         // Set the location header for the redirect
-        return $this->withHeader(Header::LOCATION, $uri);
+        $new = $this->withHeader(HeaderName::LOCATION, (string) $uri);
+        // Set the uri
+        $new->uri = $uri;
+
+        return $new;
     }
 
     /**
@@ -100,10 +111,13 @@ class RedirectResponse extends Response implements Contract
      */
     public function secure(string $path, ServerRequest $request): static
     {
-        // Set the uri to https with the host and path
-        $this->setUri('https://' . $request->getUri()->getHostPort() . $path);
+        $uri = new Uri(
+            scheme: Scheme::HTTPS,
+            host: $request->getUri()->getHostPort(),
+            path: $path
+        );
 
-        return $this;
+        return $this->withUri($uri);
     }
 
     /**
@@ -111,11 +125,14 @@ class RedirectResponse extends Response implements Contract
      */
     public function back(ServerRequest $request): static
     {
-        $refererUri = $request->getHeaderLine('Referer');
+        $refererHeaderLine = $request->getHeaderLine('Referer') ?: '/';
 
-        $this->setUri($refererUri ?: '/');
+        $refererUri = Uri::fromString($refererHeaderLine);
+        $refererUri = $this->isInternalUri($request, $refererUri)
+            ? $refererUri
+            : new Uri(path: '/');
 
-        return $this;
+        return $this->withUri($refererUri);
     }
 
     /**
@@ -123,6 +140,27 @@ class RedirectResponse extends Response implements Contract
      */
     public function throw(): void
     {
-        throw new HttpRedirectException($this->statusCode, $this->uri, $this->getHeaders(), $this);
+        throw new HttpRedirectException($this->uri, $this->statusCode, $this->getHeaders(), $this);
+    }
+
+    /**
+     * Determine if a uri is internal.
+     *
+     * @param ServerRequest $request
+     * @param UriContract   $uri
+     *
+     * @return bool
+     */
+    protected function isInternalUri(ServerRequest $request, UriContract $uri): bool
+    {
+        // Get the host of the uri
+        $host = $uri->getHost();
+
+        // If the host matches the current request uri's host
+        if (! $host || $host === $request->getUri()->getHost()) {
+            return true;
+        }
+
+        return false;
     }
 }

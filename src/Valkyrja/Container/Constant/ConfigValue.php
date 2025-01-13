@@ -39,8 +39,9 @@ final class ConfigValue
         Provider::CONTAINER,
         Provider::CRYPT,
         Provider::FILESYSTEM,
-        Provider::HTTP,
-        Provider::HTTP_KERNEL,
+        Provider::HTTP_MESSAGE,
+        Provider::HTTP_SERVER,
+        Provider::HTTP_MIDDLEWARE,
         Provider::JWT,
         Provider::LOG,
         Provider::MAIL,
@@ -48,10 +49,9 @@ final class ConfigValue
         Provider::ORM,
         Provider::PATH,
         Provider::REFLECTION,
-        Provider::ROUTING,
+        Provider::HTTP_ROUTING,
         Provider::SESSION,
         Provider::SMS,
-        Provider::VALIDATION,
         Provider::VIEW,
     ];
     public const DEV_PROVIDERS    = [];

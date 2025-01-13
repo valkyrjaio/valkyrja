@@ -57,12 +57,13 @@ class AttributesTest extends TestCase
     public const EIGHTEEN   = 'eighteen';
     public const TWENTY_ONE = 'twenty one';
 
-    protected const CONST_NAME           = 'CONST';
-    protected const PROTECTED_CONST_NAME = 'PROTECTED_CONST';
-    protected const STATIC_PROPERTY_NAME = 'staticProperty';
-    protected const PROPERTY_NAME        = 'property';
-    protected const STATIC_METHOD_NAME   = 'staticMethod';
-    protected const METHOD_NAME          = 'method';
+    protected const CONST_NAME                  = 'CONST';
+    protected const PROTECTED_CONST_NAME        = 'PROTECTED_CONST';
+    protected const STATIC_PROPERTY_NAME        = 'staticProperty';
+    protected const PROPERTY_NAME               = 'property';
+    protected const STATIC_METHOD_NAME          = 'staticMethod';
+    protected const METHOD_NAME                 = 'method';
+    protected const METHOD_WITH_PARAMETERS_NAME = 'methodWithParameter';
 
     /**
      * The attributes service.
@@ -123,13 +124,14 @@ class AttributesTest extends TestCase
     {
         $attributes = $this->attributes->forClassMembers(AttributedClass::class, Attribute::class);
 
-        self::assertCount(18, $attributes);
+        self::assertCount(21, $attributes);
         $this->testsForConst($attributes[0], $attributes[1], $attributes[2]);
         $this->testsForProtectedConst($attributes[3], $attributes[4], $attributes[5]);
         $this->testsForStaticProperty($attributes[6], $attributes[7], $attributes[8]);
         $this->testsForProperty($attributes[9], $attributes[10], $attributes[11]);
         $this->testsForStaticMethod($attributes[12], $attributes[13], $attributes[14]);
         $this->testsForMethod($attributes[15], $attributes[16], $attributes[17]);
+        $this->testsForMethod($attributes[18], $attributes[19], $attributes[20]);
     }
 
     /**
@@ -143,7 +145,7 @@ class AttributesTest extends TestCase
     {
         $attributes = $this->attributes->forClassAndMembers(AttributedClass::class, Attribute::class);
 
-        self::assertCount(21, $attributes);
+        self::assertCount(24, $attributes);
         $this->baseTests($attributes[0], $attributes[1], $attributes[2]);
         $this->testsForConst($attributes[3], $attributes[4], $attributes[5]);
         $this->testsForProtectedConst($attributes[6], $attributes[7], $attributes[8]);
@@ -151,6 +153,7 @@ class AttributesTest extends TestCase
         $this->testsForProperty($attributes[12], $attributes[13], $attributes[14]);
         $this->testsForStaticMethod($attributes[15], $attributes[16], $attributes[17]);
         $this->testsForMethod($attributes[18], $attributes[19], $attributes[20]);
+        $this->testsForMethod($attributes[21], $attributes[22], $attributes[23]);
     }
 
     /**
@@ -261,6 +264,38 @@ class AttributesTest extends TestCase
         );
 
         $this->testsForMethod(...$attributes);
+
+        $attributes = $this->attributes->forMethodParameters(
+            AttributedClass::class,
+            self::METHOD_WITH_PARAMETERS_NAME,
+            Attribute::class
+        );
+
+        $this->testsForMethod(...$attributes);
+        self::assertTrue($attributes[2]->isOptional);
+        self::assertSame('fire', $attributes[2]->default);
+        self::assertSame('parameter', $attributes[2]->name);
+
+        $attributes = $this->attributes->forMethodParameter(
+            AttributedClass::class,
+            self::METHOD_WITH_PARAMETERS_NAME,
+            'parameter',
+            Attribute::class
+        );
+
+        $this->testsForMethod(...$attributes);
+        self::assertTrue($attributes[2]->isOptional);
+        self::assertSame('fire', $attributes[2]->default);
+        self::assertSame('parameter', $attributes[2]->name);
+
+        $attributesEmpty = $this->attributes->forMethodParameter(
+            AttributedClass::class,
+            self::METHOD_WITH_PARAMETERS_NAME,
+            'nonExistent',
+            Attribute::class
+        );
+
+        self::assertEmpty($attributesEmpty);
     }
 
     /**
@@ -274,9 +309,10 @@ class AttributesTest extends TestCase
     {
         $attributes = $this->attributes->forMethods(AttributedClass::class, Attribute::class);
 
-        self::assertCount(6, $attributes);
+        self::assertCount(9, $attributes);
         $this->testsForStaticMethod($attributes[0], $attributes[1], $attributes[2]);
         $this->testsForMethod($attributes[3], $attributes[4], $attributes[5]);
+        $this->testsForMethod($attributes[6], $attributes[7], $attributes[8]);
     }
 
     /**
@@ -288,11 +324,15 @@ class AttributesTest extends TestCase
      */
     public function testForFunction(): void
     {
-        #[Attribute(self::VALUE1)]
-        #[Attribute(self::VALUE2)]
-        #[AttributeChild(self::VALUE3, self::THREE)]
-        function testFunction(): void
-        {
+        #[Attribute(AttributesTest::VALUE1)]
+        #[Attribute(AttributesTest::VALUE2)]
+        #[AttributeChild(AttributesTest::VALUE3, AttributesTest::THREE)]
+        function testFunction(
+            #[Attribute(AttributesTest::VALUE1)]
+            #[Attribute(AttributesTest::VALUE2)]
+            #[AttributeChild(AttributesTest::VALUE3, AttributesTest::THREE)]
+            string $param
+        ): void {
         }
 
         $attributes = $this->attributes->forFunction('\Valkyrja\Tests\Unit\Attribute\testFunction', Attribute::class);
@@ -305,6 +345,20 @@ class AttributesTest extends TestCase
             self::THREE,
             ...$attributes
         );
+
+        $attributes = $this->attributes->forFunctionParameters('\Valkyrja\Tests\Unit\Attribute\testFunction', Attribute::class);
+
+        $this->baseTests(...$attributes);
+        $this->valueTests(
+            self::VALUE1,
+            self::VALUE2,
+            self::VALUE3,
+            self::THREE,
+            ...$attributes
+        );
+        self::assertFalse($attributes[2]->isOptional);
+        self::assertNull($attributes[2]->default);
+        self::assertSame('param', $attributes[2]->name);
     }
 
     /**
@@ -351,6 +405,32 @@ class AttributesTest extends TestCase
             self::NINE,
             ...$attributes
         );
+
+        $attributes = $this->attributes->forClosureParameters(
+            #[Attribute(self::VALUE4)]
+            #[Attribute(self::VALUE5)]
+            #[AttributeChild(self::VALUE6, self::SIX)]
+            static function (
+                #[Attribute(AttributesTest::VALUE1)]
+                #[Attribute(AttributesTest::VALUE2)]
+                #[AttributeChild(AttributesTest::VALUE3, AttributesTest::THREE)]
+                string $param
+            ): void {
+            },
+            Attribute::class
+        );
+
+        $this->baseTests(...$attributes);
+        $this->valueTests(
+            self::VALUE1,
+            self::VALUE2,
+            self::VALUE3,
+            self::THREE,
+            ...$attributes
+        );
+        self::assertFalse($attributes[2]->isOptional);
+        self::assertNull($attributes[2]->default);
+        self::assertSame('param', $attributes[2]->name);
     }
 
     /**
@@ -486,6 +566,9 @@ class AttributesTest extends TestCase
         self::assertInstanceOf(Attribute::class, $attributes[0]);
         self::assertInstanceOf(Attribute::class, $attributes[1]);
         self::assertInstanceOf(AttributeChild::class, $attributes[2]);
+        self::assertNotNull($attributes[0]->getReflection());
+        self::assertNotNull($attributes[1]->getReflection());
+        self::assertNotNull($attributes[2]->getReflection());
     }
 
     /**
@@ -530,22 +613,22 @@ class AttributesTest extends TestCase
         self::assertSame(AttributedClass::class, $attribute->class);
 
         match ($name) {
-            self::CONST_NAME, self::PROTECTED_CONST_NAME => function () use ($name, $attribute): void {
-                $this->assertSame($name, $attribute->constant);
-                $this->assertNull($attribute->property);
-                $this->assertNull($attribute->method);
+            self::CONST_NAME, self::PROTECTED_CONST_NAME => static function () use ($name, $attribute): void {
+                self::assertSame($name, $attribute->constant);
+                self::assertNull($attribute->property);
+                self::assertNull($attribute->method);
             },
-            self::STATIC_PROPERTY_NAME, self::PROPERTY_NAME => function () use ($name, $attribute, $isStatic): void {
+            self::STATIC_PROPERTY_NAME, self::PROPERTY_NAME => static function () use ($name, $attribute, $isStatic): void {
                 self::assertSame($isStatic, $attribute->static);
-                $this->assertSame($name, $attribute->property);
-                $this->assertNull($attribute->constant);
-                $this->assertNull($attribute->method);
+                self::assertSame($name, $attribute->property);
+                self::assertNull($attribute->constant);
+                self::assertNull($attribute->method);
             },
-            self::STATIC_METHOD_NAME, self::METHOD_NAME => function () use ($name, $attribute, $isStatic): void {
+            self::STATIC_METHOD_NAME, self::METHOD_NAME => static function () use ($name, $attribute, $isStatic): void {
                 self::assertSame($isStatic, $attribute->static);
-                $this->assertSame($name, $attribute->method);
-                $this->assertNull($attribute->constant);
-                $this->assertNull($attribute->property);
+                self::assertSame($name, $attribute->method);
+                self::assertNull($attribute->constant);
+                self::assertNull($attribute->property);
             },
         };
     }

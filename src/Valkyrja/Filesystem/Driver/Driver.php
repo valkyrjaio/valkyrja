@@ -16,7 +16,7 @@ namespace Valkyrja\Filesystem\Driver;
 use Valkyrja\Filesystem\Adapter\Contract\Adapter;
 use Valkyrja\Filesystem\Driver\Contract\Driver as Contract;
 use Valkyrja\Filesystem\Enum\Visibility;
-use Valkyrja\Manager\Drivers\Driver as ParentDriver;
+use Valkyrja\Manager\Driver\Driver as ParentDriver;
 
 /**
  * Class Driver.
@@ -48,7 +48,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function read(string $path): string|null
+    public function read(string $path): string
     {
         return $this->adapter->read($path);
     }

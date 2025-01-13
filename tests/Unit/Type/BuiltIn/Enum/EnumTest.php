@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Type\Enum;
+namespace Valkyrja\Tests\Unit\Type\BuiltIn\Enum;
 
 use Valkyrja\Tests\Classes\Enum\Enum;
 use Valkyrja\Tests\Classes\Enum\IntEnum;

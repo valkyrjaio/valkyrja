@@ -19,10 +19,11 @@ use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Client\Adapter\Contract\GuzzleAdapter as Contract;
-use Valkyrja\Http\Message\Constant\RequestMethod;
+use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Message\Request\Contract\JsonServerRequest;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\JsonServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 
 /**
@@ -134,13 +135,13 @@ class GuzzleAdapter implements Contract
         $this->setGuzzleFormParams($request, $options);
         $this->setGuzzleBody($request, $options);
 
-        return $this->guzzle->request($request->getMethod(), $request->getUri()->__toString(), $options);
+        return $this->guzzle->request($request->getMethod()->value, $request->getUri()->__toString(), $options);
     }
 
     /**
      * Set the Guzzle headers.
      *
-     * @param ServerRequest $request  The request
+     * @param ServerRequest  $request The request
      * @param array         &$options The options
      *
      * @return void
@@ -159,7 +160,7 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle cookies.
      *
-     * @param ServerRequest $request  The request
+     * @param ServerRequest  $request The request
      * @param array         &$options The options
      *
      * @return void
@@ -173,7 +174,7 @@ class GuzzleAdapter implements Contract
                 $guzzleCookie = new SetCookie();
 
                 $guzzleCookie->setName($name);
-                $guzzleCookie->setValue($value);
+                $guzzleCookie->setValue($value ?? '');
 
                 $jar->setCookie($guzzleCookie);
             }
@@ -185,14 +186,17 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle form params.
      *
-     * @param ServerRequest $request  The request
+     * @param ServerRequest  $request The request
      * @param array         &$options The options
      *
      * @return void
      */
     protected function setGuzzleFormParams(ServerRequest $request, array &$options): void
     {
-        if (($body = $request->getParsedBody()) && ! ($request instanceof JsonServerRequest && $request->getParsedJson())) {
+        if (
+            ($body = $request->getParsedBody())
+            && ! ($request instanceof JsonServerRequest && $request->getParsedJson())
+        ) {
             $options['form_params'] = $body;
         }
     }
@@ -200,7 +204,7 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle body.
      *
-     * @param ServerRequest $request  The request
+     * @param ServerRequest  $request The request
      * @param array         &$options The options
      *
      * @return void
@@ -226,7 +230,7 @@ class GuzzleAdapter implements Contract
     {
         return $this->responseFactory->createResponse(
             $guzzleResponse->getBody()->getContents(),
-            $guzzleResponse->getStatusCode(),
+            StatusCode::from($guzzleResponse->getStatusCode()),
             $guzzleResponse->getHeaders()
         );
     }

@@ -30,15 +30,15 @@ final class EnvKey
     public const API_JSON_MODEL      = 'API_JSON_MODEL';
     public const API_JSON_DATA_MODEL = 'API_JSON_DATA_MODEL';
 
-    public const APP_ENV               = 'APP_ENV';
-    public const APP_DEBUG             = 'APP_DEBUG';
-    public const APP_URL               = 'APP_URL';
-    public const APP_TIMEZONE          = 'APP_TIMEZONE';
-    public const APP_VERSION           = 'APP_VERSION';
-    public const APP_KEY               = 'APP_KEY';
-    public const APP_EXCEPTION_HANDLER = 'APP_EXCEPTION_HANDLER';
-    public const APP_HTTP_KERNEL       = 'APP_HTTP_KERNEL';
-    public const APP_PROVIDERS         = 'APP_PROVIDERS';
+    public const APP_ENV           = 'APP_ENV';
+    public const APP_DEBUG         = 'APP_DEBUG';
+    public const APP_URL           = 'APP_URL';
+    public const APP_TIMEZONE      = 'APP_TIMEZONE';
+    public const APP_VERSION       = 'APP_VERSION';
+    public const APP_KEY           = 'APP_KEY';
+    public const APP_ERROR_HANDLER = 'APP_ERROR_HANDLER';
+    public const APP_HTTP_KERNEL   = 'APP_HTTP_KERNEL';
+    public const APP_PROVIDERS     = 'APP_PROVIDERS';
 
     public const ANNOTATIONS_ENABLED   = 'ANNOTATIONS_ENABLED';
     public const ANNOTATIONS_CACHE_DIR = 'ANNOTATIONS_CACHE_DIR';
@@ -158,6 +158,17 @@ final class EnvKey
     public const FILESYSTEM_S3_BUCKET               = 'FILESYSTEM_S3_BUCKET';
     public const FILESYSTEM_S3_PREFIX               = 'FILESYSTEM_S3_PREFIX';
     public const FILESYSTEM_S3_OPTIONS              = 'FILESYSTEM_S3_OPTIONS';
+
+    public const HTTP_MIDDLEWARE                   = 'HTTP_MIDDLEWARE';
+    public const HTTP_MIDDLEWARE_BEFORE            = 'HTTP_MIDDLEWARE_BEFORE';
+    public const HTTP_MIDDLEWARE_DISPATCHED        = 'HTTP_MIDDLEWARE_DISPATCHED';
+    public const HTTP_MIDDLEWARE_EXCEPTION         = 'HTTP_MIDDLEWARE_EXCEPTION';
+    public const HTTP_MIDDLEWARE_ROUTE_MATCHED     = 'HTTP_MIDDLEWARE_ROUTE_MATCHED';
+    public const HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = 'HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED';
+    public const HTTP_MIDDLEWARE_SENDING           = 'HTTP_MIDDLEWARE_SENDING';
+    public const HTTP_MIDDLEWARE_TERMINATED        = 'HTTP_MIDDLEWARE_TERMINATED';
+    public const HTTP_SERVER                       = 'HTTP_SERVER';
+    public const HTTP_SERVER_REQUEST_HANDLER       = 'HTTP_SERVER_REQUEST_HANDLER';
 
     public const JWT_DEFAULT           = 'JWT_DEFAULT';
     public const JWT_ADAPTER           = 'JWT_ADAPTER';

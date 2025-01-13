@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Factory\Contract;
 
-use Valkyrja\Manager\Factories\Contract\Factory as Contract;
+use Valkyrja\Manager\Factory\Contract\Factory as Contract;
 use Valkyrja\Session\Adapter\Contract\Adapter;
 use Valkyrja\Session\Driver\Contract\Driver;
 

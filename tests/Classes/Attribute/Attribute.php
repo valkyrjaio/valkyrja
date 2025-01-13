@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Attribute;
 
+use Valkyrja\Reflection\Trait\ReflectionProperty;
+
 /**
  * Attribute class used for unit testing.
  *
@@ -21,6 +23,8 @@ namespace Valkyrja\Tests\Classes\Attribute;
 #[\Attribute(\Attribute::TARGET_ALL | \Attribute::IS_REPEATABLE)]
 class Attribute
 {
+    use ReflectionProperty;
+
     public function __construct(
         public int $counter
     ) {

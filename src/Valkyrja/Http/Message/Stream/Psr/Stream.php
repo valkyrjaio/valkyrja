@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Stream\Psr;
 
 use Psr\Http\Message\StreamInterface;
-use Valkyrja\Http\Message\Stream\Contract\Stream as ValkyrjaStream;
+use Valkyrja\Http\Message\Stream\Contract\Stream as ValkyrjaStreamContract;
+use Valkyrja\Http\Message\Stream\Stream as ValkyrjaStream;
 
 use const SEEK_SET;
 
@@ -26,7 +27,7 @@ use const SEEK_SET;
 class Stream implements StreamInterface
 {
     public function __construct(
-        protected ValkyrjaStream $stream,
+        protected ValkyrjaStreamContract $stream = new ValkyrjaStream(),
     ) {
     }
 

@@ -18,7 +18,7 @@ use Valkyrja\Client\Adapter\Contract\GuzzleAdapter;
 use Valkyrja\Client\Adapter\Contract\LogAdapter;
 use Valkyrja\Client\Driver\Contract\Driver;
 use Valkyrja\Client\Factory\Contract\Factory as Contract;
-use Valkyrja\Manager\Factories\ContainerFactory as Factory;
+use Valkyrja\Manager\Factory\ContainerFactory as Factory;
 
 /**
  * Class ContainerFactory.

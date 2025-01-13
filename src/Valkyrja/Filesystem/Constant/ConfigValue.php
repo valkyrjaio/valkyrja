@@ -17,6 +17,7 @@ use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
 use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Filesystem\Adapter\FlysystemAdapter;
+use Valkyrja\Filesystem\Adapter\InMemoryAdapter;
 use Valkyrja\Filesystem\Driver\Driver;
 
 /**
@@ -30,15 +31,21 @@ final class ConfigValue
     public const ADAPTER = FlysystemAdapter::class;
     public const DRIVER  = Driver::class;
     public const DISKS   = [
-        CKP::LOCAL => [
-            CKP::ADAPTER           => CKP::FLYSYSTEM,
-            CKP::DRIVER            => CKP::DEFAULT,
+        CKP::IN_MEMORY => [
+            CKP::ADAPTER           => InMemoryAdapter::class,
+            CKP::DRIVER            => null,
             CKP::FLYSYSTEM_ADAPTER => FlysystemLocalAdapter::class,
             CKP::DIR               => '/',
         ],
-        CKP::S3    => [
-            CKP::ADAPTER           => CKP::FLYSYSTEM,
-            CKP::DRIVER            => CKP::DEFAULT,
+        CKP::LOCAL     => [
+            CKP::ADAPTER           => null,
+            CKP::DRIVER            => null,
+            CKP::FLYSYSTEM_ADAPTER => FlysystemLocalAdapter::class,
+            CKP::DIR               => '/',
+        ],
+        CKP::S3        => [
+            CKP::ADAPTER           => null,
+            CKP::DRIVER            => null,
             CKP::FLYSYSTEM_ADAPTER => FlysystemAwsS3Adapter::class,
             CKP::KEY               => '',
             CKP::SECRET            => '',

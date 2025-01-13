@@ -16,12 +16,12 @@ namespace Valkyrja\Tests\Classes\Model;
 use Valkyrja\Tests\Classes\Enum\Enum;
 use Valkyrja\Tests\Classes\Enum\IntEnum;
 use Valkyrja\Tests\Classes\Enum\StringEnum;
+use Valkyrja\Type\Data\ArrayCast;
+use Valkyrja\Type\Data\Cast;
+use Valkyrja\Type\Data\OriginalArrayCast;
+use Valkyrja\Type\Data\OriginalCast;
+use Valkyrja\Type\Enum\CastType;
 use Valkyrja\Type\Model\CastableModel as AbstractModel;
-use Valkyrja\Type\Model\Data\ArrayCast;
-use Valkyrja\Type\Model\Data\Cast;
-use Valkyrja\Type\Model\Data\OriginalArrayCast;
-use Valkyrja\Type\Model\Data\OriginalCast;
-use Valkyrja\Type\Model\Enum\CastType;
 
 /**
  * Model class to use to test Castable model.

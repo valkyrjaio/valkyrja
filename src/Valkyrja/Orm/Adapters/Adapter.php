@@ -138,6 +138,6 @@ abstract class Adapter implements Contract
     public function getPersister(): Persister
     {
         return $this->persister
-            ?? $this->persister = $this->orm->createPersister($this, $this->persisterClass);
+            ??= $this->orm->createPersister($this, $this->persisterClass);
     }
 }

@@ -19,7 +19,7 @@ use Valkyrja\Broadcast\Adapter\Contract\PusherAdapter;
 use Valkyrja\Broadcast\Driver\Contract\Driver;
 use Valkyrja\Broadcast\Factory\Contract\Factory as Contract;
 use Valkyrja\Broadcast\Message\Contract\Message;
-use Valkyrja\Manager\Factories\ContainerMessageFactory as Factory;
+use Valkyrja\Manager\Factory\ContainerMessageFactory as Factory;
 
 /**
  * Class ContainerFactory.

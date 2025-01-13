@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console;
 
-use ReflectionException;
 use Valkyrja\Config\Config;
-use Valkyrja\Console\Annotation\Contract\Annotations;
 use Valkyrja\Console\Config as ConsoleConfig;
 use Valkyrja\Console\Config\Cache;
 use Valkyrja\Console\Model\Contract\Command;
@@ -49,7 +47,7 @@ class CacheableConsole extends Console
         $config->commands      = base64_encode(serialize(self::$commands));
         $config->paths         = self::$paths;
         $config->namedCommands = self::$namedCommands;
-        $config->provided      = $this->provided;
+        $config->provided      = $this->deferred;
 
         return $config;
     }
@@ -86,7 +84,7 @@ class CacheableConsole extends Console
         );
         self::$paths         = $cache['paths'];
         self::$namedCommands = $cache['namedCommands'];
-        $this->provided      = $cache['provided'];
+        $this->deferred      = $cache['provided'];
     }
 
     /**
@@ -100,24 +98,6 @@ class CacheableConsole extends Console
 
         // Setup command providers
         $this->setupCommandProviders($config);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @throws ReflectionException
-     */
-    protected function setupAnnotations(Config|array $config): void
-    {
-        /** @var Annotations $commandAnnotations */
-        $commandAnnotations = $this->container->getSingleton(Annotations::class);
-
-        // Get all the annotated commands from the list of handlers
-        // Iterate through the commands
-        foreach ($commandAnnotations->getCommands(...$config['handlers']) as $command) {
-            // Set the service
-            $this->addCommand($command);
-        }
     }
 
     /**

@@ -20,4 +20,11 @@ namespace Valkyrja\Exception;
  */
 class InvalidArgumentException extends \InvalidArgumentException implements Throwable
 {
+    /**
+     * @inheritDoc
+     */
+    public function getTraceCode(): string
+    {
+        return ErrorHandler::getTraceCode($this);
+    }
 }

@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Uri\Contract;
 
 use InvalidArgumentException;
+use Stringable;
+use Valkyrja\Http\Message\Uri\Enum\Scheme;
 
 /**
  * Value object representing a URI.
@@ -32,8 +34,17 @@ use InvalidArgumentException;
  *
  * @see http://tools.ietf.org/html/rfc3986 (the URI specification)
  */
-interface Uri
+interface Uri extends Stringable
 {
+    /**
+     * Create a Uri instance from a parsed uri string.
+     *
+     * @param string $uri The uri to parse
+     *
+     * @return static A new instance with the specified uri parsed to its parts
+     */
+    public static function fromString(string $uri): static;
+
     /**
      * Retrieve the scheme component of the URI.
      * If no scheme is present, this method MUST return an empty string.
@@ -44,9 +55,9 @@ interface Uri
      *
      * @see https://tools.ietf.org/html/rfc3986#section-3.1
      *
-     * @return string The URI scheme
+     * @return Scheme The URI scheme
      */
-    public function getScheme(): string;
+    public function getScheme(): Scheme;
 
     /**
      * Determine whether the URI is secure.
@@ -76,6 +87,32 @@ interface Uri
      * @return string The URI authority, in "[user-info@]host[:port]" format
      */
     public function getAuthority(): string;
+
+    /**
+     * Retrieve the username component of the URI.
+     * If no username is present, this method MUST return an empty
+     * string.
+     * If a username is present in the URI, this will return that value.
+     * The trailing "@" and ":" characters is not part of the user information and MUST
+     * NOT be added.
+     *
+     * @return string The URI username, in "username" format
+     */
+    public function getUsername(): string;
+
+    /**
+     * Retrieve the user password component of the URI.
+     * If no user password is present, this method MUST return an empty
+     * string.
+     * If a user password is present in the URI, this will return that value.
+     * The preceding ":" character is not part of the user information and MUST
+     * NOT be added.
+     *  The trailing "@" character is not part of the user information and MUST
+     *  NOT be added.
+     *
+     * @return string The URI user password, in "password" format
+     */
+    public function getPassword(): string;
 
     /**
      * Retrieve the user information component of the URI.
@@ -232,13 +269,37 @@ interface Uri
      * insensitively, and MAY accommodate other schemes if required.
      * An empty scheme is equivalent to removing the scheme.
      *
-     * @param string $scheme The scheme to use with the new instance
+     * @param Scheme $scheme The scheme to use with the new instance
      *
      * @throws InvalidArgumentException for invalid or unsupported schemes
      *
      * @return static A new instance with the specified scheme
      */
-    public function withScheme(string $scheme): static;
+    public function withScheme(Scheme $scheme): static;
+
+    /**
+     * Return an instance with the specified username.
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified username.
+     * An empty string for the username is equivalent to removing user
+     * information.
+     *
+     * @param string $username The user name to use for authority
+     *
+     * @return static A new instance with the specified user information
+     */
+    public function withUsername(string $username): static;
+
+    /**
+     * Return an instance with the specified user password.
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified user password.
+     *
+     * @param string $password The password associated with $user
+     *
+     * @return static A new instance with the specified user information
+     */
+    public function withPassword(string $password): static;
 
     /**
      * Return an instance with the specified user information.

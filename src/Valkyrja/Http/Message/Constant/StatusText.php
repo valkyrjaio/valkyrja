@@ -18,7 +18,7 @@ namespace Valkyrja\Http\Message\Constant;
  *
  * @author Melech Mizrachi
  *
- * @see   http://www.iana.org/assignments/http-status-codes/
+ * @see    http://www.iana.org/assignments/http-status-codes/
  * - Hypertext Transfer Protocol (HTTP) Status Code Registry
  */
 final class StatusText
@@ -26,6 +26,7 @@ final class StatusText
     public const CONTINUE                        = 'Continue';
     public const SWITCHING_PROTOCOLS             = 'Switching Protocols';
     public const PROCESSING                      = 'Processing';
+    public const EARLY_HINTS                     = 'Early Hints';
     public const OK                              = 'OK';
     public const CREATED                         = 'Created';
     public const ACCEPTED                        = 'Accepted';
@@ -67,6 +68,7 @@ final class StatusText
     public const UNPROCESSABLE_ENTITY            = 'Unprocessable Entity';
     public const LOCKED                          = 'Locked';
     public const FAILED_DEPENDENCY               = 'Failed Dependency';
+    public const TOO_EARLY                       = 'Too Early';
     public const UPGRADE_REQUIRED                = 'Upgrade Required';
     public const PRECONDITION_REQUIRED           = 'Precondition Required';
     public const TOO_MANY_REQUESTS               = 'Too Many Requests';
@@ -81,6 +83,6 @@ final class StatusText
     public const VARIANT_ALSO_NEGOTIATES         = 'Variant Also Negotiates';
     public const INSUFFICIENT_STORAGE            = 'Insufficient Storage';
     public const LOOP_DETECTED                   = 'Loop Detected';
-    public const NOT_EXTENDED                    = 'Not Extended';
+    public const NOT_EXTENDED_OBSOLETED          = 'Not Extended';
     public const NETWORK_AUTHENTICATION_REQUIRED = 'Network Authentication Required';
 }

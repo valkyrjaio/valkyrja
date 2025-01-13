@@ -16,6 +16,7 @@ namespace Valkyrja\Log\Adapter;
 use Psr\Log\LoggerInterface;
 use Throwable;
 use Valkyrja\Log\Adapter\Contract\PsrAdapter as Contract;
+use Valkyrja\Log\Enum\LogLevel;
 
 /**
  * Class PsrAdapter.
@@ -117,9 +118,9 @@ class PsrAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function log(string $level, string $message, array $context = []): void
+    public function log(LogLevel $level, string $message, array $context = []): void
     {
-        $this->logger->log($level, $message, $context);
+        $this->logger->log($level->value, $message, $context);
     }
 
     /**

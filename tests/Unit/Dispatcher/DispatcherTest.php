@@ -23,6 +23,7 @@ use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Dispatcher\Model\Dispatch;
 use Valkyrja\Tests\Classes\Container\Service;
+use Valkyrja\Tests\Classes\Dispatcher\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\TestCase;
 
 use function count;
@@ -32,7 +33,7 @@ use function microtime;
 use const PHP_VERSION;
 
 /**
- * Test the dispatcher trait.
+ * Test the dispatcher.
  *
  * @author Melech Mizrachi
  */
@@ -88,13 +89,6 @@ class DispatcherTest extends TestCase
     protected Dispatcher $dispatcher;
 
     /**
-     * The value to test with.
-     *
-     * @var string
-     */
-    protected string $value = 'test';
-
-    /**
      * A valid static method.
      *
      * @param string|null $arg [optional] An argument
@@ -103,7 +97,19 @@ class DispatcherTest extends TestCase
      */
     public static function validStaticMethod(string|null $arg = null): string
     {
-        return 'test' . ($arg !== null ?: '');
+        return 'test' . ($arg ?? '');
+    }
+
+    /**
+     * A valid method.
+     *
+     * @param string|null $arg [optional] An argument
+     *
+     * @return string
+     */
+    public function validMethod(string|null $arg = null): string
+    {
+        return 'test' . ($arg ?? '');
     }
 
     /**
@@ -125,18 +131,6 @@ class DispatcherTest extends TestCase
     public function testContract(): void
     {
         self::assertTrue(method_exists(Contract::class, 'dispatch'));
-    }
-
-    /**
-     * A valid method.
-     *
-     * @param string|null $arg [optional] An argument
-     *
-     * @return string
-     */
-    public function validMethod(string|null $arg = null): string
-    {
-        return 'test' . ($arg !== null ?: '');
     }
 
     /**
@@ -491,9 +485,11 @@ class DispatcherTest extends TestCase
      */
     public function testDispatchCallable(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $dispatch = new Dispatch();
 
-        self::assertNull($this->dispatcher->dispatch($dispatch));
+        $this->dispatcher->dispatch($dispatch);
     }
 
     /**
@@ -517,10 +513,12 @@ class DispatcherTest extends TestCase
      */
     public function testDispatchCallableWithArgs(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $array    = ['foo', 'bar'];
         $dispatch = new Dispatch();
 
-        self::assertNull($this->dispatcher->dispatch($dispatch, [$array]));
+        $this->dispatcher->dispatch($dispatch, [$array]);
     }
 
     /**
@@ -530,10 +528,12 @@ class DispatcherTest extends TestCase
      */
     public function testDispatchCallableWithArgsInDispatch(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $dispatch = new Dispatch();
         $dispatch = (new Dispatch())->setArguments(['test', $dispatch]);
 
-        self::assertNull($this->dispatcher->dispatch($dispatch));
+        $this->dispatcher->dispatch($dispatch);
     }
 
     /**
@@ -543,10 +543,12 @@ class DispatcherTest extends TestCase
      */
     public function testDispatchCallableWithDependencies(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $dispatch = (new Dispatch())
             ->setDependencies([self::class]);
 
-        self::assertNull($this->dispatcher->dispatch($dispatch));
+        $this->dispatcher->dispatch($dispatch);
     }
 
     /**
@@ -556,11 +558,13 @@ class DispatcherTest extends TestCase
      */
     public function testDispatchCallableStaticWithDependencies(): void
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $dispatch = (new Dispatch())
             ->setStatic()
             ->setDependencies([self::class]);
 
-        self::assertNull($this->dispatcher->dispatch($dispatch));
+        $this->dispatcher->dispatch($dispatch);
     }
 
     public function testDependencies(): void

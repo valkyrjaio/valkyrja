@@ -14,18 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Response;
 
 use InvalidArgumentException;
-use Valkyrja\Http\Message\Constant\Header;
-use Valkyrja\Http\Message\Constant\StatusCode;
-use Valkyrja\Http\Message\Constant\StreamType;
-use Valkyrja\Http\Message\Exception\InvalidStatusCode;
-use Valkyrja\Http\Message\Exception\InvalidStream;
+use Valkyrja\Http\Message\Constant\HeaderName;
+use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Value\Contract\Cookie;
 use Valkyrja\Http\Message\Message;
-use Valkyrja\Http\Message\Model\Contract\Cookie;
 use Valkyrja\Http\Message\Response\Contract\Response as Contract;
 use Valkyrja\Http\Message\Stream\Contract\Stream;
+use Valkyrja\Http\Message\Stream\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Stream\Stream as HttpStream;
 
-use function header;
 use function sprintf;
 
 /**
@@ -47,7 +44,7 @@ class Response implements Contract
     /**
      * The default status code to set.
      *
-     * @var int
+     * @var StatusCode
      */
     protected const DEFAULT_STATUS_CODE = StatusCode::OK;
 
@@ -68,21 +65,19 @@ class Response implements Contract
     /**
      * NativeResponse constructor.
      *
-     * @param Stream $body       [optional] The body
-     * @param int    $statusCode [optional] The status
-     * @param array  $headers    [optional] The headers
+     * @param Stream                  $body       [optional] The body
+     * @param StatusCode              $statusCode [optional] The status
+     * @param array<string, string[]> $headers    [optional] The headers
      *
      * @throws InvalidArgumentException
-     * @throws InvalidStatusCode
-     * @throws InvalidStream
+     * @throws InvalidStreamException
      */
     public function __construct(
-        Stream $body = new HttpStream(StreamType::INPUT, 'rw'),
-        protected int $statusCode = self::DEFAULT_STATUS_CODE,
+        Stream $body = new HttpStream(),
+        protected StatusCode $statusCode = self::DEFAULT_STATUS_CODE,
         array $headers = self::DEFAULT_HEADERS
     ) {
-        $this->statusCode   = $this->validateStatusCode($statusCode);
-        $this->statusPhrase = StatusCode::TEXTS[$this->statusCode];
+        $this->statusPhrase = $statusCode->asPhrase();
 
         $this->setBody($body);
         $this->setHeaders($headers);
@@ -93,10 +88,10 @@ class Response implements Contract
      */
     public static function create(
         string|null $content = null,
-        int|null $statusCode = null,
+        StatusCode|null $statusCode = null,
         array|null $headers = null
     ): static {
-        $stream = new HttpStream(StreamType::TEMP, 'wb+');
+        $stream = new HttpStream();
         $stream->write($content ?? static::DEFAULT_CONTENT);
         $stream->rewind();
 
@@ -110,7 +105,7 @@ class Response implements Contract
     /**
      * @inheritDoc
      */
-    public function getStatusCode(): int
+    public function getStatusCode(): StatusCode
     {
         return $this->statusCode;
     }
@@ -118,12 +113,12 @@ class Response implements Contract
     /**
      * @inheritDoc
      */
-    public function withStatus(int $code, string|null $reasonPhrase = null): static
+    public function withStatus(StatusCode $code, string|null $reasonPhrase = null): static
     {
         $new = clone $this;
 
-        $new->statusCode   = $new->validateStatusCode($code);
-        $new->statusPhrase = $reasonPhrase ?? StatusCode::TEXTS[$this->statusCode];
+        $new->statusCode   = $code;
+        $new->statusPhrase = $reasonPhrase ?? $code->asPhrase();
 
         return $new;
     }
@@ -133,7 +128,7 @@ class Response implements Contract
      */
     public function getReasonPhrase(): string
     {
-        return $this->statusPhrase ?: StatusCode::TEXTS[$this->statusCode];
+        return $this->statusPhrase ?: $this->statusCode->asPhrase();
     }
 
     /**
@@ -141,7 +136,7 @@ class Response implements Contract
      */
     public function withCookie(Cookie $cookie): static
     {
-        return $this->withAddedHeader(Header::SET_COOKIE, (string) $cookie);
+        return $this->withAddedHeader(HeaderName::SET_COOKIE, (string) $cookie);
     }
 
     /**
@@ -149,10 +144,7 @@ class Response implements Contract
      */
     public function withoutCookie(Cookie $cookie): static
     {
-        $cookie->setValue();
-        $cookie->setExpire(0);
-
-        return $this->withAddedHeader(Header::SET_COOKIE, (string) $cookie);
+        return $this->withAddedHeader(HeaderName::SET_COOKIE, (string) $cookie->delete());
     }
 
     /**
@@ -162,12 +154,12 @@ class Response implements Contract
     {
         $httpLine = sprintf(
             'HTTP/%s %s %s',
-            $this->protocol,
-            $this->statusCode,
-            $this->statusPhrase
+            $this->protocolVersion->value,
+            $this->statusCode->value,
+            $this->statusPhrase ?: $this->statusCode->asPhrase()
         );
 
-        header($httpLine, true, $this->statusCode);
+        header($httpLine, true, $this->statusCode->value);
 
         return $this;
     }
@@ -200,6 +192,8 @@ class Response implements Contract
 
         echo $stream->getContents();
 
+        $stream->rewind();
+
         ob_flush();
         flush();
 
@@ -216,29 +210,5 @@ class Response implements Contract
         $this->sendBody();
 
         return $this;
-    }
-
-    /**
-     * Validate a status code.
-     *
-     * @param int $code The code
-     *
-     * @throws InvalidStatusCode
-     *
-     * @return int
-     */
-    protected function validateStatusCode(int $code): int
-    {
-        if (! StatusCode::isValid($code)) {
-            throw new InvalidStatusCode(
-                sprintf(
-                    'Invalid status code "%d"; must adhere to values set in the %s enum class.',
-                    $code,
-                    StatusCode::class
-                )
-            );
-        }
-
-        return $code;
     }
 }

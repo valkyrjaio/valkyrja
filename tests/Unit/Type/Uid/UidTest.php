@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Uid;
 
 use Exception;
 use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Type\Uid\Exception\InvalidUidException;
 use Valkyrja\Type\Uid\Support\Uid as Helper;
 use Valkyrja\Type\Uid\Uid;
 
@@ -70,5 +71,12 @@ class UidTest extends TestCase
         $type  = new Uid($value);
 
         self::assertSame(json_encode($value), json_encode($type));
+    }
+
+    public function testValidateWithInvalidValue(): void
+    {
+        $this->expectException(InvalidUidException::class);
+
+        new Uid('@#*(&');
     }
 }

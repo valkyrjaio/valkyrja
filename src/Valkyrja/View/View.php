@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\View;
 
 use Valkyrja\Container\Contract\Container;
+use Valkyrja\View\Constant\ConfigValue;
 use Valkyrja\View\Contract\View as Contract;
 use Valkyrja\View\Engine\Contract\Engine;
 use Valkyrja\View\Factory\Contract\Factory;
@@ -88,12 +89,12 @@ class View implements Contract
      * }                $config    The config
      */
     public function __construct(
-        protected Container $container,
-        protected Factory $factory,
-        protected Config|array $config
+        protected Container $container = new \Valkyrja\Container\Container(),
+        protected Factory $factory = new \Valkyrja\View\Factory\Factory(),
+        protected Config|array $config = new Config()
     ) {
-        $this->engine        = $config['engine'];
-        $this->enginesConfig = $config['engines'];
+        $this->engine        = $config['engine'] ?? ConfigValue::ENGINE;
+        $this->enginesConfig = $config['engines'] ?? ConfigValue::ENGINES;
     }
 
     /**

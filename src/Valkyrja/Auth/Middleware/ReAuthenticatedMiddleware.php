@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Middleware;
 
 use Valkyrja\Auth\Constant\RouteName;
-use Valkyrja\Http\Message\Constant\StatusCode;
+use Valkyrja\Container\Contract\Container;
+use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Routing\Url\Contract\Url;
+use Valkyrja\Http\Routing\Url\Contract\Url;
 
 /**
  * Class ReAuthenticatedMiddleware.
@@ -51,14 +53,19 @@ class ReAuthenticatedMiddleware extends AuthMiddleware
      */
     protected static function getFailedAuthenticationResponse(ServerRequest $request): Response
     {
+        /** @var Container $container */
+        $container = null;
+        /** @var ResponseFactory $responseFactory */
+        $responseFactory = null;
+
         if ($request->isXmlHttpRequest()) {
-            return self::getResponseFactory()->createJsonResponse([], StatusCode::LOCKED);
+            return $responseFactory->createJsonResponse([], StatusCode::LOCKED);
         }
 
         /** @var Url $url */
-        $url = self::getContainer()->getSingleton(Url::class);
+        $url = $container->getSingleton(Url::class);
 
-        return self::getResponseFactory()->createRedirectResponse(
+        return $responseFactory->createRedirectResponse(
             $url->getUrl((string) static::getConfig('passwordConfirmRoute', RouteName::PASSWORD_CONFIRM))
         );
     }

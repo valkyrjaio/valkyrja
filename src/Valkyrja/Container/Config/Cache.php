@@ -38,18 +38,18 @@ class Cache extends Model
     public array $contextServices;
 
     /**
-     * The provided services.
+     * The deferred services.
      *
      * @var string[]
      */
-    public array $provided;
+    public array $deferred;
 
     /**
-     * The provided services' publish methods.
+     * The deferred services' publish methods.
      *
      * @var array<string, callable>
      */
-    public array $providedCallback;
+    public array $deferredCallback;
 
     /**
      * The services.

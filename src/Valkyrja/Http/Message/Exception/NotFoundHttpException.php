@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Exception;
 
-use Valkyrja\Http\Message\Constant\StatusCode;
+use Valkyrja\Http\Message\Enum\StatusCode;
 
 /**
  * Class NotFoundHttpException.
@@ -25,12 +25,15 @@ class NotFoundHttpException extends HttpException
     /**
      * NotFoundHttpException constructor.
      *
-     * @param int|null    $statusCode [optional] The status code to use
-     * @param string|null $message    [optional] The Exception message to throw
-     * @param array|null  $headers    [optional] The headers to send
+     * @param StatusCode|null $statusCode [optional] The status code to use
+     * @param string|null     $message    [optional] The Exception message to throw
+     * @param array|null      $headers    [optional] The headers to send
      */
-    public function __construct(int|null $statusCode = null, string|null $message = null, array|null $headers = null)
-    {
+    public function __construct(
+        StatusCode|null $statusCode = null,
+        string|null $message = null,
+        array|null $headers = null
+    ) {
         parent::__construct($statusCode ?? StatusCode::NOT_FOUND, $message, $headers);
     }
 }

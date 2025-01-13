@@ -102,6 +102,8 @@ class Parser implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @return non-empty-string
      */
     public function getRegex(): string
     {

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Collection\Contract;
 
 use JsonException;
+use Stringable;
 
 /**
  * Interface Collection.
@@ -22,7 +23,7 @@ use JsonException;
  *
  * @template T
  */
-interface Collection
+interface Collection extends Stringable
 {
     /**
      * Set the collection.

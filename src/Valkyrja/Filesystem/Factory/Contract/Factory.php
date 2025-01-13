@@ -15,7 +15,7 @@ namespace Valkyrja\Filesystem\Factory\Contract;
 
 use Valkyrja\Filesystem\Adapter\Contract\Adapter;
 use Valkyrja\Filesystem\Driver\Contract\Driver;
-use Valkyrja\Manager\Factories\Contract\Factory as Contract;
+use Valkyrja\Manager\Factory\Contract\Factory as Contract;
 
 /**
  * Interface Factory.

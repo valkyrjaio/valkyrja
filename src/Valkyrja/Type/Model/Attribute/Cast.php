@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Model\Attribute;
 
 use Attribute;
-use Valkyrja\Type\Model\Data\Cast as Data;
+use Valkyrja\Type\Data\Cast as Data;
 
 /**
  * Attribute Cast.

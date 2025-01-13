@@ -108,7 +108,8 @@ trait ContextableContainer
     public function bindAlias(string $alias, string $id): static
     {
         if ($this->contextContainer !== null) {
-            $id = $this->getServiceIdInternal($id);
+            $id    = $this->getServiceIdInternal($id);
+            $alias = $this->getServiceIdInternal($alias);
 
             $this->contextContainer->bindAlias($alias, $id);
 

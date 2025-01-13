@@ -16,8 +16,7 @@ namespace Valkyrja\Application\Constant;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Container\Provider\AppProvider as ContainerAppProvider;
-use Valkyrja\Exception\ExceptionHandler;
-use Valkyrja\Http\Server\RequestHandler;
+use Valkyrja\Exception\ErrorHandler;
 
 /**
  * Constant ConfigValue.
@@ -26,28 +25,26 @@ use Valkyrja\Http\Server\RequestHandler;
  */
 final class ConfigValue
 {
-    public const ENV               = 'production';
-    public const DEBUG             = false;
-    public const URL               = 'localhost';
-    public const TIMEZONE          = 'UTC';
-    public const VERSION           = Application::VERSION;
-    public const KEY               = 'some_secret_app_key';
-    public const EXCEPTION_HANDLER = ExceptionHandler::class;
-    public const HTTP_KERNEL       = RequestHandler::class;
-    public const PROVIDERS         = [
+    public const ENV           = 'production';
+    public const DEBUG         = false;
+    public const URL           = 'localhost';
+    public const TIMEZONE      = 'UTC';
+    public const VERSION       = Application::VERSION;
+    public const KEY           = 'some_secret_app_key';
+    public const ERROR_HANDLER = ErrorHandler::class;
+    public const PROVIDERS     = [
         ContainerAppProvider::class,
     ];
 
     /** @var array<string, mixed> */
     public static array $defaults = [
-        CKP::ENV               => self::ENV,
-        CKP::DEBUG             => self::DEBUG,
-        CKP::URL               => self::URL,
-        CKP::TIMEZONE          => self::TIMEZONE,
-        CKP::VERSION           => self::VERSION,
-        CKP::KEY               => self::KEY,
-        CKP::EXCEPTION_HANDLER => self::EXCEPTION_HANDLER,
-        CKP::HTTP_KERNEL       => self::HTTP_KERNEL,
-        CKP::PROVIDERS         => self::PROVIDERS,
+        CKP::ENV           => self::ENV,
+        CKP::DEBUG         => self::DEBUG,
+        CKP::URL           => self::URL,
+        CKP::TIMEZONE      => self::TIMEZONE,
+        CKP::VERSION       => self::VERSION,
+        CKP::KEY           => self::KEY,
+        CKP::ERROR_HANDLER => self::ERROR_HANDLER,
+        CKP::PROVIDERS     => self::PROVIDERS,
     ];
 }

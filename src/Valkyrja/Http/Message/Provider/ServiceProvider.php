@@ -55,9 +55,7 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             ResponseFactory::class,
-            new \Valkyrja\Http\Message\Factory\ResponseFactory(
-                $container
-            )
+            new \Valkyrja\Http\Message\Factory\ResponseFactory()
         );
     }
 }

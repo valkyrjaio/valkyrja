@@ -30,16 +30,16 @@ use Valkyrja\Container\Config as Container;
 use Valkyrja\Crypt\Config as Crypt;
 use Valkyrja\Event\Config as Event;
 use Valkyrja\Filesystem\Config as Filesystem;
+use Valkyrja\Http\Config as Http;
+use Valkyrja\Http\Routing\Config as Routing;
 use Valkyrja\Jwt\Config as Jwt;
 use Valkyrja\Log\Config as Log;
 use Valkyrja\Mail\Config as Mail;
 use Valkyrja\Notification\Config as Notification;
 use Valkyrja\Orm\Config\Config as ORM;
 use Valkyrja\Path\Config as Path;
-use Valkyrja\Routing\Config as Routing;
 use Valkyrja\Session\Config as Session;
 use Valkyrja\Sms\Config as Sms;
-use Valkyrja\Validation\Config as Validation;
 use Valkyrja\View\Config as View;
 
 /**
@@ -152,6 +152,13 @@ class Config extends Model
     public Filesystem $filesystem;
 
     /**
+     * The http module config.
+     *
+     * @var Http
+     */
+    public Http $http;
+
+    /**
      * The Jwt module config.
      *
      * @var Jwt
@@ -213,13 +220,6 @@ class Config extends Model
      * @var Sms
      */
     public Sms $sms;
-
-    /**
-     * The validation module config.
-     *
-     * @var Validation
-     */
-    public Validation $validation;
 
     /**
      * The view module config.

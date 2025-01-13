@@ -27,14 +27,14 @@ trait ProvidersAwareTrait
      *
      * @var array<string, string>
      */
-    protected array $provided = [];
+    protected array $deferred = [];
 
     /**
      * The custom publish handler for items provided by providers that are deferred.
      *
      * @var array<string, callable>
      */
-    protected array $providedCallback = [];
+    protected array $deferredCallback = [];
 
     /**
      * The items provided by providers that are published.
@@ -87,14 +87,18 @@ trait ProvidersAwareTrait
 
         // The provider is now registered
         $this->registered[$provider] = true;
+
+        foreach ($providerClass::provides() as $provided) {
+            $this->published[$provided] = true;
+        }
     }
 
     /**
      * @inheritDoc
      */
-    public function isProvided(string $itemId): bool
+    public function isDeferred(string $itemId): bool
     {
-        return isset($this->provided[$itemId]);
+        return isset($this->deferred[$itemId]);
     }
 
     /**
@@ -119,10 +123,15 @@ trait ProvidersAwareTrait
     public function publishProvided(string $itemId): void
     {
         // The provider for this provided item
-        $provider = $this->provided[$itemId];
+        $provider = $this->deferred[$itemId] ?? null;
+
+        // If there is no provider found then this provided item doesn't exist
+        if ($provider === null) {
+            return;
+        }
+
         // The publish method for this provided item in the provider
-        $publishCallback = $this->providedCallback[$itemId]
-            ?? [$provider, $this->defaultPublishMethod];
+        $publishCallback = $this->deferredCallback[$itemId];
 
         // Publish the service provider
         $publishCallback($this);
@@ -141,7 +150,7 @@ trait ProvidersAwareTrait
     protected function publishUnpublishedProvided(string $itemId): void
     {
         // Check if the id is provided by a provider and isn't already published
-        if ($this->isProvided($itemId) && ! $this->isPublished($itemId)) {
+        if ($this->isDeferred($itemId) && ! $this->isPublished($itemId)) {
             // Publish the provider
             $this->publishProvided($itemId);
         }
@@ -163,8 +172,8 @@ trait ProvidersAwareTrait
 
         // Add the services to the service providers list
         foreach ($provides as $provided) {
-            $this->provided[$provided]         = $provider;
-            $this->providedCallback[$provided] = $publishCallback[$provided]
+            $this->deferred[$provided]         = $provider;
+            $this->deferredCallback[$provided] = $publishCallback[$provided]
                 ?? [$provider, $this->defaultPublishMethod];
         }
 

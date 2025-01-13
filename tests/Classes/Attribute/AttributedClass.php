@@ -60,4 +60,16 @@ class AttributedClass
     {
         return 'Method';
     }
+
+    #[Attribute(AttributesTest::VALUE19)]
+    #[Attribute(AttributesTest::VALUE20)]
+    #[AttributeChild(AttributesTest::VALUE21, AttributesTest::TWENTY_ONE)]
+    public function methodWithParameter(
+        #[Attribute(AttributesTest::VALUE19)]
+        #[Attribute(AttributesTest::VALUE20)]
+        #[AttributeChild(AttributesTest::VALUE21, AttributesTest::TWENTY_ONE)]
+        string $parameter = 'fire'
+    ): string {
+        return 'Method with Parameter';
+    }
 }

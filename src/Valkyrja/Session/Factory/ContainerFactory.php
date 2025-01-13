@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Factory;
 
-use Valkyrja\Manager\Factories\ContainerFactory as Factory;
+use Valkyrja\Manager\Factory\ContainerFactory as Factory;
 use Valkyrja\Session\Adapter\Contract\Adapter;
 use Valkyrja\Session\Adapter\Contract\CacheAdapter;
 use Valkyrja\Session\Adapter\Contract\LogAdapter;

@@ -17,9 +17,9 @@ use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Orm\Config\Config as Model;
 use Valkyrja\Orm\Constants\ConfigValue;
-use Valkyrja\Orm\Drivers\PgSqlDriver;
-use Valkyrja\Orm\Pdos\MySqlPdo;
-use Valkyrja\Orm\Pdos\PgSqlPdo;
+use Valkyrja\Orm\Driver\PgSqlDriver;
+use Valkyrja\Orm\Pdo\MySqlPdo;
+use Valkyrja\Orm\Pdo\PgSqlPdo;
 
 use function Valkyrja\env;
 

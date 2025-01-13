@@ -607,7 +607,8 @@ the `Valkyrja\Model\Models\CastableModelTrait` trait.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Castable;use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Castable;
+use Valkyrja\Type\Model\Model;
 
 class BasicModel extends Model
 {
@@ -636,7 +637,8 @@ method instead.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Castable;use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Castable;
+use Valkyrja\Type\Model\Model;
 
 class BasicModel extends Model
 {
@@ -663,7 +665,8 @@ the value to the corresponding `CastType` value you want to cast to.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\CastableModel;use Valkyrja\Type\Model\Enum\CastType;
+use Valkyrja\Type\Enum\CastType;
+use Valkyrja\Type\Model\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -694,7 +697,8 @@ incoming value should be overridden.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\CastableModel;use Valkyrja\Type\Model\Enum\CastType;
+use Valkyrja\Type\Enum\CastType;
+use Valkyrja\Type\Model\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -720,7 +724,8 @@ back to a simple `(object)` cast.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\CastableModel;use Valkyrja\Type\Model\Enum\CastType;
+use Valkyrja\Type\Enum\CastType;
+use Valkyrja\Type\Model\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -742,7 +747,8 @@ back to a simple `(array)` cast.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\CastableModel;use Valkyrja\Type\Model\Enum\CastType;
+use Valkyrja\Type\Enum\CastType;
+use Valkyrja\Type\Model\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -764,7 +770,8 @@ back to a simple `(object)` cast.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\CastableModel;use Valkyrja\Type\Model\Enum\CastType;
+use Valkyrja\Type\Enum\CastType;
+use Valkyrja\Type\Model\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -810,7 +817,8 @@ If you chose to use the `Valkyrja\Model\Models\CastableModelTrait` trait you mus
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Castable;use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Castable;
+use Valkyrja\Type\Model\Model;
 
 class BasicModel extends Model
 {
@@ -841,7 +849,8 @@ value in the array via the `fromArray` static method.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\CastableModel;use Valkyrja\Type\Model\Enum\CastType;
+use Valkyrja\Type\Enum\CastType;
+use Valkyrja\Type\Model\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -868,7 +877,8 @@ name. If the second value is an array then an array of enums will be returned.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\CastableModel;use Valkyrja\Type\Model\Enum\CastType;
+use Valkyrja\Type\Enum\CastType;
+use Valkyrja\Type\Model\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -890,7 +900,8 @@ By default `BackedEnum` is the only supported enum type. If you require support 
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Models\EnhancedCastableEnumSupport;use Valkyrja\Type\Model\CastableModel;
+use Valkyrja\Model\Models\EnhancedCastableEnumSupport;
+use Valkyrja\Type\Model\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -925,7 +936,9 @@ in other modules.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Contract\IndexedModel;use Valkyrja\Type\Model\Indexable;use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Contract\IndexedModel;
+use Valkyrja\Type\Model\Indexable;
+use Valkyrja\Type\Model\Model;
 
 class BasicModel extends Model implements IndexedModel
 {

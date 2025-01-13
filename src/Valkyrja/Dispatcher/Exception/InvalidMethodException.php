@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher\Exception;
 
-use InvalidArgumentException;
-
 /**
  * Class InvalidClassMethodException.
  *

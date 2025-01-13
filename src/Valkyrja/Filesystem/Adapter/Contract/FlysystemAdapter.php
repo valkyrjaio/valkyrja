@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Adapter\Contract;
 
+use League\Flysystem\FilesystemOperator as FlysystemInterface;
+
 /**
  * Interface FlysystemAdapter.
  *
@@ -20,4 +22,10 @@ namespace Valkyrja\Filesystem\Adapter\Contract;
  */
 interface FlysystemAdapter extends Adapter
 {
+    /**
+     * Get the flysystem.
+     *
+     * @return FlysystemInterface
+     */
+    public function getFlysystem(): FlysystemInterface;
 }

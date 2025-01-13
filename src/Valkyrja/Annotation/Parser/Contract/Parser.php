@@ -43,7 +43,7 @@ interface Parser
     /**
      * Get the annotations regex.
      *
-     * @return string
+     * @return non-empty-string
      */
     public function getRegex(): string;
 

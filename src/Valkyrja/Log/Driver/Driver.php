@@ -16,7 +16,8 @@ namespace Valkyrja\Log\Driver;
 use Throwable;
 use Valkyrja\Log\Adapter\Contract\Adapter;
 use Valkyrja\Log\Driver\Contract\Driver as Contract;
-use Valkyrja\Manager\Drivers\Driver as ParentDriver;
+use Valkyrja\Log\Enum\LogLevel;
+use Valkyrja\Manager\Driver\Driver as ParentDriver;
 
 /**
  * Class Driver.
@@ -104,7 +105,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function log(string $level, string $message, array $context = []): void
+    public function log(LogLevel $level, string $message, array $context = []): void
     {
         $this->adapter->log($level, $message, $context);
     }

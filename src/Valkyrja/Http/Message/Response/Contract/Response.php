@@ -15,7 +15,8 @@ namespace Valkyrja\Http\Message\Response\Contract;
 
 use InvalidArgumentException;
 use Valkyrja\Http\Message\Contract\Message;
-use Valkyrja\Http\Message\Model\Contract\Cookie;
+use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Header\Value\Contract\Cookie;
 
 /**
  * Representation of an outgoing, server-side response.
@@ -34,22 +35,26 @@ interface Response extends Message
     /**
      * Create a response.
      *
-     * @param string|null $content    [optional] The response content
-     * @param int|null    $statusCode [optional] The response status code
-     * @param array|null  $headers    [optional] An array of response headers
+     * @param string|null     $content    [optional] The response content
+     * @param StatusCode|null $statusCode [optional] The response status code
+     * @param array|null      $headers    [optional] An array of response headers
      *
      * @return static
      */
-    public static function create(string|null $content = null, int|null $statusCode = null, array|null $headers = null): static;
+    public static function create(
+        string|null $content = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
+    ): static;
 
     /**
      * Gets the response status code.
      * The status code is a 3-digit integer result code of the server's attempt
      * to understand and satisfy the request.
      *
-     * @return int Status code
+     * @return StatusCode Status code
      */
-    public function getStatusCode(): int;
+    public function getStatusCode(): StatusCode;
 
     /**
      * Return an instance with the specified status code and, optionally,
@@ -64,7 +69,7 @@ interface Response extends Message
      * @see http://tools.ietf.org/html/rfc7231#section-6
      * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      *
-     * @param int         $code         The 3-digit integer result code to set
+     * @param StatusCode  $code         The 3-digit integer result code to set
      * @param string|null $reasonPhrase The reason phrase to use with the
      *                                  provided status code; if none is provided,
      *                                  implementations MAY use the defaults as
@@ -74,7 +79,7 @@ interface Response extends Message
      *
      * @return static
      */
-    public function withStatus(int $code, string|null $reasonPhrase = null): static;
+    public function withStatus(StatusCode $code, string|null $reasonPhrase = null): static;
 
     /**
      * Gets the response reason phrase associated with the status code.

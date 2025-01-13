@@ -18,9 +18,11 @@ use ReflectionAttribute;
 use ReflectionClassConstant;
 use ReflectionException;
 use ReflectionMethod;
+use ReflectionParameter;
 use ReflectionProperty;
+use Reflector;
+use Valkyrja\Attribute\Constant\AttributeProperty;
 use Valkyrja\Attribute\Contract\Attributes as Contract;
-use Valkyrja\Dispatcher\Constant\Property;
 use Valkyrja\Reflection\Contract\Reflection;
 
 /**
@@ -52,11 +54,14 @@ class Attributes implements Contract
      */
     public function forClass(string $class, string|null $attribute = null, int|null $flags = null): array
     {
+        $reflection = $this->reflection->forClass($class);
+
         return $this->getInstances(
             [
-                Property::CLASS_NAME => $class,
+                AttributeProperty::CLASS_NAME => $class,
             ],
-            ...$this->reflection->forClass($class)->getAttributes($attribute, $flags ?? static::$defaultFlags)
+            $reflection,
+            ...$reflection->getAttributes($attribute, $flags ?? static::$defaultFlags)
         );
     }
 
@@ -162,6 +167,51 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
+    public function forMethodParameters(
+        string $class,
+        string $method,
+        string|null $attribute = null,
+        int|null $flags = null
+    ): array {
+        return $this->forParameter(
+            $attribute,
+            $flags,
+            ...$this->reflection->forClassMethod($class, $method)->getParameters()
+        );
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws ReflectionException
+     */
+    public function forMethodParameter(
+        string $class,
+        string $method,
+        string $parameter,
+        string|null $attribute = null,
+        int|null $flags = null
+    ): array {
+        $parameters = $this->reflection->forClassMethod($class, $method)->getParameters();
+
+        foreach ($parameters as $reflectionParameter) {
+            if ($reflectionParameter->getName() === $parameter) {
+                return $this->forParameter(
+                    $attribute,
+                    $flags,
+                    $reflectionParameter
+                );
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws ReflectionException
+     */
     public function forMethods(string $class, string|null $attribute = null, int|null $flags = null): array
     {
         return $this->forClassMember(
@@ -178,11 +228,28 @@ class Attributes implements Contract
      */
     public function forFunction(string $function, string|null $attribute = null, int|null $flags = null): array
     {
+        $reflection = $this->reflection->forFunction($function);
+
         return $this->getInstances(
             [
-                Property::FUNCTION => $function,
+                AttributeProperty::FUNCTION => $function,
             ],
-            ...$this->reflection->forFunction($function)->getAttributes($attribute, $flags ?? static::$defaultFlags)
+            $reflection,
+            ...$reflection->getAttributes($attribute, $flags ?? static::$defaultFlags)
+        );
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws ReflectionException
+     */
+    public function forFunctionParameters(string $function, string|null $attribute = null, int|null $flags = null): array
+    {
+        return $this->forParameter(
+            $attribute,
+            $flags,
+            ...$this->reflection->forFunction($function)->getParameters()
         );
     }
 
@@ -193,11 +260,28 @@ class Attributes implements Contract
      */
     public function forClosure(Closure $closure, string|null $attribute = null, int|null $flags = null): array
     {
+        $reflection = $this->reflection->forClosure($closure);
+
         return $this->getInstances(
             [
-                Property::CLOSURE => $closure,
+                AttributeProperty::CLOSURE => $closure,
             ],
-            ...$this->reflection->forClosure($closure)->getAttributes($attribute, $flags ?? static::$defaultFlags)
+            $reflection,
+            ...$reflection->getAttributes($attribute, $flags ?? static::$defaultFlags)
+        );
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws ReflectionException
+     */
+    public function forClosureParameters(Closure $closure, string|null $attribute = null, int|null $flags = null): array
+    {
+        return $this->forParameter(
+            $attribute,
+            $flags,
+            ...$this->reflection->forClosure($closure)->getParameters()
         );
     }
 
@@ -217,25 +301,68 @@ class Attributes implements Contract
         $instances = [];
 
         foreach ($members as $member) {
+            /** @var Reflector $reflection */
+            $reflection = $member;
+
             $instances = [
                 ...$instances,
                 ...$this->getInstances(
                     [
-                        Property::CLASS_NAME => $member->getDeclaringClass()->getName(),
-                        Property::CONSTANT   => $member instanceof ReflectionClassConstant
+                        AttributeProperty::CLASS_NAME => $member->getDeclaringClass()->getName(),
+                        AttributeProperty::CONSTANT   => $member instanceof ReflectionClassConstant
                             ? $member->getName()
                             : null,
-                        Property::PROPERTY   => $member instanceof ReflectionProperty
+                        AttributeProperty::PROPERTY   => $member instanceof ReflectionProperty
                             ? $member->getName()
                             : null,
-                        Property::METHOD     => $member instanceof ReflectionMethod
+                        AttributeProperty::METHOD     => $member instanceof ReflectionMethod
                             ? $member->getName()
                             : null,
-                        Property::STATIC     => method_exists($member, 'isStatic')
+                        AttributeProperty::STATIC     => method_exists($member, 'isStatic')
                             ? $member->isStatic()
                             : null,
                     ],
+                    $reflection,
                     ...$member->getAttributes($attribute, $flags ?? static::$defaultFlags)
+                ),
+            ];
+        }
+
+        return $instances;
+    }
+
+    /**
+     * Get a parameter' attributes.
+     *
+     * @param class-string|null   $attribute     [optional] The attribute to return
+     * @param ReflectionParameter ...$parameters [optional] The parameters
+     *
+     * @return object[]
+     */
+    protected function forParameter(
+        string|null $attribute = null,
+        int|null $flags = null,
+        ReflectionParameter ...$parameters
+    ): array {
+        $instances = [];
+
+        foreach ($parameters as $parameter) {
+            $className = $parameter->getDeclaringClass()?->getName();
+
+            $instances = [
+                ...$instances,
+                ...$this->getInstances(
+                    [
+                        AttributeProperty::CLASS_NAME => $className,
+                        AttributeProperty::METHOD     => $className ? $parameter->getDeclaringFunction()->getName() : null,
+                        AttributeProperty::FUNCTION   => $className === null ? $parameter->getDeclaringFunction()->getName() : null,
+                        AttributeProperty::STATIC     => $parameter->getDeclaringFunction()->isStatic(),
+                        AttributeProperty::OPTIONAL   => $parameter->isOptional(),
+                        AttributeProperty::DEFAULT    => $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null,
+                        AttributeProperty::NAME       => $parameter->getName(),
+                    ],
+                    $parameter,
+                    ...$parameter->getAttributes($attribute, $flags ?? static::$defaultFlags)
                 ),
             ];
         }
@@ -251,31 +378,47 @@ class Attributes implements Contract
      *
      * @return object[]
      */
-    protected function getInstances(array $properties, ReflectionAttribute ...$reflectionAttributes): array
+    protected function getInstances(array $properties, Reflector $reflection, ReflectionAttribute ...$reflectionAttributes): array
     {
         $instances = [];
 
         foreach ($reflectionAttributes as $reflectionAttribute) {
             $instances[] = $instance = $reflectionAttribute->newInstance();
 
-            if (isset($properties[Property::CLASS_NAME]) && method_exists($instance, 'setClass')) {
-                $instance->setClass($properties[Property::CLASS_NAME]);
+            if (method_exists($instance, 'setReflection')) {
+                $instance->setReflection($reflection);
             }
 
-            if (isset($properties[Property::CONSTANT]) && method_exists($instance, 'setConstant')) {
-                $instance->setConstant($properties[Property::CONSTANT]);
+            if (isset($properties[AttributeProperty::CLASS_NAME]) && method_exists($instance, 'setClass')) {
+                $instance->setClass($properties[AttributeProperty::CLASS_NAME]);
             }
 
-            if (isset($properties[Property::PROPERTY]) && method_exists($instance, 'setProperty')) {
-                $instance->setProperty($properties[Property::PROPERTY]);
+            if (isset($properties[AttributeProperty::CONSTANT]) && method_exists($instance, 'setConstant')) {
+                $instance->setConstant($properties[AttributeProperty::CONSTANT]);
             }
 
-            if (isset($properties[Property::METHOD]) && method_exists($instance, 'setMethod')) {
-                $instance->setMethod($properties[Property::METHOD]);
+            if (isset($properties[AttributeProperty::PROPERTY]) && method_exists($instance, 'setProperty')) {
+                $instance->setProperty($properties[AttributeProperty::PROPERTY]);
             }
 
-            if (isset($properties[Property::STATIC]) && method_exists($instance, 'setStatic')) {
-                $instance->setStatic($properties[Property::STATIC]);
+            if (isset($properties[AttributeProperty::METHOD]) && method_exists($instance, 'setMethod')) {
+                $instance->setMethod($properties[AttributeProperty::METHOD]);
+            }
+
+            if (isset($properties[AttributeProperty::STATIC]) && method_exists($instance, 'setStatic')) {
+                $instance->setStatic($properties[AttributeProperty::STATIC]);
+            }
+
+            if (isset($properties[AttributeProperty::OPTIONAL]) && method_exists($instance, 'setIsOptional')) {
+                $instance->setIsOptional($properties[AttributeProperty::OPTIONAL]);
+            }
+
+            if (isset($properties[AttributeProperty::DEFAULT]) && method_exists($instance, 'setDefault')) {
+                $instance->setDefault($properties[AttributeProperty::DEFAULT]);
+            }
+
+            if (isset($properties[AttributeProperty::NAME]) && method_exists($instance, 'setName')) {
+                $instance->setName($properties[AttributeProperty::NAME]);
             }
         }
 

@@ -25,7 +25,6 @@ use Valkyrja\Console\Annotation\Command;
 use Valkyrja\Container\Annotation\Service;
 use Valkyrja\Container\Annotation\Service\Context;
 use Valkyrja\Event\Annotation\Listener;
-use Valkyrja\Routing\Annotation\Route;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -40,7 +39,6 @@ use Valkyrja\Tests\Unit\TestCase;
  * @Route("path" = "/", "name" = "noAClass::Property")
  * @Route("path" = "/constant", "name" = "\\Valkyrja\\Tests\\Unit\\Annotation\\ParserTest::CONSTANT")
  * @Route("path" = "/property", "name" = "\\Valkyrja\\Tests\\Unit\\Annotation\\ParserTest::property")
- * @Route("path" = "/method", "name" = "\\Valkyrja\\Tests\\Unit\\Annotation\\ParserTest::staticMethod", "code" = 1)
  */
 class ParserTest extends TestCase
 {
@@ -112,7 +110,7 @@ class ParserTest extends TestCase
 
         $annotations = $this->parser->getAnnotations($docString);
 
-        self::assertCount(7, $annotations);
+        self::assertCount(6, $annotations);
 
         self::assertSame('description', $annotations[0]->getType());
         self::assertSame('author', $annotations[1]->getType());
@@ -123,10 +121,6 @@ class ParserTest extends TestCase
         self::assertSame(self::CONSTANT, $annotations[4]->getName());
         self::assertSame('Route', $annotations[5]->getType());
         self::assertSame(self::$property, $annotations[5]->getName());
-        self::assertSame('Route', $annotations[6]->getType());
-        self::assertInstanceOf(Route::class, $annotations[6]);
-        self::assertSame(self::staticMethod(), $annotations[6]->getName());
-        self::assertSame(1, $annotations[6]->getCode());
     }
 
     /**
@@ -206,16 +200,6 @@ class ParserTest extends TestCase
     public function testGetListenerAnnotationFromMap(): void
     {
         self::assertTrue($this->parser->getAnnotationFromMap(AnnotationName::LISTENER) instanceof Listener);
-    }
-
-    /**
-     * Test the getAnnotationFromMap method with a Route.
-     *
-     * @return void
-     */
-    public function testGetRouteAnnotationFromMap(): void
-    {
-        self::assertTrue($this->parser->getAnnotationFromMap(AnnotationName::ROUTE) instanceof Route);
     }
 
     /**

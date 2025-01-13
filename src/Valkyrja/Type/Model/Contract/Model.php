@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Model\Contract;
 
 use ArrayAccess;
+use Stringable;
 use Valkyrja\Type\Contract\Type;
 
 /**
@@ -24,7 +25,7 @@ use Valkyrja\Type\Contract\Type;
  * @extends ArrayAccess<string, mixed>
  * @extends Type<static>
  */
-interface Model extends ArrayAccess, Type
+interface Model extends ArrayAccess, Stringable, Type
 {
     /**
      * Set properties from an array of properties.

@@ -36,8 +36,10 @@ class Filesystem extends Manager implements Contract
      * @param Factory      $factory The factory
      * @param Config|array $config  The config
      */
-    public function __construct(Factory $factory, Config|array $config)
-    {
+    public function __construct(
+        Factory $factory = new \Valkyrja\Filesystem\Factory\Factory(),
+        Config|array $config = new Config\Filesystem(setup: true)
+    ) {
         parent::__construct($factory, $config);
 
         $this->configurations = $config['disks'];
@@ -65,7 +67,7 @@ class Filesystem extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function read(string $path): string|null
+    public function read(string $path): string
     {
         return $this->use()->read($path);
     }

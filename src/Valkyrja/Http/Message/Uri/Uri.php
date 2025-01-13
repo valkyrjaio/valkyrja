@@ -13,12 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Uri;
 
-use Valkyrja\Http\Message\Constant\Scheme;
-use Valkyrja\Http\Message\Exception\InvalidPath;
-use Valkyrja\Http\Message\Exception\InvalidPort;
-use Valkyrja\Http\Message\Exception\InvalidQuery;
-use Valkyrja\Http\Message\Exception\InvalidScheme;
+use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\Uri as Contract;
+use Valkyrja\Http\Message\Uri\Enum\Scheme;
+use Valkyrja\Http\Message\Uri\Exception\InvalidPathException;
+use Valkyrja\Http\Message\Uri\Exception\InvalidPortException;
+use Valkyrja\Http\Message\Uri\Exception\InvalidQueryException;
+
+use function parse_url;
+use function str_starts_with;
+use function strtolower;
 
 /**
  * Class Uri.
@@ -30,6 +34,11 @@ class Uri implements Contract
     use UriHelpers;
 
     /**
+     * @var string
+     */
+    protected string $userInfo;
+
+    /**
      * The URI as a string.
      *
      * @var string|null
@@ -39,34 +48,74 @@ class Uri implements Contract
     /**
      * UriImpl constructor.
      *
-     * @param string   $scheme   [optional] The scheme
-     * @param string   $userInfo [optional] The user info
+     * @param Scheme   $scheme   [optional] The scheme
+     * @param string   $username [optional] The username
+     * @param string   $password [optional] The user password
      * @param string   $host     [optional] The host
      * @param int|null $port     [optional] The port
      * @param string   $path     [optional] The path
      * @param string   $query    [optional] The query
      * @param string   $fragment [optional] The fragment
      *
-     * @throws InvalidPath
-     * @throws InvalidPort
-     * @throws InvalidQuery
-     * @throws InvalidScheme
+     * @throws InvalidPathException
+     * @throws InvalidPortException
+     * @throws InvalidQueryException
      */
     public function __construct(
-        protected string $scheme = Scheme::EMPTY,
-        protected string $userInfo = '',
+        protected Scheme $scheme = Scheme::EMPTY,
+        protected string $username = '',
+        protected string $password = '',
         protected string $host = '',
         protected int|null $port = null,
         protected string $path = '',
         protected string $query = '',
         protected string $fragment = ''
     ) {
-        $this->scheme   = $this->filterScheme($scheme);
+        $userInfo = $username;
+
+        if ($password !== '') {
+            $userInfo .= ':' . $password;
+        }
+
+        $this->validatePort($port);
+
+        $this->userInfo = $this->filterUserInfo($userInfo);
+        $this->host     = strtolower($host);
         $this->path     = $this->filterPath($path);
         $this->query    = $this->filterQuery($query);
         $this->fragment = $this->filterFragment($fragment);
+    }
 
-        $this->validatePort($this->port);
+    /**
+     * @inheritDoc
+     */
+    public static function fromString(string $uri): static
+    {
+        if (
+            $uri !== ''
+            && ! str_starts_with($uri, '/')
+            && ! str_starts_with($uri, Scheme::HTTP->value)
+            && ! str_starts_with($uri, Scheme::HTTPS->value)
+        ) {
+            $uri = '//' . $uri;
+        }
+
+        $parts = parse_url($uri);
+
+        if ($parts === false) {
+            throw new InvalidArgumentException("Invalid uri `$uri` provided");
+        }
+
+        return new static(
+            scheme: static::filterScheme($parts['scheme'] ?? ''),
+            username: $parts['user'] ?? '',
+            password: $parts['pass'] ?? '',
+            host: $parts['host'] ?? '',
+            port: $parts['port'] ?? null,
+            path: $parts['path'] ?? '',
+            query: $parts['query'] ?? '',
+            fragment: $parts['fragment'] ?? ''
+        );
     }
 
     /**
@@ -74,13 +123,13 @@ class Uri implements Contract
      */
     public function isSecure(): bool
     {
-        return $this->scheme === 'https';
+        return $this->scheme === Scheme::HTTPS;
     }
 
     /**
      * @inheritDoc
      */
-    public function getScheme(): string
+    public function getScheme(): Scheme
     {
         return $this->scheme;
     }
@@ -105,6 +154,22 @@ class Uri implements Contract
         }
 
         return $authority;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 
     /**
@@ -153,7 +218,7 @@ class Uri implements Contract
         $hostPort = $this->getHostPort();
         $scheme   = $this->scheme;
 
-        return $hostPort && $scheme ? $scheme . '://' . $hostPort : $hostPort;
+        return $hostPort && $scheme !== Scheme::EMPTY ? $scheme->value . '://' . $hostPort : $hostPort;
     }
 
     /**
@@ -183,10 +248,8 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
-    public function withScheme(string $scheme): static
+    public function withScheme(Scheme $scheme): static
     {
-        $scheme = $this->filterScheme($scheme);
-
         $new = clone $this;
 
         $new->scheme = $scheme;
@@ -197,9 +260,29 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    public function withUsername(string $username): static
+    {
+        return $this->withUserInfo($username, $this->password);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withPassword(string $password): static
+    {
+        return $this->withUserInfo($this->username, $password);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function withUserInfo(string $user, string|null $password = null): static
     {
         $info = $user;
+
+        if (empty($user)) {
+            $password = null;
+        }
 
         if ($password !== null) {
             $info .= ':' . $password;
@@ -208,6 +291,8 @@ class Uri implements Contract
         $new = clone $this;
 
         $new->userInfo = $info;
+        $new->username = $user;
+        $new->password = $password ?? '';
 
         return $new;
     }
@@ -298,5 +383,10 @@ class Uri implements Contract
         $uri = $this->addFragmentToUri($uri);
 
         return $this->uriString = $uri;
+    }
+
+    public function __clone()
+    {
+        $this->uriString = null;
     }
 }

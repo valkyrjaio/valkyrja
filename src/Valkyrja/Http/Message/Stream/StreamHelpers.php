@@ -13,12 +13,23 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Stream;
 
-use Valkyrja\Http\Message\Exception\InvalidStream;
-use Valkyrja\Http\Message\Exception\StreamException;
+use Valkyrja\Http\Message\Stream\Enum\Mode;
+use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
+use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
+use Valkyrja\Http\Message\Stream\Exception\InvalidStreamException;
+use Valkyrja\Http\Message\Stream\Exception\NoStreamAvailableException;
+use Valkyrja\Http\Message\Stream\Exception\StreamReadException;
+use Valkyrja\Http\Message\Stream\Exception\StreamSeekException;
+use Valkyrja\Http\Message\Stream\Exception\StreamTellException;
+use Valkyrja\Http\Message\Stream\Exception\StreamWriteException;
+use Valkyrja\Http\Message\Stream\Exception\UnreadableStreamException;
+use Valkyrja\Http\Message\Stream\Exception\UnseekableStreamException;
+use Valkyrja\Http\Message\Stream\Exception\UnwritableStreamException;
 
 use function fopen;
 use function get_resource_type;
 use function is_resource;
+use function str_contains;
 
 /**
  * Trait StreamHelpers.
@@ -32,7 +43,7 @@ trait StreamHelpers
      *
      * @var resource|null
      */
-    protected $stream;
+    protected $resource;
 
     /**
      * @inheritDoc
@@ -57,31 +68,54 @@ trait StreamHelpers
     /**
      * Set the stream.
      *
-     * @param string      $stream The stream
-     * @param string|null $mode   [optional] The mode
+     * @param PhpWrapper|string $stream          The stream
+     * @param Mode              $mode            [optional] The mode
+     * @param ModeTranslation   $modeTranslation [optional] The mode translation
      *
-     * @throws InvalidStream
+     * @throws InvalidStreamException
      *
      * @return void
      */
-    protected function setStream(string $stream, string|null $mode = null): void
-    {
+    protected function setStream(
+        PhpWrapper|string $stream = PhpWrapper::temp,
+        Mode $mode = Mode::WRITE_READ,
+        ModeTranslation $modeTranslation = ModeTranslation::BINARY_SAFE
+    ): void {
         // Set the mode
-        $mode ??= 'rb';
+        $fopenMode = $mode->value . $modeTranslation->value;
+
+        $streamType = $stream instanceof PhpWrapper
+            ? $stream->value
+            : $stream;
 
         // Open a new resource stream
-        $resource = fopen($stream, $mode);
+        $resource = $this->openStream($streamType, $fopenMode);
 
         // If the resource isn't a resource or a stream resource type
-        if (! is_resource($resource) || get_resource_type($resource) !== 'stream') {
+        if (! $this->isStream($resource)) {
             // Throw a new invalid stream exception
-            throw new InvalidStream(
-                'Invalid stream provided; must be a string stream identifier or stream resource'
-            );
+            throw new InvalidStreamException('Invalid stream provided');
         }
 
+        /** @var resource $resource */
+
         // Set the stream
-        $this->stream = $resource;
+        $this->resource = $resource;
+    }
+
+    /**
+     * Open a stream.
+     *
+     * @return resource|false
+     */
+    protected function openStream(string $filename, string $mode)
+    {
+        return fopen($filename, $mode);
+    }
+
+    protected function isStream(mixed $resource): bool
+    {
+        return is_resource($resource) && get_resource_type($resource) === 'stream';
     }
 
     /**
@@ -89,9 +123,9 @@ trait StreamHelpers
      *
      * @return bool
      */
-    protected function isInValidStream(): bool
+    protected function isInvalidStream(): bool
     {
-        return $this->stream === null;
+        return $this->resource === null;
     }
 
     /**
@@ -102,9 +136,9 @@ trait StreamHelpers
     protected function verifyStream(): void
     {
         // If there is no stream
-        if ($this->isInValidStream()) {
+        if ($this->isInvalidStream()) {
             // Throw a runtime exception
-            throw new InvalidStream('No resource available; cannot read');
+            throw new NoStreamAvailableException('No stream resource');
         }
     }
 
@@ -134,7 +168,7 @@ trait StreamHelpers
         // If the stream isn't writable
         if (! $this->isWritable()) {
             // Throw a new runtime exception
-            throw new StreamException('Stream is not writable');
+            throw new UnwritableStreamException('Stream is not writable');
         }
     }
 
@@ -150,7 +184,7 @@ trait StreamHelpers
         // If the write was not successful
         if ($result === false) {
             // Throw a runtime exception
-            throw new StreamException('Error writing to stream');
+            throw new StreamWriteException('Error writing to stream');
         }
     }
 
@@ -164,7 +198,7 @@ trait StreamHelpers
         // If the stream isn't seekable
         if (! $this->isSeekable()) {
             // Throw a new runtime exception
-            throw new StreamException('Stream is not seekable');
+            throw new UnseekableStreamException('Stream is not seekable');
         }
     }
 
@@ -180,7 +214,7 @@ trait StreamHelpers
         // If the result was not a 0, denoting an error occurred
         if ($result !== 0) {
             // Throw a new runtime exception
-            throw new StreamException('Error seeking within stream');
+            throw new StreamSeekException('Error seeking within stream');
         }
     }
 
@@ -207,7 +241,7 @@ trait StreamHelpers
         // If the stream is not readable
         if (! $this->isReadable()) {
             // Throw a runtime exception
-            throw new StreamException('Stream is not readable');
+            throw new UnreadableStreamException('Stream is not readable');
         }
     }
 
@@ -223,7 +257,23 @@ trait StreamHelpers
         // If there was a failure in reading the stream
         if ($result === false) {
             // Throw a runtime exception
-            throw new StreamException('Error reading stream');
+            throw new StreamReadException('Error reading stream');
+        }
+    }
+
+    /**
+     * Verify the tell result.
+     *
+     * @param int|false $result
+     *
+     * @return void
+     */
+    protected function verifyTellResult(int|false $result): void
+    {
+        // If the tell is not an int
+        if ($result === false) {
+            // Throw a runtime exception
+            throw new StreamTellException('Error occurred during tell operation');
         }
     }
 }

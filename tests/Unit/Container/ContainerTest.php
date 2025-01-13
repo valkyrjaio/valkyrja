@@ -82,7 +82,7 @@ class ContainerTest extends TestCase
         self::assertFalse($container->isAlias($id));
         self::assertFalse($container->isClosure($id));
         self::assertFalse($container->isSingleton($id));
-        self::assertFalse($container->isProvided($id));
+        self::assertFalse($container->isDeferred($id));
         self::assertFalse($container->isPublished($id));
 
         self::assertInstanceOf($id, $service = $container->get($id));
@@ -108,7 +108,7 @@ class ContainerTest extends TestCase
 
         self::assertFalse($container->isClosure($id));
         self::assertFalse($container->isSingleton($id));
-        self::assertFalse($container->isProvided($id));
+        self::assertFalse($container->isDeferred($id));
         self::assertFalse($container->isPublished($id));
 
         self::assertInstanceOf($id, $service = $container->get($alias));
@@ -133,7 +133,7 @@ class ContainerTest extends TestCase
 
         self::assertFalse($container->isAlias($id));
         self::assertFalse($container->isClosure($id));
-        self::assertFalse($container->isProvided($id));
+        self::assertFalse($container->isDeferred($id));
         self::assertFalse($container->isPublished($id));
 
         self::assertInstanceOf($id, $service = $container->get($id));
@@ -174,7 +174,7 @@ class ContainerTest extends TestCase
         self::assertFalse($container->isAlias($id));
         self::assertFalse($container->isSingleton($id));
         self::assertFalse($container->isService($id));
-        self::assertFalse($container->isProvided($id));
+        self::assertFalse($container->isDeferred($id));
 
         self::assertInstanceOf($id, $service = $container->get($id));
         // A bound service should return a new instance each time it is retrieved

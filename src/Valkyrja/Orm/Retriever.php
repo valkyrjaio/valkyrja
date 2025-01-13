@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm;
 
-use Valkyrja\Orm\Exceptions\EntityNotFoundException;
+use Valkyrja\Orm\Exception\EntityNotFoundException;
 
 /**
  * Interface Retriever.

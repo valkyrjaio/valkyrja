@@ -15,7 +15,6 @@ namespace Valkyrja\Event\Collection;
 
 use Valkyrja\Config\Config;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Event\Annotation\Contract\Annotations;
 use Valkyrja\Event\Attribute\Contract\Attributes;
 use Valkyrja\Event\Config as EventConfig;
 use Valkyrja\Event\Config\Cache;
@@ -95,22 +94,6 @@ class CacheableCollection extends Collection
 
         $this->events    = $cache['events'];
         $this->listeners = $cache['listeners'];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function setupAnnotations($config): void
-    {
-        /** @var Annotations $containerAnnotations */
-        $containerAnnotations = $this->container->getSingleton(Annotations::class);
-
-        // Get all the annotated listeners from the list of classes
-        // Iterate through the listeners
-        foreach ($containerAnnotations->getListeners(...$config['listeners']) as $listener) {
-            // Set the service
-            $this->addListener($listener);
-        }
     }
 
     /**

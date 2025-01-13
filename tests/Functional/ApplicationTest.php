@@ -26,19 +26,19 @@ use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Filesystem\Contract\Filesystem;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Routing\Contract\Router;
 use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Path\Generator\Contract\Generator;
 use Valkyrja\Path\Parser\Contract\Parser;
-use Valkyrja\Routing\Contract\Router;
 use Valkyrja\Session\Contract\Session;
 use Valkyrja\Tests\Classes\Config\ProviderClass;
 use Valkyrja\Tests\Config;
 use Valkyrja\Tests\Env;
 use Valkyrja\View\Contract\View;
 
-use function is_string;
 use function unlink;
+use function usleep;
 
 /**
  * Test the functionality of the Application.
@@ -64,7 +64,7 @@ class ApplicationTest extends TestCase
      */
     public function testApp(): void
     {
-        self::assertTrue(Valkyrja::app() instanceof Valkyrja);
+        self::assertInstanceOf(Valkyrja::class, Valkyrja::app());
     }
 
     /**
@@ -74,7 +74,7 @@ class ApplicationTest extends TestCase
      */
     public function testContainer(): void
     {
-        self::assertTrue($this->app->container() instanceof Container);
+        self::assertInstanceOf(Container::class, $this->app->container());
     }
 
     /**
@@ -84,7 +84,7 @@ class ApplicationTest extends TestCase
      */
     public function testDispatcher(): void
     {
-        self::assertTrue($this->app->dispatcher() instanceof Dispatcher);
+        self::assertInstanceOf(Dispatcher::class, $this->app->dispatcher());
     }
 
     /**
@@ -94,7 +94,7 @@ class ApplicationTest extends TestCase
      */
     public function testEvents(): void
     {
-        self::assertTrue($this->app->events() instanceof Events);
+        self::assertInstanceOf(Events::class, $this->app->events());
     }
 
     /**
@@ -114,7 +114,7 @@ class ApplicationTest extends TestCase
      */
     public function testConfig(): void
     {
-        self::assertTrue($this->app->config() instanceof Config);
+        self::assertInstanceOf(Config::class, $this->app->config());
     }
 
     /**
@@ -137,7 +137,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnv(): void
     {
-        self::assertTrue(is_string($this->app::env()));
+        self::assertIsString($this->app::env());
     }
 
     /**
@@ -198,7 +198,7 @@ class ApplicationTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        self::assertTrue($this->app[Annotations::class] instanceof Annotations);
+        self::assertInstanceOf(Annotations::class, $this->app[Annotations::class]);
     }
 
     /**
@@ -208,7 +208,7 @@ class ApplicationTest extends TestCase
      */
     public function testClient(): void
     {
-        self::assertTrue($this->app[Client::class] instanceof Client);
+        self::assertInstanceOf(Client::class, $this->app[Client::class]);
     }
 
     /**
@@ -218,7 +218,7 @@ class ApplicationTest extends TestCase
      */
     public function testConsole(): void
     {
-        self::assertTrue($this->app[Console::class] instanceof Console);
+        self::assertInstanceOf(Console::class, $this->app[Console::class]);
     }
 
     /**
@@ -228,7 +228,7 @@ class ApplicationTest extends TestCase
      */
     public function testConsoleKernel(): void
     {
-        self::assertTrue($this->app[ConsoleKernel::class] instanceof ConsoleKernel);
+        self::assertInstanceOf(ConsoleKernel::class, $this->app[ConsoleKernel::class]);
     }
 
     /**
@@ -238,7 +238,7 @@ class ApplicationTest extends TestCase
      */
     public function testFilesystem(): void
     {
-        self::assertTrue($this->app[Filesystem::class] instanceof Filesystem);
+        self::assertInstanceOf(Filesystem::class, $this->app[Filesystem::class]);
     }
 
     /**
@@ -248,7 +248,7 @@ class ApplicationTest extends TestCase
      */
     public function testKernel(): void
     {
-        self::assertTrue($this->app[RequestHandler::class] instanceof RequestHandler);
+        self::assertInstanceOf(RequestHandler::class, $this->app[RequestHandler::class]);
     }
 
     /**
@@ -258,7 +258,7 @@ class ApplicationTest extends TestCase
      */
     public function testPathGenerator(): void
     {
-        self::assertTrue($this->app[Generator::class] instanceof Generator);
+        self::assertInstanceOf(Generator::class, $this->app[Generator::class]);
     }
 
     /**
@@ -268,7 +268,7 @@ class ApplicationTest extends TestCase
      */
     public function testPathParser(): void
     {
-        self::assertTrue($this->app[Parser::class] instanceof Parser);
+        self::assertInstanceOf(Parser::class, $this->app[Parser::class]);
     }
 
     /**
@@ -278,7 +278,7 @@ class ApplicationTest extends TestCase
      */
     public function testLogger(): void
     {
-        self::assertTrue($this->app[Logger::class] instanceof Logger);
+        self::assertInstanceOf(Logger::class, $this->app[Logger::class]);
     }
 
     /**
@@ -288,7 +288,7 @@ class ApplicationTest extends TestCase
      */
     public function testRouter(): void
     {
-        self::assertTrue($this->app[Router::class] instanceof Router);
+        self::assertInstanceOf(Router::class, $this->app[Router::class]);
     }
 
     /**
@@ -298,7 +298,7 @@ class ApplicationTest extends TestCase
      */
     public function testResponseBuilder(): void
     {
-        self::assertTrue($this->app[ResponseFactory::class] instanceof ResponseFactory);
+        self::assertInstanceOf(ResponseFactory::class, $this->app[ResponseFactory::class]);
     }
 
     /**
@@ -308,7 +308,7 @@ class ApplicationTest extends TestCase
      */
     public function testSession(): void
     {
-        self::assertTrue($this->app[Session::class] instanceof Session);
+        self::assertInstanceOf(Session::class, $this->app[Session::class]);
     }
 
     /**
@@ -318,7 +318,7 @@ class ApplicationTest extends TestCase
      */
     public function testView(): void
     {
-        self::assertTrue($this->app[View::class] instanceof View);
+        self::assertInstanceOf(View::class, $this->app[View::class]);
     }
 
     /**
@@ -390,6 +390,8 @@ class ApplicationTest extends TestCase
         // Because the app will use the config cache the forced changes to the config made above shouldn't
         // take effect and the value for app.debug should still be false.
         self::assertFalse($this->app->debug());
+
+        usleep(10);
 
         // Delete the config cache file to avoid headaches later
         unlink($this->app->config(ConfigKey::CONFIG_CACHE_FILE_PATH));

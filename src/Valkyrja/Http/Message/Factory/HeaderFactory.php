@@ -13,10 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Factory;
 
-use function array_change_key_case;
 use function array_key_exists;
-use function implode;
-use function is_array;
 use function str_replace;
 use function strtolower;
 use function substr;
@@ -66,29 +63,5 @@ abstract class HeaderFactory
         }
 
         return $headers;
-    }
-
-    /**
-     * Search for a header value.
-     * Does a case-insensitive search for a matching header.
-     * If found, it is returned as a string, using comma concatenation.
-     * If not, the $default is returned.
-     *
-     * @param string     $header
-     * @param array      $headers
-     * @param mixed|null $default
-     *
-     * @return string
-     */
-    public static function getHeader(string $header, array $headers, mixed $default = null): string
-    {
-        $header  = strtolower($header);
-        $headers = array_change_key_case($headers);
-
-        if (array_key_exists($header, $headers)) {
-            return is_array($headers[$header]) ? implode(', ', $headers[$header]) : $headers[$header];
-        }
-
-        return (string) ($default ?? '');
     }
 }

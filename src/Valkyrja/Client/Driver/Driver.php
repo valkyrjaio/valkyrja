@@ -17,7 +17,7 @@ use Valkyrja\Client\Adapter\Contract\Adapter;
 use Valkyrja\Client\Driver\Contract\Driver as Contract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Manager\Drivers\Driver as ParentDriver;
+use Valkyrja\Manager\Driver\Driver as ParentDriver;
 
 /**
  * Class Driver.

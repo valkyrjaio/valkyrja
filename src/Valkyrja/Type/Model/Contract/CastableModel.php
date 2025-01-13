@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Model\Contract;
 
-use Valkyrja\Type\Model\Data\Cast;
+use Valkyrja\Type\Data\Cast;
 
 /**
  * Interface CastableModel.

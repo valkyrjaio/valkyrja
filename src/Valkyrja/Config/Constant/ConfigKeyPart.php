@@ -56,7 +56,7 @@ final class ConfigKeyPart
     public const PUBLIC_KEY             = 'publicKey';
     public const KEY_PATH               = 'keyPath';
     public const HTTP_EXCEPTION         = 'httpException';
-    public const EXCEPTION_HANDLER      = 'exceptionHandler';
+    public const ERROR_HANDLER          = 'errorHandler';
     public const HTTP_KERNEL            = 'httpKernel';
     public const PATTERNS               = 'patterns';
     public const ENABLED                = 'enabled';
@@ -150,6 +150,7 @@ final class ConfigKeyPart
     public const FLYSYSTEM              = 'flysystem';
     public const FLYSYSTEM_ADAPTER      = 'flysystemAdapter';
     public const LOCAL                  = 'local';
+    public const IN_MEMORY              = 'inMemory';
     public const S3                     = 's3';
     public const DIR                    = 'dir';
     public const COMPILED_DIR           = 'compiledDir';

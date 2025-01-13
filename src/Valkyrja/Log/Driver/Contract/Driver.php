@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Log\Driver\Contract;
 
 use Throwable;
-use Valkyrja\Manager\Drivers\Contract\Driver as Contract;
+use Valkyrja\Log\Enum\LogLevel;
+use Valkyrja\Manager\Driver\Contract\Driver as Contract;
 
 /**
  * Interface Driver.
@@ -106,13 +107,13 @@ interface Driver extends Contract
     /**
      * Log a message.
      *
-     * @param string $level   The log level
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param LogLevel $level   The log level
+     * @param string   $message The message
+     * @param array    $context [optional] The context
      *
      * @return void
      */
-    public function log(string $level, string $message, array $context = []): void;
+    public function log(LogLevel $level, string $message, array $context = []): void;
 
     /**
      * Log an exception or throwable.

@@ -15,9 +15,9 @@ namespace Valkyrja\Tests\Unit\Type\Model\Attribute;
 
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\StringT;
+use Valkyrja\Type\Enum\CastType;
 use Valkyrja\Type\Model\Attribute\Cast;
 use Valkyrja\Type\Model\Attribute\OriginalArrayCast;
-use Valkyrja\Type\Model\Enum\CastType;
 
 use function json_encode;
 

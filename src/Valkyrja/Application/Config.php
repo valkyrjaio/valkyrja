@@ -17,6 +17,7 @@ use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Exception\Contract\ErrorHandler;
 
 /**
  * Class Config.
@@ -31,15 +32,14 @@ class Config extends Model
      * @var array<string, string>
      */
     protected static array $envKeys = [
-        CKP::ENV               => EnvKey::APP_ENV,
-        CKP::DEBUG             => EnvKey::APP_DEBUG,
-        CKP::URL               => EnvKey::APP_URL,
-        CKP::TIMEZONE          => EnvKey::APP_TIMEZONE,
-        CKP::VERSION           => EnvKey::APP_VERSION,
-        CKP::KEY               => EnvKey::APP_KEY,
-        CKP::EXCEPTION_HANDLER => EnvKey::APP_EXCEPTION_HANDLER,
-        CKP::HTTP_KERNEL       => EnvKey::APP_HTTP_KERNEL,
-        CKP::PROVIDERS         => EnvKey::APP_PROVIDERS,
+        CKP::ENV           => EnvKey::APP_ENV,
+        CKP::DEBUG         => EnvKey::APP_DEBUG,
+        CKP::URL           => EnvKey::APP_URL,
+        CKP::TIMEZONE      => EnvKey::APP_TIMEZONE,
+        CKP::VERSION       => EnvKey::APP_VERSION,
+        CKP::KEY           => EnvKey::APP_KEY,
+        CKP::ERROR_HANDLER => EnvKey::APP_ERROR_HANDLER,
+        CKP::PROVIDERS     => EnvKey::APP_PROVIDERS,
     ];
 
     /**
@@ -85,18 +85,11 @@ class Config extends Model
     public string $key;
 
     /**
-     * The exception handler class.
+     * The error handler class.
      *
-     * @var string
+     * @var class-string<ErrorHandler>
      */
-    public string $exceptionHandler;
-
-    /**
-     * The http kernel class.
-     *
-     * @var string
-     */
-    public string $httpKernel;
+    public string $errorHandler;
 
     /**
      * Array of config providers.

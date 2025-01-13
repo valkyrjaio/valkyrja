@@ -15,14 +15,13 @@ namespace Valkyrja\Http\Server\Contract;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Routing\Middleware\Contract\MiddlewareAware;
 
 /**
- * Interface Kernel.
+ * Interface RequestHandler.
  *
  * @author Melech Mizrachi
  */
-interface RequestHandler extends MiddlewareAware
+interface RequestHandler
 {
     /**
      * Handle a request.

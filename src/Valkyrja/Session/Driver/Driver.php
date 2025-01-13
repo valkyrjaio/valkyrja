@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Driver;
 
-use Valkyrja\Manager\Drivers\Driver as ParentDriver;
+use Valkyrja\Manager\Driver\Driver as ParentDriver;
 use Valkyrja\Session\Adapter\Contract\Adapter;
 use Valkyrja\Session\Driver\Contract\Driver as Contract;
 

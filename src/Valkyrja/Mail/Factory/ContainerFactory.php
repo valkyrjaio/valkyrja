@@ -20,7 +20,7 @@ use Valkyrja\Mail\Adapter\Contract\PHPMailerAdapter;
 use Valkyrja\Mail\Driver\Contract\Driver;
 use Valkyrja\Mail\Factory\Contract\Factory as Contract;
 use Valkyrja\Mail\Message\Contract\Message;
-use Valkyrja\Manager\Factories\ContainerMessageFactory as Factory;
+use Valkyrja\Manager\Factory\ContainerMessageFactory as Factory;
 
 /**
  * Class ContainerFactory.

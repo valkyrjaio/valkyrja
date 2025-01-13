@@ -15,6 +15,7 @@ namespace Valkyrja\Log\Adapter;
 
 use Throwable;
 use Valkyrja\Log\Adapter\Contract\Adapter as Contract;
+use Valkyrja\Log\Enum\LogLevel;
 
 /**
  * Class NullAdapter.
@@ -99,7 +100,7 @@ class NullAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function log(string $level, string $message, array $context = []): void
+    public function log(LogLevel $level, string $message, array $context = []): void
     {
     }
 

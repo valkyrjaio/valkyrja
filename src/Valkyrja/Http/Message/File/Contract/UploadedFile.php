@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Message\File\Contract;
 
 use InvalidArgumentException;
 use RuntimeException;
+use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\Stream\Contract\Stream;
 
 /**
@@ -105,9 +106,9 @@ interface UploadedFile
      *
      * @see http://php.net/manual/en/features.file-upload.errors.php
      *
-     * @return int One of PHP's UPLOAD_ERR_XXX constants
+     * @return UploadError One of PHP's UPLOAD_ERR_XXX constants
      */
-    public function getError(): int;
+    public function getError(): UploadError;
 
     /**
      * Retrieve the filename sent by the client.

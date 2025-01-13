@@ -18,6 +18,6 @@ namespace Valkyrja\Http\Message\Exception;
  *
  * @author Melech Mizrachi
  */
-class RuntimeException extends \Valkyrja\Exception\RuntimeException implements Throwable
+class RuntimeException extends \Valkyrja\Http\Exception\RuntimeException implements Throwable
 {
 }

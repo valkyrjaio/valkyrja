@@ -57,7 +57,7 @@ interface ServerRequest extends Request
      * typically derived from PHP's $_SERVER superglobal. The data IS NOT
      * REQUIRED to originate from $_SERVER.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getServerParams(): array;
 
@@ -87,7 +87,7 @@ interface ServerRequest extends Request
      * The data MUST be compatible with the structure of the $_COOKIE
      * superglobal.
      *
-     * @return array
+     * @return array<string, string|null>
      */
     public function getCookieParams(): array;
 
@@ -102,11 +102,29 @@ interface ServerRequest extends Request
      * immutability of the message, and MUST return an instance that has the
      * updated cookie values.
      *
-     * @param array $cookies Array of key/value pairs representing cookies
+     * @param array<string, string|null> $cookies Array of key/value pairs representing cookies
      *
      * @return static
      */
     public function withCookieParams(array $cookies): static;
+
+    /**
+     * Return an instance with the specified cookie added to existing.
+     * The data IS NOT REQUIRED to come from the $_COOKIE superglobal, but MUST
+     * be compatible with the structure of $_COOKIE. Typically, this data will
+     * be injected at instantiation.
+     * This method MUST NOT update the related Cookie header of the request
+     * instance, nor related values in the server params.
+     * This method MUST be implemented in such a way as to retain the
+     * immutability of the message, and MUST return an instance that has the
+     * updated cookie values.
+     *
+     * @param string      $name  The name of the cookie
+     * @param string|null $value The value of the cookie
+     *
+     * @return static
+     */
+    public function withAddedCookieParam(string $name, string|null $value = null): static;
 
     /**
      * Retrieve a specific cookie value.
@@ -143,20 +161,20 @@ interface ServerRequest extends Request
     /**
      * Retrieve only the specified query string arguments.
      *
-     * @param string[] $names The param names to retrieve
+     * @param string[]|int[] $names The param names to retrieve
      *
      * @return array
      */
-    public function onlyQueryParams(array $names): array;
+    public function onlyQueryParams(string|int ...$names): array;
 
     /**
      * Retrieve all query string arguments except the ones specified.
      *
-     * @param string[] $names The param names to not retrieve
+     * @param string[]|int[] $names The param names to not retrieve
      *
      * @return array
      */
-    public function exceptQueryParams(array $names): array;
+    public function exceptQueryParams(string|int ...$names): array;
 
     /**
      * Return an instance with the specified query string arguments.
@@ -184,21 +202,43 @@ interface ServerRequest extends Request
      * Retrieve a specific query param value.
      * Retrieves a query param value sent by the client to the server.
      *
-     * @param string     $name    The query param name to retrieve
+     * @param string|int $name    The query param name to retrieve
      * @param mixed|null $default [optional] Default value to return if the param does not exist
      *
      * @return mixed
      */
-    public function getQueryParam(string $name, mixed $default = null): mixed;
+    public function getQueryParam(string|int $name, mixed $default = null): mixed;
 
     /**
      * Determine if a specific query param exists.
      *
-     * @param string $name The query param name to check for
+     * @param string|int $name The query param name to check for
      *
      * @return bool
      */
-    public function hasQueryParam(string $name): bool;
+    public function hasQueryParam(string|int $name): bool;
+
+    /**
+     * Return an instance with the specified query string argument added to existing.
+     * These values SHOULD remain immutable over the course of the incoming
+     * request. They MAY be injected during instantiation, such as from PHP's
+     * $_GET superglobal, or MAY be derived from some other value such as the
+     * URI. In cases where the arguments are parsed from the URI, the data
+     * MUST be compatible with what PHP's parse_str() would return for
+     * purposes of how duplicate query parameters are handled, and how nested
+     * sets are handled.
+     * Setting query string arguments MUST NOT change the URI stored by the
+     * request, nor the values in the server params.
+     * This method MUST be implemented in such a way as to retain the
+     * immutability of the message, and MUST return an instance that has the
+     * updated query string arguments.
+     *
+     * @param string|int $name  The name of the query argument
+     * @param mixed      $value The value of the query argument
+     *
+     * @return static
+     */
+    public function withAddedQueryParam(string|int $name, mixed $value): static;
 
     /**
      * Retrieve normalized file upload data.
@@ -218,14 +258,28 @@ interface ServerRequest extends Request
      * immutability of the message, and MUST return an instance that has the
      * updated body parameters.
      *
-     * @param UploadedFile ...$uploadedFiles An array tree of UploadedFileInterface
-     *                                       instances
+     * @param UploadedFile[]|array $uploadedFiles An array tree of UploadedFileInterface
+     *                                            instances
      *
      * @throws InvalidArgumentException if an invalid structure is provided
      *
      * @return static
      */
-    public function withUploadedFiles(UploadedFile ...$uploadedFiles): static;
+    public function withUploadedFiles(array $uploadedFiles): static;
+
+    /**
+     * Create a new instance with an added specified uploaded file.
+     * This method MUST be implemented in such a way as to retain the
+     * immutability of the message, and MUST return an instance that has the
+     * updated body parameters.
+     *
+     * @param UploadedFile $uploadedFile An UploadedFileInterface instance
+     *
+     * @throws InvalidArgumentException if an invalid structure is provided
+     *
+     * @return static
+     */
+    public function withAddedUploadedFile(UploadedFile $uploadedFile): static;
 
     /**
      * Retrieve any parameters provided in the request body.
@@ -245,20 +299,20 @@ interface ServerRequest extends Request
     /**
      * Retrieve only the specified request body params.
      *
-     * @param string[] $names The param names to retrieve
+     * @param string[]|int[] $names The param names to retrieve
      *
      * @return array
      */
-    public function onlyParsedBody(array $names): array;
+    public function onlyParsedBody(string|int ...$names): array;
 
     /**
      * Retrieve all request body params except the ones specified.
      *
-     * @param string[] $names The param names to not retrieve
+     * @param string[]|int[] $names The param names to not retrieve
      *
      * @return array
      */
-    public function exceptParsedBody(array $names): array;
+    public function exceptParsedBody(string|int ...$names): array;
 
     /**
      * Return an instance with the specified body parameters.
@@ -287,24 +341,50 @@ interface ServerRequest extends Request
     public function withParsedBody(array $data): static;
 
     /**
+     * Return an instance with the specified body parameter added to existing.
+     * These MAY be injected during instantiation.
+     * If the request Content-Type is either application/x-www-form-urlencoded
+     * or multipart/form-data, and the request method is POST, use this method
+     * ONLY to inject the contents of $_POST.
+     * The data IS NOT REQUIRED to come from $_POST, but MUST be the results of
+     * deserializing the request body content. Deserialization/parsing returns
+     * structured data, and, as such, this method ONLY accepts arrays or
+     * objects, or a null value if nothing was available to parse.
+     * As an example, if content negotiation determines that the request data
+     * is a JSON payload, this method could be used to create a request
+     * instance with the deserialized parameters.
+     * This method MUST be implemented in such a way as to retain the
+     * immutability of the message, and MUST return an instance that has the
+     * updated body parameters.
+     *
+     * @param string|int $name  The name of the param
+     * @param mixed      $value The value of the param
+     *
+     * @throws InvalidArgumentException if an unsupported argument type is provided
+     *
+     * @return static
+     */
+    public function withAddedParsedBodyParam(string|int $name, mixed $value): static;
+
+    /**
      * Retrieve a specific body param value.
      * Retrieves a body param value sent by the client to the server.
      *
-     * @param string     $name    The body param name to retrieve
+     * @param string|int $name    The body param name to retrieve
      * @param mixed|null $default [optional] Default value to return if the param does not exist
      *
      * @return mixed
      */
-    public function getParsedBodyParam(string $name, mixed $default = null): mixed;
+    public function getParsedBodyParam(string|int $name, mixed $default = null): mixed;
 
     /**
      * Determine if a specific body param exists.
      *
-     * @param string $name The body param name to check for
+     * @param string|int $name The body param name to check for
      *
      * @return bool
      */
-    public function hasParsedBodyParam(string $name): bool;
+    public function hasParsedBodyParam(string|int $name): bool;
 
     /**
      * Retrieve attributes derived from the request.
@@ -314,7 +394,7 @@ interface ServerRequest extends Request
      * deserializing non-form-encoded message bodies; etc. Attributes
      * will be application and request specific, and CAN be mutable.
      *
-     * @return array Attributes derived from the request
+     * @return array<string, mixed> Attributes derived from the request
      */
     public function getAttributes(): array;
 
@@ -323,18 +403,18 @@ interface ServerRequest extends Request
      *
      * @param string[] $names The attribute names to retrieve
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function onlyAttributes(array $names): array;
+    public function onlyAttributes(string ...$names): array;
 
     /**
      * Retrieve all attributes except the ones specified.
      *
      * @param string[] $names The attribute names to not retrieve
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function exceptAttributes(array $names): array;
+    public function exceptAttributes(string ...$names): array;
 
     /**
      * Retrieve a single derived request attribute.

@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Message\Request\Contract;
 
 use InvalidArgumentException;
 use Valkyrja\Http\Message\Contract\Message;
+use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Uri\Contract\Uri;
 
 /**
@@ -73,9 +74,9 @@ interface Request extends Message
     /**
      * Retrieves the HTTP method of the request.
      *
-     * @return string Returns the request method
+     * @return RequestMethod Returns the request method
      */
-    public function getMethod(): string;
+    public function getMethod(): RequestMethod;
 
     /**
      * Return an instance with the provided HTTP method.
@@ -86,13 +87,13 @@ interface Request extends Message
      * immutability of the message, and MUST return an instance that has the
      * changed request method.
      *
-     * @param string $method Case-sensitive method
+     * @param RequestMethod $method Case-sensitive method
      *
      * @throws InvalidArgumentException for invalid HTTP methods
      *
      * @return static
      */
-    public function withMethod(string $method): static;
+    public function withMethod(RequestMethod $method): static;
 
     /**
      * Retrieves the URI instance.

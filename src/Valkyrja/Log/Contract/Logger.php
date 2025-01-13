@@ -15,6 +15,7 @@ namespace Valkyrja\Log\Contract;
 
 use Throwable;
 use Valkyrja\Log\Driver\Contract\Driver;
+use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Log\Factory\Contract\Factory;
 use Valkyrja\Manager\Contract\Manager;
 
@@ -117,13 +118,13 @@ interface Logger extends Manager
     /**
      * Log a message.
      *
-     * @param string $level   The log level
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param LogLevel $level   The log level
+     * @param string   $message The message
+     * @param array    $context [optional] The context
      *
      * @return void
      */
-    public function log(string $level, string $message, array $context = []): void;
+    public function log(LogLevel $level, string $message, array $context = []): void;
 
     /**
      * Log an exception or throwable.

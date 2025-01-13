@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit;
 
+use Error;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
+use Throwable;
 
 use function class_exists;
 use function interface_exists;
@@ -60,11 +62,16 @@ class TestCase extends PHPUnitTestCase
         self::assertTrue(trait_exists($trait));
     }
 
+    protected static function assertError(Throwable $throwable): void
+    {
+        self::assertTrue($throwable instanceof Error);
+    }
+
     /**
      * @param class-string $expected The class inherited
      * @param class-string $actual   The class to test
      */
-    protected function isA(string $expected, string $actual): void
+    protected static function isA(string $expected, string $actual): void
     {
         self::assertTrue(is_a($actual, $expected, true));
     }

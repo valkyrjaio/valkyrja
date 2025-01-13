@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Log\Adapter\Contract;
 
 use Throwable;
+use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 
 /**
@@ -106,13 +107,13 @@ interface Adapter extends Contract
     /**
      * Log a message.
      *
-     * @param string $level   The log level
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param LogLevel $level   The log level
+     * @param string   $message The message
+     * @param array    $context [optional] The context
      *
      * @return void
      */
-    public function log(string $level, string $message, array $context = []): void;
+    public function log(LogLevel $level, string $message, array $context = []): void;
 
     /**
      * Log an exception or throwable.

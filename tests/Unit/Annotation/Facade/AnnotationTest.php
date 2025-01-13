@@ -32,7 +32,7 @@ class AnnotationTest extends FacadeTestCase
     /**
      * @inheritDoc
      */
-    public static function methods(): array
+    public static function methodsProvider(): array
     {
         return [
             ['getParser'],

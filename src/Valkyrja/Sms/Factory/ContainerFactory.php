@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Factory;
 
-use Valkyrja\Manager\Factories\ContainerMessageFactory as Factory;
+use Valkyrja\Manager\Factory\ContainerMessageFactory as Factory;
 use Valkyrja\Sms\Adapter\Contract\Adapter;
 use Valkyrja\Sms\Adapter\Contract\LogAdapter;
 use Valkyrja\Sms\Adapter\Contract\VonageAdapter;

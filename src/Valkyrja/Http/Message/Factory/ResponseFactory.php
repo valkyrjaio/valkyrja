@@ -13,15 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Factory;
 
-use InvalidArgumentException;
 use JsonException;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as Contract;
 use Valkyrja\Http\Message\Response\Contract\JsonResponse;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponse;
 use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Routing\Url\Contract\Url;
-use Valkyrja\View\Contract\View;
+use Valkyrja\Http\Message\Uri\Uri;
 
 /**
  * Class ResponseFactory.
@@ -31,21 +30,11 @@ use Valkyrja\View\Contract\View;
 class ResponseFactory implements Contract
 {
     /**
-     * ResponseBuilder constructor.
-     *
-     * @param Container $container
-     */
-    public function __construct(
-        protected Container $container
-    ) {
-    }
-
-    /**
      * @inheritDoc
      */
     public function createResponse(
         string|null $content = null,
-        int|null $statusCode = null,
+        StatusCode|null $statusCode = null,
         array|null $headers = null
     ): Response {
         return \Valkyrja\Http\Message\Response\Response::create(
@@ -62,7 +51,7 @@ class ResponseFactory implements Contract
      */
     public function createJsonResponse(
         array|null $data = null,
-        int|null $statusCode = null,
+        StatusCode|null $statusCode = null,
         array|null $headers = null
     ): JsonResponse {
         return \Valkyrja\Http\Message\Response\JsonResponse::createFromData(
@@ -81,7 +70,7 @@ class ResponseFactory implements Contract
     public function createJsonpResponse(
         string $callback,
         array|null $data = null,
-        int|null $statusCode = null,
+        StatusCode|null $statusCode = null,
         array|null $headers = null
     ): JsonResponse {
         return $this->createJsonResponse($data, $statusCode, $headers)->withCallback($callback);
@@ -92,48 +81,13 @@ class ResponseFactory implements Contract
      */
     public function createRedirectResponse(
         string|null $uri = null,
-        int|null $statusCode = null,
+        StatusCode|null $statusCode = null,
         array|null $headers = null
     ): RedirectResponse {
         return \Valkyrja\Http\Message\Response\RedirectResponse::createFromUri(
-            uri: $uri,
+            uri: Uri::fromString($uri ?? '/'),
             statusCode: $statusCode,
             headers: $headers
         );
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function route(
-        string $name,
-        array|null $data = null,
-        int|null $statusCode = null,
-        array|null $headers = null
-    ): RedirectResponse {
-        /** @var Url $url */
-        $url = $this->container->getSingleton(Url::class);
-
-        // Get the uri from the router using the route and parameters
-        $uri = $url->getUrl($name, $data);
-
-        return $this->createRedirectResponse($uri, $statusCode, $headers);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function view(
-        string $template,
-        array|null $data = null,
-        int|null $statusCode = null,
-        array|null $headers = null
-    ): Response {
-        /** @var View $view */
-        $view = $this->container->getSingleton(View::class);
-
-        $content = $view->createTemplate($template, $data ?? [])->render();
-
-        return $this->createResponse($content, $statusCode, $headers);
     }
 }

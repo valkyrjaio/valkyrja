@@ -171,7 +171,7 @@ class Console implements Contract
             // If the preg match is successful, we've found our command!
             if (preg_match($regex, $path, $matches)) {
                 // Check if this command is provided
-                if ($this->isProvided($commandPath)) {
+                if ($this->isDeferred($commandPath)) {
                     // Initialize the provided command
                     $this->publishProvided($commandPath);
                 }
@@ -240,7 +240,7 @@ class Console implements Contract
     public function all(): array
     {
         // Iterate through all the command providers to set any deferred commands
-        foreach ($this->provided as $provided => $provider) {
+        foreach ($this->deferred as $provided => $provider) {
             // Initialize the provided command
             $this->publishProvided($provided);
         }

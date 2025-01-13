@@ -17,11 +17,17 @@ namespace Valkyrja\Http\Message\Constant;
  * Constant ContentType.
  *
  * @author Melech Mizrachi
+ *
+ * @see    https://www.iana.org/assignments/media-types/media-types.xhtml
  */
 final class ContentType
 {
     public const APPLICATION_JSON       = 'application/json';
     public const APPLICATION_JAVASCRIPT = 'application/javascript';
+    public const APPLICATION_XML        = 'application/xml';
+    public const APPLICATION_XML_UTF8   = self::APPLICATION_XML . '; charset=utf-8';
+    public const APPLICATION_X_WWW_FORM = 'application/x-www-form-urlencoded';
+    public const MULTIPART_FORM_DATA    = 'multipart/form-data';
     public const TEXT_HTML              = 'text/html';
     public const TEXT_HTML_UTF8         = self::TEXT_HTML . '; charset=utf-8';
     public const TEXT_JAVASCRIPT        = 'text/javascript';

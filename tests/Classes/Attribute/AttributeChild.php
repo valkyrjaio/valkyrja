@@ -21,6 +21,8 @@ namespace Valkyrja\Tests\Classes\Attribute;
 #[\Attribute(\Attribute::TARGET_ALL | \Attribute::IS_REPEATABLE)]
 class AttributeChild extends Attribute
 {
+    public string|null $name = null;
+
     public string|null $class = null;
 
     public string|null $constant = null;
@@ -30,6 +32,10 @@ class AttributeChild extends Attribute
     public string|null $method = null;
 
     public bool|null $static = null;
+
+    public bool|null $isOptional = null;
+
+    public mixed $default = null;
 
     public function __construct(
         int $counter,
@@ -86,5 +92,29 @@ class AttributeChild extends Attribute
     public function setStatic(bool $static): void
     {
         $this->static = $static;
+    }
+
+    /**
+     * @param string|null $name
+     */
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param bool|null $optional
+     */
+    public function setIsOptional(?bool $optional): void
+    {
+        $this->isOptional = $optional;
+    }
+
+    /**
+     * @param mixed $default
+     */
+    public function setDefault(mixed $default): void
+    {
+        $this->default = $default;
     }
 }

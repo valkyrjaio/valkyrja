@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Stream\Contract;
 
 use RuntimeException;
+use Stringable;
 
 use const SEEK_SET;
 
@@ -23,7 +24,7 @@ use const SEEK_SET;
  * a wrapper around the most common operations, including serialization of
  * the entire stream to a string.
  */
-interface Stream
+interface Stream extends Stringable
 {
     /**
      * Reads all data from the stream into a string, from the beginning to end.
@@ -53,16 +54,6 @@ interface Stream
      * @return resource|null Underlying PHP stream, if any
      */
     public function detach();
-
-    /**
-     * Attaches a new stream.
-     *
-     * @param string      $stream The stream
-     * @param string|null $mode   [optional] The mode
-     *
-     * @return void
-     */
-    public function attach(string $stream, string|null $mode = null): void;
 
     /**
      * Get the size of the stream if known.

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem\Driver\Contract;
 
 use Valkyrja\Filesystem\Enum\Visibility;
-use Valkyrja\Manager\Drivers\Contract\Driver as Contract;
+use Valkyrja\Manager\Driver\Contract\Driver as Contract;
 
 /**
  * Interface Driver.
@@ -37,9 +37,9 @@ interface Driver extends Contract
      *
      * @param string $path The path
      *
-     * @return string|null The contents or null on failure
+     * @return string The contents
      */
-    public function read(string $path): string|null;
+    public function read(string $path): string;
 
     /**
      * Write a file.

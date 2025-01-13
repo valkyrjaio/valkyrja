@@ -18,7 +18,7 @@ namespace Valkyrja\Http\Message\Constant;
  *
  * @author Melech Mizrachi
  *
- * @see   http://www.iana.org/assignments/http-status-codes/
+ * @see    http://www.iana.org/assignments/http-status-codes/
  * - Hypertext Transfer Protocol (HTTP) Status Code Registry
  */
 final class StatusCode
@@ -146,7 +146,7 @@ final class StatusCode
         self::VARIANT_ALSO_NEGOTIATES         => StatusText::VARIANT_ALSO_NEGOTIATES,
         self::INSUFFICIENT_STORAGE            => StatusText::INSUFFICIENT_STORAGE,
         self::LOOP_DETECTED                   => StatusText::LOOP_DETECTED,
-        self::NOT_EXTENDED                    => StatusText::NOT_EXTENDED,
+        self::NOT_EXTENDED                    => StatusText::NOT_EXTENDED_OBSOLETED,
         self::NETWORK_AUTHENTICATION_REQUIRED => StatusText::NETWORK_AUTHENTICATION_REQUIRED,
     ];
 

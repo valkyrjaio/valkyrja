@@ -84,8 +84,8 @@ class CacheableContainer extends Container
         $cache = $config['cache'] ?? require $config['cacheFilePath'];
 
         $this->aliases          = $cache['aliases'];
-        $this->provided         = $cache['provided'];
-        $this->providedCallback = $cache['providedCallback'];
+        $this->deferred         = $cache['deferred'];
+        $this->deferredCallback = $cache['deferredCallback'];
         $this->services         = $cache['services'];
         $this->singletons       = $cache['singletons'];
         $this->registered       = [];
@@ -101,8 +101,8 @@ class CacheableContainer extends Container
     {
         $this->aliases          = [];
         $this->registered       = [];
-        $this->provided         = [];
-        $this->providedCallback = [];
+        $this->deferred         = [];
+        $this->deferredCallback = [];
         $this->services         = [];
         $this->singletons       = [];
 
@@ -205,8 +205,8 @@ class CacheableContainer extends Container
     {
         $config                   = new Cache();
         $config->aliases          = $this->aliases;
-        $config->provided         = $this->provided;
-        $config->providedCallback = $this->providedCallback;
+        $config->deferred         = $this->deferred;
+        $config->deferredCallback = $this->deferredCallback;
         $config->services         = $this->services;
         $config->singletons       = $this->singletons;
 

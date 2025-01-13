@@ -15,9 +15,12 @@ namespace Valkyrja\Http\Message\Response\Psr;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Valkyrja\Http\Message\Response\Contract\Response as ValkyrjaResponse;
+use Valkyrja\Http\Message\Enum\ProtocolVersion;
+use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Factory\StreamFactory;
+use Valkyrja\Http\Message\Response\Contract\Response as ValkyrjaResponseContract;
+use Valkyrja\Http\Message\Response\Response as ValkyrjaResponse;
 use Valkyrja\Http\Message\Stream\Psr\Stream;
-use Valkyrja\Http\Message\Stream\Stream as ValkyrjaStream;
 
 use function is_array;
 
@@ -29,7 +32,7 @@ use function is_array;
 class Response implements ResponseInterface
 {
     public function __construct(
-        protected ValkyrjaResponse $response,
+        protected ValkyrjaResponseContract $response = new ValkyrjaResponse(),
     ) {
     }
 
@@ -38,7 +41,7 @@ class Response implements ResponseInterface
      */
     public function getProtocolVersion(): string
     {
-        return $this->response->getProtocolVersion();
+        return $this->response->getProtocolVersion()->value;
     }
 
     /**
@@ -48,7 +51,7 @@ class Response implements ResponseInterface
     {
         $new = clone $this;
 
-        $new->response = $this->response->withProtocolVersion($version);
+        $new->response = $this->response->withProtocolVersion(ProtocolVersion::from($version));
 
         return $new;
     }
@@ -142,18 +145,10 @@ class Response implements ResponseInterface
     {
         $new = clone $this;
 
-        $mode = '';
-
-        if ($body->isReadable()) {
-            $mode = 'r';
-        }
-
-        if ($body->isWritable()) {
-            $mode .= 'w';
-        }
-
-        $stream        = new ValkyrjaStream($body->getContents(), "{$mode}b");
+        $stream        = StreamFactory::fromPsr($body);
         $new->response = $this->response->withBody($stream);
+
+        $new->response->getBody()->rewind();
 
         return $new;
     }
@@ -163,7 +158,7 @@ class Response implements ResponseInterface
      */
     public function getStatusCode(): int
     {
-        return $this->response->getStatusCode();
+        return $this->response->getStatusCode()->value;
     }
 
     /**
@@ -173,7 +168,7 @@ class Response implements ResponseInterface
     {
         $new = clone $this;
 
-        $new->response = $this->response->withStatus($code, $reasonPhrase);
+        $new->response = $this->response->withStatus(StatusCode::from($code), $reasonPhrase);
 
         return $new;
     }

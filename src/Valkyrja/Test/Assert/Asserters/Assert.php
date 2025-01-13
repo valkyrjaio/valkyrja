@@ -142,7 +142,8 @@ class Assert extends AbstractAsserter implements Contract
      */
     public function __call(string $name, array $arguments): mixed
     {
-        return $this->asserterInstances[$name] ??= new $this->asserters[$name]();
+        return $this->asserterInstances[$name]
+            ??= new $this->asserters[$name]();
     }
 
     /**

@@ -20,6 +20,7 @@ use Twig\Loader\FilesystemLoader;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\View\Contract\View;
 use Valkyrja\View\Engine\Contract\Engine;
 use Valkyrja\View\Engine\OrkaEngine;
@@ -28,6 +29,7 @@ use Valkyrja\View\Engine\TwigEngine;
 use Valkyrja\View\Exception\InvalidConfigPath;
 use Valkyrja\View\Factory\ContainerFactory;
 use Valkyrja\View\Factory\Contract\Factory;
+use Valkyrja\View\Factory\Contract\ResponseFactory;
 use Valkyrja\View\Template\Contract\Template;
 
 /**
@@ -43,13 +45,14 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            View::class        => [self::class, 'publishView'],
-            Factory::class     => [self::class, 'publishFactory'],
-            Template::class    => [self::class, 'publishTemplate'],
-            PhpEngine::class   => [self::class, 'publishPhpEngine'],
-            OrkaEngine::class  => [self::class, 'publishOrkaEngine'],
-            TwigEngine::class  => [self::class, 'publishTwigEngine'],
-            Environment::class => [self::class, 'publishTwigEnvironment'],
+            View::class            => [self::class, 'publishView'],
+            Factory::class         => [self::class, 'publishFactory'],
+            Template::class        => [self::class, 'publishTemplate'],
+            PhpEngine::class       => [self::class, 'publishPhpEngine'],
+            OrkaEngine::class      => [self::class, 'publishOrkaEngine'],
+            TwigEngine::class      => [self::class, 'publishTwigEngine'],
+            Environment::class     => [self::class, 'publishTwigEnvironment'],
+            ResponseFactory::class => [self::class, 'publishResponseFactory'],
         ];
     }
 
@@ -203,6 +206,24 @@ class ServiceProvider extends Provider
             TwigEngine::class,
             new TwigEngine(
                 $container->getSingleton(Environment::class)
+            )
+        );
+    }
+
+    /**
+     * Publish the response factory service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishResponseFactory(Container $container): void
+    {
+        $container->setSingleton(
+            ResponseFactory::class,
+            new \Valkyrja\View\Factory\ResponseFactory(
+                $container->getSingleton(HttpMessageResponseFactory::class),
+                $container->getSingleton(View::class)
             )
         );
     }

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm;
 
-use Valkyrja\Orm\Enums\WhereType;
-use Valkyrja\Orm\Exceptions\EntityNotFoundException;
+use Valkyrja\Orm\Enum\WhereType;
+use Valkyrja\Orm\Exception\EntityNotFoundException;
 
 /**
  * Interface Repository.

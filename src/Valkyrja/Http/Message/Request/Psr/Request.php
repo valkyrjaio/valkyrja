@@ -16,9 +16,11 @@ namespace Valkyrja\Http\Message\Request\Psr;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
+use Valkyrja\Http\Message\Enum\ProtocolVersion;
+use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\Factory\StreamFactory;
 use Valkyrja\Http\Message\Request\Contract\Request as ValkyrjaRequest;
 use Valkyrja\Http\Message\Stream\Psr\Stream;
-use Valkyrja\Http\Message\Stream\Stream as ValkyrjaStream;
 use Valkyrja\Http\Message\Uri\Psr\Uri;
 use Valkyrja\Http\Message\Uri\Uri as ValkyrjaUri;
 
@@ -41,7 +43,7 @@ class Request implements RequestInterface
      */
     public function getProtocolVersion(): string
     {
-        return $this->request->getProtocolVersion();
+        return $this->request->getProtocolVersion()->value;
     }
 
     /**
@@ -51,7 +53,7 @@ class Request implements RequestInterface
     {
         $new = clone $this;
 
-        $new->request = $this->request->withProtocolVersion($version);
+        $new->request = $this->request->withProtocolVersion(ProtocolVersion::from($version));
 
         return $new;
     }
@@ -145,16 +147,7 @@ class Request implements RequestInterface
     {
         $new = clone $this;
 
-        $mode = '';
-
-        if ($body->isReadable()) {
-            $mode = 'r';
-        }
-
-        if ($body->isWritable()) {
-            $mode .= 'w';
-        }
-        $stream       = new ValkyrjaStream($body->getContents(), $mode . 'b');
+        $stream       = StreamFactory::fromPsr($body);
         $new->request = $this->request->withBody($stream);
 
         return $new;
@@ -185,7 +178,7 @@ class Request implements RequestInterface
      */
     public function getMethod(): string
     {
-        return $this->request->getMethod();
+        return $this->request->getMethod()->value;
     }
 
     /**
@@ -195,7 +188,7 @@ class Request implements RequestInterface
     {
         $new = clone $this;
 
-        $new->request = $this->request->withMethod($method);
+        $new->request = $this->request->withMethod(RequestMethod::from($method));
 
         return $new;
     }
@@ -217,7 +210,7 @@ class Request implements RequestInterface
     {
         $new = clone $this;
 
-        $uri          = new ValkyrjaUri($uri->__toString());
+        $uri          = ValkyrjaUri::fromString($uri->__toString());
         $new->request = $this->request->withUri($uri, $preserveHost);
 
         return $new;

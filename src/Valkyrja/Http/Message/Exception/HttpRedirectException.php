@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Exception;
 
-use Valkyrja\Http\Message\Constant\StatusCode;
+use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Message\Response\RedirectResponse;
+use Valkyrja\Http\Message\Uri\Contract\Uri;
+use Valkyrja\Http\Message\Uri\Uri as HttpUri;
 
 /**
  * Class HttpRedirectException.
@@ -27,31 +29,31 @@ class HttpRedirectException extends HttpException
     /**
      * The uri to redirect to for this exception.
      *
-     * @var string
+     * @var Uri
      */
-    protected string $uri = '/';
+    protected Uri $uri;
 
     /**
-     * HttpException constructor.
+     * HttpRedirectException constructor.
      *
      * @see http://php.net/manual/en/exception.construct.php
      *
-     * @param int|null      $statusCode [optional] The status code to use
-     * @param string|null   $uri        [optional] The Exception message to throw
-     * @param array|null    $headers    [optional] The headers to send
-     * @param Response|null $response   [optional] The Response
+     * @param StatusCode|null $statusCode [optional] The status code to use
+     * @param Uri|null        $uri        [optional] The uri to redirect to
+     * @param array|null      $headers    [optional] The headers to send
+     * @param Response|null   $response   [optional] The Response
      */
     public function __construct(
-        int|null $statusCode = null,
-        string|null $uri = null,
+        Uri|null $uri = null,
+        StatusCode|null $statusCode = null,
         array|null $headers = null,
         Response|null $response = null
     ) {
         $statusCode ??= StatusCode::FOUND;
         $headers ??= [];
-        $uri ??= '/';
+        $uri ??= new HttpUri(path: '/');
         // Set a new redirect response if one wasn't passed in
-        $response ??= new RedirectResponse($uri, $statusCode, $headers);
+        $response ??= RedirectResponse::createFromUri($uri, $statusCode, $headers);
         // Set the uri
         $this->uri = $uri;
 
@@ -61,9 +63,9 @@ class HttpRedirectException extends HttpException
     /**
      * Get the uri to redirect to for this exception.
      *
-     * @return string
+     * @return Uri
      */
-    public function getUri(): string
+    public function getUri(): Uri
     {
         return $this->uri;
     }

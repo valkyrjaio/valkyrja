@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Provider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Config\Config\Valkyrja;
-use Valkyrja\Container\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Tests\Unit\TestCase;
 
 use function array_map;
+use function class_exists;
 
 /**
  * Test the ServiceProvider.
@@ -57,6 +59,12 @@ class ServiceProviderTestCase extends TestCase
 
     protected static function assertValidProvided(string $provided): void
     {
+        if (class_exists($provided)) {
+            self::assertClassExists($provided);
+
+            return;
+        }
+
         self::assertInterfaceExists($provided);
     }
 
@@ -64,24 +72,21 @@ class ServiceProviderTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->container = new Container(new Config());
+        $this->container = new Container();
 
-        $this->container->setSingleton(\Valkyrja\Config\Config\Config::class, new Valkyrja(null, true));
+        $this->container->setSingleton(Config::class, new Valkyrja(null, true));
     }
 
     /**
-     * @dataProvider providesDataProvider
-     *
      * @param class-string $provided
      */
+    #[DataProvider('providesDataProvider')]
     public function testProvides(string $provided): void
     {
         self::assertValidProvided($provided);
     }
 
-    /**
-     * @dataProvider publishersDataProvider
-     */
+    #[DataProvider('publishersDataProvider')]
     public function testPublishers(array $callable): void
     {
         self::assertIsCallable($callable);

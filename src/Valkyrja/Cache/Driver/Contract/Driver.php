@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Driver\Contract;
 
 use Valkyrja\Cache\Tagger\Contract\Tagger;
-use Valkyrja\Manager\Drivers\Contract\Driver as Contract;
+use Valkyrja\Manager\Driver\Contract\Driver as Contract;
 
 /**
  * Interface Driver.

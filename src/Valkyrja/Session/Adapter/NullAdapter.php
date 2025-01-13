@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Adapters;
+namespace Valkyrja\Session\Adapter;
 
 use Exception;
 use Valkyrja\Session\Adapter\Contract\Adapter as Contract;

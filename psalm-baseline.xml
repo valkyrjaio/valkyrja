@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.0.0@4e177bf0c9f03c17d2fbfd83b7cc9c47605274d8">
-    <file src="src/Valkyrja/Cache/Adapters/RedisAdapter.php">
-        <TooManyArguments occurrences="1">
-            <code>transaction</code>
-        </TooManyArguments>
+<files psalm-version="5.22.2@d768d914152dbbf3486c36398802f74e80cfde48">
+    <file src="src/Valkyrja/Dispatcher/Factory/DispatchFactory.php">
+        <InvalidArgument>
+            <code><![CDATA[$reflection->getName()]]></code>
+        </InvalidArgument>
     </file>
-    <file src="src/Valkyrja/Http/Factory/FileFactory.php">
-        <InvalidArrayOffset occurrences="1">
-            <code>$normalizedFiles[$key]</code>
+    <file src="src/Valkyrja/Http/Message/Factory/UploadedFileFactory.php">
+        <InvalidArrayOffset>
+            <code><![CDATA[$normalizedFiles[$key]]]></code>
         </InvalidArrayOffset>
-        <InvalidReturnStatement occurrences="2">
-            <code>$normalized</code>
-            <code>$normalizedFiles</code>
+        <InvalidReturnStatement>
+            <code><![CDATA[$normalized]]></code>
+            <code><![CDATA[$normalizedFiles]]></code>
         </InvalidReturnStatement>
-        <InvalidReturnType occurrences="2">
-            <code>UploadedFile[]</code>
-            <code>UploadedFile[]</code>
+        <InvalidReturnType>
+            <code><![CDATA[UploadedFile[]]]></code>
+            <code><![CDATA[UploadedFile[]]]></code>
         </InvalidReturnType>
     </file>
-    <file src="src/Valkyrja/Model/Models/Castable.php">
-        <UndefinedMethod occurrences="2">
-            <code>$type</code>
-            <code>$type</code>
-        </UndefinedMethod>
+    <file src="src/Valkyrja/Http/Middleware/Handler/Handler.php">
+        <PropertyTypeCoercion>
+            <code><![CDATA[$middleware]]></code>
+            <code><![CDATA[$this->middleware[$this->index] ?? null]]></code>
+            <code><![CDATA[array_merge($this->middleware, $middleware)]]></code>
+        </PropertyTypeCoercion>
     </file>
 </files>

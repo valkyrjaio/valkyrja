@@ -25,7 +25,7 @@ trait Arrayable
     /**
      * Get enum case names.
      *
-     * @return array
+     * @return string[]
      */
     public static function names(): array
     {
@@ -35,7 +35,7 @@ trait Arrayable
     /**
      * Get enum case values.
      *
-     * @return array
+     * @return string[]|int[]
      */
     public static function values(): array
     {
@@ -45,7 +45,7 @@ trait Arrayable
     /**
      * Get enum as an array with name as index and value as value.
      *
-     * @return array
+     * @return array<string, int|string>
      */
     public static function asArray(): array
     {
@@ -55,7 +55,7 @@ trait Arrayable
     /**
      * Get enum as an array with value as index and name as value.
      *
-     * @return array
+     * @return array<int|string, string>
      */
     public static function asReverseArray(): array
     {

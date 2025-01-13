@@ -53,8 +53,10 @@ trait Cacheable
 
         $this->beforeSetup($config);
 
+        $configUseCache = (bool) ($config['useCache'] ?? false);
+
         // If the application should use the routes cache file
-        if ($useCache && $config['useCache']) {
+        if ($useCache && $configUseCache) {
             /** @var Config|array $config */
             $this->setupFromCache($config);
 
@@ -64,7 +66,6 @@ trait Cacheable
 
         $this->setupNotCached($config);
         $this->setupFromAttributes($config);
-        $this->setupFromAnnotations($config);
         $this->requireFilePath($config);
         $this->afterSetup($config);
     }
@@ -75,24 +76,6 @@ trait Cacheable
      * @return Cache
      */
     abstract public function getCacheable(): Config;
-
-    /**
-     * Set annotations.
-     *
-     * @param Config|array{useAnnotations: ?bool} $config
-     *
-     * @return void
-     */
-    protected function setupFromAnnotations(Config|array $config): void
-    {
-        $useAnnotations = (bool) ($config['useAnnotations'] ?? true);
-
-        // If annotations are enabled and cacheable should use annotations
-        if ($useAnnotations) {
-            /** @var Config|array $config */
-            $this->setupAnnotations($config);
-        }
-    }
 
     /**
      * Set attributes.
@@ -157,15 +140,6 @@ trait Cacheable
      * @return void
      */
     abstract protected function setupNotCached(Config|array $config): void;
-
-    /**
-     * Set annotations.
-     *
-     * @param Config|array $config The config
-     *
-     * @return void
-     */
-    abstract protected function setupAnnotations(Config|array $config): void;
 
     /**
      * Set attributes.

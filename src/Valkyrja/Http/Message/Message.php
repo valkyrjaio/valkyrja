@@ -14,15 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message;
 
 use InvalidArgumentException;
-use Valkyrja\Http\Message\Exception\InvalidProtocolVersion;
+use Valkyrja\Http\Message\Enum\ProtocolVersion;
+use Valkyrja\Http\Message\Header\HeaderSecurity;
 use Valkyrja\Http\Message\Stream\Contract\Stream;
-use Valkyrja\Http\Message\Support\HeaderSecurity;
 
 use function array_merge;
 use function implode;
 use function is_array;
-use function preg_match;
-use function sprintf;
 use function strtolower;
 
 /**
@@ -35,23 +33,23 @@ trait Message
     /**
      * The headers with normalized header names.
      *
-     * @var string[][]
+     * @var array<string, string[]>
      */
     protected array $headers = [];
 
     /**
      * Original header names.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected array $headerNames = [];
 
     /**
-     * The protocol.
+     * The protocol version.
      *
-     * @var string
+     * @var ProtocolVersion
      */
-    protected string $protocol = '1.1';
+    protected ProtocolVersion $protocolVersion = ProtocolVersion::V1_1;
 
     /**
      * The stream.
@@ -63,9 +61,9 @@ trait Message
     /**
      * @inheritDoc
      */
-    public function getProtocolVersion(): string
+    public function getProtocolVersion(): ProtocolVersion
     {
-        return $this->protocol;
+        return $this->protocolVersion;
     }
 
     /**
@@ -73,19 +71,19 @@ trait Message
      *
      * @return static
      */
-    public function withProtocolVersion(string $version): static
+    public function withProtocolVersion(ProtocolVersion $version): static
     {
-        $this->validateProtocolVersion($version);
+        $new = clone $this;
 
-        $this->protocol = $version;
+        $new->protocolVersion = $version;
 
-        return $this;
+        return $new;
     }
 
     /**
      * @inheritDoc
      *
-     * @return string[][]
+     * @return array<string, string[]>
      */
     public function getHeaders(): array
     {
@@ -217,7 +215,14 @@ trait Message
 
         $new->setBody($body);
 
+        $body->rewind();
+
         return $new;
+    }
+
+    public function __clone()
+    {
+        $this->stream = clone $this->stream;
     }
 
     /**
@@ -257,29 +262,6 @@ trait Message
 
         $this->headerNames = $headerNames;
         $this->headers     = $headers;
-    }
-
-    /**
-     * Validate the protocol version.
-     *
-     * @param string $version The version
-     *
-     * @throws InvalidProtocolVersion
-     *
-     * @return void
-     */
-    protected function validateProtocolVersion(string $version): void
-    {
-        // HTTP/1 uses a "<major>.<minor>" numbering scheme to indicate
-        // versions of the protocol, while HTTP/2 does not.
-        if (! preg_match('#^(1\.[01]|2)$#', $version)) {
-            throw new InvalidProtocolVersion(
-                sprintf(
-                    'Unsupported HTTP protocol version "%s" provided',
-                    $version
-                )
-            );
-        }
     }
 
     /**
@@ -339,7 +321,7 @@ trait Message
         }
 
         // Set the header in the headers list
-        $headers[$header] = [$override ? $originalValue : $value];
+        $headers[$header] = [$override ? $value : $originalValue];
 
         return $headers;
     }

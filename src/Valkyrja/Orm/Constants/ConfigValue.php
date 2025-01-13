@@ -15,15 +15,15 @@ namespace Valkyrja\Orm\Constants;
 
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Orm\Adapters\PdoAdapter;
-use Valkyrja\Orm\Drivers\Driver;
-use Valkyrja\Orm\Drivers\PgSqlDriver;
-use Valkyrja\Orm\Pdos\MySqlPdo;
-use Valkyrja\Orm\Pdos\PgSqlPdo;
-use Valkyrja\Orm\Persisters\Persister;
-use Valkyrja\Orm\Queries\Query;
-use Valkyrja\Orm\QueryBuilders\SqlQueryBuilder;
-use Valkyrja\Orm\Repositories\Repository;
-use Valkyrja\Orm\Retrievers\Retriever;
+use Valkyrja\Orm\Driver\Driver;
+use Valkyrja\Orm\Driver\PgSqlDriver;
+use Valkyrja\Orm\Pdo\MySqlPdo;
+use Valkyrja\Orm\Pdo\PgSqlPdo;
+use Valkyrja\Orm\Persister\Persister;
+use Valkyrja\Orm\Query\Query;
+use Valkyrja\Orm\QueryBuilder\SqlQueryBuilder;
+use Valkyrja\Orm\Repository\Repository;
+use Valkyrja\Orm\Retriever\Retriever;
 
 /**
  * Constant ConfigValue.

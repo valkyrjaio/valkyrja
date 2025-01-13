@@ -61,7 +61,7 @@ class UploadedFile implements UploadedFileInterface
      */
     public function getError(): int
     {
-        return $this->file->getError();
+        return $this->file->getError()->value;
     }
 
     /**

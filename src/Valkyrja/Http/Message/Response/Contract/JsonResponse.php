@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Response\Contract;
 
+use Valkyrja\Http\Message\Enum\StatusCode;
+
 /**
  * Interface JsonResponse.
  *
@@ -23,13 +25,33 @@ interface JsonResponse extends Response
     /**
      * Create a JSON response.
      *
-     * @param array|null $data       [optional] The data to set
-     * @param int|null   $statusCode [optional] The response status code
-     * @param array|null $headers    [optional] An array of response headers
+     * @param array|null      $data       [optional] The data to set
+     * @param StatusCode|null $statusCode [optional] The response status code
+     * @param array|null      $headers    [optional] An array of response headers
      *
      * @return static
      */
-    public static function createFromData(array|null $data = null, int|null $statusCode = null, array|null $headers = null): static;
+    public static function createFromData(
+        array|null $data = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
+    ): static;
+
+    /**
+     * Get the body as a json array.
+     *
+     * @return array
+     */
+    public function getBodyAsJson(): array;
+
+    /**
+     * Create a new JsonResponse with the given data.
+     *
+     * @param array $data The data.
+     *
+     * @return static
+     */
+    public function withJsonAsBody(array $data): static;
 
     /**
      * With callback.

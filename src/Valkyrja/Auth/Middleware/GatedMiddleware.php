@@ -17,6 +17,7 @@ use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Gate\Contract\Gate;
 use Valkyrja\Auth\Policy\Contract\Policy;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Routing\Model\Contract\Route;
 
 /**
  * Abstract Class GatedMiddleware.
@@ -77,10 +78,13 @@ abstract class GatedMiddleware extends AuthorizedMiddleware
      */
     protected static function getAction(ServerRequest $request): string
     {
+        /** @var Route $route */
+        $route = null;
+
         return static::$action
-            ?? self::getRoute()?->getMethod()
-            ?? self::getRoute()?->getProperty()
-            ?? $request->getMethod();
+            ?? $route->getMethod()
+            ?? $route->getProperty()
+            ?? $request->getMethod()->value;
     }
 
     /**

@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Response;
 
-use InvalidArgumentException;
 use JsonException;
 use RuntimeException;
 use Valkyrja\Http\Message\Constant\ContentType;
-use Valkyrja\Http\Message\Constant\Header;
-use Valkyrja\Http\Message\Constant\StreamType;
-use Valkyrja\Http\Message\Exception\InvalidStatusCode;
-use Valkyrja\Http\Message\Exception\InvalidStream;
+use Valkyrja\Http\Message\Constant\HeaderName;
+use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Response\Contract\JsonResponse as Contract;
+use Valkyrja\Http\Message\Stream\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Stream\Stream;
+use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function explode;
 use function json_encode;
@@ -55,31 +55,30 @@ class JsonResponse extends Response implements Contract
     /**
      * NativeJsonResponse constructor.
      *
-     * @param array $data            [optional] The data
-     * @param int   $statusCode      [optional] The status
-     * @param array $headers         [optional] The headers
-     * @param int   $encodingOptions [optional] The encoding options
+     * @param array                   $data            [optional] The data
+     * @param StatusCode              $statusCode      [optional] The status
+     * @param array<string, string[]> $headers         [optional] The headers
+     * @param int                     $encodingOptions [optional] The encoding options
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
-     * @throws InvalidStatusCode
-     * @throws InvalidStream
+     * @throws InvalidStreamException
      * @throws JsonException
      */
     public function __construct(
         protected array $data = self::DEFAULT_DATA,
-        int $statusCode = self::DEFAULT_STATUS_CODE,
+        StatusCode $statusCode = self::DEFAULT_STATUS_CODE,
         array $headers = self::DEFAULT_HEADERS,
         protected int $encodingOptions = self::DEFAULT_ENCODING_OPTIONS
     ) {
-        $body = new Stream(StreamType::TEMP, 'wb+');
+        $body = new Stream();
         $body->write(json_encode($data, JSON_THROW_ON_ERROR | $this->encodingOptions));
         $body->rewind();
 
         parent::__construct(
             $body,
             $statusCode,
-            $this->injectHeader(Header::CONTENT_TYPE, ContentType::APPLICATION_JSON, $headers)
+            $this->injectHeader(HeaderName::CONTENT_TYPE, ContentType::APPLICATION_JSON, $headers, true)
         );
     }
 
@@ -88,8 +87,35 @@ class JsonResponse extends Response implements Contract
      *
      * @throws JsonException
      */
-    public static function createFromData(array|null $data = null, int|null $statusCode = null, array|null $headers = null): static
+    public function getBodyAsJson(): array
     {
+        return Arr::fromString((string) $this->getBody());
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws JsonException
+     */
+    public function withJsonAsBody(array $data): static
+    {
+        $body = new Stream();
+        $body->write(json_encode($data, JSON_THROW_ON_ERROR | $this->encodingOptions));
+        $body->rewind();
+
+        return $this->withBody($body);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws JsonException
+     */
+    public static function createFromData(
+        array|null $data = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
+    ): static {
         return new static(
             $data ?? static::DEFAULT_DATA,
             $statusCode ?? static::DEFAULT_STATUS_CODE,
@@ -104,11 +130,16 @@ class JsonResponse extends Response implements Contract
     public function withCallback(string $callback): static
     {
         $this->verifyCallback($callback);
-        $this->stream->write(sprintf('/**/%s(%s);', $callback, $this->stream->getContents()));
-        $this->stream->rewind();
 
         // Not using application/javascript for compatibility reasons with older browsers.
-        return $this->withHeader(Header::CONTENT_TYPE, ContentType::TEXT_JAVASCRIPT);
+        $new = $this->withHeader(HeaderName::CONTENT_TYPE, ContentType::TEXT_JAVASCRIPT);
+
+        $new->stream = new Stream();
+        $new->stream->write(sprintf('/**/%s(%s);', $callback, $this->stream->getContents()));
+        $new->stream->rewind();
+        $this->stream->rewind();
+
+        return $new;
     }
 
     /**
@@ -118,11 +149,15 @@ class JsonResponse extends Response implements Contract
      */
     public function withoutCallback(): static
     {
-        $this->stream->write(json_encode($this->data, JSON_THROW_ON_ERROR | $this->encodingOptions));
+        // Not using application/javascript for compatibility reasons with older browsers.
+        $new = $this->withHeader(HeaderName::CONTENT_TYPE, ContentType::APPLICATION_JSON);
+
+        $new->stream = new Stream();
+        $new->stream->write(json_encode($new->data, JSON_THROW_ON_ERROR | $new->encodingOptions));
+        $new->stream->rewind();
         $this->stream->rewind();
 
-        // Not using application/javascript for compatibility reasons with older browsers.
-        return $this->withHeader(Header::CONTENT_TYPE, ContentType::APPLICATION_JSON);
+        return $new;
     }
 
     /**

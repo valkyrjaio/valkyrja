@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Manager\Contract;
 
-use Valkyrja\Manager\Drivers\Contract\Driver;
-use Valkyrja\Manager\Factories\Contract\Factory;
+use Valkyrja\Manager\Driver\Contract\Driver;
+use Valkyrja\Manager\Factory\Contract\Factory;
 use Valkyrja\Manager\Message\Contract\Message;
 
 /**

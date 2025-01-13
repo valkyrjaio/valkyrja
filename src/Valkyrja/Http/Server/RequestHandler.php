@@ -15,26 +15,32 @@ namespace Valkyrja\Http\Server;
 
 use Throwable;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Event\Contract\Dispatcher as Events;
-use Valkyrja\Http\Message\Constant\StatusCode;
+use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Exception\HttpException;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Response\Response as HttpResponse;
+use Valkyrja\Http\Message\Stream\Stream;
+use Valkyrja\Http\Middleware;
+use Valkyrja\Http\Middleware\Handler\Contract\Handler;
+use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler;
+use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler;
+use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
+use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
+use Valkyrja\Http\Routing\Contract\Router;
 use Valkyrja\Http\Server\Contract\RequestHandler as Contract;
-use Valkyrja\Http\Server\Event\RequestHandled;
-use Valkyrja\Http\Server\Event\RequestTerminating;
-use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Routing\Config;
-use Valkyrja\Routing\Contract\Router;
-use Valkyrja\Routing\Middleware\MiddlewareAwareTrait;
-use Valkyrja\Routing\Model\Contract\Route;
 
 use function count;
 use function defined;
+use function fastcgi_finish_request;
 use function function_exists;
 use function in_array;
 use function litespeed_finish_request;
+use function ob_end_clean;
+use function ob_end_flush;
+use function ob_get_status;
+use function session_id;
+use function session_write_close;
 
 use const PHP_OUTPUT_HANDLER_CLEANABLE;
 use const PHP_OUTPUT_HANDLER_FLUSHABLE;
@@ -42,46 +48,24 @@ use const PHP_OUTPUT_HANDLER_REMOVABLE;
 use const PHP_SAPI;
 
 /**
- * Class Kernel.
+ * Class RequestHandler.
  *
  * @author Melech Mizrachi
  */
 class RequestHandler implements Contract
 {
-    use MiddlewareAwareTrait;
-
     /**
-     * The request.
-     *
-     * @var ServerRequest
-     */
-    protected ServerRequest $request;
-
-    /**
-     * The errors template directory.
-     *
-     * @var string
-     */
-    protected string $errorsTemplateDir = 'errors';
-
-    /**
-     * Kernel constructor.
-     *
-     * @param Container    $container The container
-     * @param Events       $events    The events
-     * @param Router       $router    The router
-     * @param Config|array $config    The config
-     * @param bool         $debug     [optional] Whether to run in debug
+     * RequestHandler constructor.
      */
     public function __construct(
-        protected Container $container,
-        protected Events $events,
-        protected Router $router,
-        protected Config|array $config,
+        protected Container $container = new \Valkyrja\Container\Container(),
+        protected Router $router = new \Valkyrja\Http\Routing\Router(),
+        protected RequestReceivedHandler&Handler $requestReceivedHandler = new Middleware\Handler\RequestReceivedHandler(),
+        protected ThrowableCaughtHandler&Handler $exceptionHandler = new Middleware\Handler\ThrowableCaughtHandler(),
+        protected SendingResponseHandler&Handler $sendingResponseHandler = new Middleware\Handler\SendingResponseHandler(),
+        protected TerminatedHandler&Handler $terminatedHandler = new Middleware\Handler\TerminatedHandler(),
         protected bool $debug = false
     ) {
-        self::$middleware       = $config['middleware'];
-        self::$middlewareGroups = $config['middlewareGroups'];
     }
 
     /**
@@ -91,24 +75,15 @@ class RequestHandler implements Contract
      */
     public function handle(ServerRequest $request): Response
     {
-        $this->request = $request;
-
         try {
             $response = $this->dispatchRouter($request);
-
-            // Dispatch the after request handled middleware and return the response
-            $response = $this->responseMiddleware($request, $response);
-        } catch (Throwable $exception) {
-            $response = $this->getExceptionResponse($exception);
-
-            // Log the error
-            $this->logException($exception);
+        } catch (Throwable $throwable) {
+            $response = $this->getResponseFromThrowable($throwable);
+            $response = $this->exceptionHandler->throwableCaught($request, $response, $throwable);
         }
 
         // Set the returned response in the container
         $this->container->setSingleton(Response::class, $response);
-        // Trigger an event for the request having been handled
-        $this->events->dispatchByIdIfHasListeners(RequestHandled::class, [$request, $response]);
 
         return $response;
     }
@@ -131,20 +106,8 @@ class RequestHandler implements Contract
      */
     public function terminate(ServerRequest $request, Response $response): void
     {
-        try {
-            // Trigger an event for the request being terminated
-            $this->events->dispatchByIdIfHasListeners(RequestTerminating::class, [$request, $response]);
-            // Dispatch the terminable middleware
-            $this->terminableMiddleware($request, $response);
-        } catch (Throwable $exception) {
-            $this->logException($exception);
-        }
-
-        // If a route was dispatched
-        if ($this->container->has(Route::class)) {
-            // Terminate the route middleware
-            $this->terminateRoute($request, $response);
-        }
+        // Dispatch the terminable middleware
+        $this->terminatedHandler->terminated($request, $response);
     }
 
     /**
@@ -156,6 +119,11 @@ class RequestHandler implements Contract
     {
         // Handle the request, dispatch the after request middleware
         $response = $this->handle($request);
+        // Dispatch the sending middleware
+        $response = $this->sendingResponseHandler->sendingResponse($request, $response);
+
+        // Set the returned response in the container
+        $this->container->setSingleton(Response::class, $response);
 
         // Send the response
         $this->send($response);
@@ -176,7 +144,7 @@ class RequestHandler implements Contract
         $this->container->setSingleton(ServerRequest::class, $request);
 
         // Dispatch the before request handled middleware
-        $requestAfterMiddleware = $this->requestMiddleware($request);
+        $requestAfterMiddleware = $this->requestReceivedHandler->requestReceived($request);
 
         // If the return value after middleware is a response return it
         if ($requestAfterMiddleware instanceof Response) {
@@ -190,115 +158,54 @@ class RequestHandler implements Contract
     }
 
     /**
-     * Get a response from an exception.
+     * Get a response from a throwable.
      *
-     * @param Throwable $exception The exception
+     * @param Throwable $throwable The exception
      *
      * @throws Throwable
      *
      * @return Response
      */
-    protected function getExceptionResponse(Throwable $exception): Response
+    protected function getResponseFromThrowable(Throwable $throwable): Response
     {
         if ($this->debug) {
-            // Log the error
-            $this->logException($exception);
-
-            throw $exception;
+            throw $throwable;
         }
 
         // If no response has been set and there is a template with the error code
-        if ($exception instanceof HttpException) {
-            return $this->getHttpExceptionResponse($exception);
+        if ($throwable instanceof HttpException) {
+            return $throwable->getResponse()
+                ?? $this->getDefaultErrorResponse($throwable);
         }
 
-        return $this->getResponseFactory()
-                    ->view(
-                        "$this->errorsTemplateDir/500",
-                        null,
-                        StatusCode::INTERNAL_SERVER_ERROR
-                    );
+        return $this->getDefaultErrorResponse();
     }
 
     /**
-     * Get an http exception response.
+     * Get the default exception response.
      *
-     * @param HttpException $exception The http exception
+     * @param HttpException|null $httpException [optional] The Http exception
      *
      * @return Response
      */
-    protected function getHttpExceptionResponse(HttpException $exception): Response
+    protected function getDefaultErrorResponse(HttpException|null $httpException = null): Response
     {
-        $responseFactory = $this->getResponseFactory();
+        $statusCode = StatusCode::INTERNAL_SERVER_ERROR;
 
-        try {
-            // Set the response as the error template
-            return $exception->getResponse()
-                ?? $responseFactory->view(
-                    $this->errorsTemplateDir . '/' . $exception->getStatusCode(),
-                    null,
-                    $exception->getStatusCode()
-                );
-        } catch (Throwable) {
-            return $responseFactory->view(
-                "$this->errorsTemplateDir/error",
-                [
-                    'exception' => $exception,
-                ],
-                $exception->getStatusCode()
-            );
+        $body = new Stream();
+        $body->write('Unknown Server Error Occurred');
+        $body->rewind();
+
+        if ($httpException !== null) {
+            $statusCode = $httpException->getStatusCode();
+            $body->write('Unknown Server Error Occurred - ' . $httpException->getTraceCode());
+            $body->rewind();
         }
-    }
 
-    /**
-     * Get the response factory.
-     *
-     * @return ResponseFactory
-     */
-    protected function getResponseFactory(): ResponseFactory
-    {
-        return $this->container->getSingleton(ResponseFactory::class);
-    }
-
-    /**
-     * Log an error.
-     *
-     * @param Throwable $exception
-     *
-     * @return void
-     */
-    protected function logException(Throwable $exception): void
-    {
-        /** @var Logger $logger */
-        $logger     = $this->container->getSingleton(Logger::class);
-        $url        = $this->request->getUri()->getPath();
-        $logMessage = "Kernel Error\nUrl: $url";
-
-        $logger->exception($exception, $logMessage);
-    }
-
-    /**
-     * Terminate a route's middleware.
-     *
-     * @param ServerRequest $request  The request
-     * @param Response      $response The response
-     *
-     * @return void
-     */
-    protected function terminateRoute(ServerRequest $request, Response $response): void
-    {
-        try {
-            /** @var Route $route */
-            $route = $this->container->getSingleton(Route::class);
-
-            // If the dispatched route has middleware
-            if ($route->getMiddleware() !== null) {
-                // Terminate each middleware
-                $this->terminableMiddleware($request, $response, $route->getMiddleware());
-            }
-        } catch (Throwable $exception) {
-            $this->logException($exception);
-        }
+        return new HttpResponse(
+            body: $body,
+            statusCode: $statusCode
+        );
     }
 
     /**
@@ -308,9 +215,31 @@ class RequestHandler implements Contract
      */
     protected function finishSession(): void
     {
-        if (($sessionId = session_id()) !== false && $sessionId !== '') {
-            session_write_close();
+        if ($this->shouldCloseSession()) {
+            $this->closeSession();
         }
+    }
+
+    /**
+     * Determine if the session should be closed.
+     *
+     * @return bool
+     */
+    protected function shouldCloseSession(): bool
+    {
+        $sessionId = session_id();
+
+        return $sessionId !== false && $sessionId !== '';
+    }
+
+    /**
+     * Close the session.
+     *
+     * @return void
+     */
+    protected function closeSession(): void
+    {
+        session_write_close();
     }
 
     /**
@@ -321,18 +250,70 @@ class RequestHandler implements Contract
     protected function finishRequest(): void
     {
         // If fastcgi is enabled
-        if (function_exists('fastcgi_finish_request')) {
+        if ($this->shouldUseFastcgiToFinishRequest()) {
             // Use it to finish the request
-            fastcgi_finish_request();
+            $this->finishRequestWithFastcgi();
         } // If litespeed is enabled
-        elseif (function_exists('litespeed_finish_request')) {
+        elseif ($this->shouldUseLitespeedToFinishRequest()) {
             // Use it to finish the request
-            litespeed_finish_request();
+            $this->finishRequestWithLitespeed();
         } // Otherwise if this isn't a cli request
-        elseif (! in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
+        elseif ($this->shouldCloseOutputBuffersToFinishRequest()) {
             // Use an internal method to finish the request
             $this->closeOutputBuffers(0, true);
+        } else {
+            $this->finishRequestForAllOtherTypes();
         }
+    }
+
+    /**
+     * Determine if the request should be finished with Fastcgi.
+     *
+     * @return bool
+     */
+    protected function shouldUseFastcgiToFinishRequest(): bool
+    {
+        return function_exists('fastcgi_finish_request');
+    }
+
+    /**
+     * Determine if the request should be finished with Litespeed.
+     *
+     * @return bool
+     */
+    protected function shouldUseLitespeedToFinishRequest(): bool
+    {
+        return function_exists('litespeed_finish_request');
+    }
+
+    /**
+     * Determine if the request should be finished via closing the output buffers.
+     *
+     * @return bool
+     */
+    protected function shouldCloseOutputBuffersToFinishRequest(): bool
+    {
+        return ! in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true);
+    }
+
+    /**
+     * Finish the request with Fastcgi.
+     *
+     * @return void
+     */
+    protected function finishRequestWithFastcgi(): void
+    {
+        fastcgi_finish_request();
+    }
+
+    /**
+     * Finish the request with Litespeed.
+     *
+     * @return void
+     */
+    protected function finishRequestWithLitespeed(): void
+    {
+        litespeed_finish_request();
     }
 
     /**
@@ -347,14 +328,12 @@ class RequestHandler implements Contract
      */
     protected function closeOutputBuffers(int $targetLevel, bool $flush): void
     {
-        $status = ob_get_status(true);
+        $status = $this->outputBuffersGetStatus();
         $level  = count($status);
+
+        $flushOrCleanFlag = $flush ? PHP_OUTPUT_HANDLER_FLUSHABLE : PHP_OUTPUT_HANDLER_CLEANABLE;
         // PHP_OUTPUT_HANDLER_* are not defined on HHVM 3.3
-        $flags = defined('PHP_OUTPUT_HANDLER_REMOVABLE')
-            ? PHP_OUTPUT_HANDLER_REMOVABLE | ($flush
-                ? PHP_OUTPUT_HANDLER_FLUSHABLE
-                : PHP_OUTPUT_HANDLER_CLEANABLE)
-            : -1;
+        $flags = defined('PHP_OUTPUT_HANDLER_REMOVABLE') ? PHP_OUTPUT_HANDLER_REMOVABLE | $flushOrCleanFlag : -1;
 
         while (
             $level-- > $targetLevel
@@ -362,10 +341,49 @@ class RequestHandler implements Contract
             && ($s['del'] ?? (! isset($s['flags']) || $flags === ($s['flags'] & $flags)))
         ) {
             if ($flush) {
-                ob_end_flush();
+                $this->closeOutputBuffersWithFlush();
             } else {
-                ob_end_clean();
+                $this->closeOutputBuffersWithClean();
             }
         }
+    }
+
+    /**
+     * Get the status of the output buffers.
+     *
+     * @return array
+     */
+    protected function outputBuffersGetStatus(): array
+    {
+        return ob_get_status(true);
+    }
+
+    /**
+     * End the output buffers with flush.
+     *
+     * @return void
+     */
+    protected function closeOutputBuffersWithFlush(): void
+    {
+        ob_end_flush();
+    }
+
+    /**
+     * End the output buffers with clean.
+     *
+     * @return void
+     */
+    protected function closeOutputBuffersWithClean(): void
+    {
+        ob_end_clean();
+    }
+
+    /**
+     * Finish the request for any scenario not previously caught.
+     *
+     * @return void
+     */
+    protected function finishRequestForAllOtherTypes(): void
+    {
     }
 }

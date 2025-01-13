@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Factory;
 
-use stdClass;
-use Valkyrja\Http\Message\Exception\InvalidPath;
-use Valkyrja\Http\Message\Exception\InvalidPort;
-use Valkyrja\Http\Message\Exception\InvalidQuery;
-use Valkyrja\Http\Message\Exception\InvalidScheme;
+use Psr\Http\Message\UriInterface;
+use Valkyrja\Http\Message\Factory\Data\HostPortAccumulator;
 use Valkyrja\Http\Message\Uri\Contract\Uri;
+use Valkyrja\Http\Message\Uri\Enum\Scheme;
+use Valkyrja\Http\Message\Uri\Exception\InvalidPathException;
+use Valkyrja\Http\Message\Uri\Exception\InvalidPortException;
+use Valkyrja\Http\Message\Uri\Exception\InvalidQueryException;
 use Valkyrja\Http\Message\Uri\Uri as HttpUri;
 
 use function array_change_key_case;
@@ -48,10 +49,9 @@ abstract class UriFactory
      * @param array $server
      * @param array $headers
      *
-     * @throws InvalidQuery
-     * @throws InvalidPort
-     * @throws InvalidPath
-     * @throws InvalidScheme
+     * @throws InvalidQueryException
+     * @throws InvalidPortException
+     * @throws InvalidPathException
      *
      * @return Uri
      */
@@ -60,21 +60,21 @@ abstract class UriFactory
         $uri = new HttpUri();
 
         // URI scheme
-        $scheme = 'http';
+        $scheme = Scheme::HTTP;
         /** @var string|null $https */
-        $https  = $server['HTTPS'] ?? null;
+        $https = $server['HTTPS'] ?? null;
 
-        if (($https !== null && $https !== 'off')
-            || self::getHeader('x-forwarded-proto', $headers, false) === 'https'
+        if (
+            ($https !== null && $https !== 'off')
+            || self::getHeader('x-forwarded-proto', $headers, false) === Scheme::HTTPS->value
         ) {
-            $scheme = 'https';
+            $scheme = Scheme::HTTPS;
         }
 
         $uri = $uri->withScheme($scheme);
 
         // Set the host
-        /** @var stdClass $accumulator */
-        $accumulator = (object) ['host' => '', 'port' => null];
+        $accumulator = new HostPortAccumulator();
 
         self::marshalHostAndPortFromHeaders($accumulator, $server, $headers);
 
@@ -109,7 +109,10 @@ abstract class UriFactory
             [$path, $fragment] = explode('#', $path);
         }
 
-        return $uri->withPath($path)->withFragment($fragment)->withQuery($query);
+        return $uri
+            ->withPath($path)
+            ->withQuery($query)
+            ->withFragment($fragment);
     }
 
     /**
@@ -139,14 +142,17 @@ abstract class UriFactory
     /**
      * Marshal the host and port from HTTP headers and/or the PHP environment.
      *
-     * @param stdClass $accumulator
-     * @param array    $server
-     * @param array    $headers
+     * @param HostPortAccumulator $accumulator
+     * @param array               $server
+     * @param array               $headers
      *
      * @return void
      */
-    public static function marshalHostAndPortFromHeaders(stdClass $accumulator, array $server, array $headers): void
-    {
+    public static function marshalHostAndPortFromHeaders(
+        HostPortAccumulator $accumulator,
+        array $server,
+        array $headers
+    ): void {
         if (self::getHeader('host', $headers, false)) {
             self::marshalHostAndPortFromHeader($accumulator, self::getHeader('host', $headers));
 
@@ -192,7 +198,7 @@ abstract class UriFactory
         /** @var string|null $iisUrlRewritten */
         $iisUrlRewritten = $server['IIS_WasUrlRewritten'] ?? null;
         /** @var string $unencodedUrl */
-        $unencodedUrl    = $server['UNENCODED_URL'] ?? '';
+        $unencodedUrl = $server['UNENCODED_URL'] ?? '';
 
         if ($iisUrlRewritten === '1' && $unencodedUrl !== '') {
             return $unencodedUrl;
@@ -248,19 +254,42 @@ abstract class UriFactory
     }
 
     /**
+     * Get a Uri object from a PSR UriInterface object.
+     *
+     * @param UriInterface $uri The PSR uri
+     *
+     * @return Uri
+     */
+    public static function fromPsr(UriInterface $uri): Uri
+    {
+        $userInfo = $uri->getUserInfo();
+        $user     = '';
+        $password = null;
+
+        if ($userInfo !== '') {
+            [$user, $password] = explode(':', $userInfo);
+        }
+
+        return (new HttpUri())
+            ->withScheme(Scheme::from($uri->getScheme()))
+            ->withUserInfo($user, $password)
+            ->withHost($uri->getHost())
+            ->withPort($uri->getPort())
+            ->withPath($uri->getPath())
+            ->withQuery($uri->getQuery())
+            ->withFragment($uri->getFragment());
+    }
+
+    /**
      * Marshal the host and port from the request header.
      *
-     * @param stdClass     $accumulator
-     * @param string|array $host
+     * @param HostPortAccumulator $accumulator
+     * @param string              $host
      *
      * @return void
      */
-    private static function marshalHostAndPortFromHeader(stdClass $accumulator, string|array $host): void
+    private static function marshalHostAndPortFromHeader(HostPortAccumulator $accumulator, string $host): void
     {
-        if (is_array($host)) {
-            $host = implode(', ', $host);
-        }
-
         $accumulator->host = $host;
         $accumulator->port = null;
 
@@ -274,15 +303,15 @@ abstract class UriFactory
     /**
      * Marshal host/port from misinterpreted IPv6 address.
      *
-     * @param stdClass $accumulator
-     * @param array    $server
+     * @param HostPortAccumulator $accumulator
+     * @param array               $server
      *
      * @return void
      */
-    private static function marshalIpv6HostAndPort(stdClass $accumulator, array $server): void
+    private static function marshalIpv6HostAndPort(HostPortAccumulator $accumulator, array $server): void
     {
         $accumulator->host = '[' . $server['SERVER_ADDR'] . ']';
-        $accumulator->port = $accumulator->port ?: 80;
+        $accumulator->port ??= 80;
 
         $portOffset = strrpos($accumulator->host, ':');
 

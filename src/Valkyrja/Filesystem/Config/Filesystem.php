@@ -17,6 +17,7 @@ use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
 use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
 use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Filesystem\Adapter\InMemoryAdapter;
 use Valkyrja\Filesystem\Config as Model;
 use Valkyrja\Filesystem\Constant\ConfigValue;
 
@@ -36,13 +37,18 @@ class Filesystem extends Model
         $this->updateProperties(ConfigValue::$defaults);
 
         $this->disks = [
-            CKP::LOCAL => [
+            CKP::LOCAL     => [
                 CKP::ADAPTER           => env(EnvKey::FILESYSTEM_LOCAL_ADAPTER),
                 CKP::DRIVER            => env(EnvKey::FILESYSTEM_LOCAL_DRIVER),
                 CKP::FLYSYSTEM_ADAPTER => env(EnvKey::FILESYSTEM_LOCAL_FLYSYSTEM_ADAPTER, FlysystemLocalAdapter::class),
                 CKP::DIR               => env(EnvKey::FILESYSTEM_LOCAL_DIR, storagePath('app')),
             ],
-            CKP::S3    => [
+            CKP::IN_MEMORY => [
+                CKP::ADAPTER => env(EnvKey::FILESYSTEM_LOCAL_ADAPTER, InMemoryAdapter::class),
+                CKP::DRIVER  => env(EnvKey::FILESYSTEM_LOCAL_DRIVER),
+                CKP::DIR     => env(EnvKey::FILESYSTEM_LOCAL_DIR, storagePath('app')),
+            ],
+            CKP::S3        => [
                 CKP::ADAPTER           => env(EnvKey::FILESYSTEM_S3_ADAPTER),
                 CKP::DRIVER            => env(EnvKey::FILESYSTEM_S3_DRIVER),
                 CKP::FLYSYSTEM_ADAPTER => env(EnvKey::FILESYSTEM_S3_FLYSYSTEM_ADAPTER, FlysystemAwsS3Adapter::class),

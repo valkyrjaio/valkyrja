@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Template\Contract;
 
+use Stringable;
+
 /**
  * Interface Template.
  *
  * @author Melech Mizrachi
  */
-interface Template
+interface Template extends Stringable
 {
     /**
      * Get the template name.

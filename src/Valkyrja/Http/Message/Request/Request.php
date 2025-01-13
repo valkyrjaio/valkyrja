@@ -13,33 +13,28 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Request;
 
-use Valkyrja\Http\Message\Constant\RequestMethod;
-use Valkyrja\Http\Message\Constant\StreamType;
+use Valkyrja\Http\Message\Constant\HeaderName;
+use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Exception\InvalidArgumentException;
-use Valkyrja\Http\Message\Exception\InvalidMethod;
-use Valkyrja\Http\Message\Exception\InvalidRequestTarget;
 use Valkyrja\Http\Message\Message;
-use Valkyrja\Http\Message\Request\Contract\Request as SimpleRequestContract;
+use Valkyrja\Http\Message\Request\Contract\Request as Contract;
+use Valkyrja\Http\Message\Request\Exception\InvalidRequestTargetException;
 use Valkyrja\Http\Message\Stream\Contract\Stream;
+use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream as HttpStream;
 use Valkyrja\Http\Message\Uri\Contract\Uri;
 use Valkyrja\Http\Message\Uri\Uri as HttpUri;
 
-use function in_array;
 use function preg_match;
-use function sprintf;
 
 /**
- * Class SimpleRequest.
+ * Class Request.
  *
  * @author Melech Mizrachi
  */
-class Request implements SimpleRequestContract
+class Request implements Contract
 {
     use Message;
-
-    public static string $HOST_NAME      = 'Host';
-    public static string $HOST_NAME_NORM = 'host';
 
     /**
      * The request target.
@@ -49,32 +44,24 @@ class Request implements SimpleRequestContract
     protected string|null $requestTarget = null;
 
     /**
-     * SimpleRequest constructor.
+     * Request constructor.
      *
-     * @param Uri    $uri     [optional] The uri
-     * @param string $method  [optional] The method
-     * @param Stream $body    [optional] The body stream
-     * @param array  $headers [optional] The headers
+     * @param Uri                     $uri     [optional] The uri
+     * @param RequestMethod           $method  [optional] The method
+     * @param Stream                  $body    [optional] The body stream
+     * @param array<string, string[]> $headers [optional] The headers
      *
      * @throws InvalidArgumentException
      */
     public function __construct(
         protected Uri $uri = new HttpUri(),
-        protected string $method = RequestMethod::GET,
-        Stream $body = new HttpStream(StreamType::INPUT),
+        protected RequestMethod $method = RequestMethod::GET,
+        Stream $body = new HttpStream(PhpWrapper::input),
         array $headers = []
     ) {
         $this->setBody($body);
         $this->setHeaders($headers);
-        $this->validateMethod($method);
-        $this->validateProtocolVersion($this->protocol);
-
-        if ($this->hasHeader(static::$HOST_NAME) && $this->uri->getHost()) {
-            $this->headerNames[static::$HOST_NAME_NORM] = static::$HOST_NAME;
-            $this->headers[static::$HOST_NAME]          = [
-                $this->uri->getHost(),
-            ];
-        }
+        $this->addHostHeaderFromUri();
     }
 
     /**
@@ -116,7 +103,7 @@ class Request implements SimpleRequestContract
     /**
      * @inheritDoc
      */
-    public function getMethod(): string
+    public function getMethod(): RequestMethod
     {
         return $this->method;
     }
@@ -124,10 +111,8 @@ class Request implements SimpleRequestContract
     /**
      * @inheritDoc
      */
-    public function withMethod(string $method): static
+    public function withMethod(RequestMethod $method): static
     {
-        $this->validateMethod($method);
-
         $new = clone $this;
 
         $new->method = $method;
@@ -152,7 +137,7 @@ class Request implements SimpleRequestContract
 
         $new->uri = $uri;
 
-        if ($preserveHost && $this->hasHeader(static::$HOST_NAME)) {
+        if ($preserveHost && $this->hasHeader(HeaderName::HOST)) {
             return $new;
         }
 
@@ -160,13 +145,23 @@ class Request implements SimpleRequestContract
             return $new;
         }
 
-        $host = $uri->getHost();
+        $host = $new->getHostFromUri();
 
-        $new->headerNames[static::$HOST_NAME_NORM] = static::$HOST_NAME;
+        $new->headerNames['host'] = HeaderName::HOST;
 
-        $new->headers = $this->injectHeader(static::$HOST_NAME, $host, $new->headerNames, true);
+        $new->headers = $this->injectHeader(HeaderName::HOST, $host, $new->headerNames, true);
 
         return $new;
+    }
+
+    /**
+     * Clone the object.
+     */
+    public function __clone()
+    {
+        $this->uri = clone $this->uri;
+
+        $this->stream = clone $this->stream;
     }
 
     /**
@@ -174,30 +169,41 @@ class Request implements SimpleRequestContract
      *
      * @param string $requestTarget The request target
      *
-     * @throws InvalidRequestTarget
+     * @throws InvalidRequestTargetException
      *
      * @return void
      */
     protected function validateRequestTarget(string $requestTarget): void
     {
         if (preg_match('#\s#', $requestTarget)) {
-            throw new InvalidRequestTarget('Invalid request target provided; cannot contain whitespace');
+            throw new InvalidRequestTargetException('Invalid request target provided; cannot contain whitespace');
         }
     }
 
     /**
-     * Validate a method.
-     *
-     * @param string $method The method
-     *
-     * @throws InvalidMethod
-     *
-     * @return void
+     * Retrieve the host from the URI instance.
      */
-    protected function validateMethod(string $method): void
+    protected function getHostFromUri(): string
     {
-        if (! in_array($method, RequestMethod::ANY, true)) {
-            throw new InvalidMethod(sprintf('Unsupported HTTP method "%s" provided', $method));
+        $host = $this->uri->getHost();
+        $port = $this->uri->getPort();
+        $host .= $port !== null
+            ? ':' . $port
+            : '';
+
+        return $host;
+    }
+
+    /**
+     * Add the host header from the URI.
+     */
+    protected function addHostHeaderFromUri(): void
+    {
+        if (! $this->hasHeader(HeaderName::HOST) && $this->uri->getHost()) {
+            $this->headerNames['host']       = HeaderName::HOST;
+            $this->headers[HeaderName::HOST] = [
+                $this->getHostFromUri(),
+            ];
         }
     }
 }

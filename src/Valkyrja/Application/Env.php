@@ -23,16 +23,16 @@ class Env
     /**
      * Application env variables.
      */
-    public const APP_ENV               = 'local';
-    public const APP_DEBUG             = true;
-    public const APP_URL               = 'localhost';
-    public const APP_TIMEZONE          = 'UTC';
-    public const APP_VERSION           = '1 (ALPHA)';
-    public const APP_KEY               = null;
-    public const APP_PATH_REGEX_MAP    = null;
-    public const APP_EXCEPTION_HANDLER = null;
-    public const APP_HTTP_KERNEL       = null;
-    public const APP_PROVIDERS         = null;
+    public const APP_ENV            = 'local';
+    public const APP_DEBUG          = true;
+    public const APP_URL            = 'localhost';
+    public const APP_TIMEZONE       = 'UTC';
+    public const APP_VERSION        = '1 (ALPHA)';
+    public const APP_KEY            = null;
+    public const APP_PATH_REGEX_MAP = null;
+    public const APP_ERROR_HANDLER  = null;
+    public const APP_HTTP_KERNEL    = null;
+    public const APP_PROVIDERS      = null;
 
     /**
      * Config env variables.

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Exception;
 
-use Valkyrja\Exception\Throwable as Contract;
+use Valkyrja\Http\Exception\Throwable as Contract;
 
 /**
  * Interface Throwable.

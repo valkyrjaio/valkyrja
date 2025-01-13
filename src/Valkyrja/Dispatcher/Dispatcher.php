@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher;
 
-use InvalidArgumentException;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Contract\ContextAwareContainer;
-use Valkyrja\Dispatcher\Constant\Constant;
 use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
+use Valkyrja\Dispatcher\Exception\InvalidArgumentException;
 use Valkyrja\Dispatcher\Model\Contract\Dispatch;
 
 use function array_map;
@@ -37,7 +36,7 @@ class Dispatcher implements Contract
      * @param Container $container The container
      */
     public function __construct(
-        protected Container $container
+        protected Container $container = new \Valkyrja\Container\Container()
     ) {
     }
 
@@ -46,18 +45,16 @@ class Dispatcher implements Contract
      */
     public function dispatch(Dispatch $dispatch, array|null $arguments = null): mixed
     {
-        // Attempt to dispatch the dispatch
-        $response = $this->dispatchClassMethod($dispatch, $arguments)
-            ?? $this->dispatchClassProperty($dispatch)
-            ?? $this->dispatchConstant($dispatch)
-            ?? $this->dispatchClass($dispatch, $arguments)
-            ?? $this->dispatchFunction($dispatch, $arguments)
-            ?? $this->dispatchClosure($dispatch, $arguments)
-            ?? $this->dispatchVariable($dispatch);
-
-        // If the response was initially null and we added the dispatched text to avoid calling each subsequent
-        // dispatcher thereafter so let's reset it to null
-        return $response !== Constant::DISPATCHED ? $response : null;
+        return match (true) {
+            $dispatch->isMethod() => $this->dispatchClassMethod($dispatch, $arguments),
+            $dispatch->isProperty() => $this->dispatchClassProperty($dispatch),
+            $dispatch->isConstant() => $this->dispatchConstant($dispatch),
+            $dispatch->isClass() => $this->dispatchClass($dispatch, $arguments),
+            $dispatch->isFunction() => $this->dispatchFunction($dispatch, $arguments),
+            $dispatch->isClosure() => $this->dispatchClosure($dispatch, $arguments),
+            $dispatch->isVariable() => $this->dispatchVariable($dispatch),
+            default => throw new InvalidArgumentException('Invalid dispatch'),
+        };
     }
 
     /**
@@ -70,24 +67,18 @@ class Dispatcher implements Contract
      */
     protected function dispatchClassMethod(Dispatch $dispatch, array|null $arguments = null): mixed
     {
-        // Ensure a class and method exist before continuing
-        if (! $dispatch->isMethod()) {
-            return null;
-        }
-
         /** @var string $method */
         $method = $dispatch->getMethod();
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments) ?? [];
-        $class     = $this->getClassFromDispatch($dispatch);
+        /** @var class-string|object $class */
+        $class = $this->getClassFromDispatch($dispatch);
         /** @var mixed $response */
         $response = is_string($class)
             ? $class::$method(...$arguments)
-            : (/** @var object $class */
-                $class->$method(...$arguments)
-            );
+            : $class->$method(...$arguments);
 
-        return $response ?? Constant::DISPATCHED;
+        return $response;
     }
 
     /**
@@ -99,20 +90,16 @@ class Dispatcher implements Contract
      */
     protected function dispatchClassProperty(Dispatch $dispatch): mixed
     {
-        // Ensure a class and property exist before continuing
-        if (! $dispatch->isProperty()) {
-            return null;
-        }
-
         /** @var string $property */
         $property = $dispatch->getProperty();
-        $class    = $this->getClassFromDispatch($dispatch);
+        /** @var class-string|object $class */
+        $class = $this->getClassFromDispatch($dispatch);
         /** @var mixed $response */
         $response = is_string($class)
             ? $class::$$property
             : $class->{$property};
 
-        return $response ?? Constant::DISPATCHED;
+        return $response;
     }
 
     /**
@@ -124,19 +111,13 @@ class Dispatcher implements Contract
      */
     protected function dispatchConstant(Dispatch $dispatch): mixed
     {
-        // Ensure a constant exists before continuing
-        if (! $dispatch->isConstant()) {
-            return null;
-        }
-
         /** @var string $constant */
         $constant = $dispatch->getConstant();
         $constant = ($class = $dispatch->getClass())
             ? $class . '::' . $constant
             : $constant;
-        $response = constant($constant);
 
-        return $response ?? Constant::DISPATCHED;
+        return constant($constant);
     }
 
     /**
@@ -149,26 +130,13 @@ class Dispatcher implements Contract
      */
     protected function dispatchClass(Dispatch $dispatch, array|null $arguments = null): mixed
     {
-        // Ensure a class exists before continuing
-        if (! $dispatch->isClass()) {
-            return null;
-        }
-
         /** @var class-string $className */
         $className = $dispatch->getClass();
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments) ?? [];
 
-        // If the class is the id then this item is not yet set in the
-        // service container so it needs a new instance returned
-        if ($className === $dispatch->getId()) {
-            $class = new $className(...$arguments);
-        } else {
-            // Get the class through the container
-            $class = $this->container->get($className, $arguments);
-        }
-
-        return $class ?? Constant::DISPATCHED;
+        // Get the class through the container
+        return $this->container->get($className, $arguments);
     }
 
     /**
@@ -181,18 +149,12 @@ class Dispatcher implements Contract
      */
     protected function dispatchFunction(Dispatch $dispatch, array|null $arguments = null): mixed
     {
-        // Ensure a function exists before continuing
-        if (! $dispatch->isFunction()) {
-            return null;
-        }
-
         /** @var callable-string $function */
         $function = $dispatch->getFunction();
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments) ?? [];
-        $response  = $function(...$arguments);
 
-        return $response ?? Constant::DISPATCHED;
+        return $function(...$arguments);
     }
 
     /**
@@ -205,18 +167,12 @@ class Dispatcher implements Contract
      */
     protected function dispatchClosure(Dispatch $dispatch, array|null $arguments = null): mixed
     {
-        // Ensure a closure exists before continuing
-        if (! $dispatch->isClosure()) {
-            return null;
-        }
-
         /** @var callable $closure */
         $closure = $dispatch->getClosure();
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments) ?? [];
-        $response  = $closure(...$arguments);
 
-        return $response ?? Constant::DISPATCHED;
+        return $closure(...$arguments);
     }
 
     /**
@@ -228,19 +184,12 @@ class Dispatcher implements Contract
      */
     protected function dispatchVariable(Dispatch $dispatch): mixed
     {
-        // Ensure a variable exists before continuing
-        if (! $dispatch->isVariable()) {
-            return null;
-        }
-
         /** @var string $variable */
         $variable = $dispatch->getVariable();
 
         global $$variable;
 
-        $response = $$variable;
-
-        return $response ?? Constant::DISPATCHED;
+        return $$variable;
     }
 
     /**

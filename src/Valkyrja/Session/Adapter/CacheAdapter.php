@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Adapters;
+namespace Valkyrja\Session\Adapter;
 
 use JsonException;
 use Valkyrja\Cache\Driver\Contract\Driver as Cache;
@@ -68,9 +68,11 @@ class CacheAdapter extends PHPAdapter
         }
 
         // If the session failed to start
-        if (! session_start() || ($cachedData = $this->cache->get(
-            $this->getCacheSessionId()
-        )) === null || $cachedData === '') {
+        if (
+            ! session_start()
+            || ($cachedData = $this->cache->get($this->getCacheSessionId())) === null
+            || $cachedData === ''
+        ) {
             // Throw a new exception
             throw new SessionStartFailure('The session failed to start!');
         }

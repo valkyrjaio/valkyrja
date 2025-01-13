@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Stream;
 
-use RuntimeException;
-use Valkyrja\Http\Message\Exception\InvalidStream;
-use Valkyrja\Http\Message\Exception\StreamException;
-use Valkyrja\Http\Message\Stream\Contract\Stream as StreamContract;
+use Throwable;
+use Valkyrja\Http\Message\Stream\Contract\Stream as Contract;
+use Valkyrja\Http\Message\Stream\Enum\Mode;
+use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
+use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
+use Valkyrja\Http\Message\Stream\Exception\InvalidStreamException;
 
 use function fclose;
 use function feof;
@@ -31,28 +33,29 @@ use function stream_get_meta_data;
 use const SEEK_SET;
 
 /**
- * Describes a data stream.
- * Typically, an instance will wrap a PHP stream; this interface provides
- * a wrapper around the most common operations, including serialization of
- * the entire stream to a string.
+ * Class Stream.
  *
  * @author Melech Mizrachi
  */
-class Stream implements StreamContract
+class Stream implements Contract
 {
     use StreamHelpers;
 
     /**
      * StreamImpl constructor.
      *
-     * @param string      $stream The stream
-     * @param string|null $mode   [optional] The mode
+     * @param PhpWrapper|string $stream          The stream
+     * @param Mode              $mode            [optional] The mode
+     * @param ModeTranslation   $modeTranslation [optional] The mode translation
      *
-     * @throws InvalidStream
+     * @throws InvalidStreamException
      */
-    public function __construct(string $stream, string|null $mode = null)
-    {
-        $this->setStream($stream, $mode);
+    public function __construct(
+        protected PhpWrapper|string $stream = PhpWrapper::temp,
+        protected Mode $mode = Mode::WRITE_READ,
+        protected ModeTranslation $modeTranslation = ModeTranslation::BINARY_SAFE
+    ) {
+        $this->setStream($stream, $mode, $modeTranslation);
     }
 
     /**
@@ -61,7 +64,7 @@ class Stream implements StreamContract
     public function isSeekable(): bool
     {
         // If there is no stream
-        if ($this->isInValidStream()) {
+        if ($this->isInvalidStream()) {
             // Don't do anything
             return false;
         }
@@ -78,10 +81,10 @@ class Stream implements StreamContract
         $this->verifySeekable();
 
         /** @var resource $stream */
-        $stream = $this->stream;
+        $stream = $this->resource;
 
         // Get the results of the seek attempt
-        $result = fseek($stream, $offset, $whence);
+        $result = $this->seekStream($stream, $offset, $whence);
 
         $this->verifySeekResult($result);
     }
@@ -100,7 +103,7 @@ class Stream implements StreamContract
     public function isReadable(): bool
     {
         // If there is no stream
-        if ($this->isInValidStream()) {
+        if ($this->isInvalidStream()) {
             // It's not readable
             return false;
         }
@@ -121,12 +124,14 @@ class Stream implements StreamContract
         $this->verifyReadable();
 
         /** @var resource $stream */
-        $stream = $this->stream;
+        $stream = $this->resource;
 
         // Read the stream
-        $result = fread($stream, $length);
+        $result = $this->readFromStream($stream, $length);
 
         $this->verifyReadResult($result);
+
+        /** @var string $result */
 
         return $result;
     }
@@ -137,7 +142,7 @@ class Stream implements StreamContract
     public function isWritable(): bool
     {
         // If there is no stream
-        if ($this->isInValidStream()) {
+        if ($this->isInvalidStream()) {
             // The stream is definitely not writable
             return false;
         }
@@ -158,12 +163,14 @@ class Stream implements StreamContract
         $this->verifyWritable();
 
         /** @var resource $stream */
-        $stream = $this->stream;
+        $stream = $this->resource;
 
         // Attempt to write to the stream
-        $result = fwrite($stream, $string);
+        $result = $this->writeToStream($stream, $string);
 
         $this->verifyWriteResult($result);
+
+        /** @var int $result */
 
         return $result;
     }
@@ -186,7 +193,7 @@ class Stream implements StreamContract
             // Get the stream's contents
             return $this->getContents();
         } // On a runtime exception
-        catch (RuntimeException) {
+        catch (Throwable) {
             // Return a string
             return '';
         }
@@ -198,7 +205,7 @@ class Stream implements StreamContract
     public function close(): void
     {
         // If there is no stream
-        if ($this->isInValidStream()) {
+        if ($this->isInvalidStream()) {
             // Don't do anything
             return;
         }
@@ -208,7 +215,7 @@ class Stream implements StreamContract
         $resource = $this->detach();
 
         // Close the stream
-        fclose($resource);
+        $this->closeStream($resource);
     }
 
     /**
@@ -216,19 +223,11 @@ class Stream implements StreamContract
      */
     public function detach()
     {
-        $resource = $this->stream ?? null;
+        $resource = $this->resource ?? null;
 
-        $this->stream = null;
+        $this->resource = null;
 
         return $resource;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function attach(string $stream, string|null $mode = null): void
-    {
-        $this->setStream($stream, $mode);
     }
 
     /**
@@ -237,13 +236,13 @@ class Stream implements StreamContract
     public function getSize(): int|null
     {
         // If the stream isn't set
-        if ($this->isInValidStream()) {
+        if ($this->isInvalidStream()) {
             // Return without attempting to get the fstat
             return null;
         }
 
         /** @var resource $stream */
-        $stream = $this->stream;
+        $stream = $this->resource;
 
         // Get the stream's fstat
         $fstat = fstat($stream);
@@ -259,16 +258,14 @@ class Stream implements StreamContract
         $this->verifyStream();
 
         /** @var resource $stream */
-        $stream = $this->stream;
+        $stream = $this->resource;
 
         // Get the tell for the stream
-        $result = ftell($stream);
+        $result = $this->tellStream($stream);
 
-        // If the tell is not an int
-        if ($result === false) {
-            // Throw a runtime exception
-            throw new StreamException('Error occurred during tell operation');
-        }
+        $this->verifyTellResult($result);
+
+        /** @var int $result */
 
         return $result;
     }
@@ -279,13 +276,13 @@ class Stream implements StreamContract
     public function eof(): bool
     {
         // If there is no stream
-        if ($this->isInValidStream()) {
+        if ($this->isInvalidStream()) {
             // Don't do anything
             return true;
         }
 
         /** @var resource $stream */
-        $stream = $this->stream;
+        $stream = $this->resource;
 
         return feof($stream);
     }
@@ -295,23 +292,17 @@ class Stream implements StreamContract
      */
     public function getContents(): string
     {
-        // If the stream isn't readable
-        if (! $this->isReadable()) {
-            // Throw a runtime exception
-            throw new StreamException('Stream is not readable');
-        }
+        $this->verifyReadable();
 
         /** @var resource $stream */
-        $stream = $this->stream;
+        $stream = $this->resource;
 
         // Get the stream contents
-        $result = stream_get_contents($stream);
+        $result = $this->getStreamContents($stream);
 
-        // If there was a failure in getting the stream contents
-        if ($result === false) {
-            // Throw a runtime exception
-            throw new StreamException('Error reading from stream');
-        }
+        $this->verifyReadResult($result);
+
+        /** @var string $result */
 
         return $result;
     }
@@ -322,22 +313,120 @@ class Stream implements StreamContract
     public function getMetadata(string|null $key = null): mixed
     {
         // Ensure the stream is valid
-        if ($this->isInValidStream()) {
+        if ($this->isInvalidStream()) {
             return null;
         }
 
         /** @var resource $stream */
-        $stream = $this->stream;
+        $stream = $this->resource;
 
         // If no key was specified
         if ($key === null) {
             // Return all the meta data
-            return stream_get_meta_data($stream);
+            return $this->getStreamMetadata($stream);
         }
 
         // Get the meta data
-        $metadata = stream_get_meta_data($stream);
+        $metadata = $this->getStreamMetadata($stream);
 
         return $metadata[$key] ?? null;
+    }
+
+    // public function __clone()
+    // {
+    //     $this->rewind();
+    //
+    //     $contents = $this->getContents();
+    //
+    //     $this->setStream($this->stream, $this->mode, $this->modeTranslation);
+    //
+    //     if ($this->isWritable()) {
+    //         $this->write($contents);
+    //         $this->rewind();
+    //     }
+    // }
+
+    /**
+     * Seek the stream resource.
+     *
+     * @param resource $stream
+     * @param int      $offset
+     * @param int      $whence
+     *
+     * @return int
+     */
+    protected function seekStream($stream, int $offset, int $whence = SEEK_SET): int
+    {
+        // Get the results of the seek attempt
+        return fseek($stream, $offset, $whence);
+    }
+
+    /**
+     * Tell the stream resource.
+     *
+     * @param resource $stream
+     *
+     * @return int|false
+     */
+    protected function tellStream($stream): int|false
+    {
+        // Get the tell for the stream
+        return ftell($stream);
+    }
+
+    /**
+     * Write to a stream.
+     *
+     * @param resource $stream The stream
+     */
+    protected function writeToStream($stream, string $data): int|false
+    {
+        return fwrite($stream, $data);
+    }
+
+    /**
+     * Read from stream.
+     *
+     * @param resource $stream The stream
+     */
+    protected function readFromStream($stream, int $length): string|false
+    {
+        return fread($stream, $length);
+    }
+
+    /**
+     * Get a stream's metadata.
+     *
+     * @param resource $stream The stream
+     *
+     * @return array
+     */
+    protected function getStreamMetadata($stream): array
+    {
+        return stream_get_meta_data($stream);
+    }
+
+    /**
+     * Get a stream's contents.
+     *
+     * @param resource $stream The stream
+     *
+     * @return string|false
+     */
+    protected function getStreamContents($stream): string|false
+    {
+        return stream_get_contents($stream);
+    }
+
+    /**
+     * Close a stream.
+     *
+     * @param resource $stream The stream
+     *
+     * @return bool
+     */
+    protected function closeStream($stream): bool
+    {
+        return fclose($stream);
     }
 }

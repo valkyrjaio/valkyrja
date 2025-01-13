@@ -72,7 +72,7 @@ class Container implements Contract
      * @param bool         $debug
      */
     public function __construct(
-        protected Config|array $config,
+        protected Config|array $config = new Config(),
         protected bool $debug = false
     ) {
     }
@@ -84,7 +84,7 @@ class Container implements Contract
     {
         $id = $this->getServiceIdInternal($id);
 
-        return $this->isProvided($id)
+        return $this->isDeferred($id)
             || $this->isSingletonInternal($id)
             || $this->isServiceInternal($id)
             || $this->isClosureInternal($id)
@@ -420,13 +420,16 @@ class Container implements Contract
      */
     protected function getServiceWithoutChecks(string $id, array $arguments = []): Service
     {
+        $isSingleton = $this->isSingleton($id);
         /** @var Service $service */
-        $service = $this->services[$id];
+        $service = $isSingleton
+            ? $this->singletons[$id]
+            : $this->services[$id];
         // Make the object by dispatching the service
         $made = $service::make($this, $arguments);
 
         // If the service is a singleton
-        if ($this->isSingleton($id)) {
+        if ($isSingleton) {
             // Set singleton
             $this->setSingleton($id, $made);
         }

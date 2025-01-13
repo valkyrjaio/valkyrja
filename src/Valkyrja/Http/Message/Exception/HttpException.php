@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Exception;
 
-use Valkyrja\Http\Message\Constant\StatusCode;
+use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Response\Contract\Response;
 
 /**
@@ -26,9 +26,9 @@ class HttpException extends RuntimeException
     /**
      * The status code for this exception.
      *
-     * @var int
+     * @var StatusCode
      */
-    protected int $statusCode = StatusCode::INTERNAL_SERVER_ERROR;
+    protected StatusCode $statusCode = StatusCode::INTERNAL_SERVER_ERROR;
 
     /**
      * The headers for this exception.
@@ -49,20 +49,22 @@ class HttpException extends RuntimeException
      *
      * @see http://php.net/manual/en/exception.construct.php
      *
-     * @param int|null      $statusCode [optional] The status code to use
-     * @param string|null   $message    [optional] The Exception message to throw
-     * @param array|null    $headers    [optional] The headers to send
-     * @param Response|null $response   [optional] The Response to send
+     * @param StatusCode|null $statusCode [optional] The status code to use
+     * @param string|null     $message    [optional] The Exception message to throw
+     * @param array|null      $headers    [optional] The headers to send
+     * @param Response|null   $response   [optional] The Response to send
      */
     public function __construct(
-        int|null $statusCode = null,
+        StatusCode|null $statusCode = null,
         string|null $message = null,
         array|null $headers = null,
         Response|null $response = null
     ) {
-        $this->statusCode = $statusCode ?? StatusCode::INTERNAL_SERVER_ERROR;
+        $this->statusCode = $statusCode
+            ?? $response?->getStatusCode()
+            ?? StatusCode::INTERNAL_SERVER_ERROR;
         $this->headers    = $headers ?? [];
-        $this->response   = $response;
+        $this->response   = $response?->withStatus($this->statusCode);
 
         parent::__construct($message ?? '');
     }
@@ -70,9 +72,9 @@ class HttpException extends RuntimeException
     /**
      * Get the status code for this exception.
      *
-     * @return int
+     * @return StatusCode
      */
-    public function getStatusCode(): int
+    public function getStatusCode(): StatusCode
     {
         return $this->statusCode;
     }

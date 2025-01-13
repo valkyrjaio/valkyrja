@@ -23,7 +23,7 @@ use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Session\Adapter\Contract\Adapter;
 use Valkyrja\Session\Adapter\Contract\CacheAdapter;
 use Valkyrja\Session\Adapter\Contract\LogAdapter;
-use Valkyrja\Session\Adapters\CookieAdapter;
+use Valkyrja\Session\Adapter\CookieAdapter;
 use Valkyrja\Session\Contract\Session;
 use Valkyrja\Session\Driver\Contract\Driver;
 use Valkyrja\Session\Factory\ContainerFactory;
@@ -82,8 +82,8 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Session::class,
             new \Valkyrja\Session\Session(
-                $container->getSingleton(Factory::class),
-                $config['session']
+                factory: $container->getSingleton(Factory::class),
+                config: $config['session']
             )
         );
     }
@@ -99,7 +99,7 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Factory::class,
-            new ContainerFactory($container),
+            new ContainerFactory(container: $container),
         );
     }
 
@@ -119,7 +119,7 @@ class ServiceProvider extends Provider
              */
             static function (string $name, Adapter $adapter): Driver {
                 return new $name(
-                    $adapter
+                    adapter: $adapter
                 );
             }
         );
@@ -141,7 +141,7 @@ class ServiceProvider extends Provider
              */
             static function (string $name, array $config): Adapter {
                 return new $name(
-                    $config
+                    config: $config
                 );
             }
         );
@@ -160,13 +160,13 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             CacheAdapter::class,
-            /**
-             * @param class-string<CacheAdapter> $name
-             */
             static function (string $name, array $config) use ($cache): CacheAdapter {
+                /**
+                 * @var class-string<CacheAdapter> $name
+                 */
                 return new $name(
-                    $cache,
-                    $config
+                    cache: $cache,
+                    config: $config
                 );
             }
         );
@@ -190,8 +190,8 @@ class ServiceProvider extends Provider
              */
             static function (string $name, array $config) use ($logger): LogAdapter {
                 return new $name(
-                    $logger->use($config['logger'] ?? null),
-                    $config
+                    logger: $logger->use($config['logger'] ?? null),
+                    config: $config
                 );
             }
         );
@@ -213,9 +213,9 @@ class ServiceProvider extends Provider
             CookieAdapter::class,
             static function (array $config) use ($crypt, $request): CookieAdapter {
                 return new CookieAdapter(
-                    $crypt,
-                    $request,
-                    $config
+                    crypt: $crypt,
+                    request: $request,
+                    config: $config
                 );
             }
         );

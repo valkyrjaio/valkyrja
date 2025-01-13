@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Factory;
 
+use function array_keys;
+use function array_map;
+use function array_values;
+use function implode;
 use function preg_match_all;
 use function urldecode;
 
@@ -22,9 +26,13 @@ use const PREG_SET_ORDER;
  * Abstract Class CookieFactory.
  *
  * @author Melech Mizrachi
+ *
+ * @see    https://www.php.net/manual/en/reserved.variables.cookies.php
  */
 abstract class CookieFactory
 {
+    protected const SEPARATOR = '; ';
+
     /**
      * Parse a cookie header according to RFC 6265.
      * PHP will replace special characters in cookie names, which results in other cookies not being available due to
@@ -59,5 +67,18 @@ abstract class CookieFactory
         }
 
         return $cookies;
+    }
+
+    public static function convertCookieArrayToHeaderString(array $cookies): string
+    {
+        return implode(
+            self::SEPARATOR,
+            array_map([self::class, 'combineKeyAndValue'], array_keys($cookies), array_values($cookies))
+        );
+    }
+
+    public static function combineKeyAndValue(string $key, string $value): string
+    {
+        return "$key=$value";
     }
 }

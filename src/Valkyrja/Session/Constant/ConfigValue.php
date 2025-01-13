@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Constant;
 
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Session\Adapters\PHPAdapter;
+use Valkyrja\Session\Adapter\PHPAdapter;
 use Valkyrja\Session\Driver\Driver;
 
 /**

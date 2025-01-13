@@ -15,8 +15,8 @@ namespace Valkyrja\Manager;
 
 use Valkyrja\Manager\Adapter\Contract\Adapter;
 use Valkyrja\Manager\Contract\Manager as Contract;
-use Valkyrja\Manager\Drivers\Contract\Driver;
-use Valkyrja\Manager\Factories\Contract\Factory;
+use Valkyrja\Manager\Driver\Contract\Driver;
+use Valkyrja\Manager\Factory\Contract\Factory;
 
 /**
  * Class Manager.

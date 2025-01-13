@@ -26,7 +26,7 @@ use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Policy\Contract\Policy;
 use Valkyrja\Auth\Repository\Contract\Repository;
 use Valkyrja\Auth\Repository\Contract\TokenizedRepository;
-use Valkyrja\Http\Message\Constant\Header;
+use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 
 /**
@@ -204,7 +204,7 @@ class Auth implements Contract
         }
 
         return $request->withHeader(
-            Header::AUTHORIZATION,
+            HeaderName::AUTHORIZATION,
             HeaderValue::BEARER . ' ' . $repository->getToken()
         );
     }
@@ -214,7 +214,7 @@ class Auth implements Contract
      */
     public function requestWithoutAuthToken(ServerRequest $request): ServerRequest
     {
-        return $request->withoutHeader(Header::AUTHORIZATION);
+        return $request->withoutHeader(HeaderName::AUTHORIZATION);
     }
 
     /**

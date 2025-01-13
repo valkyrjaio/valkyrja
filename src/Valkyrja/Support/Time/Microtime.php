@@ -24,7 +24,7 @@ class Microtime
 
     public static function freeze(float|null $microtime = null): void
     {
-        static::$frozenTime = $microtime ?? static::time();
+        static::$frozenTime = $microtime ?? static::microtime();
     }
 
     public static function unfreeze(): void
@@ -34,10 +34,10 @@ class Microtime
 
     public static function get(): float
     {
-        return static::$frozenTime ?? static::time();
+        return static::$frozenTime ?? static::microtime();
     }
 
-    protected static function time(): float
+    protected static function microtime(): float
     {
         return microtime(true);
     }

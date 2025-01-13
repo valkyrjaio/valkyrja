@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Log;
 
 use Throwable;
+use Valkyrja\Log\Constant\ConfigValue;
 use Valkyrja\Log\Contract\Logger as Contract;
 use Valkyrja\Log\Driver\Contract\Driver;
+use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Log\Factory\Contract\Factory;
 use Valkyrja\Manager\Manager;
 
@@ -36,8 +38,15 @@ class Logger extends Manager implements Contract
      * @param Factory      $factory The factory
      * @param Config|array $config  The config
      */
-    public function __construct(Factory $factory, Config|array $config)
-    {
+    public function __construct(
+        Factory $factory = new \Valkyrja\Log\Factory\Factory(),
+        Config|array $config = new Config()
+    ) {
+        $config['default'] ??= ConfigValue::DEFAULT;
+        $config['adapter'] ??= ConfigValue::ADAPTER;
+        $config['driver']  ??= ConfigValue::DRIVER;
+        $config['loggers'] ??= ConfigValue::LOGGERS;
+
         parent::__construct($factory, $config);
 
         $this->configurations = $config['loggers'];
@@ -121,7 +130,7 @@ class Logger extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function log(string $level, string $message, array $context = []): void
+    public function log(LogLevel $level, string $message, array $context = []): void
     {
         $this->use()->log($level, $message, $context);
     }

@@ -33,13 +33,17 @@
         <InvalidClassConstantType errorLevel="suppress" />
         <InvalidStringClass errorLevel="suppress" />
         <MixedArgument errorLevel="suppress" />
+        <MixedArgumentTypeCoercion errorLevel="suppress" />
         <MixedArrayAccess errorLevel="suppress" />
+        <MixedArrayAssignment errorLevel="suppress" />
         <MixedAssignment errorLevel="suppress" />
         <MixedArrayOffset errorLevel="suppress" />
         <MixedInferredReturnType errorLevel="suppress" />
         <MixedOperand errorLevel="suppress" />
         <MixedMethodCall errorLevel="suppress" />
+        <MixedPropertyTypeCoercion errorLevel="suppress" />
         <MixedReturnStatement errorLevel="suppress" />
+        <MixedReturnTypeCoercion errorLevel="suppress" />
         <UnresolvableInclude errorLevel="suppress" />
         <UnsafeInstantiation errorLevel="suppress" />
 
@@ -65,5 +69,12 @@
                 <referencedClass name="events" />
             </errorLevel>
         </UndefinedClass>
+
+        <UndefinedFunction>
+            <errorLevel type="suppress">
+                <!-- Exists on some file systems -->
+                <referencedFunction name="litespeed_finish_request" />
+            </errorLevel>
+        </UndefinedFunction>
     </issueHandlers>
 </psalm>

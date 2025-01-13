@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm;
 
-use Valkyrja\Orm\Enums\WhereType;
+use Valkyrja\Orm\Enum\WhereType;
 
 /**
  * Interface WhereQueryBuilder.
