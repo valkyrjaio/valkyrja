@@ -340,7 +340,7 @@ class CacheRepository extends Repository implements Contract
 
         match ($type) {
             self::$storeType  => $this->storeEntities[$id]   = $entity,
-            self::$forgetType => $this->forgetEntities[$id] = $entity,
+            self::$forgetType => $this->forgetEntities[$id]  = $entity,
         };
     }
 
