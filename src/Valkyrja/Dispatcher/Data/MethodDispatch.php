@@ -17,6 +17,7 @@ use Valkyrja\Dispatcher\Data\Contract\MethodDispatch as Contract;
 use Valkyrja\Dispatcher\Exception\InvalidArgumentException;
 
 use function is_array;
+use function is_string;
 
 /**
  * Class MethodDispatch.
@@ -25,6 +26,23 @@ use function is_array;
  */
 class MethodDispatch extends ClassDispatch implements Contract
 {
+    /**
+     * @param class-string $class The class name
+     */
+    public function __construct(
+        string $class,
+        protected string $method,
+        protected bool $isStatic = false,
+        ?array $arguments = null,
+        ?array $dependencies = null
+    ) {
+        parent::__construct(
+            class: $class,
+            arguments: $arguments,
+            dependencies: $dependencies
+        );
+    }
+
     /**
      * @inheritDoc
      */
@@ -49,23 +67,6 @@ class MethodDispatch extends ClassDispatch implements Contract
             class: $className,
             method: $method,
             isStatic: true
-        );
-    }
-
-    /**
-     * @param class-string $class The class name
-     */
-    public function __construct(
-        string $class,
-        protected string $method,
-        protected bool $isStatic = false,
-        ?array $arguments = null,
-        ?array $dependencies = null
-    ) {
-        parent::__construct(
-            class: $class,
-            arguments: $arguments,
-            dependencies: $dependencies
         );
     }
 

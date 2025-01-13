@@ -51,7 +51,7 @@ class Parameter extends Model
      * @param mixed       $default       [optional] The default value for this parameter
      */
     public function __construct(
-        string $name = null,
+        ?string $name = null,
         string|null $regex = null,
         protected Cast|null $cast = null,
         protected bool $isOptional = false,

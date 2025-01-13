@@ -32,7 +32,7 @@ $result = $dispatcher->dispatch($classDispatch);
 
 var_dump($result, $method, $property, $class);
 
-class Test
+class test
 {
     public function __construct(
         public string $fire,
@@ -40,12 +40,12 @@ class Test
     ) {
     }
 
-    public static function test()
+    public static function test(): void
     {
     }
 }
 
-function callsACallable(callable $test)
+function callsACallable(callable $test): void
 {
     var_dump($test, is_array($test));
 }

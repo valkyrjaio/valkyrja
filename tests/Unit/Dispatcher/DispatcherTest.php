@@ -101,18 +101,6 @@ class DispatcherTest extends TestCase
     }
 
     /**
-     * A valid method.
-     *
-     * @param string|null $arg [optional] An argument
-     *
-     * @return string
-     */
-    public function validMethod(string|null $arg = null): string
-    {
-        return 'test' . ($arg ?? '');
-    }
-
-    /**
      * Setup the test.
      *
      * @return void
@@ -126,6 +114,18 @@ class DispatcherTest extends TestCase
         $this->dispatcher = new Dispatcher($this->container);
 
         $this->container->setSingleton(self::class, $this);
+    }
+
+    /**
+     * A valid method.
+     *
+     * @param string|null $arg [optional] An argument
+     *
+     * @return string
+     */
+    public function validMethod(string|null $arg = null): string
+    {
+        return 'test' . ($arg ?? '');
     }
 
     public function testContract(): void

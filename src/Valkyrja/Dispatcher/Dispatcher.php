@@ -46,14 +46,14 @@ class Dispatcher implements Contract
     public function dispatch(Dispatch $dispatch, array|null $arguments = null): mixed
     {
         return match (true) {
-            $dispatch->isMethod() => $this->dispatchClassMethod($dispatch, $arguments),
+            $dispatch->isMethod()   => $this->dispatchClassMethod($dispatch, $arguments),
             $dispatch->isProperty() => $this->dispatchClassProperty($dispatch),
             $dispatch->isConstant() => $this->dispatchConstant($dispatch),
-            $dispatch->isClass() => $this->dispatchClass($dispatch, $arguments),
+            $dispatch->isClass()    => $this->dispatchClass($dispatch, $arguments),
             $dispatch->isFunction() => $this->dispatchFunction($dispatch, $arguments),
-            $dispatch->isClosure() => $this->dispatchClosure($dispatch, $arguments),
+            $dispatch->isClosure()  => $this->dispatchClosure($dispatch, $arguments),
             $dispatch->isVariable() => $this->dispatchVariable($dispatch),
-            default => throw new InvalidArgumentException('Invalid dispatch'),
+            default                 => throw new InvalidArgumentException('Invalid dispatch'),
         };
     }
 

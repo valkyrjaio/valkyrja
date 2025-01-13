@@ -87,6 +87,24 @@ class JsonResponse extends Response implements Contract
      *
      * @throws JsonException
      */
+    public static function createFromData(
+        array|null $data = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
+    ): static {
+        return new static(
+            $data ?? static::DEFAULT_DATA,
+            $statusCode ?? static::DEFAULT_STATUS_CODE,
+            $headers ?? static::DEFAULT_HEADERS,
+            static::DEFAULT_ENCODING_OPTIONS
+        );
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws JsonException
+     */
     public function getBodyAsJson(): array
     {
         return Arr::fromString((string) $this->getBody());
@@ -104,24 +122,6 @@ class JsonResponse extends Response implements Contract
         $body->rewind();
 
         return $this->withBody($body);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @throws JsonException
-     */
-    public static function createFromData(
-        array|null $data = null,
-        StatusCode|null $statusCode = null,
-        array|null $headers = null
-    ): static {
-        return new static(
-            $data ?? static::DEFAULT_DATA,
-            $statusCode ?? static::DEFAULT_STATUS_CODE,
-            $headers ?? static::DEFAULT_HEADERS,
-            static::DEFAULT_ENCODING_OPTIONS
-        );
     }
 
     /**

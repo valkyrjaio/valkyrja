@@ -53,13 +53,13 @@ class Dispatcher2 implements Contract
     public function dispatch(Dispatch $dispatch, array|null $arguments = null): mixed
     {
         return match (true) {
-            $dispatch instanceof MethodDispatch => $this->dispatchClassMethod($dispatch, $arguments),
-            $dispatch instanceof PropertyDispatch => $this->dispatchClassProperty($dispatch),
-            $dispatch instanceof ConstantDispatch => $this->dispatchConstant($dispatch),
-            $dispatch instanceof ClassDispatch => $this->dispatchClass($dispatch, $arguments),
-            $dispatch instanceof CallableDispatch => $this->dispatchCallable($dispatch, $arguments),
+            $dispatch instanceof MethodDispatch         => $this->dispatchClassMethod($dispatch, $arguments),
+            $dispatch instanceof PropertyDispatch       => $this->dispatchClassProperty($dispatch),
+            $dispatch instanceof ConstantDispatch       => $this->dispatchConstant($dispatch),
+            $dispatch instanceof ClassDispatch          => $this->dispatchClass($dispatch, $arguments),
+            $dispatch instanceof CallableDispatch       => $this->dispatchCallable($dispatch, $arguments),
             $dispatch instanceof GlobalVariableDispatch => $this->dispatchVariable($dispatch),
-            default => throw new InvalidArgumentException('Invalid dispatch'),
+            default                                     => throw new InvalidArgumentException('Invalid dispatch'),
         };
     }
 
@@ -220,18 +220,18 @@ class Dispatcher2 implements Contract
         }
 
         $context = match (true) {
-            $dispatch instanceof ClassDispatch => $dispatch->getClass(),
+            $dispatch instanceof ClassDispatch    => $dispatch->getClass(),
             $dispatch instanceof CallableDispatch => is_array($callable = $dispatch->getCallable()) && is_string($callable[0])
                 ? $callable[0]
                 : null,
-            default => null
+            default                               => null
         };
         $member  = match (true) {
-            $dispatch instanceof MethodDispatch => $dispatch->getMethod(),
+            $dispatch instanceof MethodDispatch   => $dispatch->getMethod(),
             $dispatch instanceof CallableDispatch => is_array($callable = $dispatch->getCallable()) && is_string($callable[1])
                 ? $callable[1]
                 : null,
-            default => null
+            default                               => null
         };
 
         $containerContext = null;

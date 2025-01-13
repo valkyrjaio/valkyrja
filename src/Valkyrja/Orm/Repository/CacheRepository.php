@@ -311,7 +311,7 @@ class CacheRepository extends Repository implements Contract
      *
      * @param string $type
      * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param bool   $defer  [optional]
      *
      * @return void
      */
@@ -339,7 +339,7 @@ class CacheRepository extends Repository implements Contract
         $id = spl_object_id($entity);
 
         match ($type) {
-            self::$storeType => $this->storeEntities[$id] = $entity,
+            self::$storeType  => $this->storeEntities[$id]   = $entity,
             self::$forgetType => $this->forgetEntities[$id] = $entity,
         };
     }

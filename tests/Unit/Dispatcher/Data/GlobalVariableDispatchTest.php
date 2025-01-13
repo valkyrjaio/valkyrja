@@ -20,6 +20,8 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function json_encode;
 
+use const JSON_THROW_ON_ERROR;
+
 /**
  * Test the GlobalVariableDispatch.
  *

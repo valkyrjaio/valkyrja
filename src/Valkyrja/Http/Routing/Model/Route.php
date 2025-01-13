@@ -209,12 +209,12 @@ class Route extends Dispatch implements Contract
         string|null $to = null,
         StatusCode|null $code = null,
     ) {
-        $path    ??= static::DEFAULT_PATH;
-        $name    ??= static::DEFAULT_NAME;
+        $path ??= static::DEFAULT_PATH;
+        $name ??= static::DEFAULT_NAME;
         $methods ??= static::DEFAULT_METHODS;
-        $secure  ??= static::DEFAULT_SECURE;
-        $to      ??= static::DEFAULT_TO;
-        $code    ??= static::DEFAULT_CODE;
+        $secure ??= static::DEFAULT_SECURE;
+        $to ??= static::DEFAULT_TO;
+        $code ??= static::DEFAULT_CODE;
 
         $this->setPath($path);
 
@@ -490,31 +490,31 @@ class Route extends Dispatch implements Contract
     {
         if (Cls::inherits($middleware, RouteMatchedMiddleware::class)) {
             /** @var class-string<RouteMatchedMiddleware> $middleware */
-            $this->matchedMiddleware   ??= [];
+            $this->matchedMiddleware ??= [];
             $this->matchedMiddleware[] = $middleware;
         }
 
         if (Cls::inherits($middleware, RouteDispatchedMiddleware::class)) {
             /** @var class-string<RouteDispatchedMiddleware> $middleware */
-            $this->dispatchedMiddleware   ??= [];
+            $this->dispatchedMiddleware ??= [];
             $this->dispatchedMiddleware[] = $middleware;
         }
 
         if (Cls::inherits($middleware, ThrowableCaughtMiddleware::class)) {
             /** @var class-string<ThrowableCaughtMiddleware> $middleware */
-            $this->exceptionMiddleware   ??= [];
+            $this->exceptionMiddleware ??= [];
             $this->exceptionMiddleware[] = $middleware;
         }
 
         if (Cls::inherits($middleware, SendingResponseMiddleware::class)) {
             /** @var class-string<SendingResponseMiddleware> $middleware */
-            $this->sendingMiddleware   ??= [];
+            $this->sendingMiddleware ??= [];
             $this->sendingMiddleware[] = $middleware;
         }
 
         if (Cls::inherits($middleware, TerminatedMiddleware::class)) {
             /** @var class-string<TerminatedMiddleware> $middleware */
-            $this->terminatedMiddleware   ??= [];
+            $this->terminatedMiddleware ??= [];
             $this->terminatedMiddleware[] = $middleware;
         }
 
@@ -722,7 +722,7 @@ class Route extends Dispatch implements Contract
     }
 
     /**
-     * Set the response struct
+     * Set the response struct.
      *
      * @param class-string<ResponseStruct>|null $responseStruct The response struct
      *

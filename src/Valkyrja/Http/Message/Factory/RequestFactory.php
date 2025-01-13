@@ -53,10 +53,10 @@ abstract class RequestFactory
         array|null $files = null,
         string $class = ServerRequest::class
     ): ServerRequest {
-        $files  ??= $_FILES;
+        $files ??= $_FILES;
         $server ??= $_SERVER;
-        $query  ??= $_GET;
-        $body   ??= $_POST;
+        $query ??= $_GET;
+        $body ??= $_POST;
 
         $server['REQUEST_METHOD'] ??= RequestMethod::GET->value;
 

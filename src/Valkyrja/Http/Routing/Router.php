@@ -223,15 +223,19 @@ class Router implements Contract
         if ($matchedMiddleware !== null) {
             $this->routeMatchedHandler->add(...$matchedMiddleware);
         }
+
         if ($dispatchedMiddleware !== null) {
             $this->routeDispatchedHandler->add(...$dispatchedMiddleware);
         }
+
         if ($exceptionMiddleware !== null) {
             $this->exceptionHandler->add(...$exceptionMiddleware);
         }
+
         if ($sendingMiddleware !== null) {
             $this->sendingResponseHandler->add(...$sendingMiddleware);
         }
+
         if ($terminatedMiddleware !== null) {
             $this->terminatedHandler->add(...$terminatedMiddleware);
         }

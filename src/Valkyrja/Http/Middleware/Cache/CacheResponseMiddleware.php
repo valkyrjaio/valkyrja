@@ -45,28 +45,6 @@ class CacheResponseMiddleware implements RequestReceivedMiddleware, TerminatedMi
     }
 
     /**
-     * Get the ttl.
-     *
-     * @return int
-     */
-    protected function getTtl(): int
-    {
-        return 1800;
-    }
-
-    /**
-     * Get a hashed version of the request path.
-     *
-     * @param ServerRequest $request
-     *
-     * @return string
-     */
-    protected function getHashedPath(ServerRequest $request): string
-    {
-        return md5($request->getUri()->getPath());
-    }
-
-    /**
      * @inheritDoc
      */
     public function requestReceived(ServerRequest $request, RequestReceivedHandler $handler): ServerRequest|Response
@@ -122,6 +100,28 @@ class CacheResponseMiddleware implements RequestReceivedMiddleware, TerminatedMi
         );
 
         $handler->terminated($request, $response);
+    }
+
+    /**
+     * Get the ttl.
+     *
+     * @return int
+     */
+    protected function getTtl(): int
+    {
+        return 1800;
+    }
+
+    /**
+     * Get a hashed version of the request path.
+     *
+     * @param ServerRequest $request
+     *
+     * @return string
+     */
+    protected function getHashedPath(ServerRequest $request): string
+    {
+        return md5($request->getUri()->getPath());
     }
 
     /**

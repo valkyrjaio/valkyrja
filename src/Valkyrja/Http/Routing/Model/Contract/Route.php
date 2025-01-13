@@ -369,7 +369,7 @@ interface Route extends Dispatch
     public function getResponseStruct(): string|null;
 
     /**
-     * Set the response struct
+     * Set the response struct.
      *
      * @param class-string<ResponseStruct>|null $responseStruct The response struct
      *

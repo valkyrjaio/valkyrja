@@ -44,7 +44,7 @@ class Logger extends Manager implements Contract
     ) {
         $config['default'] ??= ConfigValue::DEFAULT;
         $config['adapter'] ??= ConfigValue::ADAPTER;
-        $config['driver']  ??= ConfigValue::DRIVER;
+        $config['driver'] ??= ConfigValue::DRIVER;
         $config['loggers'] ??= ConfigValue::LOGGERS;
 
         parent::__construct($factory, $config);

@@ -47,7 +47,7 @@ interface JsonResponse extends Response
     /**
      * Create a new JsonResponse with the given data.
      *
-     * @param array $data The data.
+     * @param array $data the data
      *
      * @return static
      */
