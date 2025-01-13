@@ -324,13 +324,13 @@ class AttributesTest extends TestCase
      */
     public function testForFunction(): void
     {
-        #[Attribute(self::VALUE1)]
-        #[Attribute(self::VALUE2)]
-        #[AttributeChild(self::VALUE3, self::THREE)]
+        #[Attribute(1)]
+        #[Attribute(2)]
+        #[AttributeChild(3, 'three')]
         function testFunction(
-            #[Attribute(self::VALUE1)]
-            #[Attribute(self::VALUE2)]
-            #[AttributeChild(self::VALUE3, self::THREE)]
+            #[Attribute(1)]
+            #[Attribute(2)]
+            #[AttributeChild(3, 'three')]
             string $param
         ): void {
         }
