@@ -292,9 +292,9 @@ class CacheRepository extends Repository implements Contract
     /**
      * Defer or cache.
      *
-     * @param StoreType $type
-     * @param Entity    $entity
-     * @param bool      $defer [optional]
+     * @param StoreType $type   Whether to store or forget
+     * @param Entity    $entity The entity
+     * @param bool      $defer  [optional] Whether to defer
      *
      * @return void
      */
