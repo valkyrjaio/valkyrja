@@ -37,8 +37,8 @@ interface Engine
     /**
      * Render a file.
      *
-     * @param string $name      The file name
-     * @param array  $variables [optional] The variables
+     * @param string               $name      The file name
+     * @param array<string, mixed> $variables [optional] The variables
      *
      * @return string
      */

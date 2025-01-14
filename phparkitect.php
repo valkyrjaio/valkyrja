@@ -16,13 +16,11 @@ use Arkitect\CLI\Config;
 use Arkitect\Expression\ForClasses\Extend;
 use Arkitect\Expression\ForClasses\HaveAttribute;
 use Arkitect\Expression\ForClasses\HaveNameMatching;
-use Arkitect\Expression\ForClasses\IsAbstract;
 use Arkitect\Expression\ForClasses\IsEnum;
 use Arkitect\Expression\ForClasses\IsFinal;
 use Arkitect\Expression\ForClasses\IsInterface;
 use Arkitect\Expression\ForClasses\IsNotAbstract;
 use Arkitect\Expression\ForClasses\IsNotEnum;
-use Arkitect\Expression\ForClasses\IsNotFinal;
 use Arkitect\Expression\ForClasses\IsNotInterface;
 use Arkitect\Expression\ForClasses\IsNotTrait;
 use Arkitect\Expression\ForClasses\IsTrait;
@@ -41,6 +39,11 @@ return static function (Config $config): void {
 
     $srcRules  = [];
     $testRules = [];
+
+    // $srcRules[] = Rule::allClasses()
+    //                   ->that(new ResideInOneOfTheseNamespaces('*'))
+    //                   ->should(new ContainDocBlockLike('*@author Melech Mizrachi'))
+    //                   ->because('All classes should have an author');
 
     $srcRules[] = Rule::allClasses()
                       ->that(new HaveAttribute(Attribute::class))

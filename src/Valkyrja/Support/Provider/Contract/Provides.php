@@ -47,7 +47,7 @@ interface Provides
     /**
      * The items provided by this provider.
      *
-     * @return array
+     * @return class-string[]
      */
     public static function provides(): array;
 

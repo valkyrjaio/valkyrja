@@ -26,6 +26,9 @@ use function is_string;
  * @author Melech Mizrachi
  *
  * @extends Type<object>
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
  */
 class ObjectT extends Type implements Contract
 {

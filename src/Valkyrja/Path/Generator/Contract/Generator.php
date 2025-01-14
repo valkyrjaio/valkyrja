@@ -23,9 +23,9 @@ interface Generator
     /**
      * Parse segments, data, and params into a path.
      *
-     * @param array      $segments The segments
-     * @param array|null $data     [optional] The data
-     * @param array|null $params   [optional] The params
+     * @param string[]                     $segments The segments
+     * @param array<array-key, mixed>|null $data     [optional] The data
+     * @param array<array-key, mixed>|null $params   [optional] The params
      *
      * @return string
      */

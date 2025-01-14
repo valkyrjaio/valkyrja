@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Sms;
 
 use Valkyrja\Manager\MessageManager as Manager;
-use Valkyrja\Sms\Adapter\Contract\Adapter;
 use Valkyrja\Sms\Contract\Sms as Contract;
 use Valkyrja\Sms\Driver\Contract\Driver;
 use Valkyrja\Sms\Factory\Contract\Factory;
@@ -34,17 +33,8 @@ class Sms extends Manager implements Contract
     /**
      * Mail constructor.
      *
-     * @param Factory $factory The factory
-     * @param Config|array{
-     *     default: string,
-     *     adapter: class-string<Adapter>,
-     *     driver: class-string<Driver>,
-     *     message: class-string<Message>,
-     *     messengers: array<string, array>,
-     *     messages: array<string, array{
-     *         message: class-string<Message>|null,
-     *     }>
-     * }              $config  The config
+     * @param Factory                     $factory The factory
+     * @param Config|array<string, mixed> $config  The config
      */
     public function __construct(Factory $factory, Config|array $config)
     {
@@ -69,7 +59,10 @@ class Sms extends Manager implements Contract
      */
     public function createMessage(string|null $name = null, array $data = []): Message
     {
-        return parent::createMessage($name, $data);
+        /** @var Message $message */
+        $message = parent::createMessage($name, $data);
+
+        return $message;
     }
 
     /**

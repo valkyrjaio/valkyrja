@@ -23,6 +23,7 @@ use Valkyrja\Orm\Entity\Contract\SoftDeleteEntity;
 use Valkyrja\Orm\Exception\EntityNotFoundException;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
 use Valkyrja\Orm\Repository\Contract\CacheRepository as Contract;
+use Valkyrja\Orm\Repository\Enum\StoreType;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 
@@ -39,27 +40,6 @@ use function unserialize;
  */
 class CacheRepository extends Repository implements Contract
 {
-    /**
-     * Store type.
-     *
-     * @var string
-     */
-    protected static string $storeType = 'store';
-
-    /**
-     * Forget type.
-     *
-     * @var string
-     */
-    protected static string $forgetType = 'forget';
-
-    /**
-     * The cache.
-     *
-     * @var Cache
-     */
-    protected Cache $cache;
-
     /**
      * The cache store.
      *
@@ -91,17 +71,20 @@ class CacheRepository extends Repository implements Contract
     /**
      * Repository constructor.
      *
-     * @param Orm                  $manager The orm manager
-     * @param Driver               $driver  The driver
-     * @param Cache                $cache   The cache service
-     * @param class-string<Entity> $entity  The entity class name
+     * @param Orm                  $orm    The orm manager
+     * @param Driver               $driver The driver
+     * @param Cache                $cache  The cache service
+     * @param class-string<Entity> $entity The entity class name
      */
-    public function __construct(Orm $manager, Driver $driver, Cache $cache, string $entity)
-    {
-        $this->cache = $cache;
+    public function __construct(
+        Orm $orm,
+        Driver $driver,
+        protected Cache $cache,
+        string $entity
+    ) {
         $this->store = $cache->use();
 
-        parent::__construct($manager, $driver, $entity);
+        parent::__construct($orm, $driver, $entity);
     }
 
     /**
@@ -209,7 +192,7 @@ class CacheRepository extends Repository implements Contract
     {
         parent::create($entity, $defer);
 
-        $this->deferOrCache(self::$storeType, $entity, $defer);
+        $this->deferOrCache(StoreType::store, $entity, $defer);
     }
 
     /**
@@ -219,7 +202,7 @@ class CacheRepository extends Repository implements Contract
     {
         parent::save($entity, $defer);
 
-        $this->deferOrCache(self::$storeType, $entity, $defer);
+        $this->deferOrCache(StoreType::store, $entity, $defer);
     }
 
     /**
@@ -229,7 +212,7 @@ class CacheRepository extends Repository implements Contract
     {
         parent::delete($entity, $defer);
 
-        $this->deferOrCache(self::$forgetType, $entity, $defer);
+        $this->deferOrCache(StoreType::forget, $entity, $defer);
     }
 
     /**
@@ -241,7 +224,7 @@ class CacheRepository extends Repository implements Contract
     {
         parent::softDelete($entity, $defer);
 
-        $this->deferOrCache(self::$storeType, $entity, $defer);
+        $this->deferOrCache(StoreType::store, $entity, $defer);
     }
 
     /**
@@ -309,13 +292,13 @@ class CacheRepository extends Repository implements Contract
     /**
      * Defer or cache.
      *
-     * @param string $type
-     * @param Entity $entity
-     * @param bool   $defer  [optional]
+     * @param StoreType $type
+     * @param Entity    $entity
+     * @param bool      $defer  [optional]
      *
      * @return void
      */
-    protected function deferOrCache(string $type, Entity $entity, bool $defer = true): void
+    protected function deferOrCache(StoreType $type, Entity $entity, bool $defer = true): void
     {
         if ($defer) {
             $this->setDeferredEntity($type, $entity);
@@ -329,18 +312,18 @@ class CacheRepository extends Repository implements Contract
     /**
      * Set a deferred entity.
      *
-     * @param string $type
-     * @param Entity $entity
+     * @param StoreType $type
+     * @param Entity    $entity
      *
      * @return void
      */
-    protected function setDeferredEntity(string $type, Entity $entity): void
+    protected function setDeferredEntity(StoreType $type, Entity $entity): void
     {
         $id = spl_object_id($entity);
 
         match ($type) {
-            self::$storeType  => $this->storeEntities[$id]  = $entity,
-            self::$forgetType => $this->forgetEntities[$id] = $entity,
+            StoreType::store  => $this->storeEntities[$id]   = $entity,
+            StoreType::forget => $this->forgetEntities[$id] = $entity,
         };
     }
 

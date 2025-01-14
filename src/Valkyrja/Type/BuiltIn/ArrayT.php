@@ -25,10 +25,16 @@ use function is_string;
  *
  * @author Melech Mizrachi
  *
- * @extends Type<array>
+ * @extends Type<array<array-key, mixed>>
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
  */
 class ArrayT extends Type implements Contract
 {
+    /**
+     * @param array<array-key, mixed> $subject The array
+     */
     public function __construct(array $subject)
     {
         parent::__construct($subject);

@@ -58,7 +58,7 @@ class View implements Contract
     /**
      * The view variables.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $variables = [];
 
@@ -79,14 +79,8 @@ class View implements Contract
     /**
      * View constructor.
      *
-     * @param Container $container The container
-     * @param Config|array{
-     *     dir: string,
-     *     engine: string,
-     *     engines: array<string, class-string>,
-     *     paths: array<string, string>,
-     *     disks: array<string, array>
-     * }                $config    The config
+     * @param Container                   $container The container
+     * @param Config|array<string, mixed> $config    The config
      */
     public function __construct(
         protected Container $container = new \Valkyrja\Container\Container(),

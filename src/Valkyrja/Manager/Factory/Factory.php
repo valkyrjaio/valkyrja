@@ -22,12 +22,20 @@ use Valkyrja\Manager\Factory\Contract\Factory as Contract;
  *
  * @author Melech Mizrachi
  *
+ * @template Adapter
+ * @template Driver
+ *
  * @implements Contract<Adapter, Driver>
  */
 class Factory implements Contract
 {
     /**
      * @inheritDoc
+     *
+     * @param class-string<Driver>  $name    The driver
+     * @param class-string<Adapter> $adapter The adapter
+     *
+     * @return Driver
      */
     public function createDriver(string $name, string $adapter, array $config): Driver
     {
@@ -38,6 +46,10 @@ class Factory implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param class-string<Adapter> $name The adapter
+     *
+     * @return Adapter
      */
     public function createAdapter(string $name, array $config): Adapter
     {

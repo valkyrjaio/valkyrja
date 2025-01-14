@@ -30,8 +30,8 @@ interface Factory
     /**
      * Create an adapter by name.
      *
-     * @param class-string<Adapter> $name   The adapter
-     * @param Config|array          $config The config
+     * @param class-string<Adapter>       $name   The adapter
+     * @param Config|array<string, mixed> $config The config
      *
      * @return Adapter
      */
@@ -40,10 +40,10 @@ interface Factory
     /**
      * Create a repository by user entity name.
      *
-     * @param Adapter                  $adapter The adapter
-     * @param class-string<Repository> $name    The name
-     * @param class-string<User>       $user    The user
-     * @param Config|array             $config  The config
+     * @param Adapter                     $adapter The adapter
+     * @param class-string<Repository>    $name    The name
+     * @param class-string<User>          $user    The user
+     * @param Config|array<string, mixed> $config  The config
      *
      * @return Repository
      */

@@ -25,6 +25,11 @@ use Valkyrja\View\Template\Contract\Template;
  */
 class Factory implements Contract
 {
+    /**
+     * Factory constructor.
+     *
+     * @param Config|array<string, mixed> $config The config
+     */
     public function __construct(
         protected Config|array $config = new Config(),
     ) {

@@ -110,7 +110,7 @@ class Obj
      * @param bool   $includeProtected [optional] Whether to include protected members
      * @param bool   $includePrivate   [optional] Whether to include private members
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public static function getAllProperties(
         object $subject,
@@ -158,7 +158,7 @@ class Obj
      *
      * @throws JsonException
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public static function toDeepArray(object $subject): array
     {

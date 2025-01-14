@@ -29,7 +29,7 @@ trait Join
     /**
      * Joins for the query statement.
      *
-     * @var array
+     * @var string[]
      */
     protected array $joins = [];
 

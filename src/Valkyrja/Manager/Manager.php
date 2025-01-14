@@ -68,8 +68,8 @@ abstract class Manager implements Contract
     /**
      * Manager constructor.
      *
-     * @param Factory      $factory The factory
-     * @param Config|array $config  The config
+     * @param Factory                     $factory The factory
+     * @param Config|array<string, mixed> $config  The config
      */
     public function __construct(
         protected Factory $factory,

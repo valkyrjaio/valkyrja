@@ -102,9 +102,9 @@ class Auth implements Contract
     /**
      * Auth constructor.
      *
-     * @param Factory       $factory The factory
-     * @param ServerRequest $request The request
-     * @param Config|array  $config  The config
+     * @param Factory                     $factory The factory
+     * @param ServerRequest               $request The request
+     * @param Config|array<string, mixed> $config  The config
      */
     public function __construct(
         protected Factory $factory,

@@ -25,26 +25,27 @@ use function in_array;
  *
  * @author   Melech Mizrachi
  *
+ * @template K of array-key
  * @template T
  *
- * @implements Contract<T>
+ * @implements Contract<K, T>
  */
 class TypeCollection implements Contract
 {
     /**
      * The collection of items.
      *
-     * @var array<string|int, T>
+     * @var array<K, T>
      */
     protected array $collection = [];
 
     /**
      * Collection constructor.
      *
-     * @param class-string<T>      $type
-     * @param array<string|int, T> $collection
+     * @param class-string<T> $type
+     * @param array<K, T>     $collection
      */
-    public function __construct(protected string $type, mixed ...$collection)
+    public function __construct(protected string $type, array $collection)
     {
         $this->setAll($collection);
     }
@@ -102,7 +103,7 @@ class TypeCollection implements Contract
     /**
      * @inheritDoc
      */
-    public function __get(string|int $key) // : mixed
+    public function __get(string|int $key): mixed
     {
         return $this->get($key);
     }
@@ -110,9 +111,9 @@ class TypeCollection implements Contract
     /**
      * @inheritDoc
      */
-    public function __set(string|int $key, $value)
+    public function __set(string|int $key, $value): void
     {
-        return $this->set($key, $value);
+        $this->set($key, $value);
     }
 
     /**

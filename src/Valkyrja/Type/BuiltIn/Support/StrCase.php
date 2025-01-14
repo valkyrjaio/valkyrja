@@ -64,7 +64,7 @@ class StrCase
      *
      * @param string ...$subjects The subjects
      *
-     * @return array
+     * @return string[]
      */
     public static function allToTitleCase(string ...$subjects): array
     {
@@ -76,7 +76,7 @@ class StrCase
      *
      * @param string $subject The subject
      *
-     * @return string
+     * @return lowercase-string
      */
     public static function toLowerCase(string $subject): string
     {
@@ -88,7 +88,7 @@ class StrCase
      *
      * @param string ...$subjects The subjects
      *
-     * @return array
+     * @return string[]
      */
     public static function allToLowerCase(string ...$subjects): array
     {
@@ -112,7 +112,7 @@ class StrCase
      *
      * @param string ...$subjects The subjects
      *
-     * @return array
+     * @return string[]
      */
     public static function allToUpperCase(string ...$subjects): array
     {
@@ -141,7 +141,7 @@ class StrCase
      *
      * @param string ...$subjects The subjects
      *
-     * @return array
+     * @return string[]
      */
     public static function allToCapitalized(string ...$subjects): array
     {
@@ -166,7 +166,7 @@ class StrCase
      *
      * @param string ...$subjects The subjects
      *
-     * @return array
+     * @return string[]
      */
     public static function allToCapitalizedWords(string ...$subjects): array
     {
@@ -202,7 +202,7 @@ class StrCase
      *
      * @param string ...$subjects The subjects
      *
-     * @return array
+     * @return string[]
      */
     public static function allToSnakeCase(string ...$subjects): array
     {
@@ -238,7 +238,7 @@ class StrCase
      *
      * @param string ...$subjects The subjects
      *
-     * @return array
+     * @return string[]
      */
     public static function allToSlug(string ...$subjects): array
     {
@@ -263,7 +263,7 @@ class StrCase
      *
      * @param string ...$subjects The subjects
      *
-     * @return array
+     * @return string[]
      */
     public static function allToStudlyCase(string ...$subjects): array
     {
@@ -287,7 +287,7 @@ class StrCase
      *
      * @param string ...$subjects The subjects
      *
-     * @return array
+     * @return string[]
      */
     public static function allUcFirstLetter(string ...$subjects): array
     {
@@ -300,7 +300,7 @@ class StrCase
      * @param string $method      The method to call for each subject
      * @param string ...$subjects The subjects
      *
-     * @return array
+     * @return string[]
      */
     protected static function allTo(string $method, string ...$subjects): array
     {

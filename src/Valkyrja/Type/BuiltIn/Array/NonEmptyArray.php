@@ -23,12 +23,15 @@ use Valkyrja\Type\Exception\InvalidArgumentException;
  */
 class NonEmptyArray extends ArrayT
 {
+    /**
+     * @param array<array-key, mixed> $subject The array
+     */
     public function __construct(array $subject)
     {
-        parent::__construct($subject);
-
-        if (! empty($subject)) {
+        if ($subject === []) {
             throw new InvalidArgumentException('Value must be a non-empty-array.');
         }
+
+        parent::__construct($subject);
     }
 }

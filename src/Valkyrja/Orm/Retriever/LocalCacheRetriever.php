@@ -28,9 +28,16 @@ class LocalCacheRetriever extends Retriever
     /**
      * Local cache for results in case same query is made multiple times within the same session.
      *
-     * @var array
+     * @var array<string, Entity[]>
      */
-    protected static array $localCache = [];
+    protected array $localCache = [];
+
+    /**
+     * Local cache for results in case same query is made multiple times within the same session.
+     *
+     * @var array<string, int>
+     */
+    protected array $localCountCache = [];
 
     /**
      * @inheritDoc
@@ -41,8 +48,8 @@ class LocalCacheRetriever extends Retriever
     {
         $localCacheKey = $this->getCacheKey();
 
-        if (isset(self::$localCache[$localCacheKey])) {
-            return self::$localCache[$localCacheKey];
+        if (isset($this->localCache[$localCacheKey])) {
+            return $this->localCache[$localCacheKey];
         }
 
         $this->prepareResults();
@@ -50,7 +57,7 @@ class LocalCacheRetriever extends Retriever
         /** @var Entity[] $results */
         $results = $this->query->getResult();
 
-        self::$localCache[$localCacheKey] = $results;
+        $this->localCache[$localCacheKey] = $results;
 
         return $results;
     }
@@ -66,15 +73,15 @@ class LocalCacheRetriever extends Retriever
 
         $localCacheKey = $this->getCacheKey();
 
-        if (isset(self::$localCache[$localCacheKey])) {
-            return self::$localCache[$localCacheKey];
+        if (isset($this->localCountCache[$localCacheKey])) {
+            return $this->localCountCache[$localCacheKey];
         }
 
         $this->prepareResults();
 
         $count = $this->query->getCount();
 
-        self::$localCache[$localCacheKey] = $count;
+        $this->localCountCache[$localCacheKey] = $count;
 
         return $count;
     }

@@ -62,14 +62,14 @@ class Config extends Model
     /**
      * The adapters.
      *
-     * @var array
+     * @var array<string, array<string, mixed>>
      */
     public array $broadcasters;
 
     /**
      * @inheritDoc
      *
-     * @var array[]
+     * @var array<string, array<string, mixed>>
      */
     public array $messages;
 }

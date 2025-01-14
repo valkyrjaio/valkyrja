@@ -33,8 +33,8 @@ interface MessageManager extends Manager
     /**
      * Create a new message.
      *
-     * @param string|null $name [optional] The name of the message
-     * @param array       $data [optional] The data
+     * @param string|null             $name [optional] The name of the message
+     * @param array<array-key, mixed> $data [optional] The data
      *
      * @return Message
      */

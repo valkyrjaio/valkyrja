@@ -110,7 +110,7 @@ interface Adapter extends Contract
     /**
      * Get all items in the session.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function all(): array;
 

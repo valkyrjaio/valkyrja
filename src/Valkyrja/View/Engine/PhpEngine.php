@@ -66,13 +66,7 @@ class PhpEngine implements Engine
     /**
      * PhpEngine constructor.
      *
-     * @param Config|array{
-     *     dir: string,
-     *     engine: string,
-     *     engines: array<string, class-string>,
-     *     paths: array<string, string>,
-     *     disks: array{php: array{fileExtension: string}}|array<string, array>
-     * } $config The config
+     * @param Config|array<string, mixed> $config The config
      */
     public function __construct(
         protected Config|array $config
@@ -109,8 +103,8 @@ class PhpEngine implements Engine
     /**
      * Render a full file path.
      *
-     * @param string $path      The file path
-     * @param array  $variables [optional] The variables
+     * @param string               $path      The file path
+     * @param array<string, mixed> $variables [optional] The variables
      *
      * @return string
      */
@@ -125,8 +119,8 @@ class PhpEngine implements Engine
     /**
      * Require a path to generate its contents with provided variables.
      *
-     * @param string $path      The file path
-     * @param array  $variables [optional] The variables
+     * @param string               $path      The file path
+     * @param array<string, mixed> $variables [optional] The variables
      *
      * @return void
      */

@@ -82,10 +82,10 @@ class Repository implements Contract
     /**
      * Repository constructor.
      *
-     * @param Adapter            $adapter The adapter
-     * @param SessionManager     $session The session service
-     * @param Config|array       $config  The config
-     * @param class-string<User> $user    The user class
+     * @param Adapter                     $adapter The adapter
+     * @param SessionManager              $session The session service
+     * @param Config|array<string, mixed> $config  The config
+     * @param class-string<User>          $user    The user class
      */
     public function __construct(
         protected Adapter $adapter,

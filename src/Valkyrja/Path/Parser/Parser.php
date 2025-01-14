@@ -49,7 +49,7 @@ class Parser implements Contract
     /**
      * PathParser constructor.
      *
-     * @param Config|array $config
+     * @param Config|array<string, mixed> $config
      */
     public function __construct(
         protected Config|array $config
@@ -166,7 +166,7 @@ class Parser implements Contract
      *
      * @param string $path The path
      *
-     * @return array
+     * @return string[]
      */
     protected function getSegments(string $path): array
     {
@@ -182,10 +182,10 @@ class Parser implements Contract
     /**
      * Parse a path with no optionals.
      *
-     * @param string $path     The path
-     * @param array  $segments The segments
+     * @param string   $path     The path
+     * @param string[] $segments The segments
      *
-     * @return array
+     * @return array{params: array<string, array{regex: string, replace: non-falsy-string}>, regex: non-falsy-string, segments: string[]}
      */
     protected function parsePath(string $path, array &$segments): array
     {
@@ -243,8 +243,8 @@ class Parser implements Contract
     /**
      * Get a param's replacement.
      *
-     * @param int   $key    The key
-     * @param array $params The params
+     * @param int                 $key    The key
+     * @param string[]|string[][] $params The params
      *
      * @return string
      */
@@ -257,10 +257,10 @@ class Parser implements Contract
     /**
      * Split segments based on ending bracket within the segments.
      *
-     * @param array            $segments    The segments
+     * @param string[]         $segments    The segments
      * @param non-empty-string $deliminator The deliminator
      *
-     * @return array
+     * @return string[]
      */
     protected function splitSegments(array $segments, string $deliminator): array
     {
@@ -286,7 +286,7 @@ class Parser implements Contract
     /**
      * Split a segment by deliminator (recursive).
      *
-     * @param array            $segments    The segments
+     * @param string[]         $segments    The segments
      * @param string           $segment     The segment
      * @param non-empty-string $deliminator The deliminator
      *

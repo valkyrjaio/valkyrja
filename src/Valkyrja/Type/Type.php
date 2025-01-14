@@ -20,9 +20,12 @@ use Valkyrja\Type\Contract\Type as Contract;
  *
  * @author Melech Mizrachi
  *
- * @implements Contract<mixed>
+ * @implements Contract<T>
  *
  * @template T
+ *
+ * @phpstan-consistent-constructor
+ *  Will be overridden if need be
  */
 abstract class Type implements Contract
 {

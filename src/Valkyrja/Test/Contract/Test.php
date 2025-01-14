@@ -39,6 +39,11 @@ interface Test
 
     /**
      * Run the test.
+     *
+     * @param callable                $callable
+     * @param array<array-key, mixed> $data     The data
+     *
+     * @return void
      */
     public function run(callable $callable, array $data = []): void;
 }

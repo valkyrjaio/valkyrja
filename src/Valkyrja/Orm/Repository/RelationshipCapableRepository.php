@@ -161,8 +161,8 @@ trait RelationshipCapableRepository
     /**
      * Set relationships on an entity.
      *
-     * @param array  $relationships The relationships to set
-     * @param Entity $entity        The entity
+     * @param string[] $relationships The relationships to set
+     * @param Entity   $entity        The entity
      *
      * @return void
      */

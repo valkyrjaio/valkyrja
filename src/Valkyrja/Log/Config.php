@@ -54,7 +54,7 @@ class Config extends Model
     /**
      * The loggers.
      *
-     * @var array[]
+     * @var array<string, array<string, mixed>>
      */
     public array $loggers;
 }

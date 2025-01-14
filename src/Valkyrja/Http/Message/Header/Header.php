@@ -30,6 +30,14 @@ use function is_string;
 use function str_contains;
 use function strtolower;
 
+/**
+ * Class Header.
+ *
+ * @author Melech Mizrachi
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
+ */
 class Header implements Contract
 {
     /**

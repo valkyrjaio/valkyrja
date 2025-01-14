@@ -259,9 +259,9 @@ class Template implements Contract
     /**
      * Render a file.
      *
-     * @param string $name         The file name
-     * @param array  $variables    [optional] The variables to set
-     * @param bool   $renderLayout [optional] Whether to render the layout
+     * @param string               $name         The file name
+     * @param array<string, mixed> $variables    [optional] The variables to set
+     * @param bool                 $renderLayout [optional] Whether to render the layout
      *
      * @return string
      */
@@ -287,8 +287,8 @@ class Template implements Contract
     /**
      * Render a layout.
      *
-     * @param string $layout    The layout
-     * @param array  $variables [optional] The variables to set
+     * @param string               $layout    The layout
+     * @param array<string, mixed> $variables [optional] The variables to set
      *
      * @return string
      */
@@ -311,8 +311,8 @@ class Template implements Contract
     /**
      * Render a template.
      *
-     * @param string $path      The path to render
-     * @param array  $variables [optional] The variables to set
+     * @param string               $path      The path to render
+     * @param array<string, mixed> $variables [optional] The variables to set
      *
      * @return string
      */

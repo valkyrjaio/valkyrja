@@ -22,6 +22,9 @@ use Valkyrja\Type\Type;
  * @author Melech Mizrachi
  *
  * @extends Type<float>
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
  */
 class FloatT extends Type implements Contract
 {

@@ -17,6 +17,14 @@ use Valkyrja\Http\Message\Header\Value\Component\Contract\Component as Contract;
 
 use function explode;
 
+/**
+ * Class Component.
+ *
+ * @author Melech Mizrachi
+ *
+ * @phpstan-consistent-constructor
+ *  Will be overridden if need be
+ */
 class Component implements Contract
 {
     /**

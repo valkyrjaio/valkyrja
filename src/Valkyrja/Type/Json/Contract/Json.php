@@ -20,7 +20,7 @@ use Valkyrja\Type\Contract\Type;
  *
  * @author Melech Mizrachi
  *
- * @extends Type<array>
+ * @extends Type<array<string|int, mixed>>
  */
 interface Json extends Type
 {

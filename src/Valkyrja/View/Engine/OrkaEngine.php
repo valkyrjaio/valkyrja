@@ -92,14 +92,8 @@ class OrkaEngine extends PhpEngine
     /**
      * OrkaEngine constructor.
      *
-     * @param Config|array{
-     *     dir: string,
-     *     engine: string,
-     *     engines: array<string, class-string>,
-     *     paths: array<string, string>,
-     *     disks: array{orka?: array{fileExtension: string}, php?: array{fileExtension: string}}
-     * }           $config  The config
-     * @param bool $isDebug Whether to run in debug mode
+     * @param Config|array<string, mixed> $config  The config
+     * @param bool                        $isDebug Whether to run in debug mode
      */
     public function __construct(
         Config|array $config,

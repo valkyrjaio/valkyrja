@@ -34,8 +34,8 @@ class Client extends Manager implements Contract
     /**
      * Client constructor.
      *
-     * @param Factory      $factory The factory
-     * @param Config|array $config  The config
+     * @param Factory                     $factory The factory
+     * @param Config|array<string, mixed> $config  The config
      */
     public function __construct(Factory $factory, Config|array $config)
     {

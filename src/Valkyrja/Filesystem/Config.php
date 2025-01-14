@@ -54,7 +54,7 @@ class Config extends Model
     /**
      * The disks.
      *
-     * @var array
+     * @var array<string, array<string, mixed>>
      */
     public array $disks;
 }

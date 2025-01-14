@@ -38,10 +38,10 @@ class CacheAdapter extends PHPAdapter
     /**
      * CacheAdapter constructor.
      *
-     * @param Cache       $cache       The cache
-     * @param array       $config      The config
-     * @param string|null $sessionId   [optional] The session id
-     * @param string|null $sessionName [optional] The session name
+     * @param Cache                $cache       The cache
+     * @param array<string, mixed> $config      The config
+     * @param string|null          $sessionId   [optional] The session id
+     * @param string|null          $sessionName [optional] The session name
      */
     public function __construct(
         Cache $cache,

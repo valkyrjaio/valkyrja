@@ -39,7 +39,7 @@ interface Factory
      * Create an adapter.
      *
      * @param class-string<Adapter> $name   The adapter class name
-     * @param array                 $config The config
+     * @param array<string, mixed>  $config The config
      *
      * @return Adapter
      */
@@ -50,7 +50,7 @@ interface Factory
      *
      * @param Adapter              $adapter The adapter
      * @param class-string<Driver> $name    The driver class name
-     * @param array                $config  The config
+     * @param array<string, mixed> $config  The config
      *
      * @return Driver
      */

@@ -39,7 +39,7 @@ class Config extends Model
     /**
      * The cache stores.
      *
-     * @var array
+     * @var array<string, array<string, mixed>>
      */
     public array $stores;
 }

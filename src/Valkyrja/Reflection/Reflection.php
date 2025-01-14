@@ -38,29 +38,48 @@ use function spl_object_id;
 class Reflection implements Contract
 {
     /**
-     * Cache index constants.
+     * Cached reflection classes.
+     *
+     * @var array<string, ReflectionClass>
      */
-    protected const CLASS_CACHE    = 'class';
-    protected const PROPERTY_CACHE = 'property';
-    protected const METHOD_CACHE   = 'method';
-    protected const FUNCTION_CACHE = 'function';
-    protected const CLOSURE_CACHE  = 'closure';
+    protected array $classReflections = [];
 
     /**
      * Cached reflection classes.
      *
-     * @var array
+     * @var array<string, ReflectionClassConstant>
      */
-    protected static array $reflections = [];
+    protected array $constantReflections = [];
+
+    /**
+     * Cached reflection classes.
+     *
+     * @var array<string, ReflectionProperty>
+     */
+    protected array $propertyReflections = [];
+
+    /**
+     * Cached reflection classes.
+     *
+     * @var array<string, ReflectionMethod>
+     */
+    protected array $methodReflections = [];
+
+    /**
+     * Cached reflection classes.
+     *
+     * @var array<string, ReflectionFunction>
+     */
+    protected array $functionReflections = [];
 
     /**
      * @inheritDoc
      */
     public function forClass(string $class): ReflectionClass
     {
-        $index = static::CLASS_CACHE . $class;
+        $index = $class;
 
-        return self::$reflections[$index]
+        return $this->classReflections[$index]
             ??= new ReflectionClass($class);
     }
 
@@ -69,9 +88,9 @@ class Reflection implements Contract
      */
     public function forClassConstant(string $class, string $const): ReflectionClassConstant
     {
-        $index = static::PROPERTY_CACHE . $class . $const;
+        $index = $class . $const;
 
-        return self::$reflections[$index]
+        return $this->constantReflections[$index]
             ??= $this->forClass($class)->getReflectionConstant($const);
     }
 
@@ -80,9 +99,9 @@ class Reflection implements Contract
      */
     public function forClassProperty(string $class, string $property): ReflectionProperty
     {
-        $index = static::PROPERTY_CACHE . $class . $property;
+        $index = $class . $property;
 
-        return self::$reflections[$index]
+        return $this->propertyReflections[$index]
             ??= $this->forClass($class)->getProperty($property);
     }
 
@@ -91,9 +110,9 @@ class Reflection implements Contract
      */
     public function forClassMethod(string $class, string $method): ReflectionMethod
     {
-        $index = static::METHOD_CACHE . $class . $method;
+        $index = $class . $method;
 
-        return self::$reflections[$index]
+        return $this->methodReflections[$index]
             ??= $this->forClass($class)->getMethod($method);
     }
 
@@ -102,9 +121,9 @@ class Reflection implements Contract
      */
     public function forFunction(string $function): ReflectionFunction
     {
-        $index = static::FUNCTION_CACHE . $function;
+        $index = $function;
 
-        return self::$reflections[$index]
+        return $this->functionReflections[$index]
             ??= new ReflectionFunction($function);
     }
 
@@ -113,9 +132,10 @@ class Reflection implements Contract
      */
     public function forClosure(Closure $closure): ReflectionFunction
     {
-        $index = static::CLOSURE_CACHE . spl_object_id($closure);
+        /** @phpstan-var string $index */
+        $index = (string) spl_object_id($closure);
 
-        return self::$reflections[$index]
+        return $this->functionReflections[$index]
             ??= new ReflectionFunction($closure);
     }
 

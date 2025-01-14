@@ -159,8 +159,8 @@ trait ProvidersAwareTrait
     /**
      * Register a deferred provider.
      *
-     * @param class-string $provider The provider
-     * @param string[]     $provides The provided items
+     * @param class-string $provider    The provider
+     * @param string       ...$provides The provided items
      *
      * @return void
      */

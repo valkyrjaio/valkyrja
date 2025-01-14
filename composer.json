@@ -91,6 +91,7 @@
     "phpcs"            : "vendor/bin/phpcs fix --config=.php_cs.dist.php",
     "phpcs-dry-run"    : "vendor/bin/phpcs fix --config=.php_cs.dist.php --dry-run",
     "phpmetrics"       : "vendor/bin/metrics --report-html=./build/phpmetrics src",
+    "phpstan"          : "vendor/bin/phpstan analyse src",
     "phpunit"          : "vendor/bin/phpunit",
     "phpunit-no-cov"   : "vendor/bin/phpunit --no-coverage",
     "phpunit-coverage" : "vendor/bin/phpunit --coverage-text --stderr",

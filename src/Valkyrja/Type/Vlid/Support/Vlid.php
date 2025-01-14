@@ -51,7 +51,7 @@ class Vlid extends Ulid
     /** @var string */
     protected static string $time = '';
 
-    /** @var array */
+    /** @var array<int, int> */
     protected static array $randomBytes = [];
 
     /**

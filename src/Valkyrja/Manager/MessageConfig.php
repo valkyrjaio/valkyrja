@@ -37,7 +37,7 @@ class MessageConfig extends Config
     /**
      * The messages.
      *
-     * @var array[]
+     * @var array<string, array<string, mixed>>
      */
     public array $messages;
 }

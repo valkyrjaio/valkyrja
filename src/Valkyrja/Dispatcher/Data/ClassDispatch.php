@@ -19,6 +19,9 @@ use Valkyrja\Dispatcher\Data\Contract\ClassDispatch as Contract;
  * Class ClassDispatch.
  *
  * @author Melech Mizrachi
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
  */
 class ClassDispatch extends Dispatch implements Contract
 {

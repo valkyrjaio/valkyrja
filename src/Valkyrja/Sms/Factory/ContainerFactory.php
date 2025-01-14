@@ -27,8 +27,6 @@ use Valkyrja\Sms\Message\Contract\Message;
  * @author Melech Mizrachi
  *
  * @extends Factory<Adapter, Driver, Message>
- *
- * @implements Contract<Adapter, Driver, Message>
  */
 class ContainerFactory extends Factory implements Contract
 {
@@ -44,6 +42,8 @@ class ContainerFactory extends Factory implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @var class-string
      */
     protected static string $defaultMessageClass = Message::class;
 

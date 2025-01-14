@@ -29,20 +29,13 @@ use function is_int;
 class PdoStatement implements Contract
 {
     /**
-     * The PDO Statement.
-     *
-     * @var Statement
-     */
-    protected Statement $statement;
-
-    /**
      * PDOStatement constructor.
      *
      * @param Statement $statement
      */
-    public function __construct(Statement $statement)
-    {
-        $this->statement = $statement;
+    public function __construct(
+        protected Statement $statement
+    ) {
     }
 
     /**

@@ -27,29 +27,15 @@ use Valkyrja\Mail\Message\Contract\Message;
 class MailgunAdapter implements Contract
 {
     /**
-     * The Mailgun service.
-     *
-     * @var Mailgun
-     */
-    protected Mailgun $mailgun;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * MailgunAdapter constructor.
      *
-     * @param Mailgun $mailgun The mailgun service
-     * @param array   $config  The config
+     * @param Mailgun              $mailgun The mailgun service
+     * @param array<string, mixed> $config  The config
      */
-    public function __construct(Mailgun $mailgun, array $config)
-    {
-        $this->mailgun = $mailgun;
-        $this->config  = $config;
+    public function __construct(
+        protected Mailgun $mailgun,
+        protected array $config
+    ) {
     }
 
     /**

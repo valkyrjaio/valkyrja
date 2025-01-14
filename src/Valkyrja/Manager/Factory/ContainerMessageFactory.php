@@ -24,18 +24,20 @@ use Valkyrja\Type\BuiltIn\Support\Cls;
  *
  * @author   Melech Mizrachi
  *
- * @template Adapter
- * @template Driver
- * @template Message
+ * @template Adapter of Adapter
+ * @template Driver of Driver
+ * @template Message of Message
  *
  * @implements MessageFactory<Adapter, Driver, Message>
+ *
+ * @extends ContainerFactory<Adapter, Driver>
  */
 class ContainerMessageFactory extends ContainerFactory implements MessageFactory
 {
     /**
      * The default driver class.
      *
-     * @var string
+     * @var class-string
      */
     protected static string $defaultMessageClass;
 
@@ -48,10 +50,13 @@ class ContainerMessageFactory extends ContainerFactory implements MessageFactory
      */
     public function createMessage(string $name, array $config, array $data = []): Message
     {
+        /** @var class-string<Message> $defaultMessageClass */
+        $defaultMessageClass = $this->getMessageDefaultClass($name);
+
         return Cls::getDefaultableService(
             $this->container,
             $name,
-            $this->getMessageDefaultClass($name),
+            $defaultMessageClass,
             [
                 $config,
                 $data,
@@ -62,9 +67,9 @@ class ContainerMessageFactory extends ContainerFactory implements MessageFactory
     /**
      * Get the default message class.
      *
-     * @param string $name The message
+     * @param class-string<Message> $name The message
      *
-     * @return string
+     * @return class-string
      */
     protected function getMessageDefaultClass(string $name): string
     {

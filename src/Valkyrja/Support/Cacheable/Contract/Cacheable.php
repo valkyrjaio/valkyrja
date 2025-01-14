@@ -20,7 +20,7 @@ use Valkyrja\Config\Config;
  *
  * @author   Melech Mizrachi
  *
- * @template Config
+ * @template Config of Config
  */
 interface Cacheable
 {

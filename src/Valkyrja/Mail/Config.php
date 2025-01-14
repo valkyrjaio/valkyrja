@@ -62,14 +62,14 @@ class Config extends Model
     /**
      * The mailers.
      *
-     * @var array[]
+     * @var array<string, array<string, mixed>>
      */
     public array $mailers;
 
     /**
      * @inheritDoc
      *
-     * @var array[]
+     * @var array<string, array<string, mixed>>
      */
     public array $messages;
 }

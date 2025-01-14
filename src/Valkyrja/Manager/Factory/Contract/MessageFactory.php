@@ -31,9 +31,9 @@ interface MessageFactory extends Factory
     /**
      * Create a new message.
      *
-     * @param class-string<Message> $name   The message
-     * @param array                 $config The config
-     * @param array                 $data   [optional] The data
+     * @param class-string<Message>   $name   The message
+     * @param array<array-key, mixed> $config The config
+     * @param array<array-key, mixed> $data   [optional] The data
      *
      * @return Message
      */

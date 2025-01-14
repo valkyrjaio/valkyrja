@@ -49,7 +49,7 @@ class Config extends Model
     /**
      * The sessions.
      *
-     * @var array
+     * @var array<string, array<string, mixed>>
      */
     public array $sessions;
 }

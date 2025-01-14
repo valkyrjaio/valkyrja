@@ -33,8 +33,8 @@ class Filesystem extends Manager implements Contract
     /**
      * Filesystem constructor.
      *
-     * @param Factory      $factory The factory
-     * @param Config|array $config  The config
+     * @param Factory                     $factory The factory
+     * @param Config|array<string, mixed> $config  The config
      */
     public function __construct(
         Factory $factory = new \Valkyrja\Filesystem\Factory\Factory(),

@@ -22,10 +22,13 @@ use Valkyrja\Type\Type;
  * @author Melech Mizrachi
  *
  * @extends Type<false>
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
  */
 class FalseT extends Type implements Contract
 {
-    public function __construct(bool|null $subject = null)
+    public function __construct()
     {
         parent::__construct(false);
     }
@@ -35,7 +38,7 @@ class FalseT extends Type implements Contract
      */
     public static function fromValue(mixed $value): static
     {
-        return new static(false);
+        return new static();
     }
 
     /**

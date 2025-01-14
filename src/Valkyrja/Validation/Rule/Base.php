@@ -212,8 +212,8 @@ class Base
     /**
      * Subject contains given substrings.
      *
-     * @param string         $subject The subject
-     * @param string[]|int[] $needles The needles contained in the subject
+     * @param string     $subject    The subject
+     * @param string|int ...$needles The needles contained in the subject
      *
      * @throws ValidationException
      *
@@ -231,8 +231,8 @@ class Base
     /**
      * Subject contains any given substring.
      *
-     * @param string         $subject The subject
-     * @param string[]|int[] $needles The needles contained in the subject
+     * @param string     $subject    The subject
+     * @param string|int ...$needles The needles contained in the subject
      *
      * @throws ValidationException
      *
@@ -336,8 +336,8 @@ class Base
     /**
      * Subject is one of a set of valid values.
      *
-     * @param mixed $subject     The subject
-     * @param array $validValues The valid values
+     * @param mixed $subject        The subject
+     * @param mixed ...$validValues The valid values
      *
      * @throws ValidationException
      *

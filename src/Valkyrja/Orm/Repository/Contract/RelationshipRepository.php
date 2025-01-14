@@ -23,7 +23,7 @@ interface RelationshipRepository
     /**
      * Add relationships to include with the results.
      *
-     * @param array|null $relationships [optional] The relationships to get
+     * @param string[]|null $relationships [optional] The relationships to get
      *
      * @return static
      */

@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Sms\Adapter;
 
 use Exception;
+use Psr\Http\Client\ClientExceptionInterface;
 use Valkyrja\Sms\Adapter\Contract\VonageAdapter as Contract;
 use Valkyrja\Sms\Message\Contract\Message;
 use Vonage\Client as Vonage;
+use Vonage\SMS\Message\SMS;
 
 /**
  * Class VonageAdapter.
@@ -46,17 +48,17 @@ class VonageAdapter implements Contract
      * @inheritDoc
      *
      * @throws Exception
+     * @throws ClientExceptionInterface
      */
     public function send(Message $message): void
     {
-        /** @psalm-suppress UndefinedMagicMethod Method totally exists */
-        $this->vonage->message()->send(
-            [
-                'to'   => $message->getTo(),
-                'from' => $message->getFrom(),
-                'text' => $message->getText(),
-                'type' => $message->isUnicode() ? 'unicode' : null,
-            ]
+        $this->vonage->sms()->send(
+            new SMS(
+                to: $message->getTo(),
+                from: $message->getFrom(),
+                message: $message->getText(),
+                type: $message->isUnicode() ? 'unicode' : 'text',
+            )
         );
     }
 }

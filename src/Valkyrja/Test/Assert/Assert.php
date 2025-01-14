@@ -24,7 +24,6 @@ use Valkyrja\Test\Assert\Enum\AsserterName;
 use Valkyrja\Test\Assert\Enum\ResultType;
 use Valkyrja\Test\Assert\Exceptions as ExceptionsAsserter;
 use Valkyrja\Test\Assert\Str as StrAsserter;
-use Valkyrja\Type\BuiltIn\Enum\Support\Enum;
 
 /**
  * Class Assert.
@@ -125,16 +124,13 @@ class Assert extends AbstractAsserter implements Contract
      */
     public function __get(string $name): mixed
     {
-        if (Enum::isValidName(ResultType::class, $name)) {
-            return match ($name) {
-                ResultType::assertions->name => $this->getAssertions(),
-                ResultType::errors->name     => $this->getErrors(),
-                ResultType::successes->name  => $this->getSuccesses(),
-                ResultType::warnings->name   => $this->getWarnings(),
-            };
-        }
-
-        return $this->__call($name, []);
+        return match ($name) {
+            ResultType::assertions->name => $this->getAssertions(),
+            ResultType::errors->name     => $this->getErrors(),
+            ResultType::successes->name  => $this->getSuccesses(),
+            ResultType::warnings->name   => $this->getWarnings(),
+            default                      => $this->__call($name, []),
+        };
     }
 
     /**
@@ -148,13 +144,15 @@ class Assert extends AbstractAsserter implements Contract
 
     /**
      * Get all the asserters' results by type.
+     *
+     * @return array<array-key, mixed>
      */
     protected function getAllAsserterResults(ResultType $type): array
     {
-        $results = $this->{$type->name};
+        $results = $this->__get($type->name);
 
         foreach ($this->asserterInstances as $asserter) {
-            $results[] = $asserter->{$type->name};
+            $results[] = $asserter->__get($type->name);
         }
 
         return array_merge(...$results);

@@ -24,6 +24,8 @@ use Valkyrja\Session\Factory\Contract\Factory as Contract;
  * Class ContainerFactory.
  *
  * @author Melech Mizrachi
+ *
+ * @extends Factory<Adapter, Driver>
  */
 class ContainerFactory extends Factory implements Contract
 {

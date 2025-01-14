@@ -44,14 +44,14 @@ interface Statement
      *
      * @param int $columnNumber The column index in relation to the query statement
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getColumnMeta(int $columnNumber): array;
 
     /**
      * Fetch the results.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function fetch(): array;
 
@@ -67,7 +67,7 @@ interface Statement
     /**
      * Fetch all the results.
      *
-     * @return array
+     * @return array<string, mixed>[]
      */
     public function fetchAll(): array;
 

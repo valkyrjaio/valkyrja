@@ -25,8 +25,8 @@ class PgSqlDriver extends Driver
     /**
      * PgSqlDriver constructor.
      *
-     * @param Adapter $adapter The adapter
-     * @param array   $config  The config
+     * @param Adapter              $adapter The adapter
+     * @param array<string, mixed> $config  The config
      */
     public function __construct(Adapter $adapter, array $config)
     {

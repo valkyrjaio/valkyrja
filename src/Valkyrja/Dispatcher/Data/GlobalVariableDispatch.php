@@ -19,6 +19,9 @@ use Valkyrja\Dispatcher\Data\Contract\GlobalVariableDispatch as Contract;
  * Class GlobalVariableDispatch.
  *
  * @author Melech Mizrachi
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
  */
 class GlobalVariableDispatch extends Dispatch implements Contract
 {

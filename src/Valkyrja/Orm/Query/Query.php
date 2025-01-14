@@ -32,13 +32,6 @@ use function is_array;
 class Query implements QueryContract
 {
     /**
-     * The adapter.
-     *
-     * @var Adapter
-     */
-    protected Adapter $adapter;
-
-    /**
      * The statement.
      *
      * @var Statement
@@ -64,9 +57,9 @@ class Query implements QueryContract
      *
      * @param Adapter $adapter
      */
-    public function __construct(Adapter $adapter)
-    {
-        $this->adapter = $adapter;
+    public function __construct(
+        protected Adapter $adapter
+    ) {
     }
 
     /**
@@ -96,8 +89,9 @@ class Query implements QueryContract
      */
     public function prepare(string $query): static
     {
-        /** @var class-string<Entity> $entity */
-        if (($entity = $this->entity) !== null) {
+        $entity = $this->entity;
+
+        if ($entity !== null) {
             $query = str_replace($entity, $entity::getTableName(), $query);
         }
 

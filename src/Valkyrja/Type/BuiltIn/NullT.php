@@ -22,10 +22,13 @@ use Valkyrja\Type\Type;
  * @author Melech Mizrachi
  *
  * @extends Type<null>
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
  */
 class NullT extends Type implements Contract
 {
-    public function __construct(mixed $subject = null)
+    public function __construct()
     {
         parent::__construct(null);
     }
@@ -35,7 +38,7 @@ class NullT extends Type implements Contract
      */
     public static function fromValue(mixed $value): static
     {
-        return new static(null);
+        return new static();
     }
 
     /**

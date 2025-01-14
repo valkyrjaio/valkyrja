@@ -38,9 +38,9 @@ abstract class Pdo extends BasePDO
     /**
      * PDO constructor.
      *
-     * @param array       $config The config
-     * @param string|null $driver [optional] The driver
-     * @param string|null $dsn    [optional] The added dsn
+     * @param array<string, mixed> $config The config
+     * @param string|null          $driver [optional] The driver
+     * @param string|null          $dsn    [optional] The added dsn
      */
     public function __construct(
         array $config,
@@ -66,9 +66,9 @@ abstract class Pdo extends BasePDO
     /**
      * Get dsn part.
      *
-     * @param array  $config  The config
-     * @param string $name    The dsn part name
-     * @param mixed  $default [optional] The default value
+     * @param array<string, mixed> $config  The config
+     * @param string               $name    The dsn part name
+     * @param mixed                $default [optional] The default value
      *
      * @return string
      */

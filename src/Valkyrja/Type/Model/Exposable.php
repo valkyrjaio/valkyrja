@@ -48,6 +48,8 @@ trait Exposable
      * @inheritDoc
      *
      * @param string ...$properties [optional] An array of properties to return
+     *
+     * @return array<string, mixed>
      */
     public function asExposedArray(string ...$properties): array
     {
@@ -56,6 +58,8 @@ trait Exposable
 
     /**
      * @inheritDoc
+     *
+     * @return array<string, mixed>
      */
     public function asExposedChangedArray(): array
     {
@@ -64,6 +68,8 @@ trait Exposable
 
     /**
      * @inheritDoc
+     *
+     * @return array<string, mixed>
      */
     public function asExposedOnlyArray(): array
     {

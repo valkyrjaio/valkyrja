@@ -57,7 +57,7 @@ class Ulid extends Uid
     /**
      * The previously used random array item.
      *
-     * @var array
+     * @var array<int, int>
      */
     protected static array $randomBytes = [];
 
@@ -248,7 +248,7 @@ class Ulid extends Uid
      *
      * @throws Exception
      *
-     * @return array
+     * @return array<int, int>
      */
     protected static function generateRandomBytes(): array
     {
@@ -258,7 +258,7 @@ class Ulid extends Uid
     /**
      * Process the randomized byte parts.
      *
-     * @param array $randomBytes The random byte parts
+     * @param array<int, int> $randomBytes The random byte parts
      *
      * @return void
      */
@@ -275,8 +275,8 @@ class Ulid extends Uid
     /**
      * Process the randomized byte part.
      *
-     * @param array $randomBytes The random byte parts
-     * @param int   $index       The index to process
+     * @param array<int, int> $randomBytes The random byte parts
+     * @param int             $index       The index to process
      *
      * @return void
      */
@@ -288,7 +288,7 @@ class Ulid extends Uid
     /**
      * Unset random byte parts.
      *
-     * @param array $randomBytes The random byte parts
+     * @param array<int, int> $randomBytes The random byte parts
      *
      * @return void
      */

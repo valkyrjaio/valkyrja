@@ -21,6 +21,7 @@ use Stringable;
  *
  * @author   Melech Mizrachi
  *
+ * @template K of array-key
  * @template T
  */
 interface Collection extends Stringable
@@ -28,7 +29,7 @@ interface Collection extends Stringable
     /**
      * Set the collection.
      *
-     * @param array $collection The collection
+     * @param array<K, T> $collection The collection
      *
      * @return static
      */
@@ -46,14 +47,14 @@ interface Collection extends Stringable
     /**
      * Get all the items in the collection.
      *
-     * @return array<string|int, T>
+     * @return array<K, T>
      */
     public function all(): array;
 
     /**
      * Get all the keys in the collection.
      *
-     * @return array
+     * @return K[]
      */
     public function keys(): array;
 
@@ -74,27 +75,27 @@ interface Collection extends Stringable
     /**
      * Get a single item from the collection.
      *
-     * @param string|int $key The key
+     * @param K $key The key
      *
      * @return mixed
      */
-    public function __get(string|int $key);
+    public function __get(string|int $key): mixed;
 
     /**
      * Set a new item into the collection.
      *
-     * @param string|int $key   The key
-     * @param mixed      $value The value
+     * @param K     $key   The key
+     * @param mixed $value The value
      *
-     * @return mixed
+     * @return void
      */
-    public function __set(string|int $key, mixed $value);
+    public function __set(string|int $key, mixed $value): void;
 
     /**
      * Get a single item from the collection.
      *
-     * @param string|int $key     The key to get
-     * @param mixed      $default [optional] The default value
+     * @param K     $key     The key to get
+     * @param mixed $default [optional] The default value
      *
      * @return mixed
      */
@@ -103,7 +104,7 @@ interface Collection extends Stringable
     /**
      * Determine if an item is in the collection.
      *
-     * @param string|int $key The key
+     * @param K $key The key
      *
      * @return bool
      */
@@ -112,8 +113,8 @@ interface Collection extends Stringable
     /**
      * Set a new item into the collection.
      *
-     * @param string|int $key   The key
-     * @param mixed      $value The value
+     * @param K     $key   The key
+     * @param mixed $value The value
      *
      * @return static
      */
@@ -122,7 +123,7 @@ interface Collection extends Stringable
     /**
      * Determine if an item is in the collection.
      *
-     * @param string|int $key The key
+     * @param K $key The key
      *
      * @return bool
      */
@@ -131,7 +132,7 @@ interface Collection extends Stringable
     /**
      * Remove an item from the collection.
      *
-     * @param string|int $key The key
+     * @param K $key The key
      *
      * @return void
      */
@@ -140,7 +141,7 @@ interface Collection extends Stringable
     /**
      * Remove an item from the collection.
      *
-     * @param string|int $key The key
+     * @param K $key The key
      *
      * @return static
      */

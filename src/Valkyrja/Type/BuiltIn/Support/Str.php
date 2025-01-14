@@ -249,7 +249,7 @@ class Str
     /**
      * Validate multiple params to all be strings by using PHPs built in type hinting.
      *
-     * @param mixed ...$subjects The subjects
+     * @param string ...$subjects The subjects
      *
      * @return void
      */

@@ -44,21 +44,21 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     /**
      * The columns for use in a select statement.
      *
-     * @var array
+     * @var string[]
      */
     protected array $columns = [];
 
     /**
      * Order by conditions for the query statement.
      *
-     * @var array
+     * @var string[]
      */
     protected array $orderBy = [];
 
     /**
      * Group by conditions for the query statement.
      *
-     * @var array
+     * @var string[]
      */
     protected array $groupBy = [];
 

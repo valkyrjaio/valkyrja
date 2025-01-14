@@ -29,29 +29,15 @@ use Valkyrja\Orm\Statement\Contract\Statement;
 class Driver implements Contract
 {
     /**
-     * The adapter.
-     *
-     * @var Adapter
-     */
-    protected Adapter $adapter;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * Driver constructor.
      *
-     * @param Adapter $adapter The adapter
-     * @param array   $config  The config
+     * @param Adapter              $adapter The adapter
+     * @param array<string, mixed> $config  The config
      */
-    public function __construct(Adapter $adapter, array $config)
-    {
-        $this->adapter = $adapter;
-        $this->config  = $config;
+    public function __construct(
+        protected Adapter $adapter,
+        protected array $config
+    ) {
     }
 
     /**

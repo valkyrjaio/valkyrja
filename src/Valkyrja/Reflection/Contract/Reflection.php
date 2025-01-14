@@ -111,7 +111,7 @@ interface Reflection
     /**
      * Get dependencies from parameters.
      *
-     * @param ReflectionParameter[] $parameters The parameters
+     * @param ReflectionParameter ...$parameters The parameters
      *
      * @return string[]
      */

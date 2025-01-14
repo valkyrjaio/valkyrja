@@ -28,6 +28,8 @@ use Valkyrja\Manager\Message\Contract\Message;
  * @template Message
  *
  * @implements Contract<Adapter, Driver, Message>
+ *
+ * @extends Factory<Adapter, Driver>
  */
 class MessageFactory extends Factory implements Contract
 {

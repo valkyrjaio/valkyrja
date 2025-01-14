@@ -27,7 +27,7 @@ use Valkyrja\Orm\Retriever\Contract\Retriever;
  *
  * @author   Melech Mizrachi
  *
- * @template Entity
+ * @template Entity of Entity
  */
 interface Repository
 {
@@ -57,7 +57,7 @@ interface Repository
     /**
      * Set columns.
      *
-     * @param array $columns The columns
+     * @param string[] $columns The columns
      *
      * @return static
      */

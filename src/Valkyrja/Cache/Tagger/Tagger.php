@@ -26,6 +26,9 @@ use const JSON_THROW_ON_ERROR;
  * Class Cache.
  *
  * @author Melech Mizrachi
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
  */
 class Tagger implements Contract
 {

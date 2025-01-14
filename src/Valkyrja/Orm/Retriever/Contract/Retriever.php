@@ -24,7 +24,7 @@ use Valkyrja\Orm\QueryBuilder\Contract\WhereQueryBuilder;
  *
  * @author   Melech Mizrachi
  *
- * @template Entity
+ * @template Entity of Entity
  */
 interface Retriever extends WhereQueryBuilder
 {
@@ -71,7 +71,7 @@ interface Retriever extends WhereQueryBuilder
     /**
      * Set columns.
      *
-     * @param array $columns
+     * @param string[] $columns
      *
      * @return static
      */

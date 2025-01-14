@@ -23,6 +23,7 @@ use Attribute;
 #[Attribute(Attribute::IS_REPEATABLE)]
 class DataProvider
 {
+    /** @var array<int, mixed> */
     public array $data;
 
     public function __construct(

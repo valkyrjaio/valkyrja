@@ -24,6 +24,9 @@ use Valkyrja\Type\BuiltIn\Support\Cls;
  *
  * @author Melech Mizrachi
  *
+ * @template Adapter
+ * @template Driver
+ *
  * @implements Factory<Adapter, Driver>
  */
 class ContainerFactory implements Factory
@@ -43,31 +46,32 @@ class ContainerFactory implements Factory
     protected static string $defaultAdapterClass;
 
     /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
      * ContainerFactory constructor.
      *
      * @param Container $container The container
      */
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        protected Container $container
+    ) {
     }
 
     /**
      * @inheritDoc
+     *
+     * @param class-string<Driver>  $name    The driver
+     * @param class-string<Adapter> $adapter The adapter
+     *
+     * @return Driver
      */
     public function createDriver(string $name, string $adapter, array $config): Driver
     {
+        /** @var class-string<Driver> $defaultDriverClass */
+        $defaultDriverClass = $this->getDriverDefaultClass($name);
+
         return Cls::getDefaultableService(
             $this->container,
             $name,
-            $this->getDriverDefaultClass($name),
+            $defaultDriverClass,
             [
                 $this->createAdapter($adapter, $config),
             ]
@@ -76,13 +80,20 @@ class ContainerFactory implements Factory
 
     /**
      * @inheritDoc
+     *
+     * @param class-string<Adapter> $name The adapter
+     *
+     * @return Adapter
      */
     public function createAdapter(string $name, array $config): Adapter
     {
+        /** @var class-string<Adapter> $defaultAdapterClass */
+        $defaultAdapterClass = $this->getAdapterDefaultClass($name);
+
         return Cls::getDefaultableService(
             $this->container,
             $name,
-            $this->getAdapterDefaultClass($name),
+            $defaultAdapterClass,
             [
                 $config,
             ]
@@ -92,7 +103,7 @@ class ContainerFactory implements Factory
     /**
      * Get the default driver class.
      *
-     * @param class-string $name The driver
+     * @param class-string<Driver> $name The driver
      *
      * @return string
      */
@@ -104,7 +115,7 @@ class ContainerFactory implements Factory
     /**
      * Get the default adapter class.
      *
-     * @param class-string $name The adapter
+     * @param class-string<Adapter> $name The adapter
      *
      * @return string
      */

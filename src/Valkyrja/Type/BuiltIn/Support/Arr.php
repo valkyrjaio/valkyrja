@@ -39,6 +39,8 @@ class Arr
      * @param mixed|null           $defaultValue [optional] The default value
      * @param non-empty-string     $separator    [optional] The separator
      *
+     * @phpstan-param ArrayAccess|iterable<array-key, mixed> $subject      The subject
+     *
      * @return mixed
      */
     public static function getValueDotNotation(
@@ -66,7 +68,7 @@ class Arr
     /**
      * Convert an array to a string.
      *
-     * @param array $subject The subject array
+     * @param array<array-key, mixed> $subject The subject array
      *
      * @throws JsonException
      *
@@ -84,7 +86,7 @@ class Arr
      *
      * @throws JsonException
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public static function fromString(string $subject): array
     {
@@ -94,9 +96,9 @@ class Arr
     /**
      * Strip out null valued properties in an array.
      *
-     * @param array $subject The subject array
+     * @param array<array-key, mixed> $subject The subject array
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public static function newWithoutNull(array $subject): array
     {
@@ -108,9 +110,9 @@ class Arr
     /**
      * Strip out null valued properties in an array.
      *
-     * @param array $subject The subject array
+     * @param array<array-key, mixed> $subject The subject array
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public static function withoutNull(array &$subject): array
     {

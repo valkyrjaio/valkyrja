@@ -25,14 +25,14 @@ interface ExposableIndexedModel extends IndexedModel
      *
      * @param string ...$properties [optional] An array of properties to return
      *
-     * @return array
+     * @return array<int, mixed>
      */
     public function asExposedIndexedArray(string ...$properties): array;
 
     /**
      * Get model as an indexed array including only all changed properties including exposable ones.
      *
-     * @return array
+     * @return array<int, mixed>
      */
     public function asExposedChangedIndexedArray(): array;
 }

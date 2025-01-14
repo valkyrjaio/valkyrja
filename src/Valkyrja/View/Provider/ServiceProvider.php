@@ -83,16 +83,9 @@ class ServiceProvider extends Provider
      */
     public static function publishView(Container $container): void
     {
-        /** @var Config|array $config */
+        /** @var Config $config */
         $config = $container->getSingleton(Config::class);
-        /** @var \Valkyrja\View\Config|array{
-         *     dir: string,
-         *     engine: string,
-         *     engines: array<string, class-string>,
-         *     paths: array<string, string>,
-         *     disks: array<string, array>
-         * } $viewConfig
-         */
+        /** @var \Valkyrja\View\Config $viewConfig */
         $viewConfig = $config['view'];
 
         $container->setSingleton(
@@ -144,16 +137,9 @@ class ServiceProvider extends Provider
      */
     public static function publishPhpEngine(Container $container): void
     {
-        /** @var Config|array $config */
+        /** @var Config $config */
         $config = $container->getSingleton(Config::class);
-        /** @var \Valkyrja\View\Config|array{
-         *     dir: string,
-         *     engine: string,
-         *     engines: array<string, class-string>,
-         *     paths: array<string, string>,
-         *     disks: array{php?: array{fileExtension: string}}
-         * } $viewConfig
-         */
+        /** @var \Valkyrja\View\Config $viewConfig */
         $viewConfig = $config['view'];
 
         $container->setSingleton(
@@ -171,20 +157,13 @@ class ServiceProvider extends Provider
      */
     public static function publishOrkaEngine(Container $container): void
     {
-        /** @var Config|array $config */
+        /** @var Config $config */
         $config = $container->getSingleton(Config::class);
-        /** @var \Valkyrja\Application\Config|array $appConfig */
+        /** @var \Valkyrja\Application\Config $appConfig */
         $appConfig = $config['app'];
         /** @var bool $debug */
         $debug = $appConfig['debug'];
-        /** @var \Valkyrja\View\Config|array{
-         *     dir: string,
-         *     engine: string,
-         *     engines: array<string, class-string>,
-         *     paths: array<string, string>,
-         *     disks: array{orka?: array{fileExtension: string}}
-         * } $viewConfig
-         */
+        /** @var \Valkyrja\View\Config $viewConfig */
         $viewConfig = $config['view'];
 
         $container->setSingleton(
@@ -239,30 +218,17 @@ class ServiceProvider extends Provider
      */
     public static function publishTwigEnvironment(Container $container): void
     {
-        /** @var Config|array $config */
+        /** @var Config $config */
         $config = $container->getSingleton(Config::class);
-        /** @var \Valkyrja\Application\Config|array $appConfig */
+        /** @var \Valkyrja\Application\Config $appConfig */
         $appConfig = $config['app'];
         /** @var bool $debug */
         $debug = $appConfig['debug'];
-        /** @var \Valkyrja\View\Config|array{
-         *     dir: string,
-         *     engine: string,
-         *     engines: array<string, class-string>,
-         *     paths: array<string, string>,
-         *     disks: array{
-         *          twig: array{
-         *              compiledDir: string,
-         *              paths: string[],
-         *              extensions: class-string<ExtensionInterface>
-         *          }
-         *     }
-         * } $viewConfig
-         */
+        /** @var \Valkyrja\View\Config $viewConfig */
         $viewConfig = $config['view'];
-        /** @var array $disks */
-        $disks = $viewConfig['disks'];
-        /** @var array $twigConfig */
+        /** @var array<string, mixed> $disks */
+        $disks = $viewConfig['engines'];
+        /** @var array<string, mixed> $twigConfig */
         $twigConfig = $disks['twig'];
         /** @var array<string, string> $paths */
         $paths = $twigConfig['paths'];

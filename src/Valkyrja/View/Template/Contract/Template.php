@@ -101,8 +101,8 @@ interface Template extends Stringable
     /**
      * Output a partial.
      *
-     * @param string $partial   The partial
-     * @param array  $variables [optional] The variables
+     * @param string               $partial   The partial
+     * @param array<string, mixed> $variables [optional] The variables
      *
      * @return string
      */
@@ -147,7 +147,7 @@ interface Template extends Stringable
     /**
      * Render the template.
      *
-     * @param array $variables [optional] The variables to set
+     * @param array<string, mixed> $variables [optional] The variables to set
      *
      * @return string
      */

@@ -24,6 +24,9 @@ use Valkyrja\Type\Type;
  * @author Melech Mizrachi
  *
  * @extends Type<string>
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
  */
 class StringT extends Type implements Contract
 {

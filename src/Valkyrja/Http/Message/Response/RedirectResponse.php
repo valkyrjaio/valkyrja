@@ -28,6 +28,9 @@ use Valkyrja\Http\Message\Uri\Uri;
  * Class RedirectResponse.
  *
  * @author Melech Mizrachi
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
  */
 class RedirectResponse extends Response implements Contract
 {

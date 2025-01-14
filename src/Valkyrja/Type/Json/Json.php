@@ -25,10 +25,16 @@ use function is_string;
  *
  * @author Melech Mizrachi
  *
- * @extends Type<array>
+ * @extends Type<array<string|int, mixed>>
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
  */
 class Json extends Type implements Contract
 {
+    /**
+     * @param array<string|int, mixed> $subject The json
+     */
     public function __construct(array $subject)
     {
         parent::__construct($subject);

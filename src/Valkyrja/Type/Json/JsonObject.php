@@ -26,6 +26,9 @@ use function is_string;
  * @author Melech Mizrachi
  *
  * @extends Type<object>
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
  */
 class JsonObject extends Type implements Contract
 {

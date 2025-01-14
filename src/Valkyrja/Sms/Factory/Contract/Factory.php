@@ -21,10 +21,6 @@ use Valkyrja\Sms\Message\Contract\Message;
 /**
  * Interface Factory.
  *
- * @template Adapter
- * @template Driver
- * @template Message
- *
  * @author Melech Mizrachi
  *
  * @extends Contract<Adapter, Driver, Message>

@@ -26,10 +26,10 @@ interface ResponseFactory
     /**
      * View response builder.
      *
-     * @param string          $template   The view template to use
-     * @param array|null      $data       [optional] The view data
-     * @param StatusCode|null $statusCode [optional] The response status code
-     * @param array|null      $headers    [optional] An array of response headers
+     * @param string                       $template   The view template to use
+     * @param array<string, mixed>|null    $data       [optional] The view data
+     * @param StatusCode|null              $statusCode [optional] The response status code
+     * @param array<string, string[]>|null $headers    [optional] An array of response headers
      *
      * @return Response
      */

@@ -25,7 +25,7 @@ interface Parser
      *
      * @param string $path The path
      *
-     * @return array
+     * @return array{params: array<string, array{regex: string, replace: non-falsy-string}>, regex: non-falsy-string, segments: string[]}
      */
     public function parse(string $path): array;
 }

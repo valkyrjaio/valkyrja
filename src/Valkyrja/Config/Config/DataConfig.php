@@ -45,6 +45,9 @@ use Valkyrja\View\Config as View;
  * Class Config.
  *
  * @author Melech Mizrachi
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
  */
 class DataConfig extends ParentConfig
 {

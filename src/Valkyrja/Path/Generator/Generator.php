@@ -18,7 +18,6 @@ use Valkyrja\Path\Generator\Contract\Generator as Contract;
 
 use function implode;
 use function is_array;
-use function is_string;
 use function preg_match;
 use function str_replace;
 
@@ -58,7 +57,7 @@ class Generator implements Contract
             }
 
             // If parameters were replaced or none to begin with
-            if (is_string($segment) && ! str_contains($segment, '{')) {
+            if (! str_contains($segment, '{')) {
                 // Append this segment
                 $path .= $segment;
             }
@@ -70,11 +69,11 @@ class Generator implements Contract
     /**
      * Parse data for replacements.
      *
-     * @param array $segments     The segments
-     * @param array $data         The data
-     * @param array $params       The params
-     * @param array $replace      The replace array
-     * @param array $replacements The replacements array
+     * @param string[]                $segments     The segments
+     * @param array<array-key, mixed> $data         The data
+     * @param array<array-key, mixed> $params       The params
+     * @param string[]                $replace      The replace array
+     * @param string[]                $replacements The replacements array
      *
      * @throws InvalidArgumentException
      *
@@ -114,9 +113,9 @@ class Generator implements Contract
             }
 
             // Set what to replace
-            $replace[] = $params[$key]['replace'];
+            $replace[] = (string) $params[$key]['replace'];
             // With the data value to replace with
-            $replacements[] = $datum;
+            $replacements[] = (string) $datum;
         }
     }
 
@@ -150,8 +149,8 @@ class Generator implements Contract
     /**
      * Find a segment with a param key.
      *
-     * @param array  $segments
-     * @param string $param
+     * @param string[] $segments
+     * @param string   $param
      *
      * @return string
      */

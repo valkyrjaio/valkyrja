@@ -25,10 +25,10 @@ class NonEmptyString extends StringT
 {
     public function __construct(string $subject)
     {
-        parent::__construct($subject);
-
-        if (! empty($subject)) {
+        if ($subject === '') {
             throw new InvalidArgumentException('Value must be a non-empty-string.');
         }
+
+        parent::__construct($subject);
     }
 }

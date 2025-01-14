@@ -26,14 +26,14 @@ class NullAdapter implements Contract
     /**
      * The config.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $config;
 
     /**
      * NullAdapter constructor.
      *
-     * @param array $config The config
+     * @param array<string, mixed> $config The config
      */
     public function __construct(array $config)
     {

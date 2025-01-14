@@ -38,20 +38,6 @@ use function assert;
 class Repository implements Contract
 {
     /**
-     * The connection driver.
-     *
-     * @var Driver
-     */
-    protected Driver $driver;
-
-    /**
-     * The entity manager.
-     *
-     * @var Orm
-     */
-    protected Orm $orm;
-
-    /**
      * The persister.
      *
      * @var Persister
@@ -64,13 +50,6 @@ class Repository implements Contract
      * @var Retriever
      */
     protected Retriever $retriever;
-
-    /**
-     * The entity to use.
-     *
-     * @var class-string<Entity>
-     */
-    protected string $entity;
 
     /**
      * The relationships to get with each result.
@@ -89,20 +68,20 @@ class Repository implements Contract
     /**
      * Repository constructor.
      *
-     * @param Orm                  $manager The orm manager
-     * @param Driver               $driver  The driver
-     * @param class-string<Entity> $entity  The entity class name
+     * @param Orm                  $orm    The orm manager
+     * @param Driver               $driver The driver
+     * @param class-string<Entity> $entity The entity class name
      *
      * @throws InvalidArgumentException
      */
-    public function __construct(Orm $manager, Driver $driver, string $entity)
-    {
+    public function __construct(
+        protected Orm $orm,
+        protected Driver $driver,
+        protected string $entity
+    ) {
         assert(is_a($entity, Entity::class, true));
 
-        $this->driver    = $driver;
         $this->persister = $this->driver->getPersister();
-        $this->orm       = $manager;
-        $this->entity    = $entity;
     }
 
     /**

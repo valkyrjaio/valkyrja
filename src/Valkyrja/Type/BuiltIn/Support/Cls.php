@@ -119,22 +119,18 @@ class Cls
      *
      * Note: Must be used on a closure service.
      *
-     * @template T
-     * @template D
+     * @template T of object
+     * @template D of object
      *
-     * @param Container              $container    The container
-     * @param class-string<T>|string $class        The class to get
-     * @param class-string<D>|string $defaultClass The default class to fallback to
-     * @param array                  $arguments    [optional] The arguments
+     * @param Container               $container    The container
+     * @param class-string<T>         $class        The class to get
+     * @param class-string<D>         $defaultClass The default class to fallback to
+     * @param array<array-key, mixed> $arguments    [optional] The arguments
      *
      * @return T|D
      */
-    public static function getDefaultableService(
-        Container $container,
-        string $class,
-        string $defaultClass,
-        array $arguments = []
-    ): object {
+    public static function getDefaultableService(Container $container, string $class, string $defaultClass, array $arguments = []): object
+    {
         if ($container->has($class)) {
             return $container->get(
                 $class,

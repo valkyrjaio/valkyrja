@@ -39,7 +39,7 @@ class Config extends Model
     /**
      * The config.
      *
-     * @var array
+     * @var array<string, array<string, mixed>>
      */
     public array $crypts;
 }

@@ -52,6 +52,11 @@ interface Assert extends Asserter
 
     /**
      * Call an asserter by name.
+     *
+     * @param string                  $name      The name
+     * @param array<array-key, mixed> $arguments The arguments
+     *
+     * @return mixed
      */
     public function __call(string $name, array $arguments): mixed;
 }

@@ -34,7 +34,7 @@ interface SelectQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *      );
      * </code>
      *
-     * @param array|null $columns [optional] The columns to return. Defaults to *.
+     * @param string[]|null $columns [optional] The columns to return. Defaults to ['*'].
      *
      * @return static
      */

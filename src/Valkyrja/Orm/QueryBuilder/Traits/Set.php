@@ -27,7 +27,7 @@ trait Set
     /**
      * Values to use for update/insert statements.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $values = [];
 

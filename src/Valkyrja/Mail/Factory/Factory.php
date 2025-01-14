@@ -24,12 +24,17 @@ use Valkyrja\Manager\Factory\MessageFactory;
  *
  * @author Melech Mizrachi
  *
- * @extends MessageFactory<Driver, Adapter, Message>
+ * @extends MessageFactory<Adapter, Driver, Message>
  */
 class Factory extends MessageFactory implements Contract
 {
     /**
      * @inheritDoc
+     *
+     * @param class-string<Driver>  $name    The driver
+     * @param class-string<Adapter> $adapter The adapter
+     *
+     * @return Driver
      */
     public function createDriver(string $name, string $adapter, array $config): Driver
     {
@@ -41,6 +46,10 @@ class Factory extends MessageFactory implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param class-string<Adapter> $name The adapter
+     *
+     * @return Adapter
      */
     public function createAdapter(string $name, array $config): Adapter
     {

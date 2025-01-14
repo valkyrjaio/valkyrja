@@ -59,8 +59,8 @@ abstract class MessageManager extends Manager implements Contract
     /**
      * MessageManager constructor.
      *
-     * @param Factory             $factory The factory
-     * @param MessageConfig|array $config  The config
+     * @param Factory                            $factory The factory
+     * @param MessageConfig|array<string, mixed> $config  The config
      */
     public function __construct(Factory $factory, MessageConfig|array $config)
     {

@@ -28,6 +28,9 @@ use Valkyrja\Reflection\Contract\Reflection;
  * Class Collector.
  *
  * @author Melech Mizrachi
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
  */
 class Collector implements Contract
 {

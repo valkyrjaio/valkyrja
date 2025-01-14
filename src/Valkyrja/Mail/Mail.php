@@ -33,8 +33,8 @@ class Mail extends Manager implements Contract
     /**
      * Mail constructor.
      *
-     * @param Factory      $factory The factory
-     * @param Config|array $config  The config
+     * @param Factory                     $factory The factory
+     * @param Config|array<string, mixed> $config  The config
      */
     public function __construct(Factory $factory, Config|array $config)
     {
@@ -59,7 +59,10 @@ class Mail extends Manager implements Contract
      */
     public function createMessage(string|null $name = null, array $data = []): Message
     {
-        return parent::createMessage($name, $data);
+        /** @var Message $message */
+        $message = parent::createMessage($name, $data);
+
+        return $message;
     }
 
     /**

@@ -44,7 +44,7 @@ class VlidV2 extends Vlid
     /** @var string */
     protected static string $time = '';
 
-    /** @var array */
+    /** @var array<int, int> */
     protected static array $randomBytes = [];
 
     /**

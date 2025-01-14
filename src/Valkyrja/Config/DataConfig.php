@@ -25,6 +25,9 @@ use function defined;
  * @author Melech Mizrachi
  *
  * @implements ArrayAccess<string, mixed>
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
  */
 abstract class DataConfig implements ArrayAccess
 {

@@ -46,7 +46,7 @@ class Config extends Model
     /**
      * The configurations.
      *
-     * @var array[]
+     * @var array<string, array<string, mixed>>
      */
     public array $configurations;
 }

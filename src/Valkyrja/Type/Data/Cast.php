@@ -53,6 +53,8 @@ class Cast implements JsonSerializable
 
     /**
      * @inheritDoc
+     *
+     * @return array<string, mixed>
      */
     public function jsonSerialize(): array
     {

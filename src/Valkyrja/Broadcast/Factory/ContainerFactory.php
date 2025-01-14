@@ -42,6 +42,8 @@ class ContainerFactory extends Factory implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @var class-string
      */
     protected static string $defaultMessageClass = Message::class;
 

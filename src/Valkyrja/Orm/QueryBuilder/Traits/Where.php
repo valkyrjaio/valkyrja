@@ -33,7 +33,7 @@ trait Where
     /**
      * Where conditions for the query statement.
      *
-     * @var array
+     * @var string[]
      */
     protected array $where = [];
 

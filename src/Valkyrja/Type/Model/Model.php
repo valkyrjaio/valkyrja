@@ -34,6 +34,9 @@ use const JSON_THROW_ON_ERROR;
  * Class Model.
  *
  * @author Melech Mizrachi
+ *
+ * @phpstan-consistent-constructor
+ *  Will be overridden if need be
  */
 abstract class Model implements Contract
 {

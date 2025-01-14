@@ -34,7 +34,7 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *      );
      * </code>
      *
-     * @param array|null $columns
+     * @param string[]|null $columns
      *
      * @return static
      */

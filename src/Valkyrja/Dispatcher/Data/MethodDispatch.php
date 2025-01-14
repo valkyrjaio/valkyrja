@@ -23,6 +23,9 @@ use function is_string;
  * Class MethodDispatch.
  *
  * @author Melech Mizrachi
+ *
+ * @phpstan-consistent-constructor
+ *   Will be overridden if need be
  */
 class MethodDispatch extends ClassDispatch implements Contract
 {

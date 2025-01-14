@@ -33,13 +33,6 @@ use function random_bytes;
 class NullAdapter implements Contract
 {
     /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * The session id.
      *
      * @var string
@@ -56,21 +49,21 @@ class NullAdapter implements Contract
     /**
      * The session data.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $data = [];
 
     /**
      * NullAdapter constructor.
      *
-     * @param array       $config      The config
-     * @param string|null $sessionId   [optional] The session id
-     * @param string|null $sessionName [optional] The session name
+     * @param array<string, mixed> $config      The config
+     * @param string|null          $sessionId   [optional] The session id
+     * @param string|null          $sessionName [optional] The session name
      *
      * @throws InvalidSessionId
      * @throws SessionStartFailure
      */
-    public function __construct(array $config, string|null $sessionId = null, string|null $sessionName = null)
+    public function __construct(protected array $config, string|null $sessionId = null, string|null $sessionName = null)
     {
         $this->config = $config;
 

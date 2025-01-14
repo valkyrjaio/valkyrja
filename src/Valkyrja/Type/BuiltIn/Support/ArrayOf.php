@@ -94,6 +94,8 @@ class ArrayOf
 
     /**
      * Check an array to ensure it is all arrays.
+     *
+     * @param array<array-key, mixed> ...$values The arrays
      */
     public static function arrays(array ...$values): void
     {
