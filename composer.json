@@ -87,7 +87,7 @@
   },
   "scripts"           : {
     "churn"            : "vendor/bin/churn run --configuration=churn.yml src",
-    "phparkitect"      : "vendor/bin/phparkitect check --config=phparkitecht.php",
+    "phparkitect"      : "vendor/bin/phparkitect check --config=phparkitect.php",
     "phpcs"            : "vendor/bin/phpcs fix --config=.php_cs.dist.php",
     "phpcs-dry-run"    : "vendor/bin/phpcs fix --config=.php_cs.dist.php --dry-run",
     "phpmetrics"       : "vendor/bin/metrics --report-html=./build/phpmetrics src",

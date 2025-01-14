@@ -70,7 +70,7 @@ jobs:
       - name: Run PHPArkitect
         if: ${{ matrix.php == '8.1' }}
         run: |
-          vendor/bin/phparkitect check --config=phparkitecht.php
+          vendor/bin/phparkitect check --config=phparkitect.php
 
       - name: Upload Codecov Coverage Report
         if: ${{ matrix.php == '8.1' }}
