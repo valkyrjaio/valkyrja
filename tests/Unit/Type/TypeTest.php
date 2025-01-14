@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type;
 
 use JsonSerializable;
-use Valkyrja\Tests\Classes\Type\Type;
+use Valkyrja\Tests\Classes\Type\TypeClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\Contract\Type as Contract;
 
@@ -35,7 +35,7 @@ class TypeTest extends TestCase
     {
         $value        = 'test';
         $newValue     = 'test2';
-        $type         = Type::fromValue($value);
+        $type         = TypeClass::fromValue($value);
         $typeModified = $type->modify(static fn ($value) => $newValue);
 
         self::assertSame($value, $type->asValue());
@@ -51,7 +51,7 @@ class TypeTest extends TestCase
     {
         $value        = 45;
         $newValue     = 43;
-        $type         = Type::fromValue($value);
+        $type         = TypeClass::fromValue($value);
         $typeModified = $type->modify(static fn ($value) => $newValue);
 
         self::assertSame($value, $type->asValue());
@@ -67,7 +67,7 @@ class TypeTest extends TestCase
     {
         $value        = 4.75;
         $newValue     = 52.32;
-        $type         = Type::fromValue($value);
+        $type         = TypeClass::fromValue($value);
         $typeModified = $type->modify(static fn ($value) => $newValue);
 
         self::assertSame($value, $type->asValue());
@@ -83,7 +83,7 @@ class TypeTest extends TestCase
     {
         $value        = true;
         $newValue     = false;
-        $type         = Type::fromValue($value);
+        $type         = TypeClass::fromValue($value);
         $typeModified = $type->modify(static fn ($value) => $newValue);
 
         self::assertSame($value, $type->asValue());
@@ -98,7 +98,7 @@ class TypeTest extends TestCase
     public function testNull(): void
     {
         $value = null;
-        $type  = Type::fromValue($value);
+        $type  = TypeClass::fromValue($value);
 
         self::assertSame($value, $type->asValue());
         self::assertSame($value, $type->asFlatValue());

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Entity;
 
 use JsonException;
-use Valkyrja\Orm\Entity as Contract;
-use Valkyrja\Orm\Repository;
+use Valkyrja\Orm\Entity\Contract\Entity as Contract;
+use Valkyrja\Orm\Repository\Contract\Repository;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\Contract\Type;
 use Valkyrja\Type\Data\Cast;

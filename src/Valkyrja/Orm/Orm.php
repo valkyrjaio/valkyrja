@@ -13,266 +13,373 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm;
 
+use Valkyrja\Orm\Adapter\Contract\Adapter;
+use Valkyrja\Orm\Config\Config;
+use Valkyrja\Orm\Contract\Orm as Contract;
+use Valkyrja\Orm\Driver\Contract\Driver;
+use Valkyrja\Orm\Entity\Contract\Entity;
+use Valkyrja\Orm\Entity\Contract\SoftDeleteEntity;
+use Valkyrja\Orm\Factory\Contract\Factory;
+use Valkyrja\Orm\Persister\Contract\Persister;
+use Valkyrja\Orm\Query\Contract\Query;
+use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
+use Valkyrja\Orm\Repository\Contract\Repository;
+use Valkyrja\Orm\Retriever\Contract\Retriever;
+use Valkyrja\Orm\Schema\Contract\Migration;
+use Valkyrja\Orm\Statement\Contract\Statement;
+
+use function assert;
+
 /**
- * Interface ORM.
+ * Class ORM.
  *
  * @author Melech Mizrachi
  */
-interface Orm
+class Orm implements Contract
 {
     /**
-     * Use a connection by name.
+     * The drivers.
      *
-     * @param string|null                $name    The connection name
-     * @param class-string<Adapter>|null $adapter The adapter
-     *
-     * @return Driver
+     * @var Driver[]
      */
-    public function useConnection(string|null $name = null, string|null $adapter = null): Driver;
+    protected static array $drivers = [];
 
     /**
-     * Create an adapter.
+     * Repositories.
      *
-     * @param class-string<Adapter> $name   The adapter class name
-     * @param array                 $config The config
-     *
-     * @return Adapter
+     * @var Repository[]
      */
-    public function createAdapter(string $name, array $config): Adapter;
+    protected static array $repositories = [];
 
     /**
-     * Create a query builder.
+     * The connections.
      *
-     * @param Adapter                    $adapter The adapter
-     * @param class-string<QueryBuilder> $name    The query builder class name
-     *
-     * @return QueryBuilder
+     * @var array
      */
-    public function createQueryBuilder(Adapter $adapter, string $name): QueryBuilder;
+    protected array $connections;
 
     /**
-     * Create a query.
+     * The default connection.
      *
-     * @param Adapter             $adapter The adapter
-     * @param class-string<Query> $name    The query class name
-     *
-     * @return Query
+     * @var string
      */
-    public function createQuery(Adapter $adapter, string $name): Query;
+    protected string $defaultConnection;
 
     /**
-     * Create a retriever.
+     * The default adapter.
      *
-     * @param Adapter                 $adapter The adapter
-     * @param class-string<Retriever> $name    The retriever class name
-     *
-     * @return Retriever
+     * @var class-string<Adapter>
      */
-    public function createRetriever(Adapter $adapter, string $name): Retriever;
+    protected string $defaultAdapter;
 
     /**
-     * Create a persister.
+     * The default driver.
      *
-     * @param Adapter                 $adapter The adapter
-     * @param class-string<Persister> $name    The persister class name
-     *
-     * @return Persister
+     * @var class-string<Driver>
      */
-    public function createPersister(Adapter $adapter, string $name): Persister;
+    protected string $defaultDriver;
 
     /**
-     * Get a repository by entity name.
+     * The default repository.
      *
-     * @param class-string<Entity> $entity
-     *
-     * @return Repository<Entity>
+     * @var class-string<Repository>
      */
-    public function getRepository(string $entity): Repository;
+    protected string $defaultRepository;
 
     /**
-     * Get a repository from an entity class.
+     * The default query.
      *
-     * @param Entity $entity
-     *
-     * @return Repository<Entity>
+     * @var class-string<Query>
      */
-    public function getRepositoryFromClass(Entity $entity): Repository;
+    protected string $defaultQuery;
 
     /**
-     * Create a statement.
+     * The default query builder.
      *
-     * @param Adapter                 $adapter The adapter
-     * @param class-string<Statement> $name    The statement class name
-     * @param array                   $data    [optional] Additional data required for the statement
-     *
-     * @return Statement
+     * @var class-string<QueryBuilder>
      */
-    public function createStatement(Adapter $adapter, string $name, array $data = []): Statement;
+    protected string $defaultQueryBuilder;
 
     /**
-     * Create a migration.
+     * The default persister.
      *
-     * @param class-string<Migration> $name The migration class name
-     * @param array                   $data [optional] Additional data required for the migration
-     *
-     * @return Migration
+     * @var class-string<Persister>
      */
-    public function createMigration(string $name, array $data = []): Migration;
+    protected string $defaultPersister;
 
     /**
-     * Initiate a transaction.
+     * The default retriever.
      *
-     * @return bool
+     * @var class-string<Retriever>
      */
-    public function beginTransaction(): bool;
+    protected string $defaultRetriever;
 
     /**
-     * In a transaction.
+     * ORM constructor.
      *
-     * @return bool
+     * @param Factory      $factory The factory
+     * @param Config|array $config  The config
      */
-    public function inTransaction(): bool;
+    public function __construct(
+        protected Factory $factory,
+        protected Config|array $config
+    ) {
+        $this->connections         = $config['connections'];
+        $this->defaultConnection   = $config['default'];
+        $this->defaultAdapter      = $config['adapter'];
+        $this->defaultDriver       = $config['driver'];
+        $this->defaultRepository   = $config['repository'];
+        $this->defaultQuery        = $config['query'];
+        $this->defaultQueryBuilder = $config['queryBuilder'];
+        $this->defaultPersister    = $config['persister'];
+        $this->defaultRetriever    = $config['retriever'];
+    }
 
     /**
-     * Ensure a transaction is in progress.
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function ensureTransaction(): void;
+    public function useConnection(string|null $name = null, string|null $adapter = null): Driver
+    {
+        // The connection to use
+        $name ??= $this->defaultConnection;
+        /** @var array{driver?: class-string<Driver>, adapter?: class-string<Adapter>} $config */
+        // The connection config to use
+        $config = $this->connections[$name];
+        // The driver
+        $driver = $config['driver'] ?? $this->defaultDriver;
+
+        assert(is_a($name, Driver::class, true));
+
+        // The adapter to use
+        $adapter ??= $config['adapter'] ?? $this->defaultAdapter;
+
+        assert(is_a($adapter, Adapter::class, true));
+
+        // The cache key to use
+        $cacheKey = $name . $driver . $adapter;
+
+        return self::$drivers[$cacheKey]
+            ??= $this->factory->createDriver($this->createAdapter($adapter, $config), $driver, $config);
+    }
 
     /**
-     * Persist all entities.
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function persist(): bool;
+    public function createAdapter(string $name, array $config): Adapter
+    {
+        assert(is_a($name, Adapter::class, true));
+
+        // Set the query
+        $config['query'] ??= $this->defaultQuery;
+        // Set the query builder
+        $config['queryBuilder'] ??= $this->defaultQueryBuilder;
+        // Set the persister
+        $config['persister'] ??= $this->defaultPersister;
+        // Set the retriever
+        $config['retriever'] ??= $this->defaultRetriever;
+
+        return $this->factory->createAdapter($name, $config);
+    }
 
     /**
-     * Rollback the previous transaction.
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function rollback(): bool;
+    public function createQueryBuilder(Adapter $adapter, string $name): QueryBuilder
+    {
+        assert(is_a($name, QueryBuilder::class, true));
+
+        return $this->factory->createQueryBuilder($adapter, $name);
+    }
 
     /**
-     * Get the last inserted id.
-     *
-     * @param string|null $table   [optional] The table last inserted into
-     * @param string|null $idField [optional] The id field of the table last inserted into
-     *
-     * @return string
+     * @inheritDoc
      */
-    public function lastInsertId(string|null $table = null, string|null $idField = null): string;
+    public function createQuery(Adapter $adapter, string $name): Query
+    {
+        assert(is_a($name, Query::class, true));
+
+        return $this->factory->createQuery($adapter, $name);
+    }
 
     /**
-     * Find by given criteria.
-     *
-     * <code>
-     *      $entityManager->find(Entity::class, true | false)
-     * </code>
-     *
-     * @param class-string<Entity> $entity
-     *
-     * @return Retriever
+     * @inheritDoc
      */
-    public function find(string $entity): Retriever;
+    public function createRetriever(Adapter $adapter, string $name): Retriever
+    {
+        assert(is_a($name, Retriever::class, true));
+
+        return $this->factory->createRetriever($adapter, $name);
+    }
 
     /**
-     * Find a single entity given its id.
-     *
-     * <code>
-     *      $entityManager->findOne(Entity::class, 1, true | false)
-     * </code>
-     *
-     * @param class-string<Entity> $entity
-     * @param int|string           $id
-     *
-     * @return Retriever
+     * @inheritDoc
      */
-    public function findOne(string $entity, int|string $id): Retriever;
+    public function createPersister(Adapter $adapter, string $name): Persister
+    {
+        assert(is_a($name, Persister::class, true));
+
+        return $this->factory->createPersister($adapter, $name);
+    }
 
     /**
-     * Count all the results of given criteria.
-     *
-     * <code>
-     *      $entityManager
-     *          ->count(
-     *              Entity::class
-     *          )
-     * </code>
-     *
-     * @param class-string<Entity> $entity
-     *
-     * @return Retriever
+     * @inheritDoc
      */
-    public function count(string $entity): Retriever;
+    public function getRepository(string $entity): Repository
+    {
+        assert(is_a($entity, Entity::class, true));
+
+        $entityClass = $entity;
+
+        $name     = $entityClass::getRepository() ?? $this->defaultRepository;
+        $cacheKey = $name . $entity;
+
+        return static::$repositories[$cacheKey]
+            ?? static::$repositories[$cacheKey] = $this->factory->createRepository(
+                $this->useConnection($entityClass::getConnection()),
+                $name,
+                $entity
+            );
+    }
 
     /**
-     * Create a new entity.
-     *
-     * <code>
-     *      $entityManager->create(new Entity(), true | false)
-     * </code>
-     *
-     * @param Entity $entity
-     * @param bool   $defer  [optional]
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function create(Entity $entity, bool $defer = true): void;
+    public function getRepositoryFromClass(Entity $entity): Repository
+    {
+        return $this->getRepository($entity::class);
+    }
 
     /**
-     * Update an existing entity.
-     *
-     * <code>
-     *      $entityManager->save(new Entity(), true | false)
-     * </code>
-     *
-     * @param Entity $entity
-     * @param bool   $defer  [optional]
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function save(Entity $entity, bool $defer = true): void;
+    public function createStatement(Adapter $adapter, string $name, array $data = []): Statement
+    {
+        return $this->factory->createStatement($adapter, $name, $data);
+    }
 
     /**
-     * Delete an existing entity.
-     *
-     * <code>
-     *      $entityManager->delete(new Entity(), true | false)
-     * </code>
-     *
-     * @param Entity $entity
-     * @param bool   $defer  [optional]
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function delete(Entity $entity, bool $defer = true): void;
+    public function createMigration(string $name, array $data = []): Migration
+    {
+        return $this->factory->createMigration($name, $data);
+    }
 
     /**
-     * Soft delete an existing entity.
-     *
-     * <code>
-     *      $entityManager->softDelete(new SoftDeleteEntity(), true | false)
-     * </code>
-     *
-     * @param SoftDeleteEntity $entity
-     * @param bool             $defer  [optional]
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void;
+    public function beginTransaction(): bool
+    {
+        return $this->useConnection()->beginTransaction();
+    }
 
     /**
-     * Clear all, or a single, deferred entity.
-     *
-     * <code>
-     *      $entityManager->clear(new Entity())
-     * </code>
-     *
-     * @param Entity|null $entity [optional] The entity instance to remove
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function clear(Entity|null $entity = null): void;
+    public function inTransaction(): bool
+    {
+        return $this->useConnection()->inTransaction();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function ensureTransaction(): void
+    {
+        $this->useConnection()->ensureTransaction();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function persist(): bool
+    {
+        return $this->useConnection()->getPersister()->persist();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function rollback(): bool
+    {
+        return $this->useConnection()->rollback();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function lastInsertId(string|null $table = null, string|null $idField = null): string
+    {
+        return $this->useConnection()->lastInsertId($table, $idField);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function find(string $entity): Retriever
+    {
+        return $this->useConnection()->createRetriever()->find($entity);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function findOne(string $entity, int|string $id): Retriever
+    {
+        return $this->useConnection()->createRetriever()->findOne($entity, $id);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function count(string $entity): Retriever
+    {
+        return $this->useConnection()->createRetriever()->count($entity);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function create(Entity $entity, bool $defer = true): void
+    {
+        $this->getRepositoryFromClass($entity)->create($entity, $defer);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function save(Entity $entity, bool $defer = true): void
+    {
+        $this->getRepositoryFromClass($entity)->save($entity, $defer);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function delete(Entity $entity, bool $defer = true): void
+    {
+        $this->getRepositoryFromClass($entity)->delete($entity, $defer);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
+    {
+        $this->getRepositoryFromClass($entity)->softDelete($entity, $defer);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function clear(Entity|null $entity = null): void
+    {
+        if ($entity !== null) {
+            $this->getRepositoryFromClass($entity)->clear($entity);
+
+            return;
+        }
+
+        $this->useConnection()->getPersister()->clear($entity);
+    }
 }

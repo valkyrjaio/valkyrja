@@ -18,8 +18,8 @@ use Valkyrja\Attribute\Attributes as AttributesAttributes;
 use Valkyrja\Event\Attribute\Attributes;
 use Valkyrja\Event\Model\Contract\Listener;
 use Valkyrja\Reflection\Reflection;
+use Valkyrja\Tests\Classes\Event\Attribute\Attributed2Class;
 use Valkyrja\Tests\Classes\Event\Attribute\AttributedClass;
-use Valkyrja\Tests\Classes\Event\Attribute\AttributedClass2;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -88,7 +88,7 @@ class AttributesTest extends TestCase
      */
     public function testGetListeners2(): void
     {
-        $attributes = $this->class->getListeners(AttributedClass2::class);
+        $attributes = $this->class->getListeners(Attributed2Class::class);
 
         self::assertCount(6, $attributes);
 

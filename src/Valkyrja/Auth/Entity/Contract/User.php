@@ -15,7 +15,7 @@ namespace Valkyrja\Auth\Entity\Contract;
 
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\Repository;
-use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Entity\Contract\Entity;
 
 /**
  * Interface User.

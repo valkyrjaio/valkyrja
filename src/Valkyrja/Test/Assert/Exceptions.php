@@ -14,53 +14,137 @@ declare(strict_types=1);
 namespace Valkyrja\Test\Assert;
 
 use Throwable;
+use Valkyrja\Test\Assert\Contract\Exceptions as Contract;
+use Valkyrja\Test\Exception\AssertFailureException;
 
 /**
- * Interface Exceptions.
+ * Class Exceptions.
  *
  * @author Melech Mizrachi
  */
-interface Exceptions extends Asserter
+class Exceptions extends Asserter implements Contract
 {
     /**
-     * Get the error message for when an exception is expected but not thrown.
+     * Whether an exception is expected to be thrown.
      */
-    public static function getExpectedErrorMessage(): string;
+    protected bool $expecting = false;
 
     /**
-     * Get the error message for when an exception is not expected but is thrown.
-     */
-    public static function getUnexpectedErrorMessage(string $actualClassName, string $actualMessage): string;
-
-    /**
-     * Get the error message for when the expected class name does not match what was thrown.
-     */
-    public static function getIncorrectClassNameErrorMessage(string $expected, string $actual): string;
-
-    /**
-     * Get the error message for when the expected message does not match what was thrown.
-     */
-    public static function getIncorrectMessageErrorMessage(string $expected, string $actual): string;
-
-    /**
-     * Set an expected class name to be thrown.
+     * The expected class name.
      *
-     * @param class-string $className
+     * @var class-string
      */
-    public function className(string $className): void;
+    protected string $className;
 
     /**
-     * Set an expected message to be thrown.
+     * The expected message.
      */
-    public function message(string $message): void;
+    protected string $message;
 
     /**
-     * Set that an exception is expected to be thrown.
+     * @inheritDoc
      */
-    public function expecting(): void;
+    public static function getExpectedErrorMessage(): string
+    {
+        return 'An exception was expected. Got none.';
+    }
 
     /**
-     * Verify the exception thrown (or not thrown) against what is expected.
+     * @inheritDoc
      */
-    public function verify(Throwable|null $exception = null): void;
+    public static function getUnexpectedErrorMessage(string $actualClassName, string $actualMessage): string
+    {
+        return "An unexpected exception {$actualClassName} with message {$actualMessage} was thrown.";
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getIncorrectClassNameErrorMessage(string $expected, string $actual): string
+    {
+        return "Expected {$expected} exception does not match actual {$actual}.";
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getIncorrectMessageErrorMessage(string $expected, string $actual): string
+    {
+        return "Expected {$expected} message does not match actual {$actual}.";
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function className(string $className): void
+    {
+        $this->assertions[] = $className;
+
+        $this->className = $className;
+
+        $this->expecting();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function message(string $message): void
+    {
+        $this->assertions[] = $message;
+
+        $this->message = $message;
+
+        $this->expecting();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function expecting(): void
+    {
+        $this->expecting = true;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function verify(Throwable|null $exception = null): void
+    {
+        if ($exception === null) {
+            if ($this->expecting) {
+                $this->errors[] = new AssertFailureException(self::getExpectedErrorMessage());
+            }
+
+            return;
+        }
+
+        $actualClassName = $exception::class;
+        $actualMessage   = $exception->getMessage();
+
+        if (! $this->expecting) {
+            $this->errors[] = new AssertFailureException(
+                self::getUnexpectedErrorMessage($actualClassName, $actualMessage)
+            );
+
+            return;
+        }
+
+        /**
+         * @psalm-suppress RedundantConditionGivenDocblockType
+         */
+        if (isset($this->className) && ($className = $this->className) !== $actualClassName) {
+            $this->errors[] = new AssertFailureException(
+                self::getIncorrectClassNameErrorMessage($className, $actualClassName)
+            );
+        }
+
+        /**
+         * @psalm-suppress RedundantCondition
+         */
+        if (isset($this->message) && ($message = $this->message) !== $actualMessage) {
+            $this->errors[] = new AssertFailureException(
+                self::getIncorrectMessageErrorMessage($message, $actualMessage)
+            );
+        }
+    }
 }

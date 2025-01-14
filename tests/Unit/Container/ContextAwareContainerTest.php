@@ -15,10 +15,10 @@ namespace Valkyrja\Tests\Unit\Container;
 
 use Valkyrja\Container\Config;
 use Valkyrja\Container\ContextAwareContainer;
-use Valkyrja\Tests\Classes\Container\Service;
-use Valkyrja\Tests\Classes\Container\Service2;
-use Valkyrja\Tests\Classes\Container\Singleton;
-use Valkyrja\Tests\Classes\Container\Singleton2;
+use Valkyrja\Tests\Classes\Container\Service2Class;
+use Valkyrja\Tests\Classes\Container\ServiceClass;
+use Valkyrja\Tests\Classes\Container\Singleton2Class;
+use Valkyrja\Tests\Classes\Container\SingletonClass;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -33,24 +33,24 @@ class ContextAwareContainerTest extends TestCase
         $config    = new Config();
         $container = new ContextAwareContainer($config, true);
 
-        $container->bind(Service::class, Service::class);
+        $container->bind(ServiceClass::class, ServiceClass::class);
 
-        $withContext    = $container->withContext(Service::class, 'make');
+        $withContext    = $container->withContext(ServiceClass::class, 'make');
         $withoutContext = $container->withoutContext();
 
-        $withContext->bind(Service::class, Service2::class);
+        $withContext->bind(ServiceClass::class, Service2Class::class);
 
-        self::assertTrue($container->isService(Service::class));
-        self::assertInstanceOf(Service::class, $container->get(Service::class));
-        self::assertInstanceOf(Service::class, $container->getService(Service::class));
+        self::assertTrue($container->isService(ServiceClass::class));
+        self::assertInstanceOf(ServiceClass::class, $container->get(ServiceClass::class));
+        self::assertInstanceOf(ServiceClass::class, $container->getService(ServiceClass::class));
 
-        self::assertTrue($withContext->isService(Service::class));
-        self::assertInstanceOf(Service2::class, $withContext->get(Service::class));
-        self::assertInstanceOf(Service2::class, $withContext->getService(Service::class));
+        self::assertTrue($withContext->isService(ServiceClass::class));
+        self::assertInstanceOf(Service2Class::class, $withContext->get(ServiceClass::class));
+        self::assertInstanceOf(Service2Class::class, $withContext->getService(ServiceClass::class));
 
-        self::assertTrue($withoutContext->isService(Service::class));
-        self::assertInstanceOf(Service::class, $withoutContext->get(Service::class));
-        self::assertInstanceOf(Service::class, $withoutContext->getService(Service::class));
+        self::assertTrue($withoutContext->isService(ServiceClass::class));
+        self::assertInstanceOf(ServiceClass::class, $withoutContext->get(ServiceClass::class));
+        self::assertInstanceOf(ServiceClass::class, $withoutContext->getService(ServiceClass::class));
     }
 
     public function testAlias(): void
@@ -61,35 +61,35 @@ class ContextAwareContainerTest extends TestCase
         $aliasDefault = 'foo';
         $aliasContext = 'bar';
 
-        $container->bindAlias($aliasDefault, Service::class);
-        $container->bind(Service::class, Service::class);
+        $container->bindAlias($aliasDefault, ServiceClass::class);
+        $container->bind(ServiceClass::class, ServiceClass::class);
 
-        $withContext    = $container->withContext(Service::class, 'make');
+        $withContext    = $container->withContext(ServiceClass::class, 'make');
         $withoutContext = $container->withoutContext();
 
-        $withContext->bindAlias($aliasDefault, Service2::class);
-        $withContext->bindAlias($aliasContext, Service2::class);
-        $withContext->bind(Service2::class, Service2::class);
+        $withContext->bindAlias($aliasDefault, Service2Class::class);
+        $withContext->bindAlias($aliasContext, Service2Class::class);
+        $withContext->bind(Service2Class::class, Service2Class::class);
 
         self::assertTrue($container->isAlias($aliasDefault));
         // This alias should only exist in the context aware container
         self::assertFalse($container->isAlias($aliasContext));
-        self::assertInstanceOf(Service::class, $container->get($aliasDefault));
-        self::assertInstanceOf(Service::class, $container->getService($aliasDefault));
+        self::assertInstanceOf(ServiceClass::class, $container->get($aliasDefault));
+        self::assertInstanceOf(ServiceClass::class, $container->getService($aliasDefault));
 
         // We added both aliases to ensure that the default alias in the context aware container returned Service2
         // and thus works correctly
         self::assertTrue($withContext->isAlias($aliasDefault));
         self::assertTrue($withContext->isAlias($aliasContext));
-        self::assertInstanceOf(Service2::class, $withContext->get($aliasDefault));
-        self::assertInstanceOf(Service2::class, $withContext->get($aliasContext));
-        self::assertInstanceOf(Service2::class, $withContext->getService($aliasDefault));
-        self::assertInstanceOf(Service2::class, $withContext->getService($aliasContext));
+        self::assertInstanceOf(Service2Class::class, $withContext->get($aliasDefault));
+        self::assertInstanceOf(Service2Class::class, $withContext->get($aliasContext));
+        self::assertInstanceOf(Service2Class::class, $withContext->getService($aliasDefault));
+        self::assertInstanceOf(Service2Class::class, $withContext->getService($aliasContext));
 
         self::assertTrue($withoutContext->isAlias($aliasDefault));
         self::assertFalse($withoutContext->isAlias($aliasContext));
-        self::assertInstanceOf(Service::class, $withoutContext->get($aliasDefault));
-        self::assertInstanceOf(Service::class, $withoutContext->getService($aliasDefault));
+        self::assertInstanceOf(ServiceClass::class, $withoutContext->get($aliasDefault));
+        self::assertInstanceOf(ServiceClass::class, $withoutContext->getService($aliasDefault));
     }
 
     public function testSingleton(): void
@@ -97,24 +97,24 @@ class ContextAwareContainerTest extends TestCase
         $config    = new Config();
         $container = new ContextAwareContainer($config, true);
 
-        $container->bindSingleton(Singleton::class, Singleton::class);
+        $container->bindSingleton(SingletonClass::class, SingletonClass::class);
 
-        $withContext    = $container->withContext(Singleton::class, 'make');
+        $withContext    = $container->withContext(SingletonClass::class, 'make');
         $withoutContext = $container->withoutContext();
 
-        $withContext->bindSingleton(Singleton::class, Singleton2::class);
+        $withContext->bindSingleton(SingletonClass::class, Singleton2Class::class);
 
-        self::assertTrue($container->isSingleton(Singleton::class));
-        self::assertInstanceOf(Singleton::class, $container->get(Singleton::class));
-        self::assertInstanceOf(Singleton::class, $container->getSingleton(Singleton::class));
+        self::assertTrue($container->isSingleton(SingletonClass::class));
+        self::assertInstanceOf(SingletonClass::class, $container->get(SingletonClass::class));
+        self::assertInstanceOf(SingletonClass::class, $container->getSingleton(SingletonClass::class));
 
-        self::assertTrue($withContext->isSingleton(Singleton::class));
-        self::assertInstanceOf(Singleton2::class, $withContext->get(Singleton::class));
-        self::assertInstanceOf(Singleton2::class, $withContext->getSingleton(Singleton::class));
+        self::assertTrue($withContext->isSingleton(SingletonClass::class));
+        self::assertInstanceOf(Singleton2Class::class, $withContext->get(SingletonClass::class));
+        self::assertInstanceOf(Singleton2Class::class, $withContext->getSingleton(SingletonClass::class));
 
-        self::assertTrue($withoutContext->isSingleton(Singleton::class));
-        self::assertInstanceOf(Singleton::class, $withoutContext->get(Singleton::class));
-        self::assertInstanceOf(Singleton::class, $withoutContext->getSingleton(Singleton::class));
+        self::assertTrue($withoutContext->isSingleton(SingletonClass::class));
+        self::assertInstanceOf(SingletonClass::class, $withoutContext->get(SingletonClass::class));
+        self::assertInstanceOf(SingletonClass::class, $withoutContext->getSingleton(SingletonClass::class));
     }
 
     public function testClosure(): void

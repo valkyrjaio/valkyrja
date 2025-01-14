@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Statement;
 
 use stdClass;
-use Valkyrja\Orm\Statement as Contract;
+use Valkyrja\Orm\Statement\Contract\Statement as Contract;
 
 /**
  * Class NullStatement.

@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\BuiltIn\Support;
 
 use stdClass;
 use Valkyrja\Container\Container;
-use Valkyrja\Tests\Classes\Model\Model;
+use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Exception\InvalidClassPropertyProvidedException;
 use Valkyrja\Type\BuiltIn\Exception\InvalidClassProvidedException;
@@ -74,12 +74,12 @@ class ClassTest extends TestCase
 
         $object = Helper::getDefaultableService(
             $container,
-            Model::class,
+            ModelClass::class,
             ModelContract::class,
             ['public' => $publicValue]
         );
 
-        self::assertInstanceOf(Model::class, $object);
+        self::assertInstanceOf(ModelClass::class, $object);
         self::assertSame($publicValue, $object->public);
     }
 
@@ -94,20 +94,20 @@ class ClassTest extends TestCase
             static fn (string $name, mixed ...$args): ModelContract => $name::fromArray($args)
         );
         $container->setClosure(
-            Model::class,
+            ModelClass::class,
             // Setting protected here and not in the ModelContract closure to ensure we're getting this closure back
             // and not the defaultClass specified service
-            static fn (mixed ...$args): Model => Model::fromArray([...['protected' => $protectedValue], ...$args])
+            static fn (mixed ...$args): ModelClass => ModelClass::fromArray([...['protected' => $protectedValue], ...$args])
         );
 
         $object = Helper::getDefaultableService(
             $container,
-            Model::class,
+            ModelClass::class,
             ModelContract::class,
             ['public' => $publicValue]
         );
 
-        self::assertInstanceOf(Model::class, $object);
+        self::assertInstanceOf(ModelClass::class, $object);
         self::assertSame($publicValue, $object->public);
         self::assertSame($protectedValue, $object->protected);
     }

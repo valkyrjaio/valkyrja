@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\Model;
 use ArrayAccess;
 use Error;
 use JsonException;
-use Valkyrja\Tests\Classes\Model\Model;
+use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\Contract\Type;
@@ -36,7 +36,7 @@ class ModelTest extends TestCase
 {
     public function testClone(): void
     {
-        $test  = new Model();
+        $test  = new ModelClass();
         $test2 = clone $test;
 
         self::assertNotSame($test2, $test);
@@ -65,83 +65,83 @@ class ModelTest extends TestCase
 
     public function testHas(): void
     {
-        $model = new Model();
+        $model = new ModelClass();
 
-        self::assertTrue($model->hasProperty(Model::PUBLIC));
-        self::assertTrue($model->hasProperty(Model::PROTECTED));
-        self::assertTrue($model->hasProperty(Model::PRIVATE));
+        self::assertTrue($model->hasProperty(ModelClass::PUBLIC));
+        self::assertTrue($model->hasProperty(ModelClass::PROTECTED));
+        self::assertTrue($model->hasProperty(ModelClass::PRIVATE));
     }
 
     public function testGet(): void
     {
-        $model = Model::fromArray(Model::VALUES);
+        $model = ModelClass::fromArray(ModelClass::VALUES);
 
-        self::assertSame(Model::PUBLIC, $model->public);
-        self::assertSame(Model::PROTECTED, $model->protected);
-        self::assertSame(Model::PRIVATE, $model->private);
+        self::assertSame(ModelClass::PUBLIC, $model->public);
+        self::assertSame(ModelClass::PROTECTED, $model->protected);
+        self::assertSame(ModelClass::PRIVATE, $model->private);
 
-        self::assertSame(Model::PUBLIC, $model[Model::PUBLIC]);
-        self::assertSame(Model::PROTECTED, $model[Model::PROTECTED]);
-        self::assertSame(Model::PRIVATE, $model[Model::PRIVATE]);
+        self::assertSame(ModelClass::PUBLIC, $model[ModelClass::PUBLIC]);
+        self::assertSame(ModelClass::PROTECTED, $model[ModelClass::PROTECTED]);
+        self::assertSame(ModelClass::PRIVATE, $model[ModelClass::PRIVATE]);
 
-        self::assertSame(Model::PUBLIC, $model->__get(Model::PUBLIC));
-        self::assertSame(Model::PROTECTED, $model->__get(Model::PROTECTED));
-        self::assertSame(Model::PRIVATE, $model->__get(Model::PRIVATE));
+        self::assertSame(ModelClass::PUBLIC, $model->__get(ModelClass::PUBLIC));
+        self::assertSame(ModelClass::PROTECTED, $model->__get(ModelClass::PROTECTED));
+        self::assertSame(ModelClass::PRIVATE, $model->__get(ModelClass::PRIVATE));
 
-        self::assertSame(Model::PUBLIC, $model->offsetGet(Model::PUBLIC));
-        self::assertSame(Model::PROTECTED, $model->offsetGet(Model::PROTECTED));
-        self::assertSame(Model::PRIVATE, $model->offsetGet(Model::PRIVATE));
+        self::assertSame(ModelClass::PUBLIC, $model->offsetGet(ModelClass::PUBLIC));
+        self::assertSame(ModelClass::PROTECTED, $model->offsetGet(ModelClass::PROTECTED));
+        self::assertSame(ModelClass::PRIVATE, $model->offsetGet(ModelClass::PRIVATE));
     }
 
     public function testGetNotSet(): void
     {
         $this->expectException(Error::class);
         $this->expectExceptionMessage(
-            'Typed property ' . Model::class . '::$public must not be accessed before initialization'
+            'Typed property ' . ModelClass::class . '::$public must not be accessed before initialization'
         );
 
-        $model = Model::fromArray([]);
+        $model = ModelClass::fromArray([]);
 
-        self::assertSame(Model::PUBLIC, $model->public);
+        self::assertSame(ModelClass::PUBLIC, $model->public);
     }
 
     public function testIsset(): void
     {
-        $model = Model::fromArray([]);
+        $model = ModelClass::fromArray([]);
 
         self::assertFalse(isset($model->public));
         self::assertFalse(isset($model->protected));
         self::assertFalse(isset($model->private));
 
-        self::assertFalse(isset($model[Model::PUBLIC]));
-        self::assertFalse(isset($model[Model::PROTECTED]));
-        self::assertFalse(isset($model[Model::PRIVATE]));
+        self::assertFalse(isset($model[ModelClass::PUBLIC]));
+        self::assertFalse(isset($model[ModelClass::PROTECTED]));
+        self::assertFalse(isset($model[ModelClass::PRIVATE]));
 
-        self::assertFalse($model->__isset(Model::PUBLIC));
-        self::assertFalse($model->__isset(Model::PROTECTED));
-        self::assertFalse($model->__isset(Model::PRIVATE));
+        self::assertFalse($model->__isset(ModelClass::PUBLIC));
+        self::assertFalse($model->__isset(ModelClass::PROTECTED));
+        self::assertFalse($model->__isset(ModelClass::PRIVATE));
 
-        self::assertFalse($model->offsetExists(Model::PUBLIC));
-        self::assertFalse($model->offsetExists(Model::PROTECTED));
-        self::assertFalse($model->offsetExists(Model::PRIVATE));
+        self::assertFalse($model->offsetExists(ModelClass::PUBLIC));
+        self::assertFalse($model->offsetExists(ModelClass::PROTECTED));
+        self::assertFalse($model->offsetExists(ModelClass::PRIVATE));
 
-        $model = Model::fromArray(Model::VALUES);
+        $model = ModelClass::fromArray(ModelClass::VALUES);
 
         self::assertTrue(isset($model->public));
         self::assertTrue(isset($model->protected));
         self::assertTrue(isset($model->private));
 
-        self::assertTrue(isset($model[Model::PUBLIC]));
-        self::assertTrue(isset($model[Model::PROTECTED]));
-        self::assertTrue(isset($model[Model::PRIVATE]));
+        self::assertTrue(isset($model[ModelClass::PUBLIC]));
+        self::assertTrue(isset($model[ModelClass::PROTECTED]));
+        self::assertTrue(isset($model[ModelClass::PRIVATE]));
 
-        self::assertTrue($model->__isset(Model::PUBLIC));
-        self::assertTrue($model->__isset(Model::PROTECTED));
-        self::assertTrue($model->__isset(Model::PRIVATE));
+        self::assertTrue($model->__isset(ModelClass::PUBLIC));
+        self::assertTrue($model->__isset(ModelClass::PROTECTED));
+        self::assertTrue($model->__isset(ModelClass::PRIVATE));
 
-        self::assertTrue($model->offsetExists(Model::PUBLIC));
-        self::assertTrue($model->offsetExists(Model::PROTECTED));
-        self::assertTrue($model->offsetExists(Model::PRIVATE));
+        self::assertTrue($model->offsetExists(ModelClass::PUBLIC));
+        self::assertTrue($model->offsetExists(ModelClass::PROTECTED));
+        self::assertTrue($model->offsetExists(ModelClass::PRIVATE));
     }
 
     /**
@@ -149,32 +149,32 @@ class ModelTest extends TestCase
      */
     public function testFromValue(): void
     {
-        $model = Model::fromValue([]);
+        $model = ModelClass::fromValue([]);
 
         self::assertFalse(isset($model->public));
         self::assertFalse(isset($model->protected));
         self::assertFalse(isset($model->private));
 
-        $model = Model::fromValue(Model::VALUES);
+        $model = ModelClass::fromValue(ModelClass::VALUES);
 
         self::assertTrue(isset($model->public));
         self::assertTrue(isset($model->protected));
         self::assertTrue(isset($model->private));
 
-        $model = Model::fromValue(json_encode(Model::VALUES));
+        $model = ModelClass::fromValue(json_encode(ModelClass::VALUES));
 
         self::assertTrue(isset($model->public));
         self::assertTrue(isset($model->protected));
         self::assertTrue(isset($model->private));
 
-        $model = Model::fromValue(Model::fromValue(Model::VALUES));
+        $model = ModelClass::fromValue(ModelClass::fromValue(ModelClass::VALUES));
 
         self::assertTrue(isset($model->public));
         self::assertTrue(isset($model->protected));
         // Since private fields are not exposed
         self::assertFalse(isset($model->private));
 
-        $model = Model::fromValue(json_encode(Model::fromValue(Model::VALUES)));
+        $model = ModelClass::fromValue(json_encode(ModelClass::fromValue(ModelClass::VALUES)));
 
         self::assertTrue(isset($model->public));
         self::assertTrue(isset($model->protected));
@@ -184,68 +184,68 @@ class ModelTest extends TestCase
 
     public function testSet(): void
     {
-        $model = Model::fromArray([]);
+        $model = ModelClass::fromArray([]);
 
-        $model->public    = Model::PUBLIC;
-        $model->protected = Model::PROTECTED;
-        $model->private   = Model::PRIVATE;
-        $model->nullable  = Model::NULLABLE;
+        $model->public    = ModelClass::PUBLIC;
+        $model->protected = ModelClass::PROTECTED;
+        $model->private   = ModelClass::PRIVATE;
+        $model->nullable  = ModelClass::NULLABLE;
 
-        self::assertSame(Model::PUBLIC, $model->public);
-        self::assertSame(Model::PROTECTED, $model->protected);
-        self::assertSame(Model::PRIVATE, $model->private);
-        self::assertSame(Model::NULLABLE, $model->nullable);
+        self::assertSame(ModelClass::PUBLIC, $model->public);
+        self::assertSame(ModelClass::PROTECTED, $model->protected);
+        self::assertSame(ModelClass::PRIVATE, $model->private);
+        self::assertSame(ModelClass::NULLABLE, $model->nullable);
 
-        $model = Model::fromArray([]);
+        $model = ModelClass::fromArray([]);
 
-        $model->__set(Model::PUBLIC, Model::PUBLIC);
-        $model->__set(Model::PROTECTED, Model::PROTECTED);
-        $model->__set(Model::PRIVATE, Model::PRIVATE);
-        $model->__set(Model::NULLABLE, Model::NULLABLE);
+        $model->__set(ModelClass::PUBLIC, ModelClass::PUBLIC);
+        $model->__set(ModelClass::PROTECTED, ModelClass::PROTECTED);
+        $model->__set(ModelClass::PRIVATE, ModelClass::PRIVATE);
+        $model->__set(ModelClass::NULLABLE, ModelClass::NULLABLE);
 
-        self::assertSame(Model::PUBLIC, $model->public);
-        self::assertSame(Model::PROTECTED, $model->protected);
-        self::assertSame(Model::PRIVATE, $model->private);
-        self::assertSame(Model::NULLABLE, $model->nullable);
+        self::assertSame(ModelClass::PUBLIC, $model->public);
+        self::assertSame(ModelClass::PROTECTED, $model->protected);
+        self::assertSame(ModelClass::PRIVATE, $model->private);
+        self::assertSame(ModelClass::NULLABLE, $model->nullable);
 
-        $model = Model::fromArray([]);
+        $model = ModelClass::fromArray([]);
 
-        $model[Model::PUBLIC]    = Model::PUBLIC;
-        $model[Model::PROTECTED] = Model::PROTECTED;
-        $model[Model::PRIVATE]   = Model::PRIVATE;
-        $model[Model::NULLABLE]  = Model::NULLABLE;
+        $model[ModelClass::PUBLIC]    = ModelClass::PUBLIC;
+        $model[ModelClass::PROTECTED] = ModelClass::PROTECTED;
+        $model[ModelClass::PRIVATE]   = ModelClass::PRIVATE;
+        $model[ModelClass::NULLABLE]  = ModelClass::NULLABLE;
 
-        self::assertSame(Model::PUBLIC, $model->public);
-        self::assertSame(Model::PROTECTED, $model->protected);
-        self::assertSame(Model::PRIVATE, $model->private);
-        self::assertSame(Model::NULLABLE, $model->nullable);
+        self::assertSame(ModelClass::PUBLIC, $model->public);
+        self::assertSame(ModelClass::PROTECTED, $model->protected);
+        self::assertSame(ModelClass::PRIVATE, $model->private);
+        self::assertSame(ModelClass::NULLABLE, $model->nullable);
 
-        $model = Model::fromArray([]);
+        $model = ModelClass::fromArray([]);
 
-        $model->offsetSet(Model::PUBLIC, Model::PUBLIC);
-        $model->offsetSet(Model::PROTECTED, Model::PROTECTED);
-        $model->offsetSet(Model::PRIVATE, Model::PRIVATE);
-        $model->offsetSet(Model::NULLABLE, Model::NULLABLE);
+        $model->offsetSet(ModelClass::PUBLIC, ModelClass::PUBLIC);
+        $model->offsetSet(ModelClass::PROTECTED, ModelClass::PROTECTED);
+        $model->offsetSet(ModelClass::PRIVATE, ModelClass::PRIVATE);
+        $model->offsetSet(ModelClass::NULLABLE, ModelClass::NULLABLE);
 
-        self::assertSame(Model::PUBLIC, $model->public);
-        self::assertSame(Model::PROTECTED, $model->protected);
-        self::assertSame(Model::PRIVATE, $model->private);
-        self::assertSame(Model::NULLABLE, $model->nullable);
+        self::assertSame(ModelClass::PUBLIC, $model->public);
+        self::assertSame(ModelClass::PROTECTED, $model->protected);
+        self::assertSame(ModelClass::PRIVATE, $model->private);
+        self::assertSame(ModelClass::NULLABLE, $model->nullable);
     }
 
     public function testUnset(): void
     {
-        $model = Model::fromArray(Model::VALUES);
+        $model = ModelClass::fromArray(ModelClass::VALUES);
 
-        unset($model[Model::PUBLIC], $model[Model::PROTECTED]);
+        unset($model[ModelClass::PUBLIC], $model[ModelClass::PROTECTED]);
 
         self::assertFalse(isset($model->public));
         self::assertFalse(isset($model->protected));
 
-        $model = Model::fromArray(Model::VALUES);
+        $model = ModelClass::fromArray(ModelClass::VALUES);
 
-        $model->offsetUnset(Model::PUBLIC);
-        $model->offsetUnset(Model::PROTECTED);
+        $model->offsetUnset(ModelClass::PUBLIC);
+        $model->offsetUnset(ModelClass::PROTECTED);
 
         self::assertFalse(isset($model->public));
         self::assertFalse(isset($model->protected));
@@ -255,24 +255,24 @@ class ModelTest extends TestCase
     {
         $this->expectException(Error::class);
 
-        $model = Model::fromArray(Model::VALUES);
+        $model = ModelClass::fromArray(ModelClass::VALUES);
 
-        unset($model[Model::PRIVATE]);
+        unset($model[ModelClass::PRIVATE]);
     }
 
     public function testUnsetMethodPrivateErrors(): void
     {
         $this->expectException(Error::class);
 
-        $model = Model::fromArray(Model::VALUES);
+        $model = ModelClass::fromArray(ModelClass::VALUES);
 
-        $model->offsetUnset(Model::PRIVATE);
+        $model->offsetUnset(ModelClass::PRIVATE);
     }
 
     public function testWithProperties(): void
     {
-        $model    = Model::fromArray([]);
-        $newModel = $model->withProperties(Model::VALUES);
+        $model    = ModelClass::fromArray([]);
+        $newModel = $model->withProperties(ModelClass::VALUES);
 
         self::assertFalse(isset($model->public));
         self::assertFalse(isset($model->protected));
@@ -287,99 +287,99 @@ class ModelTest extends TestCase
     public function testOriginal(): void
     {
         $value = 'test';
-        $model = Model::fromArray(Model::VALUES);
+        $model = ModelClass::fromArray(ModelClass::VALUES);
 
         $model->public    = $value;
         $model->protected = $value;
         $model->private   = $value;
         $model->nullable  = $value;
 
-        self::assertSame(Model::VALUES, $model->asOriginalArray());
-        self::assertSame(Model::PUBLIC, $model->getOriginalPropertyValue(Model::PUBLIC));
-        self::assertSame(Model::PROTECTED, $model->getOriginalPropertyValue(Model::PROTECTED));
-        self::assertSame(Model::PRIVATE, $model->getOriginalPropertyValue(Model::PRIVATE));
-        self::assertNull($model->getOriginalPropertyValue(Model::NULLABLE));
+        self::assertSame(ModelClass::VALUES, $model->asOriginalArray());
+        self::assertSame(ModelClass::PUBLIC, $model->getOriginalPropertyValue(ModelClass::PUBLIC));
+        self::assertSame(ModelClass::PROTECTED, $model->getOriginalPropertyValue(ModelClass::PROTECTED));
+        self::assertSame(ModelClass::PRIVATE, $model->getOriginalPropertyValue(ModelClass::PRIVATE));
+        self::assertNull($model->getOriginalPropertyValue(ModelClass::NULLABLE));
 
-        $model = Model::fromArray([]);
+        $model = ModelClass::fromArray([]);
         self::assertSame([], $model->asOriginalArray());
-        self::assertNull($model->getOriginalPropertyValue(Model::PUBLIC));
-        self::assertNull($model->getOriginalPropertyValue(Model::PROTECTED));
-        self::assertNull($model->getOriginalPropertyValue(Model::PRIVATE));
-        self::assertNull($model->getOriginalPropertyValue(Model::NULLABLE));
-        $model->updateProperties(Model::VALUES);
+        self::assertNull($model->getOriginalPropertyValue(ModelClass::PUBLIC));
+        self::assertNull($model->getOriginalPropertyValue(ModelClass::PROTECTED));
+        self::assertNull($model->getOriginalPropertyValue(ModelClass::PRIVATE));
+        self::assertNull($model->getOriginalPropertyValue(ModelClass::NULLABLE));
+        $model->updateProperties(ModelClass::VALUES);
         self::assertSame([], $model->asOriginalArray());
-        self::assertNull($model->getOriginalPropertyValue(Model::PUBLIC));
-        self::assertNull($model->getOriginalPropertyValue(Model::PROTECTED));
-        self::assertNull($model->getOriginalPropertyValue(Model::PRIVATE));
-        self::assertNull($model->getOriginalPropertyValue(Model::NULLABLE));
+        self::assertNull($model->getOriginalPropertyValue(ModelClass::PUBLIC));
+        self::assertNull($model->getOriginalPropertyValue(ModelClass::PROTECTED));
+        self::assertNull($model->getOriginalPropertyValue(ModelClass::PRIVATE));
+        self::assertNull($model->getOriginalPropertyValue(ModelClass::NULLABLE));
 
-        $model = Model::fromArray([]);
+        $model = ModelClass::fromArray([]);
 
-        $model->public = Model::PUBLIC;
+        $model->public = ModelClass::PUBLIC;
         self::assertSame([], $model->asOriginalArray());
-        self::assertNull($model->getOriginalPropertyValue(Model::PUBLIC));
-        self::assertNull($model->getOriginalPropertyValue(Model::PROTECTED));
-        self::assertNull($model->getOriginalPropertyValue(Model::PRIVATE));
+        self::assertNull($model->getOriginalPropertyValue(ModelClass::PUBLIC));
+        self::assertNull($model->getOriginalPropertyValue(ModelClass::PROTECTED));
+        self::assertNull($model->getOriginalPropertyValue(ModelClass::PRIVATE));
     }
 
     public function testChanged(): void
     {
         // Public properties should show up if changed
-        $model = Model::fromArray(Model::VALUES);
+        $model = ModelClass::fromArray(ModelClass::VALUES);
 
         $model->public = 'test';
-        self::assertSame([Model::PUBLIC => 'test'], $model->asChangedArray());
+        self::assertSame([ModelClass::PUBLIC => 'test'], $model->asChangedArray());
 
         // Protected properties should show up if changed
-        $model = Model::fromArray(Model::VALUES);
+        $model = ModelClass::fromArray(ModelClass::VALUES);
 
         $model->protected = 'test';
-        self::assertSame([Model::PROTECTED => 'test'], $model->asChangedArray());
+        self::assertSame([ModelClass::PROTECTED => 'test'], $model->asChangedArray());
 
         // Private properties should not show up
-        $model = Model::fromArray(Model::VALUES);
+        $model = ModelClass::fromArray(ModelClass::VALUES);
 
         $model->private = 'test';
         self::assertSame([], $model->asChangedArray());
 
         // Private properties should not show up, but public and protected should if changed
-        $model = Model::fromArray(Model::VALUES);
+        $model = ModelClass::fromArray(ModelClass::VALUES);
 
         $model->public    = 'test';
         $model->protected = 'test2';
         $model->private   = 'test3';
-        self::assertSame([Model::PUBLIC => 'test', Model::PROTECTED => 'test2'], $model->asChangedArray());
+        self::assertSame([ModelClass::PUBLIC => 'test', ModelClass::PROTECTED => 'test2'], $model->asChangedArray());
 
         // Because public properties aren't tracked unless through methods then they come up as changed
-        $model = Model::fromArray([]);
+        $model = ModelClass::fromArray([]);
 
-        $model->public = Model::PUBLIC;
-        self::assertSame([Model::PUBLIC => Model::PUBLIC], $model->asChangedArray());
+        $model->public = ModelClass::PUBLIC;
+        self::assertSame([ModelClass::PUBLIC => ModelClass::PUBLIC], $model->asChangedArray());
     }
 
     public function testAsArray(): void
     {
-        $model = Model::fromArray([]);
+        $model = ModelClass::fromArray([]);
         self::assertSame([], $model->asArray());
 
-        $model = Model::fromArray(Model::VALUES);
+        $model = ModelClass::fromArray(ModelClass::VALUES);
         self::assertSame(
             [
-                Model::PUBLIC    => Model::PUBLIC,
-                Model::NULLABLE  => null,
-                Model::PROTECTED => Model::PROTECTED,
+                ModelClass::PUBLIC    => ModelClass::PUBLIC,
+                ModelClass::NULLABLE  => null,
+                ModelClass::PROTECTED => ModelClass::PROTECTED,
             ],
             $model->asArray()
         );
-        self::assertSame([Model::PUBLIC => Model::PUBLIC], $model->asArray(Model::PUBLIC));
-        self::assertSame([Model::PROTECTED => Model::PROTECTED], $model->asArray(Model::PROTECTED));
+        self::assertSame([ModelClass::PUBLIC => ModelClass::PUBLIC], $model->asArray(ModelClass::PUBLIC));
+        self::assertSame([ModelClass::PROTECTED => ModelClass::PROTECTED], $model->asArray(ModelClass::PROTECTED));
         // Private or hidden properties should not be exposable.
-        self::assertSame([], $model->asArray(Model::PRIVATE));
+        self::assertSame([], $model->asArray(ModelClass::PRIVATE));
     }
 
     public function testAsValue(): void
     {
-        $test = new Model();
+        $test = new ModelClass();
 
         self::assertSame($test, $test->asValue());
     }
@@ -389,13 +389,13 @@ class ModelTest extends TestCase
      */
     public function testJsonSerialize(): void
     {
-        $model = Model::fromArray([]);
+        $model = ModelClass::fromArray([]);
 
         $expected = '[]';
         self::assertSame($expected, json_encode($model, JSON_THROW_ON_ERROR));
         self::assertSame($expected, (string) $model);
 
-        $model = Model::fromArray(Model::VALUES);
+        $model = ModelClass::fromArray(ModelClass::VALUES);
 
         $expected = '{"public":"public","nullable":null,"protected":"protected"}';
         self::assertSame($expected, json_encode($model, JSON_THROW_ON_ERROR));
@@ -404,7 +404,7 @@ class ModelTest extends TestCase
 
     public function testCloning(): void
     {
-        $model = Model::fromArray([]);
+        $model = ModelClass::fromArray([]);
 
         $cloned = clone $model;
 
@@ -416,7 +416,7 @@ class ModelTest extends TestCase
         self::assertNotSame($model, $cloned);
         self::assertNotSame($model->asChangedArray(), $cloned->asChangedArray());
         self::assertEmpty($model->asChangedArray());
-        self::assertSame([Model::PUBLIC => $updatedValue], $cloned->asChangedArray());
+        self::assertSame([ModelClass::PUBLIC => $updatedValue], $cloned->asChangedArray());
     }
 
     /**
@@ -425,7 +425,7 @@ class ModelTest extends TestCase
     public function testAsFlatValue(): void
     {
         $value = ['public' => 'cheese'];
-        $model = Model::fromArray($value);
+        $model = ModelClass::fromArray($value);
 
         self::assertSame(Arr::toString($value), $model->asFlatValue());
     }
@@ -434,9 +434,9 @@ class ModelTest extends TestCase
     {
         $value    = 'cheese';
         $newValue = 'fire';
-        $model    = Model::fromArray(['public' => $value]);
+        $model    = ModelClass::fromArray(['public' => $value]);
 
-        $modified = $model->modify(static function (Model $model) use ($newValue): Model {
+        $modified = $model->modify(static function (ModelClass $model) use ($newValue): ModelClass {
             $model->public = $newValue;
 
             return $model;

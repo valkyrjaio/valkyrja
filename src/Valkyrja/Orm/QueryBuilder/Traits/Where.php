@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\QueryBuilder\Traits;
 
-use Valkyrja\Orm\Constants\Operator;
-use Valkyrja\Orm\Constants\Statement;
+use Valkyrja\Orm\Constant\Operator;
+use Valkyrja\Orm\Constant\Statement;
 use Valkyrja\Orm\Enum\WhereType;
-use Valkyrja\Orm\QueryBuilder;
+use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
 use Valkyrja\Orm\Support\Helpers;
 
 use function array_keys;

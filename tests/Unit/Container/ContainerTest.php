@@ -18,9 +18,9 @@ use RuntimeException;
 use Valkyrja\Container\Config\Container as Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
-use Valkyrja\Tests\Classes\Container\Service;
-use Valkyrja\Tests\Classes\Container\Singleton;
-use Valkyrja\Tests\Traits\ExpectErrorTrait;
+use Valkyrja\Tests\Classes\Container\ServiceClass;
+use Valkyrja\Tests\Classes\Container\SingletonClass;
+use Valkyrja\Tests\Trait\ExpectErrorTrait;
 use Valkyrja\Tests\Unit\TestCase;
 
 use function array_map;
@@ -72,7 +72,7 @@ class ContainerTest extends TestCase
     public function testBind(): void
     {
         $container = $this->container;
-        $id        = Service::class;
+        $id        = ServiceClass::class;
 
         $container->bind($id, $id);
 
@@ -96,7 +96,7 @@ class ContainerTest extends TestCase
     public function testBindAlias(): void
     {
         $container = $this->container;
-        $id        = Service::class;
+        $id        = ServiceClass::class;
         $alias     = 'alias';
 
         $container->bind($id, $id);
@@ -122,7 +122,7 @@ class ContainerTest extends TestCase
     public function testBindSingleton(): void
     {
         $container = $this->container;
-        $id        = Singleton::class;
+        $id        = SingletonClass::class;
 
         $container->bindSingleton($id, $id);
 
@@ -147,7 +147,7 @@ class ContainerTest extends TestCase
     public function testOffsetGetSetAndExists(): void
     {
         $container = $this->container;
-        $id        = Service::class;
+        $id        = ServiceClass::class;
 
         $container[$id] = $id;
 
@@ -188,7 +188,7 @@ class ContainerTest extends TestCase
     public function testOffsetUnset(): void
     {
         $container = $this->container;
-        $id        = Service::class;
+        $id        = ServiceClass::class;
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage("Cannot remove service with name $id from the container.");

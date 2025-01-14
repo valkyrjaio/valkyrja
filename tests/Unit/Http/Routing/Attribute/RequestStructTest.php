@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Unit\Http\Routing\Attribute;
 
 use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
-use Valkyrja\Tests\Classes\Http\Struct\TestQueryRequestStruct;
+use Valkyrja\Tests\Classes\Http\Struct\QueryRequestStructEnum;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -26,7 +26,7 @@ class RequestStructTest extends TestCase
 {
     public function testAttribute(): void
     {
-        $value = TestQueryRequestStruct::class;
+        $value = QueryRequestStructEnum::class;
 
         $attribute = new RequestStruct($value);
 

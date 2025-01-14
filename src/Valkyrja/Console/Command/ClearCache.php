@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Command;
 
 use Valkyrja\Console\Commander\Commander;
-use Valkyrja\Console\Enum\ExitCode;
+use Valkyrja\Console\Constant\ExitCode;
 use Valkyrja\Console\Support\Provides;
 
 use function is_file;

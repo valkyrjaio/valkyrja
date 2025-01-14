@@ -33,8 +33,8 @@ use Valkyrja\Path\Generator\Contract\Generator;
 use Valkyrja\Path\Parser\Contract\Parser;
 use Valkyrja\Session\Contract\Session;
 use Valkyrja\Tests\Classes\Config\ProviderClass;
-use Valkyrja\Tests\Config;
-use Valkyrja\Tests\Env;
+use Valkyrja\Tests\ConfigClass;
+use Valkyrja\Tests\EnvClass;
 use Valkyrja\View\Contract\View;
 
 use function unlink;
@@ -114,7 +114,7 @@ class ApplicationTest extends TestCase
      */
     public function testConfig(): void
     {
-        self::assertInstanceOf(Config::class, $this->app->config());
+        self::assertInstanceOf(ConfigClass::class, $this->app->config());
     }
 
     /**
@@ -124,7 +124,7 @@ class ApplicationTest extends TestCase
      */
     public function testAddConfig(): void
     {
-        $config = new Config();
+        $config = new ConfigClass();
         $this->app->addConfig($config, 'new');
 
         self::assertSame($config, $this->app->config()['new'] ?? null);
@@ -157,7 +157,7 @@ class ApplicationTest extends TestCase
      */
     public function testGetEnv(): void
     {
-        self::assertSame(Env::class, $this->app::getEnv());
+        self::assertSame(EnvClass::class, $this->app::getEnv());
     }
 
     /**
@@ -167,8 +167,8 @@ class ApplicationTest extends TestCase
      */
     public function testSetEnv(): void
     {
-        $this->app::setEnv(Env::class);
-        self::assertSame(Env::class, $this->app::getEnv());
+        $this->app::setEnv(EnvClass::class);
+        self::assertSame(EnvClass::class, $this->app::getEnv());
     }
 
     /**
@@ -329,7 +329,7 @@ class ApplicationTest extends TestCase
     public function testSetupTwice(): void
     {
         // Try to re-setup the application without forcing
-        $this->app->setup(Config::class);
+        $this->app->setup(ConfigClass::class);
 
         // It shouldn't have used the new config settings and kept the old
         // so debug should still be false
@@ -343,7 +343,7 @@ class ApplicationTest extends TestCase
      */
     public function testDebugOn(): void
     {
-        $config = new Config();
+        $config = new ConfigClass();
 
         $config->app->debug = true;
         $this->app          = $this->app->withConfig($config);
@@ -358,7 +358,7 @@ class ApplicationTest extends TestCase
      */
     public function testApplicationSetupWithConfigProvider(): void
     {
-        $config            = new Config();
+        $config            = new ConfigClass();
         $config->providers = [
             ProviderClass::class,
         ];
@@ -367,7 +367,7 @@ class ApplicationTest extends TestCase
 
         self::assertSame(ProviderClass::class, $this->app->config()['providers'][0]);
 
-        $this->app = $this->app->withConfig(new Config());
+        $this->app = $this->app->withConfig(new ConfigClass());
     }
 
     /**
@@ -385,7 +385,7 @@ class ApplicationTest extends TestCase
         $console->dispatchCommand($configCacheCommand);
 
         // Resetup the app with the new config and force
-        $this->app->setup(Config::class);
+        $this->app->setup(ConfigClass::class);
 
         // Because the app will use the config cache the forced changes to the config made above shouldn't
         // take effect and the value for app.debug should still be false.
@@ -397,6 +397,6 @@ class ApplicationTest extends TestCase
         unlink($this->app->config(ConfigKey::CONFIG_CACHE_FILE_PATH));
 
         // Reset the application to normal operations
-        $this->app = $this->app->withConfig(new Config());
+        $this->app = $this->app->withConfig(new ConfigClass());
     }
 }

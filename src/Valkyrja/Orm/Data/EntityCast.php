@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Data;
 
-use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Entity\Contract\Entity;
 use Valkyrja\Type\Contract\Type;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;

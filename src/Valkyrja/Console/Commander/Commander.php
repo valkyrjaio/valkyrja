@@ -15,8 +15,8 @@ namespace Valkyrja\Console\Commander;
 
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Console\Commander\Contract\Commander as Contract;
+use Valkyrja\Console\Constant\ExitCode;
 use Valkyrja\Console\Enum\ArgumentMode;
-use Valkyrja\Console\Enum\ExitCode;
 use Valkyrja\Console\Input\Argument;
 use Valkyrja\Console\Input\Option;
 

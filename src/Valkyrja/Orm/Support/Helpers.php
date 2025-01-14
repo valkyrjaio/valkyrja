@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Support;
 
 use DateTime;
-use Valkyrja\Orm\Constants\DateFormat;
+use Valkyrja\Orm\Constant\DateFormat;
 
 use function str_replace;
 
@@ -69,6 +69,6 @@ class Helpers
     public static function getFormattedDate(string $format = DateFormat::DEFAULT): string
     {
         return DateTime::createFromFormat('U.u', (string) microtime(true))
-            ->format($format);
+                       ->format($format);
     }
 }

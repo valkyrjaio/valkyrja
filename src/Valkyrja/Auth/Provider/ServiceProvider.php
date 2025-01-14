@@ -32,7 +32,7 @@ use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Jwt\Contract\Jwt;
-use Valkyrja\Orm\Orm;
+use Valkyrja\Orm\Contract\Orm;
 use Valkyrja\Session\Contract\Session;
 
 /**

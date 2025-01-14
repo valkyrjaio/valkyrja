@@ -22,7 +22,7 @@ use Valkyrja\Container\ContextAwareContainer;
 use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Dispatcher\Model\Dispatch;
-use Valkyrja\Tests\Classes\Container\Service;
+use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Dispatcher\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\TestCase;
 
@@ -573,28 +573,28 @@ class DispatcherTest extends TestCase
         $container2 = new ContextAwareContainer($this->config, true);
         $dispatcher = new Dispatcher($container);
 
-        $container->bind(Service::class, Service::class);
+        $container->bind(ServiceClass::class, ServiceClass::class);
         $container->setSingleton(Container::class, $container);
 
         $dispatch = (new Dispatch())
-            ->setClass(Service::class)
+            ->setClass(ServiceClass::class)
             ->setDependencies([Container::class]);
 
         $result = $dispatcher->dispatch($dispatch);
 
-        self::assertInstanceOf(Service::class, $result);
+        self::assertInstanceOf(ServiceClass::class, $result);
 
         $dispatch = (new Dispatch())
-            ->setClass(Service::class)
+            ->setClass(ServiceClass::class)
             ->setMethod('make')
             ->setDependencies([Container::class]);
 
         $result = $dispatcher->dispatch($dispatch);
 
-        self::assertInstanceOf(Service::class, $result);
+        self::assertInstanceOf(ServiceClass::class, $result);
 
         $dispatch = (new Dispatch())
-            ->setClass(Service::class)
+            ->setClass(ServiceClass::class)
             ->setMethod('getContainer')
             ->setDependencies([Container::class]);
 
@@ -603,15 +603,15 @@ class DispatcherTest extends TestCase
         self::assertSame($container, $result);
 
         $container
-            ->withContext(Service::class, 'make')
+            ->withContext(ServiceClass::class, 'make')
             ->setSingleton(Container::class, $container2);
 
         $dispatch = (new Dispatch())
-            ->setClass(Service::class)
+            ->setClass(ServiceClass::class)
             ->setMethod('make')
             ->setDependencies([Container::class]);
 
-        /** @var Service $result */
+        /** @var ServiceClass $result */
         $result = $dispatcher->dispatch($dispatch);
 
         self::assertSame($container2, $result->getContainer());

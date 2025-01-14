@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\BuiltIn;
 
 use JsonException;
-use Valkyrja\Tests\Classes\Model\Model;
+use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\SerializedObject;
 
@@ -22,7 +22,7 @@ class SerializedObjectTest extends TestCase
 {
     public function testValue(): void
     {
-        $value = new Model();
+        $value = new ModelClass();
         $type  = new SerializedObject($value);
 
         self::assertSame($type->asValue(), $value);
@@ -33,7 +33,7 @@ class SerializedObjectTest extends TestCase
      */
     public function testFromValue(): void
     {
-        $value         = new Model();
+        $value         = new ModelClass();
         $typeFromValue = SerializedObject::fromValue($value);
 
         self::assertSame($typeFromValue->asValue(), $value);
@@ -44,7 +44,7 @@ class SerializedObjectTest extends TestCase
      */
     public function testAsFlatValue(): void
     {
-        $value = new Model();
+        $value = new ModelClass();
         $type  = new SerializedObject($value);
 
         self::assertSame($type->asFlatValue(), serialize($value));
@@ -55,12 +55,12 @@ class SerializedObjectTest extends TestCase
      */
     public function testModify(): void
     {
-        $value = Model::fromArray(['public' => 'test']);
+        $value = ModelClass::fromArray(['public' => 'test']);
         $type  = new SerializedObject($value);
         // The new value
         $newValue = 'bar';
 
-        $modified = $type->modify(static function (Model $subject) use ($newValue): Model {
+        $modified = $type->modify(static function (ModelClass $subject) use ($newValue): ModelClass {
             $subject->public = $newValue;
 
             return $subject;
@@ -75,7 +75,7 @@ class SerializedObjectTest extends TestCase
 
     public function testJsonSerialize(): void
     {
-        $value = new Model();
+        $value = new ModelClass();
         $type  = new SerializedObject($value);
 
         self::assertSame(json_encode($type), json_encode($value));

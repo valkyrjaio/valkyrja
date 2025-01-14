@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Middleware\Handler;
 
 use Valkyrja\Http\Message\Response\Response;
-use Valkyrja\Tests\Classes\Http\Middleware\Handler\TestSendingResponseHandler;
-use Valkyrja\Tests\Classes\Http\Middleware\TestSendingResponseMiddleware;
-use Valkyrja\Tests\Classes\Http\Middleware\TestSendingResponseMiddlewareChanged;
+use Valkyrja\Tests\Classes\Http\Middleware\Handler\SendingResponseHandlerClass;
+use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareChangedClass;
+use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareClass;
 
 /**
  * Test the sending response handler.
@@ -30,7 +30,7 @@ class SendingResponseHandlerTest extends HandlerTestCase
      */
     public function testWithDefaults(): void
     {
-        $sendingHandler = new TestSendingResponseHandler($this->container);
+        $sendingHandler = new SendingResponseHandlerClass($this->container);
 
         $sending = $sendingHandler->sendingResponse($this->request, $this->response);
 
@@ -44,17 +44,17 @@ class SendingResponseHandlerTest extends HandlerTestCase
      */
     public function testAddWithDefault(): void
     {
-        TestSendingResponseMiddlewareChanged::resetCounter();
+        SendingResponseMiddlewareChangedClass::resetCounter();
 
-        $handler = new TestSendingResponseHandler($this->container);
+        $handler = new SendingResponseHandlerClass($this->container);
 
-        $handler->add(TestSendingResponseMiddlewareChanged::class);
+        $handler->add(SendingResponseMiddlewareChangedClass::class);
         $sending = $handler->sendingResponse($this->request, $this->response);
 
         // Only once because the last iteration that checks for null nextMiddleware doesn't run because the middleware
         // exits early and doesn't call the handler
         self::assertSame(1, $handler->getCount());
-        self::assertSame(1, TestSendingResponseMiddlewareChanged::getCounter());
+        self::assertSame(1, SendingResponseMiddlewareChangedClass::getCounter());
         self::assertNotSame($this->response, $sending);
         self::assertInstanceOf(Response::class, $sending);
     }
@@ -64,22 +64,22 @@ class SendingResponseHandlerTest extends HandlerTestCase
      */
     public function testAdd(): void
     {
-        TestSendingResponseMiddlewareChanged::resetCounter();
-        TestSendingResponseMiddleware::resetCounter();
+        SendingResponseMiddlewareChangedClass::resetCounter();
+        SendingResponseMiddlewareClass::resetCounter();
 
-        $handler = new TestSendingResponseHandler(
+        $handler = new SendingResponseHandlerClass(
             $this->container,
-            TestSendingResponseMiddleware::class
+            SendingResponseMiddlewareClass::class
         );
 
-        $handler->add(TestSendingResponseMiddlewareChanged::class);
+        $handler->add(SendingResponseMiddlewareChangedClass::class);
         $sending = $handler->sendingResponse($this->request, $this->response);
 
         // One time for each middleware and not once for the last iteration that checks for null nextMiddleware because
         // the last middleware exits early and doesn't call the handler
         self::assertSame(2, $handler->getCount());
-        self::assertSame(1, TestSendingResponseMiddlewareChanged::getCounter());
-        self::assertSame(1, TestSendingResponseMiddleware::getCounter());
+        self::assertSame(1, SendingResponseMiddlewareChangedClass::getCounter());
+        self::assertSame(1, SendingResponseMiddlewareClass::getCounter());
         self::assertNotSame($this->response, $sending);
         self::assertInstanceOf(Response::class, $sending);
     }
@@ -89,21 +89,21 @@ class SendingResponseHandlerTest extends HandlerTestCase
      */
     public function testSending(): void
     {
-        TestSendingResponseMiddlewareChanged::resetCounter();
-        TestSendingResponseMiddleware::resetCounter();
+        SendingResponseMiddlewareChangedClass::resetCounter();
+        SendingResponseMiddlewareClass::resetCounter();
 
-        $handler = new TestSendingResponseHandler(
+        $handler = new SendingResponseHandlerClass(
             $this->container,
-            TestSendingResponseMiddleware::class,
-            TestSendingResponseMiddleware::class
+            SendingResponseMiddlewareClass::class,
+            SendingResponseMiddlewareClass::class
         );
 
         $sending = $handler->sendingResponse($this->request, $this->response);
 
         // One time for each middleware and once for the last iteration that checks for null nextMiddleware
         self::assertSame(3, $handler->getCount());
-        self::assertSame(0, TestSendingResponseMiddlewareChanged::getAndResetCounter());
-        self::assertSame(2, TestSendingResponseMiddleware::getAndResetCounter());
+        self::assertSame(0, SendingResponseMiddlewareChangedClass::getAndResetCounter());
+        self::assertSame(2, SendingResponseMiddlewareClass::getAndResetCounter());
         self::assertSame($this->response, $sending);
     }
 }

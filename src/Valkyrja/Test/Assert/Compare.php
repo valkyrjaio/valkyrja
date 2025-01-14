@@ -13,20 +13,49 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Assert;
 
+use Valkyrja\Test\Assert\Contract\Compare as Contract;
+use Valkyrja\Test\Exception\AssertFailureException;
+
 /**
- * Interface Compare.
+ * Class Compare.
  *
  * @author Melech Mizrachi
  */
-interface Compare extends Asserter
+class Compare extends Asserter implements Contract
 {
     /**
-     * Assert if two values are equal.
+     * @inheritDoc
      */
-    public function equals(mixed $expected, mixed $actual): void;
+    public function equals(mixed $expected, mixed $actual): void
+    {
+        $this->assertions[] = 'equals';
+
+        if ($expected === $actual) {
+            $this->successes[] = 'equals';
+
+            return;
+        }
+
+        $this->errors[] = new AssertFailureException(
+            sprintf('Failed asserting that expected %s matches actual %s', $expected, $actual)
+        );
+    }
 
     /**
-     * Assert if two values are not equal.
+     * @inheritDoc
      */
-    public function notEquals(mixed $unexpected, mixed $actual): void;
+    public function notEquals(mixed $unexpected, mixed $actual): void
+    {
+        $this->assertions[] = 'notequals';
+
+        if ($unexpected !== $actual) {
+            $this->successes[] = 'notequals';
+
+            return;
+        }
+
+        $this->errors[] = new AssertFailureException(
+            sprintf('Failed asserting that unexpected %s does not match actual %s', $unexpected, $actual)
+        );
+    }
 }

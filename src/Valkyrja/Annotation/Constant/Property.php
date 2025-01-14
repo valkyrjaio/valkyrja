@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Constant;
 
-use Valkyrja\Dispatcher\Constant\Property as DispatchProperty;
-
 /**
  * Constant Property.
  *
@@ -22,19 +20,19 @@ use Valkyrja\Dispatcher\Constant\Property as DispatchProperty;
  */
 final class Property
 {
-    public const ID           = DispatchProperty::ID;
-    public const NAME         = DispatchProperty::NAME;
-    public const CLASS_NAME   = DispatchProperty::CLASS_NAME;
-    public const PROPERTY     = DispatchProperty::PROPERTY;
-    public const METHOD       = DispatchProperty::METHOD;
-    public const STATIC       = DispatchProperty::STATIC;
-    public const FUNCTION     = DispatchProperty::FUNCTION;
-    public const CLOSURE      = DispatchProperty::CLOSURE;
-    public const CONSTANT     = DispatchProperty::CONSTANT;
-    public const VARIABLE     = DispatchProperty::VARIABLE;
-    public const DEPENDENCIES = DispatchProperty::DEPENDENCIES;
-    public const ARGUMENTS    = DispatchProperty::ARGUMENTS;
-    public const MATCHES      = DispatchProperty::MATCHES;
+    public const ID           = 'id';
+    public const NAME         = 'name';
+    public const CLASS_NAME   = 'class';
+    public const PROPERTY     = 'property';
+    public const METHOD       = 'method';
+    public const STATIC       = 'static';
+    public const FUNCTION     = 'function';
+    public const CLOSURE      = 'closure';
+    public const CONSTANT     = 'constant';
+    public const VARIABLE     = 'variable';
+    public const DEPENDENCIES = 'dependencies';
+    public const ARGUMENTS    = 'arguments';
+    public const MATCHES      = 'matches';
     public const TYPE         = 'type';
     public const PROPERTIES   = 'properties';
 }

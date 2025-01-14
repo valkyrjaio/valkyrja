@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Container;
 
 use ReflectionClass;
 use Valkyrja\Container\Container;
-use Valkyrja\Tests\Classes\Container\Provides;
+use Valkyrja\Tests\Classes\Container\ProvidesClass;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -27,24 +27,24 @@ class ProvidesTest extends TestCase
 {
     public function testDeferred(): void
     {
-        self::assertTrue(Provides::deferred());
+        self::assertTrue(ProvidesClass::deferred());
     }
 
     public function testPublishers(): void
     {
-        self::assertEmpty(Provides::publishers());
+        self::assertEmpty(ProvidesClass::publishers());
     }
 
     public function testProvides(): void
     {
-        self::assertEmpty(Provides::provides());
+        self::assertEmpty(ProvidesClass::provides());
     }
 
     public function testPublish(): void
     {
         $container = new Container();
 
-        Provides::publish($container);
+        ProvidesClass::publish($container);
 
         $reflection = new ReflectionClass($container);
 

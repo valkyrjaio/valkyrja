@@ -13,46 +13,88 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Assert;
 
+use Valkyrja\Test\Assert\Contract\Asserter as Contract;
+use Valkyrja\Test\Assert\Enum\ResultType;
 use Valkyrja\Test\Exception\AssertFailureException;
 use Valkyrja\Test\Exception\AssertWarningException;
+use Valkyrja\Type\BuiltIn\Enum\Support\Enum;
 
 /**
- * Interface Asserter.
+ * Class Asserter.
  *
  * @author Melech Mizrachi
  */
-interface Asserter
+abstract class Asserter implements Contract
 {
     /**
-     * Get the assertions.
+     * The assertions.
      *
-     * @return string[]
+     * @var string[]
      */
-    public function getAssertions(): array;
+    protected array $assertions = [];
 
     /**
-     * Get the errors.
+     * The errors.
      *
-     * @return AssertFailureException[]
+     * @var AssertFailureException[]
      */
-    public function getErrors(): array;
+    protected array $errors = [];
 
     /**
-     * Get the successes.
+     * The successes.
      *
-     * @return string[]
+     * @var string[]
      */
-    public function getSuccesses(): array;
+    protected array $successes = [];
 
     /**
-     * Get the warnings.
+     * The warnings.
      *
-     * @return AssertWarningException[]
+     * @var AssertWarningException[]
      */
-    public function getWarnings(): array;
+    protected array $warnings = [];
 
     /**
-     * Get a result type by property name.
+     * @inheritDoc
      */
-    public function __get(string $name): mixed;
+    public function getAssertions(): array
+    {
+        return $this->assertions;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSuccesses(): array
+    {
+        return $this->successes;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getWarnings(): array
+    {
+        return $this->warnings;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function __get(string $name): mixed
+    {
+        if (Enum::isValidName(ResultType::class, $name)) {
+            return $this->$name;
+        }
+
+        return null;
+    }
 }

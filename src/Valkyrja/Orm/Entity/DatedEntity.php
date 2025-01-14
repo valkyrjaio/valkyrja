@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Entity;
 
-use Valkyrja\Orm\DatedEntity as Contract;
+use Valkyrja\Orm\Entity\Contract\DatedEntity as Contract;
 
 /**
  * Class DatedEntity.

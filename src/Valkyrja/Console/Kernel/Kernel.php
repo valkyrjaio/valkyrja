@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Kernel;
 
 use Throwable;
+use Valkyrja\Console\Constant\ExitCode;
 use Valkyrja\Console\Contract\Console;
-use Valkyrja\Console\Enum\ExitCode;
 use Valkyrja\Console\Event\ConsoleKernelHandled;
 use Valkyrja\Console\Event\ConsoleKernelTerminate;
 use Valkyrja\Console\Input\Contract\Input;

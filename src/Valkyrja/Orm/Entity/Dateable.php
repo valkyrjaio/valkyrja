@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Entity;
 
-use Valkyrja\Orm\Constants\DateFormat;
+use Valkyrja\Orm\Constant\DateFormat;
 use Valkyrja\Orm\Support\Helpers;
 
 /**

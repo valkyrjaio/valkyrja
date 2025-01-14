@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Message;
 
 use InvalidArgumentException;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
-use Valkyrja\Http\Message\Header\HeaderSecurity;
+use Valkyrja\Http\Message\Header\Security\HeaderSecurity;
 use Valkyrja\Http\Message\Stream\Contract\Stream;
 
 use function array_merge;

@@ -19,8 +19,8 @@ use Valkyrja\Application\Valkyrja;
 use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Support\Directory;
-use Valkyrja\Tests\Config;
-use Valkyrja\Tests\Env;
+use Valkyrja\Tests\ConfigClass;
+use Valkyrja\Tests\EnvClass;
 
 /**
  * Test case for functional tests.
@@ -49,9 +49,9 @@ class TestCase extends PHPUnitTestCase
         Directory::$BOOTSTRAP_PATH = 'tests/bootstrap';
         Directory::$STORAGE_PATH   = 'tests/storage';
 
-        Valkyrja::setEnv(Env::class);
+        Valkyrja::setEnv(EnvClass::class);
 
-        $this->app = new Valkyrja(Config::class);
+        $this->app = new Valkyrja(ConfigClass::class);
         $this->app->container()->setSingleton(ServerRequest::class, RequestFactory::fromGlobals());
     }
 }

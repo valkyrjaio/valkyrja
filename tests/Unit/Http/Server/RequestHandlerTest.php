@@ -24,11 +24,11 @@ use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Router;
 use Valkyrja\Http\Server\RequestHandler;
-use Valkyrja\Tests\Classes\Http\Server\CloseOutputBuffersRequestHandler;
-use Valkyrja\Tests\Classes\Http\Server\CloseOutputBuffersWithCleanRequestHandler;
-use Valkyrja\Tests\Classes\Http\Server\FastCgiRequestHandler;
-use Valkyrja\Tests\Classes\Http\Server\LitespeedRequestHandler;
-use Valkyrja\Tests\Classes\Http\Server\SessionCloseRequestHandler;
+use Valkyrja\Tests\Classes\Http\Server\CloseOutputBuffersRequestHandlerClass;
+use Valkyrja\Tests\Classes\Http\Server\CloseOutputBuffersWithCleanRequestHandlerClass;
+use Valkyrja\Tests\Classes\Http\Server\FastCgiRequestHandlerClass;
+use Valkyrja\Tests\Classes\Http\Server\LitespeedRequestHandlerClass;
+use Valkyrja\Tests\Classes\Http\Server\SessionCloseRequestHandlerClass;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -298,7 +298,7 @@ class RequestHandlerTest extends TestCase
 
         $container = new Container();
 
-        $requestHandler = new SessionCloseRequestHandler(
+        $requestHandler = new SessionCloseRequestHandlerClass(
             container: $container,
             router: $router,
         );
@@ -328,7 +328,7 @@ class RequestHandlerTest extends TestCase
 
         $container = new Container();
 
-        $requestHandler = new FastCgiRequestHandler(
+        $requestHandler = new FastCgiRequestHandlerClass(
             container: $container,
             router: $router,
         );
@@ -358,7 +358,7 @@ class RequestHandlerTest extends TestCase
 
         $container = new Container();
 
-        $requestHandler = new LitespeedRequestHandler(
+        $requestHandler = new LitespeedRequestHandlerClass(
             container: $container,
             router: $router,
         );
@@ -388,7 +388,7 @@ class RequestHandlerTest extends TestCase
 
         $container = new Container();
 
-        $requestHandler = new CloseOutputBuffersRequestHandler(
+        $requestHandler = new CloseOutputBuffersRequestHandlerClass(
             container: $container,
             router: $router,
         );
@@ -418,7 +418,7 @@ class RequestHandlerTest extends TestCase
 
         $container = new Container();
 
-        $requestHandler = new CloseOutputBuffersWithCleanRequestHandler(
+        $requestHandler = new CloseOutputBuffersWithCleanRequestHandlerClass(
             container: $container,
             router: $router,
         );

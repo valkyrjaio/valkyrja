@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\QueryBuilder\Traits;
 
-use Valkyrja\Orm\Constants\JoinType;
-use Valkyrja\Orm\Constants\Operator;
-use Valkyrja\Orm\Constants\Statement;
+use Valkyrja\Orm\Constant\JoinType;
+use Valkyrja\Orm\Constant\Operator;
+use Valkyrja\Orm\Constant\Statement;
 
 use function implode;
 

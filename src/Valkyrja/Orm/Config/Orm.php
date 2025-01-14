@@ -16,7 +16,7 @@ namespace Valkyrja\Orm\Config;
 use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Orm\Config\Config as Model;
-use Valkyrja\Orm\Constants\ConfigValue;
+use Valkyrja\Orm\Constant\ConfigValue;
 use Valkyrja\Orm\Driver\PgSqlDriver;
 use Valkyrja\Orm\Pdo\MySqlPdo;
 use Valkyrja\Orm\Pdo\PgSqlPdo;

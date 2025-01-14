@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Assert;
 
+use Valkyrja\Test\Assert\Contract\Str as Contract;
+
 /**
- * Interface Str.
+ * Class Str.
  *
  * @author Melech Mizrachi
  */
-interface Str extends Asserter
+class Str extends Asserter implements Contract
 {
 }

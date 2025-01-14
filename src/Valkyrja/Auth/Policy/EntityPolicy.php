@@ -15,7 +15,7 @@ namespace Valkyrja\Auth\Policy;
 
 use Valkyrja\Auth\Policy\Contract\EntityPolicy as Contract;
 use Valkyrja\Auth\Repository\Contract\Repository;
-use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Entity\Contract\Entity;
 
 /**
  * Abstract Class EntityPolicy.

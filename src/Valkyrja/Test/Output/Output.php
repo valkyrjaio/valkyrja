@@ -13,50 +13,72 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Output;
 
+use Valkyrja\Test\Formatter\Contract\Formatter;
+use Valkyrja\Test\Formatter\Formatter as DefaultFormatter;
+use Valkyrja\Test\Output\Contract\Output as Contract;
+use Valkyrja\Test\Result\Contract\Results;
+
 /**
- * Interface Output.
+ * Class Output.
  *
  * @author Melech Mizrachi
  */
-interface Output
+abstract class Output implements Contract
 {
-    /**
-     * Output the title.
-     */
-    public function title(): void;
+    public function __construct(
+        protected Formatter $formatter = new DefaultFormatter(),
+    ) {
+    }
 
     /**
-     * Output the meta information.
+     * @inheritDoc
      */
-    public function meta(): void;
+    public function full(Results $results): void
+    {
+        $this->title();
+        $this->sectionSpacing();
+        $this->tests($results);
+        $this->sectionSpacing();
+        $this->completed($results);
+        $this->sectionSpacing();
+        $this->meta();
+        $this->sectionSpacing();
+        $this->results($results);
+        $this->issues($results);
+    }
 
     /**
-     * Output the tests.
+     * @inheritDoc
      */
-    public function tests(Results $results): void;
+    abstract public function title(): void;
 
     /**
-     * Output the completed count.
+     * @inheritDoc
      */
-    public function completed(Results $results): void;
+    abstract public function meta(): void;
 
     /**
-     * Output the results.
+     * @inheritDoc
      */
-    public function results(Results $results): void;
+    abstract public function tests(Results $results): void;
 
     /**
-     * Output the issues.
+     * @inheritDoc
      */
-    public function issues(Results $results): void;
+    abstract public function completed(Results $results): void;
 
     /**
-     * Output the section spacing.
+     * @inheritDoc
      */
-    public function sectionSpacing(): void;
+    abstract public function results(Results $results): void;
 
     /**
-     * Output fully.
+     * @inheritDoc
      */
-    public function full(Results $results): void;
+    abstract public function issues(Results $results): void;
+
+    /**
+     * @inheritDoc
+     */
+    abstract public function sectionSpacing(): void;
 }

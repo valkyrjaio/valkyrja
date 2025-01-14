@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Attribute;
 
-use Valkyrja\Tests\Classes\Type\Type;
+use Valkyrja\Tests\Classes\Type\TypeClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\Attribute\Intersection;
 
@@ -21,7 +21,7 @@ class IntersectionTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $value     = new Type('test');
+        $value     = new TypeClass('test');
         $attribute = new Intersection($value);
 
         self::assertSame([$value], $attribute->types);

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Driver;
 
-use Valkyrja\Orm\Adapter;
+use Valkyrja\Orm\Adapter\Contract\Adapter;
 
 /**
  * Class PgSqlDriver.

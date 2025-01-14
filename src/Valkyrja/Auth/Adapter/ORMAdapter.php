@@ -18,8 +18,8 @@ use Valkyrja\Auth\Adapter\Contract\ORMAdapter as Contract;
 use Valkyrja\Auth\Config;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Exception\InvalidRegistrationException;
-use Valkyrja\Orm\Orm;
-use Valkyrja\Orm\Repository;
+use Valkyrja\Orm\Contract\Orm;
+use Valkyrja\Orm\Repository\Contract\Repository;
 
 /**
  * Class Adapter.

@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Persister;
 
 use JsonException;
-use Valkyrja\Orm\Adapter;
-use Valkyrja\Orm\Constants\Statement;
-use Valkyrja\Orm\DatedEntity;
-use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Adapter\Contract\Adapter;
+use Valkyrja\Orm\Constant\Statement;
+use Valkyrja\Orm\Entity\Contract\DatedEntity;
+use Valkyrja\Orm\Entity\Contract\Entity;
+use Valkyrja\Orm\Entity\Contract\SoftDeleteEntity;
 use Valkyrja\Orm\Exception\ExecuteException;
-use Valkyrja\Orm\Persister as Contract;
-use Valkyrja\Orm\Query;
-use Valkyrja\Orm\QueryBuilder;
-use Valkyrja\Orm\SoftDeleteEntity;
+use Valkyrja\Orm\Persister\Contract\Persister as Contract;
+use Valkyrja\Orm\Query\Contract\Query;
+use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function is_array;

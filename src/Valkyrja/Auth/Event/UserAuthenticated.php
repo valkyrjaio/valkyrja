@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Event;
 
-use Valkyrja\Event\Constant\Event;
+use Valkyrja\Event\Contract\Event;
 
 /**
- * Final Class UserAuthenticated.
+ * Class UserAuthenticated.
  *
  * @author Melech Mizrachi
  */
-final class UserAuthenticated implements Event
+class UserAuthenticated implements Event
 {
 }

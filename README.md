@@ -14,6 +14,7 @@
     <a href='https://coveralls.io/github/valkyrjaio/valkyrja'><img src='https://coveralls.io/repos/github/valkyrjaio/valkyrja/badge.svg' alt='Coverage Status' /></a>
     <!-- <a href="https://codecov.io/gh/valkyrjaio/valkyrja"><img src="https://codecov.io/gh/valkyrjaio/valkyrja/branch/master/graph/badge.svg" alt="Codecov" /></a> -->
     <a href="https://codeclimate.com/github/valkyrjaio/valkyrja/maintainability"><img src="https://api.codeclimate.com/v1/badges/189da2b7011afb23f518/maintainability" /></a>
+    <a href="https://shepherd.dev/github/valkyrjaio/valkyrja"><img src="https://shepherd.dev/github/valkyrjaio/valkyrja/coverage.svg" /></a>
 </p>
 
 About Valkyrja

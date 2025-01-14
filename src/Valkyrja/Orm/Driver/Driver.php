@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Driver;
 
-use Valkyrja\Orm\Adapter;
-use Valkyrja\Orm\Driver as Contract;
-use Valkyrja\Orm\Persister;
-use Valkyrja\Orm\Query;
-use Valkyrja\Orm\QueryBuilder;
-use Valkyrja\Orm\Retriever;
-use Valkyrja\Orm\Statement;
+use Valkyrja\Orm\Adapter\Contract\Adapter;
+use Valkyrja\Orm\Driver\Contract\Driver as Contract;
+use Valkyrja\Orm\Persister\Contract\Persister;
+use Valkyrja\Orm\Query\Contract\Query;
+use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
+use Valkyrja\Orm\Retriever\Contract\Retriever;
+use Valkyrja\Orm\Statement\Contract\Statement;
 
 /**
  * Class Driver.

@@ -16,7 +16,7 @@ namespace Valkyrja\Console\Command;
 use Valkyrja\Config\Command\ConfigCache;
 use Valkyrja\Config\Constant\ConfigKey;
 use Valkyrja\Console\Commander\Commander;
-use Valkyrja\Console\Enum\ExitCode;
+use Valkyrja\Console\Constant\ExitCode;
 use Valkyrja\Console\Input\Option;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Container\Command\ContainerCache;

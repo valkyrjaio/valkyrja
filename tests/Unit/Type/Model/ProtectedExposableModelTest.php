@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Model;
 
-use Valkyrja\Tests\Classes\Model\Model;
-use Valkyrja\Tests\Classes\Model\ProtectedExposableModel;
+use Valkyrja\Tests\Classes\Model\ModelClass;
+use Valkyrja\Tests\Classes\Model\ProtectedExposableModelClass;
 use Valkyrja\Tests\Unit\TestCase;
 
 use const JSON_THROW_ON_ERROR;
@@ -28,67 +28,67 @@ class ProtectedExposableModelTest extends TestCase
 {
     public function testGetExposable(): void
     {
-        self::assertSame([Model::PROTECTED, Model::PRIVATE], ProtectedExposableModel::getExposable());
+        self::assertSame([ModelClass::PROTECTED, ModelClass::PRIVATE], ProtectedExposableModelClass::getExposable());
     }
 
     public function testAsExposed(): void
     {
-        $model = ProtectedExposableModel::fromArray(Model::VALUES);
+        $model = ProtectedExposableModelClass::fromArray(ModelClass::VALUES);
 
-        $expected = [Model::PUBLIC => Model::PUBLIC, Model::NULLABLE => null];
+        $expected = [ModelClass::PUBLIC => ModelClass::PUBLIC, ModelClass::NULLABLE => null];
         self::assertSame($expected, $model->asArray());
-        self::assertSame(Model::VALUES, $model->asExposedArray());
+        self::assertSame(ModelClass::VALUES, $model->asExposedArray());
 
         $model->private  = 'test';
-        $expectedExposed = [Model::PRIVATE => 'test'];
+        $expectedExposed = [ModelClass::PRIVATE => 'test'];
         self::assertSame([], $model->asChangedArray());
         self::assertSame($expectedExposed, $model->asExposedChangedArray());
     }
 
     public function testExpose(): void
     {
-        $model = ProtectedExposableModel::fromArray(Model::VALUES);
+        $model = ProtectedExposableModelClass::fromArray(ModelClass::VALUES);
 
-        $model->expose(Model::PROTECTED, Model::PRIVATE);
-        self::assertSame(Model::VALUES, $model->asArray());
-        self::assertSame(Model::VALUES, $model->asExposedArray());
+        $model->expose(ModelClass::PROTECTED, ModelClass::PRIVATE);
+        self::assertSame(ModelClass::VALUES, $model->asArray());
+        self::assertSame(ModelClass::VALUES, $model->asExposedArray());
 
         // asExposed methods call unexpose and so remove the exposable properties if that array is set
-        $model->expose(Model::PROTECTED, Model::PRIVATE);
+        $model->expose(ModelClass::PROTECTED, ModelClass::PRIVATE);
         $model->protected = 'test';
         $model->private   = 'test2';
-        $expected         = [Model::PROTECTED => 'test', Model::PRIVATE => 'test2'];
+        $expected         = [ModelClass::PROTECTED => 'test', ModelClass::PRIVATE => 'test2'];
         self::assertSame($expected, $model->asChangedArray());
         self::assertSame($expected, $model->asExposedChangedArray());
 
-        $model->protected = Model::PROTECTED;
-        $model->private   = Model::PRIVATE;
+        $model->protected = ModelClass::PROTECTED;
+        $model->private   = ModelClass::PRIVATE;
 
-        $expected = [Model::PUBLIC => Model::PUBLIC, Model::NULLABLE => null];
+        $expected = [ModelClass::PUBLIC => ModelClass::PUBLIC, ModelClass::NULLABLE => null];
         self::assertSame($expected, $model->asArray());
-        self::assertSame(Model::VALUES, $model->asExposedArray());
+        self::assertSame(ModelClass::VALUES, $model->asExposedArray());
 
         $model->protected = 'test';
         $model->private   = 'test2';
-        $expectedExposed  = [Model::PROTECTED => 'test', Model::PRIVATE => 'test2'];
+        $expectedExposed  = [ModelClass::PROTECTED => 'test', ModelClass::PRIVATE => 'test2'];
         self::assertSame([], $model->asChangedArray());
         self::assertSame($expectedExposed, $model->asExposedChangedArray());
     }
 
     public function testJsonSerialize(): void
     {
-        $model = ProtectedExposableModel::fromArray([]);
+        $model = ProtectedExposableModelClass::fromArray([]);
 
         $expected = '[]';
         self::assertSame($expected, json_encode($model, JSON_THROW_ON_ERROR));
         self::assertSame($expected, (string) $model);
 
-        $model = ProtectedExposableModel::fromArray(Model::VALUES);
+        $model = ProtectedExposableModelClass::fromArray(ModelClass::VALUES);
 
         $expected = '{"public":"public","nullable":null}';
         self::assertSame($expected, json_encode($model, JSON_THROW_ON_ERROR));
         self::assertSame($expected, (string) $model);
-        $model->expose(Model::PROTECTED, Model::PRIVATE);
+        $model->expose(ModelClass::PROTECTED, ModelClass::PRIVATE);
         $expectedExposed = '{"public":"public","nullable":null,"protected":"protected","private":"private"}';
         self::assertSame($expectedExposed, json_encode($model, JSON_THROW_ON_ERROR));
         self::assertSame($expectedExposed, (string) $model);

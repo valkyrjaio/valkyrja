@@ -23,7 +23,7 @@ use Valkyrja\Http\Routing\Model\Parameter\Parameter;
 use Valkyrja\Http\Routing\Processor\Contract\Processor as Contract;
 use Valkyrja\Http\Routing\Support\Helpers;
 use Valkyrja\Orm\Data\EntityCast;
-use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Entity\Contract\Entity;
 
 use function assert;
 use function preg_match;

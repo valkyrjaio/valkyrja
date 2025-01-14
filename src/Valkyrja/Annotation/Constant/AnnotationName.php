@@ -13,10 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Constant;
 
-use Valkyrja\Console\Enum\AnnotationName as ConsoleAnnotation;
-use Valkyrja\Container\Enum\AnnotationName as ContainerAnnotation;
-use Valkyrja\Event\Enum\AnnotationName as EventAnnotation;
-
 /**
  * Constant AnnotationName.
  *
@@ -24,9 +20,9 @@ use Valkyrja\Event\Enum\AnnotationName as EventAnnotation;
  */
 final class AnnotationName
 {
-    public const COMMAND         = ConsoleAnnotation::COMMAND;
-    public const LISTENER        = EventAnnotation::LISTENER;
-    public const SERVICE         = ContainerAnnotation::SERVICE;
-    public const SERVICE_ALIAS   = ContainerAnnotation::SERVICE_ALIAS;
-    public const SERVICE_CONTEXT = ContainerAnnotation::SERVICE_CONTEXT;
+    public const COMMAND         = 'Command';
+    public const LISTENER        = 'listener';
+    public const SERVICE         = 'Service';
+    public const SERVICE_ALIAS   = 'Service\\Alias';
+    public const SERVICE_CONTEXT = 'Service\\Context';
 }

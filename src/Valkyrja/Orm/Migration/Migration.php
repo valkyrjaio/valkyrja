@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Migration;
 
-use Valkyrja\Orm\Migration as Contract;
-use Valkyrja\Orm\Orm;
+use Valkyrja\Orm\Contract\Orm;
+use Valkyrja\Orm\Schema\Contract\Migration as Contract;
 
 /**
  * Abstract Class Migration.

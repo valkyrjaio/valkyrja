@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\QueryBuilder;
 
-use Valkyrja\Orm\Adapter;
-use Valkyrja\Orm\BaseQueryBuilder as Contract;
-use Valkyrja\Orm\Entity;
-use Valkyrja\Orm\Query;
+use Valkyrja\Orm\Adapter\Contract\Adapter;
+use Valkyrja\Orm\Entity\Contract\Entity;
+use Valkyrja\Orm\Query\Contract\Query;
+use Valkyrja\Orm\QueryBuilder\Contract\BaseQueryBuilder as Contract;
 
 use function assert;
 

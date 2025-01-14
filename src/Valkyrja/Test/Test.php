@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Test;
 
 use Throwable;
-use Valkyrja\Test\Assert\Assert;
+use Valkyrja\Test\Assert\Contract\Assert;
 use Valkyrja\Test\Contract\Test as Contract;
-use Valkyrja\Test\Output\Output;
-use Valkyrja\Test\Output\Results\Results;
+use Valkyrja\Test\Output\Contract\Output;
+use Valkyrja\Test\Result\Results;
 
 /**
  * Class Test.
@@ -29,7 +29,7 @@ class Test implements Contract
     public function __construct(
         protected string|null $name = null,
         protected Output|null $output = null,
-        protected Assert $assert = new \Valkyrja\Test\Assert\Asserters\Assert(),
+        protected Assert $assert = new \Valkyrja\Test\Assert\Assert(),
         protected bool $shouldSkip = false,
     ) {
     }

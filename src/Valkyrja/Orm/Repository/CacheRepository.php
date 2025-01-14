@@ -16,13 +16,13 @@ namespace Valkyrja\Orm\Repository;
 use JsonException;
 use Valkyrja\Cache\Contract\Cache;
 use Valkyrja\Cache\Driver\Contract\Driver as CacheDriver;
-use Valkyrja\Orm\CacheRepository as Contract;
-use Valkyrja\Orm\Driver;
-use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Contract\Orm;
+use Valkyrja\Orm\Driver\Contract\Driver;
+use Valkyrja\Orm\Entity\Contract\Entity;
+use Valkyrja\Orm\Entity\Contract\SoftDeleteEntity;
 use Valkyrja\Orm\Exception\EntityNotFoundException;
-use Valkyrja\Orm\Orm;
-use Valkyrja\Orm\QueryBuilder;
-use Valkyrja\Orm\SoftDeleteEntity;
+use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
+use Valkyrja\Orm\Repository\Contract\CacheRepository as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 
@@ -340,7 +340,7 @@ class CacheRepository extends Repository implements Contract
 
         match ($type) {
             self::$storeType  => $this->storeEntities[$id]   = $entity,
-            self::$forgetType => $this->forgetEntities[$id]  = $entity,
+            self::$forgetType => $this->forgetEntities[$id] = $entity,
         };
     }
 

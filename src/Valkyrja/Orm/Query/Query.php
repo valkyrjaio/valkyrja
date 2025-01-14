@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Query;
 
 use stdClass;
-use Valkyrja\Orm\Adapter;
-use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Adapter\Contract\Adapter;
+use Valkyrja\Orm\Entity\Contract\Entity;
 use Valkyrja\Orm\Exception\NotFoundException;
-use Valkyrja\Orm\Query as QueryContract;
-use Valkyrja\Orm\Statement;
+use Valkyrja\Orm\Query\Contract\Query as QueryContract;
+use Valkyrja\Orm\Statement\Contract\Statement;
 use Valkyrja\Orm\Support\Helpers;
 
 use function assert;

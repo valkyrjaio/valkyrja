@@ -16,7 +16,7 @@ namespace Valkyrja\Console\Command;
 use JsonException;
 use Valkyrja\Console\CacheableConsole;
 use Valkyrja\Console\Commander\Commander;
-use Valkyrja\Console\Enum\ExitCode;
+use Valkyrja\Console\Constant\ExitCode;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Repository;
 
-use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Entity\Contract\Entity;
 use Valkyrja\Type\BuiltIn\Support\StrCase;
 
 /**

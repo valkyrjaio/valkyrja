@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../../../../../bootstrap.php';
 
-use Valkyrja\Test\Assert\Assert;
-use Valkyrja\Test\Output\Outputters\EchoOutput;
+use Valkyrja\Test\Assert\Contract\Assert;
+use Valkyrja\Test\Output\Output\EchoOutput;
 use Valkyrja\Test\Test;
 use Valkyrja\Type\Vlid\Exception\InvalidVlidException;
 use Valkyrja\Type\Vlid\Support\Vlid;

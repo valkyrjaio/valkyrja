@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Annotation;
 
 use ReflectionException;
+use Valkyrja\Annotation\Constant\AnnotationName;
 use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Annotation\Model\Contract\Annotation;
 use Valkyrja\Container\Annotation\Contract\Annotations as Contract;
-use Valkyrja\Container\Enum\AnnotationName;
 use Valkyrja\Reflection\Contract\Reflection;
 
 /**

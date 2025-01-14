@@ -16,7 +16,7 @@ namespace Valkyrja\Orm\Statement;
 use PDO;
 use PDOStatement as Statement;
 use stdClass;
-use Valkyrja\Orm\PdoStatement as Contract;
+use Valkyrja\Orm\Statement\Contract\PdoStatement as Contract;
 
 use function is_bool;
 use function is_int;

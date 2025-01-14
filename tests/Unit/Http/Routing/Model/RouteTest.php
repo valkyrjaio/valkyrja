@@ -15,12 +15,12 @@ namespace Unit\Http\Routing\Model;
 
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Model\Route;
-use Valkyrja\Tests\Classes\Http\Middleware\TestRequestReceivedMiddleware;
-use Valkyrja\Tests\Classes\Http\Middleware\TestRouteDispatchedMiddleware;
-use Valkyrja\Tests\Classes\Http\Middleware\TestRouteMatchedMiddleware;
-use Valkyrja\Tests\Classes\Http\Middleware\TestSendingResponseMiddleware;
-use Valkyrja\Tests\Classes\Http\Middleware\TestTerminatedMiddleware;
-use Valkyrja\Tests\Classes\Http\Middleware\TestThrowableCaughtMiddleware;
+use Valkyrja\Tests\Classes\Http\Middleware\RequestReceivedMiddlewareClass;
+use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
+use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareClass;
+use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareClass;
+use Valkyrja\Tests\Classes\Http\Middleware\TerminatedMiddlewareClass;
+use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -172,11 +172,11 @@ class RouteTest extends TestCase
     {
         $set = $this->route->setMiddleware(
             [
-                TestRequestReceivedMiddleware::class,
-                TestRouteDispatchedMiddleware::class,
-                TestThrowableCaughtMiddleware::class,
-                TestSendingResponseMiddleware::class,
-                TestTerminatedMiddleware::class,
+                RequestReceivedMiddlewareClass::class,
+                RouteDispatchedMiddlewareClass::class,
+                ThrowableCaughtMiddlewareClass::class,
+                SendingResponseMiddlewareClass::class,
+                TerminatedMiddlewareClass::class,
             ]
         );
 
@@ -204,20 +204,20 @@ class RouteTest extends TestCase
     {
         $this->route->setMiddleware(
             $middleware = [
-                TestRouteMatchedMiddleware::class,
-                TestRouteDispatchedMiddleware::class,
-                TestThrowableCaughtMiddleware::class,
-                TestSendingResponseMiddleware::class,
-                TestTerminatedMiddleware::class,
+                RouteMatchedMiddlewareClass::class,
+                RouteDispatchedMiddlewareClass::class,
+                ThrowableCaughtMiddlewareClass::class,
+                SendingResponseMiddlewareClass::class,
+                TerminatedMiddlewareClass::class,
             ]
         );
 
         self::assertSame($middleware, $this->route->getMiddleware());
-        self::assertSame([TestRouteMatchedMiddleware::class], $this->route->getMatchedMiddleware());
-        self::assertSame([TestRouteDispatchedMiddleware::class], $this->route->getDispatchedMiddleware());
-        self::assertSame([TestThrowableCaughtMiddleware::class], $this->route->getExceptionMiddleware());
-        self::assertSame([TestSendingResponseMiddleware::class], $this->route->getSendingMiddleware());
-        self::assertSame([TestTerminatedMiddleware::class], $this->route->getTerminatedMiddleware());
+        self::assertSame([RouteMatchedMiddlewareClass::class], $this->route->getMatchedMiddleware());
+        self::assertSame([RouteDispatchedMiddlewareClass::class], $this->route->getDispatchedMiddleware());
+        self::assertSame([ThrowableCaughtMiddlewareClass::class], $this->route->getExceptionMiddleware());
+        self::assertSame([SendingResponseMiddlewareClass::class], $this->route->getSendingMiddleware());
+        self::assertSame([TerminatedMiddlewareClass::class], $this->route->getTerminatedMiddleware());
     }
 
     /**

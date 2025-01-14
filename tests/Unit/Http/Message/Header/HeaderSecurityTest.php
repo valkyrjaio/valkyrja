@@ -15,7 +15,7 @@ namespace Unit\Http\Message\Header;
 
 use Valkyrja\Http\Message\Header\Exception\InvalidNameException;
 use Valkyrja\Http\Message\Header\Exception\InvalidValueException;
-use Valkyrja\Http\Message\Header\HeaderSecurity;
+use Valkyrja\Http\Message\Header\Security\HeaderSecurity;
 use Valkyrja\Tests\Unit\TestCase;
 
 class HeaderSecurityTest extends TestCase

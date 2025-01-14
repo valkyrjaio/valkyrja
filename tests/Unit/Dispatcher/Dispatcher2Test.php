@@ -27,7 +27,7 @@ use Valkyrja\Dispatcher\Data\GlobalVariableDispatch;
 use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Dispatcher\Data\PropertyDispatch;
 use Valkyrja\Dispatcher\Dispatcher2 as Dispatcher;
-use Valkyrja\Tests\Classes\Container\Service;
+use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Dispatcher\InvalidDispatchClass;
 use Valkyrja\Tests\Classes\Dispatcher\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\TestCase;
@@ -410,47 +410,47 @@ class Dispatcher2Test extends TestCase
         $container2 = new ContextAwareContainer($this->config, true);
         $dispatcher = new Dispatcher($container);
 
-        $container->bind(Service::class, Service::class);
+        $container->bind(ServiceClass::class, ServiceClass::class);
         $container->setSingleton(Container::class, $container);
 
-        $dispatch = new ClassDispatch(class: Service::class, dependencies: [Container::class]);
+        $dispatch = new ClassDispatch(class: ServiceClass::class, dependencies: [Container::class]);
 
         $result = $dispatcher->dispatch($dispatch);
 
-        self::assertInstanceOf(Service::class, $result);
+        self::assertInstanceOf(ServiceClass::class, $result);
 
-        $dispatch = new MethodDispatch(class: Service::class, method: 'make', isStatic: true, dependencies: [Container::class]);
-
-        $result = $dispatcher->dispatch($dispatch);
-
-        self::assertInstanceOf(Service::class, $result);
-
-        $dispatch = new CallableDispatch(callable: [Service::class, 'make'], dependencies: [Container::class]);
+        $dispatch = new MethodDispatch(class: ServiceClass::class, method: 'make', isStatic: true, dependencies: [Container::class]);
 
         $result = $dispatcher->dispatch($dispatch);
 
-        self::assertInstanceOf(Service::class, $result);
+        self::assertInstanceOf(ServiceClass::class, $result);
 
-        $dispatch = new MethodDispatch(class: Service::class, method: 'getContainer', dependencies: [Container::class]);
+        $dispatch = new CallableDispatch(callable: [ServiceClass::class, 'make'], dependencies: [Container::class]);
+
+        $result = $dispatcher->dispatch($dispatch);
+
+        self::assertInstanceOf(ServiceClass::class, $result);
+
+        $dispatch = new MethodDispatch(class: ServiceClass::class, method: 'getContainer', dependencies: [Container::class]);
 
         $result = $dispatcher->dispatch($dispatch);
 
         self::assertSame($container, $result);
 
         $container
-            ->withContext(Service::class, 'make')
+            ->withContext(ServiceClass::class, 'make')
             ->setSingleton(Container::class, $container2);
 
-        $dispatch = new MethodDispatch(class: Service::class, method: 'make', isStatic: true, dependencies: [Container::class]);
+        $dispatch = new MethodDispatch(class: ServiceClass::class, method: 'make', isStatic: true, dependencies: [Container::class]);
 
-        /** @var Service $result */
+        /** @var ServiceClass $result */
         $result = $dispatcher->dispatch($dispatch);
 
         self::assertSame($container2, $result->getContainer());
 
-        $dispatch = new CallableDispatch(callable: [Service::class, 'make'], dependencies: [Container::class]);
+        $dispatch = new CallableDispatch(callable: [ServiceClass::class, 'make'], dependencies: [Container::class]);
 
-        /** @var Service $result */
+        /** @var ServiceClass $result */
         $result = $dispatcher->dispatch($dispatch);
 
         self::assertSame($container2, $result->getContainer());

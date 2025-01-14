@@ -15,7 +15,7 @@ namespace Valkyrja\Event\Command;
 
 use JsonException;
 use Valkyrja\Console\Commander\Commander;
-use Valkyrja\Console\Enum\ExitCode;
+use Valkyrja\Console\Constant\ExitCode;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Event\Collection\CacheableCollection as CacheableEvents;
 use Valkyrja\Type\BuiltIn\Support\Arr;

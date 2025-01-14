@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Test\Suite;
 
 use Valkyrja\Test\Enum\Argument;
-use Valkyrja\Test\Output\Output;
-use Valkyrja\Test\Output\Outputters\EchoOutput;
-use Valkyrja\Test\Output\Results;
+use Valkyrja\Test\Output\Contract\Output;
+use Valkyrja\Test\Output\EchoOutput;
+use Valkyrja\Test\Result\Contract\Results;
 use Valkyrja\Test\Suite\Contract\Suite as Contract;
 
 /**
@@ -28,7 +28,7 @@ class Suite implements Contract
 {
     public function __construct(
         protected Output $output = new EchoOutput(),
-        protected Results $results = new Results\Results(),
+        protected Results $results = new \Valkyrja\Test\Result\Results(),
     ) {
     }
 

@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Routing\Command;
 
 use JsonException;
 use Valkyrja\Console\Commander\Commander;
-use Valkyrja\Console\Enum\ExitCode;
+use Valkyrja\Console\Constant\ExitCode;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Http\Routing\Collection\CacheableCollection;
 use Valkyrja\Type\BuiltIn\Support\Arr;

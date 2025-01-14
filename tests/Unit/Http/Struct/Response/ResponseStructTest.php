@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Http\Struct\Response;
 
 use Valkyrja\Http\Struct\Contract\Struct;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStruct as Contract;
-use Valkyrja\Tests\Classes\Http\Struct\TestIndexedResponseStruct;
-use Valkyrja\Tests\Classes\Http\Struct\TestResponseStruct;
+use Valkyrja\Tests\Classes\Http\Struct\IndexedResponseStructEnum;
+use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -65,12 +65,12 @@ class ResponseStructTest extends TestCase
             'third'  => null,
         ];
 
-        self::assertSame($dataStructured, TestResponseStruct::getStructuredData(data: $data));
-        self::assertSame($data2Structured, TestResponseStruct::getStructuredData(data: $data2));
-        self::assertSame($dataStructured, TestResponseStruct::getStructuredData(data: $data3));
-        self::assertSame($data3Structured, TestResponseStruct::getStructuredData(data: $data3, includeAll: false));
-        self::assertSame($dataEmptyStructured, TestResponseStruct::getStructuredData(data: []));
-        self::assertEmpty(TestResponseStruct::getStructuredData(data: [], includeAll: false));
+        self::assertSame($dataStructured, ResponseStructEnum::getStructuredData(data: $data));
+        self::assertSame($data2Structured, ResponseStructEnum::getStructuredData(data: $data2));
+        self::assertSame($dataStructured, ResponseStructEnum::getStructuredData(data: $data3));
+        self::assertSame($data3Structured, ResponseStructEnum::getStructuredData(data: $data3, includeAll: false));
+        self::assertSame($dataEmptyStructured, ResponseStructEnum::getStructuredData(data: []));
+        self::assertEmpty(ResponseStructEnum::getStructuredData(data: [], includeAll: false));
     }
 
     public function testIndexedStruct(): void
@@ -110,14 +110,14 @@ class ResponseStructTest extends TestCase
             3 => null,
         ];
 
-        self::assertSame($dataStructured, TestIndexedResponseStruct::getStructuredData(data: $data));
-        self::assertSame($data2Structured, TestIndexedResponseStruct::getStructuredData(data: $data2));
-        self::assertSame($dataStructured, TestIndexedResponseStruct::getStructuredData(data: $data3));
+        self::assertSame($dataStructured, IndexedResponseStructEnum::getStructuredData(data: $data));
+        self::assertSame($data2Structured, IndexedResponseStructEnum::getStructuredData(data: $data2));
+        self::assertSame($dataStructured, IndexedResponseStructEnum::getStructuredData(data: $data3));
         self::assertSame(
             $data3Structured,
-            TestIndexedResponseStruct::getStructuredData(data: $data3, includeAll: false)
+            IndexedResponseStructEnum::getStructuredData(data: $data3, includeAll: false)
         );
-        self::assertSame($dataEmptyStructured, TestIndexedResponseStruct::getStructuredData(data: []));
-        self::assertEmpty(TestIndexedResponseStruct::getStructuredData(data: [], includeAll: false));
+        self::assertSame($dataEmptyStructured, IndexedResponseStructEnum::getStructuredData(data: []));
+        self::assertEmpty(IndexedResponseStructEnum::getStructuredData(data: [], includeAll: false));
     }
 }

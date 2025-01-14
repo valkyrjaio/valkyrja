@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Model;
 
-use Valkyrja\Tests\Classes\Model\ExposedIndexableModel;
-use Valkyrja\Tests\Classes\Model\IndexableModel;
-use Valkyrja\Tests\Classes\Model\Model;
+use Valkyrja\Tests\Classes\Model\ExposedIndexableModelClass;
+use Valkyrja\Tests\Classes\Model\IndexableModelClass;
+use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\Model\Contract\ExposableIndexedModel as Contract;
 use Valkyrja\Type\Model\Contract\IndexedModel as ModelContract;
@@ -38,29 +38,29 @@ class ExposableIndexableModelTest extends TestCase
 
     public function testGetExposable(): void
     {
-        self::assertSame([Model::PRIVATE], ExposedIndexableModel::getExposable());
+        self::assertSame([ModelClass::PRIVATE], ExposedIndexableModelClass::getExposable());
     }
 
     public function testAsExposedIndexedArray(): void
     {
-        $model = ExposedIndexableModel::fromArray(Model::VALUES);
+        $model = ExposedIndexableModelClass::fromArray(ModelClass::VALUES);
 
         $expectedAsArray = [
-            Model::PUBLIC    => Model::PUBLIC,
-            Model::NULLABLE  => null,
-            Model::PROTECTED => Model::PROTECTED,
+            ModelClass::PUBLIC    => ModelClass::PUBLIC,
+            ModelClass::NULLABLE  => null,
+            ModelClass::PROTECTED => ModelClass::PROTECTED,
         ];
         $expectedExposed = [
-            Model::PUBLIC    => Model::PUBLIC,
-            Model::NULLABLE  => null,
-            Model::PROTECTED => Model::PROTECTED,
-            Model::PRIVATE   => Model::PRIVATE,
+            ModelClass::PUBLIC    => ModelClass::PUBLIC,
+            ModelClass::NULLABLE  => null,
+            ModelClass::PROTECTED => ModelClass::PROTECTED,
+            ModelClass::PRIVATE   => ModelClass::PRIVATE,
         ];
         $expectedIndexed = [
-            IndexableModel::PUBLIC_INDEX    => Model::PUBLIC,
-            IndexableModel::PROTECTED_INDEX => Model::PROTECTED,
-            IndexableModel::PRIVATE_INDEX   => Model::PRIVATE,
-            IndexableModel::NULLABLE_INDEX  => null,
+            IndexableModelClass::PUBLIC_INDEX    => ModelClass::PUBLIC,
+            IndexableModelClass::PROTECTED_INDEX => ModelClass::PROTECTED,
+            IndexableModelClass::PRIVATE_INDEX   => ModelClass::PRIVATE,
+            IndexableModelClass::NULLABLE_INDEX  => null,
         ];
         self::assertSame($expectedAsArray, $model->asArray());
         self::assertSame($expectedExposed, $model->asExposedArray());
@@ -69,12 +69,12 @@ class ExposableIndexableModelTest extends TestCase
 
     public function testAsExposedChangedIndexedArray(): void
     {
-        $model = ExposedIndexableModel::fromArray(Model::VALUES);
+        $model = ExposedIndexableModelClass::fromArray(ModelClass::VALUES);
 
         $model->private         = 'test';
         $expectedAsArray        = [];
-        $expectedExposed        = [Model::PRIVATE => 'test'];
-        $expectedExposedIndexed = [IndexableModel::PRIVATE_INDEX => 'test'];
+        $expectedExposed        = [ModelClass::PRIVATE => 'test'];
+        $expectedExposedIndexed = [IndexableModelClass::PRIVATE_INDEX => 'test'];
         self::assertSame($expectedAsArray, $model->asChangedArray());
         self::assertSame($expectedExposed, $model->asExposedChangedArray());
         self::assertSame($expectedExposedIndexed, $model->asExposedChangedIndexedArray());

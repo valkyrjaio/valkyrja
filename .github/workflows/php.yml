@@ -60,7 +60,17 @@ jobs:
 
       - name: Run Psalm
         run: |
-          vendor/bin/psalm --no-cache
+          vendor/bin/psalm --no-cache --shepherd
+
+      - name: Run Psalm with Shepherd
+        if: ${{ matrix.php == '8.1' }}
+        run: |
+          vendor/bin/psalm --no-cache --shepherd
+
+      - name: Run PHPArkitect
+        if: ${{ matrix.php == '8.1' }}
+        run: |
+          vendor/bin/phparkitect check --config=phparkitecht.php
 
       - name: Upload Codecov Coverage Report
         if: ${{ matrix.php == '8.1' }}

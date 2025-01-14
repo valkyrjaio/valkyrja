@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Config;
 
 use RuntimeException;
-use Valkyrja\Tests\Classes\Config\DataConfig;
-use Valkyrja\Tests\Classes\Config\DataConfigAfter;
-use Valkyrja\Tests\Classes\Config\DataConfigBefore;
-use Valkyrja\Tests\Classes\Env\EmptyEnv;
-use Valkyrja\Tests\Classes\Env\Env;
+use Valkyrja\Tests\Classes\Config\DataConfigClass;
+use Valkyrja\Tests\Classes\Config\DataConfigClassAfter;
+use Valkyrja\Tests\Classes\Config\DataConfigClassBefore;
+use Valkyrja\Tests\Classes\Env\EmptyEnvClass;
+use Valkyrja\Tests\Classes\Env\EnvClass;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -30,75 +30,75 @@ class DataConfigTest extends TestCase
 {
     public function testWithNoEnv(): void
     {
-        $config = new DataConfig();
+        $config = new DataConfigClass();
 
         self::assertSame('public', $config->public);
         self::assertNull($config->nullable);
 
-        $config = DataConfigBefore::fromEnv(EmptyEnv::class);
+        $config = DataConfigClassBefore::fromEnv(EmptyEnvClass::class);
 
-        self::assertSame(DataConfigBefore::PUBLIC, $config->public);
-        self::assertSame(DataConfigBefore::NULLABLE, $config->nullable);
+        self::assertSame(DataConfigClassBefore::PUBLIC, $config->public);
+        self::assertSame(DataConfigClassBefore::NULLABLE, $config->nullable);
 
-        $config = DataConfigAfter::fromEnv(EmptyEnv::class);
+        $config = DataConfigClassAfter::fromEnv(EmptyEnvClass::class);
 
-        self::assertSame(DataConfigAfter::PUBLIC, $config->public);
-        self::assertSame(DataConfigAfter::NULLABLE, $config->nullable);
+        self::assertSame(DataConfigClassAfter::PUBLIC, $config->public);
+        self::assertSame(DataConfigClassAfter::NULLABLE, $config->nullable);
     }
 
     public function testWithEmptyEnv(): void
     {
-        $config = DataConfig::fromEnv(EmptyEnv::class);
+        $config = DataConfigClass::fromEnv(EmptyEnvClass::class);
 
         self::assertSame('public', $config->public);
         self::assertNull($config->nullable);
 
-        $config = DataConfigBefore::fromEnv(EmptyEnv::class);
+        $config = DataConfigClassBefore::fromEnv(EmptyEnvClass::class);
 
-        self::assertSame(DataConfigBefore::PUBLIC, $config->public);
-        self::assertSame(DataConfigBefore::NULLABLE, $config->nullable);
+        self::assertSame(DataConfigClassBefore::PUBLIC, $config->public);
+        self::assertSame(DataConfigClassBefore::NULLABLE, $config->nullable);
 
-        $config = DataConfigAfter::fromEnv(EmptyEnv::class);
+        $config = DataConfigClassAfter::fromEnv(EmptyEnvClass::class);
 
-        self::assertSame(DataConfigAfter::PUBLIC, $config->public);
-        self::assertSame(DataConfigAfter::NULLABLE, $config->nullable);
+        self::assertSame(DataConfigClassAfter::PUBLIC, $config->public);
+        self::assertSame(DataConfigClassAfter::NULLABLE, $config->nullable);
     }
 
     public function testWithEnv(): void
     {
-        $config = DataConfig::fromEnv(Env::class);
+        $config = DataConfigClass::fromEnv(EnvClass::class);
 
-        self::assertSame(Env::DATA_CONFIG_PUBLIC, $config->public);
-        self::assertSame(Env::DATA_CONFIG_NULLABLE, $config->nullable);
+        self::assertSame(EnvClass::DATA_CONFIG_PUBLIC, $config->public);
+        self::assertSame(EnvClass::DATA_CONFIG_NULLABLE, $config->nullable);
 
-        $config = DataConfigBefore::fromEnv(Env::class);
+        $config = DataConfigClassBefore::fromEnv(EnvClass::class);
 
-        self::assertSame(Env::DATA_CONFIG_PUBLIC, $config->public);
-        self::assertSame(Env::DATA_CONFIG_NULLABLE, $config->nullable);
+        self::assertSame(EnvClass::DATA_CONFIG_PUBLIC, $config->public);
+        self::assertSame(EnvClass::DATA_CONFIG_NULLABLE, $config->nullable);
 
-        $config = DataConfigAfter::fromEnv(Env::class);
+        $config = DataConfigClassAfter::fromEnv(EnvClass::class);
 
-        self::assertSame(DataConfigAfter::PUBLIC, $config->public);
-        self::assertSame(DataConfigAfter::NULLABLE, $config->nullable);
+        self::assertSame(DataConfigClassAfter::PUBLIC, $config->public);
+        self::assertSame(DataConfigClassAfter::NULLABLE, $config->nullable);
     }
 
     public function testOffsetExists(): void
     {
-        $config = new DataConfig();
+        $config = new DataConfigClass();
 
         self::assertTrue(isset($config['public']));
         self::assertFalse(isset($config['nullable']));
         self::assertTrue($config->offsetExists('public'));
         self::assertFalse($config->offsetExists('nullable'));
 
-        $config = DataConfigBefore::fromEnv(EmptyEnv::class);
+        $config = DataConfigClassBefore::fromEnv(EmptyEnvClass::class);
 
         self::assertTrue(isset($config['public']));
         self::assertTrue(isset($config['nullable']));
         self::assertTrue($config->offsetExists('public'));
         self::assertTrue($config->offsetExists('nullable'));
 
-        $config = DataConfigAfter::fromEnv(EmptyEnv::class);
+        $config = DataConfigClassAfter::fromEnv(EmptyEnvClass::class);
 
         self::assertTrue(isset($config['public']));
         self::assertTrue(isset($config['nullable']));
@@ -108,27 +108,27 @@ class DataConfigTest extends TestCase
 
     public function testOffsetGet(): void
     {
-        $config = new DataConfig();
+        $config = new DataConfigClass();
 
         self::assertSame('public', $config['public']);
         self::assertNull($config['nullable']);
         self::assertSame('public', $config->offsetGet('public'));
         self::assertNull($config->offsetGet('nullable'));
 
-        $config = DataConfigBefore::fromEnv(EmptyEnv::class);
+        $config = DataConfigClassBefore::fromEnv(EmptyEnvClass::class);
 
-        self::assertSame(DataConfigBefore::PUBLIC, $config->offsetGet('public'));
-        self::assertSame(DataConfigBefore::NULLABLE, $config->offsetGet('nullable'));
+        self::assertSame(DataConfigClassBefore::PUBLIC, $config->offsetGet('public'));
+        self::assertSame(DataConfigClassBefore::NULLABLE, $config->offsetGet('nullable'));
 
-        $config = DataConfigAfter::fromEnv(EmptyEnv::class);
+        $config = DataConfigClassAfter::fromEnv(EmptyEnvClass::class);
 
-        self::assertSame(DataConfigAfter::PUBLIC, $config->offsetGet('public'));
-        self::assertSame(DataConfigAfter::NULLABLE, $config->offsetGet('nullable'));
+        self::assertSame(DataConfigClassAfter::PUBLIC, $config->offsetGet('public'));
+        self::assertSame(DataConfigClassAfter::NULLABLE, $config->offsetGet('nullable'));
     }
 
     public function testOffsetSet(): void
     {
-        $config             = new DataConfig();
+        $config             = new DataConfigClass();
         $config['public']   = 'test';
         $config['nullable'] = 'test';
 
@@ -146,7 +146,7 @@ class DataConfigTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
 
-        $config             = new DataConfig();
+        $config             = new DataConfigClass();
         $config['public']   = 'test';
         $config['nullable'] = 'test';
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Adapter\Contract;
 
-use Valkyrja\Orm\Orm;
+use Valkyrja\Orm\Contract\Orm;
 
 /**
  * Interface ORMAdapter.

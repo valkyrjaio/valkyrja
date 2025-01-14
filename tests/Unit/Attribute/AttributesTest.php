@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Attribute;
 
 use ReflectionException;
 use Valkyrja\Attribute\Attributes;
-use Valkyrja\Tests\Classes\Attribute\Attribute;
-use Valkyrja\Tests\Classes\Attribute\AttributeChild;
+use Valkyrja\Tests\Classes\Attribute\AttributeClass;
+use Valkyrja\Tests\Classes\Attribute\AttributeClassChildClass;
 use Valkyrja\Tests\Classes\Attribute\AttributedClass;
 use Valkyrja\Tests\Unit\TestCase;
 
@@ -101,7 +101,7 @@ class AttributesTest extends TestCase
      */
     public function testForClass(): void
     {
-        $attributes = $this->attributes->forClass(AttributedClass::class, Attribute::class);
+        $attributes = $this->attributes->forClass(AttributedClass::class, AttributeClass::class);
 
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -122,7 +122,7 @@ class AttributesTest extends TestCase
      */
     public function testForClassMembers(): void
     {
-        $attributes = $this->attributes->forClassMembers(AttributedClass::class, Attribute::class);
+        $attributes = $this->attributes->forClassMembers(AttributedClass::class, AttributeClass::class);
 
         self::assertCount(21, $attributes);
         $this->testsForConst($attributes[0], $attributes[1], $attributes[2]);
@@ -143,7 +143,7 @@ class AttributesTest extends TestCase
      */
     public function testForClassAndMembers(): void
     {
-        $attributes = $this->attributes->forClassAndMembers(AttributedClass::class, Attribute::class);
+        $attributes = $this->attributes->forClassAndMembers(AttributedClass::class, AttributeClass::class);
 
         self::assertCount(24, $attributes);
         $this->baseTests($attributes[0], $attributes[1], $attributes[2]);
@@ -168,7 +168,7 @@ class AttributesTest extends TestCase
         $attributes = $this->attributes->forConstant(
             AttributedClass::class,
             self::CONST_NAME,
-            Attribute::class
+            AttributeClass::class
         );
 
         $this->testsForConst(...$attributes);
@@ -176,7 +176,7 @@ class AttributesTest extends TestCase
         $attributes = $this->attributes->forConstant(
             AttributedClass::class,
             self::PROTECTED_CONST_NAME,
-            Attribute::class
+            AttributeClass::class
         );
 
         $this->testsForProtectedConst(...$attributes);
@@ -191,7 +191,7 @@ class AttributesTest extends TestCase
      */
     public function testForConstants(): void
     {
-        $attributes = $this->attributes->forConstants(AttributedClass::class, Attribute::class);
+        $attributes = $this->attributes->forConstants(AttributedClass::class, AttributeClass::class);
 
         self::assertCount(6, $attributes);
         $this->testsForConst($attributes[0], $attributes[1], $attributes[2]);
@@ -210,7 +210,7 @@ class AttributesTest extends TestCase
         $attributes = $this->attributes->forProperty(
             AttributedClass::class,
             self::STATIC_PROPERTY_NAME,
-            Attribute::class
+            AttributeClass::class
         );
 
         $this->testsForStaticProperty(...$attributes);
@@ -218,7 +218,7 @@ class AttributesTest extends TestCase
         $attributes = $this->attributes->forProperty(
             AttributedClass::class,
             self::PROPERTY_NAME,
-            Attribute::class
+            AttributeClass::class
         );
 
         $this->testsForProperty(...$attributes);
@@ -233,7 +233,7 @@ class AttributesTest extends TestCase
      */
     public function testForProperties(): void
     {
-        $attributes = $this->attributes->forProperties(AttributedClass::class, Attribute::class);
+        $attributes = $this->attributes->forProperties(AttributedClass::class, AttributeClass::class);
 
         self::assertCount(6, $attributes);
         $this->testsForStaticProperty($attributes[0], $attributes[1], $attributes[2]);
@@ -252,7 +252,7 @@ class AttributesTest extends TestCase
         $attributes = $this->attributes->forMethod(
             AttributedClass::class,
             self::STATIC_METHOD_NAME,
-            Attribute::class
+            AttributeClass::class
         );
 
         $this->testsForStaticMethod(...$attributes);
@@ -260,7 +260,7 @@ class AttributesTest extends TestCase
         $attributes = $this->attributes->forMethod(
             AttributedClass::class,
             self::METHOD_NAME,
-            Attribute::class
+            AttributeClass::class
         );
 
         $this->testsForMethod(...$attributes);
@@ -268,7 +268,7 @@ class AttributesTest extends TestCase
         $attributes = $this->attributes->forMethodParameters(
             AttributedClass::class,
             self::METHOD_WITH_PARAMETERS_NAME,
-            Attribute::class
+            AttributeClass::class
         );
 
         $this->testsForMethod(...$attributes);
@@ -280,7 +280,7 @@ class AttributesTest extends TestCase
             AttributedClass::class,
             self::METHOD_WITH_PARAMETERS_NAME,
             'parameter',
-            Attribute::class
+            AttributeClass::class
         );
 
         $this->testsForMethod(...$attributes);
@@ -292,7 +292,7 @@ class AttributesTest extends TestCase
             AttributedClass::class,
             self::METHOD_WITH_PARAMETERS_NAME,
             'nonExistent',
-            Attribute::class
+            AttributeClass::class
         );
 
         self::assertEmpty($attributesEmpty);
@@ -307,7 +307,7 @@ class AttributesTest extends TestCase
      */
     public function testForMethods(): void
     {
-        $attributes = $this->attributes->forMethods(AttributedClass::class, Attribute::class);
+        $attributes = $this->attributes->forMethods(AttributedClass::class, AttributeClass::class);
 
         self::assertCount(9, $attributes);
         $this->testsForStaticMethod($attributes[0], $attributes[1], $attributes[2]);
@@ -324,18 +324,18 @@ class AttributesTest extends TestCase
      */
     public function testForFunction(): void
     {
-        #[Attribute(1)]
-        #[Attribute(2)]
-        #[AttributeChild(3, 'three')]
+        #[AttributeClass(1)]
+        #[AttributeClass(2)]
+        #[AttributeClassChildClass(3, 'three')]
         function testFunction(
-            #[Attribute(1)]
-            #[Attribute(2)]
-            #[AttributeChild(3, 'three')]
+            #[AttributeClass(1)]
+            #[AttributeClass(2)]
+            #[AttributeClassChildClass(3, 'three')]
             string $param
         ): void {
         }
 
-        $attributes = $this->attributes->forFunction('\Valkyrja\Tests\Unit\Attribute\testFunction', Attribute::class);
+        $attributes = $this->attributes->forFunction('\Valkyrja\Tests\Unit\Attribute\testFunction', AttributeClass::class);
 
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -346,7 +346,7 @@ class AttributesTest extends TestCase
             ...$attributes
         );
 
-        $attributes = $this->attributes->forFunctionParameters('\Valkyrja\Tests\Unit\Attribute\testFunction', Attribute::class);
+        $attributes = $this->attributes->forFunctionParameters('\Valkyrja\Tests\Unit\Attribute\testFunction', AttributeClass::class);
 
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -371,12 +371,12 @@ class AttributesTest extends TestCase
     public function testForClosure(): void
     {
         $attributes = $this->attributes->forClosure(
-            #[Attribute(self::VALUE4)]
-            #[Attribute(self::VALUE5)]
-            #[AttributeChild(self::VALUE6, self::SIX)]
+            #[AttributeClass(self::VALUE4)]
+            #[AttributeClass(self::VALUE5)]
+            #[AttributeClassChildClass(self::VALUE6, self::SIX)]
             static function (): void {
             },
-            Attribute::class
+            AttributeClass::class
         );
 
         $this->baseTests(...$attributes);
@@ -389,12 +389,12 @@ class AttributesTest extends TestCase
         );
 
         $attributes = $this->attributes->forClosure(
-            #[Attribute(self::VALUE7)]
-            #[Attribute(self::VALUE8)]
-            #[AttributeChild(self::VALUE9, self::NINE)]
+            #[AttributeClass(self::VALUE7)]
+            #[AttributeClass(self::VALUE8)]
+            #[AttributeClassChildClass(self::VALUE9, self::NINE)]
             static function (): void {
             },
-            Attribute::class
+            AttributeClass::class
         );
 
         $this->baseTests(...$attributes);
@@ -407,17 +407,17 @@ class AttributesTest extends TestCase
         );
 
         $attributes = $this->attributes->forClosureParameters(
-            #[Attribute(self::VALUE4)]
-            #[Attribute(self::VALUE5)]
-            #[AttributeChild(self::VALUE6, self::SIX)]
+            #[AttributeClass(self::VALUE4)]
+            #[AttributeClass(self::VALUE5)]
+            #[AttributeClassChildClass(self::VALUE6, self::SIX)]
             static function (
-                #[Attribute(AttributesTest::VALUE1)]
-                #[Attribute(AttributesTest::VALUE2)]
-                #[AttributeChild(AttributesTest::VALUE3, AttributesTest::THREE)]
+                #[AttributeClass(AttributesTest::VALUE1)]
+                #[AttributeClass(AttributesTest::VALUE2)]
+                #[AttributeClassChildClass(AttributesTest::VALUE3, AttributesTest::THREE)]
                 string $param
             ): void {
             },
-            Attribute::class
+            AttributeClass::class
         );
 
         $this->baseTests(...$attributes);
@@ -436,11 +436,11 @@ class AttributesTest extends TestCase
     /**
      * Tests for the const member.
      *
-     * @param Attribute|AttributeChild ...$attributes The attributes
+     * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
      *
      * @return void
      */
-    protected function testsForConst(Attribute|AttributeChild ...$attributes): void
+    protected function testsForConst(AttributeClass|AttributeClassChildClass ...$attributes): void
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -456,11 +456,11 @@ class AttributesTest extends TestCase
     /**
      * Tests for the protectedConst member.
      *
-     * @param Attribute|AttributeChild ...$attributes The attributes
+     * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
      *
      * @return void
      */
-    protected function testsForProtectedConst(Attribute|AttributeChild ...$attributes): void
+    protected function testsForProtectedConst(AttributeClass|AttributeClassChildClass ...$attributes): void
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -476,11 +476,11 @@ class AttributesTest extends TestCase
     /**
      * Tests for the staticProperty member.
      *
-     * @param Attribute|AttributeChild ...$attributes The attributes
+     * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
      *
      * @return void
      */
-    protected function testsForStaticProperty(Attribute|AttributeChild ...$attributes): void
+    protected function testsForStaticProperty(AttributeClass|AttributeClassChildClass ...$attributes): void
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -496,11 +496,11 @@ class AttributesTest extends TestCase
     /**
      * Tests for the property member.
      *
-     * @param Attribute|AttributeChild ...$attributes The attributes
+     * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
      *
      * @return void
      */
-    protected function testsForProperty(Attribute|AttributeChild ...$attributes): void
+    protected function testsForProperty(AttributeClass|AttributeClassChildClass ...$attributes): void
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -516,11 +516,11 @@ class AttributesTest extends TestCase
     /**
      * Tests for the staticMember() member.
      *
-     * @param Attribute|AttributeChild ...$attributes The attributes
+     * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
      *
      * @return void
      */
-    protected function testsForStaticMethod(Attribute|AttributeChild ...$attributes): void
+    protected function testsForStaticMethod(AttributeClass|AttributeClassChildClass ...$attributes): void
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -536,11 +536,11 @@ class AttributesTest extends TestCase
     /**
      * Tests for the method() member.
      *
-     * @param Attribute|AttributeChild ...$attributes The attributes
+     * @param AttributeClass|AttributeClassChildClass ...$attributes The attributes
      *
      * @return void
      */
-    protected function testsForMethod(Attribute|AttributeChild ...$attributes): void
+    protected function testsForMethod(AttributeClass|AttributeClassChildClass ...$attributes): void
     {
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -556,16 +556,16 @@ class AttributesTest extends TestCase
     /**
      * Base tests for all items.
      *
-     * @param Attribute ...$attributes The attributes
+     * @param AttributeClass ...$attributes The attributes
      *
      * @return void
      */
-    protected function baseTests(Attribute ...$attributes): void
+    protected function baseTests(AttributeClass ...$attributes): void
     {
         self::assertCount(3, $attributes);
-        self::assertInstanceOf(Attribute::class, $attributes[0]);
-        self::assertInstanceOf(Attribute::class, $attributes[1]);
-        self::assertInstanceOf(AttributeChild::class, $attributes[2]);
+        self::assertInstanceOf(AttributeClass::class, $attributes[0]);
+        self::assertInstanceOf(AttributeClass::class, $attributes[1]);
+        self::assertInstanceOf(AttributeClassChildClass::class, $attributes[2]);
         self::assertNotNull($attributes[0]->getReflection());
         self::assertNotNull($attributes[1]->getReflection());
         self::assertNotNull($attributes[2]->getReflection());
@@ -574,13 +574,13 @@ class AttributesTest extends TestCase
     /**
      * Test values.
      *
-     * @param int            $value1     The value in the first attribute
-     * @param int            $value2     The value in the second attribute
-     * @param int            $value3     The first value in the third attribute
-     * @param string         $value4     The second value in the third attribute
-     * @param Attribute      $attribute1 The first attribute
-     * @param Attribute      $attribute2 The second attribute
-     * @param AttributeChild $attribute3 The third attribute
+     * @param int                      $value1     The value in the first attribute
+     * @param int                      $value2     The value in the second attribute
+     * @param int                      $value3     The first value in the third attribute
+     * @param string                   $value4     The second value in the third attribute
+     * @param AttributeClass           $attribute1 The first attribute
+     * @param AttributeClass           $attribute2 The second attribute
+     * @param AttributeClassChildClass $attribute3 The third attribute
      *
      * @return void
      */
@@ -589,9 +589,9 @@ class AttributesTest extends TestCase
         int $value2,
         int $value3,
         string $value4,
-        Attribute $attribute1,
-        Attribute $attribute2,
-        AttributeChild $attribute3
+        AttributeClass $attribute1,
+        AttributeClass $attribute2,
+        AttributeClassChildClass $attribute3
     ): void {
         self::assertSame($value1, $attribute1->counter);
         self::assertSame($value2, $attribute2->counter);
@@ -602,13 +602,13 @@ class AttributesTest extends TestCase
     /**
      * Tests related to setters.
      *
-     * @param AttributeChild $attribute The attribute
-     * @param bool           $isStatic  Whether the member is static
-     * @param string         $name      The name of the member
+     * @param AttributeClassChildClass $attribute The attribute
+     * @param bool                     $isStatic  Whether the member is static
+     * @param string                   $name      The name of the member
      *
      * @return void
      */
-    protected function setTests(AttributeChild $attribute, bool $isStatic, string $name): void
+    protected function setTests(AttributeClassChildClass $attribute, bool $isStatic, string $name): void
     {
         self::assertSame(AttributedClass::class, $attribute->class);
 

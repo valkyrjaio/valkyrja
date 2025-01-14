@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Repository;
 
 use InvalidArgumentException;
-use Valkyrja\Orm\Driver;
-use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Contract\Orm;
+use Valkyrja\Orm\Driver\Contract\Driver;
+use Valkyrja\Orm\Entity\Contract\Entity;
+use Valkyrja\Orm\Entity\Contract\SoftDeleteEntity;
 use Valkyrja\Orm\Enum\WhereType;
 use Valkyrja\Orm\Exception\InvalidEntityException;
-use Valkyrja\Orm\Orm;
-use Valkyrja\Orm\Persister;
-use Valkyrja\Orm\Query;
-use Valkyrja\Orm\QueryBuilder;
-use Valkyrja\Orm\Repository as Contract;
-use Valkyrja\Orm\Retriever;
-use Valkyrja\Orm\SoftDeleteEntity;
+use Valkyrja\Orm\Persister\Contract\Persister;
+use Valkyrja\Orm\Query\Contract\Query;
+use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
+use Valkyrja\Orm\Repository\Contract\Repository as Contract;
+use Valkyrja\Orm\Retriever\Contract\Retriever;
 
 use function assert;
 

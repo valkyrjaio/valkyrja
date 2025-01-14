@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Attribute;
 
-use Valkyrja\Tests\Classes\Type\Type as TypeClass;
+use Valkyrja\Tests\Classes\Type\TypeClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\Attribute\Type;
 

@@ -19,13 +19,13 @@ use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Struct\Contract\Struct;
 use Valkyrja\Http\Struct\Exception\InvalidArgumentException;
 use Valkyrja\Http\Struct\Request\Contract\RequestStruct as Contract;
-use Valkyrja\Tests\Classes\Http\Struct\TestIndexedJsonRequestStruct;
-use Valkyrja\Tests\Classes\Http\Struct\TestIndexedParsedBodyRequestStruct;
-use Valkyrja\Tests\Classes\Http\Struct\TestIndexedQueryRequestStruct;
-use Valkyrja\Tests\Classes\Http\Struct\TestJsonRequestStruct;
-use Valkyrja\Tests\Classes\Http\Struct\TestParsedBodyRequestStruct;
-use Valkyrja\Tests\Classes\Http\Struct\TestQueryRequestStruct;
-use Valkyrja\Tests\Classes\Http\Struct\TestWithNoRulesQueryRequestStruct;
+use Valkyrja\Tests\Classes\Http\Struct\IndexedJsonRequestStructEnum;
+use Valkyrja\Tests\Classes\Http\Struct\IndexedParsedBodyRequestStructEnum;
+use Valkyrja\Tests\Classes\Http\Struct\IndexedQueryRequestStructEnum;
+use Valkyrja\Tests\Classes\Http\Struct\JsonRequestStructEnum;
+use Valkyrja\Tests\Classes\Http\Struct\ParsedBodyRequestStructEnum;
+use Valkyrja\Tests\Classes\Http\Struct\QueryRequestStructEnum;
+use Valkyrja\Tests\Classes\Http\Struct\WithNoRulesQueryRequestStructEnum;
 use Valkyrja\Tests\Unit\TestCase;
 
 use function array_filter;
@@ -91,62 +91,62 @@ class RequestStructTest extends TestCase
             ],
         );
 
-        self::assertNull(TestWithNoRulesQueryRequestStruct::getValidationRules($request));
-        self::assertNotEmpty(TestQueryRequestStruct::getValidationRules($request));
-        self::assertNotEmpty(TestParsedBodyRequestStruct::getValidationRules($request));
-        self::assertNotEmpty(TestJsonRequestStruct::getValidationRules($request));
+        self::assertNull(WithNoRulesQueryRequestStructEnum::getValidationRules($request));
+        self::assertNotEmpty(QueryRequestStructEnum::getValidationRules($request));
+        self::assertNotEmpty(ParsedBodyRequestStructEnum::getValidationRules($request));
+        self::assertNotEmpty(JsonRequestStructEnum::getValidationRules($request));
 
-        self::assertNull(TestWithNoRulesQueryRequestStruct::getValidationRules($request2));
-        self::assertNotEmpty(TestQueryRequestStruct::getValidationRules($request2));
-        self::assertNotEmpty(TestParsedBodyRequestStruct::getValidationRules($request2));
-        self::assertNotEmpty(TestJsonRequestStruct::getValidationRules($request2));
+        self::assertNull(WithNoRulesQueryRequestStructEnum::getValidationRules($request2));
+        self::assertNotEmpty(QueryRequestStructEnum::getValidationRules($request2));
+        self::assertNotEmpty(ParsedBodyRequestStructEnum::getValidationRules($request2));
+        self::assertNotEmpty(JsonRequestStructEnum::getValidationRules($request2));
 
-        self::assertFalse(TestWithNoRulesQueryRequestStruct::determineIfRequestContainsExtraData($request));
-        self::assertFalse(TestQueryRequestStruct::determineIfRequestContainsExtraData($request));
-        self::assertFalse(TestParsedBodyRequestStruct::determineIfRequestContainsExtraData($request));
-        self::assertFalse(TestJsonRequestStruct::determineIfRequestContainsExtraData($request));
+        self::assertFalse(WithNoRulesQueryRequestStructEnum::determineIfRequestContainsExtraData($request));
+        self::assertFalse(QueryRequestStructEnum::determineIfRequestContainsExtraData($request));
+        self::assertFalse(ParsedBodyRequestStructEnum::determineIfRequestContainsExtraData($request));
+        self::assertFalse(JsonRequestStructEnum::determineIfRequestContainsExtraData($request));
 
-        self::assertTrue(TestWithNoRulesQueryRequestStruct::determineIfRequestContainsExtraData($request2));
-        self::assertTrue(TestQueryRequestStruct::determineIfRequestContainsExtraData($request2));
-        self::assertTrue(TestParsedBodyRequestStruct::determineIfRequestContainsExtraData($request2));
-        self::assertTrue(TestJsonRequestStruct::determineIfRequestContainsExtraData($request2));
+        self::assertTrue(WithNoRulesQueryRequestStructEnum::determineIfRequestContainsExtraData($request2));
+        self::assertTrue(QueryRequestStructEnum::determineIfRequestContainsExtraData($request2));
+        self::assertTrue(ParsedBodyRequestStructEnum::determineIfRequestContainsExtraData($request2));
+        self::assertTrue(JsonRequestStructEnum::determineIfRequestContainsExtraData($request2));
 
-        self::assertSame($query, TestWithNoRulesQueryRequestStruct::getDataFromRequest($request));
-        self::assertSame($query, TestQueryRequestStruct::getDataFromRequest($request));
-        self::assertSame($body, TestParsedBodyRequestStruct::getDataFromRequest($request));
-        self::assertSame($json, TestJsonRequestStruct::getDataFromRequest($request));
+        self::assertSame($query, WithNoRulesQueryRequestStructEnum::getDataFromRequest($request));
+        self::assertSame($query, QueryRequestStructEnum::getDataFromRequest($request));
+        self::assertSame($body, ParsedBodyRequestStructEnum::getDataFromRequest($request));
+        self::assertSame($json, JsonRequestStructEnum::getDataFromRequest($request));
 
-        self::assertNotSame($query2, TestWithNoRulesQueryRequestStruct::getDataFromRequest($request2));
-        self::assertNotSame($query2, TestQueryRequestStruct::getDataFromRequest($request2));
-        self::assertNotSame($body2, TestParsedBodyRequestStruct::getDataFromRequest($request2));
-        self::assertNotSame($json2, TestJsonRequestStruct::getDataFromRequest($request2));
+        self::assertNotSame($query2, WithNoRulesQueryRequestStructEnum::getDataFromRequest($request2));
+        self::assertNotSame($query2, QueryRequestStructEnum::getDataFromRequest($request2));
+        self::assertNotSame($body2, ParsedBodyRequestStructEnum::getDataFromRequest($request2));
+        self::assertNotSame($json2, JsonRequestStructEnum::getDataFromRequest($request2));
 
         $callback = static fn (string $key): bool => $key !== 'fourth';
 
         self::assertSame(
             array_filter($query2, $callback, ARRAY_FILTER_USE_KEY),
-            TestQueryRequestStruct::getDataFromRequest($request2)
+            QueryRequestStructEnum::getDataFromRequest($request2)
         );
         self::assertSame(
             array_filter($body2, $callback, ARRAY_FILTER_USE_KEY),
-            TestParsedBodyRequestStruct::getDataFromRequest($request2)
+            ParsedBodyRequestStructEnum::getDataFromRequest($request2)
         );
         self::assertSame(
             array_filter($json2, $callback, ARRAY_FILTER_USE_KEY),
-            TestJsonRequestStruct::getDataFromRequest($request2)
+            JsonRequestStructEnum::getDataFromRequest($request2)
         );
 
-        $validateQuery = TestQueryRequestStruct::validate($request);
-        $validateBody  = TestParsedBodyRequestStruct::validate($request);
-        $validateJson  = TestJsonRequestStruct::validate($request);
+        $validateQuery = QueryRequestStructEnum::validate($request);
+        $validateBody  = ParsedBodyRequestStructEnum::validate($request);
+        $validateJson  = JsonRequestStructEnum::validate($request);
 
         self::assertTrue($validateQuery->rules());
         self::assertTrue($validateBody->rules());
         self::assertTrue($validateJson->rules());
 
-        $validateQuery2 = TestQueryRequestStruct::validate($request2);
-        $validateBody2  = TestParsedBodyRequestStruct::validate($request2);
-        $validateJson2  = TestJsonRequestStruct::validate($request2);
+        $validateQuery2 = QueryRequestStructEnum::validate($request2);
+        $validateBody2  = ParsedBodyRequestStructEnum::validate($request2);
+        $validateJson2  = JsonRequestStructEnum::validate($request2);
 
         self::assertFalse($validateQuery2->rules());
         self::assertFalse($validateBody2->rules());
@@ -197,56 +197,56 @@ class RequestStructTest extends TestCase
             ],
         );
 
-        self::assertNotEmpty(TestIndexedQueryRequestStruct::getValidationRules($request));
-        self::assertNotEmpty(TestIndexedParsedBodyRequestStruct::getValidationRules($request));
-        self::assertNotEmpty(TestIndexedJsonRequestStruct::getValidationRules($request));
+        self::assertNotEmpty(IndexedQueryRequestStructEnum::getValidationRules($request));
+        self::assertNotEmpty(IndexedParsedBodyRequestStructEnum::getValidationRules($request));
+        self::assertNotEmpty(IndexedJsonRequestStructEnum::getValidationRules($request));
 
-        self::assertNotEmpty(TestIndexedQueryRequestStruct::getValidationRules($request2));
-        self::assertNotEmpty(TestIndexedParsedBodyRequestStruct::getValidationRules($request2));
-        self::assertNotEmpty(TestIndexedJsonRequestStruct::getValidationRules($request2));
+        self::assertNotEmpty(IndexedQueryRequestStructEnum::getValidationRules($request2));
+        self::assertNotEmpty(IndexedParsedBodyRequestStructEnum::getValidationRules($request2));
+        self::assertNotEmpty(IndexedJsonRequestStructEnum::getValidationRules($request2));
 
-        self::assertFalse(TestIndexedQueryRequestStruct::determineIfRequestContainsExtraData($request));
-        self::assertFalse(TestIndexedParsedBodyRequestStruct::determineIfRequestContainsExtraData($request));
-        self::assertFalse(TestIndexedJsonRequestStruct::determineIfRequestContainsExtraData($request));
+        self::assertFalse(IndexedQueryRequestStructEnum::determineIfRequestContainsExtraData($request));
+        self::assertFalse(IndexedParsedBodyRequestStructEnum::determineIfRequestContainsExtraData($request));
+        self::assertFalse(IndexedJsonRequestStructEnum::determineIfRequestContainsExtraData($request));
 
-        self::assertTrue(TestIndexedQueryRequestStruct::determineIfRequestContainsExtraData($request2));
-        self::assertTrue(TestIndexedParsedBodyRequestStruct::determineIfRequestContainsExtraData($request2));
-        self::assertTrue(TestIndexedJsonRequestStruct::determineIfRequestContainsExtraData($request2));
+        self::assertTrue(IndexedQueryRequestStructEnum::determineIfRequestContainsExtraData($request2));
+        self::assertTrue(IndexedParsedBodyRequestStructEnum::determineIfRequestContainsExtraData($request2));
+        self::assertTrue(IndexedJsonRequestStructEnum::determineIfRequestContainsExtraData($request2));
 
-        self::assertSame($query, TestIndexedQueryRequestStruct::getDataFromRequest($request));
-        self::assertSame($body, TestIndexedParsedBodyRequestStruct::getDataFromRequest($request));
-        self::assertSame($json, TestIndexedJsonRequestStruct::getDataFromRequest($request));
+        self::assertSame($query, IndexedQueryRequestStructEnum::getDataFromRequest($request));
+        self::assertSame($body, IndexedParsedBodyRequestStructEnum::getDataFromRequest($request));
+        self::assertSame($json, IndexedJsonRequestStructEnum::getDataFromRequest($request));
 
-        self::assertNotSame($query2, TestIndexedQueryRequestStruct::getDataFromRequest($request2));
-        self::assertNotSame($body2, TestIndexedParsedBodyRequestStruct::getDataFromRequest($request2));
-        self::assertNotSame($json2, TestIndexedJsonRequestStruct::getDataFromRequest($request2));
+        self::assertNotSame($query2, IndexedQueryRequestStructEnum::getDataFromRequest($request2));
+        self::assertNotSame($body2, IndexedParsedBodyRequestStructEnum::getDataFromRequest($request2));
+        self::assertNotSame($json2, IndexedJsonRequestStructEnum::getDataFromRequest($request2));
 
         $callback = static fn (int $key): bool => $key !== 4;
 
         self::assertSame(
             array_filter($query2, $callback, ARRAY_FILTER_USE_KEY),
-            TestIndexedQueryRequestStruct::getDataFromRequest($request2)
+            IndexedQueryRequestStructEnum::getDataFromRequest($request2)
         );
         self::assertSame(
             array_filter($body2, $callback, ARRAY_FILTER_USE_KEY),
-            TestIndexedParsedBodyRequestStruct::getDataFromRequest($request2)
+            IndexedParsedBodyRequestStructEnum::getDataFromRequest($request2)
         );
         self::assertSame(
             array_filter($json2, $callback, ARRAY_FILTER_USE_KEY),
-            TestIndexedJsonRequestStruct::getDataFromRequest($request2)
+            IndexedJsonRequestStructEnum::getDataFromRequest($request2)
         );
 
-        $validateQuery = TestIndexedQueryRequestStruct::validate($request);
-        $validateBody  = TestIndexedParsedBodyRequestStruct::validate($request);
-        $validateJson  = TestIndexedJsonRequestStruct::validate($request);
+        $validateQuery = IndexedQueryRequestStructEnum::validate($request);
+        $validateBody  = IndexedParsedBodyRequestStructEnum::validate($request);
+        $validateJson  = IndexedJsonRequestStructEnum::validate($request);
 
         self::assertTrue($validateQuery->rules());
         self::assertTrue($validateBody->rules());
         self::assertTrue($validateJson->rules());
 
-        $validateQuery2 = TestIndexedQueryRequestStruct::validate($request2);
-        $validateBody2  = TestIndexedParsedBodyRequestStruct::validate($request2);
-        $validateJson2  = TestIndexedJsonRequestStruct::validate($request2);
+        $validateQuery2 = IndexedQueryRequestStructEnum::validate($request2);
+        $validateBody2  = IndexedParsedBodyRequestStructEnum::validate($request2);
+        $validateJson2  = IndexedJsonRequestStructEnum::validate($request2);
 
         self::assertFalse($validateQuery2->rules());
         self::assertFalse($validateBody2->rules());
@@ -259,6 +259,6 @@ class RequestStructTest extends TestCase
 
         $request = new ServerRequest();
 
-        TestIndexedJsonRequestStruct::getDataFromRequest($request);
+        IndexedJsonRequestStructEnum::getDataFromRequest($request);
     }
 }

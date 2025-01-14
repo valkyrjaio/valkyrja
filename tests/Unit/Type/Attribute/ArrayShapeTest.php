@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\Attribute;
 
-use Valkyrja\Tests\Classes\Type\Type;
+use Valkyrja\Tests\Classes\Type\TypeClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\Attribute\ArrayShape;
 use Valkyrja\Type\Attribute\Intersection;
@@ -30,7 +30,7 @@ class ArrayShapeTest extends TestCase
 
     public function testArrayWithType(): void
     {
-        $value     = ['fire' => new Type('test')];
+        $value     = ['fire' => new TypeClass('test')];
         $attribute = new ArrayShape($value);
 
         self::assertSame($value, $attribute->shape);
@@ -38,7 +38,7 @@ class ArrayShapeTest extends TestCase
 
     public function testArrayWithIntersection(): void
     {
-        $value     = ['fire' => new Intersection(new Type('test'))];
+        $value     = ['fire' => new Intersection(new TypeClass('test'))];
         $attribute = new ArrayShape($value);
 
         self::assertSame($value, $attribute->shape);
@@ -46,7 +46,7 @@ class ArrayShapeTest extends TestCase
 
     public function testArrayWithUnion(): void
     {
-        $value     = ['fire' => new Union(new Type('test'))];
+        $value     = ['fire' => new Union(new TypeClass('test'))];
         $attribute = new ArrayShape($value);
 
         self::assertSame($value, $attribute->shape);

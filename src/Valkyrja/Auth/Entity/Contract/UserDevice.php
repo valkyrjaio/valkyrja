@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entity\Contract;
 
-use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Entity\Contract\Entity;
 
 /**
  * Interface UserDevice.

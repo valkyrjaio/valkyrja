@@ -17,12 +17,12 @@ use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Model\Parameter\Parameter;
-use Valkyrja\Tests\Classes\Http\Middleware\TestRouteDispatchedMiddleware;
-use Valkyrja\Tests\Classes\Http\Middleware\TestRouteMatchedMiddleware;
-use Valkyrja\Tests\Classes\Http\Middleware\TestSendingResponseMiddleware;
-use Valkyrja\Tests\Classes\Http\Middleware\TestTerminatedMiddleware;
-use Valkyrja\Tests\Classes\Http\Middleware\TestThrowableCaughtMiddleware;
-use Valkyrja\Tests\Classes\Http\Struct\TestQueryRequestStruct;
+use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
+use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareClass;
+use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareClass;
+use Valkyrja\Tests\Classes\Http\Middleware\TerminatedMiddlewareClass;
+use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
+use Valkyrja\Tests\Classes\Http\Struct\QueryRequestStructEnum;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -109,7 +109,7 @@ class RouteTest extends TestCase
 
     public function testRequestStruct(): void
     {
-        $value = TestQueryRequestStruct::class;
+        $value = QueryRequestStructEnum::class;
         $route = new Route(requestStruct: $value);
 
         self::assertSame($value, $route->getRequestStruct());
@@ -117,7 +117,7 @@ class RouteTest extends TestCase
 
     public function testMatchedMiddleware(): void
     {
-        $value = [TestRouteMatchedMiddleware::class];
+        $value = [RouteMatchedMiddlewareClass::class];
         $route = new Route(matchedMiddleware: $value);
 
         self::assertSame($value, $route->getMiddleware());
@@ -126,7 +126,7 @@ class RouteTest extends TestCase
 
     public function testDispatchedMiddleware(): void
     {
-        $value = [TestRouteDispatchedMiddleware::class];
+        $value = [RouteDispatchedMiddlewareClass::class];
         $route = new Route(dispatchedMiddleware: $value);
 
         self::assertSame($value, $route->getMiddleware());
@@ -135,7 +135,7 @@ class RouteTest extends TestCase
 
     public function testExceptionMiddleware(): void
     {
-        $value = [TestThrowableCaughtMiddleware::class];
+        $value = [ThrowableCaughtMiddlewareClass::class];
         $route = new Route(exceptionMiddleware: $value);
 
         self::assertSame($value, $route->getMiddleware());
@@ -144,7 +144,7 @@ class RouteTest extends TestCase
 
     public function testSendingMiddleware(): void
     {
-        $value = [TestSendingResponseMiddleware::class];
+        $value = [SendingResponseMiddlewareClass::class];
         $route = new Route(sendingMiddleware: $value);
 
         self::assertSame($value, $route->getMiddleware());
@@ -153,7 +153,7 @@ class RouteTest extends TestCase
 
     public function testTerminatedMiddleware(): void
     {
-        $value = [TestTerminatedMiddleware::class];
+        $value = [TerminatedMiddlewareClass::class];
         $route = new Route(terminatedMiddleware: $value);
 
         self::assertSame($value, $route->getMiddleware());

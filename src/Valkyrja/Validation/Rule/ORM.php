@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Rule;
 
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Orm\Entity;
-use Valkyrja\Orm\Orm as ORMManager;
+use Valkyrja\Orm\Contract\Orm as ORMManager;
+use Valkyrja\Orm\Entity\Contract\Entity;
 use Valkyrja\Validation\Exception\ValidationException;
 
 /**

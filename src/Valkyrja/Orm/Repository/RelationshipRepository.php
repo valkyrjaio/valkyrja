@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Repository;
 
-use Valkyrja\Orm\RelationshipRepository as Contract;
+use Valkyrja\Orm\Repository\Contract\RelationshipRepository as Contract;
 
 /**
  * Class RelationshipRepository.

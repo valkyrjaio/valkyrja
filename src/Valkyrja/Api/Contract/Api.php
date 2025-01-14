@@ -16,7 +16,7 @@ namespace Valkyrja\Api\Contract;
 use Exception;
 use Valkyrja\Api\Model\Contract\Json;
 use Valkyrja\Http\Message\Response\Contract\JsonResponse;
-use Valkyrja\Orm\Entity;
+use Valkyrja\Orm\Entity\Contract\Entity;
 
 /**
  * Interface Api.

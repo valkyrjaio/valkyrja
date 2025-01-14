@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Contract;
 
-use Valkyrja\Test\Assert\Assert;
+use Valkyrja\Test\Assert\Contract\Assert;
 
 /**
  * Interface Test.

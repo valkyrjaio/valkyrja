@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\QueryBuilder;
 
-use Valkyrja\Orm\Constants\OrderBy;
-use Valkyrja\Orm\Constants\Statement;
+use Valkyrja\Orm\Constant\OrderBy;
+use Valkyrja\Orm\Constant\Statement;
+use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilder as Contract;
 use Valkyrja\Orm\QueryBuilder\Traits\Join;
 use Valkyrja\Orm\QueryBuilder\Traits\Where;
-use Valkyrja\Orm\SelectQueryBuilder as Contract;
 
 use function implode;
 

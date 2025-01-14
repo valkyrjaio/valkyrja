@@ -51,7 +51,7 @@ use Valkyrja\Mail\Message\Contract\Message as MailMessage;
 use Valkyrja\Notification\Contract\Notification;
 use Valkyrja\Notification\Data\Contract\Notify;
 use Valkyrja\Notification\Entity\Contract\NotifiableUser;
-use Valkyrja\Orm\Orm;
+use Valkyrja\Orm\Contract\Orm;
 use Valkyrja\Path\Generator\Contract\Generator;
 use Valkyrja\Path\Parser\Contract\Parser;
 use Valkyrja\Reflection\Contract\Reflection;
@@ -331,7 +331,7 @@ function notifier(): Notification
  */
 function notifyUser(Notify $notification, NotifiableUser $user): void
 {
-    \Valkyrja\notifier()->notifyUser($notification, $user);
+    notifier()->notifyUser($notification, $user);
 }
 
 /**
@@ -344,7 +344,7 @@ function notifyUser(Notify $notification, NotifiableUser $user): void
  */
 function notifyUsers(Notify $notification, NotifiableUser ...$users): void
 {
-    \Valkyrja\notifier()->notifyUsers($notification, ...$users);
+    notifier()->notifyUsers($notification, ...$users);
 }
 
 /**

@@ -18,27 +18,27 @@ use Valkyrja\Cache\Contract\Cache;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Orm\Adapter;
-use Valkyrja\Orm\CacheRepository;
-use Valkyrja\Orm\DeleteQueryBuilder;
-use Valkyrja\Orm\Driver;
-use Valkyrja\Orm\Factory;
+use Valkyrja\Orm\Adapter\Contract\Adapter;
+use Valkyrja\Orm\Adapter\Contract\PdoAdapter;
+use Valkyrja\Orm\Contract\Orm;
+use Valkyrja\Orm\Driver\Contract\Driver;
 use Valkyrja\Orm\Factory\ContainerFactory;
-use Valkyrja\Orm\InsertQueryBuilder;
+use Valkyrja\Orm\Factory\Contract\Factory;
 use Valkyrja\Orm\Middleware\EntityRouteMatchedMiddleware;
 use Valkyrja\Orm\Migration\Migration;
-use Valkyrja\Orm\Orm;
 use Valkyrja\Orm\Pdo\Pdo;
-use Valkyrja\Orm\PdoAdapter;
-use Valkyrja\Orm\Persister;
-use Valkyrja\Orm\Query;
-use Valkyrja\Orm\QueryBuilder;
-use Valkyrja\Orm\Repository;
-use Valkyrja\Orm\Retriever;
+use Valkyrja\Orm\Persister\Contract\Persister;
+use Valkyrja\Orm\Query\Contract\Query;
+use Valkyrja\Orm\QueryBuilder\Contract\DeleteQueryBuilder;
+use Valkyrja\Orm\QueryBuilder\Contract\InsertQueryBuilder;
+use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
+use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilder;
+use Valkyrja\Orm\QueryBuilder\Contract\UpdateQueryBuilder;
+use Valkyrja\Orm\Repository\Contract\CacheRepository;
+use Valkyrja\Orm\Repository\Contract\Repository;
+use Valkyrja\Orm\Retriever\Contract\Retriever;
 use Valkyrja\Orm\Retriever\LocalCacheRetriever;
-use Valkyrja\Orm\SelectQueryBuilder;
-use Valkyrja\Orm\Statement;
-use Valkyrja\Orm\UpdateQueryBuilder;
+use Valkyrja\Orm\Statement\Contract\Statement;
 use Valkyrja\View\Factory\Contract\ResponseFactory as ViewResponseFactory;
 
 /**
@@ -118,7 +118,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Orm::class,
-            new \Valkyrja\Orm\Manager\Orm(
+            new \Valkyrja\Orm\Orm(
                 $container->getSingleton(Factory::class),
                 $config['orm']
             )

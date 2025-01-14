@@ -21,10 +21,10 @@ use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler;
 use Valkyrja\Http\Routing\Model\Contract\Route;
 use Valkyrja\Http\Routing\Model\Parameter\Parameter;
+use Valkyrja\Orm\Contract\Orm;
 use Valkyrja\Orm\Data\EntityCast;
-use Valkyrja\Orm\Entity;
-use Valkyrja\Orm\Orm;
-use Valkyrja\Orm\RelationshipRepository;
+use Valkyrja\Orm\Entity\Contract\Entity;
+use Valkyrja\Orm\Repository\Contract\RelationshipRepository;
 use Valkyrja\View\Factory\Contract\ResponseFactory;
 
 use function is_a;

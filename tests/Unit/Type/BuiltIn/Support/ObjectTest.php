@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\BuiltIn\Support;
 
 use JsonException;
 use stdClass;
-use Valkyrja\Tests\Classes\Model\Model;
+use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Support\Obj as Helper;
 
@@ -49,7 +49,7 @@ class ObjectTest extends TestCase
 
     public function testToSerializedString(): void
     {
-        $value = Model::fromArray(['public' => 'test']);
+        $value = ModelClass::fromArray(['public' => 'test']);
 
         self::assertSame(serialize($value), Helper::toSerializedString($value));
     }
@@ -70,7 +70,7 @@ class ObjectTest extends TestCase
     {
         error_reporting(1);
 
-        $serialized = serialize(Model::fromArray(['public' => 'test']));
+        $serialized = serialize(ModelClass::fromArray(['public' => 'test']));
         $value      = Helper::fromSerializedString($serialized);
 
         // No values should be accessible and should all be null
@@ -79,7 +79,7 @@ class ObjectTest extends TestCase
 
     public function testFromSerializedStringWithNullAllowedClasses(): void
     {
-        $serialized = serialize(Model::fromArray(['public' => 'test']));
+        $serialized = serialize(ModelClass::fromArray(['public' => 'test']));
         $value      = Helper::fromSerializedString($serialized, null);
 
         self::assertSame('test', $value->public);
@@ -87,16 +87,16 @@ class ObjectTest extends TestCase
 
     public function testFromSerializedStringWithAllowedClasses(): void
     {
-        $serialized = serialize(Model::fromArray(['public' => 'test']));
-        $value      = Helper::fromSerializedString($serialized, [Model::class]);
+        $serialized = serialize(ModelClass::fromArray(['public' => 'test']));
+        $value      = Helper::fromSerializedString($serialized, [ModelClass::class]);
 
-        self::assertInstanceOf(Model::class, $value);
+        self::assertInstanceOf(ModelClass::class, $value);
         self::assertSame('test', $value->public);
     }
 
     public function testGetAllProperties(): void
     {
-        $value = Model::fromArray(['public' => 'test', 'protected' => 'foo', 'private' => 'bar']);
+        $value = ModelClass::fromArray(['public' => 'test', 'protected' => 'foo', 'private' => 'bar']);
         // Only public properties
         $publicOnlyProperties = Helper::getAllProperties($value, false, false);
         // All public and protected
