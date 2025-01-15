@@ -26,7 +26,7 @@ use Valkyrja\Container\Contract\Container;
 interface Handler
 {
     /**
-     * @param array<int, class-string<Middleware>|Closure(Container): Middleware> $middleware The middleware to add
+     * @param class-string<Middleware>|Closure(Container): Middleware ...$middleware The middleware to add
      */
     public function add(Closure|string ...$middleware): void;
 }

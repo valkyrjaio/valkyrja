@@ -25,9 +25,9 @@ interface JsonResponse extends Response
     /**
      * Create a JSON response.
      *
-     * @param array|null      $data       [optional] The data to set
-     * @param StatusCode|null $statusCode [optional] The response status code
-     * @param array|null      $headers    [optional] An array of response headers
+     * @param array<array-key, mixed>|null $data       [optional] The data to set
+     * @param StatusCode|null              $statusCode [optional] The response status code
+     * @param array<string, string[]>|null $headers    [optional] An array of response headers
      *
      * @return static
      */
@@ -40,14 +40,14 @@ interface JsonResponse extends Response
     /**
      * Get the body as a json array.
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function getBodyAsJson(): array;
 
     /**
      * Create a new JsonResponse with the given data.
      *
-     * @param array $data the data
+     * @param array<array-key, mixed> $data the data
      *
      * @return static
      */

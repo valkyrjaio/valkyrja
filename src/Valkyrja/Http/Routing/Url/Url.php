@@ -36,9 +36,9 @@ class Url implements Contract
     /**
      * Router constructor.
      *
-     * @param ServerRequest $request The request
-     * @param Router        $router  The router
-     * @param Config|array  $config  The routing config
+     * @param ServerRequest               $request The request
+     * @param Router                      $router  The router
+     * @param Config|array<string, mixed> $config  The routing config
      */
     public function __construct(
         protected ServerRequest $request,

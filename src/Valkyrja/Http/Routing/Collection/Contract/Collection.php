@@ -20,6 +20,14 @@ use Valkyrja\Http\Routing\Model\Contract\Route;
  * Interface Collection.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-type RequestMethodList array{CONNECT?: array<string, string>, DELETE?: array<string, string>, GET?: array<string, string>, HEAD?: array<string, string>, OPTIONS?: array<string, string>, PATCH?: array<string, string>, POST?: array<string, string>, PUT?: array<string, string>, TRACE?: array<string, string>}
+ *
+ * @phpstan-type RequestMethodList array{CONNECT?: array<string, string>, DELETE?: array<string, string>, GET?: array<string, string>, HEAD?: array<string, string>, OPTIONS?: array<string, string>, PATCH?: array<string, string>, POST?: array<string, string>, PUT?: array<string, string>, TRACE?: array<string, string>}
+ *
+ * @psalm-type RequestMethodRouteList array{CONNECT?: array<string, Route>, DELETE?: array<string, Route>, GET?: array<string, Route>, HEAD?: array<string, Route>, OPTIONS?: array<string, Route>, PATCH?: array<string, Route>, POST?: array<string, Route>, PUT?: array<string, Route>, TRACE?: array<string, Route>}
+ *
+ * @phpstan-type RequestMethodRouteList array{CONNECT?: array<string, Route>, DELETE?: array<string, Route>, GET?: array<string, Route>, HEAD?: array<string, Route>, OPTIONS?: array<string, Route>, PATCH?: array<string, Route>, POST?: array<string, Route>, PUT?: array<string, Route>, TRACE?: array<string, Route>}
  */
 interface Collection
 {
@@ -153,7 +161,7 @@ interface Collection
     /**
      * Get the named routes in this collection.
      *
-     * @return string[]
+     * @return array<string, Route>
      */
     public function allNamed(): array;
 }

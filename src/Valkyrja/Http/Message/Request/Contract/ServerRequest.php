@@ -154,7 +154,7 @@ interface ServerRequest extends Request
      * values, you may need to parse the query string from
      * `getUri()->getQuery()` or from the `QUERY_STRING` server param.
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function getQueryParams(): array;
 
@@ -163,7 +163,7 @@ interface ServerRequest extends Request
      *
      * @param string[]|int[] $names The param names to retrieve
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function onlyQueryParams(string|int ...$names): array;
 
@@ -172,7 +172,7 @@ interface ServerRequest extends Request
      *
      * @param string[]|int[] $names The param names to not retrieve
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function exceptQueryParams(string|int ...$names): array;
 
@@ -191,8 +191,8 @@ interface ServerRequest extends Request
      * immutability of the message, and MUST return an instance that has the
      * updated query string arguments.
      *
-     * @param array $query Array of query string arguments, typically from
-     *                     $_GET
+     * @param array<array-key, mixed> $query Array of query string arguments, typically from
+     *                                       $_GET
      *
      * @return static
      */
@@ -291,8 +291,8 @@ interface ServerRequest extends Request
      * potential types MUST be arrays or objects only. A null value indicates
      * the absence of body content.
      *
-     * @return array The deserialized body parameters, if any.
-     *               These will typically be an array or object
+     * @return array<array-key, mixed> The deserialized body parameters, if any.
+     *                                 These will typically be an array or object
      */
     public function getParsedBody(): array;
 
@@ -301,7 +301,7 @@ interface ServerRequest extends Request
      *
      * @param string[]|int[] $names The param names to retrieve
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function onlyParsedBody(string|int ...$names): array;
 
@@ -310,7 +310,7 @@ interface ServerRequest extends Request
      *
      * @param string[]|int[] $names The param names to not retrieve
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function exceptParsedBody(string|int ...$names): array;
 
@@ -331,8 +331,8 @@ interface ServerRequest extends Request
      * immutability of the message, and MUST return an instance that has the
      * updated body parameters.
      *
-     * @param array $data The deserialized body data. This will
-     *                    typically be in an array or object
+     * @param array<array-key, mixed> $data The deserialized body data. This will
+     *                                      typically be in an array or object
      *
      * @throws InvalidArgumentException if an unsupported argument type is provided
      *

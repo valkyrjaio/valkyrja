@@ -105,13 +105,6 @@ class Route extends Dispatch implements Contract
     /**
      * The middleware for this route.
      *
-     * @var array|null
-     */
-    protected array|null $middleware;
-
-    /**
-     * The middleware for this route.
-     *
      * @var class-string<RouteMatchedMiddleware>[]|null
      */
     protected array|null $matchedMiddleware;
@@ -797,17 +790,5 @@ class Route extends Dispatch implements Contract
         $this->redirect = $redirect;
 
         return $this;
-    }
-
-    /**
-     * Set the parameters.
-     *
-     * @param array<int, Parameter> $parameters The parameters
-     *
-     * @return void
-     */
-    protected function internalSetParameters(Parameter ...$parameters): void
-    {
-        $this->parameters = $parameters;
     }
 }

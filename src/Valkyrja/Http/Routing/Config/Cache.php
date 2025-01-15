@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Config;
 
 use Valkyrja\Config\Config as Model;
+use Valkyrja\Http\Routing\Model\Contract\Route;
 
 /**
  * Class Cache.
@@ -25,28 +26,28 @@ class Cache extends Model
     /**
      * The flattened routes.
      *
-     * @var array
+     * @var array<string, Route>|array<int, array<Route>>
      */
     public array $routes = [];
 
     /**
      * The static routes.
      *
-     * @var array
+     * @var array{CONNECT?: array<string, string>, DELETE?: array<string, string>, GET?: array<string, string>, HEAD?: array<string, string>, OPTIONS?: array<string, string>, PATCH?: array<string, string>, POST?: array<string, string>, PUT?: array<string, string>, TRACE?: array<string, string>}
      */
     public array $static = [];
 
     /**
      * The dynamic routes.
      *
-     * @var array
+     * @var array{CONNECT?: array<string, string>, DELETE?: array<string, string>, GET?: array<string, string>, HEAD?: array<string, string>, OPTIONS?: array<string, string>, PATCH?: array<string, string>, POST?: array<string, string>, PUT?: array<string, string>, TRACE?: array<string, string>}
      */
     public array $dynamic = [];
 
     /**
      * The named routes.
      *
-     * @var array
+     * @var array<string, string>
      */
     public array $named = [];
 }

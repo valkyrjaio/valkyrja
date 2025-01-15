@@ -32,7 +32,7 @@ interface Router
     /**
      * Get the config.
      *
-     * @return Config|array
+     * @return Config|array<string, mixed>
      */
     public function getConfig(): Config|array;
 

@@ -48,6 +48,8 @@ class Router implements Contract
 {
     /**
      * Router constructor.
+     *
+     * @param Config|array<string, mixed> $config The config
      */
     public function __construct(
         protected Collection $collection = new RouteCollection(),

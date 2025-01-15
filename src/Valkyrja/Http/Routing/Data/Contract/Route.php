@@ -111,14 +111,14 @@ interface Route extends JsonSerializable, Stringable
     /**
      * Get the request methods.
      *
-     * @return array
+     * @return RequestMethod[]
      */
     public function getMethods(): array;
 
     /**
      * Create a new route with the specified request methods.
      *
-     * @param RequestMethod[] $methods The request methods
+     * @param RequestMethod ...$methods The request methods
      *
      * @return static
      */
@@ -127,7 +127,7 @@ interface Route extends JsonSerializable, Stringable
     /**
      * Set the request methods.
      *
-     * @param RequestMethod[] $methods The request methods
+     * @param RequestMethod ...$methods The request methods
      *
      * @return static
      */
@@ -168,7 +168,7 @@ interface Route extends JsonSerializable, Stringable
     /**
      * Create a new route with a added parameters.
      *
-     * @param Parameter[] $parameter The parameter
+     * @param Parameter ...$parameter The parameter
      *
      * @return static
      */
@@ -191,7 +191,7 @@ interface Route extends JsonSerializable, Stringable
     /**
      * Create a new route with matched middleware.
      *
-     * @param class-string<RouteMatchedMiddleware>[] $middleware The middleware
+     * @param class-string<RouteMatchedMiddleware> ...$middleware The middleware
      *
      * @return static
      */
@@ -200,7 +200,7 @@ interface Route extends JsonSerializable, Stringable
     /**
      * Create a new route with added matched middleware.
      *
-     * @param class-string<RouteMatchedMiddleware>[] $middleware The middleware
+     * @param class-string<RouteMatchedMiddleware> ...$middleware The middleware
      *
      * @return static
      */
@@ -216,7 +216,7 @@ interface Route extends JsonSerializable, Stringable
     /**
      * Create a new route with dispatched middleware.
      *
-     * @param class-string<RouteDispatchedMiddleware>[] $middleware The middleware
+     * @param class-string<RouteDispatchedMiddleware> ...$middleware The middleware
      *
      * @return static
      */
@@ -225,7 +225,7 @@ interface Route extends JsonSerializable, Stringable
     /**
      * Create a new route with added dispatched middleware.
      *
-     * @param class-string<RouteDispatchedMiddleware>[] $middleware The middleware
+     * @param class-string<RouteDispatchedMiddleware> ...$middleware The middleware
      *
      * @return static
      */
@@ -241,7 +241,7 @@ interface Route extends JsonSerializable, Stringable
     /**
      * Create a new route with exception middleware.
      *
-     * @param class-string<ThrowableCaughtMiddleware>[] $middleware The middleware
+     * @param class-string<ThrowableCaughtMiddleware> ...$middleware The middleware
      *
      * @return static
      */
@@ -250,7 +250,7 @@ interface Route extends JsonSerializable, Stringable
     /**
      * Create a new route with added exception middleware.
      *
-     * @param class-string<ThrowableCaughtMiddleware>[] $middleware The middleware
+     * @param class-string<ThrowableCaughtMiddleware> ...$middleware The middleware
      *
      * @return static
      */
@@ -266,7 +266,7 @@ interface Route extends JsonSerializable, Stringable
     /**
      * Create a new route with sending middleware.
      *
-     * @param class-string<SendingResponseMiddleware>[] $middleware The middleware
+     * @param class-string<SendingResponseMiddleware> ...$middleware The middleware
      *
      * @return static
      */
@@ -275,7 +275,7 @@ interface Route extends JsonSerializable, Stringable
     /**
      * Create a new route with added sending middleware.
      *
-     * @param class-string<SendingResponseMiddleware>[] $middleware The middleware
+     * @param class-string<SendingResponseMiddleware> ...$middleware The middleware
      *
      * @return static
      */
@@ -291,7 +291,7 @@ interface Route extends JsonSerializable, Stringable
     /**
      * Create a new route with terminated middleware.
      *
-     * @param class-string<TerminatedMiddleware>[] $middleware The middleware
+     * @param class-string<TerminatedMiddleware> ...$middleware The middleware
      *
      * @return static
      */
@@ -300,7 +300,7 @@ interface Route extends JsonSerializable, Stringable
     /**
      * Create a new route with added terminated middleware.
      *
-     * @param class-string<TerminatedMiddleware>[] $middleware The middleware
+     * @param class-string<TerminatedMiddleware> ...$middleware The middleware
      *
      * @return static
      */

@@ -16,8 +16,10 @@ namespace Valkyrja\Http\Routing\Collection;
 use JsonException;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as Contract;
+use Valkyrja\Http\Routing\Exception\RuntimeException;
 use Valkyrja\Http\Routing\Model\Contract\Route;
 
+use function array_map;
 use function array_merge;
 use function assert;
 use function is_array;
@@ -27,34 +29,40 @@ use function is_string;
  * Class Collection.
  *
  * @author Melech Mizrachi
+ *
+ * @phpstan-import-type RequestMethodList from Contract
+ * @phpstan-import-type RequestMethodRouteList from Contract
+ *
+ * @psalm-import-type RequestMethodList from Contract
+ * @psalm-import-type RequestMethodRouteList from Contract
  */
 class Collection implements Contract
 {
     /**
      * The routes.
      *
-     * @var Route[]
+     * @var array<string, Route>
      */
     protected array $routes = [];
 
     /**
      * The static routes.
      *
-     * @var string[][]
+     * @var RequestMethodList
      */
     protected array $static = [];
 
     /**
      * The dynamic routes.
      *
-     * @var string[][]
+     * @var RequestMethodList
      */
     protected array $dynamic = [];
 
     /**
      * The named routes.
      *
-     * @var string[]
+     * @var array<string, string>
      */
     protected array $named = [];
 
@@ -164,7 +172,13 @@ class Collection implements Contract
      */
     public function getNamed(string $name): Route|null
     {
-        return $this->ensureRoute($this->named[$name] ?? null);
+        $named = $this->named[$name] ?? null;
+
+        if ($named === null) {
+            return null;
+        }
+
+        return $this->ensureRoute($named);
     }
 
     /**
@@ -245,7 +259,7 @@ class Collection implements Contract
     /**
      * Get a route of type (static|dynamic).
      *
-     * @param array              $type   The type [static|dynamic]
+     * @param RequestMethodList  $type   The type [static|dynamic]
      * @param string             $path   The path
      * @param RequestMethod|null $method [optional] The request method
      *
@@ -259,14 +273,20 @@ class Collection implements Contract
             return $this->getAnyOfType($type, $path);
         }
 
-        return $this->ensureRoute($type[$method->value][$path] ?? null);
+        $route = $type[$method->value][$path] ?? null;
+
+        if ($route === null) {
+            return null;
+        }
+
+        return $this->ensureRoute($route);
     }
 
     /**
      * Get a route of any type (static|dynamic).
      *
-     * @param array  $type The type [static|dynamic]
-     * @param string $path The path
+     * @param RequestMethodList $type The type [static|dynamic]
+     * @param string            $path The path
      *
      * @throws JsonException
      *
@@ -285,7 +305,7 @@ class Collection implements Contract
     /**
      * Has a path of type (static|dynamic).
      *
-     * @param array              $type   The type [static|dynamic]
+     * @param RequestMethodList  $type   The type [static|dynamic]
      * @param string             $path   The path
      * @param RequestMethod|null $method [optional] The request method
      *
@@ -303,8 +323,8 @@ class Collection implements Contract
     /**
      * Has a path of any type.
      *
-     * @param array  $type The type [static|dynamic]
-     * @param string $path The path
+     * @param RequestMethodList $type The type [static|dynamic]
+     * @param string            $path The path
      *
      * @return bool
      */
@@ -322,10 +342,10 @@ class Collection implements Contract
     /**
      * Get all of type with optional by request method.
      *
-     * @param array              $type   The type [static|dynamic]
+     * @param RequestMethodList  $type   The type [static|dynamic]
      * @param RequestMethod|null $method [optional] The request method
      *
-     * @return array<string, Route>
+     * @return RequestMethodRouteList|array<string, Route>
      */
     protected function allOfType(array $type, RequestMethod|null $method = null): array
     {
@@ -339,30 +359,29 @@ class Collection implements Contract
     /**
      * Ensure request methods are arrays of routes.
      *
-     * @param array $methodsArray
+     * @param RequestMethodList $methodsArray
      *
-     * @return array
+     * @return RequestMethodRouteList
      */
     protected function ensureMethodRoutes(array $methodsArray): array
     {
-        foreach ($methodsArray as $method => $routes) {
-            $methodsArray[$method] = $this->ensureRoutes($routes);
-        }
-
-        return $methodsArray;
+        return array_map(
+            [$this, 'ensureRoutes'],
+            $methodsArray
+        );
     }
 
     /**
      * Ensure an array is an array of routes.
      *
-     * @param array $routesArray The routes array
+     * @param array<string, string|Route|array<string, mixed>> $routesArray The routes array
      *
-     * @return array
+     * @return array<string, Route>
      */
     protected function ensureRoutes(array $routesArray): array
     {
         return array_map(
-            fn ($route): Route|null => $this->ensureRoute($route),
+            [$this, 'ensureRoute'],
             $routesArray
         );
     }
@@ -370,14 +389,15 @@ class Collection implements Contract
     /**
      * Ensure a route, or null, is returned.
      *
-     * @param Route|array<string, mixed>|string|null $route The route
+     * @param Route|array<string, mixed>|string $route The route
      *
-     * @return Route|null
+     * @return Route
      */
-    protected function ensureRoute(Route|array|string|null $route = null): Route|null
+    protected function ensureRoute(Route|array|string $route): Route
     {
         if (is_string($route)) {
-            $route = $this->routes[$route];
+            $route = $this->routes[$route]
+                ?? throw new RuntimeException("Route $route not found.");
         }
 
         if (is_array($route)) {

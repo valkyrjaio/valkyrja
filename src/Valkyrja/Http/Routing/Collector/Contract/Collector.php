@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Collector\Contract;
 
 use Closure;
+use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Model\Contract\Route;
 
 /**
@@ -53,7 +54,7 @@ interface Collector
     /**
      * Get a router with middleware context to group routes with.
      *
-     * @param array $middleware The middleware
+     * @param class-string[] $middleware The middleware
      *
      * @return static
      */
@@ -258,10 +259,10 @@ interface Collector
      *      redirect('/', '/to', ['GET'], 301, true)
      * </code>.
      *
-     * @param string      $path    The path
-     * @param string      $to      The path to redirect to
-     * @param array|null  $methods [optional] The request methods
-     * @param string|null $name    [optional] The name of the route
+     * @param string               $path    The path
+     * @param string               $to      The path to redirect to
+     * @param RequestMethod[]|null $methods [optional] The request methods
+     * @param string|null          $name    [optional] The name of the route
      *
      * @return Route
      */

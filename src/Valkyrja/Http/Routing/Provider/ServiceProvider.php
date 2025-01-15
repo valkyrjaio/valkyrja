@@ -359,7 +359,7 @@ class ServiceProvider extends Provider
      *
      * @param Container $container The container
      *
-     * @return Config|array
+     * @return Config|array<string, mixed>
      */
     protected static function getRoutingConfig(Container $container): Config|array
     {

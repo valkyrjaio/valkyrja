@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Routing\Model\Parameter;
 
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Orm\Data\EntityCast;
+use Valkyrja\Type\Contract\Type;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Model\Model;
 
@@ -123,7 +124,7 @@ class Parameter extends Model
     /**
      * Set the cast.
      *
-     * @param Cast|array|null $cast The cast
+     * @param Cast|array{type: class-string<Type>, isArray?: bool, convert?: bool, column?: string, relationships?: string[]}|null $cast The cast
      *
      * @return static
      */

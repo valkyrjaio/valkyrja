@@ -75,7 +75,7 @@ class RoutesList extends Commander
         usort($routerRoutes, static fn (Route $a, Route $b) => $a->getPath() <=> $b->getPath());
 
         foreach ($routerRoutes as $route) {
-            $this->setRoute($route, $routes, $lengths);
+            $routes[] = $this->setRoute($route, $lengths);
         }
 
         $sepLine = $this->getSepLine($lengths);
@@ -103,7 +103,7 @@ class RoutesList extends Commander
                 . str_repeat(' ', $lengths[4] - strlen($route[4]))
                 . ' |';
 
-            $odd          = ((int) $key) % 2 > 0;
+            $odd          = $key % 2 > 0;
             $routeMessage = $this->oddFormat($odd) . $routeMessage;
 
             output()->writeMessage($routeMessage . static::END_FORMAT, true);
@@ -117,15 +117,14 @@ class RoutesList extends Commander
     /**
      * Set a route as an array from a route object.
      *
-     * @param Route $route   The route object
-     * @param array $routes  The flat routes
-     * @param array $lengths The longest string lengths
+     * @param Route           $route   The route object
+     * @param array<int, int> $lengths The longest string lengths
      *
      * @throws InvalidArgumentException
      *
-     * @return void
+     * @return array{0: string, 1: string, 2: string, 3: string, 4: string}
      */
-    protected function setRoute(Route $route, array &$routes, array &$lengths): void
+    protected function setRoute(Route $route, array &$lengths): array
     {
         $requestMethod = implode(' | ', array_column($route->getMethods(), 'value'));
         $dispatch      = 'Closure';
@@ -153,7 +152,7 @@ class RoutesList extends Commander
         $lengths[3] = max($lengths[3], strlen($dispatch));
         $lengths[4] = max($lengths[4], strlen($regex));
 
-        $routes[] = [
+        return [
             $requestMethod,
             $path,
             $name,
@@ -165,7 +164,7 @@ class RoutesList extends Commander
     /**
      * Get the separation line.
      *
-     * @param array $lengths The longest lengths
+     * @param array<int, int> $lengths The longest lengths
      *
      * @return string
      */
@@ -196,8 +195,8 @@ class RoutesList extends Commander
     /**
      * Output the header message.
      *
-     * @param array $headerTexts The header texts
-     * @param array $lengths     The longest lengths
+     * @param array<int, string> $headerTexts The header texts
+     * @param array<int, int>    $lengths     The longest lengths
      *
      * @return void
      */

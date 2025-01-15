@@ -27,9 +27,9 @@ interface RedirectResponse extends Response
     /**
      * Create a redirect response.
      *
-     * @param Uri|null        $uri        [optional] The uri to redirect to
-     * @param StatusCode|null $statusCode [optional] The response status code
-     * @param array|null      $headers    [optional] An array of response headers
+     * @param Uri|null                     $uri        [optional] The uri to redirect to
+     * @param StatusCode|null              $statusCode [optional] The response status code
+     * @param array<string, string[]>|null $headers    [optional] An array of response headers
      *
      * @return static
      */

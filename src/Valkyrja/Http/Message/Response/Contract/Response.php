@@ -35,9 +35,9 @@ interface Response extends Message
     /**
      * Create a response.
      *
-     * @param string|null     $content    [optional] The response content
-     * @param StatusCode|null $statusCode [optional] The response status code
-     * @param array|null      $headers    [optional] An array of response headers
+     * @param string|null                  $content    [optional] The response content
+     * @param StatusCode|null              $statusCode [optional] The response status code
+     * @param array<string, string[]>|null $headers    [optional] An array of response headers
      *
      * @return static
      */

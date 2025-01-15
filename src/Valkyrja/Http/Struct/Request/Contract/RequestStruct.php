@@ -51,7 +51,7 @@ interface RequestStruct extends Struct
      *
      * @param ServerRequest $request The request
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public static function getDataFromRequest(ServerRequest $request): array;
 

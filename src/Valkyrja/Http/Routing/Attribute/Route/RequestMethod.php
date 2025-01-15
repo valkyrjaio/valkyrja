@@ -24,6 +24,7 @@ use Valkyrja\Http\Message\Enum\RequestMethod as Enum;
 #[Attribute(Attribute::TARGET_ALL)]
 class RequestMethod
 {
+    /** @var Enum[] */
     public array $methods = [];
 
     /**

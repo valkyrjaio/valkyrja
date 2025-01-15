@@ -37,12 +37,12 @@ abstract class ApiController
     /**
      * Create an Api JsonResponse.
      *
-     * @param array           $data       The json data
-     * @param string|null     $message    [optional] The message
-     * @param string|null     $status     [optional] The json status
-     * @param StatusCode|null $statusCode [optional] The status code
-     * @param string[]|null   $errors     [optional] The errors
-     * @param string[]|null   $warnings   [optional] The warnings
+     * @param array<array-key, mixed> $data       The json data
+     * @param string|null             $message    [optional] The message
+     * @param string|null             $status     [optional] The json status
+     * @param StatusCode|null         $statusCode [optional] The status code
+     * @param string[]|null           $errors     [optional] The errors
+     * @param string[]|null           $warnings   [optional] The warnings
      *
      * @return JsonResponse
      */

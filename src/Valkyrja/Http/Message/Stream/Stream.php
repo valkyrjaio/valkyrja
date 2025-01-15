@@ -399,7 +399,7 @@ class Stream implements Contract
      *
      * @param resource $stream The stream
      *
-     * @return array
+     * @return array{blocked: bool, crypto?: array{cipher_bits: int, cipher_name: string, cipher_version: string, protocol: string}, eof: bool, mediatype: string, mode: string, seekable: bool, stream_type: string, timed_out: bool, unread_bytes: int, uri: string, wrapper_data: mixed, wrapper_type: string}
      */
     protected function getStreamMetadata($stream): array
     {

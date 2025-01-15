@@ -15,6 +15,13 @@ namespace Valkyrja\Http\Middleware\Handler;
 
 use Closure;
 use Valkyrja\Container\Contract\Container;
+use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
 
 use function array_merge;
 use function is_string;
@@ -26,7 +33,7 @@ use function is_string;
  *
  * https://psalm.dev/r/7441ba42c3
  *
- * @template Middleware
+ * @template Middleware of RequestReceivedMiddleware|SendingResponseMiddleware|RouteMatchedMiddleware|RouteNotMatchedMiddleware|RouteDispatchedMiddleware|ThrowableCaughtMiddleware|TerminatedMiddleware
  *
  * @implements Contract\Handler<Middleware>
  */
@@ -40,7 +47,7 @@ abstract class Handler implements Contract\Handler
     protected int $index = 0;
 
     /**
-     * @param array<int, class-string<Middleware>|Closure(Container): Middleware> $middleware The middleware
+     * @param class-string<Middleware>|Closure(Container): Middleware ...$middleware The middleware
      */
     public function __construct(
         protected Container $container = new \Valkyrja\Container\Container(),
@@ -52,7 +59,7 @@ abstract class Handler implements Contract\Handler
     }
 
     /**
-     * @param array<int, class-string<Middleware>|Closure(Container): Middleware> $middleware The middleware to add
+     * @param class-string<Middleware>|Closure(Container): Middleware ...$middleware The middleware to add
      */
     public function add(Closure|string ...$middleware): void
     {

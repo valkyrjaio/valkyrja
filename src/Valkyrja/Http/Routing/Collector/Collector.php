@@ -255,11 +255,11 @@ class Collector implements Contract
     }
 
     /**
-     * @param array          $methods         The methods to set
-     * @param string         $path            The path
-     * @param Closure|string $handler         The handler
-     * @param string|null    $name            [optional] The name of the route
-     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
+     * @param RequestMethod[] $methods         The methods to set
+     * @param string          $path            The path
+     * @param Closure|string  $handler         The handler
+     * @param string|null     $name            [optional] The name of the route
+     * @param bool            $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @return Route
      */
@@ -433,7 +433,7 @@ class Collector implements Contract
      *
      * @param Route $route The route
      *
-     * @return array
+     * @return array<int, class-string>
      */
     protected function getDependencies(Route $route): array
     {

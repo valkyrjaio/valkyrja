@@ -44,7 +44,7 @@ class JsonResponse extends Response implements Contract
     /**
      * The default data to set.
      *
-     * @var array
+     * @var array<array-key, mixed>
      */
     protected const DEFAULT_DATA = [];
 
@@ -58,7 +58,7 @@ class JsonResponse extends Response implements Contract
     /**
      * NativeJsonResponse constructor.
      *
-     * @param array                   $data            [optional] The data
+     * @param array<array-key, mixed> $data            [optional] The data
      * @param StatusCode              $statusCode      [optional] The status
      * @param array<string, string[]> $headers         [optional] The headers
      * @param int                     $encodingOptions [optional] The encoding options

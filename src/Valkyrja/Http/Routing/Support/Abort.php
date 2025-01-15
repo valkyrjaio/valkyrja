@@ -30,8 +30,8 @@ class Abort
     /**
      * Abort with a 400.
      *
-     * @param array|null    $headers  [optional] The headers
-     * @param Response|null $response [optional] The response to send
+     * @param array<string, string[]>|null $headers  [optional] The headers
+     * @param Response|null                $response [optional] The response to send
      *
      * @return never
      */
@@ -43,8 +43,8 @@ class Abort
     /**
      * Abort with a 404.
      *
-     * @param array|null    $headers  [optional] The headers
-     * @param Response|null $response [optional] The response to send
+     * @param array<string, string[]>|null $headers  [optional] The headers
+     * @param Response|null                $response [optional] The response to send
      *
      * @return never
      */
@@ -56,8 +56,8 @@ class Abort
     /**
      * Abort with a 405.
      *
-     * @param array|null    $headers  [optional] The headers
-     * @param Response|null $response [optional] The response to send
+     * @param array<string, string[]>|null $headers  [optional] The headers
+     * @param Response|null                $response [optional] The response to send
      *
      * @return never
      */
@@ -69,8 +69,8 @@ class Abort
     /**
      * Abort with a 413.
      *
-     * @param array|null    $headers  [optional] The headers
-     * @param Response|null $response [optional] The response to send
+     * @param array<string, string[]>|null $headers  [optional] The headers
+     * @param Response|null                $response [optional] The response to send
      *
      * @return never
      */
@@ -82,10 +82,10 @@ class Abort
     /**
      * Abort.
      *
-     * @param StatusCode|null $statusCode [optional] The status code
-     * @param string|null     $message    [optional] The message
-     * @param array|null      $headers    [optional] The headers
-     * @param Response|null   $response   [optional] The response to send
+     * @param StatusCode|null              $statusCode [optional] The status code
+     * @param string|null                  $message    [optional] The message
+     * @param array<string, string[]>|null $headers    [optional] The headers
+     * @param Response|null                $response   [optional] The response to send
      *
      * @return never
      */
@@ -113,9 +113,9 @@ class Abort
     /**
      * Redirect to a given uri, and abort.
      *
-     * @param Uri|null        $uri        [optional] The URI to redirect to
-     * @param StatusCode|null $statusCode [optional] The response status code
-     * @param array|null      $headers    [optional] An array of response headers
+     * @param Uri|null                     $uri        [optional] The URI to redirect to
+     * @param StatusCode|null              $statusCode [optional] The response status code
+     * @param array<string, string[]>|null $headers    [optional] An array of response headers
      *
      * @throws HttpRedirectException
      *

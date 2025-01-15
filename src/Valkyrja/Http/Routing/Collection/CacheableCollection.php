@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Collection;
 
-use JsonException;
 use Valkyrja\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Http\Routing\Attribute\Contract\Attributes;
@@ -38,8 +37,8 @@ class CacheableCollection extends Collection
     /**
      * CacheableCollection constructor.
      *
-     * @param Container           $container
-     * @param RoutingConfig|array $config
+     * @param Container                          $container
+     * @param RoutingConfig|array<string, mixed> $config
      */
     public function __construct(
         protected Container $container,
@@ -69,6 +68,8 @@ class CacheableCollection extends Collection
 
     /**
      * @inheritDoc
+     *
+     * @return RoutingConfig|array<string, mixed> $config The config
      */
     protected function getConfig(): Config|array
     {
@@ -77,6 +78,8 @@ class CacheableCollection extends Collection
 
     /**
      * @inheritDoc
+     *
+     * @param RoutingConfig|array<string, mixed> $config The config
      */
     protected function beforeSetup(Config|array $config): void
     {
@@ -84,6 +87,8 @@ class CacheableCollection extends Collection
 
     /**
      * @inheritDoc
+     *
+     * @param RoutingConfig|array<string, mixed> $config The config
      */
     protected function setupNotCached(Config|array $config): void
     {
@@ -91,6 +96,8 @@ class CacheableCollection extends Collection
 
     /**
      * @inheritDoc
+     *
+     * @param RoutingConfig|array<string, mixed> $config The config
      */
     protected function setupFromCache(Config|array $config): void
     {
@@ -105,8 +112,9 @@ class CacheableCollection extends Collection
     /**
      * @inheritDoc
      *
+     * @param RoutingConfig|array<string, mixed> $config The config
+     *
      * @throws InvalidRoutePathException
-     * @throws JsonException
      */
     protected function setupAttributes(Config|array $config): void
     {
@@ -126,6 +134,8 @@ class CacheableCollection extends Collection
     /**
      * @inheritDoc
      *
+     * @param RoutingConfig|array<string, mixed> $config The config
+     *
      * @throws InvalidRoutePathException
      */
     protected function afterSetup(Config|array $config): void
@@ -139,6 +149,8 @@ class CacheableCollection extends Collection
 
     /**
      * @inheritDoc
+     *
+     * @param RoutingConfig|array<string, mixed> $config The config
      */
     protected function requireFilePath(Config|array $config): void
     {

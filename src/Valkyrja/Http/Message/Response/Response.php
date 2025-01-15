@@ -54,7 +54,7 @@ class Response implements Contract
     /**
      * The default headers to set.
      *
-     * @var array
+     * @var array<string, string[]>
      */
     protected const DEFAULT_HEADERS = [];
 
@@ -173,7 +173,6 @@ class Response implements Contract
     public function sendHeaders(): static
     {
         foreach ($this->headers as $name => $values) {
-            /** @var array $values */
             foreach ($values as $value) {
                 header("$name: $value", false);
             }

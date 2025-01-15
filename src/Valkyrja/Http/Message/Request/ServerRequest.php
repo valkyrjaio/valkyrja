@@ -54,8 +54,8 @@ class ServerRequest extends Request implements Contract
      * @param array<string, string[]>    $headers    [optional] The headers
      * @param array<string, mixed>       $server     [optional] The server
      * @param array<string, string|null> $cookies    [optional] The cookies
-     * @param array                      $query      [optional] The query string
-     * @param array                      $parsedBody [optional] The parsed body
+     * @param array<array-key, mixed>    $query      [optional] The query string
+     * @param array<array-key, mixed>    $parsedBody [optional] The parsed body
      * @param ProtocolVersion            $protocol   [optional] The protocol version
      * @param UploadedFile[]|array       $files      [optional] The files
      *
@@ -381,10 +381,10 @@ class ServerRequest extends Request implements Contract
     /**
      * Retrieve only the specified params.
      *
-     * @param array          $params The params to sort through
-     * @param string[]|int[] $names  The query param names to retrieve
+     * @param array<array-key, mixed> $params   The params to sort through
+     * @param string|int              ...$names The query param names to retrieve
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     protected function onlyParams(array $params, string|int ...$names): array
     {
@@ -398,10 +398,10 @@ class ServerRequest extends Request implements Contract
     /**
      * Retrieve all params except the ones specified.
      *
-     * @param array          $params The params to sort through
-     * @param string[]|int[] $names  The query param names to not retrieve
+     * @param array<array-key, mixed> $params   The params to sort through
+     * @param string|int              ...$names The query param names to not retrieve
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     protected function exceptParams(array $params, string|int ...$names): array
     {
