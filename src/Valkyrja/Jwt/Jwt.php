@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt;
 
+use Valkyrja\Jwt\Adapter\Contract\Adapter;
 use Valkyrja\Jwt\Contract\Jwt as Contract;
 use Valkyrja\Jwt\Driver\Contract\Driver;
 use Valkyrja\Jwt\Factory\Contract\Factory;
@@ -23,7 +24,7 @@ use Valkyrja\Manager\Manager;
  *
  * @author Melech Mizrachi
  *
- * @extends Manager<Driver, Factory>
+ * @extends Manager<Adapter, Driver, Factory>
  *
  * @property Factory $factory
  */

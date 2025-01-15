@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Log;
 
 use Throwable;
+use Valkyrja\Log\Adapter\Contract\Adapter;
 use Valkyrja\Log\Constant\ConfigValue;
 use Valkyrja\Log\Contract\Logger as Contract;
 use Valkyrja\Log\Driver\Contract\Driver;
@@ -26,7 +27,7 @@ use Valkyrja\Manager\Manager;
  *
  * @author Melech Mizrachi
  *
- * @extends Manager<Driver, Factory>
+ * @extends Manager<Adapter, Driver, Factory>
  *
  * @property Factory $factory
  */

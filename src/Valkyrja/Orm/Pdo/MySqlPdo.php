@@ -23,7 +23,7 @@ class MySqlPdo extends Pdo
     /**
      * MySqlPDO constructor.
      *
-     * @param array $config The config
+     * @param array<string, mixed> $config The config
      */
     public function __construct(array $config)
     {

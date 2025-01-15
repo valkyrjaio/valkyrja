@@ -98,10 +98,10 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     /**
      * Check a route's parameters for an entity.
      *
-     * @param int       $index        The index
-     * @param Parameter $parameter    The parameter
-     * @param array     $dependencies The route dependencies
-     * @param array     $matches      The matches
+     * @param int               $index        The index
+     * @param Parameter         $parameter    The parameter
+     * @param string[]          $dependencies The route dependencies
+     * @param array<int, mixed> $matches      The matches
      *
      * @return Response|null
      */
@@ -122,7 +122,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
      * @param int                  $index        The index
      * @param Parameter            $parameter    The parameter
      * @param class-string<Entity> $entityName   The entity class name
-     * @param array                $dependencies The dependencies
+     * @param string[]             $dependencies The dependencies
      * @param mixed                $value        The value
      *
      * @return Response|null

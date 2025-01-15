@@ -39,13 +39,6 @@ use function strtolower;
 class Persister implements Contract
 {
     /**
-     * The adapter.
-     *
-     * @var Adapter
-     */
-    protected Adapter $adapter;
-
-    /**
      * The entities awaiting to be committed for creation.
      *
      * @var Entity[]
@@ -69,11 +62,11 @@ class Persister implements Contract
     /**
      * Persister constructor.
      *
-     * @param Adapter $connection The adapter
+     * @param Adapter $adapter The adapter
      */
-    public function __construct(Adapter $connection)
-    {
-        $this->adapter = $connection;
+    public function __construct(
+        protected Adapter $adapter
+    ) {
     }
 
     /**
@@ -273,9 +266,9 @@ class Persister implements Contract
     /**
      * Persist an entity through a transaction.
      *
-     * @param string $type       The type of persist
-     * @param Entity $entity     The entity to persist
-     * @param array  $properties [optional] The properties to persist
+     * @param string               $type       The type of persist
+     * @param Entity               $entity     The entity to persist
+     * @param array<string, mixed> $properties [optional] The properties to persist
      *
      * @throws ExecuteException
      * @throws JsonException
@@ -295,9 +288,9 @@ class Persister implements Contract
     /**
      * Persist an entity.
      *
-     * @param string $type       The type of persist
-     * @param Entity $entity     The entity to persist
-     * @param array  $properties [optional] The properties to persist
+     * @param string               $type       The type of persist
+     * @param Entity               $entity     The entity to persist
+     * @param array<string, mixed> $properties [optional] The properties to persist
      *
      * @throws ExecuteException
      * @throws JsonException
@@ -323,9 +316,9 @@ class Persister implements Contract
     /**
      * Get the query builder.
      *
-     * @param string $type       The type of persist
-     * @param Entity $entity     The entity to persist
-     * @param array  $properties The properties to persist
+     * @param string               $type       The type of persist
+     * @param Entity               $entity     The entity to persist
+     * @param array<string, mixed> $properties The properties to persist
      *
      * @return QueryBuilder
      */
@@ -349,11 +342,11 @@ class Persister implements Contract
     /**
      * Get the query.
      *
-     * @param QueryBuilder $queryBuilder The query builder
-     * @param string       $type         The type of persist
-     * @param string       $idField      The id field
-     * @param int|string   $id           The id
-     * @param array        $properties   The properties to persist
+     * @param QueryBuilder         $queryBuilder The query builder
+     * @param string               $type         The type of persist
+     * @param string               $idField      The id field
+     * @param int|string           $id           The id
+     * @param array<string, mixed> $properties   The properties to persist
      *
      * @throws JsonException
      *
@@ -437,9 +430,9 @@ class Persister implements Contract
     /**
      * Set properties for save, delete, or create queries.
      *
-     * @param QueryBuilder $queryBuilder The query builder
-     * @param array        $properties   The properties to persist
-     * @param string       $type         The type of persist
+     * @param QueryBuilder         $queryBuilder The query builder
+     * @param array<string, mixed> $properties   The properties to persist
+     * @param string               $type         The type of persist
      *
      * @return void
      */
@@ -509,9 +502,9 @@ class Persister implements Contract
     /**
      * Set properties for save, create, or delete statements.
      *
-     * @param Query  $query      The query
-     * @param array  $properties The properties to persist
-     * @param string $type       The type of persist
+     * @param Query                $query      The query
+     * @param array<string, mixed> $properties The properties to persist
+     * @param string               $type       The type of persist
      *
      * @throws JsonException
      *

@@ -25,7 +25,7 @@ class PgSqlPdo extends Pdo
     /**
      * The default options.
      *
-     * @var array
+     * @var array<int, mixed>
      */
     protected static array $defaultOptions = [
         BasePDO::ATTR_PERSISTENT        => true,
@@ -38,7 +38,7 @@ class PgSqlPdo extends Pdo
     /**
      * PgSqlPDO constructor.
      *
-     * @param array $config The config
+     * @param array<string, mixed> $config The config
      */
     public function __construct(array $config)
     {

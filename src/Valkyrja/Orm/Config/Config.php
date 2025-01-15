@@ -101,7 +101,7 @@ class Config extends Model
     /**
      * The connections.
      *
-     * @var array
+     * @var array<string, array<string, mixed>>
      */
     public array $connections;
 

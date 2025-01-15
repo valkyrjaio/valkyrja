@@ -23,9 +23,9 @@ use Valkyrja\Manager\Message\Contract\Message;
  *
  * @author   Melech Mizrachi
  *
- * @template Adapter
- * @template Driver
- * @template Message
+ * @template Adapter of Adapter
+ * @template Driver of Driver
+ * @template Message of Message
  *
  * @implements Contract<Adapter, Driver, Message>
  *

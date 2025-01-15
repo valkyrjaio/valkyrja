@@ -26,29 +26,15 @@ use Valkyrja\Log\Enum\LogLevel;
 class PsrAdapter implements Contract
 {
     /**
-     * The logger.
-     *
-     * @var LoggerInterface
-     */
-    protected LoggerInterface $logger;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * PsrAdapter constructor.
      *
-     * @param LoggerInterface $logger The logger
-     * @param array           $config The config
+     * @param LoggerInterface      $logger The logger
+     * @param array<string, mixed> $config The config
      */
-    public function __construct(LoggerInterface $logger, array $config)
-    {
-        $this->config = $config;
-        $this->logger = $logger;
+    public function __construct(
+        protected LoggerInterface $logger,
+        protected array $config
+    ) {
     }
 
     /**

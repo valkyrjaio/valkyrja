@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Manager\Contract;
 
+use Valkyrja\Manager\Adapter\Contract\Adapter;
 use Valkyrja\Manager\Driver\Contract\Driver;
 use Valkyrja\Manager\Factory\Contract\Factory;
 use Valkyrja\Manager\Message\Contract\Message;
@@ -22,11 +23,12 @@ use Valkyrja\Manager\Message\Contract\Message;
  *
  * @author   Melech Mizrachi
  *
- * @template Driver
- * @template Factory
- * @template Message
+ * @template Adapter of Adapter
+ * @template Driver of Driver
+ * @template Factory of Factory
+ * @template Message of Message
  *
- * @extends Manager<Driver, Factory>
+ * @extends Manager<Adapter, Driver, Factory>
  */
 interface MessageManager extends Manager
 {

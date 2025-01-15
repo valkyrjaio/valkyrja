@@ -25,7 +25,7 @@ abstract class Pdo extends BasePDO
     /**
      * The default options.
      *
-     * @var array
+     * @var array<int, mixed>
      */
     protected static array $defaultOptions = [
         BasePDO::ATTR_CASE              => BasePDO::CASE_NATURAL,

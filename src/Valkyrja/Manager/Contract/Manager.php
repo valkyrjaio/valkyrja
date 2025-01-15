@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Manager\Contract;
 
+use Valkyrja\Manager\Adapter\Contract\Adapter;
 use Valkyrja\Manager\Driver\Contract\Driver;
 use Valkyrja\Manager\Factory\Contract\Factory;
 
@@ -21,8 +22,9 @@ use Valkyrja\Manager\Factory\Contract\Factory;
  *
  * @author   Melech Mizrachi
  *
- * @template Driver
- * @template Factory
+ * @template Adapter of Adapter
+ * @template Driver of Driver
+ * @template Factory of Factory
  */
 interface Manager
 {

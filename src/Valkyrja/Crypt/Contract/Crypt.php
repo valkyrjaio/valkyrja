@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Contract;
 
+use Valkyrja\Crypt\Adapter\Contract\Adapter;
 use Valkyrja\Crypt\Driver\Contract\Driver;
 use Valkyrja\Crypt\Exception\CryptException;
 use Valkyrja\Crypt\Factory\Contract\Factory;
@@ -23,7 +24,7 @@ use Valkyrja\Manager\Contract\Manager;
  *
  * @author Melech Mizrachi
  *
- * @extends Manager<Driver, Factory>
+ * @extends Manager<Adapter, Driver, Factory>
  */
 interface Crypt extends Manager
 {

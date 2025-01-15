@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast;
 
+use Valkyrja\Broadcast\Adapter\Contract\Adapter;
 use Valkyrja\Broadcast\Contract\Broadcast as Contract;
 use Valkyrja\Broadcast\Driver\Contract\Driver;
 use Valkyrja\Broadcast\Factory\Contract\Factory;
@@ -24,7 +25,7 @@ use Valkyrja\Manager\MessageManager as Manager;
  *
  * @author Melech Mizrachi
  *
- * @extends Manager<Driver, Factory, Message>
+ * @extends Manager<Adapter, Driver, Factory, Message>
  *
  * @property Factory $factory
  */

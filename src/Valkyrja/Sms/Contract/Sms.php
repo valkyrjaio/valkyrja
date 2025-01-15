@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Sms\Contract;
 
 use Valkyrja\Manager\Contract\MessageManager as Manager;
+use Valkyrja\Sms\Adapter\Contract\Adapter;
 use Valkyrja\Sms\Driver\Contract\Driver;
 use Valkyrja\Sms\Factory\Contract\Factory;
 use Valkyrja\Sms\Message\Contract\Message;
@@ -23,7 +24,7 @@ use Valkyrja\Sms\Message\Contract\Message;
  *
  * @author Melech Mizrachi
  *
- * @extends Manager<Driver, Factory, Message>
+ * @extends Manager<Adapter, Driver, Factory, Message>
  */
 interface Sms extends Manager
 {

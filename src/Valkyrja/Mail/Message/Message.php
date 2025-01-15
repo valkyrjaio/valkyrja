@@ -39,35 +39,35 @@ class Message implements Contract
     /**
      * The recipients.
      *
-     * @var array[]
+     * @var array<int, array{email: string, name: string}>
      */
     protected array $recipients = [];
 
     /**
      * The reply to recipients.
      *
-     * @var array[]
+     * @var array<int, array{email: string, name: string}>
      */
     protected array $replyToRecipients = [];
 
     /**
      * The copy recipients.
      *
-     * @var array[]
+     * @var array<int, array{email: string, name: string}>
      */
     protected array $copyRecipients = [];
 
     /**
      * The blind copy recipients.
      *
-     * @var array[]
+     * @var array<int, array{email: string, name: string}>
      */
     protected array $blindCopyRecipients = [];
 
     /**
      * The attachments.
      *
-     * @var array[]
+     * @var array<int, array{path: string, name: string}>
      */
     protected array $attachments = [];
 

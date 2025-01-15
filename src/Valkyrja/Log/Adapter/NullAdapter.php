@@ -25,20 +25,13 @@ use Valkyrja\Log\Enum\LogLevel;
 class NullAdapter implements Contract
 {
     /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * NullAdapter constructor.
      *
-     * @param array $config The config
+     * @param array<string, mixed> $config The config
      */
-    public function __construct(array $config)
-    {
-        $this->config = $config;
+    public function __construct(
+        protected array $config
+    ) {
     }
 
     /**

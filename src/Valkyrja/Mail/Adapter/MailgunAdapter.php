@@ -63,7 +63,7 @@ class MailgunAdapter implements Contract
         $this->addAttachments($mailgunMessage, $message->getAttachments());
 
         if ($replyTo !== null) {
-            $this->setRecipients($mailgunMessage, 'setReplyToAddress', $replyTo);
+            $this->setRecipients($mailgunMessage, 'setReplyToAddress', [$replyTo]);
         }
 
         $this->setRecipients($mailgunMessage, 'addToRecipient', $message->getRecipients());
@@ -74,9 +74,9 @@ class MailgunAdapter implements Contract
     /**
      * Add recipients to a mailgun batch method by method.
      *
-     * @param BatchMessage $mailgunMessage The mailgun batch message
-     * @param string       $method         The method to call
-     * @param array        $recipients     The recipients
+     * @param BatchMessage                                   $mailgunMessage The mailgun batch message
+     * @param string                                         $method         The method to call
+     * @param array<int, array{email: string, name: string}> $recipients     The recipients
      *
      * @return void
      */
@@ -90,8 +90,8 @@ class MailgunAdapter implements Contract
     /**
      * Add attachments to a mailgun batch message.
      *
-     * @param BatchMessage $mailgunMessage The mailgun batch message
-     * @param array        $attachments    The attachments
+     * @param BatchMessage                                  $mailgunMessage The mailgun batch message
+     * @param array<int, array{path: string, name: string}> $attachments    The attachments
      *
      * @return void
      */

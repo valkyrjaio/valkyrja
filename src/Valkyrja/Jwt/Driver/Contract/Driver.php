@@ -25,7 +25,7 @@ interface Driver extends Contract
     /**
      * Encode a payload array into a JWT string.
      *
-     * @param array $payload The payload
+     * @param array<array-key, mixed> $payload The payload
      *
      * @return string
      */
@@ -36,7 +36,7 @@ interface Driver extends Contract
      *
      * @param string $jwt The JWT string
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function decode(string $jwt): array;
 }

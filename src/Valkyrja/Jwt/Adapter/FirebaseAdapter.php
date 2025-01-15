@@ -26,13 +26,6 @@ use Valkyrja\Jwt\Adapter\Contract\Adapter as Contract;
 abstract class FirebaseAdapter implements Contract
 {
     /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * The algorithm.
      *
      * @var string
@@ -56,11 +49,10 @@ abstract class FirebaseAdapter implements Contract
     /**
      * FirebaseAdapter constructor.
      *
-     * @param array $config The config
+     * @param array<string, mixed> $config The config
      */
-    public function __construct(array $config)
+    public function __construct(protected array $config)
     {
-        $this->config    = $config;
         $this->algorithm = $config['algo'];
 
         $this->setEncodeKey();

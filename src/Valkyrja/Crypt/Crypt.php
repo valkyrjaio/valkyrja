@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt;
 
+use Valkyrja\Crypt\Adapter\Contract\Adapter;
 use Valkyrja\Crypt\Contract\Crypt as Contract;
 use Valkyrja\Crypt\Driver\Contract\Driver;
 use Valkyrja\Crypt\Factory\Contract\Factory;
@@ -23,7 +24,7 @@ use Valkyrja\Manager\Manager;
  *
  * @author Melech Mizrachi
  *
- * @extends Manager<Driver, Factory>
+ * @extends Manager<Adapter, Driver, Factory>
  *
  * @property Factory $factory
  */

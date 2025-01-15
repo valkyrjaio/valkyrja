@@ -21,8 +21,8 @@ use Valkyrja\Manager\Driver\Contract\Driver;
  *
  * @author   Melech Mizrachi
  *
- * @template Adapter
- * @template Driver
+ * @template Adapter of Adapter
+ * @template Driver of Driver
  */
 interface Factory
 {

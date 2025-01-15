@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Contract;
 
+use Valkyrja\Cache\Adapter\Contract\Adapter;
 use Valkyrja\Cache\Driver\Contract\Driver;
 use Valkyrja\Cache\Factory\Contract\Factory;
 use Valkyrja\Cache\Tagger\Contract\Tagger;
@@ -23,7 +24,7 @@ use Valkyrja\Manager\Contract\Manager;
  *
  * @author Melech Mizrachi
  *
- * @extends Manager<Driver, Factory>
+ * @extends Manager<Adapter, Driver, Factory>
  */
 interface Cache extends Manager
 {

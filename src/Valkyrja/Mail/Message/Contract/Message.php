@@ -49,7 +49,7 @@ interface Message extends Contract
     /**
      * Get the recipients.
      *
-     * @return array
+     * @return array<int, array{email: string, name: string}>
      */
     public function getRecipients(): array;
 
@@ -66,7 +66,7 @@ interface Message extends Contract
     /**
      * Get the reply to recipients.
      *
-     * @return array
+     * @return array<int, array{email: string, name: string}>
      */
     public function getReplyToRecipients(): array;
 
@@ -83,7 +83,7 @@ interface Message extends Contract
     /**
      * Get the copy recipients.
      *
-     * @return array
+     * @return array<int, array{email: string, name: string}>
      */
     public function getCopyRecipients(): array;
 
@@ -100,7 +100,7 @@ interface Message extends Contract
     /**
      * Get the blind copy recipients.
      *
-     * @return array
+     * @return array<int, array{email: string, name: string}>
      */
     public function getBlindCopyRecipients(): array;
 
@@ -117,7 +117,7 @@ interface Message extends Contract
     /**
      * Get the attachments.
      *
-     * @return array
+     * @return array<int, array{path: string, name: string}>
      */
     public function getAttachments(): array;
 

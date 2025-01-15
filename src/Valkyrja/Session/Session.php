@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Session;
 
 use Valkyrja\Manager\Manager;
+use Valkyrja\Session\Adapter\Contract\Adapter;
 use Valkyrja\Session\Contract\Session as Contract;
 use Valkyrja\Session\Driver\Contract\Driver;
 use Valkyrja\Session\Factory\Contract\Factory;
@@ -23,7 +24,7 @@ use Valkyrja\Session\Factory\Contract\Factory;
  *
  * @author Melech Mizrachi
  *
- * @extends Manager<Driver, Factory>
+ * @extends Manager<Adapter, Driver, Factory>
  */
 class Session extends Manager implements Contract
 {

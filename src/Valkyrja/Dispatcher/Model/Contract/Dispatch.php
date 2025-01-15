@@ -233,14 +233,14 @@ interface Dispatch extends Model
     /**
      * Get the matches.
      *
-     * @return array|null
+     * @return array<array-key, mixed>|null
      */
     public function getMatches(): array|null;
 
     /**
      * Set the matches.
      *
-     * @param array|null $matches The matches
+     * @param array<array-key, mixed>|null $matches The matches
      *
      * @return static
      */
@@ -249,14 +249,14 @@ interface Dispatch extends Model
     /**
      * Get the arguments.
      *
-     * @return array|null
+     * @return array<array-key, mixed>|null
      */
     public function getArguments(): array|null;
 
     /**
      * Set the arguments.
      *
-     * @param array|null $arguments The arguments
+     * @param array<array-key, mixed>|null $arguments The arguments
      *
      * @return static
      */
@@ -265,14 +265,14 @@ interface Dispatch extends Model
     /**
      * Get the dependencies.
      *
-     * @return array|null
+     * @return string[]|null
      */
     public function getDependencies(): array|null;
 
     /**
      * Set the dependencies.
      *
-     * @param array|null $dependencies The dependencies
+     * @param string[]|null $dependencies The dependencies
      *
      * @return static
      */

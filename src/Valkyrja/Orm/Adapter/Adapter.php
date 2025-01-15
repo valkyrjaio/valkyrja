@@ -28,13 +28,6 @@ use Valkyrja\Orm\Retriever\Contract\Retriever;
 abstract class Adapter implements Contract
 {
     /**
-     * The ORM service.
-     *
-     * @var Orm
-     */
-    protected Orm $orm;
-
-    /**
      * The entity persister.
      *
      * @var Persister
@@ -70,22 +63,15 @@ abstract class Adapter implements Contract
     protected string $retrieverClass;
 
     /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * Adapter constructor.
      *
-     * @param Orm   $orm    The orm
-     * @param array $config The config
+     * @param Orm                  $orm    The orm
+     * @param array<string, mixed> $config The config
      */
-    public function __construct(Orm $orm, array $config)
-    {
-        $this->orm               = $orm;
-        $this->config            = $config;
+    public function __construct(
+        protected Orm $orm,
+        protected array $config
+    ) {
         $this->queryClass        = $this->config['query'];
         $this->queryBuilderClass = $this->config['queryBuilder'];
         $this->persisterClass    = $this->config['persister'];

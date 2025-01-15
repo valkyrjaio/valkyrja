@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Log\Contract;
 
 use Throwable;
+use Valkyrja\Log\Adapter\Contract\Adapter;
 use Valkyrja\Log\Driver\Contract\Driver;
 use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Log\Factory\Contract\Factory;
@@ -24,7 +25,7 @@ use Valkyrja\Manager\Contract\Manager;
  *
  * @author Melech Mizrachi
  *
- * @extends Manager<Driver, Factory>
+ * @extends Manager<Adapter, Driver, Factory>
  */
 interface Logger extends Manager
 {
@@ -38,8 +39,8 @@ interface Logger extends Manager
     /**
      * Log a debug message.
      *
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -48,8 +49,8 @@ interface Logger extends Manager
     /**
      * Log an info message.
      *
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -58,8 +59,8 @@ interface Logger extends Manager
     /**
      * Log a notice message.
      *
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -68,8 +69,8 @@ interface Logger extends Manager
     /**
      * Log a warning message.
      *
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -78,8 +79,8 @@ interface Logger extends Manager
     /**
      * Log a error message.
      *
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -88,8 +89,8 @@ interface Logger extends Manager
     /**
      * Log a critical message.
      *
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -98,8 +99,8 @@ interface Logger extends Manager
     /**
      * Log a alert message.
      *
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -108,8 +109,8 @@ interface Logger extends Manager
     /**
      * Log a emergency message.
      *
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -118,9 +119,9 @@ interface Logger extends Manager
     /**
      * Log a message.
      *
-     * @param LogLevel $level   The log level
-     * @param string   $message The message
-     * @param array    $context [optional] The context
+     * @param LogLevel                $level   The log level
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -129,9 +130,9 @@ interface Logger extends Manager
     /**
      * Log an exception or throwable.
      *
-     * @param Throwable $exception The exception
-     * @param string    $message   The message
-     * @param array     $context   [optional] The context
+     * @param Throwable               $exception The exception
+     * @param string                  $message   The message
+     * @param array<array-key, mixed> $context   [optional] The context
      *
      * @return void
      */

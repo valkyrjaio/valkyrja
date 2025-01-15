@@ -27,8 +27,8 @@ interface Driver extends Contract
     /**
      * Log a debug message.
      *
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -37,8 +37,8 @@ interface Driver extends Contract
     /**
      * Log an info message.
      *
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -47,8 +47,8 @@ interface Driver extends Contract
     /**
      * Log a notice message.
      *
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -57,8 +57,8 @@ interface Driver extends Contract
     /**
      * Log a warning message.
      *
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -67,8 +67,8 @@ interface Driver extends Contract
     /**
      * Log a error message.
      *
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -77,8 +77,8 @@ interface Driver extends Contract
     /**
      * Log a critical message.
      *
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -87,8 +87,8 @@ interface Driver extends Contract
     /**
      * Log a alert message.
      *
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -97,8 +97,8 @@ interface Driver extends Contract
     /**
      * Log a emergency message.
      *
-     * @param string $message The message
-     * @param array  $context [optional] The context
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -107,9 +107,9 @@ interface Driver extends Contract
     /**
      * Log a message.
      *
-     * @param LogLevel $level   The log level
-     * @param string   $message The message
-     * @param array    $context [optional] The context
+     * @param LogLevel                $level   The log level
+     * @param string                  $message The message
+     * @param array<array-key, mixed> $context [optional] The context
      *
      * @return void
      */
@@ -118,9 +118,9 @@ interface Driver extends Contract
     /**
      * Log an exception or throwable.
      *
-     * @param Throwable $exception The exception
-     * @param string    $message   The message
-     * @param array     $context   [optional] The context
+     * @param Throwable               $exception The exception
+     * @param string                  $message   The message
+     * @param array<array-key, mixed> $context   [optional] The context
      *
      * @return void
      */

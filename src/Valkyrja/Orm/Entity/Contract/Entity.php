@@ -86,7 +86,7 @@ interface Entity extends CastableModel, ExposableModel
     /**
      * Get the entity as an array for saving to the data store including only changed properties.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function asStorableChangedArray(): array;
 }

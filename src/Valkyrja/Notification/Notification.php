@@ -31,32 +31,32 @@ class Notification implements Contract
     /**
      * The mail recipients.
      *
-     * @var array[]
+     * @var array<int, array{email: string, name: string}>
      */
     protected array $mailRecipients = [];
 
     /**
      * The SMS recipients.
      *
-     * @var array[]
+     * @var array<int, array{to: string}>
      */
     protected array $smsRecipients = [];
 
     /**
      * The broadcast events.
      *
-     * @var array[]
+     * @var array<int, array{event: string}>
      */
     protected array $broadcastEvents = [];
 
     /**
      * Notifier constructor.
      *
-     * @param Factory      $factory   The factory
-     * @param Broadcast    $broadcast The broadcast
-     * @param Mail         $mail      The mail service
-     * @param Sms          $sms       The sms service
-     * @param Config|array $config    The config
+     * @param Factory                     $factory   The factory
+     * @param Broadcast                   $broadcast The broadcast
+     * @param Mail                        $mail      The mail service
+     * @param Sms                         $sms       The sms service
+     * @param Config|array<string, mixed> $config    The config
      */
     public function __construct(
         protected Factory $factory,

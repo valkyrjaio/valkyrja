@@ -26,8 +26,8 @@ interface Notification
     /**
      * Create a new notification.
      *
-     * @param string $name The notification name
-     * @param array  $data [optional] The data to add to the notification
+     * @param string                  $name The notification name
+     * @param array<array-key, mixed> $data [optional] The data to add to the notification
      *
      * @return Notify
      */
@@ -92,8 +92,8 @@ interface Notification
     /**
      * Send a notification to users.
      *
-     * @param Notify           $notify The notification to send
-     * @param NotifiableUser[] $users  The users to notify
+     * @param Notify         $notify   The notification to send
+     * @param NotifiableUser ...$users The users to notify
      *
      * @return void
      */

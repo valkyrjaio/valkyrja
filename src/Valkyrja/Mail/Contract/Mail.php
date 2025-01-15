@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Contract;
 
+use Valkyrja\Mail\Adapter\Contract\Adapter;
 use Valkyrja\Mail\Driver\Contract\Driver;
 use Valkyrja\Mail\Factory\Contract\Factory;
 use Valkyrja\Mail\Message\Contract\Message;
@@ -23,7 +24,7 @@ use Valkyrja\Manager\Contract\MessageManager as Manager;
  *
  * @author Melech Mizrachi
  *
- * @extends Manager<Driver, Factory, Message>
+ * @extends Manager<Adapter, Driver, Factory, Message>
  */
 interface Mail extends Manager
 {

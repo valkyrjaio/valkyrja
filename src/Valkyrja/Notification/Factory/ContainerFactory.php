@@ -25,20 +25,13 @@ use Valkyrja\Notification\Factory\Contract\Factory;
 class ContainerFactory implements Factory
 {
     /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
      * ContainerFactory constructor.
      *
      * @param Container $container The container
      */
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        protected Container $container
+    ) {
     }
 
     /**

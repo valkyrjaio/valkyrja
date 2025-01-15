@@ -26,20 +26,13 @@ use Valkyrja\Mail\Message\Contract\Message;
 class PHPMailerAdapter implements Contract
 {
     /**
-     * The PHP Mailer.
-     *
-     * @var PHPMailer
-     */
-    protected PHPMailer $phpMailer;
-
-    /**
      * PHPMailerAdapter constructor.
      *
      * @param PHPMailer $phpMailer
      */
-    public function __construct(PHPMailer $phpMailer)
-    {
-        $this->phpMailer = $phpMailer;
+    public function __construct(
+        protected PHPMailer $phpMailer
+    ) {
     }
 
     /**
@@ -68,8 +61,8 @@ class PHPMailerAdapter implements Contract
     /**
      * Add recipients to PHP Mailer by method.
      *
-     * @param string $method     The phpMailer method to call
-     * @param array  $recipients The recipients
+     * @param string                                         $method     The phpMailer method to call
+     * @param array<int, array{email: string, name: string}> $recipients The recipients
      *
      * @return void
      */
@@ -83,7 +76,7 @@ class PHPMailerAdapter implements Contract
     /**
      * Add attachments to PHP Mailer.
      *
-     * @param array $attachments The attachments
+     * @param array<int, array{path: string, name: string}> $attachments The attachments
      *
      * @throws Exception
      *

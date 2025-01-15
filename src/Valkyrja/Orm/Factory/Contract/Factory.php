@@ -152,7 +152,7 @@ interface Factory
      *
      * @param Adapter                 $adapter The adapter
      * @param class-string<Statement> $name    The statement class name
-     * @param array                   $data    [optional] Additional data required for the statement
+     * @param array<array-key, mixed> $data    [optional] Additional data required for the statement
      *
      * @return Statement
      */
@@ -162,7 +162,7 @@ interface Factory
      * Create a migration.
      *
      * @param class-string<Migration> $name The migration class name
-     * @param array                   $data [optional] Additional data required for the migration
+     * @param array<array-key, mixed> $data [optional] Additional data required for the migration
      *
      * @return Migration
      */

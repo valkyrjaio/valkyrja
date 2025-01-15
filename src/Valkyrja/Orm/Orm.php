@@ -54,7 +54,7 @@ class Orm implements Contract
     /**
      * The connections.
      *
-     * @var array
+     * @var array<string, array<string, mixed>>
      */
     protected array $connections;
 

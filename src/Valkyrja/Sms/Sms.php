@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Sms;
 
 use Valkyrja\Manager\MessageManager as Manager;
+use Valkyrja\Sms\Adapter\Contract\Adapter;
 use Valkyrja\Sms\Contract\Sms as Contract;
 use Valkyrja\Sms\Driver\Contract\Driver;
 use Valkyrja\Sms\Factory\Contract\Factory;
@@ -26,7 +27,7 @@ use Valkyrja\Sms\Message\Contract\Message;
  *
  * @property Factory $factory
  *
- * @extends Manager<Driver, Factory, Message>
+ * @extends Manager<Adapter, Driver, Factory, Message>
  */
 class Sms extends Manager implements Contract
 {

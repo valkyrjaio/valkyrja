@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Manager\Factory\Contract;
 
+use Valkyrja\Manager\Adapter\Contract\Adapter;
+use Valkyrja\Manager\Driver\Contract\Driver;
 use Valkyrja\Manager\Message\Contract\Message;
 
 /**
@@ -20,9 +22,9 @@ use Valkyrja\Manager\Message\Contract\Message;
  *
  * @author   Melech Mizrachi
  *
- * @template Adapter
- * @template Driver
- * @template Message
+ * @template Adapter of Adapter
+ * @template Driver of Driver
+ * @template Message of Message
  *
  * @extends Factory<Adapter, Driver>
  */

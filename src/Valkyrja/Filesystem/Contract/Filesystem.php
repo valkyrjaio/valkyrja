@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Contract;
 
+use Valkyrja\Filesystem\Adapter\Contract\Adapter;
 use Valkyrja\Filesystem\Driver\Contract\Driver;
 use Valkyrja\Filesystem\Enum\Visibility;
 use Valkyrja\Filesystem\Factory\Contract\Factory;
@@ -23,7 +24,7 @@ use Valkyrja\Manager\Contract\Manager;
  *
  * @author Melech Mizrachi
  *
- * @extends Manager<Driver, Factory>
+ * @extends Manager<Adapter, Driver, Factory>
  */
 interface Filesystem extends Manager
 {

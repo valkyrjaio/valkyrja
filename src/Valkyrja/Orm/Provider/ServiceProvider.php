@@ -510,12 +510,14 @@ class ServiceProvider extends Provider
      */
     public static function publishMigration(Container $container): void
     {
+        $orm = $container->getSingleton(Orm::class);
+
         $container->setClosure(
             Migration::class,
             /**
              * @param class-string<Migration> $name
              */
-            static fn (string $name, Orm $orm): Migration => new $name($orm)
+            static fn (string $name, array $data = []): Migration => new $name($orm, ...$data)
         );
     }
 

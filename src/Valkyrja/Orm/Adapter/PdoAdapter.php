@@ -30,23 +30,17 @@ use function is_bool;
 class PdoAdapter extends Adapter implements Contract
 {
     /**
-     * The pdo service.
-     *
-     * @var PDO
-     */
-    protected PDO $pdo;
-
-    /**
      * PDOAdapter constructor.
      *
-     * @param Orm   $orm    The orm
-     * @param PDO   $pdo    The PDO
-     * @param array $config The config
+     * @param Orm                  $orm    The orm
+     * @param PDO                  $pdo    The PDO
+     * @param array<string, mixed> $config The config
      */
-    public function __construct(Orm $orm, PDO $pdo, array $config)
-    {
-        $this->pdo = $pdo;
-
+    public function __construct(
+        Orm $orm,
+        protected PDO $pdo,
+        array $config
+    ) {
         parent::__construct($orm, $config);
     }
 

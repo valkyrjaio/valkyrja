@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Manager;
 
+use Valkyrja\Manager\Adapter\Contract\Adapter;
 use Valkyrja\Manager\Contract\MessageManager as Contract;
 use Valkyrja\Manager\Driver\Contract\Driver;
 use Valkyrja\Manager\Factory\Contract\MessageFactory as Factory;
@@ -23,15 +24,14 @@ use Valkyrja\Manager\Message\Contract\Message;
  *
  * @author   Melech Mizrachi
  *
- * @template Driver
- * @template Factory
- * @template Message
+ * @template Adapter of Adapter
+ * @template Driver of Driver
+ * @template Factory of Factory
+ * @template Message of Message
  *
- * @extends Manager<Driver, Factory>
+ * @extends Manager<Adapter, Driver, Factory>
  *
- * @implements Contract<Driver, Factory, Message>
- *
- * @property Factory $factory
+ * @implements Contract<Adapter, Driver, Factory, Message>
  */
 abstract class MessageManager extends Manager implements Contract
 {
@@ -45,7 +45,7 @@ abstract class MessageManager extends Manager implements Contract
     /**
      * The messages config.
      *
-     * @var array<string, array>
+     * @var array<string, array<string, mixed>>
      */
     protected array $messages;
 
@@ -81,8 +81,11 @@ abstract class MessageManager extends Manager implements Contract
         // The message config
         $config = $this->messages[$name];
         // The message to use
-        $message = $config['message'] ?? $this->defaultMessageClass;
+        $class = $config['message'] ?? $this->defaultMessageClass;
 
-        return $this->factory->createMessage($message, $config, $data);
+        /** @var Message $message */
+        $message = $this->factory->createMessage($class, $config, $data);
+
+        return $message;
     }
 }

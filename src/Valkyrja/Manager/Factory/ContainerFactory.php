@@ -24,8 +24,8 @@ use Valkyrja\Type\BuiltIn\Support\Cls;
  *
  * @author Melech Mizrachi
  *
- * @template Adapter
- * @template Driver
+ * @template Adapter of Adapter
+ * @template Driver of Driver
  *
  * @implements Factory<Adapter, Driver>
  */

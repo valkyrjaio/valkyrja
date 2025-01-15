@@ -22,8 +22,8 @@ use Valkyrja\Manager\Factory\Contract\Factory as Contract;
  *
  * @author Melech Mizrachi
  *
- * @template Adapter
- * @template Driver
+ * @template Adapter of Adapter
+ * @template Driver of Driver
  *
  * @implements Contract<Adapter, Driver>
  */

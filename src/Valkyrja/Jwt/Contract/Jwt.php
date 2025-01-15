@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Contract;
 
+use Valkyrja\Jwt\Adapter\Contract\Adapter;
 use Valkyrja\Jwt\Driver\Contract\Driver;
 use Valkyrja\Jwt\Factory\Contract\Factory;
 use Valkyrja\Manager\Contract\Manager;
@@ -22,7 +23,7 @@ use Valkyrja\Manager\Contract\Manager;
  *
  * @author Melech Mizrachi
  *
- * @extends Manager<Driver, Factory>
+ * @extends Manager<Adapter, Driver, Factory>
  */
 interface Jwt extends Manager
 {
@@ -36,7 +37,7 @@ interface Jwt extends Manager
     /**
      * Encode a payload array into a JWT string.
      *
-     * @param array $payload The payload
+     * @param array<array-key, mixed> $payload The payload
      *
      * @return string
      */
@@ -47,7 +48,7 @@ interface Jwt extends Manager
      *
      * @param string $jwt The JWT string
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function decode(string $jwt): array;
 }

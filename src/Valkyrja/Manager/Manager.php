@@ -21,12 +21,13 @@ use Valkyrja\Manager\Factory\Contract\Factory;
 /**
  * Class Manager.
  *
- * @template Driver
- * @template Factory
+ * @template Adapter of Adapter
+ * @template Driver of Driver
+ * @template Factory of Factory
  *
  * @author Melech Mizrachi
  *
- * @implements Contract<Driver, Factory>
+ * @implements Contract<Adapter, Driver, Factory>
  */
 abstract class Manager implements Contract
 {
@@ -61,7 +62,7 @@ abstract class Manager implements Contract
     /**
      * The configurations.
      *
-     * @var array<string, array>
+     * @var array<string, array<string, mixed>>
      */
     protected array $configurations;
 
@@ -91,14 +92,17 @@ abstract class Manager implements Contract
         // The config to use
         $config = $this->configurations[$name];
         // The driver to use
-        $driver = $config['driver'] ?? $this->defaultDriver;
+        $driverClass = $config['driver'] ?? $this->defaultDriver;
         // The adapter to use
-        $adapter = $config['adapter'] ?? $this->defaultAdapter;
+        $adapterClass = $config['adapter'] ?? $this->defaultAdapter;
         // The cache key to use
-        $cacheKey = $name . $adapter;
+        $cacheKey = $name . $adapterClass;
 
-        return self::$drivers[$cacheKey]
-            ??= $this->factory->createDriver($driver, $adapter, $config);
+        /** @var Driver $driver */
+        $driver = self::$drivers[$cacheKey]
+            ??= $this->factory->createDriver($driverClass, $adapterClass, $config);
+
+        return $driver;
     }
 
     /**
