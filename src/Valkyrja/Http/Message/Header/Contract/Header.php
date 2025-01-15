@@ -64,14 +64,14 @@ interface Header extends ArrayAccess, Countable, Iterator, JsonSerializable, Str
     public function getValues(): array;
 
     /**
-     * @param array<int, Value|string> $values
+     * @param Value|string ...$values The values
      *
      * @return static
      */
     public function withValues(Value|string ...$values): static;
 
     /**
-     * @param array<int, Value|string> $values
+     * @param Value|string ...$values The values
      *
      * @return static
      */

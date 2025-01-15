@@ -161,7 +161,7 @@ interface ServerRequest extends Request
     /**
      * Retrieve only the specified query string arguments.
      *
-     * @param string[]|int[] $names The param names to retrieve
+     * @param string|int ...$names The param names to retrieve
      *
      * @return array<array-key, mixed>
      */
@@ -170,7 +170,7 @@ interface ServerRequest extends Request
     /**
      * Retrieve all query string arguments except the ones specified.
      *
-     * @param string[]|int[] $names The param names to not retrieve
+     * @param string|int ...$names The param names to not retrieve
      *
      * @return array<array-key, mixed>
      */
@@ -299,7 +299,7 @@ interface ServerRequest extends Request
     /**
      * Retrieve only the specified request body params.
      *
-     * @param string[]|int[] $names The param names to retrieve
+     * @param string|int ...$names The param names to retrieve
      *
      * @return array<array-key, mixed>
      */
@@ -308,7 +308,7 @@ interface ServerRequest extends Request
     /**
      * Retrieve all request body params except the ones specified.
      *
-     * @param string[]|int[] $names The param names to not retrieve
+     * @param string|int ...$names The param names to not retrieve
      *
      * @return array<array-key, mixed>
      */
@@ -401,7 +401,7 @@ interface ServerRequest extends Request
     /**
      * Retrieve only the specified attributes.
      *
-     * @param string[] $names The attribute names to retrieve
+     * @param string ...$names The attribute names to retrieve
      *
      * @return array<string, mixed>
      */
@@ -410,7 +410,7 @@ interface ServerRequest extends Request
     /**
      * Retrieve all attributes except the ones specified.
      *
-     * @param string[] $names The attribute names to not retrieve
+     * @param string ...$names The attribute names to not retrieve
      *
      * @return array<string, mixed>
      */

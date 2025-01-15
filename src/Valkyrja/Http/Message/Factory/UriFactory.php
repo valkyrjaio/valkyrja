@@ -46,8 +46,8 @@ abstract class UriFactory
     /**
      * Marshal the URI from the $_SERVER array and headers.
      *
-     * @param array $server
-     * @param array $headers
+     * @param array<string, string>          $server
+     * @param array<string, string|string[]> $headers
      *
      * @throws InvalidQueryException
      * @throws InvalidPortException
@@ -121,9 +121,9 @@ abstract class UriFactory
      * If found, it is returned as a string, using comma concatenation.
      * If not, the $default is returned.
      *
-     * @param string     $header
-     * @param array      $headers
-     * @param mixed|null $default
+     * @param string                         $header
+     * @param array<string, string|string[]> $headers
+     * @param mixed|null                     $default
      *
      * @return string
      */
@@ -133,7 +133,9 @@ abstract class UriFactory
         $headers = array_change_key_case($headers);
 
         if (array_key_exists($header, $headers)) {
-            return is_array($headers[$header]) ? implode(', ', $headers[$header]) : $headers[$header];
+            return is_array($headers[$header])
+                ? implode(', ', $headers[$header])
+                : $headers[$header];
         }
 
         return (string) ($default ?? '');
@@ -142,9 +144,9 @@ abstract class UriFactory
     /**
      * Marshal the host and port from HTTP headers and/or the PHP environment.
      *
-     * @param HostPortAccumulator $accumulator
-     * @param array               $server
-     * @param array               $headers
+     * @param HostPortAccumulator            $accumulator
+     * @param array<string, string>          $server
+     * @param array<string, string|string[]> $headers
      *
      * @return void
      */
@@ -187,7 +189,7 @@ abstract class UriFactory
      * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
      * @license   http://framework.zend.com/license/new-bsd New BSD License
      *
-     * @param array $server
+     * @param array<string, string> $server
      *
      * @return string
      */
@@ -303,8 +305,8 @@ abstract class UriFactory
     /**
      * Marshal host/port from misinterpreted IPv6 address.
      *
-     * @param HostPortAccumulator $accumulator
-     * @param array               $server
+     * @param HostPortAccumulator   $accumulator
+     * @param array<string, string> $server
      *
      * @return void
      */

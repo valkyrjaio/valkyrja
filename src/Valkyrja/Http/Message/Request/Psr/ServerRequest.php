@@ -35,6 +35,8 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     /**
      * @inheritDoc
+     *
+     * @return array<array-key, mixed>
      */
     public function getServerParams(): array
     {
@@ -43,6 +45,8 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     /**
      * @inheritDoc
+     *
+     * @return array<array-key, mixed>
      */
     public function getCookieParams(): array
     {
@@ -51,8 +55,10 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     /**
      * @inheritDoc
+     *
+     * @param array<array-key, mixed> $cookies The cookies
      */
-    public function withCookieParams(array $cookies): ServerRequestInterface
+    public function withCookieParams(array $cookies): static
     {
         $new = clone $this;
 
@@ -63,6 +69,8 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     /**
      * @inheritDoc
+     *
+     * @return array<array-key, mixed>
      */
     public function getQueryParams(): array
     {
@@ -71,8 +79,10 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     /**
      * @inheritDoc
+     *
+     * @param array<array-key, mixed> $query The query
      */
-    public function withQueryParams(array $query): ServerRequestInterface
+    public function withQueryParams(array $query): static
     {
         $new = clone $this;
 
@@ -83,6 +93,8 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     /**
      * @inheritDoc
+     *
+     * @return array<array-key, mixed>
      */
     public function getUploadedFiles(): array
     {
@@ -99,8 +111,10 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     /**
      * @inheritDoc
+     *
+     * @param array<array-key, mixed> $uploadedFiles The uploaded files
      */
-    public function withUploadedFiles(array $uploadedFiles): ServerRequestInterface
+    public function withUploadedFiles(array $uploadedFiles): static
     {
         $new = clone $this;
 
@@ -114,6 +128,8 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     /**
      * @inheritDoc
+     *
+     * @return array<array-key, mixed>|object|null
      */
     public function getParsedBody(): object|array|null
     {
@@ -122,8 +138,10 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     /**
      * @inheritDoc
+     *
+     * @param array<array-key, mixed>|object|null $data The data
      */
-    public function withParsedBody($data): ServerRequestInterface
+    public function withParsedBody($data): static
     {
         $new = clone $this;
 
@@ -134,6 +152,8 @@ class ServerRequest extends Request implements ServerRequestInterface
 
     /**
      * @inheritDoc
+     *
+     * @return array<array-key, mixed>
      */
     public function getAttributes(): array
     {

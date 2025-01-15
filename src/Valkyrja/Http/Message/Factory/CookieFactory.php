@@ -40,7 +40,7 @@ abstract class CookieFactory
      *
      * @param string $cookieHeader
      *
-     * @return array
+     * @return array<string, string>
      */
     public static function parseCookieHeader(string $cookieHeader): array
     {
@@ -61,7 +61,7 @@ abstract class CookieFactory
 
         $cookies = [];
 
-        /** @var array $matches */
+        /** @var array<int, array{name: string, value: string}> $matches */
         foreach ($matches as $match) {
             $cookies[$match['name']] = urldecode($match['value']);
         }
@@ -69,6 +69,11 @@ abstract class CookieFactory
         return $cookies;
     }
 
+    /**
+     * @param array<string, string> $cookies The cookies
+     *
+     * @return string
+     */
     public static function convertCookieArrayToHeaderString(array $cookies): string
     {
         return implode(

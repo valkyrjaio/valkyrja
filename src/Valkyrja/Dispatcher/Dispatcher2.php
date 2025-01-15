@@ -101,7 +101,7 @@ class Dispatcher2 implements Contract
         /** @var mixed $response */
         $response = $dispatch->isStatic()
             ? $class::$$property
-            : $this->container->get($class)->{$property};
+            : $this->container->get($class)?->{$property};
 
         return $response;
     }

@@ -36,12 +36,12 @@ abstract class RequestFactory
     /**
      * Create a request from the supplied superglobal values.
      *
-     * @param array|null                  $server  [optional] $_SERVER superglobal
-     * @param array|null                  $query   [optional] $_GET superglobal
-     * @param array|null                  $body    [optional] $_POST superglobal
-     * @param array|null                  $cookies [optional] $_COOKIE superglobal
-     * @param array|null                  $files   [optional] $_FILES superglobal
-     * @param class-string<ServerRequest> $class   [optional] The request class to return
+     * @param array<string, string>|null      $server  [optional] $_SERVER superglobal
+     * @param array<array-key, mixed>|null    $query   [optional] $_GET superglobal
+     * @param array<array-key, mixed>|null    $body    [optional] $_POST superglobal
+     * @param array<string, string|null>|null $cookies [optional] $_COOKIE superglobal
+     * @param array<array-key, mixed>|null    $files   [optional] $_FILES superglobal
+     * @param class-string<ServerRequest>     $class   [optional] The request class to return
      *
      * @return ServerRequest
      */
@@ -58,6 +58,7 @@ abstract class RequestFactory
         $query ??= $_GET;
         $body ??= $_POST;
 
+        /** @var array<string, string> $server */
         $server['REQUEST_METHOD'] ??= RequestMethod::GET->value;
 
         $server  = ServerFactory::normalizeServer($server);
@@ -90,11 +91,11 @@ abstract class RequestFactory
     /**
      * Create a json request.
      *
-     * @param array|null $server  [optional] $_SERVER superglobal
-     * @param array|null $query   [optional] $_GET superglobal
-     * @param array|null $body    [optional] $_POST superglobal
-     * @param array|null $cookies [optional] $_COOKIE superglobal
-     * @param array|null $files   [optional] $_FILES superglobal
+     * @param array<string, string>|null      $server  [optional] $_SERVER superglobal
+     * @param array<array-key, mixed>|null    $query   [optional] $_GET superglobal
+     * @param array<array-key, mixed>|null    $body    [optional] $_POST superglobal
+     * @param array<string, string|null>|null $cookies [optional] $_COOKIE superglobal
+     * @param array<array-key, mixed>|null    $files   [optional] $_FILES superglobal
      *
      * @return ServerRequest
      */
@@ -143,7 +144,7 @@ abstract class RequestFactory
     /**
      * Return HTTP protocol version (X.Y).
      *
-     * @param array $server
+     * @param array<string, string> $server
      *
      * @throws UnexpectedValueException
      *

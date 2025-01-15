@@ -28,9 +28,9 @@ interface ResponseFactory
     /**
      * Create a response.
      *
-     * @param string|null     $content    [optional] The response content
-     * @param StatusCode|null $statusCode [optional] The response status code
-     * @param array|null      $headers    [optional] An array of response headers
+     * @param string|null                  $content    [optional] The response content
+     * @param StatusCode|null              $statusCode [optional] The response status code
+     * @param array<string, string[]>|null $headers    [optional] An array of response headers
      *
      * @return Response
      */
@@ -43,9 +43,9 @@ interface ResponseFactory
     /**
      * Create a JSON response.
      *
-     * @param array|null      $data       [optional] The data to set
-     * @param StatusCode|null $statusCode [optional] The response status code
-     * @param array|null      $headers    [optional] An array of response headers
+     * @param array<array-key, mixed>|null $data       [optional] The data to set
+     * @param StatusCode|null              $statusCode [optional] The response status code
+     * @param array<string, string[]>|null $headers    [optional] An array of response headers
      *
      * @return JsonResponse
      */
@@ -58,10 +58,10 @@ interface ResponseFactory
     /**
      * Create a JSONP response.
      *
-     * @param string          $callback   The jsonp callback
-     * @param array|null      $data       [optional] The data to set
-     * @param StatusCode|null $statusCode [optional] The response status code
-     * @param array|null      $headers    [optional] An array of response headers
+     * @param string                       $callback   The jsonp callback
+     * @param array<array-key, mixed>|null $data       [optional] The data to set
+     * @param StatusCode|null              $statusCode [optional] The response status code
+     * @param array<string, string[]>|null $headers    [optional] An array of response headers
      *
      * @return JsonResponse
      */
@@ -75,9 +75,9 @@ interface ResponseFactory
     /**
      * Create a redirect response.
      *
-     * @param string|null     $uri        [optional] The uri to redirect to
-     * @param StatusCode|null $statusCode [optional] The response status code
-     * @param array|null      $headers    [optional] An array of response headers
+     * @param string|null                  $uri        [optional] The uri to redirect to
+     * @param StatusCode|null              $statusCode [optional] The response status code
+     * @param array<string, string[]>|null $headers    [optional] An array of response headers
      *
      * @return RedirectResponse
      */

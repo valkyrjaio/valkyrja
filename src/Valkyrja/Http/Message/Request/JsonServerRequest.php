@@ -48,9 +48,9 @@ class JsonServerRequest extends ServerRequest implements Contract
      * @param array<string, string[]>    $headers    [optional] The headers
      * @param array<string, mixed>       $server     [optional] The server
      * @param array<string, string|null> $cookies    [optional] The cookies
-     * @param array                      $query      [optional] The query string
-     * @param array                      $parsedBody [optional] The parsed body
-     * @param array                      $parsedJson [optional] The parsed json
+     * @param array<array-key, mixed>    $query      [optional] The query string
+     * @param array<array-key, mixed>    $parsedBody [optional] The parsed body
+     * @param array<array-key, mixed>    $parsedJson [optional] The parsed json
      * @param ProtocolVersion            $protocol   [optional] The protocol version
      * @param UploadedFile[]|array       $files      [optional] The files
      *

@@ -155,7 +155,7 @@ trait Message
     /**
      * @inheritDoc
      *
-     * @param string ...$value Header value(s).
+     * @param string ...$values Header value(s).
      *
      * @return static
      */
@@ -240,7 +240,7 @@ trait Message
     /**
      * Set headers.
      *
-     * @param array<string, string|array> $originalHeaders The original headers
+     * @param array<string, string|string[]> $originalHeaders The original headers
      *
      * @throws InvalidArgumentException
      *
@@ -285,12 +285,12 @@ trait Message
     /**
      * Inject a header in a headers array.
      *
-     * @param string     $header   The header to set
-     * @param string     $value    The value to set
-     * @param array|null $headers  [optional] The headers
-     * @param bool       $override [optional] Whether to override any existing value
+     * @param string                       $header   The header to set
+     * @param string                       $value    The value to set
+     * @param array<string, string[]>|null $headers  [optional] The headers
+     * @param bool                         $override [optional] Whether to override any existing value
      *
-     * @return array
+     * @return array<string, string[]>
      */
     protected function injectHeader(
         string $header,
@@ -304,7 +304,7 @@ trait Message
         $normalized = strtolower($header);
         // The original value for the header (if it exists in the headers array)
         // Defaults to the value passed in
-        $originalValue = $value;
+        $originalValue = [$value];
 
         // Iterate through all the headers
         foreach ($headers as $headerIndex => $headerValue) {
@@ -321,7 +321,9 @@ trait Message
         }
 
         // Set the header in the headers list
-        $headers[$header] = [$override ? $value : $originalValue];
+        $headers[$header] = $override
+            ? [$value]
+            : $originalValue;
 
         return $headers;
     }

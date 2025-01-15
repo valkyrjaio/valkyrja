@@ -47,14 +47,14 @@ interface Value extends ArrayAccess, Countable, Iterator, JsonSerializable, Stri
     public function getComponents(): array;
 
     /**
-     * @param array<int, Component|string> $components
+     * @param Component|string ...$components The components
      *
      * @return static
      */
     public function withComponents(Component|string ...$components): static;
 
     /**
-     * @param array<int, Component|string> $components
+     * @param Component|string ...$components The components
      *
      * @return static
      */

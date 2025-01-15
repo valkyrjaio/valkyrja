@@ -28,9 +28,9 @@ abstract class HeaderFactory
     /**
      * Marshal headers from $_SERVER.
      *
-     * @param array $server
+     * @param array<string, string> $server
      *
-     * @return array
+     * @return array<string, string>
      */
     public static function marshalHeaders(array $server): array
     {

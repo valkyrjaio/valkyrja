@@ -149,7 +149,7 @@ class Request implements Contract
 
         $new->headerNames['host'] = HeaderName::HOST;
 
-        $new->headers = $this->injectHeader(HeaderName::HOST, $host, $new->headerNames, true);
+        $new->headers = $this->injectHeader(HeaderName::HOST, $host, $this->headers, true);
 
         return $new;
     }

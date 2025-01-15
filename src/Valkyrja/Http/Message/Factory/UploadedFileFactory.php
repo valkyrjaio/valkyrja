@@ -35,11 +35,11 @@ abstract class UploadedFileFactory
      * Transforms each value into an UploadedFile instance, and ensures
      * that nested arrays are normalized.
      *
-     * @param array $files The files
+     * @param array<array-key, mixed> $files The files
      *
      * @throws InvalidArgumentException for unrecognized values
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public static function normalizeFiles(array $files): array
     {
@@ -82,7 +82,7 @@ abstract class UploadedFileFactory
     }
 
     /**
-     * @param UploadedFileInterface[] $files
+     * @param UploadedFileInterface ...$files
      *
      * @return UploadedFile[]
      */
@@ -99,7 +99,7 @@ abstract class UploadedFileFactory
      * If the specification represents an array of values, this method will
      * delegate to normalizeNestedFileSpec() and return that return value.
      *
-     * @param array $value $_FILES struct
+     * @param array<array-key, mixed> $value $_FILES struct
      *
      * @throws InvalidArgumentException
      *
@@ -126,7 +126,7 @@ abstract class UploadedFileFactory
      * Loops through all nested files and returns a normalized array of
      * UploadedFileInterface instances.
      *
-     * @param array $files
+     * @param array<array-key, mixed> $files
      *
      * @throws InvalidArgumentException
      *

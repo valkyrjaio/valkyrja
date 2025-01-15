@@ -33,32 +33,25 @@ class HttpException extends RuntimeException
     /**
      * The headers for this exception.
      *
-     * @var array
+     * @var array<string, string[]>
      */
     protected array $headers = [];
-
-    /**
-     * The response to send for this exception.
-     *
-     * @var Response|null
-     */
-    protected Response|null $response = null;
 
     /**
      * HttpException constructor.
      *
      * @see http://php.net/manual/en/exception.construct.php
      *
-     * @param StatusCode|null $statusCode [optional] The status code to use
-     * @param string|null     $message    [optional] The Exception message to throw
-     * @param array|null      $headers    [optional] The headers to send
-     * @param Response|null   $response   [optional] The Response to send
+     * @param StatusCode|null              $statusCode [optional] The status code to use
+     * @param string|null                  $message    [optional] The Exception message to throw
+     * @param array<string, string[]>|null $headers    [optional] The headers to send
+     * @param Response|null                $response   [optional] The Response to send
      */
     public function __construct(
         StatusCode|null $statusCode = null,
         string|null $message = null,
-        array|null $headers = null,
-        Response|null $response = null
+        array|null $headers = [],
+        protected Response|null $response = null
     ) {
         $this->statusCode = $statusCode
             ?? $response?->getStatusCode()
@@ -82,7 +75,7 @@ class HttpException extends RuntimeException
     /**
      * Get the headers set for this exception.
      *
-     * @return array
+     * @return array<string, string[]>
      */
     public function getHeaders(): array
     {

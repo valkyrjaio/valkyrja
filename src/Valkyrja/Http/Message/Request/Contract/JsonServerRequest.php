@@ -26,31 +26,31 @@ interface JsonServerRequest extends ServerRequest
      * and the request method is POST, this method MUST
      * return the decoded contents of the body.
      *
-     * @return array The decoded json, if any.
-     *               These will typically be an array or object.
+     * @return array<array-key, mixed> The decoded json, if any.
+     *                                 These will typically be an array or object.
      */
     public function getParsedJson(): array;
 
     /**
      * Retrieve only the specified request body params.
      *
-     * @param string[]|int[] $names The param names to retrieve
+     * @param string|int ...$names The param names to retrieve
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function onlyParsedJson(string|int ...$names): array;
 
     /**
      * Retrieve all request body params except the ones specified.
      *
-     * @param string[]|int[] $names The param names to not retrieve
+     * @param string|int ...$names The param names to not retrieve
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function exceptParsedJson(string|int ...$names): array;
 
     /**
-     * @param array $data The json params
+     * @param array<array-key, mixed> $data The json params
      *
      * @return static
      */
