@@ -1,8 +1,7 @@
-CONTRIBUTORS
-============
+# Contributors
 
-Valkyrja is the result of the work of many people who made the code better
-(see https://valkyrja.io/contributors for more information):
+Shout out to our top contributors!
 
- - Melech Mizrachi (MelechMizrachi)
- - Nicolas CARPi (NicolasCARPi)
+- [MelechMizrachi](https://api.github.com/users/MelechMizrachi)
+- [StyleCIBot](https://api.github.com/users/StyleCIBot)
+- [NicolasCARPi](https://api.github.com/users/NicolasCARPi)
