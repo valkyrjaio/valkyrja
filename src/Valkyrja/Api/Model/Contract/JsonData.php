@@ -57,14 +57,14 @@ interface JsonData extends Model
     /**
      * Get the items.
      *
-     * @return array|null
+     * @return object[]|null
      */
     public function getItems(): array|null;
 
     /**
      * Set the items.
      *
-     * @param array|null $items
+     * @param object[]|null $items
      *
      * @return static
      */

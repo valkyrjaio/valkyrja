@@ -57,7 +57,7 @@ interface Tagger
      *
      * @param string ...$keys
      *
-     * @return array
+     * @return string[]
      */
     public function many(string ...$keys): array;
 
@@ -85,8 +85,8 @@ interface Tagger
      *      )
      * </code>
      *
-     * @param array $values
-     * @param int   $minutes
+     * @param array<string, mixed> $values
+     * @param int                  $minutes
      *
      * @return void
      */

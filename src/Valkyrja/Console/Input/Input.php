@@ -31,35 +31,35 @@ class Input implements Contract
     /**
      * The request arguments.
      *
-     * @var array
+     * @var string[]
      */
     protected array $inputArguments = [];
 
     /**
      * The arguments.
      *
-     * @var array
+     * @var string[]
      */
     protected array $arguments = [];
 
     /**
      * The short options.
      *
-     * @var array
+     * @var string[]
      */
     protected array $shortOptions = [];
 
     /**
      * The long options.
      *
-     * @var array
+     * @var string[]
      */
     protected array $longOptions = [];
 
     /**
      * Input constructor.
      *
-     * @param array $arguments [optional] The input arguments
+     * @param string[] $arguments [optional] The input arguments
      */
     public function __construct(array $arguments = [])
     {

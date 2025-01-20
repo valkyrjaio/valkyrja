@@ -58,11 +58,16 @@ trait TokenizableUserTrait
      * @inheritDoc
      *
      * @throws JsonException
+     *
+     * @return array<string, mixed>
      */
     public function asTokenizableArray(): array
     {
+        /** @var string $idField */
+        $idField = static::getIdField();
+
         return [
-            static::getIdField() => $this->{static::getIdField()},
+            $idField => $this->{$idField},
         ];
     }
 

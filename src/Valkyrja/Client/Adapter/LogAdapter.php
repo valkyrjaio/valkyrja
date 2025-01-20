@@ -30,38 +30,17 @@ use Valkyrja\Type\BuiltIn\Support\Obj;
 class LogAdapter implements Contract
 {
     /**
-     * The logger.
-     *
-     * @var Logger
-     */
-    protected Logger $logger;
-
-    /**
-     * The response factory.
-     *
-     * @var ResponseFactory
-     */
-    protected ResponseFactory $responseFactory;
-
-    /**
-     * The client config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * LogAdapter constructor.
      *
-     * @param Logger          $logger          The logger
-     * @param ResponseFactory $responseFactory The response factory
-     * @param array           $config          The config
+     * @param Logger               $logger          The logger
+     * @param ResponseFactory      $responseFactory The response factory
+     * @param array<string, mixed> $config          The config
      */
-    public function __construct(Logger $logger, ResponseFactory $responseFactory, array $config)
-    {
-        $this->logger          = $logger;
-        $this->responseFactory = $responseFactory;
-        $this->config          = $config;
+    public function __construct(
+        protected Logger $logger,
+        protected ResponseFactory $responseFactory,
+        protected array $config
+    ) {
     }
 
     /**

@@ -17,6 +17,14 @@ namespace Valkyrja\Path\Parser\Contract;
  * Interface Parser.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-type ParsedPathParams array<string, array{regex: string, replace: non-falsy-string}>
+ *
+ * @phpstan-type ParsedPathParams array<string, array{regex: string, replace: non-falsy-string}>
+ *
+ * @psalm-type ParsedPath array{params: ParsedPathParams, regex: non-falsy-string, segments: string[]}
+ *
+ * @phpstan-type ParsedPath array{params: ParsedPathParams, regex: non-falsy-string, segments: string[]}
  */
 interface Parser
 {
@@ -25,7 +33,7 @@ interface Parser
      *
      * @param string $path The path
      *
-     * @return array{params: array<string, array{regex: string, replace: non-falsy-string}>, regex: non-falsy-string, segments: string[]}
+     * @return ParsedPath
      */
     public function parse(string $path): array;
 }

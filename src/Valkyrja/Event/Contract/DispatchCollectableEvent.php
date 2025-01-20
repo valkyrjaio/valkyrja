@@ -27,6 +27,8 @@ interface DispatchCollectableEvent
 
     /**
      * Get the dispatches.
+     *
+     * @return array<int, mixed>
      */
     public function getDispatches(): array;
 }

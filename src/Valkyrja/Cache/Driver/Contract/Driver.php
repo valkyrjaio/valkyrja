@@ -48,7 +48,7 @@ interface Driver extends Contract
      *
      * @param string ...$keys
      *
-     * @return array
+     * @return string[]
      */
     public function many(string ...$keys): array;
 
@@ -76,8 +76,8 @@ interface Driver extends Contract
      *      )
      * </code>
      *
-     * @param array $values
-     * @param int   $minutes
+     * @param array<string, string> $values
+     * @param int                   $minutes
      *
      * @return void
      */

@@ -45,7 +45,7 @@ class Parser implements Contract
     /**
      * Parser constructor.
      *
-     * @param Config|array $config
+     * @param Config|array<string, mixed> $config
      */
     public function __construct(
         protected Config|array $config
@@ -164,7 +164,7 @@ class Parser implements Contract
      *
      * @param string $docString The doc string
      *
-     * @return array[]|null
+     * @return array<int, mixed>|null
      */
     protected function getMatches(string $docString): array|null
     {
@@ -178,17 +178,17 @@ class Parser implements Contract
     /**
      * Set a matched annotation.
      *
-     * @param array $matches     The matches
-     *                           [
-     *                           0 => matches,
-     *                           1 => annotation,
-     *                           2 => type,
-     *                           3 => args,
-     *                           4 => var,
-     *                           5 => desc
-     *                           ]
-     * @param int   $index       The index
-     * @param array $annotations The annotations list
+     * @param array<int, ?array<int, string>> $matches     The matches
+     *                                                     [
+     *                                                     0 => matches,
+     *                                                     1 => annotation,
+     *                                                     2 => type,
+     *                                                     3 => args,
+     *                                                     4 => var,
+     *                                                     5 => desc
+     *                                                     ]
+     * @param int                             $index       The index
+     * @param Annotation[]                    $annotations The annotations list
      *
      * @throws InvalidAnnotationKeyArgument
      * @throws JsonException
@@ -200,7 +200,7 @@ class Parser implements Contract
         $parts = $this->getParts($matches, $index);
 
         // Get the annotation model from the annotations map
-        $annotation = $this->getAnnotationFromMap($parts[Part::TYPE]);
+        $annotation = $this->getAnnotationFromMap($parts[Part::TYPE] ?? AnnotationModel::class);
 
         // Set the annotation's type
         $annotation->setType($parts[Part::TYPE]);
@@ -225,10 +225,10 @@ class Parser implements Contract
     /**
      * Get the properties for a matched annotation.
      *
-     * @param array $matches The matches
-     * @param int   $index   The index
+     * @param array<int, ?array<int, string>> $matches The matches
+     * @param int                             $index   The index
      *
-     * @return array
+     * @return array<string, string|null>
      */
     protected function getParts(array $matches, int $index): array
     {
@@ -247,16 +247,16 @@ class Parser implements Contract
     /**
      * Clean the parts.
      *
-     * @param array $parts The parts
+     * @param array<string, string|null> $parts The parts
      *
-     * @return array
+     * @return array<string, string|null>
      */
     protected function cleanParts(array $parts): array
     {
         // If the variable type and description exist but the variable does not
         // then that means the variable regex group captured the
         // first word of the description
-        if ($parts[Part::VARIABLE_TYPE] && $parts[Part::DESCRIPTION] && ! $parts[Part::VARIABLE]) {
+        if ($parts[Part::VARIABLE_TYPE] !== null && $parts[Part::DESCRIPTION] !== null && $parts[Part::VARIABLE] === null) {
             // Rectify this by concatenating the type and description
             $parts[Part::DESCRIPTION] = $parts[Part::VARIABLE_TYPE] . $parts[Part::DESCRIPTION];
 
@@ -320,9 +320,9 @@ class Parser implements Contract
     /**
      * Determine an array property's values.
      *
-     * @param mixed $value The value to check
+     * @param array<int, mixed> $value The value to check
      *
-     * @return array
+     * @return array<int, mixed>
      */
     protected function determineArrayPropertyValue(array $value): array
     {

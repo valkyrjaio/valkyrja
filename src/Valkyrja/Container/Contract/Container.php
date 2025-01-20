@@ -127,10 +127,10 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
      *
      * @template T
      *
-     * @param class-string<T>|string $id        The service id
-     * @param array                  $arguments [optional] The arguments
+     * @param class-string<T>|string  $id        The service id
+     * @param array<array-key, mixed> $arguments [optional] The arguments
      *
-     * @return T|mixed
+     * @return ($id is class-string ? T : mixed)
      */
     public function get(string $id, array $arguments = []): mixed;
 
@@ -139,10 +139,10 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
      *
      * @template T
      *
-     * @param class-string<T>|string $id        The service id
-     * @param array                  $arguments [optional] The arguments
+     * @param class-string<T>|string  $id        The service id
+     * @param array<array-key, mixed> $arguments [optional] The arguments
      *
-     * @return T|mixed
+     * @return ($id is class-string ? T : mixed)
      */
     public function getClosure(string $id, array $arguments = []): mixed;
 
@@ -150,7 +150,7 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
      * Get a service from the container.
      *
      * @param class-string<Service>|string $id        The service id
-     * @param array                        $arguments [optional] The arguments
+     * @param array<array-key, mixed>      $arguments [optional] The arguments
      *
      * @return Service
      */
@@ -163,7 +163,7 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
      *
      * @param class-string<T>|string $id The service id
      *
-     * @return T
+     * @return ($id is class-string ? T : mixed)
      */
     public function getSingleton(string $id): mixed;
 

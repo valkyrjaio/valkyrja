@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Data;
 
-use function get_object_vars;
-
 /**
  * Class InMemoryMetadata.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-type InMemoryMetadataAsArray array{mimetype: string|null, size: int|null, visibility: string|null}
+ *
+ * @phpstan-type InMemoryMetadataAsArray array{mimetype: string|null, size: int|null, visibility: string|null}
  */
 class InMemoryMetadata
 {
@@ -29,8 +31,15 @@ class InMemoryMetadata
     ) {
     }
 
+    /**
+     * @return InMemoryMetadataAsArray
+     */
     public function toArray(): array
     {
-        return get_object_vars($this);
+        return [
+            'mimetype'   => $this->mimetype,
+            'size'       => $this->size,
+            'visibility' => $this->visibility,
+        ];
     }
 }

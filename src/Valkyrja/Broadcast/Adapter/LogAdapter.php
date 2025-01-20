@@ -26,29 +26,15 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 class LogAdapter extends NullAdapter
 {
     /**
-     * The logger.
-     *
-     * @var Logger
-     */
-    protected Logger $log;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * LogAdapter constructor.
      *
-     * @param Logger $logger The logger
-     * @param array  $config The config
+     * @param Logger               $log    The logger
+     * @param array<string, mixed> $config The config
      */
-    public function __construct(Logger $logger, array $config)
-    {
-        $this->config = $config;
-        $this->log    = $logger;
+    public function __construct(
+        protected Logger $log,
+        protected array $config
+    ) {
     }
 
     /**

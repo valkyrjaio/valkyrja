@@ -36,9 +36,9 @@ class GuzzleAdapter implements Contract
     /**
      * GuzzleAdapter constructor.
      *
-     * @param ClientInterface $guzzle          The guzzle client
-     * @param ResponseFactory $responseFactory The response factory
-     * @param array           $config          The client config
+     * @param ClientInterface      $guzzle          The guzzle client
+     * @param ResponseFactory      $responseFactory The response factory
+     * @param array<string, mixed> $config          The client config
      */
     public function __construct(
         protected ClientInterface $guzzle,
@@ -141,8 +141,8 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle headers.
      *
-     * @param ServerRequest $request  The request
-     * @param array         &$options The options
+     * @param ServerRequest        $request  The request
+     * @param array<string, mixed> &$options The options
      *
      * @return void
      */
@@ -160,8 +160,8 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle cookies.
      *
-     * @param ServerRequest $request  The request
-     * @param array         &$options The options
+     * @param ServerRequest        $request  The request
+     * @param array<string, mixed> &$options The options
      *
      * @return void
      */
@@ -186,8 +186,8 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle form params.
      *
-     * @param ServerRequest $request  The request
-     * @param array         &$options The options
+     * @param ServerRequest        $request  The request
+     * @param array<string, mixed> &$options The options
      *
      * @return void
      */
@@ -204,8 +204,8 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle body.
      *
-     * @param ServerRequest $request  The request
-     * @param array         &$options The options
+     * @param ServerRequest        $request  The request
+     * @param array<string, mixed> &$options The options
      *
      * @return void
      */

@@ -33,14 +33,14 @@ class Container implements Contract
     /**
      * The aliases.
      *
-     * @var array<class-string<Service>|string, class-string<Service>|string>
+     * @var array<class-string|string, class-string|string>
      */
     protected array $aliases = [];
 
     /**
      * The instances.
      *
-     * @var array<class-string<Service>|string, mixed>
+     * @var array<class-string|string, mixed>
      */
     protected array $instances = [];
 
@@ -54,22 +54,22 @@ class Container implements Contract
     /**
      * The service closures.
      *
-     * @var array<class-string<Service>|string, Closure>
+     * @var array<class-string|string, Closure>
      */
     protected array $closures = [];
 
     /**
      * The singletons.
      *
-     * @var array<class-string<Service>|string, class-string<Service>|string>
+     * @var array<class-string|string, class-string|string>
      */
     protected array $singletons = [];
 
     /**
      * Container constructor.
      *
-     * @param Config|array $config
-     * @param bool         $debug
+     * @param Config|array<string, mixed> $config
+     * @param bool                        $debug
      */
     public function __construct(
         protected Config|array $config = new Config(),
@@ -383,8 +383,8 @@ class Container implements Contract
     /**
      * Get a service bound to a closure from the container without trying to get an alias or ensuring published.
      *
-     * @param class-string|string $id        The service id
-     * @param array               $arguments [optional] The arguments
+     * @param class-string|string     $id        The service id
+     * @param array<array-key, mixed> $arguments [optional] The arguments
      *
      * @return mixed
      */
@@ -414,7 +414,7 @@ class Container implements Contract
      * Get a service from the container without trying to get an alias or ensuring published.
      *
      * @param class-string<Service>|string $id        The service id
-     * @param array                        $arguments [optional] The arguments
+     * @param array<array-key, mixed>      $arguments [optional] The arguments
      *
      * @return Service
      */

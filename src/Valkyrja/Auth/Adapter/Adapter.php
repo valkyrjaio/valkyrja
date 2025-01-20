@@ -31,7 +31,7 @@ abstract class Adapter implements Contract
     /**
      * Adapter constructor.
      *
-     * @param Config|array $config The config
+     * @param Config|array<string, mixed> $config The config
      */
     public function __construct(
         protected Config|array $config

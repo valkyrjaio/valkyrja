@@ -47,8 +47,8 @@ interface Adapter extends Contract
     /**
      * Encrypt an array.
      *
-     * @param array       $array The array to encrypt
-     * @param string|null $key   The encryption key
+     * @param array<array-key, mixed> $array The array to encrypt
+     * @param string|null             $key   The encryption key
      *
      * @throws CryptException On any failure
      *
@@ -88,7 +88,7 @@ interface Adapter extends Contract
      *
      * @throws CryptException On any failure
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function decryptArray(string $encrypted, string|null $key = null): array;
 

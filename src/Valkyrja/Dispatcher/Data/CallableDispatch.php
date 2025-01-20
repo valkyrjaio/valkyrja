@@ -19,15 +19,17 @@ use Valkyrja\Dispatcher\Data\Contract\CallableDispatch as Contract;
  * Class CallableDispatch.
  *
  * @author Melech Mizrachi
- *
- * @phpstan-consistent-constructor
- *   Will be overridden if need be
  */
 class CallableDispatch extends Dispatch implements Contract
 {
     /** @var callable */
     protected $callable;
 
+    /**
+     * @param callable                     $callable     The callable
+     * @param array<array-key, mixed>|null $arguments    The arguments
+     * @param string[]|null                $dependencies The dependencies
+     */
     public function __construct(
         callable $callable,
         protected array|null $arguments = null,

@@ -26,29 +26,15 @@ use Valkyrja\Cache\Tagger\Tagger as TagClass;
 class RedisAdapter implements Contract
 {
     /**
-     * The prefix to use for all keys.
-     *
-     * @var string
-     */
-    protected string $prefix;
-
-    /**
-     * The predis client.
-     *
-     * @var Client
-     */
-    protected Client $predis;
-
-    /**
      * RedisAdapter constructor.
      *
-     * @param Client      $client The predis client
-     * @param string|null $prefix The prefix
+     * @param Client $predis The predis client
+     * @param string $prefix The prefix
      */
-    public function __construct(Client $client, string|null $prefix = null)
-    {
-        $this->predis = $client;
-        $this->prefix = $prefix ?? '';
+    public function __construct(
+        protected Client $predis,
+        protected string $prefix = ''
+    ) {
     }
 
     /**
@@ -98,7 +84,6 @@ class RedisAdapter implements Contract
 
         $this->predis->transaction(
             function (Client $client) use ($values, $seconds): void {
-                /** @var Client $client */
                 foreach ($values as $key => $value) {
                     $client->setex($this->getKey($key), $seconds, $value);
                 }
@@ -151,7 +136,7 @@ class RedisAdapter implements Contract
      */
     public function getPrefix(): string
     {
-        return $this->prefix ?? '';
+        return $this->prefix;
     }
 
     /**

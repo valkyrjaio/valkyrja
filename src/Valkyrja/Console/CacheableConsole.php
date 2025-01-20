@@ -54,6 +54,8 @@ class CacheableConsole extends Console
 
     /**
      * @inheritDoc
+     *
+     * @return ConsoleConfig|array<string, mixed>
      */
     protected function getConfig(): Config|array
     {
@@ -62,6 +64,8 @@ class CacheableConsole extends Console
 
     /**
      * @inheritDoc
+     *
+     * @param ConsoleConfig|array<string, mixed> $config
      */
     protected function beforeSetup(Config|array $config): void
     {
@@ -69,6 +73,8 @@ class CacheableConsole extends Console
 
     /**
      * @inheritDoc
+     *
+     * @param ConsoleConfig|array<string, mixed> $config
      */
     protected function setupFromCache(Config|array $config): void
     {
@@ -89,6 +95,8 @@ class CacheableConsole extends Console
 
     /**
      * @inheritDoc
+     *
+     * @param ConsoleConfig|array<string, mixed> $config
      */
     protected function setupNotCached(Config|array $config): void
     {
@@ -102,6 +110,8 @@ class CacheableConsole extends Console
 
     /**
      * @inheritDoc
+     *
+     * @param ConsoleConfig|array<string, mixed> $config
      */
     protected function setupAttributes(Config|array $config): void
     {
@@ -110,7 +120,7 @@ class CacheableConsole extends Console
     /**
      * Setup command providers.
      *
-     * @param ConsoleConfig|array $config
+     * @param ConsoleConfig|array<string, mixed> $config
      *
      * @return void
      */
@@ -134,6 +144,8 @@ class CacheableConsole extends Console
 
     /**
      * @inheritDoc
+     *
+     * @param ConsoleConfig|array<string, mixed> $config
      */
     protected function afterSetup(Config|array $config): void
     {

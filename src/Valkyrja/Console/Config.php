@@ -110,7 +110,7 @@ class Config extends Model
     /**
      * Set the cache.
      *
-     * @param Cache|array|null $cache The cache
+     * @param Cache|array<string, mixed>|null $cache The cache
      *
      * @return void
      */

@@ -67,9 +67,9 @@ class AppProvider extends Provider
     /**
      * Bootstrap services.
      *
-     * @param Application  $app       The application
-     * @param Container    $container The container
-     * @param Config|array $config    The config
+     * @param Application                 $app       The application
+     * @param Container                   $container The container
+     * @param Config|array<string, mixed> $config    The config
      *
      * @return void
      */
@@ -86,9 +86,9 @@ class AppProvider extends Provider
     /**
      * Bootstrap error handler.
      *
-     * @param Application  $app       The application
-     * @param Container    $container The container
-     * @param Config|array $config    The config
+     * @param Application                 $app       The application
+     * @param Container                   $container The container
+     * @param Config|array<string, mixed> $config    The config
      *
      * @return void
      */
@@ -114,7 +114,7 @@ class AppProvider extends Provider
     /**
      * Bootstrap the timezone.
      *
-     * @param Config|array $config The config
+     * @param Config|array<string, mixed> $config The config
      *
      * @return void
      */

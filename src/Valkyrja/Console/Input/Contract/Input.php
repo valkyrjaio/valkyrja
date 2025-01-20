@@ -25,28 +25,28 @@ interface Input
     /**
      * Get the arguments.
      *
-     * @return array
+     * @return string[]
      */
     public function getArguments(): array;
 
     /**
      * Get the short options.
      *
-     * @return array
+     * @return string[]
      */
     public function getShortOptions(): array;
 
     /**
      * Get the arguments.
      *
-     * @return array
+     * @return string[]
      */
     public function getLongOptions(): array;
 
     /**
      * Get the arguments.
      *
-     * @return array
+     * @return string[]
      */
     public function getOptions(): array;
 
@@ -60,7 +60,7 @@ interface Input
     /**
      * Get the input arguments.
      *
-     * @return array
+     * @return string[]
      */
     public function getInputArguments(): array;
 

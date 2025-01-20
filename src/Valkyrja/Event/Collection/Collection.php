@@ -265,7 +265,7 @@ class Collection implements Contract
     /**
      * Ensure a listener, or null, is returned.
      *
-     * @param Listener|array $listener The listener
+     * @param Listener|array<string, mixed> $listener The listener
      *
      * @return Listener
      */

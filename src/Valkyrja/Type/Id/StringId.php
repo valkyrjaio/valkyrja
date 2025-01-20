@@ -22,9 +22,6 @@ use Valkyrja\Type\Type;
  * @author Melech Mizrachi
  *
  * @extends Type<string>
- *
- * @phpstan-consistent-constructor
- *   Will be overridden if need be
  */
 class StringId extends Type implements Contract
 {

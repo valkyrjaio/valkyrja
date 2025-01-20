@@ -82,7 +82,7 @@ interface Api
     /**
      * Make a new JSON model from an array.
      *
-     * @param array $array
+     * @param array<array-key, mixed> $array
      *
      * @return Json
      */
@@ -91,7 +91,7 @@ interface Api
     /**
      * Make a new JSON model from an array.
      *
-     * @param array $array
+     * @param array<array-key, mixed> $array
      *
      * @return JsonResponse
      */

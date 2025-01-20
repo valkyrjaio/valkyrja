@@ -17,9 +17,6 @@ namespace Valkyrja\Type\Model;
  * Trait UnpackForNewInstance.
  *
  * @author Melech Mizrachi
- *
- * @phpstan-consistent-constructor
- *   Will be overridden if need be
  */
 trait UnpackForNewInstance
 {

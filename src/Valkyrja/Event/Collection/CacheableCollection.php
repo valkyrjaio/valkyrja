@@ -35,8 +35,8 @@ class CacheableCollection extends Collection
     /**
      * CacheableCollection constructor.
      *
-     * @param Container         $container
-     * @param EventConfig|array $config
+     * @param Container                        $container
+     * @param EventConfig|array<string, mixed> $config
      */
     public function __construct(
         protected Container $container,
@@ -46,6 +46,8 @@ class CacheableCollection extends Collection
 
     /**
      * @inheritDoc
+     *
+     * @return Cache
      */
     public function getCacheable(): Config
     {
@@ -64,6 +66,8 @@ class CacheableCollection extends Collection
 
     /**
      * @inheritDoc
+     *
+     * @return EventConfig|array<string, mixed>
      */
     protected function getConfig(): Config|array
     {
@@ -72,6 +76,8 @@ class CacheableCollection extends Collection
 
     /**
      * @inheritDoc
+     *
+     * @param EventConfig|array<string, mixed> $config
      */
     protected function beforeSetup(Config|array $config): void
     {
@@ -79,6 +85,8 @@ class CacheableCollection extends Collection
 
     /**
      * @inheritDoc
+     *
+     * @param EventConfig|array<string, mixed> $config
      */
     protected function setupNotCached(Config|array $config): void
     {
@@ -87,6 +95,8 @@ class CacheableCollection extends Collection
 
     /**
      * @inheritDoc
+     *
+     * @param EventConfig|array<string, mixed> $config
      */
     protected function setupFromCache(Config|array $config): void
     {
@@ -98,6 +108,8 @@ class CacheableCollection extends Collection
 
     /**
      * @inheritDoc
+     *
+     * @param EventConfig|array<string, mixed> $config
      */
     protected function setupAttributes(Config|array $config): void
     {
@@ -114,13 +126,18 @@ class CacheableCollection extends Collection
 
     /**
      * @inheritDoc
+     *w
+     *
+     * @param EventConfig|array<string, mixed> $config
      */
-    protected function afterSetup($config): void
+    protected function afterSetup(Config|array $config): void
     {
     }
 
     /**
      * @inheritDoc
+     *
+     * @param EventConfig|array<string, mixed> $config
      */
     protected function requireFilePath(Config|array $config): void
     {

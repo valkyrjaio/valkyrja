@@ -34,9 +34,6 @@ use function strtolower;
  * Class Header.
  *
  * @author Melech Mizrachi
- *
- * @phpstan-consistent-constructor
- *   Will be overridden if need be
  */
 class Header implements Contract
 {
@@ -104,7 +101,7 @@ class Header implements Contract
 
         if (str_contains($header, static::DELIMINATOR)) {
             [$header, $valuesAsString] = explode(static::DELIMINATOR, $value);
-            $values                    = [$valuesAsString];
+            $values = [$valuesAsString];
         }
 
         if (str_contains($valuesAsString, static::VALUE_DELIMINATOR)) {

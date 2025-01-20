@@ -17,20 +17,10 @@ namespace Valkyrja\Console\Constant;
  * Enum ExitCode.
  *
  * @author Melech Mizrachi
- *
- * @method static ExitCode SUCCESS()
- * @method static ExitCode FAILURE()
- * @method static ExitCode AUTO_EXIT()
  */
 final class ExitCode
 {
     public const SUCCESS   = 0;
     public const FAILURE   = 1;
     public const AUTO_EXIT = 255;
-
-    protected static array|null $VALUES = [
-        self::SUCCESS   => self::SUCCESS,
-        self::FAILURE   => self::FAILURE,
-        self::AUTO_EXIT => self::AUTO_EXIT,
-    ];
 }

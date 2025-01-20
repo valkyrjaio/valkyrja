@@ -38,14 +38,16 @@ interface Dispatcher extends EventDispatcherInterface
     /**
      * Dispatch an event by its id.
      *
-     * @param class-string $eventId The event class name
+     * @param class-string            $eventId   The event class name
+     * @param array<array-key, mixed> $arguments The arguments to pass to the event class
      */
     public function dispatchById(string $eventId, array $arguments = []): object;
 
     /**
      * Dispatch an event by its id if it has listeners.
      *
-     * @param class-string $eventId The event class name
+     * @param class-string            $eventId   The event class name
+     * @param array<array-key, mixed> $arguments The arguments to pass to the event class
      */
     public function dispatchByIdIfHasListeners(string $eventId, array $arguments = []): ?object;
 

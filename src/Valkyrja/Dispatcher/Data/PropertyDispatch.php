@@ -23,14 +23,16 @@ use Valkyrja\Dispatcher\Data\Contract\PropertyDispatch as Contract;
 class PropertyDispatch extends ClassDispatch implements Contract
 {
     /**
-     * @param class-string $class The class name
+     * @param class-string                 $class        The class name
+     * @param array<array-key, mixed>|null $arguments    The arguments
+     * @param string[]|null                $dependencies The dependencies
      */
     public function __construct(
         string $class,
         protected string $property,
         protected bool $isStatic = false,
-        ?array $arguments = null,
-        ?array $dependencies = null
+        array|null $arguments = null,
+        array|null $dependencies = null
     ) {
         parent::__construct(
             class: $class,

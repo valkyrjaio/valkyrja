@@ -59,13 +59,6 @@ class JsonData extends Model implements Contract
     public int|null $total = null;
 
     /**
-     * The message.
-     *
-     * @var string|null
-     */
-    public string|null $message = null;
-
-    /**
      * The messages.
      *
      * @var string[]|null
@@ -201,24 +194,6 @@ class JsonData extends Model implements Contract
     public function setData(array|null $data = null): static
     {
         $this->data = $data;
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMessage(): string|null
-    {
-        return $this->message;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setMessage(string|null $message = null): static
-    {
-        $this->message = $message;
 
         return $this;
     }

@@ -21,7 +21,7 @@ use Valkyrja\Type\Model\Contract\CastableModel;
  *
  * @author   Melech Mizrachi
  *
- * @template User
+ * @template User of User
  */
 interface AuthenticatedUsers extends CastableModel
 {

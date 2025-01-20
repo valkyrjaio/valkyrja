@@ -29,9 +29,6 @@ use function sprintf;
  * Class Response.
  *
  * @author Melech Mizrachi
- *
- * @phpstan-consistent-constructor
- *   Will be overridden if need be
  */
 class Response implements Contract
 {

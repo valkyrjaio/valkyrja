@@ -23,13 +23,6 @@ use Valkyrja\Crypt\Adapter\Contract\Adapter as Contract;
 abstract class Adapter implements Contract
 {
     /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * The key.
      *
      * @var string
@@ -39,11 +32,10 @@ abstract class Adapter implements Contract
     /**
      * Adapter constructor.
      *
-     * @param array $config The config
+     * @param array<string, mixed> $config The config
      */
-    public function __construct(array $config)
+    public function __construct(protected array $config)
     {
-        $this->config = $config;
-        $this->key    = $config['key'];
+        $this->key = $config['key'];
     }
 }

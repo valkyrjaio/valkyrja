@@ -26,36 +26,27 @@ use const JSON_THROW_ON_ERROR;
  * Class Cache.
  *
  * @author Melech Mizrachi
- *
- * @phpstan-consistent-constructor
- *   Will be overridden if need be
  */
 class Tagger implements Contract
 {
     /**
-     * The cache store.
-     *
-     * @var Adapter
-     */
-    protected Adapter $adapter;
-
-    /**
      * The tags.
      *
-     * @var array
+     * @var string[]
      */
     protected array $tags;
 
     /**
      * Tag constructor.
      *
-     * @param Adapter $store
+     * @param Adapter $adapter
      * @param string  ...$tags
      */
-    public function __construct(Adapter $store, string ...$tags)
-    {
-        $this->adapter = $store;
-        $this->tags    = $tags;
+    public function __construct(
+        protected Adapter $adapter,
+        string ...$tags
+    ) {
+        $this->tags = $tags;
     }
 
     /**
@@ -112,7 +103,13 @@ class Tagger implements Contract
 
             foreach ($keys as $key) {
                 if (isset($cachedKeys[$key])) {
-                    $items[] = $this->adapter->get($key);
+                    $value = $this->adapter->get($key);
+
+                    if ($value === null) {
+                        continue;
+                    }
+
+                    $items[] = $value;
                 }
             }
         }
@@ -279,7 +276,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      *
-     * @return array
+     * @return string[]
      */
     protected function getKeys(string $tag): array
     {
@@ -295,8 +292,8 @@ class Tagger implements Contract
     /**
      * Put a tag.
      *
-     * @param string $tag
-     * @param array  $keys
+     * @param string   $tag
+     * @param string[] $keys
      *
      * @throws JsonException
      *

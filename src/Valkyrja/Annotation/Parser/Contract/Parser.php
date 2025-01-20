@@ -36,7 +36,7 @@ interface Parser
      *
      * @param string|null $arguments The arguments
      *
-     * @return array|null
+     * @return array<string, mixed>|null
      */
     public function getPropertiesAsArray(string|null $arguments = null): array|null;
 

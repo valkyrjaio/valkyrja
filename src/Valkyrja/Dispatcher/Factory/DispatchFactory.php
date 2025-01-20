@@ -60,6 +60,11 @@ class DispatchFactory
         };
     }
 
+    /**
+     * @param array<array-key, mixed> $data The data
+     *
+     * @return ConstantDispatch|PropertyDispatch|MethodDispatch|ClassDispatch|CallableDispatch|GlobalVariableDispatch
+     */
     public static function fromArray(array $data): ConstantDispatch|PropertyDispatch|MethodDispatch|ClassDispatch|CallableDispatch|GlobalVariableDispatch
     {
         return match (true) {

@@ -19,14 +19,13 @@ use Valkyrja\Dispatcher\Data\Contract\ClassDispatch as Contract;
  * Class ClassDispatch.
  *
  * @author Melech Mizrachi
- *
- * @phpstan-consistent-constructor
- *   Will be overridden if need be
  */
 class ClassDispatch extends Dispatch implements Contract
 {
     /**
-     * @param class-string $class The class name
+     * @param class-string                 $class        The class name
+     * @param array<array-key, mixed>|null $arguments    The arguments
+     * @param string[]|null                $dependencies The dependencies
      */
     public function __construct(
         protected string $class,

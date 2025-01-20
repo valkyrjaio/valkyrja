@@ -38,9 +38,9 @@ class Api implements Contract
     /**
      * Api constructor.
      *
-     * @param ResponseFactory $responseFactory
-     * @param Config|array    $config
-     * @param bool            $debug           [optional]
+     * @param ResponseFactory             $responseFactory
+     * @param Config|array<string, mixed> $config
+     * @param bool                        $debug           [optional]
      */
     public function __construct(
         protected ResponseFactory $responseFactory,

@@ -25,8 +25,8 @@ interface Dispatcher2
     /**
      * Dispatch a callable.
      *
-     * @param Dispatch   $dispatch  The dispatch
-     * @param array|null $arguments The arguments
+     * @param Dispatch                     $dispatch  The dispatch
+     * @param array<array-key, mixed>|null $arguments The arguments
      *
      * @return mixed
      */

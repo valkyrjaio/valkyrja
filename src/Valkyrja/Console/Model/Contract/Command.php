@@ -14,11 +14,16 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Model\Contract;
 
 use Valkyrja\Dispatcher\Model\Contract\Dispatch;
+use Valkyrja\Path\Parser\Contract\Parser;
 
 /**
  * Interface Command.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-import-type ParsedPathParams from Parser
+ *
+ * @phpstan-import-type ParsedPathParams from Parser
  */
 interface Command extends Dispatch
 {
@@ -57,14 +62,14 @@ interface Command extends Dispatch
     /**
      * Get the params.
      *
-     * @return array|null
+     * @return ParsedPathParams|null
      */
     public function getParams(): array|null;
 
     /**
      * Set the params.
      *
-     * @param array|null $params The params
+     * @param ParsedPathParams|null $params The params
      *
      * @return static
      */
@@ -73,14 +78,14 @@ interface Command extends Dispatch
     /**
      * Get the segments.
      *
-     * @return array|null
+     * @return string[]|null
      */
     public function getSegments(): array|null;
 
     /**
      * Set the segments.
      *
-     * @param array|null $segments The segments
+     * @param string[]|null $segments The segments
      *
      * @return static
      */

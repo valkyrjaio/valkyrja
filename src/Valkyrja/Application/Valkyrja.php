@@ -57,7 +57,7 @@ class Valkyrja implements Application
     /**
      * Application config.
      *
-     * @var Config|array
+     * @var Config|array<string, mixed>
      */
     protected static Config|array $config;
 

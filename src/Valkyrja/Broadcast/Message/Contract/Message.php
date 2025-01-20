@@ -57,14 +57,14 @@ interface Message extends Contract
     /**
      * Get the data to broadcast.
      *
-     * @return array|null
+     * @return array<array-key, mixed>|null
      */
     public function getData(): array|null;
 
     /**
      * Set the data to broadcast.
      *
-     * @param array|null $data [optional] The data
+     * @param array<array-key, mixed>|null $data [optional] The data
      *
      * @return static
      */

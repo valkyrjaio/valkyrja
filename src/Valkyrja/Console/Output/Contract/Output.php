@@ -42,7 +42,7 @@ interface Output
     /**
      * Write messages to the console.
      *
-     * @param array            $messages    The messages
+     * @param string[]         $messages    The messages
      * @param bool             $newLine     [optional] Whether to use new lines between each message
      * @param OutputStyle|null $outputStyle [optional] The output style to use
      *

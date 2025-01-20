@@ -57,7 +57,7 @@ abstract class AuthMiddleware
     /**
      * The config.
      *
-     * @var Config|array
+     * @var Config|array<string, mixed>
      */
     protected static Config|array $config;
 

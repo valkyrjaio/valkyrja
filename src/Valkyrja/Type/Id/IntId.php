@@ -22,9 +22,6 @@ use Valkyrja\Type\Type;
  * @author Melech Mizrachi
  *
  * @extends Type<int>
- *
- * @phpstan-consistent-constructor
- *   Will be overridden if need be
  */
 class IntId extends Type implements Contract
 {

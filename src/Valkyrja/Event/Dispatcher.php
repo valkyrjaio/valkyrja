@@ -138,6 +138,9 @@ class Dispatcher implements Contract
 
     /**
      * Get an event class from a given id.
+     *
+     * @param class-string            $eventId   The event class name
+     * @param array<array-key, mixed> $arguments The arguments to pass to the event class
      */
     protected function getEventClassFromId(string $eventId, array $arguments = []): object
     {

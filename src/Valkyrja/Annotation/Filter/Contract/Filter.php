@@ -117,7 +117,7 @@ interface Filter
     /**
      * Filter annotations by types.
      *
-     * @param array      $types          The types to match
+     * @param string[]   $types          The types to match
      * @param Annotation ...$annotations The annotations
      *
      * @return Annotation[]

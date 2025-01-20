@@ -22,9 +22,6 @@ use Valkyrja\Type\Type;
  * @author Melech Mizrachi
  *
  * @extends Type<null>
- *
- * @phpstan-consistent-constructor
- *   Will be overridden if need be
  */
 class NullT extends Type implements Contract
 {

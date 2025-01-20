@@ -56,7 +56,7 @@ trait Provides
     /**
      * Get the provided command.
      *
-     * @return array
+     * @return string[]
      */
     public static function provides(): array
     {
@@ -89,7 +89,7 @@ trait Provides
     /**
      * Get the command names.
      *
-     * @return array
+     * @return string[]
      */
     public static function commands(): array
     {

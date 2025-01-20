@@ -25,7 +25,7 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Event\Contract\Dispatcher as Events;
 use Valkyrja\Log\Contract\Logger;
 
-use function Valkyrja\dd;
+use function var_dump;
 
 /**
  * Class Kernel.
@@ -35,38 +35,17 @@ use function Valkyrja\dd;
 class Kernel implements Contract
 {
     /**
-     * The console.
-     *
-     * @var Console
-     */
-    protected Console $console;
-
-    /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
-     * The events manager.
-     *
-     * @var Events
-     */
-    protected Events $events;
-
-    /**
      * Kernel constructor.
      *
      * @param Console   $console   The console
      * @param Container $container The container
      * @param Events    $events    The events manager
      */
-    public function __construct(Console $console, Container $container, Events $events)
-    {
-        $this->console   = $console;
-        $this->container = $container;
-        $this->events    = $events;
+    public function __construct(
+        protected Console $console,
+        protected Container $container,
+        protected Events $events
+    ) {
     }
 
     /**
@@ -82,7 +61,7 @@ class Kernel implements Contract
 
             // Show the exception
             // TODO: Implement
-            dd($exception);
+            var_dump($exception);
 
             $exitCode = ExitCode::FAILURE;
         }

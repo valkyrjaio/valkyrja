@@ -23,14 +23,13 @@ use function is_string;
  * Class MethodDispatch.
  *
  * @author Melech Mizrachi
- *
- * @phpstan-consistent-constructor
- *   Will be overridden if need be
  */
 class MethodDispatch extends ClassDispatch implements Contract
 {
     /**
-     * @param class-string $class The class name
+     * @param class-string                 $class        The class name
+     * @param array<array-key, mixed>|null $arguments    The arguments
+     * @param string[]|null                $dependencies The dependencies
      */
     public function __construct(
         string $class,

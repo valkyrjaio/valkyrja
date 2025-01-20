@@ -30,20 +30,13 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 class PusherAdapter extends NullAdapter implements Contract
 {
     /**
-     * The pusher service.
-     *
-     * @var Pusher
-     */
-    protected Pusher $pusher;
-
-    /**
      * PusherAdapter constructor.
      *
      * @param Pusher $pusher The pusher service
      */
-    public function __construct(Pusher $pusher)
-    {
-        $this->pusher = $pusher;
+    public function __construct(
+        protected Pusher $pusher
+    ) {
     }
 
     /**

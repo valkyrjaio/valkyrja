@@ -92,14 +92,14 @@ interface Json extends Model
     /**
      * Get the data.
      *
-     * @return array|null
+     * @return array<string, mixed>|null
      */
     public function getData(): array|null;
 
     /**
      * Set the data.
      *
-     * @param array|null $data
+     * @param array<string, mixed>|null $data
      *
      * @return static
      */

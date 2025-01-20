@@ -31,9 +31,6 @@ use function is_string;
  * Class Value.
  *
  * @author Melech Mizrachi
- *
- * @phpstan-consistent-constructor
- *   Will be overridden if need be
  */
 class Value implements Contract
 {

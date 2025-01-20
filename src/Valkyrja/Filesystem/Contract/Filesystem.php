@@ -147,7 +147,7 @@ interface Filesystem extends Manager
      *
      * @param string $path The path
      *
-     * @return array|null An array of meta data or null on failure
+     * @return array<string, string|int|null>|null An array of meta data or null on failure
      */
     public function metadata(string $path): array|null;
 
@@ -240,7 +240,7 @@ interface Filesystem extends Manager
      * @param string|null $directory [optional] The directory
      * @param bool        $recursive [optional] Whether to recurse through the directory
      *
-     * @return array
+     * @return array<string, string|int>[]
      */
     public function listContents(string|null $directory = null, bool $recursive = false): array;
 }

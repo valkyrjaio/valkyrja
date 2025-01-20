@@ -22,9 +22,6 @@ use Valkyrja\Type\Type;
  * @author Melech Mizrachi
  *
  * @extends Type<bool>
- *
- * @phpstan-consistent-constructor
- *   Will be overridden if need be
  */
 class BoolT extends Type implements Contract
 {

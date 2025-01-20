@@ -157,7 +157,7 @@ class InMemoryAdapter implements Contract
      */
     public function metadata(string $path): array|null
     {
-        return $this->getMetadataInternal($path)?->toArray() ?? null;
+        return $this->getMetadataInternal($path)?->toArray();
     }
 
     /**
@@ -257,7 +257,10 @@ class InMemoryAdapter implements Contract
 
         foreach ($this->files as $filePath => $file) {
             if (str_starts_with($filePath, $directory)) {
-                $contents[$filePath] = $file->contents;
+                $contents[] = [
+                    'path'     => $filePath,
+                    'contents' => $file->contents,
+                ];
             }
         }
 

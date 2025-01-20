@@ -31,8 +31,8 @@ class ORMAdapter extends Adapter implements Contract
     /**
      * Adapter constructor.
      *
-     * @param Orm          $orm    The orm
-     * @param Config|array $config The config
+     * @param Orm                         $orm    The orm
+     * @param Config|array<string, mixed> $config The config
      */
     public function __construct(
         protected Orm $orm,

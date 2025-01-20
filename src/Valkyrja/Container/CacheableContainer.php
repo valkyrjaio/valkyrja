@@ -38,6 +38,8 @@ class CacheableContainer extends Container
 
     /**
      * @inheritDoc
+     *
+     * @return ContainerConfig
      */
     public function getCacheable(): Config
     {
@@ -63,6 +65,8 @@ class CacheableContainer extends Container
 
     /**
      * @inheritDoc
+     *
+     * @return ContainerConfig|array<string, mixed>
      */
     protected function getConfig(): Config|array
     {
@@ -71,6 +75,8 @@ class CacheableContainer extends Container
 
     /**
      * @inheritDoc
+     *
+     * @param ContainerConfig|array<string, mixed> $config
      */
     protected function beforeSetup(Config|array $config): void
     {
@@ -78,6 +84,8 @@ class CacheableContainer extends Container
 
     /**
      * @inheritDoc
+     *
+     * @param ContainerConfig|array<string, mixed> $config
      */
     protected function setupFromCache(Config|array $config): void
     {
@@ -96,6 +104,8 @@ class CacheableContainer extends Container
 
     /**
      * @inheritDoc
+     *
+     * @param ContainerConfig|array<string, mixed> $config
      */
     protected function setupNotCached(Config|array $config): void
     {
@@ -112,6 +122,8 @@ class CacheableContainer extends Container
 
     /**
      * @inheritDoc
+     *
+     * @param ContainerConfig|array<string, mixed> $config
      */
     protected function setupAnnotations(Config|array $config): void
     {
@@ -157,6 +169,8 @@ class CacheableContainer extends Container
 
     /**
      * @inheritDoc
+     *
+     * @param ContainerConfig|array<string, mixed> $config
      */
     protected function setupAttributes(Config|array $config): void
     {
@@ -165,7 +179,7 @@ class CacheableContainer extends Container
     /**
      * Setup service providers.
      *
-     * @param ContainerConfig|array $config
+     * @param ContainerConfig|array<string, mixed> $config
      *
      * @return void
      */
@@ -191,6 +205,8 @@ class CacheableContainer extends Container
 
     /**
      * @inheritDoc
+     *
+     * @param ContainerConfig|array<string, mixed> $config
      */
     protected function afterSetup(Config|array $config): void
     {

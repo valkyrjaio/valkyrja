@@ -14,25 +14,30 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Config;
 
 use Valkyrja\Config\Config as Model;
+use Valkyrja\Event\Model\Contract\Listener;
 
 /**
  * Class Cache.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-type CacheAsArray array{events: array<class-string, string[]>, listeners: Listener[]}
+ *
+ * @phpstan-type CacheAsArray array{events: array<class-string, string[]>, listeners: Listener[]}
  */
 class Cache extends Model
 {
     /**
      * The events.
      *
-     * @var array
+     * @var array<class-string, string[]>
      */
     public array $events;
 
     /**
      * The listeners.
      *
-     * @var array
+     * @var Listener[]|array<string, mixed>[]
      */
     public array $listeners;
 }

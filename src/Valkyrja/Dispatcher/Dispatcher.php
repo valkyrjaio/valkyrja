@@ -60,8 +60,8 @@ class Dispatcher implements Contract
     /**
      * Dispatch a class method.
      *
-     * @param Dispatch   $dispatch  The dispatch
-     * @param array|null $arguments The arguments
+     * @param Dispatch                     $dispatch  The dispatch
+     * @param array<array-key, mixed>|null $arguments The arguments
      *
      * @return mixed
      */
@@ -123,8 +123,8 @@ class Dispatcher implements Contract
     /**
      * Dispatch a class.
      *
-     * @param Dispatch   $dispatch  The dispatch
-     * @param array|null $arguments The arguments
+     * @param Dispatch                     $dispatch  The dispatch
+     * @param array<array-key, mixed>|null $arguments The arguments
      *
      * @return mixed
      */
@@ -142,8 +142,8 @@ class Dispatcher implements Contract
     /**
      * Dispatch a function.
      *
-     * @param Dispatch   $dispatch  The dispatch
-     * @param array|null $arguments The arguments
+     * @param Dispatch                     $dispatch  The dispatch
+     * @param array<array-key, mixed>|null $arguments The arguments
      *
      * @return mixed
      */
@@ -160,8 +160,8 @@ class Dispatcher implements Contract
     /**
      * Dispatch a closure.
      *
-     * @param Dispatch   $dispatch  The dispatch
-     * @param array|null $arguments The arguments
+     * @param Dispatch                     $dispatch  The dispatch
+     * @param array<array-key, mixed>|null $arguments The arguments
      *
      * @return mixed
      */
@@ -213,10 +213,10 @@ class Dispatcher implements Contract
     /**
      * Get a dispatch's arguments.
      *
-     * @param Dispatch   $dispatch  The dispatch
-     * @param array|null $arguments [optional] The arguments
+     * @param Dispatch                     $dispatch  The dispatch
+     * @param array<array-key, mixed>|null $arguments [optional] The arguments
      *
-     * @return array|null
+     * @return array<array-key, mixed>|null
      */
     protected function getArguments(Dispatch $dispatch, array|null $arguments = null): array|null
     {
@@ -246,7 +246,7 @@ class Dispatcher implements Contract
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @return array|null
+     * @return array<array-key, mixed>|null
      */
     protected function getDependencies(Dispatch $dispatch): array|null
     {
@@ -269,7 +269,7 @@ class Dispatcher implements Contract
         }
 
         return array_map(
-            static fn (string $dependency): mixed => $hasContext && $containerContext?->has($dependency)
+            static fn (string $dependency): mixed => $hasContext && $containerContext !== null && $containerContext->has($dependency)
                 ? $containerContext->get($dependency)
                 : $container->get($dependency),
             $dependencies

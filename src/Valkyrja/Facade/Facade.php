@@ -62,8 +62,8 @@ abstract class Facade
     /**
      * Handle dynamic, static calls to the instance.
      *
-     * @param string $method The method to call
-     * @param array  $args   [optional] The argument
+     * @param string                  $method The method to call
+     * @param array<array-key, mixed> $args   [optional] The argument
      *
      * @throws RuntimeException
      *
@@ -89,7 +89,7 @@ abstract class Facade
     /**
      * Get an array of static methods.
      *
-     * @return array
+     * @return string[]
      */
     protected static function getStaticMethods(): array
     {
@@ -107,7 +107,7 @@ abstract class Facade
     {
         $staticMethods = static::getStaticMethods();
 
-        return ! empty($staticMethods) && (isset($staticMethods[$method]) || in_array($method, $staticMethods, true));
+        return $staticMethods !== [] && (isset($staticMethods[$method]) || in_array($method, $staticMethods, true));
     }
 
     /**

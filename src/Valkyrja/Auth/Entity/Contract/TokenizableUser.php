@@ -46,7 +46,7 @@ interface TokenizableUser extends User
     /**
      * Get user as an array for storing as a token.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function asTokenizableArray(): array;
 }

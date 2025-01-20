@@ -15,11 +15,16 @@ namespace Valkyrja\Console\Model;
 
 use Valkyrja\Console\Model\Contract\Command as Contract;
 use Valkyrja\Dispatcher\Model\Dispatch;
+use Valkyrja\Path\Parser\Contract\Parser;
 
 /**
  * Class Command.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-import-type ParsedPathParams from Parser
+ *
+ * @phpstan-import-type ParsedPathParams from Parser
  */
 class Command extends Dispatch implements Contract
 {
@@ -40,14 +45,14 @@ class Command extends Dispatch implements Contract
     /**
      * Any params for dynamic routes.
      *
-     * @var array|null
+     * @var ParsedPathParams|null
      */
     protected array|null $params = null;
 
     /**
      * Any segments for optional parts of path.
      *
-     * @var array|null
+     * @var string[]|null
      */
     protected array|null $segments = null;
 

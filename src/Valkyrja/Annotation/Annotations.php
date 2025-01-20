@@ -44,7 +44,7 @@ class Annotations implements Contract
     /**
      * Cached annotations.
      *
-     * @var array
+     * @var array<string, Annotation[]>
      */
     protected static array $annotations = [];
 
@@ -238,8 +238,8 @@ class Annotations implements Contract
     /**
      * Set the base annotation model values.
      *
-     * @param array      $properties     The properties
-     * @param Annotation ...$annotations The annotations
+     * @param array<string, mixed> $properties     The properties
+     * @param Annotation           ...$annotations The annotations
      *
      * @return Annotation[]
      */

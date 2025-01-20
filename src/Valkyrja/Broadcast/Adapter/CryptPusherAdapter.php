@@ -34,25 +34,20 @@ class CryptPusherAdapter extends PusherAdapter
     protected CryptDriver $crypt;
 
     /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * CryptPusherAdapter constructor.
      *
-     * @param Pusher $pusher The pusher service
-     * @param Crypt  $crypt  The crypt manager
-     * @param array  $config The config
+     * @param Pusher               $pusher The pusher service
+     * @param Crypt                $crypt  The crypt manager
+     * @param array<string, mixed> $config The config
      */
-    public function __construct(Pusher $pusher, Crypt $crypt, array $config)
-    {
+    public function __construct(
+        Pusher $pusher,
+        Crypt $crypt,
+        protected array $config
+    ) {
         parent::__construct($pusher);
 
-        $this->config = $config;
-        $this->crypt  = $crypt->use($config['adapter']);
+        $this->crypt = $crypt->use($config['adapter']);
     }
 
     /**

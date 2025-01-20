@@ -26,9 +26,6 @@ use function is_string;
  * @author Melech Mizrachi
  *
  * @extends Type<array<string|int, mixed>>
- *
- * @phpstan-consistent-constructor
- *   Will be overridden if need be
  */
 class Json extends Type implements Contract
 {

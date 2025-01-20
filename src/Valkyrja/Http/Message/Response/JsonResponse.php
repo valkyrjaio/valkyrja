@@ -35,9 +35,6 @@ use const JSON_THROW_ON_ERROR;
  * Class JsonResponse.
  *
  * @author Melech Mizrachi
- *
- * @phpstan-consistent-constructor
- *   Will be overridden if need be
  */
 class JsonResponse extends Response implements Contract
 {

@@ -373,8 +373,8 @@ class Attributes implements Contract
     /**
      * Set the base annotation model values.
      *
-     * @param array               $properties              The properties
-     * @param ReflectionAttribute ...$reflectionAttributes The reflection attributes
+     * @param array<string, mixed> $properties              The properties
+     * @param ReflectionAttribute  ...$reflectionAttributes The reflection attributes
      *
      * @return object[]
      */

@@ -36,7 +36,7 @@ class Service extends Dispatch implements Annotation
     /**
      * Default arguments.
      *
-     * @var array|null
+     * @var array<array-key, mixed>|null
      */
     public array|null $defaults;
 
@@ -67,7 +67,7 @@ class Service extends Dispatch implements Annotation
     /**
      * Get defaults.
      *
-     * @return array|null
+     * @return array<array-key, mixed>|null
      */
     public function getDefaults(): array|null
     {
@@ -77,7 +77,7 @@ class Service extends Dispatch implements Annotation
     /**
      * Set defaults.
      *
-     * @param array|null $defaults The defaults
+     * @param array<array-key, mixed>|null $defaults The defaults
      *
      * @return static
      */

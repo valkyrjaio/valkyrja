@@ -15,8 +15,11 @@ namespace Valkyrja\Filesystem\Adapter;
 
 use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemOperator as FlysystemInterface;
+use League\Flysystem\StorageAttributes;
 use Valkyrja\Filesystem\Adapter\Contract\FlysystemAdapter as Contract;
 use Valkyrja\Filesystem\Enum\Visibility;
+
+use function array_map;
 
 /**
  * Class FlysystemAdapter.
@@ -270,7 +273,13 @@ class FlysystemAdapter implements Contract
      */
     public function listContents(string|null $directory = null, bool $recursive = false): array
     {
-        return $this->flysystem->listContents($directory ?? '', $recursive)->toArray();
+        return array_map(
+            /**
+             * @return array<string, string|int>
+             */
+            static fn (StorageAttributes $attributes): array => (array) $attributes->jsonSerialize(),
+            $this->flysystem->listContents($directory ?? '', $recursive)->toArray()
+        );
     }
 
     /**

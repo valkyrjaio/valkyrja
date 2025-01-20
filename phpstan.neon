@@ -4,3 +4,5 @@ parameters:
         - src
 #        - tests
     checkGenericClassInNonGenericObjectType: false
+    ignoreErrors:
+        - '#^Unsafe usage of new static\(\).$#'

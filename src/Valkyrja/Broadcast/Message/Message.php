@@ -46,7 +46,7 @@ class Message implements Contract
     /**
      * The data to broadcast.
      *
-     * @var array|null
+     * @var array<array-key, mixed>|null
      */
     protected array|null $data = null;
 

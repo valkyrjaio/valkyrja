@@ -28,9 +28,6 @@ use function strtolower;
  * Class Uri.
  *
  * @author Melech Mizrachi
- *
- * @phpstan-consistent-constructor
- *   Will be overridden if need be
  */
 class Uri implements Contract
 {

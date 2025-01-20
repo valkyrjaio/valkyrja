@@ -52,7 +52,7 @@ class Config extends Model
      *      ]
      * </code>
      *
-     * @var array
+     * @var array<string, string>
      */
     public array $map;
 
@@ -71,7 +71,7 @@ class Config extends Model
      * @Annotation("name" : "Word::VALUE")
      * </code>
      *
-     * @var array
+     * @var array<string, string>
      */
     public array $aliases;
 }

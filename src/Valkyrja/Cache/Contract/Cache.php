@@ -60,7 +60,7 @@ interface Cache extends Manager
      *
      * @param string ...$keys
      *
-     * @return array
+     * @return string[]
      */
     public function many(string ...$keys): array;
 
@@ -88,8 +88,8 @@ interface Cache extends Manager
      *      )
      * </code>
      *
-     * @param array $values
-     * @param int   $minutes
+     * @param array<string, string> $values
+     * @param int                   $minutes
      *
      * @return void
      */

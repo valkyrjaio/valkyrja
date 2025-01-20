@@ -26,7 +26,7 @@ interface Notification
     /**
      * Create a new notification.
      *
-     * @param string                  $name The notification name
+     * @param class-string<Notify>    $name The notification name
      * @param array<array-key, mixed> $data [optional] The data to add to the notification
      *
      * @return Notify

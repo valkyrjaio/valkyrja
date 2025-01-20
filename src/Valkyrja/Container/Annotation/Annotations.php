@@ -18,6 +18,8 @@ use Valkyrja\Annotation\Constant\AnnotationName;
 use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Annotation\Model\Contract\Annotation;
 use Valkyrja\Container\Annotation\Contract\Annotations as Contract;
+use Valkyrja\Container\Annotation\Service\Alias;
+use Valkyrja\Container\Annotation\Service\Context;
 use Valkyrja\Reflection\Contract\Reflection;
 
 /**
@@ -43,7 +45,10 @@ class Annotations implements Contract
      */
     public function getServices(string ...$classes): array
     {
-        return $this->getAllClassesAnnotationsByType(AnnotationName::SERVICE, ...$classes);
+        /** @var Service[] $annotations */
+        $annotations = $this->getAllClassesAnnotationsByType(AnnotationName::SERVICE, ...$classes);
+
+        return $annotations;
     }
 
     /**
@@ -53,7 +58,10 @@ class Annotations implements Contract
      */
     public function getAliasServices(string ...$classes): array
     {
-        return $this->getAllClassesAnnotationsByType(AnnotationName::SERVICE_ALIAS, ...$classes);
+        /** @var Alias[] $annotations */
+        $annotations = $this->getAllClassesAnnotationsByType(AnnotationName::SERVICE_ALIAS, ...$classes);
+
+        return $annotations;
     }
 
     /**
@@ -63,7 +71,10 @@ class Annotations implements Contract
      */
     public function getContextServices(string ...$classes): array
     {
-        return $this->getAllClassesAnnotationsByType(AnnotationName::SERVICE_CONTEXT, ...$classes);
+        /** @var Context[] $annotations */
+        $annotations = $this->getAllClassesAnnotationsByType(AnnotationName::SERVICE_CONTEXT, ...$classes);
+
+        return $annotations;
     }
 
     /**
@@ -74,7 +85,7 @@ class Annotations implements Contract
      *
      * @throws ReflectionException
      *
-     * @return array
+     * @return Annotation[]
      */
     protected function getAllClassesAnnotationsByType(string $type, string ...$classes): array
     {

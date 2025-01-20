@@ -24,6 +24,10 @@ use function is_array;
  * Class Config.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-import-type CacheAsArray from Cache
+ *
+ * @phpstan-import-type CacheAsArray from Cache
  */
 class Config extends Model
 {
@@ -85,7 +89,7 @@ class Config extends Model
     /**
      * Set the cache.
      *
-     * @param Cache|array|null $cache The cache
+     * @param Cache|CacheAsArray|null $cache The cache
      *
      * @return void
      */

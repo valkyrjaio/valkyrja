@@ -109,7 +109,7 @@ class Dispatch extends Model implements Contract
     /**
      * The matches.
      *
-     * @var array|null
+     * @var array<array-key, mixed>|null
      */
     protected array|null $matches;
 
@@ -165,7 +165,7 @@ class Dispatch extends Model implements Contract
     /**
      * The arguments.
      *
-     * @var array|null
+     * @var array<array-key, mixed>|null
      */
     protected array|null $arguments;
 

@@ -98,7 +98,7 @@ class CommandsList extends Commander
     /**
      * Filter the commands by type and name.
      *
-     * @param array       $commands      The commands
+     * @param Command[]   $commands      The commands
      * @param int         $longestLength The longest length
      * @param string|null $namespace     [optional] The namespace to show commands
      *                                   for
@@ -184,7 +184,7 @@ class CommandsList extends Commander
     /**
      * Sort commands by name.
      *
-     * @param array $commands The commands
+     * @param Command[] $commands The commands
      *
      * @return void
      */

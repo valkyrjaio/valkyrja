@@ -23,8 +23,8 @@ interface Service
     /**
      * Make a new instance of this service.
      *
-     * @param Container $container The container
-     * @param array     $arguments [optional] The arguments
+     * @param Container               $container The container
+     * @param array<array-key, mixed> $arguments [optional] The arguments
      *
      * @return static
      */

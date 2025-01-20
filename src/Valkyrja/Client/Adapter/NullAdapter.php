@@ -27,29 +27,15 @@ use Valkyrja\Http\Message\Response\Contract\Response;
 class NullAdapter implements Contract
 {
     /**
-     * The response factory.
-     *
-     * @var ResponseFactory
-     */
-    protected ResponseFactory $responseFactory;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * NullAdapter constructor.
      *
-     * @param ResponseFactory $responseFactory The response factory
-     * @param array           $config          The config
+     * @param ResponseFactory      $responseFactory The response factory
+     * @param array<string, mixed> $config          The config
      */
-    public function __construct(ResponseFactory $responseFactory, array $config)
-    {
-        $this->responseFactory = $responseFactory;
-        $this->config          = $config;
+    public function __construct(
+        protected ResponseFactory $responseFactory,
+        protected array $config
+    ) {
     }
 
     /**

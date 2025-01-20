@@ -41,6 +41,10 @@ use function preg_match;
  * Class Console.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-import-type ParsedPath from Parser
+ *
+ * @phpstan-import-type ParsedPath from Parser
  */
 class Console implements Contract
 {
@@ -77,13 +81,13 @@ class Console implements Contract
     /**
      * Console constructor.
      *
-     * @param Container    $container
-     * @param Dispatcher   $dispatcher
-     * @param Validator    $validator
-     * @param Events       $events
-     * @param Parser       $pathParser
-     * @param Config|array $config
-     * @param bool         $debug
+     * @param Container                   $container
+     * @param Dispatcher                  $dispatcher
+     * @param Validator                   $validator
+     * @param Events                      $events
+     * @param Parser                      $pathParser
+     * @param Config|array<string, mixed> $config
+     * @param bool                        $debug
      */
     public function __construct(
         protected Container $container,
@@ -291,8 +295,8 @@ class Console implements Contract
     /**
      * Add a parsed command.
      *
-     * @param Command $command       The command
-     * @param array   $parsedCommand The parsed command
+     * @param Command    $command       The command
+     * @param ParsedPath $parsedCommand The parsed command
      *
      * @return void
      */

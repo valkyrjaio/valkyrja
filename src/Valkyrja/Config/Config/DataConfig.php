@@ -45,9 +45,6 @@ use Valkyrja\View\Config as View;
  * Class Config.
  *
  * @author Melech Mizrachi
- *
- * @phpstan-consistent-constructor
- *   Will be overridden if need be
  */
 class DataConfig extends ParentConfig
 {
@@ -252,6 +249,9 @@ class DataConfig extends ParentConfig
      */
     protected bool $useCache;
 
+    /**
+     * @param array<string, mixed>|null $cached
+     */
     public function __construct(
         protected array|null $cached = null
     ) {
@@ -267,11 +267,11 @@ class DataConfig extends ParentConfig
 
             match ($name) {
                 'annotations' => new Annotation\Annotation($cache),
-                'api'         => new Api\Api($cache),
-                'app'         => new App\App($cache),
-                'asset'       => new Asset\Asset($cache),
+                'api' => new Api\Api($cache),
+                'app' => new App\App($cache),
+                'asset' => new Asset\Asset($cache),
                 'useCache', 'cacheFilePath', 'providers' => $cache,
-                default       => new static::$map[$name]($cache),
+                default => new static::$map[$name]($cache),
             };
         }
 

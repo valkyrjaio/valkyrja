@@ -35,7 +35,7 @@ class Json extends Model implements Contract
     /**
      * The data.
      *
-     * @var array|null
+     * @var array<string, mixed>|null
      */
     public array|null $data = null;
 

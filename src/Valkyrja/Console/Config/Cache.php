@@ -32,21 +32,21 @@ class Cache extends Model
     /**
      * The command paths.
      *
-     * @var array
+     * @var string[]
      */
     public array $paths;
 
     /**
      * The named commands.
      *
-     * @var array
+     * @var string[]
      */
     public array $namedCommands;
 
     /**
      * The provided commands.
      *
-     * @var array
+     * @var array<string, string>
      */
     public array $provided;
 }

@@ -52,7 +52,7 @@ class Config extends Model
     /**
      * The bundles.
      *
-     * @var array
+     * @var array<string, array<string, string>>
      */
     public array $bundles;
 }
