@@ -16,7 +16,6 @@ namespace Valkyrja\Orm\Contract;
 use Valkyrja\Orm\Adapter\Contract\Adapter;
 use Valkyrja\Orm\Driver\Contract\Driver;
 use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\Entity\Contract\SoftDeleteEntity;
 use Valkyrja\Orm\Persister\Contract\Persister;
 use Valkyrja\Orm\Query\Contract\Query;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
@@ -227,7 +226,7 @@ interface Orm
      * </code>
      *
      * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param bool   $defer  [optional]
      *
      * @return void
      */
@@ -241,7 +240,7 @@ interface Orm
      * </code>
      *
      * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param bool   $defer  [optional]
      *
      * @return void
      */
@@ -255,7 +254,7 @@ interface Orm
      * </code>
      *
      * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param bool   $defer  [optional]
      *
      * @return void
      */

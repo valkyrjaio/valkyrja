@@ -34,7 +34,7 @@ class FloatT extends Type implements Contract
 {
     public function __construct(float $subject)
     {
-        parent::__construct($subject);
+        $this->subject = $subject;
     }
 
     /**

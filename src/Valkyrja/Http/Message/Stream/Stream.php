@@ -125,6 +125,7 @@ class Stream implements Contract
             throw new InvalidLengthException("Invalid length of $length provided. Length must be greater than 0");
         }
 
+        /** @var int<1, max> $length */
         $this->verifyStream();
         $this->verifyReadable();
 
@@ -397,7 +398,7 @@ class Stream implements Contract
      * Read from stream.
      *
      * @param resource    $stream The stream
-     * @param int<0, max> $length The length
+     * @param int<1, max> $length The length
      */
     protected function readFromStream($stream, int $length): string|false
     {

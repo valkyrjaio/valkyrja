@@ -32,6 +32,8 @@ interface Enum extends Type, UnitEnum
 
     /**
      * @inheritDoc
+     *
+     * @return string|int
      */
     public function asFlatValue(): string|int;
 }

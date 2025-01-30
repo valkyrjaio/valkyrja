@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Factory;
 
-use function is_callable;
+use function function_exists;
 
 /**
  * Abstract Class ServerFactory.
@@ -22,13 +22,6 @@ use function is_callable;
  */
 abstract class ServerFactory
 {
-    /**
-     * Function to use to get apache request headers; present only to simplify mocking.
-     *
-     * @var callable
-     */
-    private static $apacheRequestHeaders = 'apache_request_headers';
-
     /**
      * Marshal the $_SERVER array.
      * Pre-processes and returns the $_SERVER superglobal.
@@ -39,14 +32,11 @@ abstract class ServerFactory
      */
     public static function normalizeServer(array $server): array
     {
-        // This seems to be the only way to get the Authorization header on Apache
-        $apacheRequestHeaders = self::$apacheRequestHeaders;
+        $apacheRequestHeaders = self::apacheRequestHeaders();
 
-        if (isset($server['HTTP_AUTHORIZATION']) || ! is_callable($apacheRequestHeaders)) {
+        if (isset($server['HTTP_AUTHORIZATION']) || $apacheRequestHeaders === null) {
             return $server;
         }
-
-        $apacheRequestHeaders = $apacheRequestHeaders();
 
         if (isset($apacheRequestHeaders['Authorization'])) {
             $server['HTTP_AUTHORIZATION'] = $apacheRequestHeaders['Authorization'];
@@ -61,5 +51,18 @@ abstract class ServerFactory
         }
 
         return $server;
+    }
+
+    /**
+     * @return array{Authorization?: string, authorization?: string}|null
+     */
+    private static function apacheRequestHeaders(): array|null
+    {
+        if (function_exists('apache_request_headers')) {
+            // This seems to be the only way to get the Authorization header on Apache
+            return apache_request_headers();
+        }
+
+        return null;
     }
 }

@@ -33,11 +33,11 @@ class HeaderFactoryTest extends TestCase
         $headers = HeaderFactory::marshalHeaders($server);
 
         $expectedHeaders = [
-            'test'           => 'REDIRECT_HTTP_TEST',
-            'no-override'    => 'NO_OVERRIDE',
-            'something'      => 'HTTP_SOMETHING',
-            'something-else' => 'HTTP_SOMETHING_ELSE',
-            'content-type'   => 'CONTENT_TYPE',
+            'test'           => ['REDIRECT_HTTP_TEST'],
+            'no-override'    => ['NO_OVERRIDE'],
+            'something'      => ['HTTP_SOMETHING'],
+            'something-else' => ['HTTP_SOMETHING_ELSE'],
+            'content-type'   => ['CONTENT_TYPE'],
         ];
 
         self::assertSame($expectedHeaders, $headers);

@@ -72,7 +72,7 @@ class RoutesCache extends Commander
         $cache = $collection->getCacheable();
 
         $asArray  = json_decode(json_encode($cache, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
-        $asString = '<?php return ' . var_export(Arr::withoutNull($asArray), true) . ';' . PHP_EOL;
+        $asString = '<?php return ' . var_export(Arr::newWithoutNull($asArray), true) . ';' . PHP_EOL;
 
         // Get the results of the cache attempt
         $result = file_put_contents($cacheFilePath, $asString, LOCK_EX);

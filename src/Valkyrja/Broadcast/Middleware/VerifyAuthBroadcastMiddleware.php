@@ -17,13 +17,13 @@ use JsonException;
 use Valkyrja\Auth\Contract\Auth;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Broadcast\Contract\Broadcast;
-use Valkyrja\Container\Contract\Container;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 
 use function is_string;
+use function Valkyrja\container;
 
 /**
  * Class VerifyAuthBroadcastMiddleware.
@@ -44,13 +44,9 @@ class VerifyAuthBroadcastMiddleware /* extends Middleware */
      */
     public static function before(ServerRequest $request): ServerRequest|Response
     {
-        /** @var Container $container */
-        $container = null;
-        /** @var Auth $auth */
-        $auth = $container->getSingleton(Auth::class);
-        /** @var Broadcast $broadcaster */
-        $broadcaster = $container->getSingleton(Broadcast::class);
-        /** @var ResponseFactory $responseFactory */
+        $container       = container();
+        $auth            = $container->getSingleton(Auth::class);
+        $broadcaster     = $container->getSingleton(Broadcast::class);
         $responseFactory = $container->getSingleton(ResponseFactory::class);
         // The broadcast message
         $broadcastMessage = static::getBroadCastMessageFromRequest($request);

@@ -34,7 +34,17 @@ class UuidV8 extends Type implements Contract
     {
         Helper::validate($subject);
 
-        parent::__construct($subject);
+        $this->subject = $subject;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws Exception
+     */
+    public static function fromValue(mixed $value): static
+    {
+        return new static($value);
     }
 
     /**

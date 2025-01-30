@@ -36,7 +36,18 @@ class UuidV6 extends Type implements Contract
             Helper::validate($subject);
         }
 
-        parent::__construct($subject ?? Helper::generate());
+        $this->subject = $subject
+            ?? Helper::generate();
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws Exception
+     */
+    public static function fromValue(mixed $value): static
+    {
+        return new static($value);
     }
 
     /**

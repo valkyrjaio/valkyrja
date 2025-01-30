@@ -31,7 +31,7 @@ class ObjectT extends Type implements Contract
 {
     public function __construct(object $subject)
     {
-        parent::__construct($subject);
+        $this->subject = $subject;
     }
 
     /**

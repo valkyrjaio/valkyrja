@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Middleware;
 
 use Valkyrja\Auth\Constant\RouteName;
-use Valkyrja\Container\Contract\Container;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Routing\Url\Contract\Url;
+
+use function Valkyrja\container;
+use function Valkyrja\responseFactory;
 
 /**
  * Class ReAuthenticatedMiddleware.
@@ -53,10 +54,8 @@ class ReAuthenticatedMiddleware extends AuthMiddleware
      */
     protected static function getFailedAuthenticationResponse(ServerRequest $request): Response
     {
-        /** @var Container $container */
-        $container = null;
-        /** @var ResponseFactory $responseFactory */
-        $responseFactory = null;
+        $container       = container();
+        $responseFactory = responseFactory();
 
         if ($request->isXmlHttpRequest()) {
             return $responseFactory->createJsonResponse([], StatusCode::LOCKED);

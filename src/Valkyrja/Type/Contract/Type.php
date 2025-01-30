@@ -38,6 +38,8 @@ interface Type extends JsonSerializable
 
     /**
      * Get the flattened value.
+     *
+     * @return string|int|float|bool|null
      */
     public function asFlatValue(): string|int|float|bool|null;
 

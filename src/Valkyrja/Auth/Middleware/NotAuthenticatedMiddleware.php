@@ -15,12 +15,13 @@ namespace Valkyrja\Auth\Middleware;
 
 use Valkyrja\Auth\Constant\RouteName;
 use Valkyrja\Config\Constant\ConfigKeyPart;
-use Valkyrja\Container\Contract\Container;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Routing\Url\Contract\Url;
+
+use function Valkyrja\container;
+use function Valkyrja\responseFactory;
 
 /**
  * Class NotAuthenticatedMiddleware.
@@ -55,10 +56,8 @@ class NotAuthenticatedMiddleware extends AuthMiddleware
      */
     protected static function getFailedRegularResponse(): Response
     {
-        /** @var Container $container */
-        $container = null;
-        /** @var ResponseFactory $responseFactory */
-        $responseFactory = null;
+        $container       = container();
+        $responseFactory = responseFactory();
 
         $authenticateUrl = static::getConfig(ConfigKeyPart::NOT_AUTHENTICATE_URL);
 

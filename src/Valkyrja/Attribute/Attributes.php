@@ -301,9 +301,6 @@ class Attributes implements Contract
         $instances = [];
 
         foreach ($members as $member) {
-            /** @var Reflector $reflection */
-            $reflection = $member;
-
             $instances = [
                 ...$instances,
                 ...$this->getInstances(
@@ -318,11 +315,11 @@ class Attributes implements Contract
                         AttributeProperty::METHOD     => $member instanceof ReflectionMethod
                             ? $member->getName()
                             : null,
-                        AttributeProperty::STATIC     => method_exists($member, 'isStatic')
+                        AttributeProperty::STATIC     => $member instanceof ReflectionProperty || $member instanceof ReflectionMethod
                             ? $member->isStatic()
                             : null,
                     ],
-                    $reflection,
+                    $member,
                     ...$member->getAttributes($attribute, $flags ?? static::$defaultFlags)
                 ),
             ];

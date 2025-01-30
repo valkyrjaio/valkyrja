@@ -77,7 +77,7 @@ class ServiceProvider extends Provider
      */
     public static function publishFilesystem(Container $container): void
     {
-        /** @var array{fileystem: \Valkyrja\Filesystem\Config|array<string, mixed>, ...} $config */
+        /** @var array{filesystem: \Valkyrja\Filesystem\Config|array<string, mixed>, ...} $config */
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
@@ -180,7 +180,7 @@ class ServiceProvider extends Provider
     /**
      * Create the flysystem adapter.
      *
-     * @param Container $container
+     * @param Container                                                              $container
      * @param array{flysystemAdapter: class-string<FlysystemFilesystemAdapter>, ...} $config
      *
      * @return FlysystemAdapter

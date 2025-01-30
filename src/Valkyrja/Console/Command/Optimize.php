@@ -20,6 +20,7 @@ use Valkyrja\Console\Constant\ExitCode;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Container\CacheableContainer;
 use Valkyrja\Event\Collection\CacheableCollection as CacheableEvents;
+use Valkyrja\Event\Collection\Contract\Collection;
 use Valkyrja\Http\Routing\Collection\CacheableCollection;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
@@ -81,7 +82,7 @@ class Optimize extends Commander
         /** @var CacheableConsole $console */
         $console = console();
         /** @var CacheableEvents $events */
-        $events = events();
+        $events = container()->getSingleton(Collection::class);
         /** @var CacheableCollection $collection */
         $collection = router()->getCollection();
 
@@ -108,7 +109,7 @@ class Optimize extends Commander
             }
         }
 
-        $asString = '<?php return ' . var_export(Arr::withoutNull($asArray), true) . ';' . PHP_EOL;
+        $asString = '<?php return ' . var_export(Arr::newWithoutNull($asArray), true) . ';' . PHP_EOL;
         // $serialized = serialize($configCache);
         // $serialized = preg_replace('/O:\d+:"[^"]++"/', 'O:8:"stdClass"', $serialized);
 

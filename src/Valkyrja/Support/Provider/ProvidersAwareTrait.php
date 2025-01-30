@@ -74,7 +74,7 @@ trait ProvidersAwareTrait
 
         // Helpers::validateClass($provider, Provides::class);
 
-        /** @var Provides $providerClass */
+        /** @var class-string<Provides> $providerClass */
         $providerClass = $provider;
 
         // If the service provider is deferred
@@ -169,7 +169,7 @@ trait ProvidersAwareTrait
      */
     protected function registerDeferred(string $provider, string ...$provides): void
     {
-        /** @var Provides $providerClass */
+        /** @var class-string<Provides> $providerClass */
         $providerClass   = $provider;
         $publishCallback = $providerClass::publishers();
 

@@ -276,7 +276,7 @@ class Console implements Contract
         // Do the default registration of the service provider
         $this->traitRegister($provider, $force);
 
-        /** @var Provider $provider */
+        /** @var class-string<Provider> $provider */
         // Get the commands names provided
         $commands = $provider::commands();
 

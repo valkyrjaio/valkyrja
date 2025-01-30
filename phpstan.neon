@@ -7,3 +7,7 @@ parameters:
 #        - tests
     ignoreErrors:
         - '#^Unsafe usage of new static\(\).$#'
+        -
+            identifier: missingType.generics
+        -
+            identifier: trait.unused

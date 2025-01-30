@@ -24,7 +24,9 @@ namespace Valkyrja\Tests\Unit\Http\Message\Factory
         public function testNormalizeServer(): void
         {
             self::$defaultAuthorizationTest = true;
-            $defaultServer                  = ServerFactory::normalizeServer([]);
+
+            $defaultServer = ServerFactory::normalizeServer([]);
+
             self::$defaultAuthorizationTest = false;
 
             self::assertNull($defaultServer['HTTP_AUTHORIZATION'] ?? null);
@@ -47,7 +49,9 @@ namespace Valkyrja\Tests\Unit\Http\Message\Factory
         public function testNormalizeServerLowercaseApacheHeaders(): void
         {
             self::$lowercaseAuthorizationTest = true;
-            $lowercaseServer                  = ServerFactory::normalizeServer([]);
+
+            $lowercaseServer = ServerFactory::normalizeServer([]);
+
             self::$lowercaseAuthorizationTest = false;
 
             self::assertSame('authorization', $lowercaseServer['HTTP_AUTHORIZATION']);

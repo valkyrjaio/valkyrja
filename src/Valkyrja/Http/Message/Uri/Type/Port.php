@@ -28,12 +28,20 @@ class Port extends Type
     public function __construct(int|null $subject)
     {
         if ($subject === null || ($subject >= 1 && $subject <= 65535)) {
-            parent::__construct($subject);
+            $this->subject = $subject;
 
             return;
         }
 
         throw new InvalidArgumentException('Invalid port argument passed.');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function fromValue(mixed $value): static
+    {
+        return new static($value);
     }
 
     /**

@@ -75,16 +75,29 @@ class Retriever implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @template EntityFind of Entity
+     *
+     * @param class-string<EntityFind> $entity
+     *
+     * @return static<EntityFind>
      */
-    public function find(string $entity): static
+    public function find(string $entity): self
     {
         return $this->setQueryProperties($entity);
     }
 
     /**
      * @inheritDoc
+     *
+     * @template EntityFindOne of Entity
+     *
+     * @param class-string<EntityFindOne> $entity
+     * @param int|string                  $id
+     *
+     * @return static<EntityFindOne>
      */
-    public function findOne(string $entity, int|string $id): static
+    public function findOne(string $entity, int|string $id): self
     {
         $self = $this->setQueryProperties($entity);
         $self->limit(1);
@@ -96,8 +109,14 @@ class Retriever implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @template EntityCount of Entity
+     *
+     * @param class-string<EntityCount> $entity
+     *
+     * @return static<EntityCount>
      */
-    public function count(string $entity): static
+    public function count(string $entity): self
     {
         return $this->setQueryProperties($entity, [Statement::COUNT_ALL]);
     }
@@ -297,12 +316,11 @@ class Retriever implements Contract
      *
      * @return static<SetQueryEntity>
      */
-    protected function setQueryProperties(string $entity, array|null $columns = null): static
+    protected function setQueryProperties(string $entity, array|null $columns = null): self
     {
         assert(is_a($entity, Entity::class, true));
 
-        /** @var static<SetQueryEntity> $self */
-        $self = $this;
+        $self = clone $this;
 
         $self->queryBuilder = $this->adapter->createQueryBuilder($entity)->select($columns);
         $self->query        = $this->adapter->createQuery(null, $entity);

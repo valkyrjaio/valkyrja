@@ -33,7 +33,7 @@ class StringId extends Type implements Contract
 {
     public function __construct(string $subject)
     {
-        parent::__construct($subject);
+        $this->subject = $subject;
     }
 
     /**

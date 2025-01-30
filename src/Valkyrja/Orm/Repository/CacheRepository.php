@@ -48,6 +48,7 @@ use function unserialize;
  * @template Entity of Entity
  *
  * @extends Repository<Entity>
+ *
  * @implements Contract<Entity>
  */
 class CacheRepository extends Repository implements Contract
@@ -347,7 +348,7 @@ class CacheRepository extends Repository implements Contract
         $id = spl_object_id($entity);
 
         match ($type) {
-            StoreType::store => $this->storeEntities[$id] = $entity,
+            StoreType::store  => $this->storeEntities[$id]  = $entity,
             StoreType::forget => $this->forgetEntities[$id] = $entity,
         };
     }

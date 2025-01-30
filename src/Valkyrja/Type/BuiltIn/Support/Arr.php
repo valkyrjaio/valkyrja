@@ -15,9 +15,11 @@ namespace Valkyrja\Type\BuiltIn\Support;
 
 use ArrayAccess;
 use JsonException;
+use Stringable;
 use Valkyrja\Config\Constant\ConfigKeyPart;
 use Valkyrja\Type\Exception\RuntimeException;
 
+use function array_filter;
 use function explode;
 use function is_array;
 use function json_decode;
@@ -35,10 +37,10 @@ class Arr
     /**
      * Get a subject value by dot notation key.
      *
-     * @param ArrayAccess|iterable $subject      The subject to search
-     * @param string               $key          The dot notation to search for
-     * @param mixed|null           $defaultValue [optional] The default value
-     * @param non-empty-string     $separator    [optional] The separator
+     * @param ArrayAccess|iterable                           $subject      The subject to search
+     * @param string                                         $key          The dot notation to search for
+     * @param mixed|null                                     $defaultValue [optional] The default value
+     * @param non-empty-string                               $separator    [optional] The separator
      *
      * @phpstan-param ArrayAccess|iterable<array-key, mixed> $subject      The subject
      *
@@ -134,5 +136,17 @@ class Arr
         }
 
         return $subject;
+    }
+
+    /**
+     * Filter empty strings
+     *
+     * @param Stringable|string ...$strings
+     *
+     * @return array<Stringable|string>
+     */
+    public static function filterEmptyStrings(Stringable|string ...$strings): array
+    {
+        return array_filter($strings, static fn (Stringable|string $string): bool => ((string) $string) !== '');
     }
 }

@@ -27,7 +27,7 @@ class BoolT extends Type implements Contract
 {
     public function __construct(bool $subject)
     {
-        parent::__construct($subject);
+        $this->subject = $subject;
     }
 
     /**

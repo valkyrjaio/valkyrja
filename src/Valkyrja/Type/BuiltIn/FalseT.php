@@ -27,7 +27,7 @@ class FalseT extends Type implements Contract
 {
     public function __construct()
     {
-        parent::__construct(false);
+        $this->subject = false;
     }
 
     /**

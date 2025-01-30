@@ -27,7 +27,7 @@ class TrueT extends Type implements Contract
 {
     public function __construct()
     {
-        parent::__construct(true);
+        $this->subject = true;
     }
 
     /**

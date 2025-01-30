@@ -18,10 +18,12 @@ use Valkyrja\Console\Commander\Commander;
 use Valkyrja\Console\Constant\ExitCode;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Event\Collection\CacheableCollection as CacheableEvents;
+use Valkyrja\Event\Collection\Contract\Collection;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function file_put_contents;
 use function Valkyrja\config;
+use function Valkyrja\container;
 use function Valkyrja\events;
 use function Valkyrja\output;
 use function var_export;
@@ -65,12 +67,12 @@ class EventsCache extends Commander
         $configCache['app']['env']   = 'production';
 
         /** @var CacheableEvents $events */
-        $events = events();
+        $events = container()->getSingleton(Collection::class);
 
         $cache = $events->getCacheable();
 
         $asArray  = json_decode(json_encode($cache, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
-        $asString = '<?php return ' . var_export(Arr::withoutNull($asArray), true) . ';' . PHP_EOL;
+        $asString = '<?php return ' . var_export(Arr::newWithoutNull($asArray), true) . ';' . PHP_EOL;
 
         // Get the results of the cache attempt
         $result = file_put_contents($cacheFilePath, $asString, LOCK_EX);

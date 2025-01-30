@@ -30,7 +30,7 @@ abstract class HeaderFactory
      *
      * @param array<string, string> $server
      *
-     * @return array<string, string>
+     * @return array<string, string[]>
      */
     public static function marshalHeaders(array $server): array
     {
@@ -51,14 +51,14 @@ abstract class HeaderFactory
 
             if ($value && str_starts_with($key, 'HTTP_')) {
                 $name           = str_replace('_', '-', strtolower(substr($key, 5)));
-                $headers[$name] = $value;
+                $headers[$name] = [$value];
 
                 continue;
             }
 
             if ($value && str_starts_with($key, 'CONTENT_')) {
                 $name           = 'content-' . strtolower(substr($key, 8));
-                $headers[$name] = $value;
+                $headers[$name] = [$value];
             }
         }
 

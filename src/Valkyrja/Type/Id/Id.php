@@ -32,7 +32,7 @@ class Id extends Type implements Contract
 {
     public function __construct(string|int $subject)
     {
-        parent::__construct($subject);
+        $this->subject = $subject;
     }
 
     /**

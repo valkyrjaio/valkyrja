@@ -29,12 +29,12 @@ class Cast implements JsonSerializable
     /**
      * The type.
      *
-     * @var class-string<Type>
+     * @var class-string<Type<mixed>>
      */
     public string $type;
 
     /**
-     * @param CastType|class-string<Type> $type The type
+     * @param CastType|class-string<Type<mixed>> $type The type
      */
     public function __construct(
         CastType|string $type,

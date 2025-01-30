@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher;
 
+use Closure;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Contract\ContextAwareContainer;
 use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
@@ -46,14 +47,14 @@ class Dispatcher implements Contract
     public function dispatch(Dispatch $dispatch, array|null $arguments = null): mixed
     {
         return match (true) {
-            $dispatch->isMethod()   => $this->dispatchClassMethod($dispatch, $arguments),
+            $dispatch->isMethod() => $this->dispatchClassMethod($dispatch, $arguments),
             $dispatch->isProperty() => $this->dispatchClassProperty($dispatch),
             $dispatch->isConstant() => $this->dispatchConstant($dispatch),
-            $dispatch->isClass()    => $this->dispatchClass($dispatch, $arguments),
+            $dispatch->isClass() => $this->dispatchClass($dispatch, $arguments),
             $dispatch->isFunction() => $this->dispatchFunction($dispatch, $arguments),
-            $dispatch->isClosure()  => $this->dispatchClosure($dispatch, $arguments),
+            $dispatch->isClosure() => $this->dispatchClosure($dispatch, $arguments),
             $dispatch->isVariable() => $this->dispatchVariable($dispatch),
-            default                 => throw new InvalidArgumentException('Invalid dispatch'),
+            default => throw new InvalidArgumentException('Invalid dispatch'),
         };
     }
 
@@ -167,7 +168,7 @@ class Dispatcher implements Contract
      */
     protected function dispatchClosure(Dispatch $dispatch, array|null $arguments = null): mixed
     {
-        /** @var callable $closure */
+        /** @var Closure $closure */
         $closure = $dispatch->getClosure();
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments) ?? [];
@@ -269,7 +270,7 @@ class Dispatcher implements Contract
         }
 
         return array_map(
-            static fn (string $dependency): mixed => $hasContext && $containerContext !== null && $containerContext->has($dependency)
+            static fn (string $dependency): mixed => $containerContext !== null && $containerContext->has($dependency)
                 ? $containerContext->get($dependency)
                 : $container->get($dependency),
             $dependencies

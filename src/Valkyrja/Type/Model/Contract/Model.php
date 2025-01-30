@@ -98,6 +98,8 @@ interface Model extends ArrayAccess, Stringable, Type
 
     /**
      * @inheritDoc
+     *
+     * @return string
      */
     public function asFlatValue(): string;
 

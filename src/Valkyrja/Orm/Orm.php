@@ -18,7 +18,6 @@ use Valkyrja\Orm\Config\Config;
 use Valkyrja\Orm\Contract\Orm as Contract;
 use Valkyrja\Orm\Driver\Contract\Driver;
 use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\Entity\Contract\SoftDeleteEntity;
 use Valkyrja\Orm\Factory\Contract\Factory;
 use Valkyrja\Orm\Persister\Contract\Persister;
 use Valkyrja\Orm\Query\Contract\Query;

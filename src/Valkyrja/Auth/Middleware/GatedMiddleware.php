@@ -19,6 +19,8 @@ use Valkyrja\Auth\Policy\Contract\Policy;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Routing\Model\Contract\Route;
 
+use function Valkyrja\container;
+
 /**
  * Abstract Class GatedMiddleware.
  *
@@ -78,8 +80,7 @@ abstract class GatedMiddleware extends AuthorizedMiddleware
      */
     protected static function getAction(ServerRequest $request): string
     {
-        /** @var Route $route */
-        $route = null;
+        $route = container()->getSingleton(Route::class);
 
         return static::$action
             ?? $route->getMethod()

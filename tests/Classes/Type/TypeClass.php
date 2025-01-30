@@ -22,6 +22,19 @@ use Valkyrja\Type\Type as AbstractType;
  */
 class TypeClass extends AbstractType
 {
+    public function __construct(mixed $subject)
+    {
+        $this->subject = $subject;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function fromValue(mixed $value): static
+    {
+        return new static($value);
+    }
+
     public function asFlatValue(): string|int|float|bool|null
     {
         return $this->asValue();

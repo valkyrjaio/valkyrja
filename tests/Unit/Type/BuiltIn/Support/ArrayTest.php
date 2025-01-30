@@ -17,6 +17,8 @@ use JsonException;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
+use function PHPUnit\Framework\assertSame;
+
 class ArrayTest extends TestCase
 {
     protected const VALUE = [
@@ -90,5 +92,14 @@ class ArrayTest extends TestCase
         self::assertArrayHasKey('null', $arrWithNull);
         // Should be a new array with the original unmodified
         self::assertArrayNotHasKey('null', $arrWithoutNull);
+    }
+
+    public function testFilterEmptyStrings(): void
+    {
+        $arr = ['', 'test'];
+
+        $filtered = Arr::filterEmptyStrings(...$arr);
+
+        assertSame([1 => 'test'], $filtered);
     }
 }

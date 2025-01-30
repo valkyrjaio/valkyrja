@@ -68,7 +68,7 @@ class Config extends Model
      * Then we can do:
      * <code>
      *
-     * @Annotation("name" : "Word::VALUE")
+     * Annotation("name" : "Word::VALUE")
      * </code>
      *
      * @var array<string, string>

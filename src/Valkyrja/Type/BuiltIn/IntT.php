@@ -34,7 +34,7 @@ class IntT extends Type implements Contract
 {
     public function __construct(int $subject)
     {
-        parent::__construct($subject);
+        $this->subject = $subject;
     }
 
     /**

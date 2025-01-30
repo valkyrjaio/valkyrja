@@ -23,33 +23,21 @@ use Valkyrja\Type\Contract\Type as Contract;
  * @implements Contract<T>
  *
  * @template T
- *
- * @phpstan-consistent-constructor
- *  Will be overridden if need be
  */
 abstract class Type implements Contract
 {
     /**
-     * @param T $subject
+     * @var T
      */
-    public function __construct(
-        protected mixed $subject,
-    ) {
-        // $this->validateSubject();
-    }
+    protected mixed $subject;
 
     /**
      * @inheritDoc
      */
-    public static function fromValue(mixed $value): static
-    {
-        return new static($value);
-    }
+    abstract public static function fromValue(mixed $value): static;
 
     /**
      * @inheritDoc
-     *
-     * @return T
      */
     public function asValue(): mixed
     {

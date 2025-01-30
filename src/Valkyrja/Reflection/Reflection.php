@@ -29,7 +29,6 @@ use Valkyrja\Reflection\Contract\Reflection as Contract;
 use function class_exists;
 use function interface_exists;
 use function is_callable;
-use function spl_object_id;
 
 /**
  * Class Reflection.
@@ -134,11 +133,7 @@ class Reflection implements Contract
      */
     public function forClosure(Closure $closure): ReflectionFunction
     {
-        /** @phpstan-var string $index */
-        $index = (string) spl_object_id($closure);
-
-        return $this->functionReflections[$index]
-            ??= new ReflectionFunction($closure);
+        return new ReflectionFunction($closure);
     }
 
     /**

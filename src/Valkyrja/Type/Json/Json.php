@@ -34,7 +34,7 @@ class Json extends Type implements Contract
      */
     public function __construct(array $subject)
     {
-        parent::__construct($subject);
+        $this->subject = $subject;
     }
 
     /**

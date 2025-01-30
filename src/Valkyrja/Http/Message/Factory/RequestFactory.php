@@ -53,10 +53,10 @@ abstract class RequestFactory
         array|null $files = null,
         string $class = ServerRequest::class
     ): ServerRequest {
-        $files ??= $_FILES;
+        $files  ??= $_FILES;
         $server ??= $_SERVER;
-        $query ??= $_GET;
-        $body ??= $_POST;
+        $query  ??= $_GET;
+        $body   ??= $_POST;
 
         /** @var array<string, string> $server */
         $server['REQUEST_METHOD'] ??= RequestMethod::GET->value;
@@ -69,7 +69,7 @@ abstract class RequestFactory
         }
 
         if ($cookies === null && array_key_exists('cookie', $headers)) {
-            $cookies = CookieFactory::parseCookieHeader($headers['cookie']);
+            $cookies = CookieFactory::parseCookieHeader($headers['cookie'][0]);
         }
 
         $cookies ??= $_COOKIE;

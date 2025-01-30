@@ -131,7 +131,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
      * @param Parameter            $parameter    The parameter
      * @param class-string<Entity> $entityName   The entity class name
      * @param string[]             $dependencies The dependencies
-     * @param string|int           $value        The value
+     * @param Entity|string|int    $value        The value
      *
      * @return Response|null
      */
@@ -140,8 +140,12 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
         Parameter $parameter,
         string $entityName,
         array &$dependencies,
-        string|int &$value
+        Entity|string|int &$value
     ): Response|null {
+        if ($value instanceof Entity) {
+            return null;
+        }
+
         // Attempt to get the entity from the ORM repository
         $entity = $this->findEntityFromParameter($parameter, $entityName, $value);
 
@@ -153,6 +157,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
         $this->container->setSingleton($entityName . $index, $entity);
 
         // Replace the route match with this entity
+        /** @param-out Entity $value */
         $value = $entity;
 
         $updatedDependencies = [];

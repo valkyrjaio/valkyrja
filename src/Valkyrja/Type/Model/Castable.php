@@ -115,7 +115,7 @@ trait Castable
             return null;
         }
 
-        /** @var class-string<Type> $type */
+        /** @var class-string<Type<mixed>> $type */
         $type = $cast->type;
 
         $typeInstance = ($value instanceof $type)

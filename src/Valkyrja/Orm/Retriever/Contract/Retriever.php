@@ -25,6 +25,8 @@ use Valkyrja\Orm\QueryBuilder\Contract\WhereQueryBuilder;
  * @author   Melech Mizrachi
  *
  * @template Entity of Entity
+ *
+ * https://phpstan.org/r/157d3b9a-d646-479e-bcad-46ea0f44cb56
  */
 interface Retriever extends WhereQueryBuilder
 {
@@ -41,7 +43,7 @@ interface Retriever extends WhereQueryBuilder
      *
      * @return static<EntityFind>
      */
-    public function find(string $entity): static;
+    public function find(string $entity): self;
 
     /**
      * Find a single entity given its id.
@@ -57,7 +59,7 @@ interface Retriever extends WhereQueryBuilder
      *
      * @return static<EntityFindOne>
      */
-    public function findOne(string $entity, int|string $id): static;
+    public function findOne(string $entity, int|string $id): self;
 
     /**
      * Count all the results of given criteria.
@@ -72,7 +74,7 @@ interface Retriever extends WhereQueryBuilder
      *
      * @return static<EntityCount>
      */
-    public function count(string $entity): static;
+    public function count(string $entity): self;
 
     /**
      * Set columns.

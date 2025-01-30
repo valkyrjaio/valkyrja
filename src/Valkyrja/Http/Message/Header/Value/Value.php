@@ -120,7 +120,7 @@ class Value implements Contract
      */
     public function __toString(): string
     {
-        $filteredParts = array_filter($this->components);
+        $filteredParts = array_filter($this->components, static fn (Component $component): bool => $component->__toString() !== '');
 
         return implode(';', $filteredParts);
     }
