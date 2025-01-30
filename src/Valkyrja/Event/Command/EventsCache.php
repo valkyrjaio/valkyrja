@@ -24,7 +24,6 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 use function file_put_contents;
 use function Valkyrja\config;
 use function Valkyrja\container;
-use function Valkyrja\events;
 use function Valkyrja\output;
 use function var_export;
 

@@ -17,7 +17,6 @@ use Valkyrja\Http\Message\Header\Contract\Header as Contract;
 use Valkyrja\Http\Message\Header\Exception\UnsupportedOffsetSetException;
 use Valkyrja\Http\Message\Header\Exception\UnsupportedOffsetUnsetException;
 use Valkyrja\Http\Message\Header\Security\HeaderSecurity;
-use Valkyrja\Http\Message\Header\Value\Component\Contract\Component;
 use Valkyrja\Http\Message\Header\Value\Contract\Value;
 use Valkyrja\Http\Message\Header\Value\Value as HeaderValue;
 
@@ -102,7 +101,7 @@ class Header implements Contract
 
         if (str_contains($header, static::DELIMINATOR)) {
             [$header, $valuesAsString] = explode(static::DELIMINATOR, $value);
-            $values = [$valuesAsString];
+            $values                    = [$valuesAsString];
         }
 
         if (str_contains($valuesAsString, static::VALUE_DELIMINATOR)) {

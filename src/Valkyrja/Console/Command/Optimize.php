@@ -33,7 +33,6 @@ use function unlink;
 use function Valkyrja\config;
 use function Valkyrja\console;
 use function Valkyrja\container;
-use function Valkyrja\events;
 use function Valkyrja\output;
 use function Valkyrja\router;
 use function var_export;

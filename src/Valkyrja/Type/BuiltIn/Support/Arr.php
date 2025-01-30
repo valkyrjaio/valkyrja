@@ -37,10 +37,10 @@ class Arr
     /**
      * Get a subject value by dot notation key.
      *
-     * @param ArrayAccess|iterable                           $subject      The subject to search
-     * @param string                                         $key          The dot notation to search for
-     * @param mixed|null                                     $defaultValue [optional] The default value
-     * @param non-empty-string                               $separator    [optional] The separator
+     * @param ArrayAccess|iterable $subject      The subject to search
+     * @param string               $key          The dot notation to search for
+     * @param mixed|null           $defaultValue [optional] The default value
+     * @param non-empty-string     $separator    [optional] The separator
      *
      * @phpstan-param ArrayAccess|iterable<array-key, mixed> $subject      The subject
      *
@@ -139,7 +139,7 @@ class Arr
     }
 
     /**
-     * Filter empty strings
+     * Filter empty strings.
      *
      * @param Stringable|string ...$strings
      *
