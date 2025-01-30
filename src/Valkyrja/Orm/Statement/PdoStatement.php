@@ -16,10 +16,13 @@ namespace Valkyrja\Orm\Statement;
 use PDO;
 use PDOStatement as Statement;
 use stdClass;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Orm\Statement\Contract\PdoStatement as Contract;
 
+use function is_array;
 use function is_bool;
 use function is_int;
+use function is_object;
 
 /**
  * Class PDOStatement.
@@ -41,7 +44,7 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      */
-    public function bindValue(string $parameter, $value): bool
+    public function bindValue(string $parameter, mixed $value): bool
     {
         return $this->statement->bindValue(
             $parameter,
@@ -63,7 +66,13 @@ class PdoStatement implements Contract
      */
     public function getColumnMeta(int $columnNumber): array
     {
-        return $this->statement->getColumnMeta($columnNumber);
+        $columnMeta = $this->statement->getColumnMeta($columnNumber);
+
+        if ($columnMeta === false) {
+            throw new RuntimeException($this->errorMessage() ?? "Error occurred when getting column meta for column number $columnNumber");
+        }
+
+        return $columnMeta;
     }
 
     /**
@@ -71,7 +80,13 @@ class PdoStatement implements Contract
      */
     public function fetch(): array
     {
-        return $this->statement->fetch(PDO::FETCH_ASSOC);
+        $fetch = $this->statement->fetch(PDO::FETCH_ASSOC);
+
+        if (! is_array($fetch)) {
+            throw new RuntimeException($this->errorMessage() ?? 'Error occurred when fetching');
+        }
+
+        return $fetch;
     }
 
     /**
@@ -95,7 +110,13 @@ class PdoStatement implements Contract
      */
     public function fetchObject(string $className = stdClass::class): object
     {
-        return $this->statement->fetchObject($className);
+        $object = $this->statement->fetchObject($className);
+
+        if (! is_object($object)) {
+            throw new RuntimeException($this->errorMessage() ?? "Error occurred when fetching object of type $className");
+        }
+
+        return $object;
     }
 
     /**
@@ -139,16 +160,11 @@ class PdoStatement implements Contract
      */
     protected function getBindValueType(mixed $value): int
     {
-        $type = PDO::PARAM_STR;
-
-        if (is_int($value)) {
-            $type = PDO::PARAM_INT;
-        } elseif (is_bool($value)) {
-            $type = PDO::PARAM_BOOL;
-        } elseif ($value === null) {
-            $type = PDO::PARAM_NULL;
-        }
-
-        return $type;
+        return match (true) {
+            is_int($value)  => PDO::PARAM_INT,
+            is_bool($value) => PDO::PARAM_BOOL,
+            $value === null => PDO::PARAM_NULL,
+            default         => PDO::PARAM_STR,
+        };
     }
 }

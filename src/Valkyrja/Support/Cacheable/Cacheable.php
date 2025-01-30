@@ -21,6 +21,7 @@ use Valkyrja\Config\Config;
  * @author   Melech Mizrachi
  *
  * @template Config of Config
+ * @template ConfigAsArray of array<string, mixed>
  * @template Cache
  */
 trait Cacheable
@@ -79,7 +80,7 @@ trait Cacheable
     /**
      * Set attributes.
      *
-     * @param Config|array<string, mixed> $config The config
+     * @param Config|ConfigAsArray $config The config
      *
      * @return void
      */
@@ -89,6 +90,7 @@ trait Cacheable
 
         // If attributes are enabled and cacheable should use attributes
         if ($useAttributes) {
+            /** @var ConfigAsArray $config */
             $this->setupAttributes($config);
         }
     }
@@ -96,26 +98,30 @@ trait Cacheable
     /**
      * Require the file path specified in the config.
      *
-     * @param Config|array<string, mixed> $config The config
+     * @param Config|ConfigAsArray $config The config
      *
      * @return void
      */
     protected function requireFilePath(Config|array $config): void
     {
-        require $config['filePath'];
+        $filePath = $config['filePath'];
+
+        if (is_file($filePath)) {
+            require $filePath;
+        }
     }
 
     /**
      * Get the config.
      *
-     * @return Config|array<string, mixed>
+     * @return Config|ConfigAsArray
      */
     abstract protected function getConfig(): Config|array;
 
     /**
      * Before setup.
      *
-     * @param Config|array<string, mixed> $config The config
+     * @param Config|ConfigAsArray $config The config
      *
      * @return void
      */
@@ -124,7 +130,7 @@ trait Cacheable
     /**
      * Setup from cache.
      *
-     * @param Config|array<string, mixed> $config The config
+     * @param Config|ConfigAsArray $config The config
      *
      * @return void
      */
@@ -133,7 +139,7 @@ trait Cacheable
     /**
      * Set not cached.
      *
-     * @param Config|array<string, mixed> $config The config
+     * @param Config|ConfigAsArray $config The config
      *
      * @return void
      */
@@ -142,7 +148,7 @@ trait Cacheable
     /**
      * Set attributes.
      *
-     * @param Config|array<string, mixed> $config The config
+     * @param Config|ConfigAsArray $config The config
      *
      * @return void
      */
@@ -151,7 +157,7 @@ trait Cacheable
     /**
      * After setup.
      *
-     * @param Config|array<string, mixed> $config The config
+     * @param Config|ConfigAsArray $config The config
      *
      * @return void
      */

@@ -11,15 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Facade\Exception;
-
-use Valkyrja\Exception\Throwable as Contract;
+namespace Valkyrja\Http\Message\Stream\Exception;
 
 /**
- * Interface Throwable.
+ * Class InvalidLengthException.
  *
  * @author Melech Mizrachi
  */
-interface Throwable extends Contract
+class InvalidLengthException extends InvalidArgumentException
 {
 }

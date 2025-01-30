@@ -122,7 +122,7 @@ class ServiceProvider extends Provider
      */
     public static function publishTemplate(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             Template::class,
             static fn (Engine $engine) => new \Valkyrja\View\Template\Template($engine)
         );

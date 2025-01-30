@@ -14,9 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Adapter;
 
 use Valkyrja\Session\Exception\InvalidSessionId;
+use Valkyrja\Session\Exception\SessionIdFailure;
+use Valkyrja\Session\Exception\SessionNameFailure;
 use Valkyrja\Session\Exception\SessionStartFailure;
 
 use function headers_sent;
+use function is_array;
 use function preg_match;
 use function session_id;
 use function session_name;
@@ -44,13 +47,17 @@ class PHPAdapter extends NullAdapter
             return;
         }
 
-        // Set the session cookie parameters
-        session_set_cookie_params(...($this->config['cookieParams'] ?? []));
+        $cookieParams = $this->config['cookieParams'] ?? [];
+
+        if (is_array($cookieParams) && $cookieParams !== []) {
+            // Set the session cookie parameters
+            session_set_cookie_params(...$cookieParams);
+        }
 
         // If the session failed to start
         if (! session_start()) {
             // Throw a new exception
-            throw new SessionStartFailure('The session failed to start!');
+            throw new SessionStartFailure('The session failed to start');
         }
 
         // Set the data
@@ -62,7 +69,13 @@ class PHPAdapter extends NullAdapter
      */
     public function getId(): string
     {
-        return session_id();
+        $sessionId = session_id();
+
+        if ($sessionId === false) {
+            throw new SessionIdFailure('Retrieval of session id failed');
+        }
+
+        return $sessionId;
     }
 
     /**
@@ -86,7 +99,13 @@ class PHPAdapter extends NullAdapter
      */
     public function getName(): string
     {
-        return session_name();
+        $sessionName = session_name();
+
+        if ($sessionName === false) {
+            throw new SessionNameFailure('Retrieval of session id failed');
+        }
+
+        return $sessionName;
     }
 
     /**

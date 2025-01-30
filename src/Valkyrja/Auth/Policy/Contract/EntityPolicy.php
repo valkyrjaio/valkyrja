@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Policy\Contract;
 
+use Valkyrja\Orm\Entity\Contract\Entity;
+
 /**
  * Interface EntityPolicy.
  *
@@ -23,7 +25,7 @@ interface EntityPolicy extends Policy
     /**
      * Get the entity class name that's associated with this policy.
      *
-     * @return string
+     * @return class-string<Entity>
      */
     public static function getEntityClassName(): string;
 }

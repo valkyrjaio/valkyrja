@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Entity;
 
 use JsonException;
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Orm\Entity\Contract\Entity as Contract;
 use Valkyrja\Orm\Repository\Contract\Repository;
 use Valkyrja\Type\BuiltIn\Support\Arr;
@@ -24,6 +25,8 @@ use Valkyrja\Type\Model\Model;
 use Valkyrja\Type\Model\ProtectedExposable;
 
 use function array_walk;
+use function gettype;
+use function is_array;
 
 /**
  * Class Entity.
@@ -233,6 +236,12 @@ abstract class Entity extends Model implements Contract
 
         // An array would indicate an array of types
         if ($cast->isArray) {
+            if (! is_array($value)) {
+                $typeOf = gettype($value);
+
+                throw new InvalidArgumentException("Expecting array, $typeOf provided, for $property cast");
+            }
+
             return Arr::toString(
                 array_map(
                     fn (mixed $data): mixed => $this->internalGetTypeValueForDataStore($cast, $data),

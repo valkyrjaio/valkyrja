@@ -35,7 +35,7 @@ interface Application extends ArrayAccess
     /**
      * The Application framework version.
      *
-     * @constant string
+     * @var string
      */
     public const VERSION = '1.0.0';
 

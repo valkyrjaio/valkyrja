@@ -107,6 +107,7 @@ class ServiceProvider extends Provider
      */
     public static function publishRouter(Container $container): void
     {
+        /** @var MainConfig|array{app: array{debug: bool, ...}, ...} $config */
         $config = $container->getSingleton(MainConfig::class);
 
         /** @var ThrowableCaughtHandler&Handler $exception */
@@ -363,6 +364,7 @@ class ServiceProvider extends Provider
      */
     protected static function getRoutingConfig(Container $container): Config|array
     {
+        /** @var MainConfig|array{routing?: array<string, mixed>|Config, ...} $config */
         $config = $container->getSingleton(MainConfig::class);
 
         return $config['routing']

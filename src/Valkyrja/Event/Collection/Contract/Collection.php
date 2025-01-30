@@ -68,7 +68,7 @@ interface Collection extends ArrayAccess, ListenerProviderInterface
      *
      * @return Listener[]
      */
-    public function getListenersForEvent(object $event): iterable;
+    public function getListenersForEvent(object $event): array;
 
     /**
      * Get all listeners for a given event id.
@@ -77,7 +77,7 @@ interface Collection extends ArrayAccess, ListenerProviderInterface
      *
      * @return Listener[]
      */
-    public function getListenersForEventById(string $eventId): iterable;
+    public function getListenersForEventById(string $eventId): array;
 
     /**
      * Set listeners for a given event.
@@ -108,21 +108,21 @@ interface Collection extends ArrayAccess, ListenerProviderInterface
      *
      * @return Listener[]
      */
-    public function getListeners(): iterable;
+    public function getListeners(): array;
 
     /**
      * Get all registered event ids with listeners.
      *
      * @return class-string[]
      */
-    public function getEvents(): iterable;
+    public function getEvents(): array;
 
     /**
      * Get all registered events with their listeners.
      *
      * @return array<class-string, Listener[]>
      */
-    public function getEventsWithListeners(): iterable;
+    public function getEventsWithListeners(): array;
 
     /**
      * Get an event's listeners.
@@ -131,7 +131,7 @@ interface Collection extends ArrayAccess, ListenerProviderInterface
      *
      * @return Listener[]
      */
-    public function offsetGet(mixed $offset): iterable;
+    public function offsetGet(mixed $offset): array;
 
     /**
      * Set a listener to an event.

@@ -22,6 +22,8 @@ use Valkyrja\Http\Routing\Config\Cache;
 use Valkyrja\Http\Routing\Exception\InvalidRoutePathException;
 use Valkyrja\Support\Cacheable\Cacheable;
 
+use function is_file;
+
 /**
  * Class CacheableCollection.
  *
@@ -30,7 +32,7 @@ use Valkyrja\Support\Cacheable\Cacheable;
 class CacheableCollection extends Collection
 {
     /**
-     * @use Cacheable<RoutingConfig, Cache>
+     * @use Cacheable<RoutingConfig, array<string, mixed>, Cache>
      */
     use Cacheable;
 
@@ -101,12 +103,21 @@ class CacheableCollection extends Collection
      */
     protected function setupFromCache(Config|array $config): void
     {
-        $cache = $config['cache'] ?? require $config['cacheFilePath'];
+        $cache = $config['cache'] ?? null;
 
-        $this->routes  = $cache['routes'];
-        $this->static  = $cache['static'];
-        $this->dynamic = $cache['dynamic'];
-        $this->named   = $cache['named'];
+        if ($cache === null) {
+            $cache         = [];
+            $cacheFilePath = $config['cacheFilePath'];
+
+            if (is_file($cacheFilePath)) {
+                $cache = require $cacheFilePath;
+            }
+        }
+
+        $this->routes  = $cache['routes'] ?? [];
+        $this->static  = $cache['static'] ?? [];
+        $this->dynamic = $cache['dynamic'] ?? [];
+        $this->named   = $cache['named'] ?? [];
     }
 
     /**
@@ -162,6 +173,8 @@ class CacheableCollection extends Collection
 
         $collector = $this->container->getSingleton(Collector::class);
 
-        require $config['filePath'];
+        if (is_file($filePath)) {
+            require $filePath;
+        }
     }
 }

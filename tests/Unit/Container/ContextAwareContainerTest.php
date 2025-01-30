@@ -130,23 +130,23 @@ class ContextAwareContainerTest extends TestCase
         $closureDefault = static fn (): string => $valueDefault;
         $closureContext = static fn (): string => $valueContext;
 
-        $container->setClosure($id, $closureDefault);
+        $container->setCallable($id, $closureDefault);
 
         $withContext    = $container->withContext('closure');
         $withoutContext = $container->withoutContext();
 
-        $withContext->setClosure($id, $closureContext);
+        $withContext->setCallable($id, $closureContext);
 
-        self::assertTrue($container->isClosure($id));
+        self::assertTrue($container->isCallable($id));
         self::assertSame($valueDefault, $container->get($id));
-        self::assertSame($valueDefault, $container->getClosure($id));
+        self::assertSame($valueDefault, $container->getCallable($id));
 
-        self::assertTrue($withContext->isClosure($id));
+        self::assertTrue($withContext->isCallable($id));
         self::assertSame($valueContext, $withContext->get($id));
-        self::assertSame($valueContext, $withContext->getClosure($id));
+        self::assertSame($valueContext, $withContext->getCallable($id));
 
-        self::assertTrue($withoutContext->isClosure($id));
+        self::assertTrue($withoutContext->isCallable($id));
         self::assertSame($valueDefault, $withoutContext->get($id));
-        self::assertSame($valueDefault, $withoutContext->getClosure($id));
+        self::assertSame($valueDefault, $withoutContext->getCallable($id));
     }
 }

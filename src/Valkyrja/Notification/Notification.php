@@ -14,12 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Notification;
 
 use Valkyrja\Broadcast\Contract\Broadcast;
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Mail\Contract\Mail;
 use Valkyrja\Notification\Contract\Notification as Contract;
 use Valkyrja\Notification\Data\Contract\Notify;
 use Valkyrja\Notification\Entity\Contract\NotifiableUser;
 use Valkyrja\Notification\Factory\Contract\Factory;
 use Valkyrja\Sms\Contract\Sms;
+
+use function is_string;
 
 /**
  * Class Notification.
@@ -31,21 +34,21 @@ class Notification implements Contract
     /**
      * The mail recipients.
      *
-     * @var array<int, array{email: string, name: string}>
+     * @var array<int, array{email: string, name: string, user?: NotifiableUser}>
      */
     protected array $mailRecipients = [];
 
     /**
      * The SMS recipients.
      *
-     * @var array<int, array{to: string}>
+     * @var array<int, array{to: string, user?: NotifiableUser}>
      */
     protected array $smsRecipients = [];
 
     /**
      * The broadcast events.
      *
-     * @var array<int, array{event: string}>
+     * @var array<int, array{event: string, user?: NotifiableUser}>
      */
     protected array $broadcastEvents = [];
 
@@ -189,9 +192,13 @@ class Notification implements Contract
      */
     protected function addBroadcastUserRecipient(NotifiableUser $user): void
     {
-        if ($user::hasSecretIdField()) {
+        $secretId = $user::hasSecretIdField()
+            ? $user->__get($user::getSecretIdField())
+            : null;
+
+        if (is_string($secretId)) {
             $this->broadcastEvents[] = [
-                'event' => $user->__get($user::getSecretIdField()),
+                'event' => $secretId,
                 'user'  => $user,
             ];
         }
@@ -206,9 +213,22 @@ class Notification implements Contract
      */
     protected function addMailUserRecipient(NotifiableUser $user): void
     {
+        $email = $user->__get($user::getEmailField());
+        $name  = $user::hasNameField()
+            ? $user->__get($user::getNameField())
+            : '';
+
+        if (! is_string($email)) {
+            throw new InvalidArgumentException('Invalid email provided');
+        }
+
+        if (! is_string($name)) {
+            throw new InvalidArgumentException('Invalid name provided');
+        }
+
         $this->mailRecipients[] = [
-            'email' => $user->__get($user::getEmailField()),
-            'name'  => $user::hasNameField() ? $user->__get($user::getNameField()) : '',
+            'email' => $email,
+            'name'  => $name,
             'user'  => $user,
         ];
     }
@@ -222,9 +242,13 @@ class Notification implements Contract
      */
     protected function addSmsUserRecipient(NotifiableUser $user): void
     {
-        if ($user::hasPhoneNumberField()) {
+        $phoneNumber = $user::hasPhoneNumberField()
+            ? $user->__get($user::getPhoneNumberField())
+            : null;
+
+        if (is_string($phoneNumber)) {
             $this->smsRecipients[] = [
-                'to'   => $user->__get($user::getPhoneNumberField()),
+                'to'   => $phoneNumber,
                 'user' => $user,
             ];
         }

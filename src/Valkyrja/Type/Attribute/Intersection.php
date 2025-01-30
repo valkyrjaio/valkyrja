@@ -25,7 +25,7 @@ use Valkyrja\Type\Contract\Type as TypeContract;
 class Intersection
 {
     /**
-     * @var array<int, self|Union|TypeContract>
+     * @var array<array-key, TypeContract|Union|self>
      */
     public array $types = [];
 

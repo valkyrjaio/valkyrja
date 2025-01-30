@@ -44,9 +44,6 @@ class ContainerFactory implements Factory
      */
     public function createNotification(string $name, array $data = []): Notify
     {
-        return $this->container->get(
-            $this->config['notifications'][$name] ?? $name,
-            $data
-        );
+        return $this->container->get($name, $data);
     }
 }

@@ -34,9 +34,9 @@ abstract class Manager implements Contract
     /**
      * The drivers.
      *
-     * @var Driver[]
+     * @var array<string, Driver>
      */
-    protected static array $drivers = [];
+    protected array $drivers = [];
 
     /**
      * The default adapter.
@@ -92,17 +92,22 @@ abstract class Manager implements Contract
         // The config to use
         $config = $this->configurations[$name];
         // The driver to use
+        /** @var class-string<Driver> $driverClass */
         $driverClass = $config['driver'] ?? $this->defaultDriver;
         // The adapter to use
+        /** @var class-string<Adapter> $adapterClass */
         $adapterClass = $config['adapter'] ?? $this->defaultAdapter;
         // The cache key to use
         $cacheKey = $name . $adapterClass;
 
-        /** @var Driver $driver */
-        $driver = self::$drivers[$cacheKey]
-            ??= $this->factory->createDriver($driverClass, $adapterClass, $config);
+        if (! isset($this->drivers[$cacheKey])) {
+            /** @var Driver $driver */
+            $driver = $this->factory->createDriver($driverClass, $adapterClass, $config);
 
-        return $driver;
+            $this->drivers[$cacheKey] = $driver;
+        }
+
+        return $this->drivers[$cacheKey];
     }
 
     /**

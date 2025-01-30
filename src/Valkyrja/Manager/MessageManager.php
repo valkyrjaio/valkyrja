@@ -81,6 +81,7 @@ abstract class MessageManager extends Manager implements Contract
         // The message config
         $config = $this->messages[$name];
         // The message to use
+        /** @var class-string<Message> $class */
         $class = $config['message'] ?? $this->defaultMessageClass;
 
         /** @var Message $message */

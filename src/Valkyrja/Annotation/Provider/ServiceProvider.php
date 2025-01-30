@@ -96,6 +96,7 @@ class ServiceProvider extends Provider
      */
     public static function publishParser(Container $container): void
     {
+        /** @var array{annotation: \Valkyrja\Annotation\Config|array<string, mixed>, ...} $config */
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(

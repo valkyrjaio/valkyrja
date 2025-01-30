@@ -34,6 +34,6 @@ class Alpha extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must be alphabetic";
+        return 'Must be alphabetic';
     }
 }

@@ -20,6 +20,8 @@ use Valkyrja\Event\Config as EventConfig;
 use Valkyrja\Event\Config\Cache;
 use Valkyrja\Support\Cacheable\Cacheable;
 
+use function is_file;
+
 /**
  * Class CacheableCollection.
  *
@@ -28,7 +30,7 @@ use Valkyrja\Support\Cacheable\Cacheable;
 class CacheableCollection extends Collection
 {
     /**
-     * @use Cacheable<EventConfig, Cache>
+     * @use Cacheable<EventConfig, array<string, mixed>, Cache>
      */
     use Cacheable;
 
@@ -100,10 +102,19 @@ class CacheableCollection extends Collection
      */
     protected function setupFromCache(Config|array $config): void
     {
-        $cache = $config['cache'] ?? require $config['cacheFilePath'];
+        $cache = $config['cache'] ?? null;
 
-        $this->events    = $cache['events'];
-        $this->listeners = $cache['listeners'];
+        if ($cache === null) {
+            $cache         = [];
+            $cacheFilePath = $config['cacheFilePath'];
+
+            if (is_file($cacheFilePath)) {
+                $cache = require $cacheFilePath;
+            }
+        }
+
+        $this->events    = $cache['events'] ?? [];
+        $this->listeners = $cache['listeners'] ?? [];
     }
 
     /**
@@ -141,8 +152,12 @@ class CacheableCollection extends Collection
      */
     protected function requireFilePath(Config|array $config): void
     {
+        $filePath = $config['filePath'];
+
         $collection = $this;
 
-        require $config['filePath'];
+        if (is_file($filePath)) {
+            require $filePath;
+        }
     }
 }

@@ -20,6 +20,8 @@ use Valkyrja\Orm\Entity\Contract\Entity;
  *
  * @author Melech Mizrachi
  *
+ * @template Entity of Entity
+ *
  * @extends Repository<Entity>
  */
 interface CacheRepository extends Repository

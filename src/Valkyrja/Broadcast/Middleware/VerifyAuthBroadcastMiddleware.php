@@ -23,6 +23,8 @@ use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 
+use function is_string;
+
 /**
  * Class VerifyAuthBroadcastMiddleware.
  *
@@ -84,7 +86,11 @@ class VerifyAuthBroadcastMiddleware /* extends Middleware */
         // plain text in the query string for a normal GET request (either in logs, or elsewhere). Ideally
         // a developer should only require updating the `static::$broadcastMessageParamName` value
         // should they extend this middleware for their own purposes to ensure security.
-        return $request->getParsedBodyParam(static::$broadcastMessageParamName);
+        $broadcastMessage = $request->getParsedBodyParam(static::$broadcastMessageParamName);
+
+        return is_string($broadcastMessage)
+            ? $broadcastMessage
+            : null;
     }
 
     /**

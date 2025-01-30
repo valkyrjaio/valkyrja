@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Provider;
 
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Support\Provider\Contract\Provides;
+
+use function is_callable;
 
 /**
  * Trait AllowsProviders.
@@ -172,9 +175,15 @@ trait ProvidersAwareTrait
 
         // Add the services to the service providers list
         foreach ($provides as $provided) {
-            $this->deferred[$provided]         = $provider;
-            $this->deferredCallback[$provided] = $publishCallback[$provided]
+            $this->deferred[$provided] = $provider;
+            $callable                  = $publishCallback[$provided]
                 ?? [$provider, $this->defaultPublishMethod];
+
+            if (! is_callable($callable)) {
+                throw new InvalidArgumentException("$provided should have a valid callable");
+            }
+
+            $this->deferredCallback[$provided] = $callable;
         }
 
         // The provider is now registered

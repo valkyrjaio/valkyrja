@@ -42,6 +42,6 @@ class EndsWith extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must end with $this->needle";
+        return "Must end with $this->needle";
     }
 }

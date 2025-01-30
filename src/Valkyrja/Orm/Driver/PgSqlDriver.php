@@ -15,6 +15,8 @@ namespace Valkyrja\Orm\Driver;
 
 use Valkyrja\Orm\Adapter\Contract\Adapter;
 
+use function is_string;
+
 /**
  * Class PgSqlDriver.
  *
@@ -34,7 +36,7 @@ class PgSqlDriver extends Driver
 
         $schema = $config['schema'] ?? null;
 
-        if ($schema !== null && $schema !== '') {
+        if ($schema !== '' && is_string($schema)) {
             $statement = $this->prepare("set search_path to $schema");
             $statement->execute();
         }

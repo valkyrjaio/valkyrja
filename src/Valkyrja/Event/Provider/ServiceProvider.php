@@ -123,6 +123,7 @@ class ServiceProvider extends Provider
      */
     public static function publishCollection(Container $container): void
     {
+        /** @var array{event: \Valkyrja\Event\Config|array<string, mixed>, ...} $config */
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(

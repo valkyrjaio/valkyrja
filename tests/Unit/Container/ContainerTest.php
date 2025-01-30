@@ -80,7 +80,7 @@ class ContainerTest extends TestCase
         self::assertTrue($container->isService($id));
 
         self::assertFalse($container->isAlias($id));
-        self::assertFalse($container->isClosure($id));
+        self::assertFalse($container->isCallable($id));
         self::assertFalse($container->isSingleton($id));
         self::assertFalse($container->isDeferred($id));
         self::assertFalse($container->isPublished($id));
@@ -106,7 +106,7 @@ class ContainerTest extends TestCase
         self::assertTrue($container->isAlias($alias));
         self::assertTrue($container->isService($alias));
 
-        self::assertFalse($container->isClosure($id));
+        self::assertFalse($container->isCallable($id));
         self::assertFalse($container->isSingleton($id));
         self::assertFalse($container->isDeferred($id));
         self::assertFalse($container->isPublished($id));
@@ -132,7 +132,7 @@ class ContainerTest extends TestCase
         self::assertTrue($container->isService($id));
 
         self::assertFalse($container->isAlias($id));
-        self::assertFalse($container->isClosure($id));
+        self::assertFalse($container->isCallable($id));
         self::assertFalse($container->isDeferred($id));
         self::assertFalse($container->isPublished($id));
 
@@ -163,10 +163,10 @@ class ContainerTest extends TestCase
         $id        = self::class;
         $closure   = static fn () => new self('test');
 
-        $container->setClosure($id, $closure);
+        $container->setCallable($id, $closure);
 
         self::assertTrue($container->has($id));
-        self::assertTrue($container->isClosure($id));
+        self::assertTrue($container->isCallable($id));
         // Set methods will automatically set the service id to published
         // Bounding is a deferment technique, whilst setting is not-deferred and hence should be used through providers
         self::assertTrue($container->isPublished($id));
@@ -181,8 +181,8 @@ class ContainerTest extends TestCase
         // Of course an application can choose to return the same instance each time, but why not use a singleton then?
         self::assertNotSame($service, $container->get($id));
 
-        self::assertInstanceOf($id, $container->getClosure($id));
-        self::assertNotSame($service, $container->getClosure($id));
+        self::assertInstanceOf($id, $container->getCallable($id));
+        self::assertNotSame($service, $container->getCallable($id));
     }
 
     public function testOffsetUnset(): void

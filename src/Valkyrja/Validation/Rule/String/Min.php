@@ -42,6 +42,6 @@ class Min extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must be longer than $this->min";
+        return "Must be longer than $this->min";
     }
 }

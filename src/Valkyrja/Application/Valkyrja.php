@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application;
 
-use RuntimeException;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config as ConfigModel;
@@ -22,6 +21,7 @@ use Valkyrja\Console\Kernel\Contract\Kernel as ConsoleKernel;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Contract\Dispatcher as Events;
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Support\Directory;
 use Valkyrja\Type\BuiltIn\Support\Arr;
@@ -292,7 +292,7 @@ class Valkyrja implements Application
      */
     public function offsetUnset($offset): void
     {
-        throw new RuntimeException('Cannot unset service: ' . $offset);
+        throw new InvalidArgumentException("Cannot unset service: $offset");
     }
 
     /**
@@ -361,9 +361,15 @@ class Valkyrja implements Application
      */
     protected function setupFromCacheFile(string $cacheFilePath): void
     {
-        self::$config = require $cacheFilePath;
+        if (is_file($cacheFilePath)) {
+            self::$config = require $cacheFilePath;
 
-        $this->publishProviders();
+            $this->publishProviders();
+
+            return;
+        }
+
+        throw new InvalidArgumentException("Invalid $cacheFilePath provided");
     }
 
     /**

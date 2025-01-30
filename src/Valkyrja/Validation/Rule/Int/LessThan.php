@@ -42,6 +42,6 @@ class LessThan extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must be less than $this->max";
+        return "Must be less than $this->max";
     }
 }

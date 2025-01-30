@@ -34,10 +34,10 @@ final class ConfigValue
     public const MESSAGE         = Message::class;
     public const MESSENGERS      = [
         CKP::NEXMO => [
-            CKP::ADAPTER  => null,
-            CKP::DRIVER   => null,
-            CKP::USERNAME => '',
-            CKP::PASSWORD => '',
+            CKP::ADAPTER => null,
+            CKP::DRIVER  => null,
+            CKP::KEY     => '',
+            CKP::SECRET  => '',
         ],
         CKP::LOG   => [
             CKP::ADAPTER => LogAdapter::class,

@@ -18,6 +18,8 @@ use RuntimeException;
 use Valkyrja\Jwt\Adapter\FirebaseAdapter;
 use Valkyrja\Jwt\Support\KeyGen;
 
+use function is_string;
+
 /**
  * Class RsAdapter.
  *
@@ -30,8 +32,28 @@ class RsAdapter extends FirebaseAdapter
      */
     protected function setEncodeKey(): void
     {
-        $this->encodeKey = $this->config['privateKey']
-            ?? KeyGen::opensslPrivateKey($this->config['keyPath'], $this->config['passphrase']);
+        $encodeKey = $this->config['privateKey'] ?? null;
+
+        if ($encodeKey === null) {
+            $keyPath    = $this->config['keyPath'] ?? null;
+            $passphrase = $this->config['passphrase'] ?? null;
+
+            if (! is_string($keyPath)) {
+                throw new RuntimeException('Invalid key path provided');
+            }
+
+            if (! is_string($passphrase)) {
+                throw new RuntimeException('Invalid passphrase provided');
+            }
+
+            $encodeKey = KeyGen::opensslPrivateKey($keyPath, $passphrase);
+        }
+
+        if (! is_string($encodeKey) && ! $encodeKey instanceof OpenSSLAsymmetricKey) {
+            throw new RuntimeException('Invalid private key provided');
+        }
+
+        $this->encodeKey = $encodeKey;
     }
 
     /**
@@ -39,9 +61,20 @@ class RsAdapter extends FirebaseAdapter
      */
     protected function setDecodeKey(): void
     {
-        $this->decodeKey = $this->config['publicKey']
-            ?? (($encodeKey = $this->encodeKey) instanceof OpenSSLAsymmetricKey
-                ? KeyGen::opensslPublicKey($encodeKey)
-                : throw new RuntimeException('When using KeyGen you must use a keyPath and passphrase'));
+        $decodeKey = $this->config['publicKey'] ?? null;
+
+        if ($decodeKey === null) {
+            $encodeKey = $this->encodeKey;
+
+            if (! $encodeKey instanceof OpenSSLAsymmetricKey) {
+                throw new RuntimeException('When using KeyGen you must use a keyPath and passphrase');
+            }
+        }
+
+        if (! is_string($decodeKey) && ! $decodeKey instanceof OpenSSLAsymmetricKey) {
+            throw new RuntimeException('Invalid public key provided');
+        }
+
+        $this->decodeKey = $decodeKey;
     }
 }

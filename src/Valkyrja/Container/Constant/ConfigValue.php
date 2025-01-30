@@ -56,6 +56,7 @@ final class ConfigValue
     ];
     public const DEV_PROVIDERS    = [];
     public const USE_ANNOTATIONS  = false;
+    public const USE_ATTRIBUTES   = true;
     public const FILE_PATH        = '';
     public const CACHE_FILE_PATH  = '';
     public const USE_CACHE_FILE   = false;
@@ -68,6 +69,7 @@ final class ConfigValue
         CKP::PROVIDERS        => self::PROVIDERS,
         CKP::DEV_PROVIDERS    => self::DEV_PROVIDERS,
         CKP::USE_ANNOTATIONS  => self::USE_ANNOTATIONS,
+        CKP::USE_ATTRIBUTES   => self::USE_ATTRIBUTES,
         CKP::FILE_PATH        => self::FILE_PATH,
         CKP::CACHE_FILE_PATH  => self::CACHE_FILE_PATH,
         CKP::USE_CACHE        => self::USE_CACHE_FILE,

@@ -13,14 +13,20 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Repository;
 
+use Valkyrja\Orm\Entity\Contract\Entity;
 use Valkyrja\Orm\Repository\Contract\RelationshipRepository as Contract;
 
 /**
  * Class RelationshipRepository.
  *
  * @author Melech Mizrachi
+ *
+ * @template Entity of Entity
+ *
+ * @extends Repository<Entity>
  */
 class RelationshipRepository extends Repository implements Contract
 {
+    /** @use RelationshipCapableRepository<Entity> */
     use RelationshipCapableRepository;
 }

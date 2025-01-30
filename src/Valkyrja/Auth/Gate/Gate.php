@@ -26,29 +26,15 @@ use Valkyrja\Auth\Repository\Contract\Repository;
 class Gate implements Contract
 {
     /**
-     * The auth service.
-     *
-     * @var Auth
-     */
-    protected Auth $auth;
-
-    /**
-     * The repository.
-     *
-     * @var Repository
-     */
-    protected Repository $repository;
-
-    /**
      * Gate constructor.
      *
      * @param Auth       $auth       The auth service
      * @param Repository $repository The repository
      */
-    public function __construct(Auth $auth, Repository $repository)
-    {
-        $this->auth       = $auth;
-        $this->repository = $repository;
+    public function __construct(
+        protected Auth $auth,
+        protected Repository $repository
+    ) {
     }
 
     /**

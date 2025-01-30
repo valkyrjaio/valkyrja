@@ -17,6 +17,7 @@ use Valkyrja\Event\Collection\Contract\Collection as Contract;
 use Valkyrja\Event\Model\Contract\Listener;
 use Valkyrja\Event\Model\Listener as Model;
 
+use function array_keys;
 use function is_array;
 use function is_object;
 
@@ -114,7 +115,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function getListenersForEvent(object $event): iterable
+    public function getListenersForEvent(object $event): array
     {
         return $this->getListenersForEventById($event::class);
     }
@@ -122,7 +123,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function getListenersForEventById(string $eventId): iterable
+    public function getListenersForEventById(string $eventId): array
     {
         $listenerIds = $this->events[$eventId];
         $listeners   = [];
@@ -173,7 +174,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function getListeners(): iterable
+    public function getListeners(): array
     {
         return $this->listeners;
     }
@@ -181,22 +182,15 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function getEvents(): iterable
+    public function getEvents(): array
     {
-        $eventIds = [];
-        $events   = $this->events;
-
-        foreach ($events as $eventId => $listenerIds) {
-            $eventIds[] = $eventId;
-        }
-
-        return $eventIds;
+        return array_keys($this->events);
     }
 
     /**
      * @inheritDoc
      */
-    public function getEventsWithListeners(): iterable
+    public function getEventsWithListeners(): array
     {
         $eventsWithListeners = [];
         $events              = $this->events;
@@ -211,7 +205,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function offsetGet($offset): iterable
+    public function offsetGet($offset): array
     {
         if (is_object($offset)) {
             return $this->getListenersForEvent($offset);

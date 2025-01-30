@@ -14,27 +14,32 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Adapter;
 
 use PDO;
-use RuntimeException;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Orm\Adapter\Contract\PdoAdapter as Contract;
 use Valkyrja\Orm\Contract\Orm;
 use Valkyrja\Orm\Statement\Contract\Statement;
 use Valkyrja\Orm\Statement\PdoStatement;
 
 use function is_bool;
+use function is_string;
 
 /**
- * Class PDOAdapter.
+ * Class PdoAdapter.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-import-type Config from Adapter
+ *
+ * @phpstan-import-type Config from Adapter
  */
 class PdoAdapter extends Adapter implements Contract
 {
     /**
      * PDOAdapter constructor.
      *
-     * @param Orm                  $orm    The orm
-     * @param PDO                  $pdo    The PDO
-     * @param array<string, mixed> $config The config
+     * @param Orm    $orm    The orm
+     * @param PDO    $pdo    The PDO
+     * @param Config $config The config
      */
     public function __construct(
         Orm $orm,
@@ -105,12 +110,11 @@ class PdoAdapter extends Adapter implements Contract
      */
     public function lastInsertId(string|null $table = null, string|null $idField = null): string
     {
-        $name = null;
+        /** @var string|false $lastInsertId */
+        $lastInsertId = $this->pdo->lastInsertId();
 
-        if ($this->config['config']['driver'] === 'pgsql' && $table !== null && $table !== '' && $idField !== null && $idField !== '') {
-            $name = "{$table}_{$idField}_seq";
-        }
-
-        return (string) $this->pdo->lastInsertId($name);
+        return is_string($lastInsertId)
+            ? $lastInsertId
+            : throw new RuntimeException('No last insert id found');
     }
 }

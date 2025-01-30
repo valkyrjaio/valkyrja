@@ -5,11 +5,6 @@
             <code><![CDATA[var_dump($exception)]]></code>
         </ForbiddenCode>
     </file>
-    <file src="src/Valkyrja/Dispatcher/Factory/DispatchFactory.php">
-        <InvalidArgument>
-            <code><![CDATA[$reflection->getName()]]></code>
-        </InvalidArgument>
-    </file>
     <file src="src/Valkyrja/Http/Message/Factory/UploadedFileFactory.php">
         <InvalidArrayOffset>
             <code><![CDATA[$normalizedFiles[$key]]]></code>

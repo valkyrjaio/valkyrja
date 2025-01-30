@@ -29,6 +29,10 @@ use function random_bytes;
  * Class NullAdapter.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-type ConfigAsArray array<string, mixed>
+ *
+ * @phpstan-type ConfigAsArray array<string, mixed>
  */
 class NullAdapter implements Contract
 {
@@ -56,28 +60,26 @@ class NullAdapter implements Contract
     /**
      * NullAdapter constructor.
      *
-     * @param array<string, mixed> $config      The config
-     * @param string|null          $sessionId   [optional] The session id
-     * @param string|null          $sessionName [optional] The session name
+     * @param ConfigAsArray $config      The config
+     * @param string|null   $sessionId   [optional] The session id
+     * @param string|null   $sessionName [optional] The session name
      *
      * @throws InvalidSessionId
      * @throws SessionStartFailure
      */
     public function __construct(protected array $config, string|null $sessionId = null, string|null $sessionName = null)
     {
-        $this->config = $config;
-
-        $sessionId ??= $config['id'];
-        $sessionName ??= $config['name'];
+        $sessionId ??= $config['id'] ?? null;
+        $sessionName ??= $config['name'] ?? null;
 
         // If a session id is provided
-        if ($sessionId !== null) {
+        if (is_string($sessionId)) {
             // Set the id
             $this->setId($sessionId);
         }
 
         // If a session name is provided
-        if ($sessionName !== null) {
+        if (is_string($sessionName)) {
             // Set the name
             $this->setName($sessionName);
         }

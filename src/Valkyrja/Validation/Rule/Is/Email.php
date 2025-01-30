@@ -34,6 +34,6 @@ class Email extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must be a valid email";
+        return 'Must be a valid email';
     }
 }

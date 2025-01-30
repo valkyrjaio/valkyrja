@@ -17,6 +17,7 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Type\BuiltIn\Exception\InvalidClassPropertyProvidedException;
 use Valkyrja\Type\BuiltIn\Exception\InvalidClassProvidedException;
 
+use function array_unshift;
 use function explode;
 use function is_a;
 

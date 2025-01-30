@@ -36,7 +36,6 @@ use Valkyrja\Http\Routing\Exception\InvalidRouteNameException;
 use Valkyrja\Http\Routing\Matcher\Contract\Matcher;
 use Valkyrja\Http\Routing\Model\Contract\Route;
 
-use function is_array;
 use function rawurldecode;
 
 /**
@@ -198,10 +197,11 @@ class Router implements Contract
         $this->container->setSingleton(Route::class, $routeAfterMiddleware);
 
         // Attempt to dispatch the route using any one of the callable options
-        $dispatch = $this->dispatcher->dispatch($routeAfterMiddleware, $routeAfterMiddleware->getMatches());
+        $response = $this->dispatcher->dispatch($routeAfterMiddleware, $routeAfterMiddleware->getMatches());
 
-        // Get the response from the dispatch
-        $response = $this->getResponseFromDispatch($dispatch);
+        if (! $response instanceof Response) {
+            throw new InvalidRouteNameException('Dispatch must be a response');
+        }
 
         return $this->routeDispatchedHandler->routeDispatched($request, $response, $routeAfterMiddleware);
     }
@@ -244,30 +244,5 @@ class Router implements Contract
 
         // Set the found route in the service container
         $this->container->setSingleton(Route::class, $route);
-    }
-
-    /**
-     * Get a response from a dispatch.
-     *
-     * @param mixed $dispatch The dispatch
-     *
-     * @throws JsonException
-     *
-     * @return Response
-     */
-    protected function getResponseFromDispatch(mixed $dispatch): Response
-    {
-        // If the dispatch is a Response then simply return it
-        if ($dispatch instanceof Response) {
-            return $dispatch;
-        }
-
-        // If the dispatch is an array, return it as JSON
-        if (is_array($dispatch)) {
-            return $this->responseFactory->createJsonResponse($dispatch);
-        }
-
-        // Otherwise its a string so wrap it in a new response and return it
-        return $this->responseFactory->createResponse((string) $dispatch);
     }
 }

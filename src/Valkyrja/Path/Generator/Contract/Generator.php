@@ -13,19 +13,33 @@ declare(strict_types=1);
 
 namespace Valkyrja\Path\Generator\Contract;
 
+use Valkyrja\Path\Parser\Contract\Parser;
+
 /**
  * Interface Generator.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-import-type ParsedPathParams from Parser
+ *
+ * @phpstan-import-type ParsedPathParams from Parser
+ *
+ * @psalm-type DatumParam string|array<array-key, string>|int|bool
+ *
+ * @phpstan-type DatumParam string|array<array-key, string>|int|bool
+ *
+ * @psalm-type DataParam array<string, DatumParam>
+ *
+ * @phpstan-type DataParam array<string, DatumParam>
  */
 interface Generator
 {
     /**
      * Parse segments, data, and params into a path.
      *
-     * @param string[]                     $segments The segments
-     * @param array<array-key, mixed>|null $data     [optional] The data
-     * @param array<array-key, mixed>|null $params   [optional] The params
+     * @param string[]              $segments The segments
+     * @param DataParam|null        $data     [optional] The data
+     * @param ParsedPathParams|null $params   [optional] The params
      *
      * @return string
      */

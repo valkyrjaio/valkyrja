@@ -18,6 +18,7 @@ use Valkyrja\Http\Message\Stream\Contract\Stream as Contract;
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
+use Valkyrja\Http\Message\Stream\Exception\InvalidLengthException;
 use Valkyrja\Http\Message\Stream\Exception\InvalidStreamException;
 
 use function fclose;
@@ -120,6 +121,10 @@ class Stream implements Contract
      */
     public function read(int $length): string
     {
+        if ($length < 0) {
+            throw new InvalidLengthException("Invalid length of $length provided. Length must be greater than 0");
+        }
+
         $this->verifyStream();
         $this->verifyReadable();
 
@@ -246,6 +251,10 @@ class Stream implements Contract
 
         // Get the stream's fstat
         $fstat = fstat($stream);
+
+        if ($fstat === false) {
+            return null;
+        }
 
         return $fstat['size'];
     }
@@ -387,7 +396,8 @@ class Stream implements Contract
     /**
      * Read from stream.
      *
-     * @param resource $stream The stream
+     * @param resource    $stream The stream
+     * @param int<0, max> $length The length
      */
     protected function readFromStream($stream, int $length): string|false
     {
@@ -399,7 +409,7 @@ class Stream implements Contract
      *
      * @param resource $stream The stream
      *
-     * @return array{blocked: bool, crypto?: array{cipher_bits: int, cipher_name: string, cipher_version: string, protocol: string}, eof: bool, mediatype: string, mode: string, seekable: bool, stream_type: string, timed_out: bool, unread_bytes: int, uri: string, wrapper_data: mixed, wrapper_type: string}
+     * @return array{blocked: bool, crypto?: array{cipher_bits: int, cipher_name: string, cipher_version: string, protocol: string}, eof: bool, mediatype?: string, mode: string, seekable: bool, stream_type: string, timed_out: bool, unread_bytes: int, uri: string, wrapper_data: mixed, wrapper_type: string}
      */
     protected function getStreamMetadata($stream): array
     {

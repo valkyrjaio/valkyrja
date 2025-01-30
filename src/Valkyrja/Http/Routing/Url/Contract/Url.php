@@ -26,9 +26,9 @@ interface Url
     /**
      * Get a route url by name.
      *
-     * @param string                    $name     The name of the route to get
-     * @param array<string, mixed>|null $data     [optional] The route data if dynamic
-     * @param bool                      $absolute [optional] Whether this url should be absolute
+     * @param string                         $name     The name of the route to get
+     * @param array<string, string|int>|null $data     [optional] The route data if dynamic
+     * @param bool                           $absolute [optional] Whether this url should be absolute
      *
      * @return string
      */

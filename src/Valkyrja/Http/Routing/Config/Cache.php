@@ -26,7 +26,7 @@ class Cache extends Model
     /**
      * The flattened routes.
      *
-     * @var array<string, Route>|array<int, array<Route>>
+     * @var array<string, Route>|array<int, array<Route>|array<string, mixed>>
      */
     public array $routes = [];
 

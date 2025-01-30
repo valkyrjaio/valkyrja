@@ -14,15 +14,17 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast\Provider;
 
 use Pusher\Pusher;
+use Pusher\PusherException;
 use Valkyrja\Broadcast\Adapter\Contract\Adapter;
-use Valkyrja\Broadcast\Adapter\Contract\LogAdapter;
-use Valkyrja\Broadcast\Adapter\Contract\PusherAdapter;
 use Valkyrja\Broadcast\Adapter\CryptPusherAdapter;
+use Valkyrja\Broadcast\Adapter\LogAdapter;
+use Valkyrja\Broadcast\Adapter\NullAdapter;
+use Valkyrja\Broadcast\Adapter\PusherAdapter;
 use Valkyrja\Broadcast\Contract\Broadcast;
-use Valkyrja\Broadcast\Driver\Contract\Driver;
+use Valkyrja\Broadcast\Driver\Driver;
 use Valkyrja\Broadcast\Factory\ContainerFactory;
 use Valkyrja\Broadcast\Factory\Contract\Factory;
-use Valkyrja\Broadcast\Message\Contract\Message;
+use Valkyrja\Broadcast\Message\Message;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
@@ -48,7 +50,7 @@ class ServiceProvider extends Provider
             Broadcast::class          => [self::class, 'publishBroadcaster'],
             Factory::class            => [self::class, 'publishFactory'],
             Driver::class             => [self::class, 'publishDriver'],
-            Adapter::class            => [self::class, 'publishAdapter'],
+            NullAdapter::class        => [self::class, 'publishNullAdapter'],
             CryptPusherAdapter::class => [self::class, 'publishCryptPusherAdapter'],
             LogAdapter::class         => [self::class, 'publishLogAdapter'],
             Pusher::class             => [self::class, 'publishPusher'],
@@ -67,7 +69,7 @@ class ServiceProvider extends Provider
             Factory::class,
             CryptPusherAdapter::class,
             Driver::class,
-            Adapter::class,
+            NullAdapter::class,
             LogAdapter::class,
             Pusher::class,
             PusherAdapter::class,
@@ -84,13 +86,14 @@ class ServiceProvider extends Provider
      */
     public static function publishBroadcaster(Container $container): void
     {
+        /** @var array{broadcast: \Valkyrja\Broadcast\Config|array<string, mixed>, ...} $config */
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             Broadcast::class,
             new \Valkyrja\Broadcast\Broadcast(
                 $container->getSingleton(Factory::class),
-                $config['client']
+                $config['broadcast']
             )
         );
     }
@@ -119,43 +122,57 @@ class ServiceProvider extends Provider
      */
     public static function publishDriver(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             Driver::class,
-            /**
-             * @param class-string<Driver> $name
-             */
-            static function (string $name, Adapter $adapter): Driver {
-                return new $name(
-                    $adapter
-                );
-            }
+            [static::class, 'createDriver']
         );
     }
 
     /**
-     * Publish an adapter service.
+     * Create a driver.
+     *
+     * @param Container $container
+     * @param Adapter   $adapter
+     *
+     * @return Driver
+     */
+    public static function createDriver(Container $container, Adapter $adapter): Driver
+    {
+        return new Driver(
+            $adapter
+        );
+    }
+
+    /**
+     * Publish the null adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishAdapter(Container $container): void
+    public static function publishNullAdapter(Container $container): void
     {
-        $container->setClosure(
-            Adapter::class,
-            /**
-             * @param class-string<Adapter> $name
-             */
-            static function (string $name, array $config): Adapter {
-                return new $name(
-                    $config
-                );
-            }
+        $container->setCallable(
+            NullAdapter::class,
+            [static::class, 'createNullAdapter']
         );
     }
 
     /**
-     * Publish a log adapter service.
+     * Create a null adapter.
+     *
+     * @param Container            $container
+     * @param array<string, mixed> $config
+     *
+     * @return NullAdapter
+     */
+    public static function createNullAdapter(Container $container, array $config): NullAdapter
+    {
+        return new NullAdapter();
+    }
+
+    /**
+     * Publish the log adapter service.
      *
      * @param Container $container The container
      *
@@ -163,24 +180,32 @@ class ServiceProvider extends Provider
      */
     public static function publishLogAdapter(Container $container): void
     {
-        $logger = $container->getSingleton(Logger::class);
-
-        $container->setClosure(
+        $container->setCallable(
             LogAdapter::class,
-            /**
-             * @param class-string<LogAdapter> $name
-             */
-            static function (string $name, array $config) use ($logger): LogAdapter {
-                return new $name(
-                    $logger->use($config['logger'] ?? null),
-                    $config
-                );
-            }
+            [static::class, 'createLogAdapter']
         );
     }
 
     /**
-     * Publish a pusher adapter service.
+     * Create a log adapter.
+     *
+     * @param Container              $container
+     * @param array{logger?: string} $config
+     *
+     * @return LogAdapter
+     */
+    public static function createLogAdapter(Container $container, array $config): LogAdapter
+    {
+        $logger = $container->getSingleton(Logger::class);
+
+        return new LogAdapter(
+            $logger->use($config['logger'] ?? null),
+            $config
+        );
+    }
+
+    /**
+     * Publish the pusher adapter service.
      *
      * @param Container $container The container
      *
@@ -188,17 +213,24 @@ class ServiceProvider extends Provider
      */
     public static function publishPusherAdapter(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             PusherAdapter::class,
-            /**
-             * @param class-string<PusherAdapter> $name
-             */
-            static function (string $name, array $config) use ($container): PusherAdapter {
-                return new $name(
-                    $container->get(Pusher::class, [$config]),
-                    $config
-                );
-            }
+            [static::class, 'createPusherAdapter']
+        );
+    }
+
+    /**
+     * Create a pusher adapter.
+     *
+     * @param Container            $container
+     * @param array<string, mixed> $config
+     *
+     * @return PusherAdapter
+     */
+    public static function createPusherAdapter(Container $container, array $config): PusherAdapter
+    {
+        return new PusherAdapter(
+            $container->get(Pusher::class, [$config])
         );
     }
 
@@ -211,18 +243,26 @@ class ServiceProvider extends Provider
      */
     public static function publishCryptPusherAdapter(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             CryptPusherAdapter::class,
-            /**
-             * @param class-string<CryptPusherAdapter> $name
-             */
-            static function (string $name, array $config) use ($container): CryptPusherAdapter {
-                return new $name(
-                    $container->get(Pusher::class, [$config]),
-                    $container->getSingleton(Crypt::class),
-                    $config
-                );
-            }
+            [static::class, 'createCryptPusherAdapter']
+        );
+    }
+
+    /**
+     * Create a crypt pusher adapter.
+     *
+     * @param Container            $container
+     * @param array<string, mixed> $config
+     *
+     * @return CryptPusherAdapter
+     */
+    public static function createCryptPusherAdapter(Container $container, array $config): CryptPusherAdapter
+    {
+        return new CryptPusherAdapter(
+            $container->get(Pusher::class, [$config]),
+            $container->getSingleton(Crypt::class),
+            $config
         );
     }
 
@@ -235,27 +275,39 @@ class ServiceProvider extends Provider
      */
     public static function publishPusher(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             Pusher::class,
-            static function (array $config): Pusher {
-                return new Pusher(
-                    $config['key'],
-                    $config['secret'],
-                    $config['id'],
-                    [
-                        'cluster'      => $config['cluster'],
-                        'useTLS'       => $config['useTLS'],
-                        'curl_options' => [
-                            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
-                        ],
-                    ]
-                );
-            }
+            [static::class, 'createPusher']
         );
     }
 
     /**
-     * Publish a message service.
+     * Create a pusher class.
+     *
+     * @param array{key: string, secret: string, id: string, cluster: string, useTLS: bool} $config
+     *
+     * @throws PusherException
+     *
+     * @return Pusher
+     */
+    public static function createPusher(array $config): Pusher
+    {
+        return new Pusher(
+            $config['key'],
+            $config['secret'],
+            $config['id'],
+            [
+                'cluster'      => $config['cluster'],
+                'useTLS'       => $config['useTLS'],
+                'curl_options' => [
+                    CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+                ],
+            ]
+        );
+    }
+
+    /**
+     * Publish the message service.
      *
      * @param Container $container The container
      *
@@ -263,9 +315,22 @@ class ServiceProvider extends Provider
      */
     public static function publishMessage(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             Message::class,
-            static fn (string $name, array $config): Message => (new $name())->setChannel($config['channel'])
+            [static::class, 'createMessage']
         );
+    }
+
+    /**
+     * Create a message.
+     *
+     * @param Container              $container
+     * @param array{channel: string} $config
+     *
+     * @return Message
+     */
+    public static function createMessage(Container $container, array $config): Message
+    {
+        return (new Message())->setChannel($config['channel']);
     }
 }

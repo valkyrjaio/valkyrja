@@ -14,7 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Type\BuiltIn;
 
 use Valkyrja\Type\BuiltIn\Contract\DoubleT as Contract;
+use Valkyrja\Type\Exception\InvalidArgumentException;
 use Valkyrja\Type\Type;
+
+use function is_bool;
+use function is_float;
+use function is_int;
+use function is_string;
 
 /**
  * Class FloatT.
@@ -35,7 +41,11 @@ class DoubleT extends Type implements Contract
      */
     public static function fromValue(mixed $value): static
     {
-        return new static((float) $value);
+        return match (true) {
+            is_float($value) => new static($value),
+            is_string($value), is_int($value), is_bool($value) => new static((float) $value),
+            default          => throw new InvalidArgumentException('Unsupported value provided'),
+        };
     }
 
     /**

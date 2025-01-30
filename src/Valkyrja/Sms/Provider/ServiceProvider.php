@@ -18,12 +18,14 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Sms\Adapter\Contract\Adapter;
-use Valkyrja\Sms\Adapter\Contract\LogAdapter;
-use Valkyrja\Sms\Adapter\Contract\VonageAdapter;
+use Valkyrja\Sms\Adapter\LogAdapter;
+use Valkyrja\Sms\Adapter\NullAdapter;
+use Valkyrja\Sms\Adapter\VonageAdapter;
 use Valkyrja\Sms\Contract\Sms;
+use Valkyrja\Sms\Driver\Driver;
 use Valkyrja\Sms\Factory\ContainerFactory;
 use Valkyrja\Sms\Factory\Contract\Factory;
-use Valkyrja\Sms\Message\Contract\Message;
+use Valkyrja\Sms\Message\Message;
 use Vonage\Client as Vonage;
 use Vonage\Client\Credentials\Basic;
 
@@ -42,7 +44,8 @@ class ServiceProvider extends Provider
         return [
             Sms::class           => [self::class, 'publishSMS'],
             Factory::class       => [self::class, 'publishFactory'],
-            Adapter::class       => [self::class, 'publishAdapter'],
+            Driver::class        => [self::class, 'publishDriver'],
+            NullAdapter::class   => [self::class, 'publishNullAdapter'],
             LogAdapter::class    => [self::class, 'publishLogAdapter'],
             VonageAdapter::class => [self::class, 'publishVonageAdapter'],
             Vonage::class        => [self::class, 'publishVonage'],
@@ -58,7 +61,8 @@ class ServiceProvider extends Provider
         return [
             Sms::class,
             Factory::class,
-            Adapter::class,
+            Driver::class,
+            NullAdapter::class,
             LogAdapter::class,
             VonageAdapter::class,
             Vonage::class,
@@ -75,6 +79,7 @@ class ServiceProvider extends Provider
      */
     public static function publishSMS(Container $container): void
     {
+        /** @var array{sms: \Valkyrja\Sms\Config|array<string, mixed>, ...} $config */
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
@@ -102,24 +107,53 @@ class ServiceProvider extends Provider
     }
 
     /**
+     * Publish a driver service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishDriver(Container $container): void
+    {
+        $container->setCallable(
+            Driver::class,
+            [static::class, 'createDriver']
+        );
+    }
+
+    /**
+     * @param class-string<Driver> $name
+     */
+    public static function createDriver(Container $container, string $name, Adapter $adapter): Driver
+    {
+        return new $name(
+            adapter: $adapter
+        );
+    }
+
+    /**
      * Publish an adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishAdapter(Container $container): void
+    public static function publishNullAdapter(Container $container): void
     {
-        $container->setClosure(
-            Adapter::class,
-            /**
-             * @param class-string<Adapter> $name
-             */
-            static function (string $name, array $config): Adapter {
-                return new $name(
-                    $config
-                );
-            }
+        $container->setCallable(
+            NullAdapter::class,
+            [static::class, 'createNullAdapterClass']
+        );
+    }
+
+    /**
+     * @param Container            $container
+     * @param array<string, mixed> $config
+     */
+    public static function createNullAdapterClass(Container $container, array $config): Adapter
+    {
+        return new NullAdapter(
+            $config
         );
     }
 
@@ -132,19 +166,22 @@ class ServiceProvider extends Provider
      */
     public static function publishLogAdapter(Container $container): void
     {
+        $container->setCallable(
+            LogAdapter::class,
+            [static::class, 'createLogAdapter']
+        );
+    }
+
+    /**
+     * @param array{logger?: string} $config
+     */
+    public static function createLogAdapter(Container $container, array $config): LogAdapter
+    {
         $logger = $container->getSingleton(Logger::class);
 
-        $container->setClosure(
-            LogAdapter::class,
-            /**
-             * @param class-string<LogAdapter> $name
-             */
-            static function (string $name, array $config) use ($logger): LogAdapter {
-                return new $name(
-                    $logger->use($config['logger'] ?? null),
-                    $config
-                );
-            }
+        return new LogAdapter(
+            $logger->use($config['logger'] ?? null),
+            $config
         );
     }
 
@@ -157,16 +194,19 @@ class ServiceProvider extends Provider
      */
     public static function publishVonageAdapter(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             VonageAdapter::class,
-            /**
-             * @param class-string<VonageAdapter> $name
-             */
-            static function (string $name, array $config) use ($container): VonageAdapter {
-                return new $name(
-                    $container->get(Vonage::class, [$config])
-                );
-            }
+            [static::class, 'createVonageAdapter']
+        );
+    }
+
+    /**
+     * @param array{key: string, secret: string} $config
+     */
+    public static function createVonageAdapter(Container $container, array $config): VonageAdapter
+    {
+        return new VonageAdapter(
+            $container->get(Vonage::class, [$config])
         );
     }
 
@@ -179,13 +219,19 @@ class ServiceProvider extends Provider
      */
     public static function publishVonage(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             Vonage::class,
-            static function (array $config): Vonage {
-                return new Vonage(
-                    new Basic($config['username'], $config['password'])
-                );
-            }
+            [static::class, 'createVonageClass']
+        );
+    }
+
+    /**
+     * @param array{key: string, secret: string} $config
+     */
+    public static function createVonageClass(array $config): Vonage
+    {
+        return new Vonage(
+            new Basic($config['key'], $config['secret'])
         );
     }
 
@@ -198,12 +244,18 @@ class ServiceProvider extends Provider
      */
     public static function publishMessage(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             Message::class,
-            /**
-             * @param class-string<Message> $name
-             */
-            static fn (string $name, array $config): Message => (new $name())->setFrom($config['fromName'])
+            [static::class, 'createMessageClass']
         );
+    }
+
+    /**
+     * @param Container               $container
+     * @param array{fromName: string} $config
+     */
+    public static function createMessageClass(Container $container, array $config): Message
+    {
+        return (new Message())->setFrom($config['fromName']);
     }
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Migration;
 
 use Exception;
-use RuntimeException;
+use Valkyrja\Exception\RuntimeException;
 
 use function explode;
 use function file_get_contents;
@@ -44,13 +44,17 @@ abstract class SqlFileMigration extends TransactionalMigration
     /**
      * Execute sql.
      *
-     * @param string $sqlFilePath The sql file path
+     * @param string $filePath The sql file path
      *
      * @return void
      */
-    protected function executeSql(string $sqlFilePath): void
+    protected function executeSql(string $filePath): void
     {
-        $sql = file_get_contents($sqlFilePath);
+        $sql = file_get_contents($filePath);
+
+        if ($sql === false) {
+            throw new RuntimeException("Invalid file $filePath given");
+        }
 
         foreach (explode(';', trim($sql)) as $queryString) {
             if (! $queryString) {

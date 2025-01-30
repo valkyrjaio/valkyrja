@@ -18,11 +18,13 @@ use JsonException;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\BuiltIn\Support\StrCase;
 use Valkyrja\Type\Model\Contract\Model as Contract;
+use Valkyrja\Type\Model\Exception\RuntimeException;
 
 use function array_filter;
 use function array_walk;
 use function in_array;
 use function is_array;
+use function is_bool;
 use function is_string;
 use function json_encode;
 use function property_exists;
@@ -168,7 +170,13 @@ abstract class Model implements Contract
         $methodName = $this->internalGetPropertyTypeMethodName($name, 'isset');
 
         if ($this->internalDoesPropertyTypeMethodExist($methodName)) {
-            return $this->$methodName();
+            $isset = $this->$methodName();
+
+            if (! is_bool($isset)) {
+                throw new RuntimeException("$methodName must return a boolean");
+            }
+
+            return $isset;
         }
 
         return isset($this->$name);

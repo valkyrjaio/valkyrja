@@ -22,14 +22,15 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Mail\Adapter\Contract\Adapter;
-use Valkyrja\Mail\Adapter\Contract\LogAdapter;
-use Valkyrja\Mail\Adapter\Contract\MailgunAdapter;
-use Valkyrja\Mail\Adapter\Contract\PHPMailerAdapter;
+use Valkyrja\Mail\Adapter\LogAdapter;
+use Valkyrja\Mail\Adapter\MailgunAdapter;
+use Valkyrja\Mail\Adapter\NullAdapter;
+use Valkyrja\Mail\Adapter\PHPMailerAdapter;
 use Valkyrja\Mail\Contract\Mail;
-use Valkyrja\Mail\Driver\Contract\Driver;
+use Valkyrja\Mail\Driver\Driver;
 use Valkyrja\Mail\Factory\ContainerFactory;
 use Valkyrja\Mail\Factory\Contract\Factory;
-use Valkyrja\Mail\Message\Contract\Message;
+use Valkyrja\Mail\Message\Message;
 
 /**
  * Class ServiceProvider.
@@ -47,7 +48,7 @@ class ServiceProvider extends Provider
             Mail::class             => [self::class, 'publishMail'],
             Factory::class          => [self::class, 'publishFactory'],
             Driver::class           => [self::class, 'publishDriver'],
-            Adapter::class          => [self::class, 'publishAdapter'],
+            NullAdapter::class      => [self::class, 'publishNullAdapter'],
             LogAdapter::class       => [self::class, 'publishLogAdapter'],
             PHPMailerAdapter::class => [self::class, 'publishPHPMailerAdapter'],
             MailgunAdapter::class   => [self::class, 'publishMailgunAdapter'],
@@ -66,7 +67,7 @@ class ServiceProvider extends Provider
             Mail::class,
             Factory::class,
             Driver::class,
-            Adapter::class,
+            NullAdapter::class,
             LogAdapter::class,
             PHPMailerAdapter::class,
             MailgunAdapter::class,
@@ -85,6 +86,7 @@ class ServiceProvider extends Provider
      */
     public static function publishMail(Container $container): void
     {
+        /** @var array{mail: \Valkyrja\Mail\Config|array<string, mixed>, ...} $config */
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
@@ -120,16 +122,24 @@ class ServiceProvider extends Provider
      */
     public static function publishDriver(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             Driver::class,
-            /**
-             * @param class-string<Driver> $name
-             */
-            static function (string $name, Adapter $adapter): Driver {
-                return new $name(
-                    $adapter
-                );
-            }
+            [static::class, 'createDriver']
+        );
+    }
+
+    /**
+     * Create a driver.
+     *
+     * @param Container $container
+     * @param Adapter   $adapter
+     *
+     * @return Driver
+     */
+    public static function createDriver(Container $container, Adapter $adapter): Driver
+    {
+        return new Driver(
+            $adapter
         );
     }
 
@@ -140,18 +150,26 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishAdapter(Container $container): void
+    public static function publishNullAdapter(Container $container): void
     {
-        $container->setClosure(
-            Adapter::class,
-            /**
-             * @param class-string<Adapter> $name
-             */
-            static function (string $name, array $config): Adapter {
-                return new $name(
-                    $config
-                );
-            }
+        $container->setCallable(
+            NullAdapter::class,
+            [static::class, 'createNullAdapter']
+        );
+    }
+
+    /**
+     * Create a null adapter.
+     *
+     * @param Container            $container
+     * @param array<string, mixed> $config
+     *
+     * @return NullAdapter
+     */
+    public static function createNullAdapter(Container $container, array $config): NullAdapter
+    {
+        return new NullAdapter(
+            $config
         );
     }
 
@@ -164,24 +182,32 @@ class ServiceProvider extends Provider
      */
     public static function publishLogAdapter(Container $container): void
     {
-        $logger = $container->getSingleton(Logger::class);
-
-        $container->setClosure(
+        $container->setCallable(
             LogAdapter::class,
-            /**
-             * @param class-string<LogAdapter> $name
-             */
-            static function (string $name, array $config) use ($logger): LogAdapter {
-                return new $name(
-                    $logger->use($config['logger'] ?? null),
-                    $config
-                );
-            }
+            [static::class, 'createLogAdapter']
         );
     }
 
     /**
-     * Publish the PHP Mailer adapter service.
+     * Create a log adapter.
+     *
+     * @param Container              $container
+     * @param array{logger?: string} $config
+     *
+     * @return LogAdapter
+     */
+    public static function createLogAdapter(Container $container, array $config): LogAdapter
+    {
+        $logger = $container->getSingleton(Logger::class);
+
+        return new LogAdapter(
+            $logger->use($config['logger'] ?? null),
+            $config
+        );
+    }
+
+    /**
+     * Publish the PHPMailer adapter service.
      *
      * @param Container $container The container
      *
@@ -189,16 +215,24 @@ class ServiceProvider extends Provider
      */
     public static function publishPHPMailerAdapter(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             PHPMailerAdapter::class,
-            /**
-             * @param class-string<PHPMailerAdapter> $name
-             */
-            static function (string $name, array $config) use ($container): PHPMailerAdapter {
-                return new $name(
-                    $container->get(PHPMailer::class, [$config])
-                );
-            }
+            [static::class, 'createPHPMailerAdapter']
+        );
+    }
+
+    /**
+     * Create a PHPMailer adapter.
+     *
+     * @param Container            $container
+     * @param array<string, mixed> $config
+     *
+     * @return PHPMailerAdapter
+     */
+    public static function createPHPMailerAdapter(Container $container, array $config): PHPMailerAdapter
+    {
+        return new PHPMailerAdapter(
+            $container->get(PHPMailer::class, [$config])
         );
     }
 
@@ -211,35 +245,47 @@ class ServiceProvider extends Provider
      */
     public static function publishPHPMailer(Container $container): void
     {
-        $globalConfig = $container->getSingleton(Config::class);
-        $appDebug     = (bool) ($globalConfig['app']['debug'] ?? false);
-
-        $container->setClosure(
+        $container->setCallable(
             PHPMailer::class,
-            static function (array $config) use ($appDebug): PHPMailer {
-                // Create a new instance of the PHPMailer class
-                $mailer = new PHPMailer(true);
-
-                // Enable verbose debug output
-                $mailer->SMTPDebug = $appDebug ? 2 : 0;
-                // Set mailer to use SMTP
-                $mailer->isSMTP();
-                // Specify main and backup SMTP servers
-                $mailer->Host = $config['host'];
-                // SMTP Port
-                $mailer->Port = $config['port'];
-                // Enable SMTP authentication
-                $mailer->SMTPAuth = true;
-                // SMTP username
-                $mailer->Username = $config['username'];
-                // SMTP password
-                $mailer->Password = $config['password'];
-                // Enable TLS encryption, `ssl` also accepted
-                $mailer->SMTPSecure = $config['encryption'];
-
-                return $mailer;
-            }
+            [static::class, 'createPHPMailer']
         );
+    }
+
+    /**
+     * Create a PHPMailer service.
+     *
+     * @param Container                                                                              $container
+     * @param array{host: string, port: int, username: string, password: string, encryption: string} $config
+     *
+     * @return PHPMailer
+     */
+    public static function createPHPMailer(Container $container, array $config): PHPMailer
+    {
+        /** @var array{app?: array{debug?: bool, ...}} $globalConfig */
+        $globalConfig = $container->getSingleton(Config::class);
+        $appDebug     = $globalConfig['app']['debug'] ?? false;
+
+        // Create a new instance of the PHPMailer class
+        $mailer = new PHPMailer(true);
+
+        // Enable verbose debug output
+        $mailer->SMTPDebug = $appDebug ? 2 : 0;
+        // Set mailer to use SMTP
+        $mailer->isSMTP();
+        // Specify main and backup SMTP servers
+        $mailer->Host = $config['host'];
+        // SMTP Port
+        $mailer->Port = $config['port'];
+        // Enable SMTP authentication
+        $mailer->SMTPAuth = true;
+        // SMTP username
+        $mailer->Username = $config['username'];
+        // SMTP password
+        $mailer->Password = $config['password'];
+        // Enable TLS encryption, `ssl` also accepted
+        $mailer->SMTPSecure = $config['encryption'];
+
+        return $mailer;
     }
 
     /**
@@ -251,17 +297,25 @@ class ServiceProvider extends Provider
      */
     public static function publishMailgunAdapter(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             MailgunAdapter::class,
-            /**
-             * @param class-string<MailgunAdapter> $name
-             */
-            static function (string $name, array $config) use ($container): MailgunAdapter {
-                return new $name(
-                    $container->get(Mailgun::class, [$config]),
-                    $config
-                );
-            }
+            [static::class, 'createMailgunAdapter']
+        );
+    }
+
+    /**
+     * Create a mailgun adapter.
+     *
+     * @param Container            $container
+     * @param array<string, mixed> $config
+     *
+     * @return MailgunAdapter
+     */
+    public static function createMailgunAdapter(Container $container, array $config): MailgunAdapter
+    {
+        return new MailgunAdapter(
+            $container->get(Mailgun::class, [$config]),
+            $config
         );
     }
 
@@ -274,17 +328,27 @@ class ServiceProvider extends Provider
      */
     public static function publishMailgun(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             Mailgun::class,
-            static function (array $config): Mailgun {
-                $httpClientConfigurator = (new HttpClientConfigurator())
-                    ->setApiKey($config['apiKey'])
-                    ->setHttpClient(new Client());
+            [static::class, 'createMailgun']
+        );
+    }
 
-                return new Mailgun(
-                    $httpClientConfigurator
-                );
-            }
+    /**
+     * Create a mailgun service.
+     *
+     * @param array{apiKey: string} $config
+     *
+     * @return Mailgun
+     */
+    public static function createMailgun(array $config): Mailgun
+    {
+        $httpClientConfigurator = (new HttpClientConfigurator())
+            ->setApiKey($config['apiKey'])
+            ->setHttpClient(new Client());
+
+        return new Mailgun(
+            $httpClientConfigurator
         );
     }
 
@@ -297,12 +361,25 @@ class ServiceProvider extends Provider
      */
     public static function publishMessage(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             Message::class,
-            static fn (string $name, array $config): Message => (new $name())->setFrom(
-                $config['fromAddress'],
-                $config['fromName']
-            )
+            [static::class, 'createMessage']
+        );
+    }
+
+    /**
+     * Create a message.
+     *
+     * @param Container                                    $container
+     * @param array{fromAddress: string, fromName: string} $config
+     *
+     * @return Message
+     */
+    public static function createMessage(Container $container, array $config): Message
+    {
+        return (new Message())->setFrom(
+            $config['fromAddress'],
+            $config['fromName']
         );
     }
 }

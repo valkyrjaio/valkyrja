@@ -20,12 +20,13 @@ use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Session\Adapter\CacheAdapter;
 use Valkyrja\Session\Adapter\Contract\Adapter;
-use Valkyrja\Session\Adapter\Contract\CacheAdapter;
-use Valkyrja\Session\Adapter\Contract\LogAdapter;
 use Valkyrja\Session\Adapter\CookieAdapter;
+use Valkyrja\Session\Adapter\LogAdapter;
+use Valkyrja\Session\Adapter\NullAdapter;
 use Valkyrja\Session\Contract\Session;
-use Valkyrja\Session\Driver\Contract\Driver;
+use Valkyrja\Session\Driver\Driver;
 use Valkyrja\Session\Factory\ContainerFactory;
 use Valkyrja\Session\Factory\Contract\Factory;
 
@@ -33,6 +34,10 @@ use Valkyrja\Session\Factory\Contract\Factory;
  * Class ServiceProvider.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-import-type ConfigAsArray from NullAdapter
+ *
+ * @phpstan-import-type ConfigAsArray from NullAdapter
  */
 class ServiceProvider extends Provider
 {
@@ -45,7 +50,7 @@ class ServiceProvider extends Provider
             Session::class       => [self::class, 'publishSession'],
             Factory::class       => [self::class, 'publishFactory'],
             Driver::class        => [self::class, 'publishDriver'],
-            Adapter::class       => [self::class, 'publishAdapter'],
+            NullAdapter::class   => [self::class, 'publishNullAdapter'],
             CacheAdapter::class  => [self::class, 'publishCacheAdapter'],
             CookieAdapter::class => [self::class, 'publishCookieAdapter'],
             LogAdapter::class    => [self::class, 'publishLogAdapter'],
@@ -61,7 +66,7 @@ class ServiceProvider extends Provider
             Session::class,
             Factory::class,
             Driver::class,
-            Adapter::class,
+            NullAdapter::class,
             CacheAdapter::class,
             CookieAdapter::class,
             LogAdapter::class,
@@ -77,6 +82,7 @@ class ServiceProvider extends Provider
      */
     public static function publishSession(Container $container): void
     {
+        /** @var array{session: \Valkyrja\Session\Config|array<string, mixed>, ...} $config */
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
@@ -112,16 +118,16 @@ class ServiceProvider extends Provider
      */
     public static function publishDriver(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             Driver::class,
-            /**
-             * @param class-string<Driver> $name
-             */
-            static function (string $name, Adapter $adapter): Driver {
-                return new $name(
-                    adapter: $adapter
-                );
-            }
+            [static::class, 'createDriver']
+        );
+    }
+
+    public static function createDriver(Container $container, Adapter $adapter): Driver
+    {
+        return new Driver(
+            adapter: $adapter
         );
     }
 
@@ -132,18 +138,21 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishAdapter(Container $container): void
+    public static function publishNullAdapter(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             Adapter::class,
-            /**
-             * @param class-string<Adapter> $name
-             */
-            static function (string $name, array $config): Adapter {
-                return new $name(
-                    config: $config
-                );
-            }
+            [static::class, 'createNullAdapter']
+        );
+    }
+
+    /**
+     * @param array{id?: string, name?: string} $config
+     */
+    public static function createNullAdapter(Container $container, array $config): Adapter
+    {
+        return new NullAdapter(
+            config: $config
         );
     }
 
@@ -156,19 +165,22 @@ class ServiceProvider extends Provider
      */
     public static function publishCacheAdapter(Container $container): void
     {
+        $container->setCallable(
+            CacheAdapter::class,
+            [static::class, 'createCacheAdapter']
+        );
+    }
+
+    /**
+     * @param array{cache?: string, ...} $config
+     */
+    public static function createCacheAdapter(Container $container, array $config): CacheAdapter
+    {
         $cache = $container->getSingleton(Cache::class);
 
-        $container->setClosure(
-            CacheAdapter::class,
-            static function (string $name, array $config) use ($cache): CacheAdapter {
-                /**
-                 * @var class-string<CacheAdapter> $name
-                 */
-                return new $name(
-                    cache: $cache,
-                    config: $config
-                );
-            }
+        return new CacheAdapter(
+            cache: $cache->use($config['cache'] ?? null),
+            config: $config
         );
     }
 
@@ -181,19 +193,22 @@ class ServiceProvider extends Provider
      */
     public static function publishLogAdapter(Container $container): void
     {
+        $container->setCallable(
+            LogAdapter::class,
+            [static::class, 'createLogAdapter']
+        );
+    }
+
+    /**
+     * @param array{logger?: string, ...} $config
+     */
+    public static function createLogAdapter(Container $container, array $config): LogAdapter
+    {
         $logger = $container->getSingleton(Logger::class);
 
-        $container->setClosure(
-            LogAdapter::class,
-            /**
-             * @param class-string<LogAdapter> $name
-             */
-            static function (string $name, array $config) use ($logger): LogAdapter {
-                return new $name(
-                    logger: $logger->use($config['logger'] ?? null),
-                    config: $config
-                );
-            }
+        return new LogAdapter(
+            logger: $logger->use($config['logger'] ?? null),
+            config: $config
         );
     }
 
@@ -206,18 +221,24 @@ class ServiceProvider extends Provider
      */
     public static function publishCookieAdapter(Container $container): void
     {
+        $container->setCallable(
+            CookieAdapter::class,
+            [static::class, 'createCookieAdapter']
+        );
+    }
+
+    /**
+     * @param ConfigAsArray $config
+     */
+    public static function createCookieAdapter(Container $container, array $config): CookieAdapter
+    {
         $crypt   = $container->getSingleton(Crypt::class);
         $request = $container->getSingleton(ServerRequest::class);
 
-        $container->setClosure(
-            CookieAdapter::class,
-            static function (array $config) use ($crypt, $request): CookieAdapter {
-                return new CookieAdapter(
-                    crypt: $crypt,
-                    request: $request,
-                    config: $config
-                );
-            }
+        return new CookieAdapter(
+            crypt: $crypt,
+            request: $request,
+            config: $config
         );
     }
 }

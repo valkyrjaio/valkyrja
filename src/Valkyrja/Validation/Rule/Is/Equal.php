@@ -37,6 +37,6 @@ class Equal extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must equal $this->value";
+        return 'Must equal';
     }
 }

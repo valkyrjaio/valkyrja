@@ -22,6 +22,10 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
  * Class Retriever.
  *
  * @author   Melech Mizrachi
+ *
+ * @template Entity of Entity
+ *
+ * @extends Retriever<Entity>
  */
 class LocalCacheRetriever extends Retriever
 {

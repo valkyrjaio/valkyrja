@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast\Factory;
 
 use Valkyrja\Broadcast\Adapter\Contract\Adapter;
-use Valkyrja\Broadcast\Adapter\Contract\LogAdapter;
-use Valkyrja\Broadcast\Adapter\Contract\PusherAdapter;
 use Valkyrja\Broadcast\Driver\Contract\Driver;
 use Valkyrja\Broadcast\Factory\Contract\Factory as Contract;
 use Valkyrja\Broadcast\Message\Contract\Message;
@@ -30,23 +28,6 @@ use Valkyrja\Manager\Factory\ContainerMessageFactory as Factory;
  */
 class ContainerFactory extends Factory implements Contract
 {
-    /**
-     * @inheritDoc
-     */
-    protected static string $defaultDriverClass = Driver::class;
-
-    /**
-     * @inheritDoc
-     */
-    protected static string $defaultAdapterClass = Adapter::class;
-
-    /**
-     * @inheritDoc
-     *
-     * @var class-string
-     */
-    protected static string $defaultMessageClass = Message::class;
-
     /**
      * @inheritDoc
      */
@@ -78,21 +59,5 @@ class ContainerFactory extends Factory implements Contract
         $message = parent::createMessage($name, $config, $data);
 
         return $message;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getAdapterDefaultClass(string $name): string
-    {
-        $defaultClass = parent::getAdapterDefaultClass($name);
-
-        if (is_a($name, PusherAdapter::class, true)) {
-            $defaultClass = PusherAdapter::class;
-        } elseif (is_a($name, LogAdapter::class, true)) {
-            $defaultClass = LogAdapter::class;
-        }
-
-        return $defaultClass;
     }
 }

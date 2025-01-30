@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Factory;
 
 use Valkyrja\Cache\Adapter\Contract\Adapter;
-use Valkyrja\Cache\Adapter\Contract\LogAdapter;
-use Valkyrja\Cache\Adapter\Contract\RedisAdapter;
 use Valkyrja\Cache\Driver\Contract\Driver;
 use Valkyrja\Cache\Factory\Contract\Factory as Contract;
 use Valkyrja\Manager\Factory\ContainerFactory as Factory;
@@ -29,16 +27,6 @@ use Valkyrja\Manager\Factory\ContainerFactory as Factory;
  */
 class ContainerFactory extends Factory implements Contract
 {
-    /**
-     * @inheritDoc
-     */
-    protected static string $defaultDriverClass = Driver::class;
-
-    /**
-     * @inheritDoc
-     */
-    protected static string $defaultAdapterClass = Adapter::class;
-
     /**
      * @inheritDoc
      */
@@ -59,21 +47,5 @@ class ContainerFactory extends Factory implements Contract
         $adapter = parent::createAdapter($name, $config);
 
         return $adapter;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getAdapterDefaultClass(string $name): string
-    {
-        $defaultClass = parent::getAdapterDefaultClass($name);
-
-        if (is_a($name, RedisAdapter::class, true)) {
-            $defaultClass = RedisAdapter::class;
-        } elseif (is_a($name, LogAdapter::class, true)) {
-            $defaultClass = LogAdapter::class;
-        }
-
-        return $defaultClass;
     }
 }

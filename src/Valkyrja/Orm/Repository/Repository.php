@@ -33,21 +33,16 @@ use function assert;
  *
  * @author Melech Mizrachi
  *
+ * @template Entity of Entity
+ *
  * @implements Contract<Entity>
  */
 class Repository implements Contract
 {
     /**
-     * The persister.
-     *
-     * @var Persister
-     */
-    protected Persister $persister;
-
-    /**
      * The retriever.
      *
-     * @var Retriever
+     * @var Retriever<Entity>
      */
     protected Retriever $retriever;
 
@@ -68,20 +63,20 @@ class Repository implements Contract
     /**
      * Repository constructor.
      *
-     * @param Orm                  $orm    The orm manager
-     * @param Driver               $driver The driver
-     * @param class-string<Entity> $entity The entity class name
+     * @param Orm                  $orm       The orm manager
+     * @param Driver               $driver    The driver
+     * @param Persister<Entity>    $persister The persister
+     * @param class-string<Entity> $entity    The entity class name
      *
      * @throws InvalidArgumentException
      */
     public function __construct(
         protected Orm $orm,
         protected Driver $driver,
+        protected Persister $persister,
         protected string $entity
     ) {
         assert(is_a($entity, Entity::class, true));
-
-        $this->persister = $this->driver->getPersister();
     }
 
     /**
@@ -275,19 +270,13 @@ class Repository implements Contract
     {
         $this->validateEntity($entity);
 
+        if ($entity instanceof SoftDeleteEntity) {
+            $this->persister->save($entity, $defer);
+
+            return;
+        }
+
         $this->persister->delete($entity, $defer);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @throws InvalidEntityException
-     */
-    public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
-    {
-        $this->validateEntity($entity);
-
-        $this->persister->softDelete($entity, $defer);
     }
 
     /**
@@ -347,11 +336,7 @@ class Repository implements Contract
     /**
      * Validate the passed entity.
      *
-     * @param Entity $entity The entity
-     *
      * @throws InvalidEntityException
-     *
-     * @return void
      */
     protected function validateEntity(Entity $entity): void
     {

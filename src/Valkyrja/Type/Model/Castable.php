@@ -17,6 +17,8 @@ use Closure;
 use Valkyrja\Type\Contract\Type;
 use Valkyrja\Type\Data\Cast;
 
+use function is_array;
+
 /**
  * Trait Castable.
  *
@@ -89,7 +91,7 @@ trait Castable
         }
 
         // An array would indicate an array of types
-        if ($cast->isArray) {
+        if ($cast->isArray && is_array($value)) {
             return array_map(
                 fn (mixed $data) => $this->internalCastPropertyValue($cast, $data),
                 $value

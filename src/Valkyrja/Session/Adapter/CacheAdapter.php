@@ -25,33 +25,28 @@ use function session_start;
  * Class CacheAdapter.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-import-type ConfigAsArray from NullAdapter
+ *
+ * @phpstan-import-type ConfigAsArray from NullAdapter
  */
 class CacheAdapter extends PHPAdapter
 {
     /**
-     * The cache.
-     *
-     * @var Cache
-     */
-    protected Cache $cache;
-
-    /**
      * CacheAdapter constructor.
      *
-     * @param Cache                $cache       The cache
-     * @param array<string, mixed> $config      The config
-     * @param string|null          $sessionId   [optional] The session id
-     * @param string|null          $sessionName [optional] The session name
+     * @param Cache         $cache       The cache
+     * @param ConfigAsArray $config      The config
+     * @param string|null   $sessionId   [optional] The session id
+     * @param string|null   $sessionName [optional] The session name
      */
     public function __construct(
-        Cache $cache,
+        protected Cache $cache,
         array $config,
         string|null $sessionId = null,
         string|null $sessionName = null
     ) {
         parent::__construct($config, $sessionId, $sessionName);
-
-        $this->cache = $cache;
     }
 
     /**

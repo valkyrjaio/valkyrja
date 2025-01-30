@@ -17,6 +17,9 @@ use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Policy\Contract\Policy as Contract;
 use Valkyrja\Auth\Repository\Contract\Repository;
 
+use function is_bool;
+use function method_exists;
+
 /**
  * Abstract Class Policy.
  *
@@ -24,13 +27,6 @@ use Valkyrja\Auth\Repository\Contract\Repository;
  */
 abstract class Policy implements Contract
 {
-    /**
-     * The repository.
-     *
-     * @var Repository
-     */
-    protected Repository $repository;
-
     /**
      * The user.
      *
@@ -43,10 +39,10 @@ abstract class Policy implements Contract
      *
      * @param Repository $repository The repository
      */
-    public function __construct(Repository $repository)
-    {
-        $this->repository = $repository;
-        $this->user       = $repository->getUser();
+    public function __construct(
+        protected Repository $repository
+    ) {
+        $this->user = $repository->getUser();
     }
 
     /**
@@ -90,7 +86,7 @@ abstract class Policy implements Contract
     protected function checkIsAuthorized(string $action): bool
     {
         return method_exists($this, $action)
-            ? $this->$action()
-            : false;
+            && is_bool($isAuthorized = $this->$action())
+            && $isAuthorized;
     }
 }

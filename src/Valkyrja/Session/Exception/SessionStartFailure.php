@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Exception;
 
-use RuntimeException;
+use Valkyrja\Exception\RuntimeException;
 
 /**
  * Class SessionStartFailure.

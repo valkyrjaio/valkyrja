@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Adapter;
 
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Filesystem\Adapter\Contract\Adapter as Contract;
 use Valkyrja\Filesystem\Data\InMemoryFile;
 use Valkyrja\Filesystem\Data\InMemoryMetadata;
@@ -75,7 +76,13 @@ class InMemoryAdapter implements Contract
      */
     public function writeStream(string $path, $resource): bool
     {
-        $this->files[$path] = new InMemoryFile($path, fread($resource, 4096), timestamp: time());
+        $pathContents = fread($resource, 4096);
+
+        if ($pathContents === false) {
+            throw new RuntimeException('Failed to read provided resource');
+        }
+
+        $this->files[$path] = new InMemoryFile($path, $pathContents, timestamp: time());
 
         return true;
     }

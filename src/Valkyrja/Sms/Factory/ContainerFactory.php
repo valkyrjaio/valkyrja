@@ -15,8 +15,6 @@ namespace Valkyrja\Sms\Factory;
 
 use Valkyrja\Manager\Factory\ContainerMessageFactory as Factory;
 use Valkyrja\Sms\Adapter\Contract\Adapter;
-use Valkyrja\Sms\Adapter\Contract\LogAdapter;
-use Valkyrja\Sms\Adapter\Contract\VonageAdapter;
 use Valkyrja\Sms\Driver\Contract\Driver;
 use Valkyrja\Sms\Factory\Contract\Factory as Contract;
 use Valkyrja\Sms\Message\Contract\Message;
@@ -30,23 +28,6 @@ use Valkyrja\Sms\Message\Contract\Message;
  */
 class ContainerFactory extends Factory implements Contract
 {
-    /**
-     * @inheritDoc
-     */
-    protected static string $defaultDriverClass = Driver::class;
-
-    /**
-     * @inheritDoc
-     */
-    protected static string $defaultAdapterClass = Adapter::class;
-
-    /**
-     * @inheritDoc
-     *
-     * @var class-string
-     */
-    protected static string $defaultMessageClass = Message::class;
-
     /**
      * @inheritDoc
      */
@@ -78,21 +59,5 @@ class ContainerFactory extends Factory implements Contract
         $message = parent::createMessage($name, $config, $data);
 
         return $message;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getAdapterDefaultClass(string $name): string
-    {
-        $defaultClass = parent::getAdapterDefaultClass($name);
-
-        if (is_a($name, VonageAdapter::class, true)) {
-            $defaultClass = VonageAdapter::class;
-        } elseif (is_a($name, LogAdapter::class, true)) {
-            $defaultClass = LogAdapter::class;
-        }
-
-        return $defaultClass;
     }
 }

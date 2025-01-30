@@ -35,9 +35,11 @@ interface Retriever extends WhereQueryBuilder
      *      $retriever->bind(Entity::class, true | false)
      * </code>
      *
-     * @param class-string<Entity> $entity
+     * @template EntityFind of Entity
      *
-     * @return static
+     * @param class-string<EntityFind> $entity
+     *
+     * @return static<EntityFind>
      */
     public function find(string $entity): static;
 
@@ -48,10 +50,12 @@ interface Retriever extends WhereQueryBuilder
      *      $retriever->findOne(Entity::class, 1, true | false)
      * </code>
      *
-     * @param class-string<Entity> $entity
-     * @param int|string           $id
+     * @template EntityFindOne of Entity
      *
-     * @return static
+     * @param class-string<EntityFindOne> $entity
+     * @param int|string                  $id
+     *
+     * @return static<EntityFindOne>
      */
     public function findOne(string $entity, int|string $id): static;
 
@@ -62,9 +66,11 @@ interface Retriever extends WhereQueryBuilder
      *      $retriever->count(Entity::class)
      * </code>
      *
-     * @param class-string<Entity> $entity
+     * @template EntityCount of Entity
      *
-     * @return static
+     * @param class-string<EntityCount> $entity
+     *
+     * @return static<EntityCount>
      */
     public function count(string $entity): static;
 

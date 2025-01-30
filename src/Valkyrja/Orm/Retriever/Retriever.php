@@ -29,6 +29,8 @@ use function assert;
  *
  * @author   Melech Mizrachi
  *
+ * @template Entity of Entity
+ *
  * @implements Contract<Entity>
  */
 class Retriever implements Contract
@@ -76,9 +78,7 @@ class Retriever implements Contract
      */
     public function find(string $entity): static
     {
-        $this->setQueryProperties($entity);
-
-        return $this;
+        return $this->setQueryProperties($entity);
     }
 
     /**
@@ -86,13 +86,12 @@ class Retriever implements Contract
      */
     public function findOne(string $entity, int|string $id): static
     {
-        $this->setQueryProperties($entity);
-        $this->limit(1);
+        $self = $this->setQueryProperties($entity);
+        $self->limit(1);
 
-        /** @var Entity $entity */
-        $this->where($entity::getIdField(), null, $id);
+        $self->where($entity::getIdField(), null, $id);
 
-        return $this;
+        return $self;
     }
 
     /**
@@ -100,9 +99,7 @@ class Retriever implements Contract
      */
     public function count(string $entity): static
     {
-        $this->setQueryProperties($entity, [Statement::COUNT_ALL]);
-
-        return $this;
+        return $this->setQueryProperties($entity, [Statement::COUNT_ALL]);
     }
 
     /**
@@ -293,17 +290,24 @@ class Retriever implements Contract
     /**
      * Set query builder and query.
      *
-     * @param class-string<Entity> $entity  The entity
-     * @param string[]|null        $columns [optional] The columns
+     * @template SetQueryEntity of Entity
      *
-     * @return void
+     * @param class-string<SetQueryEntity> $entity  The entity
+     * @param string[]|null                $columns [optional] The columns
+     *
+     * @return static<SetQueryEntity>
      */
-    protected function setQueryProperties(string $entity, array|null $columns = null): void
+    protected function setQueryProperties(string $entity, array|null $columns = null): static
     {
         assert(is_a($entity, Entity::class, true));
 
-        $this->queryBuilder = $this->adapter->createQueryBuilder($entity)->select($columns);
-        $this->query        = $this->adapter->createQuery(null, $entity);
+        /** @var static<SetQueryEntity> $self */
+        $self = $this;
+
+        $self->queryBuilder = $this->adapter->createQueryBuilder($entity)->select($columns);
+        $self->query        = $this->adapter->createQuery(null, $entity);
+
+        return $self;
     }
 
     /**

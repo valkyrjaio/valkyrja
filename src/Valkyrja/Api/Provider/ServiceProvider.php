@@ -55,6 +55,7 @@ class ServiceProvider extends Provider
      */
     public static function publishApi(Container $container): void
     {
+        /** @var array{api: \Valkyrja\Api\Config|array<string, mixed>, app: array{debug: bool, ...}, ...} $config */
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(

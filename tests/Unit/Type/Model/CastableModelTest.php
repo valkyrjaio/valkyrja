@@ -215,8 +215,8 @@ class CastableModelTest extends TestCase
         $this->propertyTest(CastableModelClass::STRING_PROPERTY, (int) $value, $value);
         // Test a float
         $this->propertyTest(CastableModelClass::STRING_PROPERTY, (float) $value, $value);
-        // Test a bool (Notice the unexpected value from automatically casting...)
-        $this->propertyTest(CastableModelClass::STRING_PROPERTY, (bool) $value, '');
+        // Test a bool
+        $this->propertyTest(CastableModelClass::STRING_PROPERTY, (bool) $value, 'false');
         // Test an array of ints
         $this->propertyTest(CastableModelClass::STRING_ARRAY_PROPERTY, [$value], [$value]);
         // Test an array of StringT objects
@@ -225,8 +225,8 @@ class CastableModelTest extends TestCase
         $this->propertyTest(CastableModelClass::STRING_ARRAY_PROPERTY, [(int) $value], [$value]);
         // Test an array of floats
         $this->propertyTest(CastableModelClass::STRING_ARRAY_PROPERTY, [(float) $value], [$value]);
-        // Test an array of booleans (Notice the unexpected value from automatically casting...)
-        $this->propertyTest(CastableModelClass::STRING_ARRAY_PROPERTY, [(bool) $value], ['']);
+        // Test an array of booleans
+        $this->propertyTest(CastableModelClass::STRING_ARRAY_PROPERTY, [(bool) $value], ['false']);
     }
 
     /**

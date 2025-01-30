@@ -15,10 +15,11 @@ namespace Valkyrja\Cache\Provider;
 
 use Predis\Client;
 use Valkyrja\Cache\Adapter\Contract\Adapter;
-use Valkyrja\Cache\Adapter\Contract\LogAdapter;
-use Valkyrja\Cache\Adapter\Contract\RedisAdapter;
+use Valkyrja\Cache\Adapter\LogAdapter;
+use Valkyrja\Cache\Adapter\NullAdapter;
+use Valkyrja\Cache\Adapter\RedisAdapter;
 use Valkyrja\Cache\Contract\Cache;
-use Valkyrja\Cache\Driver\Contract\Driver;
+use Valkyrja\Cache\Driver\Driver;
 use Valkyrja\Cache\Factory\ContainerFactory;
 use Valkyrja\Cache\Factory\Contract\Factory;
 use Valkyrja\Config\Config\Config;
@@ -42,7 +43,7 @@ class ServiceProvider extends Provider
             Cache::class        => [self::class, 'publishCache'],
             Factory::class      => [self::class, 'publishFactory'],
             Driver::class       => [self::class, 'publishDriver'],
-            Adapter::class      => [self::class, 'publishAdapter'],
+            NullAdapter::class  => [self::class, 'publishNullAdapter'],
             LogAdapter::class   => [self::class, 'publishLogAdapter'],
             RedisAdapter::class => [self::class, 'publishRedisAdapter'],
         ];
@@ -57,7 +58,7 @@ class ServiceProvider extends Provider
             Cache::class,
             Factory::class,
             Driver::class,
-            Adapter::class,
+            NullAdapter::class,
             LogAdapter::class,
             RedisAdapter::class,
         ];
@@ -72,6 +73,7 @@ class ServiceProvider extends Provider
      */
     public static function publishCache(Container $container): void
     {
+        /** @var array{cache: \Valkyrja\Cache\Config|array<string, mixed>, ...} $config */
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
@@ -107,43 +109,59 @@ class ServiceProvider extends Provider
      */
     public static function publishDriver(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             Driver::class,
-            /**
-             * @param class-string<Driver> $name
-             */
-            static function (string $name, Adapter $adapter): Driver {
-                return new $name(
-                    $adapter
-                );
-            }
+            [static::class, 'createDriver']
         );
     }
 
     /**
-     * Publish an adapter service.
+     * Create a driver.
+     *
+     * @param Container $container
+     * @param Adapter   $adapter
+     *
+     * @return Driver
+     */
+    public static function createDriver(Container $container, Adapter $adapter): Driver
+    {
+        return new Driver(
+            $adapter
+        );
+    }
+
+    /**
+     * Publish the null adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishAdapter(Container $container): void
+    public static function publishNullAdapter(Container $container): void
     {
-        $container->setClosure(
-            Adapter::class,
-            /**
-             * @param class-string<Adapter> $name
-             */
-            static function (string $name, array $config): Adapter {
-                return new $name(
-                    $config['prefix'] ?? null
-                );
-            }
+        $container->setCallable(
+            NullAdapter::class,
+            [static::class, 'createNullAdapter']
         );
     }
 
     /**
-     * Publish a log adapter service.
+     * Create a null adapter.
+     *
+     * @param Container              $container
+     * @param array{prefix?: string} $config
+     *
+     * @return NullAdapter
+     */
+    public static function createNullAdapter(Container $container, array $config): NullAdapter
+    {
+        return new NullAdapter(
+            $config['prefix'] ?? null
+        );
+    }
+
+    /**
+     * Publish the log adapter service.
      *
      * @param Container $container The container
      *
@@ -151,24 +169,32 @@ class ServiceProvider extends Provider
      */
     public static function publishLogAdapter(Container $container): void
     {
-        $logger = $container->getSingleton(Logger::class);
-
-        $container->setClosure(
+        $container->setCallable(
             LogAdapter::class,
-            /**
-             * @param class-string<LogAdapter> $name
-             */
-            static function (string $name, array $config) use ($logger): LogAdapter {
-                return new $name(
-                    $logger->use($config['logger'] ?? null),
-                    $config['prefix'] ?? null
-                );
-            }
+            [static::class, 'createLogAdapter']
         );
     }
 
     /**
-     * Publish a redis adapter service.
+     * Create a log adapter.
+     *
+     * @param Container                               $container
+     * @param array{prefix?: string, logger?: string} $config
+     *
+     * @return LogAdapter
+     */
+    public static function createLogAdapter(Container $container, array $config): LogAdapter
+    {
+        $logger = $container->getSingleton(Logger::class);
+
+        return new LogAdapter(
+            $logger->use($config['logger'] ?? null),
+            $config['prefix'] ?? null
+        );
+    }
+
+    /**
+     * Publish the redis adapter service.
      *
      * @param Container $container The container
      *
@@ -176,19 +202,27 @@ class ServiceProvider extends Provider
      */
     public static function publishRedisAdapter(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             RedisAdapter::class,
-            /**
-             * @param class-string<RedisAdapter> $name
-             */
-            static function (string $name, array $config): RedisAdapter {
-                $predis = new Client($config);
+            [static::class, 'createRedisAdapter']
+        );
+    }
 
-                return new $name(
-                    $predis,
-                    $config['prefix'] ?? null
-                );
-            }
+    /**
+     * Create a redis adapter.
+     *
+     * @param Container              $container
+     * @param array{prefix?: string} $config
+     *
+     * @return RedisAdapter
+     */
+    public static function createRedisAdapter(Container $container, array $config): RedisAdapter
+    {
+        $predis = new Client($config);
+
+        return new RedisAdapter(
+            $predis,
+            $config['prefix'] ?? ''
         );
     }
 }

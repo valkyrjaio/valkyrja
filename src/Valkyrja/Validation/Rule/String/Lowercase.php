@@ -34,6 +34,6 @@ class Lowercase extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must be lowercase";
+        return 'Must be lowercase';
     }
 }

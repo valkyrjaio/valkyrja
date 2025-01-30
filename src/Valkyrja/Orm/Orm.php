@@ -364,14 +364,6 @@ class Orm implements Contract
     /**
      * @inheritDoc
      */
-    public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
-    {
-        $this->getRepositoryFromClass($entity)->softDelete($entity, $defer);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function clear(Entity|null $entity = null): void
     {
         if ($entity !== null) {

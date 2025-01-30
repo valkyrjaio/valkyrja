@@ -13,8 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Id;
 
+use JsonException;
+use Valkyrja\Type\Exception\InvalidArgumentException;
 use Valkyrja\Type\Id\Contract\StringId as Contract;
 use Valkyrja\Type\Type;
+
+use function is_float;
+use function is_int;
+use function is_string;
 
 /**
  * Class StringId.
@@ -32,10 +38,16 @@ class StringId extends Type implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public static function fromValue(mixed $value): static
     {
-        return new static((string) $value);
+        return match (true) {
+            is_string($value) => new static($value),
+            is_int($value), is_float($value) => new static((string) $value),
+            default           => throw new InvalidArgumentException('Unsupported value provided'),
+        };
     }
 
     /**

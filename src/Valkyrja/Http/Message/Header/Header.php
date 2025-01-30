@@ -101,7 +101,7 @@ class Header implements Contract
 
         if (str_contains($header, static::DELIMINATOR)) {
             [$header, $valuesAsString] = explode(static::DELIMINATOR, $value);
-            $values = [$valuesAsString];
+            $values                    = [$valuesAsString];
         }
 
         if (str_contains($valuesAsString, static::VALUE_DELIMINATOR)) {
@@ -351,7 +351,7 @@ class Header implements Contract
      *
      * @param Value|string ...$values Header values
      *
-     * @return array<int, Value|string>
+     * @return array<array-key, Value|string>
      */
     protected function assertHeaderValues(Value|string ...$values): array
     {

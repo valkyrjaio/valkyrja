@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Persister\Contract;
 
 use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\Entity\Contract\SoftDeleteEntity;
 
 /**
  * Interface Persister.
  *
  * @author Melech Mizrachi
+ *
+ * @template Entity of Entity
  */
 interface Persister
 {
@@ -64,20 +65,6 @@ interface Persister
      * @return void
      */
     public function delete(Entity $entity, bool $defer = true): void;
-
-    /**
-     * Soft delete an existing entity.
-     *
-     * <code>
-     *      $persister->softDelete(new SoftDeleteEntity(), true | false)
-     * </code>
-     *
-     * @param SoftDeleteEntity $entity The entity to soft delete
-     * @param bool             $defer  [optional] Whether to defer the soft deletion
-     *
-     * @return void
-     */
-    public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void;
 
     /**
      * Clear all, or a single, deferred entity.

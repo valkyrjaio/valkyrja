@@ -25,6 +25,14 @@ use function is_array;
  * Class Config.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-import-type CacheAsArray from Cache
+ *
+ * @phpstan-import-type CacheAsArray from Cache
+ *
+ * @psalm-type ConfigAsArray array{aliases: class-string[], services: class-string[], contextServices: class-string[], providers: class-string<Provider>[], devProviders: class-string<Provider>[], useAnnotations: bool, useAttributes: bool, filePath: string, cacheFilePath: string, useCache: bool, cache: Cache|CacheAsArray|null}
+ *
+ * @phpstan-type ConfigAsArray array{aliases: class-string[], services: class-string[], contextServices: class-string[], providers: class-string<Provider>[], devProviders: class-string<Provider>[], useAnnotations: bool, useAttributes: bool, filePath: string, cacheFilePath: string, useCache: bool, cache: Cache|CacheAsArray|null}
  */
 class Config extends Model
 {
@@ -40,6 +48,7 @@ class Config extends Model
         CKP::PROVIDERS        => EnvKey::CONTAINER_PROVIDERS,
         CKP::DEV_PROVIDERS    => EnvKey::CONTAINER_DEV_PROVIDERS,
         CKP::USE_ANNOTATIONS  => EnvKey::CONTAINER_USE_ANNOTATIONS,
+        CKP::USE_ATTRIBUTES   => EnvKey::CONTAINER_USE_ATTRIBUTES,
         CKP::FILE_PATH        => EnvKey::CONTAINER_FILE_PATH,
         CKP::CACHE_FILE_PATH  => EnvKey::CONTAINER_CACHE_FILE_PATH,
         CKP::USE_CACHE        => EnvKey::CONTAINER_USE_CACHE_FILE,
@@ -86,6 +95,13 @@ class Config extends Model
      * @var bool
      */
     public bool $useAnnotations;
+
+    /**
+     * The flag to enable attributes.
+     *
+     * @var bool
+     */
+    public bool $useAttributes;
 
     /**
      * The cache from a Cacheable::getCacheable().

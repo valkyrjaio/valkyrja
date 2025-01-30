@@ -15,6 +15,7 @@ namespace Valkyrja\Path\Generator;
 
 use InvalidArgumentException;
 use Valkyrja\Path\Generator\Contract\Generator as Contract;
+use Valkyrja\Path\Parser\Contract\Parser;
 
 use function implode;
 use function is_array;
@@ -22,9 +23,21 @@ use function preg_match;
 use function str_replace;
 
 /**
- * Class PathGenerator.
+ * Class Generator.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-import-type ParsedPathParams from Parser
+ *
+ * @phpstan-import-type ParsedPathParams from Parser
+ *
+ * @psalm-import-type DatumParam from Contract
+ *
+ * @phpstan-import-type DatumParam from Contract
+ *
+ * @psalm-import-type DataParam from Contract
+ *
+ * @phpstan-import-type DataParam from Contract
  */
 class Generator implements Contract
 {
@@ -69,11 +82,11 @@ class Generator implements Contract
     /**
      * Parse data for replacements.
      *
-     * @param string[]                $segments     The segments
-     * @param array<array-key, mixed> $data         The data
-     * @param array<array-key, mixed> $params       The params
-     * @param string[]                $replace      The replace array
-     * @param string[]                $replacements The replacements array
+     * @param string[]         $segments     The segments
+     * @param DataParam        $data         The data
+     * @param ParsedPathParams $params       The params
+     * @param string[]         $replace      The replace array
+     * @param string[]         $replacements The replacements array
      *
      * @throws InvalidArgumentException
      *
@@ -113,7 +126,7 @@ class Generator implements Contract
             }
 
             // Set what to replace
-            $replace[] = (string) $params[$key]['replace'];
+            $replace[] = $params[$key]['replace'];
             // With the data value to replace with
             $replacements[] = (string) $datum;
         }
@@ -122,9 +135,9 @@ class Generator implements Contract
     /**
      * Validate a datum.
      *
-     * @param string $key   The key
-     * @param mixed  $datum The datum
-     * @param string $regex The regex
+     * @param string     $key   The key
+     * @param DatumParam $datum The datum
+     * @param string     $regex The regex
      *
      * @throws InvalidArgumentException
      *
@@ -141,7 +154,7 @@ class Generator implements Contract
         }
 
         // If the value of the data doesn't match what was specified when the route was made
-        if (preg_match('/^' . $regex . '$/', $datum) === 0) {
+        if (preg_match('/^' . $regex . '$/', (string) $datum) === 0) {
             throw new InvalidArgumentException("Route param for $key, '$datum', does not match $regex");
         }
     }

@@ -31,6 +31,6 @@ class IsEmpty extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must be empty";
+        return 'Must be empty';
     }
 }

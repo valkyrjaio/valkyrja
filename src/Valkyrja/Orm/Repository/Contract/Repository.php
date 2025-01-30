@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Repository\Contract;
 
 use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\Entity\Contract\SoftDeleteEntity;
 use Valkyrja\Orm\Enum\WhereType;
 use Valkyrja\Orm\Exception\EntityNotFoundException;
 use Valkyrja\Orm\Persister\Contract\Persister;
@@ -221,20 +220,6 @@ interface Repository
     public function delete(Entity $entity, bool $defer = true): void;
 
     /**
-     * Soft delete an existing entity.
-     *
-     * <code>
-     *      $persister->softDelete(new SoftDeleteEntity(), true | false)
-     * </code>
-     *
-     * @param SoftDeleteEntity $entity The entity
-     * @param bool             $defer  [optional] Whether to defer deletion or delete immediately
-     *
-     * @return void
-     */
-    public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void;
-
-    /**
      * Clear all, or a single, deferred entity.
      *
      * <code>
@@ -275,14 +260,14 @@ interface Repository
     /**
      * Get the retriever.
      *
-     * @return Retriever
+     * @return Retriever<Entity>
      */
     public function getRetriever(): Retriever;
 
     /**
      * Get the persister.
      *
-     * @return Persister
+     * @return Persister<Entity>
      */
     public function getPersister(): Persister;
 }

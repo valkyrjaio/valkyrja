@@ -77,6 +77,7 @@ final class ConfigKeyPart
     public const CACHE_FILE_PATH        = 'cacheFilePath';
     public const USE_CACHE              = 'useCache';
     public const USE_ANNOTATIONS        = 'useAnnotations';
+    public const USE_ATTRIBUTES         = 'useAttributes';
     public const QUIET                  = 'quiet';
     public const LISTENERS              = 'listeners';
     public const HANDLERS               = 'handlers';

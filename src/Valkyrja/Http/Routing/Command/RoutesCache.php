@@ -54,6 +54,7 @@ class RoutesCache extends Commander
      */
     public function run(): int
     {
+        /** @var array{app: array{debug: bool, env: string}, routing: array{cacheFilePath: string}} $configCache */
         $configCache   = config();
         $cacheFilePath = $configCache['routing']['cacheFilePath'];
 

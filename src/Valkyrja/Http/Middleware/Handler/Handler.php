@@ -31,7 +31,8 @@ use function is_string;
  *
  * @author Melech Mizrachi
  *
- * https://psalm.dev/r/7441ba42c3
+ * https://psalm.dev/r/7441ba42c3 Weird errors for the template but `of ...` fixes it
+ * https://psalm.dev/r/e76d278bf9 __construct gives wrong expects as first of template below instead of correct one from extends. add() is correct, though
  *
  * @template Middleware of RequestReceivedMiddleware|SendingResponseMiddleware|RouteMatchedMiddleware|RouteNotMatchedMiddleware|RouteDispatchedMiddleware|ThrowableCaughtMiddleware|TerminatedMiddleware
  *
@@ -39,7 +40,7 @@ use function is_string;
  */
 abstract class Handler implements Contract\Handler
 {
-    /** @var array<int, class-string<Middleware>|Closure(Container): Middleware> */
+    /** @var array<array-key, class-string<Middleware>|Closure(Container): Middleware> */
     protected array $middleware = [];
     /** @var class-string<Middleware>|Closure(Container): Middleware|null */
     protected Closure|string|null $next = null;

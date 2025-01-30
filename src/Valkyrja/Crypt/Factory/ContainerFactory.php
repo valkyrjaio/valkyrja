@@ -30,16 +30,6 @@ class ContainerFactory extends Factory implements Contract
     /**
      * @inheritDoc
      */
-    protected static string $defaultDriverClass = Driver::class;
-
-    /**
-     * @inheritDoc
-     */
-    protected static string $defaultAdapterClass = Adapter::class;
-
-    /**
-     * @inheritDoc
-     */
     public function createDriver(string $name, string $adapter, array $config): Driver
     {
         /** @var Driver $driver */

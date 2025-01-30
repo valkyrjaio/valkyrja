@@ -14,19 +14,21 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Provider;
 
 use Valkyrja\Auth\Adapter\Contract\Adapter;
-use Valkyrja\Auth\Adapter\Contract\ORMAdapter;
+use Valkyrja\Auth\Adapter\NullAdapter;
+use Valkyrja\Auth\Adapter\ORMAdapter;
 use Valkyrja\Auth\Config;
 use Valkyrja\Auth\Contract\Auth;
+use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Factory\ContainerFactory;
 use Valkyrja\Auth\Factory\Contract\Factory;
 use Valkyrja\Auth\Gate\Contract\Gate;
 use Valkyrja\Auth\Policy\Contract\EntityPolicy;
-use Valkyrja\Auth\Policy\Contract\EntityRoutePolicy;
 use Valkyrja\Auth\Policy\Contract\Policy;
-use Valkyrja\Auth\Repository\Contract\CryptTokenizedRepository;
-use Valkyrja\Auth\Repository\Contract\JWTCryptRepository;
-use Valkyrja\Auth\Repository\Contract\JWTRepository;
-use Valkyrja\Auth\Repository\Contract\Repository;
+use Valkyrja\Auth\Policy\EntityRoutePolicy;
+use Valkyrja\Auth\Repository\CryptTokenizedRepository;
+use Valkyrja\Auth\Repository\JwtCryptRepository;
+use Valkyrja\Auth\Repository\JwtRepository;
+use Valkyrja\Auth\Repository\Repository;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Contract\Crypt;
@@ -53,9 +55,9 @@ class ServiceProvider extends Provider
             Gate::class                     => [self::class, 'publishGate'],
             Repository::class               => [self::class, 'publishRepository'],
             CryptTokenizedRepository::class => [self::class, 'publishCryptTokenizedRepository'],
-            JWTRepository::class            => [self::class, 'publishJWTRepository'],
-            JWTCryptRepository::class       => [self::class, 'publishJWTCryptRepository'],
-            Adapter::class                  => [self::class, 'publishAdapter'],
+            JwtRepository::class            => [self::class, 'publishJwtRepository'],
+            JwtCryptRepository::class       => [self::class, 'publishJwtCryptRepository'],
+            NullAdapter::class              => [self::class, 'publishNullAdapter'],
             ORMAdapter::class               => [self::class, 'publishOrmAdapter'],
             Policy::class                   => [self::class, 'publishPolicy'],
             EntityPolicy::class             => [self::class, 'publishEntityPolicy'],
@@ -74,9 +76,9 @@ class ServiceProvider extends Provider
             Gate::class,
             Repository::class,
             CryptTokenizedRepository::class,
-            JWTRepository::class,
-            JWTCryptRepository::class,
-            Adapter::class,
+            JwtRepository::class,
+            JwtCryptRepository::class,
+            NullAdapter::class,
             ORMAdapter::class,
             Policy::class,
             EntityPolicy::class,
@@ -93,6 +95,7 @@ class ServiceProvider extends Provider
      */
     public static function publishAuth(Container $container): void
     {
+        /** @var array{auth: Config|array<string, mixed>, ...} $config */
         $config = $container->getSingleton(\Valkyrja\Config\Config\Config::class);
 
         $container->setSingleton(
@@ -123,24 +126,32 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish an adapter service.
+     * Publish the null adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishAdapter(Container $container): void
+    public static function publishNullAdapter(Container $container): void
     {
-        $container->setClosure(
-            Adapter::class,
-            /**
-             * @param class-string<Adapter> $name
-             */
-            static function (string $name, Config|array $config): Adapter {
-                return new $name(
-                    $config,
-                );
-            }
+        $container->setCallable(
+            NullAdapter::class,
+            [static::class, 'createNullAdapter']
+        );
+    }
+
+    /**
+     * Create a null adapter.
+     *
+     * @param Container                   $container
+     * @param Config|array<string, mixed> $config
+     *
+     * @return NullAdapter
+     */
+    public static function createNullAdapter(Container $container, Config|array $config): NullAdapter
+    {
+        return new NullAdapter(
+            $config,
         );
     }
 
@@ -153,19 +164,27 @@ class ServiceProvider extends Provider
      */
     public static function publishOrmAdapter(Container $container): void
     {
+        $container->setCallable(
+            ORMAdapter::class,
+            [static::class, 'createOrmAdapter']
+        );
+    }
+
+    /**
+     * Create an ORM adapter.
+     *
+     * @param Container                   $container
+     * @param Config|array<string, mixed> $config
+     *
+     * @return ORMAdapter
+     */
+    public static function createOrmAdapter(Container $container, Config|array $config): ORMAdapter
+    {
         $orm = $container->getSingleton(Orm::class);
 
-        $container->setClosure(
-            ORMAdapter::class,
-            /**
-             * @param class-string<ORMAdapter> $name
-             */
-            static function (string $name, Config|array $config) use ($orm): ORMAdapter {
-                return new $name(
-                    $orm,
-                    $config
-                );
-            }
+        return new ORMAdapter(
+            $orm,
+            $config
         );
     }
 
@@ -178,22 +197,29 @@ class ServiceProvider extends Provider
      */
     public static function publishGate(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             Gate::class,
-            /**
-             * @param class-string<Gate> $name
-             */
-            static function (string $name, Repository $repository) use ($container): Gate {
-                return new $name(
-                    $container->getSingleton(Auth::class),
-                    $repository,
-                );
-            }
+            [static::class, 'createGate']
         );
     }
 
     /**
-     * Publish a policy service.
+     * @param Container          $container
+     * @param class-string<Gate> $name
+     * @param Repository         $repository
+     *
+     * @return Gate
+     */
+    public static function createGate(Container $container, string $name, Repository $repository): Gate
+    {
+        return new $name(
+            $container->getSingleton(Auth::class),
+            $repository,
+        );
+    }
+
+    /**
+     * Publish the policy service.
      *
      * @param Container $container The container
      *
@@ -201,21 +227,30 @@ class ServiceProvider extends Provider
      */
     public static function publishPolicy(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             Policy::class,
-            /**
-             * @param class-string<Policy> $name
-             */
-            static function (string $name, Repository $repository): Policy {
-                return new $name(
-                    $repository,
-                );
-            }
+            [static::class, 'createPolicy']
         );
     }
 
     /**
-     * Publish an entity policy service.
+     * Create a policy.
+     *
+     * @param Container            $container
+     * @param class-string<Policy> $name
+     * @param Repository           $repository
+     *
+     * @return Policy
+     */
+    public static function createPolicy(Container $container, string $name, Repository $repository): Policy
+    {
+        return new $name(
+            $repository,
+        );
+    }
+
+    /**
+     * Publish the entity policy service.
      *
      * @param Container $container The container
      *
@@ -223,22 +258,31 @@ class ServiceProvider extends Provider
      */
     public static function publishEntityPolicy(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             EntityPolicy::class,
-            /**
-             * @param class-string<EntityPolicy> $name
-             */
-            static function (string $name, Repository $repository) use ($container): EntityPolicy {
-                return new $name(
-                    $repository,
-                    $container->getSingleton($name::getEntityClassName()),
-                );
-            }
+            [static::class, 'createEntityPolicy']
         );
     }
 
     /**
-     * Publish an entity route policy service.
+     * Create an entity policy.
+     *
+     * @param Container                  $container
+     * @param class-string<EntityPolicy> $name
+     * @param Repository                 $repository
+     *
+     * @return EntityPolicy
+     */
+    public static function createEntityPolicy(Container $container, string $name, Repository $repository): EntityPolicy
+    {
+        return new $name(
+            $repository,
+            $container->getSingleton($name::getEntityClassName()),
+        );
+    }
+
+    /**
+     * Publish the entity route policy service.
      *
      * @param Container $container The container
      *
@@ -246,22 +290,31 @@ class ServiceProvider extends Provider
      */
     public static function publishEntityRoutePolicy(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             EntityRoutePolicy::class,
-            /**
-             * @param class-string<EntityRoutePolicy> $name
-             */
-            static function (string $name, Repository $repository) use ($container): EntityRoutePolicy {
-                return new $name(
-                    $repository,
-                    $container->getSingleton($name::getEntityClassName() . $name::getEntityParamNumber()),
-                );
-            }
+            [static::class, 'createEntityRoutePolicy']
         );
     }
 
     /**
-     * Publish a repository service.
+     * Create an entity route policy.
+     *
+     * @param Container                       $container
+     * @param class-string<EntityRoutePolicy> $name
+     * @param Repository                      $repository
+     *
+     * @return EntityRoutePolicy
+     */
+    public static function createEntityRoutePolicy(Container $container, string $name, Repository $repository): EntityRoutePolicy
+    {
+        return new $name(
+            $repository,
+            $container->getSingleton($name::getEntityClassName() . $name::getEntityParamNumber()),
+        );
+    }
+
+    /**
+     * Publish the repository service.
      *
      * @param Container $container The container
      *
@@ -269,26 +322,29 @@ class ServiceProvider extends Provider
      */
     public static function publishRepository(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             Repository::class,
-            /**
-             * @param class-string<Repository> $name
-             */
-            static function (
-                string $name,
-                Adapter $adapter,
-                string $user,
-                Config|array $config
-            ) use (
-                $container
-            ): Repository {
-                return new $name(
-                    $adapter,
-                    $container->getSingleton(Session::class),
-                    $config,
-                    $user
-                );
-            }
+            [static::class, 'createRepository']
+        );
+    }
+
+    /**
+     * Create a repository.
+     *
+     * @param Container                   $container
+     * @param Adapter                     $adapter
+     * @param class-string<User>          $user
+     * @param Config|array<string, mixed> $config
+     *
+     * @return Repository
+     */
+    public static function createRepository(Container $container, Adapter $adapter, string $user, Config|array $config): Repository
+    {
+        return new Repository(
+            $adapter,
+            $container->getSingleton(Session::class),
+            $config,
+            $user
         );
     }
 
@@ -301,27 +357,30 @@ class ServiceProvider extends Provider
      */
     public static function publishCryptTokenizedRepository(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             CryptTokenizedRepository::class,
-            /**
-             * @param class-string<CryptTokenizedRepository> $name
-             */
-            static function (
-                string $name,
-                Adapter $adapter,
-                string $user,
-                Config|array $config
-            ) use (
-                $container
-            ): CryptTokenizedRepository {
-                return new $name(
-                    $adapter,
-                    $container->getSingleton(Crypt::class),
-                    $container->getSingleton(Session::class),
-                    $config,
-                    $user
-                );
-            }
+            [static::class, 'createCryptTokenizedRepository']
+        );
+    }
+
+    /**
+     * Create a crypt tokenized repository.
+     *
+     * @param Container                   $container
+     * @param Adapter                     $adapter
+     * @param class-string<User>          $user
+     * @param Config|array<string, mixed> $config
+     *
+     * @return CryptTokenizedRepository
+     */
+    public static function createCryptTokenizedRepository(Container $container, Adapter $adapter, string $user, Config|array $config): CryptTokenizedRepository
+    {
+        return new CryptTokenizedRepository(
+            $adapter,
+            $container->getSingleton(Crypt::class),
+            $container->getSingleton(Session::class),
+            $config,
+            $user
         );
     }
 
@@ -332,30 +391,33 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishJWTCryptRepository(Container $container): void
+    public static function publishJwtCryptRepository(Container $container): void
     {
-        $container->setClosure(
-            JWTCryptRepository::class,
-            /**
-             * @param class-string<JWTCryptRepository> $name
-             */
-            static function (
-                string $name,
-                Adapter $adapter,
-                string $user,
-                Config|array $config
-            ) use (
-                $container
-            ): JWTCryptRepository {
-                return new $name(
-                    $adapter,
-                    $container->getSingleton(Jwt::class),
-                    $container->getSingleton(Crypt::class),
-                    $container->getSingleton(Session::class),
-                    $config,
-                    $user
-                );
-            }
+        $container->setCallable(
+            JwtCryptRepository::class,
+            [static::class, 'createJwtCryptRepository']
+        );
+    }
+
+    /**
+     * Create a JWT crypt tokenized repository.
+     *
+     * @param Container                   $container
+     * @param Adapter                     $adapter
+     * @param class-string<User>          $user
+     * @param Config|array<string, mixed> $config
+     *
+     * @return JwtCryptRepository
+     */
+    public static function createJwtCryptRepository(Container $container, Adapter $adapter, string $user, Config|array $config): JwtCryptRepository
+    {
+        return new JwtCryptRepository(
+            $adapter,
+            $container->getSingleton(Jwt::class),
+            $container->getSingleton(Crypt::class),
+            $container->getSingleton(Session::class),
+            $config,
+            $user
         );
     }
 
@@ -366,29 +428,32 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishJWTRepository(Container $container): void
+    public static function publishJwtRepository(Container $container): void
     {
-        $container->setClosure(
-            JWTRepository::class,
-            /**
-             * @param class-string<JWTRepository> $name
-             */
-            static function (
-                string $name,
-                Adapter $adapter,
-                string $user,
-                Config|array $config
-            ) use (
-                $container
-            ): JWTRepository {
-                return new $name(
-                    $adapter,
-                    $container->getSingleton(Jwt::class),
-                    $container->getSingleton(Session::class),
-                    $config,
-                    $user
-                );
-            }
+        $container->setCallable(
+            JwtRepository::class,
+            [static::class, 'createJwtRepository']
+        );
+    }
+
+    /**
+     * Create a JWT tokenized repository.
+     *
+     * @param Container                   $container
+     * @param Adapter                     $adapter
+     * @param class-string<User>          $user
+     * @param Config|array<string, mixed> $config
+     *
+     * @return JwtRepository
+     */
+    public static function createJwtRepository(Container $container, Adapter $adapter, string $user, Config|array $config): JwtRepository
+    {
+        return new JwtRepository(
+            $adapter,
+            $container->getSingleton(Jwt::class),
+            $container->getSingleton(Session::class),
+            $config,
+            $user
         );
     }
 }

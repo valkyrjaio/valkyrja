@@ -139,7 +139,7 @@ class Uuid extends Uid
 
         // Convert Namespace UUID to bits
         for ($i = 0; $i < $length; $i += 2) {
-            $string .= chr(hexdec($hex[$i] . $hex[$i + 1]));
+            $string .= chr((int) hexdec($hex[$i] . $hex[$i + 1]));
         }
 
         return $string;

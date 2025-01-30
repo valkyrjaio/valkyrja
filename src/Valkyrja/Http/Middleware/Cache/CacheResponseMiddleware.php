@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Middleware\Cache;
 
 use Throwable;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Filesystem\Contract\Filesystem;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
@@ -63,10 +64,15 @@ class CacheResponseMiddleware implements RequestReceivedMiddleware, TerminatedMi
             }
 
             try {
-                $cache = $filesystem->read($filePath);
+                $cache        = $filesystem->read($filePath);
+                $decodedCache = base64_decode($cache, true);
+
+                if ($decodedCache === false) {
+                    throw new RuntimeException('Failed to decode cache');
+                }
 
                 $response = unserialize(
-                    base64_decode($cache, true),
+                    $decodedCache,
                     [
                         'allowed_classes' => true,
                     ]

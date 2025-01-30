@@ -13,10 +13,21 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\BuiltIn;
 
+use JsonException;
 use Valkyrja\Type\BuiltIn\Contract\StringT as Contract;
+use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\BuiltIn\Support\Obj;
 use Valkyrja\Type\BuiltIn\Support\Str as Helper;
 use Valkyrja\Type\BuiltIn\Support\StrCase;
+use Valkyrja\Type\Exception\InvalidArgumentException;
 use Valkyrja\Type\Type;
+
+use function is_array;
+use function is_bool;
+use function is_float;
+use function is_int;
+use function is_object;
+use function is_string;
 
 /**
  * Class Str.
@@ -34,10 +45,19 @@ class StringT extends Type implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public static function fromValue(mixed $value): static
     {
-        return new static((string) $value);
+        return match (true) {
+            is_string($value) => new static($value),
+            is_int($value), is_float($value) => new static((string) $value),
+            is_bool($value)   => new static($value ? 'true' : 'false'),
+            is_array($value)  => new static(Arr::toString($value)),
+            is_object($value) => new static(Obj::toString($value)),
+            default           => throw new InvalidArgumentException('Unsupported value provided'),
+        };
     }
 
     /**

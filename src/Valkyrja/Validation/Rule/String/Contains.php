@@ -42,6 +42,6 @@ class Contains extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must contain $this->needle";
+        return "Must contain $this->needle";
     }
 }

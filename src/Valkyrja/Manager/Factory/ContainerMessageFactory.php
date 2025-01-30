@@ -17,7 +17,6 @@ use Valkyrja\Manager\Adapter\Contract\Adapter;
 use Valkyrja\Manager\Driver\Contract\Driver;
 use Valkyrja\Manager\Factory\Contract\MessageFactory;
 use Valkyrja\Manager\Message\Contract\Message;
-use Valkyrja\Type\BuiltIn\Support\Cls;
 
 /**
  * Class ContainerMessageFactory.
@@ -35,13 +34,6 @@ use Valkyrja\Type\BuiltIn\Support\Cls;
 class ContainerMessageFactory extends ContainerFactory implements MessageFactory
 {
     /**
-     * The default driver class.
-     *
-     * @var class-string
-     */
-    protected static string $defaultMessageClass;
-
-    /**
      * @inheritDoc
      *
      * @param class-string<Message> $name The message
@@ -50,29 +42,13 @@ class ContainerMessageFactory extends ContainerFactory implements MessageFactory
      */
     public function createMessage(string $name, array $config, array $data = []): Message
     {
-        /** @var class-string<Message> $defaultMessageClass */
-        $defaultMessageClass = $this->getMessageDefaultClass($name);
-
-        return Cls::getDefaultableService(
-            $this->container,
+        return $this->container->get(
             $name,
-            $defaultMessageClass,
             [
+                $this->container,
                 $config,
                 $data,
             ]
         );
-    }
-
-    /**
-     * Get the default message class.
-     *
-     * @param class-string<Message> $name The message
-     *
-     * @return class-string
-     */
-    protected function getMessageDefaultClass(string $name): string
-    {
-        return static::$defaultMessageClass;
     }
 }

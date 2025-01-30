@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Contract;
 
 use ArrayAccess;
-use Closure;
 use Psr\Container\ContainerInterface;
 use Valkyrja\Support\Provider\Contract\ProvidersAware;
 
@@ -67,14 +66,14 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     public function bindSingleton(string $id, string $singleton): static;
 
     /**
-     * Set a closure in the container.
+     * Set a callable in the container.
      *
-     * @param class-string|string $id      The service id
-     * @param Closure             $closure The closure
+     * @param class-string|string $id       The service id
+     * @param callable            $callable The callable
      *
      * @return static
      */
-    public function setClosure(string $id, Closure $closure): static;
+    public function setCallable(string $id, callable $callable): static;
 
     /**
      * Set a singleton in the container.
@@ -96,13 +95,13 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     public function isAlias(string $id): bool;
 
     /**
-     * Check whether a given service is bound to a closure.
+     * Check whether a given service is bound to a callable.
      *
      * @param class-string|string $id The service id
      *
      * @return bool
      */
-    public function isClosure(string $id): bool;
+    public function isCallable(string $id): bool;
 
     /**
      * Check whether a given service exists.
@@ -130,21 +129,21 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
      * @param class-string<T>|string  $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
      *
-     * @return ($id is class-string ? T : mixed)
+     * @return ($id is class-string<T> ? T : mixed)
      */
     public function get(string $id, array $arguments = []): mixed;
 
     /**
-     * Get a service bound to a closure from the container.
+     * Get a service bound to a callable from the container.
      *
      * @template T
      *
      * @param class-string<T>|string  $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
      *
-     * @return ($id is class-string ? T : mixed)
+     * @return ($id is class-string<T> ? T : mixed)
      */
-    public function getClosure(string $id, array $arguments = []): mixed;
+    public function getCallable(string $id, array $arguments = []): mixed;
 
     /**
      * Get a service from the container.
@@ -163,7 +162,7 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
      *
      * @param class-string<T>|string $id The service id
      *
-     * @return ($id is class-string ? T : mixed)
+     * @return ($id is class-string<T> ? T : mixed)
      */
     public function getSingleton(string $id): mixed;
 

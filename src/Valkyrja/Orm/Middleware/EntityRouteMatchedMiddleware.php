@@ -28,6 +28,8 @@ use Valkyrja\Orm\Repository\Contract\RelationshipRepository;
 use Valkyrja\View\Factory\Contract\ResponseFactory;
 
 use function is_a;
+use function is_int;
+use function is_string;
 
 /**
  * Class EntityRouteMatchedMiddleware.
@@ -107,10 +109,16 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
      */
     protected function checkParameterForEntity(int $index, Parameter $parameter, array &$dependencies, array &$matches): Response|null
     {
-        $entityName = $parameter->getCast()->type ?? null;
+        $type = $parameter->getCast()->type ?? null;
 
-        if (is_a($entityName, Entity::class, true)) {
-            return $this->findAndSetEntityFromParameter($index, $parameter, $entityName, $dependencies, $matches[$index]);
+        if ($type !== null && is_a($type, Entity::class, true)) {
+            $match = $matches[$index];
+
+            if (! is_string($match) && ! is_int($match) && ! $match instanceof Entity) {
+                return $this->getBadRequestResponse($type, $match);
+            }
+
+            return $this->findAndSetEntityFromParameter($index, $parameter, $type, $dependencies, $matches[$index]);
         }
 
         return null;
@@ -123,7 +131,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
      * @param Parameter            $parameter    The parameter
      * @param class-string<Entity> $entityName   The entity class name
      * @param string[]             $dependencies The dependencies
-     * @param mixed                $value        The value
+     * @param string|int           $value        The value
      *
      * @return Response|null
      */
@@ -132,13 +140,13 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
         Parameter $parameter,
         string $entityName,
         array &$dependencies,
-        mixed &$value
+        string|int &$value
     ): Response|null {
         // Attempt to get the entity from the ORM repository
         $entity = $this->findEntityFromParameter($parameter, $entityName, $value);
 
         if ($entity === null) {
-            return $this->entityNotFound($entityName, $value);
+            return $this->getNotFoundResponse($entityName, $value);
         }
 
         // Set the entity with the param name as the service id into the container
@@ -165,14 +173,14 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
      *
      * @param Parameter            $parameter  The parameter
      * @param class-string<Entity> $entityName The entity class name
-     * @param mixed                $value      The value
+     * @param string|int           $value      The value
      *
      * @return Entity|null
      */
     protected function findEntityFromParameter(
         Parameter $parameter,
         string $entityName,
-        mixed $value
+        string|int $value
     ): Entity|null {
         $cast          = $parameter->getCast();
         $repository    = $this->orm->getRepository($entityName);
@@ -205,19 +213,36 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     }
 
     /**
-     * Do when an entity was not found with the given value.
+     * Response for when the entity was not found with the given value.
      *
      * @param string $entity The entity not found
      * @param mixed  $value  [optional] The value used to check for the entity
      *
      * @return Response
      */
-    protected function entityNotFound(string $entity, mixed $value): Response
+    protected function getNotFoundResponse(string $entity, mixed $value): Response
     {
         return $this->responseFactory
             ->createResponseFromView(
                 template: "$this->errorsTemplateDir/" . StatusCode::NOT_FOUND->value,
                 statusCode: StatusCode::NOT_FOUND,
+            );
+    }
+
+    /**
+     * Response for when bad data has been provided to match for the entity.
+     *
+     * @param string $entity The entity with bad data
+     * @param mixed  $value  [optional] The bad data value
+     *
+     * @return Response
+     */
+    protected function getBadRequestResponse(string $entity, mixed $value): Response
+    {
+        return $this->responseFactory
+            ->createResponseFromView(
+                template: "$this->errorsTemplateDir/" . StatusCode::BAD_REQUEST->value,
+                statusCode: StatusCode::BAD_REQUEST,
             );
     }
 }

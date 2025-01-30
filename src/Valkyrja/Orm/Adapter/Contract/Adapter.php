@@ -104,14 +104,14 @@ interface Adapter
     /**
      * Create a new retriever instance.
      *
-     * @return Retriever
+     * @return Retriever<Entity>
      */
     public function createRetriever(): Retriever;
 
     /**
      * Get the persister.
      *
-     * @return Persister
+     * @return Persister<Entity>
      */
     public function getPersister(): Persister;
 }

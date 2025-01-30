@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Support;
 
 use DateTime;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Orm\Constant\DateFormat;
 
+use function microtime;
 use function str_replace;
 
 /**
@@ -68,7 +70,12 @@ class Helpers
      */
     public static function getFormattedDate(string $format = DateFormat::DEFAULT): string
     {
-        return DateTime::createFromFormat('U.u', (string) microtime(true))
-                       ->format($format);
+        $dateTime = DateTime::createFromFormat('U.u', (string) microtime(true));
+
+        if ($dateTime === false) {
+            throw new RuntimeException('Failure occurred when creating a new DateTime object for current microtime.');
+        }
+
+        return $dateTime->format($format);
     }
 }

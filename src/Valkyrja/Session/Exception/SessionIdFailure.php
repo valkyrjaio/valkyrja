@@ -11,13 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Facade\Exception;
+namespace Valkyrja\Session\Exception;
+
+use Valkyrja\Exception\RuntimeException;
 
 /**
- * Class InvalidClassStringUsageException.
+ * Class SessionIdFailure.
  *
  * @author Melech Mizrachi
  */
-class InvalidClassStringUsageException extends InvalidArgumentException
+class SessionIdFailure extends RuntimeException
 {
 }

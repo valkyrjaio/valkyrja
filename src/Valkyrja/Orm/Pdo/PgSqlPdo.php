@@ -15,19 +15,26 @@ namespace Valkyrja\Orm\Pdo;
 
 use PDO as BasePDO;
 
+use function is_int;
+use function is_string;
+
 /**
  * Class PgSqlPDO.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-import-type Config from Pdo
+ *
+ * @phpstan-import-type Config from Pdo
  */
 class PgSqlPdo extends Pdo
 {
     /**
      * The default options.
      *
-     * @var array<int, mixed>
+     * @var array<int, int|bool>
      */
-    protected static array $defaultOptions = [
+    protected array $defaultOptions = [
         BasePDO::ATTR_PERSISTENT        => true,
         BasePDO::ATTR_CASE              => BasePDO::CASE_NATURAL,
         BasePDO::ATTR_ERRMODE           => BasePDO::ERRMODE_EXCEPTION,
@@ -38,11 +45,14 @@ class PgSqlPdo extends Pdo
     /**
      * PgSqlPDO constructor.
      *
-     * @param array<string, mixed> $config The config
+     * @param Config $config The config
      */
     public function __construct(array $config)
     {
-        $charset = $config['charset'] ?? 'utf8';
+        $configCharset = $config['charset'] ?? null;
+        $charset       = is_string($configCharset) || is_int($configCharset)
+            ? $configCharset
+            : 'utf8';
 
         $dsn = $this->getDsnPart($config, 'sslmode')
             . ";options='--client_encoding=$charset'";

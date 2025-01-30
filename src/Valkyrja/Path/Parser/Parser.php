@@ -185,7 +185,7 @@ class Parser implements Contract
      * @param string   $path     The path
      * @param string[] $segments The segments
      *
-     * @return array{params: array<string, array{regex: string, replace: non-falsy-string}>, regex: non-falsy-string, segments: string[]}
+     * @return array{params: array<array-key, array{regex: string, replace: non-falsy-string}>, regex: non-falsy-string, segments: string[]}
      */
     protected function parsePath(string $path, array &$segments): array
     {

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container;
 
-use Closure;
 use Valkyrja\Container\Contract\Container as Contract;
 use Valkyrja\Container\Contract\Service;
 
@@ -144,17 +143,17 @@ trait ContextableContainer
     /**
      * @inheritDoc
      */
-    public function setClosure(string $id, Closure $closure): static
+    public function setCallable(string $id, callable $callable): static
     {
         if ($this->contextContainer !== null) {
             $id = $this->getServiceIdInternal($id);
 
-            $this->contextContainer->setClosure($id, $closure);
+            $this->contextContainer->setCallable($id, $callable);
 
             return $this;
         }
 
-        parent::setClosure($id, $closure);
+        parent::setCallable($id, $callable);
 
         return $this;
     }
@@ -194,15 +193,15 @@ trait ContextableContainer
     /**
      * @inheritDoc
      */
-    public function isClosure(string $id): bool
+    public function isCallable(string $id): bool
     {
         if ($this->contextContainer !== null) {
             $id = $this->getServiceIdInternal($id);
 
-            return $this->contextContainer->isClosure($id);
+            return $this->contextContainer->isCallable($id);
         }
 
-        return parent::isClosure($id);
+        return parent::isCallable($id);
     }
 
     /**
@@ -250,15 +249,15 @@ trait ContextableContainer
     /**
      * @inheritDoc
      */
-    public function getClosure(string $id, array $arguments = []): mixed
+    public function getCallable(string $id, array $arguments = []): mixed
     {
         if ($this->contextContainer !== null) {
             $id = $this->getServiceIdInternal($id);
 
-            return $this->contextContainer->getClosure($id, $arguments);
+            return $this->contextContainer->getCallable($id, $arguments);
         }
 
-        return parent::getClosure($id, $arguments);
+        return parent::getCallable($id, $arguments);
     }
 
     /**

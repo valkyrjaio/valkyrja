@@ -14,20 +14,33 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Pdo;
 
 use PDO as BasePDO;
+use Valkyrja\Exception\InvalidArgumentException;
+
+use function is_array;
+use function is_int;
+use function is_string;
 
 /**
  * Class DefaultPDO.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-type Options array<int, int|bool>
+ *
+ * @phpstan-type Options array<int, int|bool>
+ *
+ * @psalm-type Config array<string, string|int|Options>
+ *
+ * @phpstan-type Config array<string, string|int|Options>
  */
 abstract class Pdo extends BasePDO
 {
     /**
      * The default options.
      *
-     * @var array<int, mixed>
+     * @var Options
      */
-    protected static array $defaultOptions = [
+    protected array $defaultOptions = [
         BasePDO::ATTR_CASE              => BasePDO::CASE_NATURAL,
         BasePDO::ATTR_ERRMODE           => BasePDO::ERRMODE_EXCEPTION,
         BasePDO::ATTR_ORACLE_NULLS      => BasePDO::NULL_NATURAL,
@@ -38,44 +51,53 @@ abstract class Pdo extends BasePDO
     /**
      * PDO constructor.
      *
-     * @param array<string, mixed> $config The config
-     * @param string|null          $driver [optional] The driver
-     * @param string|null          $dsn    [optional] The added dsn
+     * @param Config      $config The config
+     * @param string|null $driver [optional] The driver
+     * @param string|null $dsn    [optional] The added dsn
      */
     public function __construct(
         array $config,
         string|null $driver = null,
         string|null $dsn = null
     ) {
+        $db = is_string($config['db'])
+            ? $config['db']
+            : throw new InvalidArgumentException('Invalid DB provided');
+
         $config['dsn'] = ($driver ?? 'mysql')
-            . ":dbname={$config['db']}"
+            . ":dbname=$db}"
             . $this->getDsnPart($config, 'host')
             . $this->getDsnPart($config, 'port')
             . $this->getDsnPart($config, 'user')
             . $this->getDsnPart($config, 'password')
             . ($dsn ?? '');
+        $options       = is_array($config['options'])
+            ? $config['options']
+            : $this->defaultOptions;
 
         parent::__construct(
             $config['dsn'],
             null,
             null,
-            $config['options'] ?? static::$defaultOptions
+            $options
         );
     }
 
     /**
      * Get dsn part.
      *
-     * @param array<string, mixed> $config  The config
-     * @param string               $name    The dsn part name
-     * @param mixed                $default [optional] The default value
+     * @param Config          $config  The config
+     * @param string          $name    The dsn part name
+     * @param string|int|null $default [optional] The default value
      *
      * @return string
      */
-    protected function getDsnPart(array $config, string $name, mixed $default = null): string
+    protected function getDsnPart(array $config, string $name, string|int|null $default = null): string
     {
         $value = $config[$name] ?? $default;
 
-        return $value ? ";$name=$value" : '';
+        return is_string($value) || is_int($value)
+            ? ";$name=$value"
+            : '';
     }
 }

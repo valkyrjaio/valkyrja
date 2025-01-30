@@ -267,11 +267,11 @@ class DataConfig extends ParentConfig
 
             match ($name) {
                 'annotations' => new Annotation\Annotation($cache),
-                'api' => new Api\Api($cache),
-                'app' => new App\App($cache),
-                'asset' => new Asset\Asset($cache),
+                'api'         => new Api\Api($cache),
+                'app'         => new App\App($cache),
+                'asset'       => new Asset\Asset($cache),
                 'useCache', 'cacheFilePath', 'providers' => $cache,
-                default => new static::$map[$name]($cache),
+                default       => new static::$map[$name]($cache),
             };
         }
 

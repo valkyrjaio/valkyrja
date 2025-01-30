@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Exception;
 
-use Exception;
+use Valkyrja\Exception\RuntimeException;
 
 /**
  * Class CryptException.
  *
  * @author Melech Mizrachi
  */
-class CryptException extends Exception
+class CryptException extends RuntimeException
 {
 }

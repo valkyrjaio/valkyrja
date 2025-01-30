@@ -62,6 +62,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     {
         $new = clone $this;
 
+        /** @var array<string, string|null> $cookies */
         $new->request = $this->request->withCookieParams($cookies);
 
         return $new;

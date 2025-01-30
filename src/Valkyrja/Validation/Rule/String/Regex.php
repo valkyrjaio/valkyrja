@@ -43,6 +43,6 @@ class Regex extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must match the given regex $this->regex";
+        return "Must match the given regex $this->regex";
     }
 }

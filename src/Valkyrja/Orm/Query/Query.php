@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Query;
 
 use stdClass;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Orm\Adapter\Contract\Adapter;
 use Valkyrja\Orm\Entity\Contract\Entity;
 use Valkyrja\Orm\Exception\NotFoundException;
@@ -23,6 +24,8 @@ use Valkyrja\Orm\Support\Helpers;
 
 use function assert;
 use function is_array;
+use function is_int;
+use function is_string;
 
 /**
  * Class Query.
@@ -189,7 +192,17 @@ class Query implements QueryContract
     {
         $results = $this->statement->fetchAll();
 
-        return (int) ($results[0]['COUNT(*)'] ?? $results[0]['count'] ?? 0);
+        $count = ($results[0]['COUNT(*)'] ?? $results[0]['count'] ?? 0);
+
+        if (is_int($count)) {
+            return $count;
+        }
+
+        if (is_string($count)) {
+            return (int) $count;
+        }
+
+        throw new RuntimeException('Unsupported count results');
     }
 
     /**

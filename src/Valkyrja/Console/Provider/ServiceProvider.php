@@ -94,6 +94,7 @@ class ServiceProvider extends Provider
      */
     public static function publishConsole(Container $container): void
     {
+        /** @var array{console: \Valkyrja\Console\Config|array<string, mixed>, ...} $config */
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(

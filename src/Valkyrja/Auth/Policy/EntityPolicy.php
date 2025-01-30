@@ -27,16 +27,9 @@ abstract class EntityPolicy extends Policy implements Contract
     /**
      * The entity class name.
      *
-     * @var string
+     * @var class-string<Entity>
      */
     protected static string $entityClassName;
-
-    /**
-     * The entity.
-     *
-     * @var Entity
-     */
-    protected Entity $entity;
 
     /**
      * Policy constructor.
@@ -44,15 +37,17 @@ abstract class EntityPolicy extends Policy implements Contract
      * @param Repository $repository The repository
      * @param Entity     $entity     The entity
      */
-    public function __construct(Repository $repository, Entity $entity)
-    {
+    public function __construct(
+        Repository $repository,
+        protected Entity $entity
+    ) {
         parent::__construct($repository);
-
-        $this->entity = $entity;
     }
 
     /**
      * @inheritDoc
+     *
+     * @return class-string<Entity>
      */
     public static function getEntityClassName(): string
     {

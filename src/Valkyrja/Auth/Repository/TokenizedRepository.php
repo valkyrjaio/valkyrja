@@ -32,8 +32,8 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequest;
  *
  * @author Melech Mizrachi
  *
- * @property TokenizableUser        $user
- * @property TokenizableUser|string $userEntityName
+ * @property TokenizableUser               $user
+ * @property class-string<TokenizableUser> $userEntityName
  */
 abstract class TokenizedRepository extends Repository implements Contract
 {

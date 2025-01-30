@@ -13,8 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Id;
 
+use Valkyrja\Type\Exception\InvalidArgumentException;
 use Valkyrja\Type\Id\Contract\Id as Contract;
 use Valkyrja\Type\Type;
+
+use function is_float;
+use function is_int;
+use function is_string;
 
 /**
  * Class Id.
@@ -35,11 +40,11 @@ class Id extends Type implements Contract
      */
     public static function fromValue(mixed $value): static
     {
-        if (is_numeric($value)) {
-            return new static((int) $value);
-        }
-
-        return new static((string) $value);
+        return match (true) {
+            is_string($value), is_int($value) => new static($value),
+            is_float($value) => new static((string) $value),
+            default          => throw new InvalidArgumentException('Unsupported value provided'),
+        };
     }
 
     /**

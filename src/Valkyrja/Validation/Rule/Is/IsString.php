@@ -31,6 +31,6 @@ class IsString extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must be a string";
+        return 'Must be a string';
     }
 }

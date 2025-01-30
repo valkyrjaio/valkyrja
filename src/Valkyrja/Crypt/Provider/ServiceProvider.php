@@ -17,8 +17,10 @@ use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Adapter\Contract\Adapter;
+use Valkyrja\Crypt\Adapter\NullAdapter;
+use Valkyrja\Crypt\Adapter\SodiumAdapter;
 use Valkyrja\Crypt\Contract\Crypt;
-use Valkyrja\Crypt\Driver\Contract\Driver;
+use Valkyrja\Crypt\Driver\Driver;
 use Valkyrja\Crypt\Factory\ContainerFactory;
 use Valkyrja\Crypt\Factory\Contract\Factory;
 
@@ -35,10 +37,11 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Crypt::class   => [self::class, 'publishCrypt'],
-            Factory::class => [self::class, 'publishFactory'],
-            Driver::class  => [self::class, 'publishDriver'],
-            Adapter::class => [self::class, 'publishAdapter'],
+            Crypt::class         => [self::class, 'publishCrypt'],
+            Factory::class       => [self::class, 'publishFactory'],
+            Driver::class        => [self::class, 'publishDriver'],
+            NullAdapter::class   => [self::class, 'publishNullAdapter'],
+            SodiumAdapter::class => [self::class, 'publishSodiumAdapter'],
         ];
     }
 
@@ -51,7 +54,8 @@ class ServiceProvider extends Provider
             Crypt::class,
             Factory::class,
             Driver::class,
-            Adapter::class,
+            NullAdapter::class,
+            SodiumAdapter::class,
         ];
     }
 
@@ -64,6 +68,7 @@ class ServiceProvider extends Provider
      */
     public static function publishCrypt(Container $container): void
     {
+        /** @var array{crypt: \Valkyrja\Crypt\Config|array<string, mixed>, ...} $config */
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
@@ -99,38 +104,84 @@ class ServiceProvider extends Provider
      */
     public static function publishDriver(Container $container): void
     {
-        $container->setClosure(
+        $container->setCallable(
             Driver::class,
-            /**
-             * @param class-string<Driver> $name
-             */
-            static function (string $name, Adapter $adapter): Driver {
-                return new $name(
-                    $adapter
-                );
-            }
+            [static::class, 'createDriver']
         );
     }
 
     /**
-     * Publish the adapter service.
+     * Create a driver.
+     *
+     * @param Container $container
+     * @param Adapter   $adapter
+     *
+     * @return Driver
+     */
+    public static function createDriver(Container $container, Adapter $adapter): Driver
+    {
+        return new Driver(
+            $adapter
+        );
+    }
+
+    /**
+     * Publish the null adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishAdapter(Container $container): void
+    public static function publishNullAdapter(Container $container): void
     {
-        $container->setClosure(
-            Adapter::class,
-            /**
-             * @param class-string<Adapter> $name
-             */
-            static function (string $name, array $config): Adapter {
-                return new $name(
-                    $config
-                );
-            }
+        $container->setCallable(
+            NullAdapter::class,
+            [static::class, 'createNullAdapter']
+        );
+    }
+
+    /**
+     * Create a null adapter.
+     *
+     * @param Container            $container
+     * @param array<string, mixed> $config
+     *
+     * @return NullAdapter
+     */
+    public static function createNullAdapter(Container $container, array $config): NullAdapter
+    {
+        return new NullAdapter(
+            $config
+        );
+    }
+
+    /**
+     * Publish the sodium adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishSodiumAdapter(Container $container): void
+    {
+        $container->setCallable(
+            SodiumAdapter::class,
+            [static::class, 'createSodiumAdapter']
+        );
+    }
+
+    /**
+     * Create a sodium adapter.
+     *
+     * @param Container            $container
+     * @param array<string, mixed> $config
+     *
+     * @return SodiumAdapter
+     */
+    public static function createSodiumAdapter(Container $container, array $config): SodiumAdapter
+    {
+        return new SodiumAdapter(
+            $config
         );
     }
 }

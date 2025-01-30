@@ -20,6 +20,8 @@ use Valkyrja\Type\BuiltIn\Support\StrCase;
  * Trait RelationshipCapableRepository.
  *
  * @author Melech Mizrachi
+ *
+ * @template Entity of Entity
  */
 trait RelationshipCapableRepository
 {

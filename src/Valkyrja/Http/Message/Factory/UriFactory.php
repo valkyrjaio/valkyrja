@@ -226,7 +226,7 @@ abstract class UriFactory
         }
 
         if ($requestUri !== null && $requestUri !== '') {
-            return preg_replace('#^[^/:]+://[^/]+#', '', $requestUri);
+            return preg_replace('#^[^/:]+://[^/]+#', '', $requestUri) ?? $requestUri;
         }
 
         /** @var string|null $origPathInfo */

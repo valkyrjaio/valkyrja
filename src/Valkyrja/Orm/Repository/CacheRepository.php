@@ -14,21 +14,28 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Repository;
 
 use JsonException;
+use Throwable;
 use Valkyrja\Cache\Contract\Cache;
 use Valkyrja\Cache\Driver\Contract\Driver as CacheDriver;
+use Valkyrja\Exception\InvalidArgumentException;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Orm\Contract\Orm;
 use Valkyrja\Orm\Driver\Contract\Driver;
 use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\Entity\Contract\SoftDeleteEntity;
 use Valkyrja\Orm\Exception\EntityNotFoundException;
+use Valkyrja\Orm\Persister\Contract\Persister;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
 use Valkyrja\Orm\Repository\Contract\CacheRepository as Contract;
 use Valkyrja\Orm\Repository\Enum\StoreType;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 
+use function base64_decode;
 use function is_array;
+use function is_int;
+use function is_string;
 use function md5;
+use function method_exists;
 use function serialize;
 use function spl_object_id;
 use function unserialize;
@@ -37,6 +44,11 @@ use function unserialize;
  * Class CacheRepository.
  *
  * @author Melech Mizrachi
+ *
+ * @template Entity of Entity
+ *
+ * @extends Repository<Entity>
+ * @implements Contract<Entity>
  */
 class CacheRepository extends Repository implements Contract
 {
@@ -69,22 +81,29 @@ class CacheRepository extends Repository implements Contract
     protected array $forgetEntities = [];
 
     /**
-     * Repository constructor.
+     * CacheRepository constructor.
      *
-     * @param Orm                  $orm    The orm manager
-     * @param Driver               $driver The driver
-     * @param Cache                $cache  The cache service
-     * @param class-string<Entity> $entity The entity class name
+     * @param Orm                  $orm       The orm manager
+     * @param Driver               $driver    The driver
+     * @param Persister<Entity>    $persister The persister
+     * @param Cache                $cache     The cache service
+     * @param class-string<Entity> $entity    The entity class name
      */
     public function __construct(
         Orm $orm,
         Driver $driver,
+        Persister $persister,
         protected Cache $cache,
         string $entity
     ) {
         $this->store = $cache->use();
 
-        parent::__construct($orm, $driver, $entity);
+        parent::__construct(
+            orm: $orm,
+            driver: $driver,
+            persister: $persister,
+            entity: $entity
+        );
     }
 
     /**
@@ -109,6 +128,10 @@ class CacheRepository extends Repository implements Contract
         bool $setType = true
     ): static {
         if (! ($value instanceof QueryBuilder) && $column === $this->entity::getIdField()) {
+            if (! is_string($value) && ! is_int($value)) {
+                throw new InvalidArgumentException('ID should be either a string or int');
+            }
+
             $this->id = $value;
         }
 
@@ -127,13 +150,29 @@ class CacheRepository extends Repository implements Contract
         $cacheKey = $this->getCacheKey();
 
         if (($results = $this->store->get($cacheKey)) !== null && $results !== '') {
-            $results = unserialize(base64_decode($results, true), ['allowed_classes' => true]);
+            try {
+                $decodedResults = base64_decode($results, true);
 
-            if (method_exists($this, 'setRelationshipsOnEntities')) {
-                $this->setRelationshipsOnEntities(...$results);
+                if ($decodedResults === false) {
+                    throw new RuntimeException('Failed to decode results');
+                }
+
+                $results = unserialize($decodedResults, ['allowed_classes' => true]);
+
+                if (! is_array($results)) {
+                    throw new RuntimeException('Unserialized results were not an array');
+                }
+
+                if (method_exists($this, 'setRelationshipsOnEntities')) {
+                    $this->setRelationshipsOnEntities(...$results);
+                }
+
+                return $results;
+            } catch (Throwable) {
             }
 
-            return $results;
+            // Remove the bad cache
+            $this->store->forget($cacheKey);
         }
 
         $results = $this->retriever->getResult();
@@ -217,20 +256,6 @@ class CacheRepository extends Repository implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @param SoftDeleteEntity $entity The entity
-     */
-    public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
-    {
-        parent::softDelete($entity, $defer);
-
-        $this->deferOrCache(StoreType::store, $entity, $defer);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param Entity|null $entity The entity instance to remove
      */
     public function clear(Entity|null $entity = null): void
     {
@@ -322,7 +347,7 @@ class CacheRepository extends Repository implements Contract
         $id = spl_object_id($entity);
 
         match ($type) {
-            StoreType::store  => $this->storeEntities[$id]  = $entity,
+            StoreType::store => $this->storeEntities[$id] = $entity,
             StoreType::forget => $this->forgetEntities[$id] = $entity,
         };
     }

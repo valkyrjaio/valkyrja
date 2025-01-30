@@ -29,6 +29,6 @@ class Required extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject is required";
+        return 'Must be provided';
     }
 }

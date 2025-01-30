@@ -31,6 +31,6 @@ class IsBool extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must be a boolean";
+        return 'Must be a boolean';
     }
 }

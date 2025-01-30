@@ -21,6 +21,7 @@ use Valkyrja\Support\Cacheable\Cacheable;
 
 use function base64_decode;
 use function base64_encode;
+use function is_file;
 use function serialize;
 use function unserialize;
 
@@ -32,7 +33,7 @@ use function unserialize;
 class CacheableConsole extends Console
 {
     /**
-     * @use Cacheable<ConsoleConfig, Cache>
+     * @use Cacheable<ConsoleConfig, array<string, mixed>, Cache>
      */
     use Cacheable;
 
@@ -78,16 +79,30 @@ class CacheableConsole extends Console
      */
     protected function setupFromCache(Config|array $config): void
     {
-        $cache = $config['cache'] ?? require $config['cacheFilePath'];
+        $cache = $config['cache'] ?? null;
 
-        self::$commands      = unserialize(
-            base64_decode($cache['commands'], true),
-            [
-                'allowed_classes' => [
-                    Command::class,
-                ],
-            ]
-        );
+        if ($cache === null) {
+            $cache         = [];
+            $cacheFilePath = $config['cacheFilePath'];
+
+            if (is_file($cacheFilePath)) {
+                $cache = require $cacheFilePath;
+            }
+        }
+
+        $decodedCommands = base64_decode($cache['commands'], true);
+
+        if ($decodedCommands !== false) {
+            self::$commands = unserialize(
+                $decodedCommands,
+                [
+                    'allowed_classes' => [
+                        Command::class,
+                    ],
+                ]
+            );
+        }
+
         self::$paths         = $cache['paths'];
         self::$namedCommands = $cache['namedCommands'];
         $this->deferred      = $cache['provided'];

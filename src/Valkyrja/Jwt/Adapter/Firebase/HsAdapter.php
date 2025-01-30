@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Adapter\Firebase;
 
+use RuntimeException;
 use Valkyrja\Jwt\Adapter\FirebaseAdapter;
+
+use function is_string;
 
 /**
  * Class HsAdapter.
@@ -27,7 +30,13 @@ class HsAdapter extends FirebaseAdapter
      */
     protected function setEncodeKey(): void
     {
-        $this->encodeKey = $this->config['key'];
+        $encodeKey = $this->config['key'];
+
+        if (! is_string($encodeKey)) {
+            throw new RuntimeException('Invalid private key provided');
+        }
+
+        $this->encodeKey = $encodeKey;
     }
 
     /**
@@ -35,6 +44,12 @@ class HsAdapter extends FirebaseAdapter
      */
     protected function setDecodeKey(): void
     {
-        $this->decodeKey = $this->config['key'];
+        $decodeKey = $this->config['key'];
+
+        if (! is_string($decodeKey)) {
+            throw new RuntimeException('Invalid public key provided');
+        }
+
+        $this->decodeKey = $decodeKey;
     }
 }

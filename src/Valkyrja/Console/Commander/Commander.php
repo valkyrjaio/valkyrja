@@ -32,13 +32,14 @@ use function Valkyrja\output;
  */
 abstract class Commander implements Contract
 {
-    /**
-     * The command.
-     */
-    public const COMMAND           = '';
-    public const PATH              = '';
+    /** @var string */
+    public const COMMAND = '';
+    /** @var string */
+    public const PATH = '';
+    /** @var string */
     public const SHORT_DESCRIPTION = '';
-    public const DESCRIPTION       = '';
+    /** @var string */
+    public const DESCRIPTION = '';
 
     /**
      * Tabbing structure to use.

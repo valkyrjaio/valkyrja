@@ -18,10 +18,6 @@ use Valkyrja\Cache\Adapter\Contract\Adapter;
 use Valkyrja\Cache\Tagger\Contract\Tagger as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
-use function json_decode;
-
-use const JSON_THROW_ON_ERROR;
-
 /**
  * Class Cache.
  *
@@ -283,7 +279,7 @@ class Tagger implements Contract
         $keys = $this->adapter->get($tag);
 
         if ($keys !== null && $keys !== '') {
-            return json_decode($keys, true, 512, JSON_THROW_ON_ERROR);
+            return Arr::fromString($keys);
         }
 
         return [];

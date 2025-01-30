@@ -22,13 +22,11 @@ use Valkyrja\Type\BuiltIn\Support\Obj;
 
 use function bin2hex;
 use function hex2bin;
-use function json_decode;
 use function random_bytes;
 use function sodium_crypto_secretbox;
 use function sodium_crypto_secretbox_open;
 use function sodium_memzero;
 
-use const JSON_THROW_ON_ERROR;
 use const SODIUM_CRYPTO_SECRETBOX_MACBYTES;
 use const SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
 
@@ -118,7 +116,7 @@ class SodiumAdapter extends Adapter
      */
     public function decryptArray(string $encrypted, string|null $key = null): array
     {
-        return json_decode($this->decrypt($encrypted, $key), true, 512, JSON_THROW_ON_ERROR);
+        return Arr::fromString($this->decrypt($encrypted, $key));
     }
 
     /**
@@ -129,7 +127,7 @@ class SodiumAdapter extends Adapter
      */
     public function decryptObject(string $encrypted, string|null $key = null): object
     {
-        return json_decode($this->decrypt($encrypted, $key), false, 512, JSON_THROW_ON_ERROR);
+        return Obj::fromString($this->decrypt($encrypted, $key));
     }
 
     /**
@@ -146,6 +144,8 @@ class SodiumAdapter extends Adapter
         $decoded = hex2bin($encrypted);
 
         $this->validateDecoded($decoded);
+
+        /** @var string $decoded Checked in validateDecoded */
 
         return $decoded;
     }
@@ -291,6 +291,12 @@ class SodiumAdapter extends Adapter
     {
         $key ??= $this->key;
 
-        return hex2bin($key);
+        $keyAsBytes = hex2bin($key);
+
+        if ($keyAsBytes === false) {
+            throw new CryptException("$key could not be converted to bytes");
+        }
+
+        return $keyAsBytes;
     }
 }

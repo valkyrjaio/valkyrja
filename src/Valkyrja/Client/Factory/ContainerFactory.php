@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Client\Factory;
 
 use Valkyrja\Client\Adapter\Contract\Adapter;
-use Valkyrja\Client\Adapter\Contract\GuzzleAdapter;
-use Valkyrja\Client\Adapter\Contract\LogAdapter;
 use Valkyrja\Client\Driver\Contract\Driver;
 use Valkyrja\Client\Factory\Contract\Factory as Contract;
 use Valkyrja\Manager\Factory\ContainerFactory as Factory;
@@ -29,16 +27,6 @@ use Valkyrja\Manager\Factory\ContainerFactory as Factory;
  */
 class ContainerFactory extends Factory implements Contract
 {
-    /**
-     * @inheritDoc
-     */
-    protected static string $defaultDriverClass = Driver::class;
-
-    /**
-     * @inheritDoc
-     */
-    protected static string $defaultAdapterClass = Adapter::class;
-
     /**
      * @inheritDoc
      */
@@ -59,21 +47,5 @@ class ContainerFactory extends Factory implements Contract
         $adapter = parent::createAdapter($name, $config);
 
         return $adapter;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getAdapterDefaultClass(string $name): string
-    {
-        $defaultClass = parent::getAdapterDefaultClass($name);
-
-        if (is_a($name, GuzzleAdapter::class, true)) {
-            $defaultClass = GuzzleAdapter::class;
-        } elseif (is_a($name, LogAdapter::class, true)) {
-            $defaultClass = LogAdapter::class;
-        }
-
-        return $defaultClass;
     }
 }

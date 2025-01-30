@@ -42,6 +42,6 @@ class StartsWith extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must start with $this->needle";
+        return "Must start with $this->needle";
     }
 }

@@ -42,6 +42,6 @@ class GreaterThan extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must be greater than $this->min";
+        return "Must be greater than $this->min";
     }
 }

@@ -35,6 +35,10 @@ use function strtolower;
  * Class Persister.
  *
  * @author Melech Mizrachi
+ *
+ * @template Entity of Entity
+ *
+ * @implements Contract<Entity>
  */
 class Persister implements Contract
 {
@@ -98,6 +102,13 @@ class Persister implements Contract
      */
     public function save(Entity $entity, bool $defer = true): void
     {
+        if ($entity instanceof SoftDeleteEntity) {
+            /**
+             * @psalm-suppress UndefinedMethod Psalm is being silly here...
+             */
+            $entity->__set($entity::getDateDeletedField(), $entity::getFormattedDeletedDate());
+        }
+
         $this->modifyEntityBeforeSave($entity);
 
         if (! $defer) {
@@ -119,6 +130,12 @@ class Persister implements Contract
      */
     public function delete(Entity $entity, bool $defer = true): void
     {
+        if ($entity instanceof SoftDeleteEntity) {
+            $this->save($entity, $defer);
+
+            return;
+        }
+
         if (! $defer) {
             $this->persistEntityThroughTransaction(Statement::DELETE, $entity);
 
@@ -128,19 +145,6 @@ class Persister implements Contract
         $id = $this->getIdFromEntity($entity);
 
         $this->deleteEntities[$id] = $entity;
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @throws ExecuteException
-     * @throws JsonException
-     */
-    public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
-    {
-        $entity->__set($entity::getDateDeletedField(), $entity::getFormattedDeletedDate());
-
-        $this->save($entity, $defer);
     }
 
     /**

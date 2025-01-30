@@ -30,7 +30,7 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\JsonResponse;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Routing\Url\Contract\Url;
-use Valkyrja\Log\Facade\Logger;
+use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
@@ -222,6 +222,8 @@ abstract class AuthMiddleware
      */
     protected static function handleException(Exception $exception, string $logMessage = ''): void
     {
-        Logger::exception($exception, $logMessage);
+        /** @var Logger $logger */
+        $logger = null;
+        $logger->exception($exception, $logMessage);
     }
 }

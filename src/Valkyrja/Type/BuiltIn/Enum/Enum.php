@@ -18,6 +18,9 @@ use UnitEnum;
 use Valkyrja\Type\Exception\InvalidArgumentException;
 use Valkyrja\Type\Exception\RuntimeException;
 
+use function is_int;
+use function is_string;
+
 /**
  * Trait Enum.
  *
@@ -37,6 +40,10 @@ trait Enum
         /** @var class-string<UnitEnum>|class-string<BackedEnum> $class */
         $class = static::class;
 
+        if (! is_string($value) && ! is_int($value)) {
+            throw new InvalidArgumentException("Invalid value provided for enum $class");
+        }
+
         // Need to check BackedEnum first because all Enums are UnitEnum
         if (is_a($class, BackedEnum::class, true)) {
             /** @var static $case Get Psalm working and understanding that the static is what gets returned here */
@@ -53,7 +60,7 @@ trait Enum
             }
         }
 
-        throw new InvalidArgumentException("Invalid value `$value` provided for enum $class");
+        throw new InvalidArgumentException("Invalid value provided for enum $class");
     }
 
     /**

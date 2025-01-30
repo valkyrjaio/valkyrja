@@ -17,13 +17,17 @@ namespace Valkyrja\Orm\Pdo;
  * Class MySqlPDO.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-import-type Config from Pdo
+ *
+ * @phpstan-import-type Config from Pdo
  */
 class MySqlPdo extends Pdo
 {
     /**
      * MySqlPDO constructor.
      *
-     * @param array<string, mixed> $config The config
+     * @param Config $config The config
      */
     public function __construct(array $config)
     {

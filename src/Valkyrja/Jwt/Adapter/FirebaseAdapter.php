@@ -16,7 +16,10 @@ namespace Valkyrja\Jwt\Adapter;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use OpenSSLAsymmetricKey;
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Jwt\Adapter\Contract\Adapter as Contract;
+
+use function is_string;
 
 /**
  * Abstract Class FirebaseAdapter.
@@ -53,7 +56,13 @@ abstract class FirebaseAdapter implements Contract
      */
     public function __construct(protected array $config)
     {
-        $this->algorithm = $config['algo'];
+        $algorithm = $config['algo'];
+
+        if (! is_string($algorithm)) {
+            throw new InvalidArgumentException('Invalid algo provided');
+        }
+
+        $this->algorithm = $algorithm;
 
         $this->setEncodeKey();
         $this->setDecodeKey();

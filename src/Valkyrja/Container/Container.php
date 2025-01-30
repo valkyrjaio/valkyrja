@@ -13,18 +13,23 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container;
 
-use Closure;
 use RuntimeException;
 use Valkyrja\Container\Contract\Container as Contract;
 use Valkyrja\Container\Contract\Service;
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Support\Provider\ProvidersAwareTrait;
 
 use function assert;
+use function class_exists;
 
 /**
  * Class Container.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-import-type ConfigAsArray from Config
+ *
+ * @phpstan-import-type ConfigAsArray from Config
  */
 class Container implements Contract
 {
@@ -52,11 +57,11 @@ class Container implements Contract
     protected array $services = [];
 
     /**
-     * The service closures.
+     * The service callables.
      *
-     * @var array<class-string|string, Closure>
+     * @var array<class-string|string, callable>
      */
-    protected array $closures = [];
+    protected array $callables = [];
 
     /**
      * The singletons.
@@ -68,8 +73,8 @@ class Container implements Contract
     /**
      * Container constructor.
      *
-     * @param Config|array<string, mixed> $config
-     * @param bool                        $debug
+     * @param Config|ConfigAsArray $config
+     * @param bool                 $debug
      */
     public function __construct(
         protected Config|array $config = new Config(),
@@ -87,7 +92,7 @@ class Container implements Contract
         return $this->isDeferred($id)
             || $this->isSingletonInternal($id)
             || $this->isServiceInternal($id)
-            || $this->isClosureInternal($id)
+            || $this->isCallableInternal($id)
             || $this->isAliasInternal($id);
     }
 
@@ -138,11 +143,11 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function setClosure(string $id, Closure $closure): static
+    public function setCallable(string $id, callable $callable): static
     {
         $id = $this->getServiceIdInternal($id);
 
-        $this->closures[$id]  = $closure;
+        $this->callables[$id] = $callable;
         $this->published[$id] = true;
 
         return $this;
@@ -173,11 +178,11 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
-    public function isClosure(string $id): bool
+    public function isCallable(string $id): bool
     {
         $id = $this->getServiceIdInternal($id);
 
-        return $this->isClosureInternal($id);
+        return $this->isCallableInternal($id);
     }
 
     /**
@@ -214,9 +219,9 @@ class Container implements Contract
         }
 
         // If the service is a singleton
-        if ($this->isClosureInternal($id)) {
+        if ($this->isCallableInternal($id)) {
             // Return the closure
-            return $this->getClosureWithoutChecks($id, $arguments);
+            return $this->getCallableWithoutChecks($id, $arguments);
         }
 
         // If the service is in the container
@@ -225,18 +230,22 @@ class Container implements Contract
             return $this->getServiceWithoutChecks($id, $arguments);
         }
 
-        // Return a new object with the arguments
-        return new $id(...$arguments);
+        if (class_exists($id)) {
+            // Return a new object with the arguments
+            return new $id(...$arguments);
+        }
+
+        throw new InvalidArgumentException("Provided $id does not exist");
     }
 
     /**
      * @inheritDoc
      */
-    public function getClosure(string $id, array $arguments = []): mixed
+    public function getCallable(string $id, array $arguments = []): mixed
     {
         $id = $this->getServiceIdAndEnsurePublished($id);
 
-        return $this->getClosureWithoutChecks($id, $arguments);
+        return $this->getCallableWithoutChecks($id, $arguments);
     }
 
     /**
@@ -345,15 +354,15 @@ class Container implements Contract
     }
 
     /**
-     * Check whether a given service is bound to a closure.
+     * Check whether a given service is bound to a callable.
      *
      * @param class-string|string $id The service id
      *
      * @return bool
      */
-    protected function isClosureInternal(string $id): bool
+    protected function isCallableInternal(string $id): bool
     {
-        return isset($this->closures[$id]);
+        return isset($this->callables[$id]);
     }
 
     /**
@@ -381,16 +390,16 @@ class Container implements Contract
     }
 
     /**
-     * Get a service bound to a closure from the container without trying to get an alias or ensuring published.
+     * Get a service bound to a callable from the container without trying to get an alias or ensuring published.
      *
      * @param class-string|string     $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
      *
      * @return mixed
      */
-    protected function getClosureWithoutChecks(string $id, array $arguments = []): mixed
+    protected function getCallableWithoutChecks(string $id, array $arguments = []): mixed
     {
-        $closure = $this->closures[$id];
+        $closure = $this->callables[$id];
 
         return $closure(...$arguments);
     }

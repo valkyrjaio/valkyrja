@@ -36,9 +36,6 @@ use Valkyrja\View\Contract\View;
  */
 class ServiceProvider extends Provider
 {
-    /** @var class-string<RequestHandler> */
-    public static string $requestHandlerClass = DefaultRequestHandler::class;
-
     /**
      * @inheritDoc
      */
@@ -72,6 +69,7 @@ class ServiceProvider extends Provider
      */
     public static function publishRequestHandler(Container $container): void
     {
+        /** @var Config|array{app: array{debug: bool, ...}, ...} $config */
         $config = $container->getSingleton(Config::class);
 
         /** @var RequestReceivedHandler&Handler $requestReceived */

@@ -15,6 +15,7 @@ namespace Valkyrja\Orm\Adapter;
 
 use Valkyrja\Orm\Adapter\Contract\Adapter as Contract;
 use Valkyrja\Orm\Contract\Orm;
+use Valkyrja\Orm\Entity\Contract\Entity;
 use Valkyrja\Orm\Persister\Contract\Persister;
 use Valkyrja\Orm\Query\Contract\Query;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
@@ -24,13 +25,17 @@ use Valkyrja\Orm\Retriever\Contract\Retriever;
  * Abstract Class Adapter.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-type Config array{query: class-string<Query>, queryBuilder: class-string<QueryBuilder>, persister: class-string<Persister>, retriever: class-string<Retriever>, ...}
+ *
+ * @phpstan-type Config array{query: class-string<Query>, queryBuilder: class-string<QueryBuilder>, persister: class-string<Persister>, retriever: class-string<Retriever>, ...}
  */
 abstract class Adapter implements Contract
 {
     /**
      * The entity persister.
      *
-     * @var Persister
+     * @var Persister<Entity>
      */
     protected Persister $persister;
 
@@ -65,17 +70,17 @@ abstract class Adapter implements Contract
     /**
      * Adapter constructor.
      *
-     * @param Orm                  $orm    The orm
-     * @param array<string, mixed> $config The config
+     * @param Orm    $orm    The orm
+     * @param Config $config The config
      */
     public function __construct(
         protected Orm $orm,
         protected array $config
     ) {
-        $this->queryClass        = $this->config['query'];
-        $this->queryBuilderClass = $this->config['queryBuilder'];
-        $this->persisterClass    = $this->config['persister'];
-        $this->retrieverClass    = $this->config['retriever'];
+        $this->queryClass        = $config['query'];
+        $this->queryBuilderClass = $config['queryBuilder'];
+        $this->persisterClass    = $config['persister'];
+        $this->retrieverClass    = $config['retriever'];
     }
 
     /**

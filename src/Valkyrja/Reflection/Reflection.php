@@ -23,6 +23,7 @@ use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionProperty;
 use UnitEnum;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Reflection\Contract\Reflection as Contract;
 
 use function class_exists;
@@ -91,7 +92,8 @@ class Reflection implements Contract
         $index = $class . $const;
 
         return $this->constantReflections[$index]
-            ??= $this->forClass($class)->getReflectionConstant($const);
+            ??= $this->forClass($class)->getReflectionConstant($const)
+            ?: throw new RuntimeException("Failed to retrieve constant $const for $class");
     }
 
     /**

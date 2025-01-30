@@ -26,10 +26,10 @@ interface ResponseFactory
     /**
      * Redirect to a named route response builder.
      *
-     * @param string                       $name       The name of the route
-     * @param array<string, mixed>|null    $data       [optional] The data for dynamic routes
-     * @param StatusCode|null              $statusCode [optional] The response status code
-     * @param array<string, string[]>|null $headers    [optional] An array of response headers
+     * @param string                         $name       The name of the route
+     * @param array<string, string|int>|null $data       [optional] The data for dynamic routes
+     * @param StatusCode|null                $statusCode [optional] The response status code
+     * @param array<string, string[]>|null   $headers    [optional] An array of response headers
      *
      * @return RedirectResponse
      */

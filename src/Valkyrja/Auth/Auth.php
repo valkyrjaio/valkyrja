@@ -145,7 +145,8 @@ class Auth implements Contract
     public function getRepository(string|null $user = null, string|null $adapter = null): Repository
     {
         $user ??= $this->defaultUserEntity;
-        $name = $user::getAuthRepository() ?? $this->defaultRepository;
+        $name = $user::getAuthRepository()
+            ?? $this->defaultRepository;
 
         return self::$repositories[$name]
             ??= $this->factory->createRepository($this->getAdapter($adapter), $name, $user, $this->config);

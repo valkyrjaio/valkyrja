@@ -189,9 +189,10 @@ class StrCase
         }
 
         if (! ctype_lower($subject)) {
-            $subject = preg_replace('/\s+/u', '', static::toCapitalizedWords($subject));
+            $subject = static::toCapitalizedWords($subject);
+            $subject = preg_replace('/\s+/u', '', $subject) ?? $subject;
 
-            $subject = static::toLowerCase(preg_replace('/(.)(?=[A-Z])/u', '$1_', $subject));
+            $subject = static::toLowerCase(preg_replace('/(.)(?=[A-Z])/u', '$1_', $subject) ?? $subject);
         }
 
         return static::$snakeCache[$key] = $subject;
@@ -225,9 +226,10 @@ class StrCase
         }
 
         if (! ctype_lower($subject)) {
-            $subject = preg_replace('/\s+/u', '', static::toCapitalizedWords($subject));
+            $subject = static::toCapitalizedWords($subject);
+            $subject = preg_replace('/\s+/u', '', $subject) ?? $subject;
 
-            $subject = static::toLowerCase(preg_replace('/(.)(?=[A-Z])/u', '$1-', $subject));
+            $subject = static::toLowerCase(preg_replace('/(.)(?=[A-Z])/u', '$1-', $subject) ?? $subject);
         }
 
         return static::$slugCache[$key] = $subject;

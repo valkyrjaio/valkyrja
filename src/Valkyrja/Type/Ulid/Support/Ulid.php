@@ -16,12 +16,15 @@ namespace Valkyrja\Type\Ulid\Support;
 use DateTimeInterface;
 use Exception;
 use InvalidArgumentException;
+use Valkyrja\Type\Exception\RuntimeException;
 use Valkyrja\Type\Uid\Support\Uid;
 use Valkyrja\Type\Ulid\Exception\InvalidUlidException;
 
 use function microtime;
+use function random_bytes;
 use function strtr;
 use function substr;
+use function unpack;
 
 /**
  * Class Ulid.
@@ -252,7 +255,13 @@ class Ulid extends Uid
      */
     protected static function generateRandomBytes(): array
     {
-        return unpack('n*', random_bytes(10));
+        $randomBytes = unpack('n*', random_bytes(10));
+
+        if ($randomBytes === false) {
+            throw new RuntimeException('Random bytes failed to unpack');
+        }
+
+        return $randomBytes;
     }
 
     /**

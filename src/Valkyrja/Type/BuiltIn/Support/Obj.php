@@ -15,10 +15,12 @@ namespace Valkyrja\Type\BuiltIn\Support;
 
 use JsonException;
 use stdClass;
+use Valkyrja\Type\Exception\RuntimeException;
 
 use function count;
 use function explode;
 use function get_object_vars;
+use function is_object;
 use function json_decode;
 use function json_encode;
 use function str_contains;
@@ -57,7 +59,13 @@ class Obj
      */
     public static function fromString(string $subject): object
     {
-        return json_decode($subject, false, 512, JSON_THROW_ON_ERROR);
+        $decoded = json_decode($subject, false, 512, JSON_THROW_ON_ERROR);
+
+        if (! is_object($decoded)) {
+            throw new RuntimeException("Invalid json string provided: `$subject`");
+        }
+
+        return $decoded;
     }
 
     /**
@@ -88,7 +96,13 @@ class Obj
             $options['allowed_classes'] = $allowedClasses;
         }
 
-        return unserialize($subject, $options);
+        $unserialized = unserialize($subject, $options);
+
+        if (! is_object($unserialized)) {
+            throw new RuntimeException("Invalid serialized string provided: `$subject`");
+        }
+
+        return $unserialized;
     }
 
     /**

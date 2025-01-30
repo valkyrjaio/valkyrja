@@ -1,8 +1,9 @@
+includes:
+    - phpstan-baseline.neon
 parameters:
-    level: 6
+    level: 8
     paths:
         - src
 #        - tests
-    checkGenericClassInNonGenericObjectType: false
     ignoreErrors:
         - '#^Unsafe usage of new static\(\).$#'

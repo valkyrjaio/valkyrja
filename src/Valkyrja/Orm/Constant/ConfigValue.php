@@ -15,6 +15,7 @@ namespace Valkyrja\Orm\Constant;
 
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Orm\Adapter\PdoAdapter;
+use Valkyrja\Orm\Adapter\PgSqlPdoAdapter;
 use Valkyrja\Orm\Driver\Driver;
 use Valkyrja\Orm\Driver\PgSqlDriver;
 use Valkyrja\Orm\Pdo\MySqlPdo;
@@ -64,7 +65,7 @@ final class ConfigValue
             ],
         ],
         CKP::PGSQL => [
-            CKP::ADAPTER       => null,
+            CKP::ADAPTER       => PgSqlPdoAdapter::class,
             CKP::DRIVER        => PgSqlDriver::class,
             CKP::REPOSITORY    => null,
             CKP::QUERY         => null,

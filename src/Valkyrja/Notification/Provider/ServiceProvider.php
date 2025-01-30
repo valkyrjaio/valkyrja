@@ -61,6 +61,7 @@ class ServiceProvider extends Provider
      */
     public static function publishNotifier(Container $container): void
     {
+        /** @var array{notification: \Valkyrja\Notification\Config|array<string, mixed>, ...} $config */
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(

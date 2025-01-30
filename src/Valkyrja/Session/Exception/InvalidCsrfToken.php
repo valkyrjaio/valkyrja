@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Exception;
 
-use InvalidArgumentException;
+use Valkyrja\Exception\InvalidArgumentException;
 
 /**
  * Class InvalidCsrfToken.

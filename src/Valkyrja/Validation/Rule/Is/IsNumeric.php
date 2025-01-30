@@ -31,6 +31,6 @@ class IsNumeric extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must be numeric";
+        return 'Must be numeric';
     }
 }

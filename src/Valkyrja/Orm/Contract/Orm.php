@@ -227,7 +227,7 @@ interface Orm
      * </code>
      *
      * @param Entity $entity
-     * @param bool   $defer  [optional]
+     * @param bool   $defer [optional]
      *
      * @return void
      */
@@ -241,7 +241,7 @@ interface Orm
      * </code>
      *
      * @param Entity $entity
-     * @param bool   $defer  [optional]
+     * @param bool   $defer [optional]
      *
      * @return void
      */
@@ -255,25 +255,11 @@ interface Orm
      * </code>
      *
      * @param Entity $entity
-     * @param bool   $defer  [optional]
+     * @param bool   $defer [optional]
      *
      * @return void
      */
     public function delete(Entity $entity, bool $defer = true): void;
-
-    /**
-     * Soft delete an existing entity.
-     *
-     * <code>
-     *      $entityManager->softDelete(new SoftDeleteEntity(), true | false)
-     * </code>
-     *
-     * @param SoftDeleteEntity $entity
-     * @param bool             $defer  [optional]
-     *
-     * @return void
-     */
-    public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void;
 
     /**
      * Clear all, or a single, deferred entity.

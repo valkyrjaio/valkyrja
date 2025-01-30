@@ -85,17 +85,16 @@ class ServiceProvider extends Provider
      */
     public static function publishRequestReceivedHandler(Container $container): void
     {
+        /** @var array{middleware: array{requestReceived?: class-string<RequestReceivedMiddleware>[]}} $config */
         $config     = $container->getSingleton(Config::class);
-        $middleware = $config['middleware']['before'] ?? [];
+        $middleware = $config['middleware']['requestReceived'] ?? [];
 
         $container->setSingleton(
             RequestReceivedHandler::class,
-            $handler = new Handler\RequestReceivedHandler(
-                $container,
-                ...$middleware
-            )
+            $handler = new Handler\RequestReceivedHandler($container)
         );
 
+        $handler->add(...$middleware);
         $handler->add(...static::getBeforeMiddleware());
     }
 
@@ -108,17 +107,16 @@ class ServiceProvider extends Provider
      */
     public static function publishRouteDispatchedHandler(Container $container): void
     {
+        /** @var array{middleware: array{routeDispatched?: class-string<RouteDispatchedMiddleware>[]}} $config */
         $config     = $container->getSingleton(Config::class);
-        $middleware = $config['middleware']['dispatched'] ?? [];
+        $middleware = $config['middleware']['routeDispatched'] ?? [];
 
         $container->setSingleton(
             RouteDispatchedHandler::class,
-            $handler = new Handler\RouteDispatchedHandler(
-                $container,
-                ...$middleware
-            )
+            $handler = new Handler\RouteDispatchedHandler($container)
         );
 
+        $handler->add(...$middleware);
         $handler->add(...static::getDispatchedMiddleware());
     }
 
@@ -131,17 +129,16 @@ class ServiceProvider extends Provider
      */
     public static function publishExceptionHandler(Container $container): void
     {
+        /** @var array{middleware: array{throwableCaught?: class-string<ThrowableCaughtMiddleware>[]}} $config */
         $config     = $container->getSingleton(Config::class);
-        $middleware = $config['middleware']['exception'] ?? [];
+        $middleware = $config['middleware']['throwableCaught'] ?? [];
 
         $container->setSingleton(
             ThrowableCaughtHandler::class,
-            $handler = new Handler\ThrowableCaughtHandler(
-                $container,
-                ...$middleware
-            )
+            $handler = new Handler\ThrowableCaughtHandler($container)
         );
 
+        $handler->add(...$middleware);
         $handler->add(...static::getExceptionMiddleware());
     }
 
@@ -154,17 +151,16 @@ class ServiceProvider extends Provider
      */
     public static function publishRouteMatchedHandler(Container $container): void
     {
+        /** @var array{middleware: array{routeMatched?: class-string<RouteMatchedMiddleware>[]}} $config */
         $config     = $container->getSingleton(Config::class);
         $middleware = $config['middleware']['routeMatched'] ?? [];
 
         $container->setSingleton(
             RouteMatchedHandler::class,
-            $handler = new Handler\RouteMatchedHandler(
-                $container,
-                ...$middleware
-            )
+            $handler = new Handler\RouteMatchedHandler($container)
         );
 
+        $handler->add(...$middleware);
         $handler->add(...static::getRouteMatchedMiddleware());
     }
 
@@ -177,17 +173,16 @@ class ServiceProvider extends Provider
      */
     public static function publishRouteNotMatchedHandler(Container $container): void
     {
+        /** @var array{middleware: array{routeNotMatched?: class-string<RouteNotMatchedMiddleware>[]}} $config */
         $config     = $container->getSingleton(Config::class);
         $middleware = $config['middleware']['routeNotMatched'] ?? [];
 
         $container->setSingleton(
             RouteNotMatchedHandler::class,
-            $handler = new Handler\RouteNotMatchedHandler(
-                $container,
-                ...$middleware
-            )
+            $handler = new Handler\RouteNotMatchedHandler($container)
         );
 
+        $handler->add(...$middleware);
         $handler->add(...static::getRouteNotMatchedMiddleware());
     }
 
@@ -200,17 +195,16 @@ class ServiceProvider extends Provider
      */
     public static function publishSendingResponseHandler(Container $container): void
     {
+        /** @var array{middleware: array{sendingResponse?: class-string<SendingResponseMiddleware>[]}} $config */
         $config     = $container->getSingleton(Config::class);
-        $middleware = $config['middleware']['sending'] ?? [];
+        $middleware = $config['middleware']['sendingResponse'] ?? [];
 
         $container->setSingleton(
             SendingResponseHandler::class,
-            $handler = new Handler\SendingResponseHandler(
-                $container,
-                ...$middleware
-            )
+            $handler = new Handler\SendingResponseHandler($container)
         );
 
+        $handler->add(...$middleware);
         $handler->add(...static::getSendingMiddleware());
     }
 
@@ -223,17 +217,16 @@ class ServiceProvider extends Provider
      */
     public static function publishTerminatedHandler(Container $container): void
     {
+        /** @var array{middleware: array{terminated?: class-string<TerminatedMiddleware>[]}} $config */
         $config     = $container->getSingleton(Config::class);
-        $middleware = $config['middleware']['terminate'] ?? [];
+        $middleware = $config['middleware']['terminated'] ?? [];
 
         $container->setSingleton(
             TerminatedHandler::class,
-            $handler = new Handler\TerminatedHandler(
-                $container,
-                ...$middleware
-            )
+            $handler = new Handler\TerminatedHandler($container)
         );
 
+        $handler->add(...$middleware);
         $handler->add(...static::getTerminatedMiddleware());
     }
 
@@ -246,6 +239,7 @@ class ServiceProvider extends Provider
      */
     public static function publishCacheResponseMiddleware(Container $container): void
     {
+        /** @var array{app: array{debug: bool}} $config */
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(

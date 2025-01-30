@@ -16,8 +16,11 @@ namespace Valkyrja\Mail\Adapter;
 use Mailgun\Mailgun;
 use Mailgun\Message\BatchMessage;
 use Mailgun\Message\Exceptions\MissingRequiredParameter;
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Mail\Adapter\Contract\MailgunAdapter as Contract;
 use Valkyrja\Mail\Message\Contract\Message;
+
+use function is_string;
 
 /**
  * Class MailGunAdapter.
@@ -45,7 +48,13 @@ class MailgunAdapter implements Contract
      */
     public function send(Message $message): void
     {
-        $mailgunMessage = $this->mailgun->messages()->getBatchMessage($this->config['domain']);
+        $domain = $this->config['domain'];
+
+        if (! is_string($domain)) {
+            throw new InvalidArgumentException('Domain in config must be a string');
+        }
+
+        $mailgunMessage = $this->mailgun->messages()->getBatchMessage($domain);
         $replyTo        = $message->getReplyToRecipients()[0] ?? null;
         $from           = [['email' => $message->getFromEmail(), 'name' => $message->getFromName()]];
 

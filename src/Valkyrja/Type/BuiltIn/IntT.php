@@ -14,7 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Type\BuiltIn;
 
 use Valkyrja\Type\BuiltIn\Contract\IntT as Contract;
+use Valkyrja\Type\Exception\InvalidArgumentException;
 use Valkyrja\Type\Type;
+
+use function is_array;
+use function is_bool;
+use function is_float;
+use function is_int;
+use function is_string;
 
 /**
  * Class IntT.
@@ -35,7 +42,12 @@ class IntT extends Type implements Contract
      */
     public static function fromValue(mixed $value): static
     {
-        return new static((int) $value);
+        return match (true) {
+            is_int($value)   => new static($value),
+            is_string($value), is_float($value), is_bool($value) => new static((int) $value),
+            is_array($value) => new static($value !== [] ? 1 : 0),
+            default          => throw new InvalidArgumentException('Unsupported value provided'),
+        };
     }
 
     /**

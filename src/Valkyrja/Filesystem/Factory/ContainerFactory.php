@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem\Factory;
 
 use Valkyrja\Filesystem\Adapter\Contract\Adapter;
-use Valkyrja\Filesystem\Adapter\Contract\FlysystemAdapter;
 use Valkyrja\Filesystem\Driver\Contract\Driver;
 use Valkyrja\Filesystem\Factory\Contract\Factory as Contract;
 use Valkyrja\Manager\Factory\ContainerFactory as Factory;
@@ -28,16 +27,6 @@ use Valkyrja\Manager\Factory\ContainerFactory as Factory;
  */
 class ContainerFactory extends Factory implements Contract
 {
-    /**
-     * @inheritDoc
-     */
-    protected static string $defaultDriverClass = Driver::class;
-
-    /**
-     * @inheritDoc
-     */
-    protected static string $defaultAdapterClass = Adapter::class;
-
     /**
      * @inheritDoc
      */
@@ -58,19 +47,5 @@ class ContainerFactory extends Factory implements Contract
         $adapter = parent::createAdapter($name, $config);
 
         return $adapter;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getAdapterDefaultClass(string $name): string
-    {
-        $defaultClass = parent::getAdapterDefaultClass($name);
-
-        if (is_a($name, FlysystemAdapter::class, true)) {
-            $defaultClass = FlysystemAdapter::class;
-        }
-
-        return $defaultClass;
     }
 }

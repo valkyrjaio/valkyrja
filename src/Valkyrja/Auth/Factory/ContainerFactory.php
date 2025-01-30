@@ -14,19 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Factory;
 
 use Valkyrja\Auth\Adapter\Contract\Adapter;
-use Valkyrja\Auth\Adapter\Contract\ORMAdapter;
 use Valkyrja\Auth\Config;
 use Valkyrja\Auth\Factory\Contract\Factory as Contract;
 use Valkyrja\Auth\Gate\Contract\Gate;
-use Valkyrja\Auth\Policy\Contract\EntityPolicy;
-use Valkyrja\Auth\Policy\Contract\EntityRoutePolicy;
 use Valkyrja\Auth\Policy\Contract\Policy;
-use Valkyrja\Auth\Repository\Contract\CryptTokenizedRepository;
-use Valkyrja\Auth\Repository\Contract\JWTCryptRepository;
-use Valkyrja\Auth\Repository\Contract\JWTRepository;
 use Valkyrja\Auth\Repository\Contract\Repository;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Type\BuiltIn\Support\Cls;
 
 /**
  * Class ContainerFactory.
@@ -57,11 +50,10 @@ class ContainerFactory implements Contract
      */
     public function createAdapter(string $name, Config|array $config): Adapter
     {
-        return Cls::getDefaultableService(
-            $this->container,
+        return $this->container->get(
             $name,
-            is_a($name, ORMAdapter::class, true) ? ORMAdapter::class : Adapter::class,
             [
+                $this->container,
                 $config,
             ]
         );
@@ -72,21 +64,10 @@ class ContainerFactory implements Contract
      */
     public function createRepository(Adapter $adapter, string $name, string $user, Config|array $config): Repository
     {
-        $defaultClass = Repository::class;
-
-        if (is_a($name, JWTCryptRepository::class, true)) {
-            $defaultClass = JWTCryptRepository::class;
-        } elseif (is_a($name, CryptTokenizedRepository::class, true)) {
-            $defaultClass = CryptTokenizedRepository::class;
-        } elseif (is_a($name, JWTRepository::class, true)) {
-            $defaultClass = JWTRepository::class;
-        }
-
-        return Cls::getDefaultableService(
-            $this->container,
+        return $this->container->get(
             $name,
-            $defaultClass,
             [
+                $this->container,
                 $adapter,
                 $user,
                 $config,
@@ -99,11 +80,10 @@ class ContainerFactory implements Contract
      */
     public function createGate(Repository $repository, string $name): Gate
     {
-        return Cls::getDefaultableService(
-            $this->container,
+        return $this->container->get(
             $name,
-            Gate::class,
             [
+                $this->container,
                 $repository,
             ]
         );
@@ -114,19 +94,10 @@ class ContainerFactory implements Contract
      */
     public function createPolicy(Repository $repository, string $name): Policy
     {
-        $defaultClass = Policy::class;
-
-        if (is_a($name, EntityRoutePolicy::class, true)) {
-            $defaultClass = EntityRoutePolicy::class;
-        } elseif (is_a($name, EntityPolicy::class, true)) {
-            $defaultClass = EntityPolicy::class;
-        }
-
-        return Cls::getDefaultableService(
-            $this->container,
+        return $this->container->get(
             $name,
-            $defaultClass,
             [
+                $this->container,
                 $repository,
             ]
         );

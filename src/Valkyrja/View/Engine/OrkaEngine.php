@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Engine;
 
-use Valkyrja\Auth\Facade\Auth;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Support\Directory;
 use Valkyrja\View\Config;
 
@@ -79,10 +79,6 @@ class OrkaEngine extends PhpEngine
         '/\{\{\-\-/x'                              => '<?php /** ?>',
         // --}}
         '/\-\-\}\}/x'                              => '<?php */ ?>',
-        // {{{ unescaped Auth::
-        '/\{\{\{\s*Auth::/x'                       => '{{{ ' . Auth::class . '::',
-        // {{ escaped Auth::
-        '/\{\{\s*Auth::/x'                         => '{{ ' . Auth::class . '::',
         // {{{ unescaped }}}
         '/\{\{\{\s*(.*?)\s*\}\}\}/x'               => '<?= ${1}; ?>',
         // {{ escaped }}
@@ -112,7 +108,13 @@ class OrkaEngine extends PhpEngine
         $cachedPath = $this->getCachedFilePath($name);
 
         if ($this->isDebug || ! is_file($cachedPath)) {
-            $contents = $this->parseContent(file_get_contents($this->getFullPath($name)));
+            $fileContents = file_get_contents($this->getFullPath($name));
+
+            if ($fileContents === false) {
+                throw new RuntimeException("Contents for file $name could not be retrieved");
+            }
+
+            $contents = $this->parseContent($fileContents);
 
             file_put_contents($cachedPath, $contents);
         }
@@ -132,7 +134,7 @@ class OrkaEngine extends PhpEngine
         /** @var non-empty-string[] $regexes */
         $regexes = array_keys(self::$replace);
 
-        return preg_replace($regexes, self::$replace, $contents);
+        return preg_replace($regexes, self::$replace, $contents) ?? $contents;
     }
 
     /**

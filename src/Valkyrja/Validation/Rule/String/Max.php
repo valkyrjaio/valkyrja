@@ -42,6 +42,6 @@ class Max extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must not be longer than $this->max";
+        return "Must not be longer than $this->max";
     }
 }

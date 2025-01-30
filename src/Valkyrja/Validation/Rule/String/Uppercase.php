@@ -34,6 +34,6 @@ class Uppercase extends Rule
 
     public function getDefaultErrorMessage(): string
     {
-        return "$this->subject must be uppercase";
+        return 'Must be uppercase';
     }
 }

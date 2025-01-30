@@ -23,16 +23,21 @@ use Valkyrja\Container\Support\Provider;
 use Valkyrja\Support\Cacheable\Cacheable;
 
 use function array_map;
+use function is_file;
 
 /**
  * Class CacheableContainer.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-import-type ConfigAsArray from ContainerConfig
+ *
+ * @phpstan-import-type ConfigAsArray from ContainerConfig
  */
 class CacheableContainer extends Container
 {
     /**
-     * @use Cacheable<ContainerConfig, ContainerConfig>
+     * @use Cacheable<ContainerConfig, ConfigAsArray, ContainerConfig>
      */
     use Cacheable;
 
@@ -66,7 +71,7 @@ class CacheableContainer extends Container
     /**
      * @inheritDoc
      *
-     * @return ContainerConfig|array<string, mixed>
+     * @return ContainerConfig|ConfigAsArray
      */
     protected function getConfig(): Config|array
     {
@@ -76,7 +81,7 @@ class CacheableContainer extends Container
     /**
      * @inheritDoc
      *
-     * @param ContainerConfig|array<string, mixed> $config
+     * @param ContainerConfig|ConfigAsArray $config
      */
     protected function beforeSetup(Config|array $config): void
     {
@@ -85,17 +90,26 @@ class CacheableContainer extends Container
     /**
      * @inheritDoc
      *
-     * @param ContainerConfig|array<string, mixed> $config
+     * @param ContainerConfig|ConfigAsArray $config
      */
     protected function setupFromCache(Config|array $config): void
     {
-        $cache = $config['cache'] ?? require $config['cacheFilePath'];
+        $cache = $config['cache'] ?? null;
 
-        $this->aliases          = $cache['aliases'];
-        $this->deferred         = $cache['deferred'];
-        $this->deferredCallback = $cache['deferredCallback'];
-        $this->services         = $cache['services'];
-        $this->singletons       = $cache['singletons'];
+        if ($cache === null) {
+            $cache         = [];
+            $cacheFilePath = $config['cacheFilePath'];
+
+            if (is_file($cacheFilePath)) {
+                $cache = require $cacheFilePath;
+            }
+        }
+
+        $this->aliases          = $cache['aliases'] ?? [];
+        $this->deferred         = $cache['deferred'] ?? [];
+        $this->deferredCallback = $cache['deferredCallback'] ?? [];
+        $this->services         = $cache['services'] ?? [];
+        $this->singletons       = $cache['singletons'] ?? [];
         $this->registered       = [];
 
         // Setup service providers
@@ -105,7 +119,7 @@ class CacheableContainer extends Container
     /**
      * @inheritDoc
      *
-     * @param ContainerConfig|array<string, mixed> $config
+     * @param ContainerConfig|ConfigAsArray $config
      */
     protected function setupNotCached(Config|array $config): void
     {
@@ -123,7 +137,7 @@ class CacheableContainer extends Container
     /**
      * @inheritDoc
      *
-     * @param ContainerConfig|array<string, mixed> $config
+     * @param ContainerConfig|ConfigAsArray $config
      */
     protected function setupAnnotations(Config|array $config): void
     {
@@ -170,7 +184,7 @@ class CacheableContainer extends Container
     /**
      * @inheritDoc
      *
-     * @param ContainerConfig|array<string, mixed> $config
+     * @param ContainerConfig|ConfigAsArray $config
      */
     protected function setupAttributes(Config|array $config): void
     {
@@ -179,15 +193,14 @@ class CacheableContainer extends Container
     /**
      * Setup service providers.
      *
-     * @param ContainerConfig|array<string, mixed> $config
+     * @param ContainerConfig|ConfigAsArray $config
      *
      * @return void
      */
     protected function setupServiceProviders(Config|array $config): void
     {
         array_map(
-            /** @param class-string $provider */
-            fn (string $provider) => $this->register($provider),
+            [$this, 'register'],
             $config['providers']
         );
 
@@ -197,8 +210,7 @@ class CacheableContainer extends Container
         }
 
         array_map(
-            /** @param class-string $provider */
-            fn (string $provider) => $this->register($provider),
+            [$this, 'register'],
             $config['devProviders']
         );
     }
@@ -206,7 +218,7 @@ class CacheableContainer extends Container
     /**
      * @inheritDoc
      *
-     * @param ContainerConfig|array<string, mixed> $config
+     * @param ContainerConfig|ConfigAsArray $config
      */
     protected function afterSetup(Config|array $config): void
     {

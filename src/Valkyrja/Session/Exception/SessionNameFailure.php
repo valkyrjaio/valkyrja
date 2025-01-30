@@ -11,13 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Facade\Exception;
+namespace Valkyrja\Session\Exception;
+
+use Valkyrja\Exception\RuntimeException;
 
 /**
- * Class InvalidArgumentException.
+ * Class SessionNameFailure.
  *
  * @author Melech Mizrachi
  */
-class InvalidArgumentException extends \Valkyrja\Exception\InvalidArgumentException implements Throwable
+class SessionNameFailure extends RuntimeException
 {
 }

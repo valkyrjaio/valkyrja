@@ -16,6 +16,7 @@ namespace Valkyrja\Type\BuiltIn\Support;
 use ArrayAccess;
 use JsonException;
 use Valkyrja\Config\Constant\ConfigKeyPart;
+use Valkyrja\Type\Exception\RuntimeException;
 
 use function explode;
 use function is_array;
@@ -90,7 +91,13 @@ class Arr
      */
     public static function fromString(string $subject): array
     {
-        return json_decode($subject, true, 512, JSON_THROW_ON_ERROR);
+        $decoded = json_decode($subject, true, 512, JSON_THROW_ON_ERROR);
+
+        if (! is_array($decoded)) {
+            throw new RuntimeException("Invalid json string provided: `$subject`");
+        }
+
+        return $decoded;
     }
 
     /**

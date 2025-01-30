@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Engine;
 
-use RuntimeException;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Support\Directory;
 use Valkyrja\View\Config;
 use Valkyrja\View\Engine\Contract\Engine;
@@ -89,7 +89,13 @@ class PhpEngine implements Engine
      */
     public function endRender(): string
     {
-        return ob_get_clean();
+        $obClean = ob_get_clean();
+
+        if ($obClean === false) {
+            throw new RuntimeException('Render failed');
+        }
+
+        return $obClean;
     }
 
     /**

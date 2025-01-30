@@ -15,7 +15,10 @@ namespace Valkyrja\Jwt\Support;
 
 use OpenSSLAsymmetricKey;
 use SodiumException;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Jwt\Data\EdDsaKey;
+
+use function file_get_contents;
 
 /**
  * Class KeyGen.
@@ -53,10 +56,22 @@ class KeyGen
      */
     public static function opensslPrivateKey(string $privateKeyFile, string $passphrase): OpenSSLAsymmetricKey
     {
-        return openssl_pkey_get_private(
-            file_get_contents($privateKeyFile),
+        $privateKeyFileContents = file_get_contents($privateKeyFile);
+
+        if ($privateKeyFileContents === false) {
+            throw new RuntimeException("Failed to get contents of `$privateKeyFile`");
+        }
+
+        $privateKey = openssl_pkey_get_private(
+            $privateKeyFileContents,
             $passphrase
         );
+
+        if ($privateKey === false) {
+            throw new RuntimeException("Failed to get private key for private key file `$privateKeyFile` with passphrase `$passphrase`");
+        }
+
+        return $privateKey;
     }
 
     /**
@@ -68,6 +83,12 @@ class KeyGen
      */
     public static function opensslPublicKey(OpenSSLAsymmetricKey $privateKey): OpenSSLAsymmetricKey
     {
-        return openssl_pkey_get_details($privateKey)['key'];
+        $details = openssl_pkey_get_details($privateKey);
+
+        if ($details === false || ! $details['key'] instanceof OpenSSLAsymmetricKey) {
+            throw new RuntimeException('Failed to get details from private key');
+        }
+
+        return $details['key'];
     }
 }
