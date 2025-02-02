@@ -14,9 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Rule;
 
 use Valkyrja\Container\Contract\Container;
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Orm\Contract\Orm as ORMManager;
 use Valkyrja\Orm\Entity\Contract\Entity;
 use Valkyrja\Validation\Exception\ValidationException;
+
+use function is_bool;
+use function is_float;
+use function is_int;
+use function is_string;
 
 /**
  * Class ORM.
@@ -26,29 +32,15 @@ use Valkyrja\Validation\Exception\ValidationException;
 class ORM
 {
     /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
-     * The ORM manager.
-     *
-     * @var ORMManager
-     */
-    protected ORMManager $orm;
-
-    /**
      * ORM constructor.
      *
      * @param Container  $container
      * @param ORMManager $orm
      */
-    public function __construct(Container $container, ORMManager $orm)
-    {
-        $this->container = $container;
-        $this->orm       = $orm;
+    public function __construct(
+        protected Container $container,
+        protected ORMManager $orm
+    ) {
     }
 
     /**
@@ -62,9 +54,13 @@ class ORM
      */
     public function ormUnique(mixed $subject, string $entity, string|null $field = null): void
     {
+        if ($subject !== null && ! is_string($subject) && ! is_int($subject) && ! is_float($subject) && ! is_bool($subject)) {
+            throw new InvalidArgumentException('Value to match must be string, int, float, bool, or null');
+        }
+
         $field ??= $entity::getIdField();
         // Check for a result
-        $result = $this->orm->getRepository($entity)->find()->where($field, null, $subject)->getOneOrNull();
+        $result = $this->orm->getRepository($entity)->find()->where($field, value: $subject)->getOneOrNull();
 
         // Set a singleton of the entity in the container for later retrieval
         $this->container->setSingleton($entity, $result);
@@ -85,9 +81,13 @@ class ORM
      */
     public function ormExists(mixed $subject, string $entity, string|null $field = null): void
     {
+        if ($subject !== null && ! is_string($subject) && ! is_int($subject) && ! is_float($subject) && ! is_bool($subject)) {
+            throw new InvalidArgumentException('Value to match must be string, int, float, bool, or null');
+        }
+
         $field ??= $entity::getIdField();
         // Check for a result
-        $result = $this->orm->getRepository($entity)->find()->where($field, null, $subject)->getOneOrNull();
+        $result = $this->orm->getRepository($entity)->find()->where($field, value: $subject)->getOneOrNull();
 
         // Set a singleton of the entity in the container for later retrieval
         $this->container->setSingleton($entity, $result);

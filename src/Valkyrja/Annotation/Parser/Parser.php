@@ -65,8 +65,7 @@ class Parser implements Contract
         // Get all matches of @ Annotations
         $matches = $this->getMatches($docString);
 
-        // If there are any matches iterate through them and create new
-        // annotations
+        // If there are any matches iterate through them and create new annotations
         if ($matches !== null && $matches !== [] && isset($matches[0], $matches[1])) {
             foreach ($matches[0] as $index => $match) {
                 $this->setAnnotation($matches, $index, $annotations);
@@ -164,7 +163,7 @@ class Parser implements Contract
      *
      * @param string $docString The doc string
      *
-     * @return array<int, mixed>|null
+     * @return array<int, array<int, string>|null>|null
      */
     protected function getMatches(string $docString): array|null
     {
@@ -320,9 +319,9 @@ class Parser implements Contract
     /**
      * Determine an array property's values.
      *
-     * @param array<int, mixed> $value The value to check
+     * @param array<array-key, mixed> $value The value to check
      *
-     * @return array<int, mixed>
+     * @return array<array-key, mixed>
      */
     protected function determineArrayPropertyValue(array $value): array
     {
@@ -338,11 +337,11 @@ class Parser implements Contract
     /**
      * Determine if a value is a defined static.
      *
-     * @param mixed $value The value to check
+     * @param string $value The value to check
      *
      * @return mixed
      */
-    protected function determineStaticPropertyValue(mixed $value): mixed
+    protected function determineStaticPropertyValue(string $value): mixed
     {
         [$class, $member] = explode('::', $value);
         // Check if the class name is a key defined in the reference classes config

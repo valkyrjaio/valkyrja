@@ -85,8 +85,8 @@ interface Tagger
      *      )
      * </code>
      *
-     * @param array<string, mixed> $values
-     * @param int                  $minutes
+     * @param array<string, string> $values
+     * @param int                   $minutes
      *
      * @return void
      */

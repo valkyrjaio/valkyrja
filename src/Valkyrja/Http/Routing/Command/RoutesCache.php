@@ -71,6 +71,7 @@ class RoutesCache extends Commander
 
         $cache = $collection->getCacheable();
 
+        /** @var array<string, mixed> $asArray */
         $asArray  = json_decode(json_encode($cache, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
         $asString = '<?php return ' . var_export(Arr::newWithoutNull($asArray), true) . ';' . PHP_EOL;
 

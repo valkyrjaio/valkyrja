@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Assert;
 
+use JsonException;
 use Valkyrja\Test\Assert\Contract\Compare as Contract;
 use Valkyrja\Test\Exception\AssertFailureException;
+use Valkyrja\Type\BuiltIn\Support\Str as StrSupport;
 
 /**
  * Class Compare.
@@ -25,6 +27,7 @@ class Compare extends Asserter implements Contract
 {
     /**
      * @inheritDoc
+     * @throws JsonException
      */
     public function equals(mixed $expected, mixed $actual): void
     {
@@ -37,12 +40,17 @@ class Compare extends Asserter implements Contract
         }
 
         $this->errors[] = new AssertFailureException(
-            sprintf('Failed asserting that expected %s matches actual %s', $expected, $actual)
+            sprintf(
+                'Failed asserting that expected %s matches actual %s',
+                StrSupport::fromMixed($expected),
+                StrSupport::fromMixed($actual)
+            )
         );
     }
 
     /**
      * @inheritDoc
+     * @throws JsonException
      */
     public function notEquals(mixed $unexpected, mixed $actual): void
     {
@@ -55,7 +63,11 @@ class Compare extends Asserter implements Contract
         }
 
         $this->errors[] = new AssertFailureException(
-            sprintf('Failed asserting that unexpected %s does not match actual %s', $unexpected, $actual)
+            sprintf(
+                'Failed asserting that unexpected %s does not match actual %s',
+                StrSupport::fromMixed($unexpected),
+                StrSupport::fromMixed($actual)
+            )
         );
     }
 }

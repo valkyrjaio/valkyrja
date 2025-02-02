@@ -110,7 +110,7 @@ class Query implements QueryContract
     /**
      * @inheritDoc
      */
-    public function bindValue(string $property, mixed $value): static
+    public function bindValue(string $property, array|string|float|int|bool|null $value): static
     {
         if (is_array($value)) {
             foreach ($value as $key => $item) {

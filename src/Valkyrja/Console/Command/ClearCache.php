@@ -43,7 +43,9 @@ class ClearCache extends Commander
      */
     public function run(): int
     {
-        $cacheFilePath = config()['cacheFilePath'];
+        /** @var array{cacheFilePath: string, ...} $configCache */
+        $configCache   = config();
+        $cacheFilePath = $configCache['cacheFilePath'];
 
         // If the cache file already exists, delete it
         if (is_file($cacheFilePath)) {

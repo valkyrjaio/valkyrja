@@ -59,9 +59,9 @@ class Input implements Contract
     /**
      * Input constructor.
      *
-     * @param string[] $arguments [optional] The input arguments
+     * @param string ...$arguments [optional] The input arguments
      */
-    public function __construct(array $arguments = [])
+    public function __construct(string ...$arguments)
     {
         $this->inputArguments = $arguments;
 

@@ -276,10 +276,13 @@ class Tagger implements Contract
      */
     protected function getKeys(string $tag): array
     {
-        $keys = $this->adapter->get($tag);
+        $keysFromCache = $this->adapter->get($tag);
 
-        if ($keys !== null && $keys !== '') {
-            return Arr::fromString($keys);
+        if ($keysFromCache !== null && $keysFromCache !== '') {
+            /** @var string[] $keys */
+            $keys = Arr::fromString($keysFromCache);
+
+            return $keys;
         }
 
         return [];

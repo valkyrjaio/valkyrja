@@ -38,14 +38,19 @@ interface WhereQueryBuilder
      *          ->where('column2', '=', ':column2');
      * </code>
      *
-     * @param string      $column
-     * @param string|null $operator [optional]
-     * @param mixed|null  $value    [optional]
-     * @param bool        $setType  [optional]
+     * @param string                                                                    $column
+     * @param string|null                                                               $operator [optional]
+     * @param QueryBuilder|array<string|float|int|bool|null>|string|float|int|bool|null $value    [optional]
+     * @param bool                                                                      $setType  [optional]
      *
      * @return static
      */
-    public function where(string $column, string|null $operator = null, mixed $value = null, bool $setType = true): static;
+    public function where(
+        string $column,
+        string|null $operator = null,
+        QueryBuilder|array|string|float|int|bool|null $value = null,
+        bool $setType = true
+    ): static;
 
     /**
      * Start a where clause in parentheses.

@@ -53,17 +53,20 @@ class ConfigCache extends Commander
      */
     public function run(): int
     {
-        $cacheFilePath = config()['cacheFilePath'];
+        /** @var array{app: array{debug: bool, env: string}, cacheFilePath: string} $config */
+        $config = config();
+
+        $cacheFilePath = $config['cacheFilePath'];
 
         // If the cache file already exists, delete it
         if (is_file($cacheFilePath)) {
             unlink($cacheFilePath);
         }
 
-        $config                 = config();
         $config['app']['debug'] = false;
         $config['app']['env']   = 'production';
 
+        /** @var array<string, mixed> $asArray */
         $asArray  = json_decode(json_encode($config, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
         $asString = '<?php return ' . var_export($asArray, true) . ';' . PHP_EOL;
         // $serialized = serialize($config);

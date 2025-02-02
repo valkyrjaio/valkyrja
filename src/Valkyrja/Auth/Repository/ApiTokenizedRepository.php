@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Repository;
 
 use Valkyrja\Auth\Entity\Contract\TokenizableUser;
+use Valkyrja\Exception\RuntimeException;
+
+use function is_string;
 
 /**
  * Class ApiTokenizedRepository.
@@ -64,7 +67,8 @@ class ApiTokenizedRepository extends Repository implements Contract\TokenizedRep
      */
     public function getToken(): string
     {
-        return $this->token ??= $this->session->get($this->user::getTokenSessionId());
+        return $this->token
+            ??= $this->getTokenFromSession();
     }
 
     /**
@@ -75,5 +79,21 @@ class ApiTokenizedRepository extends Repository implements Contract\TokenizedRep
         $this->token = $token;
 
         return $this;
+    }
+
+    /**
+     * Get the token from the session.
+     *
+     * @return string
+     */
+    protected function getTokenFromSession(): string
+    {
+        $token = $this->session->get($this->user::getTokenSessionId());
+
+        if (! is_string($token)) {
+            throw new RuntimeException('Invalid session token');
+        }
+
+        return $token;
     }
 }

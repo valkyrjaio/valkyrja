@@ -15,6 +15,7 @@ namespace Valkyrja\Orm\Entity;
 
 use JsonException;
 use Valkyrja\Exception\InvalidArgumentException;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Orm\Entity\Contract\Entity as Contract;
 use Valkyrja\Orm\Repository\Contract\Repository;
 use Valkyrja\Type\BuiltIn\Support\Arr;
@@ -27,6 +28,8 @@ use Valkyrja\Type\Model\ProtectedExposable;
 use function array_walk;
 use function gettype;
 use function is_array;
+use function is_int;
+use function is_string;
 
 /**
  * Class Entity.
@@ -126,6 +129,22 @@ abstract class Entity extends Model implements Contract
     public static function getUnStorableFields(): array
     {
         return static::$unStorableFields;
+    }
+
+    /**
+     * Get the id field's value.
+     *
+     * @return string|int
+     */
+    public function getIdValue(): string|int
+    {
+        $id = $this->__get(static::getIdField());
+
+        if (! is_int($id) && ! is_string($id)) {
+            throw new RuntimeException('Id field value should be a string or int');
+        }
+
+        return $id;
     }
 
     /**

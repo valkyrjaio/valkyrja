@@ -137,6 +137,7 @@ class ServiceProvider extends Provider
      */
     public static function publishInput(Container $container): void
     {
+        /** @var string[] $arguments */
         $arguments = $_SERVER['argv'] ?? [];
 
         // Strip the application name
@@ -144,7 +145,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Input::class,
-            new \Valkyrja\Console\Input\Input($arguments)
+            new \Valkyrja\Console\Input\Input(...$arguments)
         );
     }
 

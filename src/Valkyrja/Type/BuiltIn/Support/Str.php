@@ -15,12 +15,19 @@ namespace Valkyrja\Type\BuiltIn\Support;
 
 use Exception;
 
+use JsonException;
+
 use function base64_encode;
 use function bin2hex;
 use function ctype_alpha;
 use function ctype_lower;
 use function ctype_upper;
 use function filter_var;
+use function gettype;
+use function is_float;
+use function is_int;
+use function is_object;
+use function is_string;
 use function random_bytes;
 use function str_contains;
 use function str_ends_with;
@@ -304,6 +311,28 @@ class Str
     public static function isUppercase(string $subject): bool
     {
         return ctype_upper($subject);
+    }
+
+    /**
+     * Convert mixed to a string.
+     *
+     * @param mixed $subject
+     *
+     * @throws JsonException
+     *
+     * @return string
+     */
+    public static function fromMixed(mixed $subject): string
+    {
+        return match (true) {
+            is_string($subject) => $subject,
+            is_int($subject), is_float($subject) => (string) $subject,
+            is_bool($subject) => $subject ? 'true' : 'false',
+            is_array($subject) => Arr::toString($subject),
+            is_object($subject) => Obj::toString($subject),
+            $subject === null => 'null',
+            default => gettype($subject),
+        };
     }
 
     /**

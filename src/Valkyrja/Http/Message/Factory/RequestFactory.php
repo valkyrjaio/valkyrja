@@ -17,6 +17,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use UnexpectedValueException;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\File\Contract\UploadedFile;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
@@ -73,6 +74,9 @@ abstract class RequestFactory
         }
 
         $cookies ??= $_COOKIE;
+
+        /** @var array<string, string|null> $cookies */
+        /** @var array<string, UploadedFile> $files */
 
         return new $class(
             uri: UriFactory::marshalUriFromServer($server, $headers),

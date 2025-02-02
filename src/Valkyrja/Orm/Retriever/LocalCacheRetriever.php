@@ -73,7 +73,7 @@ class LocalCacheRetriever extends Retriever
      */
     public function getCount(): int
     {
-        $this->columns([Statement::COUNT_ALL]);
+        $this->columns(Statement::COUNT_ALL);
 
         $localCacheKey = $this->getCacheKey();
 

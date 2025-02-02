@@ -66,7 +66,7 @@ abstract class UriFactory
 
         if (
             ($https !== null && $https !== 'off')
-            || self::getHeader('x-forwarded-proto', $headers, false) === Scheme::HTTPS->value
+            || self::getHeader('x-forwarded-proto', $headers) === Scheme::HTTPS->value
         ) {
             $scheme = Scheme::HTTPS;
         }
@@ -123,11 +123,11 @@ abstract class UriFactory
      *
      * @param string                         $header
      * @param array<string, string|string[]> $headers
-     * @param mixed|null                     $default
+     * @param string|null                    $default
      *
      * @return string
      */
-    public static function getHeader(string $header, array $headers, mixed $default = null): string
+    public static function getHeader(string $header, array $headers, string|null $default = null): string
     {
         $header  = strtolower($header);
         $headers = array_change_key_case($headers);
@@ -138,7 +138,7 @@ abstract class UriFactory
                 : $headers[$header];
         }
 
-        return (string) ($default ?? '');
+        return $default ?? '';
     }
 
     /**
@@ -155,7 +155,7 @@ abstract class UriFactory
         array $server,
         array $headers
     ): void {
-        if (self::getHeader('host', $headers, false)) {
+        if (self::getHeader('host', $headers) !== '') {
             self::marshalHostAndPortFromHeader($accumulator, self::getHeader('host', $headers));
 
             return;

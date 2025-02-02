@@ -72,4 +72,18 @@ interface User extends Entity
      * @return string[]
      */
     public static function getAuthenticationFields(): array;
+
+    /**
+     * Get the username value.
+     *
+     * @return string
+     */
+    public function getUsernameValue(): string;
+
+    /**
+     * Get the password value.
+     *
+     * @return string
+     */
+    public function getPasswordValue(): string;
 }

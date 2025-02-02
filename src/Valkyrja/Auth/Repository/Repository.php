@@ -24,11 +24,16 @@ use Valkyrja\Auth\Exception\InvalidCurrentAuthenticationException;
 use Valkyrja\Auth\Exception\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\Repository as Contract;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Session\Contract\Session as SessionManager;
 use Valkyrja\Session\Driver\Contract\Driver as Session;
 
 use function assert;
+use function is_int;
+use function is_string;
+use function serialize;
+use function unserialize;
 
 /**
  * Class Repository.
@@ -217,16 +222,10 @@ class Repository implements Contract
      */
     public function setSession(): static
     {
-        $collection        = $this->users;
-        $collectionAsArray = $collection->asArray();
-        /** @var class-string<User> $userClassName */
-        $userClassName = $this->userEntityName;
-
-        foreach ($collection->all() as $key => $user) {
-            $collectionAsArray['users'][$key] = $user->asStorableArray();
-        }
-
-        $this->session->set($userClassName::getUserSessionId(), $collectionAsArray);
+        $this->session->set(
+            $this->userEntityName::getUserSessionId(),
+            serialize($this->users)
+        );
 
         return $this;
     }
@@ -236,10 +235,7 @@ class Repository implements Contract
      */
     public function unsetSession(): static
     {
-        /** @var class-string<User> $userClassName */
-        $userClassName = $this->userEntityName;
-
-        $this->session->remove($userClassName::getUserSessionId());
+        $this->session->remove($this->userEntityName::getUserSessionId());
 
         return $this;
     }
@@ -332,9 +328,21 @@ class Repository implements Contract
      */
     public function isReAuthenticationRequired(): bool
     {
-        $confirmedAt = time() - ((int) $this->session->get(SessionId::PASSWORD_CONFIRMED_TIMESTAMP, 0));
+        $passwordConfirmedTimestamp = $this->session->get(SessionId::PASSWORD_CONFIRMED_TIMESTAMP, 0);
 
-        return $confirmedAt > (int) ($this->config['passwordTimeout'] ?? 10800);
+        if (! is_int($passwordConfirmedTimestamp)) {
+            throw new RuntimeException('Password confirmation timestamp should be an int');
+        }
+
+        $confirmedAt = time() - $passwordConfirmedTimestamp;
+
+        $configTimeout = $this->config['passwordTimeout'] ?? null;
+
+        if (! is_int($configTimeout)) {
+            $configTimeout = 10800;
+        }
+
+        return $confirmedAt > $configTimeout;
     }
 
     /**
@@ -358,17 +366,28 @@ class Repository implements Contract
             return $this->user;
         }
 
-        /** @var class-string<User> $userClassName */
-        $userClassName = $this->userEntityName;
-        $sessionUsers  = $this->session->get($userClassName::getUserSessionId());
+        $sessionUsersSerialized = $this->session->get($this->userEntityName::getUserSessionId());
 
-        if (! $sessionUsers) {
+        if (! is_string($sessionUsersSerialized)) {
             $this->resetAfterUnAuthentication();
 
-            throw new InvalidAuthenticationException('No authenticated users.');
+            throw new InvalidAuthenticationException('Invalid session');
         }
 
-        $this->users = $this->usersModel::fromArray($sessionUsers);
+        $sessionUsers = unserialize(
+            $sessionUsersSerialized,
+            ['allowed_classes' => [$this->usersModel]]
+        );
+
+        if (! $sessionUsers instanceof $this->usersModel) {
+            $this->resetAfterUnAuthentication();
+
+            throw new InvalidAuthenticationException('No authenticated users');
+        }
+
+        /** @var AuthenticatedUsers $sessionUsers */
+
+        $this->users = $sessionUsers;
 
         $current = $this->users->getCurrent();
 

@@ -26,7 +26,7 @@ interface View
     /**
      * Make a new View.
      *
-     * @param string               $name      [optional] The template to set
+     * @param string               $name      The template to set
      * @param array<string, mixed> $variables [optional] The variables to set
      * @param string|null          $engine    [optional] The engine to use
      *

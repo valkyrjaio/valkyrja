@@ -25,12 +25,12 @@ interface Statement
     /**
      * Bind a value.
      *
-     * @param string $parameter
-     * @param mixed  $value
+     * @param string                     $parameter
+     * @param string|float|int|bool|null $value
      *
      * @return bool
      */
-    public function bindValue(string $parameter, mixed $value): bool;
+    public function bindValue(string $parameter, string|float|int|bool|null $value): bool;
 
     /**
      * Execute the statement.

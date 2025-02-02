@@ -124,7 +124,7 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     /**
      * Get a service from the container.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string<T>|string  $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
@@ -136,7 +136,7 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     /**
      * Get a service bound to a callable from the container.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string<T>|string  $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
@@ -148,17 +148,19 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     /**
      * Get a service from the container.
      *
-     * @param class-string<Service>|string $id        The service id
-     * @param array<array-key, mixed>      $arguments [optional] The arguments
+     * @template T of Service
      *
-     * @return Service
+     * @param class-string<T>|string  $id        The service id
+     * @param array<array-key, mixed> $arguments [optional] The arguments
+     *
+     * @return ($id is class-string<T> ? T : Service)
      */
     public function getService(string $id, array $arguments = []): Service;
 
     /**
      * Get a singleton from the container.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string<T>|string $id The service id
      *

@@ -81,4 +81,13 @@ interface AuthenticatedUsers extends CastableModel
      * @return array<int|string, User>
      */
     public function all(): array;
+
+    /**
+     * Get all the users in the collection as a storable array.
+     *
+     * @param string ...$properties [optional] An array of properties to return
+     *
+     * @return array{currentId: string|int|null, users: array<string|int, array<string, mixed>>}
+     */
+    public function asStorableArray(string ...$properties): array;
 }

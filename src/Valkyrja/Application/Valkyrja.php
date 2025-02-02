@@ -31,6 +31,7 @@ use function constant;
 use function define;
 use function defined;
 use function is_file;
+use function is_string;
 use function microtime;
 
 /**
@@ -270,52 +271,6 @@ class Valkyrja implements Application
     }
 
     /**
-     * @inheritDoc
-     */
-    public function offsetSet($offset, $value): void
-    {
-        /** @var class-string $offset */
-        // Let the container and PHP do the type handling here. Let's add the docblock to avoid static analyzer errors.
-        self::$container->bind($offset, $value);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetExists($offset): bool
-    {
-        return self::$container->has($offset);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetUnset($offset): void
-    {
-        throw new InvalidArgumentException("Cannot unset service: $offset");
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetGet($offset): mixed
-    {
-        if ($offset === Config::class) {
-            return self::$config;
-        }
-
-        if ($offset === Env::class) {
-            return self::$env;
-        }
-
-        if ($offset === Container::class) {
-            return self::$container;
-        }
-
-        return self::$container->get($offset);
-    }
-
-    /**
      * Bootstrap the config.
      *
      * @param class-string<Config>|null $config [optional] The config class to use
@@ -337,7 +292,7 @@ class Valkyrja implements Application
 
         $config ??= self::env('CONFIG_CLASS', Config::class);
 
-        assert(is_a($config, Config::class, true));
+        assert(is_string($config) && is_a($config, Config::class, true));
 
         $this->withConfig(new $config(null, true));
     }
@@ -349,7 +304,13 @@ class Valkyrja implements Application
      */
     protected function getCacheFilePath(): string
     {
-        return self::env('CONFIG_CACHE_FILE_PATH', Directory::cachePath('config.php'));
+        $cacheFilePath = self::env('CONFIG_CACHE_FILE_PATH', Directory::cachePath('config.php'));
+
+        if (! is_string($cacheFilePath)) {
+            throw new InvalidArgumentException('Cache file path should be a string');
+        }
+
+        return $cacheFilePath;
     }
 
     /**

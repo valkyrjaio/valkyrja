@@ -18,8 +18,15 @@ use Valkyrja\Auth\Adapter\Contract\ORMAdapter as Contract;
 use Valkyrja\Auth\Config;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Exception\InvalidRegistrationException;
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Orm\Contract\Orm;
+use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
 use Valkyrja\Orm\Repository\Contract\Repository;
+
+use function is_bool;
+use function is_float;
+use function is_int;
+use function is_string;
 
 /**
  * Class Adapter.
@@ -49,7 +56,7 @@ class ORMAdapter extends Adapter implements Contract
         $dbUser = $this->retrieve($user);
 
         // If there is a user and the password matches
-        if ($dbUser && $this->verifyPassword($dbUser, $user->__get($user::getPasswordField()))) {
+        if ($dbUser && $this->verifyPassword($dbUser, $user->getPasswordValue())) {
             // Update the user model with all the properties from the database
             $user->updateProperties($dbUser->asStorableArray());
 
@@ -69,8 +76,20 @@ class ORMAdapter extends Adapter implements Contract
 
         // Iterate through the login fields
         foreach ($loginFields as $loginField) {
+            $userField = $user->__get($loginField);
+
+            if ($userField !== null
+                && ! is_bool($userField)
+                && ! is_string($userField)
+                && ! is_int($userField)
+                && ! is_float($userField)
+                && ! $userField instanceof QueryBuilder
+            ) {
+                throw new InvalidArgumentException('Login fields should be QueryBuilder|array|string|float|int|bool|null');
+            }
+
             // Set a where clause for each field
-            $find->where($loginField, null, $user->__get($loginField));
+            $find->where($loginField, null, $userField);
         }
 
         /** @var User|null $result */
@@ -86,10 +105,22 @@ class ORMAdapter extends Adapter implements Contract
     {
         $resetTokenField = $user::getResetTokenField();
 
+        $userField = $user->__get($resetTokenField);
+
+        if ($userField !== null
+            && ! is_bool($userField)
+            && ! is_string($userField)
+            && ! is_int($userField)
+            && ! is_float($userField)
+            && ! $userField instanceof QueryBuilder
+        ) {
+            throw new InvalidArgumentException('Login fields should be QueryBuilder|array|string|float|int|bool|null');
+        }
+
         /** @var User|null $result */
         $result = $this->getUserRepository($user)
                        ->find()
-                       ->where($resetTokenField, null, $user->__get($resetTokenField))
+                       ->where($resetTokenField, null, $userField)
                        ->getOneOrNull();
 
         return $result;
@@ -102,7 +133,7 @@ class ORMAdapter extends Adapter implements Contract
     {
         /** @var User $result */
         $result = $this->getUserRepository($user)
-                       ->findOne($user->__get($user::getIdField()))
+                       ->findOne($user->getIdValue())
                        ->getOneOrFail();
 
         return $result;
@@ -133,7 +164,7 @@ class ORMAdapter extends Adapter implements Contract
                 return false;
             }
 
-            $user->__set($passwordField, $this->hashPassword($user->__get($passwordField)));
+            $user->__set($passwordField, $this->hashPassword($user->getPasswordValue()));
 
             $this->orm->ensureTransaction();
             $repository->create($user);

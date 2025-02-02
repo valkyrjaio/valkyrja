@@ -18,6 +18,7 @@ use Valkyrja\Application\Env;
 use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\CacheableContainer;
+use Valkyrja\Container\Config as ContainerConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Exception\Contract\ErrorHandler as ErrorHandlerContract;
 use Valkyrja\Exception\ErrorHandler;
@@ -28,6 +29,10 @@ use const E_ALL;
  * Class AppProvider.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-import-type ConfigAsArray from ContainerConfig
+ *
+ * @phpstan-import-type ConfigAsArray from ContainerConfig
  */
 class AppProvider extends Provider
 {
@@ -36,6 +41,7 @@ class AppProvider extends Provider
      */
     public static function publish(Application $app): void
     {
+        /** @var array{container: ConfigAsArray} $config */
         $config = $app->config();
 
         $container = new CacheableContainer($config['container'], $app->debug());

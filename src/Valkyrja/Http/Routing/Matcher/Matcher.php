@@ -18,6 +18,7 @@ use Valkyrja\Http\Routing\Collection\Collection as RouteCollection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection;
 use Valkyrja\Http\Routing\Exception\InvalidRouteParameterException;
 use Valkyrja\Http\Routing\Exception\InvalidRoutePathException;
+use Valkyrja\Http\Routing\Exception\RuntimeException;
 use Valkyrja\Http\Routing\Matcher\Contract\Matcher as Contract;
 use Valkyrja\Http\Routing\Model\Contract\Route;
 use Valkyrja\Http\Routing\Model\Parameter\Parameter;
@@ -25,6 +26,7 @@ use Valkyrja\Http\Routing\Support\Helpers;
 use Valkyrja\Type\Data\Cast;
 
 use function is_array;
+use function is_string;
 use function preg_match;
 
 /**
@@ -172,14 +174,12 @@ class Matcher implements Contract
 
         // Get the parameters
         $parameters = $route->getParameters();
-        // Get the last index in the array
-        $lastIndex = array_key_last($matches);
 
         // Iterate through the matches
         foreach ($matches as $index => $match) {
             $parameter = $this->getParameterForMatchIndex($parameters, $index);
 
-            $matches = $this->updateMatchValueWithDefault($parameter, $matches, $index, $match, $lastIndex);
+            $matches = $this->updateMatchValueWithDefault($parameter, $matches, $index, $match);
             $matches = $this->checkAndCastMatchValue($route, $parameter, $matches, $index, $match);
         }
 
@@ -204,11 +204,10 @@ class Matcher implements Contract
     /**
      * Update a match's value with the default as defined in the parameter.
      *
-     * @param Parameter          $parameter The parameter
-     * @param array<int, string> $matches   The matches
-     * @param int                $index     The index for this match
-     * @param mixed              $match     The match
-     * @param int                $lastIndex The last index
+     * @param Parameter         $parameter The parameter
+     * @param array<int, mixed> $matches   The matches
+     * @param int               $index     The index for this match
+     * @param mixed             $match     The match
      *
      * @return array<int, mixed>
      */
@@ -216,19 +215,10 @@ class Matcher implements Contract
         Parameter $parameter,
         array $matches,
         int $index,
-        mixed $match,
-        int $lastIndex
+        mixed $match
     ): array {
         // If there is no match (middle of regex optional group)
         if (! $match) {
-            // If the optional parameter was at the end, let the action decide the default assuming a default
-            // is not set in the parameter already
-            if ($lastIndex === $index && $parameter->getDefault() !== null) {
-                array_pop($matches);
-
-                return $matches;
-            }
-
             // Set the value to the parameter default
             $matches[$index] = $parameter->getDefault();
         }
@@ -237,13 +227,13 @@ class Matcher implements Contract
     }
 
     /**
-     * @param Route              $route     The Route
-     * @param Parameter          $parameter The parameter
-     * @param array<int, string> $matches   The matches
-     * @param int                $index     The index for this match
-     * @param mixed              $match     The match
+     * @param Route             $route     The Route
+     * @param Parameter         $parameter The parameter
+     * @param array<int, mixed> $matches   The matches
+     * @param int               $index     The index for this match
+     * @param mixed             $match     The match
      *
-     * @return array<int, string>
+     * @return array<int, mixed>
      */
     protected function checkAndCastMatchValue(
         Route $route,
@@ -255,6 +245,11 @@ class Matcher implements Contract
         $cast = $parameter->getCast();
 
         if ($cast !== null) {
+            // This shouldn't ever happen as we're iterating over the array with fresh match values as the process runs
+            if (! is_string($match)) {
+                throw new RuntimeException('Unexpected match value for ' . $parameter->getName());
+            }
+
             $matches[$index] = $this->castMatchValue($route, $parameter, $cast, $index, $match);
         }
 

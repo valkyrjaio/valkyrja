@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Middleware;
 
 use Valkyrja\Auth\Constant\RouteName;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Routing\Url\Contract\Url;
 
+use function is_string;
 use function Valkyrja\container;
 use function Valkyrja\responseFactory;
 
@@ -64,8 +66,14 @@ class ReAuthenticatedMiddleware extends AuthMiddleware
         /** @var Url $url */
         $url = $container->getSingleton(Url::class);
 
+        $redirectRoute = static::getConfig('passwordConfirmRoute', RouteName::PASSWORD_CONFIRM);
+
+        if (! is_string($redirectRoute)) {
+            throw new RuntimeException('passwordConfirmRoute in config should be a string');
+        }
+
         return $responseFactory->createRedirectResponse(
-            $url->getUrl((string) static::getConfig('passwordConfirmRoute', RouteName::PASSWORD_CONFIRM))
+            $url->getUrl($redirectRoute)
         );
     }
 }

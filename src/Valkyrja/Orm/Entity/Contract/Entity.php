@@ -75,6 +75,13 @@ interface Entity extends CastableModel, ExposableModel
     public static function getUnStorableFields(): array;
 
     /**
+     * Get the id field's value.
+     *
+     * @return string|int
+     */
+    public function getIdValue(): string|int;
+
+    /**
      * Get the entity as an array for saving to the data store.
      *
      * @param string ...$properties [optional] An array of properties to return

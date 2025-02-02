@@ -19,9 +19,12 @@ use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\JWTCryptRepository as Contract;
 use Valkyrja\Crypt\Contract\Crypt;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Jwt\Contract\Jwt as JwtManager;
 use Valkyrja\Jwt\Driver\Contract\Driver as Jwt;
 use Valkyrja\Session\Contract\Session;
+
+use function is_string;
 
 /**
  * Class JwtCryptRepository.
@@ -73,6 +76,14 @@ class JwtCryptRepository extends CryptTokenizedRepository implements Contract
      */
     protected function unTokenizeUsers(string $token): AuthenticatedUsers
     {
-        return parent::unTokenizeUsers($this->jwt->decode($token)['token']);
+        $decodedJwt = $this->jwt->decode($token);
+
+        $decodedToken = $decodedJwt['token'] ?? null;
+
+        if (! is_string($decodedToken)) {
+            throw new RuntimeException('Token must be a string');
+        }
+
+        return parent::unTokenizeUsers($decodedToken);
     }
 }

@@ -24,8 +24,12 @@ use Valkyrja\Auth\Exception\MissingTokenizableUserRequiredFieldsException;
 use Valkyrja\Auth\Exception\TokenizationException;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\TokenizedRepository as Contract;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+
+use function getType;
+use function is_string;
 
 /**
  * Abstract Class TokenizedRepository.
@@ -221,7 +225,15 @@ abstract class TokenizedRepository extends Repository implements Contract
      */
     protected function getTokenFromSession(): string|null
     {
-        return $this->session->get($this->userEntityName::getTokenSessionId());
+        $token = $this->session->get($this->userEntityName::getTokenSessionId());
+
+        if (! is_string($token)) {
+            $type = getType($token);
+
+            throw new RuntimeException("Token should be a string $type provided");
+        }
+
+        return $token;
     }
 
     /**

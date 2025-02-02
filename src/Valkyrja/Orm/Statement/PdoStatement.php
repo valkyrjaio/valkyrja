@@ -44,7 +44,7 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      */
-    public function bindValue(string $parameter, mixed $value): bool
+    public function bindValue(string $parameter, string|float|int|bool|null $value): bool
     {
         return $this->statement->bindValue(
             $parameter,
@@ -80,6 +80,7 @@ class PdoStatement implements Contract
      */
     public function fetch(): array
     {
+        /** @var array<string, mixed>|false $fetch */
         $fetch = $this->statement->fetch(PDO::FETCH_ASSOC);
 
         if (! is_array($fetch)) {

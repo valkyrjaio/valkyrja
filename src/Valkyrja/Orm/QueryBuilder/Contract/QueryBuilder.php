@@ -34,11 +34,11 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *      );
      * </code>
      *
-     * @param string[]|null $columns
+     * @param string ...$columns
      *
      * @return static
      */
-    public function select(array|null $columns = null): static;
+    public function select(string ...$columns): static;
 
     /**
      * Create an INSERT query statement.
@@ -87,12 +87,12 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *          ->set('column', ':column');
      * </code>
      *
-     * @param string     $column
-     * @param mixed|null $value
+     * @param string                     $column
+     * @param string|float|int|bool|null $value  [optional]
      *
      * @return static
      */
-    public function set(string $column, mixed $value = null): static;
+    public function set(string $column, string|float|int|bool|null $value = null): static;
 
     /**
      * Join with another table.

@@ -84,11 +84,11 @@ class Annotations implements Contract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::CLASS_NAME => $class,
-                ],
-                ...$this->parser->getAnnotations((string) $this->reflection->forClass($class)->getDocComment())
-            );
+            [
+                Property::CLASS_NAME => $class,
+            ],
+            ...$this->parser->getAnnotations((string) $this->reflection->forClass($class)->getDocComment())
+        );
     }
 
     /**
@@ -102,9 +102,9 @@ class Annotations implements Contract
 
         return self::$annotations[$index]
             ??= array_merge(
-                $this->forClassProperties($class),
-                $this->forClassMethods($class)
-            );
+            $this->forClassProperties($class),
+            $this->forClassMethods($class)
+        );
     }
 
     /**
@@ -118,9 +118,9 @@ class Annotations implements Contract
 
         return self::$annotations[$index]
             ??= array_merge(
-                $this->forClass($class),
-                $this->forClassMembers($class)
-            );
+            $this->forClass($class),
+            $this->forClassMembers($class)
+        );
     }
 
     /**
@@ -135,13 +135,13 @@ class Annotations implements Contract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::CLASS_NAME => $class,
-                    Property::PROPERTY   => $property,
-                    Property::STATIC     => $reflection->isStatic(),
-                ],
-                ...$this->parser->getAnnotations((string) $reflection->getDocComment())
-            );
+            [
+                Property::CLASS_NAME => $class,
+                Property::PROPERTY   => $property,
+                Property::STATIC     => $reflection->isStatic(),
+            ],
+            ...$this->parser->getAnnotations((string) $reflection->getDocComment())
+        );
     }
 
     /**
@@ -181,13 +181,13 @@ class Annotations implements Contract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::CLASS_NAME => $class,
-                    Property::METHOD     => $method,
-                    Property::STATIC     => $reflection->isStatic(),
-                ],
-                ...$this->parser->getAnnotations((string) $reflection->getDocComment())
-            );
+            [
+                Property::CLASS_NAME => $class,
+                Property::METHOD     => $method,
+                Property::STATIC     => $reflection->isStatic(),
+            ],
+            ...$this->parser->getAnnotations((string) $reflection->getDocComment())
+        );
     }
 
     /**
@@ -226,20 +226,20 @@ class Annotations implements Contract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::FUNCTION => $function,
-                ],
-                ...$this->parser->getAnnotations(
-                    (string) $this->reflection->forFunction($function)->getDocComment()
-                )
-            );
+            [
+                Property::FUNCTION => $function,
+            ],
+            ...$this->parser->getAnnotations(
+            (string) $this->reflection->forFunction($function)->getDocComment()
+        )
+        );
     }
 
     /**
      * Set the base annotation model values.
      *
-     * @param array<string, mixed> $properties     The properties
-     * @param Annotation           ...$annotations The annotations
+     * @param array{class?: class-string, property?: non-empty-string, method?: non-empty-string, function?: callable-string, static?: bool} $properties     The properties
+     * @param Annotation                                                                                                                     ...$annotations The annotations
      *
      * @return Annotation[]
      */

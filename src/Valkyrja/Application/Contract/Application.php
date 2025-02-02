@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Contract;
 
-use ArrayAccess;
 use Valkyrja\Application\Env;
 use Valkyrja\Config\Config as ConfigModel;
 use Valkyrja\Config\Config\Config;
@@ -27,10 +26,8 @@ use Valkyrja\Http\Server\Contract\RequestHandler;
  * Interface Application.
  *
  * @author Melech Mizrachi
- *
- * @extends ArrayAccess<string, mixed>
  */
-interface Application extends ArrayAccess
+interface Application
 {
     /**
      * The Application framework version.

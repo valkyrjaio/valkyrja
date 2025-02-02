@@ -47,11 +47,12 @@ class PHPAdapter extends NullAdapter
             return;
         }
 
+        /** @var array{lifetime?: int, path?: string, domain?: string|null, secure?: bool, httponly?: bool, samesite?: 'Lax'|'lax'|'None'|'none'|'Strict'|'strict'}|int $cookieParams */
         $cookieParams = $this->config['cookieParams'] ?? [];
 
         if (is_array($cookieParams) && $cookieParams !== []) {
             // Set the session cookie parameters
-            session_set_cookie_params(...$cookieParams);
+            session_set_cookie_params($cookieParams);
         }
 
         // If the session failed to start

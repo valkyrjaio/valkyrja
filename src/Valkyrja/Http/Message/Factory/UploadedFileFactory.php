@@ -22,6 +22,7 @@ use Valkyrja\Http\Message\File\UploadedFile as HttpUploadedFile;
 use function array_keys;
 use function array_map;
 use function is_array;
+use function is_string;
 
 /**
  * Abstract Class UploadedFileFactory.
@@ -107,12 +108,18 @@ abstract class UploadedFileFactory
      */
     private static function createUploadedFileFromSpec(array $value): UploadedFile|array
     {
-        if (is_array($value['tmp_name'])) {
+        $tmpName = $value['tmp_name'] ?? null;
+
+        if (is_array($tmpName)) {
             return self::normalizeNestedFileSpec($value);
         }
 
+        if (! is_string($tmpName)) {
+            throw new InvalidArgumentException('Temp file name expected to be a string');
+        }
+
         return new HttpUploadedFile(
-            $value['tmp_name'],
+            $tmpName,
             null,
             UploadError::from($value['error']),
             $value['size'],
@@ -135,8 +142,13 @@ abstract class UploadedFileFactory
     private static function normalizeNestedFileSpec(array $files = []): array
     {
         $normalizedFiles = [];
+        $filesTmpName    = $files['tmp_name'];
 
-        foreach (array_keys($files['tmp_name']) as $key) {
+        if (! is_array($filesTmpName)) {
+            throw new InvalidArgumentException('Expecting tmp name to be a nested array of files');
+        }
+
+        foreach (array_keys($filesTmpName) as $key) {
             $spec                  = [
                 'tmp_name' => $files['tmp_name'][$key],
                 'size'     => $files['size'][$key] ?? 0,

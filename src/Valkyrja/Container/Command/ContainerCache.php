@@ -53,6 +53,7 @@ class ContainerCache extends Commander
      */
     public function run(): int
     {
+        /** @var array{app: array{debug: bool, env: string}, container: array{cacheFilePath: string}} $configCache */
         $configCache   = config();
         $cacheFilePath = $configCache['container']['cacheFilePath'];
 
@@ -69,6 +70,7 @@ class ContainerCache extends Commander
 
         $cache = $container->getCacheable();
 
+        /** @var array<string, mixed> $asArray */
         $asArray  = json_decode(json_encode($cache, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
         $asString = '<?php return ' . var_export(Arr::newWithoutNull($asArray), true) . ';' . PHP_EOL;
 

@@ -51,6 +51,7 @@ class Valkyrja extends Model
      */
     protected function setup(array|null $properties = null): void
     {
+        /** @var array<string, array<string, mixed>>|null $properties */
         $this->annotation = new Annotation($properties['annotation'] ?? null, true);
         $this->api        = new Api($properties['api'] ?? null, true);
         $this->app        = new App($properties['app'] ?? null, true);

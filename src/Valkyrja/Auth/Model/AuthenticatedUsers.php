@@ -31,9 +31,9 @@ class AuthenticatedUsers extends CastableModel implements Contract
     /**
      * The current user's id.
      *
-     * @var string|null
+     * @var string|int|null
      */
-    protected string|null $currentId = null;
+    protected string|int|null $currentId = null;
 
     /**
      * The users.
@@ -70,7 +70,7 @@ class AuthenticatedUsers extends CastableModel implements Contract
      */
     public function setCurrent(User $user): static
     {
-        $this->currentId = $user->__get($user::getIdField());
+        $this->currentId = $user->getIdValue();
 
         return $this->add($user);
     }
@@ -82,14 +82,14 @@ class AuthenticatedUsers extends CastableModel implements Contract
      */
     public function isAuthenticated(User $user): bool
     {
-        $id = $user->__get($user::getIdField());
+        $id = $user->getIdValue();
 
         if ($this->currentId === $id) {
             return true;
         }
 
         foreach ($this->users as $authedUser) {
-            if ($authedUser->__get($authedUser::getIdField()) === $id) {
+            if ($authedUser->getIdValue() === $id) {
                 return true;
             }
         }
@@ -106,7 +106,7 @@ class AuthenticatedUsers extends CastableModel implements Contract
      */
     public function add(User $user): static
     {
-        $this->users[$user->__get($user::getIdField())] = $user;
+        $this->users[$user->getIdValue()] = $user;
 
         return $this;
     }
@@ -120,9 +120,9 @@ class AuthenticatedUsers extends CastableModel implements Contract
      */
     public function remove(User $user): static
     {
-        $id = $user->__get($user::getIdField());
+        $id = $user->getIdValue();
 
-        unset($this->users[$user->__get($user::getIdField())]);
+        unset($this->users[$id]);
 
         if ($this->currentId === $id) {
             $this->currentId = null;
@@ -152,6 +152,23 @@ class AuthenticatedUsers extends CastableModel implements Contract
 
         foreach ($this->users as $key => $userFromCollection) {
             $users[$key] = $userFromCollection->asArray();
+        }
+
+        return [
+            'currentId' => $this->currentId,
+            'users'     => $users,
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function asStorableArray(string ...$properties): array
+    {
+        $users = [];
+
+        foreach ($this->users as $key => $userFromCollection) {
+            $users[$key] = $userFromCollection->asStorableArray();
         }
 
         return [

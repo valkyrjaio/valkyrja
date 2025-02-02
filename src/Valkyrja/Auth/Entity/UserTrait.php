@@ -17,6 +17,9 @@ use Valkyrja\Auth\Constant\SessionId;
 use Valkyrja\Auth\Constant\UserField;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\Repository;
+use Valkyrja\Exception\RuntimeException;
+
+use function is_string;
 
 /**
  * Trait UserTrait.
@@ -87,5 +90,33 @@ trait UserTrait
         return [
             static::getUsernameField(),
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUsernameValue(): string
+    {
+        $value = $this->__get(static::getUsernameField());
+
+        if (! is_string($value)) {
+            throw new RuntimeException('Username field value should be a string');
+        }
+
+        return $value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPasswordValue(): string
+    {
+        $value = $this->__get(static::getPasswordField());
+
+        if (! is_string($value)) {
+            throw new RuntimeException('Username field value should be a string');
+        }
+
+        return $value;
     }
 }

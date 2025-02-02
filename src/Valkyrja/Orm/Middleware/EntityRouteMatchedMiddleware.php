@@ -118,7 +118,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
                 return $this->getBadRequestResponse($type, $match);
             }
 
-            return $this->findAndSetEntityFromParameter($index, $parameter, $type, $dependencies, $matches[$index]);
+            return $this->findAndSetEntityFromParameter($index, $parameter, $type, $dependencies, $match);
         }
 
         return null;

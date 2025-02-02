@@ -34,12 +34,12 @@ interface InsertQueryBuilder extends BaseQueryBuilder
      *          ->set('column', ':column');
      * </code>
      *
-     * @param string     $column
-     * @param mixed|null $value
+     * @param string                     $column
+     * @param string|float|int|bool|null $value
      *
      * @return static
      */
-    public function set(string $column, mixed $value = null): static;
+    public function set(string $column, string|float|int|bool|null $value = null): static;
 
     /**
      * Join with another table.

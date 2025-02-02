@@ -112,9 +112,9 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function columns(array $columns): static
+    public function columns(string ...$columns): static
     {
-        $this->retriever->columns($columns);
+        $this->retriever->columns(...$columns);
 
         return $this;
     }
@@ -122,8 +122,12 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function where(string $column, string|null $operator = null, mixed $value = null, bool $setType = true): static
-    {
+    public function where(
+        string $column,
+        string|null $operator = null,
+        QueryBuilder|array|string|float|int|bool|null $value = null,
+        bool $setType = true
+    ): static {
         $this->retriever->where($column, $operator, $value, $setType);
 
         return $this;

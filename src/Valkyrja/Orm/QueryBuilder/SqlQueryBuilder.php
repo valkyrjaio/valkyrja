@@ -79,10 +79,12 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function select(array|null $columns = null): static
+    public function select(string ...$columns): static
     {
         $this->type    = Statement::SELECT;
-        $this->columns = $columns ?? ['*'];
+        $this->columns = $columns !== []
+            ? $columns
+            : ['*'];
 
         return $this;
     }

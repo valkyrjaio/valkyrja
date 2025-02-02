@@ -79,11 +79,11 @@ interface Retriever extends WhereQueryBuilder
     /**
      * Set columns.
      *
-     * @param string[] $columns
+     * @param string ...$columns
      *
      * @return static
      */
-    public function columns(array $columns): static;
+    public function columns(string ...$columns): static;
 
     /**
      * Join with another table.

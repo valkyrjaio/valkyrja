@@ -23,6 +23,7 @@ use Valkyrja\Auth\Contract\Auth;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Repository\Contract\Repository;
 use Valkyrja\Config\Constant\ConfigKeyPart;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
@@ -32,6 +33,7 @@ use Valkyrja\Http\Routing\Url\Contract\Url;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
+use function is_string;
 use function Valkyrja\container;
 
 /**
@@ -191,7 +193,7 @@ abstract class AuthMiddleware
         $responseFactory = $container->getSingleton(ResponseFactory::class);
         $authenticateUrl = static::getConfig(ConfigKeyPart::AUTHENTICATE_URL);
 
-        if ($authenticateUrl !== null && $authenticateUrl !== '') {
+        if (is_string($authenticateUrl) && $authenticateUrl !== '') {
             return $responseFactory->createRedirectResponse(
                 $authenticateUrl,
                 StatusCode::UNAUTHORIZED
@@ -201,8 +203,14 @@ abstract class AuthMiddleware
         /** @var Url $url */
         $url = $container->getSingleton(Url::class);
 
+        $redirectRoute = static::getConfig(ConfigKeyPart::AUTHENTICATE_ROUTE, RouteName::AUTHENTICATE);
+
+        if (! is_string($redirectRoute)) {
+            throw new RuntimeException('authenticateRoute in config should be a string');
+        }
+
         return $responseFactory->createRedirectResponse(
-            $url->getUrl((string) static::getConfig(ConfigKeyPart::AUTHENTICATE_ROUTE, RouteName::AUTHENTICATE)),
+            $url->getUrl($redirectRoute),
             StatusCode::UNAUTHORIZED
         );
     }

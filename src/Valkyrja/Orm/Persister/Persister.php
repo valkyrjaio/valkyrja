@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Persister;
 
 use JsonException;
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Orm\Adapter\Contract\Adapter;
 use Valkyrja\Orm\Constant\Statement;
 use Valkyrja\Orm\Entity\Contract\DatedEntity;
@@ -26,7 +27,11 @@ use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function is_array;
+use function is_bool;
+use function is_float;
+use function is_int;
 use function is_object;
+use function is_string;
 use function serialize;
 use function spl_object_id;
 use function strtolower;
@@ -309,7 +314,7 @@ class Persister implements Contract
         // Get the query builder
         $queryBuilder = $this->getQueryBuilder($type, $entity, $properties);
         // Get the query
-        $query = $this->getQuery($queryBuilder, $type, $idField, $entity->{$idField}, $properties);
+        $query = $this->getQuery($queryBuilder, $type, $idField, $entity->getIdValue(), $properties);
 
         // Execute the query
         $this->executeQuery($query);
@@ -547,6 +552,10 @@ class Persister implements Contract
         } // Otherwise json encode if its an array
         elseif (is_array($value)) {
             $value = Arr::toString($value);
+        }
+
+        if ($value !== null && ! is_string($value) && ! is_int($value) && ! is_float($value) && ! is_bool($value)) {
+            throw new InvalidArgumentException("Invalid value for column: $column. Expecting string, int, float, bool, or null");
         }
 
         // Bind property

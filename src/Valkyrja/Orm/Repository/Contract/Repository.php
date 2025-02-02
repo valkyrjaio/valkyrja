@@ -56,24 +56,29 @@ interface Repository
     /**
      * Set columns.
      *
-     * @param string[] $columns The columns
+     * @param string ...$columns The columns
      *
      * @return static
      */
-    public function columns(array $columns): static;
+    public function columns(string ...$columns): static;
 
     /**
      * Add a where condition.
      * - Each additional use will add an `AND` where condition.
      *
-     * @param string      $column   The column
-     * @param string|null $operator [optional]
-     * @param mixed|null  $value    [optional]
-     * @param bool        $setType  [optional]
+     * @param string                                                                    $column   The column
+     * @param string|null                                                               $operator [optional]
+     * @param QueryBuilder|array<string|float|int|bool|null>|string|float|int|bool|null $value    [optional]
+     * @param bool                                                                      $setType  [optional]
      *
      * @return static
      */
-    public function where(string $column, string|null $operator = null, mixed $value = null, bool $setType = true): static;
+    public function where(
+        string $column,
+        string|null $operator = null,
+        QueryBuilder|array|string|float|int|bool|null $value = null,
+        bool $setType = true
+    ): static;
 
     /**
      * Start a where clause in parentheses.

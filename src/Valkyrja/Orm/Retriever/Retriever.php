@@ -59,7 +59,7 @@ class Retriever implements Contract
     /**
      * The values to bind.
      *
-     * @var array<string, mixed>
+     * @var array<string, array<string|float|int|bool|null>|string|float|int|bool|null>
      */
     protected array $values = [];
 
@@ -118,15 +118,15 @@ class Retriever implements Contract
      */
     public function count(string $entity): self
     {
-        return $this->setQueryProperties($entity, [Statement::COUNT_ALL]);
+        return $this->setQueryProperties($entity, Statement::COUNT_ALL);
     }
 
     /**
      * @inheritDoc
      */
-    public function columns(array $columns): static
+    public function columns(string ...$columns): static
     {
-        $this->queryBuilder = $this->queryBuilder->select($columns);
+        $this->queryBuilder = $this->queryBuilder->select(...$columns);
 
         return $this;
     }
@@ -137,7 +137,7 @@ class Retriever implements Contract
     public function where(
         string $column,
         string|null $operator = null,
-        mixed $value = null,
+        QueryBuilder|array|string|float|int|bool|null $value = null,
         bool $setType = true
     ): static {
         $this->queryBuilder->where($column, $operator, $value, $setType);
@@ -283,7 +283,7 @@ class Retriever implements Contract
      */
     public function getCount(): int
     {
-        $this->columns([Statement::COUNT_ALL]);
+        $this->columns(Statement::COUNT_ALL);
 
         $this->prepareResults();
 
@@ -311,18 +311,18 @@ class Retriever implements Contract
      *
      * @template SetQueryEntity of Entity
      *
-     * @param class-string<SetQueryEntity> $entity  The entity
-     * @param string[]|null                $columns [optional] The columns
+     * @param class-string<SetQueryEntity> $entity     The entity
+     * @param string                       ...$columns [optional] The columns
      *
      * @return static<SetQueryEntity>
      */
-    protected function setQueryProperties(string $entity, array|null $columns = null): self
+    protected function setQueryProperties(string $entity, string ...$columns): self
     {
         assert(is_a($entity, Entity::class, true));
 
         $self = clone $this;
 
-        $self->queryBuilder = $this->adapter->createQueryBuilder($entity)->select($columns);
+        $self->queryBuilder = $this->adapter->createQueryBuilder($entity)->select(...$columns);
         $self->query        = $this->adapter->createQuery(null, $entity);
 
         return $self;
@@ -331,12 +331,12 @@ class Retriever implements Contract
     /**
      * Set a value to bind later.
      *
-     * @param string $column The column to bind
-     * @param mixed  $value  [optional] The value to bind
+     * @param string                                                       $column The column to bind
+     * @param array<string|float|int|bool|null>|string|float|int|bool|null $value  [optional] The value to bind
      *
      * @return void
      */
-    protected function setValue(string $column, mixed $value): void
+    protected function setValue(string $column, array|string|float|int|bool|null $value): void
     {
         $this->values[$column] = $value;
     }

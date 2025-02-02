@@ -54,8 +54,9 @@ class EventsCache extends Commander
      */
     public function run(): int
     {
+        /** @var array{app: array{debug: bool, env: string}, event: array{cacheFilePath: string}} $configCache */
         $configCache   = config();
-        $cacheFilePath = $configCache['container']['cacheFilePath'];
+        $cacheFilePath = $configCache['event']['cacheFilePath'];
 
         // If the cache file already exists, delete it
         if (is_file($cacheFilePath)) {
@@ -70,6 +71,7 @@ class EventsCache extends Commander
 
         $cache = $events->getCacheable();
 
+        /** @var array<string, mixed> $asArray */
         $asArray  = json_decode(json_encode($cache, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
         $asString = '<?php return ' . var_export(Arr::newWithoutNull($asArray), true) . ';' . PHP_EOL;
 

@@ -48,7 +48,7 @@ abstract class Adapter implements Contract
      */
     public function verifyPassword(User $user, string $password): bool
     {
-        return password_verify($password, $user->__get($user::getPasswordField()));
+        return password_verify($password, $user->getPasswordValue());
     }
 
     /**

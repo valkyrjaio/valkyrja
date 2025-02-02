@@ -27,7 +27,7 @@ trait Set
     /**
      * Values to use for update/insert statements.
      *
-     * @var array<string, mixed>
+     * @var array<string, string|float|int|bool>
      */
     protected array $values = [];
 
@@ -36,7 +36,7 @@ trait Set
      *
      * @return static
      */
-    public function set(string $column, mixed $value = null): static
+    public function set(string $column, string|float|int|bool|null $value = null): static
     {
         $this->values[$column] = $value ?? ":$column";
 

@@ -54,12 +54,12 @@ interface Query
     /**
      * Bind a value.
      *
-     * @param string $property
-     * @param mixed  $value
+     * @param string                                                       $property
+     * @param array<string|float|int|bool|null>|string|float|int|bool|null $value
      *
      * @return static
      */
-    public function bindValue(string $property, mixed $value): static;
+    public function bindValue(string $property, array|string|float|int|bool|null $value): static;
 
     /**
      * Execute the query.

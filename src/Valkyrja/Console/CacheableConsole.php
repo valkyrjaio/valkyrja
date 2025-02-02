@@ -93,7 +93,8 @@ class CacheableConsole extends Console
         $decodedCommands = base64_decode($cache['commands'], true);
 
         if ($decodedCommands !== false) {
-            self::$commands = unserialize(
+            /** @var Command[] $commands */
+            $commands = unserialize(
                 $decodedCommands,
                 [
                     'allowed_classes' => [
@@ -101,6 +102,8 @@ class CacheableConsole extends Console
                     ],
                 ]
             );
+
+            self::$commands = $commands;
         }
 
         self::$paths         = $cache['paths'];

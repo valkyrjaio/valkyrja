@@ -64,14 +64,15 @@ class Optimize extends Commander
      */
     public function run(): int
     {
-        $cacheFilePath = config()['cacheFilePath'];
+        /** @var array{app: array{debug: bool, env: string}, container: array<string, mixed>, console: array<string, mixed>, event: array<string, mixed>, routing: array<string, mixed>, cacheFilePath: string} $configCache */
+        $configCache = config();
+
+        $cacheFilePath = $configCache['cacheFilePath'];
 
         // If the cache file already exists, delete it
         if (is_file($cacheFilePath)) {
             unlink($cacheFilePath);
         }
-
-        $configCache = config();
 
         $configCache['app']['debug'] = false;
         $configCache['app']['env']   = 'production';
@@ -100,6 +101,7 @@ class Optimize extends Commander
         $configCache['event']['useCache']     = true;
         $configCache['routing']['useCache']   = true;
 
+        /** @var array{container: array{providers: string[], cache: array{provided: string[]}, ...},...} $asArray */
         $asArray = json_decode(json_encode($configCache, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
 
         foreach ($asArray['container']['providers'] as $key => $provider) {

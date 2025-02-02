@@ -17,6 +17,7 @@ use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Asset\Config as Model;
 use Valkyrja\Asset\Constant\ConfigValue;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Exception\InvalidArgumentException;
 
 use function Valkyrja\env;
 
@@ -32,13 +33,29 @@ class Asset extends Model
     {
         $this->updateProperties(ConfigValue::$defaults);
 
+        $host     = env(EnvKey::ASSET_DEFAULT_HOST, '');
+        $path     = env(EnvKey::ASSET_DEFAULT_PATH, '/');
+        $manifest = env(EnvKey::ASSET_DEFAULT_MANIFEST, '/rev-manifest.json');
+
+        if (! is_string($host)) {
+            throw new InvalidArgumentException('Host should be a string');
+        }
+
+        if (! is_string($path)) {
+            throw new InvalidArgumentException('Path should be a string');
+        }
+
+        if (! is_string($manifest)) {
+            throw new InvalidArgumentException('Manifest should be a string');
+        }
+
         $this->adapters = array_merge(ConfigValue::ADAPTERS, []);
         $this->bundles  = [
             CKP::DEFAULT => [
                 CKP::ADAPTER  => CKP::DEFAULT,
-                CKP::HOST     => env(EnvKey::ASSET_DEFAULT_HOST, ''),
-                CKP::PATH     => env(EnvKey::ASSET_DEFAULT_PATH, '/'),
-                CKP::MANIFEST => env(EnvKey::ASSET_DEFAULT_MANIFEST, '/rev-manifest.json'),
+                CKP::HOST     => $host,
+                CKP::PATH     => $path,
+                CKP::MANIFEST => $manifest,
             ],
         ];
     }

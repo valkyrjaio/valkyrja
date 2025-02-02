@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Assert;
 
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Test\Assert\Asserter as AbstractAsserter;
 use Valkyrja\Test\Assert\Compare as CompareAsserter;
 use Valkyrja\Test\Assert\Contract\Assert as Contract;
@@ -25,6 +26,8 @@ use Valkyrja\Test\Assert\Enum\ResultType;
 use Valkyrja\Test\Assert\Exceptions as ExceptionsAsserter;
 use Valkyrja\Test\Assert\Str as StrAsserter;
 
+use function array_merge;
+
 /**
  * Class Assert.
  *
@@ -35,7 +38,7 @@ class Assert extends AbstractAsserter implements Contract
     /**
      * Asserter instances.
      *
-     * @var Asserter[]
+     * @var array<string, Asserter>
      */
     protected array $asserterInstances = [];
 
@@ -60,7 +63,13 @@ class Assert extends AbstractAsserter implements Contract
      */
     public function compare(): Compare
     {
-        return $this->__call(AsserterName::compare->name, []);
+        $compare = $this->__call(AsserterName::compare->name, []);
+
+        if (! $compare instanceof Compare) {
+            throw new InvalidArgumentException('Expecting Str contract');
+        }
+
+        return $compare;
     }
 
     /**
@@ -68,7 +77,13 @@ class Assert extends AbstractAsserter implements Contract
      */
     public function exceptions(): Exceptions
     {
-        return $this->__call(AsserterName::exceptions->name, []);
+        $exceptions = $this->__call(AsserterName::exceptions->name, []);
+
+        if (! $exceptions instanceof Exceptions) {
+            throw new InvalidArgumentException('Expecting Str contract');
+        }
+
+        return $exceptions;
     }
 
     /**
@@ -76,7 +91,13 @@ class Assert extends AbstractAsserter implements Contract
      */
     public function string(): Str
     {
-        return $this->__call(AsserterName::string->name, []);
+        $str = $this->__call(AsserterName::string->name, []);
+
+        if (! $str instanceof Str) {
+            throw new InvalidArgumentException('Expecting Str contract');
+        }
+
+        return $str;
     }
 
     /**
@@ -92,7 +113,13 @@ class Assert extends AbstractAsserter implements Contract
      */
     public function getAssertions(): array
     {
-        return $this->getAllAsserterResults(ResultType::assertions);
+        $assertions = [];
+
+        foreach ($this->asserterInstances as $asserter) {
+            $assertions[] = $asserter->getAssertions();
+        }
+
+        return array_merge(...$assertions);
     }
 
     /**
@@ -100,7 +127,13 @@ class Assert extends AbstractAsserter implements Contract
      */
     public function getErrors(): array
     {
-        return $this->getAllAsserterResults(ResultType::errors);
+        $assertions = [];
+
+        foreach ($this->asserterInstances as $asserter) {
+            $assertions[] = $asserter->getErrors();
+        }
+
+        return array_merge(...$assertions);
     }
 
     /**
@@ -108,7 +141,13 @@ class Assert extends AbstractAsserter implements Contract
      */
     public function getSuccesses(): array
     {
-        return $this->getAllAsserterResults(ResultType::successes);
+        $assertions = [];
+
+        foreach ($this->asserterInstances as $asserter) {
+            $assertions[] = $asserter->getSuccesses();
+        }
+
+        return array_merge(...$assertions);
     }
 
     /**
@@ -116,7 +155,13 @@ class Assert extends AbstractAsserter implements Contract
      */
     public function getWarnings(): array
     {
-        return $this->getAllAsserterResults(ResultType::warnings);
+        $assertions = [];
+
+        foreach ($this->asserterInstances as $asserter) {
+            $assertions[] = $asserter->getWarnings();
+        }
+
+        return array_merge(...$assertions);
     }
 
     /**
@@ -126,35 +171,19 @@ class Assert extends AbstractAsserter implements Contract
     {
         return match ($name) {
             ResultType::assertions->name => $this->getAssertions(),
-            ResultType::errors->name     => $this->getErrors(),
-            ResultType::successes->name  => $this->getSuccesses(),
-            ResultType::warnings->name   => $this->getWarnings(),
-            default                      => $this->__call($name, []),
+            ResultType::errors->name => $this->getErrors(),
+            ResultType::successes->name => $this->getSuccesses(),
+            ResultType::warnings->name => $this->getWarnings(),
+            default => $this->__call($name, []),
         };
     }
 
     /**
      * @inheritDoc
      */
-    public function __call(string $name, array $arguments): mixed
+    public function __call(string $name, array $arguments): Asserter
     {
         return $this->asserterInstances[$name]
             ??= new $this->asserters[$name]();
-    }
-
-    /**
-     * Get all the asserters' results by type.
-     *
-     * @return array<array-key, mixed>
-     */
-    protected function getAllAsserterResults(ResultType $type): array
-    {
-        $results = $this->__get($type->name);
-
-        foreach ($this->asserterInstances as $asserter) {
-            $results[] = $asserter->__get($type->name);
-        }
-
-        return array_merge(...$results);
     }
 }

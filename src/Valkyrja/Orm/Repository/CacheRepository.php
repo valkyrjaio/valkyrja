@@ -164,6 +164,14 @@ class CacheRepository extends Repository implements Contract
                     throw new RuntimeException('Unserialized results were not an array');
                 }
 
+                if ($results === []) {
+                    return [];
+                }
+
+                if (! $results[0] instanceof Entity) {
+                    throw new RuntimeException('Unserialized results were not an array of entities');
+                }
+
                 if (method_exists($this, 'setRelationshipsOnEntities')) {
                     $this->setRelationshipsOnEntities(...$results);
                 }
@@ -348,7 +356,7 @@ class CacheRepository extends Repository implements Contract
         $id = spl_object_id($entity);
 
         match ($type) {
-            StoreType::store  => $this->storeEntities[$id]  = $entity,
+            StoreType::store  => $this->storeEntities[$id]   = $entity,
             StoreType::forget => $this->forgetEntities[$id] = $entity,
         };
     }
@@ -376,7 +384,7 @@ class CacheRepository extends Repository implements Contract
      */
     protected function getEntityCacheKey(Entity $entity): string
     {
-        return $entity::class . $entity->__get($entity::getIdField());
+        return $entity::class . $entity->getIdValue();
     }
 
     /**
