@@ -33,7 +33,7 @@ interface Crypt extends Manager
      *
      * @return Driver
      */
-    public function use(string|null $name = null): Driver;
+    public function use(?string $name = null): Driver;
 
     /**
      * Determine if an encrypted message is valid.
@@ -54,7 +54,7 @@ interface Crypt extends Manager
      *
      * @return string
      */
-    public function encrypt(string $message, string|null $key = null): string;
+    public function encrypt(string $message, ?string $key = null): string;
 
     /**
      * Decrypt a message.
@@ -66,7 +66,7 @@ interface Crypt extends Manager
      *
      * @return string
      */
-    public function decrypt(string $encrypted, string|null $key = null): string;
+    public function decrypt(string $encrypted, ?string $key = null): string;
 
     /**
      * Encrypt an array.
@@ -78,7 +78,7 @@ interface Crypt extends Manager
      *
      * @return string
      */
-    public function encryptArray(array $array, string|null $key = null): string;
+    public function encryptArray(array $array, ?string $key = null): string;
 
     /**
      * Decrypt a message originally encrypted from an array.
@@ -90,7 +90,7 @@ interface Crypt extends Manager
      *
      * @return array<array-key, mixed>
      */
-    public function decryptArray(string $encrypted, string|null $key = null): array;
+    public function decryptArray(string $encrypted, ?string $key = null): array;
 
     /**
      * Encrypt a json array.
@@ -102,7 +102,7 @@ interface Crypt extends Manager
      *
      * @return string
      */
-    public function encryptObject(object $object, string|null $key = null): string;
+    public function encryptObject(object $object, ?string $key = null): string;
 
     /**
      * Decrypt a message originally encrypted from an object.
@@ -114,5 +114,5 @@ interface Crypt extends Manager
      *
      * @return object
      */
-    public function decryptObject(string $encrypted, string|null $key = null): object;
+    public function decryptObject(string $encrypted, ?string $key = null): object;
 }

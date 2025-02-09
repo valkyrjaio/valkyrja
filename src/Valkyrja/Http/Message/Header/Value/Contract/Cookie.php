@@ -57,7 +57,7 @@ interface Cookie extends Value
      *
      * @return string|null
      */
-    public function getValue(): string|null;
+    public function getValue(): ?string;
 
     /**
      * Set the cookie's value.
@@ -66,7 +66,7 @@ interface Cookie extends Value
      *
      * @return static
      */
-    public function withValue(string|null $value = null): static;
+    public function withValue(?string $value = null): static;
 
     /**
      * Get expire time for the cookie.
@@ -105,7 +105,7 @@ interface Cookie extends Value
      *
      * @return string|null
      */
-    public function getDomain(): string|null;
+    public function getDomain(): ?string;
 
     /**
      * Set the domain the cookie is available to.
@@ -114,7 +114,7 @@ interface Cookie extends Value
      *
      * @return static
      */
-    public function withDomain(string|null $domain = null): static;
+    public function withDomain(?string $domain = null): static;
 
     /**
      * Whether the cookie should only be transmitted over a secure HTTPS
@@ -172,7 +172,7 @@ interface Cookie extends Value
      *
      * @return SameSite|null
      */
-    public function getSameSite(): SameSite|null;
+    public function getSameSite(): ?SameSite;
 
     /**
      * Set whether the cookie will be available for cross-site requests.
@@ -181,5 +181,5 @@ interface Cookie extends Value
      *
      * @return static
      */
-    public function withSameSite(SameSite|null $sameSite = null): static;
+    public function withSameSite(?SameSite $sameSite = null): static;
 }

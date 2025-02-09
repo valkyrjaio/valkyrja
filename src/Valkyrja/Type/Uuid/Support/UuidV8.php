@@ -29,11 +29,11 @@ abstract class UuidV8 extends Uuid
 {
     /** @var string */
     public const REGEX = self::REGEX_PART . '{8}-'
-    . self::REGEX_PART . '{4}-'
-    . '[8]'
-    . self::REGEX_PART . '{3}-'
-    . self::REGEX_PART . '{4}-'
-    . self::REGEX_PART . '{12}';
+        . self::REGEX_PART . '{4}-'
+        . '[8]'
+        . self::REGEX_PART . '{3}-'
+        . self::REGEX_PART . '{4}-'
+        . self::REGEX_PART . '{12}';
 
     /** @var Version */
     public const VERSION = Version::V8;
@@ -47,7 +47,7 @@ abstract class UuidV8 extends Uuid
      *
      * @return string
      */
-    public static function generate(string|null $node = null): string
+    public static function generate(?string $node = null): string
     {
         $uuid     = self::v1($node);
         $uuid     = str_replace('-', '', $uuid);

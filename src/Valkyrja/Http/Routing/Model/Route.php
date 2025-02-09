@@ -47,15 +47,21 @@ use function is_string;
  */
 class Route extends Dispatch implements Contract
 {
-    protected const DEFAULT_PATH    = '/';
-    protected const DEFAULT_NAME    = null;
+    /** @var string */
+    protected const DEFAULT_PATH = '/';
+    /** @var string|null */
+    protected const DEFAULT_NAME = null;
+    /** @var RequestMethod[] */
     protected const DEFAULT_METHODS = [
         RequestMethod::GET,
         RequestMethod::HEAD,
     ];
-    protected const DEFAULT_SECURE  = null;
-    protected const DEFAULT_TO      = null;
-    protected const DEFAULT_CODE    = null;
+    /** @var bool|null */
+    protected const DEFAULT_SECURE = null;
+    /** @var string|null */
+    protected const DEFAULT_TO = null;
+    /** @var StatusCode|null */
+    protected const DEFAULT_CODE = null;
 
     /**
      * The path for this route.
@@ -69,14 +75,14 @@ class Route extends Dispatch implements Contract
      *
      * @var string|null
      */
-    protected string|null $to;
+    protected ?string $to;
 
     /**
      * The redirect status code for this route.
      *
      * @var StatusCode|null
      */
-    protected StatusCode|null $code;
+    protected ?StatusCode $code;
 
     /**
      * The request methods for this route.
@@ -93,7 +99,7 @@ class Route extends Dispatch implements Contract
      *
      * @var string|null
      */
-    protected string|null $regex;
+    protected ?string $regex;
 
     /**
      * The dynamic parameters.
@@ -107,49 +113,49 @@ class Route extends Dispatch implements Contract
      *
      * @var class-string<RouteMatchedMiddleware>[]|null
      */
-    protected array|null $matchedMiddleware;
+    protected ?array $matchedMiddleware;
 
     /**
      * The middleware for this route.
      *
      * @var class-string<RouteDispatchedMiddleware>[]|null
      */
-    protected array|null $dispatchedMiddleware;
+    protected ?array $dispatchedMiddleware;
 
     /**
      * The middleware for this route.
      *
      * @var class-string<ThrowableCaughtMiddleware>[]|null
      */
-    protected array|null $exceptionMiddleware;
+    protected ?array $exceptionMiddleware;
 
     /**
      * The middleware for this route.
      *
      * @var class-string<SendingResponseMiddleware>[]|null
      */
-    protected array|null $sendingMiddleware;
+    protected ?array $sendingMiddleware;
 
     /**
      * The middleware for this route.
      *
      * @var class-string<TerminatedMiddleware>[]|null
      */
-    protected array|null $terminatedMiddleware;
+    protected ?array $terminatedMiddleware;
 
     /**
      * The request struct for this route.
      *
      * @var class-string<RequestStruct>|null
      */
-    protected string|null $requestStruct;
+    protected ?string $requestStruct;
 
     /**
      * The response struct for this route.
      *
      * @var class-string<ResponseStruct>|null
      */
-    protected string|null $responseStruct;
+    protected ?string $responseStruct;
 
     /**
      * Whether the route is dynamic.
@@ -187,20 +193,20 @@ class Route extends Dispatch implements Contract
      * @throws InvalidRoutePathException
      */
     public function __construct(
-        string|null $path = null,
-        string|null $name = null,
-        array|null $methods = null,
-        array|null $parameters = null,
-        array|null $matchedMiddleware = null,
-        array|null $dispatchedMiddleware = null,
-        array|null $exceptionMiddleware = null,
-        array|null $sendingMiddleware = null,
-        array|null $terminatedMiddleware = null,
-        string|null $requestStruct = null,
-        string|null $responseStruct = null,
-        bool|null $secure = null,
-        string|null $to = null,
-        StatusCode|null $code = null,
+        ?string $path = null,
+        ?string $name = null,
+        ?array $methods = null,
+        ?array $parameters = null,
+        ?array $matchedMiddleware = null,
+        ?array $dispatchedMiddleware = null,
+        ?array $exceptionMiddleware = null,
+        ?array $sendingMiddleware = null,
+        ?array $terminatedMiddleware = null,
+        ?string $requestStruct = null,
+        ?string $responseStruct = null,
+        ?bool $secure = null,
+        ?string $to = null,
+        ?StatusCode $code = null,
     ) {
         $path ??= static::DEFAULT_PATH;
         $name ??= static::DEFAULT_NAME;
@@ -210,13 +216,10 @@ class Route extends Dispatch implements Contract
         $code ??= static::DEFAULT_CODE;
 
         $this->setPath($path);
+        $this->setMethods($methods);
 
         if ($name !== null && $name !== '') {
             $this->name = $name;
-        }
-
-        if ($methods !== null) {
-            $this->setMethods($methods);
         }
 
         if ($parameters !== null) {
@@ -296,7 +299,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getTo(): string|null
+    public function getTo(): ?string
     {
         return $this->to ?? null;
     }
@@ -304,7 +307,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setTo(string|null $to = null): static
+    public function setTo(?string $to = null): static
     {
         if ($to !== null) {
             $this->setRedirect(true);
@@ -318,7 +321,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getCode(): StatusCode|null
+    public function getCode(): ?StatusCode
     {
         return $this->code ?? null;
     }
@@ -361,7 +364,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getRegex(): string|null
+    public function getRegex(): ?string
     {
         return $this->regex ?? null;
     }
@@ -369,7 +372,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setRegex(string|null $regex = null): static
+    public function setRegex(?string $regex = null): static
     {
         $this->regex = $regex;
 
@@ -390,7 +393,7 @@ class Route extends Dispatch implements Contract
     public function setParameters(array $parameters): static
     {
         $this->parameters = array_map(
-            static fn (Parameter|array $parameter) => is_array($parameter)
+            static fn (Parameter|array $parameter): Parameter => is_array($parameter)
                 ? Parameter::fromArray($parameter)
                 : $parameter,
             $parameters
@@ -416,8 +419,8 @@ class Route extends Dispatch implements Contract
      */
     public function addParameter(
         string $name,
-        string|null $regex = null,
-        Cast|null $cast = null,
+        ?string $regex = null,
+        ?Cast $cast = null,
         bool $isOptional = false,
         bool $shouldCapture = true,
         mixed $default = null
@@ -437,7 +440,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getMiddleware(): array|null
+    public function getMiddleware(): ?array
     {
         return array_merge(
             $this->matchedMiddleware ?? [],
@@ -451,7 +454,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setMiddleware(array|null $middleware = null): static
+    public function setMiddleware(?array $middleware = null): static
     {
         $this->matchedMiddleware    = [];
         $this->dispatchedMiddleware = [];
@@ -529,7 +532,7 @@ class Route extends Dispatch implements Contract
      *
      * @return class-string<RouteMatchedMiddleware>[]|null
      */
-    public function getMatchedMiddleware(): array|null
+    public function getMatchedMiddleware(): ?array
     {
         return $this->matchedMiddleware ?? null;
     }
@@ -561,7 +564,7 @@ class Route extends Dispatch implements Contract
      *
      * @return class-string<RouteDispatchedMiddleware>[]|null
      */
-    public function getDispatchedMiddleware(): array|null
+    public function getDispatchedMiddleware(): ?array
     {
         return $this->dispatchedMiddleware ?? null;
     }
@@ -593,7 +596,7 @@ class Route extends Dispatch implements Contract
      *
      * @return class-string<ThrowableCaughtMiddleware>[]|null
      */
-    public function getExceptionMiddleware(): array|null
+    public function getExceptionMiddleware(): ?array
     {
         return $this->exceptionMiddleware ?? null;
     }
@@ -625,7 +628,7 @@ class Route extends Dispatch implements Contract
      *
      * @return class-string<SendingResponseMiddleware>[]|null
      */
-    public function getSendingMiddleware(): array|null
+    public function getSendingMiddleware(): ?array
     {
         return $this->sendingMiddleware ?? null;
     }
@@ -657,7 +660,7 @@ class Route extends Dispatch implements Contract
      *
      * @return class-string<TerminatedMiddleware>[]|null
      */
-    public function getTerminatedMiddleware(): array|null
+    public function getTerminatedMiddleware(): ?array
     {
         return $this->terminatedMiddleware ?? null;
     }
@@ -687,7 +690,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getRequestStruct(): string|null
+    public function getRequestStruct(): ?string
     {
         return $this->requestStruct ?? null;
     }
@@ -695,7 +698,7 @@ class Route extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setRequestStruct(string|null $requestStruct = null): static
+    public function setRequestStruct(?string $requestStruct = null): static
     {
         assert($requestStruct === null || is_a($requestStruct, RequestStruct::class, true));
 
@@ -709,7 +712,7 @@ class Route extends Dispatch implements Contract
      *
      * @return class-string<ResponseStruct>|null
      */
-    public function getResponseStruct(): string|null
+    public function getResponseStruct(): ?string
     {
         return $this->responseStruct ?? null;
     }
@@ -721,7 +724,7 @@ class Route extends Dispatch implements Contract
      *
      * @return static
      */
-    public function setResponseStruct(string|null $responseStruct = null): static
+    public function setResponseStruct(?string $responseStruct = null): static
     {
         assert($responseStruct === null || is_a($responseStruct, ResponseStruct::class, true));
 

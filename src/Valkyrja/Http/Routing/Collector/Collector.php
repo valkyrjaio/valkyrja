@@ -119,7 +119,7 @@ class Collector implements Contract
     public function get(
         string $path,
         Closure|string $handler,
-        string|null $name = null,
+        ?string $name = null,
         bool $setDependencies = true
     ): Route {
         return $this->makeRoute(
@@ -140,7 +140,7 @@ class Collector implements Contract
     public function post(
         string $path,
         Closure|string $handler,
-        string|null $name = null,
+        ?string $name = null,
         bool $setDependencies = true
     ): Route {
         return $this->makeRoute([RequestMethod::POST], $path, $handler, $name, $setDependencies);
@@ -152,7 +152,7 @@ class Collector implements Contract
     public function put(
         string $path,
         Closure|string $handler,
-        string|null $name = null,
+        ?string $name = null,
         bool $setDependencies = true
     ): Route {
         return $this->makeRoute([RequestMethod::PUT], $path, $handler, $name, $setDependencies);
@@ -164,7 +164,7 @@ class Collector implements Contract
     public function patch(
         string $path,
         Closure|string $handler,
-        string|null $name = null,
+        ?string $name = null,
         bool $setDependencies = true
     ): Route {
         return $this->makeRoute([RequestMethod::PATCH], $path, $handler, $name, $setDependencies);
@@ -176,7 +176,7 @@ class Collector implements Contract
     public function delete(
         string $path,
         Closure|string $handler,
-        string|null $name = null,
+        ?string $name = null,
         bool $setDependencies = true
     ): Route {
         return $this->makeRoute([RequestMethod::DELETE], $path, $handler, $name, $setDependencies);
@@ -188,7 +188,7 @@ class Collector implements Contract
     public function head(
         string $path,
         Closure|string $handler,
-        string|null $name = null,
+        ?string $name = null,
         bool $setDependencies = true
     ): Route {
         return $this->makeRoute([RequestMethod::HEAD], $path, $handler, $name, $setDependencies);
@@ -200,7 +200,7 @@ class Collector implements Contract
     public function any(
         string $path,
         Closure|string $handler,
-        string|null $name = null,
+        ?string $name = null,
         bool $setDependencies = true
     ): Route {
         return $this->makeRoute(RequestMethod::ANY, $path, $handler, $name, $setDependencies);
@@ -209,7 +209,7 @@ class Collector implements Contract
     /**
      * @inheritDoc
      */
-    public function redirect(string $path, string $to, array|null $methods = null, string|null $name = null): Route
+    public function redirect(string $path, string $to, ?array $methods = null, ?string $name = null): Route
     {
         $route = new RouteModel();
 
@@ -264,7 +264,7 @@ class Collector implements Contract
         array $methods,
         string $path,
         Closure|string $handler,
-        string|null $name = null,
+        ?string $name = null,
         bool $setDependencies = true
     ): Route {
         $route = $this->route->withPath($path);

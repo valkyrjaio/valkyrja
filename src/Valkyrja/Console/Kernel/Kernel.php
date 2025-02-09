@@ -88,7 +88,7 @@ class Kernel implements Contract
     /**
      * @inheritDoc
      */
-    public function run(Input|null $input = null, Output|null $output = null): int
+    public function run(?Input $input = null, ?Output $output = null): int
     {
         $this->container->setSingleton(
             Input::class,

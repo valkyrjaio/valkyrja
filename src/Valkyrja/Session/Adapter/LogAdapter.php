@@ -37,8 +37,8 @@ class LogAdapter extends PHPAdapter
     public function __construct(
         protected Logger $logger,
         array $config,
-        string|null $sessionId = null,
-        string|null $sessionName = null
+        ?string $sessionId = null,
+        ?string $sessionName = null
     ) {
         parent::__construct($config, $sessionId, $sessionName);
     }

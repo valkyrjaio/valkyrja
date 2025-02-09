@@ -81,7 +81,7 @@ trait Castable
      *
      * @return mixed
      */
-    protected function internalCheckAndCastPropertyValue(Cast|null $cast, mixed $value): mixed
+    protected function internalCheckAndCastPropertyValue(?Cast $cast, mixed $value): mixed
     {
         // If there is no type specified or the value is null just return the value
         // cast assignment is set in the if specifically to avoid an assignment

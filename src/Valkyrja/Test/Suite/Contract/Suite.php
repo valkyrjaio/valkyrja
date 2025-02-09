@@ -25,5 +25,5 @@ interface Suite
      *
      * @param string[]|null $args The arguments
      */
-    public function run(array|null $args = null): void;
+    public function run(?array $args = null): void;
 }

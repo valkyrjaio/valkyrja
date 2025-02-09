@@ -50,14 +50,14 @@ class Cookie extends Value implements Contract
      */
     public function __construct(
         protected string $name,
-        protected string|null $value = null,
+        protected ?string $value = null,
         protected int $expire = 0,
         protected string $path = '/',
-        protected string|null $domain = null,
+        protected ?string $domain = null,
         protected bool $secure = false,
         protected bool $httpOnly = true,
         protected bool $raw = false,
-        protected SameSite|null $sameSite = null,
+        protected ?SameSite $sameSite = null,
         protected bool $delete = false
     ) {
         parent::__construct();
@@ -145,7 +145,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
-    public function getValue(): string|null
+    public function getValue(): ?string
     {
         return $this->value;
     }
@@ -153,7 +153,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
-    public function withValue(string|null $value = null): static
+    public function withValue(?string $value = null): static
     {
         $new = clone $this;
 
@@ -205,7 +205,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
-    public function getDomain(): string|null
+    public function getDomain(): ?string
     {
         return $this->domain;
     }
@@ -213,7 +213,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
-    public function withDomain(string|null $domain = null): static
+    public function withDomain(?string $domain = null): static
     {
         $new = clone $this;
 
@@ -285,7 +285,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
-    public function getSameSite(): SameSite|null
+    public function getSameSite(): ?SameSite
     {
         return $this->sameSite;
     }
@@ -293,7 +293,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
-    public function withSameSite(SameSite|null $sameSite = null): static
+    public function withSameSite(?SameSite $sameSite = null): static
     {
         $new = clone $this;
 

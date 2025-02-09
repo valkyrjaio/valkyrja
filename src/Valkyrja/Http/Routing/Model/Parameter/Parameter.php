@@ -53,8 +53,8 @@ class Parameter extends Model
      */
     public function __construct(
         ?string $name = null,
-        string|null $regex = null,
-        protected Cast|null $cast = null,
+        ?string $regex = null,
+        protected ?Cast $cast = null,
         protected bool $isOptional = false,
         protected bool $shouldCapture = true,
         protected mixed $default = null,

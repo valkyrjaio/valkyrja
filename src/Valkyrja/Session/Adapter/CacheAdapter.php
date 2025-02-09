@@ -43,8 +43,8 @@ class CacheAdapter extends PHPAdapter
     public function __construct(
         protected Cache $cache,
         array $config,
-        string|null $sessionId = null,
-        string|null $sessionName = null
+        ?string $sessionId = null,
+        ?string $sessionName = null
     ) {
         parent::__construct($config, $sessionId, $sessionName);
     }

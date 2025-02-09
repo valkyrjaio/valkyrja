@@ -27,7 +27,7 @@ class ConstantDispatch extends Dispatch implements Contract
      */
     public function __construct(
         protected string $constant,
-        protected string|null $class = null,
+        protected ?string $class = null,
     ) {
     }
 
@@ -62,7 +62,7 @@ class ConstantDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getClass(): string|null
+    public function getClass(): ?string
     {
         return $this->class;
     }
@@ -70,7 +70,7 @@ class ConstantDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function withClass(string|null $class = null): static
+    public function withClass(?string $class = null): static
     {
         $new = clone $this;
 

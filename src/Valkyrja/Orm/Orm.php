@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Orm;
 
 use Valkyrja\Orm\Adapter\Contract\Adapter;
-use Valkyrja\Orm\Config\Config;
 use Valkyrja\Orm\Contract\Orm as Contract;
 use Valkyrja\Orm\Driver\Contract\Driver;
 use Valkyrja\Orm\Entity\Contract\Entity;
@@ -137,7 +136,7 @@ class Orm implements Contract
     /**
      * @inheritDoc
      */
-    public function useConnection(string|null $name = null, string|null $adapter = null): Driver
+    public function useConnection(?string $name = null, ?string $adapter = null): Driver
     {
         // The connection to use
         $name ??= $this->defaultConnection;
@@ -307,7 +306,7 @@ class Orm implements Contract
     /**
      * @inheritDoc
      */
-    public function lastInsertId(string|null $table = null, string|null $idField = null): string
+    public function lastInsertId(?string $table = null, ?string $idField = null): string
     {
         return $this->useConnection()->lastInsertId($table, $idField);
     }
@@ -363,7 +362,7 @@ class Orm implements Contract
     /**
      * @inheritDoc
      */
-    public function clear(Entity|null $entity = null): void
+    public function clear(?Entity $entity = null): void
     {
         if ($entity !== null) {
             $this->getRepositoryFromClass($entity)->clear($entity);

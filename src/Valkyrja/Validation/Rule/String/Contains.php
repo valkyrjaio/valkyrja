@@ -28,7 +28,7 @@ class Contains extends Rule
     public function __construct(
         mixed $subject,
         protected string $needle,
-        string|null $errorMessage = null
+        ?string $errorMessage = null
     ) {
         parent::__construct($subject, $errorMessage);
     }

@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Template;
 
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\View\Engine\Contract\Engine;
 use Valkyrja\View\Template\Contract\Template as Contract;
 
 use function array_merge;
 use function assert;
 use function htmlentities;
+use function is_string;
 
 use const ENT_QUOTES;
 
@@ -48,7 +50,7 @@ class Template implements Contract
      *
      * @var string|null
      */
-    protected string|null $layout = null;
+    protected ?string $layout = null;
 
     /**
      * The block status.
@@ -154,15 +156,20 @@ class Template implements Contract
      */
     public function escape(string|int|float $value): string
     {
-        $value = mb_convert_encoding((string) $value, 'UTF-8', 'UTF-8');
+        /** @var string|false $encodedValue */
+        $encodedValue = mb_convert_encoding((string) $value, 'UTF-8', 'UTF-8');
 
-        return htmlentities($value, ENT_QUOTES, 'UTF-8');
+        if (! is_string($encodedValue)) {
+            throw new InvalidArgumentException("Error occurred when encoding `$value`");
+        }
+
+        return htmlentities($encodedValue, ENT_QUOTES, 'UTF-8');
     }
 
     /**
      * @inheritDoc
      */
-    public function setLayout(string|null $layout = null): static
+    public function setLayout(?string $layout = null): static
     {
         // If no layout has been set
         if ($layout === null) {

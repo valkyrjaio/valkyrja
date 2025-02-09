@@ -44,10 +44,10 @@ class HttpRedirectException extends HttpException
      * @param Response|null                $response   [optional] The Response
      */
     public function __construct(
-        Uri|null $uri = null,
-        StatusCode|null $statusCode = null,
-        array|null $headers = null,
-        Response|null $response = null
+        ?Uri $uri = null,
+        ?StatusCode $statusCode = null,
+        ?array $headers = null,
+        ?Response $response = null
     ) {
         $statusCode ??= StatusCode::FOUND;
         $headers ??= [];

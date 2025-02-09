@@ -33,7 +33,7 @@ interface Cache extends Manager
      *
      * @return Driver
      */
-    public function use(string|null $name = null): Driver;
+    public function use(?string $name = null): Driver;
 
     /**
      * Determine if an item exists in the cache.
@@ -51,7 +51,7 @@ interface Cache extends Manager
      *
      * @return string|null
      */
-    public function get(string $key): string|null;
+    public function get(string $key): ?string;
 
     /**
      * Retrieve multiple items from the cache by key.

@@ -45,7 +45,7 @@ class CommandsListForBash extends Commander
      *
      * @param string|null $commandTyped The command typed
      */
-    public function run(string|null $commandTyped = null): int
+    public function run(?string $commandTyped = null): int
     {
         $allCommands = array_keys(console()->getNamedCommands());
 

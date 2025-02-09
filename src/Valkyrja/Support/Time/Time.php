@@ -20,9 +20,9 @@ namespace Valkyrja\Support\Time;
  */
 class Time
 {
-    protected static int|null $frozenTime = null;
+    protected static ?int $frozenTime = null;
 
-    public static function freeze(int|null $time = null): void
+    public static function freeze(?int $time = null): void
     {
         static::$frozenTime = $time ?? static::time();
     }

@@ -47,7 +47,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function encrypt(string $message, string|null $key = null): string
+    public function encrypt(string $message, ?string $key = null): string
     {
         return $this->adapter->encrypt($message, $key);
     }
@@ -55,7 +55,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function decrypt(string $encrypted, string|null $key = null): string
+    public function decrypt(string $encrypted, ?string $key = null): string
     {
         return $this->adapter->decrypt($encrypted, $key);
     }
@@ -63,7 +63,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function encryptArray(array $array, string|null $key = null): string
+    public function encryptArray(array $array, ?string $key = null): string
     {
         return $this->adapter->encryptArray($array, $key);
     }
@@ -71,7 +71,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function decryptArray(string $encrypted, string|null $key = null): array
+    public function decryptArray(string $encrypted, ?string $key = null): array
     {
         return $this->adapter->decryptArray($encrypted, $key);
     }
@@ -79,7 +79,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function encryptObject(object $object, string|null $key = null): string
+    public function encryptObject(object $object, ?string $key = null): string
     {
         return $this->adapter->encryptObject($object, $key);
     }
@@ -87,7 +87,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function decryptObject(string $encrypted, string|null $key = null): object
+    public function decryptObject(string $encrypted, ?string $key = null): object
     {
         return $this->adapter->decryptObject($encrypted, $key);
     }

@@ -80,7 +80,7 @@ class Parser implements Contract
      *
      * @throws JsonException
      */
-    public function getPropertiesAsArray(string|null $arguments = null): array|null
+    public function getPropertiesAsArray(?string $arguments = null): ?array
     {
         // If a valid properties list was passed in
         if ($arguments !== null) {
@@ -165,7 +165,7 @@ class Parser implements Contract
      *
      * @return array<int, array<int, string>|null>|null
      */
-    protected function getMatches(string $docString): array|null
+    protected function getMatches(string $docString): ?array
     {
         $regex = $this->getRegex();
 
@@ -279,7 +279,7 @@ class Parser implements Contract
      *
      * @return string|null
      */
-    protected function cleanPart(string|null $match = null): string|null
+    protected function cleanPart(?string $match = null): ?string
     {
         if ($match === null || $match === '') {
             return $match;

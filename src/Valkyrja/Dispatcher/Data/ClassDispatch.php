@@ -29,8 +29,8 @@ class ClassDispatch extends Dispatch implements Contract
      */
     public function __construct(
         protected string $class,
-        protected array|null $arguments = null,
-        protected array|null $dependencies = null,
+        protected ?array $arguments = null,
+        protected ?array $dependencies = null,
     ) {
     }
 
@@ -65,7 +65,7 @@ class ClassDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getArguments(): array|null
+    public function getArguments(): ?array
     {
         return $this->arguments;
     }
@@ -73,7 +73,7 @@ class ClassDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function withArguments(array|null $arguments = null): static
+    public function withArguments(?array $arguments = null): static
     {
         $new = clone $this;
 
@@ -85,7 +85,7 @@ class ClassDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getDependencies(): array|null
+    public function getDependencies(): ?array
     {
         return $this->dependencies;
     }
@@ -93,7 +93,7 @@ class ClassDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function withDependencies(array|null $dependencies = null): static
+    public function withDependencies(?array $dependencies = null): static
     {
         $new = clone $this;
 

@@ -72,7 +72,7 @@ interface Route extends Dispatch
      *
      * @return string|null
      */
-    public function getTo(): string|null;
+    public function getTo(): ?string;
 
     /**
      * Set the redirect path.
@@ -81,14 +81,14 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setTo(string|null $to = null): static;
+    public function setTo(?string $to = null): static;
 
     /**
      * Get the redirect status code.
      *
      * @return StatusCode|null
      */
-    public function getCode(): StatusCode|null;
+    public function getCode(): ?StatusCode;
 
     /**
      * Set the redirect status code.
@@ -120,7 +120,7 @@ interface Route extends Dispatch
      *
      * @return string|null
      */
-    public function getRegex(): string|null;
+    public function getRegex(): ?string;
 
     /**
      * Set the regex.
@@ -129,7 +129,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setRegex(string|null $regex = null): static;
+    public function setRegex(?string $regex = null): static;
 
     /**
      * Get the parameters.
@@ -170,8 +170,8 @@ interface Route extends Dispatch
      */
     public function addParameter(
         string $name,
-        string|null $regex = null,
-        Cast|null $cast = null,
+        ?string $regex = null,
+        ?Cast $cast = null,
         bool $isOptional = false,
         bool $shouldCapture = true,
         mixed $default = null
@@ -182,7 +182,7 @@ interface Route extends Dispatch
      *
      * @return class-string[]|null
      */
-    public function getMiddleware(): array|null;
+    public function getMiddleware(): ?array;
 
     /**
      * Set the middleware.
@@ -191,7 +191,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setMiddleware(array|null $middleware = null): static;
+    public function setMiddleware(?array $middleware = null): static;
 
     /**
      * Route with added middleware.
@@ -225,7 +225,7 @@ interface Route extends Dispatch
      *
      * @return class-string<RouteMatchedMiddleware>[]|null
      */
-    public function getMatchedMiddleware(): array|null;
+    public function getMatchedMiddleware(): ?array;
 
     /**
      * Set the matched middleware.
@@ -234,7 +234,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setMatchedMiddleware(array|null $middleware = null): static;
+    public function setMatchedMiddleware(?array $middleware = null): static;
 
     /**
      * Route with added matched middleware.
@@ -250,7 +250,7 @@ interface Route extends Dispatch
      *
      * @return class-string<RouteDispatchedMiddleware>[]|null
      */
-    public function getDispatchedMiddleware(): array|null;
+    public function getDispatchedMiddleware(): ?array;
 
     /**
      * Set the dispatched middleware.
@@ -259,7 +259,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setDispatchedMiddleware(array|null $middleware = null): static;
+    public function setDispatchedMiddleware(?array $middleware = null): static;
 
     /**
      * Route with added dispatched middleware.
@@ -275,7 +275,7 @@ interface Route extends Dispatch
      *
      * @return class-string<ThrowableCaughtMiddleware>[]|null
      */
-    public function getExceptionMiddleware(): array|null;
+    public function getExceptionMiddleware(): ?array;
 
     /**
      * Set the exception middleware.
@@ -284,7 +284,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setExceptionMiddleware(array|null $middleware = null): static;
+    public function setExceptionMiddleware(?array $middleware = null): static;
 
     /**
      * Route with added exception middleware.
@@ -300,7 +300,7 @@ interface Route extends Dispatch
      *
      * @return class-string<SendingResponseMiddleware>[]|null
      */
-    public function getSendingMiddleware(): array|null;
+    public function getSendingMiddleware(): ?array;
 
     /**
      * Set the sending middleware.
@@ -309,7 +309,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setSendingMiddleware(array|null $middleware = null): static;
+    public function setSendingMiddleware(?array $middleware = null): static;
 
     /**
      * Route with added sending middleware.
@@ -325,7 +325,7 @@ interface Route extends Dispatch
      *
      * @return class-string<TerminatedMiddleware>[]|null
      */
-    public function getTerminatedMiddleware(): array|null;
+    public function getTerminatedMiddleware(): ?array;
 
     /**
      * Set the terminated middleware.
@@ -334,7 +334,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setTerminatedMiddleware(array|null $middleware = null): static;
+    public function setTerminatedMiddleware(?array $middleware = null): static;
 
     /**
      * Route with added terminated middleware.
@@ -350,7 +350,7 @@ interface Route extends Dispatch
      *
      * @return class-string<RequestStruct>|null
      */
-    public function getRequestStruct(): string|null;
+    public function getRequestStruct(): ?string;
 
     /**
      * Set the request struct.
@@ -359,14 +359,14 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setRequestStruct(string|null $requestStruct = null): static;
+    public function setRequestStruct(?string $requestStruct = null): static;
 
     /**
      * Get the response struct.
      *
      * @return class-string<ResponseStruct>|null
      */
-    public function getResponseStruct(): string|null;
+    public function getResponseStruct(): ?string;
 
     /**
      * Set the response struct.
@@ -375,7 +375,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setResponseStruct(string|null $responseStruct = null): static;
+    public function setResponseStruct(?string $responseStruct = null): static;
 
     /**
      * Check whether the route is dynamic.

@@ -79,6 +79,10 @@ abstract class Model implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @see https://psalm.dev/r/309e3a322e
+     *
+     * @return static
      */
     public static function fromArray(array $properties): static
     {
@@ -96,6 +100,10 @@ abstract class Model implements Contract
      */
     public static function fromValue(mixed $value): static
     {
+        if ($value instanceof static) {
+            return $value;
+        }
+
         if (! is_array($value) && ! is_string($value)) {
             $value = json_encode($value, JSON_THROW_ON_ERROR);
         }

@@ -35,7 +35,7 @@ interface Manager
      *
      * @return Driver
      */
-    public function use(string|null $name = null): Driver;
+    public function use(?string $name = null): Driver;
 
     /**
      * Get the loader.

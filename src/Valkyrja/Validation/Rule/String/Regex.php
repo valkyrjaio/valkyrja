@@ -28,7 +28,7 @@ class Regex extends Rule
     public function __construct(
         mixed $subject,
         protected string $regex,
-        string|null $errorMessage = null
+        ?string $errorMessage = null
     ) {
         parent::__construct($subject, $errorMessage);
     }

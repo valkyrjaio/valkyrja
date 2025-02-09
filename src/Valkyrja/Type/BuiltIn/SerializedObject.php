@@ -56,7 +56,10 @@ class SerializedObject extends Type implements Contract
     public static function fromValue(mixed $value): static
     {
         if (is_string($value)) {
-            return new static(Helper::fromSerializedString($value, static::ALLOWED_CLASSES));
+            /** @var class-string[] $allowedClasses */
+            $allowedClasses = static::ALLOWED_CLASSES;
+
+            return new static(Helper::fromSerializedString($value, $allowedClasses));
         }
 
         return new static((object) $value);

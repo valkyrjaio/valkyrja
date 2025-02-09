@@ -28,7 +28,7 @@ trait TokenizableUserTrait
      *
      * @var string|null
      */
-    protected static string|null $token = null;
+    protected static ?string $token = null;
 
     /**
      * @inheritDoc
@@ -49,7 +49,7 @@ trait TokenizableUserTrait
     /**
      * @inheritDoc
      */
-    public static function asTokenized(): string|null
+    public static function asTokenized(): ?string
     {
         return static::$token;
     }

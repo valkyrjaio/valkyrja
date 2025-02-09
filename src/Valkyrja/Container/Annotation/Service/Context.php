@@ -27,14 +27,14 @@ class Context extends Service
      *
      * @var class-string<\Valkyrja\Container\Contract\Service>|null
      */
-    public string|null $service;
+    public ?string $service;
 
     /**
      * Get the service.
      *
      * @return class-string<\Valkyrja\Container\Contract\Service>|null
      */
-    public function getService(): string|null
+    public function getService(): ?string
     {
         return $this->service ?? null;
     }
@@ -46,7 +46,7 @@ class Context extends Service
      *
      * @return static
      */
-    public function setService(string|null $service = null): static
+    public function setService(?string $service = null): static
     {
         $this->service = $service;
 

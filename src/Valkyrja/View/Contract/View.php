@@ -32,7 +32,7 @@ interface View
      *
      * @return Template
      */
-    public function createTemplate(string $name, array $variables = [], string|null $engine = null): Template;
+    public function createTemplate(string $name, array $variables = [], ?string $engine = null): Template;
 
     /**
      * Get a render engine.
@@ -41,7 +41,7 @@ interface View
      *
      * @return Engine
      */
-    public function getEngine(string|null $name = null): Engine;
+    public function getEngine(?string $name = null): Engine;
 
     /**
      * Render a template.

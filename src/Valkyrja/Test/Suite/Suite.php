@@ -35,7 +35,7 @@ class Suite implements Contract
     /**
      * @inheritDoc
      */
-    public function run(array|null $args = null): void
+    public function run(?array $args = null): void
     {
         $args ??= $this->getServerArgs();
         $results = $this->results;
@@ -53,6 +53,8 @@ class Suite implements Contract
     protected function getServerArgs(): array
     {
         global $argv;
+
+        /** @var string[] $argv */
 
         return $argv;
     }

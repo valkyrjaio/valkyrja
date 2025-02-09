@@ -46,14 +46,14 @@ class Query implements QueryContract
      *
      * @var string|null
      */
-    protected string|null $table = null;
+    protected ?string $table = null;
 
     /**
      * The entity to query with.
      *
      * @var class-string<Entity>|null
      */
-    protected string|null $entity = null;
+    protected ?string $entity = null;
 
     /**
      * Query constructor.

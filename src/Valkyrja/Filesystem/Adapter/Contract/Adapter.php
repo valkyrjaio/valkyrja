@@ -137,7 +137,7 @@ interface Adapter extends Contract
      *
      * @return array<string, string|int|null>|null An array of meta data or null on failure
      */
-    public function metadata(string $path): array|null;
+    public function metadata(string $path): ?array;
 
     /**
      * Get a file's mime type.
@@ -146,7 +146,7 @@ interface Adapter extends Contract
      *
      * @return string|null The mime type or null on failure
      */
-    public function mimetype(string $path): string|null;
+    public function mimetype(string $path): ?string;
 
     /**
      * Get a file's size.
@@ -155,7 +155,7 @@ interface Adapter extends Contract
      *
      * @return int|null The size in bytes or null on failure
      */
-    public function size(string $path): int|null;
+    public function size(string $path): ?int;
 
     /**
      * Get a file's timestamp.
@@ -164,7 +164,7 @@ interface Adapter extends Contract
      *
      * @return int|null The timestamp or null on failure
      */
-    public function timestamp(string $path): int|null;
+    public function timestamp(string $path): ?int;
 
     /**
      * Get a file's visibility.
@@ -174,7 +174,7 @@ interface Adapter extends Contract
      * @return string|null The visibility ('public' or 'private') or null on
      *                     failure
      */
-    public function visibility(string $path): string|null;
+    public function visibility(string $path): ?string;
 
     /**
      * Set a file's visibility.
@@ -230,5 +230,5 @@ interface Adapter extends Contract
      *
      * @return array<string, string|int>[]
      */
-    public function listContents(string|null $directory = null, bool $recursive = false): array;
+    public function listContents(?string $directory = null, bool $recursive = false): array;
 }

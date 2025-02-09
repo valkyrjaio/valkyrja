@@ -25,7 +25,7 @@ abstract class Rule implements Contract
 {
     public function __construct(
         protected mixed $subject,
-        protected string|null $errorMessage = null
+        protected ?string $errorMessage = null
     ) {
     }
 

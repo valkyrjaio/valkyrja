@@ -74,9 +74,9 @@ class RedirectResponse extends Response implements Contract
      * @inheritDoc
      */
     public static function createFromUri(
-        UriContract|null $uri = null,
-        StatusCode|null $statusCode = null,
-        array|null $headers = null
+        ?UriContract $uri = null,
+        ?StatusCode $statusCode = null,
+        ?array $headers = null
     ): static {
         return new static(
             $uri ?? new Uri(path: static::DEFAULT_URI),

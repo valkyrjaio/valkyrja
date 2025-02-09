@@ -52,7 +52,7 @@ class Matcher implements Contract
      * @throws InvalidRoutePathException
      * @throws InvalidRouteParameterException
      */
-    public function match(string $path, RequestMethod|null $method = null): Route|null
+    public function match(string $path, ?RequestMethod $method = null): ?Route
     {
         $path  = Helpers::trimPath($path);
         $route = $this->matchStatic($path, $method);
@@ -63,7 +63,7 @@ class Matcher implements Contract
     /**
      * @inheritDoc
      */
-    public function matchStatic(string $path, RequestMethod|null $method = null): Route|null
+    public function matchStatic(string $path, ?RequestMethod $method = null): ?Route
     {
         $route = $this->collection->getStatic($path, $method);
 
@@ -80,7 +80,7 @@ class Matcher implements Contract
      * @throws InvalidRoutePathException
      * @throws InvalidRouteParameterException
      */
-    public function matchDynamic(string $path, RequestMethod|null $method = null): Route|null
+    public function matchDynamic(string $path, ?RequestMethod $method = null): ?Route
     {
         return $this->matchDynamicFromArray($this->collection->allDynamic($method), $path);
     }
@@ -96,7 +96,7 @@ class Matcher implements Contract
      *
      * @return Route|null
      */
-    protected function matchDynamicFromArray(array $routes, string $path): Route|null
+    protected function matchDynamicFromArray(array $routes, string $path): ?Route
     {
         // Attempt to find a match using dynamic routes that are set
         foreach ($routes as $regex => $route) {
@@ -120,7 +120,7 @@ class Matcher implements Contract
      *
      * @return Route|null
      */
-    protected function matchDynamicFromRouteOrArray(Route|array $route, string $path, string $regex): Route|null
+    protected function matchDynamicFromRouteOrArray(Route|array $route, string $path, string $regex): ?Route
     {
         if (is_array($route)) {
             return $this->matchDynamicFromArray($route, $path);

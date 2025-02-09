@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Cacheable;
 
 use Valkyrja\Config\Config;
+use Valkyrja\Exception\InvalidArgumentException;
+
+use function is_string;
 
 /**
  * Trait Cacheable.
@@ -105,6 +108,10 @@ trait Cacheable
     protected function requireFilePath(Config|array $config): void
     {
         $filePath = $config['filePath'];
+
+        if (! is_string($filePath)) {
+            throw new InvalidArgumentException('File path must be a string');
+        }
 
         if (is_file($filePath)) {
             require $filePath;

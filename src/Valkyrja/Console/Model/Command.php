@@ -33,40 +33,40 @@ class Command extends Dispatch implements Contract
      *
      * @var string|null
      */
-    protected string|null $path = null;
+    protected ?string $path = null;
 
     /**
      * The regex for dynamic routes.
      *
      * @var string|null
      */
-    protected string|null $regex = null;
+    protected ?string $regex = null;
 
     /**
      * Any params for dynamic routes.
      *
      * @var ParsedPathParams|null
      */
-    protected array|null $params = null;
+    protected ?array $params = null;
 
     /**
      * Any segments for optional parts of path.
      *
      * @var string[]|null
      */
-    protected array|null $segments = null;
+    protected ?array $segments = null;
 
     /**
      * The description.
      *
      * @var string|null
      */
-    protected string|null $description = null;
+    protected ?string $description = null;
 
     /**
      * @inheritDoc
      */
-    public function getPath(): string|null
+    public function getPath(): ?string
     {
         return $this->path;
     }
@@ -84,7 +84,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getRegex(): string|null
+    public function getRegex(): ?string
     {
         return $this->regex;
     }
@@ -92,7 +92,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setRegex(string|null $regex = null): static
+    public function setRegex(?string $regex = null): static
     {
         $this->regex = $regex;
 
@@ -102,7 +102,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getParams(): array|null
+    public function getParams(): ?array
     {
         return $this->params;
     }
@@ -110,7 +110,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setParams(array|null $params = null): static
+    public function setParams(?array $params = null): static
     {
         $this->params = $params;
 
@@ -120,7 +120,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getSegments(): array|null
+    public function getSegments(): ?array
     {
         return $this->segments;
     }
@@ -128,7 +128,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setSegments(array|null $segments = null): static
+    public function setSegments(?array $segments = null): static
     {
         $this->segments = $segments;
 
@@ -138,7 +138,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function getDescription(): string|null
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -146,7 +146,7 @@ class Command extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public function setDescription(string|null $description = null): static
+    public function setDescription(?string $description = null): static
     {
         $this->description = $description;
 

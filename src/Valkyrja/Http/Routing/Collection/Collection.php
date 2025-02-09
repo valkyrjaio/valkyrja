@@ -86,7 +86,7 @@ class Collection implements Contract
      *
      * @throws JsonException
      */
-    public function get(string $path, RequestMethod|null $method = null): Route|null
+    public function get(string $path, ?RequestMethod $method = null): ?Route
     {
         return $this->getStatic($path, $method) ?? $this->getDynamic($path, $method);
     }
@@ -94,7 +94,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function isset(string $path, RequestMethod|null $method = null): bool
+    public function isset(string $path, ?RequestMethod $method = null): bool
     {
         return $this->hasStatic($path, $method) || $this->hasDynamic($path, $method);
     }
@@ -120,7 +120,7 @@ class Collection implements Contract
      *
      * @throws JsonException
      */
-    public function getStatic(string $path, RequestMethod|null $method = null): Route|null
+    public function getStatic(string $path, ?RequestMethod $method = null): ?Route
     {
         return $this->getOfType($this->static, $path, $method);
     }
@@ -128,7 +128,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function hasStatic(string $path, RequestMethod|null $method = null): bool
+    public function hasStatic(string $path, ?RequestMethod $method = null): bool
     {
         return $this->hasOfType($this->static, $path, $method);
     }
@@ -136,7 +136,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function allStatic(RequestMethod|null $method = null): array
+    public function allStatic(?RequestMethod $method = null): array
     {
         return $this->allOfType($this->static, $method);
     }
@@ -146,7 +146,7 @@ class Collection implements Contract
      *
      * @throws JsonException
      */
-    public function getDynamic(string $regex, RequestMethod|null $method = null): Route|null
+    public function getDynamic(string $regex, ?RequestMethod $method = null): ?Route
     {
         return $this->getOfType($this->dynamic, $regex, $method);
     }
@@ -154,7 +154,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function hasDynamic(string $regex, RequestMethod|null $method = null): bool
+    public function hasDynamic(string $regex, ?RequestMethod $method = null): bool
     {
         return $this->hasOfType($this->dynamic, $regex, $method);
     }
@@ -162,7 +162,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function allDynamic(RequestMethod|null $method = null): array
+    public function allDynamic(?RequestMethod $method = null): array
     {
         return $this->allOfType($this->dynamic, $method);
     }
@@ -170,7 +170,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function getNamed(string $name): Route|null
+    public function getNamed(string $name): ?Route
     {
         $named = $this->named[$name] ?? null;
 
@@ -267,7 +267,7 @@ class Collection implements Contract
      *
      * @return Route|null
      */
-    protected function getOfType(array $type, string $path, RequestMethod|null $method = null): Route|null
+    protected function getOfType(array $type, string $path, ?RequestMethod $method = null): ?Route
     {
         if ($method === null) {
             return $this->getAnyOfType($type, $path);
@@ -292,7 +292,7 @@ class Collection implements Contract
      *
      * @return Route|null
      */
-    protected function getAnyOfType(array $type, string $path): Route|null
+    protected function getAnyOfType(array $type, string $path): ?Route
     {
         return $this->getOfType($type, $path, RequestMethod::GET)
             ?? $this->getOfType($type, $path, RequestMethod::HEAD)
@@ -311,7 +311,7 @@ class Collection implements Contract
      *
      * @return bool
      */
-    protected function hasOfType(array $type, string $path, RequestMethod|null $method = null): bool
+    protected function hasOfType(array $type, string $path, ?RequestMethod $method = null): bool
     {
         if ($method === null) {
             return $this->hasAnyOfType($type, $path);
@@ -347,7 +347,7 @@ class Collection implements Contract
      *
      * @return RequestMethodRouteList|array<string, Route>
      */
-    protected function allOfType(array $type, RequestMethod|null $method = null): array
+    protected function allOfType(array $type, ?RequestMethod $method = null): array
     {
         if ($method === null) {
             return $this->ensureMethodRoutes($type);

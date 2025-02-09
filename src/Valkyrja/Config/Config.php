@@ -43,7 +43,7 @@ abstract class Config extends Model
      * @param array<string, mixed>|null $properties [optional] The properties to set
      * @param bool                      $setup      [optional] Whether to setup this config
      */
-    public function __construct(array|null $properties = null, bool $setup = false)
+    public function __construct(?array $properties = null, bool $setup = false)
     {
         if ($setup) {
             $this->setup($properties);
@@ -65,7 +65,7 @@ abstract class Config extends Model
      *
      * @return void
      */
-    protected function setup(array|null $properties = null): void
+    protected function setup(?array $properties = null): void
     {
     }
 

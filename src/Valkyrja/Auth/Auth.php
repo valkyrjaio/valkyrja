@@ -131,7 +131,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function getAdapter(string|null $name = null): Adapter
+    public function getAdapter(?string $name = null): Adapter
     {
         $name ??= $this->defaultAdapter;
 
@@ -142,7 +142,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function getRepository(string|null $user = null, string|null $adapter = null): Repository
+    public function getRepository(?string $user = null, ?string $adapter = null): Repository
     {
         $user ??= $this->defaultUserEntity;
         $name = $user::getAuthRepository()
@@ -155,7 +155,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function getGate(string|null $name = null, string|null $user = null, string|null $adapter = null): Gate
+    public function getGate(?string $name = null, ?string $user = null, ?string $adapter = null): Gate
     {
         $name ??= $this->defaultGate;
 
@@ -166,7 +166,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function getPolicy(string|null $name = null, string|null $user = null, string|null $adapter = null): Policy
+    public function getPolicy(?string $name = null, ?string $user = null, ?string $adapter = null): Policy
     {
         $name ??= $this->defaultPolicy;
 
@@ -187,8 +187,8 @@ class Auth implements Contract
      */
     public function requestWithAuthToken(
         ServerRequest $request,
-        string|null $user = null,
-        string|null $adapter = null
+        ?string $user = null,
+        ?string $adapter = null
     ): ServerRequest {
         $repository = $this->getRepository($user, $adapter);
 
@@ -293,7 +293,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function unAuthenticate(User|null $user = null): static
+    public function unAuthenticate(?User $user = null): static
     {
         $this->getRepository()->unAuthenticate($user);
 

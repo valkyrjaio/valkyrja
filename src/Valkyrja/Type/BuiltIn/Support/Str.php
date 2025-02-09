@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Type\BuiltIn\Support;
 
 use Exception;
-
 use JsonException;
 
 use function base64_encode;
@@ -24,6 +23,8 @@ use function ctype_lower;
 use function ctype_upper;
 use function filter_var;
 use function gettype;
+use function is_array;
+use function is_bool;
 use function is_float;
 use function is_int;
 use function is_object;
@@ -206,7 +207,7 @@ class Str
      *
      * @return string
      */
-    public static function substr(string $subject, int $start, int|null $length = null): string
+    public static function substr(string $subject, int $start, ?int $length = null): string
     {
         return substr($subject, $start, $length);
     }
@@ -327,11 +328,11 @@ class Str
         return match (true) {
             is_string($subject) => $subject,
             is_int($subject), is_float($subject) => (string) $subject,
-            is_bool($subject) => $subject ? 'true' : 'false',
-            is_array($subject) => Arr::toString($subject),
+            is_bool($subject)   => $subject ? 'true' : 'false',
+            is_array($subject)  => Arr::toString($subject),
             is_object($subject) => Obj::toString($subject),
-            $subject === null => 'null',
-            default => gettype($subject),
+            $subject === null   => 'null',
+            default             => gettype($subject),
         };
     }
 

@@ -47,7 +47,7 @@ interface WhereQueryBuilder
      */
     public function where(
         string $column,
-        string|null $operator = null,
+        ?string $operator = null,
         QueryBuilder|array|string|float|int|bool|null $value = null,
         bool $setType = true
     ): static;

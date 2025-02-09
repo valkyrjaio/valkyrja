@@ -23,7 +23,7 @@ class JsonObjectTest extends TestCase
 {
     public function testValue(): void
     {
-        $value = new class() {
+        $value = new class {
         };
         $type  = new JsonObject($value);
 
@@ -35,7 +35,7 @@ class JsonObjectTest extends TestCase
      */
     public function testFromValue(): void
     {
-        $value         = new class() {
+        $value         = new class {
         };
         $typeFromValue = JsonObject::fromValue($value);
 
@@ -47,7 +47,7 @@ class JsonObjectTest extends TestCase
      */
     public function testAsFlatValue(): void
     {
-        $value = new class() {
+        $value = new class {
         };
         $type  = new JsonObject($value);
 
@@ -59,7 +59,7 @@ class JsonObjectTest extends TestCase
      */
     public function testModify(): void
     {
-        $value = new class() {
+        $value = new class {
             public string $foo = 'test';
         };
         $type  = new JsonObject($value);
@@ -81,7 +81,7 @@ class JsonObjectTest extends TestCase
 
     public function testJsonSerialize(): void
     {
-        $value = new class() {
+        $value = new class {
             public string $pie = 'pie';
         };
         $type  = new JsonObject($value);

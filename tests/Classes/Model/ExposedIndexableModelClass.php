@@ -32,7 +32,7 @@ class ExposedIndexableModelClass extends AbstractModel implements Contract
 
     public string $public;
 
-    public string|null $nullable;
+    public ?string $nullable;
 
     protected string $protected;
 

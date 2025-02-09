@@ -25,7 +25,7 @@ use Valkyrja\Type\Type;
  */
 class Port extends Type
 {
-    public function __construct(int|null $subject)
+    public function __construct(?int $subject)
     {
         if ($subject === null || ($subject >= 1 && $subject <= 65535)) {
             $this->subject = $subject;
@@ -49,7 +49,7 @@ class Port extends Type
      *
      * @return int|null
      */
-    public function asFlatValue(): int|null
+    public function asFlatValue(): ?int
     {
         return $this->subject;
     }

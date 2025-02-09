@@ -48,10 +48,10 @@ class HttpException extends RuntimeException
      * @param Response|null                $response   [optional] The Response to send
      */
     public function __construct(
-        StatusCode|null $statusCode = null,
-        string|null $message = null,
-        array|null $headers = [],
-        protected Response|null $response = null
+        ?StatusCode $statusCode = null,
+        ?string $message = null,
+        ?array $headers = [],
+        protected ?Response $response = null
     ) {
         $this->statusCode = $statusCode
             ?? $response?->getStatusCode()
@@ -87,7 +87,7 @@ class HttpException extends RuntimeException
      *
      * @return Response|null
      */
-    public function getResponse(): Response|null
+    public function getResponse(): ?Response
     {
         return $this->response;
     }

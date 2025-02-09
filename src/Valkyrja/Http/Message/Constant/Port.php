@@ -33,7 +33,7 @@ final class Port
      *
      * @return bool
      */
-    public static function isValid(int|null $port = null): bool
+    public static function isValid(?int $port = null): bool
     {
         return $port === null || ($port >= self::MIN && $port <= self::MAX);
     }

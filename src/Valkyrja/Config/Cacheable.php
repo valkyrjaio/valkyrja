@@ -25,7 +25,7 @@ trait Cacheable
      *
      * @var Config|null
      */
-    public Config|null $cache = null;
+    public ?Config $cache = null;
 
     /**
      * The file path.

@@ -33,7 +33,7 @@ class NullAdapter extends Adapter
     /**
      * @inheritDoc
      */
-    public function retrieve(User $user): User|null
+    public function retrieve(User $user): ?User
     {
         return $user;
     }
@@ -41,7 +41,7 @@ class NullAdapter extends Adapter
     /**
      * @inheritDoc
      */
-    public function retrieveByResetToken(User $user, string $resetToken): User|null
+    public function retrieveByResetToken(User $user, string $resetToken): ?User
     {
         return $user;
     }

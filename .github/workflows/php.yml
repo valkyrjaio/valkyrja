@@ -48,6 +48,9 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
+      - name: Install dependencies for PHP Arkitect
+        run: cd .github/ci/phparkitect && composer install --prefer-dist --no-progress
+
       # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
       # Docs: https://getcomposer.org/doc/articles/scripts.md
 
@@ -70,7 +73,7 @@ jobs:
       - name: Run PHPArkitect
         if: ${{ matrix.php == '8.1' }}
         run: |
-          vendor/bin/phparkitect check --config=phparkitect.php
+          .github/ci/phparkitect/vendor/bin/phparkitect check --config=phparkitect.php
 
       - name: Upload Codecov Coverage Report
         if: ${{ matrix.php == '8.1' }}

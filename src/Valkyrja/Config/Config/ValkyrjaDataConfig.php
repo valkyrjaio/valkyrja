@@ -22,6 +22,7 @@ use Valkyrja\Auth\Config as Auth;
 use Valkyrja\Broadcast\Config as Broadcast;
 use Valkyrja\Cache\Config as Cache;
 use Valkyrja\Client\Config as Client;
+use Valkyrja\Config\Config\DataConfig as ConfigConfig;
 use Valkyrja\Config\DataConfig;
 use Valkyrja\Console\Config as Console;
 use Valkyrja\Container\Config as Container;
@@ -34,7 +35,7 @@ use Valkyrja\Jwt\Config as Jwt;
 use Valkyrja\Log\Config as Log;
 use Valkyrja\Mail\Config as Mail;
 use Valkyrja\Notification\Config as Notification;
-use Valkyrja\Orm\Config\Config as ORM;
+use Valkyrja\Orm\Config as Orm;
 use Valkyrja\Path\Config as Path;
 use Valkyrja\Session\Config as Session;
 use Valkyrja\Sms\Config as Sms;
@@ -44,13 +45,13 @@ use function is_string;
 use function unserialize;
 
 /**
- * Class Config.
+ * Class ValkyrjaConfig.
  *
  * @author Melech Mizrachi
  *
  * @implements ArrayAccess<string, DataConfig>
  */
-class MainDataConfig implements ArrayAccess
+class ValkyrjaDataConfig implements ArrayAccess
 {
     /**
      * A map of property to class.
@@ -60,168 +61,168 @@ class MainDataConfig implements ArrayAccess
     protected static array $map = [];
 
     /**
-     * The annotation module config.
+     * The annotation component config.
      *
      * @var Annotation
      */
     protected Annotation $annotation;
 
     /**
-     * The api module config.
+     * The api component config.
      *
      * @var Api
      */
     protected Api $api;
 
     /**
-     * The application module config.
+     * The application component config.
      *
      * @var App
      */
     protected App $app;
 
     /**
-     * The asset module config.
+     * The asset component config.
      *
      * @var Asset
      */
     protected Asset $asset;
 
     /**
-     * The auth module config.
+     * The auth component config.
      *
      * @var Auth
      */
     protected Auth $auth;
 
     /**
-     * The broadcast module config.
+     * The broadcast component config.
      *
      * @var Broadcast
      */
     protected Broadcast $broadcast;
 
     /**
-     * The cache module config.
+     * The cache component config.
      *
      * @var Cache
      */
     protected Cache $cache;
 
     /**
-     * The client module config.
+     * The client component config.
      *
      * @var Client
      */
     protected Client $client;
 
     /**
-     * The client module config.
+     * The client component config.
      *
-     * @var Config
+     * @var ConfigConfig
      */
-    protected Config $config;
+    protected ConfigConfig $config;
 
     /**
-     * The console module config.
+     * The console component config.
      *
      * @var Console
      */
     protected Console $console;
 
     /**
-     * The container module config.
+     * The container component config.
      *
      * @var Container
      */
     protected Container $container;
 
     /**
-     * The crypt module config.
+     * The crypt component config.
      *
      * @var Crypt
      */
     protected Crypt $crypt;
 
     /**
-     * The event module config.
+     * The event component config.
      *
      * @var Event
      */
     protected Event $event;
 
     /**
-     * The filesystem module config.
+     * The filesystem component config.
      *
      * @var Filesystem
      */
     protected Filesystem $filesystem;
 
     /**
-     * The Jwt module config.
+     * The Jwt component config.
      *
      * @var Jwt
      */
     protected Jwt $jwt;
 
     /**
-     * The logging module config.
+     * The logging component config.
      *
      * @var Log
      */
     protected Log $log;
 
     /**
-     * The mail module config.
+     * The mail component config.
      *
      * @var Mail
      */
     protected Mail $mail;
 
     /**
-     * The notification module config.
+     * The notification component config.
      *
      * @var Notification
      */
     protected Notification $notification;
 
     /**
-     * The ORM module config.
+     * The ORM component config.
      *
-     * @var ORM
+     * @var Orm
      */
-    protected ORM $orm;
+    protected Orm $orm;
 
     /**
-     * The path module config.
+     * The path component config.
      *
      * @var Path
      */
     protected Path $path;
 
     /**
-     * The routing module config.
+     * The routing component config.
      *
      * @var Routing
      */
     protected Routing $routing;
 
     /**
-     * The session module config.
+     * The session component config.
      *
      * @var Session
      */
     protected Session $session;
 
     /**
-     * The SMS module config.
+     * The SMS component config.
      *
      * @var Sms
      */
     protected Sms $sms;
 
     /**
-     * The view module config.
+     * The view component config.
      *
      * @var View
      */
@@ -231,14 +232,39 @@ class MainDataConfig implements ArrayAccess
      * @param array<string, array<string, mixed>|string>|null $cached
      */
     public function __construct(
-        protected array|null $cached = null
+        protected ?array $cached = null
     ) {
+        if ($cached === null) {
+            $this->annotation   = new Annotation\Annotation();
+            $this->api          = new Api\Api();
+            $this->asset        = new Asset\Asset();
+            $this->auth         = new Auth\Auth();
+            $this->broadcast    = new Broadcast\Broadcast();
+            $this->cache        = new Cache\Cache();
+            $this->client       = new Client\Client();
+            $this->config       = new ConfigConfig();
+            $this->console      = new Console\Console();
+            $this->container    = new Container\Container();
+            $this->crypt        = new Crypt\Crypt();
+            $this->event        = new Event\Event();
+            $this->filesystem   = new Filesystem\Filesystem();
+            $this->jwt          = new Jwt\Jwt();
+            $this->log          = new Log\Log();
+            $this->mail         = new Mail\Mail();
+            $this->notification = new Notification\Notification();
+            $this->orm          = new Orm\Orm();
+            $this->path         = new Path\Path();
+            $this->routing      = new Routing\Routing();
+            $this->session      = new Session\Session();
+            $this->sms          = new Sms\Sms();
+            $this->view         = new View\View();
+        }
     }
 
     /**
      * Get a property.
      */
-    public function __get(string $name): DataConfig|null
+    public function __get(string $name): ?DataConfig
     {
         if (! isset($this->$name) && $this->cached !== null) {
             $cache = $this->cached[$name];
@@ -250,16 +276,10 @@ class MainDataConfig implements ArrayAccess
                     throw new RuntimeException("Invalid cache provided for $name");
                 }
 
+                $this->$name = $config;
+
                 return $config;
             }
-
-            match ($name) {
-                'annotations' => new Annotation\Annotation($cache),
-                'api' => new Api\Api($cache),
-                'app' => new App\App($cache),
-                'asset' => new Asset\Asset($cache),
-                default => throw new RuntimeException("$name has not been implemented"),
-            };
         }
 
         return $this->$name ?? null;
@@ -292,7 +312,7 @@ class MainDataConfig implements ArrayAccess
     /**
      * @inheritDoc
      */
-    public function offsetGet($offset): DataConfig|null
+    public function offsetGet($offset): ?DataConfig
     {
         return $this->__get($offset);
     }

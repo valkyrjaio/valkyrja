@@ -36,8 +36,8 @@ interface DeleteQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
         string $table,
         string $column1,
         string $column2,
-        string|null $operator = null,
-        string|null $type = null,
-        bool|null $isWhere = null
+        ?string $operator = null,
+        ?string $type = null,
+        ?bool $isWhere = null
     ): static;
 }

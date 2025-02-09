@@ -40,5 +40,5 @@ interface MessageManager extends Manager
      *
      * @return Message
      */
-    public function createMessage(string|null $name = null, array $data = []): Message;
+    public function createMessage(?string $name = null, array $data = []): Message;
 }

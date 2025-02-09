@@ -19,6 +19,7 @@ use Valkyrja\Asset\Constant\ConfigValue;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Exception\InvalidArgumentException;
 
+use function is_string;
 use function Valkyrja\env;
 
 /**
@@ -29,7 +30,7 @@ class Asset extends Model
     /**
      * @inheritDoc
      */
-    protected function setup(array|null $properties = null): void
+    protected function setup(?array $properties = null): void
     {
         $this->updateProperties(ConfigValue::$defaults);
 

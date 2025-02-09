@@ -81,7 +81,7 @@ class RequestStructMiddleware implements RouteMatchedMiddleware
      *
      * @return Response|null
      */
-    protected function ensureRequestConformsToMessage(ServerRequest $request, Route $matchedRoute, string $struct): Response|null
+    protected function ensureRequestConformsToMessage(ServerRequest $request, Route $matchedRoute, string $struct): ?Response
     {
         return $this->ensureRequestHasNoExtraData($request, $matchedRoute, $struct)
             ?? $this->ensureRequestIsValid($request, $matchedRoute, $struct)
@@ -95,7 +95,7 @@ class RequestStructMiddleware implements RouteMatchedMiddleware
      *
      * @return Response|null
      */
-    protected function ensureRequestHasNoExtraData(ServerRequest $request, Route $matchedRoute, string $struct): Response|null
+    protected function ensureRequestHasNoExtraData(ServerRequest $request, Route $matchedRoute, string $struct): ?Response
     {
         // If there is extra data
         if ($struct::determineIfRequestContainsExtraData($request)) {
@@ -127,7 +127,7 @@ class RequestStructMiddleware implements RouteMatchedMiddleware
      *
      * @return Response|null
      */
-    protected function ensureRequestIsValid(ServerRequest $request, Route $matchedRoute, string $struct): Response|null
+    protected function ensureRequestIsValid(ServerRequest $request, Route $matchedRoute, string $struct): ?Response
     {
         $validate = $struct::validate($request);
 

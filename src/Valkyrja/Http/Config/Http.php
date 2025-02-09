@@ -28,7 +28,7 @@ class Http extends Model
     /**
      * @inheritDoc
      */
-    protected function setup(array|null $properties = null): void
+    protected function setup(?array $properties = null): void
     {
         $middleware = $properties['middleware'] ?? null;
         $server     = $properties['server'] ?? null;

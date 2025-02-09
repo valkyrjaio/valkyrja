@@ -29,14 +29,14 @@ interface Notify
      *
      * @return string|null
      */
-    public function getBroadcastAdapterName(): string|null;
+    public function getBroadcastAdapterName(): ?string;
 
     /**
      * Get the broadcast message's name to use for this notification.
      *
      * @return string|null
      */
-    public function getBroadcastMessageName(): string|null;
+    public function getBroadcastMessageName(): ?string;
 
     /**
      * Whether an broadcast message should be sent for this notification.
@@ -50,14 +50,14 @@ interface Notify
      *
      * @return string|null
      */
-    public function getMailAdapterName(): string|null;
+    public function getMailAdapterName(): ?string;
 
     /**
      * Get the mail message's name to use for this notification.
      *
      * @return string|null
      */
-    public function getMailMessageName(): string|null;
+    public function getMailMessageName(): ?string;
 
     /**
      * Whether a mail message should be sent for this notification.
@@ -71,14 +71,14 @@ interface Notify
      *
      * @return string|null
      */
-    public function getSmsAdapterName(): string|null;
+    public function getSmsAdapterName(): ?string;
 
     /**
      * Get the SMS message's name to use for this notification.
      *
      * @return string|null
      */
-    public function getSmsMessageName(): string|null;
+    public function getSmsMessageName(): ?string;
 
     /**
      * Whether an SMS message should be sent for this notification.

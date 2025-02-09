@@ -41,7 +41,7 @@ class Request implements Contract
      *
      * @var string|null
      */
-    protected string|null $requestTarget = null;
+    protected ?string $requestTarget = null;
 
     /**
      * Request constructor.

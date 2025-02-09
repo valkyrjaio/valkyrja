@@ -33,21 +33,21 @@ abstract class GatedMiddleware extends AuthorizedMiddleware
      *
      * @var class-string<Gate>|null
      */
-    protected static string|null $gate = null;
+    protected static ?string $gate = null;
 
     /**
      * The policy to check against.
      *
      * @var class-string<Policy>|null
      */
-    protected static string|null $policy = null;
+    protected static ?string $policy = null;
 
     /**
      * The action to check for.
      *
      * @var string|null
      */
-    protected static string|null $action = null;
+    protected static ?string $action = null;
 
     /**
      * @inheritDoc
@@ -66,7 +66,7 @@ abstract class GatedMiddleware extends AuthorizedMiddleware
      *
      * @return string|null
      */
-    protected static function getGate(): string|null
+    protected static function getGate(): ?string
     {
         return static::$gate;
     }
@@ -93,7 +93,7 @@ abstract class GatedMiddleware extends AuthorizedMiddleware
      *
      * @return string|null
      */
-    protected static function getPolicy(): string|null
+    protected static function getPolicy(): ?string
     {
         return static::$policy;
     }

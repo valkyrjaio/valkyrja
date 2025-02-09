@@ -38,7 +38,7 @@ interface SelectQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function columns(array|null $columns = null): static;
+    public function columns(?array $columns = null): static;
 
     /**
      * Join with another table.
@@ -56,9 +56,9 @@ interface SelectQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
         string $table,
         string $column1,
         string $column2,
-        string|null $operator = null,
-        string|null $type = null,
-        bool|null $isWhere = null
+        ?string $operator = null,
+        ?string $type = null,
+        ?bool $isWhere = null
     ): static;
 
     /**
@@ -94,7 +94,7 @@ interface SelectQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function orderBy(string $column, string|null $type = null): static;
+    public function orderBy(string $column, ?string $type = null): static;
 
     /**
      * Add an order by ascending to the query statement.

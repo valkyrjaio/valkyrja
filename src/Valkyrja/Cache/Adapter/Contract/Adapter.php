@@ -39,7 +39,7 @@ interface Adapter extends Contract
      *
      * @return string|null
      */
-    public function get(string $key): string|null;
+    public function get(string $key): ?string;
 
     /**
      * Retrieve multiple items from the cache by key.

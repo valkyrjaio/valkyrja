@@ -33,7 +33,7 @@ trait UserTrait
      *
      * @return class-string<Repository>|null
      */
-    public static function getAuthRepository(): string|null
+    public static function getAuthRepository(): ?string
     {
         return null;
     }
@@ -43,7 +43,7 @@ trait UserTrait
      *
      * @return class-string<AuthenticatedUsers>|null
      */
-    public static function getAuthCollection(): string|null
+    public static function getAuthCollection(): ?string
     {
         return null;
     }

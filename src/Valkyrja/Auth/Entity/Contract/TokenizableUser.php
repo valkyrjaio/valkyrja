@@ -41,7 +41,7 @@ interface TokenizableUser extends User
      *
      * @return string|null
      */
-    public static function asTokenized(): string|null;
+    public static function asTokenized(): ?string;
 
     /**
      * Get user as an array for storing as a token.

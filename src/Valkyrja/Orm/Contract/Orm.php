@@ -39,7 +39,7 @@ interface Orm
      *
      * @return Driver
      */
-    public function useConnection(string|null $name = null, string|null $adapter = null): Driver;
+    public function useConnection(?string $name = null, ?string $adapter = null): Driver;
 
     /**
      * Create an adapter.
@@ -173,7 +173,7 @@ interface Orm
      *
      * @return string
      */
-    public function lastInsertId(string|null $table = null, string|null $idField = null): string;
+    public function lastInsertId(?string $table = null, ?string $idField = null): string;
 
     /**
      * Find by given criteria.
@@ -271,5 +271,5 @@ interface Orm
      *
      * @return void
      */
-    public function clear(Entity|null $entity = null): void;
+    public function clear(?Entity $entity = null): void;
 }

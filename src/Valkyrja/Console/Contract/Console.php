@@ -42,7 +42,7 @@ interface Console extends ProvidersAware
      *
      * @return Command|null
      */
-    public function getCommand(string $name): Command|null;
+    public function getCommand(string $name): ?Command;
 
     /**
      * Determine whether a command exists.

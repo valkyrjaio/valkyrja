@@ -10,6 +10,11 @@
             <code><![CDATA[var_dump($exception)]]></code>
         </ForbiddenCode>
     </file>
+    <file src="src/Valkyrja/Http/Server/RequestHandler.php">
+        <UndefinedFunction>
+            <code><![CDATA[litespeed_finish_request()]]></code>
+        </UndefinedFunction>
+    </file>
     <file src="src/Valkyrja/Console/Output/Output.php">
         <RedundantCondition>
             <code><![CDATA[$outputStyle->value]]></code>

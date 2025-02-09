@@ -34,7 +34,7 @@ interface Logger extends Manager
      *
      * @return Driver
      */
-    public function use(string|null $name = null): Driver;
+    public function use(?string $name = null): Driver;
 
     /**
      * Log a debug message.

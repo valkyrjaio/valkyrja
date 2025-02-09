@@ -39,7 +39,7 @@ use Valkyrja\Session\Factory\Contract\Factory;
  *
  * @phpstan-import-type ConfigAsArray from NullAdapter
  */
-class ServiceProvider extends Provider
+final class ServiceProvider extends Provider
 {
     /**
      * @inheritDoc

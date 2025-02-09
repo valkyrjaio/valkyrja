@@ -84,7 +84,10 @@ trait Enum
         }
 
         // Fallback to UnitEnum name property
-        return $this->name;
+        /** @var string $name */
+        $name = $this->name;
+
+        return $name;
     }
 
     /**

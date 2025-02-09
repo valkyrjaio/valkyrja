@@ -56,11 +56,14 @@ abstract class ServerFactory
     /**
      * @return array{Authorization?: string, authorization?: string}|null
      */
-    private static function apacheRequestHeaders(): array|null
+    private static function apacheRequestHeaders(): ?array
     {
         if (function_exists('apache_request_headers')) {
+            /** @var array{Authorization?: string, authorization?: string} $headers */
+            $headers = apache_request_headers();
+
             // This seems to be the only way to get the Authorization header on Apache
-            return apache_request_headers();
+            return $headers;
         }
 
         return null;

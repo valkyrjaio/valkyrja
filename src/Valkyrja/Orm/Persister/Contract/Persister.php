@@ -77,7 +77,7 @@ interface Persister
      *
      * @return void
      */
-    public function clear(Entity|null $entity = null): void;
+    public function clear(?Entity $entity = null): void;
 
     /**
      * Persist all entities.

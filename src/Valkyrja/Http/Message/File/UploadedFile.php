@@ -66,12 +66,12 @@ class UploadedFile implements Contract
      * @throws InvalidArgumentException
      */
     public function __construct(
-        protected string|null $file = null,
-        protected Stream|null $stream = null,
+        protected ?string $file = null,
+        protected ?Stream $stream = null,
         protected UploadError $uploadError = UploadError::OK,
-        protected int|null $size = null,
-        protected string|null $fileName = null,
-        protected string|null $mediaType = null
+        protected ?int $size = null,
+        protected ?string $fileName = null,
+        protected ?string $mediaType = null
     ) {
         // If the file is not set and the stream is not set
         if ($uploadError === UploadError::OK && $file === null && $stream === null) {
@@ -166,7 +166,7 @@ class UploadedFile implements Contract
     /**
      * @inheritDoc
      */
-    public function getSize(): int|null
+    public function getSize(): ?int
     {
         return $this->size;
     }
@@ -182,7 +182,7 @@ class UploadedFile implements Contract
     /**
      * @inheritDoc
      */
-    public function getClientFilename(): string|null
+    public function getClientFilename(): ?string
     {
         return $this->fileName;
     }
@@ -190,7 +190,7 @@ class UploadedFile implements Contract
     /**
      * @inheritDoc
      */
-    public function getClientMediaType(): string|null
+    public function getClientMediaType(): ?string
     {
         return $this->mediaType;
     }

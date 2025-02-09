@@ -47,7 +47,7 @@ use Valkyrja\View\Factory\Contract\ResponseFactory as ViewResponseFactory;
  *
  * @author Melech Mizrachi
  */
-class ServiceProvider extends Provider
+final class ServiceProvider extends Provider
 {
     /**
      * @inheritDoc
@@ -115,7 +115,7 @@ class ServiceProvider extends Provider
      */
     public static function publishOrm(Container $container): void
     {
-        /** @var array{orm: \Valkyrja\Orm\Config\Config|array<string, mixed>, ...} $config */
+        /** @var array{orm: \Valkyrja\Orm\Config|array<string, mixed>, ...} $config */
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(

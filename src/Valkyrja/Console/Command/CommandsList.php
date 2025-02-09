@@ -50,7 +50,7 @@ class CommandsList extends Commander
      *
      * @param string|null $namespace [optional] The namespace to show commands for
      */
-    public function run(string|null $namespace = null): int
+    public function run(?string $namespace = null): int
     {
         $commands        = console()->all();
         $longestLength   = 0;
@@ -105,7 +105,7 @@ class CommandsList extends Commander
      *
      * @return void
      */
-    protected function filterCommands(array &$commands, int &$longestLength, string|null $namespace = null): void
+    protected function filterCommands(array &$commands, int &$longestLength, ?string $namespace = null): void
     {
         $globalCommands = [];
 

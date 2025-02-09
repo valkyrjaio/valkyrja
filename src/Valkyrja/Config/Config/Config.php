@@ -36,7 +36,7 @@ use Valkyrja\Jwt\Config as Jwt;
 use Valkyrja\Log\Config as Log;
 use Valkyrja\Mail\Config as Mail;
 use Valkyrja\Notification\Config as Notification;
-use Valkyrja\Orm\Config\Config as ORM;
+use Valkyrja\Orm\Config as ORM;
 use Valkyrja\Path\Config as Path;
 use Valkyrja\Session\Config as Session;
 use Valkyrja\Sms\Config as Sms;

@@ -57,19 +57,19 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
      *
      * @var int|null
      */
-    protected int|null $limit = null;
+    protected ?int $limit = null;
 
     /**
      * Offset condition for the query statement.
      *
      * @var int|null
      */
-    protected int|null $offset = null;
+    protected ?int $offset = null;
 
     /**
      * @inheritDoc
      */
-    public function columns(array|null $columns = null): static
+    public function columns(?array $columns = null): static
     {
         $this->columns = $columns ?? ['*'];
 
@@ -89,7 +89,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function orderBy(string $column, string|null $type = null): static
+    public function orderBy(string $column, ?string $type = null): static
     {
         $this->orderBy[] = $column . ' ' . ((string) $type);
 

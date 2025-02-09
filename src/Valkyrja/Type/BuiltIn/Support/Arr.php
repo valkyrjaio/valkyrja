@@ -37,25 +37,30 @@ class Arr
     /**
      * Get a subject value by dot notation key.
      *
-     * @param ArrayAccess|iterable $subject      The subject to search
-     * @param string               $key          The dot notation to search for
-     * @param mixed|null           $defaultValue [optional] The default value
-     * @param non-empty-string     $separator    [optional] The separator
+     * @param ArrayAccess<string, mixed>|array<string, mixed> $subject      The subject to search
+     * @param string                                          $key          The dot notation to search for
+     * @param mixed|null                                      $defaultValue [optional] The default value
+     * @param non-empty-string                                $separator    [optional] The separator
      *
-     * @phpstan-param ArrayAccess|iterable<array-key, mixed> $subject      The subject
+     * @phpstan-param ArrayAccess<string, mixed>|array<string, mixed> $subject The subject
      *
      * @return mixed
      */
     public static function getValueDotNotation(
-        ArrayAccess|iterable $subject,
+        ArrayAccess|array $subject,
         string $key,
         mixed $defaultValue = null,
         string $separator = ConfigKeyPart::SEP
     ): mixed {
-        $value = $subject;
+        $value    = $subject;
+        $keyParts = explode($separator, $key);
 
         // Explode the keys on period and iterate through the keys
-        foreach (explode($separator, $key) as $item) {
+        foreach ($keyParts as $item) {
+            if (! is_array($value) && ! $value instanceof ArrayAccess) {
+                return $defaultValue;
+            }
+
             // Trying to get the item from the current value or set the default
             $value = $value[$item] ?? null;
 

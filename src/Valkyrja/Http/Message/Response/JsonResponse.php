@@ -72,7 +72,7 @@ class JsonResponse extends Response implements Contract
         protected int $encodingOptions = self::DEFAULT_ENCODING_OPTIONS
     ) {
         $body = new Stream();
-        $body->write(json_encode($data, JSON_THROW_ON_ERROR | $this->encodingOptions));
+        $body->write((string) json_encode($data, JSON_THROW_ON_ERROR | $this->encodingOptions));
         $body->rewind();
 
         parent::__construct(
@@ -88,9 +88,9 @@ class JsonResponse extends Response implements Contract
      * @throws JsonException
      */
     public static function createFromData(
-        array|null $data = null,
-        StatusCode|null $statusCode = null,
-        array|null $headers = null
+        ?array $data = null,
+        ?StatusCode $statusCode = null,
+        ?array $headers = null
     ): static {
         return new static(
             $data ?? static::DEFAULT_DATA,
@@ -118,7 +118,7 @@ class JsonResponse extends Response implements Contract
     public function withJsonAsBody(array $data): static
     {
         $body = new Stream();
-        $body->write(json_encode($data, JSON_THROW_ON_ERROR | $this->encodingOptions));
+        $body->write((string) json_encode($data, JSON_THROW_ON_ERROR | $this->encodingOptions));
         $body->rewind();
 
         return $this->withBody($body);
@@ -153,7 +153,7 @@ class JsonResponse extends Response implements Contract
         $new = $this->withHeader(HeaderName::CONTENT_TYPE, ContentType::APPLICATION_JSON);
 
         $new->stream = new Stream();
-        $new->stream->write(json_encode($new->data, JSON_THROW_ON_ERROR | $new->encodingOptions));
+        $new->stream->write((string) json_encode($new->data, JSON_THROW_ON_ERROR | $new->encodingOptions));
         $new->stream->rewind();
         $this->stream->rewind();
 

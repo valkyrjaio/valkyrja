@@ -234,7 +234,7 @@ class CastableModelTest extends TestCase
      */
     public function testObjectCast(): void
     {
-        $value = new class() {
+        $value = new class {
             public int $test = 0;
         };
 
@@ -330,7 +330,7 @@ class CastableModelTest extends TestCase
      */
     public function testJsonObjectCast(): void
     {
-        $value = new class() {
+        $value = new class {
             public int $test = 0;
         };
 
@@ -388,7 +388,7 @@ class CastableModelTest extends TestCase
         // Test an object
         $this->propertyTest(
             CastableModelClass::TRUE_PROPERTY,
-            new class() {
+            new class {
             },
             true
         );
@@ -408,7 +408,7 @@ class CastableModelTest extends TestCase
         $this->propertyTest(CastableModelClass::TRUE_ARRAY_PROPERTY, [[]], [true]);
         // Test an array of objects
         $this->propertyTest(CastableModelClass::TRUE_ARRAY_PROPERTY, [
-            new class() {
+            new class {
             },
         ], [true]);
     }
@@ -434,7 +434,7 @@ class CastableModelTest extends TestCase
         // Test an object
         $this->propertyTest(
             CastableModelClass::FALSE_PROPERTY,
-            new class() {
+            new class {
             },
             false
         );
@@ -454,7 +454,7 @@ class CastableModelTest extends TestCase
         $this->propertyTest(CastableModelClass::FALSE_ARRAY_PROPERTY, [[]], [false]);
         // Test an array of objects
         $this->propertyTest(CastableModelClass::FALSE_ARRAY_PROPERTY, [
-            new class() {
+            new class {
             },
         ], [false]);
     }
@@ -481,7 +481,7 @@ class CastableModelTest extends TestCase
         // Test an object
         $this->propertyTest(
             CastableModelClass::NULL_PROPERTY,
-            new class() {
+            new class {
             },
             $value
         );
@@ -501,7 +501,7 @@ class CastableModelTest extends TestCase
         $this->propertyTest(CastableModelClass::NULL_ARRAY_PROPERTY, [[]], [$value]);
         // Test an array of objects
         $this->propertyTest(CastableModelClass::NULL_ARRAY_PROPERTY, [
-            new class() {
+            new class {
             },
         ], [$value]);
     }

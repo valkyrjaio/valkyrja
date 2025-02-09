@@ -33,10 +33,10 @@ class Uuid extends Uid
 {
     /** @var string */
     public const REGEX = self::REGEX_PART . '{8}-'
-    . self::REGEX_PART . '{4}-'
-    . self::REGEX_PART . '{4}-'
-    . self::REGEX_PART . '{4}-'
-    . self::REGEX_PART . '{12}';
+        . self::REGEX_PART . '{4}-'
+        . self::REGEX_PART . '{4}-'
+        . self::REGEX_PART . '{4}-'
+        . self::REGEX_PART . '{12}';
 
     /** @var Version */
     public const VERSION = Version::V1;
@@ -56,7 +56,7 @@ class Uuid extends Uid
      *
      * @return string
      */
-    final public static function v1(string|null $node = null): string
+    final public static function v1(?string $node = null): string
     {
         return UuidV1::generate($node);
     }
@@ -112,7 +112,7 @@ class Uuid extends Uid
      *
      * @return string
      */
-    final public static function v6(string|null $node = null): string
+    final public static function v6(?string $node = null): string
     {
         return UuidV6::generate($node);
     }

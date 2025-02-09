@@ -37,7 +37,7 @@ enum JsonRequestStructEnum implements RequestStruct
     /**
      * @inheritDoc
      */
-    public static function getValidationRules(ServerRequest $request): array|null
+    public static function getValidationRules(ServerRequest $request): ?array
     {
         $first  = $request->getParsedBodyParam(self::first->name);
         $second = $request->getParsedBodyParam(self::second->name);

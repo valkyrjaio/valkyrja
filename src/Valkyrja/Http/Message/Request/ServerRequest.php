@@ -126,7 +126,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
-    public function withAddedCookieParam(string $name, string|null $value = null): static
+    public function withAddedCookieParam(string $name, ?string $value = null): static
     {
         $new = clone $this;
 
@@ -138,7 +138,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
-    public function getCookieParam(string $name, string|null $default = null): string|null
+    public function getCookieParam(string $name, ?string $default = null): ?string
     {
         return $this->cookies[$name] ?? $default;
     }

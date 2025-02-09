@@ -39,7 +39,7 @@ interface ClassDispatch extends Dispatch
      *
      * @return array<array-key, mixed>|null
      */
-    public function getArguments(): array|null;
+    public function getArguments(): ?array;
 
     /**
      * Create a new dispatch with the specified arguments.
@@ -48,14 +48,14 @@ interface ClassDispatch extends Dispatch
      *
      * @return static
      */
-    public function withArguments(array|null $arguments = null): static;
+    public function withArguments(?array $arguments = null): static;
 
     /**
      * Get the dependencies.
      *
      * @return string[]|null
      */
-    public function getDependencies(): array|null;
+    public function getDependencies(): ?array;
 
     /**
      * Create a new dispatch with the specified dependencies.
@@ -64,5 +64,5 @@ interface ClassDispatch extends Dispatch
      *
      * @return static
      */
-    public function withDependencies(array|null $dependencies = null): static;
+    public function withDependencies(?array $dependencies = null): static;
 }

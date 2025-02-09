@@ -152,7 +152,7 @@ interface Uri extends Stringable
      *
      * @return int|null The URI port
      */
-    public function getPort(): int|null;
+    public function getPort(): ?int;
 
     /**
      * Retrieve the host and port components of the URI.
@@ -314,7 +314,7 @@ interface Uri extends Stringable
      *
      * @return static A new instance with the specified user information
      */
-    public function withUserInfo(string $user, string|null $password = null): static;
+    public function withUserInfo(string $user, ?string $password = null): static;
 
     /**
      * Return an instance with the specified host.
@@ -346,7 +346,7 @@ interface Uri extends Stringable
      *
      * @return static A new instance with the specified port
      */
-    public function withPort(int|null $port = null): static;
+    public function withPort(?int $port = null): static;
 
     /**
      * Return an instance with the specified path.

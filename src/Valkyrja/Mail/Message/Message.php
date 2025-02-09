@@ -97,7 +97,7 @@ class Message implements Contract
      *
      * @var string|null
      */
-    protected string|null $plainBody = null;
+    protected ?string $plainBody = null;
 
     /**
      * @inheritDoc
@@ -288,7 +288,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function getPlainBody(): string|null
+    public function getPlainBody(): ?string
     {
         return $this->plainBody;
     }
@@ -296,7 +296,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setPlainBody(string|null $plainBody = null): static
+    public function setPlainBody(?string $plainBody = null): static
     {
         $this->plainBody = $plainBody;
 

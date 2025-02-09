@@ -32,7 +32,7 @@ interface Command extends Dispatch
      *
      * @return string|null
      */
-    public function getPath(): string|null;
+    public function getPath(): ?string;
 
     /**
      * Set the path.
@@ -48,7 +48,7 @@ interface Command extends Dispatch
      *
      * @return string|null
      */
-    public function getRegex(): string|null;
+    public function getRegex(): ?string;
 
     /**
      * Set the regex.
@@ -57,14 +57,14 @@ interface Command extends Dispatch
      *
      * @return static
      */
-    public function setRegex(string|null $regex = null): static;
+    public function setRegex(?string $regex = null): static;
 
     /**
      * Get the params.
      *
      * @return ParsedPathParams|null
      */
-    public function getParams(): array|null;
+    public function getParams(): ?array;
 
     /**
      * Set the params.
@@ -73,14 +73,14 @@ interface Command extends Dispatch
      *
      * @return static
      */
-    public function setParams(array|null $params = null): static;
+    public function setParams(?array $params = null): static;
 
     /**
      * Get the segments.
      *
      * @return string[]|null
      */
-    public function getSegments(): array|null;
+    public function getSegments(): ?array;
 
     /**
      * Set the segments.
@@ -89,14 +89,14 @@ interface Command extends Dispatch
      *
      * @return static
      */
-    public function setSegments(array|null $segments = null): static;
+    public function setSegments(?array $segments = null): static;
 
     /**
      * Get the description.
      *
      * @return string|null
      */
-    public function getDescription(): string|null;
+    public function getDescription(): ?string;
 
     /**
      * Set the description.
@@ -105,5 +105,5 @@ interface Command extends Dispatch
      *
      * @return static
      */
-    public function setDescription(string|null $description = null): static;
+    public function setDescription(?string $description = null): static;
 }

@@ -30,5 +30,5 @@ interface Dispatcher2
      *
      * @return mixed
      */
-    public function dispatch(Dispatch $dispatch, array|null $arguments = null): mixed;
+    public function dispatch(Dispatch $dispatch, ?array $arguments = null): mixed;
 }

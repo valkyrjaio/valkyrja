@@ -43,14 +43,14 @@ interface Entity extends CastableModel, ExposableModel
      *
      * @return class-string<Repository>|null
      */
-    public static function getRepository(): string|null;
+    public static function getRepository(): ?string;
 
     /**
      * Get the connection to use for this entity.
      *
      * @return string|null
      */
-    public static function getConnection(): string|null;
+    public static function getConnection(): ?string;
 
     /**
      * Entity relationship properties.

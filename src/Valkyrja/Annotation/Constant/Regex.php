@@ -138,9 +138,9 @@ final class Regex
      * The full regex.
      */
     public const REGEX = '/'
-    . self::SYMBOL
-    . self::NAME_REGEX
-    . '(?:' . self::ARGUMENTS_REGEX . ')?'
-    . self::LINE_REGEX
-    . '/x';
+        . self::SYMBOL
+        . self::NAME_REGEX
+        . '(?:' . self::ARGUMENTS_REGEX . ')?'
+        . self::LINE_REGEX
+        . '/x';
 }

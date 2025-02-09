@@ -36,7 +36,7 @@ class Component implements Contract
 
     public function __construct(
         protected string $token,
-        protected string|null $text = null
+        protected ?string $text = null
     ) {
     }
 

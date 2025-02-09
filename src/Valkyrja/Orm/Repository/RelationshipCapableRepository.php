@@ -30,7 +30,7 @@ trait RelationshipCapableRepository
      *
      * @var string[]|null
      */
-    protected array|null $relationships = null;
+    protected ?array $relationships = null;
 
     /**
      * Whether to get relations.
@@ -80,7 +80,7 @@ trait RelationshipCapableRepository
      *
      * @return static
      */
-    public function withRelationships(array|null $relationships = null): static
+    public function withRelationships(?array $relationships = null): static
     {
         $this->getRelations  = true;
         $this->relationships = $relationships;

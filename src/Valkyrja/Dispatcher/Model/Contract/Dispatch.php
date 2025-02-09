@@ -28,7 +28,7 @@ interface Dispatch extends Model
      *
      * @return string|null
      */
-    public function getId(): string|null;
+    public function getId(): ?string;
 
     /**
      * Set the id.
@@ -37,14 +37,14 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setId(string|null $id = null): static;
+    public function setId(?string $id = null): static;
 
     /**
      * Get the name.
      *
      * @return string|null
      */
-    public function getName(): string|null;
+    public function getName(): ?string;
 
     /**
      * Set the name.
@@ -53,14 +53,14 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setName(string|null $name = null): static;
+    public function setName(?string $name = null): static;
 
     /**
      * Get the class.
      *
      * @return class-string|null
      */
-    public function getClass(): string|null;
+    public function getClass(): ?string;
 
     /**
      * Set the class.
@@ -69,7 +69,7 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setClass(string|null $class = null): static;
+    public function setClass(?string $class = null): static;
 
     /**
      * Check whether this is a class dispatch.
@@ -83,7 +83,7 @@ interface Dispatch extends Model
      *
      * @return non-empty-string|null
      */
-    public function getProperty(): string|null;
+    public function getProperty(): ?string;
 
     /**
      * Set the property.
@@ -92,7 +92,7 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setProperty(string|null $property = null): static;
+    public function setProperty(?string $property = null): static;
 
     /**
      * Check whether this is a class/property dispatch.
@@ -106,7 +106,7 @@ interface Dispatch extends Model
      *
      * @return non-empty-string|null
      */
-    public function getMethod(): string|null;
+    public function getMethod(): ?string;
 
     /**
      * Set the method.
@@ -115,7 +115,7 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setMethod(string|null $method = null): static;
+    public function setMethod(?string $method = null): static;
 
     /**
      * Check whether this is a class/method dispatch.
@@ -143,7 +143,7 @@ interface Dispatch extends Model
     /**
      * @return callable-string|null
      */
-    public function getFunction(): string|null;
+    public function getFunction(): ?string;
 
     /**
      * Set the function.
@@ -152,7 +152,7 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setFunction(string|null $function = null): static;
+    public function setFunction(?string $function = null): static;
 
     /**
      * Check whether this is a function dispatch.
@@ -166,7 +166,7 @@ interface Dispatch extends Model
      *
      * @return Closure|null
      */
-    public function getClosure(): Closure|null;
+    public function getClosure(): ?Closure;
 
     /**
      * Set the closure.
@@ -175,7 +175,7 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setClosure(Closure|null $closure = null): static;
+    public function setClosure(?Closure $closure = null): static;
 
     /**
      * Check whether this is a closure dispatch.
@@ -189,7 +189,7 @@ interface Dispatch extends Model
      *
      * @return non-empty-string|null
      */
-    public function getConstant(): string|null;
+    public function getConstant(): ?string;
 
     /**
      * Set the constant.
@@ -198,7 +198,7 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setConstant(string|null $constant = null): static;
+    public function setConstant(?string $constant = null): static;
 
     /**
      * Check whether this is a constant dispatch.
@@ -212,7 +212,7 @@ interface Dispatch extends Model
      *
      * @return non-empty-string|null
      */
-    public function getVariable(): string|null;
+    public function getVariable(): ?string;
 
     /**
      * Set the variable.
@@ -221,7 +221,7 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setVariable(string|null $variable = null): static;
+    public function setVariable(?string $variable = null): static;
 
     /**
      * Check whether this is a variable dispatch.
@@ -235,7 +235,7 @@ interface Dispatch extends Model
      *
      * @return array<array-key, mixed>|null
      */
-    public function getMatches(): array|null;
+    public function getMatches(): ?array;
 
     /**
      * Set the matches.
@@ -244,14 +244,14 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setMatches(array|null $matches = null): static;
+    public function setMatches(?array $matches = null): static;
 
     /**
      * Get the arguments.
      *
      * @return array<array-key, mixed>|null
      */
-    public function getArguments(): array|null;
+    public function getArguments(): ?array;
 
     /**
      * Set the arguments.
@@ -260,14 +260,14 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setArguments(array|null $arguments = null): static;
+    public function setArguments(?array $arguments = null): static;
 
     /**
      * Get the dependencies.
      *
      * @return string[]|null
      */
-    public function getDependencies(): array|null;
+    public function getDependencies(): ?array;
 
     /**
      * Set the dependencies.
@@ -276,5 +276,5 @@ interface Dispatch extends Model
      *
      * @return static
      */
-    public function setDependencies(array|null $dependencies = null): static;
+    public function setDependencies(?array $dependencies = null): static;
 }

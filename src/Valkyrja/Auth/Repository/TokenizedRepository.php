@@ -223,12 +223,12 @@ abstract class TokenizedRepository extends Repository implements Contract
      *
      * @return string|null
      */
-    protected function getTokenFromSession(): string|null
+    protected function getTokenFromSession(): ?string
     {
         $token = $this->session->get($this->userEntityName::getTokenSessionId());
 
         if (! is_string($token)) {
-            $type = getType($token);
+            $type = gettype($token);
 
             throw new RuntimeException("Token should be a string $type provided");
         }
@@ -263,7 +263,7 @@ abstract class TokenizedRepository extends Repository implements Contract
      *
      * @return static
      */
-    protected function storeToken(string|null $token = null): static
+    protected function storeToken(?string $token = null): static
     {
         $this->session->set($this->user::getTokenSessionId(), $token ?? $this->getToken());
 

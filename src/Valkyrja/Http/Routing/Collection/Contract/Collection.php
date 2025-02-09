@@ -50,7 +50,7 @@ interface Collection
      *                    The route if found or null when no route is
      *                    found for the path combination specified
      */
-    public function get(string $path, RequestMethod|null $method = null): Route|null;
+    public function get(string $path, ?RequestMethod $method = null): ?Route;
 
     /**
      * Determine if a route exists.
@@ -60,7 +60,7 @@ interface Collection
      *
      * @return bool
      */
-    public function isset(string $path, RequestMethod|null $method = null): bool;
+    public function isset(string $path, ?RequestMethod $method = null): bool;
 
     /**
      * Get all routes.
@@ -86,7 +86,7 @@ interface Collection
      *                    The route if found or null when no static route is
      *                    found for the path and method combination specified
      */
-    public function getStatic(string $path, RequestMethod|null $method = null): Route|null;
+    public function getStatic(string $path, ?RequestMethod $method = null): ?Route;
 
     /**
      * Determine if a static route exists.
@@ -96,7 +96,7 @@ interface Collection
      *
      * @return bool
      */
-    public function hasStatic(string $path, RequestMethod|null $method = null): bool;
+    public function hasStatic(string $path, ?RequestMethod $method = null): bool;
 
     /**
      * Get static routes of a certain request method.
@@ -105,7 +105,7 @@ interface Collection
      *
      * @return array<string, Route>|array<string, array<string, Route>>
      */
-    public function allStatic(RequestMethod|null $method = null): array;
+    public function allStatic(?RequestMethod $method = null): array;
 
     /**
      * Get a dynamic route.
@@ -117,7 +117,7 @@ interface Collection
      *                    The route if found or null when no dynamic route is
      *                    found for the path and method combination specified
      */
-    public function getDynamic(string $regex, RequestMethod|null $method = null): Route|null;
+    public function getDynamic(string $regex, ?RequestMethod $method = null): ?Route;
 
     /**
      * Determine if a dynamic route exists.
@@ -127,7 +127,7 @@ interface Collection
      *
      * @return bool
      */
-    public function hasDynamic(string $regex, RequestMethod|null $method = null): bool;
+    public function hasDynamic(string $regex, ?RequestMethod $method = null): bool;
 
     /**
      * Get the dynamic routes in this collection.
@@ -136,7 +136,7 @@ interface Collection
      *
      * @return array<string, Route>|array<string, array<string, Route>>
      */
-    public function allDynamic(RequestMethod|null $method = null): array;
+    public function allDynamic(?RequestMethod $method = null): array;
 
     /**
      * Get a named route.
@@ -147,7 +147,7 @@ interface Collection
      *                    The route if found or null when no named route is
      *                    found for the path and method combination specified
      */
-    public function getNamed(string $name): Route|null;
+    public function getNamed(string $name): ?Route;
 
     /**
      * Determine if a named route exists.

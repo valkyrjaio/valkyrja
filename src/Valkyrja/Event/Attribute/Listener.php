@@ -29,7 +29,7 @@ class Listener extends Model
      */
     public function __construct(
         string $eventId,
-        string|null $name = null,
+        ?string $name = null,
     ) {
         $this->setEventId($eventId);
         $this->setName($name);

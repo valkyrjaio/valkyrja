@@ -33,7 +33,7 @@ class NullAdapter extends Adapter
     /**
      * @inheritDoc
      */
-    public function encrypt(string $message, string|null $key = null): string
+    public function encrypt(string $message, ?string $key = null): string
     {
         return '';
     }
@@ -41,7 +41,7 @@ class NullAdapter extends Adapter
     /**
      * @inheritDoc
      */
-    public function encryptArray(array $array, string|null $key = null): string
+    public function encryptArray(array $array, ?string $key = null): string
     {
         return '';
     }
@@ -49,7 +49,7 @@ class NullAdapter extends Adapter
     /**
      * @inheritDoc
      */
-    public function encryptObject(object $object, string|null $key = null): string
+    public function encryptObject(object $object, ?string $key = null): string
     {
         return '';
     }
@@ -57,7 +57,7 @@ class NullAdapter extends Adapter
     /**
      * @inheritDoc
      */
-    public function decrypt(string $encrypted, string|null $key = null): string
+    public function decrypt(string $encrypted, ?string $key = null): string
     {
         return '';
     }
@@ -65,7 +65,7 @@ class NullAdapter extends Adapter
     /**
      * @inheritDoc
      */
-    public function decryptArray(string $encrypted, string|null $key = null): array
+    public function decryptArray(string $encrypted, ?string $key = null): array
     {
         return [];
     }
@@ -73,7 +73,7 @@ class NullAdapter extends Adapter
     /**
      * @inheritDoc
      */
-    public function decryptObject(string $encrypted, string|null $key = null): object
+    public function decryptObject(string $encrypted, ?string $key = null): object
     {
         return new stdClass();
     }

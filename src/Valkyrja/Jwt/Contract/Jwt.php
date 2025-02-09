@@ -32,7 +32,7 @@ interface Jwt extends Manager
      *
      * @return Driver
      */
-    public function use(string|null $name = null): Driver;
+    public function use(?string $name = null): Driver;
 
     /**
      * Encode a payload array into a JWT string.

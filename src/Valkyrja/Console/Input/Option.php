@@ -34,7 +34,7 @@ class Option
      *
      * @var string|null
      */
-    protected string|null $shortcut = null;
+    protected ?string $shortcut = null;
 
     /**
      * The description.
@@ -48,7 +48,7 @@ class Option
      *
      * @var string|null
      */
-    protected string|null $default = null;
+    protected ?string $default = null;
 
     /**
      * The mode.
@@ -69,9 +69,9 @@ class Option
     public function __construct(
         string $name,
         string $description,
-        string|null $shortcut = null,
-        OptionMode|null $mode = null,
-        string|null $default = null
+        ?string $shortcut = null,
+        ?OptionMode $mode = null,
+        ?string $default = null
     ) {
         $this->name        = $name;
         $this->shortcut    = $shortcut;
@@ -95,7 +95,7 @@ class Option
      *
      * @return string|null
      */
-    public function getShortcut(): string|null
+    public function getShortcut(): ?string
     {
         return $this->shortcut;
     }
@@ -115,7 +115,7 @@ class Option
      *
      * @return string|null
      */
-    public function getDefault(): string|null
+    public function getDefault(): ?string
     {
         return $this->default;
     }

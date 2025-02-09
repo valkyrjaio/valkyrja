@@ -24,7 +24,7 @@ use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
  *
  * @author Melech Mizrachi
  */
-class ServiceProvider extends Provider
+final class ServiceProvider extends Provider
 {
     /**
      * @inheritDoc

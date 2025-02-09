@@ -30,7 +30,7 @@ class UuidV1 extends Type implements Contract
     /**
      * @throws Exception
      */
-    public function __construct(string|null $subject = null)
+    public function __construct(?string $subject = null)
     {
         if ($subject !== null) {
             Helper::validate($subject);

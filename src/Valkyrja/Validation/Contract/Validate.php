@@ -66,5 +66,5 @@ interface Validate
      *
      * @return string|null
      */
-    public function getFirstErrorMessage(): string|null;
+    public function getFirstErrorMessage(): ?string;
 }

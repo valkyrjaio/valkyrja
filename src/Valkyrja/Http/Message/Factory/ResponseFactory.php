@@ -33,9 +33,9 @@ class ResponseFactory implements Contract
      * @inheritDoc
      */
     public function createResponse(
-        string|null $content = null,
-        StatusCode|null $statusCode = null,
-        array|null $headers = null
+        ?string $content = null,
+        ?StatusCode $statusCode = null,
+        ?array $headers = null
     ): Response {
         return \Valkyrja\Http\Message\Response\Response::create(
             content: $content,
@@ -50,9 +50,9 @@ class ResponseFactory implements Contract
      * @throws JsonException
      */
     public function createJsonResponse(
-        array|null $data = null,
-        StatusCode|null $statusCode = null,
-        array|null $headers = null
+        ?array $data = null,
+        ?StatusCode $statusCode = null,
+        ?array $headers = null
     ): JsonResponse {
         return \Valkyrja\Http\Message\Response\JsonResponse::createFromData(
             data: $data,
@@ -69,9 +69,9 @@ class ResponseFactory implements Contract
      */
     public function createJsonpResponse(
         string $callback,
-        array|null $data = null,
-        StatusCode|null $statusCode = null,
-        array|null $headers = null
+        ?array $data = null,
+        ?StatusCode $statusCode = null,
+        ?array $headers = null
     ): JsonResponse {
         return $this->createJsonResponse($data, $statusCode, $headers)->withCallback($callback);
     }
@@ -80,9 +80,9 @@ class ResponseFactory implements Contract
      * @inheritDoc
      */
     public function createRedirectResponse(
-        string|null $uri = null,
-        StatusCode|null $statusCode = null,
-        array|null $headers = null
+        ?string $uri = null,
+        ?StatusCode $statusCode = null,
+        ?array $headers = null
     ): RedirectResponse {
         return \Valkyrja\Http\Message\Response\RedirectResponse::createFromUri(
             uri: Uri::fromString($uri ?? '/'),

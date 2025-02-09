@@ -40,7 +40,7 @@ use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
  *
  * @author Melech Mizrachi
  */
-class ServiceProvider extends Provider
+final class ServiceProvider extends Provider
 {
     /**
      * @inheritDoc

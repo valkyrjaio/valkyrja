@@ -30,7 +30,7 @@ class ObjectTest extends TestCase
      */
     public function testToString(): void
     {
-        $value = new class() {
+        $value = new class {
             public string $foo = 'bar';
         };
 
@@ -142,22 +142,22 @@ class ObjectTest extends TestCase
      */
     public function testToDeepArray(): void
     {
-        $value = new class() {
+        $value = new class {
             public object $first;
 
             public function __construct()
             {
-                $this->first = new class() {
+                $this->first = new class {
                     public object $second;
 
                     public function __construct()
                     {
-                        $this->second = new class() {
+                        $this->second = new class {
                             public object $third;
 
                             public function __construct()
                             {
-                                $this->third = new class() {
+                                $this->third = new class {
                                     public string $foo = 'bar';
                                 };
                             }

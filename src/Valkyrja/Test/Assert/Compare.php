@@ -18,6 +18,8 @@ use Valkyrja\Test\Assert\Contract\Compare as Contract;
 use Valkyrja\Test\Exception\AssertFailureException;
 use Valkyrja\Type\BuiltIn\Support\Str as StrSupport;
 
+use function sprintf;
+
 /**
  * Class Compare.
  *
@@ -27,6 +29,7 @@ class Compare extends Asserter implements Contract
 {
     /**
      * @inheritDoc
+     *
      * @throws JsonException
      */
     public function equals(mixed $expected, mixed $actual): void
@@ -50,6 +53,7 @@ class Compare extends Asserter implements Contract
 
     /**
      * @inheritDoc
+     *
      * @throws JsonException
      */
     public function notEquals(mixed $unexpected, mixed $actual): void

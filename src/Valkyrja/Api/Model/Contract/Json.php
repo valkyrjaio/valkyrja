@@ -28,7 +28,7 @@ interface Json extends Model
      *
      * @return string|null
      */
-    public function getMessage(): string|null;
+    public function getMessage(): ?string;
 
     /**
      * Set the message.
@@ -37,7 +37,7 @@ interface Json extends Model
      *
      * @return static
      */
-    public function setMessage(string|null $message = null): static;
+    public function setMessage(?string $message = null): static;
 
     /**
      * Get the errors.
@@ -94,7 +94,7 @@ interface Json extends Model
      *
      * @return array<string, mixed>|null
      */
-    public function getData(): array|null;
+    public function getData(): ?array;
 
     /**
      * Set the data.
@@ -103,7 +103,7 @@ interface Json extends Model
      *
      * @return static
      */
-    public function setData(array|null $data = null): static;
+    public function setData(?array $data = null): static;
 
     /**
      * Get the status code.

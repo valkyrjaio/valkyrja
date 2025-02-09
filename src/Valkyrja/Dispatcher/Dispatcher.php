@@ -44,17 +44,17 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
-    public function dispatch(Dispatch $dispatch, array|null $arguments = null): mixed
+    public function dispatch(Dispatch $dispatch, ?array $arguments = null): mixed
     {
         return match (true) {
-            $dispatch->isMethod() => $this->dispatchClassMethod($dispatch, $arguments),
+            $dispatch->isMethod()   => $this->dispatchClassMethod($dispatch, $arguments),
             $dispatch->isProperty() => $this->dispatchClassProperty($dispatch),
             $dispatch->isConstant() => $this->dispatchConstant($dispatch),
-            $dispatch->isClass() => $this->dispatchClass($dispatch, $arguments),
+            $dispatch->isClass()    => $this->dispatchClass($dispatch, $arguments),
             $dispatch->isFunction() => $this->dispatchFunction($dispatch, $arguments),
-            $dispatch->isClosure() => $this->dispatchClosure($dispatch, $arguments),
+            $dispatch->isClosure()  => $this->dispatchClosure($dispatch, $arguments),
             $dispatch->isVariable() => $this->dispatchVariable($dispatch),
-            default => throw new InvalidArgumentException('Invalid dispatch'),
+            default                 => throw new InvalidArgumentException('Invalid dispatch'),
         };
     }
 
@@ -66,7 +66,7 @@ class Dispatcher implements Contract
      *
      * @return mixed
      */
-    protected function dispatchClassMethod(Dispatch $dispatch, array|null $arguments = null): mixed
+    protected function dispatchClassMethod(Dispatch $dispatch, ?array $arguments = null): mixed
     {
         /** @var string $method */
         $method = $dispatch->getMethod();
@@ -129,7 +129,7 @@ class Dispatcher implements Contract
      *
      * @return mixed
      */
-    protected function dispatchClass(Dispatch $dispatch, array|null $arguments = null): mixed
+    protected function dispatchClass(Dispatch $dispatch, ?array $arguments = null): mixed
     {
         /** @var class-string $className */
         $className = $dispatch->getClass();
@@ -148,7 +148,7 @@ class Dispatcher implements Contract
      *
      * @return mixed
      */
-    protected function dispatchFunction(Dispatch $dispatch, array|null $arguments = null): mixed
+    protected function dispatchFunction(Dispatch $dispatch, ?array $arguments = null): mixed
     {
         /** @var callable-string $function */
         $function = $dispatch->getFunction();
@@ -166,7 +166,7 @@ class Dispatcher implements Contract
      *
      * @return mixed
      */
-    protected function dispatchClosure(Dispatch $dispatch, array|null $arguments = null): mixed
+    protected function dispatchClosure(Dispatch $dispatch, ?array $arguments = null): mixed
     {
         /** @var Closure $closure */
         $closure = $dispatch->getClosure();
@@ -226,7 +226,7 @@ class Dispatcher implements Contract
      *
      * @return array<array-key, mixed>|null
      */
-    protected function getArguments(Dispatch $dispatch, array|null $arguments = null): array|null
+    protected function getArguments(Dispatch $dispatch, ?array $arguments = null): ?array
     {
         // Get either the arguments passed or from the dispatch model
         $arguments ??= $dispatch->getArguments();
@@ -256,7 +256,7 @@ class Dispatcher implements Contract
      *
      * @return array<array-key, mixed>|null
      */
-    protected function getDependencies(Dispatch $dispatch): array|null
+    protected function getDependencies(Dispatch $dispatch): ?array
     {
         // If there are dependencies
         if (($dependencies = $dispatch->getDependencies()) === null) {

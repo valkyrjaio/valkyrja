@@ -71,7 +71,7 @@ class Dispatcher2Test extends TestCase
      *
      * @var string|null
      */
-    public string|null $validPropertyNull = null;
+    public ?string $validPropertyNull = null;
 
     /**
      * The config to test with.
@@ -101,7 +101,7 @@ class Dispatcher2Test extends TestCase
      *
      * @return string
      */
-    public static function validStaticMethod(string|null $arg = null): string
+    public static function validStaticMethod(?string $arg = null): string
     {
         return 'test' . ($arg ?? '');
     }
@@ -129,7 +129,7 @@ class Dispatcher2Test extends TestCase
      *
      * @return string
      */
-    public function validMethod(string|null $arg = null): string
+    public function validMethod(?string $arg = null): string
     {
         return 'test' . ($arg ?? '');
     }

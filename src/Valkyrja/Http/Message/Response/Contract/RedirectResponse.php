@@ -34,9 +34,9 @@ interface RedirectResponse extends Response
      * @return static
      */
     public static function createFromUri(
-        Uri|null $uri = null,
-        StatusCode|null $statusCode = null,
-        array|null $headers = null
+        ?Uri $uri = null,
+        ?StatusCode $statusCode = null,
+        ?array $headers = null
     ): static;
 
     /**

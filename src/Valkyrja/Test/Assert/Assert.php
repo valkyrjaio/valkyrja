@@ -171,10 +171,10 @@ class Assert extends AbstractAsserter implements Contract
     {
         return match ($name) {
             ResultType::assertions->name => $this->getAssertions(),
-            ResultType::errors->name => $this->getErrors(),
-            ResultType::successes->name => $this->getSuccesses(),
-            ResultType::warnings->name => $this->getWarnings(),
-            default => $this->__call($name, []),
+            ResultType::errors->name     => $this->getErrors(),
+            ResultType::successes->name  => $this->getSuccesses(),
+            ResultType::warnings->name   => $this->getWarnings(),
+            default                      => $this->__call($name, []),
         };
     }
 

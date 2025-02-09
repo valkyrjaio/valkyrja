@@ -294,11 +294,11 @@ class ArrayOfTest extends TestCase
     protected function getArrayOfObjects(): array
     {
         return [
-            new class() {
+            new class {
             },
-            new class() {
+            new class {
             },
-            new class() {
+            new class {
             },
         ];
     }

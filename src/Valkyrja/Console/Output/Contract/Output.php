@@ -48,7 +48,7 @@ interface Output
      *
      * @return void
      */
-    public function write(array $messages, bool|null $newLine = null, OutputStyle|null $outputStyle = null): void;
+    public function write(array $messages, ?bool $newLine = null, ?OutputStyle $outputStyle = null): void;
 
     /**
      * Write a message to the console.
@@ -61,7 +61,7 @@ interface Output
      */
     public function writeMessage(
         string $message,
-        bool|null $newLine = null,
-        OutputStyle|null $outputStyle = null
+        ?bool $newLine = null,
+        ?OutputStyle $outputStyle = null
     ): void;
 }

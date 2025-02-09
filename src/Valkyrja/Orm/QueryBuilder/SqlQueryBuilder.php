@@ -67,14 +67,14 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
      *
      * @var int|null
      */
-    protected int|null $limit = null;
+    protected ?int $limit = null;
 
     /**
      * Offset condition for the query statement.
      *
      * @var int|null
      */
-    protected int|null $offset = null;
+    protected ?int $offset = null;
 
     /**
      * @inheritDoc
@@ -132,7 +132,7 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
-    public function orderBy(string $column, string|null $type = null): static
+    public function orderBy(string $column, ?string $type = null): static
     {
         $this->orderBy[] = $column . ' ' . ((string) $type);
 

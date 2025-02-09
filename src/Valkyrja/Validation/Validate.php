@@ -74,7 +74,7 @@ class Validate implements Contract
     /**
      * @inheritDoc
      */
-    public function getFirstErrorMessage(): string|null
+    public function getFirstErrorMessage(): ?string
     {
         if (! empty($errorMessages = $this->errorMessages)) {
             return $errorMessages[array_key_first($errorMessages)];

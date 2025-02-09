@@ -106,7 +106,7 @@ interface Repository
      *
      * @return static
      */
-    public function unAuthenticate(User|null $user = null): static;
+    public function unAuthenticate(?User $user = null): static;
 
     /**
      * Set the authenticated user in the session.

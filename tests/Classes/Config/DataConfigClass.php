@@ -36,5 +36,5 @@ class DataConfigClass extends AbstractConfig
 
     public string $public = 'public';
 
-    public string|null $nullable = null;
+    public ?string $nullable = null;
 }

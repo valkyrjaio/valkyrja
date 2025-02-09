@@ -198,7 +198,7 @@ class ApplicationTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        self::assertInstanceOf(Annotations::class, $this->app[Annotations::class]);
+        self::assertInstanceOf(Annotations::class, $this->app->container()->getSingleton(Annotations::class));
     }
 
     /**
@@ -208,7 +208,7 @@ class ApplicationTest extends TestCase
      */
     public function testClient(): void
     {
-        self::assertInstanceOf(Client::class, $this->app[Client::class]);
+        self::assertInstanceOf(Client::class, $this->app->container()->getSingleton(Client::class));
     }
 
     /**
@@ -218,7 +218,7 @@ class ApplicationTest extends TestCase
      */
     public function testConsole(): void
     {
-        self::assertInstanceOf(Console::class, $this->app[Console::class]);
+        self::assertInstanceOf(Console::class, $this->app->container()->getSingleton(Console::class));
     }
 
     /**
@@ -228,7 +228,7 @@ class ApplicationTest extends TestCase
      */
     public function testConsoleKernel(): void
     {
-        self::assertInstanceOf(ConsoleKernel::class, $this->app[ConsoleKernel::class]);
+        self::assertInstanceOf(ConsoleKernel::class, $this->app->container()->getSingleton(ConsoleKernel::class));
     }
 
     /**
@@ -238,7 +238,7 @@ class ApplicationTest extends TestCase
      */
     public function testFilesystem(): void
     {
-        self::assertInstanceOf(Filesystem::class, $this->app[Filesystem::class]);
+        self::assertInstanceOf(Filesystem::class, $this->app->container()->getSingleton(Filesystem::class));
     }
 
     /**
@@ -248,7 +248,7 @@ class ApplicationTest extends TestCase
      */
     public function testKernel(): void
     {
-        self::assertInstanceOf(RequestHandler::class, $this->app[RequestHandler::class]);
+        self::assertInstanceOf(RequestHandler::class, $this->app->container()->getSingleton(RequestHandler::class));
     }
 
     /**
@@ -258,7 +258,7 @@ class ApplicationTest extends TestCase
      */
     public function testPathGenerator(): void
     {
-        self::assertInstanceOf(Generator::class, $this->app[Generator::class]);
+        self::assertInstanceOf(Generator::class, $this->app->container()->getSingleton(Generator::class));
     }
 
     /**
@@ -268,7 +268,7 @@ class ApplicationTest extends TestCase
      */
     public function testPathParser(): void
     {
-        self::assertInstanceOf(Parser::class, $this->app[Parser::class]);
+        self::assertInstanceOf(Parser::class, $this->app->container()->getSingleton(Parser::class));
     }
 
     /**
@@ -278,7 +278,7 @@ class ApplicationTest extends TestCase
      */
     public function testLogger(): void
     {
-        self::assertInstanceOf(Logger::class, $this->app[Logger::class]);
+        self::assertInstanceOf(Logger::class, $this->app->container()->getSingleton(Logger::class));
     }
 
     /**
@@ -288,7 +288,7 @@ class ApplicationTest extends TestCase
      */
     public function testRouter(): void
     {
-        self::assertInstanceOf(Router::class, $this->app[Router::class]);
+        self::assertInstanceOf(Router::class, $this->app->container()->getSingleton(Router::class));
     }
 
     /**
@@ -298,7 +298,7 @@ class ApplicationTest extends TestCase
      */
     public function testResponseBuilder(): void
     {
-        self::assertInstanceOf(ResponseFactory::class, $this->app[ResponseFactory::class]);
+        self::assertInstanceOf(ResponseFactory::class, $this->app->container()->getSingleton(ResponseFactory::class));
     }
 
     /**
@@ -308,7 +308,7 @@ class ApplicationTest extends TestCase
      */
     public function testSession(): void
     {
-        self::assertInstanceOf(Session::class, $this->app[Session::class]);
+        self::assertInstanceOf(Session::class, $this->app->container()->getSingleton(Session::class));
     }
 
     /**
@@ -318,7 +318,7 @@ class ApplicationTest extends TestCase
      */
     public function testView(): void
     {
-        self::assertInstanceOf(View::class, $this->app[View::class]);
+        self::assertInstanceOf(View::class, $this->app->container()->getSingleton(View::class));
     }
 
     /**
@@ -378,7 +378,7 @@ class ApplicationTest extends TestCase
     public function testApplicationSetupWithCachedConfig(): void
     {
         /** @var Console $console */
-        $console = $this->app[Console::class];
+        $console = $this->app->container()->getSingleton(Console::class);
         // Get the config cache command
         $configCacheCommand = $console->matchCommand(ConfigCache::COMMAND);
         // Run the config cache command

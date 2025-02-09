@@ -29,11 +29,11 @@ class UuidV4 extends Uuid
 {
     /** @var string */
     public const REGEX = self::REGEX_PART . '{8}-'
-    . self::REGEX_PART . '{4}-'
-    . '[4]'
-    . self::REGEX_PART . '{3}-'
-    . self::REGEX_PART . '{4}-'
-    . self::REGEX_PART . '{12}';
+        . self::REGEX_PART . '{4}-'
+        . '[4]'
+        . self::REGEX_PART . '{3}-'
+        . self::REGEX_PART . '{4}-'
+        . self::REGEX_PART . '{12}';
 
     /** @var Version */
     public const VERSION = Version::V4;

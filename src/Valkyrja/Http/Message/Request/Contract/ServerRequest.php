@@ -124,7 +124,7 @@ interface ServerRequest extends Request
      *
      * @return static
      */
-    public function withAddedCookieParam(string $name, string|null $value = null): static;
+    public function withAddedCookieParam(string $name, ?string $value = null): static;
 
     /**
      * Retrieve a specific cookie value.
@@ -135,7 +135,7 @@ interface ServerRequest extends Request
      *
      * @return string|null
      */
-    public function getCookieParam(string $name, string|null $default = null): string|null;
+    public function getCookieParam(string $name, ?string $default = null): ?string;
 
     /**
      * Determine if a specific cookie exists.

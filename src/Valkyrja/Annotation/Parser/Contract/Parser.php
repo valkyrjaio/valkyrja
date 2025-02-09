@@ -38,7 +38,7 @@ interface Parser
      *
      * @return array<string, mixed>|null
      */
-    public function getPropertiesAsArray(string|null $arguments = null): array|null;
+    public function getPropertiesAsArray(?string $arguments = null): ?array;
 
     /**
      * Get the annotations regex.

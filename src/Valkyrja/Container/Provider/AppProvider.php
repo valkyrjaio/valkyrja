@@ -34,7 +34,7 @@ use const E_ALL;
  *
  * @phpstan-import-type ConfigAsArray from ContainerConfig
  */
-class AppProvider extends Provider
+final class AppProvider extends Provider
 {
     /**
      * @inheritDoc

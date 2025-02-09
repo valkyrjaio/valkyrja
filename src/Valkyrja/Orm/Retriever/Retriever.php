@@ -136,7 +136,7 @@ class Retriever implements Contract
      */
     public function where(
         string $column,
-        string|null $operator = null,
+        ?string $operator = null,
         QueryBuilder|array|string|float|int|bool|null $value = null,
         bool $setType = true
     ): static {
@@ -194,9 +194,9 @@ class Retriever implements Contract
         string $table,
         string $column1,
         string $column2,
-        string|null $operator = null,
-        string|null $type = null,
-        bool|null $isWhere = null
+        ?string $operator = null,
+        ?string $type = null,
+        ?bool $isWhere = null
     ): static {
         $this->queryBuilder->join($table, $column1, $column2, $operator, $type, $isWhere);
 
@@ -216,7 +216,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function orderBy(string $column, string|null $type = null): static
+    public function orderBy(string $column, ?string $type = null): static
     {
         $this->queryBuilder->orderBy($column, $type);
 
@@ -259,7 +259,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function getOneOrNull(): Entity|null
+    public function getOneOrNull(): ?Entity
     {
         return $this->getResult()[0] ?? null;
     }
@@ -316,11 +316,12 @@ class Retriever implements Contract
      *
      * @return static<SetQueryEntity>
      */
-    protected function setQueryProperties(string $entity, string ...$columns): self
+    protected function setQueryProperties(string $entity, string ...$columns): static
     {
         assert(is_a($entity, Entity::class, true));
 
-        $self = clone $this;
+        /** @var static<SetQueryEntity> $self */
+        $self = new self($this->adapter);
 
         $self->queryBuilder = $this->adapter->createQueryBuilder($entity)->select(...$columns);
         $self->query        = $this->adapter->createQuery(null, $entity);

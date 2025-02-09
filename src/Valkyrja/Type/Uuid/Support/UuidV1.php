@@ -35,11 +35,11 @@ class UuidV1 extends Uuid
 {
     /** @var string */
     public const REGEX = self::REGEX_PART . '{8}-'
-    . self::REGEX_PART . '{4}-'
-    . '[1]'
-    . self::REGEX_PART . '{3}-'
-    . self::REGEX_PART . '{4}-'
-    . self::REGEX_PART . '{12}';
+        . self::REGEX_PART . '{4}-'
+        . '[1]'
+        . self::REGEX_PART . '{3}-'
+        . self::REGEX_PART . '{4}-'
+        . self::REGEX_PART . '{12}';
 
     /** @var Version */
     public const VERSION = Version::V1;
@@ -56,7 +56,7 @@ class UuidV1 extends Uuid
      *
      * @return string
      */
-    public static function generate(string|null $node = null): string
+    public static function generate(?string $node = null): string
     {
         $node ??= random_bytes(16);
         // nano second time (only micro second precision) since start of UTC

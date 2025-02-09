@@ -33,7 +33,7 @@ interface Filesystem extends Manager
      *
      * @return Driver
      */
-    public function use(string|null $name = null): Driver;
+    public function use(?string $name = null): Driver;
 
     /**
      * Determine whether a path exists.
@@ -149,7 +149,7 @@ interface Filesystem extends Manager
      *
      * @return array<string, string|int|null>|null An array of meta data or null on failure
      */
-    public function metadata(string $path): array|null;
+    public function metadata(string $path): ?array;
 
     /**
      * Get a file's mime type.
@@ -158,7 +158,7 @@ interface Filesystem extends Manager
      *
      * @return string|null The mime type or null on failure
      */
-    public function mimetype(string $path): string|null;
+    public function mimetype(string $path): ?string;
 
     /**
      * Get a file's size.
@@ -167,7 +167,7 @@ interface Filesystem extends Manager
      *
      * @return int|null The size in bytes or null on failure
      */
-    public function size(string $path): int|null;
+    public function size(string $path): ?int;
 
     /**
      * Get a file's timestamp.
@@ -176,7 +176,7 @@ interface Filesystem extends Manager
      *
      * @return int|null The timestamp or null on failure
      */
-    public function timestamp(string $path): int|null;
+    public function timestamp(string $path): ?int;
 
     /**
      * Get a file's visibility.
@@ -186,7 +186,7 @@ interface Filesystem extends Manager
      * @return string|null The visibility ('public' or 'private') or null on
      *                     failure
      */
-    public function visibility(string $path): string|null;
+    public function visibility(string $path): ?string;
 
     /**
      * Set a file's visibility.
@@ -242,5 +242,5 @@ interface Filesystem extends Manager
      *
      * @return array<string, string|int>[]
      */
-    public function listContents(string|null $directory = null, bool $recursive = false): array;
+    public function listContents(?string $directory = null, bool $recursive = false): array;
 }

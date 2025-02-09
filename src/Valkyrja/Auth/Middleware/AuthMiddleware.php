@@ -69,14 +69,14 @@ abstract class AuthMiddleware
      *
      * @var class-string<Adapter>|null
      */
-    protected static string|null $adapterName = null;
+    protected static ?string $adapterName = null;
 
     /**
      * The user class to use.
      *
      * @var class-string<User>|null
      */
-    protected static string|null $userEntity = null;
+    protected static ?string $userEntity = null;
 
     /**
      * The error message to use.
@@ -113,7 +113,7 @@ abstract class AuthMiddleware
      *
      * @return mixed|null
      */
-    protected static function getConfig(string|null $key = null, mixed $default = null): mixed
+    protected static function getConfig(?string $key = null, mixed $default = null): mixed
     {
         $config = self::$config ??= static::getAuth()->getConfig();
 

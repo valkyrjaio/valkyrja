@@ -23,19 +23,19 @@ use Attribute;
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class AttributeClassChildClass extends AttributeClass
 {
-    public string|null $name = null;
+    public ?string $name = null;
 
-    public string|null $class = null;
+    public ?string $class = null;
 
-    public string|null $constant = null;
+    public ?string $constant = null;
 
-    public string|null $property = null;
+    public ?string $property = null;
 
-    public string|null $method = null;
+    public ?string $method = null;
 
-    public bool|null $static = null;
+    public ?bool $static = null;
 
-    public bool|null $isOptional = null;
+    public ?bool $isOptional = null;
 
     public mixed $default = null;
 

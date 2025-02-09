@@ -38,7 +38,6 @@
         <MixedArrayAssignment errorLevel="suppress" />
         <MixedAssignment errorLevel="suppress" />
         <MixedArrayOffset errorLevel="suppress" />
-        <MixedInferredReturnType errorLevel="suppress" />
         <MixedOperand errorLevel="suppress" />
         <MixedMethodCall errorLevel="suppress" />
         <MixedPropertyTypeCoercion errorLevel="suppress" />
@@ -46,35 +45,5 @@
         <MixedReturnTypeCoercion errorLevel="suppress" />
         <UnresolvableInclude errorLevel="suppress" />
         <UnsafeInstantiation errorLevel="suppress" />
-
-        <NoValue>
-            <errorLevel type="suppress">
-                <file name="src/Valkyrja/Type/BuiltIn/Support/StrCase.php" />
-            </errorLevel>
-        </NoValue>
-
-        <RedundantCast>
-            <errorLevel type="suppress">
-                <!-- For some reason Psalm thinks that the return of PDO::lastInsertId() isn't string|false -->
-                <file name="src/Valkyrja/Orm/Adapter/PdoAdapter.php" />
-            </errorLevel>
-        </RedundantCast>
-
-        <UndefinedClass>
-            <errorLevel type="suppress">
-                <!-- Non class-string aliases -->
-                <referencedClass name="app" />
-                <referencedClass name="config" />
-                <referencedClass name="container" />
-                <referencedClass name="events" />
-            </errorLevel>
-        </UndefinedClass>
-
-        <UndefinedFunction>
-            <errorLevel type="suppress">
-                <!-- Exists on some file systems -->
-                <referencedFunction name="litespeed_finish_request" />
-            </errorLevel>
-        </UndefinedFunction>
     </issueHandlers>
 </psalm>

@@ -57,8 +57,8 @@ abstract class Pdo extends BasePDO
      */
     public function __construct(
         array $config,
-        string|null $driver = null,
-        string|null $dsn = null
+        ?string $driver = null,
+        ?string $dsn = null
     ) {
         $db = is_string($config['db'])
             ? $config['db']

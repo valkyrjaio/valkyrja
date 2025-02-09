@@ -35,7 +35,7 @@ class Abort
      *
      * @return never
      */
-    public static function abort400(array|null $headers = null, Response|null $response = null): never
+    public static function abort400(?array $headers = null, ?Response $response = null): never
     {
         static::abort(StatusCode::BAD_REQUEST, StatusText::BAD_REQUEST, $headers, $response);
     }
@@ -48,7 +48,7 @@ class Abort
      *
      * @return never
      */
-    public static function abort404(array|null $headers = null, Response|null $response = null): never
+    public static function abort404(?array $headers = null, ?Response $response = null): never
     {
         static::abort(StatusCode::NOT_FOUND, StatusText::NOT_FOUND, $headers, $response);
     }
@@ -61,7 +61,7 @@ class Abort
      *
      * @return never
      */
-    public static function abort405(array|null $headers = null, Response|null $response = null): never
+    public static function abort405(?array $headers = null, ?Response $response = null): never
     {
         static::abort(StatusCode::METHOD_NOT_ALLOWED, StatusText::METHOD_NOT_ALLOWED, $headers, $response);
     }
@@ -74,7 +74,7 @@ class Abort
      *
      * @return never
      */
-    public static function abort413(array|null $headers = null, Response|null $response = null): never
+    public static function abort413(?array $headers = null, ?Response $response = null): never
     {
         static::abort(StatusCode::PAYLOAD_TOO_LARGE, StatusText::PAYLOAD_TOO_LARGE, $headers, $response);
     }
@@ -90,10 +90,10 @@ class Abort
      * @return never
      */
     public static function abort(
-        StatusCode|null $statusCode = null,
-        string|null $message = null,
-        array|null $headers = null,
-        Response|null $response = null
+        ?StatusCode $statusCode = null,
+        ?string $message = null,
+        ?array $headers = null,
+        ?Response $response = null
     ): never {
         throw new HttpException($statusCode, $message, $headers, $response);
     }
@@ -122,9 +122,9 @@ class Abort
      * @return never
      */
     public static function redirect(
-        Uri|null $uri = null,
-        StatusCode|null $statusCode = null,
-        array|null $headers = null
+        ?Uri $uri = null,
+        ?StatusCode $statusCode = null,
+        ?array $headers = null
     ): never {
         throw new HttpRedirectException($uri, $statusCode, $headers);
     }

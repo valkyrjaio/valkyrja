@@ -40,7 +40,7 @@ interface Adapter
      *
      * @return User|null
      */
-    public function retrieve(User $user): User|null;
+    public function retrieve(User $user): ?User;
 
     /**
      * Get a user from token.
@@ -50,7 +50,7 @@ interface Adapter
      *
      * @return User|null
      */
-    public function retrieveByResetToken(User $user, string $resetToken): User|null;
+    public function retrieveByResetToken(User $user, string $resetToken): ?User;
 
     /**
      * Refresh a user from the data store.

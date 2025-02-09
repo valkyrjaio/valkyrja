@@ -41,7 +41,7 @@ interface ConstantDispatch extends Dispatch
      *
      * @return class-string|null
      */
-    public function getClass(): string|null;
+    public function getClass(): ?string;
 
     /**
      * Create a new dispatch with the specified class name.
@@ -50,5 +50,5 @@ interface ConstantDispatch extends Dispatch
      *
      * @return static
      */
-    public function withClass(string|null $class = null): static;
+    public function withClass(?string $class = null): static;
 }

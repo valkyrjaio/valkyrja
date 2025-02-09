@@ -47,11 +47,11 @@ abstract class RequestFactory
      * @return ServerRequest
      */
     public static function fromGlobals(
-        array|null $server = null,
-        array|null $query = null,
-        array|null $body = null,
-        array|null $cookies = null,
-        array|null $files = null,
+        ?array $server = null,
+        ?array $query = null,
+        ?array $body = null,
+        ?array $cookies = null,
+        ?array $files = null,
         string $class = ServerRequest::class
     ): ServerRequest {
         $files ??= $_FILES;
@@ -104,11 +104,11 @@ abstract class RequestFactory
      * @return ServerRequest
      */
     public static function jsonFromGlobals(
-        array|null $server = null,
-        array|null $query = null,
-        array|null $body = null,
-        array|null $cookies = null,
-        array|null $files = null
+        ?array $server = null,
+        ?array $query = null,
+        ?array $body = null,
+        ?array $cookies = null,
+        ?array $files = null
     ): ServerRequest {
         return self::fromGlobals(
             server: $server,

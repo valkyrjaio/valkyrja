@@ -147,7 +147,7 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      */
-    public function errorMessage(): string|null
+    public function errorMessage(): ?string
     {
         return $this->statement->errorInfo()[2] ?? null;
     }

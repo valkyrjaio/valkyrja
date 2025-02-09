@@ -31,7 +31,7 @@ class Field
      */
     public function __construct(
         public string $type,
-        public int|null $length = null
+        public ?int $length = null
     ) {
     }
 }

@@ -28,7 +28,7 @@ class JsonData extends Model implements Contract
      *
      * @var object|null
      */
-    public object|null $item = null;
+    public ?object $item = null;
 
     /**
      * The item key.
@@ -42,7 +42,7 @@ class JsonData extends Model implements Contract
      *
      * @var object[]|null
      */
-    public array|null $items = null;
+    public ?array $items = null;
 
     /**
      * The items key.
@@ -56,26 +56,26 @@ class JsonData extends Model implements Contract
      *
      * @var int|null
      */
-    public int|null $total = null;
+    public ?int $total = null;
 
     /**
      * The messages.
      *
      * @var string[]|null
      */
-    public array|null $messages = null;
+    public ?array $messages = null;
 
     /**
      * The data.
      *
      * @var array<string, mixed>|null
      */
-    public array|null $data = null;
+    public ?array $data = null;
 
     /**
      * @inheritDoc
      */
-    public function getItem(): object|null
+    public function getItem(): ?object
     {
         return $this->item;
     }
@@ -83,7 +83,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setItem(object|null $item = null): static
+    public function setItem(?object $item = null): static
     {
         $this->item = $item;
 
@@ -111,7 +111,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getItems(): array|null
+    public function getItems(): ?array
     {
         return $this->items;
     }
@@ -119,7 +119,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setItems(array|null $items = null): static
+    public function setItems(?array $items = null): static
     {
         $this->items = $items;
 
@@ -147,7 +147,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getTotal(): int|null
+    public function getTotal(): ?int
     {
         return $this->total;
     }
@@ -155,7 +155,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setTotal(int|null $total = null): static
+    public function setTotal(?int $total = null): static
     {
         $this->total = $total;
 
@@ -165,7 +165,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getMessages(): array|null
+    public function getMessages(): ?array
     {
         return $this->messages;
     }
@@ -173,7 +173,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setMessages(array|null $messages = null): static
+    public function setMessages(?array $messages = null): static
     {
         $this->messages = $messages;
 
@@ -183,7 +183,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function getData(): array|null
+    public function getData(): ?array
     {
         return $this->data;
     }
@@ -191,7 +191,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public function setData(array|null $data = null): static
+    public function setData(?array $data = null): static
     {
         $this->data = $data;
 

@@ -125,7 +125,7 @@ class Console implements Contract
     /**
      * @inheritDoc
      */
-    public function getCommand(string $name): Command|null
+    public function getCommand(string $name): ?Command
     {
         return $this->hasCommand($name)
             ? self::$commands[self::$namedCommands[$name]]

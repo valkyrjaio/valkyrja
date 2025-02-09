@@ -70,6 +70,7 @@ return static function (Config $config): void {
                       ->andThat(new IsNotAbstract())
                       ->andThat(new IsNotTrait())
                       ->andThat(new NotHaveNameMatching('*Security'))
+                      ->andThat(new NotHaveNameMatching('*Provider'))
                       ->should(new ResideInOneOfTheseNamespaces('*Constant\\'))
                       ->because('All final classes are constants and should exist in an appropriate namespace');
 

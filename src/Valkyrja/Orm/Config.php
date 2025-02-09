@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Orm\Config;
+namespace Valkyrja\Orm;
 
 use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Config as Model;

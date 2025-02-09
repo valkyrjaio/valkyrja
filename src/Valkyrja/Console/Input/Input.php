@@ -128,7 +128,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
-    public function getArgument(string $argument): string|null
+    public function getArgument(string $argument): ?string
     {
         return $this->arguments[$argument] ?? null;
     }
@@ -144,7 +144,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
-    public function getShortOption(string $option): string|null
+    public function getShortOption(string $option): ?string
     {
         return $this->shortOptions[$option] ?? null;
     }
@@ -160,7 +160,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
-    public function getLongOption(string $option): string|null
+    public function getLongOption(string $option): ?string
     {
         return $this->longOptions[$option] ?? null;
     }
@@ -176,7 +176,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
-    public function getOption(string $option): string|null
+    public function getOption(string $option): ?string
     {
         return $this->shortOptions[$option] ?? $this->longOptions[$option] ?? null;
     }

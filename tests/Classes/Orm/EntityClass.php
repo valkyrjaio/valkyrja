@@ -27,21 +27,21 @@ class EntityClass extends AbstractEntity
      *
      * @var string|null
      */
-    public string|null $property = null;
+    public ?string $property = null;
 
     /**
      * A property to test with using getter/setter.
      *
      * @var string|null
      */
-    protected string|null $prop = null;
+    protected ?string $prop = null;
 
     /**
      * Get the prop.
      *
      * @return string|null
      */
-    public function getProp(): string|null
+    public function getProp(): ?string
     {
         return $this->prop;
     }

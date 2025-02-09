@@ -37,7 +37,7 @@ use Valkyrja\Mail\Message\Message;
  *
  * @author Melech Mizrachi
  */
-class ServiceProvider extends Provider
+final class ServiceProvider extends Provider
 {
     /**
      * @inheritDoc

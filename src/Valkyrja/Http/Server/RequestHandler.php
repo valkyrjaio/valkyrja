@@ -188,7 +188,7 @@ class RequestHandler implements Contract
      *
      * @return Response
      */
-    protected function getDefaultErrorResponse(HttpException|null $httpException = null): Response
+    protected function getDefaultErrorResponse(?HttpException $httpException = null): Response
     {
         $statusCode = StatusCode::INTERNAL_SERVER_ERROR;
 

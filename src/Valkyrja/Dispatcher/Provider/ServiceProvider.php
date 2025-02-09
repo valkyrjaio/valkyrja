@@ -23,7 +23,7 @@ use Valkyrja\Dispatcher\Validator\Contract\Validator;
  *
  * @author Melech Mizrachi
  */
-class ServiceProvider extends Provider
+final class ServiceProvider extends Provider
 {
     /**
      * @inheritDoc

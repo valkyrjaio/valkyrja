@@ -108,7 +108,7 @@ class Exceptions extends Asserter implements Contract
     /**
      * @inheritDoc
      */
-    public function verify(Throwable|null $exception = null): void
+    public function verify(?Throwable $exception = null): void
     {
         if ($exception === null) {
             if ($this->expecting) {

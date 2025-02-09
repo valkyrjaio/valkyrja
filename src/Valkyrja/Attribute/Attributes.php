@@ -52,7 +52,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
-    public function forClass(string $class, string|null $attribute = null, int|null $flags = null): array
+    public function forClass(string $class, ?string $attribute = null, ?int $flags = null): array
     {
         $reflection = $this->reflection->forClass($class);
 
@@ -70,7 +70,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
-    public function forClassMembers(string $class, string|null $attribute = null, int|null $flags = null): array
+    public function forClassMembers(string $class, ?string $attribute = null, ?int $flags = null): array
     {
         return [
             ...$this->forConstants($class, $attribute, $flags),
@@ -84,7 +84,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
-    public function forClassAndMembers(string $class, string|null $attribute = null, int|null $flags = null): array
+    public function forClassAndMembers(string $class, ?string $attribute = null, ?int $flags = null): array
     {
         return [
             ...$this->forClass($class, $attribute, $flags),
@@ -100,8 +100,8 @@ class Attributes implements Contract
     public function forConstant(
         string $class,
         string $constant,
-        string|null $attribute = null,
-        int|null $flags = null
+        ?string $attribute = null,
+        ?int $flags = null
     ): array {
         return $this->forClassMember($attribute, $flags, $this->reflection->forClassConstant($class, $constant));
     }
@@ -111,7 +111,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
-    public function forConstants(string $class, string|null $attribute = null, int|null $flags = null): array
+    public function forConstants(string $class, ?string $attribute = null, ?int $flags = null): array
     {
         return $this->forClassMember(
             $attribute,
@@ -128,8 +128,8 @@ class Attributes implements Contract
     public function forProperty(
         string $class,
         string $property,
-        string|null $attribute = null,
-        int|null $flags = null
+        ?string $attribute = null,
+        ?int $flags = null
     ): array {
         return $this->forClassMember($attribute, $flags, $this->reflection->forClassProperty($class, $property));
     }
@@ -139,7 +139,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
-    public function forProperties(string $class, string|null $attribute = null, int|null $flags = null): array
+    public function forProperties(string $class, ?string $attribute = null, ?int $flags = null): array
     {
         return $this->forClassMember(
             $attribute,
@@ -156,8 +156,8 @@ class Attributes implements Contract
     public function forMethod(
         string $class,
         string $method,
-        string|null $attribute = null,
-        int|null $flags = null
+        ?string $attribute = null,
+        ?int $flags = null
     ): array {
         return $this->forClassMember($attribute, $flags, $this->reflection->forClassMethod($class, $method));
     }
@@ -170,8 +170,8 @@ class Attributes implements Contract
     public function forMethodParameters(
         string $class,
         string $method,
-        string|null $attribute = null,
-        int|null $flags = null
+        ?string $attribute = null,
+        ?int $flags = null
     ): array {
         return $this->forParameter(
             $attribute,
@@ -189,8 +189,8 @@ class Attributes implements Contract
         string $class,
         string $method,
         string $parameter,
-        string|null $attribute = null,
-        int|null $flags = null
+        ?string $attribute = null,
+        ?int $flags = null
     ): array {
         $parameters = $this->reflection->forClassMethod($class, $method)->getParameters();
 
@@ -212,7 +212,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
-    public function forMethods(string $class, string|null $attribute = null, int|null $flags = null): array
+    public function forMethods(string $class, ?string $attribute = null, ?int $flags = null): array
     {
         return $this->forClassMember(
             $attribute,
@@ -226,7 +226,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
-    public function forFunction(string $function, string|null $attribute = null, int|null $flags = null): array
+    public function forFunction(string $function, ?string $attribute = null, ?int $flags = null): array
     {
         $reflection = $this->reflection->forFunction($function);
 
@@ -244,7 +244,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
-    public function forFunctionParameters(string $function, string|null $attribute = null, int|null $flags = null): array
+    public function forFunctionParameters(string $function, ?string $attribute = null, ?int $flags = null): array
     {
         return $this->forParameter(
             $attribute,
@@ -258,7 +258,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
-    public function forClosure(Closure $closure, string|null $attribute = null, int|null $flags = null): array
+    public function forClosure(Closure $closure, ?string $attribute = null, ?int $flags = null): array
     {
         $reflection = $this->reflection->forClosure($closure);
 
@@ -276,7 +276,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
-    public function forClosureParameters(Closure $closure, string|null $attribute = null, int|null $flags = null): array
+    public function forClosureParameters(Closure $closure, ?string $attribute = null, ?int $flags = null): array
     {
         return $this->forParameter(
             $attribute,
@@ -294,8 +294,8 @@ class Attributes implements Contract
      * @return object[]
      */
     protected function forClassMember(
-        string|null $attribute = null,
-        int|null $flags = null,
+        ?string $attribute = null,
+        ?int $flags = null,
         ReflectionClassConstant|ReflectionMethod|ReflectionProperty ...$members
     ): array {
         $instances = [];
@@ -337,8 +337,8 @@ class Attributes implements Contract
      * @return object[]
      */
     protected function forParameter(
-        string|null $attribute = null,
-        int|null $flags = null,
+        ?string $attribute = null,
+        ?int $flags = null,
         ReflectionParameter ...$parameters
     ): array {
         $instances = [];

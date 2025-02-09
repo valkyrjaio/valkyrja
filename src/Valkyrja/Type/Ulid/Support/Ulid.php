@@ -22,6 +22,7 @@ use Valkyrja\Type\Ulid\Exception\InvalidUlidException;
 
 use function microtime;
 use function random_bytes;
+use function sprintf;
 use function strtr;
 use function substr;
 use function unpack;
@@ -74,7 +75,7 @@ class Ulid extends Uid
      *
      * @return string
      */
-    public static function generate(DateTimeInterface|null $dateTime = null, bool $lowerCase = false): string
+    public static function generate(?DateTimeInterface $dateTime = null, bool $lowerCase = false): string
     {
         $time = static::getTime($dateTime);
 
@@ -121,7 +122,7 @@ class Ulid extends Uid
      *
      * @return string
      */
-    public static function generateLowerCase(DateTimeInterface|null $dateTime = null): string
+    public static function generateLowerCase(?DateTimeInterface $dateTime = null): string
     {
         return static::generate($dateTime, lowerCase: true);
     }
@@ -133,7 +134,7 @@ class Ulid extends Uid
      *
      * @return string
      */
-    protected static function getTime(DateTimeInterface|null $dateTime = null): string
+    protected static function getTime(?DateTimeInterface $dateTime = null): string
     {
         // If no date was passed in
         if ($dateTime === null) {
@@ -179,7 +180,7 @@ class Ulid extends Uid
      *
      * @return bool
      */
-    protected static function doesTimeMatch(string $time, DateTimeInterface|null $dateTime = null): bool
+    protected static function doesTimeMatch(string $time, ?DateTimeInterface $dateTime = null): bool
     {
         return $time > static::$time || ($dateTime !== null && $time !== static::$time);
     }
@@ -260,6 +261,8 @@ class Ulid extends Uid
         if ($randomBytes === false) {
             throw new RuntimeException('Random bytes failed to unpack');
         }
+
+        /** @var array<int, int> $randomBytes */
 
         return $randomBytes;
     }

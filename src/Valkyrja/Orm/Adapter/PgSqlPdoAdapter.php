@@ -27,7 +27,7 @@ class PgSqlPdoAdapter extends PdoAdapter
     /**
      * @inheritDoc
      */
-    public function lastInsertId(string|null $table = null, string|null $idField = null): string
+    public function lastInsertId(?string $table = null, ?string $idField = null): string
     {
         $name = null;
 

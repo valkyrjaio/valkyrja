@@ -162,7 +162,7 @@ class InMemoryAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function metadata(string $path): array|null
+    public function metadata(string $path): ?array
     {
         return $this->getMetadataInternal($path)?->toArray();
     }
@@ -170,7 +170,7 @@ class InMemoryAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function mimetype(string $path): string|null
+    public function mimetype(string $path): ?string
     {
         return $this->getMetadataInternal($path)->mimetype ?? null;
     }
@@ -178,7 +178,7 @@ class InMemoryAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function size(string $path): int|null
+    public function size(string $path): ?int
     {
         return $this->getMetadataInternal($path)->size ?? null;
     }
@@ -186,7 +186,7 @@ class InMemoryAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function timestamp(string $path): int|null
+    public function timestamp(string $path): ?int
     {
         return $this->files[$path]->timestamp ?? null;
     }
@@ -194,7 +194,7 @@ class InMemoryAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function visibility(string $path): string|null
+    public function visibility(string $path): ?string
     {
         return $this->getMetadataInternal($path)->visibility ?? null;
     }
@@ -274,7 +274,7 @@ class InMemoryAdapter implements Contract
         return $contents;
     }
 
-    protected function getMetadataInternal(string $path): InMemoryMetadata|null
+    protected function getMetadataInternal(string $path): ?InMemoryMetadata
     {
         return $this->files[$path]->metadata ?? null;
     }

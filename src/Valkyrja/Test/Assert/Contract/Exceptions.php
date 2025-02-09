@@ -62,5 +62,5 @@ interface Exceptions extends Asserter
     /**
      * Verify the exception thrown (or not thrown) against what is expected.
      */
-    public function verify(Throwable|null $exception = null): void;
+    public function verify(?Throwable $exception = null): void;
 }

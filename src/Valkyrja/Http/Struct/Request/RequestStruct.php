@@ -45,7 +45,7 @@ trait RequestStruct
     /**
      * @inheritDoc
      */
-    public static function getValidationRules(ServerRequest $request): array|null
+    public static function getValidationRules(ServerRequest $request): ?array
     {
         return null;
     }

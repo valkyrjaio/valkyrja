@@ -33,7 +33,7 @@ class EmptyCastableModelClass extends AbstractModel
     {
         parent::internalSetProperties(
             $properties,
-            static function (string $property, mixed $value, Cast|null $cast): mixed {
+            static function (string $property, mixed $value, ?Cast $cast): mixed {
                 throw new RuntimeException(json_encode([$property, $value, $cast], JSON_THROW_ON_ERROR));
             }
         );

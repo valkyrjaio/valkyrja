@@ -41,7 +41,7 @@ class ModelClass extends AbstractModel
 
     public string $public;
 
-    public string|null $nullable;
+    public ?string $nullable;
 
     protected string $protected;
 }
