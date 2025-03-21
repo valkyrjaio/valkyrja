@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Config;
+namespace Valkyrja\Http\Server;
 
-use Valkyrja\Config\DataConfig as AbstractConfig;
+use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Http\Server\Constant\ConfigName;
+use Valkyrja\Http\Server\Constant\EnvName;
 
 /**
- * Config class to use to test abstract config.
+ * Class Config.
  *
  * @author Melech Mizrachi
- *
- * @property string $protected
  */
-class DataConfigClass extends AbstractConfig
+class DataConfig extends ParentConfig
 {
     /**
      * @inheritDoc
@@ -30,11 +30,11 @@ class DataConfigClass extends AbstractConfig
      * @var array<string, string>
      */
     protected static array $envNames = [
-        'public'   => 'DATA_CONFIG_PUBLIC',
-        'nullable' => 'DATA_CONFIG_NULLABLE',
+        ConfigName::REQUEST_HANDLER => EnvName::REQUEST_HANDLER,
     ];
 
-    public string $public = 'public';
-
-    public ?string $nullable = null;
+    public function __construct(
+        public string $requestHandler = RequestHandler::class,
+    ) {
+    }
 }

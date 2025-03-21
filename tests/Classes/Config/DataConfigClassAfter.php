@@ -25,7 +25,7 @@ class DataConfigClassAfter extends DataConfigClass
     public const PUBLIC   = 'publicAfterEnv';
     public const NULLABLE = 'nullableAfterEnv';
 
-    protected function setPropertiesAfterSettingFromEnv(): void
+    protected function setPropertiesAfterSettingFromEnv(string $env): void
     {
         $this->public   = self::PUBLIC;
         $this->nullable = self::NULLABLE;

@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Config\Config;
+namespace Valkyrja\Annotation;
 
-use Valkyrja\Config\Constant\ConfigName;
-use Valkyrja\Config\Constant\EnvName;
+use Valkyrja\Annotation\Model\Contract\Annotation;
 use Valkyrja\Config\DataConfig as ParentConfig;
-use Valkyrja\Config\Support\Provider;
+use Valkyrja\Annotation\Constant\ConfigName;
+use Valkyrja\Annotation\Constant\EnvName;
 
 /**
  * Class Config.
@@ -31,20 +31,17 @@ class DataConfig extends ParentConfig
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::PROVIDERS       => EnvName::PROVIDERS,
-        ConfigName::CACHE_FILE_PATH => EnvName::CACHE_FILE_PATH,
-        ConfigName::USE_CACHE       => EnvName::USE_CACHE,
+        ConfigName::ALIASES => EnvName::ALIASES,
+        ConfigName::MAP     => EnvName::MAP,
     ];
 
     /**
-     * @param class-string<Provider>[] $providers
-     * @param string                   $cacheFilePath
-     * @param bool                     $useCache
+     * @param array<string, class-string>[]           $aliases
+     * @param array<string, class-string<Annotation>> $map
      */
     public function __construct(
-        public array $providers = [],
-        public string $cacheFilePath = '',
-        public bool $useCache = false
+        public array $aliases = [],
+        public array $map = [],
     ) {
     }
 }

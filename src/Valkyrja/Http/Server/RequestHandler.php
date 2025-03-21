@@ -22,7 +22,6 @@ use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Message\Response\Response as HttpResponse;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Middleware;
-use Valkyrja\Http\Middleware\Handler\Contract\Handler;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
@@ -60,10 +59,10 @@ class RequestHandler implements Contract
     public function __construct(
         protected Container $container = new \Valkyrja\Container\Container(),
         protected Router $router = new \Valkyrja\Http\Routing\Router(),
-        protected RequestReceivedHandler&Handler $requestReceivedHandler = new Middleware\Handler\RequestReceivedHandler(),
-        protected ThrowableCaughtHandler&Handler $exceptionHandler = new Middleware\Handler\ThrowableCaughtHandler(),
-        protected SendingResponseHandler&Handler $sendingResponseHandler = new Middleware\Handler\SendingResponseHandler(),
-        protected TerminatedHandler&Handler $terminatedHandler = new Middleware\Handler\TerminatedHandler(),
+        protected RequestReceivedHandler $requestReceivedHandler = new Middleware\Handler\RequestReceivedHandler(),
+        protected ThrowableCaughtHandler $exceptionHandler = new Middleware\Handler\ThrowableCaughtHandler(),
+        protected SendingResponseHandler $sendingResponseHandler = new Middleware\Handler\SendingResponseHandler(),
+        protected TerminatedHandler $terminatedHandler = new Middleware\Handler\TerminatedHandler(),
         protected bool $debug = false
     ) {
     }

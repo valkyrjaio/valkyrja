@@ -23,6 +23,10 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Exception\Contract\ErrorHandler as ErrorHandlerContract;
 use Valkyrja\Exception\ErrorHandler;
 
+use function set_error_handler;
+
+use function Valkyrja\dd;
+
 use const E_ALL;
 
 /**

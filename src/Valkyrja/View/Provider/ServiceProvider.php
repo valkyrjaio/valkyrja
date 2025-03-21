@@ -69,6 +69,7 @@ final class ServiceProvider extends Provider
             OrkaEngine::class,
             TwigEngine::class,
             Environment::class,
+            ResponseFactory::class,
         ];
     }
 

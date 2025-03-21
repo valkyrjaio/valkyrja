@@ -33,7 +33,7 @@ abstract class DataConfig implements ArrayAccess
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [];
+    protected static array $envNames = [];
 
     /**
      * Create config from Env.
@@ -44,9 +44,9 @@ abstract class DataConfig implements ArrayAccess
     {
         $new = new static();
 
-        $new->setPropertiesBeforeSettingFromEnv();
+        $new->setPropertiesBeforeSettingFromEnv($env);
         $new->setPropertiesFromEnv($env);
-        $new->setPropertiesAfterSettingFromEnv();
+        $new->setPropertiesAfterSettingFromEnv($env);
 
         return $new;
     }
@@ -93,24 +93,28 @@ abstract class DataConfig implements ArrayAccess
      */
     protected function setPropertiesFromEnv(string $env): void
     {
-        foreach (static::$envKeys as $property => $value) {
-            if (defined("$env::$value")) {
-                $this->$property = constant("$env::$value") ?? $this->$property;
+        foreach (static::$envNames as $propertyName => $envName) {
+            if (defined("$env::$envName")) {
+                $this->$propertyName = constant("$env::$envName") ?? $this->$propertyName;
             }
         }
     }
 
     /**
      * Set properties' values before setting from env.
+     *
+     * @param class-string $env The env
      */
-    protected function setPropertiesBeforeSettingFromEnv(): void
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
     {
     }
 
     /**
      * Set properties' values after setting from env.
+     *
+     * @param class-string $env The env
      */
-    protected function setPropertiesAfterSettingFromEnv(): void
+    protected function setPropertiesAfterSettingFromEnv(string $env): void
     {
     }
 }

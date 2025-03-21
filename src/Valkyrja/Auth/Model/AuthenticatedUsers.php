@@ -36,6 +36,13 @@ class AuthenticatedUsers extends CastableModel implements Contract
     protected string|int|null $currentId = null;
 
     /**
+     * The impersonated user's id.
+     *
+     * @var string|int|null
+     */
+    protected string|int|null $impersonatedId = null;
+
+    /**
      * The users.
      *
      * @var array<int|string, User>
@@ -77,6 +84,32 @@ class AuthenticatedUsers extends CastableModel implements Contract
 
     /**
      * @inheritDoc
+     */
+    public function isImpersonating(): bool
+    {
+        return isset($this->impersonatedId);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getImpersonated(): ?User
+    {
+        return $this->users[$this->impersonatedId] ?? null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setImpersonated(User $user): static
+    {
+        $this->impersonatedId = $user->getIdValue();
+
+        return $this->add($user);
+    }
+
+    /**
+     * @inheritDoc
      *
      * @param User $user The user
      */
@@ -85,6 +118,10 @@ class AuthenticatedUsers extends CastableModel implements Contract
         $id = $user->getIdValue();
 
         if ($this->currentId === $id) {
+            return true;
+        }
+
+        if ($this->impersonatedId === $id) {
             return true;
         }
 
@@ -148,11 +185,9 @@ class AuthenticatedUsers extends CastableModel implements Contract
      */
     public function asArray(string ...$properties): array
     {
-        $users = [];
-
-        foreach ($this->users as $key => $userFromCollection) {
-            $users[$key] = $userFromCollection->asArray();
-        }
+        $users = array_map(static function ($userFromCollection) {
+            return $userFromCollection->asArray();
+        }, $this->users);
 
         return [
             'currentId' => $this->currentId,
@@ -165,11 +200,9 @@ class AuthenticatedUsers extends CastableModel implements Contract
      */
     public function asStorableArray(string ...$properties): array
     {
-        $users = [];
-
-        foreach ($this->users as $key => $userFromCollection) {
-            $users[$key] = $userFromCollection->asStorableArray();
-        }
+        $users = array_map(static function ($userFromCollection) {
+            return $userFromCollection->asStorableArray();
+        }, $this->users);
 
         return [
             'currentId' => $this->currentId,

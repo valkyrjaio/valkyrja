@@ -11,18 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Config;
+namespace Valkyrja\Sms\Config;
 
-use Valkyrja\Config\DataConfig as AbstractConfig;
+use Valkyrja\Sms\Adapter\NullAdapter;
+use Valkyrja\Sms\Constant\ConfigName;
 
 /**
- * Config class to use to test abstract config.
+ * Class NullConfiguration.
  *
  * @author Melech Mizrachi
- *
- * @property string $protected
  */
-class DataConfigClass extends AbstractConfig
+class NullConfiguration extends Configuration
 {
     /**
      * @inheritDoc
@@ -30,11 +29,14 @@ class DataConfigClass extends AbstractConfig
      * @var array<string, string>
      */
     protected static array $envNames = [
-        'public'   => 'DATA_CONFIG_PUBLIC',
-        'nullable' => 'DATA_CONFIG_NULLABLE',
+        ConfigName::ADAPTER_CLASS => 'SMS_NULL_ADAPTER_CLASS',
+        ConfigName::DRIVER_CLASS  => 'SMS_NULL_DRIVER_CLASS',
     ];
 
-    public string $public = 'public';
-
-    public ?string $nullable = null;
+    public function __construct()
+    {
+        parent::__construct(
+            adapterClass: NullAdapter::class,
+        );
+    }
 }

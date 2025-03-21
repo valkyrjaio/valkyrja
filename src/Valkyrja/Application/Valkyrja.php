@@ -33,6 +33,7 @@ use function defined;
 use function is_file;
 use function is_string;
 use function microtime;
+use function Valkyrja\dd;
 
 /**
  * Class Valkyrja.

@@ -49,6 +49,29 @@ interface AuthenticatedUsers extends CastableModel
     public function setCurrent(User $user): static;
 
     /**
+     * Determine whether there is an impersonated user in the collection.
+     *
+     * @return bool
+     */
+    public function isImpersonating(): bool;
+
+    /**
+     * Get the impersonated user.
+     *
+     * @return User|null
+     */
+    public function getImpersonated(): ?User;
+
+    /**
+     * Set a user to impersonate.
+     *
+     * @param User $user The user
+     *
+     * @return static
+     */
+    public function setImpersonated(User $user): static;
+
+    /**
      * Check if a user is authenticated.
      *
      * @param User $user The user to check

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Config;
 
 use ArrayAccess;
-use Valkyrja\Annotation\Config as Annotation;
+use Valkyrja\Annotation\DataConfig as Annotation;
 use Valkyrja\Api\Config as Api;
 use Valkyrja\Application\Config as App;
 use Valkyrja\Asset\Config as Asset;
@@ -25,12 +25,15 @@ use Valkyrja\Client\Config as Client;
 use Valkyrja\Config\Config\DataConfig as ConfigConfig;
 use Valkyrja\Config\DataConfig;
 use Valkyrja\Console\Config as Console;
-use Valkyrja\Container\Config as Container;
+use Valkyrja\Container\DataConfig as Container;
 use Valkyrja\Crypt\Config as Crypt;
 use Valkyrja\Event\Config as Event;
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Filesystem\Config as Filesystem;
-use Valkyrja\Http\Routing\Config as Routing;
+use Valkyrja\Http\Middleware\DataConfig as Middleware;
+use Valkyrja\Http\Routing\DataConfig as Routing;
+use Valkyrja\Http\Server\DataConfig as Server;
 use Valkyrja\Jwt\Config as Jwt;
 use Valkyrja\Log\Config as Log;
 use Valkyrja\Mail\Config as Mail;
@@ -38,8 +41,8 @@ use Valkyrja\Notification\Config as Notification;
 use Valkyrja\Orm\Config as Orm;
 use Valkyrja\Path\Config as Path;
 use Valkyrja\Session\Config as Session;
-use Valkyrja\Sms\Config as Sms;
-use Valkyrja\View\Config as View;
+use Valkyrja\Sms\DataConfig as Sms;
+use Valkyrja\View\DataConfig as View;
 
 use function is_string;
 use function unserialize;
@@ -159,6 +162,27 @@ class ValkyrjaDataConfig implements ArrayAccess
     protected Filesystem $filesystem;
 
     /**
+     * The http middleware component config.
+     *
+     * @var Middleware
+     */
+    protected Middleware $httpMiddleware;
+
+    /**
+     * The http routing component config.
+     *
+     * @var Routing
+     */
+    protected Routing $httpRouting;
+
+    /**
+     * The http server component config.
+     *
+     * @var Server
+     */
+    protected Server $httpServer;
+
+    /**
      * The Jwt component config.
      *
      * @var Jwt
@@ -201,13 +225,6 @@ class ValkyrjaDataConfig implements ArrayAccess
     protected Path $path;
 
     /**
-     * The routing component config.
-     *
-     * @var Routing
-     */
-    protected Routing $routing;
-
-    /**
      * The session component config.
      *
      * @var Session
@@ -229,35 +246,19 @@ class ValkyrjaDataConfig implements ArrayAccess
     protected View $view;
 
     /**
-     * @param array<string, array<string, mixed>|string>|null $cached
+     * @param array<string, array<string, mixed>|string>|null $cached The cached config
+     * @param class-string|null                               $env    The env class
      */
     public function __construct(
-        protected ?array $cached = null
+        protected array|null $cached = null,
+        protected string|null $env = null
     ) {
+        if ($env === null && $cached === null) {
+            throw new InvalidArgumentException('One of env or cached is required');
+        }
+
         if ($cached === null) {
-            $this->annotation   = new Annotation\Annotation();
-            $this->api          = new Api\Api();
-            $this->asset        = new Asset\Asset();
-            $this->auth         = new Auth\Auth();
-            $this->broadcast    = new Broadcast\Broadcast();
-            $this->cache        = new Cache\Cache();
-            $this->client       = new Client\Client();
-            $this->config       = new ConfigConfig();
-            $this->console      = new Console\Console();
-            $this->container    = new Container\Container();
-            $this->crypt        = new Crypt\Crypt();
-            $this->event        = new Event\Event();
-            $this->filesystem   = new Filesystem\Filesystem();
-            $this->jwt          = new Jwt\Jwt();
-            $this->log          = new Log\Log();
-            $this->mail         = new Mail\Mail();
-            $this->notification = new Notification\Notification();
-            $this->orm          = new Orm\Orm();
-            $this->path         = new Path\Path();
-            $this->routing      = new Routing\Routing();
-            $this->session      = new Session\Session();
-            $this->sms          = new Sms\Sms();
-            $this->view         = new View\View();
+            $this->setConfigFromEnv($env);
         }
     }
 
@@ -335,5 +336,37 @@ class ValkyrjaDataConfig implements ArrayAccess
     public function offsetUnset(mixed $offset): void
     {
         throw new RuntimeException("Cannot remove offset with name $offset from config.");
+    }
+
+    /**
+     * @param class-string $env The env class
+     */
+    protected function setConfigFromEnv(string $env): void
+    {
+        $this->annotation     = Annotation::fromEnv($env);
+        $this->api            = new Api\Api();
+        $this->asset          = new Asset\Asset();
+        $this->auth           = new Auth\Auth();
+        $this->broadcast      = new Broadcast\Broadcast();
+        $this->cache          = new Cache\Cache();
+        $this->client         = new Client\Client();
+        $this->config         = ConfigConfig::fromEnv($env);
+        $this->console        = new Console\Console();
+        $this->container      = Container::fromEnv($env);
+        $this->crypt          = new Crypt\Crypt();
+        $this->event          = new Event\Event();
+        $this->filesystem     = new Filesystem\Filesystem();
+        $this->httpMiddleware = Middleware::fromEnv($env);
+        $this->httpRouting    = Routing::fromEnv($env);
+        $this->httpServer     = Server::fromEnv($env);
+        $this->jwt            = new Jwt\Jwt();
+        $this->log            = new Log\Log();
+        $this->mail           = new Mail\Mail();
+        $this->notification   = new Notification\Notification();
+        $this->orm            = new Orm\Orm();
+        $this->path           = new Path\Path();
+        $this->session        = new Session\Session();
+        $this->sms            = Sms::fromEnv($env);
+        $this->view           = View::fromEnv($env);
     }
 }

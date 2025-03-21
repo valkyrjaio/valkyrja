@@ -193,7 +193,10 @@ class Response implements Contract
 
         $stream->rewind();
 
-        ob_flush();
+        if (ob_get_level() > 0) {
+            ob_flush();
+        }
+
         flush();
 
         return $this;

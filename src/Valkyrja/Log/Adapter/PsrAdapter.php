@@ -18,6 +18,8 @@ use Throwable;
 use Valkyrja\Log\Adapter\Contract\PsrAdapter as Contract;
 use Valkyrja\Log\Enum\LogLevel;
 
+use function var_dump;
+
 /**
  * Class PsrAdapter.
  *
@@ -135,6 +137,6 @@ class PsrAdapter implements Contract
      */
     protected function getExceptionTraceCode(Throwable $exception): string
     {
-        return md5(serialize($exception));
+        return md5($exception::class . $exception->getTraceAsString());
     }
 }

@@ -171,8 +171,7 @@ class ModelTest extends TestCase
 
         self::assertTrue(isset($model->public));
         self::assertTrue(isset($model->protected));
-        // Since private fields are not exposed
-        self::assertFalse(isset($model->private));
+        self::assertTrue(isset($model->private));
 
         $model = ModelClass::fromValue(json_encode(ModelClass::fromValue(ModelClass::VALUES)));
 

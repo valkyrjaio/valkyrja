@@ -20,7 +20,7 @@
     "ext-mbstring" : "*"
   },
   "require-dev"       : {
-    "phparkitect/phparkitect" : "^0.3.33"
+    "phparkitect/phparkitect" : "^0.4.0"
   },
   "autoload"          : {
     "psr-4" : {

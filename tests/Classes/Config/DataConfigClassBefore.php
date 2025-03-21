@@ -25,7 +25,7 @@ class DataConfigClassBefore extends DataConfigClass
     public const PUBLIC   = 'publicBeforeEnv';
     public const NULLABLE = 'nullableBeforeEnv';
 
-    protected function setPropertiesBeforeSettingFromEnv(): void
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
     {
         $this->public   = self::PUBLIC;
         $this->nullable = self::NULLABLE;
