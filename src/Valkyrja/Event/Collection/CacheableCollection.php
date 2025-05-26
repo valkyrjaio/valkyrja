@@ -60,7 +60,7 @@ class CacheableCollection extends Collection
         $config->listeners = [];
 
         foreach ($this->listeners as $id => $listener) {
-            $config->listeners[$id] = $listener->asArray();
+            $config->listeners[$id] = serialize($listener);
         }
 
         return $config;

@@ -32,6 +32,7 @@ final class ConfigValue
         Provider::CONSOLE_CACHE_COMMAND,
         Provider::COMMANDS_LIST_FOR_BASH_COMMAND,
         Provider::OPTIMIZE_COMMAND,
+        Provider::OPTIMIZE_CACHE_COMMAND,
         Provider::CONTAINER_CACHE_COMMAND,
         Provider::EVENTS_CACHE_COMMAND,
         Provider::ROUTES_CACHE_COMMAND,

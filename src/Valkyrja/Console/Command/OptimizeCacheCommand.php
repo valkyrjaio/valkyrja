@@ -48,7 +48,7 @@ class OptimizeCacheCommand extends Commander
     /**
      * The command.
      */
-    public const COMMAND           = 'optimize-cache';
+    public const COMMAND           = 'optimize:cache';
     public const PATH              = self::COMMAND;
     public const SHORT_DESCRIPTION = 'Optimize the application';
 
