@@ -53,7 +53,7 @@ trait Set
         $values = [];
 
         foreach ($this->values as $column => $value) {
-            $values[] = $column . ' = ' . $value;
+            $values[] = $column . ' = ' . ((string) $value);
         }
 
         return Statement::SET . ' ' . implode(', ', $values);

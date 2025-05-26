@@ -356,8 +356,8 @@ class CacheRepository extends Repository implements Contract
         $id = spl_object_id($entity);
 
         match ($type) {
-            StoreType::store  => $this->storeEntities[$id]   = $entity,
-            StoreType::forget => $this->forgetEntities[$id]  = $entity,
+            StoreType::store => $this->storeEntities[$id] = $entity,
+            StoreType::forget => $this->forgetEntities[$id] = $entity,
         };
     }
 
@@ -384,7 +384,7 @@ class CacheRepository extends Repository implements Contract
      */
     protected function getEntityCacheKey(Entity $entity): string
     {
-        return $entity::class . $entity->getIdValue();
+        return $entity::class . ((string) $entity->getIdValue());
     }
 
     /**

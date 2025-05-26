@@ -154,7 +154,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
         }
 
         // Set the entity with the param name as the service id into the container
-        $this->container->setSingleton($entityName . $index, $entity);
+        $this->container->setSingleton($entityName . ((string) $index), $entity);
 
         // Replace the route match with this entity
         /** @param-out Entity $value */
@@ -229,7 +229,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     {
         return $this->responseFactory
             ->createResponseFromView(
-                template: "$this->errorsTemplateDir/" . StatusCode::NOT_FOUND->value,
+                template: "$this->errorsTemplateDir/" . ((string) StatusCode::NOT_FOUND->value),
                 statusCode: StatusCode::NOT_FOUND,
             );
     }
@@ -246,7 +246,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     {
         return $this->responseFactory
             ->createResponseFromView(
-                template: "$this->errorsTemplateDir/" . StatusCode::BAD_REQUEST->value,
+                template: "$this->errorsTemplateDir/" . ((string) StatusCode::BAD_REQUEST->value),
                 statusCode: StatusCode::BAD_REQUEST,
             );
     }

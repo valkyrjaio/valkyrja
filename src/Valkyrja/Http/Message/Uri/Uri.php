@@ -204,7 +204,7 @@ class Uri implements Contract
         $host = $this->host;
 
         if ($host !== '' && ($port = $this->port) !== null) {
-            $host .= ':' . $port;
+            $host .= ':' . ((string) $port);
         }
 
         return $host;

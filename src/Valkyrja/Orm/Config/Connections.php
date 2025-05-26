@@ -22,7 +22,7 @@ class Connections
 {
     public function __construct(
         public MysqlConnection|null $mysql = null,
-        public PgSqlConnection|null $pgsql = null,
+        public PgsqlConnection|null $pgsql = null,
     ) {
     }
 }

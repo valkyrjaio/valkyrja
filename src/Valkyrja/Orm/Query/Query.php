@@ -114,7 +114,7 @@ class Query implements QueryContract
     {
         if (is_array($value)) {
             foreach ($value as $key => $item) {
-                $this->bindValue($property . $key, $item);
+                $this->bindValue($property . ((string) $key), $item);
             }
 
             return $this;

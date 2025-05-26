@@ -18,6 +18,7 @@ use Valkyrja\Application\Env;
 use Valkyrja\Application\Valkyrja;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Config\Config\ValkyrjaDataConfig;
+use Valkyrja\Exception\ErrorHandler;
 use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Support\Directory;
@@ -43,6 +44,13 @@ abstract class App
      */
     public static function start(string $dir, string $env, string $config, string|null $dataConfig = null): Application
     {
+        static::defaultErrorHandler(
+            dir: $dir,
+            env: $env,
+            config: $config,
+            dataConfig: $dataConfig
+        );
+
         static::appStart(
             dir: $dir,
             env: $env,
@@ -114,6 +122,23 @@ abstract class App
         $exitCode = $app->consoleKernel()->run();
 
         static::exitConsole($exitCode);
+    }
+
+    /**
+     * Set a default error handler until the one specified in config is set in the Container\AppProvider.
+     *
+     * @param string                                $dir        The directory
+     * @param class-string<Env>                     $env        The env class to use
+     * @param class-string<Config>                  $config     The config class to use
+     * @param class-string<ValkyrjaDataConfig>|null $dataConfig The config class to use
+     *
+     * @return void
+     */
+    protected static function defaultErrorHandler(string $dir, string $env, string $config, string|null $dataConfig = null): void
+    {
+        ErrorHandler::enable(
+            displayErrors: true
+        );
     }
 
     /**

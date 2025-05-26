@@ -188,8 +188,8 @@ class RoutesList extends Commander
     protected function oddFormat(bool $odd): string
     {
         return $odd
-            ? static::INVERT_FORMAT . "\e[" . FormatForeground::CYAN->value . 'm'
-            : static::INVERT_FORMAT . "\e[" . FormatForeground::LIGHT_CYAN->value . 'm';
+            ? static::INVERT_FORMAT . "\e[" . ((string) FormatForeground::CYAN->value) . 'm'
+            : static::INVERT_FORMAT . "\e[" . ((string) FormatForeground::LIGHT_CYAN->value) . 'm';
     }
 
     /**

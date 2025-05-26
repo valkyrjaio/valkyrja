@@ -48,7 +48,7 @@ class ViewRouteNotMatchedMiddleware implements RouteNotMatchedMiddleware
 
         $view = $this->view
             ->render(
-                name: "$this->errorsTemplateDir/" . $statusCode->value,
+                name: "$this->errorsTemplateDir/" . ((string) $statusCode->value),
                 variables: [
                     'request'  => $request,
                     'response' => $response,

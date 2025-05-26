@@ -25,11 +25,11 @@ use Valkyrja\Crypt\Driver\Contract\Driver;
 abstract class Configuration extends ParentConfig
 {
     /**
-     * @param class-string<Adapter>|null $adapterClass
-     * @param class-string<Driver>|null  $driverClass
+     * @param class-string<Adapter> $adapterClass
+     * @param class-string<Driver>  $driverClass
      */
     public function __construct(
-        public string|null $adapterClass = null,
+        public string $adapterClass,
         public string $driverClass = \Valkyrja\Crypt\Driver\Driver::class,
     ) {
     }

@@ -188,7 +188,7 @@ class Request implements Contract
         $host = $this->uri->getHost();
         $port = $this->uri->getPort();
         $host .= $port !== null
-            ? ':' . $port
+            ? ':' . ((string) $port)
             : '';
 
         return $host;

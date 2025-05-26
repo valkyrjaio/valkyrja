@@ -181,7 +181,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     {
         return $this->limit === null || $this->isCount()
             ? ''
-            : Statement::LIMIT . ' ' . $this->limit;
+            : Statement::LIMIT . ' ' . ((string) $this->limit);
     }
 
     /**
@@ -193,7 +193,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     {
         return $this->offset === null || $this->isCount()
             ? ''
-            : Statement::OFFSET . ' ' . $this->offset;
+            : Statement::OFFSET . ' ' . ((string) $this->offset);
     }
 
     /**

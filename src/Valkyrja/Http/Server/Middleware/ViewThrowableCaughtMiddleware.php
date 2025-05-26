@@ -49,7 +49,7 @@ class ViewThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
 
         $view = $this->view
             ->render(
-                name: "$this->errorsTemplateDir/" . $statusCode->value,
+                name: "$this->errorsTemplateDir/" . ((string) $statusCode->value),
                 variables: [
                     'exception' => $exception,
                     'request'   => $request,

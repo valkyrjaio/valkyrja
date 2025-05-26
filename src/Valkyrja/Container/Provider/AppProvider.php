@@ -95,7 +95,6 @@ final class AppProvider extends Provider
         if ($app->debug()) {
             // Enable error handling
             $errorHandler::enable(
-            // errorReportingLevel: E_ALL,
                 displayErrors: true
             );
         }

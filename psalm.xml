@@ -19,6 +19,7 @@
 
     <issueHandlers>
         <PropertyNotSetInConstructor errorLevel="suppress" />
+        <ClassMustBeFinal errorLevel="suppress" />
 
         <!-- A bunch of false-positives with empty -->
         <!--<RiskyTruthyFalsyComparison errorLevel="suppress" />-->

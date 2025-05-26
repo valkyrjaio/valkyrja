@@ -23,6 +23,7 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Contract\Dispatcher as Events;
 use Valkyrja\Exception\InvalidArgumentException;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Support\Directory;
 use Valkyrja\Type\BuiltIn\Support\Arr;
@@ -66,9 +67,9 @@ class Valkyrja implements Application
     /**
      * Application config.
      *
-     * @var ValkyrjaDataConfig|array<string, mixed>
+     * @var ValkyrjaDataConfig
      */
-    protected static ValkyrjaDataConfig|array $dataConfig;
+    protected static ValkyrjaDataConfig $dataConfig;
 
     /**
      * Get the instance of the container.
@@ -391,9 +392,13 @@ class Valkyrja implements Application
     protected function setupFromDataConfigCacheFile(string $cacheFilePath): void
     {
         if (is_file($cacheFilePath)) {
-            self::$dataConfig = ValkyrjaDataConfig::fromSerializesString(
-                file_get_contents($cacheFilePath)
-            );
+            $cacheFileContents = file_get_contents($cacheFilePath);
+
+            if ($cacheFileContents === '' || $cacheFileContents === false) {
+                throw new RuntimeException('Invalid cache file contents');
+            }
+
+            self::$dataConfig = ValkyrjaDataConfig::fromSerializesString($cacheFileContents);
 
             $this->publishDataConfigAppProviders();
 

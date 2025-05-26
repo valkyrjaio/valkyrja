@@ -317,7 +317,7 @@ abstract class UriFactory
 
         $portOffset = strrpos($accumulator->host, ':');
 
-        if ($portOffset !== false && $accumulator->port . ']' === substr($accumulator->host, $portOffset + 1)) {
+        if ($portOffset !== false && (((string) $accumulator->port) . ']') === substr($accumulator->host, $portOffset + 1)) {
             // The last digit of the IPv6-Address has been taken as port
             // Unset the port so the default port can be used
             $accumulator->port = null;

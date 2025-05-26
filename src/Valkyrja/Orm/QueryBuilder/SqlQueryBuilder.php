@@ -299,7 +299,7 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     {
         return $this->limit === null || $this->isCount()
             ? ''
-            : Statement::LIMIT . ' ' . $this->limit;
+            : Statement::LIMIT . ' ' . ((string) $this->limit);
     }
 
     /**
@@ -311,7 +311,7 @@ class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
     {
         return $this->offset === null || $this->isCount()
             ? ''
-            : Statement::OFFSET . ' ' . $this->offset;
+            : Statement::OFFSET . ' ' . ((string) $this->offset);
     }
 
     /**
