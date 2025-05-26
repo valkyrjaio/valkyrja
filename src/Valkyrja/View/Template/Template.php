@@ -50,7 +50,7 @@ class Template implements Contract
      *
      * @var string|null
      */
-    protected ?string $layout = null;
+    protected string|null $layout = null;
 
     /**
      * The block status.
@@ -169,7 +169,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
-    public function setLayout(?string $layout = null): static
+    public function setLayout(string|null $layout = null): static
     {
         // If no layout has been set
         if ($layout === null) {

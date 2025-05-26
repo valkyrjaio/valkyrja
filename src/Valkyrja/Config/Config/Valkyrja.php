@@ -13,10 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Config;
 
-use Valkyrja\Annotation\Config\Annotation;
-use Valkyrja\Api\Config\Api;
 use Valkyrja\Application\Config\App;
-use Valkyrja\Auth\Config\Auth;
 use Valkyrja\Broadcast\Config\Broadcast;
 use Valkyrja\Cache\Config\Cache;
 use Valkyrja\Client\Config\Client;
@@ -49,13 +46,10 @@ class Valkyrja extends Model
     /**
      * @inheritDoc
      */
-    protected function setup(?array $properties = null): void
+    protected function setup(array|null $properties = null): void
     {
         /** @var array<string, array<string, mixed>>|null $properties */
-        $this->annotation = new Annotation($properties['annotation'] ?? null, true);
-        $this->api        = new Api($properties['api'] ?? null, true);
         $this->app        = new App($properties['app'] ?? null, true);
-        $this->auth       = new Auth($properties['auth'] ?? null, true);
         $this->broadcast  = new Broadcast($properties['broadcast'] ?? null, true);
         $this->cache      = new Cache($properties['cache'] ?? null, true);
         $this->client     = new Client($properties['client'] ?? null, true);

@@ -22,7 +22,7 @@ class HostPortAccumulator
 {
     public function __construct(
         public string $host = '',
-        public ?int $port = null
+        public int|null $port = null
     ) {
     }
 }

@@ -31,8 +31,8 @@ class PropertyDispatch extends ClassDispatch implements Contract
         string $class,
         protected string $property,
         protected bool $isStatic = false,
-        ?array $arguments = null,
-        ?array $dependencies = null
+        array|null $arguments = null,
+        array|null $dependencies = null
     ) {
         parent::__construct(
             class: $class,

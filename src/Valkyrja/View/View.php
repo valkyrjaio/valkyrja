@@ -94,7 +94,7 @@ class View implements Contract
     /**
      * @inheritDoc
      */
-    public function createTemplate(string $name, array $variables = [], ?string $engine = null): Template
+    public function createTemplate(string $name, array $variables = [], string|null $engine = null): Template
     {
         return $this->factory->getTemplate($this->getEngine($engine), $name, $variables);
     }
@@ -102,7 +102,7 @@ class View implements Contract
     /**
      * @inheritDoc
      */
-    public function getEngine(?string $name = null): Engine
+    public function getEngine(string|null $name = null): Engine
     {
         $name ??= $this->engine;
 

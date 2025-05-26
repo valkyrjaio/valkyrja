@@ -29,13 +29,13 @@ class LogConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        'logName'                 => 'SMS_LOG_LOG_NAME',
         ConfigName::ADAPTER_CLASS => 'SMS_LOG_ADAPTER_CLASS',
         ConfigName::DRIVER_CLASS  => 'SMS_LOG_DRIVER_CLASS',
+        ConfigName::LOGGER        => 'SMS_LOG_LOG_NAME',
     ];
 
     public function __construct(
-        public string|null $logName = null
+        public string|null $logger = null
     ) {
         parent::__construct(
             adapterClass: LogAdapter::class,

@@ -41,7 +41,7 @@ interface CallableDispatch extends Dispatch
      *
      * @return array<array-key, mixed>|null
      */
-    public function getArguments(): ?array;
+    public function getArguments(): array|null;
 
     /**
      * Create a new dispatch with the specified arguments.
@@ -50,14 +50,14 @@ interface CallableDispatch extends Dispatch
      *
      * @return static
      */
-    public function withArguments(?array $arguments = null): static;
+    public function withArguments(array|null $arguments = null): static;
 
     /**
      * Get the dependencies.
      *
      * @return string[]|null
      */
-    public function getDependencies(): ?array;
+    public function getDependencies(): array|null;
 
     /**
      * Create a new dispatch with the specified dependencies.
@@ -66,5 +66,5 @@ interface CallableDispatch extends Dispatch
      *
      * @return static
      */
-    public function withDependencies(?array $dependencies = null): static;
+    public function withDependencies(array|null $dependencies = null): static;
 }

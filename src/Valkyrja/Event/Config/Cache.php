@@ -37,7 +37,7 @@ class Cache extends Model
     /**
      * The listeners.
      *
-     * @var Listener[]|array<string, mixed>[]
+     * @var array<string, Listener|string>
      */
     public array $listeners;
 }

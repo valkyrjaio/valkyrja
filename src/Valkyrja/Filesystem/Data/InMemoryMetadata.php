@@ -25,9 +25,9 @@ namespace Valkyrja\Filesystem\Data;
 class InMemoryMetadata
 {
     public function __construct(
-        public ?string $mimetype = null,
-        public ?int $size = 0,
-        public ?string $visibility = null,
+        public string|null $mimetype = null,
+        public int|null $size = 0,
+        public string|null $visibility = null,
     ) {
     }
 

@@ -51,7 +51,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @inheritDoc
      */
-    public function getSize(): ?int
+    public function getSize(): int|null
     {
         return $this->file->getSize();
     }
@@ -67,7 +67,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @inheritDoc
      */
-    public function getClientFilename(): ?string
+    public function getClientFilename(): string|null
     {
         return $this->file->getClientFilename();
     }
@@ -75,7 +75,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @inheritDoc
      */
-    public function getClientMediaType(): ?string
+    public function getClientMediaType(): string|null
     {
         return $this->file->getClientMediaType();
     }

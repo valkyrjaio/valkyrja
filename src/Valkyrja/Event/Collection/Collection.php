@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Collection;
 
 use Valkyrja\Event\Collection\Contract\Collection as Contract;
+use Valkyrja\Event\Exception\InvalidArgumentException;
 use Valkyrja\Event\Model\Contract\Listener;
 use Valkyrja\Event\Model\Listener as Model;
 
 use function array_keys;
 use function is_array;
 use function is_object;
+use function is_string;
 
 /**
  * Class Collection.
@@ -38,7 +40,7 @@ class Collection implements Contract
     /**
      * The listeners.
      *
-     * @var Listener[]
+     * @var array<string, Listener|string>
      */
     protected array $listeners;
 
@@ -176,7 +178,10 @@ class Collection implements Contract
      */
     public function getListeners(): array
     {
-        return $this->listeners;
+        return array_map(
+            [$this, 'ensureListener'],
+            $this->listeners
+        );
     }
 
     /**
@@ -259,12 +264,22 @@ class Collection implements Contract
     /**
      * Ensure a listener, or null, is returned.
      *
-     * @param Listener|array<string, mixed> $listener The listener
+     * @param Listener|array<string, mixed>|string $listener The listener
      *
      * @return Listener
      */
-    protected function ensureListener(Listener|array $listener): Listener
+    protected function ensureListener(Listener|array|string $listener): Listener
     {
+        if (is_string($listener)) {
+            $unserializedListener = unserialize($listener, ['allowed_classes' => true]);
+
+            if (! $unserializedListener instanceof Model) {
+                throw new InvalidArgumentException('Invalid object serialized.');
+            }
+
+            return $unserializedListener;
+        }
+
         if (is_array($listener)) {
             return Model::fromArray($listener);
         }

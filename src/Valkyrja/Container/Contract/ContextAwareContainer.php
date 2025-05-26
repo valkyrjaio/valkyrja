@@ -28,7 +28,7 @@ interface ContextAwareContainer extends Container
      *
      * @return static
      */
-    public function withContext(string $context, ?string $member = null): static;
+    public function withContext(string $context, string|null $member = null): static;
 
     /**
      * Get a container instance with no context.

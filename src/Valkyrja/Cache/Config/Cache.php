@@ -30,7 +30,7 @@ class Cache extends Model
     /**
      * @inheritDoc
      */
-    protected function setup(?array $properties = null): void
+    protected function setup(array|null $properties = null): void
     {
         $this->updateProperties(ConfigValue::$defaults);
 

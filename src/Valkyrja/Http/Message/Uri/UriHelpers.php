@@ -76,7 +76,7 @@ trait UriHelpers
      *
      * @return void
      */
-    protected function validatePort(?int $port = null): void
+    protected function validatePort(int|null $port = null): void
     {
         if (! Port::isValid($port)) {
             throw new InvalidPortException("Invalid port `%$port` specified; must be a valid TCP/UDP port");

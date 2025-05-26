@@ -99,7 +99,7 @@ interface Collector
     public function get(
         string $path,
         Closure|string $handler,
-        ?string $name = null,
+        string|null $name = null,
         bool $setDependencies = false
     ): Route;
 
@@ -124,7 +124,7 @@ interface Collector
     public function post(
         string $path,
         Closure|string $handler,
-        ?string $name = null,
+        string|null $name = null,
         bool $setDependencies = false
     ): Route;
 
@@ -149,7 +149,7 @@ interface Collector
     public function put(
         string $path,
         Closure|string $handler,
-        ?string $name = null,
+        string|null $name = null,
         bool $setDependencies = false
     ): Route;
 
@@ -174,7 +174,7 @@ interface Collector
     public function patch(
         string $path,
         Closure|string $handler,
-        ?string $name = null,
+        string|null $name = null,
         bool $setDependencies = false
     ): Route;
 
@@ -199,7 +199,7 @@ interface Collector
     public function delete(
         string $path,
         Closure|string $handler,
-        ?string $name = null,
+        string|null $name = null,
         bool $setDependencies = false
     ): Route;
 
@@ -224,7 +224,7 @@ interface Collector
     public function head(
         string $path,
         Closure|string $handler,
-        ?string $name = null,
+        string|null $name = null,
         bool $setDependencies = false
     ): Route;
 
@@ -249,7 +249,7 @@ interface Collector
     public function any(
         string $path,
         Closure|string $handler,
-        ?string $name = null,
+        string|null $name = null,
         bool $setDependencies = false
     ): Route;
 
@@ -266,5 +266,5 @@ interface Collector
      *
      * @return Route
      */
-    public function redirect(string $path, string $to, ?array $methods = null, ?string $name = null): Route;
+    public function redirect(string $path, string $to, array|null $methods = null, string|null $name = null): Route;
 }

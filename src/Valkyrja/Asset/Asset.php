@@ -26,5 +26,5 @@ abstract class Asset implements Contract
     /**
      * @inheritDoc
      */
-    abstract public function getBundle(string $bundle, ?string $adapter = null): Adapter;
+    abstract public function getBundle(string $bundle, string|null $adapter = null): Adapter;
 }

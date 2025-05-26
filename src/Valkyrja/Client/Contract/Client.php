@@ -34,7 +34,7 @@ interface Client extends Manager
      *
      * @return Driver
      */
-    public function use(?string $name = null): Driver;
+    public function use(string|null $name = null): Driver;
 
     /**
      * Make a request.

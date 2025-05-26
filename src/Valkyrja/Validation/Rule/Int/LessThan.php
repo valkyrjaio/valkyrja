@@ -28,7 +28,7 @@ class LessThan extends Rule
     public function __construct(
         mixed $subject,
         protected int $max,
-        ?string $errorMessage = null
+        string|null $errorMessage = null
     ) {
         parent::__construct($subject, $errorMessage);
     }

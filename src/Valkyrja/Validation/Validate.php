@@ -42,7 +42,7 @@ class Validate implements Contract
     /**
      * @inheritDoc
      */
-    public function rules(?array $rules = null): bool
+    public function rules(array|null $rules = null): bool
     {
         $rules ??= $this->rules;
 
@@ -74,7 +74,7 @@ class Validate implements Contract
     /**
      * @inheritDoc
      */
-    public function getFirstErrorMessage(): ?string
+    public function getFirstErrorMessage(): string|null
     {
         if (! empty($errorMessages = $this->errorMessages)) {
             return $errorMessages[array_key_first($errorMessages)];

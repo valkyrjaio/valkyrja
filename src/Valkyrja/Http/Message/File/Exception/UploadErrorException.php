@@ -31,7 +31,7 @@ class UploadErrorException extends RuntimeException
     public const EXTENSION_MESSAGE  = 'A PHP extension stopped the file upload';
     public const OK_MESSAGE         = 'OK is not a valid upload error';
 
-    public function __construct(UploadError $uploadError, int $code = 0, ?Throwable $previous = null)
+    public function __construct(UploadError $uploadError, int $code = 0, Throwable|null $previous = null)
     {
         $message = match ($uploadError) {
             UploadError::FORM_SIZE  => static::FORM_SIZE_MESSAGE,

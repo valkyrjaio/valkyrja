@@ -45,12 +45,12 @@ class DataConfigTest extends TestCase
         self::assertNotEmpty($dataConfig->sendingResponse);
         self::assertNotEmpty($dataConfig->terminated);
 
-        self::assertSame(EnvClass::HTTP_MIDDLEWARE_BEFORE, $dataConfig->requestReceived);
-        self::assertSame(EnvClass::HTTP_MIDDLEWARE_DISPATCHED, $dataConfig->routeDispatched);
-        self::assertSame(EnvClass::HTTP_MIDDLEWARE_EXCEPTION, $dataConfig->throwableCaught);
+        self::assertSame(EnvClass::HTTP_MIDDLEWARE_REQUEST_RECEIVED, $dataConfig->requestReceived);
+        self::assertSame(EnvClass::HTTP_MIDDLEWARE_ROUTE_DISPATCHED, $dataConfig->routeDispatched);
+        self::assertSame(EnvClass::HTTP_MIDDLEWARE_THROWABLE_CAUGHT, $dataConfig->throwableCaught);
         self::assertSame(EnvClass::HTTP_MIDDLEWARE_ROUTE_MATCHED, $dataConfig->routeMatched);
         self::assertSame(EnvClass::HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED, $dataConfig->routeNotMatched);
-        self::assertSame(EnvClass::HTTP_MIDDLEWARE_SENDING, $dataConfig->sendingResponse);
+        self::assertSame(EnvClass::HTTP_MIDDLEWARE_SENDING_RESPONSE, $dataConfig->sendingResponse);
         self::assertSame(EnvClass::HTTP_MIDDLEWARE_TERMINATED, $dataConfig->terminated);
     }
 

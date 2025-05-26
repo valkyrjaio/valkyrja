@@ -35,8 +35,8 @@ interface ResponseFactory
      */
     public function createRouteRedirectResponse(
         string $name,
-        ?array $data = null,
-        ?StatusCode $statusCode = null,
-        ?array $headers = null
+        array|null $data = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
     ): RedirectResponse;
 }

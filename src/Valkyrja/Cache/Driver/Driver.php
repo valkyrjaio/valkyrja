@@ -48,7 +48,7 @@ class Driver extends ParentDriver implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string $key): ?string
+    public function get(string $key): string|null
     {
         return $this->adapter->get($key);
     }

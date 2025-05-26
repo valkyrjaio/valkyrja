@@ -27,8 +27,8 @@ use Valkyrja\Test\Result\Results;
 class Test implements Contract
 {
     public function __construct(
-        protected ?string $name = null,
-        protected ?Output $output = null,
+        protected string|null $name = null,
+        protected Output|null $output = null,
         protected Assert $assert = new \Valkyrja\Test\Assert\Assert(),
         protected bool $shouldSkip = false,
     ) {

@@ -49,7 +49,7 @@ class Filesystem extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function use(?string $name = null): Driver
+    public function use(string|null $name = null): Driver
     {
         /** @var Driver $driver */
         $driver = parent::use($name);
@@ -148,7 +148,7 @@ class Filesystem extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function metadata(string $path): ?array
+    public function metadata(string $path): array|null
     {
         return $this->use()->metadata($path);
     }
@@ -156,7 +156,7 @@ class Filesystem extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function mimetype(string $path): ?string
+    public function mimetype(string $path): string|null
     {
         return $this->use()->mimetype($path);
     }
@@ -164,7 +164,7 @@ class Filesystem extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function size(string $path): ?int
+    public function size(string $path): int|null
     {
         return $this->use()->size($path);
     }
@@ -172,7 +172,7 @@ class Filesystem extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function timestamp(string $path): ?int
+    public function timestamp(string $path): int|null
     {
         return $this->use()->timestamp($path);
     }
@@ -180,7 +180,7 @@ class Filesystem extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function visibility(string $path): ?string
+    public function visibility(string $path): string|null
     {
         return $this->use()->visibility($path);
     }
@@ -228,7 +228,7 @@ class Filesystem extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function listContents(?string $directory = null, bool $recursive = false): array
+    public function listContents(string|null $directory = null, bool $recursive = false): array
     {
         return $this->use()->listContents($directory, $recursive);
     }

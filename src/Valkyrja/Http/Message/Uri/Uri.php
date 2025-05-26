@@ -43,7 +43,7 @@ class Uri implements Contract
      *
      * @var string|null
      */
-    private ?string $uriString = null;
+    private string|null $uriString = null;
 
     /**
      * UriImpl constructor.
@@ -66,7 +66,7 @@ class Uri implements Contract
         protected string $username = '',
         protected string $password = '',
         protected string $host = '',
-        protected ?int $port = null,
+        protected int|null $port = null,
         protected string $path = '',
         protected string $query = '',
         protected string $fragment = ''
@@ -191,7 +191,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
-    public function getPort(): ?int
+    public function getPort(): int|null
     {
         return $this->isStandardPort() ? null : $this->port;
     }
@@ -276,7 +276,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
-    public function withUserInfo(string $user, ?string $password = null): static
+    public function withUserInfo(string $user, string|null $password = null): static
     {
         $info = $user;
 
@@ -312,7 +312,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
-    public function withPort(?int $port = null): static
+    public function withPort(int|null $port = null): static
     {
         $this->validatePort($port);
 

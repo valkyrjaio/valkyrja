@@ -110,9 +110,9 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
         string $table,
         string $column1,
         string $column2,
-        ?string $operator = null,
-        ?string $type = null,
-        ?bool $isWhere = null
+        string|null $operator = null,
+        string|null $type = null,
+        bool|null $isWhere = null
     ): static;
 
     /**
@@ -148,7 +148,7 @@ interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
      *
      * @return static
      */
-    public function orderBy(string $column, ?string $type = null): static;
+    public function orderBy(string $column, string|null $type = null): static;
 
     /**
      * Add an order by ascending to the query statement.

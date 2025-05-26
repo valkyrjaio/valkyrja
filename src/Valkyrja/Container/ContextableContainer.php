@@ -28,29 +28,29 @@ trait ContextableContainer
      *
      * @var class-string|string|null
      */
-    protected ?string $context = null;
+    protected string|null $context = null;
 
     /**
      * The context id.
      */
-    protected ?string $contextId = null;
+    protected string|null $contextId = null;
 
     /**
      * The context method name.
      */
-    protected ?string $contextMember = null;
+    protected string|null $contextMember = null;
 
     /**
      * The context container name.
      */
-    protected ?Contract $contextContainer = null;
+    protected Contract|null $contextContainer = null;
 
     /**
      * @inheritDoc
      *
      * @return static
      */
-    public function withContext(string $context, ?string $member = null): static
+    public function withContext(string $context, string|null $member = null): static
     {
         $contextContainer = clone $this;
 
@@ -296,7 +296,7 @@ trait ContextableContainer
      *
      * @return string
      */
-    protected function getContextId(string $context, ?string $member = null): string
+    protected function getContextId(string $context, string|null $member = null): string
     {
         return $context . ($member ?? '');
     }

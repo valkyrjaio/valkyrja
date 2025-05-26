@@ -33,21 +33,18 @@ class Broadcast extends Manager implements Contract
 {
     /**
      * Broadcast constructor.
-     *
-     * @param Factory                     $factory The factory
-     * @param Config|array<string, mixed> $config  The config
      */
-    public function __construct(Factory $factory, Config|array $config)
+    public function __construct(Factory $factory, DataConfig $config)
     {
         parent::__construct($factory, $config);
 
-        $this->configurations = $config['broadcasters'];
+        $this->configurations = $config->configurations;
     }
 
     /**
      * @inheritDoc
      */
-    public function use(?string $name = null): Driver
+    public function use(string|null $name = null): Driver
     {
         /** @var Driver $driver */
         $driver = parent::use($name);
@@ -58,7 +55,7 @@ class Broadcast extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function createMessage(?string $name = null, array $data = []): Message
+    public function createMessage(string|null $name = null, array $data = []): Message
     {
         /** @var Message $message */
         $message = parent::createMessage($name, $data);

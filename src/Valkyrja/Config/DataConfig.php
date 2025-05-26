@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Config;
 
 use ArrayAccess;
-use RuntimeException;
+use Valkyrja\Config\Exception\RuntimeException;
 
 use function constant;
 use function defined;
+use function is_callable;
 
 /**
  * Abstract Class Config.
@@ -95,7 +96,14 @@ abstract class DataConfig implements ArrayAccess
     {
         foreach (static::$envNames as $propertyName => $envName) {
             if (defined("$env::$envName")) {
-                $this->$propertyName = constant("$env::$envName") ?? $this->$propertyName;
+                $constantValue = constant("$env::$envName");
+
+                if (is_callable($constantValue)) {
+                    $constantValue($env);
+                }
+
+                $this->$propertyName = $constantValue
+                    ?? $this->$propertyName;
             }
         }
     }

@@ -127,7 +127,7 @@ class StrCase
      *
      * @return string
      */
-    public static function toCapitalized(string $subject, ?string $delimiter = null): string
+    public static function toCapitalized(string $subject, string|null $delimiter = null): string
     {
         if ($delimiter !== null && $delimiter !== '') {
             return ucwords($subject, $delimiter);
@@ -156,7 +156,7 @@ class StrCase
      *
      * @return string
      */
-    public static function toCapitalizedWords(string $subject, ?string $delimiter = null): string
+    public static function toCapitalizedWords(string $subject, string|null $delimiter = null): string
     {
         return static::toCapitalized(Str::replaceAllWith($subject, ['-', '_'], ' '), $delimiter);
     }

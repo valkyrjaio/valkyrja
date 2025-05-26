@@ -226,8 +226,8 @@ final class ServiceProvider extends Provider
     /**
      * Create a PDO adapter.
      *
-     * @param Container                $container
-     * @param class-string<PdoAdapter> $name
+     * @param Container                                    $container
+     * @param class-string<PdoAdapter>                     $name
      * @param array{config: array{pdo?: string, ...}, ...} $config
      *
      * @return PdoAdapter

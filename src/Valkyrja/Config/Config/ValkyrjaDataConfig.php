@@ -14,33 +14,33 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Config;
 
 use ArrayAccess;
-use Valkyrja\Annotation\DataConfig as Annotation;
+use Valkyrja\Annotation\Config as Annotation;
 use Valkyrja\Api\Config as Api;
-use Valkyrja\Application\Config as App;
+use Valkyrja\Application\DataConfig as App;
 use Valkyrja\Asset\Config as Asset;
 use Valkyrja\Auth\Config as Auth;
-use Valkyrja\Broadcast\Config as Broadcast;
-use Valkyrja\Cache\Config as Cache;
-use Valkyrja\Client\Config as Client;
+use Valkyrja\Broadcast\DataConfig as Broadcast;
+use Valkyrja\Cache\DataConfig as Cache;
+use Valkyrja\Client\DataConfig as Client;
 use Valkyrja\Config\Config\DataConfig as ConfigConfig;
 use Valkyrja\Config\DataConfig;
-use Valkyrja\Console\Config as Console;
+use Valkyrja\Config\Exception\InvalidArgumentException;
+use Valkyrja\Config\Exception\RuntimeException;
+use Valkyrja\Console\DataConfig as Console;
 use Valkyrja\Container\DataConfig as Container;
-use Valkyrja\Crypt\Config as Crypt;
-use Valkyrja\Event\Config as Event;
-use Valkyrja\Exception\InvalidArgumentException;
-use Valkyrja\Exception\RuntimeException;
-use Valkyrja\Filesystem\Config as Filesystem;
+use Valkyrja\Crypt\DataConfig as Crypt;
+use Valkyrja\Event\DataConfig as Event;
+use Valkyrja\Filesystem\DataConfig as Filesystem;
 use Valkyrja\Http\Middleware\DataConfig as Middleware;
 use Valkyrja\Http\Routing\DataConfig as Routing;
 use Valkyrja\Http\Server\DataConfig as Server;
-use Valkyrja\Jwt\Config as Jwt;
-use Valkyrja\Log\Config as Log;
-use Valkyrja\Mail\Config as Mail;
-use Valkyrja\Notification\Config as Notification;
-use Valkyrja\Orm\Config as Orm;
-use Valkyrja\Path\Config as Path;
-use Valkyrja\Session\Config as Session;
+use Valkyrja\Jwt\DataConfig as Jwt;
+use Valkyrja\Log\DataConfig as Log;
+use Valkyrja\Mail\DataConfig as Mail;
+use Valkyrja\Notification\DataConfig as Notification;
+use Valkyrja\Orm\DataConfig as Orm;
+use Valkyrja\Path\DataConfig as Path;
+use Valkyrja\Session\DataConfig as Session;
 use Valkyrja\Sms\DataConfig as Sms;
 use Valkyrja\View\DataConfig as View;
 
@@ -53,6 +53,33 @@ use function unserialize;
  * @author Melech Mizrachi
  *
  * @implements ArrayAccess<string, DataConfig>
+ *
+ * @property Annotation   $annotation
+ * @property Api          $api
+ * @property App          $app
+ * @property Asset        $asset
+ * @property Auth         $auth
+ * @property Broadcast    $broadcast
+ * @property Cache        $cache
+ * @property Client       $client
+ * @property ConfigConfig $config
+ * @property Console      $console
+ * @property Container    $container
+ * @property Crypt        $crypt
+ * @property Event        $event
+ * @property Filesystem   $filesystem
+ * @property Middleware   $httpMiddleware
+ * @property Routing      $httpRouting
+ * @property Server       $httpServer
+ * @property Jwt          $jwt
+ * @property Log          $log
+ * @property Mail         $mail
+ * @property Notification $notification
+ * @property Orm          $orm
+ * @property Path         $path
+ * @property Session      $session
+ * @property Sms          $sms
+ * @property View         $view
  */
 class ValkyrjaDataConfig implements ArrayAccess
 {
@@ -246,8 +273,8 @@ class ValkyrjaDataConfig implements ArrayAccess
     protected View $view;
 
     /**
-     * @param array<string, array<string, mixed>|string>|null $cached The cached config
-     * @param class-string|null                               $env    The env class
+     * @param array<string, string>|null $cached The cached config
+     * @param class-string|null          $env    The env class
      */
     public function __construct(
         protected array|null $cached = null,
@@ -263,24 +290,37 @@ class ValkyrjaDataConfig implements ArrayAccess
     }
 
     /**
+     * Get a config from a serialized string version of itself.
+     */
+    public static function fromSerializesString(string $cached): static
+    {
+        return unserialize(
+            $cached,
+            [
+                'allowed_classes' => [static::class],
+            ]
+        );
+    }
+
+    /**
      * Get a property.
      */
-    public function __get(string $name): ?DataConfig
+    public function __get(string $name): DataConfig|null
     {
         if (! isset($this->$name) && $this->cached !== null) {
             $cache = $this->cached[$name];
 
-            if (is_string($cache)) {
-                $config = unserialize($cache);
+            // Allow all classes, and filter for only Config classes down below since allowed_classes cannot be
+            // a class that others extend off of, and we don't want to limit what a cached config class could be
+            $config = unserialize($cache, ['allowed_classes' => true]);
 
-                if (! $config instanceof DataConfig) {
-                    throw new RuntimeException("Invalid cache provided for $name");
-                }
-
-                $this->$name = $config;
-
-                return $config;
+            if (! $config instanceof DataConfig) {
+                throw new RuntimeException("Invalid cache provided for $name");
             }
+
+            $this->$name = $config;
+
+            return $config;
         }
 
         return $this->$name ?? null;
@@ -313,7 +353,7 @@ class ValkyrjaDataConfig implements ArrayAccess
     /**
      * @inheritDoc
      */
-    public function offsetGet($offset): ?DataConfig
+    public function offsetGet($offset): DataConfig|null
     {
         return $this->__get($offset);
     }
@@ -339,33 +379,72 @@ class ValkyrjaDataConfig implements ArrayAccess
     }
 
     /**
+     * Cache the config.
+     */
+    public function cache(): void
+    {
+        $cache = [];
+
+        foreach (get_object_vars($this) as $key => $item) {
+            if ($item instanceof DataConfig) {
+                $cache[$key] = serialize($item);
+            }
+        }
+
+        $this->cached = $cache;
+    }
+
+    /**
+     * Get a cached version of this cache.
+     */
+    public function getCached(): static
+    {
+        $this->cache();
+
+        $static = new static(cached: $this->cached);
+
+        $this->cached = null;
+
+        return $static;
+    }
+
+    /**
+     * Get the config as a serialized string.
+     */
+    public function asSerializedString(): string
+    {
+        return serialize($this->getCached());
+    }
+
+    /**
      * @param class-string $env The env class
      */
     protected function setConfigFromEnv(string $env): void
     {
         $this->annotation     = Annotation::fromEnv($env);
-        $this->api            = new Api\Api();
-        $this->asset          = new Asset\Asset();
-        $this->auth           = new Auth\Auth();
-        $this->broadcast      = new Broadcast\Broadcast();
-        $this->cache          = new Cache\Cache();
-        $this->client         = new Client\Client();
+        $this->api            = Api::fromEnv($env);
+        $this->app            = App::fromEnv($env);
+        $this->asset          = Asset::fromEnv($env);
+        $this->auth           = Auth::fromEnv($env);
+        $this->broadcast      = Broadcast::fromEnv($env);
+        $this->cache          = Cache::fromEnv($env);
+        $this->client         = Client::fromEnv($env);
         $this->config         = ConfigConfig::fromEnv($env);
-        $this->console        = new Console\Console();
+        $this->console        = Console::fromEnv($env);
         $this->container      = Container::fromEnv($env);
-        $this->crypt          = new Crypt\Crypt();
-        $this->event          = new Event\Event();
-        $this->filesystem     = new Filesystem\Filesystem();
+        $this->crypt          = Crypt::fromEnv($env);
+        $this->event          = Event::fromEnv($env);
+        $this->filesystem     = Filesystem::fromEnv($env);
         $this->httpMiddleware = Middleware::fromEnv($env);
         $this->httpRouting    = Routing::fromEnv($env);
         $this->httpServer     = Server::fromEnv($env);
-        $this->jwt            = new Jwt\Jwt();
-        $this->log            = new Log\Log();
-        $this->mail           = new Mail\Mail();
-        $this->notification   = new Notification\Notification();
-        $this->orm            = new Orm\Orm();
-        $this->path           = new Path\Path();
-        $this->session        = new Session\Session();
+        $this->jwt            = Jwt::fromEnv($env);
+        $this->log            = Log::fromEnv($env);
+        $this->mail           = Mail::fromEnv($env);
+        $this->notification   = Notification::fromEnv($env);
+        $this->orm            = Orm::fromEnv($env);
+        $this->path           = Path::fromEnv($env);
+        $this->session        = Session::fromEnv($env);
         $this->sms            = Sms::fromEnv($env);
         $this->view           = View::fromEnv($env);
     }

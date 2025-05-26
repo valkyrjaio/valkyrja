@@ -42,9 +42,9 @@ interface Response extends Message
      * @return static
      */
     public static function create(
-        ?string $content = null,
-        ?StatusCode $statusCode = null,
-        ?array $headers = null
+        string|null $content = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
     ): static;
 
     /**
@@ -79,7 +79,7 @@ interface Response extends Message
      *
      * @return static
      */
-    public function withStatus(StatusCode $code, ?string $reasonPhrase = null): static;
+    public function withStatus(StatusCode $code, string|null $reasonPhrase = null): static;
 
     /**
      * Gets the response reason phrase associated with the status code.

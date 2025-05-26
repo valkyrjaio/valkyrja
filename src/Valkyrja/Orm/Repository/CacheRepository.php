@@ -124,7 +124,7 @@ class CacheRepository extends Repository implements Contract
      */
     public function where(
         string $column,
-        ?string $operator = null,
+        string|null $operator = null,
         mixed $value = null,
         bool $setType = true
     ): static {
@@ -266,7 +266,7 @@ class CacheRepository extends Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function clear(?Entity $entity = null): void
+    public function clear(Entity|null $entity = null): void
     {
         parent::clear($entity);
 

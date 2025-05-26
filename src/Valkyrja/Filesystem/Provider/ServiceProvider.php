@@ -180,7 +180,7 @@ final class ServiceProvider extends Provider
     /**
      * Create the flysystem adapter.
      *
-     * @param Container $container
+     * @param Container                                                              $container
      * @param array{flysystemAdapter: class-string<FlysystemFilesystemAdapter>, ...} $config
      *
      * @return FlysystemAdapter

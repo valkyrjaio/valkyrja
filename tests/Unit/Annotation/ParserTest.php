@@ -94,7 +94,7 @@ class ParserTest extends TestCase
     {
         parent::setUp();
 
-        $this->parser = new Parser((array) new Config(ConfigValue::$defaults, true));
+        $this->parser = new Parser(new Config());
     }
 
     /**

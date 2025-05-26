@@ -31,8 +31,8 @@ class EntityCast extends Cast
      */
     public function __construct(
         CastType|string $type,
-        public ?string $column = null,
-        public ?array $relationships = null,
+        public string|null $column = null,
+        public array|null $relationships = null,
         bool $convert = true,
         bool $isArray = false
     ) {

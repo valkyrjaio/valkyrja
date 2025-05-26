@@ -46,7 +46,7 @@ abstract class SqlBaseQueryBuilder implements Contract
      *
      * @var class-string<Entity>|null
      */
-    protected ?string $entity = null;
+    protected string|null $entity = null;
 
     /**
      * SqlBaseQueryBuilder constructor.
@@ -61,7 +61,7 @@ abstract class SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function table(string $table, ?string $alias = null): static
+    public function table(string $table, string|null $alias = null): static
     {
         $this->table = $table . ' ' . ((string) $alias);
 
@@ -71,7 +71,7 @@ abstract class SqlBaseQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
-    public function entity(string $entity, ?string $alias = null): static
+    public function entity(string $entity, string|null $alias = null): static
     {
         assert(is_a($entity, Entity::class, true));
 

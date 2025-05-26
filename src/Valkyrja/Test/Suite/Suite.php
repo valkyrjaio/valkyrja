@@ -35,7 +35,7 @@ class Suite implements Contract
     /**
      * @inheritDoc
      */
-    public function run(?array $args = null): void
+    public function run(array|null $args = null): void
     {
         $args ??= $this->getServerArgs();
         $results = $this->results;

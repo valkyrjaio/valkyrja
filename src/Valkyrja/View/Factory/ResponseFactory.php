@@ -37,9 +37,9 @@ class ResponseFactory implements Contract
      */
     public function createResponseFromView(
         string $template,
-        ?array $data = null,
-        ?StatusCode $statusCode = null,
-        ?array $headers = null
+        array|null $data = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
     ): Response {
         $content = $this->view->render($template, $data ?? []);
 

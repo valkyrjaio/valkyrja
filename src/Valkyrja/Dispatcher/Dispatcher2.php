@@ -50,7 +50,7 @@ class Dispatcher2 implements Contract
     /**
      * @inheritDoc
      */
-    public function dispatch(Dispatch $dispatch, ?array $arguments = null): mixed
+    public function dispatch(Dispatch $dispatch, array|null $arguments = null): mixed
     {
         return match (true) {
             $dispatch instanceof MethodDispatch         => $this->dispatchClassMethod($dispatch, $arguments),
@@ -71,7 +71,7 @@ class Dispatcher2 implements Contract
      *
      * @return mixed
      */
-    protected function dispatchClassMethod(MethodDispatch $dispatch, ?array $arguments = null): mixed
+    protected function dispatchClassMethod(MethodDispatch $dispatch, array|null $arguments = null): mixed
     {
         $method = $dispatch->getMethod();
         // Get the arguments with dependencies
@@ -131,7 +131,7 @@ class Dispatcher2 implements Contract
      *
      * @return mixed
      */
-    protected function dispatchClass(ClassDispatch $dispatch, ?array $arguments = null): mixed
+    protected function dispatchClass(ClassDispatch $dispatch, array|null $arguments = null): mixed
     {
         $className = $dispatch->getClass();
         // Get the arguments with dependencies
@@ -149,7 +149,7 @@ class Dispatcher2 implements Contract
      *
      * @return mixed
      */
-    protected function dispatchCallable(CallableDispatch $dispatch, ?array $arguments = null): mixed
+    protected function dispatchCallable(CallableDispatch $dispatch, array|null $arguments = null): mixed
     {
         $callable = $dispatch->getCallable();
         // Get the arguments with dependencies
@@ -182,7 +182,7 @@ class Dispatcher2 implements Contract
      *
      * @return array<array-key, mixed>|null
      */
-    protected function getArguments(CallableDispatch|ClassDispatch|MethodDispatch $dispatch, ?array $arguments = null): ?array
+    protected function getArguments(CallableDispatch|ClassDispatch|MethodDispatch $dispatch, array|null $arguments = null): array|null
     {
         // Get either the arguments passed or from the dispatch model
         $arguments ??= $dispatch->getArguments();
@@ -212,7 +212,7 @@ class Dispatcher2 implements Contract
      *
      * @return array<array-key, mixed>|null
      */
-    protected function getDependencies(CallableDispatch|ClassDispatch|MethodDispatch $dispatch): ?array
+    protected function getDependencies(CallableDispatch|ClassDispatch|MethodDispatch $dispatch): array|null
     {
         // If there are dependencies
         if (($dependencies = $dispatch->getDependencies()) === null) {

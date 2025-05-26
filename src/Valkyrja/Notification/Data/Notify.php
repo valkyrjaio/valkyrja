@@ -31,7 +31,7 @@ abstract class Notify implements Contract
      *
      * @var string|null
      */
-    protected static ?string $broadcastAdapter = null;
+    protected static string|null $broadcastAdapter = null;
 
     /**
      * The broadcast message to use for this notification.
@@ -39,7 +39,7 @@ abstract class Notify implements Contract
      *
      * @var string|null
      */
-    protected static ?string $broadcastMessage = null;
+    protected static string|null $broadcastMessage = null;
 
     /**
      * @var bool
@@ -52,7 +52,7 @@ abstract class Notify implements Contract
      *
      * @var string|null
      */
-    protected static ?string $mailAdapter = null;
+    protected static string|null $mailAdapter = null;
 
     /**
      * The mail message to use for this notification.
@@ -60,7 +60,7 @@ abstract class Notify implements Contract
      *
      * @var string|null
      */
-    protected static ?string $mailMessage = null;
+    protected static string|null $mailMessage = null;
 
     /**
      * @var bool
@@ -73,7 +73,7 @@ abstract class Notify implements Contract
      *
      * @var string|null
      */
-    protected static ?string $smsAdapter = null;
+    protected static string|null $smsAdapter = null;
 
     /**
      * The SMS message to use for this notification.
@@ -81,7 +81,7 @@ abstract class Notify implements Contract
      *
      * @var string|null
      */
-    protected static ?string $smsMessage = null;
+    protected static string|null $smsMessage = null;
 
     /**
      * @var bool
@@ -91,7 +91,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
-    public function getBroadcastAdapterName(): ?string
+    public function getBroadcastAdapterName(): string|null
     {
         return static::$broadcastAdapter;
     }
@@ -99,7 +99,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
-    public function getBroadcastMessageName(): ?string
+    public function getBroadcastMessageName(): string|null
     {
         return static::$broadcastMessage;
     }
@@ -115,7 +115,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
-    public function getMailAdapterName(): ?string
+    public function getMailAdapterName(): string|null
     {
         return static::$mailAdapter;
     }
@@ -123,7 +123,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
-    public function getMailMessageName(): ?string
+    public function getMailMessageName(): string|null
     {
         return static::$mailMessage;
     }
@@ -139,7 +139,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
-    public function getSmsAdapterName(): ?string
+    public function getSmsAdapterName(): string|null
     {
         return static::$smsAdapter;
     }
@@ -147,7 +147,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
-    public function getSmsMessageName(): ?string
+    public function getSmsMessageName(): string|null
     {
         return static::$smsMessage;
     }

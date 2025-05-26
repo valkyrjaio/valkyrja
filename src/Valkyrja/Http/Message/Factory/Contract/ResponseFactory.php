@@ -35,9 +35,9 @@ interface ResponseFactory
      * @return Response
      */
     public function createResponse(
-        ?string $content = null,
-        ?StatusCode $statusCode = null,
-        ?array $headers = null
+        string|null $content = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
     ): Response;
 
     /**
@@ -50,9 +50,9 @@ interface ResponseFactory
      * @return JsonResponse
      */
     public function createJsonResponse(
-        ?array $data = null,
-        ?StatusCode $statusCode = null,
-        ?array $headers = null
+        array|null $data = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
     ): JsonResponse;
 
     /**
@@ -67,9 +67,9 @@ interface ResponseFactory
      */
     public function createJsonpResponse(
         string $callback,
-        ?array $data = null,
-        ?StatusCode $statusCode = null,
-        ?array $headers = null
+        array|null $data = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
     ): JsonResponse;
 
     /**
@@ -82,8 +82,8 @@ interface ResponseFactory
      * @return RedirectResponse
      */
     public function createRedirectResponse(
-        ?string $uri = null,
-        ?StatusCode $statusCode = null,
-        ?array $headers = null
+        string|null $uri = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
     ): RedirectResponse;
 }

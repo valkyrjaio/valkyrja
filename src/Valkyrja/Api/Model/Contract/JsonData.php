@@ -27,7 +27,7 @@ interface JsonData extends Model
      *
      * @return object|null
      */
-    public function getItem(): ?object;
+    public function getItem(): object|null;
 
     /**
      * Set the item.
@@ -36,7 +36,7 @@ interface JsonData extends Model
      *
      * @return static
      */
-    public function setItem(?object $item = null): static;
+    public function setItem(object|null $item = null): static;
 
     /**
      * Get the item key.
@@ -59,7 +59,7 @@ interface JsonData extends Model
      *
      * @return object[]|null
      */
-    public function getItems(): ?array;
+    public function getItems(): array|null;
 
     /**
      * Set the items.
@@ -68,7 +68,7 @@ interface JsonData extends Model
      *
      * @return static
      */
-    public function setItems(?array $items = null): static;
+    public function setItems(array|null $items = null): static;
 
     /**
      * Get the items key.
@@ -91,7 +91,7 @@ interface JsonData extends Model
      *
      * @return int|null
      */
-    public function getTotal(): ?int;
+    public function getTotal(): int|null;
 
     /**
      * Set the total.
@@ -100,14 +100,14 @@ interface JsonData extends Model
      *
      * @return static
      */
-    public function setTotal(?int $total = null): static;
+    public function setTotal(int|null $total = null): static;
 
     /**
      * Get the messages.
      *
      * @return string[]|null
      */
-    public function getMessages(): ?array;
+    public function getMessages(): array|null;
 
     /**
      * Set the messages.
@@ -116,14 +116,14 @@ interface JsonData extends Model
      *
      * @return static
      */
-    public function setMessages(?array $messages = null): static;
+    public function setMessages(array|null $messages = null): static;
 
     /**
      * Get the data.
      *
      * @return array<string, mixed>|null
      */
-    public function getData(): ?array;
+    public function getData(): array|null;
 
     /**
      * Set the data.
@@ -132,5 +132,5 @@ interface JsonData extends Model
      *
      * @return static
      */
-    public function setData(?array $data = null): static;
+    public function setData(array|null $data = null): static;
 }

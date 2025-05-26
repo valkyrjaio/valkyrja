@@ -56,7 +56,7 @@ abstract class ServerFactory
     /**
      * @return array{Authorization?: string, authorization?: string}|null
      */
-    private static function apacheRequestHeaders(): ?array
+    private static function apacheRequestHeaders(): array|null
     {
         if (function_exists('apache_request_headers')) {
             /** @var array{Authorization?: string, authorization?: string} $headers */

@@ -127,7 +127,7 @@ abstract class UriFactory
      *
      * @return string
      */
-    public static function getHeader(string $header, array $headers, ?string $default = null): string
+    public static function getHeader(string $header, array $headers, string|null $default = null): string
     {
         $header  = strtolower($header);
         $headers = array_change_key_case($headers);

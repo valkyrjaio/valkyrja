@@ -37,7 +37,7 @@ class IndexableModelClass extends AbstractModel implements Contract
 
     public string $public;
 
-    public ?string $nullable;
+    public string|null $nullable;
 
     protected string $protected;
 

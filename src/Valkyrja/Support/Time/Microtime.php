@@ -20,9 +20,9 @@ namespace Valkyrja\Support\Time;
  */
 class Microtime
 {
-    protected static ?float $frozenTime = null;
+    protected static float|null $frozenTime = null;
 
-    public static function freeze(?float $microtime = null): void
+    public static function freeze(float|null $microtime = null): void
     {
         static::$frozenTime = $microtime ?? static::microtime();
     }

@@ -136,7 +136,7 @@ class Retriever implements Contract
      */
     public function where(
         string $column,
-        ?string $operator = null,
+        string|null $operator = null,
         QueryBuilder|array|string|float|int|bool|null $value = null,
         bool $setType = true
     ): static {
@@ -194,9 +194,9 @@ class Retriever implements Contract
         string $table,
         string $column1,
         string $column2,
-        ?string $operator = null,
-        ?string $type = null,
-        ?bool $isWhere = null
+        string|null $operator = null,
+        string|null $type = null,
+        bool|null $isWhere = null
     ): static {
         $this->queryBuilder->join($table, $column1, $column2, $operator, $type, $isWhere);
 
@@ -216,7 +216,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function orderBy(string $column, ?string $type = null): static
+    public function orderBy(string $column, string|null $type = null): static
     {
         $this->queryBuilder->orderBy($column, $type);
 
@@ -259,7 +259,7 @@ class Retriever implements Contract
     /**
      * @inheritDoc
      */
-    public function getOneOrNull(): ?Entity
+    public function getOneOrNull(): Entity|null
     {
         return $this->getResult()[0] ?? null;
     }

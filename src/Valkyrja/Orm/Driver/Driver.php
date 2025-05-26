@@ -91,7 +91,7 @@ class Driver implements Contract
     /**
      * @inheritDoc
      */
-    public function lastInsertId(?string $table = null, ?string $idField = null): string
+    public function lastInsertId(string|null $table = null, string|null $idField = null): string
     {
         return $this->adapter->lastInsertId($table, $idField);
     }
@@ -99,7 +99,7 @@ class Driver implements Contract
     /**
      * @inheritDoc
      */
-    public function createQuery(?string $query = null, ?string $entity = null): Query
+    public function createQuery(string|null $query = null, string|null $entity = null): Query
     {
         return $this->adapter->createQuery($query, $entity);
     }
@@ -107,7 +107,7 @@ class Driver implements Contract
     /**
      * @inheritDoc
      */
-    public function createQueryBuilder(?string $entity = null, ?string $alias = null): QueryBuilder
+    public function createQueryBuilder(string|null $entity = null, string|null $alias = null): QueryBuilder
     {
         return $this->adapter->createQueryBuilder($entity, $alias);
     }

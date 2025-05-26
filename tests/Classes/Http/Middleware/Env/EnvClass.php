@@ -29,11 +29,11 @@ use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
  */
 class EnvClass extends Env
 {
-    public const HTTP_MIDDLEWARE_BEFORE            = [RequestReceivedMiddlewareClass::class];
-    public const HTTP_MIDDLEWARE_DISPATCHED        = [RouteDispatchedMiddlewareClass::class];
-    public const HTTP_MIDDLEWARE_EXCEPTION         = [ThrowableCaughtMiddlewareClass::class];
+    public const HTTP_MIDDLEWARE_REQUEST_RECEIVED  = [RequestReceivedMiddlewareClass::class];
+    public const HTTP_MIDDLEWARE_ROUTE_DISPATCHED  = [RouteDispatchedMiddlewareClass::class];
+    public const HTTP_MIDDLEWARE_THROWABLE_CAUGHT  = [ThrowableCaughtMiddlewareClass::class];
     public const HTTP_MIDDLEWARE_ROUTE_MATCHED     = [RouteMatchedMiddlewareClass::class];
     public const HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = [RouteNotMatchedMiddlewareClass::class];
-    public const HTTP_MIDDLEWARE_SENDING           = [SendingResponseMiddlewareClass::class];
+    public const HTTP_MIDDLEWARE_SENDING_RESPONSE  = [SendingResponseMiddlewareClass::class];
     public const HTTP_MIDDLEWARE_TERMINATED        = [TerminatedMiddlewareClass::class];
 }

@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Routing\Collection;
 use JsonException;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as Contract;
-use Valkyrja\Http\Routing\Exception\RuntimeException;
+use Valkyrja\Http\Routing\Exception\InvalidArgumentException;
 use Valkyrja\Http\Routing\Model\Contract\Route;
 
 use function array_map;
@@ -86,7 +86,7 @@ class Collection implements Contract
      *
      * @throws JsonException
      */
-    public function get(string $path, ?RequestMethod $method = null): ?Route
+    public function get(string $path, RequestMethod|null $method = null): Route|null
     {
         return $this->getStatic($path, $method) ?? $this->getDynamic($path, $method);
     }
@@ -94,7 +94,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function isset(string $path, ?RequestMethod $method = null): bool
+    public function isset(string $path, RequestMethod|null $method = null): bool
     {
         return $this->hasStatic($path, $method) || $this->hasDynamic($path, $method);
     }
@@ -120,7 +120,7 @@ class Collection implements Contract
      *
      * @throws JsonException
      */
-    public function getStatic(string $path, ?RequestMethod $method = null): ?Route
+    public function getStatic(string $path, RequestMethod|null $method = null): Route|null
     {
         return $this->getOfType($this->static, $path, $method);
     }
@@ -128,7 +128,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function hasStatic(string $path, ?RequestMethod $method = null): bool
+    public function hasStatic(string $path, RequestMethod|null $method = null): bool
     {
         return $this->hasOfType($this->static, $path, $method);
     }
@@ -136,7 +136,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function allStatic(?RequestMethod $method = null): array
+    public function allStatic(RequestMethod|null $method = null): array
     {
         return $this->allOfType($this->static, $method);
     }
@@ -146,7 +146,7 @@ class Collection implements Contract
      *
      * @throws JsonException
      */
-    public function getDynamic(string $regex, ?RequestMethod $method = null): ?Route
+    public function getDynamic(string $regex, RequestMethod|null $method = null): Route|null
     {
         return $this->getOfType($this->dynamic, $regex, $method);
     }
@@ -154,7 +154,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function hasDynamic(string $regex, ?RequestMethod $method = null): bool
+    public function hasDynamic(string $regex, RequestMethod|null $method = null): bool
     {
         return $this->hasOfType($this->dynamic, $regex, $method);
     }
@@ -162,7 +162,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function allDynamic(?RequestMethod $method = null): array
+    public function allDynamic(RequestMethod|null $method = null): array
     {
         return $this->allOfType($this->dynamic, $method);
     }
@@ -170,7 +170,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function getNamed(string $name): ?Route
+    public function getNamed(string $name): Route|null
     {
         $named = $this->named[$name] ?? null;
 
@@ -267,7 +267,7 @@ class Collection implements Contract
      *
      * @return Route|null
      */
-    protected function getOfType(array $type, string $path, ?RequestMethod $method = null): ?Route
+    protected function getOfType(array $type, string $path, RequestMethod|null $method = null): Route|null
     {
         if ($method === null) {
             return $this->getAnyOfType($type, $path);
@@ -292,7 +292,7 @@ class Collection implements Contract
      *
      * @return Route|null
      */
-    protected function getAnyOfType(array $type, string $path): ?Route
+    protected function getAnyOfType(array $type, string $path): Route|null
     {
         return $this->getOfType($type, $path, RequestMethod::GET)
             ?? $this->getOfType($type, $path, RequestMethod::HEAD)
@@ -311,7 +311,7 @@ class Collection implements Contract
      *
      * @return bool
      */
-    protected function hasOfType(array $type, string $path, ?RequestMethod $method = null): bool
+    protected function hasOfType(array $type, string $path, RequestMethod|null $method = null): bool
     {
         if ($method === null) {
             return $this->hasAnyOfType($type, $path);
@@ -347,7 +347,7 @@ class Collection implements Contract
      *
      * @return RequestMethodRouteList|array<string, Route>
      */
-    protected function allOfType(array $type, ?RequestMethod $method = null): array
+    protected function allOfType(array $type, RequestMethod|null $method = null): array
     {
         if ($method === null) {
             return $this->ensureMethodRoutes($type);
@@ -395,13 +395,26 @@ class Collection implements Contract
      */
     protected function ensureRoute(Route|array|string $route): Route
     {
+        if (is_string($route) && isset($this->routes[$route])) {
+            $route = $this->routes[$route];
+        }
+
         if (is_string($route)) {
-            $route = $this->routes[$route]
-                ?? throw new RuntimeException("Route $route not found.");
+            $unserializedRoute = unserialize($route, ['allowed_classes' => true]);
+
+            if (! $unserializedRoute instanceof Route) {
+                throw new InvalidArgumentException('Invalid object serialized.');
+            }
+
+            return $unserializedRoute;
         }
 
         if (is_array($route)) {
             return \Valkyrja\Http\Routing\Model\Route::fromArray($route);
+        }
+
+        if (! $route instanceof Route) {
+            throw new InvalidArgumentException('Invalid route.');
         }
 
         return $route;

@@ -162,7 +162,7 @@ class InMemoryAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function metadata(string $path): ?array
+    public function metadata(string $path): array|null
     {
         return $this->getMetadataInternal($path)?->toArray();
     }
@@ -170,7 +170,7 @@ class InMemoryAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function mimetype(string $path): ?string
+    public function mimetype(string $path): string|null
     {
         return $this->getMetadataInternal($path)->mimetype ?? null;
     }
@@ -178,7 +178,7 @@ class InMemoryAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function size(string $path): ?int
+    public function size(string $path): int|null
     {
         return $this->getMetadataInternal($path)->size ?? null;
     }
@@ -186,7 +186,7 @@ class InMemoryAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function timestamp(string $path): ?int
+    public function timestamp(string $path): int|null
     {
         return $this->files[$path]->timestamp ?? null;
     }
@@ -194,7 +194,7 @@ class InMemoryAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function visibility(string $path): ?string
+    public function visibility(string $path): string|null
     {
         return $this->getMetadataInternal($path)->visibility ?? null;
     }
@@ -256,7 +256,7 @@ class InMemoryAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function listContents(?string $directory = null, bool $recursive = false): array
+    public function listContents(string|null $directory = null, bool $recursive = false): array
     {
         $directory ??= '';
 
@@ -274,7 +274,7 @@ class InMemoryAdapter implements Contract
         return $contents;
     }
 
-    protected function getMetadataInternal(string $path): ?InMemoryMetadata
+    protected function getMetadataInternal(string $path): InMemoryMetadata|null
     {
         return $this->files[$path]->metadata ?? null;
     }

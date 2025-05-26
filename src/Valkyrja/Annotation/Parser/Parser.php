@@ -44,11 +44,9 @@ class Parser implements Contract
 {
     /**
      * Parser constructor.
-     *
-     * @param Config|array<string, mixed> $config
      */
     public function __construct(
-        protected Config|array $config
+        protected Config $config
     ) {
     }
 
@@ -80,7 +78,7 @@ class Parser implements Contract
      *
      * @throws JsonException
      */
-    public function getPropertiesAsArray(?string $arguments = null): ?array
+    public function getPropertiesAsArray(string|null $arguments = null): array|null
     {
         // If a valid properties list was passed in
         if ($arguments !== null) {
@@ -135,7 +133,7 @@ class Parser implements Contract
      */
     public function getAnnotationsMap(): array
     {
-        return $this->config['map'];
+        return $this->config->map;
     }
 
     /**
@@ -165,7 +163,7 @@ class Parser implements Contract
      *
      * @return array<int, array<int, string>|null>|null
      */
-    protected function getMatches(string $docString): ?array
+    protected function getMatches(string $docString): array|null
     {
         $regex = $this->getRegex();
 
@@ -279,7 +277,7 @@ class Parser implements Contract
      *
      * @return string|null
      */
-    protected function cleanPart(?string $match = null): ?string
+    protected function cleanPart(string|null $match = null): string|null
     {
         if ($match === null || $match === '') {
             return $match;
@@ -375,6 +373,7 @@ class Parser implements Contract
      */
     protected function getClassFromAlias(string $class): string
     {
-        return $this->config['aliases'][$class] ?? $class;
+        return $this->config->aliases[$class]
+            ?? $class;
     }
 }

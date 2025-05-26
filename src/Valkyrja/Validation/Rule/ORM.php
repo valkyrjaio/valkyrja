@@ -52,7 +52,7 @@ class ORM
      *
      * @return void
      */
-    public function ormUnique(mixed $subject, string $entity, ?string $field = null): void
+    public function ormUnique(mixed $subject, string $entity, string|null $field = null): void
     {
         if ($subject !== null && ! is_string($subject) && ! is_int($subject) && ! is_float($subject) && ! is_bool($subject)) {
             throw new InvalidArgumentException('Value to match must be string, int, float, bool, or null');
@@ -79,7 +79,7 @@ class ORM
      *
      * @return void
      */
-    public function ormExists(mixed $subject, string $entity, ?string $field = null): void
+    public function ormExists(mixed $subject, string $entity, string|null $field = null): void
     {
         if ($subject !== null && ! is_string($subject) && ! is_int($subject) && ! is_float($subject) && ! is_bool($subject)) {
             throw new InvalidArgumentException('Value to match must be string, int, float, bool, or null');

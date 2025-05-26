@@ -181,7 +181,7 @@ abstract class TokenizedRepository extends Repository implements Contract
 
         // If the always authenticate flag is on in the config we need the password and authentication fields to be part
         // of the tokenized user
-        if ($this->config['alwaysAuthenticate']) {
+        if ($this->config->shouldAlwaysAuthenticate) {
             $requiredFields[] = $this->userEntityName::getPasswordField();
 
             $requiredFields = array_merge($requiredFields, $this->user::getAuthenticationFields());
@@ -223,7 +223,7 @@ abstract class TokenizedRepository extends Repository implements Contract
      *
      * @return string|null
      */
-    protected function getTokenFromSession(): ?string
+    protected function getTokenFromSession(): string|null
     {
         $token = $this->session->get($this->userEntityName::getTokenSessionId());
 
@@ -263,7 +263,7 @@ abstract class TokenizedRepository extends Repository implements Contract
      *
      * @return static
      */
-    protected function storeToken(?string $token = null): static
+    protected function storeToken(string|null $token = null): static
     {
         $this->session->set($this->user::getTokenSessionId(), $token ?? $this->getToken());
 

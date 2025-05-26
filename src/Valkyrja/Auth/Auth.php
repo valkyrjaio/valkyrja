@@ -102,20 +102,19 @@ class Auth implements Contract
     /**
      * Auth constructor.
      *
-     * @param Factory                     $factory The factory
-     * @param ServerRequest               $request The request
-     * @param Config|array<string, mixed> $config  The config
+     * @param Factory       $factory The factory
+     * @param ServerRequest $request The request
      */
     public function __construct(
         protected Factory $factory,
         protected ServerRequest $request,
-        protected Config|array $config
+        protected Config $config
     ) {
-        $this->defaultAdapter    = $config['adapter'];
-        $this->defaultRepository = $config['repository'];
-        $this->defaultGate       = $config['gate'];
-        $this->defaultUserEntity = $config['userEntity'];
-        $this->defaultPolicy     = $config['policy'];
+        $this->defaultAdapter    = $config->defaultAdapter;
+        $this->defaultRepository = $config->defaultRepository;
+        $this->defaultGate       = $config->defaultGate;
+        $this->defaultUserEntity = $config->defaultUserEntity;
+        $this->defaultPolicy     = $config->defaultPolicy;
 
         $this->tryAuthenticating();
     }
@@ -123,7 +122,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function getConfig(): Config|array
+    public function getConfig(): Config
     {
         return $this->config;
     }
@@ -131,7 +130,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function getAdapter(?string $name = null): Adapter
+    public function getAdapter(string|null $name = null): Adapter
     {
         $name ??= $this->defaultAdapter;
 
@@ -142,7 +141,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function getRepository(?string $user = null, ?string $adapter = null): Repository
+    public function getRepository(string|null $user = null, string|null $adapter = null): Repository
     {
         $user ??= $this->defaultUserEntity;
         $name = $user::getAuthRepository()
@@ -155,7 +154,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function getGate(?string $name = null, ?string $user = null, ?string $adapter = null): Gate
+    public function getGate(string|null $name = null, string|null $user = null, string|null $adapter = null): Gate
     {
         $name ??= $this->defaultGate;
 
@@ -166,7 +165,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function getPolicy(?string $name = null, ?string $user = null, ?string $adapter = null): Policy
+    public function getPolicy(string|null $name = null, string|null $user = null, string|null $adapter = null): Policy
     {
         $name ??= $this->defaultPolicy;
 
@@ -187,8 +186,8 @@ class Auth implements Contract
      */
     public function requestWithAuthToken(
         ServerRequest $request,
-        ?string $user = null,
-        ?string $adapter = null
+        string|null $user = null,
+        string|null $adapter = null
     ): ServerRequest {
         $repository = $this->getRepository($user, $adapter);
 
@@ -293,7 +292,7 @@ class Auth implements Contract
     /**
      * @inheritDoc
      */
-    public function unAuthenticate(?User $user = null): static
+    public function unAuthenticate(User|null $user = null): static
     {
         $this->getRepository()->unAuthenticate($user);
 

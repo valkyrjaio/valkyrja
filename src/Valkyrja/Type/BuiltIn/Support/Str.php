@@ -207,7 +207,7 @@ class Str
      *
      * @return string
      */
-    public static function substr(string $subject, int $start, ?int $length = null): string
+    public static function substr(string $subject, int $start, int|null $length = null): string
     {
         return substr($subject, $start, $length);
     }

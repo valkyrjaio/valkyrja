@@ -17,9 +17,9 @@ use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Orm\Config as Model;
 use Valkyrja\Orm\Constant\ConfigValue;
-use Valkyrja\Orm\Driver\PgSqlDriver;
-use Valkyrja\Orm\Pdo\MySqlPdo;
-use Valkyrja\Orm\Pdo\PgSqlPdo;
+use Valkyrja\Orm\Driver\PgsqlDriver;
+use Valkyrja\Orm\Pdo\MysqlPdo;
+use Valkyrja\Orm\Pdo\PgsqlPdo;
 
 use function Valkyrja\env;
 
@@ -31,7 +31,7 @@ class Orm extends Model
     /**
      * @inheritDoc
      */
-    protected function setup(?array $properties = null): void
+    protected function setup(array|null $properties = null): void
     {
         $this->updateProperties(ConfigValue::$defaults);
 
@@ -45,7 +45,7 @@ class Orm extends Model
                 CKP::PERSISTER     => env(EnvKey::ORM_MYSQL_PERSISTER),
                 CKP::RETRIEVER     => env(EnvKey::ORM_MYSQL_RETRIEVER),
                 CKP::CONFIG        => [
-                    CKP::PDO      => env(EnvKey::ORM_MYSQL_PDO, MySqlPdo::class),
+                    CKP::PDO      => env(EnvKey::ORM_MYSQL_PDO, MysqlPdo::class),
                     CKP::DRIVER   => CKP::MYSQL,
                     CKP::HOST     => env(EnvKey::ORM_MYSQL_HOST, '127.0.0.1'),
                     CKP::PORT     => env(EnvKey::ORM_MYSQL_PORT, '3306'),
@@ -60,14 +60,14 @@ class Orm extends Model
             ],
             CKP::PGSQL => [
                 CKP::ADAPTER       => env(EnvKey::ORM_PGSQL_ADAPTER),
-                CKP::DRIVER        => env(EnvKey::ORM_PGSQL_DRIVER, PgSqlDriver::class),
+                CKP::DRIVER        => env(EnvKey::ORM_PGSQL_DRIVER, PgsqlDriver::class),
                 CKP::REPOSITORY    => env(EnvKey::ORM_PGSQL_REPOSITORY),
                 CKP::QUERY         => env(EnvKey::ORM_PGSQL_QUERY),
                 CKP::QUERY_BUILDER => env(EnvKey::ORM_PGSQL_QUERY_BUILDER),
                 CKP::PERSISTER     => env(EnvKey::ORM_PGSQL_PERSISTER),
                 CKP::RETRIEVER     => env(EnvKey::ORM_PGSQL_RETRIEVER),
                 CKP::CONFIG        => [
-                    CKP::PDO           => env(EnvKey::ORM_PGSQL_PDO, PgSqlPdo::class),
+                    CKP::PDO           => env(EnvKey::ORM_PGSQL_PDO, PgsqlPdo::class),
                     CKP::DRIVER        => CKP::PGSQL,
                     CKP::HOST          => env(EnvKey::ORM_PGSQL_HOST, '127.0.0.1'),
                     CKP::PORT          => env(EnvKey::ORM_PGSQL_PORT, '5432'),

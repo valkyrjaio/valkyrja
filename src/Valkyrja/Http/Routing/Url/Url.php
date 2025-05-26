@@ -52,7 +52,7 @@ class Url implements Contract
      *
      * @throws InvalidRouteNameException
      */
-    public function getUrl(string $name, ?array $data = null, ?bool $absolute = null): string
+    public function getUrl(string $name, array|null $data = null, bool|null $absolute = null): string
     {
         // Get the matching route
         $route = $this->router->getRoute($name);
@@ -79,7 +79,7 @@ class Url implements Contract
     /**
      * @inheritDoc
      */
-    public function getRouteByPath(string $path, ?RequestMethod $method = null): ?Route
+    public function getRouteByPath(string $path, RequestMethod|null $method = null): Route|null
     {
         return $this->router->getMatcher()->match($path, $method ?? RequestMethod::GET);
     }

@@ -67,7 +67,7 @@ class NullAdapter implements Contract
      * @throws InvalidSessionId
      * @throws SessionStartFailure
      */
-    public function __construct(protected array $config, ?string $sessionId = null, ?string $sessionName = null)
+    public function __construct(protected array $config, string|null $sessionId = null, string|null $sessionName = null)
     {
         $sessionId ??= $config['id'] ?? null;
         $sessionName ??= $config['name'] ?? null;

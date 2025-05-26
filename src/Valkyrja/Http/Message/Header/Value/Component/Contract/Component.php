@@ -36,14 +36,14 @@ interface Component extends JsonSerializable, Stringable
     /**
      * @return string|null
      */
-    public function getText(): ?string;
+    public function getText(): string|null;
 
     /**
      * @param string|null $text
      *
      * @return static
      */
-    public function withText(?string $text = null): static;
+    public function withText(string|null $text = null): static;
 
     /**
      * @inheritDoc

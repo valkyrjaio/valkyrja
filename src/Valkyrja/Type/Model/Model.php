@@ -366,7 +366,7 @@ abstract class Model implements Contract
      *
      * @return void
      */
-    protected function internalSetProperties(array $properties, ?Closure $modifyValue = null): void
+    protected function internalSetProperties(array $properties, Closure|null $modifyValue = null): void
     {
         array_walk(
             $properties,

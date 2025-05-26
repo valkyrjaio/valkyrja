@@ -51,7 +51,7 @@ trait Where
      */
     public function where(
         string $column,
-        ?string $operator = null,
+        string|null $operator = null,
         QueryBuilder|array|string|float|int|bool|null $value = null,
         bool $setType = true
     ): static {

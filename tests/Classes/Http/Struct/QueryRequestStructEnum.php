@@ -37,7 +37,7 @@ enum QueryRequestStructEnum implements RequestStruct
     /**
      * @inheritDoc
      */
-    public static function getValidationRules(ServerRequest $request): ?array
+    public static function getValidationRules(ServerRequest $request): array|null
     {
         $first  = $request->getParsedBodyParam(self::first->name);
         $second = $request->getParsedBodyParam(self::second->name);

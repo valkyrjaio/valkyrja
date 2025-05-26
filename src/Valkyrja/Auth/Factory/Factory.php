@@ -30,7 +30,7 @@ class Factory implements Contract
     /**
      * @inheritDoc
      */
-    public function createAdapter(string $name, Config|array $config): Adapter
+    public function createAdapter(string $name, Config $config): Adapter
     {
         return new $name($config);
     }
@@ -38,7 +38,7 @@ class Factory implements Contract
     /**
      * @inheritDoc
      */
-    public function createRepository(Adapter $adapter, string $name, string $user, Config|array $config): Repository
+    public function createRepository(Adapter $adapter, string $name, string $user, Config $config): Repository
     {
         return new $name($adapter, $user, $config);
     }

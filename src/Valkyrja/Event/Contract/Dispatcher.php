@@ -33,7 +33,7 @@ interface Dispatcher extends EventDispatcherInterface
      *
      * @param object $event The event class
      */
-    public function dispatchIfHasListeners(object $event): ?object;
+    public function dispatchIfHasListeners(object $event): object|null;
 
     /**
      * Dispatch an event by its id.
@@ -49,7 +49,7 @@ interface Dispatcher extends EventDispatcherInterface
      * @param class-string            $eventId   The event class name
      * @param array<array-key, mixed> $arguments The arguments to pass to the event class
      */
-    public function dispatchByIdIfHasListeners(string $eventId, array $arguments = []): ?object;
+    public function dispatchByIdIfHasListeners(string $eventId, array $arguments = []): object|null;
 
     /**
      * Dispatch a set of listeners.

@@ -190,7 +190,7 @@ class PhpEngine implements Engine
      *
      * @return string
      */
-    protected function getDir(?string $path = null): string
+    protected function getDir(string|null $path = null): string
     {
         return $this->dir
             . ($path !== null && $path !== ''

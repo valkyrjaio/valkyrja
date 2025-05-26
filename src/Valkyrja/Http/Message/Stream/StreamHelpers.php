@@ -63,7 +63,7 @@ trait StreamHelpers
     /**
      * @inheritDoc
      */
-    abstract public function getMetadata(?string $key = null): mixed;
+    abstract public function getMetadata(string|null $key = null): mixed;
 
     /**
      * Set the stream.

@@ -39,7 +39,7 @@ interface RequestStruct extends Struct
      *
      * @return array<string, Rule[]>|null
      */
-    public static function getValidationRules(ServerRequest $request): ?array;
+    public static function getValidationRules(ServerRequest $request): array|null;
 
     /**
      * Validate the Struct.

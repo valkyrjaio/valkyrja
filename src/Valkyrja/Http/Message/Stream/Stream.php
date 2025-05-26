@@ -239,7 +239,7 @@ class Stream implements Contract
     /**
      * @inheritDoc
      */
-    public function getSize(): ?int
+    public function getSize(): int|null
     {
         // If the stream isn't set
         if ($this->isInvalidStream()) {
@@ -320,7 +320,7 @@ class Stream implements Contract
     /**
      * @inheritDoc
      */
-    public function getMetadata(?string $key = null): mixed
+    public function getMetadata(string|null $key = null): mixed
     {
         // Ensure the stream is valid
         if ($this->isInvalidStream()) {

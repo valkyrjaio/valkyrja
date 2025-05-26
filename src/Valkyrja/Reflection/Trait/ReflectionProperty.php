@@ -22,14 +22,14 @@ use Reflector;
  */
 trait ReflectionProperty
 {
-    protected ?Reflector $reflection = null;
+    protected Reflector|null $reflection = null;
 
     /**
      * Get the reflection.
      *
      * @return Reflector|null
      */
-    public function getReflection(): ?Reflector
+    public function getReflection(): Reflector|null
     {
         return $this->reflection;
     }

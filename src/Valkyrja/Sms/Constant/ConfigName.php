@@ -22,11 +22,10 @@ final class ConfigName
 {
     public const DEFAULT_CONFIGURATION         = 'defaultConfiguration';
     public const DEFAULT_MESSAGE_CONFIGURATION = 'defaultMessageConfiguration';
-    public const CONFIGURATIONS                = 'configurations';
-    public const MESSAGE_CONFIGURATIONS        = 'messageConfigurations';
 
     public const ADAPTER_CLASS = 'adapterClass';
     public const DRIVER_CLASS  = 'driverClass';
+    public const LOGGER        = 'logger';
     public const MESSAGE_CLASS = 'messageClass';
     public const FROM          = 'from';
 }

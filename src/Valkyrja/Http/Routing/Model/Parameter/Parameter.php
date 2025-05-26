@@ -52,9 +52,9 @@ class Parameter extends Model
      * @param mixed       $default       [optional] The default value for this parameter
      */
     public function __construct(
-        ?string $name = null,
-        ?string $regex = null,
-        protected ?Cast $cast = null,
+        string|null $name = null,
+        string|null $regex = null,
+        protected Cast|null $cast = null,
         protected bool $isOptional = false,
         protected bool $shouldCapture = true,
         protected mixed $default = null,
@@ -116,7 +116,7 @@ class Parameter extends Model
      *
      * @return Cast|null
      */
-    public function getCast(): ?Cast
+    public function getCast(): Cast|null
     {
         return $this->cast;
     }

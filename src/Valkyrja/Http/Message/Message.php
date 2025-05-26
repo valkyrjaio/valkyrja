@@ -295,7 +295,7 @@ trait Message
     protected function injectHeader(
         string $header,
         string $value,
-        ?array $headers = null,
+        array|null $headers = null,
         bool $override = false
     ): array {
         // The headers

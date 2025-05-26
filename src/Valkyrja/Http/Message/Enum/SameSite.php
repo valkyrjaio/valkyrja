@@ -20,6 +20,7 @@ namespace Valkyrja\Http\Message\Enum;
  */
 enum SameSite: string
 {
+    case NONE   = 'none';
     case LAX    = 'lax';
     case STRICT = 'strict';
 }

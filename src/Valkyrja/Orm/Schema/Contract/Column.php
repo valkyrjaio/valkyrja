@@ -60,7 +60,7 @@ interface Column
      *
      * @return static
      */
-    public function setType(string $type, ?int $length = null): static;
+    public function setType(string $type, int|null $length = null): static;
 
     /**
      * Set the default value for this column.

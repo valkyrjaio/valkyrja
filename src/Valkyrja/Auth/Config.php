@@ -13,123 +13,79 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Auth\Adapter\Contract\Adapter as AdapterContract;
+use Valkyrja\Auth\Adapter\ORMAdapter;
+use Valkyrja\Auth\Constant\ConfigName;
+use Valkyrja\Auth\Constant\EnvName;
+use Valkyrja\Auth\Constant\RouteName;
+use Valkyrja\Auth\Entity\Contract\User as UserContract;
+use Valkyrja\Auth\Entity\User;
+use Valkyrja\Auth\Gate\Contract\Gate as GateContract;
+use Valkyrja\Auth\Gate\Gate;
+use Valkyrja\Auth\Policy\Contract\Policy as PolicyContract;
+use Valkyrja\Auth\Policy\UserPermissiblePolicy;
+use Valkyrja\Auth\Repository\Contract\Repository as RepositoryContract;
+use Valkyrja\Auth\Repository\Repository;
+use Valkyrja\Config\DataConfig as ParentConfig;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::ADAPTER                => EnvKey::AUTH_ADAPTER,
-        CKP::USER_ENTITY            => EnvKey::AUTH_USER_ENTITY,
-        CKP::REPOSITORY             => EnvKey::AUTH_REPOSITORY,
-        CKP::GATE                   => EnvKey::AUTH_GATE,
-        CKP::POLICY                 => EnvKey::AUTH_POLICY,
-        CKP::ALWAYS_AUTHENTICATE    => EnvKey::AUTH_ALWAYS_AUTHENTICATE,
-        CKP::KEEP_USER_FRESH        => EnvKey::AUTH_KEEP_USER_FRESH,
-        CKP::AUTHENTICATE_ROUTE     => EnvKey::AUTH_AUTHENTICATE_ROUTE,
-        CKP::PASSWORD_CONFIRM_ROUTE => EnvKey::AUTH_PASSWORD_CONFIRM_ROUTE,
-        CKP::USE_SESSION            => EnvKey::AUTH_USE_SESSION,
+    protected static array $envNames = [
+        ConfigName::DEFAULT_ADAPTER            => EnvName::DEFAULT_ADAPTER,
+        ConfigName::DEFAULT_USER_ENTITY        => EnvName::DEFAULT_USER_ENTITY,
+        ConfigName::DEFAULT_REPOSITORY         => EnvName::DEFAULT_REPOSITORY,
+        ConfigName::DEFAULT_GATE               => EnvName::DEFAULT_GATE,
+        ConfigName::DEFAULT_POLICY             => EnvName::DEFAULT_POLICY,
+        ConfigName::SHOULD_ALWAYS_AUTHENTICATE => EnvName::SHOULD_ALWAYS_AUTHENTICATE,
+        ConfigName::SHOULD_KEEP_USER_FRESH     => EnvName::SHOULD_KEEP_USER_FRESH,
+        ConfigName::SHOULD_USE_SESSION         => EnvName::SHOULD_USE_SESSION,
+        ConfigName::AUTHENTICATE_ROUTE         => EnvName::AUTHENTICATE_ROUTE,
+        ConfigName::AUTHENTICATE_URL           => EnvName::AUTHENTICATE_URL,
+        ConfigName::NOT_AUTHENTICATED_ROUTE    => EnvName::NOT_AUTHENTICATED_ROUTE,
+        ConfigName::NOT_AUTHENTICATE_URL       => EnvName::NOT_AUTHENTICATE_URL,
+        ConfigName::PASSWORD_CONFIRM_ROUTE     => EnvName::PASSWORD_CONFIRM_ROUTE,
+        ConfigName::PASSWORD_TIMEOUT           => EnvName::PASSWORD_TIMEOUT,
     ];
 
     /**
-     * The default adapter.
-     *
-     * @var string
+     * @param class-string<AdapterContract>    $defaultAdapter    The default adapter
+     * @param class-string<UserContract>       $defaultUserEntity The default user entity
+     * @param class-string<RepositoryContract> $defaultRepository The default repository
+     * @param class-string<GateContract>       $defaultGate       The default gate
+     * @param class-string<PolicyContract>     $defaultPolicy     The default gate
      */
-    public string $adapter;
+    public function __construct(
+        public string $defaultAdapter = ORMAdapter::class,
+        public string $defaultUserEntity = User::class,
+        public string $defaultRepository = Repository::class,
+        public string $defaultGate = Gate::class,
+        public string $defaultPolicy = UserPermissiblePolicy::class,
+        public bool $shouldAlwaysAuthenticate = false,
+        public bool $shouldKeepUserFresh = false,
+        public bool $shouldUseSession = true,
+        public string $authenticateRoute = RouteName::AUTHENTICATE,
+        public string|null $authenticateUrl = null,
+        public string $notAuthenticatedRoute = RouteName::DASHBOARD,
+        public string|null $notAuthenticatedUrl = null,
+        public string $passwordConfirmRoute = RouteName::PASSWORD_CONFIRM,
+        public int $passwordTimeout = 10800,
+    ) {
+    }
 
     /**
-     * The default user entity.
-     *
-     * @var string
+     * @inheritDoc
      */
-    public string $userEntity;
-
-    /**
-     * The default repository to use for all entities.
-     *
-     * @var string
-     */
-    public string $repository;
-
-    /**
-     * The default gate to use for authorization checks.
-     *
-     * @var string
-     */
-    public string $gate;
-
-    /**
-     * The default policy to use for authorization checks.
-     *
-     * @var string
-     */
-    public string $policy;
-
-    /**
-     * Whether to always authenticate a user (regardless if a session exists).
-     *
-     * @var bool
-     */
-    public bool $alwaysAuthenticate;
-
-    /**
-     * Whether to always keep a user fresh by querying the data store.
-     *
-     * @var bool
-     */
-    public bool $keepUserFresh;
-
-    /**
-     * The authenticate route name.
-     *
-     * @var string
-     */
-    public string $authenticateRoute;
-
-    /**
-     * The authenticate url.
-     *
-     * @var string|null
-     */
-    public ?string $authenticateUrl;
-
-    /**
-     * The not authenticated route name.
-     *
-     * @var string
-     */
-    public string $notAuthenticateRoute;
-
-    /**
-     * The not authenticated url.
-     *
-     * @var string|null
-     */
-    public ?string $notAuthenticateUrl;
-
-    /**
-     * The password confirm route name.
-     *
-     * @var string
-     */
-    public string $passwordConfirmRoute;
-
-    /**
-     * Whether to authenticate using a session.
-     *
-     * @var bool
-     */
-    public bool $useSession;
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+    }
 }

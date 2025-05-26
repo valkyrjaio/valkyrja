@@ -67,7 +67,7 @@ class AuthenticatedUsers extends CastableModel implements Contract
     /**
      * @inheritDoc
      */
-    public function getCurrent(): ?User
+    public function getCurrent(): User|null
     {
         return $this->users[$this->currentId] ?? null;
     }
@@ -93,7 +93,7 @@ class AuthenticatedUsers extends CastableModel implements Contract
     /**
      * @inheritDoc
      */
-    public function getImpersonated(): ?User
+    public function getImpersonated(): User|null
     {
         return $this->users[$this->impersonatedId] ?? null;
     }
@@ -185,9 +185,7 @@ class AuthenticatedUsers extends CastableModel implements Contract
      */
     public function asArray(string ...$properties): array
     {
-        $users = array_map(static function ($userFromCollection) {
-            return $userFromCollection->asArray();
-        }, $this->users);
+        $users = array_map(static fn ($userFromCollection) => $userFromCollection->asArray(), $this->users);
 
         return [
             'currentId' => $this->currentId,
@@ -200,9 +198,7 @@ class AuthenticatedUsers extends CastableModel implements Contract
      */
     public function asStorableArray(string ...$properties): array
     {
-        $users = array_map(static function ($userFromCollection) {
-            return $userFromCollection->asStorableArray();
-        }, $this->users);
+        $users = array_map(static fn ($userFromCollection) => $userFromCollection->asStorableArray(), $this->users);
 
         return [
             'currentId' => $this->currentId,

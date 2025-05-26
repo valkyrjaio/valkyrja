@@ -43,19 +43,14 @@ class JwtCryptRepository extends CryptTokenizedRepository implements Contract
     /**
      * JWTCryptRepository constructor.
      *
-     * @param Adapter                     $adapter The adapter
-     * @param JwtManager                  $jwt     The JWT service
-     * @param Crypt                       $crypt   The crypt service
-     * @param Session                     $session The session service
-     * @param Config|array<string, mixed> $config  The config
-     * @param class-string<User>          $user    The user class
+     * @param class-string<User> $user The user class
      */
     public function __construct(
         Adapter $adapter,
         JwtManager $jwt,
         Crypt $crypt,
         Session $session,
-        Config|array $config,
+        Config $config,
         string $user
     ) {
         parent::__construct($adapter, $crypt, $session, $config, $user);

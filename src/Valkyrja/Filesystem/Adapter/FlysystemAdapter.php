@@ -161,7 +161,7 @@ class FlysystemAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function metadata(string $path): ?array
+    public function metadata(string $path): array|null
     {
         return null;
     }
@@ -171,7 +171,7 @@ class FlysystemAdapter implements Contract
      *
      * @throws FilesystemException
      */
-    public function mimetype(string $path): ?string
+    public function mimetype(string $path): string|null
     {
         return $this->flysystem->mimeType($path);
     }
@@ -181,7 +181,7 @@ class FlysystemAdapter implements Contract
      *
      * @throws FilesystemException
      */
-    public function size(string $path): ?int
+    public function size(string $path): int|null
     {
         return $this->flysystem->fileSize($path);
     }
@@ -191,7 +191,7 @@ class FlysystemAdapter implements Contract
      *
      * @throws FilesystemException
      */
-    public function timestamp(string $path): ?int
+    public function timestamp(string $path): int|null
     {
         return $this->flysystem->lastModified($path);
     }
@@ -201,7 +201,7 @@ class FlysystemAdapter implements Contract
      *
      * @throws FilesystemException
      */
-    public function visibility(string $path): ?string
+    public function visibility(string $path): string|null
     {
         return $this->flysystem->visibility($path);
     }
@@ -271,7 +271,7 @@ class FlysystemAdapter implements Contract
      *
      * @throws FilesystemException
      */
-    public function listContents(?string $directory = null, bool $recursive = false): array
+    public function listContents(string|null $directory = null, bool $recursive = false): array
     {
         return array_map(
             /**

@@ -16,7 +16,7 @@ namespace Valkyrja\Annotation\Provider;
 use Valkyrja\Annotation\Contract\Annotations;
 use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Annotation\Parser\Contract\Parser;
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Reflection\Contract\Reflection;
@@ -96,13 +96,12 @@ final class ServiceProvider extends Provider
      */
     public static function publishParser(Container $container): void
     {
-        /** @var array{annotation: \Valkyrja\Annotation\Config|array<string, mixed>, ...} $config */
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ValkyrjaDataConfig::class);
 
         $container->setSingleton(
             Parser::class,
             new \Valkyrja\Annotation\Parser\Parser(
-                $config['annotation']
+                $config->annotation
             )
         );
     }

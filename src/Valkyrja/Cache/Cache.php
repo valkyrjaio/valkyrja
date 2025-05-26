@@ -47,7 +47,7 @@ class Cache extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function use(?string $name = null): Driver
+    public function use(string|null $name = null): Driver
     {
         /** @var Driver $driver */
         $driver = parent::use($name);
@@ -66,7 +66,7 @@ class Cache extends Manager implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string $key): ?string
+    public function get(string $key): string|null
     {
         return $this->use()->get($key);
     }

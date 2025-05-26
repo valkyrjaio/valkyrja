@@ -13,46 +13,49 @@ declare(strict_types=1);
 
 namespace Valkyrja\Asset;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Asset\Config\Bundles;
+use Valkyrja\Asset\Config\DefaultBundle;
+use Valkyrja\Asset\Constant\ConfigName;
+use Valkyrja\Asset\Constant\EnvName;
+use Valkyrja\Config\DataConfig as ParentConfig;
+
+use function array_key_first;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::DEFAULT  => EnvKey::ASSET_DEFAULT,
-        CKP::ADAPTERS => EnvKey::ASSET_ADAPTERS,
-        CKP::BUNDLES  => EnvKey::ASSET_BUNDLES,
+    protected static array $envNames = [
+        ConfigName::DEFAULT_BUNDLE => EnvName::DEFAULT_BUNDLE,
     ];
 
-    /**
-     * The default bundle.
-     *
-     * @var string
-     */
-    public string $default;
+    public function __construct(
+        public string $defaultBundle = '',
+        public Bundles|null $bundles = null,
+    ) {
+    }
 
     /**
-     * The adapters.
-     *
-     * @var string[]
+     * @inheritDoc
      */
-    public array $adapters;
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+        if ($this->bundles === null) {
+            $this->bundles = new Bundles(
+                default: DefaultBundle::fromEnv($env),
+            );
+        }
 
-    /**
-     * The bundles.
-     *
-     * @var array<string, array<string, string>>
-     */
-    public array $bundles;
+        if ($this->defaultBundle === '') {
+            $this->defaultBundle = array_key_first((array) $this->bundles);
+        }
+    }
 }

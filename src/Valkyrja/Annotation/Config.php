@@ -13,65 +13,64 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Annotation\Constant\Alias;
+use Valkyrja\Annotation\Constant\AliasClass;
+use Valkyrja\Annotation\Constant\AnnotationClass;
+use Valkyrja\Annotation\Constant\AnnotationName;
+use Valkyrja\Annotation\Constant\ConfigName;
+use Valkyrja\Annotation\Constant\EnvName;
+use Valkyrja\Annotation\Model\Contract\Annotation;
+use Valkyrja\Config\DataConfig as ParentConfig;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::ENABLED => EnvKey::ANNOTATIONS_ENABLED,
-        CKP::MAP     => EnvKey::ANNOTATIONS_MAP,
-        CKP::ALIASES => EnvKey::ANNOTATIONS_ALIASES,
+    protected static array $envNames = [
+        ConfigName::ALIASES => EnvName::ALIASES,
+        ConfigName::MAP     => EnvName::MAP,
     ];
 
     /**
-     * Flag for whether annotations are enabled.
-     *
-     * @var bool
+     * @param array<class-string|string, class-string> $aliases A list of aliases
+     * @param array<string, class-string<Annotation>>  $map     A list of mappings
      */
-    public bool $enabled;
+    public function __construct(
+        public array $aliases = [],
+        public array $map = [],
+    ) {
+    }
 
     /**
-     * The annotations map.
-     *
-     * @example
-     * <code>
-     *      [
-     *         'Annotation' => Annotation::class,
-     *      ]
-     * </code>
-     *
-     * @var array<string, string>
+     * @inheritDoc
      */
-    public array $map;
+    protected function setPropertiesAfterSettingFromEnv(string $env): void
+    {
+        $this->aliases = array_merge(
+            [
+                Alias::REQUEST_METHOD => AliasClass::REQUEST_METHOD,
+                Alias::STATUS_CODE    => AliasClass::STATUS_CODE,
+            ],
+            $this->aliases
+        );
 
-    /**
-     * The annotation aliases.
-     *
-     * @example
-     * <code>
-     *      [
-     *         'Word' => WordEnum::class,
-     *      ]
-     * </code>
-     * Then we can do:
-     * <code>
-     *
-     * Annotation("name" : "Word::VALUE")
-     * </code>
-     *
-     * @var array<string, string>
-     */
-    public array $aliases;
+        $this->map = array_merge(
+            [
+                AnnotationName::COMMAND         => AnnotationClass::COMMAND,
+                AnnotationName::LISTENER        => AnnotationClass::LISTENER,
+                AnnotationName::SERVICE         => AnnotationClass::SERVICE,
+                AnnotationName::SERVICE_ALIAS   => AnnotationClass::SERVICE_ALIAS,
+                AnnotationName::SERVICE_CONTEXT => AnnotationClass::SERVICE_CONTEXT,
+            ],
+            $this->map
+        );
+    }
 }

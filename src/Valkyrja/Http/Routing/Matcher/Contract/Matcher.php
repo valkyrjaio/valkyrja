@@ -33,7 +33,7 @@ interface Matcher
      *                    The route if found or null when no route is
      *                    found for the path and method combination specified
      */
-    public function match(string $path, ?RequestMethod $method = null): ?Route;
+    public function match(string $path, RequestMethod|null $method = null): Route|null;
 
     /**
      * Match a static route by path.
@@ -45,7 +45,7 @@ interface Matcher
      *                    The route if found or null when no static route is
      *                    found for the path and method combination specified
      */
-    public function matchStatic(string $path, ?RequestMethod $method = null): ?Route;
+    public function matchStatic(string $path, RequestMethod|null $method = null): Route|null;
 
     /**
      * Match a dynamic route by path.
@@ -57,5 +57,5 @@ interface Matcher
      *                    The route if found or null when no dynamic route is
      *                    found for the path and method combination specified
      */
-    public function matchDynamic(string $path, ?RequestMethod $method = null): ?Route;
+    public function matchDynamic(string $path, RequestMethod|null $method = null): Route|null;
 }

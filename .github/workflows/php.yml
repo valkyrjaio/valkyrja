@@ -51,7 +51,7 @@ jobs:
       - name: Install dependencies for PHP Arkitect
         run: cd .github/ci/phparkitect && composer install --prefer-dist --no-progress
 
-      # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
+      # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"fan
       # Docs: https://getcomposer.org/doc/articles/scripts.md
 
       - name: Make build logs dir

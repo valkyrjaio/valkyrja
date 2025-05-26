@@ -76,7 +76,7 @@ class VerifyAuthBroadcastMiddleware /* extends Middleware */
      *
      * @return string|null
      */
-    protected static function getBroadCastMessageFromRequest(ServerRequest $request): ?string
+    protected static function getBroadCastMessageFromRequest(ServerRequest $request): string|null
     {
         // Here we default to pulling the broadcast message from the body to avoid having the message appear in
         // plain text in the query string for a normal GET request (either in logs, or elsewhere). Ideally

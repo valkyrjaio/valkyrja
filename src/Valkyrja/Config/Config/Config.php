@@ -13,12 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Config;
 
-use Valkyrja\Annotation\Config as Annotation;
-use Valkyrja\Api\Config as Api;
 use Valkyrja\Application\Config as App;
 use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Asset\Config as Asset;
-use Valkyrja\Auth\Config as Auth;
 use Valkyrja\Broadcast\Config as Broadcast;
 use Valkyrja\Cache\Config as Cache;
 use Valkyrja\Client\Config as Client;
@@ -61,39 +57,11 @@ class Config extends Model
     ];
 
     /**
-     * The annotation module config.
-     *
-     * @var Annotation
-     */
-    public Annotation $annotation;
-
-    /**
-     * The api module config.
-     *
-     * @var Api
-     */
-    public Api $api;
-
-    /**
      * The application module config.
      *
      * @var App
      */
     public App $app;
-
-    /**
-     * The asset module config.
-     *
-     * @var Asset
-     */
-    public Asset $asset;
-
-    /**
-     * The auth module config.
-     *
-     * @var Auth
-     */
-    public Auth $auth;
 
     /**
      * The broadcast module config.

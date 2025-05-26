@@ -108,7 +108,7 @@ class Config extends Model
      *
      * @var Cache|null
      */
-    public ?Cache $cache = null;
+    public Cache|null $cache = null;
 
     /**
      * The file path.

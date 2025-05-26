@@ -25,7 +25,7 @@ use Valkyrja\Broadcast\Driver\Driver;
 use Valkyrja\Broadcast\Factory\ContainerFactory;
 use Valkyrja\Broadcast\Factory\Contract\Factory;
 use Valkyrja\Broadcast\Message\Message;
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Contract\Crypt;
@@ -86,14 +86,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishBroadcaster(Container $container): void
     {
-        /** @var array{broadcast: \Valkyrja\Broadcast\Config|array<string, mixed>, ...} $config */
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ValkyrjaDataConfig::class);
 
         $container->setSingleton(
             Broadcast::class,
             new \Valkyrja\Broadcast\Broadcast(
                 $container->getSingleton(Factory::class),
-                $config['broadcast']
+                $config->broadcast
             )
         );
     }
@@ -124,7 +123,7 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             Driver::class,
-            [static::class, 'createDriver']
+            [self::class, 'createDriver']
         );
     }
 
@@ -154,7 +153,7 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             NullAdapter::class,
-            [static::class, 'createNullAdapter']
+            [self::class, 'createNullAdapter']
         );
     }
 
@@ -182,7 +181,7 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             LogAdapter::class,
-            [static::class, 'createLogAdapter']
+            [self::class, 'createLogAdapter']
         );
     }
 
@@ -215,7 +214,7 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             PusherAdapter::class,
-            [static::class, 'createPusherAdapter']
+            [self::class, 'createPusherAdapter']
         );
     }
 
@@ -245,7 +244,7 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             CryptPusherAdapter::class,
-            [static::class, 'createCryptPusherAdapter']
+            [self::class, 'createCryptPusherAdapter']
         );
     }
 
@@ -277,7 +276,7 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             Pusher::class,
-            [static::class, 'createPusher']
+            [self::class, 'createPusher']
         );
     }
 
@@ -317,7 +316,7 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             Message::class,
-            [static::class, 'createMessage']
+            [self::class, 'createMessage']
         );
     }
 

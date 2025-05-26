@@ -97,7 +97,7 @@ interface StringT extends Type
     /**
      * Get a substring from start position with a certain length.
      */
-    public function substr(int $start, ?int $length = null): static;
+    public function substr(int $start, int|null $length = null): static;
 
     /**
      * Convert a string to title case.
@@ -117,12 +117,12 @@ interface StringT extends Type
     /**
      * Convert a string to capitalized.
      */
-    public function toCapitalized(?string $delimiter = null): static;
+    public function toCapitalized(string|null $delimiter = null): static;
 
     /**
      * Convert a string to capitalized.
      */
-    public function toCapitalizedWords(?string $delimiter = null): static;
+    public function toCapitalizedWords(string|null $delimiter = null): static;
 
     /**
      * Convert a string to snake case.

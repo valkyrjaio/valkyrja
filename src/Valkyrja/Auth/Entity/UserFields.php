@@ -39,5 +39,5 @@ trait UserFields
      *
      * @var string|null
      */
-    protected ?string $reset_token = null;
+    protected string|null $reset_token = null;
 }

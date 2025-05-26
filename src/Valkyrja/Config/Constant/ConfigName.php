@@ -20,10 +20,7 @@ namespace Valkyrja\Config\Constant;
  */
 final class ConfigName
 {
-    public const CLASS                 = 'class';
-    public const PROVIDERS             = 'providers';
-    public const FILE_PATH             = 'filePath';
-    public const CACHE_FILE_PATH       = 'cacheFilePath';
-    public const CACHE_ALLOWED_CLASSES = 'cacheAllowedClasses';
-    public const USE_CACHE             = 'useCache';
+    public const PROVIDERS       = 'providers';
+    public const CACHE_FILE_PATH = 'cacheFilePath';
+    public const USE_CACHE       = 'useCache';
 }

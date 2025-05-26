@@ -58,7 +58,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
-    public function getSize(): ?int
+    public function getSize(): int|null
     {
         return $this->stream->getSize();
     }
@@ -146,7 +146,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
-    public function getMetadata(?string $key = null)
+    public function getMetadata(string|null $key = null)
     {
         return $this->stream->getMetadata($key);
     }

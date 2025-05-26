@@ -197,6 +197,14 @@ class Env
     public const FILESYSTEM_S3_PREFIX               = null;
     public const FILESYSTEM_S3_OPTIONS              = null;
 
+    public const HTTP_MIDDLEWARE_REQUEST_RECEIVED  = null;
+    public const HTTP_MIDDLEWARE_ROUTE_DISPATCHED  = null;
+    public const HTTP_MIDDLEWARE_THROWABLE_CAUGHT  = null;
+    public const HTTP_MIDDLEWARE_ROUTE_MATCHED     = null;
+    public const HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = null;
+    public const HTTP_MIDDLEWARE_SENDING_RESPONSE  = null;
+    public const HTTP_MIDDLEWARE_TERMINATED        = null;
+
     /**
      * JWT env variables.
      */

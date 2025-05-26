@@ -29,7 +29,7 @@ interface Validate
      *
      * @return bool
      */
-    public function rules(?array $rules = null): bool;
+    public function rules(array|null $rules = null): bool;
 
     /**
      * Set the rules to validate.
@@ -66,5 +66,5 @@ interface Validate
      *
      * @return string|null
      */
-    public function getFirstErrorMessage(): ?string;
+    public function getFirstErrorMessage(): string|null;
 }

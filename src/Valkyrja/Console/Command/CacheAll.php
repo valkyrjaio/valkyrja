@@ -51,7 +51,7 @@ class CacheAll extends Commander
      *
      * @param string|null $sync [optional] Whether to sync the cached files
      */
-    public function run(?string $sync = null): int
+    public function run(string|null $sync = null): int
     {
         $containerCache = console()->matchCommand(ContainerCache::COMMAND);
         $consoleCache   = console()->matchCommand(ConsoleCache::COMMAND);

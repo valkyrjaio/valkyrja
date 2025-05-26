@@ -23,7 +23,6 @@ use Valkyrja\View\Constant\ConfigName;
 use Valkyrja\View\Constant\EnvName;
 
 use function array_key_first;
-use function Valkyrja\resourcesPath;
 
 /**
  * Class Config.

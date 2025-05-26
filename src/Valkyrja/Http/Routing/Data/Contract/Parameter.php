@@ -70,7 +70,7 @@ interface Parameter extends JsonSerializable, Stringable
      *
      * @return Cast|null
      */
-    public function getCast(): ?Cast;
+    public function getCast(): Cast|null;
 
     /**
      * Create a new parameter with the specified cast.
@@ -79,7 +79,7 @@ interface Parameter extends JsonSerializable, Stringable
      *
      * @return static
      */
-    public function withCast(?Cast $cast = null): static;
+    public function withCast(Cast|null $cast = null): static;
 
     /**
      * Get whether this parameter is optional.

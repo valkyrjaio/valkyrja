@@ -88,7 +88,7 @@ class Obj
      *
      * @return object
      */
-    public static function fromSerializedString(string $subject, ?array $allowedClasses = [stdClass::class]): object
+    public static function fromSerializedString(string $subject, array|null $allowedClasses = [stdClass::class]): object
     {
         $options = [];
 

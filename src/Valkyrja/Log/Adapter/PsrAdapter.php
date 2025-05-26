@@ -18,8 +18,6 @@ use Throwable;
 use Valkyrja\Log\Adapter\Contract\PsrAdapter as Contract;
 use Valkyrja\Log\Enum\LogLevel;
 
-use function var_dump;
-
 /**
  * Class PsrAdapter.
  *

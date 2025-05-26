@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing;
 
 use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Http\Routing\Config\Cache;
 use Valkyrja\Http\Routing\Constant\ConfigName;
 use Valkyrja\Http\Routing\Constant\EnvName;
+use Valkyrja\Support\Directory;
 
 /**
  * Class Config.
@@ -37,13 +39,28 @@ class DataConfig extends ParentConfig
     ];
 
     /**
-     * @param class-string[] $controllers
+     * @param class-string[] $controllers A list of attributed controller classes
      */
     public function __construct(
         public array $controllers = [],
         public string $filePath = '',
         public string $cacheFilePath = '',
-        public bool $useCache = false
+        public bool $useCache = false,
+        public Cache|null $cache = null,
     ) {
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+        if ($this->filePath === '') {
+            $this->filePath = Directory::routesPath('default.php');
+        }
+
+        if ($this->cacheFilePath === '') {
+            $this->filePath = Directory::cachePath('routes.php');
+        }
     }
 }

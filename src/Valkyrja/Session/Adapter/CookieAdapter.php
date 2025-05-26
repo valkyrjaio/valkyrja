@@ -59,8 +59,8 @@ class CookieAdapter extends PHPAdapter
         Crypt $crypt,
         ServerRequest $request,
         array $config,
-        ?string $sessionId = null,
-        ?string $sessionName = null
+        string|null $sessionId = null,
+        string|null $sessionName = null
     ) {
         parent::__construct($config, $sessionId, $sessionName);
 

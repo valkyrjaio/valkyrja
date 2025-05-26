@@ -171,7 +171,7 @@ class StringT extends Type implements Contract
     /**
      * @inheritDoc
      */
-    public function substr(int $start, ?int $length = null): static
+    public function substr(int $start, int|null $length = null): static
     {
         return $this->modify(static fn (string $subject): string => Helper::substr($subject, $start, $length));
     }
@@ -203,7 +203,7 @@ class StringT extends Type implements Contract
     /**
      * @inheritDoc
      */
-    public function toCapitalized(?string $delimiter = null): static
+    public function toCapitalized(string|null $delimiter = null): static
     {
         return $this->modify(static fn (string $subject): string => StrCase::toCapitalized($subject, $delimiter));
     }
@@ -211,7 +211,7 @@ class StringT extends Type implements Contract
     /**
      * @inheritDoc
      */
-    public function toCapitalizedWords(?string $delimiter = null): static
+    public function toCapitalizedWords(string|null $delimiter = null): static
     {
         return $this->modify(static fn (string $subject): string => StrCase::toCapitalizedWords($subject, $delimiter));
     }

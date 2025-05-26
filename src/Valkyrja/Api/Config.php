@@ -13,40 +13,45 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api;
 
-use Valkyrja\Api\Model\Contract\Json;
-use Valkyrja\Api\Model\Contract\JsonData;
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Api\Constant\ConfigName;
+use Valkyrja\Api\Constant\EnvName;
+use Valkyrja\Api\Model\Contract\Json as JsonContract;
+use Valkyrja\Api\Model\Contract\JsonData as JsonDataContract;
+use Valkyrja\Api\Model\Json;
+use Valkyrja\Api\Model\JsonData;
+use Valkyrja\Config\DataConfig as ParentConfig;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::JSON_MODEL      => EnvKey::API_JSON_MODEL,
-        CKP::JSON_DATA_MODEL => EnvKey::API_JSON_DATA_MODEL,
+    protected static array $envNames = [
+        ConfigName::JSON_MODEL => EnvName::JSON_MODEL,
+        ConfigName::DATA_MODEL => EnvName::DATA_MODEL,
     ];
 
     /**
-     * The JSON model class.
-     *
-     * @var class-string<Json>
+     * @param class-string<JsonContract>     $jsonModel The JSON model
+     * @param class-string<JsonDataContract> $dataModel The data model
      */
-    public string $jsonModel;
+    public function __construct(
+        public string $jsonModel = Json::class,
+        public string $dataModel = JsonData::class,
+    ) {
+    }
 
     /**
-     * The JSON data model class.
-     *
-     * @var class-string<JsonData>
+     * @inheritDoc
      */
-    public string $jsonDataModel;
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+    }
 }

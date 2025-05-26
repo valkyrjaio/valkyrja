@@ -23,19 +23,19 @@ use Attribute;
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class AttributeClassChildClass extends AttributeClass
 {
-    public ?string $name = null;
+    public string|null $name = null;
 
-    public ?string $class = null;
+    public string|null $class = null;
 
-    public ?string $constant = null;
+    public string|null $constant = null;
 
-    public ?string $property = null;
+    public string|null $property = null;
 
-    public ?string $method = null;
+    public string|null $method = null;
 
-    public ?bool $static = null;
+    public bool|null $static = null;
 
-    public ?bool $isOptional = null;
+    public bool|null $isOptional = null;
 
     public mixed $default = null;
 
@@ -99,7 +99,7 @@ class AttributeClassChildClass extends AttributeClass
     /**
      * @param string|null $name
      */
-    public function setName(?string $name): void
+    public function setName(string|null $name): void
     {
         $this->name = $name;
     }
@@ -107,7 +107,7 @@ class AttributeClassChildClass extends AttributeClass
     /**
      * @param bool|null $optional
      */
-    public function setIsOptional(?bool $optional): void
+    public function setIsOptional(bool|null $optional): void
     {
         $this->isOptional = $optional;
     }

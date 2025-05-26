@@ -64,7 +64,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
-    public function getPort(): ?int
+    public function getPort(): int|null
     {
         return $this->uri->getPort();
     }
@@ -108,7 +108,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
-    public function withUserInfo(string $user, ?string $password = null): UriInterface
+    public function withUserInfo(string $user, string|null $password = null): UriInterface
     {
         $new = clone $this;
 
@@ -132,7 +132,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
-    public function withPort(?int $port): UriInterface
+    public function withPort(int|null $port): UriInterface
     {
         $new = clone $this;
 

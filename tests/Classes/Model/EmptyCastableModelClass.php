@@ -29,11 +29,11 @@ use const JSON_THROW_ON_ERROR;
  */
 class EmptyCastableModelClass extends AbstractModel
 {
-    protected function internalSetProperties(array $properties, ?Closure $modifyValue = null): void
+    protected function internalSetProperties(array $properties, Closure|null $modifyValue = null): void
     {
         parent::internalSetProperties(
             $properties,
-            static function (string $property, mixed $value, ?Cast $cast): mixed {
+            static function (string $property, mixed $value, Cast|null $cast): mixed {
                 throw new RuntimeException(json_encode([$property, $value, $cast], JSON_THROW_ON_ERROR));
             }
         );

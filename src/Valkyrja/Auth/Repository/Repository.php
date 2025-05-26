@@ -68,7 +68,7 @@ class Repository implements Contract
      *
      * @var User|null
      */
-    protected ?User $user = null;
+    protected User|null $user = null;
 
     /**
      * The current authenticated users.
@@ -87,15 +87,12 @@ class Repository implements Contract
     /**
      * Repository constructor.
      *
-     * @param Adapter                     $adapter The adapter
-     * @param SessionManager              $session The session service
-     * @param Config|array<string, mixed> $config  The config
-     * @param class-string<User>          $user    The user class
+     * @param class-string<User> $user The user class
      */
     public function __construct(
         protected Adapter $adapter,
         SessionManager $session,
-        protected Config|array $config,
+        protected Config $config,
         string $user
     ) {
         assert(is_a($user, User::class, true));
@@ -138,7 +135,7 @@ class Repository implements Contract
      */
     public function getUsers(): AuthenticatedUsers
     {
-        if ($this->config['keepUserFresh']) {
+        if ($this->config->shouldKeepUserFresh) {
             foreach ($this->users->all() as $user) {
                 $dbUser = $this->adapter->retrieveById($user);
 
@@ -208,7 +205,7 @@ class Repository implements Contract
     /**
      * @inheritDoc
      */
-    public function unAuthenticate(?User $user = null): static
+    public function unAuthenticate(User|null $user = null): static
     {
         if ($this->isAuthenticated) {
             $this->resetAfterUnAuthentication($user);
@@ -336,11 +333,7 @@ class Repository implements Contract
 
         $confirmedAt = time() - $passwordConfirmedTimestamp;
 
-        $configTimeout = $this->config['passwordTimeout'] ?? null;
-
-        if (! is_int($configTimeout)) {
-            $configTimeout = 10800;
-        }
+        $configTimeout = $this->config->passwordTimeout;
 
         return $confirmedAt > $configTimeout;
     }
@@ -417,13 +410,13 @@ class Repository implements Contract
      */
     protected function authenticateWithUser(User $user): static
     {
-        if ($this->config['alwaysAuthenticate']) {
+        if ($this->config->shouldAlwaysAuthenticate) {
             $this->ensureUserValidity($user);
 
             return $this;
         }
 
-        if ($this->config['keepUserFresh']) {
+        if ($this->config->shouldKeepUserFresh) {
             $user = $this->adapter->retrieveById($user);
         }
 
@@ -454,7 +447,7 @@ class Repository implements Contract
      *
      * @return void
      */
-    protected function resetAfterUnAuthentication(?User $user = null): void
+    protected function resetAfterUnAuthentication(User|null $user = null): void
     {
         $this->isAuthenticated = false;
 
@@ -509,7 +502,7 @@ class Repository implements Contract
             throw new InvalidAuthenticationException('User is no longer valid.');
         }
 
-        if ($this->config['keepUserFresh']) {
+        if ($this->config->shouldKeepUserFresh) {
             $this->setAuthenticatedUser($dbUser);
         }
 

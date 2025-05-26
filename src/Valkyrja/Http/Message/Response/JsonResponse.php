@@ -88,9 +88,9 @@ class JsonResponse extends Response implements Contract
      * @throws JsonException
      */
     public static function createFromData(
-        ?array $data = null,
-        ?StatusCode $statusCode = null,
-        ?array $headers = null
+        array|null $data = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
     ): static {
         return new static(
             $data ?? static::DEFAULT_DATA,

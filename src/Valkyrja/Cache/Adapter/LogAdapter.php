@@ -47,7 +47,7 @@ class LogAdapter implements Contract
      * @param Logger      $logger The logger service
      * @param string|null $prefix [optional] The prefix
      */
-    public function __construct(Logger $logger, ?string $prefix = null)
+    public function __construct(Logger $logger, string|null $prefix = null)
     {
         $this->logger = $logger;
         $this->prefix = $prefix ?? '';
@@ -66,7 +66,7 @@ class LogAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string $key): ?string
+    public function get(string $key): string|null
     {
         $this->logger->info(self::class . " get: $key");
 

@@ -29,6 +29,7 @@ use Valkyrja\Auth\Repository\CryptTokenizedRepository;
 use Valkyrja\Auth\Repository\JwtCryptRepository;
 use Valkyrja\Auth\Repository\JwtRepository;
 use Valkyrja\Auth\Repository\Repository;
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Contract\Crypt;
@@ -95,15 +96,14 @@ final class ServiceProvider extends Provider
      */
     public static function publishAuth(Container $container): void
     {
-        /** @var array{auth: Config|array<string, mixed>, ...} $config */
-        $config = $container->getSingleton(\Valkyrja\Config\Config\Config::class);
+        $config = $container->getSingleton(ValkyrjaDataConfig::class);
 
         $container->setSingleton(
             Auth::class,
             new \Valkyrja\Auth\Auth(
                 $container->getSingleton(Factory::class),
                 $container->getSingleton(ServerRequest::class),
-                $config['auth']
+                $config->auth
             )
         );
     }
@@ -136,19 +136,14 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             NullAdapter::class,
-            [static::class, 'createNullAdapter']
+            [self::class, 'createNullAdapter']
         );
     }
 
     /**
      * Create a null adapter.
-     *
-     * @param Container                   $container
-     * @param Config|array<string, mixed> $config
-     *
-     * @return NullAdapter
      */
-    public static function createNullAdapter(Container $container, Config|array $config): NullAdapter
+    public static function createNullAdapter(Container $container, Config $config): NullAdapter
     {
         return new NullAdapter(
             $config,
@@ -166,19 +161,14 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             ORMAdapter::class,
-            [static::class, 'createOrmAdapter']
+            [self::class, 'createOrmAdapter']
         );
     }
 
     /**
      * Create an ORM adapter.
-     *
-     * @param Container                   $container
-     * @param Config|array<string, mixed> $config
-     *
-     * @return ORMAdapter
      */
-    public static function createOrmAdapter(Container $container, Config|array $config): ORMAdapter
+    public static function createOrmAdapter(Container $container, Config $config): ORMAdapter
     {
         $orm = $container->getSingleton(Orm::class);
 
@@ -199,7 +189,7 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             Gate::class,
-            [static::class, 'createGate']
+            [self::class, 'createGate']
         );
     }
 
@@ -229,7 +219,7 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             Policy::class,
-            [static::class, 'createPolicy']
+            [self::class, 'createPolicy']
         );
     }
 
@@ -260,7 +250,7 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             EntityPolicy::class,
-            [static::class, 'createEntityPolicy']
+            [self::class, 'createEntityPolicy']
         );
     }
 
@@ -292,7 +282,7 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             EntityRoutePolicy::class,
-            [static::class, 'createEntityRoutePolicy']
+            [self::class, 'createEntityRoutePolicy']
         );
     }
 
@@ -324,21 +314,16 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             Repository::class,
-            [static::class, 'createRepository']
+            [self::class, 'createRepository']
         );
     }
 
     /**
      * Create a repository.
      *
-     * @param Container                   $container
-     * @param Adapter                     $adapter
-     * @param class-string<User>          $user
-     * @param Config|array<string, mixed> $config
-     *
-     * @return Repository
+     * @param class-string<User> $user The user entity class
      */
-    public static function createRepository(Container $container, Adapter $adapter, string $user, Config|array $config): Repository
+    public static function createRepository(Container $container, Adapter $adapter, string $user, Config $config): Repository
     {
         return new Repository(
             $adapter,
@@ -359,21 +344,16 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             CryptTokenizedRepository::class,
-            [static::class, 'createCryptTokenizedRepository']
+            [self::class, 'createCryptTokenizedRepository']
         );
     }
 
     /**
      * Create a crypt tokenized repository.
      *
-     * @param Container                   $container
-     * @param Adapter                     $adapter
-     * @param class-string<User>          $user
-     * @param Config|array<string, mixed> $config
-     *
-     * @return CryptTokenizedRepository
+     * @param class-string<User> $user The user entity class
      */
-    public static function createCryptTokenizedRepository(Container $container, Adapter $adapter, string $user, Config|array $config): CryptTokenizedRepository
+    public static function createCryptTokenizedRepository(Container $container, Adapter $adapter, string $user, Config $config): CryptTokenizedRepository
     {
         return new CryptTokenizedRepository(
             $adapter,
@@ -395,21 +375,16 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             JwtCryptRepository::class,
-            [static::class, 'createJwtCryptRepository']
+            [self::class, 'createJwtCryptRepository']
         );
     }
 
     /**
      * Create a JWT crypt tokenized repository.
      *
-     * @param Container                   $container
-     * @param Adapter                     $adapter
-     * @param class-string<User>          $user
-     * @param Config|array<string, mixed> $config
-     *
-     * @return JwtCryptRepository
+     * @param class-string<User> $user THe user entity class
      */
-    public static function createJwtCryptRepository(Container $container, Adapter $adapter, string $user, Config|array $config): JwtCryptRepository
+    public static function createJwtCryptRepository(Container $container, Adapter $adapter, string $user, Config $config): JwtCryptRepository
     {
         return new JwtCryptRepository(
             $adapter,
@@ -432,21 +407,16 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             JwtRepository::class,
-            [static::class, 'createJwtRepository']
+            [self::class, 'createJwtRepository']
         );
     }
 
     /**
      * Create a JWT tokenized repository.
      *
-     * @param Container                   $container
-     * @param Adapter                     $adapter
-     * @param class-string<User>          $user
-     * @param Config|array<string, mixed> $config
-     *
-     * @return JwtRepository
+     * @param class-string<User> $user The user entity class
      */
-    public static function createJwtRepository(Container $container, Adapter $adapter, string $user, Config|array $config): JwtRepository
+    public static function createJwtRepository(Container $container, Adapter $adapter, string $user, Config $config): JwtRepository
     {
         return new JwtRepository(
             $adapter,

@@ -17,17 +17,12 @@ use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Env;
 use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config\Config;
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\CacheableContainer;
 use Valkyrja\Container\Config as ContainerConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Exception\Contract\ErrorHandler as ErrorHandlerContract;
 use Valkyrja\Exception\ErrorHandler;
-
-use function set_error_handler;
-
-use function Valkyrja\dd;
-
-use const E_ALL;
 
 /**
  * Class AppProvider.
@@ -46,7 +41,8 @@ final class AppProvider extends Provider
     public static function publish(Application $app): void
     {
         /** @var array{container: ConfigAsArray} $config */
-        $config = $app->config();
+        $config     = $app->config();
+        $dataConfig = $app->dataConfig();
 
         $container = new CacheableContainer($config['container'], $app->debug());
 
@@ -54,21 +50,16 @@ final class AppProvider extends Provider
 
         $container->setup();
 
-        static::bootstrapContainer($app, $container);
-        static::bootstrapServices($app, $container, $config);
+        self::bootstrapContainer($app, $container);
+        self::bootstrapServices($app, $container);
         // Bootstrap debug capabilities
-        static::bootstrapErrorHandler($app, $container, $config);
+        self::bootstrapErrorHandler($app, $container);
         // Bootstrap the timezone
-        static::bootstrapTimezone($config);
+        self::bootstrapTimezone($dataConfig);
     }
 
     /**
      * Bootstrap container.
-     *
-     * @param Application $app       The application
-     * @param Container   $container The container
-     *
-     * @return void
      */
     protected static function bootstrapContainer(Application $app, Container $container): void
     {
@@ -76,39 +67,25 @@ final class AppProvider extends Provider
 
     /**
      * Bootstrap services.
-     *
-     * @param Application                 $app       The application
-     * @param Container                   $container The container
-     * @param Config|array<string, mixed> $config    The config
-     *
-     * @return void
      */
-    protected static function bootstrapServices(Application $app, Container $container, Config|array $config): void
+    protected static function bootstrapServices(Application $app, Container $container): void
     {
         $container->setSingleton(Application::class, $app);
         $container->setSingleton('env', $app->env());
         $container->bindAlias('env', Env::class);
-        $container->setSingleton(Config::class, $config);
+        $container->setSingleton(Config::class, $app->config());
+        $container->setSingleton(ValkyrjaDataConfig::class, $app->dataConfig());
         $container->bindAlias('config', Config::class);
         $container->setSingleton(Container::class, $container);
     }
 
     /**
      * Bootstrap error handler.
-     *
-     * @param Application                 $app       The application
-     * @param Container                   $container The container
-     * @param Config|array<string, mixed> $config    The config
-     *
-     * @return void
      */
-    protected static function bootstrapErrorHandler(
-        Application $app,
-        Container $container,
-        Config|array $config
-    ): void {
-        /** @var ErrorHandlerContract $errorHandler */
-        $errorHandler = $config['app']['errorHandler']
+    protected static function bootstrapErrorHandler(Application $app, Container $container): void
+    {
+        $config       = $app->dataConfig();
+        $errorHandler = $config->app->errorHandler
             ?? ErrorHandler::class;
 
         // Set error handler in the service container
@@ -117,19 +94,18 @@ final class AppProvider extends Provider
         // If debug is on, enable debug handling
         if ($app->debug()) {
             // Enable error handling
-            $errorHandler::enable(E_ALL, true);
+            $errorHandler::enable(
+            // errorReportingLevel: E_ALL,
+                displayErrors: true
+            );
         }
     }
 
     /**
      * Bootstrap the timezone.
-     *
-     * @param Config|array<string, mixed> $config The config
-     *
-     * @return void
      */
-    protected static function bootstrapTimezone(Config|array $config): void
+    protected static function bootstrapTimezone(ValkyrjaDataConfig $config): void
     {
-        date_default_timezone_set($config['app']['timezone']);
+        date_default_timezone_set($config->app->timezone);
     }
 }

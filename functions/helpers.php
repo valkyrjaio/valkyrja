@@ -88,10 +88,10 @@ function app(): Application
  * @return never
  */
 function abort(
-    ?int $statusCode = null,
-    ?string $message = null,
-    ?array $headers = null,
-    ?Response $response = null
+    int|null $statusCode = null,
+    string|null $message = null,
+    array|null $headers = null,
+    Response|null $response = null
 ): never {
     Abort::abort($statusCode, $message, $headers, $response);
 }
@@ -168,7 +168,7 @@ function client(): Client
  *
  * @return mixed
  */
-function config(?string $key = null, mixed $default = null): mixed
+function config(string|null $key = null, mixed $default = null): mixed
 {
     return Valkyrja::app()->config($key, $default);
 }
@@ -211,7 +211,7 @@ function dispatcher(): Dispatcher
  *
  * @return mixed
  */
-function env(?string $key = null, mixed $default = null): mixed
+function env(string|null $key = null, mixed $default = null): mixed
 {
     // Does not use the app() helper due to the self::$instance property
     // that Valkyrja::app() relies on has not been set yet when
@@ -306,7 +306,7 @@ function mail(): Mail
  *
  * @return MailMessage
  */
-function mailMessage(?string $name = null): MailMessage
+function mailMessage(string|null $name = null): MailMessage
 {
     return \Valkyrja\mail()->createMessage($name);
 }
@@ -460,7 +460,7 @@ function route(string $name): Route
  *
  * @return string
  */
-function routeUrl(string $name, ?array $data = null, ?bool $absolute = null): string
+function routeUrl(string $name, array|null $data = null, bool|null $absolute = null): string
 {
     return url()->getUrl($name, $data, $absolute);
 }
@@ -504,7 +504,7 @@ function viewResponseFactory(): ViewResponseFactory
  *
  * @return Response
  */
-function response(?string $content = null, ?int $statusCode = null, ?array $headers = null): Response
+function response(string|null $content = null, int|null $statusCode = null, array|null $headers = null): Response
 {
     return responseFactory()->createResponse($content, $statusCode, $headers);
 }
@@ -518,7 +518,7 @@ function response(?string $content = null, ?int $statusCode = null, ?array $head
  *
  * @return JsonResponse
  */
-function json(?array $data = null, ?int $statusCode = null, ?array $headers = null): JsonResponse
+function json(array|null $data = null, int|null $statusCode = null, array|null $headers = null): JsonResponse
 {
     return responseFactory()->createJsonResponse($data, $statusCode, $headers);
 }
@@ -532,7 +532,7 @@ function json(?array $data = null, ?int $statusCode = null, ?array $headers = nu
  *
  * @return RedirectResponse
  */
-function redirect(?string $uri = null, ?int $statusCode = null, ?array $headers = null): RedirectResponse
+function redirect(string|null $uri = null, int|null $statusCode = null, array|null $headers = null): RedirectResponse
 {
     return responseFactory()->createRedirectResponse($uri, $statusCode, $headers);
 }
@@ -549,9 +549,9 @@ function redirect(?string $uri = null, ?int $statusCode = null, ?array $headers 
  */
 function redirectRoute(
     string $route,
-    ?array $parameters = null,
-    ?int $statusCode = null,
-    ?array $headers = null
+    array|null $parameters = null,
+    int|null $statusCode = null,
+    array|null $headers = null
 ): RedirectResponse {
     return routeResponseFactory()->createRouteRedirectResponse($route, $parameters, $statusCode, $headers);
 }
@@ -568,9 +568,9 @@ function redirectRoute(
  * @return never
  */
 function redirectTo(
-    ?Uri $uri = null,
-    ?int $statusCode = null,
-    ?array $headers = null
+    Uri|null $uri = null,
+    int|null $statusCode = null,
+    array|null $headers = null
 ): never {
     Abort::redirect($uri, $statusCode, $headers);
 }
@@ -602,7 +602,7 @@ function sms(): Sms
  *
  * @return SmsMessage
  */
-function smsMessage(?string $name = null): SmsMessage
+function smsMessage(string|null $name = null): SmsMessage
 {
     return \Valkyrja\sms()->createMessage($name);
 }
@@ -651,7 +651,7 @@ function dd(...$args): never
  *
  * @return string
  */
-function basePath(?string $path = null): string
+function basePath(string|null $path = null): string
 {
     return Directory::basePath($path);
 }
@@ -663,7 +663,7 @@ function basePath(?string $path = null): string
  *
  * @return string
  */
-function appPath(?string $path = null): string
+function appPath(string|null $path = null): string
 {
     return Directory::appPath($path);
 }
@@ -675,7 +675,7 @@ function appPath(?string $path = null): string
  *
  * @return string
  */
-function bootstrapPath(?string $path = null): string
+function bootstrapPath(string|null $path = null): string
 {
     return Directory::bootstrapPath($path);
 }
@@ -687,7 +687,7 @@ function bootstrapPath(?string $path = null): string
  *
  * @return string
  */
-function envPath(?string $path = null): string
+function envPath(string|null $path = null): string
 {
     return Directory::envPath($path);
 }
@@ -699,7 +699,7 @@ function envPath(?string $path = null): string
  *
  * @return string
  */
-function configPath(?string $path = null): string
+function configPath(string|null $path = null): string
 {
     return Directory::configPath($path);
 }
@@ -711,7 +711,7 @@ function configPath(?string $path = null): string
  *
  * @return string
  */
-function commandsPath(?string $path = null): string
+function commandsPath(string|null $path = null): string
 {
     return Directory::commandsPath($path);
 }
@@ -723,7 +723,7 @@ function commandsPath(?string $path = null): string
  *
  * @return string
  */
-function eventsPath(?string $path = null): string
+function eventsPath(string|null $path = null): string
 {
     return Directory::eventsPath($path);
 }
@@ -735,7 +735,7 @@ function eventsPath(?string $path = null): string
  *
  * @return string
  */
-function routesPath(?string $path = null): string
+function routesPath(string|null $path = null): string
 {
     return Directory::routesPath($path);
 }
@@ -747,7 +747,7 @@ function routesPath(?string $path = null): string
  *
  * @return string
  */
-function servicesPath(?string $path = null): string
+function servicesPath(string|null $path = null): string
 {
     return Directory::servicesPath($path);
 }
@@ -759,7 +759,7 @@ function servicesPath(?string $path = null): string
  *
  * @return string
  */
-function publicPath(?string $path = null): string
+function publicPath(string|null $path = null): string
 {
     return Directory::publicPath($path);
 }
@@ -771,7 +771,7 @@ function publicPath(?string $path = null): string
  *
  * @return string
  */
-function resourcesPath(?string $path = null): string
+function resourcesPath(string|null $path = null): string
 {
     return Directory::resourcesPath($path);
 }
@@ -783,7 +783,7 @@ function resourcesPath(?string $path = null): string
  *
  * @return string
  */
-function storagePath(?string $path = null): string
+function storagePath(string|null $path = null): string
 {
     return Directory::storagePath($path);
 }
@@ -795,7 +795,7 @@ function storagePath(?string $path = null): string
  *
  * @return string
  */
-function frameworkStoragePath(?string $path = null): string
+function frameworkStoragePath(string|null $path = null): string
 {
     return Directory::frameworkStoragePath($path);
 }
@@ -807,7 +807,7 @@ function frameworkStoragePath(?string $path = null): string
  *
  * @return string
  */
-function cachePath(?string $path = null): string
+function cachePath(string|null $path = null): string
 {
     return Directory::cachePath($path);
 }
@@ -819,7 +819,7 @@ function cachePath(?string $path = null): string
  *
  * @return string
  */
-function testsPath(?string $path = null): string
+function testsPath(string|null $path = null): string
 {
     return Directory::testsPath($path);
 }
@@ -831,7 +831,7 @@ function testsPath(?string $path = null): string
  *
  * @return string
  */
-function vendorPath(?string $path = null): string
+function vendorPath(string|null $path = null): string
 {
     return Directory::vendorPath($path);
 }

@@ -48,7 +48,7 @@ class Message implements Contract
      *
      * @var array<array-key, mixed>|null
      */
-    protected ?array $data = null;
+    protected array|null $data = null;
 
     /**
      * @inheritDoc
@@ -89,7 +89,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function getData(): ?array
+    public function getData(): array|null
     {
         return $this->data;
     }
@@ -97,7 +97,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
-    public function setData(?array $data = null): static
+    public function setData(array|null $data = null): static
     {
         $this->data = $data;
 

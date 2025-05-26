@@ -36,7 +36,7 @@ class Component implements Contract
 
     public function __construct(
         protected string $token,
-        protected ?string $text = null
+        protected string|null $text = null
     ) {
     }
 
@@ -75,7 +75,7 @@ class Component implements Contract
     /**
      * @inheritDoc
      */
-    public function getText(): ?string
+    public function getText(): string|null
     {
         return $this->text ?? null;
     }
@@ -83,7 +83,7 @@ class Component implements Contract
     /**
      * @inheritDoc
      */
-    public function withText(?string $text = null): static
+    public function withText(string|null $text = null): static
     {
         $new = clone $this;
 

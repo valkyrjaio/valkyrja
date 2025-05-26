@@ -108,7 +108,7 @@ class PdoAdapter extends Adapter implements Contract
     /**
      * @inheritDoc
      */
-    public function lastInsertId(?string $table = null, ?string $idField = null): string
+    public function lastInsertId(string|null $table = null, string|null $idField = null): string
     {
         /** @var string|false $lastInsertId */
         $lastInsertId = $this->pdo->lastInsertId();

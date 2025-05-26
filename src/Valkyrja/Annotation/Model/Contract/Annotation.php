@@ -27,7 +27,7 @@ interface Annotation extends Dispatch
      *
      * @return string|null
      */
-    public function getType(): ?string;
+    public function getType(): string|null;
 
     /**
      * Set the type.
@@ -36,5 +36,5 @@ interface Annotation extends Dispatch
      *
      * @return static
      */
-    public function setType(?string $type = null): static;
+    public function setType(string|null $type = null): static;
 }

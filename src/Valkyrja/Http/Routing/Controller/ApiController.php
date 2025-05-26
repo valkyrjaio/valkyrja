@@ -48,11 +48,11 @@ abstract class ApiController
      */
     public function createApiJsonResponse(
         array $data = [],
-        ?string $message = null,
-        ?string $status = null,
-        ?StatusCode $statusCode = null,
-        ?array $errors = null,
-        ?array $warnings = null
+        string|null $message = null,
+        string|null $status = null,
+        StatusCode|null $statusCode = null,
+        array|null $errors = null,
+        array|null $warnings = null
     ): JsonResponse {
         $json = $this->api->jsonFromArray($data);
 
@@ -79,11 +79,11 @@ abstract class ApiController
      */
     public function getExceptionResponse(
         Throwable $exception,
-        ?string $message = null,
-        ?string $status = null,
-        ?StatusCode $statusCode = null,
-        ?array $errors = null,
-        ?array $warnings = null
+        string|null $message = null,
+        string|null $status = null,
+        StatusCode|null $statusCode = null,
+        array|null $errors = null,
+        array|null $warnings = null
     ): JsonResponse {
         return $this->createApiJsonResponse(
             [

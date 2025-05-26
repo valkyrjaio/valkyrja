@@ -31,7 +31,7 @@ interface Formatter
      *
      * @return void
      */
-    public function setForeground(?FormatForeground $foreground = null): void;
+    public function setForeground(FormatForeground|null $foreground = null): void;
 
     /**
      * Set the background.
@@ -40,7 +40,7 @@ interface Formatter
      *
      * @return void
      */
-    public function setBackground(?FormatBackground $background = null): void;
+    public function setBackground(FormatBackground|null $background = null): void;
 
     /**
      * Set foreground or background to black.
@@ -49,7 +49,7 @@ interface Formatter
      *
      * @return void
      */
-    public function black(?bool $background = null): void;
+    public function black(bool|null $background = null): void;
 
     /**
      * Set foreground or background to red.
@@ -58,7 +58,7 @@ interface Formatter
      *
      * @return void
      */
-    public function red(?bool $background = null): void;
+    public function red(bool|null $background = null): void;
 
     /**
      * Set foreground or background to green.
@@ -67,7 +67,7 @@ interface Formatter
      *
      * @return void
      */
-    public function green(?bool $background = null): void;
+    public function green(bool|null $background = null): void;
 
     /**
      * Set foreground or background to yellow.
@@ -76,7 +76,7 @@ interface Formatter
      *
      * @return void
      */
-    public function yellow(?bool $background = null): void;
+    public function yellow(bool|null $background = null): void;
 
     /**
      * Set foreground or background to blue.
@@ -85,7 +85,7 @@ interface Formatter
      *
      * @return void
      */
-    public function blue(?bool $background = null): void;
+    public function blue(bool|null $background = null): void;
 
     /**
      * Set foreground or background to magenta.
@@ -94,7 +94,7 @@ interface Formatter
      *
      * @return void
      */
-    public function magenta(?bool $background = null): void;
+    public function magenta(bool|null $background = null): void;
 
     /**
      * Set foreground or background to cyan.
@@ -103,7 +103,7 @@ interface Formatter
      *
      * @return void
      */
-    public function cyan(?bool $background = null): void;
+    public function cyan(bool|null $background = null): void;
 
     /**
      * Set foreground or background to white.
@@ -112,7 +112,7 @@ interface Formatter
      *
      * @return void
      */
-    public function white(?bool $background = null): void;
+    public function white(bool|null $background = null): void;
 
     /**
      * Set foreground or background to default.
@@ -121,7 +121,7 @@ interface Formatter
      *
      * @return void
      */
-    public function resetColor(?bool $background = null): void;
+    public function resetColor(bool|null $background = null): void;
 
     /**
      * Set an option.

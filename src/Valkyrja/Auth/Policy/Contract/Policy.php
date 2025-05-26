@@ -27,7 +27,7 @@ interface Policy
      *
      * @return bool|null
      */
-    public function before(string &$action): ?bool;
+    public function before(string &$action): bool|null;
 
     /**
      * After authorization check.
@@ -37,7 +37,7 @@ interface Policy
      *
      * @return bool|null
      */
-    public function after(bool $isAuthorized, string $action): ?bool;
+    public function after(bool $isAuthorized, string $action): bool|null;
 
     /**
      * Check if the authenticated user is authorized.

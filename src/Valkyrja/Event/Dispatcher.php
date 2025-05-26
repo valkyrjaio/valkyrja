@@ -47,7 +47,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
-    public function dispatchIfHasListeners(object $event): ?object
+    public function dispatchIfHasListeners(object $event): object|null
     {
         if ($this->collection->hasListenersForEvent($event)) {
             return $this->dispatch($event);
@@ -69,7 +69,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
-    public function dispatchByIdIfHasListeners(string $eventId, array $arguments = []): ?object
+    public function dispatchByIdIfHasListeners(string $eventId, array $arguments = []): object|null
     {
         if ($this->collection->hasListenersForEventById($eventId)) {
             return $this->dispatchById($eventId, $arguments);

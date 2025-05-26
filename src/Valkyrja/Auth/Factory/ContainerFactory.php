@@ -48,7 +48,7 @@ class ContainerFactory implements Contract
     /**
      * @inheritDoc
      */
-    public function createAdapter(string $name, Config|array $config): Adapter
+    public function createAdapter(string $name, Config $config): Adapter
     {
         return $this->container->get(
             $name,
@@ -62,7 +62,7 @@ class ContainerFactory implements Contract
     /**
      * @inheritDoc
      */
-    public function createRepository(Adapter $adapter, string $name, string $user, Config|array $config): Repository
+    public function createRepository(Adapter $adapter, string $name, string $user, Config $config): Repository
     {
         return $this->container->get(
             $name,

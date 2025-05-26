@@ -38,12 +38,11 @@ class ORMAdapter extends Adapter implements Contract
     /**
      * Adapter constructor.
      *
-     * @param Orm                         $orm    The orm
-     * @param Config|array<string, mixed> $config The config
+     * @param Orm $orm The orm
      */
     public function __construct(
         protected Orm $orm,
-        Config|array $config
+        Config $config
     ) {
         parent::__construct($config);
     }
@@ -69,7 +68,7 @@ class ORMAdapter extends Adapter implements Contract
     /**
      * @inheritDoc
      */
-    public function retrieve(User $user): ?User
+    public function retrieve(User $user): User|null
     {
         $loginFields = $user::getAuthenticationFields();
         $find        = $this->getUserRepository($user)->find();
@@ -101,7 +100,7 @@ class ORMAdapter extends Adapter implements Contract
     /**
      * @inheritDoc
      */
-    public function retrieveByResetToken(User $user, string $resetToken): ?User
+    public function retrieveByResetToken(User $user, string $resetToken): User|null
     {
         $resetTokenField = $user::getResetTokenField();
 

@@ -47,7 +47,7 @@ abstract class UuidV7 extends Uuid
      *
      * @return string
      */
-    public static function generate(?string $node = null): string
+    public static function generate(string|null $node = null): string
     {
         $uuid     = self::v1($node);
         $uuid     = str_replace('-', '', $uuid);

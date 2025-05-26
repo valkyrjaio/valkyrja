@@ -32,9 +32,9 @@ interface JsonResponse extends Response
      * @return static
      */
     public static function createFromData(
-        ?array $data = null,
-        ?StatusCode $statusCode = null,
-        ?array $headers = null
+        array|null $data = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
     ): static;
 
     /**

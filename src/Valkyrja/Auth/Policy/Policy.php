@@ -48,7 +48,7 @@ abstract class Policy implements Contract
     /**
      * @inheritDoc
      */
-    public function before(string &$action): ?bool
+    public function before(string &$action): bool|null
     {
         return null;
     }
@@ -56,7 +56,7 @@ abstract class Policy implements Contract
     /**
      * @inheritDoc
      */
-    public function after(bool $isAuthorized, string $action): ?bool
+    public function after(bool $isAuthorized, string $action): bool|null
     {
         return null;
     }

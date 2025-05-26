@@ -155,7 +155,7 @@ class Persister implements Contract
     /**
      * @inheritDoc
      */
-    public function clear(?Entity $entity = null): void
+    public function clear(Entity|null $entity = null): void
     {
         if ($entity === null) {
             $this->clearDeferred();

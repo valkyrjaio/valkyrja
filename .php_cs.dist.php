@@ -21,10 +21,10 @@ file that was distributed with this source code.
 EOF;
 
 $finder = PhpCsFixer\Finder::create()
-    ->exclude('.github')
-    ->exclude('docs')
-    ->exclude('vendor')
-    ->in(__DIR__);
+                           ->exclude('.github')
+                           ->exclude('docs')
+                           ->exclude('vendor')
+                           ->in(__DIR__);
 
 return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
@@ -126,6 +126,9 @@ return (new PhpCsFixer\Config())
             ],
             'multiline_whitespace_before_semicolons'   => [
                 'strategy' => 'no_multi_line',
+            ],
+            'nullable_type_declaration'                => [
+                'syntax' => 'union',
             ],
             'no_alias_functions'                       => [
                 'sets' => ['@all'],

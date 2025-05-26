@@ -37,14 +37,10 @@ class Api implements Contract
 {
     /**
      * Api constructor.
-     *
-     * @param ResponseFactory             $responseFactory
-     * @param Config|array<string, mixed> $config
-     * @param bool                        $debug           [optional]
      */
     public function __construct(
         protected ResponseFactory $responseFactory,
-        protected Config|array $config,
+        protected Config $config,
         protected bool $debug = false
     ) {
     }
@@ -211,8 +207,7 @@ class Api implements Contract
      */
     protected function getJsonModel(): Json
     {
-        /** @var class-string<Json> $jsonModel */
-        $jsonModel = $this->config['jsonModel'];
+        $jsonModel = $this->config->jsonModel;
 
         return new $jsonModel();
     }
@@ -224,8 +219,7 @@ class Api implements Contract
      */
     protected function getJsonDataModel(): JsonData
     {
-        /** @var class-string<JsonData> $jsonDataModel */
-        $jsonDataModel = $this->config['jsonDataModel'];
+        $jsonDataModel = $this->config->dataModel;
 
         return new $jsonDataModel();
     }

@@ -58,7 +58,7 @@ trait Castable
      * @param array<string, mixed>                          $properties  The properties to set
      * @param Closure(string, mixed, Cast|null): mixed|null $modifyValue [optional] The closure to modify the value before setting
      */
-    protected function internalSetProperties(array $properties, ?Closure $modifyValue = null): void
+    protected function internalSetProperties(array $properties, Closure|null $modifyValue = null): void
     {
         $castings = $this->internalGetCastings();
 
@@ -81,7 +81,7 @@ trait Castable
      *
      * @return mixed
      */
-    protected function internalCheckAndCastPropertyValue(?Cast $cast, mixed $value): mixed
+    protected function internalCheckAndCastPropertyValue(Cast|null $cast, mixed $value): mixed
     {
         // If there is no type specified or the value is null just return the value
         // cast assignment is set in the if specifically to avoid an assignment

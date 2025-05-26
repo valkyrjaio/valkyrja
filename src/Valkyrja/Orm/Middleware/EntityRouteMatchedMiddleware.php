@@ -107,7 +107,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
      *
      * @return Response|null
      */
-    protected function checkParameterForEntity(int $index, Parameter $parameter, array &$dependencies, array &$matches): ?Response
+    protected function checkParameterForEntity(int $index, Parameter $parameter, array &$dependencies, array &$matches): Response|null
     {
         $type = $parameter->getCast()->type ?? null;
 
@@ -141,7 +141,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
         string $entityName,
         array &$dependencies,
         Entity|string|int &$value
-    ): ?Response {
+    ): Response|null {
         if ($value instanceof Entity) {
             return null;
         }
@@ -186,7 +186,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
         Parameter $parameter,
         string $entityName,
         string|int $value
-    ): ?Entity {
+    ): Entity|null {
         $cast          = $parameter->getCast();
         $repository    = $this->orm->getRepository($entityName);
         $field         = null;
