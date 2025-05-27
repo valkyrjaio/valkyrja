@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Path\Provider;
 
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Path\Generator\Contract\Generator;
@@ -72,13 +72,12 @@ final class ServiceProvider extends Provider
      */
     public static function publishParser(Container $container): void
     {
-        /** @var array{path: \Valkyrja\Path\Config|array<string, mixed>, ...} $config */
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ValkyrjaDataConfig::class);
 
         $container->setSingleton(
             Parser::class,
             new \Valkyrja\Path\Parser\Parser(
-                $config['path']
+                $config->path
             )
         );
     }

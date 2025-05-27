@@ -20,7 +20,6 @@ use Valkyrja\Event\Config\Event;
 use Valkyrja\Http\Config\Http;
 use Valkyrja\Http\Routing\Config\Routing;
 use Valkyrja\Orm\Config\Orm;
-use Valkyrja\Path\Config\Path;
 
 use function Valkyrja\cachePath;
 
@@ -42,7 +41,6 @@ class Valkyrja extends Model
         $this->event   = new Event($properties['event'] ?? null, true);
         $this->http    = new Http($properties['http'] ?? null, true);
         $this->orm     = new Orm($properties['orm'] ?? null, true);
-        $this->path    = new Path($properties['path'] ?? null, true);
         $this->routing = new Routing($properties['routing'] ?? null, true);
 
         $this->providers     = [];

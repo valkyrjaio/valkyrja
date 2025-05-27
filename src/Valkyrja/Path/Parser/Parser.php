@@ -48,11 +48,9 @@ class Parser implements Contract
 
     /**
      * PathParser constructor.
-     *
-     * @param Config|array<string, mixed> $config
      */
     public function __construct(
-        protected Config|array $config
+        protected Config $config
     ) {
     }
 
@@ -250,7 +248,7 @@ class Parser implements Contract
      */
     protected function getParamReplacement(int $key, array $params): string
     {
-        return $this->config['patterns'][$params[2][$key]]
+        return $this->config->patterns[$params[2][$key]]
             ?? ('(' . ($params[2][$key] ?: $params[1][$key]) . ')');
     }
 

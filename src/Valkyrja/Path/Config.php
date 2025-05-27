@@ -13,30 +13,39 @@ declare(strict_types=1);
 
 namespace Valkyrja\Path;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Path\Constant\ConfigName;
+use Valkyrja\Path\Constant\ConfigValue;
+use Valkyrja\Path\Constant\EnvName;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::PATTERNS => EnvKey::PATH_PATTERNS,
+    protected static array $envNames = [
+        ConfigName::PATTERNS => EnvName::PATTERNS,
     ];
 
     /**
-     * The patterns.
-     *
-     * @var array<string, string>
+     * @param array<string, string> $patterns
      */
-    public array $patterns;
+    public function __construct(
+        public array $patterns = ConfigValue::PATTERNS,
+    ) {
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+    }
 }

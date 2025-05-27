@@ -39,7 +39,7 @@ use Valkyrja\Log\Config as Log;
 use Valkyrja\Mail\Config as Mail;
 use Valkyrja\Notification\DataConfig as Notification;
 use Valkyrja\Orm\DataConfig as Orm;
-use Valkyrja\Path\DataConfig as Path;
+use Valkyrja\Path\Config as Path;
 use Valkyrja\Session\Config as Session;
 use Valkyrja\Sms\Config as Sms;
 use Valkyrja\View\Config as View;

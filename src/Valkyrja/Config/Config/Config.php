@@ -24,7 +24,6 @@ use Valkyrja\Http\Config as Http;
 use Valkyrja\Http\Routing\Config as Routing;
 use Valkyrja\Notification\Config as Notification;
 use Valkyrja\Orm\Config as ORM;
-use Valkyrja\Path\Config as Path;
 
 /**
  * Class Config.
@@ -85,13 +84,6 @@ class Config extends Model
      * @var ORM
      */
     public ORM $orm;
-
-    /**
-     * The path module config.
-     *
-     * @var Path
-     */
-    public Path $path;
 
     /**
      * The routing module config.
