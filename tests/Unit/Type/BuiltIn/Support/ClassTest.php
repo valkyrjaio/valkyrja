@@ -91,13 +91,13 @@ class ClassTest extends TestCase
         $container->setCallable(
             ModelContract::class,
             /** @param class-string<ModelContract> $name */
-            static fn (string $name, mixed ...$args): ModelContract => $name::fromArray($args)
+            static fn (Container $container, string $name, mixed ...$args): ModelContract => $name::fromArray($args)
         );
         $container->setCallable(
             ModelClass::class,
             // Setting protected here and not in the ModelContract closure to ensure we're getting this closure back
             // and not the defaultClass specified service
-            static fn (mixed ...$args): ModelClass => ModelClass::fromArray([...['protected' => $protectedValue], ...$args])
+            static fn (Container $container, mixed ...$args): ModelClass => ModelClass::fromArray([...['protected' => $protectedValue], ...$args])
         );
 
         $object = Helper::getDefaultableService(

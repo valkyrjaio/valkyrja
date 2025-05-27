@@ -142,12 +142,7 @@ final class ServiceProvider extends Provider
     public static function createPsrAdapter(Container $container, PsrConfiguration $config): PsrAdapter
     {
         return new PsrAdapter(
-            $container->get(
-                LoggerInterface::class,
-                [
-                    $config,
-                ]
-            ),
+            $container->get(LoggerInterface::class, [$config]),
             $config
         );
     }
@@ -191,7 +186,7 @@ final class ServiceProvider extends Provider
     /**
      * Create the logger interface.
      */
-    public static function createLoggerInterface(PsrConfiguration $config): LoggerInterface
+    public static function createLoggerInterface(Container $container, PsrConfiguration $config): LoggerInterface
     {
         $filePath  = $config->filePath;
         $name      = $config->name . date('-Y-m-d');

@@ -394,7 +394,7 @@ class Container implements Contract
     {
         $closure = $this->callables[$id];
 
-        return $closure(...$arguments);
+        return $closure($this, ...$arguments);
     }
 
     /**

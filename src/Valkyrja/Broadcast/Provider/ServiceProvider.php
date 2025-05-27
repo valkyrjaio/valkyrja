@@ -232,7 +232,7 @@ final class ServiceProvider extends Provider
      *
      * @throws PusherException
      */
-    public static function createPusher(PusherConfiguration $config): Pusher
+    public static function createPusher(Container $container, PusherConfiguration $config): Pusher
     {
         return new Pusher(
             $config->key,

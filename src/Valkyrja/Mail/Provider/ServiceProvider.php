@@ -282,7 +282,7 @@ final class ServiceProvider extends Provider
     /**
      * Create a mailgun service.
      */
-    public static function createMailgun(MailgunConfiguration $config): Mailgun
+    public static function createMailgun(Container $container, MailgunConfiguration $config): Mailgun
     {
         $httpClientConfigurator = (new HttpClientConfigurator())
             ->setApiKey($config->apiKey)

@@ -19,10 +19,10 @@ use Twig\Loader\FilesystemLoader;
 use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\View\Config\OrkaConfiguration;
 use Valkyrja\View\Config\PhpConfiguration;
+use Valkyrja\View\Config\TwigConfiguration;
 use Valkyrja\View\Contract\View;
 use Valkyrja\View\Engine\Contract\Engine;
 use Valkyrja\View\Engine\OrkaEngine;
@@ -116,7 +116,7 @@ final class ServiceProvider extends Provider
     /**
      * Create a template.
      */
-    public static function createTemplate(Engine $engine): Template
+    public static function createTemplate(Container $container, Engine $engine): Template
     {
         return new \Valkyrja\View\Template\Template($engine);
     }
@@ -135,7 +135,7 @@ final class ServiceProvider extends Provider
     /**
      * Create a Php engine.
      */
-    public static function createPhpEngine(PhpConfiguration $config): PhpEngine
+    public static function createPhpEngine(Container $container, PhpConfiguration $config): PhpEngine
     {
         return new PhpEngine($config);
     }
@@ -154,7 +154,7 @@ final class ServiceProvider extends Provider
     /**
      * Create an Orka engine.
      */
-    public static function createOrkaEngine(OrkaConfiguration $config): OrkaEngine
+    public static function createOrkaEngine(Container $container, OrkaConfiguration $config): OrkaEngine
     {
         return new OrkaEngine($config);
     }
@@ -164,11 +164,19 @@ final class ServiceProvider extends Provider
      */
     public static function publishTwigEngine(Container $container): void
     {
-        $container->setSingleton(
+        $container->setCallable(
             TwigEngine::class,
-            new TwigEngine(
-                $container->getSingleton(Environment::class)
-            )
+            [self::class, 'createTwigEngine']
+        );
+    }
+
+    /**
+     * Create a Twig engine.
+     */
+    public static function createTwigEngine(Container $container, TwigConfiguration $config): TwigEngine
+    {
+        return new TwigEngine(
+            $container->get(Environment::class, [$config])
         );
     }
 
@@ -188,18 +196,28 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the Twig environment service.
-     *
-     * @throws LoaderError
      */
     public static function publishTwigEnvironment(Container $container): void
     {
-        $config      = $container->getSingleton(ValkyrjaDataConfig::class);
-        $debug       = $config->app->debug;
-        $twigConfig  = $config->view->configurations->twig
-            ?? throw new RuntimeException('Twig configuration missing');
-        $paths       = $twigConfig->paths;
-        $extensions  = $twigConfig->extensions;
-        $compiledDir = $twigConfig->compiledDir;
+        // Set the twig environment as a singleton in the container
+        $container->setCallable(
+            Environment::class,
+            [self::class, 'createTwigEnvironment']
+        );
+    }
+
+    /**
+     * Create a Twig environment.
+     *
+     * @throws LoaderError
+     */
+    public static function createTwigEnvironment(Container $container, TwigConfiguration $config): Environment
+    {
+        $globalConfig = $container->getSingleton(ValkyrjaDataConfig::class);
+        $debug        = $globalConfig->app->debug;
+        $paths        = $config->paths;
+        $extensions   = $config->extensions;
+        $compiledDir  = $config->compiledDir;
 
         // Get the twig filesystem loader
         $loader = new FilesystemLoader();
@@ -225,10 +243,6 @@ final class ServiceProvider extends Provider
             $twig->addExtension(new $extension());
         }
 
-        // Set the twig environment as a singleton in the container
-        $container->setSingleton(
-            Environment::class,
-            $twig
-        );
+        return $twig;
     }
 }

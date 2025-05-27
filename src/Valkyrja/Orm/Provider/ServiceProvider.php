@@ -153,7 +153,7 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             Driver::class,
-            [static::class, 'createDriver']
+            [self::class, 'createDriver']
         );
     }
 
@@ -166,7 +166,7 @@ final class ServiceProvider extends Provider
      *
      * @return Driver
      */
-    public static function createDriver(string $name, Adapter $adapter, array $config): Driver
+    public static function createDriver(Container $container, string $name, Adapter $adapter, array $config): Driver
     {
         return new $name(
             $adapter,
@@ -176,27 +176,20 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishAdapter(Container $container): void
     {
         $container->setCallable(
             Adapter::class,
-            [static::class, 'createAdapter']
+            [self::class, 'createAdapter']
         );
     }
 
     /**
      * Create an adapter.
      *
-     * @param Container             $container
      * @param class-string<Adapter> $name
      * @param array<string, mixed>  $config
-     *
-     * @return Adapter
      */
     public static function createAdapter(Container $container, string $name, array $config): Adapter
     {
@@ -210,27 +203,20 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the PDO adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishPdoAdapter(Container $container): void
     {
         $container->setCallable(
             PdoAdapter::class,
-            [static::class, 'createPdoAdapter']
+            [self::class, 'createPdoAdapter']
         );
     }
 
     /**
      * Create a PDO adapter.
      *
-     * @param Container                                    $container
      * @param class-string<PdoAdapter>                     $name
      * @param array{config: array{pdo?: string, ...}, ...} $config
-     *
-     * @return PdoAdapter
      */
     public static function createPdoAdapter(Container $container, string $name, array $config): PdoAdapter
     {
@@ -254,16 +240,12 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the PDO service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishPdo(Container $container): void
     {
         $container->setCallable(
             Pdo::class,
-            [static::class, 'createPdo']
+            [self::class, 'createPdo']
         );
     }
 
@@ -272,8 +254,6 @@ final class ServiceProvider extends Provider
      *
      * @param class-string<Pdo>    $name
      * @param array<string, mixed> $config
-     *
-     * @return Pdo
      */
     public static function createPdo(string $name, array $config): Pdo
     {
@@ -292,25 +272,19 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the repository service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishRepository(Container $container): void
     {
         $container->setCallable(
             Repository::class,
-            [static::class, 'createRepository']
+            [self::class, 'createRepository']
         );
     }
 
     /**
      * Create a repository.
      *
-     * @param Container                $container
      * @param class-string<Repository> $name
-     * @param Driver                   $driver
      * @param class-string<Entity>     $entity
      *
      * @return Repository<Entity>
@@ -329,23 +303,17 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the cache repository service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishCacheRepository(Container $container): void
     {
         $container->setCallable(
             CacheRepository::class,
-            [static::class, 'createCacheRepository']
+            [self::class, 'createCacheRepository']
         );
     }
 
     /**
-     * @param Container                     $container
      * @param class-string<CacheRepository> $name
-     * @param Driver                        $driver
      * @param class-string<Entity>          $entity
      *
      * @return CacheRepository<Entity>
@@ -366,16 +334,12 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the persister service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishPersister(Container $container): void
     {
         $container->setCallable(
             Persister::class,
-            [static::class, 'createPersister']
+            [self::class, 'createPersister']
         );
     }
 
@@ -383,11 +347,10 @@ final class ServiceProvider extends Provider
      * Create a persister.
      *
      * @param class-string<Persister> $name
-     * @param Adapter                 $adapter
      *
      * @return Persister<Entity>
      */
-    public static function createPersister(string $name, Adapter $adapter): Persister
+    public static function createPersister(Container $container, string $name, Adapter $adapter): Persister
     {
         return new $name(
             $adapter
@@ -396,24 +359,17 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the retriever service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishRetriever(Container $container): void
     {
         $container->setCallable(
             Retriever::class,
-            [static::class, 'createRetriever']
+            [self::class, 'createRetriever']
         );
     }
 
     /**
      * Create a retriever.
-     *
-     * @param Container $container
-     * @param Adapter   $adapter
      *
      * @return Retriever<Entity>
      */
@@ -426,24 +382,17 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the retriever service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishLocalCacheRetriever(Container $container): void
     {
         $container->setCallable(
             LocalCacheRetriever::class,
-            [static::class, 'createLocalCacheRetriever']
+            [self::class, 'createLocalCacheRetriever']
         );
     }
 
     /**
      * Create a local cache retriever.
-     *
-     * @param Container $container
-     * @param Adapter   $adapter
      *
      * @return LocalCacheRetriever<Entity>
      */
@@ -456,16 +405,12 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the query service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishQuery(Container $container): void
     {
         $container->setCallable(
             Query::class,
-            [static::class, 'createQuery']
+            [self::class, 'createQuery']
         );
     }
 
@@ -473,11 +418,8 @@ final class ServiceProvider extends Provider
      * Create a query.
      *
      * @param class-string<Query> $name
-     * @param Adapter             $adapter
-     *
-     * @return Query
      */
-    public static function createQuery(string $name, Adapter $adapter): Query
+    public static function createQuery(Container $container, string $name, Adapter $adapter): Query
     {
         return new $name(
             $adapter
@@ -486,16 +428,12 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the query builder service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishQueryBuilder(Container $container): void
     {
         $container->setCallable(
             QueryBuilder::class,
-            [static::class, 'createQueryBuilder']
+            [self::class, 'createQueryBuilder']
         );
     }
 
@@ -503,11 +441,8 @@ final class ServiceProvider extends Provider
      * Create a query builder.
      *
      * @param class-string<QueryBuilder> $name
-     * @param Adapter                    $adapter
-     *
-     * @return QueryBuilder
      */
-    public static function createQueryBuilder(string $name, Adapter $adapter): QueryBuilder
+    public static function createQueryBuilder(Container $container, string $name, Adapter $adapter): QueryBuilder
     {
         return new $name(
             $adapter
@@ -516,16 +451,12 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the delete query builder service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishDeleteQueryBuilder(Container $container): void
     {
         $container->setCallable(
             DeleteQueryBuilder::class,
-            [static::class, 'createDeleteQueryBuilder']
+            [self::class, 'createDeleteQueryBuilder']
         );
     }
 
@@ -533,11 +464,8 @@ final class ServiceProvider extends Provider
      * Create a delete query builder.
      *
      * @param class-string<DeleteQueryBuilder> $name
-     * @param Adapter                          $adapter
-     *
-     * @return DeleteQueryBuilder
      */
-    public static function createDeleteQueryBuilder(string $name, Adapter $adapter): DeleteQueryBuilder
+    public static function createDeleteQueryBuilder(Container $container, string $name, Adapter $adapter): DeleteQueryBuilder
     {
         return new $name(
             $adapter
@@ -546,16 +474,12 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the insert query builder service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishInsertQueryBuilder(Container $container): void
     {
         $container->setCallable(
             InsertQueryBuilder::class,
-            [static::class, 'createInsertQueryBuilder']
+            [self::class, 'createInsertQueryBuilder']
         );
     }
 
@@ -563,11 +487,8 @@ final class ServiceProvider extends Provider
      * Create an insert query builder.
      *
      * @param class-string<InsertQueryBuilder> $name
-     * @param Adapter                          $adapter
-     *
-     * @return InsertQueryBuilder
      */
-    public static function createInsertQueryBuilder(string $name, Adapter $adapter): InsertQueryBuilder
+    public static function createInsertQueryBuilder(Container $container, string $name, Adapter $adapter): InsertQueryBuilder
     {
         return new $name(
             $adapter
@@ -576,23 +497,19 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the select query builder service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishSelectQueryBuilder(Container $container): void
     {
         $container->setCallable(
             SelectQueryBuilder::class,
-            [static::class, 'createSelectQueryBuilder']
+            [self::class, 'createSelectQueryBuilder']
         );
     }
 
     /**
      * @param class-string<SelectQueryBuilder> $name
      */
-    public static function createSelectQueryBuilder(string $name, Adapter $adapter): SelectQueryBuilder
+    public static function createSelectQueryBuilder(Container $container, string $name, Adapter $adapter): SelectQueryBuilder
     {
         return new $name(
             $adapter
@@ -601,16 +518,12 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the update query builder service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishUpdateQueryBuilder(Container $container): void
     {
         $container->setCallable(
             UpdateQueryBuilder::class,
-            [static::class, 'createUpdateQueryBuilder']
+            [self::class, 'createUpdateQueryBuilder']
         );
     }
 
@@ -618,11 +531,8 @@ final class ServiceProvider extends Provider
      * Create an update query builder.
      *
      * @param class-string<UpdateQueryBuilder> $name
-     * @param Adapter                          $adapter
-     *
-     * @return UpdateQueryBuilder
      */
-    public static function createUpdateQueryBuilder(string $name, Adapter $adapter): UpdateQueryBuilder
+    public static function createUpdateQueryBuilder(Container $container, string $name, Adapter $adapter): UpdateQueryBuilder
     {
         return new $name(
             $adapter
@@ -640,7 +550,7 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             Statement::class,
-            [static::class, 'createStatement']
+            [self::class, 'createStatement']
         );
     }
 
@@ -648,39 +558,29 @@ final class ServiceProvider extends Provider
      * Create a statement service.
      *
      * @param class-string<Statement> $name
-     * @param Adapter                 $adapter
      * @param array<string, mixed>    $data
-     *
-     * @return Statement
      */
-    public static function createStatement(string $name, Adapter $adapter, array $data = []): Statement
+    public static function createStatement(Container $container, string $name, Adapter $adapter, array $data = []): Statement
     {
         return new $name(...$data);
     }
 
     /**
      * Publish the migration service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishMigration(Container $container): void
     {
         $container->setCallable(
             Migration::class,
-            [static::class, 'createMigration']
+            [self::class, 'createMigration']
         );
     }
 
     /**
      * Create a migration.
      *
-     * @param Container               $container
      * @param class-string<Migration> $name
      * @param array<string, mixed>    $data
-     *
-     * @return Migration
      */
     public static function createMigration(Container $container, string $name, array $data = []): Migration
     {
@@ -691,10 +591,6 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the EntityRouteMatchedMiddleware service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishEntityRouteMatchedMiddleware(Container $container): void
     {

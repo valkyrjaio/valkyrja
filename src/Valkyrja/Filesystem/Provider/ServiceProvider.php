@@ -156,12 +156,7 @@ final class ServiceProvider extends Provider
     {
         return new FlysystemAdapter(
             new Flysystem(
-                $container->get(
-                    $config->flysystemAdapter,
-                    [
-                        $config,
-                    ]
-                )
+                $container->get($config->flysystemAdapter, [$config])
             )
         );
     }
@@ -180,7 +175,7 @@ final class ServiceProvider extends Provider
     /**
      * Create the flysystem local adapter.
      */
-    public static function createFlysystemLocalAdapter(LocalFlysystemConfiguration $config): FlysystemLocalAdapter
+    public static function createFlysystemLocalAdapter(Container $container, LocalFlysystemConfiguration $config): FlysystemLocalAdapter
     {
         return new FlysystemLocalAdapter(
             $config->dir
@@ -201,7 +196,7 @@ final class ServiceProvider extends Provider
     /**
      * Create the flysystem s3 adapter.
      */
-    public static function createFlysystemAwsS3Adapter(S3FlysystemConfiguration $config): FlysystemAwsS3Adapter
+    public static function createFlysystemAwsS3Adapter(Container $container, S3FlysystemConfiguration $config): FlysystemAwsS3Adapter
     {
         $clientConfig = [
             'credentials' => [
