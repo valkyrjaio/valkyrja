@@ -18,6 +18,7 @@ use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config as ConfigModel;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Config\Config\ValkyrjaDataConfig;
+use Valkyrja\Config\Support\DataProvider;
 use Valkyrja\Console\Kernel\Contract\Kernel as ConsoleKernel;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
@@ -27,6 +28,7 @@ use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Support\Directory;
 use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\BuiltIn\Support\Obj;
 
 use function assert;
 use function constant;
@@ -53,9 +55,9 @@ class Valkyrja implements Application
     /**
      * Application env.
      *
-     * @var class-string<Env>|null
+     * @var class-string<Env>
      */
-    protected static string|null $env = null;
+    protected static string $env;
 
     /**
      * Application config.
@@ -110,19 +112,9 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public static function env(string|null $key = null, $default = null): mixed
+    public static function getEnvValue(string $key, mixed $default = null): mixed
     {
         $env = self::$env;
-
-        if ($env === null) {
-            return $default;
-        }
-
-        // If there was no variable requested
-        if ($key === null) {
-            // Return the env class
-            return $env;
-        }
 
         // If the env has this variable defined and the variable isn't null
         if (defined($env . '::' . $key)) {
@@ -137,8 +129,10 @@ class Valkyrja implements Application
 
     /**
      * @inheritDoc
+     *
+     * @return class-string<Env>
      */
-    public static function getEnv(): string|null
+    public static function getEnv(): string
     {
         return self::$env;
     }
@@ -217,15 +211,17 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function dataConfig(string|null $key = null, mixed $default = null): mixed
+    public function getDataConfig(): ValkyrjaDataConfig
     {
-        // If no key was specified
-        if ($key === null) {
-            // Return all the entire config
-            return self::$dataConfig;
-        }
+        return self::$dataConfig;
+    }
 
-        return Arr::getValueDotNotation(self::$dataConfig, $key, $default);
+    /**
+     * @inheritDoc
+     */
+    public function getDataConfigValue(string $key, mixed $default = null): mixed
+    {
+        return Obj::getValueDotNotation(self::$dataConfig, $key, $default);
     }
 
     /**
@@ -290,7 +286,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function debug(): bool
+    public function getDebugMode(): bool
     {
         return self::$dataConfig->app->debug;
     }
@@ -298,7 +294,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function environment(): string
+    public function getEnvironment(): string
     {
         return self::$dataConfig->app->env;
     }
@@ -306,7 +302,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function version(): string
+    public function getVersion(): string
     {
         return static::VERSION;
     }
@@ -326,21 +322,33 @@ class Valkyrja implements Application
 
         // If we should use the config cache file
         if (is_file($cacheFilePath)) {
+            self::$dataConfig = new ValkyrjaDataConfig(env: self::getEnv());
             // Get the config from the cache file's contents
             $this->setupFromCacheFile($cacheFilePath);
+
+            return;
+        }
+
+        // Get the cache file
+        $cacheFilePath = $this->getConfigCacheFilePath();
+
+        // If we should use the config cache file
+        if (is_file($cacheFilePath)) {
+            self::$config = new Config(null, true);
+            // Get the config from the cache file's contents
             $this->setupFromDataConfigCacheFile($cacheFilePath);
 
             return;
         }
 
-        $config     ??= self::env('CONFIG_CLASS', Config::class);
-        $dataConfig ??= self::env('DATA_CONFIG_CLASS', ValkyrjaDataConfig::class);
+        $config     ??= self::getEnvValue('CONFIG_CLASS', Config::class);
+        $dataConfig ??= self::getEnvValue('DATA_CONFIG_CLASS', ValkyrjaDataConfig::class);
 
         assert(is_string($config) && is_a($config, Config::class, true));
         assert(is_string($dataConfig) && is_a($dataConfig, ValkyrjaDataConfig::class, true));
 
         self::$config     = $newConfig = new $config(null, true);
-        self::$dataConfig = $newDataConfig = new $dataConfig(env: self::env());
+        self::$dataConfig = $newDataConfig = new $dataConfig(env: self::getEnv());
 
         $this->withConfig($newConfig);
         $this->withDataConfig($newDataConfig);
@@ -353,10 +361,26 @@ class Valkyrja implements Application
      */
     protected function getCacheFilePath(): string
     {
-        $cacheFilePath = self::env('CONFIG_CACHE_FILE_PATH', Directory::cachePath('config.php'));
+        $cacheFilePath = self::getEnvValue('CONFIG_CACHE_FILE_PATH', Directory::cachePath('config.php'));
 
         if (! is_string($cacheFilePath)) {
             throw new InvalidArgumentException('Cache file path should be a string');
+        }
+
+        return $cacheFilePath;
+    }
+
+    /**
+     * Get cache file path.
+     *
+     * @return string
+     */
+    protected function getConfigCacheFilePath(): string
+    {
+        $cacheFilePath = self::getEnvValue('CONFIG_CACHE_FILE_PATH', Directory::cachePath('data-config.php'));
+
+        if (! is_string($cacheFilePath)) {
+            throw new InvalidArgumentException('Config cache file path should be a string');
         }
 
         return $cacheFilePath;
@@ -462,6 +486,7 @@ class Valkyrja implements Application
     {
         $config = self::$dataConfig;
 
+        /** @var class-string<DataProvider> $provider */
         foreach ($config->config->providers as $provider) {
             // Config providers are NOT deferred
             $provider::publish($config);

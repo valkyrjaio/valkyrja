@@ -16,6 +16,7 @@ namespace Valkyrja\Jwt\Adapter\Firebase;
 use OpenSSLAsymmetricKey;
 use RuntimeException;
 use Valkyrja\Jwt\Adapter\FirebaseAdapter;
+use Valkyrja\Jwt\Config\RsConfiguration;
 use Valkyrja\Jwt\Support\KeyGen;
 
 use function is_string;
@@ -24,25 +25,35 @@ use function is_string;
  * Class RsAdapter.
  *
  * @author Melech Mizrachi
+ *
+ * @property RsConfiguration $config
  */
 class RsAdapter extends FirebaseAdapter
 {
+    /**
+     * RsAdapter constructor.
+     */
+    public function __construct(RsConfiguration $config)
+    {
+        parent::__construct($config);
+    }
+
     /**
      * @inheritDoc
      */
     protected function setEncodeKey(): void
     {
-        $encodeKey = $this->config['privateKey'] ?? null;
+        $encodeKey = $this->config->privateKey;
 
-        if ($encodeKey === null) {
-            $keyPath    = $this->config['keyPath'] ?? null;
-            $passphrase = $this->config['passphrase'] ?? null;
+        if ($encodeKey === '') {
+            $keyPath    = $this->config->keyPath;
+            $passphrase = $this->config->passphrase;
 
-            if (! is_string($keyPath)) {
+            if ($keyPath === '') {
                 throw new RuntimeException('Invalid key path provided');
             }
 
-            if (! is_string($passphrase)) {
+            if ($passphrase === '') {
                 throw new RuntimeException('Invalid passphrase provided');
             }
 

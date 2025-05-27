@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Adapter\Contract;
 
 use Valkyrja\Cache\Tagger\Contract\Tagger;
-use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 
 /**
  * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-interface Adapter extends Contract
+interface Adapter
 {
     /**
      * Determine if an item exists in the cache.

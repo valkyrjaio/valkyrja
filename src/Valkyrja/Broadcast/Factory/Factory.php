@@ -14,59 +14,61 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast\Factory;
 
 use Valkyrja\Broadcast\Adapter\Contract\Adapter;
+use Valkyrja\Broadcast\Config\Configuration;
+use Valkyrja\Broadcast\Config\MessageConfiguration;
 use Valkyrja\Broadcast\Driver\Contract\Driver;
 use Valkyrja\Broadcast\Factory\Contract\Factory as Contract;
 use Valkyrja\Broadcast\Message\Contract\Message;
-use Valkyrja\Manager\Factory\MessageFactory;
 
 /**
  * Class Factory.
  *
  * @author Melech Mizrachi
- *
- * @extends MessageFactory<Adapter, Driver, Message>
  */
-class Factory extends MessageFactory implements Contract
+class Factory implements Contract
 {
     /**
      * @inheritDoc
+     *
+     * @template Driver of Driver
      *
      * @param class-string<Driver>  $name    The driver
      * @param class-string<Adapter> $adapter The adapter
      *
      * @return Driver
      */
-    public function createDriver(string $name, string $adapter, array $config): Driver
+    public function createDriver(string $name, string $adapter, Configuration $config): Driver
     {
-        /** @var Driver $driver */
-        $driver = parent::createDriver($name, $adapter, $config);
-
-        return $driver;
+        return new $name(
+            $this->createAdapter($adapter, $config)
+        );
     }
 
     /**
      * @inheritDoc
+     *
+     * @template Adapter of Adapter
      *
      * @param class-string<Adapter> $name The adapter
      *
      * @return Adapter
      */
-    public function createAdapter(string $name, array $config): Adapter
+    public function createAdapter(string $name, Configuration $config): Adapter
     {
-        /** @var Adapter $adapter */
-        $adapter = parent::createAdapter($name, $config);
-
-        return $adapter;
+        return new $name($config);
     }
 
     /**
      * @inheritDoc
+     *
+     * @template Message of Message
+     *
+     * @param class-string<Message> $name The message
+     *
+     * @return Message
      */
-    public function createMessage(string $name, array $config, array $data = []): Message
+    public function createMessage(string $name, MessageConfiguration $config, array $data = []): Message
     {
-        /** @var Message $message */
-        $message = parent::createMessage($name, $config, $data);
-
-        return $message;
+        return new $name($data);
     }
 }

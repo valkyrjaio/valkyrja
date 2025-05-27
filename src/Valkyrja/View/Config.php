@@ -13,75 +13,53 @@ declare(strict_types=1);
 
 namespace Valkyrja\View;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\View\Config\Configurations;
+use Valkyrja\View\Config\OrkaConfiguration;
+use Valkyrja\View\Config\PhpConfiguration;
+use Valkyrja\View\Config\TwigConfiguration;
+use Valkyrja\View\Constant\ConfigName;
+use Valkyrja\View\Constant\EnvName;
+
+use function array_key_first;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::DIR     => EnvKey::VIEW_DIR,
-        CKP::ENGINE  => EnvKey::VIEW_ENGINE,
-        CKP::ENGINES => EnvKey::VIEW_ENGINES,
-        CKP::PATHS   => EnvKey::VIEW_PATHS,
-        CKP::DISKS   => EnvKey::VIEW_DISKS,
+    protected static array $envNames = [
+        ConfigName::DEFAULT_CONFIGURATION => EnvName::DEFAULT_CONFIGURATION,
     ];
 
-    /**
-     * The dir.
-     *
-     * @var string
-     */
-    public string $dir;
+    public function __construct(
+        public string $defaultConfiguration = '',
+        public Configurations|null $configurations = null,
+    ) {
+    }
 
     /**
-     * The default engine.
-     *
-     * @var string
+     * @inheritDoc
      */
-    public string $engine;
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+        if ($this->configurations === null) {
+            $this->configurations = new Configurations(
+                orka: OrkaConfiguration::fromEnv($env),
+                php: PhpConfiguration::fromEnv($env),
+                twig: TwigConfiguration::fromEnv($env),
+            );
+        }
 
-    /**
-     * The engines.
-     *
-     * @var array<string, class-string>
-     */
-    public array $engines;
-
-    /**
-     * The paths.
-     *
-     * @example
-     * <code>
-     *      [
-     *         '@path' => '/some/path/on/disk',
-     *      ]
-     * </code>
-     * Then we can do:
-     * <code>
-     *      view('@path/template');
-     *      $view->layout('@path/layout');
-     *      $view->partial('@path/partials/partial');
-     * </code>
-     *
-     * @var array<string, string>
-     */
-    public array $paths;
-
-    /**
-     * The disks.
-     *
-     * @var array<string, array<string, mixed>>
-     */
-    public array $disks;
+        if ($this->defaultConfiguration === '') {
+            $this->defaultConfiguration = array_key_first((array) $this->configurations);
+        }
+    }
 }

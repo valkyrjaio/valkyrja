@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Message\Contract;
 
-use Valkyrja\Manager\Message\Contract\Message as Contract;
-
 /**
  * Interface Message.
  *
  * @author Melech Mizrachi
  */
-interface Message extends Contract
+interface Message
 {
     /**
      * Get the from email.

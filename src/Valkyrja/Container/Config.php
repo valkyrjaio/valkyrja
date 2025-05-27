@@ -13,139 +13,74 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Config\DataConfig as ParentConfig;
 use Valkyrja\Container\Config\Cache;
+use Valkyrja\Container\Constant\ConfigName;
+use Valkyrja\Container\Constant\ConfigValue;
+use Valkyrja\Container\Constant\EnvName;
+use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Support\Provider;
-
-use function is_array;
+use Valkyrja\Support\Directory;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
- *
- * @psalm-import-type CacheAsArray from Cache
- *
- * @phpstan-import-type CacheAsArray from Cache
- *
- * @psalm-type ConfigAsArray array{aliases: class-string[], services: class-string[], contextServices: class-string[], providers: class-string<Provider>[], devProviders: class-string<Provider>[], useAnnotations: bool, useAttributes: bool, filePath: string, cacheFilePath: string, useCache: bool, cache: Cache|CacheAsArray|null}
- *
- * @phpstan-type ConfigAsArray array{aliases: class-string[], services: class-string[], contextServices: class-string[], providers: class-string<Provider>[], devProviders: class-string<Provider>[], useAnnotations: bool, useAttributes: bool, filePath: string, cacheFilePath: string, useCache: bool, cache: Cache|CacheAsArray|null}
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::ALIASES          => EnvKey::CONTAINER_ALIASES,
-        CKP::SERVICES         => EnvKey::CONTAINER_SERVICES,
-        CKP::CONTEXT_SERVICES => EnvKey::CONTAINER_CONTEXT_SERVICES,
-        CKP::PROVIDERS        => EnvKey::CONTAINER_PROVIDERS,
-        CKP::DEV_PROVIDERS    => EnvKey::CONTAINER_DEV_PROVIDERS,
-        CKP::USE_ANNOTATIONS  => EnvKey::CONTAINER_USE_ANNOTATIONS,
-        CKP::USE_ATTRIBUTES   => EnvKey::CONTAINER_USE_ATTRIBUTES,
-        CKP::FILE_PATH        => EnvKey::CONTAINER_FILE_PATH,
-        CKP::CACHE_FILE_PATH  => EnvKey::CONTAINER_CACHE_FILE_PATH,
-        CKP::USE_CACHE        => EnvKey::CONTAINER_USE_CACHE_FILE,
+    protected static array $envNames = [
+        ConfigName::ALIASES          => EnvName::ALIASES,
+        ConfigName::SERVICES         => EnvName::SERVICES,
+        ConfigName::CONTEXT_SERVICES => EnvName::CONTEXT_SERVICES,
+        ConfigName::PROVIDERS        => EnvName::PROVIDERS,
+        ConfigName::DEV_PROVIDERS    => EnvName::DEV_PROVIDERS,
+        ConfigName::USE_ATTRIBUTES   => EnvName::USE_ATTRIBUTES,
+        ConfigName::FILE_PATH        => EnvName::FILE_PATH,
+        ConfigName::CACHE_FILE_PATH  => EnvName::CACHE_FILE_PATH,
+        ConfigName::USE_CACHE        => EnvName::USE_CACHE,
     ];
 
     /**
-     * The annotated service aliases.
-     *
-     * @var class-string[]
+     * @param class-string[]           $aliases
+     * @param class-string<Service>[]  $services
+     * @param class-string<Service>[]  $contextServices
+     * @param class-string<Provider>[] $providers
+     * @param class-string<Provider>[] $devProviders
      */
-    public array $aliases;
+    public function __construct(
+        public array $aliases = [],
+        public array $services = [],
+        public array $contextServices = [],
+        public array $providers = [],
+        public array $devProviders = [],
+        public bool $useAttributes = true,
+        public string $filePath = '',
+        public string $cacheFilePath = '',
+        public bool $useCache = false,
+        public Cache|null $cache = null,
+    ) {
+    }
 
     /**
-     * The annotated services.
-     *
-     * @var class-string[]
+     * @inheritDoc
      */
-    public array $services;
-
-    /**
-     * The annotated context services.
-     *
-     * @var class-string[]
-     */
-    public array $contextServices;
-
-    /**
-     * The command providers.
-     *
-     * @var class-string<Provider>[]
-     */
-    public array $providers;
-
-    /**
-     * The dev command providers.
-     *
-     * @var class-string<Provider>[]
-     */
-    public array $devProviders;
-
-    /**
-     * The flag to enable annotations.
-     *
-     * @var bool
-     */
-    public bool $useAnnotations;
-
-    /**
-     * The flag to enable attributes.
-     *
-     * @var bool
-     */
-    public bool $useAttributes;
-
-    /**
-     * The cache from a Cacheable::getCacheable().
-     *
-     * @var Cache|null
-     */
-    public Cache|null $cache = null;
-
-    /**
-     * The file path.
-     *
-     * @var string
-     */
-    public string $filePath;
-
-    /**
-     * The cache file path.
-     *
-     * @var string
-     */
-    public string $cacheFilePath;
-
-    /**
-     * The flag to enable cache.
-     *
-     * @var bool
-     */
-    public bool $useCache;
-
-    /**
-     * Set the cache.
-     *
-     * @param Cache|array<string, mixed>|null $cache The cache
-     *
-     * @return void
-     */
-    protected function setCache(Cache|array|null $cache): void
+    protected function setPropertiesAfterSettingFromEnv(string $env): void
     {
-        if (is_array($cache)) {
-            $this->cache = Cache::fromArray($cache);
+        $this->providers    = array_merge(ConfigValue::PROVIDERS, $this->providers);
+        $this->devProviders = array_merge(ConfigValue::DEV_PROVIDERS, $this->devProviders);
 
-            return;
+        if ($this->filePath === '') {
+            $this->filePath = Directory::servicesPath('default.php');
         }
 
-        $this->cache = $cache;
+        if ($this->cacheFilePath === '') {
+            $this->cacheFilePath = Directory::cachePath('container.php');
+        }
     }
 }

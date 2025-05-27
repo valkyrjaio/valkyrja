@@ -13,25 +13,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Contract;
 
-use Valkyrja\Manager\Contract\Manager;
-use Valkyrja\Session\Adapter\Contract\Adapter;
 use Valkyrja\Session\Driver\Contract\Driver;
 use Valkyrja\Session\Exception\InvalidCsrfToken;
-use Valkyrja\Session\Factory\Contract\Factory;
 
 /**
  * Interface Session.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Adapter, Driver, Factory>
  */
-interface Session extends Manager
+interface Session
 {
     /**
-     * @inheritDoc
-     *
-     * @return Driver
+     * Use a specific configuration.
      */
     public function use(string|null $name = null): Driver;
 

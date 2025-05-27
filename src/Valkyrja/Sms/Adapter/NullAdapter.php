@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Sms\Adapter;
 
 use Valkyrja\Sms\Adapter\Contract\Adapter as Contract;
+use Valkyrja\Sms\Config\NullConfiguration;
 use Valkyrja\Sms\Message\Contract\Message;
 
 /**
@@ -24,20 +25,11 @@ use Valkyrja\Sms\Message\Contract\Message;
 class NullAdapter implements Contract
 {
     /**
-     * The config.
-     *
-     * @var array<string, mixed>
-     */
-    protected array $config;
-
-    /**
      * NullAdapter constructor.
-     *
-     * @param array<string, mixed> $config The config
      */
-    public function __construct(array $config)
-    {
-        $this->config = $config;
+    public function __construct(
+        protected NullConfiguration $config
+    ) {
     }
 
     /**

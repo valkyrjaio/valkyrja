@@ -16,8 +16,7 @@ namespace Valkyrja\Tests\Unit\Container;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Container\Annotation\Contract\Annotations;
 use Valkyrja\Container\CacheableContainer;
-use Valkyrja\Container\Config;
-use Valkyrja\Container\Config\Container as ContainerConfig;
+use Valkyrja\Container\Config as ContainerConfig;
 use Valkyrja\Container\Constant\Provider;
 use Valkyrja\Tests\Unit\TestCase;
 
@@ -33,7 +32,7 @@ class CacheableContainerTest extends TestCase
      */
     public function testGetCacheable(): void
     {
-        $config    = new ContainerConfig(setup: true);
+        $config    = new ContainerConfig();
         $container = new CacheableContainer($config, true);
 
         $annotator = $this->createMock(Annotations::class);
@@ -49,7 +48,7 @@ class CacheableContainerTest extends TestCase
 
         $cacheable = $container->getCacheable();
 
-        self::assertInstanceOf(Config::class, $cacheable);
+        self::assertInstanceOf(ContainerConfig::class, $cacheable);
     }
 
     /**
@@ -57,7 +56,7 @@ class CacheableContainerTest extends TestCase
      */
     public function testSetup(): void
     {
-        $config    = new ContainerConfig(setup: true);
+        $config    = new ContainerConfig();
         $container = new CacheableContainer($config, true);
 
         $annotator = $this->createMock(Annotations::class);
@@ -74,6 +73,6 @@ class CacheableContainerTest extends TestCase
 
         $container->setup(true, true);
 
-        self::assertInstanceOf(Config::class, $cacheable);
+        self::assertInstanceOf(ContainerConfig::class, $cacheable);
     }
 }

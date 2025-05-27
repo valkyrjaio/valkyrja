@@ -48,7 +48,7 @@ class DataConfig extends ParentConfig
     /**
      * @param non-empty-string                   $timezone     The timezone
      * @param class-string<ErrorHandlerContract> $errorHandler The error handler
-     * @param array<string, Provider>            $providers    The app providers
+     * @param class-string<Provider>[]           $providers    The app providers
      */
     public function __construct(
         public string $env = 'production',
@@ -74,11 +74,6 @@ class DataConfig extends ParentConfig
      */
     protected function setPropertiesAfterSettingFromEnv(string $env): void
     {
-        $this->providers = array_merge(
-            [
-                ContainerAppProvider::class,
-            ],
-            $this->providers
-        );
+        $this->providers[] = ContainerAppProvider::class;
     }
 }

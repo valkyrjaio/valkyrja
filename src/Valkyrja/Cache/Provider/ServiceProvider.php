@@ -18,13 +18,16 @@ use Valkyrja\Cache\Adapter\Contract\Adapter;
 use Valkyrja\Cache\Adapter\LogAdapter;
 use Valkyrja\Cache\Adapter\NullAdapter;
 use Valkyrja\Cache\Adapter\RedisAdapter;
+use Valkyrja\Cache\Config\LogConfiguration;
+use Valkyrja\Cache\Config\RedisConfiguration;
 use Valkyrja\Cache\Contract\Cache;
 use Valkyrja\Cache\Driver\Driver;
 use Valkyrja\Cache\Factory\ContainerFactory;
 use Valkyrja\Cache\Factory\Contract\Factory;
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
+use Valkyrja\Log\Config\NullConfiguration;
 use Valkyrja\Log\Contract\Logger;
 
 /**
@@ -66,31 +69,22 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the cache service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishCache(Container $container): void
     {
-        /** @var array{cache: \Valkyrja\Cache\Config|array<string, mixed>, ...} $config */
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ValkyrjaDataConfig::class);
 
         $container->setSingleton(
             Cache::class,
             new \Valkyrja\Cache\Cache(
                 $container->getSingleton(Factory::class),
-                $config['cache']
+                $config->cache
             )
         );
     }
 
     /**
      * Publish the factory service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishFactory(Container $container): void
     {
@@ -102,26 +96,17 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the default driver service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishDriver(Container $container): void
     {
         $container->setCallable(
             Driver::class,
-            [static::class, 'createDriver']
+            [self::class, 'createDriver']
         );
     }
 
     /**
      * Create a driver.
-     *
-     * @param Container $container
-     * @param Adapter   $adapter
-     *
-     * @return Driver
      */
     public static function createDriver(Container $container, Adapter $adapter): Driver
     {
@@ -132,31 +117,22 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the null adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishNullAdapter(Container $container): void
     {
         $container->setCallable(
             NullAdapter::class,
-            [static::class, 'createNullAdapter']
+            [self::class, 'createNullAdapter']
         );
     }
 
     /**
      * Create a null adapter.
-     *
-     * @param Container              $container
-     * @param array{prefix?: string} $config
-     *
-     * @return NullAdapter
      */
-    public static function createNullAdapter(Container $container, array $config): NullAdapter
+    public static function createNullAdapter(Container $container, NullConfiguration $config): NullAdapter
     {
         return new NullAdapter(
-            $config['prefix'] ?? null
+            $config->prefix
         );
     }
 
@@ -171,58 +147,44 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             LogAdapter::class,
-            [static::class, 'createLogAdapter']
+            [self::class, 'createLogAdapter']
         );
     }
 
     /**
      * Create a log adapter.
-     *
-     * @param Container                               $container
-     * @param array{prefix?: string, logger?: string} $config
-     *
-     * @return LogAdapter
      */
-    public static function createLogAdapter(Container $container, array $config): LogAdapter
+    public static function createLogAdapter(Container $container, LogConfiguration $config): LogAdapter
     {
         $logger = $container->getSingleton(Logger::class);
 
         return new LogAdapter(
-            $logger->use($config['logger'] ?? null),
-            $config['prefix'] ?? null
+            $logger->use($config->logger),
+            $config->prefix
         );
     }
 
     /**
      * Publish the redis adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishRedisAdapter(Container $container): void
     {
         $container->setCallable(
             RedisAdapter::class,
-            [static::class, 'createRedisAdapter']
+            [self::class, 'createRedisAdapter']
         );
     }
 
     /**
      * Create a redis adapter.
-     *
-     * @param Container              $container
-     * @param array{prefix?: string} $config
-     *
-     * @return RedisAdapter
      */
-    public static function createRedisAdapter(Container $container, array $config): RedisAdapter
+    public static function createRedisAdapter(Container $container, RedisConfiguration $config): RedisAdapter
     {
         $predis = new Client($config);
 
         return new RedisAdapter(
             $predis,
-            $config['prefix'] ?? ''
+            $config->prefix
         );
     }
 }

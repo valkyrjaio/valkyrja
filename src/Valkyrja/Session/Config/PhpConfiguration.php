@@ -37,12 +37,12 @@ class PhpConfiguration extends Configuration
     ];
 
     public function __construct(
-        public string $id = 'VALKYRJA_ID',
-        public string $name = 'VALKYRJA_SESSION',
         public CookieParamsConfiguration $cookieParams = new CookieParamsConfiguration(),
     ) {
         parent::__construct(
             adapterClass: PHPAdapter::class,
+            id: 'VALKYRJA_ID',
+            name: 'VALKYRJA_SESSION',
         );
     }
 

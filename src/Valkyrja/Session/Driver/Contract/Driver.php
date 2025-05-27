@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Driver\Contract;
 
-use Valkyrja\Manager\Driver\Contract\Driver as Contract;
 use Valkyrja\Session\Exception\InvalidCsrfToken;
 
 /**
@@ -21,7 +20,7 @@ use Valkyrja\Session\Exception\InvalidCsrfToken;
  *
  * @author Melech Mizrachi
  */
-interface Driver extends Contract
+interface Driver
 {
     /**
      * Start the session.

@@ -16,6 +16,7 @@ namespace Valkyrja\Mail\Adapter;
 use JsonException;
 use Valkyrja\Log\Driver\Contract\Driver as Logger;
 use Valkyrja\Mail\Adapter\Contract\LogAdapter as Contract;
+use Valkyrja\Mail\Config\LogConfiguration;
 use Valkyrja\Mail\Message\Contract\Message;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
@@ -28,13 +29,10 @@ class LogAdapter implements Contract
 {
     /**
      * LogAdapter constructor.
-     *
-     * @param Logger               $logger The logger
-     * @param array<string, mixed> $config The config
      */
     public function __construct(
         protected Logger $logger,
-        protected array $config
+        protected LogConfiguration $config
     ) {
     }
 

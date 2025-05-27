@@ -13,25 +13,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Contract;
 
-use Valkyrja\Filesystem\Adapter\Contract\Adapter;
 use Valkyrja\Filesystem\Driver\Contract\Driver;
 use Valkyrja\Filesystem\Enum\Visibility;
-use Valkyrja\Filesystem\Factory\Contract\Factory;
-use Valkyrja\Manager\Contract\Manager;
 
 /**
  * Interface Filesystem.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Adapter, Driver, Factory>
  */
-interface Filesystem extends Manager
+interface Filesystem
 {
     /**
-     * @inheritDoc
-     *
-     * @return Driver
+     * Use a specific configuration.
      */
     public function use(string|null $name = null): Driver;
 

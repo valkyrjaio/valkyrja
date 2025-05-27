@@ -13,13 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Provider;
 
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Jwt\Adapter\Contract\Adapter;
 use Valkyrja\Jwt\Adapter\Firebase\EdDsaAdapter;
 use Valkyrja\Jwt\Adapter\Firebase\HsAdapter;
 use Valkyrja\Jwt\Adapter\Firebase\RsAdapter;
+use Valkyrja\Jwt\Config\EdDsaConfiguration;
+use Valkyrja\Jwt\Config\HsConfiguration;
+use Valkyrja\Jwt\Config\RsConfiguration;
 use Valkyrja\Jwt\Contract\Jwt;
 use Valkyrja\Jwt\Driver\Driver;
 use Valkyrja\Jwt\Factory\ContainerFactory;
@@ -64,31 +67,22 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the JWT service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishJwt(Container $container): void
     {
-        /** @var array{jwt: \Valkyrja\Jwt\Config|array<string, mixed>, ...} $config */
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ValkyrjaDataConfig::class);
 
         $container->setSingleton(
             Jwt::class,
             new \Valkyrja\Jwt\Jwt(
                 $container->getSingleton(Factory::class),
-                $config['jwt']
+                $config->jwt
             )
         );
     }
 
     /**
      * Publish the factory service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishFactory(Container $container): void
     {
@@ -100,28 +94,19 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the EdDsa adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishEdDsaAdapter(Container $container): void
     {
         $container->setCallable(
             Adapter::class,
-            [static::class, 'createEdDsaAdapter']
+            [self::class, 'createEdDsaAdapter']
         );
     }
 
     /**
      * Create the EdDsa adapter.
-     *
-     * @param Container            $container
-     * @param array<string, mixed> $config
-     *
-     * @return EdDsaAdapter
      */
-    public static function createEdDsaAdapter(Container $container, array $config): Adapter
+    public static function createEdDsaAdapter(Container $container, EdDsaConfiguration $config): Adapter
     {
         return new EdDsaAdapter(
             $config,
@@ -130,28 +115,19 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the HS adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishHsAdapter(Container $container): void
     {
         $container->setCallable(
             Adapter::class,
-            [static::class, 'createHsAdapter']
+            [self::class, 'createHsAdapter']
         );
     }
 
     /**
      * Create the HS adapter.
-     *
-     * @param Container            $container
-     * @param array<string, mixed> $config
-     *
-     * @return HsAdapter
      */
-    public static function createHsAdapter(Container $container, array $config): Adapter
+    public static function createHsAdapter(Container $container, HsConfiguration $config): Adapter
     {
         return new HsAdapter(
             $config,
@@ -169,19 +145,14 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             RsAdapter::class,
-            [static::class, 'createRsAdapter']
+            [self::class, 'createRsAdapter']
         );
     }
 
     /**
      * Create the RS adapter.
-     *
-     * @param Container            $container
-     * @param array<string, mixed> $config
-     *
-     * @return RsAdapter
      */
-    public static function createRsAdapter(Container $container, array $config): Adapter
+    public static function createRsAdapter(Container $container, RsConfiguration $config): Adapter
     {
         return new RsAdapter(
             $config,
@@ -190,26 +161,17 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish a driver service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishDriver(Container $container): void
     {
         $container->setCallable(
             Driver::class,
-            [static::class, 'createDriver']
+            [self::class, 'createDriver']
         );
     }
 
     /**
      * Create the driver.
-     *
-     * @param Container $container
-     * @param Adapter   $adapter
-     *
-     * @return Driver
      */
     public static function createDriver(Container $container, Adapter $adapter): Driver
     {

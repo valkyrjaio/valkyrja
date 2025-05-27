@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\View;
 
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\View\Constant\ConfigValue;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\View\Contract\View as Contract;
 use Valkyrja\View\Engine\Contract\Engine;
 use Valkyrja\View\Factory\Contract\Factory;
@@ -63,32 +63,13 @@ class View implements Contract
     protected array $variables = [];
 
     /**
-     * The engines.
-     *
-     * @var array<string, class-string<Engine>>
-     */
-    protected array $enginesConfig;
-
-    /**
-     * The default engine.
-     *
-     * @var string
-     */
-    protected string $engine;
-
-    /**
      * View constructor.
-     *
-     * @param Container                   $container The container
-     * @param Config|array<string, mixed> $config    The config
      */
     public function __construct(
         protected Container $container = new \Valkyrja\Container\Container(),
         protected Factory $factory = new \Valkyrja\View\Factory\Factory(),
-        protected Config|array $config = new Config()
+        protected Config $config = new Config()
     ) {
-        $this->engine        = $config['engine'] ?? ConfigValue::ENGINE;
-        $this->enginesConfig = $config['engines'] ?? ConfigValue::ENGINES;
     }
 
     /**
@@ -104,10 +85,10 @@ class View implements Contract
      */
     public function getEngine(string|null $name = null): Engine
     {
-        $name ??= $this->engine;
+        $name ??= $this->config->defaultConfiguration;
 
         return self::$engines[$name]
-            ??= $this->factory->getEngine($this->enginesConfig[$name]);
+            ??= $this->getEngineFromFactory($name);
     }
 
     /**
@@ -116,5 +97,17 @@ class View implements Contract
     public function render(string $name, array $variables = []): string
     {
         return $this->createTemplate($name, $variables)->render();
+    }
+
+    /**
+     * Get an engine from the factory given a configuration name.
+     */
+    protected function getEngineFromFactory(string $configurationName): Engine
+    {
+        $config     = $this->config->configurations->$configurationName;
+        $engineName = $config->engine
+            ?? throw new RuntimeException("$configurationName is an invalid configuration");
+
+        return $this->factory->getEngine($engineName, $config);
     }
 }

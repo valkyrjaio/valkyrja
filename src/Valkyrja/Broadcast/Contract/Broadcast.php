@@ -13,32 +13,23 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Contract;
 
-use Valkyrja\Broadcast\Adapter\Contract\Adapter;
 use Valkyrja\Broadcast\Driver\Contract\Driver;
-use Valkyrja\Broadcast\Factory\Contract\Factory;
 use Valkyrja\Broadcast\Message\Contract\Message;
-use Valkyrja\Manager\Contract\MessageManager as Manager;
 
 /**
  * Interface Broadcast.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Adapter, Driver, Factory, Message>
  */
-interface Broadcast extends Manager
+interface Broadcast
 {
     /**
-     * @inheritDoc
-     *
-     * @return Driver
+     * Use a specific configuration.
      */
     public function use(string|null $name = null): Driver;
 
     /**
-     * @inheritDoc
-     *
-     * @return Message
+     * Create a new message.
      */
     public function createMessage(string|null $name = null, array $data = []): Message;
 }

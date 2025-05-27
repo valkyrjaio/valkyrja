@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\View\Factory;
 
 use Valkyrja\Container\Contract\Container;
+use Valkyrja\View\Config\Configuration;
 use Valkyrja\View\Engine\Contract\Engine;
 use Valkyrja\View\Factory\Contract\Factory as Contract;
 use Valkyrja\View\Template\Contract\Template;
@@ -46,8 +47,8 @@ class ContainerFactory implements Contract
     /**
      * @inheritDoc
      */
-    public function getEngine(string $name): Engine
+    public function getEngine(string $name, Configuration $config): Engine
     {
-        return $this->container->getSingleton($name);
+        return $this->container->get($name, [$config]);
     }
 }

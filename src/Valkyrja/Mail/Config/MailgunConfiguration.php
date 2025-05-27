@@ -17,7 +17,7 @@ use Valkyrja\Mail\Adapter\MailgunAdapter;
 use Valkyrja\Mail\Constant\ConfigName;
 
 /**
- * Class NullConfiguration.
+ * Class MailgunConfiguration.
  *
  * @author Melech Mizrachi
  */
@@ -29,12 +29,14 @@ class MailgunConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'MAILGUN_NULL_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'MAILGUN_NULL_DRIVER_CLASS',
+        ConfigName::ADAPTER_CLASS => 'MAILGUN_MAILGUN_ADAPTER_CLASS',
+        ConfigName::DRIVER_CLASS  => 'MAILGUN_MAILGUN_DRIVER_CLASS',
+        'apiKey'                  => 'MAILGUN_MAILGUN_API_KEY',
     ];
 
-    public function __construct()
-    {
+    public function __construct(
+        public string $apiKey = '',
+    ) {
         parent::__construct(
             adapterClass: MailgunAdapter::class,
         );

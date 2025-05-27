@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Driver\Contract;
 
-use Valkyrja\Manager\Driver\Contract\Driver as Contract;
 use Valkyrja\Sms\Message\Contract\Message;
 
 /**
@@ -21,7 +20,7 @@ use Valkyrja\Sms\Message\Contract\Message;
  *
  * @author Melech Mizrachi
  */
-interface Driver extends Contract
+interface Driver
 {
     /**
      * Send a message.

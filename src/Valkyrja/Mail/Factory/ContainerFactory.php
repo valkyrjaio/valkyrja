@@ -13,51 +13,88 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Factory;
 
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Mail\Adapter\Contract\Adapter;
+use Valkyrja\Mail\Config\Configuration;
+use Valkyrja\Mail\Config\MessageConfiguration;
 use Valkyrja\Mail\Driver\Contract\Driver;
 use Valkyrja\Mail\Factory\Contract\Factory as Contract;
 use Valkyrja\Mail\Message\Contract\Message;
-use Valkyrja\Manager\Factory\ContainerMessageFactory as Factory;
 
 /**
  * Class ContainerFactory.
  *
  * @author Melech Mizrachi
- *
- * @extends Factory<Adapter, Driver, Message>
  */
-class ContainerFactory extends Factory implements Contract
+class ContainerFactory implements Contract
 {
     /**
-     * @inheritDoc
+     * ContainerFactory constructor.
      */
-    public function createDriver(string $name, string $adapter, array $config): Driver
-    {
-        /** @var Driver $driver */
-        $driver = parent::createDriver($name, $adapter, $config);
-
-        return $driver;
+    public function __construct(
+        protected Container $container
+    ) {
     }
 
     /**
      * @inheritDoc
+     *
+     * @template Driver of Driver
+     *
+     * @param class-string<Driver>  $name    The driver
+     * @param class-string<Adapter> $adapter The adapter
+     *
+     * @return Driver
      */
-    public function createAdapter(string $name, array $config): Adapter
+    public function createDriver(string $name, string $adapter, Configuration $config): Driver
     {
-        /** @var Adapter $adapter */
-        $adapter = parent::createAdapter($name, $config);
-
-        return $adapter;
+        return $this->container->get(
+            $name,
+            [
+                $this->container,
+                $this->createAdapter($adapter, $config),
+            ]
+        );
     }
 
     /**
      * @inheritDoc
+     *
+     * @template Adapter of Adapter
+     *
+     * @param class-string<Adapter> $name The adapter
+     *
+     * @return Adapter
      */
-    public function createMessage(string $name, array $config, array $data = []): Message
+    public function createAdapter(string $name, Configuration $config): Adapter
     {
-        /** @var Message $message */
-        $message = parent::createMessage($name, $config, $data);
+        return $this->container->get(
+            $name,
+            [
+                $this->container,
+                $config,
+            ]
+        );
+    }
 
-        return $message;
+    /**
+     * @inheritDoc
+     *
+     * @template Message of Message
+     *
+     * @param class-string<Message> $name The message
+     *
+     * @return Message
+     */
+    public function createMessage(string $name, MessageConfiguration $config, array $data = []): Message
+    {
+        return $this->container->get(
+            $name,
+            [
+                $this->container,
+                $config,
+                $data,
+            ]
+        );
     }
 }

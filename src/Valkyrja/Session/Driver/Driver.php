@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Driver;
 
-use Valkyrja\Manager\Driver\Driver as ParentDriver;
 use Valkyrja\Session\Adapter\Contract\Adapter;
 use Valkyrja\Session\Driver\Contract\Driver as Contract;
 
@@ -21,19 +20,15 @@ use Valkyrja\Session\Driver\Contract\Driver as Contract;
  * Class Driver.
  *
  * @author Melech Mizrachi
- *
- * @property Adapter $adapter
  */
-class Driver extends ParentDriver implements Contract
+class Driver implements Contract
 {
     /**
      * Driver constructor.
-     *
-     * @param Adapter $adapter The adapter
      */
-    public function __construct(Adapter $adapter)
-    {
-        parent::__construct($adapter);
+    public function __construct(
+        protected Adapter $adapter
+    ) {
     }
 
     /**

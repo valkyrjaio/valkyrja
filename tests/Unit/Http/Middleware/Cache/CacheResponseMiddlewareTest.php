@@ -16,6 +16,8 @@ namespace Valkyrja\Tests\Unit\Http\Middleware\Cache;
 use Valkyrja\Container\Container;
 use Valkyrja\Filesystem\Adapter\InMemoryAdapter;
 use Valkyrja\Filesystem\Config;
+use Valkyrja\Filesystem\Config\Configurations;
+use Valkyrja\Filesystem\Config\InMemoryConfiguration;
 use Valkyrja\Filesystem\Driver\Driver;
 use Valkyrja\Filesystem\Factory\ContainerFactory;
 use Valkyrja\Filesystem\Filesystem;
@@ -165,14 +167,12 @@ class CacheResponseMiddlewareTest extends TestCase
 
         return new Filesystem(
             new ContainerFactory($container),
-            config: new Config([
-                'default' => 'memory',
-                'adapter' => InMemoryAdapter::class,
-                'driver'  => Driver::class,
-                'disks'   => [
-                    'memory' => [],
-                ],
-            ])
+            config: new Config(
+                defaultConfiguration: 'memory',
+                configurations: new Configurations(
+                    memory: new InMemoryConfiguration()
+                )
+            )
         );
     }
 

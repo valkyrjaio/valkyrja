@@ -15,7 +15,7 @@ namespace Valkyrja\View\Engine;
 
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Support\Directory;
-use Valkyrja\View\Config;
+use Valkyrja\View\Config\PhpConfiguration;
 use Valkyrja\View\Engine\Contract\Engine;
 use Valkyrja\View\Exception\InvalidConfigPath;
 
@@ -65,15 +65,13 @@ class PhpEngine implements Engine
 
     /**
      * PhpEngine constructor.
-     *
-     * @param Config|array<string, mixed> $config The config
      */
     public function __construct(
-        protected Config|array $config
+        protected PhpConfiguration $config
     ) {
-        $this->paths         = $config['paths'];
-        $this->dir           = $config['dir'];
-        $this->fileExtension = $config['disks']['php']['fileExtension'] ?? '.phtml';
+        $this->paths         = $config->paths;
+        $this->dir           = $config->dir;
+        $this->fileExtension = $config->fileExtension;
     }
 
     /**

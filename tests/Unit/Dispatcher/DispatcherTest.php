@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Dispatcher;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Contract\Application;
-use Valkyrja\Container\Config\Container as Config;
+use Valkyrja\Container\Config as Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\ContextAwareContainer;
 use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
@@ -109,7 +109,7 @@ class DispatcherTest extends TestCase
     {
         parent::setUp();
 
-        $this->config     = new Config(setup: true);
+        $this->config     = new Config();
         $this->container  = new Container($this->config, true);
         $this->dispatcher = new Dispatcher($this->container);
 

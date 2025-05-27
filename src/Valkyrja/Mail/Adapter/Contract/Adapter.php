@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Mail\Adapter\Contract;
 
 use Valkyrja\Mail\Message\Contract\Message;
-use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 
 /**
  * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-interface Adapter extends Contract
+interface Adapter
 {
     /**
      * Send a message.

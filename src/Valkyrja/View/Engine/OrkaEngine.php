@@ -15,7 +15,7 @@ namespace Valkyrja\View\Engine;
 
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Support\Directory;
-use Valkyrja\View\Config;
+use Valkyrja\View\Config\OrkaConfiguration;
 
 use function array_keys;
 use function file_get_contents;
@@ -87,17 +87,13 @@ class OrkaEngine extends PhpEngine
 
     /**
      * OrkaEngine constructor.
-     *
-     * @param Config|array<string, mixed> $config  The config
-     * @param bool                        $isDebug Whether to run in debug mode
      */
     public function __construct(
-        Config|array $config,
-        protected bool $isDebug
+        OrkaConfiguration $config
     ) {
         parent::__construct($config);
 
-        $this->fileExtension = $config['disks']['orka']['fileExtension'] ?? '.orka.phtml';
+        $this->fileExtension = $config->fileExtension;
     }
 
     /**
@@ -107,7 +103,7 @@ class OrkaEngine extends PhpEngine
     {
         $cachedPath = $this->getCachedFilePath($name);
 
-        if ($this->isDebug || ! is_file($cachedPath)) {
+        if (! is_file($cachedPath)) {
             $fileContents = file_get_contents($this->getFullPath($name));
 
             if ($fileContents === false) {

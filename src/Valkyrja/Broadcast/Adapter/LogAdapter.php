@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast\Adapter;
 
 use JsonException;
+use Valkyrja\Broadcast\Config\LogConfiguration;
 use Valkyrja\Broadcast\Message\Contract\Message;
 use Valkyrja\Log\Driver\Contract\Driver as Logger;
 use Valkyrja\Type\BuiltIn\Support\Arr;
@@ -27,13 +28,10 @@ class LogAdapter extends NullAdapter
 {
     /**
      * LogAdapter constructor.
-     *
-     * @param Logger               $log    The logger
-     * @param array<string, mixed> $config The config
      */
     public function __construct(
         protected Logger $log,
-        protected array $config
+        protected LogConfiguration $config
     ) {
     }
 

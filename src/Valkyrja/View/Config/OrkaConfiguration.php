@@ -21,7 +21,7 @@ use Valkyrja\View\Engine\OrkaEngine;
  *
  * @author Melech Mizrachi
  */
-class OrkaConfiguration extends Configuration
+class OrkaConfiguration extends PhpConfiguration
 {
     /**
      * @inheritDoc
@@ -31,13 +31,15 @@ class OrkaConfiguration extends Configuration
     protected static array $envNames = [
         ConfigName::ENGINE         => 'VIEW_ORKA_ENGINE',
         ConfigName::FILE_EXTENSION => 'VIEW_ORKA_FILE_EXTENSION',
+        ConfigName::DIR            => 'VIEW_ORKA_DIR',
+        ConfigName::PATHS          => 'VIEW_ORKA_PATHS',
     ];
 
     public function __construct()
     {
-        parent::__construct(
-            engine: OrkaEngine::class,
-            fileExtension: '.orka.php',
-        );
+        parent::__construct();
+
+        $this->engine        = OrkaEngine::class;
+        $this->fileExtension = '.orka.phtml';
     }
 }

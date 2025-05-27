@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem\Config;
 
 use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
-use Valkyrja\Filesystem\Adapter\FlysystemAdapter;
 use Valkyrja\Filesystem\Constant\ConfigName;
 use Valkyrja\Support\Directory;
 
@@ -23,7 +22,7 @@ use Valkyrja\Support\Directory;
  *
  * @author Melech Mizrachi
  */
-class LocalFlysystemConfiguration extends Configuration
+class LocalFlysystemConfiguration extends FlysystemConfiguration
 {
     /**
      * @inheritDoc
@@ -39,10 +38,9 @@ class LocalFlysystemConfiguration extends Configuration
 
     public function __construct(
         public string $dir = '',
-        public string $flysystemAdapter = FlysystemLocalAdapter::class,
     ) {
         parent::__construct(
-            adapterClass: FlysystemAdapter::class,
+            flysystemAdapter: FlysystemLocalAdapter::class,
         );
 
         if ($this->dir === '') {

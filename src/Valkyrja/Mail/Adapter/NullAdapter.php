@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Mail\Adapter;
 
 use Valkyrja\Mail\Adapter\Contract\Adapter as Contract;
+use Valkyrja\Mail\Config\NullConfiguration;
 use Valkyrja\Mail\Message\Contract\Message;
 
 /**
@@ -25,11 +26,9 @@ class NullAdapter implements Contract
 {
     /**
      * NullAdapter constructor.
-     *
-     * @param array<string, mixed> $config The config
      */
     public function __construct(
-        protected array $config
+        protected NullConfiguration $config
     ) {
     }
 

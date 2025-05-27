@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Driver;
 
-use Valkyrja\Manager\Driver\Driver as ParentDriver;
 use Valkyrja\Sms\Adapter\Contract\Adapter;
 use Valkyrja\Sms\Driver\Contract\Driver as Contract;
 use Valkyrja\Sms\Message\Contract\Message;
@@ -22,19 +21,15 @@ use Valkyrja\Sms\Message\Contract\Message;
  * Class Driver.
  *
  * @author Melech Mizrachi
- *
- * @property Adapter $adapter
  */
-class Driver extends ParentDriver implements Contract
+class Driver implements Contract
 {
     /**
      * Driver constructor.
-     *
-     * @param Adapter $adapter The adapter
      */
-    public function __construct(Adapter $adapter)
-    {
-        parent::__construct($adapter);
+    public function __construct(
+        protected Adapter $adapter
+    ) {
     }
 
     /**

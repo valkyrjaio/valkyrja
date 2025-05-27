@@ -13,33 +13,53 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Manager\Config as Model;
+use Valkyrja\Cache\Config\Configurations;
+use Valkyrja\Cache\Config\LogConfiguration;
+use Valkyrja\Cache\Config\NullConfiguration;
+use Valkyrja\Cache\Config\RedisConfiguration;
+use Valkyrja\Cache\Constant\ConfigName;
+use Valkyrja\Cache\Constant\EnvName;
+use Valkyrja\Config\DataConfig as ParentConfig;
+
+use function array_key_first;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::DEFAULT => EnvKey::CACHE_DEFAULT,
-        CKP::ADAPTER => EnvKey::CACHE_ADAPTER,
-        CKP::DRIVER  => EnvKey::CACHE_DRIVER,
-        CKP::STORES  => EnvKey::CACHE_STORES,
+    protected static array $envNames = [
+        ConfigName::DEFAULT_CONFIGURATION => EnvName::DEFAULT_CONFIGURATION,
     ];
 
+    public function __construct(
+        public string $defaultConfiguration = '',
+        public Configurations|null $configurations = null,
+    ) {
+    }
+
     /**
-     * The cache stores.
-     *
-     * @var array<string, array<string, mixed>>
+     * @inheritDoc
      */
-    public array $stores;
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+        if ($this->configurations === null) {
+            $this->configurations = new Configurations(
+                redis: RedisConfiguration::fromEnv($env),
+                log: LogConfiguration::fromEnv($env),
+                null: NullConfiguration::fromEnv($env),
+            );
+        }
+
+        if ($this->defaultConfiguration === '') {
+            $this->defaultConfiguration = array_key_first((array) $this->configurations);
+        }
+    }
 }

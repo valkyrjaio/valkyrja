@@ -24,11 +24,11 @@ use Valkyrja\Sms\Message\Contract\Message;
 abstract class MessageConfiguration extends ParentConfig
 {
     /**
-     * @param class-string<Message>|null $messageClass
+     * @param class-string<Message> $messageClass
      */
     public function __construct(
         public string $from,
-        public string|null $messageClass = \Valkyrja\Sms\Message\Message::class,
+        public string $messageClass = \Valkyrja\Sms\Message\Message::class,
     ) {
     }
 }

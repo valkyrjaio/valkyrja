@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt\Adapter;
 
 use Valkyrja\Crypt\Adapter\Contract\Adapter as Contract;
+use Valkyrja\Crypt\Config\Configuration;
 use Valkyrja\Exception\InvalidArgumentException;
-
-use function is_string;
 
 /**
  * Abstract Class Adapter.
@@ -34,14 +33,13 @@ abstract class Adapter implements Contract
 
     /**
      * Adapter constructor.
-     *
-     * @param array<string, mixed> $config The config
      */
-    public function __construct(protected array $config)
-    {
-        $key = $config['key'];
+    public function __construct(
+        protected Configuration $config
+    ) {
+        $key = $config->key;
 
-        if (! is_string($key)) {
+        if ($key === '') {
             throw new InvalidArgumentException('Key must be a string');
         }
 

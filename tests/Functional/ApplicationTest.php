@@ -104,7 +104,7 @@ class ApplicationTest extends TestCase
      */
     public function testVersion(): void
     {
-        self::assertSame(Application::VERSION, $this->app->version());
+        self::assertSame(Application::VERSION, $this->app->getVersion());
     }
 
     /**
@@ -137,7 +137,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnv(): void
     {
-        self::assertIsString($this->app::env());
+        self::assertIsString($this->app::getEnvValue());
     }
 
     /**
@@ -147,7 +147,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnvValue(): void
     {
-        self::assertTrue($this->app::env('CONSOLE_QUIET'));
+        self::assertTrue($this->app::getEnvValue('CONSOLE_QUIET'));
     }
 
     /**
@@ -178,7 +178,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnvironment(): void
     {
-        self::assertSame($this->app->config()['app']['env'], $this->app->environment());
+        self::assertSame($this->app->config()['app']['env'], $this->app->getEnvironment());
     }
 
     /**
@@ -188,7 +188,7 @@ class ApplicationTest extends TestCase
      */
     public function testDebug(): void
     {
-        self::assertSame($this->app->config()['app']['debug'], $this->app->debug());
+        self::assertSame($this->app->config()['app']['debug'], $this->app->getDebugMode());
     }
 
     /**
@@ -333,7 +333,7 @@ class ApplicationTest extends TestCase
 
         // It shouldn't have used the new config settings and kept the old
         // so debug should still be false
-        self::assertFalse($this->app->debug());
+        self::assertFalse($this->app->getDebugMode());
     }
 
     /**
@@ -348,7 +348,7 @@ class ApplicationTest extends TestCase
         $config->app->debug = true;
         $this->app          = $this->app->withConfig($config);
 
-        self::assertTrue($this->app->debug());
+        self::assertTrue($this->app->getDebugMode());
     }
 
     /**
@@ -389,7 +389,7 @@ class ApplicationTest extends TestCase
 
         // Because the app will use the config cache the forced changes to the config made above shouldn't
         // take effect and the value for app.debug should still be false.
-        self::assertFalse($this->app->debug());
+        self::assertFalse($this->app->getDebugMode());
 
         usleep(10);
 

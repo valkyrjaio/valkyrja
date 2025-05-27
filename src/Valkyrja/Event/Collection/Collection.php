@@ -35,14 +35,14 @@ class Collection implements Contract
      *
      * @var array<class-string, string[]>
      */
-    protected array $events;
+    protected array $events = [];
 
     /**
      * The listeners.
      *
      * @var array<string, Listener|string>
      */
-    protected array $listeners;
+    protected array $listeners = [];
 
     /**
      * @inheritDoc
@@ -70,7 +70,7 @@ class Collection implements Contract
         $listenerId = $this->getIdFromListener($listener);
         $eventId    = $listener->getEventId();
 
-        $this->events[$eventId] ??= [];
+        $this->events[$eventId]              ??= [];
         $this->events[$eventId][$listenerId] = $listenerId;
         $this->listeners[$listenerId]        = $listener;
     }

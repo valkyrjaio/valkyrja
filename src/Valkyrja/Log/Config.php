@@ -13,48 +13,49 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Manager\Config as Model;
+use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Log\Config\Configurations;
+use Valkyrja\Log\Config\PsrConfiguration;
+use Valkyrja\Log\Constant\ConfigName;
+use Valkyrja\Log\Constant\EnvName;
+
+use function array_key_first;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::DEFAULT => EnvKey::LOG_DEFAULT,
-        CKP::ADAPTER => EnvKey::LOG_ADAPTER,
-        CKP::DRIVER  => EnvKey::LOG_DRIVER,
-        CKP::LOGGERS => EnvKey::LOG_LOGGERS,
+    protected static array $envNames = [
+        ConfigName::DEFAULT_CONFIGURATION => EnvName::DEFAULT_CONFIGURATION,
     ];
 
-    /**
-     * @inheritDoc
-     */
-    public string $default;
+    public function __construct(
+        public string $defaultConfiguration = '',
+        public Configurations|null $configurations = null,
+    ) {
+    }
 
     /**
      * @inheritDoc
      */
-    public string $adapter;
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+        if ($this->configurations === null) {
+            $this->configurations = new Configurations(
+                psr: PsrConfiguration::fromEnv($env),
+            );
+        }
 
-    /**
-     * @inheritDoc
-     */
-    public string $driver;
-
-    /**
-     * The loggers.
-     *
-     * @var array<string, array<string, mixed>>
-     */
-    public array $loggers;
+        if ($this->defaultConfiguration === '') {
+            $this->defaultConfiguration = array_key_first((array) $this->configurations);
+        }
+    }
 }

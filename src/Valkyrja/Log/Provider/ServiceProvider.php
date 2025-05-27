@@ -17,12 +17,14 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Monolog;
 use Psr\Log\LoggerInterface;
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Adapter\Contract\Adapter;
 use Valkyrja\Log\Adapter\NullAdapter;
 use Valkyrja\Log\Adapter\PsrAdapter;
+use Valkyrja\Log\Config\NullConfiguration;
+use Valkyrja\Log\Config\PsrConfiguration;
 use Valkyrja\Log\Constant\LogLevel;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Log\Driver\Driver;
@@ -77,31 +79,22 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the logger service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishLogger(Container $container): void
     {
-        /** @var array{log: \Valkyrja\Log\Config|array<string, mixed>, ...} $config */
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ValkyrjaDataConfig::class);
 
         $container->setSingleton(
             Logger::class,
             new \Valkyrja\Log\Logger(
                 $container->getSingleton(Factory::class),
-                $config['log']
+                $config->log
             )
         );
     }
 
     /**
      * Publish the factory service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishFactory(Container $container): void
     {
@@ -113,26 +106,17 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the default driver service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishDriver(Container $container): void
     {
         $container->setCallable(
             Driver::class,
-            [static::class, 'createDriver']
+            [self::class, 'createDriver']
         );
     }
 
     /**
      * Create the driver.
-     *
-     * @param Container $container
-     * @param Adapter   $adapter
-     *
-     * @return Driver
      */
     public static function createDriver(Container $container, Adapter $adapter): Driver
     {
@@ -143,28 +127,19 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the psr adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishPsrAdapter(Container $container): void
     {
         $container->setCallable(
             PsrAdapter::class,
-            [static::class, 'createPsrAdapter']
+            [self::class, 'createPsrAdapter']
         );
     }
 
     /**
      * Create the psr adapter.
-     *
-     * @param Container            $container
-     * @param array<string, mixed> $config
-     *
-     * @return PsrAdapter
      */
-    public static function createPsrAdapter(Container $container, array $config): PsrAdapter
+    public static function createPsrAdapter(Container $container, PsrConfiguration $config): PsrAdapter
     {
         return new PsrAdapter(
             $container->get(
@@ -188,19 +163,14 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             NullAdapter::class,
-            [static::class, 'createNullAdapter']
+            [self::class, 'createNullAdapter']
         );
     }
 
     /**
      * Create the null adapter.
-     *
-     * @param Container            $container
-     * @param array<string, mixed> $config
-     *
-     * @return NullAdapter
      */
-    public static function createNullAdapter(Container $container, array $config): NullAdapter
+    public static function createNullAdapter(Container $container, NullConfiguration $config): NullAdapter
     {
         return new NullAdapter(
             $config
@@ -209,30 +179,22 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the logger interface.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishLoggerInterface(Container $container): void
     {
         $container->setCallable(
             LoggerInterface::class,
-            [static::class, 'createLoggerInterface']
+            [self::class, 'createLoggerInterface']
         );
     }
 
     /**
      * Create the logger interface.
-     *
-     * @param array{filePath: string, name: string} $config
-     *
-     * @return LoggerInterface
      */
-    public static function createLoggerInterface(array $config): LoggerInterface
+    public static function createLoggerInterface(PsrConfiguration $config): LoggerInterface
     {
-        $filePath  = $config['filePath'];
-        $name      = $config['name'] . date('-Y-m-d');
+        $filePath  = $config->filePath;
+        $name      = $config->name . date('-Y-m-d');
         $handler   = new StreamHandler(
             "$filePath/$name.log",
             LogLevel::DEBUG

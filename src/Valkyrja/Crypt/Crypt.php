@@ -13,34 +13,25 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt;
 
-use Valkyrja\Crypt\Adapter\Contract\Adapter;
 use Valkyrja\Crypt\Contract\Crypt as Contract;
 use Valkyrja\Crypt\Driver\Contract\Driver;
 use Valkyrja\Crypt\Factory\Contract\Factory;
-use Valkyrja\Manager\Manager;
+use Valkyrja\Exception\InvalidArgumentException;
 
 /**
  * Class Crypt.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Adapter, Driver, Factory>
- *
- * @property Factory $factory
  */
-class Crypt extends Manager implements Contract
+class Crypt implements Contract
 {
     /**
      * Crypt constructor.
-     *
-     * @param Factory                     $factory The factory
-     * @param Config|array<string, mixed> $config  The config
      */
-    public function __construct(Factory $factory, Config|array $config)
-    {
-        parent::__construct($factory, $config);
-
-        $this->configurations = $config['crypts'];
+    public function __construct(
+        protected Factory $factory,
+        protected Config $config
+    ) {
     }
 
     /**
@@ -48,10 +39,20 @@ class Crypt extends Manager implements Contract
      */
     public function use(string|null $name = null): Driver
     {
-        /** @var Driver $driver */
-        $driver = parent::use($name);
+        // The configuration name to use
+        $name ??= $this->config->defaultConfiguration;
+        // The config to use
+        $config = $this->config->configurations->$name
+            ?? throw new InvalidArgumentException("$name is not a valid configuration");
+        // The driver to use
+        $driverClass = $config->driverClass;
+        // The adapter to use
+        $adapterClass = $config->adapterClass;
+        // The cache key to use
+        $cacheKey = $name . $adapterClass;
 
-        return $driver;
+        return $this->drivers[$cacheKey]
+            ?? $this->factory->createDriver($driverClass, $adapterClass, $config);
     }
 
     /**

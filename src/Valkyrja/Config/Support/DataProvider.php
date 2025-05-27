@@ -11,13 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Manager\Message\Contract;
+namespace Valkyrja\Config\Support;
+
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 
 /**
- * Interface Message.
+ * Abstract Class Provider.
  *
  * @author Melech Mizrachi
  */
-interface Message
+abstract class DataProvider
 {
+    /**
+     * Publish the provider.
+     */
+    abstract public static function publish(ValkyrjaDataConfig $config): void;
 }

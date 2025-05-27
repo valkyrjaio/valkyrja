@@ -16,7 +16,8 @@ namespace Valkyrja\Config\Config;
 use Valkyrja\Config\Constant\ConfigName;
 use Valkyrja\Config\Constant\EnvName;
 use Valkyrja\Config\DataConfig as ParentConfig;
-use Valkyrja\Config\Support\Provider;
+use Valkyrja\Config\Support\DataProvider;
+use Valkyrja\Support\Directory;
 
 /**
  * Class Config.
@@ -37,14 +38,21 @@ class DataConfig extends ParentConfig
     ];
 
     /**
-     * @param class-string<Provider>[] $providers
-     * @param string                   $cacheFilePath
-     * @param bool                     $useCache
+     * @param class-string<DataProvider>[] $providers
+     * @param string                       $cacheFilePath
+     * @param bool                         $useCache
      */
     public function __construct(
         public array $providers = [],
         public string $cacheFilePath = '',
         public bool $useCache = false
     ) {
+    }
+
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+        if ($this->cacheFilePath === '') {
+            $this->cacheFilePath = Directory::cachePath('data-config.php');
+        }
     }
 }

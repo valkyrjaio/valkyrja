@@ -15,6 +15,7 @@ namespace Valkyrja\Type\BuiltIn\Support;
 
 use JsonException;
 use stdClass;
+use Valkyrja\Config\Constant\ConfigKeyPart;
 use Valkyrja\Type\Exception\RuntimeException;
 
 use function count;
@@ -177,5 +178,38 @@ class Obj
     public static function toDeepArray(object $subject): array
     {
         return Arr::fromString(static::toString($subject));
+    }
+
+    /**
+     * Get a subject value by dot notation key.
+     *
+     * @param object           $subject      The subject to search
+     * @param string           $key          The dot notation to search for
+     * @param mixed|null       $defaultValue [optional] The default value
+     * @param non-empty-string $separator    [optional] The separator
+     *
+     * @return mixed
+     */
+    public static function getValueDotNotation(
+        object $subject,
+        string $key,
+        mixed $defaultValue = null,
+        string $separator = ConfigKeyPart::SEP
+    ): mixed {
+        $value    = $subject;
+        $keyParts = explode($separator, $key);
+
+        // Explode the keys on period and iterate through the keys
+        foreach ($keyParts as $item) {
+            // Trying to get the item from the current value or set the default
+            $value = $value->$item ?? null;
+
+            // If the value is ull then the dot notation doesn't exist in this array so return the default
+            if ($value === null) {
+                return $defaultValue;
+            }
+        }
+
+        return $value;
     }
 }

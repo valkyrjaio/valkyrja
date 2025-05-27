@@ -26,10 +26,6 @@ use function class_exists;
  * Class Container.
  *
  * @author Melech Mizrachi
- *
- * @psalm-import-type ConfigAsArray from Config
- *
- * @phpstan-import-type ConfigAsArray from Config
  */
 class Container implements Contract
 {
@@ -72,12 +68,9 @@ class Container implements Contract
 
     /**
      * Container constructor.
-     *
-     * @param Config|ConfigAsArray $config
-     * @param bool                 $debug
      */
     public function __construct(
-        protected Config|array $config = new Config(),
+        protected Config $config = new Config(),
         protected bool $debug = false
     ) {
     }

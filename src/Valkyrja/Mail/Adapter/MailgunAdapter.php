@@ -18,6 +18,7 @@ use Mailgun\Message\BatchMessage;
 use Mailgun\Message\Exceptions\MissingRequiredParameter;
 use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Mail\Adapter\Contract\MailgunAdapter as Contract;
+use Valkyrja\Mail\Config\MailgunConfiguration;
 use Valkyrja\Mail\Message\Contract\Message;
 
 use function is_string;
@@ -31,13 +32,10 @@ class MailgunAdapter implements Contract
 {
     /**
      * MailgunAdapter constructor.
-     *
-     * @param Mailgun              $mailgun The mailgun service
-     * @param array<string, mixed> $config  The config
      */
     public function __construct(
         protected Mailgun $mailgun,
-        protected array $config
+        protected MailgunConfiguration $config
     ) {
     }
 

@@ -14,13 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast\Adapter;
 
 use Pusher\Pusher;
+use Valkyrja\Broadcast\Config\PusherConfiguration;
 use Valkyrja\Broadcast\Message\Contract\Message;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Crypt\Driver\Contract\Driver as CryptDriver;
 use Valkyrja\Crypt\Exception\CryptException;
-use Valkyrja\Exception\InvalidArgumentException;
-
-use function is_string;
 
 /**
  * Class CryptPusherAdapter.
@@ -38,23 +36,13 @@ class CryptPusherAdapter extends PusherAdapter
 
     /**
      * CryptPusherAdapter constructor.
-     *
-     * @param Pusher               $pusher The pusher service
-     * @param Crypt                $crypt  The crypt manager
-     * @param array<string, mixed> $config The config
      */
     public function __construct(
         Pusher $pusher,
         Crypt $crypt,
-        protected array $config
+        protected PusherConfiguration $config
     ) {
         parent::__construct($pusher);
-
-        $adapter = $config['adapter'] ?? null;
-
-        if (! is_string($adapter)) {
-            throw new InvalidArgumentException('Adapter should be a class string');
-        }
 
         $this->crypt = $crypt->use();
     }

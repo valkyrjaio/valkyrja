@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Adapter;
 
+use Valkyrja\Session\Config\PhpConfiguration;
 use Valkyrja\Session\Exception\InvalidSessionId;
 use Valkyrja\Session\Exception\SessionIdFailure;
 use Valkyrja\Session\Exception\SessionNameFailure;
 use Valkyrja\Session\Exception\SessionStartFailure;
 
 use function headers_sent;
-use function is_array;
 use function preg_match;
 use function session_id;
 use function session_name;
@@ -33,6 +33,8 @@ use const PHP_SESSION_ACTIVE;
  * Class PHPAdapter.
  *
  * @author Melech Mizrachi
+ *
+ * @property PhpConfiguration $config
  */
 class PHPAdapter extends NullAdapter
 {
@@ -47,13 +49,15 @@ class PHPAdapter extends NullAdapter
             return;
         }
 
-        /** @var array{lifetime?: int, path?: string, domain?: string|null, secure?: bool, httponly?: bool, samesite?: 'Lax'|'lax'|'None'|'none'|'Strict'|'strict'}|int $cookieParams */
-        $cookieParams = $this->config['cookieParams'] ?? [];
-
-        if (is_array($cookieParams) && $cookieParams !== []) {
-            // Set the session cookie parameters
-            session_set_cookie_params($cookieParams);
-        }
+        // Set the session cookie parameters
+        session_set_cookie_params([
+            'path'     => $this->config->cookieParams->path,
+            'domain'   => $this->config->cookieParams->domain,
+            'lifetime' => $this->config->cookieParams->lifetime,
+            'secure'   => $this->config->cookieParams->secure,
+            'httponly' => $this->config->cookieParams->httpOnly,
+            'samesite' => $this->config->cookieParams->sameSite->value,
+        ]);
 
         // If the session failed to start
         if (! session_start()) {

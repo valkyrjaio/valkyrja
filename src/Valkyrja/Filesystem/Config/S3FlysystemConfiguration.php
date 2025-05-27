@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem\Config;
 
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
-use Valkyrja\Filesystem\Adapter\FlysystemAdapter;
 use Valkyrja\Filesystem\Constant\ConfigName;
 
 /**
@@ -22,7 +21,7 @@ use Valkyrja\Filesystem\Constant\ConfigName;
  *
  * @author Melech Mizrachi
  */
-class S3FlysystemConfiguration extends Configuration
+class S3FlysystemConfiguration extends FlysystemConfiguration
 {
     /**
      * @inheritDoc
@@ -53,7 +52,7 @@ class S3FlysystemConfiguration extends Configuration
         public string $flysystemAdapter = FlysystemAwsS3Adapter::class,
     ) {
         parent::__construct(
-            adapterClass: FlysystemAdapter::class,
+            flysystemAdapter: FlysystemAwsS3Adapter::class,
         );
     }
 }

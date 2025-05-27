@@ -15,14 +15,13 @@ namespace Valkyrja\Client\Adapter\Contract;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 
 /**
  * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-interface Adapter extends Contract
+interface Adapter
 {
     /**
      * Make a request.

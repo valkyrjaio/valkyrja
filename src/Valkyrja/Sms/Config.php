@@ -13,63 +13,68 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Manager\MessageConfig as Model;
+use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Sms\Config\Configurations;
+use Valkyrja\Sms\Config\DefaultMessageConfiguration;
+use Valkyrja\Sms\Config\LogConfiguration;
+use Valkyrja\Sms\Config\MessageConfigurations;
+use Valkyrja\Sms\Config\NullConfiguration;
+use Valkyrja\Sms\Config\VonageConfiguration;
+use Valkyrja\Sms\Constant\ConfigName;
+use Valkyrja\Sms\Constant\EnvName;
+
+use function array_key_first;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::DEFAULT         => EnvKey::SMS_DEFAULT,
-        CKP::DEFAULT_MESSAGE => EnvKey::SMS_DEFAULT_MESSAGE,
-        CKP::ADAPTER         => EnvKey::SMS_ADAPTER,
-        CKP::DRIVER          => EnvKey::SMS_DRIVER,
-        CKP::MESSAGE         => EnvKey::SMS_MESSAGE,
-        CKP::MESSENGERS      => EnvKey::SMS_MESSENGERS,
-        CKP::MESSAGES        => EnvKey::SMS_MESSAGES,
+    protected static array $envNames = [
+        ConfigName::DEFAULT_CONFIGURATION         => EnvName::DEFAULT_CONFIGURATION,
+        ConfigName::DEFAULT_MESSAGE_CONFIGURATION => EnvName::DEFAULT_MESSAGE_CONFIGURATION,
     ];
 
-    /**
-     * @inheritDoc
-     */
-    public string $default;
+    public function __construct(
+        public string $defaultConfiguration = '',
+        public Configurations|null $configurations = null,
+        public string $defaultMessageConfiguration = '',
+        public MessageConfigurations|null $messageConfigurations = null,
+    ) {
+    }
 
     /**
      * @inheritDoc
      */
-    public string $adapter;
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+        if ($this->configurations === null) {
+            $this->configurations = new Configurations(
+                vonage: VonageConfiguration::fromEnv($env),
+                log: LogConfiguration::fromEnv($env),
+                null: NullConfiguration::fromEnv($env)
+            );
+        }
 
-    /**
-     * @inheritDoc
-     */
-    public string $driver;
+        if ($this->messageConfigurations === null) {
+            $this->messageConfigurations = new MessageConfigurations(
+                default: DefaultMessageConfiguration::fromEnv($env)
+            );
+        }
 
-    /**
-     * @inheritDoc
-     */
-    public string $message;
+        if ($this->defaultConfiguration === '') {
+            $this->defaultConfiguration = array_key_first((array) $this->configurations);
+        }
 
-    /**
-     * The messengers.
-     *
-     * @var array<string, array<string, mixed>>
-     */
-    public array $messengers;
-
-    /**
-     * @inheritDoc
-     *
-     * @var array<string, array<string, mixed>>
-     */
-    public array $messages;
+        if ($this->defaultMessageConfiguration === '') {
+            $this->defaultMessageConfiguration = array_key_first((array) $this->messageConfigurations);
+        }
+    }
 }

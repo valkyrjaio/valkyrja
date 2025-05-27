@@ -29,6 +29,7 @@ abstract class Configuration extends ParentConfig
      * @param class-string<Driver>  $driverClass
      */
     public function __construct(
+        public string $key,
         public string $adapterClass,
         public string $driverClass = \Valkyrja\Crypt\Driver\Driver::class,
     ) {

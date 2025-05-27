@@ -46,20 +46,15 @@ interface Application
 
     /**
      * Get an environment variable.
-     *
-     * @param string|null $key     [optional] The variable to get
-     * @param mixed       $default [optional] The default value to return
-     *
-     * @return mixed
      */
-    public static function env(string|null $key = null, mixed $default = null): mixed;
+    public static function getEnvValue(string $key, mixed $default = null): mixed;
 
     /**
      * Get environment variables.
      *
-     * @return class-string<Env>|null
+     * @return class-string<Env>
      */
-    public static function getEnv(): string|null;
+    public static function getEnv(): string;
 
     /**
      * Set the environment variables class.
@@ -73,8 +68,9 @@ interface Application
     /**
      * Setup the application.
      *
-     * @param class-string<Config>|null $config [optional] The config to use
-     * @param bool                      $force  [optional] Whether to force a setup
+     * @param class-string<Config>|null             $config     [optional] The config to use
+     * @param class-string<ValkyrjaDataConfig>|null $dataConfig [optional] The config to use
+     * @param bool                                  $force      [optional] Whether to force a setup
      *
      * @return void
      */
@@ -110,13 +106,13 @@ interface Application
 
     /**
      * Get the config.
-     *
-     * @param string|null $key     [optional] The key to get
-     * @param mixed       $default [optional] The default value if the key is not found
-     *
-     * @return mixed
      */
-    public function dataConfig(string|null $key = null, mixed $default = null): mixed;
+    public function getDataConfig(): ValkyrjaDataConfig;
+
+    /**
+     * Get a config value.
+     */
+    public function getDataConfigValue(string $key, mixed $default = null): mixed;
 
     /**
      * Add to the global config array.
@@ -177,19 +173,19 @@ interface Application
      *
      * @return bool
      */
-    public function debug(): bool;
+    public function getDebugMode(): bool;
 
     /**
      * Get the environment with which the application is running in.
      *
      * @return string
      */
-    public function environment(): string;
+    public function getEnvironment(): string;
 
     /**
      * Get the application version.
      *
      * @return string
      */
-    public function version(): string;
+    public function getVersion(): string;
 }

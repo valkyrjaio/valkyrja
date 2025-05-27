@@ -20,6 +20,10 @@ use Valkyrja\Broadcast\Adapter\CryptPusherAdapter;
 use Valkyrja\Broadcast\Adapter\LogAdapter;
 use Valkyrja\Broadcast\Adapter\NullAdapter;
 use Valkyrja\Broadcast\Adapter\PusherAdapter;
+use Valkyrja\Broadcast\Config\LogConfiguration;
+use Valkyrja\Broadcast\Config\MessageConfiguration;
+use Valkyrja\Broadcast\Config\NullConfiguration;
+use Valkyrja\Broadcast\Config\PusherConfiguration;
 use Valkyrja\Broadcast\Contract\Broadcast;
 use Valkyrja\Broadcast\Driver\Driver;
 use Valkyrja\Broadcast\Factory\ContainerFactory;
@@ -78,11 +82,7 @@ final class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the broadcaster service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
+     * Publish the broadcaster service.\
      */
     public static function publishBroadcaster(Container $container): void
     {
@@ -98,11 +98,7 @@ final class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the factory service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
+     * Publish the factory service.\
      */
     public static function publishFactory(Container $container): void
     {
@@ -113,11 +109,7 @@ final class ServiceProvider extends Provider
     }
 
     /**
-     * Publish a driver service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
+     * Publish a driver service.\
      */
     public static function publishDriver(Container $container): void
     {
@@ -128,12 +120,7 @@ final class ServiceProvider extends Provider
     }
 
     /**
-     * Create a driver.
-     *
-     * @param Container $container
-     * @param Adapter   $adapter
-     *
-     * @return Driver
+     * Create a driver.\
      */
     public static function createDriver(Container $container, Adapter $adapter): Driver
     {
@@ -143,11 +130,7 @@ final class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the null adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
+     * Publish the null adapter service.\
      */
     public static function publishNullAdapter(Container $container): void
     {
@@ -159,23 +142,14 @@ final class ServiceProvider extends Provider
 
     /**
      * Create a null adapter.
-     *
-     * @param Container            $container
-     * @param array<string, mixed> $config
-     *
-     * @return NullAdapter
      */
-    public static function createNullAdapter(Container $container, array $config): NullAdapter
+    public static function createNullAdapter(Container $container, NullConfiguration $config): NullAdapter
     {
         return new NullAdapter();
     }
 
     /**
      * Publish the log adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishLogAdapter(Container $container): void
     {
@@ -187,28 +161,19 @@ final class ServiceProvider extends Provider
 
     /**
      * Create a log adapter.
-     *
-     * @param Container              $container
-     * @param array{logger?: string} $config
-     *
-     * @return LogAdapter
      */
-    public static function createLogAdapter(Container $container, array $config): LogAdapter
+    public static function createLogAdapter(Container $container, LogConfiguration $config): LogAdapter
     {
         $logger = $container->getSingleton(Logger::class);
 
         return new LogAdapter(
-            $logger->use($config['logger'] ?? null),
+            $logger->use($config->logName),
             $config
         );
     }
 
     /**
      * Publish the pusher adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishPusherAdapter(Container $container): void
     {
@@ -220,13 +185,8 @@ final class ServiceProvider extends Provider
 
     /**
      * Create a pusher adapter.
-     *
-     * @param Container            $container
-     * @param array<string, mixed> $config
-     *
-     * @return PusherAdapter
      */
-    public static function createPusherAdapter(Container $container, array $config): PusherAdapter
+    public static function createPusherAdapter(Container $container, PusherConfiguration $config): PusherAdapter
     {
         return new PusherAdapter(
             $container->get(Pusher::class, [$config])
@@ -235,10 +195,6 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the crypt pusher adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishCryptPusherAdapter(Container $container): void
     {
@@ -250,13 +206,8 @@ final class ServiceProvider extends Provider
 
     /**
      * Create a crypt pusher adapter.
-     *
-     * @param Container            $container
-     * @param array<string, mixed> $config
-     *
-     * @return CryptPusherAdapter
      */
-    public static function createCryptPusherAdapter(Container $container, array $config): CryptPusherAdapter
+    public static function createCryptPusherAdapter(Container $container, PusherConfiguration $config): CryptPusherAdapter
     {
         return new CryptPusherAdapter(
             $container->get(Pusher::class, [$config]),
@@ -267,10 +218,6 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the Pusher service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishPusher(Container $container): void
     {
@@ -283,21 +230,17 @@ final class ServiceProvider extends Provider
     /**
      * Create a pusher class.
      *
-     * @param array{key: string, secret: string, id: string, cluster: string, useTLS: bool} $config
-     *
      * @throws PusherException
-     *
-     * @return Pusher
      */
-    public static function createPusher(array $config): Pusher
+    public static function createPusher(PusherConfiguration $config): Pusher
     {
         return new Pusher(
-            $config['key'],
-            $config['secret'],
-            $config['id'],
+            $config->key,
+            $config->secret,
+            $config->id,
             [
-                'cluster'      => $config['cluster'],
-                'useTLS'       => $config['useTLS'],
+                'cluster'      => $config->cluster,
+                'useTLS'       => $config->useTls,
                 'curl_options' => [
                     CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
                 ],
@@ -307,10 +250,6 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the message service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishMessage(Container $container): void
     {
@@ -322,14 +261,9 @@ final class ServiceProvider extends Provider
 
     /**
      * Create a message.
-     *
-     * @param Container              $container
-     * @param array{channel: string} $config
-     *
-     * @return Message
      */
-    public static function createMessage(Container $container, array $config): Message
+    public static function createMessage(Container $container, MessageConfiguration $config): Message
     {
-        return (new Message())->setChannel($config['channel']);
+        return (new Message())->setChannel($config->channel);
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\View\Config;
 
 use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Support\Directory;
 use Valkyrja\View\Engine\Contract\Engine;
 
 /**
@@ -24,11 +25,24 @@ use Valkyrja\View\Engine\Contract\Engine;
 abstract class Configuration extends ParentConfig
 {
     /**
-     * @param class-string<Engine> $engine
+     * @param class-string<Engine>  $engine The engine class name
+     * @param array<string, string> $paths  The paths
      */
     public function __construct(
         public string $engine,
         public string $fileExtension,
+        public string $dir = '',
+        public array $paths = [],
     ) {
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function setPropertiesAfterSettingFromEnv(string $env): void
+    {
+        if ($this->dir === '') {
+            $this->dir = Directory::resourcesPath('views');
+        }
     }
 }

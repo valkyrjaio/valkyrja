@@ -19,19 +19,13 @@ use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\CacheableContainer;
-use Valkyrja\Container\Config as ContainerConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Exception\Contract\ErrorHandler as ErrorHandlerContract;
-use Valkyrja\Exception\ErrorHandler;
 
 /**
  * Class AppProvider.
  *
  * @author Melech Mizrachi
- *
- * @psalm-import-type ConfigAsArray from ContainerConfig
- *
- * @phpstan-import-type ConfigAsArray from ContainerConfig
  */
 final class AppProvider extends Provider
 {
@@ -40,18 +34,17 @@ final class AppProvider extends Provider
      */
     public static function publish(Application $app): void
     {
-        /** @var array{container: ConfigAsArray} $config */
-        $config     = $app->config();
-        $dataConfig = $app->dataConfig();
+        $dataConfig = $app->getDataConfig();
 
-        $container = new CacheableContainer($config['container'], $app->debug());
+        $container = new CacheableContainer($dataConfig->container, $app->getDebugMode());
 
         $app->setContainer($container);
 
-        $container->setup();
-
         self::bootstrapContainer($app, $container);
         self::bootstrapServices($app, $container);
+
+        $container->setup();
+
         // Bootstrap debug capabilities
         self::bootstrapErrorHandler($app, $container);
         // Bootstrap the timezone
@@ -71,10 +64,10 @@ final class AppProvider extends Provider
     protected static function bootstrapServices(Application $app, Container $container): void
     {
         $container->setSingleton(Application::class, $app);
-        $container->setSingleton('env', $app->env());
+        $container->setSingleton(Env::class, $app->getEnv());
         $container->bindAlias('env', Env::class);
         $container->setSingleton(Config::class, $app->config());
-        $container->setSingleton(ValkyrjaDataConfig::class, $app->dataConfig());
+        $container->setSingleton(ValkyrjaDataConfig::class, $app->getDataConfig());
         $container->bindAlias('config', Config::class);
         $container->setSingleton(Container::class, $container);
     }
@@ -84,15 +77,14 @@ final class AppProvider extends Provider
      */
     protected static function bootstrapErrorHandler(Application $app, Container $container): void
     {
-        $config       = $app->dataConfig();
-        $errorHandler = $config->app->errorHandler
-            ?? ErrorHandler::class;
+        $config       = $app->getDataConfig();
+        $errorHandler = $config->app->errorHandler;
 
         // Set error handler in the service container
         $container->setSingleton(ErrorHandlerContract::class, $errorHandler);
 
         // If debug is on, enable debug handling
-        if ($app->debug()) {
+        if ($app->getDebugMode()) {
             // Enable error handling
             $errorHandler::enable(
                 displayErrors: true

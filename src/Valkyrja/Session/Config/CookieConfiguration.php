@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Config;
+namespace Valkyrja\Session\Config;
 
-use Valkyrja\View\Constant\ConfigName;
-use Valkyrja\View\Engine\PhpEngine;
+use Valkyrja\Session\Adapter\CookieAdapter;
+use Valkyrja\Session\Constant\ConfigName;
 
 /**
- * Class PhpConfiguration.
+ * Class CookieConfiguration.
  *
  * @author Melech Mizrachi
  */
-class PhpConfiguration extends Configuration
+class CookieConfiguration extends Configuration
 {
     /**
      * @inheritDoc
@@ -29,17 +29,14 @@ class PhpConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ENGINE         => 'VIEW_PHP_ENGINE',
-        ConfigName::FILE_EXTENSION => 'VIEW_PHP_FILE_EXTENSION',
-        ConfigName::DIR            => 'VIEW_PHP_DIR',
-        ConfigName::PATHS          => 'VIEW_PHP_PATHS',
+        ConfigName::ADAPTER_CLASS => 'SESSION_COOKIE_ADAPTER_CLASS',
+        ConfigName::DRIVER_CLASS  => 'SESSION_COOKIE_DRIVER_CLASS',
     ];
 
     public function __construct()
     {
         parent::__construct(
-            engine: PhpEngine::class,
-            fileExtension: '.phtml',
+            adapterClass: CookieAdapter::class,
         );
     }
 }

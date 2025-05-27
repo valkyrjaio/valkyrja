@@ -15,6 +15,7 @@ namespace Valkyrja\Client\Adapter;
 
 use JsonException;
 use Valkyrja\Client\Adapter\Contract\LogAdapter as Contract;
+use Valkyrja\Client\Config\LogConfiguration;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
@@ -31,15 +32,11 @@ class LogAdapter implements Contract
 {
     /**
      * LogAdapter constructor.
-     *
-     * @param Logger               $logger          The logger
-     * @param ResponseFactory      $responseFactory The response factory
-     * @param array<string, mixed> $config          The config
      */
     public function __construct(
         protected Logger $logger,
         protected ResponseFactory $responseFactory,
-        protected array $config
+        protected LogConfiguration $config
     ) {
     }
 

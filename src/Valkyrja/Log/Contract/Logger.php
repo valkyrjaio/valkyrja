@@ -14,25 +14,18 @@ declare(strict_types=1);
 namespace Valkyrja\Log\Contract;
 
 use Throwable;
-use Valkyrja\Log\Adapter\Contract\Adapter;
 use Valkyrja\Log\Driver\Contract\Driver;
 use Valkyrja\Log\Enum\LogLevel;
-use Valkyrja\Log\Factory\Contract\Factory;
-use Valkyrja\Manager\Contract\Manager;
 
 /**
  * Interface Logger.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Adapter, Driver, Factory>
  */
-interface Logger extends Manager
+interface Logger
 {
     /**
-     * @inheritDoc
-     *
-     * @return Driver
+     * Use a specific configuration.
      */
     public function use(string|null $name = null): Driver;
 

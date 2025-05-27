@@ -13,32 +13,23 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Contract;
 
-use Valkyrja\Mail\Adapter\Contract\Adapter;
 use Valkyrja\Mail\Driver\Contract\Driver;
-use Valkyrja\Mail\Factory\Contract\Factory;
 use Valkyrja\Mail\Message\Contract\Message;
-use Valkyrja\Manager\Contract\MessageManager as Manager;
 
 /**
  * Interface Mail.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Adapter, Driver, Factory, Message>
  */
-interface Mail extends Manager
+interface Mail
 {
     /**
-     * @inheritDoc
-     *
-     * @return Driver
+     * Use a specific configuration.
      */
     public function use(string|null $name = null): Driver;
 
     /**
-     * @inheritDoc
-     *
-     * @return Message
+     * Create a new message.
      */
     public function createMessage(string|null $name = null, array $data = []): Message;
 

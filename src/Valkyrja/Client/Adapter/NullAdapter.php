@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Client\Adapter;
 
 use Valkyrja\Client\Adapter\Contract\Adapter as Contract;
+use Valkyrja\Client\Config\NullConfiguration;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
@@ -28,13 +29,10 @@ class NullAdapter implements Contract
 {
     /**
      * NullAdapter constructor.
-     *
-     * @param ResponseFactory      $responseFactory The response factory
-     * @param array<string, mixed> $config          The config
      */
     public function __construct(
         protected ResponseFactory $responseFactory,
-        protected array $config
+        protected NullConfiguration $config
     ) {
     }
 

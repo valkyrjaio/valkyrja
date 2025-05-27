@@ -15,14 +15,13 @@ namespace Valkyrja\Log\Driver\Contract;
 
 use Throwable;
 use Valkyrja\Log\Enum\LogLevel;
-use Valkyrja\Manager\Driver\Contract\Driver as Contract;
 
 /**
  * Interface Driver.
  *
  * @author Melech Mizrachi
  */
-interface Driver extends Contract
+interface Driver
 {
     /**
      * Log a debug message.

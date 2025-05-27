@@ -15,28 +15,16 @@ namespace Valkyrja\Config\Config;
 
 use Valkyrja\Application\Config as App;
 use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Broadcast\Config as Broadcast;
-use Valkyrja\Cache\Config as Cache;
-use Valkyrja\Client\Config as Client;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Config\Support\Provider;
 use Valkyrja\Console\Config as Console;
-use Valkyrja\Container\Config as Container;
-use Valkyrja\Crypt\Config as Crypt;
 use Valkyrja\Event\Config as Event;
-use Valkyrja\Filesystem\Config as Filesystem;
 use Valkyrja\Http\Config as Http;
 use Valkyrja\Http\Routing\Config as Routing;
-use Valkyrja\Jwt\Config as Jwt;
-use Valkyrja\Log\Config as Log;
-use Valkyrja\Mail\Config as Mail;
 use Valkyrja\Notification\Config as Notification;
 use Valkyrja\Orm\Config as ORM;
 use Valkyrja\Path\Config as Path;
-use Valkyrja\Session\Config as Session;
-use Valkyrja\Sms\Config as Sms;
-use Valkyrja\View\Config as View;
 
 /**
  * Class Config.
@@ -64,46 +52,11 @@ class Config extends Model
     public App $app;
 
     /**
-     * The broadcast module config.
-     *
-     * @var Broadcast
-     */
-    public Broadcast $broadcast;
-
-    /**
-     * The cache module config.
-     *
-     * @var Cache
-     */
-    public Cache $cache;
-
-    /**
-     * The client module config.
-     *
-     * @var Client
-     */
-    public Client $client;
-
-    /**
      * The console module config.
      *
      * @var Console
      */
     public Console $console;
-
-    /**
-     * The container module config.
-     *
-     * @var Container
-     */
-    public Container $container;
-
-    /**
-     * The crypt module config.
-     *
-     * @var Crypt
-     */
-    public Crypt $crypt;
 
     /**
      * The event module config.
@@ -113,39 +66,11 @@ class Config extends Model
     public Event $event;
 
     /**
-     * The filesystem module config.
-     *
-     * @var Filesystem
-     */
-    public Filesystem $filesystem;
-
-    /**
      * The http module config.
      *
      * @var Http
      */
     public Http $http;
-
-    /**
-     * The Jwt module config.
-     *
-     * @var Jwt
-     */
-    public Jwt $jwt;
-
-    /**
-     * The logging module config.
-     *
-     * @var Log
-     */
-    public Log $log;
-
-    /**
-     * The mail module config.
-     *
-     * @var Mail
-     */
-    public Mail $mail;
 
     /**
      * The notification module config.
@@ -174,27 +99,6 @@ class Config extends Model
      * @var Routing
      */
     public Routing $routing;
-
-    /**
-     * The session module config.
-     *
-     * @var Session
-     */
-    public Session $session;
-
-    /**
-     * The SMS module config.
-     *
-     * @var Sms
-     */
-    public Sms $sms;
-
-    /**
-     * The view module config.
-     *
-     * @var View
-     */
-    public View $view;
 
     /**
      * Array of config providers.

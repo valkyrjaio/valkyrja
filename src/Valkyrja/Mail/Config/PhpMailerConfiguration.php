@@ -17,7 +17,7 @@ use Valkyrja\Mail\Adapter\PHPMailerAdapter;
 use Valkyrja\Mail\Constant\ConfigName;
 
 /**
- * Class NullConfiguration.
+ * Class PhpMailerConfiguration.
  *
  * @author Melech Mizrachi
  */
@@ -29,12 +29,22 @@ class PhpMailerConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'PHPMAILER_NULL_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'PHPMAILER_NULL_DRIVER_CLASS',
+        ConfigName::ADAPTER_CLASS => 'PHPMAILER_PHP_MAILER_ADAPTER_CLASS',
+        ConfigName::DRIVER_CLASS  => 'PHPMAILER_PHP_MAILER_DRIVER_CLASS',
+        'host'                    => 'PHPMAILER_PHP_MAILER_HOST',
+        'port'                    => 'PHPMAILER_PHP_MAILER_PORT',
+        'username'                => 'PHPMAILER_PHP_MAILER_USERNAME',
+        'password'                => 'PHPMAILER_PHP_MAILER_PASSWORD',
+        'encryption'              => 'PHPMAILER_PHP_MAILER_ENCRYPTION',
     ];
 
-    public function __construct()
-    {
+    public function __construct(
+        public string $host = '',
+        public int $port = 25,
+        public string $username = '',
+        public string $password = '',
+        public string $encryption = '',
+    ) {
         parent::__construct(
             adapterClass: PHPMailerAdapter::class,
         );

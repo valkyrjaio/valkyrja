@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Factory;
 
-use Valkyrja\Manager\Factory\Factory as ManagerFactory;
 use Valkyrja\Session\Adapter\Contract\Adapter;
+use Valkyrja\Session\Config\Configuration;
 use Valkyrja\Session\Driver\Contract\Driver;
 use Valkyrja\Session\Factory\Contract\Factory as Contract;
 
@@ -22,30 +22,37 @@ use Valkyrja\Session\Factory\Contract\Factory as Contract;
  * Class Factory.
  *
  * @author Melech Mizrachi
- *
- * @extends ManagerFactory<Adapter, Driver>
  */
-class Factory extends ManagerFactory implements Contract
+class Factory implements Contract
 {
     /**
      * @inheritDoc
+     *
+     * @template Driver of Driver
+     *
+     * @param class-string<Driver>  $name    The driver
+     * @param class-string<Adapter> $adapter The adapter
+     *
+     * @return Driver
      */
-    public function createDriver(string $name, string $adapter, array $config): Driver
+    public function createDriver(string $name, string $adapter, Configuration $config): Driver
     {
-        /** @var Driver $driver */
-        $driver = parent::createDriver($name, $adapter, $config);
-
-        return $driver;
+        return new $name(
+            $this->createAdapter($adapter, $config)
+        );
     }
 
     /**
      * @inheritDoc
+     *
+     * @template Adapter of Adapter
+     *
+     * @param class-string<Adapter> $name The adapter
+     *
+     * @return Adapter
      */
-    public function createAdapter(string $name, array $config): Adapter
+    public function createAdapter(string $name, Configuration $config): Adapter
     {
-        /** @var Adapter $adapter */
-        $adapter = parent::createAdapter($name, $config);
-
-        return $adapter;
+        return new $name($config);
     }
 }

@@ -14,34 +14,36 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Factory\Contract;
 
 use Valkyrja\Cache\Adapter\Contract\Adapter;
+use Valkyrja\Cache\Config\Configuration;
 use Valkyrja\Cache\Driver\Contract\Driver;
-use Valkyrja\Manager\Factory\Contract\Factory as Contract;
 
 /**
  * Interface Factory.
  *
  * @author Melech Mizrachi
- *
- * @extends Contract<Adapter, Driver>
  */
-interface Factory extends Contract
+interface Factory
 {
     /**
-     * @inheritDoc
+     * Create a driver.
      *
-     * @param class-string<Driver>  $name
-     * @param class-string<Adapter> $adapter
+     * @template Driver of Driver
+     *
+     * @param class-string<Driver>  $name    The driver
+     * @param class-string<Adapter> $adapter The adapter
      *
      * @return Driver
      */
-    public function createDriver(string $name, string $adapter, array $config): Driver;
+    public function createDriver(string $name, string $adapter, Configuration $config): Driver;
 
     /**
-     * @inheritDoc
+     * Create a new message.
      *
-     * @param class-string<Adapter> $name
+     * @template Adapter of Adapter
+     *
+     * @param class-string<Adapter> $name The adapter
      *
      * @return Adapter
      */
-    public function createAdapter(string $name, array $config): Adapter;
+    public function createAdapter(string $name, Configuration $config): Adapter;
 }

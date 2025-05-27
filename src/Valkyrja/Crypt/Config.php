@@ -13,33 +13,51 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Manager\Config as Model;
+use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Crypt\Config\Configurations;
+use Valkyrja\Crypt\Config\NullConfiguration;
+use Valkyrja\Crypt\Config\SodiumConfiguration;
+use Valkyrja\Crypt\Constant\ConfigName;
+use Valkyrja\Crypt\Constant\EnvName;
+
+use function array_key_first;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::DEFAULT => EnvKey::CRYPT_DEFAULT,
-        CKP::ADAPTER => EnvKey::CRYPT_ADAPTER,
-        CKP::DRIVER  => EnvKey::CRYPT_DRIVER,
-        CKP::CRYPTS  => EnvKey::CRYPT_CRYPTS,
+    protected static array $envNames = [
+        ConfigName::DEFAULT_CONFIGURATION => EnvName::DEFAULT_CONFIGURATION,
     ];
 
+    public function __construct(
+        public string $defaultConfiguration = '',
+        public Configurations|null $configurations = null,
+    ) {
+    }
+
     /**
-     * The config.
-     *
-     * @var array<string, array<string, mixed>>
+     * @inheritDoc
      */
-    public array $crypts;
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+        if ($this->configurations === null) {
+            $this->configurations = new Configurations(
+                sodium: SodiumConfiguration::fromEnv($env),
+                null: NullConfiguration::fromEnv($env),
+            );
+        }
+
+        if ($this->defaultConfiguration === '') {
+            $this->defaultConfiguration = array_key_first((array) $this->configurations);
+        }
+    }
 }

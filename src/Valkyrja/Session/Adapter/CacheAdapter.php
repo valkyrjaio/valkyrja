@@ -15,6 +15,7 @@ namespace Valkyrja\Session\Adapter;
 
 use JsonException;
 use Valkyrja\Cache\Driver\Contract\Driver as Cache;
+use Valkyrja\Session\Config\CacheConfiguration;
 use Valkyrja\Session\Exception\SessionStartFailure;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
@@ -25,24 +26,15 @@ use function session_start;
  * Class CacheAdapter.
  *
  * @author Melech Mizrachi
- *
- * @psalm-import-type ConfigAsArray from NullAdapter
- *
- * @phpstan-import-type ConfigAsArray from NullAdapter
  */
 class CacheAdapter extends PHPAdapter
 {
     /**
      * CacheAdapter constructor.
-     *
-     * @param Cache         $cache       The cache
-     * @param ConfigAsArray $config      The config
-     * @param string|null   $sessionId   [optional] The session id
-     * @param string|null   $sessionName [optional] The session name
      */
     public function __construct(
         protected Cache $cache,
-        array $config,
+        CacheConfiguration $config,
         string|null $sessionId = null,
         string|null $sessionName = null
     ) {

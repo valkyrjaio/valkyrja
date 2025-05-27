@@ -13,35 +13,27 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail;
 
-use Valkyrja\Mail\Adapter\Contract\Adapter;
+use Valkyrja\Exception\InvalidArgumentException;
+use Valkyrja\Mail\Config\MessageConfiguration;
 use Valkyrja\Mail\Contract\Mail as Contract;
 use Valkyrja\Mail\Driver\Contract\Driver;
 use Valkyrja\Mail\Factory\Contract\Factory;
 use Valkyrja\Mail\Message\Contract\Message;
-use Valkyrja\Manager\MessageManager as Manager;
 
 /**
  * Class Mail.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Adapter, Driver, Factory, Message>
- *
- * @property Factory $factory
  */
-class Mail extends Manager implements Contract
+class Mail implements Contract
 {
     /**
      * Mail constructor.
-     *
-     * @param Factory                     $factory The factory
-     * @param Config|array<string, mixed> $config  The config
      */
-    public function __construct(Factory $factory, Config|array $config)
-    {
-        parent::__construct($factory, $config);
-
-        $this->configurations = $config['mailers'];
+    public function __construct(
+        protected Factory $factory,
+        protected Config $config
+    ) {
     }
 
     /**
@@ -49,10 +41,20 @@ class Mail extends Manager implements Contract
      */
     public function use(string|null $name = null): Driver
     {
-        /** @var Driver $driver */
-        $driver = parent::use($name);
+        // The configuration name to use
+        $name ??= $this->config->defaultConfiguration;
+        // The config to use
+        $config = $this->config->configurations->$name
+            ?? throw new InvalidArgumentException("$name is not a valid configuration");
+        // The driver to use
+        $driverClass = $config->driverClass;
+        // The adapter to use
+        $adapterClass = $config->adapterClass;
+        // The cache key to use
+        $cacheKey = $name . $adapterClass;
 
-        return $driver;
+        return $this->drivers[$cacheKey]
+            ?? $this->factory->createDriver($driverClass, $adapterClass, $config);
     }
 
     /**
@@ -60,10 +62,16 @@ class Mail extends Manager implements Contract
      */
     public function createMessage(string|null $name = null, array $data = []): Message
     {
-        /** @var Message $message */
-        $message = parent::createMessage($name, $data);
+        // The name of the message to use
+        $name ??= $this->config->defaultMessageConfiguration;
+        // The message config
+        /** @var MessageConfiguration $config */
+        $config = $this->config->messageConfigurations->$name
+            ?? throw new InvalidArgumentException("$name is not a valid message");
+        // The message to use
+        $class = $config->messageClass;
 
-        return $message;
+        return $this->factory->createMessage($class, $config, $data);
     }
 
     /**

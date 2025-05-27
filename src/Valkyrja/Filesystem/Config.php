@@ -13,48 +13,55 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Manager\Config as Model;
+use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Filesystem\Config\Configurations;
+use Valkyrja\Filesystem\Config\InMemoryConfiguration;
+use Valkyrja\Filesystem\Config\LocalFlysystemConfiguration;
+use Valkyrja\Filesystem\Config\NullConfiguration;
+use Valkyrja\Filesystem\Config\S3FlysystemConfiguration;
+use Valkyrja\Filesystem\Constant\ConfigName;
+use Valkyrja\Filesystem\Constant\EnvName;
+
+use function array_key_first;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::DEFAULT => EnvKey::FILESYSTEM_DEFAULT,
-        CKP::ADAPTER => EnvKey::FILESYSTEM_ADAPTER,
-        CKP::DRIVER  => EnvKey::FILESYSTEM_DRIVER,
-        CKP::DISKS   => EnvKey::FILESYSTEM_DISKS,
+    protected static array $envNames = [
+        ConfigName::DEFAULT_CONFIGURATION => EnvName::DEFAULT_CONFIGURATION,
     ];
 
-    /**
-     * @inheritDoc
-     */
-    public string $default;
+    public function __construct(
+        public string $defaultConfiguration = '',
+        public Configurations|null $configurations = null,
+    ) {
+    }
 
     /**
      * @inheritDoc
      */
-    public string $adapter;
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+        if ($this->configurations === null) {
+            $this->configurations = new Configurations(
+                local: LocalFlysystemConfiguration::fromEnv($env),
+                memory: InMemoryConfiguration::fromEnv($env),
+                s3: S3FlysystemConfiguration::fromEnv($env),
+                null: NullConfiguration::fromEnv($env),
+            );
+        }
 
-    /**
-     * @inheritDoc
-     */
-    public string $driver;
-
-    /**
-     * The disks.
-     *
-     * @var array<string, array<string, mixed>>
-     */
-    public array $disks;
+        if ($this->defaultConfiguration === '') {
+            $this->defaultConfiguration = array_key_first((array) $this->configurations);
+        }
+    }
 }

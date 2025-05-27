@@ -36,10 +36,11 @@ class SodiumConfiguration extends Configuration
     ];
 
     public function __construct(
-        public string|null $key = null,
+        string $key = '',
         public string|null $keyPath = null,
     ) {
         parent::__construct(
+            key: $key,
             adapterClass: SodiumAdapter::class,
         );
     }

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Adapter\Contract;
 
-use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 use Valkyrja\Session\Exception\InvalidCsrfToken;
 
 /**
@@ -21,7 +20,7 @@ use Valkyrja\Session\Exception\InvalidCsrfToken;
  *
  * @author Melech Mizrachi
  */
-interface Adapter extends Contract
+interface Adapter
 {
     /**
      * Start the session.

@@ -13,43 +13,49 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Manager\Config as Model;
+use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Session\Config\Configurations;
+use Valkyrja\Session\Config\PhpConfiguration;
+use Valkyrja\Session\Constant\ConfigName;
+use Valkyrja\Session\Constant\EnvName;
+
+use function array_key_first;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::DEFAULT  => EnvKey::SESSION_DEFAULT,
-        CKP::ADAPTER  => EnvKey::SESSION_ADAPTER,
-        CKP::DRIVER   => EnvKey::SESSION_DRIVER,
-        CKP::SESSIONS => EnvKey::SESSION_SESSIONS,
+    protected static array $envNames = [
+        ConfigName::DEFAULT_CONFIGURATION => EnvName::DEFAULT_CONFIGURATION,
     ];
 
-    /**
-     * @inheritDoc
-     */
-    public string $adapter;
+    public function __construct(
+        public string $defaultConfiguration = '',
+        public Configurations|null $configurations = null,
+    ) {
+    }
 
     /**
      * @inheritDoc
      */
-    public string $driver;
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+        if ($this->configurations === null) {
+            $this->configurations = new Configurations(
+                php: PhpConfiguration::fromEnv($env),
+            );
+        }
 
-    /**
-     * The sessions.
-     *
-     * @var array<string, array<string, mixed>>
-     */
-    public array $sessions;
+        if ($this->defaultConfiguration === '') {
+            $this->defaultConfiguration = array_key_first((array) $this->configurations);
+        }
+    }
 }

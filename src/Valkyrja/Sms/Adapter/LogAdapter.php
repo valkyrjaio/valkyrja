@@ -15,6 +15,7 @@ namespace Valkyrja\Sms\Adapter;
 
 use Valkyrja\Log\Driver\Contract\Driver as Logger;
 use Valkyrja\Sms\Adapter\Contract\LogAdapter as Contract;
+use Valkyrja\Sms\Config\LogConfiguration;
 use Valkyrja\Sms\Message\Contract\Message;
 
 /**
@@ -25,29 +26,12 @@ use Valkyrja\Sms\Message\Contract\Message;
 class LogAdapter implements Contract
 {
     /**
-     * The log adapter.
-     *
-     * @var Logger
-     */
-    protected Logger $log;
-
-    /**
-     * The config.
-     *
-     * @var array<string, mixed>
-     */
-    protected array $config;
-
-    /**
      * LogAdapter constructor.
-     *
-     * @param Logger               $logger The logger
-     * @param array<string, mixed> $config The config
      */
-    public function __construct(Logger $logger, array $config)
-    {
-        $this->config = $config;
-        $this->log    = $logger;
+    public function __construct(
+        protected Logger $log,
+        protected LogConfiguration $config
+    ) {
     }
 
     /**

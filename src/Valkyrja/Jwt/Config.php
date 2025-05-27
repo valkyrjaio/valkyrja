@@ -13,48 +13,53 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Manager\Config as Model;
+use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Jwt\Config\Configurations;
+use Valkyrja\Jwt\Config\EdDsaConfiguration;
+use Valkyrja\Jwt\Config\HsConfiguration;
+use Valkyrja\Jwt\Config\RsConfiguration;
+use Valkyrja\Jwt\Constant\ConfigName;
+use Valkyrja\Jwt\Constant\EnvName;
+
+use function array_key_first;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::DEFAULT => EnvKey::JWT_DEFAULT,
-        CKP::ADAPTER => EnvKey::JWT_ADAPTER,
-        CKP::DRIVER  => EnvKey::JWT_DRIVER,
-        CKP::ALGOS   => EnvKey::JWT_ALGOS,
+    protected static array $envNames = [
+        ConfigName::DEFAULT_CONFIGURATION => EnvName::DEFAULT_CONFIGURATION,
     ];
 
-    /**
-     * @inheritDoc
-     */
-    public string $default;
+    public function __construct(
+        public string $defaultConfiguration = '',
+        public Configurations|null $configurations = null,
+    ) {
+    }
 
     /**
      * @inheritDoc
      */
-    public string $adapter;
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+        if ($this->configurations === null) {
+            $this->configurations = new Configurations(
+                hs: HsConfiguration::fromEnv($env),
+                rs: RsConfiguration::fromEnv($env),
+                edDsa: EdDsaConfiguration::fromEnv($env),
+            );
+        }
 
-    /**
-     * @inheritDoc
-     */
-    public string $driver;
-
-    /**
-     * The algorithms.
-     *
-     * @var array<string, array<string, mixed>>
-     */
-    public array $algos;
+        if ($this->defaultConfiguration === '') {
+            $this->defaultConfiguration = array_key_first((array) $this->configurations);
+        }
+    }
 }

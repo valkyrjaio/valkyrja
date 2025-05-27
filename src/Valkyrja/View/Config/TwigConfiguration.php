@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Config;
 
+use Twig\Extension\ExtensionInterface;
 use Valkyrja\Support\Directory;
 use Valkyrja\View\Constant\ConfigName;
 use Valkyrja\View\Engine\TwigEngine;
@@ -32,11 +33,14 @@ class TwigConfiguration extends Configuration
     protected static array $envNames = [
         ConfigName::ENGINE         => 'VIEW_TWIG_ENGINE',
         ConfigName::FILE_EXTENSION => 'VIEW_TWIG_FILE_EXTENSION',
+        ConfigName::DIR            => 'VIEW_TWIG_DIR',
+        ConfigName::PATHS          => 'VIEW_TWIG_PATHS',
         'extensions'               => 'VIEW_TWIG_EXTENSIONS',
+        'compiledDir'              => 'VIEW_TWIG_COMPILED_DIR',
     ];
 
     /**
-     * @param string[] $extensions
+     * @param class-string<ExtensionInterface>[] $extensions The twig extensions
      */
     public function __construct(
         public string $compiledDir = '',

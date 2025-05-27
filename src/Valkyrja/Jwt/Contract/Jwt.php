@@ -13,24 +13,17 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Contract;
 
-use Valkyrja\Jwt\Adapter\Contract\Adapter;
 use Valkyrja\Jwt\Driver\Contract\Driver;
-use Valkyrja\Jwt\Factory\Contract\Factory;
-use Valkyrja\Manager\Contract\Manager;
 
 /**
  * Interface Jwt.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Adapter, Driver, Factory>
  */
-interface Jwt extends Manager
+interface Jwt
 {
     /**
-     * @inheritDoc
-     *
-     * @return Driver
+     * Use a specific configuration.
      */
     public function use(string|null $name = null): Driver;
 

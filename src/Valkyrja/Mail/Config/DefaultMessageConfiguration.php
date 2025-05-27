@@ -35,7 +35,8 @@ class DefaultMessageConfiguration extends MessageConfiguration
     public function __construct()
     {
         parent::__construct(
-            from: 'Example',
+            from: 'example@example.com',
+            name: 'Example',
         );
     }
 }

@@ -16,6 +16,7 @@ namespace Valkyrja\Session\Adapter;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Crypt\Exception\CryptException;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Session\Config\CookieConfiguration;
 use Valkyrja\Session\Exception\SessionStartFailure;
 
 use function headers_sent;
@@ -25,10 +26,6 @@ use function session_start;
  * Class CookieAdapter.
  *
  * @author Melech Mizrachi
- *
- * @psalm-import-type ConfigAsArray from NullAdapter
- *
- * @phpstan-import-type ConfigAsArray from NullAdapter
  */
 class CookieAdapter extends PHPAdapter
 {
@@ -48,17 +45,11 @@ class CookieAdapter extends PHPAdapter
 
     /**
      * CookieAdapter constructor.
-     *
-     * @param Crypt         $crypt       The crypt
-     * @param ServerRequest $request     The request
-     * @param ConfigAsArray $config      The config
-     * @param string|null   $sessionId   [optional] The session id
-     * @param string|null   $sessionName [optional] The session name
      */
     public function __construct(
         Crypt $crypt,
         ServerRequest $request,
-        array $config,
+        CookieConfiguration $config,
         string|null $sessionId = null,
         string|null $sessionName = null
     ) {

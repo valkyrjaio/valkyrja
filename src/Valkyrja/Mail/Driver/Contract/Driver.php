@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Mail\Driver\Contract;
 
 use Valkyrja\Mail\Message\Contract\Message;
-use Valkyrja\Manager\Driver\Contract\Driver as Contract;
 
 /**
  * Interface Driver.
  *
  * @author Melech Mizrachi
  */
-interface Driver extends Contract
+interface Driver
 {
     /**
      * Send a message.

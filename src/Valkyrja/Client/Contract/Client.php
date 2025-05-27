@@ -13,26 +13,19 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client\Contract;
 
-use Valkyrja\Client\Adapter\Contract\Adapter;
 use Valkyrja\Client\Driver\Contract\Driver;
-use Valkyrja\Client\Factory\Contract\Factory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Manager\Contract\Manager;
 
 /**
  * Interface Client.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Adapter, Driver, Factory>
  */
-interface Client extends Manager
+interface Client
 {
     /**
-     * @inheritDoc
-     *
-     * @return Driver
+     * Use a specific configuration.
      */
     public function use(string|null $name = null): Driver;
 

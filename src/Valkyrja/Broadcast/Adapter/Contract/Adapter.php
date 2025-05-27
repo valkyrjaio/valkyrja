@@ -16,14 +16,13 @@ namespace Valkyrja\Broadcast\Adapter\Contract;
 use InvalidArgumentException;
 use JsonException;
 use Valkyrja\Broadcast\Message\Contract\Message;
-use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 
 /**
  * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-interface Adapter extends Contract
+interface Adapter
 {
     /**
      * Determine if a key/value pair exists and matches in a broadcast message.

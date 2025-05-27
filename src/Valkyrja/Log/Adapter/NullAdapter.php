@@ -15,6 +15,7 @@ namespace Valkyrja\Log\Adapter;
 
 use Throwable;
 use Valkyrja\Log\Adapter\Contract\Adapter as Contract;
+use Valkyrja\Log\Config\NullConfiguration;
 use Valkyrja\Log\Enum\LogLevel;
 
 /**
@@ -26,11 +27,9 @@ class NullAdapter implements Contract
 {
     /**
      * NullAdapter constructor.
-     *
-     * @param array<string, mixed> $config The config
      */
     public function __construct(
-        protected array $config
+        protected NullConfiguration $config
     ) {
     }
 

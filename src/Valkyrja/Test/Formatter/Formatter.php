@@ -99,7 +99,8 @@ class Formatter implements Contract
             }
         }
 
-        $count         = $total - $failed;
+        $count = $total - $failed;
+        /** @psalm-suppress InvalidOperand */
         $percentPassed = ($count / $total) * 100;
 
         return $this->getCompleted($count, $total, $percentPassed);

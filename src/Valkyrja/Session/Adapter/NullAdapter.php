@@ -15,6 +15,7 @@ namespace Valkyrja\Session\Adapter;
 
 use Exception;
 use Valkyrja\Session\Adapter\Contract\Adapter as Contract;
+use Valkyrja\Session\Config\Configuration;
 use Valkyrja\Session\Exception\InvalidCsrfToken;
 use Valkyrja\Session\Exception\InvalidSessionId;
 use Valkyrja\Session\Exception\SessionStartFailure;
@@ -29,10 +30,6 @@ use function random_bytes;
  * Class NullAdapter.
  *
  * @author Melech Mizrachi
- *
- * @psalm-type ConfigAsArray array<string, mixed>
- *
- * @phpstan-type ConfigAsArray array<string, mixed>
  */
 class NullAdapter implements Contract
 {
@@ -60,17 +57,16 @@ class NullAdapter implements Contract
     /**
      * NullAdapter constructor.
      *
-     * @param ConfigAsArray $config      The config
-     * @param string|null   $sessionId   [optional] The session id
-     * @param string|null   $sessionName [optional] The session name
-     *
      * @throws InvalidSessionId
      * @throws SessionStartFailure
      */
-    public function __construct(protected array $config, string|null $sessionId = null, string|null $sessionName = null)
-    {
-        $sessionId ??= $config['id'] ?? null;
-        $sessionName ??= $config['name'] ?? null;
+    public function __construct(
+        protected Configuration $config,
+        string|null $sessionId = null,
+        string|null $sessionName = null
+    ) {
+        $sessionId   ??= $config->id;
+        $sessionName ??= $config->name;
 
         // If a session id is provided
         if (is_string($sessionId)) {

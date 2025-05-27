@@ -15,14 +15,13 @@ namespace Valkyrja\Log\Adapter\Contract;
 
 use Throwable;
 use Valkyrja\Log\Enum\LogLevel;
-use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 
 /**
  * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-interface Adapter extends Contract
+interface Adapter
 {
     /**
      * Log a debug message.

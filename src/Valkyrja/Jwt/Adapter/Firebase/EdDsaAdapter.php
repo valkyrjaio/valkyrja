@@ -15,24 +15,33 @@ namespace Valkyrja\Jwt\Adapter\Firebase;
 
 use RuntimeException;
 use Valkyrja\Jwt\Adapter\FirebaseAdapter;
-
-use function is_string;
+use Valkyrja\Jwt\Config\EdDsaConfiguration;
 
 /**
  * Class EdDsaAdapter.
  *
  * @author Melech Mizrachi
+ *
+ * @property EdDsaConfiguration $config
  */
 class EdDsaAdapter extends FirebaseAdapter
 {
+    /**
+     * EdDsaAdapter constructor.
+     */
+    public function __construct(EdDsaConfiguration $config)
+    {
+        parent::__construct($config);
+    }
+
     /**
      * @inheritDoc
      */
     protected function setEncodeKey(): void
     {
-        $encodeKey = $this->config['privateKey'];
+        $encodeKey = $this->config->privateKey;
 
-        if (! is_string($encodeKey)) {
+        if ($encodeKey === '') {
             throw new RuntimeException('Invalid private key provided');
         }
 
@@ -44,9 +53,9 @@ class EdDsaAdapter extends FirebaseAdapter
      */
     protected function setDecodeKey(): void
     {
-        $decodeKey = $this->config['publicKey'];
+        $decodeKey = $this->config->publicKey;
 
-        if (! is_string($decodeKey)) {
+        if ($decodeKey === '') {
             throw new RuntimeException('Invalid public key provided');
         }
 

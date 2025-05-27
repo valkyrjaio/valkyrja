@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container;
 
-use Valkyrja\Config\Config;
 use Valkyrja\Container\Annotation\Contract\Annotations;
-use Valkyrja\Container\Config as ContainerConfig;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Contract\ContextAwareContainer;
 use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Support\Cacheable\Cacheable;
+use Valkyrja\Exception\InvalidArgumentException;
+use Valkyrja\Exception\RuntimeException;
 
 use function array_map;
 use function is_file;
@@ -29,29 +28,60 @@ use function is_file;
  * Class CacheableContainer.
  *
  * @author Melech Mizrachi
- *
- * @psalm-import-type ConfigAsArray from ContainerConfig
- *
- * @phpstan-import-type ConfigAsArray from ContainerConfig
  */
 class CacheableContainer extends Container
 {
     /**
-     * @use Cacheable<ContainerConfig, ConfigAsArray, ContainerConfig>
+     * Has setup already completed? Used to avoid duplicate setup.
+     *
+     * @var bool
      */
-    use Cacheable;
+    protected bool $setup = false;
 
     /**
-     * @inheritDoc
+     * Setup the container.
      *
-     * @return ContainerConfig
+     * @param bool $force    [optional] Whether to force setup
+     * @param bool $useCache [optional] Whether to use cache
+     *
+     * @return void
+     */
+    public function setup(bool $force = false, bool $useCache = true): void
+    {
+        // If route's have already been setup, no need to do it again
+        if ($this->setup && ! $force) {
+            return;
+        }
+
+        $this->setup = true;
+        // The cacheable config
+        $config = $this->config;
+
+        $configUseCache = $config->useCache;
+
+        // If the application should use the routes cache file
+        if ($useCache && $configUseCache) {
+            $this->setupFromCache($config);
+
+            // Then return out of setup
+            return;
+        }
+
+        $this->setupNotCached($config);
+        $this->setupAnnotatedServices($config);
+        $this->setupAttributedServices($config);
+        $this->requireFilePath($config);
+    }
+
+    /**
+     * Get a cacheable representation of the container.
      */
     public function getCacheable(): Config
     {
         $this->setup(true, false);
 
         // Set app config
-        $config        = new ContainerConfig((array) $this->config);
+        $config        = clone $this->config;
         $config->cache = $this->getCacheModel();
         $providers     = $config->providers;
 
@@ -69,47 +99,28 @@ class CacheableContainer extends Container
     }
 
     /**
-     * @inheritDoc
-     *
-     * @return ContainerConfig|ConfigAsArray
+     * Setup from cache.
      */
-    protected function getConfig(): Config|array
+    protected function setupFromCache(Config $config): void
     {
-        return $this->config;
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param ContainerConfig|ConfigAsArray $config
-     */
-    protected function beforeSetup(Config|array $config): void
-    {
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param ContainerConfig|ConfigAsArray $config
-     */
-    protected function setupFromCache(Config|array $config): void
-    {
-        $cache = $config['cache'] ?? null;
+        $cache = $config->cache ?? null;
 
         if ($cache === null) {
             $cache         = [];
-            $cacheFilePath = $config['cacheFilePath'];
+            $cacheFilePath = $config->cacheFilePath;
 
             if (is_file($cacheFilePath)) {
                 $cache = require $cacheFilePath;
+            } else {
+                throw new RuntimeException('No cache found');
             }
         }
 
-        $this->aliases          = $cache['aliases'] ?? [];
-        $this->deferred         = $cache['deferred'] ?? [];
-        $this->deferredCallback = $cache['deferredCallback'] ?? [];
-        $this->services         = $cache['services'] ?? [];
-        $this->singletons       = $cache['singletons'] ?? [];
+        $this->aliases          = $cache->aliases;
+        $this->deferred         = $cache->deferred;
+        $this->deferredCallback = $cache->deferredCallback;
+        $this->services         = $cache->services;
+        $this->singletons       = $cache->singletons;
         $this->registered       = [];
 
         // Setup service providers
@@ -117,11 +128,9 @@ class CacheableContainer extends Container
     }
 
     /**
-     * @inheritDoc
-     *
-     * @param ContainerConfig|ConfigAsArray $config
+     * Setup not cached.
      */
-    protected function setupNotCached(Config|array $config): void
+    protected function setupNotCached(Config $config): void
     {
         $this->aliases          = [];
         $this->registered       = [];
@@ -135,17 +144,15 @@ class CacheableContainer extends Container
     }
 
     /**
-     * @inheritDoc
-     *
-     * @param ContainerConfig|ConfigAsArray $config
+     * Get annotated services.
      */
-    protected function setupAnnotations(Config|array $config): void
+    protected function setupAnnotatedServices(Config $config): void
     {
         /** @var Annotations $containerAnnotations */
         $containerAnnotations = $this->getSingleton(Annotations::class);
 
         // Get all the annotated services from the list of controllers and iterate through the services
-        foreach ($containerAnnotations->getServices(...$config['services']) as $service) {
+        foreach ($containerAnnotations->getServices(...$config->services) as $service) {
             $class = $service->getClass();
             $id    = $service->getId();
 
@@ -157,7 +164,7 @@ class CacheableContainer extends Container
         }
 
         // Get all the annotated services from the list of controllers and iterate through the services
-        foreach ($containerAnnotations->getContextServices(...$config['contextServices']) as $context) {
+        foreach ($containerAnnotations->getContextServices(...$config->contextServices) as $context) {
             $class   = $context->getClass();
             $method  = $context->getMethod();
             $id      = $context->getId();
@@ -170,7 +177,7 @@ class CacheableContainer extends Container
         }
 
         // Get all the annotated services from the list of classes and iterate through the services
-        foreach ($containerAnnotations->getAliasServices(...$config['aliases']) as $alias) {
+        foreach ($containerAnnotations->getAliasServices(...$config->aliases) as $alias) {
             $name = $alias->getName();
             $id   = $alias->getId();
 
@@ -182,26 +189,34 @@ class CacheableContainer extends Container
     }
 
     /**
-     * @inheritDoc
-     *
-     * @param ContainerConfig|ConfigAsArray $config
+     * Get attributed services.
      */
-    protected function setupAttributes(Config|array $config): void
+    protected function setupAttributedServices(Config $config): void
     {
     }
 
     /**
-     * Setup service providers.
-     *
-     * @param ContainerConfig|ConfigAsArray $config
-     *
-     * @return void
+     * Require the file path specified in the config.
      */
-    protected function setupServiceProviders(Config|array $config): void
+    protected function requireFilePath(Config $config): void
+    {
+        $filePath = $config->filePath;
+
+        if (! is_file($filePath)) {
+            throw new InvalidArgumentException('Invalid file path provided');
+        }
+
+        require $filePath;
+    }
+
+    /**
+     * Setup service providers.
+     */
+    protected function setupServiceProviders(Config $config): void
     {
         array_map(
             [$this, 'register'],
-            $config['providers']
+            $config->providers
         );
 
         // If this is not a dev environment
@@ -211,17 +226,8 @@ class CacheableContainer extends Container
 
         array_map(
             [$this, 'register'],
-            $config['devProviders']
+            $config->devProviders
         );
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param ContainerConfig|ConfigAsArray $config
-     */
-    protected function afterSetup(Config|array $config): void
-    {
     }
 
     /**

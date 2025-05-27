@@ -13,33 +13,51 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Manager\Config as Model;
+use Valkyrja\Client\Config\Configurations;
+use Valkyrja\Client\Config\GuzzleConfiguration;
+use Valkyrja\Client\Config\NullConfiguration;
+use Valkyrja\Client\Constant\ConfigName;
+use Valkyrja\Client\Constant\EnvName;
+use Valkyrja\Config\DataConfig as ParentConfig;
+
+use function array_key_first;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::DEFAULT => EnvKey::CLIENT_DEFAULT,
-        CKP::ADAPTER => EnvKey::CLIENT_ADAPTER,
-        CKP::DRIVER  => EnvKey::CLIENT_DRIVER,
-        CKP::CLIENTS => EnvKey::CLIENT_CLIENTS,
+    protected static array $envNames = [
+        ConfigName::DEFAULT_CONFIGURATION => EnvName::DEFAULT_CONFIGURATION,
     ];
 
+    public function __construct(
+        public string $defaultConfiguration = '',
+        public Configurations|null $configurations = null,
+    ) {
+    }
+
     /**
-     * The client connections.
-     *
-     * @var array<string, array<string, mixed>>
+     * @inheritDoc
      */
-    public array $clients;
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+        if ($this->configurations === null) {
+            $this->configurations = new Configurations(
+                guzzle: GuzzleConfiguration::fromEnv($env),
+                null: NullConfiguration::fromEnv($env),
+            );
+        }
+
+        if ($this->defaultConfiguration === '') {
+            $this->defaultConfiguration = array_key_first((array) $this->configurations);
+        }
+    }
 }

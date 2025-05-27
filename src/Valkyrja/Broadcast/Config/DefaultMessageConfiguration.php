@@ -35,7 +35,7 @@ class DefaultMessageConfiguration extends MessageConfiguration
     public function __construct()
     {
         parent::__construct(
-            from: 'Example',
+            channel: 'Example',
         );
     }
 }

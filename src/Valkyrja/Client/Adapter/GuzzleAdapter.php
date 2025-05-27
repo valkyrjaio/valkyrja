@@ -19,15 +19,13 @@ use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Client\Adapter\Contract\GuzzleAdapter as Contract;
-use Valkyrja\Exception\InvalidArgumentException;
+use Valkyrja\Client\Config\GuzzleConfiguration;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\JsonServerRequest;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
-
-use function is_array;
 
 /**
  * Class GuzzleAdapter.
@@ -38,15 +36,11 @@ class GuzzleAdapter implements Contract
 {
     /**
      * GuzzleAdapter constructor.
-     *
-     * @param ClientInterface      $guzzle          The guzzle client
-     * @param ResponseFactory      $responseFactory The response factory
-     * @param array<string, mixed> $config          The client config
      */
     public function __construct(
         protected ClientInterface $guzzle,
         protected ResponseFactory $responseFactory,
-        protected array $config
+        protected GuzzleConfiguration $config
     ) {
     }
 
@@ -131,11 +125,7 @@ class GuzzleAdapter implements Contract
      */
     protected function getGuzzleResponse(ServerRequest $request): ResponseInterface
     {
-        $options = $this->config['options'] ?? [];
-
-        if (! is_array($options)) {
-            throw new InvalidArgumentException('Options should be an array with string keys');
-        }
+        $options = $this->config->options;
 
         /** @var array<string, mixed> $options */
         $this->setGuzzleHeaders($request, $options);
@@ -149,7 +139,7 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle headers.
      *
-     * @param ServerRequest        $request  The request
+     * @param ServerRequest         $request The request
      * @param array<string, mixed> &$options The options
      *
      * @return void
@@ -168,7 +158,7 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle cookies.
      *
-     * @param ServerRequest        $request  The request
+     * @param ServerRequest         $request The request
      * @param array<string, mixed> &$options The options
      *
      * @return void
@@ -194,7 +184,7 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle form params.
      *
-     * @param ServerRequest        $request  The request
+     * @param ServerRequest         $request The request
      * @param array<string, mixed> &$options The options
      *
      * @return void
@@ -212,7 +202,7 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle body.
      *
-     * @param ServerRequest        $request  The request
+     * @param ServerRequest         $request The request
      * @param array<string, mixed> &$options The options
      *
      * @return void

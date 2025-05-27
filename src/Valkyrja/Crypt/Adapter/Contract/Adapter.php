@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt\Adapter\Contract;
 
 use Valkyrja\Crypt\Exception\CryptException;
-use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 
 /**
  * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-interface Adapter extends Contract
+interface Adapter
 {
     /**
      * Determine if an encrypted message is valid.

@@ -54,6 +54,7 @@ class Config extends ParentConfig
      */
     protected function setPropertiesAfterSettingFromEnv(string $env): void
     {
+        // Specifically done this way to allow for previously set aliases overwrite the default ones here
         $this->aliases = array_merge(
             [
                 Alias::REQUEST_METHOD => AliasClass::REQUEST_METHOD,
@@ -62,6 +63,7 @@ class Config extends ParentConfig
             $this->aliases
         );
 
+        // Specifically done this way to allow for previously set mappings overwrite the default ones here
         $this->map = array_merge(
             [
                 AnnotationName::COMMAND         => AnnotationClass::COMMAND,

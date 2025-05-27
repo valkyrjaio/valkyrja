@@ -13,35 +13,37 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Factory\Contract;
 
-use Valkyrja\Manager\Factory\Contract\Factory as Contract;
 use Valkyrja\Session\Adapter\Contract\Adapter;
+use Valkyrja\Session\Config\Configuration;
 use Valkyrja\Session\Driver\Contract\Driver;
 
 /**
  * Interface Factory.
  *
  * @author Melech Mizrachi
- *
- * @extends Contract<Adapter, Driver>
  */
-interface Factory extends Contract
+interface Factory
 {
     /**
-     * @inheritDoc
+     * Create a driver.
+     *
+     * @template Driver of Driver
      *
      * @param class-string<Driver>  $name    The driver
      * @param class-string<Adapter> $adapter The adapter
      *
      * @return Driver
      */
-    public function createDriver(string $name, string $adapter, array $config): Driver;
+    public function createDriver(string $name, string $adapter, Configuration $config): Driver;
 
     /**
-     * @inheritDoc
+     * Create an adapter.
+     *
+     * @template Adapter of Adapter
      *
      * @param class-string<Adapter> $name The adapter
      *
      * @return Adapter
      */
-    public function createAdapter(string $name, array $config): Adapter;
+    public function createAdapter(string $name, Configuration $config): Adapter;
 }

@@ -16,6 +16,7 @@ namespace Valkyrja\Log\Adapter;
 use Psr\Log\LoggerInterface;
 use Throwable;
 use Valkyrja\Log\Adapter\Contract\PsrAdapter as Contract;
+use Valkyrja\Log\Config\PsrConfiguration;
 use Valkyrja\Log\Enum\LogLevel;
 
 /**
@@ -27,13 +28,10 @@ class PsrAdapter implements Contract
 {
     /**
      * PsrAdapter constructor.
-     *
-     * @param LoggerInterface      $logger The logger
-     * @param array<string, mixed> $config The config
      */
     public function __construct(
         protected LoggerInterface $logger,
-        protected array $config
+        protected PsrConfiguration $config
     ) {
     }
 

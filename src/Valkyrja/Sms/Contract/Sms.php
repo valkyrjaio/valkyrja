@@ -13,32 +13,23 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Contract;
 
-use Valkyrja\Manager\Contract\MessageManager as Manager;
-use Valkyrja\Sms\Adapter\Contract\Adapter;
 use Valkyrja\Sms\Driver\Contract\Driver;
-use Valkyrja\Sms\Factory\Contract\Factory;
 use Valkyrja\Sms\Message\Contract\Message;
 
 /**
  * Interface Sms.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Adapter, Driver, Factory, Message>
  */
-interface Sms extends Manager
+interface Sms
 {
     /**
-     * @inheritDoc
-     *
-     * @return Driver
+     * Use a specific configuration.
      */
     public function use(string|null $name = null): Driver;
 
     /**
-     * @inheritDoc
-     *
-     * @return Message
+     * Create a new message.
      */
     public function createMessage(string|null $name = null, array $data = []): Message;
 

@@ -216,7 +216,7 @@ function env(string|null $key = null, mixed $default = null): mixed
     // Does not use the app() helper due to the self::$instance property
     // that Valkyrja::app() relies on has not been set yet when
     // this helper may be used.
-    return Valkyrja::env($key, $default);
+    return Valkyrja::getEnvValue($key, $default);
 }
 
 /**

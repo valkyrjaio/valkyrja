@@ -21,6 +21,7 @@ use Valkyrja\Annotation\Exception\InvalidAnnotationKeyArgument;
 use Valkyrja\Annotation\Model\Annotation as AnnotationModel;
 use Valkyrja\Annotation\Model\Contract\Annotation;
 use Valkyrja\Annotation\Parser\Contract\Parser as Contract;
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function array_key_exists;
@@ -373,7 +374,13 @@ class Parser implements Contract
      */
     protected function getClassFromAlias(string $class): string
     {
-        return $this->config->aliases[$class]
+        $class = $this->config->aliases[$class]
             ?? $class;
+
+        if (! class_exists($class)) {
+            throw new InvalidArgumentException("$class is not a valid class");
+        }
+
+        return $class;
     }
 }

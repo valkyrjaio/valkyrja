@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem\Adapter\Contract;
 
 use Valkyrja\Filesystem\Enum\Visibility;
-use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 
 /**
  * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-interface Adapter extends Contract
+interface Adapter
 {
     /**
      * Determine whether a path exists.

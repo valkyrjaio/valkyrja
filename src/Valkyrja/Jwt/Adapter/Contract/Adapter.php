@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Adapter\Contract;
 
-use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
-
 /**
  * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-interface Adapter extends Contract
+interface Adapter
 {
     /**
      * Encode a payload array into a JWT string.

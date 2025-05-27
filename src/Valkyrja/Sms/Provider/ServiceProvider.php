@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Provider;
 
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Contract\Logger;
@@ -21,6 +21,10 @@ use Valkyrja\Sms\Adapter\Contract\Adapter;
 use Valkyrja\Sms\Adapter\LogAdapter;
 use Valkyrja\Sms\Adapter\NullAdapter;
 use Valkyrja\Sms\Adapter\VonageAdapter;
+use Valkyrja\Sms\Config\LogConfiguration;
+use Valkyrja\Sms\Config\MessageConfiguration;
+use Valkyrja\Sms\Config\NullConfiguration;
+use Valkyrja\Sms\Config\VonageConfiguration;
 use Valkyrja\Sms\Contract\Sms;
 use Valkyrja\Sms\Driver\Driver;
 use Valkyrja\Sms\Factory\ContainerFactory;
@@ -72,31 +76,22 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the SMS service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishSMS(Container $container): void
     {
-        /** @var array{sms: \Valkyrja\Sms\Config|array<string, mixed>, ...} $config */
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ValkyrjaDataConfig::class);
 
         $container->setSingleton(
             Sms::class,
             new \Valkyrja\Sms\Sms(
                 $container->getSingleton(Factory::class),
-                $config['sms']
+                $config->sms
             )
         );
     }
 
     /**
      * Publish the factory service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishFactory(Container $container): void
     {
@@ -108,21 +103,19 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish a driver service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishDriver(Container $container): void
     {
         $container->setCallable(
             Driver::class,
-            [static::class, 'createDriver']
+            [self::class, 'createDriver']
         );
     }
 
     /**
-     * @param class-string<Driver> $name
+     * Create a driver.
+     *
+     * @param class-string<Driver> $name The driver name
      */
     public static function createDriver(Container $container, string $name, Adapter $adapter): Driver
     {
@@ -133,24 +126,19 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish an adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishNullAdapter(Container $container): void
     {
         $container->setCallable(
             NullAdapter::class,
-            [static::class, 'createNullAdapterClass']
+            [self::class, 'createNullAdapterClass']
         );
     }
 
     /**
-     * @param Container            $container
-     * @param array<string, mixed> $config
+     * Create a null adapter.
      */
-    public static function createNullAdapterClass(Container $container, array $config): Adapter
+    public static function createNullAdapterClass(Container $container, NullConfiguration $config): Adapter
     {
         return new NullAdapter(
             $config
@@ -159,51 +147,43 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the log adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishLogAdapter(Container $container): void
     {
         $container->setCallable(
             LogAdapter::class,
-            [static::class, 'createLogAdapter']
+            [self::class, 'createLogAdapter']
         );
     }
 
     /**
-     * @param array{logger?: string} $config
+     * Create a log adapter.
      */
-    public static function createLogAdapter(Container $container, array $config): LogAdapter
+    public static function createLogAdapter(Container $container, LogConfiguration $config): LogAdapter
     {
         $logger = $container->getSingleton(Logger::class);
 
         return new LogAdapter(
-            $logger->use($config['logger'] ?? null),
+            $logger->use($config->logger),
             $config
         );
     }
 
     /**
      * Publish a Vonage adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishVonageAdapter(Container $container): void
     {
         $container->setCallable(
             VonageAdapter::class,
-            [static::class, 'createVonageAdapter']
+            [self::class, 'createVonageAdapter']
         );
     }
 
     /**
-     * @param array{key: string, secret: string} $config
+     * Create a vonage adapter.
      */
-    public static function createVonageAdapter(Container $container, array $config): VonageAdapter
+    public static function createVonageAdapter(Container $container, VonageConfiguration $config): VonageAdapter
     {
         return new VonageAdapter(
             $container->get(Vonage::class, [$config])
@@ -212,50 +192,41 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish a Vonage service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishVonage(Container $container): void
     {
         $container->setCallable(
             Vonage::class,
-            [static::class, 'createVonageClass']
+            [self::class, 'createVonageClass']
         );
     }
 
     /**
-     * @param array{key: string, secret: string} $config
+     * Create the vonage class.
      */
-    public static function createVonageClass(array $config): Vonage
+    public static function createVonageClass(VonageConfiguration $config): Vonage
     {
         return new Vonage(
-            new Basic($config['key'], $config['secret'])
+            new Basic($config->key, $config->secret)
         );
     }
 
     /**
      * Publish a message service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishMessage(Container $container): void
     {
         $container->setCallable(
             Message::class,
-            [static::class, 'createMessageClass']
+            [self::class, 'createMessageClass']
         );
     }
 
     /**
-     * @param Container               $container
-     * @param array{fromName: string} $config
+     * Create a message.
      */
-    public static function createMessageClass(Container $container, array $config): Message
+    public static function createMessageClass(Container $container, MessageConfiguration $config): Message
     {
-        return (new Message())->setFrom($config['fromName']);
+        return (new Message())->setFrom($config->from);
     }
 }

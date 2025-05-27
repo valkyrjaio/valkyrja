@@ -18,11 +18,14 @@ use Valkyrja\Client\Adapter\Contract\Adapter;
 use Valkyrja\Client\Adapter\GuzzleAdapter;
 use Valkyrja\Client\Adapter\LogAdapter;
 use Valkyrja\Client\Adapter\NullAdapter;
+use Valkyrja\Client\Config\GuzzleConfiguration;
+use Valkyrja\Client\Config\LogConfiguration;
+use Valkyrja\Client\Config\NullConfiguration;
 use Valkyrja\Client\Contract\Client;
 use Valkyrja\Client\Driver\Driver;
 use Valkyrja\Client\Factory\ContainerFactory;
 use Valkyrja\Client\Factory\Contract\Factory;
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
@@ -67,31 +70,22 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the client service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishClient(Container $container): void
     {
-        /** @var array{client: \Valkyrja\Client\Config|array<string, mixed>, ...} $config */
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ValkyrjaDataConfig::class);
 
         $container->setSingleton(
             Client::class,
             new \Valkyrja\Client\Client(
                 $container->getSingleton(Factory::class),
-                $config['client']
+                $config->client
             )
         );
     }
 
     /**
      * Publish the factory service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishFactory(Container $container): void
     {
@@ -103,26 +97,17 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the driver service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishDriver(Container $container): void
     {
         $container->setCallable(
             Driver::class,
-            [static::class, 'createDriver']
+            [self::class, 'createDriver']
         );
     }
 
     /**
      * Create a driver.
-     *
-     * @param Container $container
-     * @param Adapter   $adapter
-     *
-     * @return Driver
      */
     public static function createDriver(Container $container, Adapter $adapter): Driver
     {
@@ -131,33 +116,24 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the guzzle adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishGuzzleAdapter(Container $container): void
     {
         $container->setCallable(
             GuzzleAdapter::class,
-            [static::class, 'createGuzzleAdapter']
+            [self::class, 'createGuzzleAdapter']
         );
     }
 
     /**
      * Create a guzzle adapter.
-     *
-     * @param Container                             $container
-     * @param array{options?: array<string, mixed>} $config
-     *
-     * @return GuzzleAdapter
      */
-    public static function createGuzzleAdapter(Container $container, array $config): GuzzleAdapter
+    public static function createGuzzleAdapter(Container $container, GuzzleConfiguration $config): GuzzleAdapter
     {
         $responseFactory = $container->getSingleton(ResponseFactory::class);
 
         return new GuzzleAdapter(
-            new Guzzle($config['options'] ?? []),
+            new Guzzle($config->options),
             $responseFactory,
             $config
         );
@@ -165,34 +141,25 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the log adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishLogAdapter(Container $container): void
     {
         $container->setCallable(
             LogAdapter::class,
-            [static::class, 'createLogAdapter']
+            [self::class, 'createLogAdapter']
         );
     }
 
     /**
      * Create a log adapter.
-     *
-     * @param Container              $container
-     * @param array{logger?: string} $config
-     *
-     * @return LogAdapter
      */
-    public static function createLogAdapter(Container $container, array $config): LogAdapter
+    public static function createLogAdapter(Container $container, LogConfiguration $config): LogAdapter
     {
         $logger          = $container->getSingleton(Logger::class);
         $responseFactory = $container->getSingleton(ResponseFactory::class);
 
         return new LogAdapter(
-            $logger->use($config['logger'] ?? null),
+            $logger->use($config->logger),
             $responseFactory,
             $config
         );
@@ -200,28 +167,19 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishNullAdapter(Container $container): void
     {
         $container->setCallable(
             NullAdapter::class,
-            [static::class, 'createNullAdapter']
+            [self::class, 'createNullAdapter']
         );
     }
 
     /**
      * Create a null adapter.
-     *
-     * @param Container            $container
-     * @param array<string, mixed> $config
-     *
-     * @return NullAdapter
      */
-    public static function createNullAdapter(Container $container, array $config): NullAdapter
+    public static function createNullAdapter(Container $container, NullConfiguration $config): NullAdapter
     {
         $responseFactory = $container->getSingleton(ResponseFactory::class);
 

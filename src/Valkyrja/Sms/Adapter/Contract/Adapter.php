@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Adapter\Contract;
 
-use Valkyrja\Manager\Adapter\Contract\Adapter as Contract;
 use Valkyrja\Sms\Message\Contract\Message;
 
 /**
@@ -21,7 +20,7 @@ use Valkyrja\Sms\Message\Contract\Message;
  *
  * @author Melech Mizrachi
  */
-interface Adapter extends Contract
+interface Adapter
 {
     /**
      * Send a message.

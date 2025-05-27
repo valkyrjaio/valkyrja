@@ -33,9 +33,11 @@ class NullConfiguration extends Configuration
         ConfigName::DRIVER_CLASS  => 'CRYPT_NULL_DRIVER_CLASS',
     ];
 
-    public function __construct()
-    {
+    public function __construct(
+        string $key = '',
+    ) {
         parent::__construct(
+            key: $key,
             adapterClass: NullAdapter::class,
         );
     }

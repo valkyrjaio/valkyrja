@@ -30,6 +30,8 @@ abstract class Configuration extends ParentConfig
      */
     public function __construct(
         public string $adapterClass,
+        public string|null $id = null,
+        public string|null $name = null,
         public string $driverClass = \Valkyrja\Session\Driver\Driver::class,
     ) {
     }

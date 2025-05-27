@@ -27,4 +27,5 @@ final class ConfigName
 
     public const ENGINE         = 'engine';
     public const FILE_EXTENSION = 'fileExtension';
+    public const PATHS          = 'paths';
 }

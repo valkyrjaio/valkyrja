@@ -16,25 +16,20 @@ namespace Valkyrja\Cache\Driver;
 use Valkyrja\Cache\Adapter\Contract\Adapter;
 use Valkyrja\Cache\Driver\Contract\Driver as Contract;
 use Valkyrja\Cache\Tagger\Contract\Tagger;
-use Valkyrja\Manager\Driver\Driver as ParentDriver;
 
 /**
  * Class Driver.
  *
  * @author Melech Mizrachi
- *
- * @property Adapter $adapter
  */
-class Driver extends ParentDriver implements Contract
+class Driver implements Contract
 {
     /**
      * Driver constructor.
-     *
-     * @param Adapter $adapter The adapter
      */
-    public function __construct(Adapter $adapter)
-    {
-        parent::__construct($adapter);
+    public function __construct(
+        protected Adapter $adapter
+    ) {
     }
 
     /**

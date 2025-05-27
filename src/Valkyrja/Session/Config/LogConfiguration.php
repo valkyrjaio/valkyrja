@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Log\Config;
+namespace Valkyrja\Session\Config;
 
-use Valkyrja\Log\Adapter\NullAdapter;
-use Valkyrja\Log\Constant\ConfigName;
+use Valkyrja\Session\Adapter\LogAdapter;
+use Valkyrja\Session\Constant\ConfigName;
 
 /**
- * Class NullConfiguration.
+ * Class LogConfiguration.
  *
  * @author Melech Mizrachi
  */
-class NullConfiguration extends Configuration
+class LogConfiguration extends Configuration
 {
     /**
      * @inheritDoc
@@ -29,15 +29,16 @@ class NullConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'LOG_NULL_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'LOG_NULL_DRIVER_CLASS',
+        ConfigName::ADAPTER_CLASS => 'SESSION_LOG_ADAPTER_CLASS',
+        ConfigName::DRIVER_CLASS  => 'SESSION_LOG_DRIVER_CLASS',
+        'logger'                  => 'SESSION_LOG_LOGGER',
     ];
 
     public function __construct(
-        public string $prefix = '',
+        public string|null $logger = null
     ) {
         parent::__construct(
-            adapterClass: NullAdapter::class,
+            adapterClass: LogAdapter::class,
         );
     }
 }

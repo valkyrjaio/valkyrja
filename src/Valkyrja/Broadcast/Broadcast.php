@@ -13,32 +13,32 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast;
 
-use Valkyrja\Broadcast\Adapter\Contract\Adapter;
+use Valkyrja\Broadcast\Config\MessageConfiguration;
 use Valkyrja\Broadcast\Contract\Broadcast as Contract;
 use Valkyrja\Broadcast\Driver\Contract\Driver;
 use Valkyrja\Broadcast\Factory\Contract\Factory;
 use Valkyrja\Broadcast\Message\Contract\Message;
-use Valkyrja\Manager\MessageManager as Manager;
+use Valkyrja\Exception\InvalidArgumentException;
 
 /**
  * Class Broadcast.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Adapter, Driver, Factory, Message>
- *
- * @property Factory $factory
  */
-class Broadcast extends Manager implements Contract
+class Broadcast implements Contract
 {
+    /**
+     * @var array<string, Driver>
+     */
+    protected array $drivers = [];
+
     /**
      * Broadcast constructor.
      */
-    public function __construct(Factory $factory, DataConfig $config)
-    {
-        parent::__construct($factory, $config);
-
-        $this->configurations = $config->configurations;
+    public function __construct(
+        protected Factory $factory,
+        protected Config $config
+    ) {
     }
 
     /**
@@ -46,10 +46,20 @@ class Broadcast extends Manager implements Contract
      */
     public function use(string|null $name = null): Driver
     {
-        /** @var Driver $driver */
-        $driver = parent::use($name);
+        // The configuration name to use
+        $name ??= $this->config->defaultConfiguration;
+        // The config to use
+        $config = $this->config->configurations->$name
+            ?? throw new InvalidArgumentException("$name is not a valid configuration");
+        // The driver to use
+        $driverClass = $config->driverClass;
+        // The adapter to use
+        $adapterClass = $config->adapterClass;
+        // The cache key to use
+        $cacheKey = $name . $adapterClass;
 
-        return $driver;
+        return $this->drivers[$cacheKey]
+            ?? $this->factory->createDriver($driverClass, $adapterClass, $config);
     }
 
     /**
@@ -57,9 +67,15 @@ class Broadcast extends Manager implements Contract
      */
     public function createMessage(string|null $name = null, array $data = []): Message
     {
-        /** @var Message $message */
-        $message = parent::createMessage($name, $data);
+        // The name of the message to use
+        $name ??= $this->config->defaultMessageConfiguration;
+        // The message config
+        /** @var MessageConfiguration $config */
+        $config = $this->config->messageConfigurations->$name
+            ?? throw new InvalidArgumentException("$name is not a valid message");
+        // The message to use
+        $class = $config->messageClass;
 
-        return $message;
+        return $this->factory->createMessage($class, $config, $data);
     }
 }

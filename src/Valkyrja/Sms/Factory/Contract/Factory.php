@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Factory\Contract;
 
-use Valkyrja\Manager\Factory\Contract\MessageFactory as Contract;
 use Valkyrja\Sms\Adapter\Contract\Adapter;
+use Valkyrja\Sms\Config\Configuration;
+use Valkyrja\Sms\Config\MessageConfiguration;
 use Valkyrja\Sms\Driver\Contract\Driver;
 use Valkyrja\Sms\Message\Contract\Message;
 
@@ -22,36 +23,40 @@ use Valkyrja\Sms\Message\Contract\Message;
  * Interface Factory.
  *
  * @author Melech Mizrachi
- *
- * @extends Contract<Adapter, Driver, Message>
  */
-interface Factory extends Contract
+interface Factory
 {
     /**
-     * @inheritDoc
+     * Create a driver.
+     *
+     * @template Driver of Driver
      *
      * @param class-string<Driver>  $name    The driver
      * @param class-string<Adapter> $adapter The adapter
      *
      * @return Driver
      */
-    public function createDriver(string $name, string $adapter, array $config): Driver;
+    public function createDriver(string $name, string $adapter, Configuration $config): Driver;
 
     /**
-     * @inheritDoc
+     * Create an adapter.
+     *
+     * @template Adapter of Adapter
      *
      * @param class-string<Adapter> $name The adapter
      *
      * @return Adapter
      */
-    public function createAdapter(string $name, array $config): Adapter;
+    public function createAdapter(string $name, Configuration $config): Adapter;
 
     /**
-     * @inheritDoc
+     * Create a new message.
+     *
+     * @template Message of Message
      *
      * @param class-string<Message> $name The message
      *
      * @return Message
      */
-    public function createMessage(string $name, array $config, array $data = []): Message;
+    public function createMessage(string $name, MessageConfiguration $config, array $data = []): Message;
 }

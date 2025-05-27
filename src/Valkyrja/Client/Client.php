@@ -13,36 +13,27 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client;
 
-use Valkyrja\Client\Adapter\Contract\Adapter;
 use Valkyrja\Client\Contract\Client as Contract;
 use Valkyrja\Client\Driver\Contract\Driver;
 use Valkyrja\Client\Factory\Contract\Factory;
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Manager\Manager;
 
 /**
  * Class Client.
  *
  * @author Melech Mizrachi
- *
- * @extends Manager<Adapter, Driver, Factory>
- *
- * @property Factory $factory
  */
-class Client extends Manager implements Contract
+class Client implements Contract
 {
     /**
      * Client constructor.
-     *
-     * @param Factory                     $factory The factory
-     * @param Config|array<string, mixed> $config  The config
      */
-    public function __construct(Factory $factory, Config|array $config)
-    {
-        parent::__construct($factory, $config);
-
-        $this->configurations = $config['clients'];
+    public function __construct(
+        protected Factory $factory,
+        protected Config $config
+    ) {
     }
 
     /**
@@ -50,10 +41,20 @@ class Client extends Manager implements Contract
      */
     public function use(string|null $name = null): Driver
     {
-        /** @var Driver $driver */
-        $driver = parent::use($name);
+        // The configuration name to use
+        $name ??= $this->config->defaultConfiguration;
+        // The config to use
+        $config = $this->config->configurations->$name
+            ?? throw new InvalidArgumentException("$name is not a valid configuration");
+        // The driver to use
+        $driverClass = $config->driverClass;
+        // The adapter to use
+        $adapterClass = $config->adapterClass;
+        // The cache key to use
+        $cacheKey = $name . $adapterClass;
 
-        return $driver;
+        return $this->drivers[$cacheKey]
+            ?? $this->factory->createDriver($driverClass, $adapterClass, $config);
     }
 
     /**

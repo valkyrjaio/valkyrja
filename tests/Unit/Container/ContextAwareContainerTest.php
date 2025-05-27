@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container;
 
-use Valkyrja\Container\Config;
 use Valkyrja\Container\ContextAwareContainer;
 use Valkyrja\Tests\Classes\Container\Service2Class;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
@@ -30,8 +29,7 @@ class ContextAwareContainerTest extends TestCase
 {
     public function testService(): void
     {
-        $config    = new Config();
-        $container = new ContextAwareContainer($config, true);
+        $container = new ContextAwareContainer(debug: true);
 
         $container->bind(ServiceClass::class, ServiceClass::class);
 
@@ -55,8 +53,7 @@ class ContextAwareContainerTest extends TestCase
 
     public function testAlias(): void
     {
-        $config    = new Config();
-        $container = new ContextAwareContainer($config, true);
+        $container = new ContextAwareContainer(debug: true);
 
         $aliasDefault = 'foo';
         $aliasContext = 'bar';
@@ -94,8 +91,7 @@ class ContextAwareContainerTest extends TestCase
 
     public function testSingleton(): void
     {
-        $config    = new Config();
-        $container = new ContextAwareContainer($config, true);
+        $container = new ContextAwareContainer(debug: true);
 
         $container->bindSingleton(SingletonClass::class, SingletonClass::class);
 
@@ -119,8 +115,7 @@ class ContextAwareContainerTest extends TestCase
 
     public function testClosure(): void
     {
-        $config    = new Config();
-        $container = new ContextAwareContainer($config, true);
+        $container = new ContextAwareContainer(debug: true);
 
         $id = 'closureTest';
 
