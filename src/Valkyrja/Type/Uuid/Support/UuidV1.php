@@ -35,11 +35,11 @@ class UuidV1 extends Uuid
 {
     /** @var string */
     public const REGEX = self::REGEX_PART . '{8}-'
-        . self::REGEX_PART . '{4}-'
-        . '[1]'
-        . self::REGEX_PART . '{3}-'
-        . self::REGEX_PART . '{4}-'
-        . self::REGEX_PART . '{12}';
+    . self::REGEX_PART . '{4}-'
+    . '[1]'
+    . self::REGEX_PART . '{3}-'
+    . self::REGEX_PART . '{4}-'
+    . self::REGEX_PART . '{12}';
 
     /** @var Version */
     public const VERSION = Version::V1;
@@ -60,7 +60,8 @@ class UuidV1 extends Uuid
     {
         $node ??= random_bytes(16);
         // nano second time (only micro second precision) since start of UTC
-        $time = microtime(true) * 10000000 + 0x01B21DD213814000;
+        /** @psalm-suppress InvalidOperand */
+        $time = (microtime(true) * 10000000.00) + 0x01B21DD213814000;
         $time = pack('H*', sprintf('%016x', $time));
 
         $sequence    = random_bytes(2);
@@ -73,7 +74,7 @@ class UuidV1 extends Uuid
                 // base node off md5 hash for sequence
                 $node = md5($node);
                 // set multicast bit not IEEE 802 MAC
-                $node = (hexdec(substr($node, 0, 2)) | 1) . substr($node, 2, 10);
+                $node = ((string) (hexdec(substr($node, 0, 2)) | 1)) . substr($node, 2, 10);
             }
 
             if (is_numeric($node)) {

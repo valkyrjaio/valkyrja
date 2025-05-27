@@ -11,13 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Manager\Adapter\Contract;
+namespace Valkyrja\View\Config;
 
 /**
- * Interface Adapter.
+ * Class Configurations.
  *
  * @author Melech Mizrachi
  */
-interface Adapter
+class Configurations
 {
+    public function __construct(
+        public OrkaConfiguration|null $orka = null,
+        public PhpConfiguration|null $php = null,
+        public TwigConfiguration|null $twig = null,
+    ) {
+    }
 }
