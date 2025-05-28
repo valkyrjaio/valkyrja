@@ -19,7 +19,6 @@ use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Config\Support\Provider;
 use Valkyrja\Console\Config as Console;
-use Valkyrja\Event\Config as Event;
 use Valkyrja\Notification\Config as Notification;
 use Valkyrja\Orm\Config as ORM;
 
@@ -54,13 +53,6 @@ class Config extends Model
      * @var Console
      */
     public Console $console;
-
-    /**
-     * The event module config.
-     *
-     * @var Event
-     */
-    public Event $event;
 
     /**
      * The notification module config.

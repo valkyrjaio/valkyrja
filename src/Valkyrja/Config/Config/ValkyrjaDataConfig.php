@@ -29,7 +29,7 @@ use Valkyrja\Config\Exception\RuntimeException;
 use Valkyrja\Console\DataConfig as Console;
 use Valkyrja\Container\Config as Container;
 use Valkyrja\Crypt\Config as Crypt;
-use Valkyrja\Event\DataConfig as Event;
+use Valkyrja\Event\Config as Event;
 use Valkyrja\Filesystem\Config as Filesystem;
 use Valkyrja\Http\Middleware\Config as Middleware;
 use Valkyrja\Http\Routing\Config as Routing;

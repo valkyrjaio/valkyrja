@@ -15,7 +15,7 @@ namespace Valkyrja\Event\Provider;
 
 use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Attribute\Contract\Attributes as AttributeAttributes;
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
@@ -62,10 +62,6 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the annotator service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishAnnotator(Container $container): void
     {
@@ -80,10 +76,6 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the attributes service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishAttributes(Container $container): void
     {
@@ -98,10 +90,6 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the dispatcher service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishDispatcher(Container $container): void
     {
@@ -116,21 +104,16 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the collection service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishCollection(Container $container): void
     {
-        /** @var array{event: \Valkyrja\Event\Config|array<string, mixed>, ...} $config */
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ValkyrjaDataConfig::class);
 
         $container->setSingleton(
             Collection::class,
             $collection = new EventCollection(
                 $container->getSingleton(Container::class),
-                $config['event']
+                $config->event
             )
         );
 
