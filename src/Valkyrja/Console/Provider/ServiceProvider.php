@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Provider;
 
 use Valkyrja\Annotation\Filter\Contract\Filter;
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Console\Annotation\Contract\Annotations;
 use Valkyrja\Console\CacheableConsole;
 use Valkyrja\Console\Contract\Console;
@@ -94,8 +94,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishConsole(Container $container): void
     {
-        /** @var array{app: array{debug: bool}, console: \Valkyrja\Console\Config|array<string, mixed>, ...} $config */
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ValkyrjaDataConfig::class);
 
         $container->setSingleton(
             Console::class,
@@ -105,8 +104,8 @@ final class ServiceProvider extends Provider
                 $container->getSingleton(Validator::class),
                 $container->getSingleton(Events::class),
                 $container->getSingleton(Parser::class),
-                $config['console'],
-                $config['app']['debug'],
+                $config->console,
+                $config->app->debug,
             )
         );
 

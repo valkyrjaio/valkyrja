@@ -94,7 +94,7 @@ trait Cacheable
         // If attributes are enabled and cacheable should use attributes
         if ($useAttributes) {
             /** @var ConfigAsArray $config */
-            $this->setupAttributes($config);
+            $this->setupAttributedCommands($config);
         }
     }
 

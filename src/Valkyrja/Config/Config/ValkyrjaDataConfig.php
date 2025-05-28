@@ -26,7 +26,7 @@ use Valkyrja\Config\Config\DataConfig as ConfigConfig;
 use Valkyrja\Config\DataConfig;
 use Valkyrja\Config\Exception\InvalidArgumentException;
 use Valkyrja\Config\Exception\RuntimeException;
-use Valkyrja\Console\DataConfig as Console;
+use Valkyrja\Console\Config as Console;
 use Valkyrja\Container\Config as Container;
 use Valkyrja\Crypt\Config as Crypt;
 use Valkyrja\Event\Config as Event;

@@ -13,115 +13,73 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Config\DataConfig as ParentConfig;
 use Valkyrja\Console\Commander\Contract\Commander;
 use Valkyrja\Console\Config\Cache;
-
-use function is_array;
+use Valkyrja\Console\Constant\ConfigName;
+use Valkyrja\Console\Constant\ConfigValue;
+use Valkyrja\Console\Constant\EnvName;
+use Valkyrja\Support\Directory;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::HANDLERS        => EnvKey::CONSOLE_HANDLERS,
-        CKP::PROVIDERS       => EnvKey::CONSOLE_PROVIDERS,
-        CKP::DEV_PROVIDERS   => EnvKey::CONSOLE_DEV_PROVIDERS,
-        CKP::QUIET           => EnvKey::CONSOLE_QUIET,
-        CKP::USE_ANNOTATIONS => EnvKey::CONSOLE_USE_ANNOTATIONS,
-        CKP::FILE_PATH       => EnvKey::CONSOLE_FILE_PATH,
-        CKP::CACHE_FILE_PATH => EnvKey::CONSOLE_CACHE_FILE_PATH,
-        CKP::USE_CACHE       => EnvKey::CONSOLE_USE_CACHE_FILE,
+    protected static array $envNames = [
+        ConfigName::HANDLERS           => EnvName::HANDLERS,
+        ConfigName::PROVIDERS          => EnvName::PROVIDERS,
+        ConfigName::DEV_PROVIDERS      => EnvName::DEV_PROVIDERS,
+        ConfigName::SHOULD_RUN_QUIETLY => EnvName::SHOULD_RUN_QUIETLY,
+        ConfigName::FILE_PATH          => EnvName::FILE_PATH,
+        ConfigName::CACHE_FILE_PATH    => EnvName::CACHE_FILE_PATH,
+        ConfigName::SHOULD_USE_CACHE   => EnvName::SHOULD_USE_CACHE,
     ];
 
     /**
-     * The annotated command handlers.
-     *
-     * @var class-string<Commander>[]
+     * @param class-string<Commander>[] $handlers     A list of attributed command handlers
+     * @param class-string[]            $providers    A list of providers for command handlers
+     * @param class-string[]            $devProviders A list of providers for command handlers for dev only
      */
-    public array $handlers;
+    public function __construct(
+        public array $handlers = [],
+        public array $providers = [],
+        public array $devProviders = [],
+        public bool $shouldRunQuietly = false,
+        public string $filePath = '',
+        public string $cacheFilePath = '',
+        public bool $shouldUseCache = false,
+        public Cache|null $cache = null
+    ) {
+    }
 
     /**
-     * The command providers.
-     *
-     * @var class-string[]
+     * @inheritDoc
      */
-    public array $providers;
-
-    /**
-     * The dev command providers.
-     *
-     * @var class-string[]
-     */
-    public array $devProviders;
-
-    /**
-     * Flag to enable quiet console (no output).
-     *
-     * @var bool
-     */
-    public bool $quiet;
-
-    /**
-     * The flag to enable annotations.
-     *
-     * @var bool
-     */
-    public bool $useAnnotations;
-
-    /**
-     * The cache from a Cacheable::getCacheable().
-     *
-     * @var Cache|null
-     */
-    public Cache|null $cache = null;
-
-    /**
-     * The file path.
-     *
-     * @var string
-     */
-    public string $filePath;
-
-    /**
-     * The cache file path.
-     *
-     * @var string
-     */
-    public string $cacheFilePath;
-
-    /**
-     * The flag to enable cache.
-     *
-     * @var bool
-     */
-    public bool $useCache;
-
-    /**
-     * Set the cache.
-     *
-     * @param Cache|array<string, mixed>|null $cache The cache
-     *
-     * @return void
-     */
-    protected function setCache(Cache|array|null $cache): void
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
     {
-        if (is_array($cache)) {
-            $this->cache = Cache::fromArray($cache);
-
-            return;
+        if ($this->filePath === '') {
+            $this->filePath = Directory::commandsPath('default.php');
         }
 
-        $this->cache = $cache;
+        if ($this->cacheFilePath === '') {
+            $this->cacheFilePath = Directory::cachePath('commands.php');
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function setPropertiesAfterSettingFromEnv(string $env): void
+    {
+        $this->providers    = array_merge(ConfigValue::PROVIDERS, $this->providers);
+        $this->devProviders = array_merge(ConfigValue::DEV_PROVIDERS, $this->devProviders);
     }
 }

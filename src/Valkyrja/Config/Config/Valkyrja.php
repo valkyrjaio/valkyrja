@@ -15,7 +15,6 @@ namespace Valkyrja\Config\Config;
 
 use Valkyrja\Application\Config\App;
 use Valkyrja\Config\Config\Config as Model;
-use Valkyrja\Console\Config\Console;
 use Valkyrja\Orm\Config\Orm;
 
 use function Valkyrja\cachePath;
@@ -33,9 +32,8 @@ class Valkyrja extends Model
     protected function setup(array|null $properties = null): void
     {
         /** @var array<string, array<string, mixed>>|null $properties */
-        $this->app     = new App($properties['app'] ?? null, true);
-        $this->console = new Console($properties['console'] ?? null, true);
-        $this->orm     = new Orm($properties['orm'] ?? null, true);
+        $this->app = new App($properties['app'] ?? null, true);
+        $this->orm = new Orm($properties['orm'] ?? null, true);
 
         $this->providers     = [];
         $this->cacheFilePath = cachePath('config.php');

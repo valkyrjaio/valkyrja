@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console;
 
-use Valkyrja\Config\Config;
-use Valkyrja\Console\Config as ConsoleConfig;
 use Valkyrja\Console\Config\Cache;
 use Valkyrja\Console\Model\Contract\Command;
-use Valkyrja\Support\Cacheable\Cacheable;
 
 use function base64_decode;
 use function base64_encode;
@@ -33,14 +30,45 @@ use function unserialize;
 class CacheableConsole extends Console
 {
     /**
-     * @use Cacheable<ConsoleConfig, array<string, mixed>, Cache>
+     * Has setup already completed? Used to avoid duplicate setup.
+     *
+     * @var bool
      */
-    use Cacheable;
+    protected bool $setup = false;
 
     /**
-     * @inheritDoc
+     * Setup the collection.
      */
-    public function getCacheable(): Config
+    public function setup(bool $force = false, bool $useCache = true): void
+    {
+        // If route's have already been setup, no need to do it again
+        if ($this->setup && ! $force) {
+            return;
+        }
+
+        $this->setup = true;
+        // The cacheable config
+        $config = $this->config;
+
+        $configUseCache = $config->shouldUseCache;
+
+        // If the application should use the routes cache file
+        if ($useCache && $configUseCache) {
+            $this->setupFromCache();
+
+            // Then return out of setup
+            return;
+        }
+
+        $this->setupNotCached();
+        $this->setupAttributedCommands();
+        $this->requireFilePath();
+    }
+
+    /**
+     * Get a cacheable representation of the collection.
+     */
+    public function getCacheable(): Cache
     {
         $this->setup(true, false);
 
@@ -55,35 +83,14 @@ class CacheableConsole extends Console
 
     /**
      * @inheritDoc
-     *
-     * @return ConsoleConfig|array<string, mixed>
      */
-    protected function getConfig(): Config|array
+    protected function setupFromCache(): void
     {
-        return $this->config;
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param ConsoleConfig|array<string, mixed> $config
-     */
-    protected function beforeSetup(Config|array $config): void
-    {
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param ConsoleConfig|array<string, mixed> $config
-     */
-    protected function setupFromCache(Config|array $config): void
-    {
-        $cache = $config['cache'] ?? null;
+        $cache = $this->config->cache ?? null;
 
         if ($cache === null) {
             $cache         = [];
-            $cacheFilePath = $config['cacheFilePath'];
+            $cacheFilePath = $this->config->cacheFilePath;
 
             if (is_file($cacheFilePath)) {
                 $cache = require $cacheFilePath;
@@ -113,39 +120,30 @@ class CacheableConsole extends Console
 
     /**
      * @inheritDoc
-     *
-     * @param ConsoleConfig|array<string, mixed> $config
      */
-    protected function setupNotCached(Config|array $config): void
+    protected function setupNotCached(): void
     {
         self::$paths         = [];
         self::$commands      = [];
         self::$namedCommands = [];
 
         // Setup command providers
-        $this->setupCommandProviders($config);
+        $this->setupCommandProviders();
     }
 
     /**
-     * @inheritDoc
-     *
-     * @param ConsoleConfig|array<string, mixed> $config
      */
-    protected function setupAttributes(Config|array $config): void
+    protected function setupAttributedCommands(): void
     {
     }
 
     /**
      * Setup command providers.
-     *
-     * @param ConsoleConfig|array<string, mixed> $config
-     *
-     * @return void
      */
-    protected function setupCommandProviders(Config|array $config): void
+    protected function setupCommandProviders(): void
     {
         // Iterate through all the providers
-        foreach ($config['providers'] as $provider) {
+        foreach ($this->config->providers as $provider) {
             $this->register($provider);
         }
 
@@ -155,17 +153,22 @@ class CacheableConsole extends Console
         }
 
         // Iterate through all the providers
-        foreach ($config['devProviders'] as $provider) {
+        foreach ($this->config->devProviders as $provider) {
             $this->register($provider);
         }
     }
 
     /**
-     * @inheritDoc
-     *
-     * @param ConsoleConfig|array<string, mixed> $config
+     * Require the file path specified in the config.
      */
-    protected function afterSetup(Config|array $config): void
+    protected function requireFilePath(): void
     {
+        $filePath = $this->config->filePath;
+
+        if (is_file($filePath)) {
+            $console = $this;
+
+            require $filePath;
+        }
     }
 }

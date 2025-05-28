@@ -80,14 +80,6 @@ class Console implements Contract
 
     /**
      * Console constructor.
-     *
-     * @param Container                   $container
-     * @param Dispatcher                  $dispatcher
-     * @param Validator                   $validator
-     * @param Events                      $events
-     * @param Parser                      $pathParser
-     * @param Config|array<string, mixed> $config
-     * @param bool                        $debug
      */
     public function __construct(
         protected Container $container,
@@ -95,7 +87,7 @@ class Console implements Contract
         protected Validator $validator,
         protected Events $events,
         protected Parser $pathParser,
-        protected Config|array $config,
+        protected Config $config,
         protected bool $debug = false
     ) {
     }
