@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Contract;
 
 use Valkyrja\Orm\Adapter\Contract\Adapter;
+use Valkyrja\Orm\Config\Connection;
 use Valkyrja\Orm\Driver\Contract\Driver;
 use Valkyrja\Orm\Entity\Contract\Entity;
 use Valkyrja\Orm\Persister\Contract\Persister;
@@ -44,12 +45,11 @@ interface Orm
     /**
      * Create an adapter.
      *
-     * @param class-string<Adapter> $name   The adapter class name
-     * @param array<string, mixed>  $config The config
+     * @param class-string<Adapter> $name The adapter class name
      *
      * @return Adapter
      */
-    public function createAdapter(string $name, array $config): Adapter;
+    public function createAdapter(string $name, Connection $config): Adapter;
 
     /**
      * Create a query builder.
@@ -226,7 +226,7 @@ interface Orm
      * </code>
      *
      * @param Entity $entity
-     * @param bool   $defer  [optional]
+     * @param bool   $defer [optional]
      *
      * @return void
      */
@@ -240,7 +240,7 @@ interface Orm
      * </code>
      *
      * @param Entity $entity
-     * @param bool   $defer  [optional]
+     * @param bool   $defer [optional]
      *
      * @return void
      */
@@ -254,7 +254,7 @@ interface Orm
      * </code>
      *
      * @param Entity $entity
-     * @param bool   $defer  [optional]
+     * @param bool   $defer [optional]
      *
      * @return void
      */

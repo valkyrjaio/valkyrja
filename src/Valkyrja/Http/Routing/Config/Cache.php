@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Config;
 
-use Valkyrja\Config\Config as Model;
 use Valkyrja\Http\Routing\Model\Contract\Route;
 
 /**
@@ -21,7 +20,7 @@ use Valkyrja\Http\Routing\Model\Contract\Route;
  *
  * @author Melech Mizrachi
  */
-class Cache extends Model
+class Cache
 {
     /**
      * The flattened routes.

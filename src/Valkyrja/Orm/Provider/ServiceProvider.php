@@ -15,11 +15,13 @@ namespace Valkyrja\Orm\Provider;
 
 use RuntimeException;
 use Valkyrja\Cache\Contract\Cache;
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Orm\Adapter\Contract\Adapter;
 use Valkyrja\Orm\Adapter\Contract\PdoAdapter;
+use Valkyrja\Orm\Config\Connection;
+use Valkyrja\Orm\Config\PdoConnection;
 use Valkyrja\Orm\Contract\Orm;
 use Valkyrja\Orm\Driver\Contract\Driver;
 use Valkyrja\Orm\Entity\Contract\Entity;
@@ -115,14 +117,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishOrm(Container $container): void
     {
-        /** @var array{orm: \Valkyrja\Orm\Config|array<string, mixed>, ...} $config */
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ValkyrjaDataConfig::class);
 
         $container->setSingleton(
             Orm::class,
             new \Valkyrja\Orm\Orm(
                 $container->getSingleton(Factory::class),
-                $config['orm']
+                $config->orm
             )
         );
     }
@@ -160,13 +161,13 @@ final class ServiceProvider extends Provider
     /**
      * Create a driver.
      *
+     * @template Driver of Driver
+     *
      * @param class-string<Driver> $name
-     * @param Adapter              $adapter
-     * @param array<string, mixed> $config
      *
      * @return Driver
      */
-    public static function createDriver(Container $container, string $name, Adapter $adapter, array $config): Driver
+    public static function createDriver(Container $container, string $name, Adapter $adapter, Connection $config): Driver
     {
         return new $name(
             $adapter,
@@ -188,10 +189,13 @@ final class ServiceProvider extends Provider
     /**
      * Create an adapter.
      *
+     * @template Adapter of Adapter
+     *
      * @param class-string<Adapter> $name
-     * @param array<string, mixed>  $config
+     *
+     * @return Adapter
      */
-    public static function createAdapter(Container $container, string $name, array $config): Adapter
+    public static function createAdapter(Container $container, string $name, Connection $config): Adapter
     {
         $orm = $container->getSingleton(Orm::class);
 
@@ -215,21 +219,17 @@ final class ServiceProvider extends Provider
     /**
      * Create a PDO adapter.
      *
-     * @param class-string<PdoAdapter>                     $name
-     * @param array{config: array{pdo?: string, ...}, ...} $config
+     * @template PdoAdapter of PdoAdapter
+     *
+     * @param class-string<PdoAdapter> $name
+     *
+     * @return PdoAdapter
      */
-    public static function createPdoAdapter(Container $container, string $name, array $config): PdoAdapter
+    public static function createPdoAdapter(Container $container, string $name, PdoConnection $config): PdoAdapter
     {
         $orm = $container->getSingleton(Orm::class);
 
-        $pdoConfig = $config['config'];
-        $pdoClass  = $pdoConfig['pdo'] ?? \PDO::class;
-
-        if ($container->has($pdoClass)) {
-            $pdo = $container->get($pdoClass, [$pdoConfig]);
-        } else {
-            $pdo = $container->get(Pdo::class, [$pdoClass, $pdoConfig]);
-        }
+        $pdo = $container->get($config->pdoClass, [$config]);
 
         return new $name(
             $orm,
@@ -252,10 +252,9 @@ final class ServiceProvider extends Provider
     /**
      * Create a PDO.
      *
-     * @param class-string<Pdo>    $name
-     * @param array<string, mixed> $config
+     * @param class-string<Pdo> $name
      */
-    public static function createPdo(string $name, array $config): Pdo
+    public static function createPdo(string $name, PdoConnection $config): Pdo
     {
         if ($name === \PDO::class) {
             // If we got here then that means the developer has opted to use the default PDO

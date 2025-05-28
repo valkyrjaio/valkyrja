@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Factory\Contract;
 
 use Valkyrja\Orm\Adapter\Contract\Adapter;
+use Valkyrja\Orm\Config\Connection;
 use Valkyrja\Orm\Driver\Contract\Driver;
 use Valkyrja\Orm\Entity\Contract\Entity;
 use Valkyrja\Orm\Persister\Contract\Persister;
@@ -38,23 +39,21 @@ interface Factory
     /**
      * Create an adapter.
      *
-     * @param class-string<Adapter> $name   The adapter class name
-     * @param array<string, mixed>  $config The config
+     * @param class-string<Adapter> $name The adapter class name
      *
      * @return Adapter
      */
-    public function createAdapter(string $name, array $config): Adapter;
+    public function createAdapter(string $name, Connection $config): Adapter;
 
     /**
      * Create a driver.
      *
      * @param Adapter              $adapter The adapter
      * @param class-string<Driver> $name    The driver class name
-     * @param array<string, mixed> $config  The config
      *
      * @return Driver
      */
-    public function createDriver(Adapter $adapter, string $name, array $config): Driver;
+    public function createDriver(Adapter $adapter, string $name, Connection $config): Driver;
 
     /**
      * Create a repository.

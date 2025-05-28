@@ -13,19 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Config;
 
-use Valkyrja\Config\Config as Model;
 use Valkyrja\Container\Contract\Service;
 
 /**
  * Class Cache.
  *
  * @author Melech Mizrachi
- *
- * @psalm-type CacheAsArray array{aliases: string[], contextServices: string[], deferred: string[], deferredCallback: array<string, callable>, services: class-string<Service>[], singletons: string[]}
- *
- * @phpstan-type CacheAsArray array{aliases: string[], contextServices: string[], deferred: string[], deferredCallback: array<string, callable>, services: class-string<Service>[], singletons: string[]}
  */
-class Cache extends Model
+class Cache
 {
     /**
      * The aliases.

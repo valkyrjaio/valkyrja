@@ -13,102 +13,55 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Orm\Config\Connections;
+use Valkyrja\Orm\Config\MysqlConnection;
+use Valkyrja\Orm\Config\PgsqlConnection;
+use Valkyrja\Orm\Constant\ConfigName;
+use Valkyrja\Orm\Constant\EnvName;
+use Valkyrja\Orm\Schema\Contract\Migration;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::DEFAULT       => EnvKey::ORM_DEFAULT,
-        CKP::ADAPTER       => EnvKey::ORM_ADAPTER,
-        CKP::DRIVER        => EnvKey::ORM_DRIVER,
-        CKP::QUERY         => EnvKey::ORM_QUERY,
-        CKP::QUERY_BUILDER => EnvKey::ORM_QUERY_BUILDER,
-        CKP::PERSISTER     => EnvKey::ORM_PERSISTER,
-        CKP::RETRIEVER     => EnvKey::ORM_RETRIEVER,
-        CKP::REPOSITORY    => EnvKey::ORM_REPOSITORY,
-        CKP::CONNECTIONS   => EnvKey::ORM_CONNECTIONS,
-        CKP::MIGRATIONS    => EnvKey::ORM_MIGRATIONS,
+    protected static array $envNames = [
+        ConfigName::DEFAULT_CONNECTION => EnvName::DEFAULT_CONNECTION,
+        ConfigName::MIGRATIONS         => EnvName::MIGRATIONS,
     ];
 
     /**
-     * The default connection.
-     *
-     * @var string
+     * @param array<string, Migration> $migrations A list of migrations
      */
-    public string $default;
+    public function __construct(
+        public string $defaultConnection = '',
+        public Connections|null $connections = null,
+        public array $migrations = [],
+    ) {
+    }
 
     /**
-     * The default adapter.
-     *
-     * @var string
+     * @inheritDoc
      */
-    public string $adapter;
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+        if ($this->connections === null) {
+            $this->connections = new Connections(
+                mysql: MysqlConnection::fromEnv($env),
+                pgsql: PgsqlConnection::fromEnv($env)
+            );
+        }
 
-    /**
-     * The default driver.
-     *
-     * @var string
-     */
-    public string $driver;
-
-    /**
-     * The default query.
-     *
-     * @var string
-     */
-    public string $query;
-
-    /**
-     * The default query builder.
-     *
-     * @var string
-     */
-    public string $queryBuilder;
-
-    /**
-     * The default persister.
-     *
-     * @var string
-     */
-    public string $persister;
-
-    /**
-     * The default retriever.
-     *
-     * @var string
-     */
-    public string $retriever;
-
-    /**
-     * The default repository to use for all entities.
-     *
-     * @var string
-     */
-    public string $repository;
-
-    /**
-     * The connections.
-     *
-     * @var array<string, array<string, mixed>>
-     */
-    public array $connections;
-
-    /**
-     * The migrations.
-     *
-     * @var string[]
-     */
-    public array $migrations;
+        if ($this->defaultConnection === '') {
+            $this->defaultConnection = array_key_first((array) $this->connections);
+        }
+    }
 }

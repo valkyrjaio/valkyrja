@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Config;
 
-use Valkyrja\Config\Config as Model;
-
 /**
  * Class Cache.
  *
  * @author Melech Mizrachi
  */
-class Cache extends Model
+class Cache
 {
     /**
      * The base64 encoded serialized commands.

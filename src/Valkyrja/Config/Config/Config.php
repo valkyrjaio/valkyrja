@@ -18,7 +18,6 @@ use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Config\Support\Provider;
-use Valkyrja\Orm\Config as ORM;
 
 /**
  * Class Config.
@@ -44,13 +43,6 @@ class Config extends Model
      * @var App
      */
     public App $app;
-
-    /**
-     * The ORM module config.
-     *
-     * @var ORM
-     */
-    public ORM $orm;
 
     /**
      * Array of config providers.

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm;
 
 use Valkyrja\Orm\Adapter\Contract\Adapter;
+use Valkyrja\Orm\Config\Connection;
 use Valkyrja\Orm\Contract\Orm as Contract;
 use Valkyrja\Orm\Driver\Contract\Driver;
 use Valkyrja\Orm\Entity\Contract\Entity;
@@ -50,87 +51,12 @@ class Orm implements Contract
     protected static array $repositories = [];
 
     /**
-     * The connections.
-     *
-     * @var array<string, array<string, mixed>>
-     */
-    protected array $connections;
-
-    /**
-     * The default connection.
-     *
-     * @var string
-     */
-    protected string $defaultConnection;
-
-    /**
-     * The default adapter.
-     *
-     * @var class-string<Adapter>
-     */
-    protected string $defaultAdapter;
-
-    /**
-     * The default driver.
-     *
-     * @var class-string<Driver>
-     */
-    protected string $defaultDriver;
-
-    /**
-     * The default repository.
-     *
-     * @var class-string<Repository>
-     */
-    protected string $defaultRepository;
-
-    /**
-     * The default query.
-     *
-     * @var class-string<Query>
-     */
-    protected string $defaultQuery;
-
-    /**
-     * The default query builder.
-     *
-     * @var class-string<QueryBuilder>
-     */
-    protected string $defaultQueryBuilder;
-
-    /**
-     * The default persister.
-     *
-     * @var class-string<Persister>
-     */
-    protected string $defaultPersister;
-
-    /**
-     * The default retriever.
-     *
-     * @var class-string<Retriever>
-     */
-    protected string $defaultRetriever;
-
-    /**
      * ORM constructor.
-     *
-     * @param Factory                     $factory The factory
-     * @param Config|array<string, mixed> $config  The config
      */
     public function __construct(
         protected Factory $factory,
-        protected Config|array $config
+        protected Config $config
     ) {
-        $this->connections         = $config['connections'];
-        $this->defaultConnection   = $config['default'];
-        $this->defaultAdapter      = $config['adapter'];
-        $this->defaultDriver       = $config['driver'];
-        $this->defaultRepository   = $config['repository'];
-        $this->defaultQuery        = $config['query'];
-        $this->defaultQueryBuilder = $config['queryBuilder'];
-        $this->defaultPersister    = $config['persister'];
-        $this->defaultRetriever    = $config['retriever'];
     }
 
     /**
@@ -139,17 +65,17 @@ class Orm implements Contract
     public function useConnection(string|null $name = null, string|null $adapter = null): Driver
     {
         // The connection to use
-        $name ??= $this->defaultConnection;
-        /** @var array{driver?: class-string<Driver>, adapter?: class-string<Adapter>} $config */
+        $name ??= $this->config->defaultConnection;
         // The connection config to use
-        $config = $this->connections[$name];
+        /** @var Connection $config */
+        $config = $this->config->connections->$name;
         // The driver
-        $driver = $config['driver'] ?? $this->defaultDriver;
+        $driver = $config->driverClass;
 
         assert(is_a($name, Driver::class, true));
 
         // The adapter to use
-        $adapter ??= $config['adapter'] ?? $this->defaultAdapter;
+        $adapter ??= $config->adapterClass;
 
         assert(is_a($adapter, Adapter::class, true));
 
@@ -163,18 +89,9 @@ class Orm implements Contract
     /**
      * @inheritDoc
      */
-    public function createAdapter(string $name, array $config): Adapter
+    public function createAdapter(string $name, Connection $config): Adapter
     {
         assert(is_a($name, Adapter::class, true));
-
-        // Set the query
-        $config['query'] ??= $this->defaultQuery;
-        // Set the query builder
-        $config['queryBuilder'] ??= $this->defaultQueryBuilder;
-        // Set the persister
-        $config['persister'] ??= $this->defaultPersister;
-        // Set the retriever
-        $config['retriever'] ??= $this->defaultRetriever;
 
         return $this->factory->createAdapter($name, $config);
     }

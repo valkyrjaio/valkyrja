@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Config;
 
-use Valkyrja\Config\Config as Model;
 use Valkyrja\Orm\Entity\Contract\Entity;
 
 /**
@@ -21,7 +20,7 @@ use Valkyrja\Orm\Entity\Contract\Entity;
  *
  * @author Melech Mizrachi
  */
-class Cache extends Model
+class Cache
 {
     /**
      * The entities mapped to tables.

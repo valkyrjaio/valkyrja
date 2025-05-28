@@ -16,6 +16,7 @@ namespace Valkyrja\Orm\Factory;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Orm\Adapter\Contract\Adapter;
 use Valkyrja\Orm\Adapter\Contract\PdoAdapter;
+use Valkyrja\Orm\Config\Connection;
 use Valkyrja\Orm\Driver\Contract\Driver;
 use Valkyrja\Orm\Factory\Contract\Factory as Contract;
 use Valkyrja\Orm\Persister\Contract\Persister;
@@ -59,7 +60,7 @@ class ContainerFactory implements Contract
     /**
      * @inheritDoc
      */
-    public function createAdapter(string $name, array $config): Adapter
+    public function createAdapter(string $name, Connection $config): Adapter
     {
         return Cls::getDefaultableService(
             $this->container,
@@ -74,7 +75,7 @@ class ContainerFactory implements Contract
     /**
      * @inheritDoc
      */
-    public function createDriver(Adapter $adapter, string $name, array $config): Driver
+    public function createDriver(Adapter $adapter, string $name, Connection $config): Driver
     {
         return Cls::getDefaultableService(
             $this->container,

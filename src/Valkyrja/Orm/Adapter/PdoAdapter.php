@@ -16,6 +16,7 @@ namespace Valkyrja\Orm\Adapter;
 use PDO;
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Orm\Adapter\Contract\PdoAdapter as Contract;
+use Valkyrja\Orm\Config\PdoConnection;
 use Valkyrja\Orm\Contract\Orm;
 use Valkyrja\Orm\Statement\Contract\Statement;
 use Valkyrja\Orm\Statement\PdoStatement;
@@ -27,24 +28,16 @@ use function is_string;
  * Class PdoAdapter.
  *
  * @author Melech Mizrachi
- *
- * @psalm-import-type Config from Adapter
- *
- * @phpstan-import-type Config from Adapter
  */
 class PdoAdapter extends Adapter implements Contract
 {
     /**
      * PDOAdapter constructor.
-     *
-     * @param Orm    $orm    The orm
-     * @param PDO    $pdo    The PDO
-     * @param Config $config The config
      */
     public function __construct(
         Orm $orm,
         protected PDO $pdo,
-        array $config
+        PdoConnection $config
     ) {
         parent::__construct($orm, $config);
     }

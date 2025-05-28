@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Driver;
 
 use Valkyrja\Orm\Adapter\Contract\Adapter;
+use Valkyrja\Orm\Config\Connection;
 use Valkyrja\Orm\Driver\Contract\Driver as Contract;
 use Valkyrja\Orm\Persister\Contract\Persister;
 use Valkyrja\Orm\Query\Contract\Query;
@@ -30,13 +31,10 @@ class Driver implements Contract
 {
     /**
      * Driver constructor.
-     *
-     * @param Adapter              $adapter The adapter
-     * @param array<string, mixed> $config  The config
      */
     public function __construct(
         protected Adapter $adapter,
-        protected array $config
+        protected Connection $config
     ) {
     }
 

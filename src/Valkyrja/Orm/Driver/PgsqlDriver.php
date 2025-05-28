@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Driver;
 
 use Valkyrja\Orm\Adapter\Contract\Adapter;
+use Valkyrja\Orm\Config\PgsqlConnection;
 
 use function is_string;
 
@@ -26,15 +27,12 @@ class PgsqlDriver extends Driver
 {
     /**
      * PgSqlDriver constructor.
-     *
-     * @param Adapter              $adapter The adapter
-     * @param array<string, mixed> $config  The config
      */
-    public function __construct(Adapter $adapter, array $config)
+    public function __construct(Adapter $adapter, PgsqlConnection $config)
     {
         parent::__construct($adapter, $config);
 
-        $schema = $config['schema'] ?? null;
+        $schema = $config->schema;
 
         if ($schema !== '' && is_string($schema)) {
             $statement = $this->prepare("set search_path to $schema");
