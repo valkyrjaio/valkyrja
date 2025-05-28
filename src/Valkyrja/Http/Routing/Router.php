@@ -47,8 +47,6 @@ class Router implements Contract
 {
     /**
      * Router constructor.
-     *
-     * @param Config|array<string, mixed> $config The config
      */
     public function __construct(
         protected Collection $collection = new RouteCollection(),
@@ -62,7 +60,7 @@ class Router implements Contract
         protected RouteDispatchedHandler&Handler $routeDispatchedHandler = new Middleware\Handler\RouteDispatchedHandler(),
         protected SendingResponseHandler&Handler $sendingResponseHandler = new Middleware\Handler\SendingResponseHandler(),
         protected TerminatedHandler&Handler $terminatedHandler = new Middleware\Handler\TerminatedHandler(),
-        protected Config|array $config = new Config(),
+        protected Config $config = new Config(),
         protected bool $debug = false
     ) {
     }
@@ -70,7 +68,7 @@ class Router implements Contract
     /**
      * @inheritDoc
      */
-    public function getConfig(): Config|array
+    public function getConfig(): Config
     {
         return $this->config;
     }

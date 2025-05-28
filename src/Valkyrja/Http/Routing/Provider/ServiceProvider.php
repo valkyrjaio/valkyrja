@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Provider;
 
-use Valkyrja\Config\Config\Config as MainConfig;
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
@@ -31,9 +31,7 @@ use Valkyrja\Http\Routing\Attribute\Contract\Attributes;
 use Valkyrja\Http\Routing\Collection\CacheableCollection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection;
 use Valkyrja\Http\Routing\Collector\Contract\Collector;
-use Valkyrja\Http\Routing\Config;
 use Valkyrja\Http\Routing\Contract\Router;
-use Valkyrja\Http\Routing\Exception\ModuleNotEnabledException;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Routing\Matcher\Contract\Matcher;
 use Valkyrja\Http\Routing\Middleware\RedirectRouteMiddleware;
@@ -107,8 +105,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishRouter(Container $container): void
     {
-        /** @var MainConfig|array{app: array{debug: bool, ...}, ...} $config */
-        $config = $container->getSingleton(MainConfig::class);
+        $config = $container->getSingleton(ValkyrjaDataConfig::class);
 
         /** @var ThrowableCaughtHandler&Handler $exception */
         $exception = $container->getSingleton(ThrowableCaughtHandler::class);
@@ -139,8 +136,8 @@ final class ServiceProvider extends Provider
                 routeDispatchedHandler: $routeDispatched,
                 sendingResponseHandler: $sendingResponse,
                 terminatedHandler: $terminated,
-                config: self::getRoutingConfig($container),
-                debug: $config['app']['debug']
+                config: $config->httpRouting,
+                debug: $config->app->debug
             )
         );
     }
@@ -173,11 +170,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishCollection(Container $container): void
     {
+        $config = $container->getSingleton(ValkyrjaDataConfig::class);
+
         $container->setSingleton(
             Collection::class,
             $collection = new CacheableCollection(
                 container: $container,
-                config: self::getRoutingConfig($container)
+                config: $config->httpRouting
             )
         );
 
@@ -214,8 +213,7 @@ final class ServiceProvider extends Provider
             Url::class,
             new \Valkyrja\Http\Routing\Url\Url(
                 request: $container->getSingleton(ServerRequest::class),
-                router: $container->getSingleton(Router::class),
-                config: self::getRoutingConfig($container)
+                router: $container->getSingleton(Router::class)
             )
         );
     }
@@ -353,21 +351,5 @@ final class ServiceProvider extends Provider
                 view: $container->getSingleton(View::class),
             )
         );
-    }
-
-    /**
-     * Get the routing config.
-     *
-     * @param Container $container The container
-     *
-     * @return Config|array<string, mixed>
-     */
-    protected static function getRoutingConfig(Container $container): Config|array
-    {
-        /** @var MainConfig|array{routing?: array<string, mixed>|Config, ...} $config */
-        $config = $container->getSingleton(MainConfig::class);
-
-        return $config['routing']
-            ?? throw new ModuleNotEnabledException('Routing config must be enabled in Config');
     }
 }

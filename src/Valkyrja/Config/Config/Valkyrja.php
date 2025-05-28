@@ -17,8 +17,6 @@ use Valkyrja\Application\Config\App;
 use Valkyrja\Config\Config\Config as Model;
 use Valkyrja\Console\Config\Console;
 use Valkyrja\Event\Config\Event;
-use Valkyrja\Http\Config\Http;
-use Valkyrja\Http\Routing\Config\Routing;
 use Valkyrja\Orm\Config\Orm;
 
 use function Valkyrja\cachePath;
@@ -39,9 +37,7 @@ class Valkyrja extends Model
         $this->app     = new App($properties['app'] ?? null, true);
         $this->console = new Console($properties['console'] ?? null, true);
         $this->event   = new Event($properties['event'] ?? null, true);
-        $this->http    = new Http($properties['http'] ?? null, true);
         $this->orm     = new Orm($properties['orm'] ?? null, true);
-        $this->routing = new Routing($properties['routing'] ?? null, true);
 
         $this->providers     = [];
         $this->cacheFilePath = cachePath('config.php');

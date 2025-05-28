@@ -15,7 +15,6 @@ namespace Valkyrja\Http\Routing\Url;
 
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Routing\Config;
 use Valkyrja\Http\Routing\Contract\Router;
 use Valkyrja\Http\Routing\Exception\InvalidRouteNameException;
 use Valkyrja\Http\Routing\Model\Contract\Route;
@@ -35,15 +34,10 @@ class Url implements Contract
 {
     /**
      * Router constructor.
-     *
-     * @param ServerRequest               $request The request
-     * @param Router                      $router  The router
-     * @param Config|array<string, mixed> $config  The routing config
      */
     public function __construct(
         protected ServerRequest $request,
-        protected Router $router,
-        protected Config|array $config
+        protected Router $router
     ) {
     }
 
@@ -59,7 +53,7 @@ class Url implements Contract
         // Set the host to use if this is an absolute url
         // or the config is set to always use absolute urls
         // or the route is secure (needs https:// appended)
-        $host = $absolute || $route->isSecure() || $this->config['useAbsoluteUrls']
+        $host = $absolute || $route->isSecure()
             ? $this->routeHost($route)
             : '';
         // Get the path from the generator
@@ -73,7 +67,7 @@ class Url implements Contract
             }
         }
 
-        return $host . $this->validateRouteUrl($path);
+        return $host . $path;
     }
 
     /**
@@ -123,24 +117,5 @@ class Url implements Contract
             . ($route->isSecure() ? 's' : '')
             . '://'
             . $this->request->getUri()->getHostPort();
-    }
-
-    /**
-     * Validate the route url.
-     *
-     * @param string $path The path
-     *
-     * @return string
-     */
-    protected function validateRouteUrl(string $path): string
-    {
-        // If the last character is not a slash and the config is set to
-        // ensure trailing slash
-        if ($path[-1] !== '/' && $this->config['useTrailingSlash']) {
-            // add a trailing slash
-            $path .= '/';
-        }
-
-        return $path;
     }
 }

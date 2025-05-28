@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Middleware;
 
-use Valkyrja\Http\Middleware\DataConfig;
+use Valkyrja\Http\Middleware\Config;
 use Valkyrja\Tests\Classes\Http\Middleware\Env\EmptyEnvClass;
 use Valkyrja\Tests\Classes\Http\Middleware\Env\EnvClass;
 use Valkyrja\Tests\Unit\TestCase;
@@ -22,7 +22,7 @@ class DataConfigTest extends TestCase
 {
     public function testDefaults(): void
     {
-        $dataConfig = new DataConfig();
+        $dataConfig = new Config();
 
         self::assertEmpty($dataConfig->requestReceived);
         self::assertEmpty($dataConfig->routeDispatched);
@@ -35,7 +35,7 @@ class DataConfigTest extends TestCase
 
     public function testFromEnv(): void
     {
-        $dataConfig = DataConfig::fromEnv(EnvClass::class);
+        $dataConfig = Config::fromEnv(EnvClass::class);
 
         self::assertNotEmpty($dataConfig->requestReceived);
         self::assertNotEmpty($dataConfig->routeDispatched);
@@ -56,7 +56,7 @@ class DataConfigTest extends TestCase
 
     public function testFromEmptyEnv(): void
     {
-        $dataConfig = DataConfig::fromEnv(EmptyEnvClass::class);
+        $dataConfig = Config::fromEnv(EmptyEnvClass::class);
 
         self::assertEmpty($dataConfig->requestReceived);
         self::assertEmpty($dataConfig->routeDispatched);

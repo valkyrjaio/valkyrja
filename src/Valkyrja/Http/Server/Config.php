@@ -13,28 +13,28 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Server;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Config as Model;
-use Valkyrja\Http\Server\Contract\RequestHandler;
+use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Http\Server\Constant\ConfigName;
+use Valkyrja\Http\Server\Constant\EnvName;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        'requestHandler' => EnvKey::HTTP_SERVER_REQUEST_HANDLER,
+    protected static array $envNames = [
+        ConfigName::REQUEST_HANDLER => EnvName::REQUEST_HANDLER,
     ];
 
-    /**
-     * @var class-string<RequestHandler>
-     */
-    public string $requestHandler;
+    public function __construct(
+        public string $requestHandler = RequestHandler::class,
+    ) {
+    }
 }

@@ -21,7 +21,7 @@ use Valkyrja\Http\Routing\Model\Parameter\Parameter as Model;
  *
  * @author Melech Mizrachi
  */
-#[Attribute(Attribute::TARGET_PARAMETER)]
+#[Attribute(Attribute::TARGET_METHOD)]
 class Parameter extends Model
 {
 }

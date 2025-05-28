@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Middleware;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Config as Model;
+use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Http\Middleware\Constant\ConfigName;
+use Valkyrja\Http\Middleware\Constant\EnvName;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
@@ -28,55 +29,40 @@ use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        'before'          => EnvKey::HTTP_MIDDLEWARE_BEFORE,
-        'dispatched'      => EnvKey::HTTP_MIDDLEWARE_DISPATCHED,
-        'exception'       => EnvKey::HTTP_MIDDLEWARE_EXCEPTION,
-        'routeMatched'    => EnvKey::HTTP_MIDDLEWARE_ROUTE_MATCHED,
-        'routeNotMatched' => EnvKey::HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED,
-        'sending'         => EnvKey::HTTP_MIDDLEWARE_SENDING,
-        'terminated'      => EnvKey::HTTP_MIDDLEWARE_TERMINATED,
+    protected static array $envNames = [
+        ConfigName::REQUEST_RECEIVED  => EnvName::REQUEST_RECEIVED,
+        ConfigName::ROUTE_DISPATCHED  => EnvName::ROUTE_DISPATCHED,
+        ConfigName::THROWABLE_CAUGHT  => EnvName::THROWABLE_CAUGHT,
+        ConfigName::ROUTE_MATCHED     => EnvName::ROUTE_MATCHED,
+        ConfigName::ROUTE_NOT_MATCHED => EnvName::ROUTE_NOT_MATCHED,
+        ConfigName::SENDING_RESPONSE  => EnvName::SENDING_RESPONSE,
+        ConfigName::TERMINATED        => EnvName::TERMINATED,
     ];
 
     /**
-     * @var class-string<RequestReceivedMiddleware>[]
+     * @param class-string<RequestReceivedMiddleware>[] $requestReceived The before middleware
+     * @param class-string<RouteDispatchedMiddleware>[] $routeDispatched The dispatched middleware
+     * @param class-string<RouteMatchedMiddleware>[]    $routeMatched    The route matched middleware
+     * @param class-string<RouteNotMatchedMiddleware>[] $routeNotMatched The route not matched middleware
+     * @param class-string<ThrowableCaughtMiddleware>[] $throwableCaught The exception middleware
+     * @param class-string<SendingResponseMiddleware>[] $sendingResponse The sending middleware
+     * @param class-string<TerminatedMiddleware>[]      $terminated      The terminated middleware
      */
-    public array $before;
-
-    /**
-     * @var class-string<RouteDispatchedMiddleware>[]
-     */
-    public array $dispatched;
-
-    /**
-     * @var class-string<ThrowableCaughtMiddleware>[]
-     */
-    public array $exception;
-
-    /**
-     * @var class-string<RouteMatchedMiddleware>[]
-     */
-    public array $routeMatched;
-
-    /**
-     * @var class-string<RouteNotMatchedMiddleware>[]
-     */
-    public array $routeNotMatched;
-
-    /**
-     * @var class-string<SendingResponseMiddleware>[]
-     */
-    public array $sending;
-
-    /**
-     * @var class-string<TerminatedMiddleware>[]
-     */
-    public array $terminated;
+    public function __construct(
+        public array $requestReceived = [],
+        public array $routeDispatched = [],
+        public array $routeMatched = [],
+        public array $routeNotMatched = [],
+        public array $throwableCaught = [],
+        public array $sendingResponse = [],
+        public array $terminated = [],
+    ) {
+    }
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Middleware\Provider;
 
 use Closure;
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Filesystem\Contract\Filesystem;
@@ -85,9 +85,8 @@ final class ServiceProvider extends Provider
      */
     public static function publishRequestReceivedHandler(Container $container): void
     {
-        /** @var array{middleware: array{requestReceived?: class-string<RequestReceivedMiddleware>[]}} $config */
-        $config     = $container->getSingleton(Config::class);
-        $middleware = $config['middleware']['requestReceived'] ?? [];
+        $config     = $container->getSingleton(ValkyrjaDataConfig::class);
+        $middleware = $config->httpMiddleware->requestReceived;
 
         $container->setSingleton(
             RequestReceivedHandler::class,
@@ -95,7 +94,7 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
-        $handler->add(...static::getBeforeMiddleware());
+        $handler->add(...self::getBeforeMiddleware());
     }
 
     /**
@@ -107,9 +106,8 @@ final class ServiceProvider extends Provider
      */
     public static function publishRouteDispatchedHandler(Container $container): void
     {
-        /** @var array{middleware: array{routeDispatched?: class-string<RouteDispatchedMiddleware>[]}} $config */
-        $config     = $container->getSingleton(Config::class);
-        $middleware = $config['middleware']['routeDispatched'] ?? [];
+        $config     = $container->getSingleton(ValkyrjaDataConfig::class);
+        $middleware = $config->httpMiddleware->routeDispatched;
 
         $container->setSingleton(
             RouteDispatchedHandler::class,
@@ -117,7 +115,7 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
-        $handler->add(...static::getDispatchedMiddleware());
+        $handler->add(...self::getDispatchedMiddleware());
     }
 
     /**
@@ -129,9 +127,8 @@ final class ServiceProvider extends Provider
      */
     public static function publishExceptionHandler(Container $container): void
     {
-        /** @var array{middleware: array{throwableCaught?: class-string<ThrowableCaughtMiddleware>[]}} $config */
-        $config     = $container->getSingleton(Config::class);
-        $middleware = $config['middleware']['throwableCaught'] ?? [];
+        $config     = $container->getSingleton(ValkyrjaDataConfig::class);
+        $middleware = $config->httpMiddleware->throwableCaught;
 
         $container->setSingleton(
             ThrowableCaughtHandler::class,
@@ -139,7 +136,7 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
-        $handler->add(...static::getExceptionMiddleware());
+        $handler->add(...self::getExceptionMiddleware());
     }
 
     /**
@@ -151,9 +148,8 @@ final class ServiceProvider extends Provider
      */
     public static function publishRouteMatchedHandler(Container $container): void
     {
-        /** @var array{middleware: array{routeMatched?: class-string<RouteMatchedMiddleware>[]}} $config */
-        $config     = $container->getSingleton(Config::class);
-        $middleware = $config['middleware']['routeMatched'] ?? [];
+        $config     = $container->getSingleton(ValkyrjaDataConfig::class);
+        $middleware = $config->httpMiddleware->routeMatched;
 
         $container->setSingleton(
             RouteMatchedHandler::class,
@@ -161,7 +157,7 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
-        $handler->add(...static::getRouteMatchedMiddleware());
+        $handler->add(...self::getRouteMatchedMiddleware());
     }
 
     /**
@@ -173,9 +169,8 @@ final class ServiceProvider extends Provider
      */
     public static function publishRouteNotMatchedHandler(Container $container): void
     {
-        /** @var array{middleware: array{routeNotMatched?: class-string<RouteNotMatchedMiddleware>[]}} $config */
-        $config     = $container->getSingleton(Config::class);
-        $middleware = $config['middleware']['routeNotMatched'] ?? [];
+        $config     = $container->getSingleton(ValkyrjaDataConfig::class);
+        $middleware = $config->httpMiddleware->routeNotMatched;
 
         $container->setSingleton(
             RouteNotMatchedHandler::class,
@@ -183,7 +178,7 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
-        $handler->add(...static::getRouteNotMatchedMiddleware());
+        $handler->add(...self::getRouteNotMatchedMiddleware());
     }
 
     /**
@@ -195,9 +190,8 @@ final class ServiceProvider extends Provider
      */
     public static function publishSendingResponseHandler(Container $container): void
     {
-        /** @var array{middleware: array{sendingResponse?: class-string<SendingResponseMiddleware>[]}} $config */
-        $config     = $container->getSingleton(Config::class);
-        $middleware = $config['middleware']['sendingResponse'] ?? [];
+        $config     = $container->getSingleton(ValkyrjaDataConfig::class);
+        $middleware = $config->httpMiddleware->sendingResponse;
 
         $container->setSingleton(
             SendingResponseHandler::class,
@@ -205,7 +199,7 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
-        $handler->add(...static::getSendingMiddleware());
+        $handler->add(...self::getSendingMiddleware());
     }
 
     /**
@@ -217,9 +211,8 @@ final class ServiceProvider extends Provider
      */
     public static function publishTerminatedHandler(Container $container): void
     {
-        /** @var array{middleware: array{terminated?: class-string<TerminatedMiddleware>[]}} $config */
-        $config     = $container->getSingleton(Config::class);
-        $middleware = $config['middleware']['terminated'] ?? [];
+        $config     = $container->getSingleton(ValkyrjaDataConfig::class);
+        $middleware = $config->httpMiddleware->terminated;
 
         $container->setSingleton(
             TerminatedHandler::class,
@@ -227,7 +220,7 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
-        $handler->add(...static::getTerminatedMiddleware());
+        $handler->add(...self::getTerminatedMiddleware());
     }
 
     /**
@@ -239,14 +232,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishCacheResponseMiddleware(Container $container): void
     {
-        /** @var array{app: array{debug: bool}} $config */
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ValkyrjaDataConfig::class);
 
         $container->setSingleton(
             CacheResponseMiddleware::class,
             new CacheResponseMiddleware(
                 $container->getSingleton(Filesystem::class),
-                $config['app']['debug']
+                $config->app->debug
             )
         );
     }

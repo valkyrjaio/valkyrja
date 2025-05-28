@@ -33,19 +33,18 @@ class RouterTest extends TestCase
         $collection = new Collection();
         $matcher    = new Matcher(collection: $collection);
         $config     = new Config();
-        $debug      = true;
 
         $router = new Router(
             collection: $collection,
             matcher: $matcher,
             config: $config,
-            debug: $debug,
+            debug: true,
         );
 
         self::assertSame($collection, $router->getCollection());
         self::assertSame($matcher, $router->getMatcher());
         self::assertSame($config, $router->getConfig());
-        self::assertSame($debug, $router->debug());
+        self::assertTrue($router->debug());
     }
 
     public function testRouteMethods(): void

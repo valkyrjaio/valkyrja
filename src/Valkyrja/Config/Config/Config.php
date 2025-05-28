@@ -20,8 +20,6 @@ use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Config\Support\Provider;
 use Valkyrja\Console\Config as Console;
 use Valkyrja\Event\Config as Event;
-use Valkyrja\Http\Config as Http;
-use Valkyrja\Http\Routing\Config as Routing;
 use Valkyrja\Notification\Config as Notification;
 use Valkyrja\Orm\Config as ORM;
 
@@ -65,13 +63,6 @@ class Config extends Model
     public Event $event;
 
     /**
-     * The http module config.
-     *
-     * @var Http
-     */
-    public Http $http;
-
-    /**
      * The notification module config.
      *
      * @var Notification
@@ -84,13 +75,6 @@ class Config extends Model
      * @var ORM
      */
     public ORM $orm;
-
-    /**
-     * The routing module config.
-     *
-     * @var Routing
-     */
-    public Routing $routing;
 
     /**
      * Array of config providers.

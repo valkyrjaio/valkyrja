@@ -31,10 +31,8 @@ interface Router
 {
     /**
      * Get the config.
-     *
-     * @return Config|array<string, mixed>
      */
-    public function getConfig(): Config|array;
+    public function getConfig(): Config;
 
     /**
      * Whether to run in debug.

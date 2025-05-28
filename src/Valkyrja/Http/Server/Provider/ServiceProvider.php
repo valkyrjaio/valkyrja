@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Server\Provider;
 
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\Middleware\Handler\Contract\Handler;
@@ -69,8 +69,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishRequestHandler(Container $container): void
     {
-        /** @var Config|array{app: array{debug: bool, ...}, ...} $config */
-        $config = $container->getSingleton(Config::class);
+        $config = $container->getSingleton(ValkyrjaDataConfig::class);
 
         /** @var RequestReceivedHandler&Handler $requestReceived */
         $requestReceived = $container->getSingleton(RequestReceivedHandler::class);
@@ -92,7 +91,7 @@ final class ServiceProvider extends Provider
                 exceptionHandler: $exception,
                 sendingResponseHandler: $sendingResponse,
                 terminatedHandler: $terminated,
-                debug: $config['app']['debug'] ?? false
+                debug: $config->app->debug
             )
         );
     }

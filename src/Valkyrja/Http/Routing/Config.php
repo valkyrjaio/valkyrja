@@ -13,122 +13,54 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Config\DataConfig as ParentConfig;
 use Valkyrja\Http\Routing\Config\Cache;
-
-use function is_array;
+use Valkyrja\Http\Routing\Constant\ConfigName;
+use Valkyrja\Http\Routing\Constant\EnvName;
+use Valkyrja\Support\Directory;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::MIDDLEWARE         => EnvKey::ROUTING_MIDDLEWARE,
-        CKP::MIDDLEWARE_GROUPS  => EnvKey::ROUTING_MIDDLEWARE_GROUPS,
-        CKP::CONTROLLERS        => EnvKey::ROUTING_CONTROLLERS,
-        CKP::USE_TRAILING_SLASH => EnvKey::ROUTING_USE_TRAILING_SLASH,
-        CKP::USE_ABSOLUTE_URLS  => EnvKey::ROUTING_USE_ABSOLUTE_URLS,
-        CKP::USE_ANNOTATIONS    => EnvKey::ROUTING_USE_ANNOTATIONS,
-        CKP::FILE_PATH          => EnvKey::ROUTING_FILE_PATH,
-        CKP::CACHE_FILE_PATH    => EnvKey::ROUTING_CACHE_FILE_PATH,
-        CKP::USE_CACHE          => EnvKey::ROUTING_USE_CACHE_FILE,
+    protected static array $envNames = [
+        ConfigName::CONTROLLERS     => EnvName::CONTROLLERS,
+        ConfigName::FILE_PATH       => EnvName::FILE_PATH,
+        ConfigName::CACHE_FILE_PATH => EnvName::CACHE_FILE_PATH,
+        ConfigName::USE_CACHE       => EnvName::USE_CACHE,
     ];
 
     /**
-     * The middleware.
-     *
-     * @var class-string[]
+     * @param class-string[] $controllers A list of attributed controller classes
      */
-    public array $middleware;
+    public function __construct(
+        public array $controllers = [],
+        public string $filePath = '',
+        public string $cacheFilePath = '',
+        public bool $useCache = false,
+        public Cache|null $cache = null,
+    ) {
+    }
 
     /**
-     * The middleware groups.
-     *
-     * @var class-string[][]
+     * @inheritDoc
      */
-    public array $middlewareGroups;
-
-    /**
-     * The annotated controllers.
-     *
-     * @var class-string[]
-     */
-    public array $controllers;
-
-    /**
-     * The flag to enable trailing slashes for all urls.
-     *
-     * @var bool
-     */
-    public bool $useTrailingSlash;
-
-    /**
-     * The flag to enable absolute urls.
-     *
-     * @var bool
-     */
-    public bool $useAbsoluteUrls;
-
-    /**
-     * The flag to enable annotations.
-     *
-     * @var bool
-     */
-    public bool $useAnnotations;
-
-    /**
-     * The cache from a Cacheable::getCacheable().
-     *
-     * @var Cache|null
-     */
-    public Cache|null $cache = null;
-
-    /**
-     * The file path.
-     *
-     * @var string
-     */
-    public string $filePath;
-
-    /**
-     * The cache file path.
-     *
-     * @var string
-     */
-    public string $cacheFilePath;
-
-    /**
-     * The flag to enable cache.
-     *
-     * @var bool
-     */
-    public bool $useCache;
-
-    /**
-     * Set the cache.
-     *
-     * @param Cache|array<string, mixed>|null $cache The cache
-     *
-     * @return void
-     */
-    protected function setCache(Cache|array|null $cache): void
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
     {
-        if (is_array($cache)) {
-            $this->cache = Cache::fromArray($cache);
-
-            return;
+        if ($this->filePath === '') {
+            $this->filePath = Directory::routesPath('default.php');
         }
 
-        $this->cache = $cache;
+        if ($this->cacheFilePath === '') {
+            $this->cacheFilePath = Directory::cachePath('routes.php');
+        }
     }
 }
