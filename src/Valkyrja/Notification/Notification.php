@@ -54,19 +54,13 @@ class Notification implements Contract
 
     /**
      * Notifier constructor.
-     *
-     * @param Factory                     $factory   The factory
-     * @param Broadcast                   $broadcast The broadcast
-     * @param Mail                        $mail      The mail service
-     * @param Sms                         $sms       The sms service
-     * @param Config|array<string, mixed> $config    The config
      */
     public function __construct(
         protected Factory $factory,
         protected Broadcast $broadcast,
         protected Mail $mail,
         protected Sms $sms,
-        protected Config|array $config
+        protected Config $config
     ) {
     }
 
@@ -131,7 +125,7 @@ class Notification implements Contract
      * @inheritDoc
      */
     public function notify(Notify $notify): void
-    // public function notify(string $notificationName, array $data = []): void
+        // public function notify(string $notificationName, array $data = []): void
     {
         // $notification = $this->getNotification($notificationName, $data);
 

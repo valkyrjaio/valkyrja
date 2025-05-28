@@ -13,30 +13,38 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification;
 
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Notification\Constant\ConfigName;
+use Valkyrja\Notification\Constant\EnvName;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::NOTIFICATIONS => EnvKey::NOTIFICATION_NOTIFICATIONS,
+    protected static array $envNames = [
+        ConfigName::NOTIFICATIONS => EnvName::NOTIFICATIONS,
     ];
 
     /**
-     * The notifications.
-     *
-     * @var array<string, mixed>
+     * @param array<string, mixed> $notifications The notifications
      */
-    public array $notifications;
+    public function __construct(
+        public array $notifications = [],
+    ) {
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+    }
 }

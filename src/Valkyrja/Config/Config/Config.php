@@ -18,7 +18,6 @@ use Valkyrja\Application\Constant\EnvKey;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
 use Valkyrja\Config\Support\Provider;
-use Valkyrja\Notification\Config as Notification;
 use Valkyrja\Orm\Config as ORM;
 
 /**
@@ -45,13 +44,6 @@ class Config extends Model
      * @var App
      */
     public App $app;
-
-    /**
-     * The notification module config.
-     *
-     * @var Notification
-     */
-    public Notification $notification;
 
     /**
      * The ORM module config.
