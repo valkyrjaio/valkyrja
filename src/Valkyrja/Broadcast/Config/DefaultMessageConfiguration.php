@@ -28,7 +28,7 @@ class DefaultMessageConfiguration extends MessageConfiguration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::FROM          => 'BROADCAST_DEFAULT_MESSAGE_FROM',
+        ConfigName::FROM          => 'BROADCAST_DEFAULT_MESSAGE_CHANNEL',
         ConfigName::MESSAGE_CLASS => 'BROADCAST_DEFAULT_MESSAGE_CLASS',
     ];
 
