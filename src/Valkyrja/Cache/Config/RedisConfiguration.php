@@ -37,8 +37,8 @@ class RedisConfiguration extends Configuration
     ];
 
     public function __construct(
-        public string $host = '',
-        public string $port = '',
+        public string $host = '127.0.0.1',
+        public int $port = 6379,
         public string $prefix = '',
     ) {
         parent::__construct(

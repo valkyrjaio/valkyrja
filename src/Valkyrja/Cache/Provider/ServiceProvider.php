@@ -180,7 +180,12 @@ final class ServiceProvider extends Provider
      */
     public static function createRedisAdapter(Container $container, RedisConfiguration $config): RedisAdapter
     {
-        $predis = new Client($config);
+        $predis = new Client(
+            parameters: [
+                'host' => $config->host,
+                'port' => $config->port,
+            ]
+        );
 
         return new RedisAdapter(
             $predis,
