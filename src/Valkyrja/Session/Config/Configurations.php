@@ -22,6 +22,10 @@ class Configurations
 {
     public function __construct(
         public PhpConfiguration|null $php = null,
+        public NullConfiguration|null $null = null,
+        public CacheConfiguration|null $cache = null,
+        public CookieConfiguration|null $cookie = null,
+        public LogConfiguration|null $log = null,
     ) {
     }
 }
