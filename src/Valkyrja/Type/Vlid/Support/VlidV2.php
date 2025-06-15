@@ -28,9 +28,9 @@ class VlidV2 extends Vlid
 {
     /** @var string */
     public const string REGEX = '[0-7]'
-    . '[' . self::VALID_CHARACTERS . ']{12}'
-    . '[2]'
-    . '[' . self::VALID_CHARACTERS . ']{16}';
+        . '[' . self::VALID_CHARACTERS . ']{12}'
+        . '[2]'
+        . '[' . self::VALID_CHARACTERS . ']{16}';
 
     /** @var Version */
     public const Version VERSION = Version::V2;

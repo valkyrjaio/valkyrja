@@ -42,14 +42,14 @@ class UploadErrorException extends RuntimeException
     public function __construct(UploadError $uploadError, int $code = 0, Throwable|null $previous = null)
     {
         $message = match ($uploadError) {
-            UploadError::FORM_SIZE => static::FORM_SIZE_MESSAGE,
-            UploadError::INI_SIZE => static::INI_SIZE_MESSAGE,
-            UploadError::PARTIAL => static::PARTIAL_MESSAGE,
-            UploadError::NO_FILE => static::NO_FILE_MESSAGE,
+            UploadError::FORM_SIZE  => static::FORM_SIZE_MESSAGE,
+            UploadError::INI_SIZE   => static::INI_SIZE_MESSAGE,
+            UploadError::PARTIAL    => static::PARTIAL_MESSAGE,
+            UploadError::NO_FILE    => static::NO_FILE_MESSAGE,
             UploadError::NO_TMP_DIR => static::NO_TMP_DIR_MESSAGE,
             UploadError::CANT_WRITE => static::CANT_WRITE_MESSAGE,
-            UploadError::EXTENSION => static::EXTENSION_MESSAGE,
-            UploadError::OK => throw new InvalidArgumentException(static::OK_MESSAGE),
+            UploadError::EXTENSION  => static::EXTENSION_MESSAGE,
+            UploadError::OK         => throw new InvalidArgumentException(static::OK_MESSAGE),
         };
 
         parent::__construct($message, $code, $previous);

@@ -763,7 +763,7 @@ class Env
     /** @var class-string<ViewEngine>|null */
     public const string|null VIEW_PHP_ENGINE = null;
     /** @var string|null */
-    public const  string|null VIEW_PHP_FILE_EXTENSION = null;
+    public const string|null VIEW_PHP_FILE_EXTENSION = null;
     /** @var string|null */
     public const string|null VIEW_PHP_DIR = null;
     /** @var array<string, string>|null */

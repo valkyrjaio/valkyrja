@@ -34,12 +34,12 @@ class Vlid extends Ulid
 {
     /** @var string */
     public const string REGEX = '[0-7]'
-    . '[' . self::VALID_CHARACTERS . ']{12}'
-    . '[1-4]'
-    . '[' . self::VALID_CHARACTERS . ']{4}'
-    . '([' . self::VALID_CHARACTERS . ']{4})?'
-    . '([' . self::VALID_CHARACTERS . ']{4})?'
-    . '([' . self::VALID_CHARACTERS . ']{4})?';
+        . '[' . self::VALID_CHARACTERS . ']{12}'
+        . '[1-4]'
+        . '[' . self::VALID_CHARACTERS . ']{4}'
+        . '([' . self::VALID_CHARACTERS . ']{4})?'
+        . '([' . self::VALID_CHARACTERS . ']{4})?'
+        . '([' . self::VALID_CHARACTERS . ']{4})?';
 
     /** @var Version */
     public const Version VERSION = Version::V1;

@@ -88,5 +88,4 @@ class EnvClass extends Env
     public const string|null HTTP_ROUTING_FILE_PATH = __DIR__ . '/bootstrap/routes/default.php';
     /** @var string|null */
     public const string|null HTTP_ROUTING_CACHE_FILE_PATH = __DIR__ . '/bootstrap/routing-cache.php';
-
 }

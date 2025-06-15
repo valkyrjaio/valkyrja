@@ -19,7 +19,6 @@ namespace Valkyrja\Asset\Constant;
  * @author Melech Mizrachi
  */
 final class ConfigName
-
 {
     public const DEFAULT_BUNDLE = 'defaultBundle';
 

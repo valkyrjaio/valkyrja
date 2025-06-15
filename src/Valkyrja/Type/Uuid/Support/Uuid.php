@@ -33,10 +33,10 @@ class Uuid extends Uid
 {
     /** @var string */
     public const string REGEX = self::REGEX_PART . '{8}-'
-    . self::REGEX_PART . '{4}-'
-    . self::REGEX_PART . '{4}-'
-    . self::REGEX_PART . '{4}-'
-    . self::REGEX_PART . '{12}';
+        . self::REGEX_PART . '{4}-'
+        . self::REGEX_PART . '{4}-'
+        . self::REGEX_PART . '{4}-'
+        . self::REGEX_PART . '{12}';
 
     /** @var Version */
     public const Version VERSION = Version::V1;
