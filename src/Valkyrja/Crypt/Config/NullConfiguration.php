@@ -31,6 +31,7 @@ class NullConfiguration extends Configuration
     protected static array $envNames = [
         ConfigName::ADAPTER_CLASS => 'CRYPT_NULL_ADAPTER_CLASS',
         ConfigName::DRIVER_CLASS  => 'CRYPT_NULL_DRIVER_CLASS',
+        ConfigName::KEY           => 'CRYPT_NULL_KEY',
     ];
 
     public function __construct(
