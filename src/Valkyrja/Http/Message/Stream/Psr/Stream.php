@@ -146,7 +146,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
-    public function getMetadata(string|null $key = null)
+    public function getMetadata(string|null $key = null): mixed
     {
         return $this->stream->getMetadata($key);
     }

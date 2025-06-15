@@ -22,7 +22,7 @@ use Valkyrja\Http\Message\Stream\Psr\Stream;
  */
 class StreamEmptyModeClass extends Stream
 {
-    public function getMetadata(string|null $key = null)
+    public function getMetadata(string|null $key = null): mixed
     {
         if ($key === 'mode') {
             return null;
