@@ -18,7 +18,7 @@ use Valkyrja\Tests\Classes\Http\Middleware\Env\EmptyEnvClass;
 use Valkyrja\Tests\Classes\Http\Middleware\Env\EnvClass;
 use Valkyrja\Tests\Unit\TestCase;
 
-class DataConfigTest extends TestCase
+class ConfigTest extends TestCase
 {
     public function testDefaults(): void
     {
