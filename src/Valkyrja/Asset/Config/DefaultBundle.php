@@ -28,9 +28,9 @@ class DefaultBundle extends Bundle
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER  => 'ASSET_DFAULT_ADAPTER',
-        ConfigName::HOST     => 'ASSET_DFAULT_HOST',
-        ConfigName::PATH     => 'ASSET_DFAULT_PATH',
-        ConfigName::MANIFEST => 'ASSET_DFAULT_MANIFEST',
+        ConfigName::ADAPTER_CLASS => 'ASSET_DFAULT_ADAPTER_CLASS',
+        ConfigName::HOST          => 'ASSET_DFAULT_HOST',
+        ConfigName::PATH          => 'ASSET_DFAULT_PATH',
+        ConfigName::MANIFEST      => 'ASSET_DFAULT_MANIFEST',
     ];
 }

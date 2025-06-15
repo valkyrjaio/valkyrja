@@ -19,11 +19,12 @@ namespace Valkyrja\Asset\Constant;
  * @author Melech Mizrachi
  */
 final class ConfigName
+
 {
     public const DEFAULT_BUNDLE = 'defaultBundle';
 
-    public const ADAPTER  = 'adapter';
-    public const HOST     = 'host';
-    public const PATH     = 'path';
-    public const MANIFEST = 'manifest';
+    public const ADAPTER_CLASS = 'adapterClass';
+    public const HOST          = 'host';
+    public const PATH          = 'path';
+    public const MANIFEST      = 'manifest';
 }

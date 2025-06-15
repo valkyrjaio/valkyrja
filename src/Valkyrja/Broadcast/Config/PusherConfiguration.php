@@ -31,6 +31,11 @@ class PusherConfiguration extends Configuration
     protected static array $envNames = [
         ConfigName::ADAPTER_CLASS => 'BROADCAST_PUSHER_ADAPTER_CLASS',
         ConfigName::DRIVER_CLASS  => 'BROADCAST_PUSHER_DRIVER_CLASS',
+        'key'                     => 'BROADCAST_PUSHER_KEY',
+        'secret'                  => 'BROADCAST_PUSHER_SECRET',
+        'id'                      => 'BROADCAST_PUSHER_ID',
+        'cluster'                 => 'BROADCAST_PUSHER_CLUSTER',
+        'useTls'                  => 'BROADCAST_PUSHER_USE_TLS',
     ];
 
     public function __construct(
