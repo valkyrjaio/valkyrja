@@ -18,8 +18,8 @@ use Valkyrja\Auth\Constant\HeaderValue;
 use Valkyrja\Auth\Contract\Auth as Contract;
 use Valkyrja\Auth\Entity\Contract\LockableUser;
 use Valkyrja\Auth\Entity\Contract\User;
-use Valkyrja\Auth\Exception\AuthRuntimeException;
 use Valkyrja\Auth\Exception\InvalidAuthenticationException;
+use Valkyrja\Auth\Exception\RuntimeException;
 use Valkyrja\Auth\Factory\Contract\Factory;
 use Valkyrja\Auth\Gate\Contract\Gate;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
@@ -192,7 +192,7 @@ class Auth implements Contract
         $repository = $this->getRepository($user, $adapter);
 
         if (! ($repository instanceof TokenizedRepository)) {
-            throw new AuthRuntimeException(
+            throw new RuntimeException(
                 "The repository for $user should be an instance of "
                 . TokenizedRepository::class
                 . '. '

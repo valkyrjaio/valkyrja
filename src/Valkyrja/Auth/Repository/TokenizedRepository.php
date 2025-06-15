@@ -17,14 +17,14 @@ use Throwable;
 use Valkyrja\Auth\Constant\HeaderValue;
 use Valkyrja\Auth\Entity\Contract\TokenizableUser;
 use Valkyrja\Auth\Entity\Contract\User;
-use Valkyrja\Auth\Exception\AuthRuntimeException;
+use Valkyrja\Auth\Exception\InvalidArgumentException;
 use Valkyrja\Auth\Exception\InvalidAuthenticationException;
 use Valkyrja\Auth\Exception\InvalidCurrentAuthenticationException;
 use Valkyrja\Auth\Exception\MissingTokenizableUserRequiredFieldsException;
+use Valkyrja\Auth\Exception\RuntimeException;
 use Valkyrja\Auth\Exception\TokenizationException;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\TokenizedRepository as Contract;
-use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 
@@ -100,7 +100,7 @@ abstract class TokenizedRepository extends Repository implements Contract
         $token = $this->getTokenFromSession();
 
         if ($token === null) {
-            throw new AuthRuntimeException('Invalid token provided.');
+            throw new InvalidArgumentException('Invalid token provided.');
         }
 
         return $this->authenticateFromToken($token);
