@@ -27,5 +27,5 @@ final class ConfigName
     public const DRIVER_CLASS  = 'driverClass';
     public const LOG_NAME      = 'logName';
     public const MESSAGE_CLASS = 'messageClass';
-    public const FROM          = 'from';
+    public const CHANNEL       = 'channel';
 }
