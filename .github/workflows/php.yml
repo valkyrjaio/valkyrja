@@ -18,7 +18,7 @@ jobs:
       fail-fast: true
       matrix:
         operating-system: [ 'ubuntu-22.04' ]
-        php: [ '8.1', '8.2', '8.3' ]
+        php: [ '8.1', '8.2', '8.3', '8.4' ]
         stability: [ prefer-lowest, prefer-stable ]
 
     name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
@@ -58,12 +58,19 @@ jobs:
         run: mkdir -p build/logs
 
       - name: Run PHPUnit tests
+        if: ${{ matrix.php != '8.1' }}
+        run: |
+          vendor/bin/phpunit --no-coverage
+
+      - name: Run PHPUnit tests
+        if: ${{ matrix.php == '8.1' }}
         run: |
           XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --stderr
 
       - name: Run Psalm
+        if: ${{ matrix.php != '8.1' }}
         run: |
-          vendor/bin/psalm --no-cache --shepherd
+          vendor/bin/psalm --no-cache
 
       - name: Run Psalm with Shepherd
         if: ${{ matrix.php == '8.1' }}
