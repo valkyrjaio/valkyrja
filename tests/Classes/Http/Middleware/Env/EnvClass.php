@@ -14,6 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Http\Middleware\Env;
 
 use Valkyrja\Application\Env;
+use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware as HttpRequestReceivedMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware as HttpRouteDispatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware as HttpRouteMatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware as HttpRouteNotMatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware as HttpSendingResponseMiddleware;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware as HttpTerminatedMiddleware;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware as HttpThrowableCaughtMiddleware;
 use Valkyrja\Tests\Classes\Http\Middleware\RequestReceivedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareClass;
@@ -29,11 +36,24 @@ use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
  */
 class EnvClass extends Env
 {
-    public const HTTP_MIDDLEWARE_REQUEST_RECEIVED  = [RequestReceivedMiddlewareClass::class];
-    public const HTTP_MIDDLEWARE_ROUTE_DISPATCHED  = [RouteDispatchedMiddlewareClass::class];
-    public const HTTP_MIDDLEWARE_THROWABLE_CAUGHT  = [ThrowableCaughtMiddlewareClass::class];
-    public const HTTP_MIDDLEWARE_ROUTE_MATCHED     = [RouteMatchedMiddlewareClass::class];
+    /************************************************************
+     *
+     * Http Middleware component env variables.
+     *
+     ************************************************************/
+
+    /** @var class-string<HttpRequestReceivedMiddleware>[]|null */
+    public const HTTP_MIDDLEWARE_REQUEST_RECEIVED = [RequestReceivedMiddlewareClass::class];
+    /** @var class-string<HttpRouteDispatchedMiddleware>[]|null */
+    public const HTTP_MIDDLEWARE_ROUTE_DISPATCHED = [RouteDispatchedMiddlewareClass::class];
+    /** @var class-string<HttpRouteMatchedMiddleware>[]|null */
+    public const HTTP_MIDDLEWARE_THROWABLE_CAUGHT = [ThrowableCaughtMiddlewareClass::class];
+    /** @var class-string<HttpRouteNotMatchedMiddleware>[]|null */
+    public const HTTP_MIDDLEWARE_ROUTE_MATCHED = [RouteMatchedMiddlewareClass::class];
+    /** @var class-string<HttpThrowableCaughtMiddleware>[]|null */
     public const HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = [RouteNotMatchedMiddlewareClass::class];
-    public const HTTP_MIDDLEWARE_SENDING_RESPONSE  = [SendingResponseMiddlewareClass::class];
-    public const HTTP_MIDDLEWARE_TERMINATED        = [TerminatedMiddlewareClass::class];
+    /** @var class-string<HttpSendingResponseMiddleware>[]|null */
+    public const HTTP_MIDDLEWARE_SENDING_RESPONSE = [SendingResponseMiddlewareClass::class];
+    /** @var class-string<HttpTerminatedMiddleware>[]|null */
+    public const HTTP_MIDDLEWARE_TERMINATED = [TerminatedMiddlewareClass::class];
 }

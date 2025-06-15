@@ -13,6 +13,64 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application;
 
+use League\Flysystem\FilesystemAdapter as FlysystemAdapter;
+use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
+use Valkyrja\Annotation\Model\Contract\Annotation;
+use Valkyrja\Api\Model\Contract\Json as ApiJson;
+use Valkyrja\Api\Model\Contract\JsonData as ApiJsonData;
+use Valkyrja\Application\Support\Provider as AppProvider;
+use Valkyrja\Asset\Adapter\Contract\Adapter as AssetAdapter;
+use Valkyrja\Auth\Adapter\Contract\Adapter as AuthAdapter;
+use Valkyrja\Auth\Entity\Contract\User as AuthUser;
+use Valkyrja\Auth\Gate\Contract\Gate as AuthGate;
+use Valkyrja\Auth\Policy\Contract\Policy as AuthPolicy;
+use Valkyrja\Auth\Repository\Contract\Repository as AuthRepository;
+use Valkyrja\Broadcast\Adapter\Contract\Adapter as BroadcastAdapter;
+use Valkyrja\Broadcast\Driver\Contract\Driver as BroadcastDriver;
+use Valkyrja\Broadcast\Message\Contract\Message as BroadcastMessage;
+use Valkyrja\Cache\Adapter\Contract\Adapter as CacheAdapter;
+use Valkyrja\Cache\Driver\Contract\Driver as CacheDriver;
+use Valkyrja\Client\Adapter\Contract\Adapter as ClientAdapter;
+use Valkyrja\Client\Driver\Contract\Driver as ClientDriver;
+use Valkyrja\Config\Support\Provider as ConfigProvider;
+use Valkyrja\Console\Commander\Contract\Commander as ConsoleCommander;
+use Valkyrja\Container\Contract\Service as ContainerService;
+use Valkyrja\Container\Support\Provider as ContainerProvider;
+use Valkyrja\Crypt\Adapter\Contract\Adapter as CryptAdapter;
+use Valkyrja\Crypt\Driver\Contract\Driver as CryptDriver;
+use Valkyrja\Exception\Contract\ErrorHandler;
+use Valkyrja\Filesystem\Adapter\Contract\Adapter as FilesystemAdapter;
+use Valkyrja\Filesystem\Driver\Contract\Driver as FilesystemDriver;
+use Valkyrja\Http\Message\Enum\SameSite;
+use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware as HttpRequestReceivedMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware as HttpRouteDispatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware as HttpRouteMatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware as HttpRouteNotMatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware as HttpSendingResponseMiddleware;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware as HttpTerminatedMiddleware;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware as HttpThrowableCaughtMiddleware;
+use Valkyrja\Http\Server\Contract\RequestHandler as HttpServerRequestHandler;
+use Valkyrja\Jwt\Adapter\Contract\Adapter as JwtAdapter;
+use Valkyrja\Jwt\Driver\Contract\Driver as JwtDriver;
+use Valkyrja\Log\Adapter\Contract\Adapter as LogAdapter;
+use Valkyrja\Log\Driver\Contract\Driver as LogDriver;
+use Valkyrja\Mail\Adapter\Contract\Adapter as MailAdapter;
+use Valkyrja\Mail\Driver\Contract\Driver as MailDriver;
+use Valkyrja\Mail\Message\Contract\Message as MailMessage;
+use Valkyrja\Orm\Adapter\Contract\Adapter as OrmAdapter;
+use Valkyrja\Orm\Driver\Contract\Driver as OrmDriver;
+use Valkyrja\Orm\Pdo\Pdo as OrmPdo;
+use Valkyrja\Orm\Persister\Contract\Persister as OrmPersister;
+use Valkyrja\Orm\Query\Contract\Query as OrmQuery;
+use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder as OrmQueryBuilder;
+use Valkyrja\Orm\Repository\Contract\Repository as OrmRepository;
+use Valkyrja\Orm\Retriever\Contract\Retriever as OrmRetriever;
+use Valkyrja\Session\Adapter\Contract\Adapter as SessionAdapter;
+use Valkyrja\Session\Driver\Contract\Driver as SessionDriver;
+use Valkyrja\Sms\Adapter\Contract\Adapter as SmsAdapter;
+use Valkyrja\Sms\Driver\Contract\Driver as SmsDriver;
+use Valkyrja\View\Engine\Contract\Engine as ViewEngine;
+
 /**
  * Class Env.
  *
@@ -20,375 +78,706 @@ namespace Valkyrja\Application;
  */
 class Env
 {
-    /**
-     * Application env variables.
-     */
-    public const APP_ENV            = 'local';
-    public const APP_DEBUG          = true;
-    public const APP_URL            = 'localhost';
-    public const APP_TIMEZONE       = 'UTC';
-    public const APP_VERSION        = '1 (ALPHA)';
-    public const APP_KEY            = null;
-    public const APP_PATH_REGEX_MAP = null;
-    public const APP_ERROR_HANDLER  = null;
-    public const APP_HTTP_KERNEL    = null;
-    public const APP_PROVIDERS      = null;
+    /************************************************************
+     *
+     * Application component env variables.
+     *
+     ************************************************************/
 
-    /**
-     * Config env variables.
-     */
-    public const CONFIG_PROVIDERS       = null;
-    public const CONFIG_FILE_PATH       = null;
-    public const CONFIG_CACHE_FILE_PATH = null;
-    public const CONFIG_USE_CACHE_FILE  = null;
+    /** @var string|null */
+    public const string|null APP_ENV = 'local';
+    /** @var bool|null */
+    public const bool|null APP_DEBUG = true;
+    /** @var string|null */
+    public const string|null APP_URL = 'localhost';
+    /** @var string|null */
+    public const string|null APP_TIMEZONE = 'UTC';
+    /** @var string|null */
+    public const string|null APP_VERSION = '1 (ALPHA)';
+    /** @var string|null */
+    public const string|null APP_KEY = null;
+    /** @var class-string<ErrorHandler>|null */
+    public const string|null APP_ERROR_HANDLER = null;
+    /** @var class-string<AppProvider>[]|null */
+    public const array|null APP_PROVIDERS = null;
 
-    /**
-     * Api env variables.
-     */
-    public const API_JSON_MODEL      = null;
-    public const API_JSON_DATA_MODEL = null;
+    /************************************************************
+     *
+     * Config component env variables.
+     *
+     ************************************************************/
 
-    /**
-     * Annotation env variables.
-     */
-    public const ANNOTATIONS_ENABLED   = null;
-    public const ANNOTATIONS_CACHE_DIR = null;
-    public const ANNOTATIONS_MAP       = null;
+    /** @var class-string<ConfigProvider>[]|null */
+    public const array|null CONFIG_PROVIDERS = null;
+    /** @var string|null */
+    public const string|null CONFIG_CACHE_FILE_PATH = null;
+    /** @var string|null */
+    public const string|null CONFIG_USE_CACHE = null;
 
-    /**
-     * Asset env variables.
-     */
-    public const ASSET_DEFAULT          = null;
-    public const ASSET_ADAPTERS         = null;
-    public const ASSET_BUNDLES          = null;
-    public const ASSET_DEFAULT_HOST     = null;
-    public const ASSET_DEFAULT_PATH     = null;
-    public const ASSET_DEFAULT_MANIFEST = null;
+    /************************************************************
+     *
+     * Annotation component env variables.
+     *
+     ************************************************************/
 
-    /**
-     * Auth env variables.
-     */
-    public const AUTH_ADAPTER                = null;
-    public const AUTH_USER_ENTITY            = null;
-    public const AUTH_REPOSITORY             = null;
-    public const AUTH_GATE                   = null;
-    public const AUTH_POLICY                 = null;
-    public const AUTH_ALWAYS_AUTHENTICATE    = null;
-    public const AUTH_KEEP_USER_FRESH        = null;
-    public const AUTH_AUTHENTICATE_ROUTE     = null;
-    public const AUTH_PASSWORD_CONFIRM_ROUTE = null;
-    public const AUTH_USE_SESSION            = null;
+    /** @var array<class-string|string, class-string>|null */
+    public const array|null ANNOTATION_ALIASES = null;
+    /** @var array<string, class-string<Annotation>>|null */
+    public const array|null ANNOTATION_MAP = null;
 
-    /**
-     * Broadcast env variables.
-     */
-    public const BROADCAST_DEFAULT         = null;
-    public const BROADCAST_DEFAULT_MESSAGE = null;
-    public const BROADCAST_ADAPTER         = null;
-    public const BROADCAST_DRIVER          = null;
-    public const BROADCAST_MESSAGE         = null;
-    public const BROADCAST_BROADCASTERS    = null;
-    public const BROADCAST_MESSAGES        = null;
-    public const BROADCAST_LOG_ADAPTER     = null;
-    public const BROADCAST_LOG_DRIVER      = null;
-    public const BROADCAST_LOG_LOGGER      = null;
-    public const BROADCAST_NULL_ADAPTER    = null;
-    public const BROADCAST_NULL_DRIVER     = null;
-    public const BROADCAST_PUSHER_ADAPTER  = null;
-    public const BROADCAST_PUSHER_DRIVER   = null;
-    public const BROADCAST_PUSHER_KEY      = null;
-    public const BROADCAST_PUSHER_SECRET   = null;
-    public const BROADCAST_PUSHER_ID       = null;
-    public const BROADCAST_PUSHER_CLUSTER  = null;
-    public const BROADCAST_PUSHER_USE_TLS  = null;
+    /************************************************************
+     *
+     * Api component env variables.
+     *
+     ************************************************************/
 
-    /**
-     * Cache env variables.
-     */
-    public const CACHE_DEFAULT       = null;
-    public const CACHE_ADAPTER       = null;
-    public const CACHE_DRIVER        = null;
-    public const CACHE_STORES        = null;
-    public const CACHE_REDIS_ADAPTER = null;
-    public const CACHE_REDIS_DRIVER  = null;
-    public const CACHE_REDIS_HOST    = null;
-    public const CACHE_REDIS_PORT    = null;
-    public const CACHE_REDIS_PREFIX  = null;
-    public const CACHE_NULL_ADAPTER  = null;
-    public const CACHE_NULL_DRIVER   = null;
-    public const CACHE_NULL_PREFIX   = null;
-    public const CACHE_LOG_ADAPTER   = null;
-    public const CACHE_LOG_DRIVER    = null;
-    public const CACHE_LOG_LOGGER    = null;
-    public const CACHE_LOG_PREFIX    = null;
+    /** @var class-string<ApiJson>|null */
+    public const API_JSON_MODEL = null;
+    /** @var class-string<ApiJsonData>|null */
+    public const API_DATA_MODEL = null;
 
-    /**
-     * Client env variables.
-     */
-    public const CLIENT_DEFAULT = null;
-    public const CLIENT_ADAPTER = null;
-    public const CLIENT_DRIVER  = null;
-    public const CLIENT_CLIENTS = null;
+    /************************************************************
+     *
+     * Asset component env variables.
+     *
+     ************************************************************/
 
-    /**
-     * Console env variables.
-     */
-    public const CONSOLE_PROVIDERS       = null;
-    public const CONSOLE_DEV_PROVIDERS   = null;
-    public const CONSOLE_QUIET           = null;
-    public const CONSOLE_USE_ANNOTATIONS = null;
-    public const CONSOLE_HANDLERS        = null;
-    public const CONSOLE_FILE_PATH       = null;
-    public const CONSOLE_CACHE_FILE_PATH = null;
-    public const CONSOLE_USE_CACHE_FILE  = null;
+    /** @var string|null */
+    public const string|null ASSET_DEFAULT_BUNDLE = null;
+    /** @var class-string<AssetAdapter>|null */
+    public const string|null ASSET_DFAULT_ADAPTER_CLASS = null;
+    /** @var string|null */
+    public const string|null ASSET_DFAULT_HOST = null;
+    /** @var string|null */
+    public const string|null ASSET_DFAULT_PATH = null;
+    /** @var string|null */
+    public const string|null ASSET_DFAULT_MANIFEST = null;
 
-    /**
-     * Container env variables.
-     */
-    public const CONTAINER_PROVIDERS        = null;
-    public const CONTAINER_DEV_PROVIDERS    = null;
-    public const CONTAINER_USE_ANNOTATIONS  = null;
-    public const CONTAINER_SERVICES         = null;
-    public const CONTAINER_CONTEXT_SERVICES = null;
-    public const CONTAINER_FILE_PATH        = null;
-    public const CONTAINER_CACHE_FILE_PATH  = null;
-    public const CONTAINER_USE_CACHE_FILE   = null;
+    /************************************************************
+     *
+     * Auth component env variables.
+     *
+     ************************************************************/
 
-    /**
-     * Crypt env variables.
-     */
-    public const CRYPT_KEY             = null;
-    public const CRYPT_KEY_PATH        = null;
-    public const CRYPT_DEFAULT         = null;
-    public const CRYPT_ADAPTERS        = null;
-    public const CRYPT_DRIVERS         = null;
-    public const CRYPT_CRYPTS          = null;
-    public const CRYPT_DEFAULT_ADAPTER = null;
-    public const CRYPT_DEFAULT_DRIVER  = null;
+    /** @var class-string<AuthAdapter>|null */
+    public const string|null AUTH_DEFAULT_ADAPTER = null;
+    /** @var class-string<AuthUser>|null */
+    public const string|null AUTH_DEFAULT_USER_ENTITY = null;
+    /** @var class-string<AuthRepository>|null */
+    public const string|null AUTH_DEFAULT_REPOSITORY = null;
+    /** @var class-string<AuthGate>|null */
+    public const string|null AUTH_DEFAULT_GATE = null;
+    /** @var class-string<AuthPolicy>|null */
+    public const string|null AUTH_DEFAULT_POLICY = null;
+    /** @var bool|null */
+    public const bool|null AUTH_SHOULD_ALWAYS_AUTHENTICATE = null;
+    /** @var bool|null */
+    public const bool|null AUTH_SHOULD_KEEP_USER_FRESH = null;
+    /** @var bool|null */
+    public const bool|null AUTH_SHOULD_USE_SESSION = null;
+    /** @var string|null */
+    public const string|null AUTH_AUTHENTICATE_ROUTE = null;
+    /** @var string|null */
+    public const string|null AUTH_AUTHENTICATE_URL = null;
+    /** @var string|null */
+    public const string|null AUTH_NOT_AUTHENTICATED_ROUTE = null;
+    /** @var string|null */
+    public const string|null AUTH_NOT_AUTHENTICATED_URL = null;
+    /** @var string|null */
+    public const string|null AUTH_PASSWORD_CONFIRM_ROUTE = null;
+    /** @var int|null */
+    public const int|null AUTH_PASSWORD_TIMEOUT = null;
 
-    /**
-     * Events env variables.
-     */
-    public const EVENT_USE_ANNOTATIONS = null;
-    public const EVENT_LISTENERS       = null;
-    public const EVENT_FILE_PATH       = null;
-    public const EVENT_CACHE_FILE_PATH = null;
-    public const EVENTS_USE_CACHE_FILE = null;
+    /************************************************************
+     *
+     * Broadcast component env variables.
+     *
+     ************************************************************/
 
-    /**
-     * Filesystem env variables.
-     */
-    public const FILESYSTEM_DEFAULT                 = null;
-    public const FILESYSTEM_ADAPTER                 = null;
-    public const FILESYSTEM_DRIVER                  = null;
-    public const FILESYSTEM_DISKS                   = null;
-    public const FILESYSTEM_LOCAL_ADAPTER           = null;
-    public const FILESYSTEM_LOCAL_DRIVER            = null;
-    public const FILESYSTEM_LOCAL_FLYSYSTEM_ADAPTER = null;
-    public const FILESYSTEM_LOCAL_DIR               = null;
-    public const FILESYSTEM_S3_ADAPTER              = null;
-    public const FILESYSTEM_S3_DRIVER               = null;
-    public const FILESYSTEM_S3_FLYSYSTEM_ADAPTER    = null;
-    public const FILESYSTEM_S3_KEY                  = null;
-    public const FILESYSTEM_S3_SECRET               = null;
-    public const FILESYSTEM_S3_REGION               = null;
-    public const FILESYSTEM_S3_VERSION              = null;
-    public const FILESYSTEM_S3_BUCKET               = null;
-    public const FILESYSTEM_S3_PREFIX               = null;
-    public const FILESYSTEM_S3_OPTIONS              = null;
+    /** @var string|null */
+    public const string|null BROADCAST_DEFAULT_CONFIGURATION = null;
+    /** @var string|null */
+    public const string|null BROADCAST_DEFAULT_MESSAGE_CONFIGURATION = null;
+    /** @var string|null */
+    public const string|null BROADCAST_DEFAULT_MESSAGE_CHANNEL = null;
+    /** @var class-string<BroadcastMessage>|null */
+    public const string|null BROADCAST_DEFAULT_MESSAGE_CLASS = null;
+    /** @var class-string<BroadcastAdapter>|null */
+    public const string|null BROADCAST_PUSHER_ADAPTER_CLASS = null;
+    /** @var class-string<BroadcastDriver>|null */
+    public const string|null BROADCAST_PUSHER_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null BROADCAST_PUSHER_KEY = null;
+    /** @var string|null */
+    public const string|null BROADCAST_PUSHER_SECRET = null;
+    /** @var string|null */
+    public const string|null BROADCAST_PUSHER_ID = null;
+    /** @var string|null */
+    public const string|null BROADCAST_PUSHER_CLUSTER = null;
+    /** @var bool|null */
+    public const bool|null BROADCAST_PUSHER_USE_TLS = null;
+    /** @var class-string<BroadcastAdapter>|null */
+    public const string|null BROADCAST_LOG_ADAPTER_CLASS = null;
+    /** @var class-string<BroadcastDriver>|null */
+    public const string|null BROADCAST_LOG_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null BROADCAST_LOG_LOG_NAME = null;
+    /** @var class-string<BroadcastAdapter>|null */
+    public const string|null BROADCAST_NULL_ADAPTER_CLASS = null;
+    /** @var class-string<BroadcastDriver>|null */
+    public const string|null BROADCAST_NULL_DRIVER_CLASS = null;
 
-    public const HTTP_MIDDLEWARE_REQUEST_RECEIVED  = null;
-    public const HTTP_MIDDLEWARE_ROUTE_DISPATCHED  = null;
-    public const HTTP_MIDDLEWARE_THROWABLE_CAUGHT  = null;
-    public const HTTP_MIDDLEWARE_ROUTE_MATCHED     = null;
+    /************************************************************
+     *
+     * Cache component env variables.
+     *
+     ************************************************************/
+
+    /** @var string|null */
+    public const string|null CACHE_DEFAULT_CONFIGURATION = null;
+    /** @var class-string<CacheAdapter>|null */
+    public const string|null CACHE_REDIS_ADAPTER_CLASS = null;
+    /** @var class-string<CacheDriver>|null */
+    public const string|null CACHE_REDIS_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null CACHE_REDIS_HOST = null;
+    /** @var int|null */
+    public const int|null CACHE_REDIS_PORT = null;
+    /** @var string|null */
+    public const string|null CACHE_REDIS_PREFIX = null;
+    /** @var class-string<CacheAdapter>|null */
+    public const string|null CACHE_LOG_ADAPTER_CLASS = null;
+    /** @var class-string<CacheDriver>|null */
+    public const string|null CACHE_LOG_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null CACHE_LOG_PREFIX = null;
+    /** @var string|null */
+    public const string|null CACHE_LOG_LOGGER = null;
+    /** @var class-string<CacheAdapter>|null */
+    public const string|null CACHE_NULL_ADAPTER_CLASS = null;
+    /** @var class-string<CacheDriver>|null */
+    public const string|null CACHE_NULL_DRIVER_CLASS = null;
+
+    /************************************************************
+     *
+     * Client component env variables.
+     *
+     ************************************************************/
+
+    /** @var string|null */
+    public const string|null CLIENT_DEFAULT_CONFIGURATION = null;
+    /** @var class-string<ClientAdapter>|null */
+    public const string|null CLIENT_GUZZLE_ADAPTER_CLASS = null;
+    /** @var class-string<ClientDriver>|null */
+    public const string|null CLIENT_GUZZLE_DRIVER_CLASS = null;
+    /** @var array<string, mixed>|null */
+    public const array|null CLIENT_GUZZLE_OPTIONS = null;
+    /** @var class-string<ClientAdapter>|null */
+    public const string|null CLIENT_NULL_ADAPTER_CLASS = null;
+    /** @var class-string<ClientDriver>|null */
+    public const string|null CLIENT_NULL_DRIVER_CLASS = null;
+
+    /************************************************************
+     *
+     * Console component env variables.
+     *
+     ************************************************************/
+
+    /** @var class-string<ConsoleCommander>[]|null */
+    public const array|null CONSOLE_HANDLERS = null;
+    /** @var class-string[]|null */
+    public const array|null CONSOLE_PROVIDERS = null;
+    /** @var class-string[]|null */
+    public const array|null CONSOLE_DEV_PROVIDERS = null;
+    /** @var bool|null */
+    public const bool|null CONSOLE_SHOULD_RUN_QUIETLY = null;
+    /** @var string|null */
+    public const string|null CONSOLE_FILE_PATH = null;
+    /** @var string|null */
+    public const string|null CONSOLE_CACHE_FILE_PATH = null;
+    /** @var bool|null */
+    public const bool|null CONSOLE_SHOULD_USE_CACHE = null;
+
+    /************************************************************
+     *
+     * Container component env variables.
+     *
+     ************************************************************/
+
+    /** @var class-string[]|null */
+    public const array|null CONTAINER_ALIASES = null;
+    /** @var class-string<ContainerService>[]|null */
+    public const array|null CONTAINER_SERVICES = null;
+    /** @var class-string<ContainerService>[]|null */
+    public const array|null CONTAINER_CONTEXT_SERVICES = null;
+    /** @var class-string<ContainerProvider>[]|null */
+    public const array|null CONTAINER_PROVIDERS = null;
+    /** @var class-string<ContainerProvider>[]|null */
+    public const array|null CONTAINER_DEV_PROVIDERS = null;
+    /** @var bool|null */
+    public const bool|null CONTAINER_USE_ATTRIBUTES = null;
+    /** @var string|null */
+    public const string|null CONTAINER_FILE_PATH = null;
+    /** @var string|null */
+    public const string|null CONTAINER_CACHE_FILE_PATH = null;
+    /** @var bool|null */
+    public const bool|null CONTAINER_USE_CACHE = null;
+
+    /************************************************************
+     *
+     * Crypt component env variables.
+     *
+     ************************************************************/
+
+    /** @var string|null */
+    public const string|null CRYPT_DEFAULT_CONFIGURATION = null;
+    /** @var class-string<CryptAdapter>|null */
+    public const string|null CRYPT_SODIUM_ADAPTER_CLASS = null;
+    /** @var class-string<CryptDriver>|null */
+    public const string|null CRYPT_SODIUM_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null CRYPT_SODIUM_KEY = null;
+    /** @var string|null */
+    public const string|null CRYPT_SODIUM_KEY_PATH = null;
+    /** @var class-string<CryptAdapter>|null */
+    public const string|null CRYPT_NULL_ADAPTER_CLASS = null;
+    /** @var class-string<CryptDriver>|null */
+    public const string|null CRYPT_NULL_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null CRYPT_NULL_KEY = null;
+
+    /************************************************************
+     *
+     * Event component env variables.
+     *
+     ************************************************************/
+
+    /** @var class-string[]|null */
+    public const array|null EVENT_LISTENER_CLASSES = null;
+    /** @var string|null */
+    public const string|null EVENT_FILE_PATH = null;
+    /** @var string|null */
+    public const string|null EVENT_CACHE_FILE_PATH = null;
+    /** @var string|null */
+    public const string|null EVENT_USE_CACHE_FILE = null;
+
+    /************************************************************
+     *
+     * Filesystem component env variables.
+     *
+     ************************************************************/
+
+    /** @var string|null */
+    public const string|null FILESYSTEM_DEFAULT_CONFIGURATION = null;
+    /** @var class-string<FilesystemAdapter>|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_LOCAL_ADAPTER_CLASS = null;
+    /** @var class-string<FilesystemDriver>|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_LOCAL_DRIVER_CLASS = null;
+    /** @var class-string<FlysystemAdapter>|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_LOCAL_FLYSYSTEM_ADAPTER = null;
+    /** @var string|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_LOCAL_DIR = null;
+    /** @var class-string<FilesystemAdapter>|null */
+    public const string|null FILESYSTEM_IN_MEMORY_ADAPTER_CLASS = null;
+    /** @var class-string<FilesystemDriver>|null */
+    public const string|null FILESYSTEM_IN_MEMORY_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null FILESYSTEM_IN_MEMORY_DIR = null;
+    /** @var class-string<FilesystemAdapter>|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_S3_ADAPTER_CLASS = null;
+    /** @var class-string<FilesystemDriver>|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_S3_DRIVER_CLASS = null;
+    /** @var class-string<FlysystemAdapter>|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_S3_FLYSYSTEM_ADAPTER = null;
+    /** @var string|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_S3_KEY = null;
+    /** @var string|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_S3_SECRET = null;
+    /** @var string|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_S3_REGION = null;
+    /** @var string|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_S3_VERSION = null;
+    /** @var string|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_S3_BUCKET = null;
+    /** @var string|null */
+    public const string|null FILESYSTEM_FLYSYSTEM_S3_PREFIX = null;
+    /** @var array<string, mixed>|null */
+    public const array|null FILESYSTEM_FLYSYSTEM_S3_OPTIONS = null;
+    /** @var class-string<FilesystemAdapter>|null */
+    public const string|null FILESYSTEM_NULL_ADAPTER_CLASS = null;
+    /** @var class-string<FilesystemDriver>|null */
+    public const string|null FILESYSTEM_NULL_DRIVER_CLASS = null;
+
+    /************************************************************
+     *
+     * Http Middleware component env variables.
+     *
+     ************************************************************/
+
+    /** @var class-string<HttpRequestReceivedMiddleware>[]|null */
+    public const HTTP_MIDDLEWARE_REQUEST_RECEIVED = null;
+    /** @var class-string<HttpRouteDispatchedMiddleware>[]|null */
+    public const HTTP_MIDDLEWARE_ROUTE_DISPATCHED = null;
+    /** @var class-string<HttpRouteMatchedMiddleware>[]|null */
+    public const HTTP_MIDDLEWARE_THROWABLE_CAUGHT = null;
+    /** @var class-string<HttpRouteNotMatchedMiddleware>[]|null */
+    public const HTTP_MIDDLEWARE_ROUTE_MATCHED = null;
+    /** @var class-string<HttpThrowableCaughtMiddleware>[]|null */
     public const HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = null;
-    public const HTTP_MIDDLEWARE_SENDING_RESPONSE  = null;
-    public const HTTP_MIDDLEWARE_TERMINATED        = null;
+    /** @var class-string<HttpSendingResponseMiddleware>[]|null */
+    public const HTTP_MIDDLEWARE_SENDING_RESPONSE = null;
+    /** @var class-string<HttpTerminatedMiddleware>[]|null */
+    public const HTTP_MIDDLEWARE_TERMINATED = null;
 
-    /**
-     * JWT env variables.
-     */
-    public const JWT_DEFAULT           = null;
-    public const JWT_ADAPTER           = null;
-    public const JWT_DRIVER            = null;
-    public const JWT_ALGOS             = null;
-    public const JWT_HS_ADAPTER        = null;
-    public const JWT_HS_DRIVER         = null;
-    public const JWT_HS_KEY            = null;
-    public const JWT_RS_ADAPTER        = null;
-    public const JWT_RS_DRIVER         = null;
-    public const JWT_RS_PRIVATE_KEY    = null;
-    public const JWT_RS_PUBLIC_KEY     = null;
-    public const JWT_RS_KEY_PATH       = null;
-    public const JWT_RS_PASSPHRASE     = null;
-    public const JWT_EDDSA_ADAPTER     = null;
-    public const JWT_EDDSA_DRIVER      = null;
-    public const JWT_EDDSA_PRIVATE_KEY = null;
-    public const JWT_EDDSA_PUBLIC_KEY  = null;
+    /************************************************************
+     *
+     * Http Routing component env variables.
+     *
+     ************************************************************/
 
-    /**
-     * Logger env variables.
-     */
-    public const LOG_NAME      = null;
-    public const LOG_FILE_PATH = null;
-    public const LOG_DEFAULT   = null;
-    public const LOG_ADAPTER   = null;
-    public const LOG_DRIVER    = null;
-    public const LOG_LOGGERS   = null;
+    /** @var class-string[]|null */
+    public const array|null HTTP_ROUTING_CONTROLLERS = null;
+    /** @var string|null */
+    public const string|null HTTP_ROUTING_FILE_PATH = null;
+    /** @var string|null */
+    public const string|null HTTP_ROUTING_CACHE_FILE_PATH = null;
+    /** @var bool|null */
+    public const bool|null HTTP_ROUTING_USE_CACHE = null;
 
-    /**
-     * Mail env variables.
-     */
-    public const MAIL_FROM_ADDRESS          = null;
-    public const MAIL_FROM_NAME             = null;
-    public const MAIL_DEFAULT               = null;
-    public const MAIL_ADAPTER               = null;
-    public const MAIL_DRIVER                = null;
-    public const MAIL_MESSAGE               = null;
-    public const MAIL_MAILERS               = null;
-    public const MAIL_MESSAGES              = null;
-    public const MAIL_LOG_DRIVER            = null;
-    public const MAIL_LOG_ADAPTER           = null;
-    public const MAIL_LOG_LOGGER            = null;
-    public const MAIL_NULL_ADAPTER          = null;
-    public const MAIL_NULL_DRIVER           = null;
-    public const MAIL_PHP_MAILER_ADAPTER    = null;
-    public const MAIL_PHP_MAILER_DRIVER     = null;
-    public const MAIL_PHP_MAILER_HOST       = null;
-    public const MAIL_PHP_MAILER_PORT       = null;
-    public const MAIL_PHP_MAILER_ENCRYPTION = null;
-    public const MAIL_PHP_MAILER_USERNAME   = null;
-    public const MAIL_PHP_MAILER_PASSWORD   = null;
-    public const MAIL_MAILGUN_ADAPTER       = null;
-    public const MAIL_MAILGUN_DRIVER        = null;
-    public const MAIL_MAILGUN_DOMAIN        = null;
-    public const MAIL_MAILGUN_API_KEY       = null;
+    /************************************************************
+     *
+     * Http Server component env variables.
+     *
+     ************************************************************/
 
-    /**
-     * Notification env variables.
-     */
-    public const NOTIFICATION_NOTIFICATIONS = null;
+    /** @var class-string<HttpServerRequestHandler>|null */
+    public const string|null HTTP_SERVER_REQUEST_HANDLER = null;
 
-    /**
-     * ORM env variables.
-     */
-    public const ORM_DEFAULT             = null;
-    public const ORM_ADAPTER             = null;
-    public const ORM_DRIVER              = null;
-    public const ORM_QUERY               = null;
-    public const ORM_QUERY_BUILDER       = null;
-    public const ORM_PERSISTER           = null;
-    public const ORM_RETRIEVER           = null;
-    public const ORM_REPOSITORY          = null;
-    public const ORM_CONNECTIONS         = null;
-    public const ORM_MIGRATIONS          = null;
-    public const ORM_MYSQL_ADAPTER       = null;
-    public const ORM_MYSQL_QUERY         = null;
-    public const ORM_MYSQL_QUERY_BUILDER = null;
-    public const ORM_MYSQL_PERSISTER     = null;
-    public const ORM_MYSQL_RETRIEVER     = null;
-    public const ORM_MYSQL_DRIVER        = null;
-    public const ORM_MYSQL_PDO           = null;
-    public const ORM_MYSQL_HOST          = null;
-    public const ORM_MYSQL_PORT          = null;
-    public const ORM_MYSQL_DB            = null;
-    public const ORM_MYSQL_CHARSET       = null;
-    public const ORM_MYSQL_USERNAME      = null;
-    public const ORM_MYSQL_PASSWORD      = null;
-    public const ORM_MYSQL_STRICT        = null;
-    public const ORM_MYSQL_ENGINE        = null;
-    public const ORM_MYSQL_OPTIONS       = null;
-    public const ORM_PGSQL_ADAPTER       = null;
-    public const ORM_PGSQL_QUERY         = null;
-    public const ORM_PGSQL_QUERY_BUILDER = null;
-    public const ORM_PGSQL_PERSISTER     = null;
-    public const ORM_PGSQL_RETRIEVER     = null;
-    public const ORM_PGSQL_DRIVER        = null;
-    public const ORM_PGSQL_PDO           = null;
-    public const ORM_PGSQL_HOST          = null;
-    public const ORM_PGSQL_PORT          = null;
-    public const ORM_PGSQL_DB            = null;
-    public const ORM_PGSQL_USERNAME      = null;
-    public const ORM_PGSQL_PASSWORD      = null;
-    public const ORM_PGSQL_CHARSET       = null;
-    public const ORM_PGSQL_OPTIONS       = null;
-    public const ORM_PGSQL_SSL_MODE      = null;
-    public const ORM_PGSQL_SSL_CERT      = null;
-    public const ORM_PGSQL_SSL_KEY       = null;
-    public const ORM_PGSQL_SSL_ROOT_CERT = null;
-    public const ORM_PGSQL_SCHEMA        = null;
+    /************************************************************
+     *
+     * Jwt component env variables.
+     *
+     ************************************************************/
 
-    /**
-     * Path env variables.
-     */
-    // public const PATH_PATTERNS = null;
+    /** @var string|null */
+    public const string|null JWT_DEFAULT_CONFIGURATION = null;
+    /** @var class-string<JwtAdapter>|null */
+    public const string|null JWT_HS_ADAPTER_CLASS = null;
+    /** @var class-string<JwtDriver>|null */
+    public const string|null JWT_HS_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null JWT_HS_ALGORITHM = null;
+    /** @var string|null */
+    public const string|null JWT_HS_KEY = null;
+    /** @var string|null */
+    public const string|null JWT_HS_DRIVER = null;
+    /** @var class-string<JwtAdapter>|null */
+    public const string|null JWT_RS_ADAPTER_CLASS = null;
+    /** @var class-string<JwtDriver>|null */
+    public const string|null JWT_RS_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null JWT_RS_ALGORITHM = null;
+    /** @var string|null */
+    public const string|null JWT_RS_PRIVATE_KEY = null;
+    /** @var string|null */
+    public const string|null JWT_RS_PUBLIC_KEY = null;
+    /** @var string|null */
+    public const string|null JWT_RS_KEY_PATH = null;
+    /** @var string|null */
+    public const string|null JWT_RS_PASSPHRASE = null;
+    /** @var class-string<JwtAdapter>|null */
+    public const string|null JWT_EDDSA_ADAPTER_CLASS = null;
+    /** @var class-string<JwtDriver>|null */
+    public const string|null JWT_EDDSA_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null JWT_EDDSA_ALGORITHM = null;
+    /** @var string|null */
+    public const string|null JWT_EDDSA_PRIVATE_KEY = null;
+    /** @var string|null */
+    public const string|null JWT_EDDSA_PUBLIC_KEY = null;
+    /** @var class-string<JwtAdapter>|null */
+    public const string|null JWT_NULL_ADAPTER_CLASS = null;
+    /** @var class-string<JwtDriver>|null */
+    public const string|null JWT_NULL_DRIVER_CLASS = null;
 
-    /**
-     * Routing env variables.
-     */
-    public const ROUTING_TRAILING_SLASH    = null;
-    public const ROUTING_USE_ABSOLUTE_URLS = null;
-    public const ROUTING_MIDDLEWARE        = null;
-    public const ROUTING_MIDDLEWARE_GROUPS = null;
-    public const ROUTING_USE_ANNOTATIONS   = null;
-    public const ROUTING_CONTROLLERS       = null;
-    public const ROUTING_FILE_PATH         = null;
-    public const ROUTING_CACHE_FILE_PATH   = null;
-    public const ROUTING_USE_CACHE_FILE    = null;
+    /************************************************************
+     *
+     * Logger component env variables.
+     *
+     ************************************************************/
 
-    /**
-     * Session env variables.
-     */
-    public const SESSION_DEFAULT          = null;
-    public const SESSION_SESSIONS         = null;
-    public const SESSION_ID               = null;
-    public const SESSION_NAME             = null;
-    public const SESSION_ADAPTER          = null;
-    public const SESSION_DRIVER           = null;
-    public const SESSION_COOKIE_LIFETIME  = null;
-    public const SESSION_COOKIE_PATH      = null;
-    public const SESSION_COOKIE_DOMAIN    = null;
-    public const SESSION_COOKIE_SECURE    = null;
-    public const SESSION_COOKIE_HTTP_ONLY = null;
-    public const SESSION_COOKIE_SAME_SITE = null;
+    /** @var string|null */
+    public const string|null LOG_DEFAULT_CONFIGURATION = null;
+    /** @var class-string<LogAdapter>|null */
+    public const string|null LOG_PSR_ADAPTER_CLASS = null;
+    /** @var class-string<LogDriver>|null */
+    public const string|null LOG_PSR_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null LOG_PSR_NAME = null;
+    /** @var string|null */
+    public const string|null LOG_PSR_FILE_PATH = null;
+    /** @var class-string<LogAdapter>|null */
+    public const string|null LOG_NULL_ADAPTER_CLASS = null;
+    /** @var class-string<LogDriver>|null */
+    public const string|null LOG_NULL_DRIVER_CLASS = null;
 
-    /**
-     * SMS env variables.
-     */
-    public const SMS_ADAPTER        = null;
-    public const SMS_DRIVER         = null;
-    public const SMS_MESSAGE        = null;
-    public const SMS_MESSAGES       = null;
-    public const SMS_MESSENGERS     = null;
-    public const SMS_LOG_DRIVER     = null;
-    public const SMS_LOG_ADAPTER    = null;
-    public const SMS_NEXMO_DRIVER   = null;
-    public const SMS_NEXMO_USERNAME = null;
-    public const SMS_NEXMO_PASSWORD = null;
-    public const SMS_NULL_DRIVER    = null;
+    /************************************************************
+     *
+     * Mail component env variables.
+     *
+     ************************************************************/
 
-    /**
-     * Storage env variables.
-     */
-    public const STORAGE_UPLOADS_DIR = null;
-    public const STORAGE_LOGS_DIR    = null;
+    /** @var string|null */
+    public const string|null MAIL_DEFAULT_CONFIGURATION = null;
+    /** @var string|null */
+    public const string|null MAIL_DEFAULT_MESSAGE_CONFIGURATION = null;
+    /** @var string|null */
+    public const string|null MAIL_DEFAULT_MESSAGE_FROM = null;
+    /** @var class-string<MailMessage>|null */
+    public const string|null MAIL_DEFAULT_MESSAGE_CLASS = null;
+    /** @var class-string<MailAdapter>|null */
+    public const string|null MAILGUN_MAILGUN_ADAPTER_CLASS = null;
+    /** @var class-string<MailDriver>|null */
+    public const string|null MAILGUN_MAILGUN_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null MAILGUN_MAILGUN_API_KEY = null;
+    /** @var string|null */
+    public const string|null MAILGUN_MAILGUN_DOMAIN = null;
+    /** @var class-string<MailAdapter>|null */
+    public const string|null PHPMAILER_PHP_MAILER_ADAPTER_CLASS = null;
+    /** @var class-string<MailDriver>|null */
+    public const string|null PHPMAILER_PHP_MAILER_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null PHPMAILER_PHP_MAILER_HOST = null;
+    /** @var int|null */
+    public const int|null PHPMAILER_PHP_MAILER_PORT = null;
+    /** @var string|null */
+    public const string|null PHPMAILER_PHP_MAILER_USERNAME = null;
+    /** @var string|null */
+    public const string|null PHPMAILER_PHP_MAILER_PASSWORD = null;
+    /** @var string|null */
+    public const string|null PHPMAILER_PHP_MAILER_ENCRYPTION = null;
+    /** @var string|null */
+    public const string|null MAIL_LOG_LOG_NAME = null;
+    /** @var class-string<MailAdapter>|null */
+    public const string|null MAIL_LOG_ADAPTER_CLASS = null;
+    /** @var class-string<MailDriver>|null */
+    public const string|null MAIL_LOG_DRIVER_CLASS = null;
+    /** @var class-string<MailAdapter>|null */
+    public const string|null MAIL_NULL_ADAPTER_CLASS = null;
+    /** @var class-string<MailDriver>|null */
+    public const string|null MAIL_NULL_DRIVER_CLASS = null;
 
-    /**
-     * Validation env variables.
-     */
-    public const VALIDATION_RULE      = null;
-    public const VALIDATION_RULES     = null;
-    public const VALIDATION_RULES_MAP = null;
+    /************************************************************
+     *
+     * Notification component env variables.
+     *
+     ************************************************************/
 
-    /**
-     * Views env variables.
-     */
-    public const VIEW_DIR                = null;
-    public const VIEW_ENGINE             = null;
-    public const VIEW_ENGINES            = null;
-    public const VIEW_PATHS              = null;
-    public const VIEW_DISKS              = null;
-    public const VIEW_PHP_FILE_EXTENSION = null;
-    public const VIEW_TWIG_COMPILED_DIR  = null;
-    public const VIEW_TWIG_EXTENSIONS    = null;
+    /** @var array<string, mixed>|null */
+    public const array|null NOTIFICATION_NOTIFICATIONS = null;
+
+    /************************************************************
+     *
+     * Orm component env variables.
+     *
+     ************************************************************/
+
+    /** @var string|null */
+    public const string|null ORM_DEFAULT_CONNECTION = null;
+    /** @var string|null */
+    public const string|null ORM_MIGRATIONS = null;
+    /** @var class-string<OrmAdapter>|null */
+    public const string|null ORM_PGSQL_ADAPTER_CLASS = null;
+    /** @var class-string<OrmDriver>|null */
+    public const string|null ORM_PGSQL_DRIVER_CLASS = null;
+    /** @var class-string<OrmRepository>|null */
+    public const string|null ORM_PGSQL_REPOSITORY_CLASS = null;
+    /** @var class-string<OrmQuery>|null */
+    public const string|null ORM_PGSQL_QUERY_CLASS = null;
+    /** @var class-string<OrmQueryBuilder>|null */
+    public const string|null ORM_PGSQL_QUERY_BUILDER_CLASS = null;
+    /** @var class-string<OrmPersister>|null */
+    public const string|null ORM_PGSQL_PERSISTER_CLASS = null;
+    /** @var class-string<OrmRetriever>|null */
+    public const string|null ORM_PGSQL_RETRIEVER_CLASS = null;
+    /** @var class-string<OrmPdo>|null */
+    public const string|null ORM_PGSQL_PDO_CLASS = null;
+    /** @var string|null */
+    public const string|null ORM_PGSQL_PDO_DRIVER = null;
+    /** @var string|null */
+    public const string|null ORM_PGSQL_HOST = null;
+    /** @var string|null */
+    public const string|null ORM_PGSQL_PORT = null;
+    /** @var string|null */
+    public const string|null ORM_PGSQL_DB = null;
+    /** @var string|null */
+    public const string|null ORM_PGSQL_USER = null;
+    /** @var string|null */
+    public const string|null ORM_PGSQL_PASSWORD = null;
+    /** @var string|null */
+    public const string|null ORM_PGSQL_CHARSET = null;
+    /** @var array<int, int|bool>|null */
+    public const array|null ORM_PGSQL_OPTIONS = null;
+    /** @var string|null */
+    public const string|null ORM_PGSQL_SCHEMA = null;
+    /** @var string|null */
+    public const string|null ORM_PGSQL_SSL_MODE = null;
+    /** @var string|null */
+    public const string|null ORM_PGSQL_SSL_CERT = null;
+    /** @var string|null */
+    public const string|null ORM_PGSQL_KEY = null;
+    /** @var string|null */
+    public const string|null ORM_PGSQL_ROOT_KEY = null;
+    /** @var class-string<OrmAdapter>|null */
+    public const string|null ORM_MYSQL_ADAPTER_CLASS = null;
+    /** @var class-string<OrmDriver>|null */
+    public const string|null ORM_MYSQL_DRIVER_CLASS = null;
+    /** @var class-string<OrmRepository>|null */
+    public const string|null ORM_MYSQL_REPOSITORY_CLASS = null;
+    /** @var class-string<OrmQuery>|null */
+    public const string|null ORM_MYSQL_QUERY_CLASS = null;
+    /** @var class-string<OrmQueryBuilder>|null */
+    public const string|null ORM_MYSQL_QUERY_BUILDER_CLASS = null;
+    /** @var class-string<OrmPersister>|null */
+    public const string|null ORM_MYSQL_PERSISTER_CLASS = null;
+    /** @var class-string<OrmRetriever>|null */
+    public const string|null ORM_MYSQL_RETRIEVER_CLASS = null;
+    /** @var class-string<OrmPdo>|null */
+    public const string|null ORM_MYSQL_PDO_CLASS = null;
+    /** @var string|null */
+    public const string|null ORM_MYSQL_PDO_DRIVER = null;
+    /** @var string|null */
+    public const string|null ORM_MYSQL_HOST = null;
+    /** @var string|null */
+    public const string|null ORM_MYSQL_PORT = null;
+    /** @var string|null */
+    public const string|null ORM_MYSQL_DB = null;
+    /** @var string|null */
+    public const string|null ORM_MYSQL_USER = null;
+    /** @var string|null */
+    public const string|null ORM_MYSQL_PASSWORD = null;
+    /** @var string|null */
+    public const string|null ORM_MYSQL_CHARSET = null;
+    /** @var array<int, int|bool>|null */
+    public const array|null ORM_MYSQL_OPTIONS = null;
+    /** @var bool|null */
+    public const bool|null ORM_MYSQL_STRICT = null;
+    /** @var string|null */
+    public const string|null ORM_MYSQL_ENGINE = null;
+
+    /************************************************************
+     *
+     * Session component env variables.
+     *
+     ************************************************************/
+
+    /** @var string|null */
+    public const string|null SESSION_DEFAULT_CONFIGURATION = null;
+    /** @var class-string<SessionAdapter>|null */
+    public const string|null SESSION_PHP_ADAPTER_CLASS = null;
+    /** @var class-string<SessionDriver>|null */
+    public const string|null SESSION_PHP_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null SESSION_PHP_ID = null;
+    /** @var string|null */
+    public const string|null SESSION_PHP_NAME = null;
+    /** @var class-string<SessionAdapter>|null */
+    public const string|null SESSION_NULL_ADAPTER_CLASS = null;
+    /** @var class-string<SessionDriver>|null */
+    public const string|null SESSION_NULL_DRIVER_CLASS = null;
+    /** @var class-string<SessionAdapter>|null */
+    public const string|null SESSION_CACHE_ADAPTER_CLASS = null;
+    /** @var class-string<SessionDriver>|null */
+    public const string|null SESSION_CACHE_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null SESSION_CACHE_CACHE = null;
+    /** @var class-string<SessionAdapter>|null */
+    public const string|null SESSION_COOKIE_ADAPTER_CLASS = null;
+    /** @var class-string<SessionDriver>|null */
+    public const string|null SESSION_COOKIE_DRIVER_CLASS = null;
+    /** @var class-string<SessionAdapter>|null */
+    public const string|null SESSION_LOG_ADAPTER_CLASS = null;
+    /** @var class-string<SessionDriver>|null */
+    public const string|null SESSION_LOG_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null SESSION_LOG_LOGGER = null;
+    /** @var string|null */
+    public const string|null SESSION_COOKIE_PARAM_PATH = null;
+    /** @var string|null */
+    public const string|null SESSION_COOKIE_PARAM_DOMAIN = null;
+    /** @var int|null */
+    public const int|null SESSION_COOKIE_PARAM_LIFETIME = null;
+    /** @var bool|null */
+    public const bool|null SESSION_COOKIE_PARAM_SECURE = null;
+    /** @var bool|null */
+    public const bool|null SESSION_COOKIE_PARAM_HTTP_ONLY = null;
+    /** @var SameSite|null */
+    public const SameSite|null SESSION_COOKIE_PARAM_SAME_SITE = null;
+
+    /************************************************************
+     *
+     * SMS component env variables.
+     *
+     ************************************************************/
+
+    /** @var string|null */
+    public const string|null SMS_DEFAULT_CONFIGURATION = null;
+    /** @var string|null */
+    public const string|null SMS_DEFAULT_MESSAGE_CONFIGURATION = null;
+    /** @var class-string<SmsAdapter>|null */
+    public const string|null SMS_NULL_ADAPTER_CLASS = null;
+    /** @var class-string<SmsDriver>|null */
+    public const string|null SMS_NULL_DRIVER_CLASS = null;
+    /** @var class-string<SmsAdapter>|null */
+    public const string|null SMS_LOG_ADAPTER_CLASS = null;
+    /** @var class-string<SmsDriver>|null */
+    public const string|null SMS_LOG_DRIVER_CLASS = null;
+    /** @var string|null */
+    public const string|null SMS_LOG_LOG_NAME = null;
+    /** @var string|null */
+    public const string|null SMS_VONAGE_KEY = null;
+    /** @var string|null */
+    public const string|null SMS_VONAGE_SECRET = null;
+    /** @var class-string<SmsAdapter>|null */
+    public const string|null SMS_VONAGE_ADAPTER_CLASS = null;
+    /** @var class-string<SmsDriver>|null */
+    public const string|null SMS_VONAGE_DRIVER_CLASS = null;
+
+    /************************************************************
+     *
+     * View component env variables.
+     *
+     ************************************************************/
+
+    /** @var string|null */
+    public const string|null VIEW_DEFAULT_CONFIGURATION = null;
+    /** @var class-string<ViewEngine>|null */
+    public const string|null VIEW_ORKA_ENGINE = null;
+    /** @var string|null */
+    public const string|null VIEW_ORKA_FILE_EXTENSION = null;
+    /** @var string|null */
+    public const string|null VIEW_ORKA_DIR = null;
+    /** @var array<string, string>|null */
+    public const array|null VIEW_ORKA_PATHS = null;
+    /** @var class-string<ViewEngine>|null */
+    public const string|null VIEW_PHP_ENGINE = null;
+    /** @var string|null */
+    public const  string|null VIEW_PHP_FILE_EXTENSION = null;
+    /** @var string|null */
+    public const string|null VIEW_PHP_DIR = null;
+    /** @var array<string, string>|null */
+    public const array|null VIEW_PHP_PATHS = null;
+    /** @var class-string<ViewEngine>|null */
+    public const string|null VIEW_TWIG_ENGINE = null;
+    /** @var string|null */
+    public const string|null VIEW_TWIG_FILE_EXTENSION = null;
+    /** @var string|null */
+    public const string|null VIEW_TWIG_DIR = null;
+    /** @var array<string, string>|null */
+    public const array|null VIEW_TWIG_PATHS = null;
+    /** @var class-string<TwigExtensionInterface>[]|null */
+    public const array|null VIEW_TWIG_EXTENSIONS = null;
+    /** @var string|null */
+    public const string|null VIEW_TWIG_COMPILED_DIR = null;
 }

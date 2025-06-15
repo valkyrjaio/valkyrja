@@ -20,8 +20,10 @@ namespace Valkyrja\Tests\Classes\Env;
  */
 class EnvClassWithCallable extends EnvClass
 {
-    public const DATA_CONFIG_PUBLIC   = [self::class, 'getDataConfigPublic'];
-    public const DATA_CONFIG_NULLABLE = [self::class, 'getDataConfigNullable'];
+    /** @var string|array{0: class-string, 1: string} */
+    public const array|string DATA_CONFIG_PUBLIC = [self::class, 'getDataConfigPublic'];
+    /** @var string|array{0: class-string, 1: string} */
+    public const array|string DATA_CONFIG_NULLABLE = [self::class, 'getDataConfigNullable'];
 
     public static function getDataConfigPublic(): string
     {

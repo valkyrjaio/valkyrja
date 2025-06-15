@@ -22,6 +22,8 @@ use Valkyrja\Application\Env;
  */
 class EnvClass extends Env
 {
-    public const DATA_CONFIG_PUBLIC   = 'publicFromEnv';
-    public const DATA_CONFIG_NULLABLE = 'nullableFromEnv';
+    /** @var string|array{0: class-string, 1: string} */
+    public const array|string DATA_CONFIG_PUBLIC = 'publicFromEnv';
+    /** @var string|array{0: class-string, 1: string} */
+    public const array|string DATA_CONFIG_NULLABLE = 'nullableFromEnv';
 }
