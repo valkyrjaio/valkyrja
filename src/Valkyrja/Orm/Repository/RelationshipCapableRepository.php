@@ -78,6 +78,8 @@ trait RelationshipCapableRepository
     /**
      * @inheritDoc
      *
+     * @param string[]|null $relationships [optional] The relationships to get
+     *
      * @return static
      */
     public function withRelationships(array|null $relationships = null): static

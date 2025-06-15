@@ -44,9 +44,9 @@ class StreamOutput extends Output implements StreamOutputContract
      *
      * @param resource|null $stream The resource to use as a stream
      */
-    public function __construct($stream = null)
+    public function __construct($stream = null, bool $quiet = false)
     {
-        parent::__construct();
+        parent::__construct($quiet);
 
         // Set the resource
         $resource = $stream ?? fopen('php://stdout', 'w');

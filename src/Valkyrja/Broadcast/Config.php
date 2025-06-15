@@ -21,7 +21,7 @@ use Valkyrja\Broadcast\Config\NullConfiguration;
 use Valkyrja\Broadcast\Config\PusherConfiguration;
 use Valkyrja\Broadcast\Constant\ConfigName;
 use Valkyrja\Broadcast\Constant\EnvName;
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 
 use function array_key_first;
 
@@ -70,11 +70,11 @@ class Config extends ParentConfig
         }
 
         if ($this->defaultConfiguration === '') {
-            $this->defaultConfiguration = array_key_first((array) $this->configurations);
+            $this->defaultConfiguration = (string) array_key_first((array) $this->configurations);
         }
 
         if ($this->defaultMessageConfiguration === '') {
-            $this->defaultMessageConfiguration = array_key_first((array) $this->messageConfigurations);
+            $this->defaultMessageConfiguration = (string) array_key_first((array) $this->messageConfigurations);
         }
     }
 }

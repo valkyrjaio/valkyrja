@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Config;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Mail\Message\Contract\Message;
 
 /**

@@ -21,6 +21,7 @@ use Valkyrja\Http\Routing\Attribute\Route\Middleware;
 use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
 use Valkyrja\Http\Routing\Attribute\Route\Secure;
 use Valkyrja\Http\Routing\Processor\Contract\Processor;
+use Valkyrja\Http\Struct\Request\Contract\RequestStruct as RequestStructContract;
 use Valkyrja\Reflection\Contract\Reflection;
 
 use function array_column;
@@ -65,9 +66,11 @@ class Attributes implements Contract
                         ...$classAttribute->getParameters(),
                         ...$this->attributes->forClass($class, Parameter::class),
                     ];
+                    /** @var class-string[] $middlewareClasses */
+                    $middlewareClasses     = array_column($this->attributes->forClass($class, Middleware::class), 'name');
                     $mergedClassMiddleware = [
                         ...($classAttribute->getMiddleware() ?? []),
-                        ...array_column($this->attributes->forClass($class, Middleware::class), 'name'),
+                        ...$middlewareClasses,
                     ];
 
                     $secure = $this->attributes->forClass($class, Secure::class);
@@ -76,12 +79,14 @@ class Attributes implements Contract
                         $classAttribute->setSecure();
                     }
 
+                    /** @var string[] $to */
                     $to = array_column($this->attributes->forClass($class, Redirect::class), 'to');
 
                     if ($to !== []) {
                         $classAttribute->setTo($to[0]);
                     }
 
+                    /** @var class-string<RequestStructContract>[] $requestStruct */
                     $requestStruct = array_column(
                         $this->attributes->forClass($class, RequestStruct::class),
                         'name'
@@ -126,21 +131,25 @@ class Attributes implements Contract
                                 ...$routeAttribute->getParameters(),
                                 ...$routeParameters,
                             ];
+                            /** @var class-string[] $middlewareClasses */
+                            $middlewareClasses        = array_column($routeMiddleware, 'name');
                             $mergedPropertyMiddleware = [
                                 ...($routeAttribute->getMiddleware() ?? []),
-                                ...array_column($routeMiddleware, 'name'),
+                                ...$middlewareClasses,
                             ];
 
                             if ($routeSecure !== []) {
                                 $routeAttribute->setSecure();
                             }
 
+                            /** @var string[] $to */
                             $to = array_column($routeRedirect, 'to');
 
                             if ($to !== []) {
                                 $routeAttribute->setTo($to[0]);
                             }
 
+                            /** @var class-string<RequestStructContract>[] $requestStruct */
                             $requestStruct = array_column($routeMessages, 'name');
 
                             if ($requestStruct !== []) {

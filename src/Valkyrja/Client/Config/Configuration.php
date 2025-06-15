@@ -15,7 +15,7 @@ namespace Valkyrja\Client\Config;
 
 use Valkyrja\Client\Adapter\Contract\Adapter;
 use Valkyrja\Client\Driver\Contract\Driver;
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 
 /**
  * Abstract Class Configuration.

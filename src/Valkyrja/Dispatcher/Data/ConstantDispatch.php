@@ -34,14 +34,6 @@ class ConstantDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public static function fromArray(array $data): static
-    {
-        return new static(...$data);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getConstant(): string
     {
         return $this->constant;

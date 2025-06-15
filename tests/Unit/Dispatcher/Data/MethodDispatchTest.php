@@ -13,17 +13,11 @@ declare(strict_types=1);
 
 namespace Unit\Dispatcher\Data;
 
-use JsonException;
 use stdClass;
 use Valkyrja\Dispatcher\Data\MethodDispatch as Dispatch;
 use Valkyrja\Dispatcher\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Dispatcher\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\BuiltIn\Support\Arr;
-
-use function json_encode;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Test the MethodDispatch.
@@ -32,29 +26,6 @@ use const JSON_THROW_ON_ERROR;
  */
 class MethodDispatchTest extends TestCase
 {
-    /**
-     * @throws JsonException
-     */
-    public function testFromArray(): void
-    {
-        $class  = InvalidDispatcherClass::class;
-        $method = 'TEST';
-        $array  = [
-            'class'        => $class,
-            'arguments'    => null,
-            'dependencies' => null,
-            'method'       => $method,
-            'isStatic'     => false,
-        ];
-
-        $dispatch = Dispatch::fromArray($array);
-
-        self::assertSame($method, $dispatch->getMethod());
-        self::assertSame(Arr::toString($array), (string) $dispatch);
-        self::assertSame($array, $dispatch->jsonSerialize());
-        self::assertSame(Arr::toString($array), json_encode($dispatch, JSON_THROW_ON_ERROR));
-    }
-
     public function testFromCallableOrArray(): void
     {
         $dispatch  = Dispatch::fromCallableOrArray([InvalidDispatcherClass::class, 'method']);

@@ -17,6 +17,7 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Event\Attribute\Contract\Attributes;
 use Valkyrja\Event\Config;
 use Valkyrja\Event\Config\Cache;
+use Valkyrja\Exception\RuntimeException;
 
 use function is_file;
 
@@ -111,11 +112,17 @@ class CacheableCollection extends Collection
 
             if (is_file($cacheFilePath)) {
                 $cache = require $cacheFilePath;
+
+                if (! $cache instanceof Cache) {
+                    throw new RuntimeException('Invalid cache object returned');
+                }
+            } else {
+                throw new RuntimeException('No cache found');
             }
         }
 
-        $this->events    = $cache['events'] ?? [];
-        $this->listeners = $cache['listeners'] ?? [];
+        $this->events    = $cache->events;
+        $this->listeners = $cache->listeners;
     }
 
     /**
@@ -139,12 +146,12 @@ class CacheableCollection extends Collection
      */
     protected function requireFilePath(): void
     {
-        $filePath = $this->config->filePath;
-
-        if (is_file($filePath)) {
-            $collection = $this;
-
-            require $filePath;
-        }
+        // $filePath = $this->config->filePath;
+        //
+        // if (is_file($filePath)) {
+        //     $collection = $this;
+        //
+        //     require $filePath;
+        // }
     }
 }

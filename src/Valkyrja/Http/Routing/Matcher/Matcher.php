@@ -188,8 +188,8 @@ class Matcher implements Contract
     }
 
     /**
-     * @param array<int, Parameter> $parameters The parameters
-     * @param int                   $index      The index for this match
+     * @param array<array-key, Parameter> $parameters The parameters
+     * @param int                         $index      The index for this match
      *
      * @throws InvalidRoutePathException
      *

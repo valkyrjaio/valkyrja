@@ -13,89 +13,67 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application;
 
-use Valkyrja\Application\Constant\EnvKey;
+use Valkyrja\Application\Constant\ConfigName;
+use Valkyrja\Application\Constant\EnvName;
+use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Support\Provider;
-use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-use Valkyrja\Exception\Contract\ErrorHandler;
+use Valkyrja\Config\Config as ParentConfig;
+use Valkyrja\Container\Provider\AppProvider as ContainerAppProvider;
+use Valkyrja\Exception\Contract\ErrorHandler as ErrorHandlerContract;
+use Valkyrja\Exception\ErrorHandler;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::ENV           => EnvKey::APP_ENV,
-        CKP::DEBUG         => EnvKey::APP_DEBUG,
-        CKP::URL           => EnvKey::APP_URL,
-        CKP::TIMEZONE      => EnvKey::APP_TIMEZONE,
-        CKP::VERSION       => EnvKey::APP_VERSION,
-        CKP::KEY           => EnvKey::APP_KEY,
-        CKP::ERROR_HANDLER => EnvKey::APP_ERROR_HANDLER,
-        CKP::PROVIDERS     => EnvKey::APP_PROVIDERS,
+    protected static array $envNames = [
+        ConfigName::ENV           => EnvName::ENV,
+        ConfigName::DEBUG         => EnvName::DEBUG,
+        ConfigName::URL           => EnvName::ENV,
+        ConfigName::TIMEZONE      => EnvName::TIMEZONE,
+        ConfigName::VERSION       => EnvName::VERSION,
+        ConfigName::KEY           => EnvName::KEY,
+        ConfigName::ERROR_HANDLER => EnvName::ERROR_HANDLER,
+        ConfigName::PROVIDERS     => EnvName::PROVIDERS,
     ];
 
     /**
-     * The environment name.
-     *
-     * @var string
+     * @param non-empty-string                   $timezone     The timezone
+     * @param class-string<ErrorHandlerContract> $errorHandler The error handler
+     * @param class-string<Provider>[]           $providers    The app providers
      */
-    public string $env;
+    public function __construct(
+        public string $env = 'production',
+        public bool $debug = false,
+        public string $url = 'localhost',
+        public string $timezone = 'UTC',
+        public string $version = Application::VERSION,
+        public string $key = 'some_secret_app_key',
+        public string $errorHandler = ErrorHandler::class,
+        public array $providers = [],
+    ) {
+    }
 
     /**
-     * Flag to enable debug.
-     *
-     * @var bool
+     * @inheritDoc
      */
-    public bool $debug;
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+    }
 
     /**
-     * The url.
-     *
-     * @var string
+     * @inheritDoc
      */
-    public string $url;
-
-    /**
-     * The timezone.
-     *
-     * @var string
-     */
-    public string $timezone;
-
-    /**
-     * The version.
-     *
-     * @var string
-     */
-    public string $version;
-
-    /**
-     * The key.
-     *
-     * @var string
-     */
-    public string $key;
-
-    /**
-     * The error handler class.
-     *
-     * @var class-string<ErrorHandler>
-     */
-    public string $errorHandler;
-
-    /**
-     * Array of config providers.
-     *  NOTE: Provider::deferred() is disregarded.
-     *
-     * @var Provider[]|string[]
-     */
-    public array $providers;
+    protected function setPropertiesAfterSettingFromEnv(string $env): void
+    {
+        $this->providers[] = ContainerAppProvider::class;
+    }
 }

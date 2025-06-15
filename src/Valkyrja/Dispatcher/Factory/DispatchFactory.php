@@ -21,10 +21,8 @@ use ReflectionProperty;
 use Valkyrja\Dispatcher\Data\CallableDispatch;
 use Valkyrja\Dispatcher\Data\ClassDispatch;
 use Valkyrja\Dispatcher\Data\ConstantDispatch;
-use Valkyrja\Dispatcher\Data\GlobalVariableDispatch;
 use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Dispatcher\Data\PropertyDispatch;
-use Valkyrja\Dispatcher\Exception\InvalidArgumentException;
 use Valkyrja\Dispatcher\Exception\RuntimeException;
 
 use function is_callable;
@@ -44,42 +42,24 @@ class DispatchFactory
                 constant: $reflection->getName(),
                 class: $reflection->getDeclaringClass()->getName(),
             ),
-            $reflection instanceof ReflectionProperty      => new PropertyDispatch(
+            $reflection instanceof ReflectionProperty => new PropertyDispatch(
                 class: $reflection->getDeclaringClass()->getName(),
                 property: $reflection->getName(),
                 isStatic: $reflection->isStatic()
             ),
-            $reflection instanceof ReflectionMethod        => new MethodDispatch(
+            $reflection instanceof ReflectionMethod => new MethodDispatch(
                 class: $reflection->getDeclaringClass()->getName(),
                 method: $reflection->getName(),
                 isStatic: $reflection->isStatic()
             ),
-            $reflection instanceof ReflectionClass         => new ClassDispatch(
+            $reflection instanceof ReflectionClass => new ClassDispatch(
                 class: $reflection->getName(),
             ),
-            $reflection instanceof ReflectionFunction      => new CallableDispatch(
+            $reflection instanceof ReflectionFunction => new CallableDispatch(
                 callable: is_callable($functionName = $reflection->getName())
                     ? $functionName
                     : throw new RuntimeException('ReflectionFunction has no valid callable'),
             ),
-        };
-    }
-
-    /**
-     * @param array<array-key, mixed> $data The data
-     *
-     * @return ConstantDispatch|PropertyDispatch|MethodDispatch|ClassDispatch|CallableDispatch|GlobalVariableDispatch
-     */
-    public static function fromArray(array $data): ConstantDispatch|PropertyDispatch|MethodDispatch|ClassDispatch|CallableDispatch|GlobalVariableDispatch
-    {
-        return match (true) {
-            isset($data['method'], $data['class'], $data['isStatic'])   => new MethodDispatch(...$data),
-            isset($data['property'], $data['class'], $data['isStatic']) => new PropertyDispatch(...$data),
-            isset($data['constant'])                                    => new ConstantDispatch(...$data),
-            isset($data['class'])                                       => new ClassDispatch(...$data),
-            isset($data['callable'])                                    => new CallableDispatch(...$data),
-            isset($data['variable'])                                    => new GlobalVariableDispatch(...$data),
-            default                                                     => throw new InvalidArgumentException('Unsupported Dispatch'),
         };
     }
 }

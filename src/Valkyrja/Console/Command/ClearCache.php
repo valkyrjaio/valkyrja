@@ -13,14 +13,17 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Command;
 
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Console\Commander\Commander;
 use Valkyrja\Console\Constant\ExitCode;
+use Valkyrja\Console\Input\Contract\Input as InputContract;
+use Valkyrja\Console\Input\Input;
+use Valkyrja\Console\Output\Contract\Output as OutputContract;
+use Valkyrja\Console\Output\Output;
 use Valkyrja\Console\Support\Provides;
 
 use function is_file;
 use function unlink;
-use function Valkyrja\config;
-use function Valkyrja\output;
 
 /**
  * Class Clear.
@@ -38,21 +41,28 @@ class ClearCache extends Commander
     public const PATH              = self::COMMAND;
     public const SHORT_DESCRIPTION = 'Clear the optimized application';
 
+    public function __construct(
+        protected Valkyrja $config,
+        InputContract $input = new Input(),
+        OutputContract $output = new Output()
+    ) {
+        parent::__construct($input, $output);
+    }
+
     /**
      * @inheritDoc
      */
     public function run(): int
     {
-        /** @var array{cacheFilePath: string, ...} $configCache */
-        $configCache   = config();
-        $cacheFilePath = $configCache['cacheFilePath'];
+        $configCache   = $this->config;
+        $cacheFilePath = $configCache->config->cacheFilePath;
 
         // If the cache file already exists, delete it
         if (is_file($cacheFilePath)) {
             unlink($cacheFilePath);
         }
 
-        output()->writeMessage('Application cache cleared successfully', true);
+        $this->output->writeMessage('Application cache cleared successfully', true);
 
         return ExitCode::SUCCESS;
     }

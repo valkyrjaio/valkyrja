@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Sms\Config\Configurations;
 use Valkyrja\Sms\Config\DefaultMessageConfiguration;
 use Valkyrja\Sms\Config\LogConfiguration;
@@ -70,11 +70,11 @@ class Config extends ParentConfig
         }
 
         if ($this->defaultConfiguration === '') {
-            $this->defaultConfiguration = array_key_first((array) $this->configurations);
+            $this->defaultConfiguration = (string) array_key_first((array) $this->configurations);
         }
 
         if ($this->defaultMessageConfiguration === '') {
-            $this->defaultMessageConfiguration = array_key_first((array) $this->messageConfigurations);
+            $this->defaultMessageConfiguration = (string) array_key_first((array) $this->messageConfigurations);
         }
     }
 }

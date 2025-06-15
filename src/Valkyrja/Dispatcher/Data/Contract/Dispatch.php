@@ -24,15 +24,6 @@ use Stringable;
 interface Dispatch extends JsonSerializable, Stringable
 {
     /**
-     * Create a new dispatch from an array of data.
-     *
-     * @param array<string, mixed> $data The data
-     *
-     * @return static
-     */
-    public static function fromArray(array $data): static;
-
-    /**
      * Get the Dispatch as a string.
      *
      * @return string

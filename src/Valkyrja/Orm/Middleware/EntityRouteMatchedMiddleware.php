@@ -83,7 +83,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
 
             // Iterate through the params
             foreach ($parameters as $index => $parameter) {
-                $response = $this->checkParameterForEntity($index, $parameter, $dependencies, $matches);
+                $response = $this->checkParameterForEntity((int) $index, $parameter, $dependencies, $matches);
 
                 if ($response !== null) {
                     return $response;

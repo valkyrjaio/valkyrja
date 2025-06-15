@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Server\Provider;
 
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Container\Container;
 use Valkyrja\Http\Middleware\Provider\ServiceProvider as MiddlewareServiceProvider;
 use Valkyrja\Http\Routing\Contract\Router;
@@ -23,6 +23,7 @@ use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Provider\ServiceProvider;
 use Valkyrja\Http\Server\RequestHandler;
 use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 use Valkyrja\View\Contract\View;
 
@@ -62,16 +63,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = new Container();
 
-        $container->setSingleton(
-            Config::class,
-            [
-                'http' => [
-                    'server' => [
-                        'requestHandler' => null,
-                    ],
-                ],
-            ]
-        );
+        $container->setSingleton(Valkyrja::class, new Valkyrja(env: EnvClass::class));
 
         MiddlewareServiceProvider::publishRequestReceivedHandler($container);
         MiddlewareServiceProvider::publishExceptionHandler($container);

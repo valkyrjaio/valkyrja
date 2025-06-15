@@ -17,7 +17,7 @@ use Aws\S3\S3Client as AwsS3Client;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
 use League\Flysystem\Filesystem as Flysystem;
 use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
-use Valkyrja\Config\Config\ValkyrjaDataConfig;
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Filesystem\Adapter\Contract\Adapter;
@@ -76,7 +76,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishFilesystem(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaDataConfig::class);
+        $config = $container->getSingleton(Valkyrja::class);
 
         $container->setSingleton(
             Filesystem::class,

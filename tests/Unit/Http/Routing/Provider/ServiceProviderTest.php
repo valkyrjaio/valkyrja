@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Attribute\Contract\Attributes as AttributesAttributesContract;
-use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Constant\ConfigValue;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
@@ -56,6 +56,7 @@ use Valkyrja\Http\Routing\Router;
 use Valkyrja\Http\Routing\Url\Contract\Url as UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Reflection\Contract\Reflection;
+use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 use Valkyrja\View\Contract\View;
 
@@ -130,7 +131,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = new Container();
 
-        $container->setSingleton(Config::class, ['routing' => [], 'app' => ['debug' => false]]);
+        $container->setSingleton(Valkyrja::class, new Valkyrja(env: EnvClass::class));
         $container->setSingleton(RouteDispatchedHandlerContract::class, new RouteDispatchedHandler());
         $container->setSingleton(ThrowableCaughtHandlerContract::class, new ThrowableCaughtHandler());
         $container->setSingleton(RouteMatchedHandlerContract::class, new RouteMatchedHandler());
@@ -172,8 +173,9 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = new Container();
 
-        $container->setSingleton(Config::class, ['routing' => ['controllers' => []]]);
+        $container->setSingleton(Valkyrja::class, new Valkyrja(env: EnvClass::class));
         $container->setSingleton(AttributesContract::class, $this->createMock(AttributesContract::class));
+        $container->setSingleton(CollectorContract::class, $this->createMock(CollectorContract::class));
 
         self::assertFalse($container->has(CollectionContract::class));
 
@@ -203,7 +205,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = new Container();
 
-        $container->setSingleton(Config::class, ['routing' => []]);
+        $container->setSingleton(Valkyrja::class, new Valkyrja(env: EnvClass::class));
         $container->setSingleton(RouterContract::class, $this->createMock(RouterContract::class));
         $container->setSingleton(ServerRequest::class, $this->createMock(ServerRequest::class));
 

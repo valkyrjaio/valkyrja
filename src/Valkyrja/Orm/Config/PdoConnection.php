@@ -23,7 +23,8 @@ use Valkyrja\Orm\Pdo\Pdo;
 abstract class PdoConnection extends Connection
 {
     /**
-     * @param class-string<Pdo> $pdoClass
+     * @param class-string<Pdo>    $pdoClass
+     * @param array<int, int|bool> $options
      */
     public function __construct(
         public string $pdoClass,

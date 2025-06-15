@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Filesystem\Config\Configurations;
 use Valkyrja\Filesystem\Config\InMemoryConfiguration;
 use Valkyrja\Filesystem\Config\LocalFlysystemConfiguration;
@@ -61,7 +61,7 @@ class Config extends ParentConfig
         }
 
         if ($this->defaultConfiguration === '') {
-            $this->defaultConfiguration = array_key_first((array) $this->configurations);
+            $this->defaultConfiguration = (string) array_key_first((array) $this->configurations);
         }
     }
 }

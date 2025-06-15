@@ -46,6 +46,10 @@ class RequestStructMiddleware implements RouteMatchedMiddleware
             $response = $this->ensureRequestConformsToMessage($request, $route, $message);
         }
 
+        /**
+         * @psalm-suppress MixedReturnStatement No clue what Psalm is confused about here. $response is either a Response or null, and routeMatched() returns a
+         * Route or Response
+         */
         return $response
             ?? $handler->routeMatched($request, $route);
     }

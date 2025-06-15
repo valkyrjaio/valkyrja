@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Provider;
 
-use Valkyrja\Config\Config\ValkyrjaDataConfig;
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Adapter\Contract\Adapter;
@@ -66,7 +66,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishCrypt(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaDataConfig::class);
+        $config = $container->getSingleton(Valkyrja::class);
 
         $container->setSingleton(
             Crypt::class,

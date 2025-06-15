@@ -30,14 +30,14 @@ class Cache
     /**
      * The command paths.
      *
-     * @var string[]
+     * @var array<non-empty-string, string>
      */
     public array $paths;
 
     /**
      * The named commands.
      *
-     * @var string[]
+     * @var array<string, string>
      */
     public array $namedCommands;
 

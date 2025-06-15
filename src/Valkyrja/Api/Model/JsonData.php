@@ -68,7 +68,7 @@ class JsonData extends Model implements Contract
     /**
      * The data.
      *
-     * @var array<string, mixed>|null
+     * @var array<array-key, mixed>|null
      */
     public array|null $data = null;
 
@@ -200,6 +200,8 @@ class JsonData extends Model implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @psalm-suppress MixedReturnTypeCoercion
      */
     public function asArray(string ...$properties): array
     {

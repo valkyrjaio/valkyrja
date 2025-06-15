@@ -54,10 +54,10 @@ abstract class RequestFactory
         array|null $files = null,
         string $class = ServerRequest::class
     ): ServerRequest {
-        $files ??= $_FILES;
+        $files  ??= $_FILES;
         $server ??= $_SERVER;
-        $query ??= $_GET;
-        $body ??= $_POST;
+        $query  ??= $_GET;
+        $body   ??= $_POST;
 
         /** @var array<string, string> $server */
         $server['REQUEST_METHOD'] ??= RequestMethod::GET->value;
@@ -122,6 +122,9 @@ abstract class RequestFactory
 
     /**
      * Get a ServerRequest from a PSR ServerRequestInterface object.
+     *
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedArgumentTypeCoercion
      */
     public static function fromPsr(ServerRequestInterface $psrRequest): ServerRequest
     {

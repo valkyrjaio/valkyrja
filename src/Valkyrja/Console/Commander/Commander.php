@@ -18,12 +18,15 @@ use Valkyrja\Console\Commander\Contract\Commander as Contract;
 use Valkyrja\Console\Constant\ExitCode;
 use Valkyrja\Console\Enum\ArgumentMode;
 use Valkyrja\Console\Input\Argument;
+use Valkyrja\Console\Input\Contract\Input as InputContract;
+use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Input\Option;
+use Valkyrja\Console\Output\Contract\Output as OutputContract;
+use Valkyrja\Console\Output\Output;
 
 use function max;
 use function str_repeat;
 use function strlen;
-use function Valkyrja\output;
 
 /**
  * Abstract Class Handler.
@@ -43,8 +46,14 @@ abstract class Commander implements Contract
 
     /**
      * Tabbing structure to use.
+     *
+     * @var string
      */
-    protected const TAB        = '  ';
+    protected const TAB = '  ';
+
+    /**
+     * @var string
+     */
     protected const DOUBLE_TAB = self::TAB . self::TAB;
 
     /**
@@ -77,6 +86,12 @@ abstract class Commander implements Contract
     public static function getDescription(): string
     {
         return static::DESCRIPTION;
+    }
+
+    public function __construct(
+        protected InputContract $input = new Input(),
+        protected OutputContract $output = new Output(),
+    ) {
     }
 
     /**
@@ -121,8 +136,8 @@ abstract class Commander implements Contract
         $message ??= $this->usagePath();
 
         $this->sectionTitleMessage('Usage');
-        output()->writeMessage(static::TAB);
-        output()->writeMessage($message, true);
+        $this->output->writeMessage(static::TAB);
+        $this->output->writeMessage($message, true);
     }
 
     /**
@@ -221,9 +236,9 @@ abstract class Commander implements Contract
      */
     protected function sectionTitleMessage(string $sectionName): void
     {
-        output()->getFormatter()->underscore();
-        output()->writeMessage($sectionName . ':', true);
-        output()->getFormatter()->resetOptions();
+        $this->output->getFormatter()->underscore();
+        $this->output->writeMessage($sectionName . ':', true);
+        $this->output->getFormatter()->resetOptions();
     }
 
     /**
@@ -243,7 +258,7 @@ abstract class Commander implements Contract
      */
     protected function sectionDivider(): void
     {
-        output()->writeMessage('', true);
+        $this->output->writeMessage('', true);
     }
 
     /**
@@ -260,14 +275,14 @@ abstract class Commander implements Contract
         $longestLength ??= 0;
         $spacesToAdd   = $longestLength - strlen($name);
 
-        output()->getFormatter()->green();
-        output()->writeMessage(static::TAB . $name);
+        $this->output->getFormatter()->green();
+        $this->output->writeMessage(static::TAB . $name);
 
-        output()->getFormatter()->resetColor();
+        $this->output->getFormatter()->resetColor();
 
-        output()->writeMessage($spacesToAdd > 0 ? str_repeat('.', $spacesToAdd) : '');
-        output()->writeMessage(str_repeat('.', 8));
-        output()->writeMessage($description, true);
+        $this->output->writeMessage($spacesToAdd > 0 ? str_repeat('.', $spacesToAdd) : '');
+        $this->output->writeMessage(str_repeat('.', 8));
+        $this->output->writeMessage($description, true);
     }
 
     /**
@@ -309,12 +324,12 @@ abstract class Commander implements Contract
      */
     protected function applicationMessage(): void
     {
-        output()->getFormatter()->magenta();
-        output()->writeMessage('Valkyrja Application');
-        output()->getFormatter()->resetColor();
-        output()->writeMessage(' version ');
-        output()->getFormatter()->cyan();
-        output()->writeMessage(Application::VERSION, true);
-        output()->getFormatter()->resetColor();
+        $this->output->getFormatter()->magenta();
+        $this->output->writeMessage('Valkyrja Application');
+        $this->output->getFormatter()->resetColor();
+        $this->output->writeMessage(' version ');
+        $this->output->getFormatter()->cyan();
+        $this->output->writeMessage(Application::VERSION, true);
+        $this->output->getFormatter()->resetColor();
     }
 }

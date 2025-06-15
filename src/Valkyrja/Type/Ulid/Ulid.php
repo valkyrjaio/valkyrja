@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Ulid;
 
 use Exception;
+use Valkyrja\Type\Exception\InvalidArgumentException;
 use Valkyrja\Type\Type;
 use Valkyrja\Type\Ulid\Contract\Ulid as Contract;
 use Valkyrja\Type\Ulid\Support\Ulid as Helper;
@@ -47,6 +48,10 @@ class Ulid extends Type implements Contract
      */
     public static function fromValue(mixed $value): static
     {
+        if ($value !== null && ! is_string($value)) {
+            throw new InvalidArgumentException(sprintf('String or null expected value of type `%s` provided', gettype($value)));
+        }
+
         return new static($value);
     }
 

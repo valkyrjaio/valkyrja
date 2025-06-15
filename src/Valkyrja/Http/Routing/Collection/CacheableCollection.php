@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Collection;
 
 use Valkyrja\Container\Contract\Container;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Http\Routing\Attribute\Contract\Attributes;
-use Valkyrja\Http\Routing\Collector\Contract\Collector;
 use Valkyrja\Http\Routing\Config;
 use Valkyrja\Http\Routing\Config\Cache;
 use Valkyrja\Http\Routing\Exception\InvalidRoutePathException;
+use Valkyrja\Http\Routing\Model\Contract\Route;
 
 use function is_file;
 
@@ -88,7 +89,7 @@ class CacheableCollection extends Collection
         $config->named   = $this->named;
 
         foreach ($this->routes as $id => $route) {
-            $config->routes[$id] = $route->asArray();
+            $config->routes[$id] = serialize($route);
         }
 
         return $config;
@@ -107,13 +108,19 @@ class CacheableCollection extends Collection
 
             if (is_file($cacheFilePath)) {
                 $cache = require $cacheFilePath;
+
+                if (! $cache instanceof Cache) {
+                    throw new RuntimeException('Invalid cache object returned');
+                }
+            } else {
+                throw new RuntimeException('No cache found');
             }
         }
 
-        $this->routes  = $cache['routes'] ?? [];
-        $this->static  = $cache['static'] ?? [];
-        $this->dynamic = $cache['dynamic'] ?? [];
-        $this->named   = $cache['named'] ?? [];
+        $this->routes  = $cache->routes;
+        $this->static  = $cache->static;
+        $this->dynamic = $cache->dynamic;
+        $this->named   = $cache->named;
     }
 
     /**
@@ -144,6 +151,7 @@ class CacheableCollection extends Collection
     {
         $this->dynamic = [];
 
+        /** @var Route $route */
         foreach ($this->routes as $route) {
             $this->setRouteToRequestMethods($route);
         }
@@ -154,12 +162,12 @@ class CacheableCollection extends Collection
      */
     protected function requireFilePath(): void
     {
-        $filePath = $this->config->filePath;
-
-        if (is_file($filePath)) {
-            $collector = $this->container->getSingleton(Collector::class);
-
-            require $filePath;
-        }
+        // $filePath = $this->config->filePath;
+        //
+        // if (is_file($filePath)) {
+        //     $collector = $this->container->getSingleton(Collector::class);
+        //
+        //     require $filePath;
+        // }
     }
 }

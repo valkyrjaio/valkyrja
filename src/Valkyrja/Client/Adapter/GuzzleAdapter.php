@@ -223,6 +223,8 @@ class GuzzleAdapter implements Contract
      * @param ResponseInterface $guzzleResponse The Guzzle Response
      *
      * @return Response
+     *
+     * @psalm-suppress MixedArgumentTypeCoercion
      */
     protected function fromPsr7(ResponseInterface $guzzleResponse): Response
     {

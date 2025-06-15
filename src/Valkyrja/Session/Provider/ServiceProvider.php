@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Provider;
 
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Cache\Contract\Cache;
-use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Contract\Crypt;
@@ -82,7 +82,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishSession(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaDataConfig::class);
+        $config = $container->getSingleton(Valkyrja::class);
 
         $container->setSingleton(
             Session::class,

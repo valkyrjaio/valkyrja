@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Config;
 
+use League\Flysystem\FilesystemAdapter;
 use Valkyrja\Filesystem\Adapter\FlysystemAdapter;
 
 /**
@@ -22,6 +23,9 @@ use Valkyrja\Filesystem\Adapter\FlysystemAdapter;
  */
 abstract class FlysystemConfiguration extends Configuration
 {
+    /**
+     * @param class-string<FilesystemAdapter> $flysystemAdapter
+     */
     public function __construct(
         public string $flysystemAdapter,
     ) {

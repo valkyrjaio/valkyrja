@@ -54,27 +54,29 @@ class Console implements Contract
 
     /**
      * The run method to call within command handlers.
+     *
+     * @var non-empty-string
      */
     public const RUN_METHOD = 'run';
 
     /**
      * The commands.
      *
-     * @var Command[]
+     * @var array<string, Command>
      */
     protected static array $commands = [];
 
     /**
      * The command paths.
      *
-     * @var string[]
+     * @var array<non-empty-string, string>
      */
     protected static array $paths = [];
 
     /**
      * The commands by name.
      *
-     * @var string[]
+     * @var array<string, string>
      */
     protected static array $namedCommands = [];
 
@@ -249,7 +251,17 @@ class Console implements Contract
      */
     public function set(Command ...$commands): void
     {
-        self::$commands = $commands;
+        self::$commands = [];
+
+        foreach ($commands as $command) {
+            $path = $command->getPath();
+
+            if ($path === null || $path === '') {
+                throw new InvalidArgumentException('Path must be valid');
+            }
+
+            self::$commands[$path] = $command;
+        }
     }
 
     /**

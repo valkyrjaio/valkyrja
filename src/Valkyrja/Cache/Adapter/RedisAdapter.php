@@ -55,6 +55,8 @@ class RedisAdapter implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @psalm-suppress MixedReturnTypeCoercion
      */
     public function many(string ...$keys): array
     {

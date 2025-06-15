@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Functional;
 
 use Valkyrja\Annotation\Contract\Annotations;
+use Valkyrja\Application\Config\Valkyrja as ValkyrjaConfig;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Valkyrja;
 use Valkyrja\Client\Contract\Client;
-use Valkyrja\Config\Command\ConfigCache;
-use Valkyrja\Config\Constant\ConfigKey;
+use Valkyrja\Config\Config\Config;
+use Valkyrja\Console\Command\OptimizeCacheCommand;
 use Valkyrja\Console\Contract\Console;
 use Valkyrja\Console\Kernel\Contract\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
@@ -114,7 +115,7 @@ class ApplicationTest extends TestCase
      */
     public function testConfig(): void
     {
-        self::assertInstanceOf(ConfigClass::class, $this->app->config());
+        self::assertInstanceOf(ConfigClass::class, $this->app->getConfig());
     }
 
     /**
@@ -124,10 +125,10 @@ class ApplicationTest extends TestCase
      */
     public function testAddConfig(): void
     {
-        $config = new ConfigClass();
+        $config = new Config();
         $this->app->addConfig($config, 'new');
 
-        self::assertSame($config, $this->app->config()['new'] ?? null);
+        self::assertSame($config, $this->app->getConfig()->new ?? null);
     }
 
     /**
@@ -137,7 +138,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnv(): void
     {
-        self::assertIsString($this->app::getEnvValue());
+        self::assertIsString($this->app::getEnv());
     }
 
     /**
@@ -147,7 +148,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnvValue(): void
     {
-        self::assertTrue($this->app::getEnvValue('CONSOLE_QUIET'));
+        self::assertTrue($this->app::getEnvValue('CONSOLE_SHOULD_RUN_QUIETLY'));
     }
 
     /**
@@ -178,7 +179,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnvironment(): void
     {
-        self::assertSame($this->app->config()['app']['env'], $this->app->getEnvironment());
+        self::assertSame($this->app->getConfig()->app->env, $this->app->getEnvironment());
     }
 
     /**
@@ -188,7 +189,7 @@ class ApplicationTest extends TestCase
      */
     public function testDebug(): void
     {
-        self::assertSame($this->app->config()['app']['debug'], $this->app->getDebugMode());
+        self::assertSame($this->app->getConfig()->app->debug, $this->app->getDebugMode());
     }
 
     /**
@@ -343,10 +344,10 @@ class ApplicationTest extends TestCase
      */
     public function testDebugOn(): void
     {
-        $config = new ConfigClass();
+        $config = new ConfigClass(env: EnvClass::class);
 
         $config->app->debug = true;
-        $this->app          = $this->app->withConfig($config);
+        $this->app          = $this->app->setConfig($config);
 
         self::assertTrue($this->app->getDebugMode());
     }
@@ -358,16 +359,17 @@ class ApplicationTest extends TestCase
      */
     public function testApplicationSetupWithConfigProvider(): void
     {
-        $config            = new ConfigClass();
-        $config->providers = [
+        $oldConfig                 = $this->app->getConfig();
+        $config                    = new ValkyrjaConfig(env: EnvClass::class);
+        $config->config->providers = [
             ProviderClass::class,
         ];
 
-        $this->app = $this->app->withConfig($config);
+        $this->app = $this->app->setConfig($config);
 
-        self::assertSame(ProviderClass::class, $this->app->config()['providers'][0]);
+        self::assertSame(ProviderClass::class, $this->app->getConfig()->config->providers[0]);
 
-        $this->app = $this->app->withConfig(new ConfigClass());
+        $this->app = $this->app->setConfig($oldConfig);
     }
 
     /**
@@ -380,7 +382,7 @@ class ApplicationTest extends TestCase
         /** @var Console $console */
         $console = $this->app->container()->getSingleton(Console::class);
         // Get the config cache command
-        $configCacheCommand = $console->matchCommand(ConfigCache::COMMAND);
+        $configCacheCommand = $console->matchCommand(OptimizeCacheCommand::COMMAND);
         // Run the config cache command
         $console->dispatchCommand($configCacheCommand);
 
@@ -391,12 +393,13 @@ class ApplicationTest extends TestCase
         // take effect and the value for app.debug should still be false.
         self::assertFalse($this->app->getDebugMode());
 
-        usleep(10);
+        usleep(100);
 
-        // Delete the config cache file to avoid headaches later
-        unlink($this->app->config(ConfigKey::CONFIG_CACHE_FILE_PATH));
+        $cacheFilePath = $this->app->getConfig()->config->cacheFilePath;
 
-        // Reset the application to normal operations
-        $this->app = $this->app->withConfig(new ConfigClass());
+        if (is_file($cacheFilePath)) {
+            // Delete the config cache file to avoid headaches later
+            unlink($cacheFilePath);
+        }
     }
 }

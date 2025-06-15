@@ -15,8 +15,13 @@ namespace Valkyrja\Console\Command;
 
 use Valkyrja\Console\Commander\Commander;
 use Valkyrja\Console\Constant\ExitCode;
+use Valkyrja\Console\Contract\Console;
 use Valkyrja\Console\Input\Argument;
+use Valkyrja\Console\Input\Contract\Input as InputContract;
+use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Model\Contract\Command;
+use Valkyrja\Console\Output\Contract\Output as OutputContract;
+use Valkyrja\Console\Output\Output;
 use Valkyrja\Console\Support\Provides;
 
 use function array_merge;
@@ -24,9 +29,6 @@ use function explode;
 use function max;
 use function strlen;
 use function usort;
-use function Valkyrja\console;
-use function Valkyrja\input;
-use function Valkyrja\output;
 
 /**
  * Class CommandsList.
@@ -45,6 +47,14 @@ class CommandsList extends Commander
     public const SHORT_DESCRIPTION = 'List all the commands';
     public const DESCRIPTION       = 'List all the commands';
 
+    public function __construct(
+        protected Console $console,
+        InputContract $input = new Input(),
+        OutputContract $output = new Output()
+    ) {
+        parent::__construct($input, $output);
+    }
+
     /**
      * @inheritDoc
      *
@@ -52,7 +62,7 @@ class CommandsList extends Commander
      */
     public function run(string|null $namespace = null): int
     {
-        $commands        = console()->all();
+        $commands        = $this->console->all();
         $longestLength   = 0;
         $previousSection = '';
 
@@ -63,7 +73,7 @@ class CommandsList extends Commander
 
         $this->usageMessage('command [options] [arguments]');
 
-        $this->optionsSection(...input()->getGlobalOptions());
+        $this->optionsSection(...$this->input->getGlobalOptions());
         $this->sectionDivider();
 
         $this->sectionTitleMessage(
@@ -173,9 +183,9 @@ class CommandsList extends Commander
             : 'global';
 
         if ($previousSection !== $currentSection) {
-            output()->getFormatter()->cyan();
-            output()->writeMessage(static::TAB);
-            output()->writeMessage($currentSection, true);
+            $this->output->getFormatter()->cyan();
+            $this->output->writeMessage(static::TAB);
+            $this->output->writeMessage($currentSection, true);
 
             $previousSection = $currentSection;
         }

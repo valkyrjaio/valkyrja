@@ -61,6 +61,7 @@ class Kernel implements Contract
 
             // Show the exception
             // TODO: Implement
+            /** @psalm-suppress ForbiddenCode */
             var_dump($exception);
 
             $exitCode = ExitCode::FAILURE;

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Client\Provider;
 
 use GuzzleHttp\Client as Guzzle;
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Client\Adapter\Contract\Adapter;
 use Valkyrja\Client\Adapter\GuzzleAdapter;
 use Valkyrja\Client\Adapter\LogAdapter;
@@ -25,7 +26,6 @@ use Valkyrja\Client\Contract\Client;
 use Valkyrja\Client\Driver\Driver;
 use Valkyrja\Client\Factory\ContainerFactory;
 use Valkyrja\Client\Factory\Contract\Factory;
-use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
@@ -73,7 +73,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishClient(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaDataConfig::class);
+        $config = $container->getSingleton(Valkyrja::class);
 
         $container->setSingleton(
             Client::class,

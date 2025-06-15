@@ -13,15 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Dispatcher\Data;
 
-use JsonException;
 use Valkyrja\Dispatcher\Data\CallableDispatch as Dispatch;
 use Valkyrja\Tests\Classes\Dispatcher\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\BuiltIn\Support\Arr;
-
-use function json_encode;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Test the CallableDispatch.
@@ -30,26 +24,6 @@ use const JSON_THROW_ON_ERROR;
  */
 class CallableDispatchTest extends TestCase
 {
-    /**
-     * @throws JsonException
-     */
-    public function testFromArray(): void
-    {
-        $callable = 'str_replace';
-        $array    = [
-            'callable'     => $callable,
-            'arguments'    => null,
-            'dependencies' => null,
-        ];
-
-        $dispatch = Dispatch::fromArray($array);
-
-        self::assertSame($callable, $dispatch->getCallable());
-        self::assertSame(Arr::toString($array), (string) $dispatch);
-        self::assertSame($array, $dispatch->jsonSerialize());
-        self::assertSame(Arr::toString($array), json_encode($dispatch, JSON_THROW_ON_ERROR));
-    }
-
     public function testClass(): void
     {
         $callable  = 'str_replace';
@@ -64,6 +38,18 @@ class CallableDispatchTest extends TestCase
         self::assertNotSame($dispatch, $newDispatch);
         self::assertSame($callable, $dispatch->getCallable());
         self::assertSame($callable2, $newDispatch->getCallable());
+        self::assertSame(
+            '{"callable":["Valkyrja\\\\Tests\\\\Classes\\\\Dispatcher\\\\InvalidDispatcherClass","staticMethod"],"arguments":null,"dependencies":null}',
+            $newDispatch->__toString()
+        );
+        self::assertSame(
+            [
+                'callable'     => $callable2,
+                'arguments'    => null,
+                'dependencies' => null,
+            ],
+            $newDispatch->jsonSerialize()
+        );
     }
 
     public function testArguments(): void

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Middleware;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Http\Middleware\Constant\ConfigName;
 use Valkyrja\Http\Middleware\Constant\EnvName;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;

@@ -28,11 +28,6 @@ abstract class Dispatch implements Contract
 {
     /**
      * @inheritDoc
-     */
-    abstract public static function fromArray(array $data): static;
-
-    /**
-     * @inheritDoc
      *
      * @throws JsonException
      */

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Config;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Session\Constant\ConfigName;
 

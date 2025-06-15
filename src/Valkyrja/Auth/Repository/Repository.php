@@ -188,6 +188,7 @@ class Repository implements Contract
     {
         /** @var class-string<User> $userClassName */
         $userClassName = $this->userEntityName;
+        /** @var array<string, mixed> $requestParams */
         $requestParams = $request->onlyParsedBody(...$userClassName::getAuthenticationFields());
 
         if (empty($requestParams)) {

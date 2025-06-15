@@ -15,6 +15,8 @@ namespace Valkyrja\Log;
 
 use Throwable;
 use Valkyrja\Exception\InvalidArgumentException;
+use Valkyrja\Exception\RuntimeException;
+use Valkyrja\Log\Config\Configuration;
 use Valkyrja\Log\Contract\Logger as Contract;
 use Valkyrja\Log\Driver\Contract\Driver;
 use Valkyrja\Log\Enum\LogLevel;
@@ -27,6 +29,11 @@ use Valkyrja\Log\Factory\Contract\Factory;
  */
 class Logger implements Contract
 {
+    /**
+     * @var Driver[]
+     */
+    protected array $drivers = [];
+
     /**
      * Logger constructor.
      */
@@ -43,18 +50,9 @@ class Logger implements Contract
     {
         // The configuration name to use
         $name ??= $this->config->defaultConfiguration;
-        // The config to use
-        $config = $this->config->configurations->$name
-            ?? throw new InvalidArgumentException("$name is not a valid configuration");
-        // The driver to use
-        $driverClass = $config->driverClass;
-        // The adapter to use
-        $adapterClass = $config->adapterClass;
-        // The cache key to use
-        $cacheKey = $name . $adapterClass;
 
-        return $this->drivers[$cacheKey]
-            ?? $this->factory->createDriver($driverClass, $adapterClass, $config);
+        return $this->drivers[$name]
+            ??= $this->createDriverForName($name);
     }
 
     /**
@@ -135,5 +133,26 @@ class Logger implements Contract
     public function exception(Throwable $exception, string $message, array $context = []): void
     {
         $this->use()->exception($exception, $message, $context);
+    }
+
+    /**
+     * Create a driver for a given name.
+     */
+    protected function createDriverForName(string $name): Driver
+    {
+        // The config to use
+        $config = $this->config->configurations->$name
+            ?? throw new InvalidArgumentException("$name is not a valid configuration");
+
+        if (! $config instanceof Configuration) {
+            throw new RuntimeException("$name is an invalid configuration");
+        }
+
+        // The driver to use
+        $driverClass = $config->driverClass;
+        // The adapter to use
+        $adapterClass = $config->adapterClass;
+
+        return $this->factory->createDriver($driverClass, $adapterClass, $config);
     }
 }

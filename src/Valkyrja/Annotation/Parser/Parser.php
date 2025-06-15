@@ -21,7 +21,6 @@ use Valkyrja\Annotation\Exception\InvalidAnnotationKeyArgument;
 use Valkyrja\Annotation\Model\Annotation as AnnotationModel;
 use Valkyrja\Annotation\Model\Contract\Annotation;
 use Valkyrja\Annotation\Parser\Contract\Parser as Contract;
-use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function array_key_exists;
@@ -78,6 +77,8 @@ class Parser implements Contract
      * @inheritDoc
      *
      * @throws JsonException
+     *
+     * @psalm-suppress MixedReturnTypeCoercion
      */
     public function getPropertiesAsArray(string|null $arguments = null): array|null
     {
@@ -163,6 +164,8 @@ class Parser implements Contract
      * @param string $docString The doc string
      *
      * @return array<int, array<int, string>|null>|null
+     *
+     * @psalm-suppress MixedReturnTypeCoercion
      */
     protected function getMatches(string $docString): array|null
     {
@@ -346,6 +349,10 @@ class Parser implements Contract
         // Check if the class name is a key defined in the reference classes config
         $class = $this->getClassFromAlias($class);
 
+        if (! class_exists($class)) {
+            return $value;
+        }
+
         // Determine if the value is a constant
         if (defined("$class::$member")) {
             // Set the value as the constant's value
@@ -359,6 +366,7 @@ class Parser implements Contract
 
         // Check for static method
         if (method_exists($class, $member)) {
+            /** @psalm-suppress MixedMethodCall method_exists call checked to make sure this is fine -.- */
             return $class::$member();
         }
 
@@ -370,17 +378,11 @@ class Parser implements Contract
      *
      * @param class-string|string $class The class to check for a reference
      *
-     * @return class-string
+     * @return class-string|string
      */
     protected function getClassFromAlias(string $class): string
     {
-        $class = $this->config->aliases[$class]
+        return $this->config->aliases[$class]
             ?? $class;
-
-        if (! class_exists($class)) {
-            throw new InvalidArgumentException("$class is not a valid class");
-        }
-
-        return $class;
     }
 }

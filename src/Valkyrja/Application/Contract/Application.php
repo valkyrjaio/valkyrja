@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Contract;
 
+use Valkyrja\Application\Config\Valkyrja as ValkyrjaConfig;
 use Valkyrja\Application\Env;
-use Valkyrja\Config\Config as ConfigModel;
-use Valkyrja\Config\Config\Config;
-use Valkyrja\Config\Config\ValkyrjaDataConfig;
+use Valkyrja\Config\Config;
 use Valkyrja\Console\Kernel\Contract\Kernel as ConsoleKernel;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
@@ -68,61 +67,32 @@ interface Application
     /**
      * Setup the application.
      *
-     * @param class-string<Config>|null             $config     [optional] The config to use
-     * @param class-string<ValkyrjaDataConfig>|null $dataConfig [optional] The config to use
-     * @param bool                                  $force      [optional] Whether to force a setup
+     * @param class-string<ValkyrjaConfig>|null $dataConfig [optional] The config to use
+     * @param bool                              $force      [optional] Whether to force a setup
      *
      * @return void
      */
-    public function setup(string|null $config = null, string|null $dataConfig = null, bool $force = false): void;
+    public function setup(string|null $dataConfig = null, bool $force = false): void;
 
     /**
      * Add to the global config array.
-     *
-     * @param Config $config The config to add
-     *
-     * @return static
      */
-    public function withConfig(Config $config): static;
-
-    /**
-     * Add to the global config array.
-     *
-     * @param ValkyrjaDataConfig $config The config to add
-     *
-     * @return static
-     */
-    public function withDataConfig(ValkyrjaDataConfig $config): static;
-
-    /**
-     * Get the config.
-     *
-     * @param string|null $key     [optional] The key to get
-     * @param mixed       $default [optional] The default value if the key is not found
-     *
-     * @return mixed
-     */
-    public function config(string|null $key = null, mixed $default = null): mixed;
+    public function setConfig(ValkyrjaConfig $config): static;
 
     /**
      * Get the config.
      */
-    public function getDataConfig(): ValkyrjaDataConfig;
+    public function getConfig(): ValkyrjaConfig;
 
     /**
      * Get a config value.
      */
-    public function getDataConfigValue(string $key, mixed $default = null): mixed;
+    public function getConfigValue(string $key, mixed $default = null): mixed;
 
     /**
      * Add to the global config array.
-     *
-     * @param ConfigModel $newConfig The new config to add
-     * @param string      $key       The key to use
-     *
-     * @return void
      */
-    public function addConfig(ConfigModel $newConfig, string $key): void;
+    public function addConfig(Config $newConfig, string $key): void;
 
     /**
      * Get the container instance.

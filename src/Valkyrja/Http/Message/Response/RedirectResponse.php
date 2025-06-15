@@ -40,6 +40,8 @@ class RedirectResponse extends Response implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @var StatusCode
      */
     protected const DEFAULT_STATUS_CODE = StatusCode::FOUND;
 

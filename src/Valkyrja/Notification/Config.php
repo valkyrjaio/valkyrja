@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Notification\Constant\ConfigName;
 use Valkyrja\Notification\Constant\EnvName;
 

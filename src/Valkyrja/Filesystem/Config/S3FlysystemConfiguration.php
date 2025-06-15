@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Config;
 
-use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
+use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 use Valkyrja\Filesystem\Constant\ConfigName;
 
 /**
@@ -41,6 +41,9 @@ class S3FlysystemConfiguration extends FlysystemConfiguration
         ConfigName::OPTIONS           => 'FILESYSTEM_FLYSYSTEM_S3_OPTIONS',
     ];
 
+    /**
+     * @param array<string, mixed> $options [optional] Options passed directly to the Flysystem S3 adapter
+     */
     public function __construct(
         public string $key = '',
         public string $secret = '',
@@ -49,10 +52,9 @@ class S3FlysystemConfiguration extends FlysystemConfiguration
         public string $bucket = '',
         public string $prefix = '',
         public array $options = [],
-        public string $flysystemAdapter = FlysystemAwsS3Adapter::class,
     ) {
         parent::__construct(
-            flysystemAdapter: FlysystemAwsS3Adapter::class,
+            flysystemAdapter: AwsS3V3Adapter::class,
         );
     }
 }

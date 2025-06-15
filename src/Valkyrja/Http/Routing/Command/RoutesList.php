@@ -16,7 +16,12 @@ namespace Valkyrja\Http\Routing\Command;
 use InvalidArgumentException;
 use Valkyrja\Console\Commander\Commander;
 use Valkyrja\Console\Enum\FormatForeground;
+use Valkyrja\Console\Input\Contract\Input as InputContract;
+use Valkyrja\Console\Input\Input;
+use Valkyrja\Console\Output\Contract\Output as OutputContract;
+use Valkyrja\Console\Output\Output;
 use Valkyrja\Console\Support\Provides;
+use Valkyrja\Http\Routing\Contract\Router;
 use Valkyrja\Http\Routing\Model\Contract\Route;
 
 use function implode;
@@ -24,8 +29,6 @@ use function max;
 use function str_repeat;
 use function strlen;
 use function usort;
-use function Valkyrja\output;
-use function Valkyrja\router;
 
 /**
  * Class RoutesList.
@@ -44,8 +47,18 @@ class RoutesList extends Commander
     public const SHORT_DESCRIPTION = 'List all routes';
     public const DESCRIPTION       = '';
 
+    /** @var string */
     protected const INVERT_FORMAT = "\e[7m";
-    protected const END_FORMAT    = "\e[0m";
+    /** @var string */
+    protected const END_FORMAT = "\e[0m";
+
+    public function __construct(
+        protected Router $router,
+        InputContract $input = new Input(),
+        OutputContract $output = new Output()
+    ) {
+        parent::__construct($input, $output);
+    }
 
     /**
      * @inheritDoc
@@ -54,7 +67,7 @@ class RoutesList extends Commander
      */
     public function run(): int
     {
-        $routerRoutes = router()->getRoutes();
+        $routerRoutes = $this->router->getRoutes();
         $routes       = [];
         $headerTexts  = [
             'Request Methods',
@@ -81,9 +94,9 @@ class RoutesList extends Commander
         $sepLine = $this->getSepLine($lengths);
         $odd     = false;
 
-        output()->writeMessage($this->oddFormat(true) . $sepLine, true);
+        $this->output->writeMessage($this->oddFormat(true) . $sepLine, true);
         $this->headerMessage($headerTexts, $lengths);
-        output()->writeMessage($sepLine, true);
+        $this->output->writeMessage($sepLine, true);
 
         foreach ($routes as $key => $route) {
             $routeMessage = '| '
@@ -106,10 +119,10 @@ class RoutesList extends Commander
             $odd          = $key % 2 > 0;
             $routeMessage = $this->oddFormat($odd) . $routeMessage;
 
-            output()->writeMessage($routeMessage . static::END_FORMAT, true);
+            $this->output->writeMessage($routeMessage . static::END_FORMAT, true);
         }
 
-        output()->writeMessage($this->oddFormat(! $odd) . $sepLine . static::END_FORMAT, true);
+        $this->output->writeMessage($this->oddFormat(! $odd) . $sepLine . static::END_FORMAT, true);
 
         return 0;
     }
@@ -214,6 +227,6 @@ class RoutesList extends Commander
             . str_repeat(' ', $lengths[4] - strlen($headerTexts[4]))
             . ' |';
 
-        output()->writeMessage($headerMessage, true);
+        $this->output->writeMessage($headerMessage, true);
     }
 }

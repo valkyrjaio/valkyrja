@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Provider;
 
-use Valkyrja\Config\Config\ValkyrjaDataConfig;
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
@@ -105,7 +105,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishRouter(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaDataConfig::class);
+        $config = $container->getSingleton(Valkyrja::class);
 
         /** @var ThrowableCaughtHandler&Handler $exception */
         $exception = $container->getSingleton(ThrowableCaughtHandler::class);
@@ -170,7 +170,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishCollection(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaDataConfig::class);
+        $config = $container->getSingleton(Valkyrja::class);
 
         $container->setSingleton(
             Collection::class,

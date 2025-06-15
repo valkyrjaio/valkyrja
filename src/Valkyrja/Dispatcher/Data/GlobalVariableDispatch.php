@@ -30,14 +30,6 @@ class GlobalVariableDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public static function fromArray(array $data): static
-    {
-        return new static(...$data);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getVariable(): string
     {
         return $this->variable;

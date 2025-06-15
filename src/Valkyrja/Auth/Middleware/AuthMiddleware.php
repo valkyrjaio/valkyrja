@@ -23,6 +23,7 @@ use Valkyrja\Auth\Contract\Auth;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Repository\Contract\Repository;
 use Valkyrja\Config\Constant\ConfigKeyPart;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\ResponseFactory;
@@ -31,10 +32,9 @@ use Valkyrja\Http\Message\Response\Contract\JsonResponse;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Routing\Url\Contract\Url;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\BuiltIn\Support\Obj;
 
 use function is_string;
-use function Valkyrja\container;
 
 /**
  * Abstract Class AuthenticatedMiddleware.
@@ -99,7 +99,7 @@ abstract class AuthMiddleware
      */
     protected static function getAuth(): Auth
     {
-        $container = container();
+        /** @var Container $container */
 
         return self::$auth
             ??= $container->getSingleton(Auth::class);
@@ -118,7 +118,7 @@ abstract class AuthMiddleware
         $config = self::$config ??= static::getAuth()->getConfig();
 
         if ($key !== null) {
-            return Arr::getValueDotNotation($config, $key, $default);
+            return Obj::getValueDotNotation($config, $key, $default);
         }
 
         return $config;
@@ -167,7 +167,7 @@ abstract class AuthMiddleware
      */
     protected static function getFailedJsonResponse(): JsonResponse
     {
-        $container       = container();
+        /** @var Container $container */
         $responseFactory = $container->getSingleton(ResponseFactory::class);
         $api             = $container->getSingleton(Api::class);
         $json            = $api->jsonFromArray([]);
@@ -189,7 +189,7 @@ abstract class AuthMiddleware
      */
     protected static function getFailedRegularResponse(): Response
     {
-        $container       = container();
+        /** @var Container $container */
         $responseFactory = $container->getSingleton(ResponseFactory::class);
         $authenticateUrl = static::getConfig(ConfigKeyPart::AUTHENTICATE_URL);
 
@@ -225,7 +225,8 @@ abstract class AuthMiddleware
      */
     protected static function handleException(Exception $exception, string $logMessage = ''): void
     {
-        $logger = container()->getSingleton(Logger::class);
+        /** @var Container $container */
+        $logger = $container->getSingleton(Logger::class);
         $logger->exception($exception, $logMessage);
     }
 }

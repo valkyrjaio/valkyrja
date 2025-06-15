@@ -397,7 +397,7 @@ class Auth implements Contract
         try {
             $repository = $this->getRepository();
 
-            if ($this->config['useSession']) {
+            if ($this->config->shouldUseSession) {
                 // Try to authenticate from session
                 $repository->authenticateFromSession();
 

@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Support\Provider;
 
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Support\DeferredProviderClass;
+use Valkyrja\Tests\Classes\Support\InvalidDeferredProviderClass;
 use Valkyrja\Tests\Classes\Support\ProvidedClass;
 use Valkyrja\Tests\Classes\Support\ProvidedSecondaryClass;
 use Valkyrja\Tests\Classes\Support\ProviderClass;
@@ -121,5 +123,14 @@ class ProvidersAwareTraitTest extends TestCase
         self::assertTrue($providersAware->isDeferred(ProvidedSecondaryClass::class));
         self::assertTrue($providersAware->isPublished(ProvidedClass::class));
         self::assertTrue($providersAware->isPublished(ProvidedSecondaryClass::class));
+    }
+
+    public function testRegisterDeferredInvalid(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $providersAware = new ProvidersAwareClass();
+
+        $providersAware->register(InvalidDeferredProviderClass::class);
     }
 }

@@ -54,7 +54,7 @@ class Exceptions extends Asserter implements Contract
      */
     public static function getUnexpectedErrorMessage(string $actualClassName, string $actualMessage): string
     {
-        return "An unexpected exception {$actualClassName} with message {$actualMessage} was thrown.";
+        return "An unexpected exception $actualClassName with message $actualMessage was thrown.";
     }
 
     /**
@@ -62,7 +62,7 @@ class Exceptions extends Asserter implements Contract
      */
     public static function getIncorrectClassNameErrorMessage(string $expected, string $actual): string
     {
-        return "Expected {$expected} exception does not match actual {$actual}.";
+        return "Expected $expected exception does not match actual $actual.";
     }
 
     /**
@@ -70,7 +70,7 @@ class Exceptions extends Asserter implements Contract
      */
     public static function getIncorrectMessageErrorMessage(string $expected, string $actual): string
     {
-        return "Expected {$expected} message does not match actual {$actual}.";
+        return "Expected $expected message does not match actual $actual.";
     }
 
     /**

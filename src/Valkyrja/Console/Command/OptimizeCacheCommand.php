@@ -13,26 +13,27 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Command;
 
-use Valkyrja\Application\Env;
-use Valkyrja\Config\Config\ValkyrjaDataConfig;
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Console\CacheableConsole;
 use Valkyrja\Console\Commander\Commander;
 use Valkyrja\Console\Constant\ExitCode;
+use Valkyrja\Console\Contract\Console;
+use Valkyrja\Console\Input\Contract\Input as InputContract;
+use Valkyrja\Console\Input\Input;
+use Valkyrja\Console\Output\Contract\Output as OutputContract;
+use Valkyrja\Console\Output\Output;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Container\CacheableContainer;
+use Valkyrja\Container\Contract\Container;
 use Valkyrja\Event\Collection\CacheableCollection as CacheableEvents;
-use Valkyrja\Event\Collection\Contract\Collection;
+use Valkyrja\Event\Collection\Contract\Collection as EventCollection;
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Http\Routing\Collection\CacheableCollection;
+use Valkyrja\Http\Routing\Collection\Contract\Collection as RouterCollection;
 
 use function file_put_contents;
-use function in_array;
 use function is_file;
 use function unlink;
-use function Valkyrja\console;
-use function Valkyrja\container;
-use function Valkyrja\output;
-use function Valkyrja\router;
 
 use const LOCK_EX;
 
@@ -52,12 +53,24 @@ class OptimizeCacheCommand extends Commander
     public const PATH              = self::COMMAND;
     public const SHORT_DESCRIPTION = 'Optimize the application';
 
+    public function __construct(
+        protected Container $container,
+        protected Console $console,
+        protected EventCollection $eventCollection,
+        protected RouterCollection $routerCollection,
+        protected Valkyrja $config,
+        InputContract $input = new Input(),
+        OutputContract $output = new Output()
+    ) {
+        parent::__construct($input, $output);
+    }
+
     /**
      * @inheritDoc
      */
     public function run(): int
     {
-        $config = clone new ValkyrjaDataConfig(env: Env::class);
+        $config = clone $this->config;
 
         $cacheFilePath = $config->config->cacheFilePath;
 
@@ -70,13 +83,13 @@ class OptimizeCacheCommand extends Commander
         $config->app->env   = 'production';
 
         /** @var CacheableContainer $container */
-        $container = container();
+        $container = $this->container;
         /** @var CacheableConsole $console */
-        $console = console();
+        $console = $this->console;
         /** @var CacheableEvents $events */
-        $events = container()->getSingleton(Collection::class);
+        $events = $this->eventCollection;
         /** @var CacheableCollection $collection */
-        $collection = router()->getCollection();
+        $collection = $this->routerCollection;
 
         $containerCache = $container->getCacheable();
         $consoleCache   = $console->getCacheable();
@@ -97,25 +110,25 @@ class OptimizeCacheCommand extends Commander
         $config->httpRouting->cache    = $routesCache;
         $config->httpRouting->useCache = true;
 
-        $containerCacheProviders = $config->container->cache->providers
-            ?? [];
-
-        foreach ($config->container->providers as $key => $provider) {
-            if (in_array($provider, $containerCacheProviders, true)) {
-                unset($config->container->providers[$key]);
-            }
-        }
+        // $containerProvided = $config->container->cache->provided
+        //     ?? [];
+        //
+        // foreach ($config->container->providers as $key => $provider) {
+        //     if (in_array($provider, $containerProvided, true)) {
+        //         unset($config->container->providers[$key]);
+        //     }
+        // }
 
         // Get the results of the cache attempt
         $result = file_put_contents($cacheFilePath, $config->asSerializedString(), LOCK_EX);
 
         if ($result === false) {
-            output()->writeMessage('An error occurred while optimizing the application.', true);
+            $this->output->writeMessage('An error occurred while optimizing the application.', true);
 
             return ExitCode::FAILURE;
         }
 
-        output()->writeMessage('Application optimized successfully', true);
+        $this->output->writeMessage('Application optimized successfully', true);
 
         return ExitCode::SUCCESS;
     }

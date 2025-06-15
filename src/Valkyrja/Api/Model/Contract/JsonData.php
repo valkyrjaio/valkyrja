@@ -121,14 +121,14 @@ interface JsonData extends Model
     /**
      * Get the data.
      *
-     * @return array<string, mixed>|null
+     * @return array<array-key, mixed>|null
      */
     public function getData(): array|null;
 
     /**
      * Set the data.
      *
-     * @param array<string, mixed>|null $data
+     * @param array<array-key, mixed>|null $data
      *
      * @return static
      */

@@ -3,7 +3,7 @@
        xmlns="https://getpsalm.org/schema/config"
        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
        errorBaseline="psalm-baseline.xml"
-       errorLevel="2"
+       errorLevel="1"
        findUnusedBaselineEntry="false"
        findUnusedCode="false"
        ensureOverrideAttribute="false"
@@ -19,10 +19,9 @@
 
     <issueHandlers>
         <PropertyNotSetInConstructor errorLevel="suppress" />
-        <ClassMustBeFinal errorLevel="suppress" />
 
-        <!-- A bunch of false-positives with empty -->
-        <!--<RiskyTruthyFalsyComparison errorLevel="suppress" />-->
+        <!-- Classes aren't extended because they could potentially be since this is a framework -->
+        <ClassMustBeFinal errorLevel="suppress" />
 
         <!-- A bunch of false-positives with ??= -->
         <RedundantPropertyInitializationCheck errorLevel="suppress" />
@@ -31,21 +30,9 @@
         <ReservedWord errorLevel="suppress" />
 
         <!-- As a framework things have to be dynamic -->
-        <DuplicateClass errorLevel="suppress" />
-        <InvalidClassConstantType errorLevel="suppress" />
-        <InvalidStringClass errorLevel="suppress" />
-        <MixedArgument errorLevel="suppress" />
-        <MixedArgumentTypeCoercion errorLevel="suppress" />
-        <MixedArrayAccess errorLevel="suppress" />
-        <MixedArrayAssignment errorLevel="suppress" />
         <MixedAssignment errorLevel="suppress" />
-        <MixedArrayOffset errorLevel="suppress" />
-        <MixedOperand errorLevel="suppress" />
-        <MixedMethodCall errorLevel="suppress" />
-        <MixedPropertyTypeCoercion errorLevel="suppress" />
-        <MixedReturnStatement errorLevel="suppress" />
-        <MixedReturnTypeCoercion errorLevel="suppress" />
-        <UnresolvableInclude errorLevel="suppress" />
+
+        <!-- Up to the developers to ensure params for child classes match, not us -->
         <UnsafeInstantiation errorLevel="suppress" />
     </issueHandlers>
 </psalm>

@@ -271,10 +271,6 @@ class Directory
      */
     protected static function __basePath(string|null $path = null): string
     {
-        if ($path !== null && $path !== '' && str_starts_with($path, static::DIRECTORY_SEPARATOR)) {
-            return $path;
-        }
-
         return static::$BASE_PATH . static::path($path);
     }
 }

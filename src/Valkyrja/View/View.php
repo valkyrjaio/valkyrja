@@ -15,6 +15,7 @@ namespace Valkyrja\View;
 
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Exception\RuntimeException;
+use Valkyrja\View\Config\Configuration;
 use Valkyrja\View\Contract\View as Contract;
 use Valkyrja\View\Engine\Contract\Engine;
 use Valkyrja\View\Factory\Contract\Factory;
@@ -47,13 +48,6 @@ class View implements Contract
      * @var string
      */
     protected string $template = 'index';
-
-    /**
-     * The fully qualified template path.
-     *
-     * @var string
-     */
-    protected string $templatePath;
 
     /**
      * The view variables.
@@ -104,9 +98,13 @@ class View implements Contract
      */
     protected function getEngineFromFactory(string $configurationName): Engine
     {
-        $config     = $this->config->configurations->$configurationName;
-        $engineName = $config->engine
-            ?? throw new RuntimeException("$configurationName is an invalid configuration");
+        $config = $this->config->configurations->$configurationName;
+
+        if (! $config instanceof Configuration) {
+            throw new RuntimeException("$configurationName is an invalid configuration");
+        }
+
+        $engineName = $config->engine;
 
         return $this->factory->getEngine($engineName, $config);
     }

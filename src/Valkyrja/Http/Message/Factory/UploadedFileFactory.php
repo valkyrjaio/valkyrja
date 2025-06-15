@@ -121,10 +121,10 @@ abstract class UploadedFileFactory
         return new HttpUploadedFile(
             $tmpName,
             null,
-            UploadError::from($value['error']),
-            $value['size'],
-            $value['name'],
-            $value['type']
+            UploadError::from((int) $value['error']),
+            (int) $value['size'],
+            (string) $value['name'],
+            (string) $value['type']
         );
     }
 
@@ -138,6 +138,10 @@ abstract class UploadedFileFactory
      * @throws InvalidArgumentException
      *
      * @return UploadedFile[]
+     *
+     * @psalm-suppress InvalidReturnType Cannot do recursive return type
+     * @psalm-suppress InvalidReturnStatement Cannot do recursive return type
+     * @psalm-suppress MixedArrayAccess tmp_name should exist
      */
     private static function normalizeNestedFileSpec(array $files = []): array
     {
@@ -150,7 +154,7 @@ abstract class UploadedFileFactory
 
         foreach (array_keys($filesTmpName) as $key) {
             $spec                  = [
-                'tmp_name' => $files['tmp_name'][$key],
+                'tmp_name' => $files['tmp_name'][$key] ?? '',
                 'size'     => $files['size'][$key] ?? 0,
                 'error'    => $files['error'][$key] ?? 0,
                 'name'     => $files['name'][$key] ?? null,

@@ -66,6 +66,7 @@ class PdoStatement implements Contract
      */
     public function getColumnMeta(int $columnNumber): array
     {
+        /** @var array<string, mixed>|false $columnMeta */
         $columnMeta = $this->statement->getColumnMeta($columnNumber);
 
         if ($columnMeta === false) {
@@ -100,6 +101,8 @@ class PdoStatement implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @psalm-suppress MixedReturnTypeCoercion
      */
     public function fetchAll(): array
     {
@@ -162,10 +165,10 @@ class PdoStatement implements Contract
     protected function getBindValueType(mixed $value): int
     {
         return match (true) {
-            is_int($value)  => PDO::PARAM_INT,
+            is_int($value) => PDO::PARAM_INT,
             is_bool($value) => PDO::PARAM_BOOL,
             $value === null => PDO::PARAM_NULL,
-            default         => PDO::PARAM_STR,
+            default => PDO::PARAM_STR,
         };
     }
 }

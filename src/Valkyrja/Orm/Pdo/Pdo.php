@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Pdo;
 
 use PDO as BasePDO;
-use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Orm\Config\PdoConnection;
 
 use function is_array;
@@ -49,12 +48,8 @@ abstract class Pdo extends BasePDO
         string|null $driver = null,
         string|null $dsn = null
     ) {
-        $db = is_string($config->db)
-            ? $config->db
-            : throw new InvalidArgumentException('Invalid DB provided');
-
         $dsn = ($driver ?? 'mysql')
-            . ":dbname=$db}"
+            . ":dbname=$config->db}"
             . $this->getDsnPart($config, 'host')
             . $this->getDsnPart($config, 'port')
             . $this->getDsnPart($config, 'user')

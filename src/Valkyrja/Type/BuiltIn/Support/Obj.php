@@ -201,6 +201,10 @@ class Obj
 
         // Explode the keys on period and iterate through the keys
         foreach ($keyParts as $item) {
+            if (! is_object($value)) {
+                return $defaultValue;
+            }
+
             // Trying to get the item from the current value or set the default
             $value = $value->$item ?? null;
 

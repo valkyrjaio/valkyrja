@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client;
 
+use Valkyrja\Client\Config\Configuration;
 use Valkyrja\Client\Contract\Client as Contract;
 use Valkyrja\Client\Driver\Contract\Driver;
 use Valkyrja\Client\Factory\Contract\Factory;
 use Valkyrja\Exception\InvalidArgumentException;
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 
@@ -27,6 +29,11 @@ use Valkyrja\Http\Message\Response\Contract\Response;
  */
 class Client implements Contract
 {
+    /**
+     * @var Driver[]
+     */
+    protected array $drivers = [];
+
     /**
      * Client constructor.
      */
@@ -43,18 +50,9 @@ class Client implements Contract
     {
         // The configuration name to use
         $name ??= $this->config->defaultConfiguration;
-        // The config to use
-        $config = $this->config->configurations->$name
-            ?? throw new InvalidArgumentException("$name is not a valid configuration");
-        // The driver to use
-        $driverClass = $config->driverClass;
-        // The adapter to use
-        $adapterClass = $config->adapterClass;
-        // The cache key to use
-        $cacheKey = $name . $adapterClass;
 
-        return $this->drivers[$cacheKey]
-            ?? $this->factory->createDriver($driverClass, $adapterClass, $config);
+        return $this->drivers[$name]
+            ??= $this->createDriverForName($name);
     }
 
     /**
@@ -111,5 +109,26 @@ class Client implements Contract
     public function delete(ServerRequest $request): Response
     {
         return $this->use()->delete($request);
+    }
+
+    /**
+     * Create a driver for a given name.
+     */
+    protected function createDriverForName(string $name): Driver
+    {
+        // The config to use
+        $config = $this->config->configurations->$name
+            ?? throw new InvalidArgumentException("$name is not a valid configuration");
+
+        if (! $config instanceof Configuration) {
+            throw new RuntimeException("$name is an invalid configuration");
+        }
+
+        // The driver to use
+        $driverClass = $config->driverClass;
+        // The adapter to use
+        $adapterClass = $config->adapterClass;
+
+        return $this->factory->createDriver($driverClass, $adapterClass, $config);
     }
 }

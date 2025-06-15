@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing;
 
-use JsonException;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Http\Message\Enum\StatusCode;
@@ -166,8 +165,6 @@ class Router implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     public function dispatch(ServerRequest $request): Response
     {
@@ -180,11 +177,19 @@ class Router implements Contract
             return $this->routeNotMatchedHandler->routeNotMatched($request, $matchedRoute);
         }
 
+        return $this->dispatchRoute($request, $matchedRoute);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function dispatchRoute(ServerRequest $request, Route $route): Response
+    {
         // The route has been matched
-        $this->routeMatched($matchedRoute);
+        $this->routeMatched($route);
 
         // Dispatch the RouteMatchedMiddleware
-        $routeAfterMiddleware = $this->routeMatchedHandler->routeMatched($request, $matchedRoute);
+        $routeAfterMiddleware = $this->routeMatchedHandler->routeMatched($request, $route);
 
         // If the return value after middleware is a response return it
         if ($routeAfterMiddleware instanceof Response) {

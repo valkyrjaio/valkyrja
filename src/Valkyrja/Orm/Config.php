@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Orm\Config\Connections;
 use Valkyrja\Orm\Config\MysqlConnection;
 use Valkyrja\Orm\Config\PgsqlConnection;
@@ -61,7 +61,7 @@ class Config extends ParentConfig
         }
 
         if ($this->defaultConnection === '') {
-            $this->defaultConnection = array_key_first((array) $this->connections);
+            $this->defaultConnection = (string) array_key_first((array) $this->connections);
         }
     }
 }

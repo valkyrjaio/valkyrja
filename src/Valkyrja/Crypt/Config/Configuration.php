@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Config;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Crypt\Adapter\Contract\Adapter;
 use Valkyrja\Crypt\Driver\Contract\Driver;
 

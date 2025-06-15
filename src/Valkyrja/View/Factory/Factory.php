@@ -39,9 +39,8 @@ class Factory implements Contract
      */
     public function getTemplate(Engine $engine, string $name, array $variables = []): Template
     {
-        $template = new \Valkyrja\View\Template\Template($engine);
+        $template = new \Valkyrja\View\Template\Template($engine, $name);
 
-        $template->setName($name);
         $template->setVariables($variables);
 
         return $template;

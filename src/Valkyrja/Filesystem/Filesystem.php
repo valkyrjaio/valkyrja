@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem;
 
 use Valkyrja\Exception\InvalidArgumentException;
+use Valkyrja\Filesystem\Config\Configuration;
 use Valkyrja\Filesystem\Contract\Filesystem as Contract;
 use Valkyrja\Filesystem\Driver\Contract\Driver;
 use Valkyrja\Filesystem\Enum\Visibility;
+use Valkyrja\Filesystem\Exception\RuntimeException;
 use Valkyrja\Filesystem\Factory\Contract\Factory;
 
 /**
@@ -26,6 +28,11 @@ use Valkyrja\Filesystem\Factory\Contract\Factory;
  */
 class Filesystem implements Contract
 {
+    /**
+     * @var Driver[]
+     */
+    protected array $drivers = [];
+
     /**
      * Filesystem constructor.
      */
@@ -42,18 +49,9 @@ class Filesystem implements Contract
     {
         // The configuration name to use
         $name ??= $this->config->defaultConfiguration;
-        // The config to use
-        $config = $this->config->configurations->$name
-            ?? throw new InvalidArgumentException("$name is not a valid configuration");
-        // The driver to use
-        $driverClass = $config->driverClass;
-        // The adapter to use
-        $adapterClass = $config->adapterClass;
-        // The cache key to use
-        $cacheKey = $name . $adapterClass;
 
-        return $this->drivers[$cacheKey]
-            ?? $this->factory->createDriver($driverClass, $adapterClass, $config);
+        return $this->drivers[$name]
+            ??= $this->createDriverForName($name);
     }
 
     /**
@@ -230,5 +228,26 @@ class Filesystem implements Contract
     public function listContents(string|null $directory = null, bool $recursive = false): array
     {
         return $this->use()->listContents($directory, $recursive);
+    }
+
+    /**
+     * Create a driver for a given name.
+     */
+    protected function createDriverForName(string $name): Driver
+    {
+        // The config to use
+        $config = $this->config->configurations->$name
+            ?? throw new InvalidArgumentException("$name is not a valid configuration");
+
+        if (! $config instanceof Configuration) {
+            throw new RuntimeException("$name is an invalid configuration");
+        }
+
+        // The driver to use
+        $driverClass = $config->driverClass;
+        // The adapter to use
+        $adapterClass = $config->adapterClass;
+
+        return $this->factory->createDriver($driverClass, $adapterClass, $config);
     }
 }

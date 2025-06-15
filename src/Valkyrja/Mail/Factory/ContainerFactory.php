@@ -51,7 +51,6 @@ class ContainerFactory implements Contract
         return $this->container->get(
             $name,
             [
-                $this->container,
                 $this->createAdapter($adapter, $config),
             ]
         );
@@ -71,7 +70,6 @@ class ContainerFactory implements Contract
         return $this->container->get(
             $name,
             [
-                $this->container,
                 $config,
             ]
         );
@@ -91,7 +89,6 @@ class ContainerFactory implements Contract
         return $this->container->get(
             $name,
             [
-                $this->container,
                 $config,
                 $data,
             ]

@@ -301,6 +301,7 @@ class Attributes implements Contract
         $instances = [];
 
         foreach ($members as $member) {
+            /** @psalm-suppress PossiblyInvalidArgument $member is absolutely a Reflector */
             $instances = [
                 ...$instances,
                 ...$this->getInstances(

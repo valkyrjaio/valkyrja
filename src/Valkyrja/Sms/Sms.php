@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Sms;
 
 use Valkyrja\Exception\InvalidArgumentException;
+use Valkyrja\Exception\RuntimeException;
+use Valkyrja\Sms\Config\Configuration;
 use Valkyrja\Sms\Config\MessageConfiguration;
 use Valkyrja\Sms\Contract\Sms as Contract;
 use Valkyrja\Sms\Driver\Contract\Driver;
@@ -27,6 +29,11 @@ use Valkyrja\Sms\Message\Contract\Message;
  */
 class Sms implements Contract
 {
+    /**
+     * @var Driver[]
+     */
+    protected array $drivers = [];
+
     /**
      * Sms constructor.
      */
@@ -43,18 +50,9 @@ class Sms implements Contract
     {
         // The configuration name to use
         $name ??= $this->config->defaultConfiguration;
-        // The config to use
-        $config = $this->config->configurations->$name
-            ?? throw new InvalidArgumentException("$name is not a valid configuration");
-        // The driver to use
-        $driverClass = $config->driverClass;
-        // The adapter to use
-        $adapterClass = $config->adapterClass;
-        // The cache key to use
-        $cacheKey = $name . $adapterClass;
 
-        return $this->drivers[$cacheKey]
-            ?? $this->factory->createDriver($driverClass, $adapterClass, $config);
+        return $this->drivers[$name]
+            ??= $this->createDriverForName($name);
     }
 
     /**
@@ -65,9 +63,13 @@ class Sms implements Contract
         // The name of the message to use
         $name ??= $this->config->defaultMessageConfiguration;
         // The message config
-        /** @var MessageConfiguration $config */
         $config = $this->config->messageConfigurations->$name
-            ?? throw new InvalidArgumentException("$name is not a valid message");
+            ?? throw new InvalidArgumentException("$name is not a valid message configuration");
+
+        if (! $config instanceof MessageConfiguration) {
+            throw new RuntimeException("$name is an invalid message configuration");
+        }
+
         // The message to use
         $class = $config->messageClass;
 
@@ -80,5 +82,26 @@ class Sms implements Contract
     public function send(Message $message): void
     {
         $this->use()->send($message);
+    }
+
+    /**
+     * Create a driver for a given name.
+     */
+    protected function createDriverForName(string $name): Driver
+    {
+        // The config to use
+        $config = $this->config->configurations->$name
+            ?? throw new InvalidArgumentException("$name is not a valid configuration");
+
+        if (! $config instanceof Configuration) {
+            throw new RuntimeException("$name is an invalid configuration");
+        }
+
+        // The driver to use
+        $driverClass = $config->driverClass;
+        // The adapter to use
+        $adapterClass = $config->adapterClass;
+
+        return $this->factory->createDriver($driverClass, $adapterClass, $config);
     }
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Constant\ConfigName;
 use Valkyrja\Container\Constant\ConfigValue;

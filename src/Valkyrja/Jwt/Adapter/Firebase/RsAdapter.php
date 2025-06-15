@@ -13,13 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Adapter\Firebase;
 
-use OpenSSLAsymmetricKey;
 use RuntimeException;
 use Valkyrja\Jwt\Adapter\FirebaseAdapter;
 use Valkyrja\Jwt\Config\RsConfiguration;
 use Valkyrja\Jwt\Support\KeyGen;
-
-use function is_string;
 
 /**
  * Class RsAdapter.
@@ -60,10 +57,6 @@ class RsAdapter extends FirebaseAdapter
             $encodeKey = KeyGen::opensslPrivateKey($keyPath, $passphrase);
         }
 
-        if (! is_string($encodeKey) && ! $encodeKey instanceof OpenSSLAsymmetricKey) {
-            throw new RuntimeException('Invalid private key provided');
-        }
-
         $this->encodeKey = $encodeKey;
     }
 
@@ -72,17 +65,9 @@ class RsAdapter extends FirebaseAdapter
      */
     protected function setDecodeKey(): void
     {
-        $decodeKey = $this->config['publicKey'] ?? null;
+        $decodeKey = $this->config->publicKey;
 
-        if ($decodeKey === null) {
-            $encodeKey = $this->encodeKey;
-
-            if (! $encodeKey instanceof OpenSSLAsymmetricKey) {
-                throw new RuntimeException('When using KeyGen you must use a keyPath and passphrase');
-            }
-        }
-
-        if (! is_string($decodeKey) && ! $decodeKey instanceof OpenSSLAsymmetricKey) {
+        if ($decodeKey === '') {
             throw new RuntimeException('Invalid public key provided');
         }
 

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests;
 
-use Valkyrja\Config\Config\Valkyrja;
-use Valkyrja\Config\Constant\ConfigValue;
+use Valkyrja\Application\Config\Valkyrja;
+use Valkyrja\Config\Config\Config;
 
 /**
  * Class Config.
@@ -23,10 +23,5 @@ use Valkyrja\Config\Constant\ConfigValue;
  */
 class ConfigClass extends Valkyrja
 {
-    public ConfigClass $new;
-
-    public function __construct()
-    {
-        parent::__construct(ConfigValue::$defaults, true);
-    }
+    public Config $new;
 }

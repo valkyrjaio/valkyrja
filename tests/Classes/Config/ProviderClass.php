@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Config;
 
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Config\Support\Provider;
 
 /**
@@ -36,7 +36,7 @@ class ProviderClass extends Provider
     /**
      * @inheritDoc
      */
-    public static function publish(Config $config): void
+    public static function publish(Valkyrja $config): void
     {
     }
 }

@@ -18,6 +18,7 @@ use RuntimeException;
 use Valkyrja\Container\Config as Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
+use Valkyrja\Dispatcher\Provider\ServiceProvider;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Container\SingletonClass;
 use Valkyrja\Tests\Trait\ExpectErrorTrait;
@@ -201,6 +202,8 @@ class ContainerTest extends TestCase
     public function testProvided(): void
     {
         $container = $this->container;
+
+        $this->config->providers[] = ServiceProvider::class;
 
         array_map(
         /** @param class-string $provider */

@@ -34,6 +34,9 @@ class GuzzleConfiguration extends Configuration
         ConfigName::OPTIONS       => 'CLIENT_GUZZLE_OPTIONS',
     ];
 
+    /**
+     * @param array<string, mixed> $options [optional] Options passed directly to the Guzzle client
+     */
     public function __construct(
         public array $options = [],
     ) {

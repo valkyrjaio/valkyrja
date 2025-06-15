@@ -247,8 +247,9 @@ interface ServerRequest extends Request
      * These values MAY be prepared from $_FILES or the message body during
      * instantiation, or MAY be injected via withUploadedFiles().
      *
-     * @return UploadedFile[] An array tree of UploadedFileInterface instances; an empty
-     *                        array MUST be returned if no data is present
+     * @return UploadedFile[]|array<array-key, mixed>
+     *         An array tree of UploadedFileInterface instances; an empty
+     *         array MUST be returned if no data is present
      */
     public function getUploadedFiles(): array;
 
@@ -394,7 +395,7 @@ interface ServerRequest extends Request
      * deserializing non-form-encoded message bodies; etc. Attributes
      * will be application and request specific, and CAN be mutable.
      *
-     * @return array<string, mixed> Attributes derived from the request
+     * @return array<array-key, mixed> Attributes derived from the request
      */
     public function getAttributes(): array;
 
@@ -403,7 +404,7 @@ interface ServerRequest extends Request
      *
      * @param string ...$names The attribute names to retrieve
      *
-     * @return array<string, mixed>
+     * @return array<array-key, mixed>
      */
     public function onlyAttributes(string ...$names): array;
 
@@ -412,7 +413,7 @@ interface ServerRequest extends Request
      *
      * @param string ...$names The attribute names to not retrieve
      *
-     * @return array<string, mixed>
+     * @return array<array-key, mixed>
      */
     public function exceptAttributes(string ...$names): array;
 

@@ -82,6 +82,8 @@ abstract class Model implements Contract
      *
      * @see https://psalm.dev/r/309e3a322e
      *
+     * @param array<string, mixed> $properties The properties
+     *
      * @return static
      */
     public static function fromArray(array $properties): static

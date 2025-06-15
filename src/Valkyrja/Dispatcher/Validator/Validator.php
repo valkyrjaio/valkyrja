@@ -97,8 +97,9 @@ class Validator implements Contract
      */
     protected function isInvalidClassMethod(Dispatch $dispatch): bool
     {
+        /** @psalm-suppress MixedArgument For some reason Psalm things $class and $method are mixed */
         return $dispatch->isMethod()
-            && ($class  = $dispatch->getClass()) !== null
+            && ($class = $dispatch->getClass()) !== null
             && ($method = $dispatch->getMethod()) !== null
             && ! method_exists($class, $method);
     }
@@ -112,8 +113,9 @@ class Validator implements Contract
      */
     protected function isInvalidClassProperty(Dispatch $dispatch): bool
     {
+        /** @psalm-suppress MixedArgument For some reason Psalm things $class and $property are mixed */
         return $dispatch->isProperty()
-            && ($class    = $dispatch->getClass()) !== null
+            && ($class = $dispatch->getClass()) !== null
             && ($property = $dispatch->getProperty()) !== null
             && ! property_exists($class, $property);
     }

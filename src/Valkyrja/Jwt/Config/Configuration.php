@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Config;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Jwt\Adapter\Contract\Adapter;
 use Valkyrja\Jwt\Driver\Contract\Driver;
 use Valkyrja\Jwt\Enum\Algorithm;
@@ -26,12 +26,12 @@ use Valkyrja\Jwt\Enum\Algorithm;
 abstract class Configuration extends ParentConfig
 {
     /**
-     * @param class-string<Adapter>|null $adapterClass
-     * @param class-string<Driver>       $driverClass
+     * @param class-string<Adapter> $adapterClass
+     * @param class-string<Driver>  $driverClass
      */
     public function __construct(
         public Algorithm $algorithm,
-        public string|null $adapterClass = null,
+        public string $adapterClass,
         public string $driverClass = \Valkyrja\Jwt\Driver\Driver::class,
     ) {
     }

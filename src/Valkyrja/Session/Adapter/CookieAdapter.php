@@ -81,6 +81,7 @@ class CookieAdapter extends PHPAdapter
         $dataString = $this->request->getCookieParam($this->getId());
 
         // Set the data
+        /** @psalm-suppress MixedPropertyTypeCoercion */
         $this->data = $dataString !== null && $dataString !== ''
             ? $this->crypt->decryptArray($dataString)
             : [];

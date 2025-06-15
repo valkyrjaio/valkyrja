@@ -312,6 +312,7 @@ class RequestHandler implements Contract
      */
     protected function finishRequestWithLitespeed(): void
     {
+        /** @psalm-suppress UndefinedFunction */
         litespeed_finish_request();
     }
 
@@ -351,6 +352,8 @@ class RequestHandler implements Contract
      * Get the status of the output buffers.
      *
      * @return array<int, ?array{chunk_size: int, buffer_size: int, buffer_used: int, flags?: int, level?: int, type?: int, del?: int, name?: string}>
+     *
+     * @psalm-suppress MixedReturnTypeCoercion
      */
     protected function outputBuffersGetStatus(): array
     {

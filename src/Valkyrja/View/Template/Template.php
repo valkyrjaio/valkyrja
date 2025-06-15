@@ -18,7 +18,6 @@ use Valkyrja\View\Engine\Contract\Engine;
 use Valkyrja\View\Template\Contract\Template as Contract;
 
 use function array_merge;
-use function assert;
 use function htmlentities;
 use function is_string;
 
@@ -31,20 +30,6 @@ use const ENT_QUOTES;
  */
 class Template implements Contract
 {
-    /**
-     * The engine.
-     *
-     * @var Engine
-     */
-    protected Engine $engine;
-
-    /**
-     * The template name.
-     *
-     * @var string
-     */
-    protected string $name;
-
     /**
      * The layout template.
      *
@@ -89,12 +74,11 @@ class Template implements Contract
 
     /**
      * Template constructor.
-     *
-     * @param Engine $engine The engine
      */
-    public function __construct(Engine $engine)
-    {
-        $this->engine = $engine;
+    public function __construct(
+        protected Engine $engine,
+        protected string $name
+    ) {
     }
 
     /**
@@ -250,8 +234,6 @@ class Template implements Contract
      */
     public function render(array $variables = []): string
     {
-        assert(isset($this->name));
-
         return $this->renderFile($this->name, $variables, true);
     }
 

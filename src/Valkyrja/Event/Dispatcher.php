@@ -144,6 +144,7 @@ class Dispatcher implements Contract
      */
     protected function getEventClassFromId(string $eventId, array $arguments = []): object
     {
+        /** @psalm-suppress MixedMethodCall The developer should have passed the proper arguments for the class */
         return new $eventId(...$arguments);
     }
 }

@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application;
 
+use Valkyrja\Application\Config\Valkyrja as ValkyrjaConfig;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Support\Provider;
-use Valkyrja\Config\Config as ConfigModel;
-use Valkyrja\Config\Config\Config;
-use Valkyrja\Config\Config\ValkyrjaDataConfig;
-use Valkyrja\Config\Support\DataProvider;
+use Valkyrja\Config\Config;
+use Valkyrja\Config\Support\Provider as ConfigProvider;
 use Valkyrja\Console\Kernel\Contract\Kernel as ConsoleKernel;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
@@ -27,7 +26,6 @@ use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Support\Directory;
-use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 
 use function assert;
@@ -47,8 +45,6 @@ class Valkyrja implements Application
 {
     /**
      * Get the instance of the application.
-     *
-     * @var Application
      */
     protected static Application $app;
 
@@ -61,42 +57,27 @@ class Valkyrja implements Application
 
     /**
      * Application config.
-     *
-     * @var Config|array<string, mixed>
      */
-    protected static Config|array $config;
-
-    /**
-     * Application config.
-     *
-     * @var ValkyrjaDataConfig
-     */
-    protected static ValkyrjaDataConfig $dataConfig;
+    protected static ValkyrjaConfig $config;
 
     /**
      * Get the instance of the container.
-     *
-     * @var Container
      */
     protected static Container $container;
 
     /**
      * Whether the application was setup.
-     *
-     * @var bool
      */
     protected static bool $setup = false;
 
     /**
      * Application constructor.
      *
-     * @param class-string<Config>|null             $config     [optional] The config class to use
-     * @param class-string<ValkyrjaDataConfig>|null $dataConfig [optional] The config class to use
+     * @param class-string<ValkyrjaConfig>|null $dataConfig [optional] The config class to use
      */
-    public function __construct(string|null $config = null, string|null $dataConfig = null)
+    public function __construct(string|null $dataConfig = null)
     {
         $this->setup(
-            config: $config,
             dataConfig: $dataConfig
         );
     }
@@ -149,7 +130,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function setup(string|null $config = null, string|null $dataConfig = null, bool $force = false): void
+    public function setup(string|null $dataConfig = null, bool $force = false): void
     {
         // If the application was already setup, no need to do it again
         if (self::$setup && ! $force) {
@@ -165,18 +146,18 @@ class Valkyrja implements Application
         define('VALKYRJA_START', microtime(true));
 
         // Bootstrap debug capabilities
-        $this->bootstrapConfig(config: $config, dataConfig: $dataConfig);
+        $this->bootstrapConfig(dataConfig: $dataConfig);
     }
 
     /**
      * @inheritDoc
      */
-    public function withConfig(Config $config): static
+    public function setConfig(ValkyrjaConfig $config): static
     {
         self::$config = $config;
 
+        $this->publishConfigAppProviders();
         $this->publishConfigProviders();
-        $this->publishProviders();
 
         return $this;
     }
@@ -184,50 +165,23 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function withDataConfig(ValkyrjaDataConfig $config): static
+    public function getConfig(): ValkyrjaConfig
     {
-        self::$dataConfig = $config;
-
-        $this->publishDataConfigAppProviders();
-        $this->publishDataConfigProviders();
-
-        return $this;
+        return self::$config;
     }
 
     /**
      * @inheritDoc
      */
-    public function config(string|null $key = null, mixed $default = null): mixed
+    public function getConfigValue(string $key, mixed $default = null): mixed
     {
-        // If no key was specified
-        if ($key === null) {
-            // Return all the entire config
-            return self::$config;
-        }
-
-        return Arr::getValueDotNotation(self::$config, $key, $default);
+        return Obj::getValueDotNotation(self::$config, $key, $default);
     }
 
     /**
      * @inheritDoc
      */
-    public function getDataConfig(): ValkyrjaDataConfig
-    {
-        return self::$dataConfig;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getDataConfigValue(string $key, mixed $default = null): mixed
-    {
-        return Obj::getValueDotNotation(self::$dataConfig, $key, $default);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function addConfig(ConfigModel $newConfig, string $key): void
+    public function addConfig(Config $newConfig, string $key): void
     {
         // Set the config within the application
         self::$config[$key] = $newConfig;
@@ -288,7 +242,7 @@ class Valkyrja implements Application
      */
     public function getDebugMode(): bool
     {
-        return self::$dataConfig->app->debug;
+        return self::$config->app->debug;
     }
 
     /**
@@ -296,7 +250,7 @@ class Valkyrja implements Application
      */
     public function getEnvironment(): string
     {
-        return self::$dataConfig->app->env;
+        return self::$config->app->env;
     }
 
     /**
@@ -310,74 +264,36 @@ class Valkyrja implements Application
     /**
      * Bootstrap the config.
      *
-     * @param class-string<Config>|null             $config     [optional] The config class to use
-     * @param class-string<ValkyrjaDataConfig>|null $dataConfig [optional] The config class to use
-     *
-     * @return void
+     * @param class-string<ValkyrjaConfig>|null $dataConfig [optional] The config class to use
      */
-    protected function bootstrapConfig(string|null $config = null, string|null $dataConfig = null): void
+    protected function bootstrapConfig(string|null $dataConfig = null): void
     {
-        // Get the cache file
-        $cacheFilePath = $this->getCacheFilePath();
-
-        // If we should use the config cache file
-        if (is_file($cacheFilePath)) {
-            self::$dataConfig = new ValkyrjaDataConfig(env: self::getEnv());
-            // Get the config from the cache file's contents
-            $this->setupFromCacheFile($cacheFilePath);
-
-            return;
-        }
-
         // Get the cache file
         $cacheFilePath = $this->getConfigCacheFilePath();
 
         // If we should use the config cache file
         if (is_file($cacheFilePath)) {
-            self::$config = new Config(null, true);
             // Get the config from the cache file's contents
-            $this->setupFromDataConfigCacheFile($cacheFilePath);
+            $this->setupFromConfigCacheFile($cacheFilePath);
 
             return;
         }
 
-        $config     ??= self::getEnvValue('CONFIG_CLASS', Config::class);
-        $dataConfig ??= self::getEnvValue('DATA_CONFIG_CLASS', ValkyrjaDataConfig::class);
+        $dataConfig ??= self::getEnvValue('DATA_CONFIG_CLASS', ValkyrjaConfig::class);
 
-        assert(is_string($config) && is_a($config, Config::class, true));
-        assert(is_string($dataConfig) && is_a($dataConfig, ValkyrjaDataConfig::class, true));
+        assert(is_string($dataConfig) && is_a($dataConfig, ValkyrjaConfig::class, true));
 
-        self::$config     = $newConfig = new $config(null, true);
-        self::$dataConfig = $newDataConfig = new $dataConfig(env: self::getEnv());
+        self::$config = $newDataConfig = new $dataConfig(env: self::getEnv());
 
-        $this->withConfig($newConfig);
-        $this->withDataConfig($newDataConfig);
+        $this->setConfig($newDataConfig);
     }
 
     /**
      * Get cache file path.
-     *
-     * @return string
-     */
-    protected function getCacheFilePath(): string
-    {
-        $cacheFilePath = self::getEnvValue('CONFIG_CACHE_FILE_PATH', Directory::cachePath('config.php'));
-
-        if (! is_string($cacheFilePath)) {
-            throw new InvalidArgumentException('Cache file path should be a string');
-        }
-
-        return $cacheFilePath;
-    }
-
-    /**
-     * Get cache file path.
-     *
-     * @return string
      */
     protected function getConfigCacheFilePath(): string
     {
-        $cacheFilePath = self::getEnvValue('CONFIG_CACHE_FILE_PATH', Directory::cachePath('data-config.php'));
+        $cacheFilePath = self::getEnvValue('CONFIG_CACHE_FILE_PATH', Directory::cachePath('config.php'));
 
         if (! is_string($cacheFilePath)) {
             throw new InvalidArgumentException('Config cache file path should be a string');
@@ -388,32 +304,8 @@ class Valkyrja implements Application
 
     /**
      * Setup the application from a cache file.
-     *
-     * @param string $cacheFilePath The cache file path
-     *
-     * @return void
      */
-    protected function setupFromCacheFile(string $cacheFilePath): void
-    {
-        if (is_file($cacheFilePath)) {
-            self::$config = require $cacheFilePath;
-
-            $this->publishProviders();
-
-            return;
-        }
-
-        throw new InvalidArgumentException("Invalid $cacheFilePath provided");
-    }
-
-    /**
-     * Setup the application from a cache file.
-     *
-     * @param string $cacheFilePath The cache file path
-     *
-     * @return void
-     */
-    protected function setupFromDataConfigCacheFile(string $cacheFilePath): void
+    protected function setupFromConfigCacheFile(string $cacheFilePath): void
     {
         if (is_file($cacheFilePath)) {
             $cacheFileContents = file_get_contents($cacheFilePath);
@@ -422,9 +314,9 @@ class Valkyrja implements Application
                 throw new RuntimeException('Invalid cache file contents');
             }
 
-            self::$dataConfig = ValkyrjaDataConfig::fromSerializesString($cacheFileContents);
+            self::$config = ValkyrjaConfig::fromSerializedString($cacheFileContents);
 
-            $this->publishDataConfigAppProviders();
+            $this->publishConfigAppProviders();
 
             return;
         }
@@ -434,26 +326,10 @@ class Valkyrja implements Application
 
     /**
      * Publish app providers.
-     *
-     * @return void
      */
-    protected function publishProviders(): void
+    protected function publishConfigAppProviders(): void
     {
-        foreach (self::$config['app']['providers'] as $provider) {
-            /** @var Provider $provider */
-            // App providers are NOT deferred
-            $provider::publish($this);
-        }
-    }
-
-    /**
-     * Publish app providers.
-     *
-     * @return void
-     */
-    protected function publishDataConfigAppProviders(): void
-    {
-        foreach (self::$dataConfig->app->providers as $provider) {
+        foreach (self::$config->app->providers as $provider) {
             /** @var Provider $provider */
             // App providers are NOT deferred
             $provider::publish($this);
@@ -462,31 +338,12 @@ class Valkyrja implements Application
 
     /**
      * Publish config providers.
-     *
-     * @return void
      */
     protected function publishConfigProviders(): void
     {
-        /** @var Config $config */
         $config = self::$config;
 
-        /** @var class-string<\Valkyrja\Config\Support\Provider> $provider */
-        foreach ($config->providers as $provider) {
-            // Config providers are NOT deferred
-            $provider::publish($config);
-        }
-    }
-
-    /**
-     * Publish config providers.
-     *
-     * @return void
-     */
-    protected function publishDataConfigProviders(): void
-    {
-        $config = self::$dataConfig;
-
-        /** @var class-string<DataProvider> $provider */
+        /** @var class-string<ConfigProvider> $provider */
         foreach ($config->config->providers as $provider) {
             // Config providers are NOT deferred
             $provider::publish($config);

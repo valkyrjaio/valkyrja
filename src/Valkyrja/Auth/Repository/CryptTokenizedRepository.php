@@ -21,6 +21,7 @@ use Valkyrja\Auth\Repository\Contract\CryptTokenizedRepository as Contract;
 use Valkyrja\Crypt\Contract\Crypt as CryptManager;
 use Valkyrja\Crypt\Driver\Contract\Driver as Crypt;
 use Valkyrja\Crypt\Exception\CryptException;
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Session\Contract\Session;
 
 /**
@@ -71,6 +72,14 @@ class CryptTokenizedRepository extends TokenizedRepository implements Contract
      */
     protected function unTokenizeUsers(string $token): AuthenticatedUsers
     {
-        return $this->usersModel::fromArray($this->crypt->decryptArray($token));
+        $decodedToken = $this->crypt->decryptArray($token);
+
+        if (! is_string(array_key_first($decodedToken))) {
+            throw new InvalidArgumentException('Provided token is invalid');
+        }
+
+        /** @var array<string, mixed> $decodedToken */
+
+        return $this->usersModel::fromArray($decodedToken);
     }
 }

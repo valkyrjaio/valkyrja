@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log\Config;
 
-use Valkyrja\Log\Adapter\NullAdapter;
+use Valkyrja\Log\Adapter\PsrAdapter;
 use Valkyrja\Log\Constant\ConfigName;
 use Valkyrja\Support\Directory;
 
@@ -41,7 +41,7 @@ class PsrConfiguration extends Configuration
         public string $filePath = '',
     ) {
         parent::__construct(
-            adapterClass: NullAdapter::class,
+            adapterClass: PsrAdapter::class,
         );
 
         if ($this->filePath === '') {

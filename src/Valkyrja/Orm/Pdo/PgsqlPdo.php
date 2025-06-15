@@ -14,18 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Pdo;
 
 use PDO as BasePDO;
-
-use function is_int;
-use function is_string;
+use Valkyrja\Orm\Config\PgsqlConnection;
 
 /**
  * Class PgsqlPdo.
  *
  * @author Melech Mizrachi
- *
- * @psalm-import-type Config from Pdo
- *
- * @phpstan-import-type Config from Pdo
  */
 class PgsqlPdo extends Pdo
 {
@@ -44,18 +38,11 @@ class PgsqlPdo extends Pdo
 
     /**
      * PgSqlPDO constructor.
-     *
-     * @param Config $config The config
      */
-    public function __construct(array $config)
+    public function __construct(PgsqlConnection $config)
     {
-        $configCharset = $config['charset'] ?? null;
-        $charset       = is_string($configCharset) || is_int($configCharset)
-            ? $configCharset
-            : 'utf8';
-
         $dsn = $this->getDsnPart($config, 'sslmode')
-            . ";options='--client_encoding=$charset'";
+            . ";options='--client_encoding=$config->charset'";
 
         parent::__construct($config, 'pgsql', $dsn);
     }

@@ -54,6 +54,7 @@ class ResponseStructMiddleware implements RouteDispatchedMiddleware
     {
         $data = $response->getBodyAsJson();
 
+        /** @psalm-suppress MixedArgumentTypeCoercion */
         return $response->withJsonAsBody($responseStruct::getStructuredData($data));
     }
 }

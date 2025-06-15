@@ -30,6 +30,8 @@ interface Mail
 
     /**
      * Create a new message.
+     *
+     * @param array<array-key, mixed> $data [optional] The data
      */
     public function createMessage(string|null $name = null, array $data = []): Message;
 

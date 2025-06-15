@@ -25,21 +25,21 @@ class Cache
     /**
      * The aliases.
      *
-     * @var string[]
+     * @var array<string, string>
      */
     public array $aliases;
 
     /**
      * The context services.
      *
-     * @var string[]
+     * @var array<string, string>
      */
     public array $contextServices;
 
     /**
      * The deferred services.
      *
-     * @var string[]
+     * @var array<string, string>
      */
     public array $deferred;
 
@@ -53,14 +53,14 @@ class Cache
     /**
      * The services.
      *
-     * @var class-string<Service>[]
+     * @var array<string, class-string<Service>>
      */
     public array $services;
 
     /**
      * The singletons.
      *
-     * @var string[]
+     * @var array<string, string>
      */
     public array $singletons;
 }

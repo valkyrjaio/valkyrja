@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Provider;
 
 use Valkyrja\Annotation\Filter\Contract\Filter;
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Attribute\Contract\Attributes as AttributeAttributes;
-use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
@@ -107,7 +107,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishCollection(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaDataConfig::class);
+        $config = $container->getSingleton(Valkyrja::class);
 
         $container->setSingleton(
             Collection::class,

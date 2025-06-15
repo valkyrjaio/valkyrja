@@ -15,7 +15,7 @@ namespace Valkyrja\Asset\Config;
 
 use Valkyrja\Asset\Adapter\Contract\Adapter;
 use Valkyrja\Asset\Adapter\DefaultAdapter;
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 
 /**
  * Abstract Class Bundle.

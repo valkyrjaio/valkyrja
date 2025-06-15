@@ -242,18 +242,27 @@ class Input implements Contract
 
             // If the key is already set
             if (isset($this->{$type}[$key])) {
+                /**
+                 * @psalm-suppress MixedArrayAccess isset check exists, Psalm just isn't understanding that
+                 * @psalm-suppress MixedArrayAssignment isset check exists, Psalm just isn't understanding that
+                 */
                 // If the key isn't already an array
                 if (! is_array($this->{$type}[$key])) {
                     // Make it an array with the current value
                     $this->{$type}[$key] = [$this->{$type}[$key]];
                 }
 
+                /**
+                 * @psalm-suppress MixedArrayAccess isset check exists, Psalm just isn't understanding that
+                 * @psalm-suppress MixedArrayAssignment isset check exists, Psalm just isn't understanding that
+                 */
                 // Add the next value to the array
                 $this->{$type}[$key][] = $value;
 
                 continue;
             }
 
+            /** @psalm-suppress MixedArrayAssignment isset check exists, Psalm just isn't understanding that */
             // Set the key value pair
             $this->{$type}[$key] = $value;
         }

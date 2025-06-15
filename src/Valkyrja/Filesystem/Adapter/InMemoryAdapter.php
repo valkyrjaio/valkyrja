@@ -32,14 +32,16 @@ use function time;
 class InMemoryAdapter implements Contract
 {
     /**
-     * @var InMemoryFile[]
+     * @var array<string, InMemoryFile>
      */
     protected array $files = [];
 
     public function __construct(
         InMemoryFile ...$files
     ) {
-        $this->files = $files;
+        foreach ($files as $file) {
+            $this->files[$file->name] = $file;
+        }
     }
 
     /**

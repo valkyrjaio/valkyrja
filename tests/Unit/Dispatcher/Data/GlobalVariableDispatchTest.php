@@ -13,14 +13,8 @@ declare(strict_types=1);
 
 namespace Unit\Dispatcher\Data;
 
-use JsonException;
 use Valkyrja\Dispatcher\Data\GlobalVariableDispatch as Dispatch;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\BuiltIn\Support\Arr;
-
-use function json_encode;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Test the GlobalVariableDispatch.
@@ -29,24 +23,6 @@ use const JSON_THROW_ON_ERROR;
  */
 class GlobalVariableDispatchTest extends TestCase
 {
-    /**
-     * @throws JsonException
-     */
-    public function testFromArray(): void
-    {
-        $variable = '_GET';
-        $array    = [
-            'variable' => $variable,
-        ];
-
-        $dispatch = Dispatch::fromArray($array);
-
-        self::assertSame($variable, $dispatch->getVariable());
-        self::assertSame(Arr::toString($array), (string) $dispatch);
-        self::assertSame($array, $dispatch->jsonSerialize());
-        self::assertSame(Arr::toString($array), json_encode($dispatch, JSON_THROW_ON_ERROR));
-    }
-
     public function testVariable(): void
     {
         $variable  = '_GET';

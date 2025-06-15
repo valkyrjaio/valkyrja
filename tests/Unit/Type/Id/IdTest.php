@@ -19,6 +19,7 @@ use Valkyrja\Type\Id\Id;
 class IdTest extends TestCase
 {
     protected const INT_VALUE    = 1;
+    protected const FLOAT_VALUE  = 1.0;
     protected const STRING_VALUE = 'id';
 
     public function testIntValue(): void
@@ -40,6 +41,13 @@ class IdTest extends TestCase
         $typeFromValue = Id::fromValue(self::INT_VALUE);
 
         self::assertSame(self::INT_VALUE, $typeFromValue->asValue());
+    }
+
+    public function testFloatFromValue(): void
+    {
+        $typeFromValue = Id::fromValue(self::FLOAT_VALUE);
+
+        self::assertSame('1', $typeFromValue->asValue());
     }
 
     public function testStringFromValue(): void

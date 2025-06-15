@@ -134,14 +134,14 @@ interface Route extends Dispatch
     /**
      * Get the parameters.
      *
-     * @return array<int, Parameter>
+     * @return array<array-key, Parameter>
      */
     public function getParameters(): array;
 
     /**
      * Set the parameters.
      *
-     * @param array<int, Parameter>|array<array-key, array<string, mixed>> $parameters The parameters
+     * @param array<array-key, Parameter>|array<array-key, array<string, mixed>> $parameters The parameters
      *
      * @return static
      */

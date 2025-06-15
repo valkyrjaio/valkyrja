@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Server\Provider;
 
-use Valkyrja\Config\Config\ValkyrjaDataConfig;
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\Middleware\Handler\Contract\Handler;
@@ -69,7 +69,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishRequestHandler(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaDataConfig::class);
+        $config = $container->getSingleton(Valkyrja::class);
 
         /** @var RequestReceivedHandler&Handler $requestReceived */
         $requestReceived = $container->getSingleton(RequestReceivedHandler::class);

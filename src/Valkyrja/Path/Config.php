@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Path;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Path\Constant\ConfigName;
 use Valkyrja\Path\Constant\ConfigValue;
 use Valkyrja\Path\Constant\EnvName;

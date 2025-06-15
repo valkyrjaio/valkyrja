@@ -18,7 +18,6 @@ use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Contract\ContextAwareContainer;
 use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Exception\RuntimeException;
 
 use function array_map;
@@ -106,6 +105,10 @@ class CacheableContainer extends Container
 
             if (is_file($cacheFilePath)) {
                 $cache = require $cacheFilePath;
+
+                if (! $cache instanceof Cache) {
+                    throw new RuntimeException('Invalid cache object returned');
+                }
             } else {
                 throw new RuntimeException('No cache found');
             }
@@ -195,13 +198,13 @@ class CacheableContainer extends Container
      */
     protected function requireFilePath(Config $config): void
     {
-        $filePath = $config->filePath;
-
-        if (! is_file($filePath)) {
-            throw new InvalidArgumentException('Invalid file path provided');
-        }
-
-        require $filePath;
+        // $filePath = $config->filePath;
+        //
+        // if (! is_file($filePath)) {
+        //     throw new InvalidArgumentException('Invalid file path provided');
+        // }
+        //
+        // require $filePath;
     }
 
     /**

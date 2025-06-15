@@ -19,6 +19,7 @@ use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Exception\TokenizationException;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\JWTRepository as Contract;
+use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Jwt\Contract\Jwt as JwtManager;
 use Valkyrja\Jwt\Driver\Contract\Driver as Jwt;
 use Valkyrja\Session\Contract\Session;
@@ -62,7 +63,15 @@ class JwtRepository extends TokenizedRepository implements Contract
      */
     protected function unTokenizeUsers(string $token): AuthenticatedUsers
     {
-        return $this->usersModel::fromArray($this->jwt->decode($token));
+        $decodedToken = $this->jwt->decode($token);
+
+        if (! is_string(array_key_first($decodedToken))) {
+            throw new InvalidArgumentException('Provided token is invalid');
+        }
+
+        /** @var array<string, mixed> $decodedToken */
+
+        return $this->usersModel::fromArray($decodedToken);
     }
 
     /**

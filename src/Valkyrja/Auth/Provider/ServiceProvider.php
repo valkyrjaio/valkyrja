@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Provider;
 
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Auth\Adapter\Contract\Adapter;
 use Valkyrja\Auth\Adapter\NullAdapter;
 use Valkyrja\Auth\Adapter\ORMAdapter;
@@ -29,7 +30,6 @@ use Valkyrja\Auth\Repository\CryptTokenizedRepository;
 use Valkyrja\Auth\Repository\JwtCryptRepository;
 use Valkyrja\Auth\Repository\JwtRepository;
 use Valkyrja\Auth\Repository\Repository;
-use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Contract\Crypt;
@@ -96,7 +96,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishAuth(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaDataConfig::class);
+        $config = $container->getSingleton(Valkyrja::class);
 
         $container->setSingleton(
             Auth::class,

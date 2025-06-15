@@ -13,106 +13,79 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config;
 
-use Valkyrja\Exception\RuntimeException;
-use Valkyrja\Type\Model\Model;
-
-use function Valkyrja\env;
+use function constant;
+use function defined;
+use function is_callable;
 
 /**
  * Abstract Class Config.
  *
  * @author Melech Mizrachi
  */
-abstract class Config extends Model
+abstract class Config
 {
-    /**
-     * @inheritDoc
-     */
-    protected static bool $shouldSetOriginalProperties = false;
-
     /**
      * The model properties env keys.
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [];
+    protected static array $envNames = [];
 
     /**
-     * Model constructor.
+     * Create config from Env.
      *
-     * @param array<string, mixed>|null $properties [optional] The properties to set
-     * @param bool                      $setup      [optional] Whether to setup this config
+     * @param class-string $env The env
      */
-    public function __construct(array|null $properties = null, bool $setup = false)
+    public static function fromEnv(string $env): static
     {
-        if ($setup) {
-            $this->setup($properties);
-        }
+        $new = new static();
 
-        if ($properties !== null) {
-            $this->updateProperties($properties);
-        }
+        $new->setPropertiesBeforeSettingFromEnv($env);
+        $new->setPropertiesFromEnv($env);
+        $new->setPropertiesAfterSettingFromEnv($env);
 
-        if ($setup) {
-            $this->setPropertiesFromEnv();
-        }
-    }
-
-    /**
-     * Setup the config.
-     *
-     * @param array<string, mixed>|null $properties [optional] The properties to set
-     *
-     * @return void
-     */
-    protected function setup(array|null $properties = null): void
-    {
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetExists($offset): bool
-    {
-        /** @var string $offset */
-        return isset($this->{$offset});
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetGet($offset): mixed
-    {
-        /** @var string $offset */
-        return $this->__get($offset);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetSet($offset, $value): void
-    {
-        /** @var string $offset */
-        $this->__set($offset, $value);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetUnset(mixed $offset): void
-    {
-        throw new RuntimeException("Cannot remove offset with name $offset from config.");
+        return $new;
     }
 
     /**
      * Set properties from env.
      *
-     * @return void
+     * @param class-string $env The env
      */
-    protected function setPropertiesFromEnv(): void
+    protected function setPropertiesFromEnv(string $env): void
     {
-        foreach (static::$envKeys as $property => $value) {
-            $this->__set($property, env($value) ?? $this->__get($property));
+        foreach (static::$envNames as $propertyName => $envName) {
+            if (defined("$env::$envName")) {
+                $constantValue = constant("$env::$envName");
+
+                if (is_callable($constantValue)) {
+                    $this->$propertyName = $constantValue()
+                        ?? $this->$propertyName;
+
+                    continue;
+                }
+
+                $this->$propertyName = $constantValue
+                    ?? $this->$propertyName;
+            }
         }
+    }
+
+    /**
+     * Set properties' values before setting from env.
+     *
+     * @param class-string $env The env
+     */
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+    }
+
+    /**
+     * Set properties' values after setting from env.
+     *
+     * @param class-string $env The env
+     */
+    protected function setPropertiesAfterSettingFromEnv(string $env): void
+    {
     }
 }

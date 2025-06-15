@@ -37,14 +37,6 @@ class ClassDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public static function fromArray(array $data): static
-    {
-        return new static(...$data);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getClass(): string
     {
         return $this->class;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm;
 
+use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Orm\Adapter\Contract\Adapter;
 use Valkyrja\Orm\Config\Connection;
 use Valkyrja\Orm\Contract\Orm as Contract;
@@ -145,7 +146,7 @@ class Orm implements Contract
 
         $entityClass = $entity;
 
-        $name     = $entityClass::getRepository() ?? $this->defaultRepository;
+        $name     = $entityClass::getRepository() ?? $this->getDefaultRepositoryClass();
         $cacheKey = $name . $entity;
 
         return static::$repositories[$cacheKey]
@@ -288,5 +289,21 @@ class Orm implements Contract
         }
 
         $this->useConnection()->getPersister()->clear($entity);
+    }
+
+    /**
+     * @return class-string<Repository>
+     */
+    protected function getDefaultRepositoryClass(): string
+    {
+        $defaultConfig = $this->config->defaultConnection;
+
+        $defaultConnection = $this->config->connections->$defaultConfig ?? null;
+
+        if (! $defaultConnection instanceof Connection) {
+            throw new RuntimeException("$defaultConfig is an invalid connection");
+        }
+
+        return $defaultConnection->repositoryClass;
     }
 }

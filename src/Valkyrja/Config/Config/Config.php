@@ -13,56 +13,46 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Config;
 
-use Valkyrja\Application\Config as App;
-use Valkyrja\Application\Constant\EnvKey;
-use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Config\Config as ParentConfig;
+use Valkyrja\Config\Constant\ConfigName;
+use Valkyrja\Config\Constant\EnvName;
 use Valkyrja\Config\Support\Provider;
+use Valkyrja\Support\Directory;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class Config extends ParentConfig
 {
     /**
      * @inheritDoc
      *
      * @var array<string, string>
      */
-    protected static array $envKeys = [
-        CKP::PROVIDERS       => EnvKey::CONFIG_PROVIDERS,
-        CKP::CACHE_FILE_PATH => EnvKey::CONFIG_CACHE_FILE_PATH,
-        CKP::USE_CACHE       => EnvKey::CONFIG_USE_CACHE_FILE,
+    protected static array $envNames = [
+        ConfigName::PROVIDERS       => EnvName::PROVIDERS,
+        ConfigName::CACHE_FILE_PATH => EnvName::CACHE_FILE_PATH,
+        ConfigName::USE_CACHE       => EnvName::USE_CACHE,
     ];
 
     /**
-     * The application module config.
-     *
-     * @var App
+     * @param class-string<Provider>[] $providers
+     * @param string                   $cacheFilePath
+     * @param bool                     $useCache
      */
-    public App $app;
+    public function __construct(
+        public array $providers = [],
+        public string $cacheFilePath = '',
+        public bool $useCache = false
+    ) {
+    }
 
-    /**
-     * Array of config providers.
-     *  NOTE: Provider::deferred() is disregarded.
-     *
-     * @var class-string<Provider>[]
-     */
-    public array $providers;
-
-    /**
-     * The cache file path.
-     *
-     * @var string
-     */
-    public string $cacheFilePath;
-
-    /**
-     * Whether to use cache.
-     *
-     * @var bool
-     */
-    public bool $useCache;
+    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    {
+        if ($this->cacheFilePath === '') {
+            $this->cacheFilePath = Directory::cachePath('config.php');
+        }
+    }
 }

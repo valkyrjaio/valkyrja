@@ -15,6 +15,7 @@ namespace Valkyrja\Console;
 
 use Valkyrja\Console\Config\Cache;
 use Valkyrja\Console\Model\Contract\Command;
+use Valkyrja\Exception\RuntimeException;
 
 use function base64_decode;
 use function base64_encode;
@@ -94,13 +95,19 @@ class CacheableConsole extends Console
 
             if (is_file($cacheFilePath)) {
                 $cache = require $cacheFilePath;
+
+                if (! $cache instanceof Cache) {
+                    throw new RuntimeException('Invalid cache object returned');
+                }
+            } else {
+                throw new RuntimeException('No cache found');
             }
         }
 
-        $decodedCommands = base64_decode($cache['commands'], true);
+        $decodedCommands = base64_decode($cache->commands, true);
 
         if ($decodedCommands !== false) {
-            /** @var Command[] $commands */
+            /** @var array<string, Command> $commands */
             $commands = unserialize(
                 $decodedCommands,
                 [
@@ -113,9 +120,9 @@ class CacheableConsole extends Console
             self::$commands = $commands;
         }
 
-        self::$paths         = $cache['paths'];
-        self::$namedCommands = $cache['namedCommands'];
-        $this->deferred      = $cache['provided'];
+        self::$paths         = $cache->paths;
+        self::$namedCommands = $cache->namedCommands;
+        $this->deferred      = $cache->provided;
     }
 
     /**
@@ -163,12 +170,12 @@ class CacheableConsole extends Console
      */
     protected function requireFilePath(): void
     {
-        $filePath = $this->config->filePath;
-
-        if (is_file($filePath)) {
-            $console = $this;
-
-            require $filePath;
-        }
+        // $filePath = $this->config->filePath;
+        //
+        // if (is_file($filePath)) {
+        //     $console = $this;
+        //
+        //     require $filePath;
+        // }
     }
 }

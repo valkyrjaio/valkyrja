@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Uuid;
 
 use Exception;
 use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Type\Exception\InvalidArgumentException;
 use Valkyrja\Type\Uuid\Support\UuidV6 as Helper;
 use Valkyrja\Type\Uuid\UuidV6 as Id;
 
@@ -40,6 +41,16 @@ class UuidV6Test extends TestCase
         $id = Id::fromValue(Helper::generate());
 
         self::assertTrue(Helper::isValid($id->asValue()));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testFromInvalidValue(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        Id::fromValue(1);
     }
 
     public function testAsFlatValue(): void

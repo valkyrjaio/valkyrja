@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log\Config;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Log\Adapter\Contract\Adapter;
 use Valkyrja\Log\Driver\Contract\Driver;
 

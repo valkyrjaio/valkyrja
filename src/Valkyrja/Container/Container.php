@@ -208,12 +208,14 @@ class Container implements Contract
         // If the service is a singleton
         if ($this->isSingletonInternal($id)) {
             // Return the singleton
+            /** @psalm-suppress MixedReturnStatement Duh, up to the developer */
             return $this->getSingletonWithoutChecks($id);
         }
 
         // If the service is a singleton
         if ($this->isCallableInternal($id)) {
             // Return the closure
+            /** @psalm-suppress MixedReturnStatement Duh, up to the developer */
             return $this->getCallableWithoutChecks($id, $arguments);
         }
 
@@ -224,6 +226,7 @@ class Container implements Contract
         }
 
         if (class_exists($id)) {
+            /** @psalm-suppress MixedMethodCall The developer should have passed the proper arguments */
             // Return a new object with the arguments
             return new $id(...$arguments);
         }
@@ -238,6 +241,7 @@ class Container implements Contract
     {
         $id = $this->getServiceIdAndEnsurePublished($id);
 
+        /** @psalm-suppress MixedReturnStatement Duh, up to the developer */
         return $this->getCallableWithoutChecks($id, $arguments);
     }
 
@@ -258,6 +262,7 @@ class Container implements Contract
     {
         $id = $this->getServiceIdAndEnsurePublished($id);
 
+        /** @psalm-suppress MixedReturnStatement Duh, up to the developer */
         return $this->getSingletonWithoutChecks($id);
     }
 

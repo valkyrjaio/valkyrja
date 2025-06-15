@@ -176,7 +176,7 @@ class ValidatorTest extends TestCase
     {
         $valid = $this->validator->func(
             (new Dispatch())
-                ->setFunction('\Valkyrja\routeUrl')
+                ->setFunction('is_string')
         ) ?? null;
 
         self::assertNull($valid);

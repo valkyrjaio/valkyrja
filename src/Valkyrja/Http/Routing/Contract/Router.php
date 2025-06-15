@@ -110,4 +110,9 @@ interface Router
      * @return Response
      */
     public function dispatch(ServerRequest $request): Response;
+
+    /**
+     * Dispatch a server request and a specific route.
+     */
+    public function dispatchRoute(ServerRequest $request, Route $route): Response;
 }

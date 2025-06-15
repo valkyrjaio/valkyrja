@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Log\Config\Configurations;
 use Valkyrja\Log\Config\PsrConfiguration;
 use Valkyrja\Log\Constant\ConfigName;
@@ -55,7 +55,7 @@ class Config extends ParentConfig
         }
 
         if ($this->defaultConfiguration === '') {
-            $this->defaultConfiguration = array_key_first((array) $this->configurations);
+            $this->defaultConfiguration = (string) array_key_first((array) $this->configurations);
         }
     }
 }

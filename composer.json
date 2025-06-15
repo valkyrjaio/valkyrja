@@ -56,15 +56,15 @@
   "autoload"          : {
     "psr-4" : {
       "Valkyrja\\" : "src/Valkyrja"
-    },
-    "files" : [
-      "functions/helpers.php"
-    ]
+    }
   },
   "autoload-dev"      : {
     "psr-4" : {
       "Valkyrja\\Tests\\" : "tests"
-    }
+    },
+    "files" : [
+      "functions/helpers.php"
+    ]
   },
   "suggest"           : {
     "firebase/php-jwt"           : "Required to use the default JWT adapter (^6.10.0)",

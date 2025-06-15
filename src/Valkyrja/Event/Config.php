@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Event\Config\Cache;
 use Valkyrja\Event\Constant\ConfigName;
 use Valkyrja\Event\Constant\EnvName;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Support;
 
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Application\Config\Valkyrja;
 
 /**
  * Abstract Class Provider.
@@ -24,10 +24,6 @@ abstract class Provider
 {
     /**
      * Publish the provider.
-     *
-     * @param Config $config The config
-     *
-     * @return void
      */
-    abstract public static function publish(Config $config): void;
+    abstract public static function publish(Valkyrja $config): void;
 }

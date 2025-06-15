@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Entry;
 
+use Valkyrja\Application\Config\Valkyrja as ValkyrjaConfig;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Env;
 use Valkyrja\Application\Valkyrja;
-use Valkyrja\Config\Config\Config;
-use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Exception\ErrorHandler;
 use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
@@ -35,45 +34,39 @@ abstract class App
     /**
      * Start the application.
      *
-     * @param string                                $dir        The directory
-     * @param class-string<Env>                     $env        The env class to use
-     * @param class-string<Config>                  $config     The config class to use
-     * @param class-string<ValkyrjaDataConfig>|null $dataConfig The config class to use
+     * @param string                       $dir        The directory
+     * @param class-string<Env>            $env        The env class to use
+     * @param class-string<ValkyrjaConfig> $dataConfig The config class to use
      *
      * @return Application
      */
-    public static function start(string $dir, string $env, string $config, string|null $dataConfig = null): Application
+    public static function start(string $dir, string $env, string $dataConfig): Application
     {
         static::defaultErrorHandler(
             dir: $dir,
             env: $env,
-            config: $config,
             dataConfig: $dataConfig
         );
 
         static::appStart(
             dir: $dir,
             env: $env,
-            config: $config,
             dataConfig: $dataConfig
         );
         static::directory(
             dir: $dir,
             env: $env,
-            config: $config,
             dataConfig: $dataConfig
         );
         static::env(
             dir: $dir,
             env: $env,
-            config: $config,
             dataConfig: $dataConfig
         );
 
         return static::app(
             dir: $dir,
             env: $env,
-            config: $config,
             dataConfig: $dataConfig
         );
     }
@@ -81,19 +74,17 @@ abstract class App
     /**
      * Now that the application has been bootstrapped and setup correctly with all our requirements lets run it!
      *
-     * @param string                                $dir        The directory
-     * @param class-string<Env>                     $env        The env class to use
-     * @param class-string<Config>                  $config     The config class to use
-     * @param class-string<ValkyrjaDataConfig>|null $dataConfig The config class to use
+     * @param string                       $dir        The directory
+     * @param class-string<Env>            $env        The env class to use
+     * @param class-string<ValkyrjaConfig> $dataConfig The config class to use
      *
      * @return void
      */
-    public static function http(string $dir, string $env, string $config, string|null $dataConfig = null): void
+    public static function http(string $dir, string $env, string $dataConfig): void
     {
         $app = static::start(
             dir: $dir,
             env: $env,
-            config: $config,
             dataConfig: $dataConfig
         );
 
@@ -103,19 +94,17 @@ abstract class App
     /**
      * Now that the application has been bootstrapped and setup correctly with all our requirements lets run it!
      *
-     * @param string                                $dir        The directory
-     * @param class-string<Env>                     $env        The env class to use
-     * @param class-string<Config>                  $config     The config class to use
-     * @param class-string<ValkyrjaDataConfig>|null $dataConfig The config class to use
+     * @param string                       $dir        The directory
+     * @param class-string<Env>            $env        The env class to use
+     * @param class-string<ValkyrjaConfig> $dataConfig The config class to use
      *
      * @return never
      */
-    public static function console(string $dir, string $env, string $config, string|null $dataConfig = null): never
+    public static function console(string $dir, string $env, string $dataConfig): never
     {
         $app = static::start(
             dir: $dir,
             env: $env,
-            config: $config,
             dataConfig: $dataConfig
         );
 
@@ -127,14 +116,13 @@ abstract class App
     /**
      * Set a default error handler until the one specified in config is set in the Container\AppProvider.
      *
-     * @param string                                $dir        The directory
-     * @param class-string<Env>                     $env        The env class to use
-     * @param class-string<Config>                  $config     The config class to use
-     * @param class-string<ValkyrjaDataConfig>|null $dataConfig The config class to use
+     * @param string                       $dir        The directory
+     * @param class-string<Env>            $env        The env class to use
+     * @param class-string<ValkyrjaConfig> $dataConfig The config class to use
      *
      * @return void
      */
-    protected static function defaultErrorHandler(string $dir, string $env, string $config, string|null $dataConfig = null): void
+    protected static function defaultErrorHandler(string $dir, string $env, string $dataConfig): void
     {
         ErrorHandler::enable(
             displayErrors: true
@@ -144,14 +132,13 @@ abstract class App
     /**
      * Set a global constant for when the application as a whole started.
      *
-     * @param string                                $dir        The directory
-     * @param class-string<Env>                     $env        The env class to use
-     * @param class-string<Config>                  $config     The config class to use
-     * @param class-string<ValkyrjaDataConfig>|null $dataConfig The config class to use
+     * @param string                       $dir        The directory
+     * @param class-string<Env>            $env        The env class to use
+     * @param class-string<ValkyrjaConfig> $dataConfig The config class to use
      *
      * @return void
      */
-    protected static function appStart(string $dir, string $env, string $config, string|null $dataConfig = null): void
+    protected static function appStart(string $dir, string $env, string $dataConfig): void
     {
         define('APP_START', microtime(true));
     }
@@ -161,14 +148,13 @@ abstract class App
      * so that when we locate directories and files within the application
      * we have a standard location from which to do so.
      *
-     * @param string                                $dir        The directory
-     * @param class-string<Env>                     $env        The env class to use
-     * @param class-string<Config>                  $config     The config class to use
-     * @param class-string<ValkyrjaDataConfig>|null $dataConfig The config class to use
+     * @param string                       $dir        The directory
+     * @param class-string<Env>            $env        The env class to use
+     * @param class-string<ValkyrjaConfig> $dataConfig The config class to use
      *
      * @return void
      */
-    protected static function directory(string $dir, string $env, string $config, string|null $dataConfig = null): void
+    protected static function directory(string $dir, string $env, string $dataConfig): void
     {
         Directory::$BASE_PATH = $dir;
     }
@@ -181,14 +167,13 @@ abstract class App
      * when you're on a production environment definitely have
      * your config cached and the flag set in your env class.
      *
-     * @param string                                $dir        The directory
-     * @param class-string<Env>                     $env        The env class to use
-     * @param class-string<Config>                  $config     The config class to use
-     * @param class-string<ValkyrjaDataConfig>|null $dataConfig The config class to use
+     * @param string                       $dir        The directory
+     * @param class-string<Env>            $env        The env class to use
+     * @param class-string<ValkyrjaConfig> $dataConfig The config class to use
      *
      * @return void
      */
-    protected static function env(string $dir, string $env, string $config, string|null $dataConfig = null): void
+    protected static function env(string $dir, string $env, string $dataConfig): void
     {
         Valkyrja::setEnv($env);
     }
@@ -198,16 +183,15 @@ abstract class App
      * application class. This is going to bind all the various
      * components together into a singular hub.
      *
-     * @param string                                $dir        The directory
-     * @param class-string<Env>                     $env        The env class to use
-     * @param class-string<Config>                  $config     The config class to use
-     * @param class-string<ValkyrjaDataConfig>|null $dataConfig The config class to use
+     * @param string                       $dir        The directory
+     * @param class-string<Env>            $env        The env class to use
+     * @param class-string<ValkyrjaConfig> $dataConfig The config class to use
      *
      * @return Application
      */
-    protected static function app(string $dir, string $env, string $config, string|null $dataConfig = null): Application
+    protected static function app(string $dir, string $env, string $dataConfig): Application
     {
-        return new Valkyrja(config: $config, dataConfig: $dataConfig);
+        return new Valkyrja(dataConfig: $dataConfig);
     }
 
     /**

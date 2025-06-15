@@ -76,6 +76,7 @@ class NullStatement implements Contract
      */
     public function fetchObject(string $className = stdClass::class): object
     {
+        /** @psalm-suppress MixedMethodCall This NullAdapter should really only be used for testing */
         return new $className();
     }
 

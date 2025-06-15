@@ -18,7 +18,10 @@ use Valkyrja\Type\Id\IntId;
 
 class IntIdTest extends TestCase
 {
-    protected const VALUE = 1;
+    protected const VALUE        = 1;
+    protected const STRING_VALUE = '1';
+    protected const FLOAT_VALUE  = 1.0;
+    protected const BOOL_VALUE   = true;
 
     public function testValue(): void
     {
@@ -30,6 +33,27 @@ class IntIdTest extends TestCase
     public function testFromValue(): void
     {
         $typeFromValue = IntId::fromValue(self::VALUE);
+
+        self::assertSame(self::VALUE, $typeFromValue->asValue());
+    }
+
+    public function testFromStringValue(): void
+    {
+        $typeFromValue = IntId::fromValue(self::STRING_VALUE);
+
+        self::assertSame(self::VALUE, $typeFromValue->asValue());
+    }
+
+    public function testFromFloatValue(): void
+    {
+        $typeFromValue = IntId::fromValue(self::FLOAT_VALUE);
+
+        self::assertSame(self::VALUE, $typeFromValue->asValue());
+    }
+
+    public function testFromBoolValue(): void
+    {
+        $typeFromValue = IntId::fromValue(self::BOOL_VALUE);
 
         self::assertSame(self::VALUE, $typeFromValue->asValue());
     }

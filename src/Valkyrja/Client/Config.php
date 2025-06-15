@@ -18,7 +18,7 @@ use Valkyrja\Client\Config\GuzzleConfiguration;
 use Valkyrja\Client\Config\NullConfiguration;
 use Valkyrja\Client\Constant\ConfigName;
 use Valkyrja\Client\Constant\EnvName;
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 
 use function array_key_first;
 
@@ -57,7 +57,7 @@ class Config extends ParentConfig
         }
 
         if ($this->defaultConfiguration === '') {
-            $this->defaultConfiguration = array_key_first((array) $this->configurations);
+            $this->defaultConfiguration = (string) array_key_first((array) $this->configurations);
         }
     }
 }

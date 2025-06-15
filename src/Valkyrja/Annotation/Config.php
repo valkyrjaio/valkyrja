@@ -20,7 +20,7 @@ use Valkyrja\Annotation\Constant\AnnotationName;
 use Valkyrja\Annotation\Constant\ConfigName;
 use Valkyrja\Annotation\Constant\EnvName;
 use Valkyrja\Annotation\Model\Contract\Annotation;
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 
 /**
  * Class Config.

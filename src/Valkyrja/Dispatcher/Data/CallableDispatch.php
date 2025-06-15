@@ -41,14 +41,6 @@ class CallableDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
-    public static function fromArray(array $data): static
-    {
-        return new static(...$data);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getCallable(): callable
     {
         return $this->callable;

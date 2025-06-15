@@ -21,8 +21,6 @@ use Valkyrja\Mail\Adapter\Contract\MailgunAdapter as Contract;
 use Valkyrja\Mail\Config\MailgunConfiguration;
 use Valkyrja\Mail\Message\Contract\Message;
 
-use function is_string;
-
 /**
  * Class MailGunAdapter.
  *
@@ -46,10 +44,10 @@ class MailgunAdapter implements Contract
      */
     public function send(Message $message): void
     {
-        $domain = $this->config['domain'];
+        $domain = $this->config->domain;
 
-        if (! is_string($domain)) {
-            throw new InvalidArgumentException('Domain in config must be a string');
+        if ($domain === '') {
+            throw new InvalidArgumentException('Domain in config must be a valid string');
         }
 
         $mailgunMessage = $this->mailgun->messages()->getBatchMessage($domain);

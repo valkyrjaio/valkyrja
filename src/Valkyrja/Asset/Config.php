@@ -17,7 +17,7 @@ use Valkyrja\Asset\Config\Bundles;
 use Valkyrja\Asset\Config\DefaultBundle;
 use Valkyrja\Asset\Constant\ConfigName;
 use Valkyrja\Asset\Constant\EnvName;
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 
 use function array_key_first;
 
@@ -55,7 +55,7 @@ class Config extends ParentConfig
         }
 
         if ($this->defaultBundle === '') {
-            $this->defaultBundle = array_key_first((array) $this->bundles);
+            $this->defaultBundle = (string) array_key_first((array) $this->bundles);
         }
     }
 }

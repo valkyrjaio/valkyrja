@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Config;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Orm\Adapter\Contract\Adapter as AdapterContract;
 use Valkyrja\Orm\Adapter\PdoAdapter;
 use Valkyrja\Orm\Driver\Contract\Driver as DriverContract;

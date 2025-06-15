@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Provider;
 
 use Valkyrja\Annotation\Filter\Contract\Filter;
-use Valkyrja\Config\Config\ValkyrjaDataConfig;
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Console\Annotation\Contract\Annotations;
 use Valkyrja\Console\CacheableConsole;
 use Valkyrja\Console\Contract\Console;
@@ -94,7 +94,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishConsole(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaDataConfig::class);
+        $config = $container->getSingleton(Valkyrja::class);
 
         $container->setSingleton(
             Console::class,
@@ -176,9 +176,16 @@ final class ServiceProvider extends Provider
      */
     public static function publishOutput(Container $container): void
     {
+        $input  = $container->getSingleton(Input::class);
+        $config = $container->getSingleton(Valkyrja::class);
+
+        $quiet = $config->console->shouldRunQuietly || $input->hasOption('--quiet');
+
         $container->setSingleton(
             Output::class,
-            new \Valkyrja\Console\Output\Output()
+            new \Valkyrja\Console\Output\Output(
+                $quiet
+            )
         );
     }
 }

@@ -176,6 +176,7 @@ class CacheRepository extends Repository implements Contract
                     $this->setRelationshipsOnEntities(...$results);
                 }
 
+                /** @var Entity[] $results */
                 return $results;
             } catch (Throwable) {
             }

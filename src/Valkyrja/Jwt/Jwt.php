@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Jwt;
 
 use Valkyrja\Exception\InvalidArgumentException;
+use Valkyrja\Exception\RuntimeException;
+use Valkyrja\Jwt\Config\Configuration;
 use Valkyrja\Jwt\Contract\Jwt as Contract;
 use Valkyrja\Jwt\Driver\Contract\Driver;
 use Valkyrja\Jwt\Factory\Contract\Factory;
@@ -25,6 +27,11 @@ use Valkyrja\Jwt\Factory\Contract\Factory;
  */
 class Jwt implements Contract
 {
+    /**
+     * @var Driver[]
+     */
+    protected array $drivers = [];
+
     /**
      * JWT constructor.
      */
@@ -41,18 +48,9 @@ class Jwt implements Contract
     {
         // The configuration name to use
         $name ??= $this->config->defaultConfiguration;
-        // The config to use
-        $config = $this->config->configurations->$name
-            ?? throw new InvalidArgumentException("$name is not a valid configuration");
-        // The driver to use
-        $driverClass = $config->driverClass;
-        // The adapter to use
-        $adapterClass = $config->adapterClass;
-        // The cache key to use
-        $cacheKey = $name . $adapterClass;
 
-        return $this->drivers[$cacheKey]
-            ?? $this->factory->createDriver($driverClass, $adapterClass, $config);
+        return $this->drivers[$name]
+            ??= $this->createDriverForName($name);
     }
 
     /**
@@ -69,5 +67,26 @@ class Jwt implements Contract
     public function decode(string $jwt): array
     {
         return $this->use()->decode($jwt);
+    }
+
+    /**
+     * Create a driver for a given name.
+     */
+    protected function createDriverForName(string $name): Driver
+    {
+        // The config to use
+        $config = $this->config->configurations->$name
+            ?? throw new InvalidArgumentException("$name is not a valid configuration");
+
+        if (! $config instanceof Configuration) {
+            throw new RuntimeException("$name is an invalid configuration");
+        }
+
+        // The driver to use
+        $driverClass = $config->driverClass;
+        // The adapter to use
+        $adapterClass = $config->adapterClass;
+
+        return $this->factory->createDriver($driverClass, $adapterClass, $config);
     }
 }

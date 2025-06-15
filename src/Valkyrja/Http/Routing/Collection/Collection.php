@@ -22,7 +22,6 @@ use Valkyrja\Http\Routing\Model\Contract\Route;
 use function array_map;
 use function array_merge;
 use function assert;
-use function is_array;
 use function is_string;
 
 /**
@@ -41,7 +40,7 @@ class Collection implements Contract
     /**
      * The routes.
      *
-     * @var array<string, Route>
+     * @var array<string, Route|string>
      */
     protected array $routes = [];
 
@@ -374,7 +373,7 @@ class Collection implements Contract
     /**
      * Ensure an array is an array of routes.
      *
-     * @param array<string, string|Route|array<string, mixed>> $routesArray The routes array
+     * @param array<string, string|Route> $routesArray The routes array
      *
      * @return array<string, Route>
      */
@@ -389,11 +388,11 @@ class Collection implements Contract
     /**
      * Ensure a route, or null, is returned.
      *
-     * @param Route|array<string, mixed>|string $route The route
+     * @param Route|string $route The route
      *
      * @return Route
      */
-    protected function ensureRoute(Route|array|string $route): Route
+    protected function ensureRoute(Route|string $route): Route
     {
         if (is_string($route) && isset($this->routes[$route])) {
             $route = $this->routes[$route];
@@ -407,14 +406,6 @@ class Collection implements Contract
             }
 
             return $unserializedRoute;
-        }
-
-        if (is_array($route)) {
-            return \Valkyrja\Http\Routing\Model\Route::fromArray($route);
-        }
-
-        if (! $route instanceof Route) {
-            throw new InvalidArgumentException('Invalid route.');
         }
 
         return $route;

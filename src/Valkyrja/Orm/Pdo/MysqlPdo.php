@@ -13,23 +13,19 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Pdo;
 
+use Valkyrja\Orm\Config\MysqlConnection;
+
 /**
  * Class MysqlPdo.
  *
  * @author Melech Mizrachi
- *
- * @psalm-import-type Config from Pdo
- *
- * @phpstan-import-type Config from Pdo
  */
 class MysqlPdo extends Pdo
 {
     /**
      * MySqlPDO constructor.
-     *
-     * @param Config $config The config
      */
-    public function __construct(array $config)
+    public function __construct(MysqlConnection $config)
     {
         $dsn = $this->getDsnPart($config, 'charset')
             . $this->getDsnPart($config, 'strict')

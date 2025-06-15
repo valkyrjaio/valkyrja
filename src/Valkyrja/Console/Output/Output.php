@@ -13,15 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Output;
 
-use Valkyrja\Config\Constant\ConfigKey;
 use Valkyrja\Console\Enum\OutputStyle;
 use Valkyrja\Console\Formatter\Contract\Formatter;
 use Valkyrja\Console\Formatter\Formatter as FormatterClass;
 use Valkyrja\Console\Output\Contract\Output as Contract;
 
 use function strip_tags;
-use function Valkyrja\config;
-use function Valkyrja\input;
 
 use const PHP_EOL;
 
@@ -33,13 +30,6 @@ use const PHP_EOL;
 class Output implements Contract
 {
     /**
-     * Whether to use quiet console.
-     *
-     * @var bool
-     */
-    private static bool $quiet = false;
-
-    /**
      * The formatter.
      *
      * @var Formatter
@@ -49,11 +39,10 @@ class Output implements Contract
     /**
      * Output constructor.
      */
-    public function __construct()
-    {
+    public function __construct(
+        protected bool $quiet = false,
+    ) {
         $this->formatter = new FormatterClass();
-
-        self::$quiet = config(ConfigKey::CONSOLE_QUIET) || input()->hasOption('--quiet');
     }
 
     /**
@@ -88,6 +77,10 @@ class Output implements Contract
     public function writeMessage(string $message, bool|null $newLine = null, OutputStyle|null $outputStyle = null): void
     {
         $newLine ??= false;
+        /**
+         * @psalm-suppress RedundantCondition Because $outputStyle can be null
+         * @psalm-suppress TypeDoesNotContainType Because $outputStyle can be null
+         */
         $outputStyleType = $outputStyle->value ?? OutputStyle::NORMAL->value;
 
         switch ($outputStyleType) {
@@ -116,7 +109,7 @@ class Output implements Contract
      */
     protected function writeOut(string $message, bool $newLine): void
     {
-        if (self::$quiet) {
+        if ($this->quiet) {
             return;
         }
 

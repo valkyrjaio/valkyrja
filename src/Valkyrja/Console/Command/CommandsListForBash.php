@@ -15,14 +15,17 @@ namespace Valkyrja\Console\Command;
 
 use Valkyrja\Console\Commander\Commander;
 use Valkyrja\Console\Constant\ExitCode;
+use Valkyrja\Console\Contract\Console;
+use Valkyrja\Console\Input\Contract\Input as InputContract;
+use Valkyrja\Console\Input\Input;
+use Valkyrja\Console\Output\Contract\Output as OutputContract;
+use Valkyrja\Console\Output\Output;
 use Valkyrja\Console\Support\Provides;
 
 use function array_keys;
 use function implode;
 use function strpos;
 use function substr;
-use function Valkyrja\console;
-use function Valkyrja\output;
 
 /**
  * Class CommandsListForBash.
@@ -40,6 +43,14 @@ class CommandsListForBash extends Commander
     public const PATH              = self::COMMAND . ' valkyrja[ {commandTyped:[a-zA-Z0-9\:]+}]';
     public const SHORT_DESCRIPTION = 'List all the commands for bash auto complete';
 
+    public function __construct(
+        protected Console $console,
+        InputContract $input = new Input(),
+        OutputContract $output = new Output()
+    ) {
+        parent::__construct($input, $output);
+    }
+
     /**
      * @inheritDoc
      *
@@ -47,7 +58,8 @@ class CommandsListForBash extends Commander
      */
     public function run(string|null $commandTyped = null): int
     {
-        $allCommands = array_keys(console()->getNamedCommands());
+        /** @var string[] $allCommands */
+        $allCommands = array_keys($this->console->getNamedCommands());
 
         if ($commandTyped !== null && $commandTyped !== '') {
             $colonAt          = strpos($commandTyped, ':');
@@ -66,7 +78,7 @@ class CommandsListForBash extends Commander
             $possibleCommands = $allCommands;
         }
 
-        output()->writeMessage(implode(' ', $possibleCommands));
+        $this->output->writeMessage(implode(' ', $possibleCommands));
 
         return ExitCode::SUCCESS;
     }

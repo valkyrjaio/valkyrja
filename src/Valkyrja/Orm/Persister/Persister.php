@@ -110,6 +110,7 @@ class Persister implements Contract
         if ($entity instanceof SoftDeleteEntity) {
             /**
              * @psalm-suppress UndefinedMethod Psalm is being silly here...
+             * @psalm-suppress MixedArgument Psalm thinks getDateDeletedField doesn't return string
              */
             $entity->__set($entity::getDateDeletedField(), $entity::getFormattedDeletedDate());
         }

@@ -16,8 +16,10 @@ namespace Valkyrja\Http\Message\Request\Psr;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Valkyrja\Http\Message\Factory\UploadedFileFactory;
+use Valkyrja\Http\Message\File\Contract\UploadedFile as ValkyrjaUploadedFile;
 use Valkyrja\Http\Message\File\Psr\UploadedFile;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest as ValkyrjaRequest;
+use Valkyrja\Http\Message\Request\Exception\RuntimeException;
 
 /**
  * Class ServerRequest.
@@ -95,7 +97,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * @inheritDoc
      *
-     * @return array<array-key, mixed>
+     * @return array<array-key, UploadedFile>
      */
     public function getUploadedFiles(): array
     {
@@ -104,6 +106,11 @@ class ServerRequest extends Request implements ServerRequestInterface
         $uploadedFiles = [];
 
         foreach ($valkyrjaUploadedFiles as $valkyrjaUploadedFile) {
+            /** @phpstan-ignore instanceof.alwaysTrue */
+            if (! $valkyrjaUploadedFile instanceof ValkyrjaUploadedFile) {
+                throw new RuntimeException('Invalid uploaded file');
+            }
+
             $uploadedFiles[] = new UploadedFile($valkyrjaUploadedFile);
         }
 

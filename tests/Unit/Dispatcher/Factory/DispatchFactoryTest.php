@@ -22,10 +22,8 @@ use ReflectionProperty;
 use Valkyrja\Dispatcher\Data\CallableDispatch;
 use Valkyrja\Dispatcher\Data\ClassDispatch;
 use Valkyrja\Dispatcher\Data\ConstantDispatch;
-use Valkyrja\Dispatcher\Data\GlobalVariableDispatch;
 use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Dispatcher\Data\PropertyDispatch;
-use Valkyrja\Dispatcher\Exception\InvalidArgumentException;
 use Valkyrja\Dispatcher\Factory\DispatchFactory;
 use Valkyrja\Tests\Classes\Dispatcher\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\TestCase;
@@ -96,105 +94,5 @@ class DispatchFactoryTest extends TestCase
         self::assertSame($class, $classDispatch->getClass());
 
         self::assertSame($callable, $callableDispatch->getCallable());
-    }
-
-    public function testFromArray(): void
-    {
-        $class    = 'Test';
-        $method   = 'foo';
-        $property = 'bar';
-        $constant = 'TEST';
-        $callable = 'str_replace';
-        $variable = '_GET';
-
-        $methodDispatchArray         = [
-            'class'    => $class,
-            'method'   => $method,
-            'isStatic' => false,
-        ];
-        $methodDispatchArrayStatic   = [
-            'class'    => $class,
-            'method'   => $method,
-            'isStatic' => true,
-        ];
-        $propertyDispatchArray       = [
-            'class'    => $class,
-            'property' => $property,
-            'isStatic' => false,
-        ];
-        $propertyDispatchArrayStatic = [
-            'class'    => $class,
-            'property' => $property,
-            'isStatic' => true,
-        ];
-        $constantArray               = [
-            'constant' => $constant,
-        ];
-        $constantArrayWithClass      = [
-            'constant' => $constant,
-            'class'    => $class,
-        ];
-        $classArray                  = [
-            'class' => $class,
-        ];
-        $callableArray               = [
-            'callable' => $callable,
-        ];
-        $variableArray               = [
-            'variable' => $variable,
-        ];
-
-        $methodDispatch         = DispatchFactory::fromArray($methodDispatchArray);
-        $methodStaticDispatch   = DispatchFactory::fromArray($methodDispatchArrayStatic);
-        $propertyDispatch       = DispatchFactory::fromArray($propertyDispatchArray);
-        $propertyStaticDispatch = DispatchFactory::fromArray($propertyDispatchArrayStatic);
-        $constantDispatch       = DispatchFactory::fromArray($constantArray);
-        $classConstantDispatch  = DispatchFactory::fromArray($constantArrayWithClass);
-        $classDispatch          = DispatchFactory::fromArray($classArray);
-        $callableDispatch       = DispatchFactory::fromArray($callableArray);
-        $variableDispatch       = DispatchFactory::fromArray($variableArray);
-
-        self::assertInstanceOf(MethodDispatch::class, $methodDispatch);
-        self::assertInstanceOf(MethodDispatch::class, $methodStaticDispatch);
-        self::assertInstanceOf(PropertyDispatch::class, $propertyDispatch);
-        self::assertInstanceOf(PropertyDispatch::class, $propertyStaticDispatch);
-        self::assertInstanceOf(ConstantDispatch::class, $constantDispatch);
-        self::assertInstanceOf(ConstantDispatch::class, $classConstantDispatch);
-        self::assertInstanceOf(ClassDispatch::class, $classDispatch);
-        self::assertInstanceOf(CallableDispatch::class, $callableDispatch);
-        self::assertInstanceOf(GlobalVariableDispatch::class, $variableDispatch);
-
-        self::assertSame($class, $methodDispatch->getClass());
-        self::assertSame($method, $methodDispatch->getMethod());
-        self::assertFalse($methodDispatch->isStatic());
-        self::assertSame($class, $methodStaticDispatch->getClass());
-        self::assertSame($method, $methodStaticDispatch->getMethod());
-        self::assertTrue($methodStaticDispatch->isStatic());
-
-        self::assertSame($class, $propertyDispatch->getClass());
-        self::assertSame($property, $propertyDispatch->getProperty());
-        self::assertFalse($propertyDispatch->isStatic());
-        self::assertSame($class, $propertyStaticDispatch->getClass());
-        self::assertSame($property, $propertyStaticDispatch->getProperty());
-        self::assertTrue($propertyStaticDispatch->isStatic());
-
-        self::assertNull($constantDispatch->getClass());
-        self::assertSame($constant, $constantDispatch->getConstant());
-
-        self::assertSame($class, $classConstantDispatch->getClass());
-        self::assertSame($constant, $classConstantDispatch->getConstant());
-
-        self::assertSame($class, $classDispatch->getClass());
-
-        self::assertSame($callable, $callableDispatch->getCallable());
-
-        self::assertSame($variable, $variableDispatch->getVariable());
-    }
-
-    public function testFromArrayException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        DispatchFactory::fromArray(['random' => 'test']);
     }
 }

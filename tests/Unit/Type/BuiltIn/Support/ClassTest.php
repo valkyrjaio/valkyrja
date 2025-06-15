@@ -69,7 +69,7 @@ class ClassTest extends TestCase
         $container->setCallable(
             ModelContract::class,
             /** @param class-string<ModelContract> $name */
-            static fn (string $name, mixed ...$args): ModelContract => $name::fromArray($args)
+            static fn (Container $container, string $name, mixed ...$args): ModelContract => $name::fromArray($args)
         );
 
         $object = Helper::getDefaultableService(

@@ -65,6 +65,7 @@ class CacheAdapter extends PHPAdapter
         }
 
         // Set the data
+        /** @psalm-suppress MixedPropertyTypeCoercion */
         $this->data = Arr::fromString($cachedData);
     }
 

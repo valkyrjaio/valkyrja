@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Routing\Collector;
 
 use Closure;
 use InvalidArgumentException;
+use ReflectionException;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Contract\Collection;
 use Valkyrja\Http\Routing\Collector\Contract\Collector as Contract;
@@ -115,6 +116,8 @@ class Collector implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws ReflectionException
      */
     public function get(
         string $path,
@@ -136,6 +139,8 @@ class Collector implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws ReflectionException
      */
     public function post(
         string $path,
@@ -148,6 +153,8 @@ class Collector implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws ReflectionException
      */
     public function put(
         string $path,
@@ -160,6 +167,8 @@ class Collector implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws ReflectionException
      */
     public function patch(
         string $path,
@@ -172,6 +181,8 @@ class Collector implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws ReflectionException
      */
     public function delete(
         string $path,
@@ -184,6 +195,8 @@ class Collector implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws ReflectionException
      */
     public function head(
         string $path,
@@ -196,6 +209,8 @@ class Collector implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws ReflectionException
      */
     public function any(
         string $path,
@@ -257,6 +272,8 @@ class Collector implements Contract
      * @param Closure|string  $handler         The handler
      * @param string|null     $name            [optional] The name of the route
      * @param bool            $setDependencies [optional] Whether to dynamically set dependencies
+     *
+     * @throws ReflectionException
      *
      * @return Route
      */
@@ -414,6 +431,8 @@ class Collector implements Contract
      *
      * @param Route $route The route
      *
+     * @throws ReflectionException
+     *
      * @return void
      */
     protected function setDependencies(Route $route): void
@@ -430,7 +449,9 @@ class Collector implements Contract
      *
      * @param Route $route The route
      *
-     * @return array<int, class-string>
+     * @throws ReflectionException
+     *
+     * @return array<array-key, class-string>
      */
     protected function getDependencies(Route $route): array
     {

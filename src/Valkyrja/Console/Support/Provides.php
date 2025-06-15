@@ -81,7 +81,8 @@ trait Provides
             ->setPath(static::getPath())
             ->setName(static::getCommand())
             ->setClass(static::class)
-            ->setMethod('run');
+            ->setMethod('run')
+            ->setDependencies(static::getCommandDependencies());
 
         $console->addCommand($command);
     }
@@ -125,4 +126,14 @@ trait Provides
      * @return int
      */
     abstract public function run(): int;
+
+    /**
+     * Get the command dependencies.
+     *
+     * @return class-string[]
+     */
+    protected static function getCommandDependencies(): array
+    {
+        return [];
+    }
 }

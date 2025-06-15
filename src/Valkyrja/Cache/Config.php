@@ -19,7 +19,7 @@ use Valkyrja\Cache\Config\NullConfiguration;
 use Valkyrja\Cache\Config\RedisConfiguration;
 use Valkyrja\Cache\Constant\ConfigName;
 use Valkyrja\Cache\Constant\EnvName;
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 
 use function array_key_first;
 
@@ -59,7 +59,7 @@ class Config extends ParentConfig
         }
 
         if ($this->defaultConfiguration === '') {
-            $this->defaultConfiguration = array_key_first((array) $this->configurations);
+            $this->defaultConfiguration = (string) array_key_first((array) $this->configurations);
         }
     }
 }

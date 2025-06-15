@@ -54,7 +54,8 @@ interface Factory
      *
      * @template Message of Message
      *
-     * @param class-string<Message> $name The message
+     * @param class-string<Message>   $name The message
+     * @param array<array-key, mixed> $data [optional] The data
      *
      * @return Message
      */

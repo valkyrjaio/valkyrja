@@ -18,7 +18,9 @@ use Valkyrja\Type\Id\StringId;
 
 class StringIdTest extends TestCase
 {
-    protected const VALUE = 'foo';
+    protected const VALUE       = 'foo';
+    protected const INT_VALUE   = 1;
+    protected const FLOAT_VALUE = 1.1;
 
     public function testValue(): void
     {
@@ -32,6 +34,20 @@ class StringIdTest extends TestCase
         $typeFromValue = StringId::fromValue(self::VALUE);
 
         self::assertSame(self::VALUE, $typeFromValue->asValue());
+    }
+
+    public function testFromIntValue(): void
+    {
+        $typeFromValue = StringId::fromValue(self::INT_VALUE);
+
+        self::assertSame('1', $typeFromValue->asValue());
+    }
+
+    public function testFromFloatValue(): void
+    {
+        $typeFromValue = StringId::fromValue(self::FLOAT_VALUE);
+
+        self::assertSame('1.1', $typeFromValue->asValue());
     }
 
     public function testAsFlatValue(): void

@@ -41,6 +41,10 @@ class Port extends Type
      */
     public static function fromValue(mixed $value): static
     {
+        if ($value !== null && ! is_int($value)) {
+            throw new InvalidArgumentException(sprintf('Int or null expected value of type `%s` provided', gettype($value)));
+        }
+
         return new static($value);
     }
 

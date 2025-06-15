@@ -15,7 +15,7 @@ namespace Valkyrja\Broadcast\Config;
 
 use Valkyrja\Broadcast\Adapter\Contract\Adapter;
 use Valkyrja\Broadcast\Driver\Contract\Driver;
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 
 /**
  * Abstract Class Configuration.
@@ -30,7 +30,7 @@ abstract class Configuration extends ParentConfig
      */
     public function __construct(
         public string $adapterClass,
-        public string $driverClass = \Valkyrja\Sms\Driver\Driver::class,
+        public string $driverClass = \Valkyrja\Broadcast\Driver\Driver::class,
     ) {
     }
 }

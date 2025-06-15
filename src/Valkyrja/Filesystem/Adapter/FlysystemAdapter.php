@@ -270,13 +270,15 @@ class FlysystemAdapter implements Contract
      * @inheritDoc
      *
      * @throws FilesystemException
+     *
+     * @psalm-suppress MixedReturnTypeCoercion
      */
     public function listContents(string|null $directory = null, bool $recursive = false): array
     {
         return array_map(
-            /**
-             * @return array<string, string|int>
-             */
+        /**
+         * @return array<string, string|int>
+         */
             static fn (StorageAttributes $attributes): array => (array) $attributes->jsonSerialize(),
             $this->flysystem->listContents($directory ?? '', $recursive)->toArray()
         );

@@ -15,6 +15,7 @@ namespace Valkyrja\Broadcast\Provider;
 
 use Pusher\Pusher;
 use Pusher\PusherException;
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Broadcast\Adapter\Contract\Adapter;
 use Valkyrja\Broadcast\Adapter\CryptPusherAdapter;
 use Valkyrja\Broadcast\Adapter\LogAdapter;
@@ -29,7 +30,6 @@ use Valkyrja\Broadcast\Driver\Driver;
 use Valkyrja\Broadcast\Factory\ContainerFactory;
 use Valkyrja\Broadcast\Factory\Contract\Factory;
 use Valkyrja\Broadcast\Message\Message;
-use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Contract\Crypt;
@@ -86,7 +86,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishBroadcaster(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaDataConfig::class);
+        $config = $container->getSingleton(Valkyrja::class);
 
         $container->setSingleton(
             Broadcast::class,

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Console\Commander\Contract\Commander;
 use Valkyrja\Console\Config\Cache;
 use Valkyrja\Console\Constant\ConfigName;

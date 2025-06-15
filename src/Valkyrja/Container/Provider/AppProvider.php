@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Provider;
 
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Env;
 use Valkyrja\Application\Support\Provider;
-use Valkyrja\Config\Config\Config;
-use Valkyrja\Config\Config\ValkyrjaDataConfig;
 use Valkyrja\Container\CacheableContainer;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Exception\Contract\ErrorHandler as ErrorHandlerContract;
@@ -34,7 +33,7 @@ final class AppProvider extends Provider
      */
     public static function publish(Application $app): void
     {
-        $dataConfig = $app->getDataConfig();
+        $dataConfig = $app->getConfig();
 
         $container = new CacheableContainer($dataConfig->container, $app->getDebugMode());
 
@@ -66,9 +65,7 @@ final class AppProvider extends Provider
         $container->setSingleton(Application::class, $app);
         $container->setSingleton(Env::class, $app->getEnv());
         $container->bindAlias('env', Env::class);
-        $container->setSingleton(Config::class, $app->config());
-        $container->setSingleton(ValkyrjaDataConfig::class, $app->getDataConfig());
-        $container->bindAlias('config', Config::class);
+        $container->setSingleton(Valkyrja::class, $app->getConfig());
         $container->setSingleton(Container::class, $container);
     }
 
@@ -77,7 +74,7 @@ final class AppProvider extends Provider
      */
     protected static function bootstrapErrorHandler(Application $app, Container $container): void
     {
-        $config       = $app->getDataConfig();
+        $config       = $app->getConfig();
         $errorHandler = $config->app->errorHandler;
 
         // Set error handler in the service container
@@ -95,7 +92,7 @@ final class AppProvider extends Provider
     /**
      * Bootstrap the timezone.
      */
-    protected static function bootstrapTimezone(ValkyrjaDataConfig $config): void
+    protected static function bootstrapTimezone(Valkyrja $config): void
     {
         date_default_timezone_set($config->app->timezone);
     }

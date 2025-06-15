@@ -13,15 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Dispatcher\Data;
 
-use JsonException;
 use Valkyrja\Dispatcher\Data\ClassDispatch as Dispatch;
 use Valkyrja\Tests\Classes\Dispatcher\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\BuiltIn\Support\Arr;
-
-use function json_encode;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Test the ClassDispatch.
@@ -30,26 +24,6 @@ use const JSON_THROW_ON_ERROR;
  */
 class ClassDispatchTest extends TestCase
 {
-    /**
-     * @throws JsonException
-     */
-    public function testFromArray(): void
-    {
-        $class = 'Test';
-        $array = [
-            'class'        => $class,
-            'arguments'    => null,
-            'dependencies' => null,
-        ];
-
-        $dispatch = Dispatch::fromArray($array);
-
-        self::assertSame($class, $dispatch->getClass());
-        self::assertSame(Arr::toString($array), (string) $dispatch);
-        self::assertSame($array, $dispatch->jsonSerialize());
-        self::assertSame(Arr::toString($array), json_encode($dispatch, JSON_THROW_ON_ERROR));
-    }
-
     public function testClass(): void
     {
         $class = InvalidDispatcherClass::class;

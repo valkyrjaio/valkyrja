@@ -22,8 +22,4 @@ use Valkyrja\Dispatcher\Data\Dispatch;
  */
 class InvalidDispatchClass extends Dispatch
 {
-    public static function fromArray(array $data): static
-    {
-        return new self();
-    }
 }

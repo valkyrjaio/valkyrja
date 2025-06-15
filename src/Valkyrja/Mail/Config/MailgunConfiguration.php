@@ -32,10 +32,12 @@ class MailgunConfiguration extends Configuration
         ConfigName::ADAPTER_CLASS => 'MAILGUN_MAILGUN_ADAPTER_CLASS',
         ConfigName::DRIVER_CLASS  => 'MAILGUN_MAILGUN_DRIVER_CLASS',
         'apiKey'                  => 'MAILGUN_MAILGUN_API_KEY',
+        'domain'                  => 'MAILGUN_MAILGUN_DOMAIN',
     ];
 
     public function __construct(
         public string $apiKey = '',
+        public string $domain = '',
     ) {
         parent::__construct(
             adapterClass: MailgunAdapter::class,

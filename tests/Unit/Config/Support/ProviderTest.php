@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Config\Support;
 
-use Valkyrja\Config\Config\Config;
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Tests\Classes\Config\ProviderClass;
 use Valkyrja\Tests\Unit\TestCase;
 
@@ -31,8 +31,8 @@ class ProviderTest extends TestCase
      */
     public function testServiceProvider(): void
     {
-        /** @var Config $config */
-        $config = $this->createMock(Config::class);
+        /** @var Valkyrja $config */
+        $config = $this->createMock(Valkyrja::class);
 
         self::assertNull(ProviderClass::publish($config) ?? null);
     }

@@ -56,6 +56,8 @@ class Parser implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @psalm-suppress MixedReturnTypeCoercion
      */
     public function parse(string $path): array
     {

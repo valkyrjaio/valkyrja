@@ -13,15 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Dispatcher\Data;
 
-use JsonException;
 use Valkyrja\Dispatcher\Data\ConstantDispatch as Dispatch;
 use Valkyrja\Tests\Classes\Dispatcher\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\BuiltIn\Support\Arr;
-
-use function json_encode;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Test the ConstantDispatch.
@@ -30,25 +24,6 @@ use const JSON_THROW_ON_ERROR;
  */
 class ConstantDispatchTest extends TestCase
 {
-    /**
-     * @throws JsonException
-     */
-    public function testFromArray(): void
-    {
-        $constant = 'TEST';
-        $array    = [
-            'constant' => $constant,
-            'class'    => null,
-        ];
-
-        $dispatch = Dispatch::fromArray($array);
-
-        self::assertSame($constant, $dispatch->getConstant());
-        self::assertSame(Arr::toString($array), (string) $dispatch);
-        self::assertSame($array, $dispatch->jsonSerialize());
-        self::assertSame(Arr::toString($array), json_encode($dispatch, JSON_THROW_ON_ERROR));
-    }
-
     public function testConstant(): void
     {
         $constant  = 'TEST';

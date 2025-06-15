@@ -36,9 +36,8 @@ class ContainerFactory implements Contract
      */
     public function getTemplate(Engine $engine, string $name, array $variables = []): Template
     {
-        $template = $this->container->get(Template::class, [$engine]);
+        $template = $this->container->get(Template::class, [$engine, $name]);
 
-        $template->setName($name);
         $template->setVariables($variables);
 
         return $template;

@@ -25,7 +25,7 @@ class Cache
     /**
      * The flattened routes.
      *
-     * @var array<string, Route>|array<int, array<Route>|array<string, mixed>>
+     * @var array<string, Route|string>
      */
     public array $routes = [];
 

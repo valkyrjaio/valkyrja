@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Config;
 
-use Valkyrja\Config\DataConfig as ParentConfig;
+use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Support\Directory;
 use Valkyrja\View\Engine\Contract\Engine;
 

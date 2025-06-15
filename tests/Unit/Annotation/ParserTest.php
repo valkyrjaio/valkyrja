@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Annotation;
 
+use JsonException;
 use ReflectionClass;
-use ReflectionException;
 use Valkyrja\Annotation\Config;
 use Valkyrja\Annotation\Constant\AnnotationName;
 use Valkyrja\Annotation\Constant\ConfigValue;
@@ -94,13 +94,13 @@ class ParserTest extends TestCase
     {
         parent::setUp();
 
-        $this->parser = new Parser(new Config());
+        $this->parser = new Parser(new Config(map: ConfigValue::MAP));
     }
 
     /**
      * Test the getAnnotations method.
      *
-     * @throws ReflectionException
+     * @throws JsonException
      *
      * @return void
      */
@@ -126,6 +126,8 @@ class ParserTest extends TestCase
     /**
      * Test the getArguments method.
      *
+     * @throws JsonException
+     *
      * @return void
      */
     public function testGetArguments(): void
@@ -135,21 +137,23 @@ class ParserTest extends TestCase
             // Test for line 413
             . '"empty" = "", '
             . '"requestMethods" = ["POST", "GET", "HEAD"], '
-            . '"constant" = "Valkyrja\\\\Application::VERSION", '
-            . '"property" = "Valkyrja\\\\Tests\\\\Unit\\\\Annotations\\\\AnnotationsParserTest::property", '
-            . '"method" = "Valkyrja\\\\Tests\\\\Unit\\\\Annotations\\\\AnnotationsParserTest::staticMethod"';
+            . '"constant" = "Valkyrja\\\\Application\\\\Valkyrja::VERSION", '
+            . '"property" = "Valkyrja\\\\Tests\\\\Unit\\\\Annotation\\\\ParserTest::property", '
+            . '"method" = "Valkyrja\\\\Tests\\\\Unit\\\\Annotation\\\\ParserTest::staticMethod"';
 
-        self::assertCount(7, $this->parser->getPropertiesAsArray($arguments));
+        self::assertCount(7, $this->parser->getPropertiesAsArray($arguments) ?? []);
     }
 
     /**
      * Test the getArguments method.
      *
+     * @throws JsonException
+     *
      * @return void
      */
     public function testGetArgumentsNull(): void
     {
-        self::assertNull($this->parser->getPropertiesAsArray(null));
+        self::assertNull($this->parser->getPropertiesAsArray());
     }
 
     /**
@@ -179,7 +183,10 @@ class ParserTest extends TestCase
      */
     public function testGetAnnotationFromMap(): void
     {
-        self::assertTrue($this->parser->getAnnotationFromMap('Bogus') instanceof Annotation);
+        self::assertInstanceOf(
+            Annotation::class,
+            $this->parser->getAnnotationFromMap('Bogus')
+        );
     }
 
     /**
@@ -189,7 +196,10 @@ class ParserTest extends TestCase
      */
     public function testGetCommandAnnotationFromMap(): void
     {
-        self::assertTrue($this->parser->getAnnotationFromMap(AnnotationName::COMMAND) instanceof Command);
+        self::assertInstanceOf(
+            Command::class,
+            $this->parser->getAnnotationFromMap(AnnotationName::COMMAND)
+        );
     }
 
     /**
@@ -199,7 +209,10 @@ class ParserTest extends TestCase
      */
     public function testGetListenerAnnotationFromMap(): void
     {
-        self::assertTrue($this->parser->getAnnotationFromMap(AnnotationName::LISTENER) instanceof Listener);
+        self::assertInstanceOf(
+            Listener::class,
+            $this->parser->getAnnotationFromMap(AnnotationName::LISTENER)
+        );
     }
 
     /**
@@ -209,7 +222,10 @@ class ParserTest extends TestCase
      */
     public function testGetServiceAnnotationFromMap(): void
     {
-        self::assertTrue($this->parser->getAnnotationFromMap(AnnotationName::SERVICE) instanceof Service);
+        self::assertInstanceOf(
+            Service::class,
+            $this->parser->getAnnotationFromMap(AnnotationName::SERVICE)
+        );
     }
 
     /**
@@ -219,8 +235,9 @@ class ParserTest extends TestCase
      */
     public function testGetServiceAliasAnnotationFromMap(): void
     {
-        self::assertTrue(
-            $this->parser->getAnnotationFromMap(AnnotationName::SERVICE_ALIAS) instanceof Service\Alias
+        self::assertInstanceOf(
+            Service\Alias::class,
+            $this->parser->getAnnotationFromMap(AnnotationName::SERVICE_ALIAS)
         );
     }
 
@@ -231,8 +248,9 @@ class ParserTest extends TestCase
      */
     public function testGetServiceContextAnnotationFromMap(): void
     {
-        self::assertTrue(
-            $this->parser->getAnnotationFromMap(AnnotationName::SERVICE_CONTEXT) instanceof Context
+        self::assertInstanceOf(
+            Context::class,
+            $this->parser->getAnnotationFromMap(AnnotationName::SERVICE_CONTEXT)
         );
     }
 }
