@@ -18,6 +18,6 @@ namespace Valkyrja\Auth\Exception;
  *
  * @author Melech Mizrachi
  */
-class MissingTokenizableUserRequiredFieldsException extends AuthRuntimeException
+class MissingTokenizableUserRequiredFieldsException extends InvalidArgumentException
 {
 }

@@ -18,6 +18,6 @@ namespace Valkyrja\Auth\Exception;
  *
  * @author Melech Mizrachi
  */
-class InvalidPasswordConfirmationException extends AuthRuntimeException
+class InvalidPasswordConfirmationException extends InvalidArgumentException
 {
 }

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Exception;
 
-use Valkyrja\Exception\RuntimeException;
-
 /**
  * Class ValidationException.
  *

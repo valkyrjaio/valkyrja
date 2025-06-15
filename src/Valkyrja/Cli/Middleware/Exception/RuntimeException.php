@@ -11,15 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth\Exception;
-
-use RuntimeException;
+namespace Valkyrja\Cli\Middleware\Exception;
 
 /**
- * Exception AuthRuntimeException.
+ * Class RuntimeException.
  *
  * @author Melech Mizrachi
  */
-class AuthRuntimeException extends RuntimeException
+class RuntimeException extends \Valkyrja\Cli\Exception\RuntimeException implements Throwable
 {
 }

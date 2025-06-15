@@ -23,8 +23,8 @@ use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionProperty;
 use UnitEnum;
-use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Reflection\Contract\Reflection as Contract;
+use Valkyrja\Reflection\Exception\RuntimeException;
 
 use function class_exists;
 use function interface_exists;

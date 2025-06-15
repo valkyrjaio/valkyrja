@@ -18,6 +18,6 @@ namespace Valkyrja\Auth\Exception;
  *
  * @author Melech Mizrachi
  */
-class InvalidRegistrationException extends AuthRuntimeException
+class InvalidRegistrationException extends InvalidArgumentException
 {
 }

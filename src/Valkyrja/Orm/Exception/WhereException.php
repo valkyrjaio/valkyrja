@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Exception;
 
-use Exception;
-
 /**
  * Exception WhereException.
  *
  * @author Melech Mizrachi
  */
-class WhereException extends Exception
+class WhereException extends RuntimeException
 {
 }

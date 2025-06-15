@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Exception;
 
-use Exception;
-
 /**
  * Exception ExecuteException.
  *
  * @author Melech Mizrachi
  */
-class ExecuteException extends Exception
+class ExecuteException extends RuntimeException
 {
 }

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Exception;
 
-use Valkyrja\Exception\RuntimeException;
-
 /**
  * Exception AssertFailureException.
  *

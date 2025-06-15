@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Exception;
 
-use RuntimeException;
-
 /**
  * Class CommandNotFound.
  *

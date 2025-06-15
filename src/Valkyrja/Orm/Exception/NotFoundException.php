@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Exception;
 
-use RuntimeException;
-
 /**
  * Exception NotFoundException.
  *

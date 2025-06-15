@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Exception;
 
-use InvalidArgumentException;
-
 /**
  * Class InvalidAnnotationKeyArgument.
  *

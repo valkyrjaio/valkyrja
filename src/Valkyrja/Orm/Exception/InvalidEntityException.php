@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Exception;
 
-use Exception;
-
 /**
  * Exception InvalidEntityException.
  *
  * @author Melech Mizrachi
  */
-class InvalidEntityException extends Exception
+class InvalidEntityException extends InvalidArgumentException
 {
 }

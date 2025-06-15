@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Exception;
 
-use InvalidArgumentException;
-
 /**
  * Class InvalidConfigPath.
  *

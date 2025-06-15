@@ -18,6 +18,6 @@ namespace Valkyrja\Auth\Exception;
  *
  * @author Melech Mizrachi
  */
-class TokenizationException extends AuthRuntimeException
+class TokenizationException extends RuntimeException
 {
 }
