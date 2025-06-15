@@ -59,7 +59,6 @@ class NotAuthenticatedMiddleware extends AuthMiddleware
     protected static function getFailedRegularResponse(): Response
     {
         /** @var ResponseFactory $responseFactory */
-
         $authenticateUrl = static::getConfig(ConfigKeyPart::NOT_AUTHENTICATE_URL);
 
         if (is_string($authenticateUrl) && $authenticateUrl !== '') {

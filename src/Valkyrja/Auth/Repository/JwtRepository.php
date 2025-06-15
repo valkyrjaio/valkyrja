@@ -24,6 +24,8 @@ use Valkyrja\Jwt\Contract\Jwt as JwtManager;
 use Valkyrja\Jwt\Driver\Contract\Driver as Jwt;
 use Valkyrja\Session\Contract\Session;
 
+use function is_string;
+
 /**
  * Class JwtRepository.
  *

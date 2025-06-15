@@ -82,7 +82,7 @@ final class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the broadcaster service.\
+     * Publish the broadcaster service.\.
      */
     public static function publishBroadcaster(Container $container): void
     {
@@ -98,7 +98,7 @@ final class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the factory service.\
+     * Publish the factory service.\.
      */
     public static function publishFactory(Container $container): void
     {
@@ -109,7 +109,7 @@ final class ServiceProvider extends Provider
     }
 
     /**
-     * Publish a driver service.\
+     * Publish a driver service.\.
      */
     public static function publishDriver(Container $container): void
     {
@@ -120,7 +120,7 @@ final class ServiceProvider extends Provider
     }
 
     /**
-     * Create a driver.\
+     * Create a driver.\.
      */
     public static function createDriver(Container $container, Adapter $adapter): Driver
     {
@@ -130,7 +130,7 @@ final class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the null adapter service.\
+     * Publish the null adapter service.\.
      */
     public static function publishNullAdapter(Container $container): void
     {

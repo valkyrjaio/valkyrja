@@ -194,7 +194,7 @@ class NullAdapter implements Contract
     /**
      * @inheritDoc
      */
-    public function listContents(?string $directory = null, bool $recursive = false): array
+    public function listContents(string|null $directory = null, bool $recursive = false): array
     {
         return [];
     }

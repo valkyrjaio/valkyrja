@@ -65,7 +65,7 @@ class NullAdapter implements Contract
         string|null $sessionId = null,
         string|null $sessionName = null
     ) {
-        $sessionId   ??= $config->id;
+        $sessionId ??= $config->id;
         $sessionName ??= $config->name;
 
         // If a session id is provided

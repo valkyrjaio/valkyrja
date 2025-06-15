@@ -248,8 +248,8 @@ interface ServerRequest extends Request
      * instantiation, or MAY be injected via withUploadedFiles().
      *
      * @return UploadedFile[]|array<array-key, mixed>
-     *         An array tree of UploadedFileInterface instances; an empty
-     *         array MUST be returned if no data is present
+     *                                                An array tree of UploadedFileInterface instances; an empty
+     *                                                array MUST be returned if no data is present
      */
     public function getUploadedFiles(): array;
 

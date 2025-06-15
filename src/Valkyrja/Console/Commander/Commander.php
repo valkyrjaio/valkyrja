@@ -56,6 +56,12 @@ abstract class Commander implements Contract
      */
     protected const DOUBLE_TAB = self::TAB . self::TAB;
 
+    public function __construct(
+        protected InputContract $input = new Input(),
+        protected OutputContract $output = new Output(),
+    ) {
+    }
+
     /**
      * @inheritDoc
      */
@@ -86,12 +92,6 @@ abstract class Commander implements Contract
     public static function getDescription(): string
     {
         return static::DESCRIPTION;
-    }
-
-    public function __construct(
-        protected InputContract $input = new Input(),
-        protected OutputContract $output = new Output(),
-    ) {
     }
 
     /**

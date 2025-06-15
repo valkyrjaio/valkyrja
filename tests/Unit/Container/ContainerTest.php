@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Container;
 
 use AssertionError;
 use RuntimeException;
-use Valkyrja\Container\Config as Config;
+use Valkyrja\Container\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Dispatcher\Provider\ServiceProvider;
@@ -206,7 +206,7 @@ class ContainerTest extends TestCase
         $this->config->providers[] = ServiceProvider::class;
 
         array_map(
-        /** @param class-string $provider */
+            /** @param class-string $provider */
             static fn (string $provider) => $container->register($provider),
             $this->config->providers
         );

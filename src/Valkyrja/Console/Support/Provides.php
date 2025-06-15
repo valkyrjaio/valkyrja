@@ -121,13 +121,6 @@ trait Provides
     abstract public static function getShortDescription(): string;
 
     /**
-     * The run handler.
-     *
-     * @return int
-     */
-    abstract public function run(): int;
-
-    /**
      * Get the command dependencies.
      *
      * @return class-string[]
@@ -136,4 +129,11 @@ trait Provides
     {
         return [];
     }
+
+    /**
+     * The run handler.
+     *
+     * @return int
+     */
+    abstract public function run(): int;
 }

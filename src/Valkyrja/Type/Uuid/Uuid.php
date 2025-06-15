@@ -19,6 +19,10 @@ use Valkyrja\Type\Type;
 use Valkyrja\Type\Uuid\Contract\Uuid as Contract;
 use Valkyrja\Type\Uuid\Support\Uuid as Helper;
 
+use function gettype;
+use function is_string;
+use function sprintf;
+
 /**
  * Class Uuid.
  *

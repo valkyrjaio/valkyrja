@@ -19,6 +19,10 @@ use Valkyrja\Type\Type;
 use Valkyrja\Type\Vlid\Contract\Vlid as Contract;
 use Valkyrja\Type\Vlid\Support\Vlid as Helper;
 
+use function gettype;
+use function is_string;
+use function sprintf;
+
 /**
  * Class Vlid.
  *

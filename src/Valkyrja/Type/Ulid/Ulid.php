@@ -19,6 +19,10 @@ use Valkyrja\Type\Type;
 use Valkyrja\Type\Ulid\Contract\Ulid as Contract;
 use Valkyrja\Type\Ulid\Support\Ulid as Helper;
 
+use function gettype;
+use function is_string;
+use function sprintf;
+
 /**
  * Class Ulid.
  *

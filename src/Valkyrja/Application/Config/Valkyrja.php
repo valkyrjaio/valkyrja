@@ -297,7 +297,7 @@ class Valkyrja implements ArrayAccess
         $config = unserialize($cached, ['allowed_classes' => true]);
 
         if (! $config instanceof static) {
-            throw new RuntimeException("Invalid cached config provided");
+            throw new RuntimeException('Invalid cached config provided');
         }
 
         /** @psalm-suppress MixedReturnStatement It's a static object, not sure why Psalm is confused */

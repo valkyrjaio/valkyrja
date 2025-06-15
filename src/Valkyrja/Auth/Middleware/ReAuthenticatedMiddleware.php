@@ -57,7 +57,6 @@ class ReAuthenticatedMiddleware extends AuthMiddleware
     protected static function getFailedAuthenticationResponse(ServerRequest $request): Response
     {
         /** @var ResponseFactory $responseFactory */
-
         if ($request->isXmlHttpRequest()) {
             return $responseFactory->createJsonResponse([], StatusCode::LOCKED);
         }

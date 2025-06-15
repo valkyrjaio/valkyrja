@@ -138,8 +138,6 @@ class CacheableConsole extends Console
         $this->setupCommandProviders();
     }
 
-    /**
-     */
     protected function setupAttributedCommands(): void
     {
     }

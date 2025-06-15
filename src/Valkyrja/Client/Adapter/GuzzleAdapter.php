@@ -139,7 +139,7 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle headers.
      *
-     * @param ServerRequest         $request The request
+     * @param ServerRequest        $request  The request
      * @param array<string, mixed> &$options The options
      *
      * @return void
@@ -158,7 +158,7 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle cookies.
      *
-     * @param ServerRequest         $request The request
+     * @param ServerRequest        $request  The request
      * @param array<string, mixed> &$options The options
      *
      * @return void
@@ -184,7 +184,7 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle form params.
      *
-     * @param ServerRequest         $request The request
+     * @param ServerRequest        $request  The request
      * @param array<string, mixed> &$options The options
      *
      * @return void
@@ -202,7 +202,7 @@ class GuzzleAdapter implements Contract
     /**
      * Set the Guzzle body.
      *
-     * @param ServerRequest         $request The request
+     * @param ServerRequest        $request  The request
      * @param array<string, mixed> &$options The options
      *
      * @return void

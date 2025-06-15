@@ -24,6 +24,8 @@ use Valkyrja\Crypt\Exception\CryptException;
 use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Session\Contract\Session;
 
+use function is_string;
+
 /**
  * Class CryptTokenizedRepository.
  *

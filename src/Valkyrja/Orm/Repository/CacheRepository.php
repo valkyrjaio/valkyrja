@@ -357,7 +357,7 @@ class CacheRepository extends Repository implements Contract
         $id = spl_object_id($entity);
 
         match ($type) {
-            StoreType::store => $this->storeEntities[$id] = $entity,
+            StoreType::store  => $this->storeEntities[$id]  = $entity,
             StoreType::forget => $this->forgetEntities[$id] = $entity,
         };
     }

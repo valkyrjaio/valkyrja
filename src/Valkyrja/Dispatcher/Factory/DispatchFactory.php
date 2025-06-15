@@ -42,20 +42,20 @@ class DispatchFactory
                 constant: $reflection->getName(),
                 class: $reflection->getDeclaringClass()->getName(),
             ),
-            $reflection instanceof ReflectionProperty => new PropertyDispatch(
+            $reflection instanceof ReflectionProperty      => new PropertyDispatch(
                 class: $reflection->getDeclaringClass()->getName(),
                 property: $reflection->getName(),
                 isStatic: $reflection->isStatic()
             ),
-            $reflection instanceof ReflectionMethod => new MethodDispatch(
+            $reflection instanceof ReflectionMethod        => new MethodDispatch(
                 class: $reflection->getDeclaringClass()->getName(),
                 method: $reflection->getName(),
                 isStatic: $reflection->isStatic()
             ),
-            $reflection instanceof ReflectionClass => new ClassDispatch(
+            $reflection instanceof ReflectionClass         => new ClassDispatch(
                 class: $reflection->getName(),
             ),
-            $reflection instanceof ReflectionFunction => new CallableDispatch(
+            $reflection instanceof ReflectionFunction      => new CallableDispatch(
                 callable: is_callable($functionName = $reflection->getName())
                     ? $functionName
                     : throw new RuntimeException('ReflectionFunction has no valid callable'),

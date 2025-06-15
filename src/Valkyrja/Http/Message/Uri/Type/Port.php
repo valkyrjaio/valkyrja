@@ -16,6 +16,10 @@ namespace Valkyrja\Http\Message\Uri\Type;
 use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Type\Type;
 
+use function gettype;
+use function is_int;
+use function sprintf;
+
 /**
  * Class Port.
  *
