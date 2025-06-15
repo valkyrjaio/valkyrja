@@ -21,5 +21,7 @@ namespace Valkyrja\Mail\Constant;
 final class EnvName
 {
     public const DEFAULT_CONFIGURATION         = 'MAIL_DEFAULT_CONFIGURATION';
+    public const CONFIGURATIONS                = 'MAIL_CONFIGURATIONS';
     public const DEFAULT_MESSAGE_CONFIGURATION = 'MAIL_DEFAULT_MESSAGE_CONFIGURATION';
+    public const MESSAGE_CONFIGURATIONS        = 'MAIL_MESSAGE_CONFIGURATIONS';
 }

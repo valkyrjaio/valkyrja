@@ -21,4 +21,5 @@ namespace Valkyrja\Jwt\Constant;
 final class EnvName
 {
     public const DEFAULT_CONFIGURATION = 'JWT_DEFAULT_CONFIGURATION';
+    public const CONFIGURATIONS        = 'JWT_CONFIGURATIONS';
 }

@@ -21,6 +21,7 @@ namespace Valkyrja\Session\Constant;
 final class EnvName
 {
     public const DEFAULT_CONFIGURATION = 'SESSION_DEFAULT_CONFIGURATION';
+    public const CONFIGURATIONS        = 'SESSION_CONFIGURATIONS';
 
     public const PHP_ADAPTER_CLASS = 'SESSION_PHP_ADAPTER_CLASS';
     public const PHP_DRIVER_CLASS  = 'SESSION_PHP_DRIVER_CLASS';

@@ -21,4 +21,5 @@ namespace Valkyrja\Filesystem\Constant;
 final class EnvName
 {
     public const DEFAULT_CONFIGURATION = 'FILESYSTEM_DEFAULT_CONFIGURATION';
+    public const CONFIGURATIONS        = 'FILESYSTEM_CONFIGURATIONS';
 }

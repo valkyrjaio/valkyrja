@@ -21,7 +21,8 @@ namespace Valkyrja\Orm\Constant;
 final class ConfigName
 {
     public const DEFAULT_CONNECTION = 'defaultConnection';
-    public const MIGRATIONS         = 'connections';
+    public const CONNECTIONS        = 'connections';
+    public const MIGRATIONS         = 'migrations';
 
     public const ADAPTER_CLASS       = 'adapterClass';
     public const DRIVER_CLASS        = 'driverClass';

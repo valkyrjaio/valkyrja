@@ -21,4 +21,5 @@ namespace Valkyrja\Crypt\Constant;
 final class EnvName
 {
     public const DEFAULT_CONFIGURATION = 'CRYPT_DEFAULT_CONFIGURATION';
+    public const CONFIGURATIONS        = 'CRYPT_CONFIGURATIONS';
 }

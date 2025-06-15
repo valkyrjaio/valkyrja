@@ -21,6 +21,7 @@ namespace Valkyrja\Session\Constant;
 final class ConfigName
 {
     public const DEFAULT_CONFIGURATION = 'defaultConfiguration';
+    public const CONFIGURATIONS        = 'configurations';
 
     public const ADAPTER_CLASS = 'adapterClass';
     public const DRIVER_CLASS  = 'driverClass';

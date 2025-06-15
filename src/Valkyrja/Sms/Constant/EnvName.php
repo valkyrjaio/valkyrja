@@ -21,5 +21,7 @@ namespace Valkyrja\Sms\Constant;
 final class EnvName
 {
     public const DEFAULT_CONFIGURATION         = 'SMS_DEFAULT_CONFIGURATION';
+    public const CONFIGURATIONS                = 'SMS_CONFIGURATIONS';
     public const DEFAULT_MESSAGE_CONFIGURATION = 'SMS_DEFAULT_MESSAGE_CONFIGURATION';
+    public const MESSAGE_CONFIGURATIONS        = 'SMS_MESSAGE_CONFIGURATIONS';
 }

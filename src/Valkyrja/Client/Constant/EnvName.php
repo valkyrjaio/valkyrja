@@ -21,4 +21,5 @@ namespace Valkyrja\Client\Constant;
 final class EnvName
 {
     public const DEFAULT_CONFIGURATION = 'CLIENT_DEFAULT_CONFIGURATION';
+    public const CONFIGURATIONS        = 'CLIENT_CONFIGURATIONS';
 }

@@ -21,7 +21,9 @@ namespace Valkyrja\Sms\Constant;
 final class ConfigName
 {
     public const DEFAULT_CONFIGURATION         = 'defaultConfiguration';
+    public const CONFIGURATIONS                = 'configurations';
     public const DEFAULT_MESSAGE_CONFIGURATION = 'defaultMessageConfiguration';
+    public const MESSAGE_CONFIGURATIONS        = 'messageConfigurations';
 
     public const ADAPTER_CLASS = 'adapterClass';
     public const DRIVER_CLASS  = 'driverClass';

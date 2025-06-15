@@ -21,4 +21,5 @@ namespace Valkyrja\Cache\Constant;
 final class EnvName
 {
     public const DEFAULT_CONFIGURATION = 'CACHE_DEFAULT_CONFIGURATION';
+    public const CONFIGURATIONS        = 'CACHE_CONFIGURATIONS';
 }

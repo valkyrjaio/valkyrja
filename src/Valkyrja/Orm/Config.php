@@ -35,6 +35,7 @@ class Config extends ParentConfig
      */
     protected static array $envNames = [
         ConfigName::DEFAULT_CONNECTION => EnvName::DEFAULT_CONNECTION,
+        ConfigName::CONNECTIONS        => EnvName::CONNECTIONS,
         ConfigName::MIGRATIONS         => EnvName::MIGRATIONS,
     ];
 

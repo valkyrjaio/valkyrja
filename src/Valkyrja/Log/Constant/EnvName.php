@@ -21,4 +21,5 @@ namespace Valkyrja\Log\Constant;
 final class EnvName
 {
     public const DEFAULT_CONFIGURATION = 'LOG_DEFAULT_CONFIGURATION';
+    public const CONFIGURATIONS        = 'LOG_CONFIGURATIONS';
 }

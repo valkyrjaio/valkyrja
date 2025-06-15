@@ -39,7 +39,9 @@ class Config extends ParentConfig
      */
     protected static array $envNames = [
         ConfigName::DEFAULT_CONFIGURATION         => EnvName::DEFAULT_CONFIGURATION,
+        ConfigName::CONFIGURATIONS                => EnvName::CONFIGURATIONS,
         ConfigName::DEFAULT_MESSAGE_CONFIGURATION => EnvName::DEFAULT_MESSAGE_CONFIGURATION,
+        ConfigName::MESSAGE_CONFIGURATIONS        => EnvName::MESSAGE_CONFIGURATIONS,
     ];
 
     public function __construct(

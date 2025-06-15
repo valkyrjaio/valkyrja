@@ -21,5 +21,6 @@ namespace Valkyrja\Orm\Constant;
 final class EnvName
 {
     public const DEFAULT_CONNECTION = 'ORM_DEFAULT_CONNECTION';
+    public const CONNECTIONS        = 'ORM_CONNECTIONS';
     public const MIGRATIONS         = 'ORM_MIGRATIONS';
 }

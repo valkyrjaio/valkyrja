@@ -21,5 +21,7 @@ namespace Valkyrja\Broadcast\Constant;
 final class EnvName
 {
     public const DEFAULT_CONFIGURATION         = 'BROADCAST_DEFAULT_CONFIGURATION';
+    public const CONFIGURATIONS                = 'BROADCAST_CONFIGURATIONS';
     public const DEFAULT_MESSAGE_CONFIGURATION = 'BROADCAST_DEFAULT_MESSAGE_CONFIGURATION';
+    public const MESSAGE_CONFIGURATIONS        = 'BROADCAST_MESSAGE_CONFIGURATIONS';
 }

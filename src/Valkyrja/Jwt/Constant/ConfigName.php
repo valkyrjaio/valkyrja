@@ -21,6 +21,7 @@ namespace Valkyrja\Jwt\Constant;
 final class ConfigName
 {
     public const DEFAULT_CONFIGURATION = 'defaultConfiguration';
+    public const CONFIGURATIONS        = 'configurations';
 
     public const ALGORITHM     = 'algorithm';
     public const ADAPTER_CLASS = 'adapterClass';

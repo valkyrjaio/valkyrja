@@ -21,4 +21,5 @@ namespace Valkyrja\View\Constant;
 final class EnvName
 {
     public const string DEFAULT_CONFIGURATION = 'VIEW_DEFAULT_CONFIGURATION';
+    public const string CONFIGURATIONS        = 'VIEW_CONFIGURATIONS';
 }

@@ -26,20 +26,26 @@ use Valkyrja\Auth\Gate\Contract\Gate as AuthGate;
 use Valkyrja\Auth\Policy\Contract\Policy as AuthPolicy;
 use Valkyrja\Auth\Repository\Contract\Repository as AuthRepository;
 use Valkyrja\Broadcast\Adapter\Contract\Adapter as BroadcastAdapter;
+use Valkyrja\Broadcast\Config\Configurations as BroadcastConfigurations;
+use Valkyrja\Broadcast\Config\MessageConfigurations as BroadcastMessageConfigurations;
 use Valkyrja\Broadcast\Driver\Contract\Driver as BroadcastDriver;
 use Valkyrja\Broadcast\Message\Contract\Message as BroadcastMessage;
 use Valkyrja\Cache\Adapter\Contract\Adapter as CacheAdapter;
+use Valkyrja\Cache\Config\Configurations as CacheConfigurations;
 use Valkyrja\Cache\Driver\Contract\Driver as CacheDriver;
 use Valkyrja\Client\Adapter\Contract\Adapter as ClientAdapter;
+use Valkyrja\Client\Config\Configurations as ClientConfigurations;
 use Valkyrja\Client\Driver\Contract\Driver as ClientDriver;
 use Valkyrja\Config\Support\Provider as ConfigProvider;
 use Valkyrja\Console\Commander\Contract\Commander as ConsoleCommander;
 use Valkyrja\Container\Contract\Service as ContainerService;
 use Valkyrja\Container\Support\Provider as ContainerProvider;
 use Valkyrja\Crypt\Adapter\Contract\Adapter as CryptAdapter;
+use Valkyrja\Crypt\Config\Configurations as CryptConfigurations;
 use Valkyrja\Crypt\Driver\Contract\Driver as CryptDriver;
 use Valkyrja\Exception\Contract\ErrorHandler;
 use Valkyrja\Filesystem\Adapter\Contract\Adapter as FilesystemAdapter;
+use Valkyrja\Filesystem\Config\Configurations as FilesystemConfigurations;
 use Valkyrja\Filesystem\Driver\Contract\Driver as FilesystemDriver;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware as HttpRequestReceivedMiddleware;
@@ -51,13 +57,18 @@ use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware as HttpTerminatedMidd
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware as HttpThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Contract\RequestHandler as HttpServerRequestHandler;
 use Valkyrja\Jwt\Adapter\Contract\Adapter as JwtAdapter;
+use Valkyrja\Jwt\Config\Configurations as JwtConfiguration;
 use Valkyrja\Jwt\Driver\Contract\Driver as JwtDriver;
 use Valkyrja\Log\Adapter\Contract\Adapter as LogAdapter;
+use Valkyrja\Log\Config\Configurations as LogConfigurations;
 use Valkyrja\Log\Driver\Contract\Driver as LogDriver;
 use Valkyrja\Mail\Adapter\Contract\Adapter as MailAdapter;
+use Valkyrja\Mail\Config\Configurations as MailConfigurations;
+use Valkyrja\Mail\Config\MessageConfigurations as MailMessageConfigurations;
 use Valkyrja\Mail\Driver\Contract\Driver as MailDriver;
 use Valkyrja\Mail\Message\Contract\Message as MailMessage;
 use Valkyrja\Orm\Adapter\Contract\Adapter as OrmAdapter;
+use Valkyrja\Orm\Config\Connections as OrmConnections;
 use Valkyrja\Orm\Driver\Contract\Driver as OrmDriver;
 use Valkyrja\Orm\Pdo\Pdo as OrmPdo;
 use Valkyrja\Orm\Persister\Contract\Persister as OrmPersister;
@@ -66,9 +77,13 @@ use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder as OrmQueryBuilder;
 use Valkyrja\Orm\Repository\Contract\Repository as OrmRepository;
 use Valkyrja\Orm\Retriever\Contract\Retriever as OrmRetriever;
 use Valkyrja\Session\Adapter\Contract\Adapter as SessionAdapter;
+use Valkyrja\Session\Config\Configurations as SessionConfigurations;
 use Valkyrja\Session\Driver\Contract\Driver as SessionDriver;
 use Valkyrja\Sms\Adapter\Contract\Adapter as SmsAdapter;
+use Valkyrja\Sms\Config\Configurations as SmsConfigurations;
+use Valkyrja\Sms\Config\MessageConfiguration as SmsMessageConfiguration;
 use Valkyrja\Sms\Driver\Contract\Driver as SmsDriver;
+use Valkyrja\View\Config\Configurations as ViewConfigurations;
 use Valkyrja\View\Engine\Contract\Engine as ViewEngine;
 
 /**
@@ -196,8 +211,12 @@ class Env
 
     /** @var string|null */
     public const string|null BROADCAST_DEFAULT_CONFIGURATION = null;
+    /** @var callable():BroadcastConfigurations|null */
+    public const array|null BROADCAST_CONFIGURATIONS = null;
     /** @var string|null */
     public const string|null BROADCAST_DEFAULT_MESSAGE_CONFIGURATION = null;
+    /** @var callable():BroadcastMessageConfigurations|null */
+    public const array|null BROADCAST_MESSAGE_CONFIGURATIONS = null;
     /** @var string|null */
     public const string|null BROADCAST_DEFAULT_MESSAGE_CHANNEL = null;
     /** @var class-string<BroadcastMessage>|null */
@@ -235,6 +254,8 @@ class Env
 
     /** @var string|null */
     public const string|null CACHE_DEFAULT_CONFIGURATION = null;
+    /** @var callable():CacheConfigurations|null */
+    public const array|null CACHE_CONFIGURATIONS = null;
     /** @var class-string<CacheAdapter>|null */
     public const string|null CACHE_REDIS_ADAPTER_CLASS = null;
     /** @var class-string<CacheDriver>|null */
@@ -266,6 +287,8 @@ class Env
 
     /** @var string|null */
     public const string|null CLIENT_DEFAULT_CONFIGURATION = null;
+    /** @var callable():ClientConfigurations|null */
+    public const array|null CLIENT_CONFIGURATIONS = null;
     /** @var class-string<ClientAdapter>|null */
     public const string|null CLIENT_GUZZLE_ADAPTER_CLASS = null;
     /** @var class-string<ClientDriver>|null */
@@ -331,6 +354,8 @@ class Env
 
     /** @var string|null */
     public const string|null CRYPT_DEFAULT_CONFIGURATION = null;
+    /** @var callable():CryptConfigurations|null */
+    public const array|null CRYPT_CONFIGURATIONS = null;
     /** @var class-string<CryptAdapter>|null */
     public const string|null CRYPT_SODIUM_ADAPTER_CLASS = null;
     /** @var class-string<CryptDriver>|null */
@@ -369,6 +394,8 @@ class Env
 
     /** @var string|null */
     public const string|null FILESYSTEM_DEFAULT_CONFIGURATION = null;
+    /** @var callable():FilesystemConfigurations|null */
+    public const array|null FILESYSTEM_CONFIGURATIONS = null;
     /** @var class-string<FilesystemAdapter>|null */
     public const string|null FILESYSTEM_FLYSYSTEM_LOCAL_ADAPTER_CLASS = null;
     /** @var class-string<FilesystemDriver>|null */
@@ -461,6 +488,8 @@ class Env
 
     /** @var string|null */
     public const string|null JWT_DEFAULT_CONFIGURATION = null;
+    /** @var callable():JwtConfiguration|null */
+    public const array|null JWT_CONFIGURATIONS = null;
     /** @var class-string<JwtAdapter>|null */
     public const string|null JWT_HS_ADAPTER_CLASS = null;
     /** @var class-string<JwtDriver>|null */
@@ -508,6 +537,8 @@ class Env
 
     /** @var string|null */
     public const string|null LOG_DEFAULT_CONFIGURATION = null;
+    /** @var callable():LogConfigurations|null */
+    public const array|null LOG_CONFIGURATIONS = null;
     /** @var class-string<LogAdapter>|null */
     public const string|null LOG_PSR_ADAPTER_CLASS = null;
     /** @var class-string<LogDriver>|null */
@@ -529,8 +560,12 @@ class Env
 
     /** @var string|null */
     public const string|null MAIL_DEFAULT_CONFIGURATION = null;
+    /** @var callable():MailConfigurations|null */
+    public const array|null MAIL_CONFIGURATIONS = null;
     /** @var string|null */
     public const string|null MAIL_DEFAULT_MESSAGE_CONFIGURATION = null;
+    /** @var callable():MailMessageConfigurations|null */
+    public const array|null MAIL_MESSAGE_CONFIGURATIONS = null;
     /** @var string|null */
     public const string|null MAIL_DEFAULT_MESSAGE_FROM = null;
     /** @var class-string<MailMessage>|null */
@@ -585,6 +620,8 @@ class Env
 
     /** @var string|null */
     public const string|null ORM_DEFAULT_CONNECTION = null;
+    /** @var callable():OrmConnections|null */
+    public const array|null ORM_CONNECTIONS = null;
     /** @var string|null */
     public const string|null ORM_MIGRATIONS = null;
     /** @var class-string<OrmAdapter>|null */
@@ -674,6 +711,8 @@ class Env
 
     /** @var string|null */
     public const string|null SESSION_DEFAULT_CONFIGURATION = null;
+    /** @var callable():SessionConfigurations|null */
+    public const array|null SESSION_CONFIGURATIONS = null;
     /** @var class-string<SessionAdapter>|null */
     public const string|null SESSION_PHP_ADAPTER_CLASS = null;
     /** @var class-string<SessionDriver>|null */
@@ -723,8 +762,12 @@ class Env
 
     /** @var string|null */
     public const string|null SMS_DEFAULT_CONFIGURATION = null;
+    /** @var callable():SmsConfigurations|null */
+    public const array|null SMS_CONFIGURATIONS = null;
     /** @var string|null */
     public const string|null SMS_DEFAULT_MESSAGE_CONFIGURATION = null;
+    /** @var callable():SmsMessageConfiguration|null */
+    public const array|null SMS_MESSAGE_CONFIGURATIONS = null;
     /** @var class-string<SmsAdapter>|null */
     public const string|null SMS_NULL_ADAPTER_CLASS = null;
     /** @var class-string<SmsDriver>|null */
@@ -752,6 +795,8 @@ class Env
 
     /** @var string|null */
     public const string|null VIEW_DEFAULT_CONFIGURATION = null;
+    /** @var callable():ViewConfigurations|null */
+    public const array|null VIEW_CONFIGURATIONS = null;
     /** @var class-string<ViewEngine>|null */
     public const string|null VIEW_ORKA_ENGINE = null;
     /** @var string|null */
