@@ -32,7 +32,13 @@ class StatusCodeTest extends TestCase
      */
     public static function codesProvider(): array
     {
-        return [Enum::values(StatusCode::class)];
+        $codes = [];
+
+        foreach (Enum::values(StatusCode::class) as $code) {
+            $codes[] = [$code];
+        }
+
+        return $codes;
     }
 
     /**
@@ -40,7 +46,13 @@ class StatusCodeTest extends TestCase
      */
     public static function casesProvider(): array
     {
-        return [StatusCode::cases()];
+        $cases = [];
+
+        foreach (StatusCode::cases() as $case) {
+            $cases[] = [$case];
+        }
+
+        return $cases;
     }
 
     #[DataProvider('casesProvider')]

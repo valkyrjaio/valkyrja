@@ -29,7 +29,13 @@ class RequestMethodTest extends TestCase
      */
     public static function casesProvider(): array
     {
-        return [RequestMethod::cases()];
+        $cases = [];
+
+        foreach (RequestMethod::cases() as $case) {
+            $cases[] = [$case];
+        }
+
+        return $cases;
     }
 
     /**

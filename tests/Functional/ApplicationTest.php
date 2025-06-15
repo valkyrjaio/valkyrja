@@ -350,6 +350,9 @@ class ApplicationTest extends TestCase
         $this->app          = $this->app->setConfig($config);
 
         self::assertTrue($this->app->getDebugMode());
+
+        restore_error_handler();
+        restore_exception_handler();
     }
 
     /**
