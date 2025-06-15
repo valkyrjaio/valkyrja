@@ -32,7 +32,7 @@ class Component implements Contract
      *
      * @var non-empty-string
      */
-    protected const DELIMINATOR = '=';
+    protected const string DELIMINATOR = '=';
 
     public function __construct(
         protected string $token,

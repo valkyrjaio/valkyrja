@@ -48,20 +48,20 @@ use function is_string;
 class Route extends Dispatch implements Contract
 {
     /** @var string */
-    protected const DEFAULT_PATH = '/';
+    protected const string DEFAULT_PATH = '/';
     /** @var string|null */
-    protected const DEFAULT_NAME = null;
+    protected const string|null DEFAULT_NAME = null;
     /** @var RequestMethod[] */
-    protected const DEFAULT_METHODS = [
+    protected const array DEFAULT_METHODS = [
         RequestMethod::GET,
         RequestMethod::HEAD,
     ];
     /** @var bool|null */
-    protected const DEFAULT_SECURE = null;
+    protected const bool|null DEFAULT_SECURE = null;
     /** @var string|null */
-    protected const DEFAULT_TO = null;
+    protected const string|null DEFAULT_TO = null;
     /** @var StatusCode|null */
-    protected const DEFAULT_CODE = null;
+    protected const StatusCode|null DEFAULT_CODE = null;
 
     /**
      * The path for this route.
@@ -208,12 +208,12 @@ class Route extends Dispatch implements Contract
         string|null $to = null,
         StatusCode|null $code = null,
     ) {
-        $path ??= static::DEFAULT_PATH;
-        $name ??= static::DEFAULT_NAME;
+        $path    ??= static::DEFAULT_PATH;
+        $name    ??= static::DEFAULT_NAME;
         $methods ??= static::DEFAULT_METHODS;
-        $secure ??= static::DEFAULT_SECURE;
-        $to ??= static::DEFAULT_TO;
-        $code ??= static::DEFAULT_CODE;
+        $secure  ??= static::DEFAULT_SECURE;
+        $to      ??= static::DEFAULT_TO;
+        $code    ??= static::DEFAULT_CODE;
 
         $this->setPath($path);
         $this->setMethods($methods);
@@ -486,31 +486,31 @@ class Route extends Dispatch implements Contract
     {
         if (Cls::inherits($middleware, RouteMatchedMiddleware::class)) {
             /** @var class-string<RouteMatchedMiddleware> $middleware */
-            $this->matchedMiddleware ??= [];
+            $this->matchedMiddleware   ??= [];
             $this->matchedMiddleware[] = $middleware;
         }
 
         if (Cls::inherits($middleware, RouteDispatchedMiddleware::class)) {
             /** @var class-string<RouteDispatchedMiddleware> $middleware */
-            $this->dispatchedMiddleware ??= [];
+            $this->dispatchedMiddleware   ??= [];
             $this->dispatchedMiddleware[] = $middleware;
         }
 
         if (Cls::inherits($middleware, ThrowableCaughtMiddleware::class)) {
             /** @var class-string<ThrowableCaughtMiddleware> $middleware */
-            $this->exceptionMiddleware ??= [];
+            $this->exceptionMiddleware   ??= [];
             $this->exceptionMiddleware[] = $middleware;
         }
 
         if (Cls::inherits($middleware, SendingResponseMiddleware::class)) {
             /** @var class-string<SendingResponseMiddleware> $middleware */
-            $this->sendingMiddleware ??= [];
+            $this->sendingMiddleware   ??= [];
             $this->sendingMiddleware[] = $middleware;
         }
 
         if (Cls::inherits($middleware, TerminatedMiddleware::class)) {
             /** @var class-string<TerminatedMiddleware> $middleware */
-            $this->terminatedMiddleware ??= [];
+            $this->terminatedMiddleware   ??= [];
             $this->terminatedMiddleware[] = $middleware;
         }
 

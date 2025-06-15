@@ -36,25 +36,23 @@ use function strlen;
 abstract class Commander implements Contract
 {
     /** @var string */
-    public const COMMAND = '';
+    public const string COMMAND = '';
     /** @var string */
-    public const PATH = '';
+    public const string PATH = '';
     /** @var string */
-    public const SHORT_DESCRIPTION = '';
+    public const string SHORT_DESCRIPTION = '';
     /** @var string */
-    public const DESCRIPTION = '';
+    public const string DESCRIPTION = '';
 
     /**
      * Tabbing structure to use.
      *
      * @var string
      */
-    protected const TAB = '  ';
+    protected const string TAB = '  ';
 
-    /**
-     * @var string
-     */
-    protected const DOUBLE_TAB = self::TAB . self::TAB;
+    /** @var string */
+    protected const string DOUBLE_TAB = self::TAB . self::TAB;
 
     public function __construct(
         protected InputContract $input = new Input(),

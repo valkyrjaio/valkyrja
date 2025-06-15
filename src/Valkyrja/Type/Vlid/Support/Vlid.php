@@ -33,22 +33,22 @@ use function sprintf;
 class Vlid extends Ulid
 {
     /** @var string */
-    public const REGEX = '[0-7]'
-        . '[' . self::VALID_CHARACTERS . ']{12}'
-        . '[1-4]'
-        . '[' . self::VALID_CHARACTERS . ']{4}'
-        . '([' . self::VALID_CHARACTERS . ']{4})?'
-        . '([' . self::VALID_CHARACTERS . ']{4})?'
-        . '([' . self::VALID_CHARACTERS . ']{4})?';
+    public const string REGEX = '[0-7]'
+    . '[' . self::VALID_CHARACTERS . ']{12}'
+    . '[1-4]'
+    . '[' . self::VALID_CHARACTERS . ']{4}'
+    . '([' . self::VALID_CHARACTERS . ']{4})?'
+    . '([' . self::VALID_CHARACTERS . ']{4})?'
+    . '([' . self::VALID_CHARACTERS . ']{4})?';
 
     /** @var Version */
-    public const VERSION = Version::V1;
+    public const Version VERSION = Version::V1;
 
     /** @var string */
-    protected const FORMAT = '%013s%01s%04s%04s%04s';
+    protected const string FORMAT = '%013s%01s%04s%04s%04s';
 
     /** @var int */
-    protected const MAX_RANDOM_BYTES = 3;
+    protected const int MAX_RANDOM_BYTES = 3;
 
     /** @var string */
     protected static string $time = '';

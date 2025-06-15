@@ -31,7 +31,8 @@ use const PREG_SET_ORDER;
  */
 abstract class CookieFactory
 {
-    protected const SEPARATOR = '; ';
+    /** @var string */
+    protected const string SEPARATOR = '; ';
 
     /**
      * Parse a cookie header according to RFC 6265.

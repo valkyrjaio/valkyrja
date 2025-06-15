@@ -28,9 +28,11 @@ use function is_array;
  */
 class Parameter extends Model
 {
-    protected const DEFAULT_NAME = 'param';
+    /** @var string */
+    protected const string DEFAULT_NAME = 'param';
 
-    protected const DEFAULT_REGEX = Regex::ANY;
+    /** @var string */
+    protected const string DEFAULT_REGEX = Regex::ANY;
 
     /**
      * @inheritDoc

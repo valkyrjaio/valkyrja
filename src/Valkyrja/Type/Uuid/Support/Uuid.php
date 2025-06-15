@@ -32,17 +32,17 @@ use function strlen;
 class Uuid extends Uid
 {
     /** @var string */
-    public const REGEX = self::REGEX_PART . '{8}-'
-        . self::REGEX_PART . '{4}-'
-        . self::REGEX_PART . '{4}-'
-        . self::REGEX_PART . '{4}-'
-        . self::REGEX_PART . '{12}';
+    public const string REGEX = self::REGEX_PART . '{8}-'
+    . self::REGEX_PART . '{4}-'
+    . self::REGEX_PART . '{4}-'
+    . self::REGEX_PART . '{4}-'
+    . self::REGEX_PART . '{12}';
 
     /** @var Version */
-    public const VERSION = Version::V1;
+    public const Version VERSION = Version::V1;
 
     /** @var string */
-    protected const REGEX_PART = '[0-9A-Fa-f]';
+    protected const string REGEX_PART = '[0-9A-Fa-f]';
 
     /**
      * Generate v1 UUID.

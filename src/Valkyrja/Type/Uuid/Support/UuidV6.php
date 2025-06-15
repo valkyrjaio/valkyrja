@@ -28,15 +28,15 @@ use function substr;
 class UuidV6 extends Uuid
 {
     /** @var string */
-    public const REGEX = self::REGEX_PART . '{8}-'
-        . self::REGEX_PART . '{4}-'
-        . '[6]'
-        . self::REGEX_PART . '{3}-'
-        . self::REGEX_PART . '{4}-'
-        . self::REGEX_PART . '{12}';
+    public const string REGEX = self::REGEX_PART . '{8}-'
+    . self::REGEX_PART . '{4}-'
+    . '[6]'
+    . self::REGEX_PART . '{3}-'
+    . self::REGEX_PART . '{4}-'
+    . self::REGEX_PART . '{12}';
 
     /** @var Version */
-    public const VERSION = Version::V6;
+    public const Version VERSION = Version::V6;
 
     /**
      * Generate a v6 UUID.

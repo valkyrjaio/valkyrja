@@ -57,7 +57,7 @@ class Console implements Contract
      *
      * @var non-empty-string
      */
-    public const RUN_METHOD = 'run';
+    public const string RUN_METHOD = 'run';
 
     /**
      * The commands.

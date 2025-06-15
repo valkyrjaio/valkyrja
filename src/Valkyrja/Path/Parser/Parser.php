@@ -37,7 +37,7 @@ class Parser implements Contract
      *
      * @var string
      */
-    protected const VARIABLE_REGEX = <<<'REGEX'
+    protected const string VARIABLE_REGEX = <<<'REGEX'
         \{
             \s* ([a-zA-Z0-9\_\-\\\@\|\+\,]*) \s*
             (?:

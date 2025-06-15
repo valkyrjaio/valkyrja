@@ -16,6 +16,7 @@ namespace Valkyrja\Http\Server;
 use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Http\Server\Constant\ConfigName;
 use Valkyrja\Http\Server\Constant\EnvName;
+use Valkyrja\Http\Server\Contract\RequestHandler as RequestHandlerContract;
 
 /**
  * Class Config.
@@ -33,6 +34,9 @@ class Config extends ParentConfig
         ConfigName::REQUEST_HANDLER => EnvName::REQUEST_HANDLER,
     ];
 
+    /**
+     * @param class-string<RequestHandlerContract> $requestHandler
+     */
     public function __construct(
         public string $requestHandler = RequestHandler::class,
     ) {

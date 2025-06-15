@@ -34,12 +34,12 @@ class ClearCache extends Commander
 {
     use Provides;
 
-    /**
-     * The command.
-     */
-    public const COMMAND           = 'clear:cache';
-    public const PATH              = self::COMMAND;
-    public const SHORT_DESCRIPTION = 'Clear the optimized application';
+    /** @var string */
+    public const string COMMAND = 'clear:cache';
+    /** @var string */
+    public const string PATH = self::COMMAND;
+    /** @var string */
+    public const string SHORT_DESCRIPTION = 'Clear the optimized application';
 
     public function __construct(
         protected Valkyrja $config,

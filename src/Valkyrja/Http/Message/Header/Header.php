@@ -42,14 +42,14 @@ class Header implements Contract
      *
      * @var non-empty-string
      */
-    protected const DELIMINATOR = ':';
+    protected const string DELIMINATOR = ':';
 
     /**
      * Deliminator for values.
      *
      * @var non-empty-string
      */
-    protected const VALUE_DELIMINATOR = ',';
+    protected const string VALUE_DELIMINATOR = ',';
 
     /**
      * The header name.
@@ -101,7 +101,7 @@ class Header implements Contract
 
         if (str_contains($header, static::DELIMINATOR)) {
             [$header, $valuesAsString] = explode(static::DELIMINATOR, $value);
-            $values                    = [$valuesAsString];
+            $values = [$valuesAsString];
         }
 
         if (str_contains($valuesAsString, static::VALUE_DELIMINATOR)) {

@@ -37,19 +37,19 @@ use function unpack;
 class Ulid extends Uid
 {
     /** @var string */
-    public const VALID_CHARACTERS = '0123456789ABCDEFGHJKMNPQRSTVWXYZabcdefghjkmnpqrstvwxyz';
+    public const string VALID_CHARACTERS = '0123456789ABCDEFGHJKMNPQRSTVWXYZabcdefghjkmnpqrstvwxyz';
 
     /** @var string */
-    public const REGEX = '[0-7][' . self::VALID_CHARACTERS . ']{25}';
+    public const string REGEX = '[0-7][' . self::VALID_CHARACTERS . ']{25}';
 
     /** @var int */
-    public const MAX_PART = 0xFFFFF;
+    public const int MAX_PART = 0xFFFFF;
 
     /** @var int */
-    protected const MAX_RANDOM_BYTES = 4;
+    protected const int MAX_RANDOM_BYTES = 4;
 
     /** @var string */
-    protected const FORMAT = '%010s%04s%04s%04s%04s';
+    protected const string FORMAT = '%010s%04s%04s%04s%04s';
 
     /**
      * The previously used time string.

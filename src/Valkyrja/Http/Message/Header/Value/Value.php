@@ -39,7 +39,7 @@ class Value implements Contract
      *
      * @var non-empty-string
      */
-    protected const DELIMINATOR = ';';
+    protected const string DELIMINATOR = ';';
 
     /**
      * @var Component[]

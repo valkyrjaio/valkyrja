@@ -46,12 +46,12 @@ class OptimizeCacheCommand extends Commander
 {
     use Provides;
 
-    /**
-     * The command.
-     */
-    public const COMMAND           = 'optimize:cache';
-    public const PATH              = self::COMMAND;
-    public const SHORT_DESCRIPTION = 'Optimize the application';
+    /** @var string */
+    public const string COMMAND = 'optimize:cache';
+    /** @var string */
+    public const string PATH = self::COMMAND;
+    /** @var string */
+    public const string SHORT_DESCRIPTION = 'Optimize the application';
 
     public function __construct(
         protected Container $container,

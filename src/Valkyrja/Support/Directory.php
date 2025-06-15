@@ -25,7 +25,7 @@ class Directory
      *
      * @var string
      */
-    public const DIRECTORY_SEPARATOR = '/';
+    public const string DIRECTORY_SEPARATOR = '/';
 
     /**
      * Base directory path.

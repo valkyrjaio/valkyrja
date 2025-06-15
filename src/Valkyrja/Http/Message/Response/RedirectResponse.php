@@ -36,14 +36,14 @@ class RedirectResponse extends Response implements Contract
      *
      * @var string
      */
-    protected const DEFAULT_URI = '/';
+    protected const string DEFAULT_URI = '/';
 
     /**
      * @inheritDoc
      *
      * @var StatusCode
      */
-    protected const DEFAULT_STATUS_CODE = StatusCode::FOUND;
+    protected const StatusCode DEFAULT_STATUS_CODE = StatusCode::FOUND;
 
     /**
      * RedirectResponse constructor.

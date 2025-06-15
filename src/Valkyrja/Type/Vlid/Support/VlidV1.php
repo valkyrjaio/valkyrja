@@ -28,16 +28,16 @@ use Valkyrja\Type\Vlid\Exception\InvalidVlidV1Exception;
 class VlidV1 extends Vlid
 {
     /** @var string */
-    public const REGEX = '[0-7]'
-        . '[' . self::VALID_CHARACTERS . ']{12}'
-        . '[1]'
-        . '[' . self::VALID_CHARACTERS . ']{12}';
+    public const string REGEX = '[0-7]'
+    . '[' . self::VALID_CHARACTERS . ']{12}'
+    . '[1]'
+    . '[' . self::VALID_CHARACTERS . ']{12}';
 
     /** @var Version */
-    public const VERSION = Version::V1;
+    public const Version VERSION = Version::V1;
 
     /** @var string */
-    protected const FORMAT = '%013s%01s%04s%04s%04s';
+    protected const string FORMAT = '%013s%01s%04s%04s%04s';
 
     /** @var string */
     protected static string $time = '';

@@ -39,21 +39,21 @@ class Response implements Contract
      *
      * @var string
      */
-    protected const DEFAULT_CONTENT = '';
+    protected const string DEFAULT_CONTENT = '';
 
     /**
      * The default status code to set.
      *
      * @var StatusCode
      */
-    protected const DEFAULT_STATUS_CODE = StatusCode::OK;
+    protected const StatusCode DEFAULT_STATUS_CODE = StatusCode::OK;
 
     /**
      * The default headers to set.
      *
      * @var array<string, string[]>
      */
-    protected const DEFAULT_HEADERS = [];
+    protected const array DEFAULT_HEADERS = [];
 
     /**
      * The status phrase.

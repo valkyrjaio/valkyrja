@@ -41,7 +41,7 @@ class SerializedObject extends Type implements Contract
      *
      * @return class-string[]
      */
-    protected const ALLOWED_CLASSES = [];
+    protected const array ALLOWED_CLASSES = [];
 
     public function __construct(object $subject)
     {

@@ -36,12 +36,12 @@ class CommandsListForBash extends Commander
 {
     use Provides;
 
-    /**
-     * The command.
-     */
-    public const COMMAND           = 'console:commandsForBash';
-    public const PATH              = self::COMMAND . ' valkyrja[ {commandTyped:[a-zA-Z0-9\:]+}]';
-    public const SHORT_DESCRIPTION = 'List all the commands for bash auto complete';
+    /** @var string */
+    public const string COMMAND = 'console:commandsForBash';
+    /** @var string */
+    public const string PATH = self::COMMAND . ' valkyrja[ {commandTyped:[a-zA-Z0-9\:]+}]';
+    /** @var string */
+    public const string SHORT_DESCRIPTION = 'List all the commands for bash auto complete';
 
     public function __construct(
         protected Console $console,

@@ -43,14 +43,14 @@ class JsonResponse extends Response implements Contract
      *
      * @var array<array-key, mixed>
      */
-    protected const DEFAULT_DATA = [];
+    protected const array DEFAULT_DATA = [];
 
     /**
      * The default encoding options to use for json_encode.
      *
      * @var int
      */
-    protected const DEFAULT_ENCODING_OPTIONS = 79;
+    protected const int DEFAULT_ENCODING_OPTIONS = 79;
 
     /**
      * NativeJsonResponse constructor.

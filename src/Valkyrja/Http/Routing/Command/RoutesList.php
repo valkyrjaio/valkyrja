@@ -39,18 +39,19 @@ class RoutesList extends Commander
 {
     use Provides;
 
-    /**
-     * The command.
-     */
-    public const COMMAND           = 'routes:list';
-    public const PATH              = self::COMMAND;
-    public const SHORT_DESCRIPTION = 'List all routes';
-    public const DESCRIPTION       = '';
+    /** @var string */
+    public const string COMMAND = 'routes:list';
+    /** @var string */
+    public const string PATH = self::COMMAND;
+    /** @var string */
+    public const string SHORT_DESCRIPTION = 'List all routes';
+    /** @var string */
+    public const string DESCRIPTION = '';
 
     /** @var string */
-    protected const INVERT_FORMAT = "\e[7m";
+    protected const string INVERT_FORMAT = "\e[7m";
     /** @var string */
-    protected const END_FORMAT = "\e[0m";
+    protected const string END_FORMAT = "\e[0m";
 
     public function __construct(
         protected Router $router,

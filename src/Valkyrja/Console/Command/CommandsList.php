@@ -39,13 +39,14 @@ class CommandsList extends Commander
 {
     use Provides;
 
-    /**
-     * The command.
-     */
-    public const COMMAND           = 'commands';
-    public const PATH              = '[' . self::COMMAND . '][ {namespace:[a-zA-Z0-9]+}]';
-    public const SHORT_DESCRIPTION = 'List all the commands';
-    public const DESCRIPTION       = 'List all the commands';
+    /** @var string */
+    public const string COMMAND = 'commands';
+    /** @var string */
+    public const string PATH = '[' . self::COMMAND . '][ {namespace:[a-zA-Z0-9]+}]';
+    /** @var string */
+    public const string SHORT_DESCRIPTION = 'List all the commands';
+    /** @var string */
+    public const string DESCRIPTION = 'List all the commands';
 
     public function __construct(
         protected Console $console,
