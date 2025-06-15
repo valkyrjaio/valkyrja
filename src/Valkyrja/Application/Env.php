@@ -132,9 +132,9 @@ class Env
      ************************************************************/
 
     /** @var class-string<ApiJson>|null */
-    public const API_JSON_MODEL = null;
+    public const string|null API_JSON_MODEL = null;
     /** @var class-string<ApiJsonData>|null */
-    public const API_DATA_MODEL = null;
+    public const string|null API_DATA_MODEL = null;
 
     /************************************************************
      *
