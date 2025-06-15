@@ -415,19 +415,19 @@ class Env
      ************************************************************/
 
     /** @var class-string<HttpRequestReceivedMiddleware>[]|null */
-    public const HTTP_MIDDLEWARE_REQUEST_RECEIVED = null;
+    public const array|null HTTP_MIDDLEWARE_REQUEST_RECEIVED = null;
     /** @var class-string<HttpRouteDispatchedMiddleware>[]|null */
-    public const HTTP_MIDDLEWARE_ROUTE_DISPATCHED = null;
+    public const array|null HTTP_MIDDLEWARE_ROUTE_DISPATCHED = null;
     /** @var class-string<HttpRouteMatchedMiddleware>[]|null */
-    public const HTTP_MIDDLEWARE_THROWABLE_CAUGHT = null;
+    public const array|null HTTP_MIDDLEWARE_THROWABLE_CAUGHT = null;
     /** @var class-string<HttpRouteNotMatchedMiddleware>[]|null */
-    public const HTTP_MIDDLEWARE_ROUTE_MATCHED = null;
+    public const array|null HTTP_MIDDLEWARE_ROUTE_MATCHED = null;
     /** @var class-string<HttpThrowableCaughtMiddleware>[]|null */
-    public const HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = null;
+    public const array|null HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = null;
     /** @var class-string<HttpSendingResponseMiddleware>[]|null */
-    public const HTTP_MIDDLEWARE_SENDING_RESPONSE = null;
+    public const array|null HTTP_MIDDLEWARE_SENDING_RESPONSE = null;
     /** @var class-string<HttpTerminatedMiddleware>[]|null */
-    public const HTTP_MIDDLEWARE_TERMINATED = null;
+    public const array|null HTTP_MIDDLEWARE_TERMINATED = null;
 
     /************************************************************
      *

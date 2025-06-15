@@ -43,17 +43,17 @@ class EnvClass extends Env
      ************************************************************/
 
     /** @var class-string<HttpRequestReceivedMiddleware>[]|null */
-    public const HTTP_MIDDLEWARE_REQUEST_RECEIVED = [RequestReceivedMiddlewareClass::class];
+    public const array|null HTTP_MIDDLEWARE_REQUEST_RECEIVED = [RequestReceivedMiddlewareClass::class];
     /** @var class-string<HttpRouteDispatchedMiddleware>[]|null */
-    public const HTTP_MIDDLEWARE_ROUTE_DISPATCHED = [RouteDispatchedMiddlewareClass::class];
+    public const array|null HTTP_MIDDLEWARE_ROUTE_DISPATCHED = [RouteDispatchedMiddlewareClass::class];
     /** @var class-string<HttpRouteMatchedMiddleware>[]|null */
-    public const HTTP_MIDDLEWARE_THROWABLE_CAUGHT = [ThrowableCaughtMiddlewareClass::class];
+    public const array|null HTTP_MIDDLEWARE_THROWABLE_CAUGHT = [ThrowableCaughtMiddlewareClass::class];
     /** @var class-string<HttpRouteNotMatchedMiddleware>[]|null */
-    public const HTTP_MIDDLEWARE_ROUTE_MATCHED = [RouteMatchedMiddlewareClass::class];
+    public const array|null HTTP_MIDDLEWARE_ROUTE_MATCHED = [RouteMatchedMiddlewareClass::class];
     /** @var class-string<HttpThrowableCaughtMiddleware>[]|null */
-    public const HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = [RouteNotMatchedMiddlewareClass::class];
+    public const array|null HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = [RouteNotMatchedMiddlewareClass::class];
     /** @var class-string<HttpSendingResponseMiddleware>[]|null */
-    public const HTTP_MIDDLEWARE_SENDING_RESPONSE = [SendingResponseMiddlewareClass::class];
+    public const array|null HTTP_MIDDLEWARE_SENDING_RESPONSE = [SendingResponseMiddlewareClass::class];
     /** @var class-string<HttpTerminatedMiddleware>[]|null */
-    public const HTTP_MIDDLEWARE_TERMINATED = [TerminatedMiddlewareClass::class];
+    public const array|null HTTP_MIDDLEWARE_TERMINATED = [TerminatedMiddlewareClass::class];
 }
