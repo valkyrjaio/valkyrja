@@ -85,7 +85,7 @@ class Collector implements Contract
 
                     foreach ($middlewareClasses as $middlewareClass) {
                         $classAttribute = match (true) {
-                            is_a($middlewareClass, RouteMatchedMiddleware::class, true) => $classAttribute->withAddedRouteMatchedMiddleware(
+                            is_a($middlewareClass, RouteMatchedMiddleware::class, true)    => $classAttribute->withAddedRouteMatchedMiddleware(
                                 $middlewareClass
                             ),
                             is_a($middlewareClass, RouteDispatchedMiddleware::class, true) => $classAttribute->withAddedRouteDispatchedMiddleware(
@@ -97,7 +97,7 @@ class Collector implements Contract
                             is_a($middlewareClass, SendingResponseMiddleware::class, true) => $classAttribute->withAddedSendingResponseMiddleware(
                                 $middlewareClass
                             ),
-                            is_a($middlewareClass, TerminatedMiddleware::class, true) => $classAttribute->withAddedTerminatedMiddleware(
+                            is_a($middlewareClass, TerminatedMiddleware::class, true)      => $classAttribute->withAddedTerminatedMiddleware(
                                 $middlewareClass
                             ),
                         };
@@ -159,7 +159,7 @@ class Collector implements Contract
 
                             foreach ($middlewareClasses as $middlewareClass) {
                                 $routeAttribute = match (true) {
-                                    is_a($middlewareClass, RouteMatchedMiddleware::class, true) => $routeAttribute->withAddedRouteMatchedMiddleware(
+                                    is_a($middlewareClass, RouteMatchedMiddleware::class, true)    => $routeAttribute->withAddedRouteMatchedMiddleware(
                                         $middlewareClass
                                     ),
                                     is_a($middlewareClass, RouteDispatchedMiddleware::class, true) => $routeAttribute->withAddedRouteDispatchedMiddleware(
@@ -171,7 +171,7 @@ class Collector implements Contract
                                     is_a($middlewareClass, SendingResponseMiddleware::class, true) => $routeAttribute->withAddedSendingResponseMiddleware(
                                         $middlewareClass
                                     ),
-                                    is_a($middlewareClass, TerminatedMiddleware::class, true) => $routeAttribute->withAddedTerminatedMiddleware(
+                                    is_a($middlewareClass, TerminatedMiddleware::class, true)      => $routeAttribute->withAddedTerminatedMiddleware(
                                         $middlewareClass
                                     ),
                                 };

@@ -258,10 +258,10 @@ class Router implements Contract
     {
         return match (true) {
             is_string($response) => $this->getResponseForString($response),
-            is_int($response) => $this->getResponseForInt($response),
-            is_float($response) => $this->getResponseForFloat($response),
-            is_array($response) => $this->getResponseForArray($response),
-            default => throw new InvalidRouteNameException('Dispatch must be a valid response')
+            is_int($response)    => $this->getResponseForInt($response),
+            is_float($response)  => $this->getResponseForFloat($response),
+            is_array($response)  => $this->getResponseForArray($response),
+            default              => throw new InvalidRouteNameException('Dispatch must be a valid response')
         };
     }
 
