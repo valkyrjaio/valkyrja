@@ -163,22 +163,6 @@ interface Route
     public function withRegex(string|null $regex = null): static;
 
     /**
-     * Get the dynamic route arguments.
-     *
-     * @return array<array-key, mixed>|null
-     */
-    public function getArguments(): array|null;
-
-    /**
-     * Create a new route with a set of route arguments.
-     *
-     * @param array<array-key, mixed>|null $arguments The route arguments
-     *
-     * @return static
-     */
-    public function withArguments(array|null $arguments = null): static;
-
-    /**
      * Get the parameters.
      *
      * @return array<array-key, Parameter>

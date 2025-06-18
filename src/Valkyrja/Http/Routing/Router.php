@@ -16,6 +16,7 @@ namespace Valkyrja\Http\Routing;
 use JsonException;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher2;
+use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Factory\ResponseFactory as HttpMessageResponseFactory;
@@ -220,10 +221,17 @@ class Router implements Contract
         // Set the route after middleware has potentially modified it in the service container
         $this->container->setSingleton(Route::class, $routeAfterMiddleware);
 
+        $dispatch  = $routeAfterMiddleware->getDispatch();
+        $arguments = null;
+
+        if ($dispatch instanceof ClassDispatch) {
+            $arguments = $dispatch->getArguments();
+        }
+
         // Attempt to dispatch the route using any one of the callable options
         $response = $this->dispatcher->dispatch(
-            dispatch: $routeAfterMiddleware->getDispatch(),
-            arguments: $routeAfterMiddleware->getArguments()
+            dispatch: $dispatch,
+            arguments: $arguments
         );
 
         if (! $response instanceof Response) {
@@ -250,10 +258,10 @@ class Router implements Contract
     {
         return match (true) {
             is_string($response) => $this->getResponseForString($response),
-            is_int($response)    => $this->getResponseForInt($response),
-            is_float($response)  => $this->getResponseForFloat($response),
-            is_array($response)  => $this->getResponseForArray($response),
-            default              => throw new InvalidRouteNameException('Dispatch must be a valid response')
+            is_int($response) => $this->getResponseForInt($response),
+            is_float($response) => $this->getResponseForFloat($response),
+            is_array($response) => $this->getResponseForArray($response),
+            default => throw new InvalidRouteNameException('Dispatch must be a valid response')
         };
     }
 

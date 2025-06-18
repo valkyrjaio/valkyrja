@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Matcher;
 
+use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Collection as RouteCollection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection;
@@ -129,7 +130,7 @@ class Matcher implements Contract
         // If the preg match is successful, we've found our route!
         if ($regex !== '' && preg_match($regex, $path, $arguments)) {
             /** @var array<int, string> $arguments */
-            return $this->applyMatchesToRoute($route, $arguments);
+            return $this->applyArgumentsToRoute($route, $arguments);
         }
 
         return null;
@@ -145,12 +146,12 @@ class Matcher implements Contract
      *
      * @return Route
      */
-    protected function applyMatchesToRoute(Route $route, array $arguments): Route
+    protected function applyArgumentsToRoute(Route $route, array $arguments): Route
     {
         // Clone the route to avoid changing the one set in the master array
         $route = clone $route;
 
-        return $this->processMatches($route, $arguments);
+        return $this->processArguments($route, $arguments);
     }
 
     /**
@@ -163,10 +164,12 @@ class Matcher implements Contract
      *
      * @return Route
      */
-    protected function processMatches(Route $route, array $arguments): Route
+    protected function processArguments(Route $route, array $arguments): Route
     {
+        $dispatch = $route->getDispatch();
+
         // The first match is the path itself, the rest could be empty.
-        if (array_shift($arguments) === null || empty($arguments)) {
+        if (array_shift($arguments) === null || empty($arguments) || ! $dispatch instanceof ClassDispatch) {
             return $route;
         }
 
@@ -181,7 +184,7 @@ class Matcher implements Contract
             $arguments = $this->checkAndCastMatchValue($route, $parameter, $arguments, $index, $match);
         }
 
-        return $route->withArguments($arguments);
+        return $route->withDispatch($dispatch->withArguments($arguments));
     }
 
     /**

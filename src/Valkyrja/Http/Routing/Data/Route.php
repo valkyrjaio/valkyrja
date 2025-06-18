@@ -45,7 +45,6 @@ class Route implements Contract
      * @param class-string<TerminatedMiddleware>[]      $terminatedMiddleware      The terminated middleware
      * @param class-string<RequestStruct>|null          $requestStruct             The request struct
      * @param class-string<ResponseStruct>|null         $responseStruct            The response struct
-     * @param array<array-key, mixed>|null              $arguments                 The route arguments
      */
     public function __construct(
         protected string $path,
@@ -61,7 +60,6 @@ class Route implements Contract
         protected array $terminatedMiddleware = [],
         protected string|null $requestStruct = null,
         protected string|null $responseStruct = null,
-        protected array|null $arguments = null,
     ) {
     }
 
@@ -237,26 +235,6 @@ class Route implements Contract
         $new = clone $this;
 
         $new->regex = $regex;
-
-        return $new;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getArguments(): array|null
-    {
-        return $this->arguments;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function withArguments(array|null $arguments = null): static
-    {
-        $new = clone $this;
-
-        $new->arguments = $arguments;
 
         return $new;
     }

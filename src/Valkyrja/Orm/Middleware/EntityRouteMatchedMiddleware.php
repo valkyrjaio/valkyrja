@@ -80,7 +80,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
         $dispatch   = $route->getDispatch();
 
         if ($parameters !== [] && $dispatch instanceof ClassDispatch) {
-            $arguments    = $route->getArguments() ?? [];
+            $arguments    = $dispatch->getArguments() ?? [];
             $dependencies = $dispatch->getDependencies() ?? [];
 
             // Iterate through the params
@@ -92,7 +92,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
                 }
             }
 
-            $route = $route->withArguments($arguments);
+            $route = $route->withDispatch($dispatch->withArguments($arguments));
             $route = $route->withDispatch($dispatch->withDependencies($dependencies));
         }
 
