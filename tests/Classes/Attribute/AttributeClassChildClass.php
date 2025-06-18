@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Attribute;
 
 use Attribute;
+use Valkyrja\Dispatcher\Data\Contract\Dispatch;
 
 /**
  * Attribute child class used for unit testing.
@@ -36,6 +37,8 @@ class AttributeClassChildClass extends AttributeClass
     public bool|null $static = null;
 
     public bool|null $isOptional = null;
+
+    public Dispatch|null $dispatch = null;
 
     public mixed $default = null;
 
@@ -118,5 +121,20 @@ class AttributeClassChildClass extends AttributeClass
     public function setDefault(mixed $default): void
     {
         $this->default = $default;
+    }
+
+    public function getDispatch(): Dispatch|null
+    {
+        return $this->dispatch;
+    }
+
+    /**
+     * @param Dispatch|null $dispatch
+     */
+    public function withDispatch(Dispatch|null $dispatch): static
+    {
+        $this->dispatch = $dispatch;
+
+        return $this;
     }
 }

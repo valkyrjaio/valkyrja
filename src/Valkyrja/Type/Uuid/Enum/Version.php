@@ -13,18 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Uuid\Enum;
 
-use Valkyrja\Type\BuiltIn\Enum\Contract\Enum as Contract;
-use Valkyrja\Type\BuiltIn\Enum\Enum;
-
 /**
  * Enum Version.
  *
  * @author Melech Mizrachi
  */
-enum Version: int implements Contract
+enum Version: int
 {
-    use Enum;
-
     case V1 = 1;
     case V3 = 3;
     case V4 = 4;

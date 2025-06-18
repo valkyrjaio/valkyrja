@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Enum;
 
 use Valkyrja\Http\Message\Constant\StatusText;
-use Valkyrja\Type\BuiltIn\Enum\Contract\Enum as Contract;
-use Valkyrja\Type\BuiltIn\Enum\Enum;
 
 /**
  * Enum Status.
@@ -25,10 +23,8 @@ use Valkyrja\Type\BuiltIn\Enum\Enum;
  * @see    http://www.iana.org/assignments/http-status-codes/
  * - Hypertext Transfer Protocol (HTTP) Status Code Registry
  */
-enum StatusCode: int implements Contract
+enum StatusCode: int
 {
-    use Enum;
-
     case CONTINUE                        = 100;
     case SWITCHING_PROTOCOLS             = 101;
     case PROCESSING                      = 102;
@@ -193,13 +189,5 @@ enum StatusCode: int implements Contract
             self::NOT_EXTENDED_OBSOLETED          => StatusText::NOT_EXTENDED_OBSOLETED,
             self::NETWORK_AUTHENTICATION_REQUIRED => StatusText::NETWORK_AUTHENTICATION_REQUIRED,
         };
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function jsonSerialize(): int
-    {
-        return $this->value;
     }
 }

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Enum;
 
-use JsonException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Http\Message\Constant\StatusText;
 use Valkyrja\Http\Message\Enum\StatusCode;
@@ -21,9 +20,6 @@ use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Enum\Support\Enum;
 
 use function constant;
-use function json_encode;
-
-use const JSON_THROW_ON_ERROR;
 
 class StatusCodeTest extends TestCase
 {
@@ -85,15 +81,5 @@ class StatusCodeTest extends TestCase
     public function testText(StatusCode $status): void
     {
         self::assertSame($status->asPhrase(), constant(StatusText::class . "::$status->name"));
-    }
-
-    /**
-     * @throws JsonException
-     */
-    #[DataProvider('casesProvider')]
-    public function testJsonSerialize(StatusCode $statusCode): void
-    {
-        self::assertSame($statusCode->value, $statusCode->jsonSerialize());
-        self::assertSame((string) $statusCode->value, json_encode($statusCode, JSON_THROW_ON_ERROR));
     }
 }

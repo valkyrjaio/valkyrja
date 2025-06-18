@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Enum;
 
-use Valkyrja\Type\BuiltIn\Enum\Contract\Enum as Contract;
-use Valkyrja\Type\BuiltIn\Enum\Enum;
-
 /**
  * Enum RequestMethod.
  *
@@ -23,10 +20,8 @@ use Valkyrja\Type\BuiltIn\Enum\Enum;
  *
  * @see    https://www.rfc-editor.org/rfc/rfc9110.html#name-method-definitions
  */
-enum RequestMethod: string implements Contract
+enum RequestMethod: string
 {
-    use Enum;
-
     /**
      * @see https://www.rfc-editor.org/rfc/rfc9110.html#name-get
      */
@@ -85,12 +80,4 @@ enum RequestMethod: string implements Contract
         self::TRACE,
         self::PATCH,
     ];
-
-    /**
-     * @inheritDoc
-     */
-    public function jsonSerialize(): string
-    {
-        return $this->value;
-    }
 }

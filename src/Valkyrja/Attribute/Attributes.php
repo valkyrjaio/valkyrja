@@ -25,7 +25,6 @@ use ReflectionProperty;
 use Reflector;
 use Valkyrja\Attribute\Constant\AttributeProperty;
 use Valkyrja\Attribute\Contract\Attributes as Contract;
-use Valkyrja\Attribute\Exception\RuntimeException;
 use Valkyrja\Dispatcher\Data\CallableDispatch;
 use Valkyrja\Dispatcher\Data\ClassDispatch;
 use Valkyrja\Dispatcher\Data\ConstantDispatch;
@@ -416,10 +415,11 @@ class Attributes implements Contract
                             constant: $reflection->getName(),
                             class: $reflection->getDeclaringClass()->getName()
                         ),
-                        $reflection instanceof ReflectionFunction      => new CallableDispatch(
+                        $reflection instanceof ReflectionFunction
+                        && ! $reflection->isClosure()                  => new CallableDispatch(
                             callable: $reflection->getName()
                         ),
-                        default                                        => throw new RuntimeException('Unsupported reflection type'),
+                        default                                        => $instance->getDispatch(),
                     }
                 );
             }

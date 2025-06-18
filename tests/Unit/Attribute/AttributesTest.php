@@ -15,6 +15,9 @@ namespace Valkyrja\Tests\Unit\Attribute;
 
 use ReflectionException;
 use Valkyrja\Attribute\Attributes;
+use Valkyrja\Dispatcher\Data\Contract\ConstantDispatch;
+use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
+use Valkyrja\Dispatcher\Data\Contract\PropertyDispatch;
 use Valkyrja\Tests\Classes\Attribute\AttributeClass;
 use Valkyrja\Tests\Classes\Attribute\AttributeClassChildClass;
 use Valkyrja\Tests\Classes\Attribute\AttributedClass;
@@ -617,18 +620,21 @@ class AttributesTest extends TestCase
                 self::assertSame($name, $attribute->constant);
                 self::assertNull($attribute->property);
                 self::assertNull($attribute->method);
+                self::assertInstanceOf(ConstantDispatch::class, $attribute->dispatch);
             },
             self::STATIC_PROPERTY_NAME, self::PROPERTY_NAME => static function () use ($name, $attribute, $isStatic): void {
                 self::assertSame($isStatic, $attribute->static);
                 self::assertSame($name, $attribute->property);
                 self::assertNull($attribute->constant);
                 self::assertNull($attribute->method);
+                self::assertInstanceOf(PropertyDispatch::class, $attribute->dispatch);
             },
             self::STATIC_METHOD_NAME, self::METHOD_NAME => static function () use ($name, $attribute, $isStatic): void {
                 self::assertSame($isStatic, $attribute->static);
                 self::assertSame($name, $attribute->method);
                 self::assertNull($attribute->constant);
                 self::assertNull($attribute->property);
+                self::assertInstanceOf(MethodDispatch::class, $attribute->dispatch);
             },
         };
     }
