@@ -333,12 +333,6 @@ class Env
     public const array|null CONTAINER_DEV_PROVIDERS = null;
     /** @var bool|null */
     public const bool|null CONTAINER_USE_ATTRIBUTES = null;
-    /** @var string|null */
-    public const string|null CONTAINER_FILE_PATH = null;
-    /** @var string|null */
-    public const string|null CONTAINER_CACHE_FILE_PATH = null;
-    /** @var bool|null */
-    public const bool|null CONTAINER_USE_CACHE = null;
 
     /************************************************************
      *

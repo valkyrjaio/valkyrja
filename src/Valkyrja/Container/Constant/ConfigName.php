@@ -26,7 +26,4 @@ final class ConfigName
     public const string PROVIDERS        = 'providers';
     public const string DEV_PROVIDERS    = 'devProviders';
     public const string USE_ATTRIBUTES   = 'useAttributes';
-    public const string FILE_PATH        = 'filePath';
-    public const string CACHE_FILE_PATH  = 'cacheFilePath';
-    public const string USE_CACHE        = 'useCache';
 }

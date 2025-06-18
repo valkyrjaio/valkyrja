@@ -52,17 +52,6 @@ class EnvClass extends Env
 
     /************************************************************
      *
-     * Container component env variables.
-     *
-     ************************************************************/
-
-    /** @var string|null */
-    public const string|null CONTAINER_FILE_PATH = __DIR__ . '/bootstrap/services/default.php';
-    /** @var string|null */
-    public const string|null CONTAINER_CACHE_FILE_PATH = __DIR__ . '/bootstrap/container-cache.php';
-
-    /************************************************************
-     *
      * Event component env variables.
      *
      ************************************************************/

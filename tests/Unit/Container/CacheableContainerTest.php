@@ -68,8 +68,7 @@ class CacheableContainerTest extends TestCase
 
         $cacheable = $container->getCacheable();
 
-        $config->useCache = true;
-        $config->cache    = $cacheable->cache;
+        $config->cache = $cacheable->cache;
 
         $container->setup(true, true);
 

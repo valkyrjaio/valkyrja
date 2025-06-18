@@ -20,7 +20,6 @@ use Valkyrja\Container\Constant\ConfigValue;
 use Valkyrja\Container\Constant\EnvName;
 use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Support\Directory;
 
 /**
  * Class Config.
@@ -41,9 +40,6 @@ class Config extends ParentConfig
         ConfigName::PROVIDERS        => EnvName::PROVIDERS,
         ConfigName::DEV_PROVIDERS    => EnvName::DEV_PROVIDERS,
         ConfigName::USE_ATTRIBUTES   => EnvName::USE_ATTRIBUTES,
-        ConfigName::FILE_PATH        => EnvName::FILE_PATH,
-        ConfigName::CACHE_FILE_PATH  => EnvName::CACHE_FILE_PATH,
-        ConfigName::USE_CACHE        => EnvName::USE_CACHE,
     ];
 
     /**
@@ -60,9 +56,6 @@ class Config extends ParentConfig
         public array $providers = [],
         public array $devProviders = [],
         public bool $useAttributes = true,
-        public string $filePath = '',
-        public string $cacheFilePath = '',
-        public bool $useCache = false,
         public Cache|null $cache = null,
     ) {
     }
@@ -74,13 +67,5 @@ class Config extends ParentConfig
     {
         $this->providers    = array_merge(ConfigValue::PROVIDERS, $this->providers);
         $this->devProviders = array_merge(ConfigValue::DEV_PROVIDERS, $this->devProviders);
-
-        if ($this->filePath === '') {
-            $this->filePath = Directory::servicesPath('default.php');
-        }
-
-        if ($this->cacheFilePath === '') {
-            $this->cacheFilePath = Directory::cachePath('container.php');
-        }
     }
 }

@@ -99,7 +99,6 @@ class OptimizeCacheCommand extends Commander
         $config->container->providers = $containerCache->providers;
         $config->container->cache     = $containerCache->cache
             ?? throw new RuntimeException('Container Cache should be set');
-        $config->container->useCache  = true;
 
         $config->console->cache = $consoleCache;
 

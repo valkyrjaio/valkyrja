@@ -18,10 +18,8 @@ use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Contract\ContextAwareContainer;
 use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Exception\RuntimeException;
 
 use function array_map;
-use function is_file;
 
 /**
  * Class CacheableContainer.
@@ -48,23 +46,20 @@ class CacheableContainer extends Container
         }
 
         $this->setup = true;
-        // The cacheable config
-        $config = $this->config;
 
-        $configUseCache = $config->useCache;
+        $cache = $this->config->cache;
 
         // If the application should use the routes cache file
-        if ($useCache && $configUseCache) {
-            $this->setupFromCache($config);
+        if ($useCache && $cache) {
+            $this->setupFromCache($cache);
 
             // Then return out of setup
             return;
         }
 
-        $this->setupNotCached($config);
-        $this->setupAnnotatedServices($config);
-        $this->setupAttributedServices($config);
-        $this->requireFilePath($config);
+        $this->setupNotCached();
+        $this->setupAnnotatedServices();
+        $this->setupAttributedServices();
     }
 
     /**
@@ -75,7 +70,8 @@ class CacheableContainer extends Container
         $this->setup(true, false);
 
         // Set app config
-        $config        = clone $this->config;
+        $config = clone $this->config;
+
         $config->cache = $this->getCacheModel();
         $providers     = $config->providers;
 
@@ -95,25 +91,8 @@ class CacheableContainer extends Container
     /**
      * Setup from cache.
      */
-    protected function setupFromCache(Config $config): void
+    protected function setupFromCache(Cache $cache): void
     {
-        $cache = $config->cache ?? null;
-
-        if ($cache === null) {
-            $cache         = [];
-            $cacheFilePath = $config->cacheFilePath;
-
-            if (is_file($cacheFilePath)) {
-                $cache = require $cacheFilePath;
-
-                if (! $cache instanceof Cache) {
-                    throw new RuntimeException('Invalid cache object returned');
-                }
-            } else {
-                throw new RuntimeException('No cache found');
-            }
-        }
-
         $this->aliases          = $cache->aliases;
         $this->deferred         = $cache->deferred;
         $this->deferredCallback = $cache->deferredCallback;
@@ -122,28 +101,28 @@ class CacheableContainer extends Container
         $this->registered       = [];
 
         // Setup service providers
-        $this->setupServiceProviders($config);
+        $this->setupServiceProviders();
     }
 
     /**
      * Setup not cached.
      */
-    protected function setupNotCached(Config $config): void
+    protected function setupNotCached(): void
     {
         // Setup service providers
-        $this->setupServiceProviders($config);
+        $this->setupServiceProviders();
     }
 
     /**
      * Get annotated services.
      */
-    protected function setupAnnotatedServices(Config $config): void
+    protected function setupAnnotatedServices(): void
     {
         /** @var Annotations $containerAnnotations */
         $containerAnnotations = $this->getSingleton(Annotations::class);
 
         // Get all the annotated services from the list of controllers and iterate through the services
-        foreach ($containerAnnotations->getServices(...$config->services) as $service) {
+        foreach ($containerAnnotations->getServices(...$this->config->services) as $service) {
             $class = $service->getClass();
             $id    = $service->getId();
 
@@ -155,7 +134,7 @@ class CacheableContainer extends Container
         }
 
         // Get all the annotated services from the list of controllers and iterate through the services
-        foreach ($containerAnnotations->getContextServices(...$config->contextServices) as $context) {
+        foreach ($containerAnnotations->getContextServices(...$this->config->contextServices) as $context) {
             $class   = $context->getClass();
             $method  = $context->getMethod();
             $id      = $context->getId();
@@ -168,7 +147,7 @@ class CacheableContainer extends Container
         }
 
         // Get all the annotated services from the list of classes and iterate through the services
-        foreach ($containerAnnotations->getAliasServices(...$config->aliases) as $alias) {
+        foreach ($containerAnnotations->getAliasServices(...$this->config->aliases) as $alias) {
             $name = $alias->getName();
             $id   = $alias->getId();
 
@@ -182,32 +161,18 @@ class CacheableContainer extends Container
     /**
      * Get attributed services.
      */
-    protected function setupAttributedServices(Config $config): void
+    protected function setupAttributedServices(): void
     {
-    }
-
-    /**
-     * Require the file path specified in the config.
-     */
-    protected function requireFilePath(Config $config): void
-    {
-        // $filePath = $config->filePath;
-        //
-        // if (! is_file($filePath)) {
-        //     throw new InvalidArgumentException('Invalid file path provided');
-        // }
-        //
-        // require $filePath;
     }
 
     /**
      * Setup service providers.
      */
-    protected function setupServiceProviders(Config $config): void
+    protected function setupServiceProviders(): void
     {
         array_map(
             [$this, 'register'],
-            $config->providers
+            $this->config->providers
         );
 
         // If this is not a dev environment
@@ -217,7 +182,7 @@ class CacheableContainer extends Container
 
         array_map(
             [$this, 'register'],
-            $config->devProviders
+            $this->config->devProviders
         );
     }
 
@@ -228,7 +193,8 @@ class CacheableContainer extends Container
      */
     protected function getCacheModel(): Cache
     {
-        $config                   = new Cache();
+        $config = new Cache();
+
         $config->aliases          = $this->aliases;
         $config->deferred         = $this->deferred;
         $config->deferredCallback = $this->deferredCallback;

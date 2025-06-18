@@ -26,7 +26,4 @@ final class EnvName
     public const string PROVIDERS        = 'CONTAINER_PROVIDERS';
     public const string DEV_PROVIDERS    = 'CONTAINER_DEV_PROVIDERS';
     public const string USE_ATTRIBUTES   = 'CONTAINER_USE_ATTRIBUTES';
-    public const string FILE_PATH        = 'CONTAINER_FILE_PATH';
-    public const string CACHE_FILE_PATH  = 'CONTAINER_CACHE_FILE_PATH';
-    public const string USE_CACHE        = 'CONTAINER_USE_CACHE';
 }
