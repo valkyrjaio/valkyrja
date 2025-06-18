@@ -52,17 +52,6 @@ class EnvClass extends Env
 
     /************************************************************
      *
-     * Event component env variables.
-     *
-     ************************************************************/
-
-    /** @var string|null */
-    public const string|null EVENT_FILE_PATH = __DIR__ . '/bootstrap/events/default.php';
-    /** @var string|null */
-    public const string|null EVENT_CACHE_FILE_PATH = __DIR__ . '/bootstrap/events-cache.php';
-
-    /************************************************************
-     *
      * Http Routing component env variables.
      *
      ************************************************************/
