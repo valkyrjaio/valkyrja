@@ -39,7 +39,6 @@ final class AppProvider extends Provider
 
         $app->setContainer($container);
 
-        self::bootstrapContainer($app, $container);
         self::bootstrapServices($app, $container);
 
         $container->setup();
@@ -48,13 +47,6 @@ final class AppProvider extends Provider
         self::bootstrapErrorHandler($app, $container);
         // Bootstrap the timezone
         self::bootstrapTimezone($dataConfig);
-    }
-
-    /**
-     * Bootstrap container.
-     */
-    protected static function bootstrapContainer(Application $app, Container $container): void
-    {
     }
 
     /**

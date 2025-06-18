@@ -130,13 +130,6 @@ class CacheableContainer extends Container
      */
     protected function setupNotCached(Config $config): void
     {
-        $this->aliases          = [];
-        $this->registered       = [];
-        $this->deferred         = [];
-        $this->deferredCallback = [];
-        $this->services         = [];
-        $this->singletons       = [];
-
         // Setup service providers
         $this->setupServiceProviders($config);
     }
