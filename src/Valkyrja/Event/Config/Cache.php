@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Config;
 
-use Valkyrja\Event\Model\Contract\Listener;
+use Valkyrja\Event\Data\Contract\Listener;
 
 /**
  * Class Cache.

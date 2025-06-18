@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Event;
 
 use Psr\EventDispatcher\StoppableEventInterface;
-use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
+use Valkyrja\Dispatcher\Contract\Dispatcher2 as DispatchDispatcher;
 use Valkyrja\Event\Collection\Contract\Collection;
 use Valkyrja\Event\Contract\DispatchCollectableEvent;
 use Valkyrja\Event\Contract\Dispatcher as Contract;
-use Valkyrja\Event\Model\Contract\Listener;
+use Valkyrja\Event\Data\Contract\Listener;
 
 /**
  * Class Dispatcher.
@@ -114,7 +114,7 @@ class Dispatcher implements Contract
     public function dispatchListener(object $event, Listener $listener): object
     {
         // Dispatch the listener with the event
-        $dispatch = $this->dispatcher->dispatch($listener, [$event]);
+        $dispatch = $this->dispatcher->dispatch($listener->getDispatch(), [$event]);
 
         // If the event is a dispatch collectable event
         if ($event instanceof DispatchCollectableEvent) {

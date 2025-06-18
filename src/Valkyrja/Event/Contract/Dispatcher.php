@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Contract;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Valkyrja\Event\Model\Contract\Listener;
+use Valkyrja\Event\Data\Contract\Listener;
 
 /**
  * Interface Dispatcher.

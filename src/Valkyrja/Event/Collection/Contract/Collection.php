@@ -15,7 +15,7 @@ namespace Valkyrja\Event\Collection\Contract;
 
 use ArrayAccess;
 use Psr\EventDispatcher\ListenerProviderInterface;
-use Valkyrja\Event\Model\Contract\Listener;
+use Valkyrja\Event\Data\Contract\Listener;
 
 /**
  * Interface Dispatcher.

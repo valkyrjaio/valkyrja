@@ -31,6 +31,13 @@ class ListenerTest extends TestCase
     protected const string VALUE = self::class;
 
     /**
+     * The name to test with.
+     *
+     * @var non-empty-string
+     */
+    protected const string NAME = 'uniqueName';
+
+    /**
      * The class to test with.
      */
     protected Listener $class;
@@ -44,7 +51,7 @@ class ListenerTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new Listener(self::VALUE);
+        $this->class = new Listener(self::VALUE, self::NAME);
     }
 
     /**
@@ -57,10 +64,10 @@ class ListenerTest extends TestCase
         self::assertSame(self::VALUE, $this->class->getEventId());
 
         $newValue = TestCase::class;
-        $set      = $this->class->setEventId($newValue);
+        $new      = $this->class->withEventId($newValue);
 
-        self::assertSame($newValue, $this->class->getEventId());
-        // Assertion to ensure the interface doesn't change unexpectedly
-        self::assertTrue($set instanceof Listener);
+        self::assertSame(self::VALUE, $this->class->getEventId());
+        self::assertSame($newValue, $new->getEventId());
+        self::assertNotSame($new, $this->class);
     }
 }

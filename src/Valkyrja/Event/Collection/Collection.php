@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Collection;
 
 use Valkyrja\Event\Collection\Contract\Collection as Contract;
+use Valkyrja\Event\Data\Contract\Listener;
+use Valkyrja\Event\Data\Listener as Model;
 use Valkyrja\Event\Exception\InvalidArgumentException;
-use Valkyrja\Event\Model\Contract\Listener;
-use Valkyrja\Event\Model\Listener as Model;
 
 use function array_keys;
 use function is_array;
@@ -49,9 +49,7 @@ class Collection implements Contract
      */
     public function hasListener(Listener $listener): bool
     {
-        return $this->hasListenerById(
-            $this->getIdFromListener($listener)
-        );
+        return $this->hasListenerById($listener->getName());
     }
 
     /**
@@ -67,7 +65,7 @@ class Collection implements Contract
      */
     public function addListener(Listener $listener): void
     {
-        $listenerId = $this->getIdFromListener($listener);
+        $listenerId = $listener->getName();
         $eventId    = $listener->getEventId();
 
         $this->events[$eventId] ??= [];
@@ -80,7 +78,7 @@ class Collection implements Contract
      */
     public function removeListener(Listener $listener): void
     {
-        $listenerId = $this->getIdFromListener($listener);
+        $listenerId = $listener->getName();
         $eventId    = $listener->getEventId();
 
         unset($this->events[$eventId][$listenerId], $this->listeners[$listenerId]);
@@ -152,8 +150,9 @@ class Collection implements Contract
     public function setListenersForEventById(string $eventId, Listener ...$listeners): void
     {
         foreach ($listeners as $listener) {
-            $listener->setEventId($eventId);
-            $this->addListener($listener);
+            $this->addListener(
+                $listener->withEventId($eventId)
+            );
         }
     }
 
@@ -264,11 +263,11 @@ class Collection implements Contract
     /**
      * Ensure a listener, or null, is returned.
      *
-     * @param Listener|array<string, mixed>|string $listener The listener
+     * @param Listener|string $listener The listener
      *
      * @return Listener
      */
-    protected function ensureListener(Listener|array|string $listener): Listener
+    protected function ensureListener(Listener|string $listener): Listener
     {
         if (is_string($listener)) {
             $unserializedListener = unserialize($listener, ['allowed_classes' => true]);
@@ -280,18 +279,6 @@ class Collection implements Contract
             return $unserializedListener;
         }
 
-        if (is_array($listener)) {
-            return Model::fromArray($listener);
-        }
-
         return $listener;
-    }
-
-    /**
-     * Get an id for a given listener.
-     */
-    protected function getIdFromListener(Listener $listener): string
-    {
-        return $listener->getId() ?? md5($listener->__toString());
     }
 }

@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Attribute;
 
-use InvalidArgumentException;
 use ReflectionException;
 use Valkyrja\Attribute\Contract\Attributes as AttributeAttributes;
 use Valkyrja\Event\Attribute\Contract\Attributes as Contract;
 use Valkyrja\Event\Attribute\Listener as Attribute;
-use Valkyrja\Event\Model\Contract\Listener;
-use Valkyrja\Event\Model\Listener as Model;
+use Valkyrja\Event\Data\Contract\Listener;
+use Valkyrja\Event\Data\Listener as Model;
 use Valkyrja\Reflection\Contract\Reflection;
 
 /**
@@ -50,20 +49,8 @@ class Attributes implements Contract
             $attributes = $this->attributes->forClassAndMembers($class, Attribute::class);
 
             // Get all the attributes for each class and iterate through them
-            /** @var Attribute $attribute */
-            foreach ($attributes as $key => $attribute) {
-                $this->setListenerProperties($attribute);
-
-                // Check if the attribute has a method. If not there's no where for this event to be dispatched to
-                if ($attribute->getMethod() === null) {
-                    // So unset it as it's an invalid attribute
-                    unset($attributes[$key]);
-
-                    // Continue onward
-                    continue;
-                }
-                // Set the attribute in the attributes list
-                $listeners[] = $this->getListenerFromAttribute($attribute);
+            foreach ($attributes as $attribute) {
+                $listeners[] = $this->setListenerProperties($attribute);
             }
         }
 
@@ -77,39 +64,35 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      *
-     * @return void
+     * @return Listener
      */
-    protected function setListenerProperties(Attribute $attribute): void
+    protected function setListenerProperties(Attribute $attribute): Listener
     {
-        if (! ($class = $attribute->getClass())) {
-            throw new InvalidArgumentException('Invalid class defined in listener attribute.');
-        }
+        $dispatch         = $attribute->getDispatch();
+        $methodReflection = $this->reflection->forClassMethod($dispatch->getClass(), $dispatch->getMethod());
 
-        $classReflection = $this->reflection->forClass($class);
+        $dependencies = $this->reflection->getDependencies($methodReflection);
 
-        if (($method = $attribute->getMethod()) !== null || $classReflection->hasMethod('__construct')) {
-            $method ??= '__construct';
-
-            $attribute->setMethod($method);
-            /** @var non-empty-string $method */
-            $methodReflection = $this->reflection->forClassMethod($class, $method);
-
-            // Set the dependencies
-            $attribute->setDependencies($this->reflection->getDependencies($methodReflection));
-        }
-
-        $attribute->setMatches();
+        return $this->getListenerFromAttribute(
+            $attribute->withDispatch(
+                $dispatch->withDependencies($dependencies)
+            )
+        );
     }
 
     /**
      * Get a listener from an attribute.
      *
-     * @param Attribute $attribute The attribute
+     * @param Listener $attribute The attribute
      *
      * @return Listener
      */
-    protected function getListenerFromAttribute(Attribute $attribute): Listener
+    protected function getListenerFromAttribute(Listener $attribute): Listener
     {
-        return Model::fromArray($attribute->asArray());
+        return new Model(
+            eventId: $attribute->getEventId(),
+            name: $attribute->getName(),
+            dispatch: $attribute->getDispatch()
+        );
     }
 }

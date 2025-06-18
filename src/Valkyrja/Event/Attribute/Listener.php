@@ -14,24 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Attribute;
 
 use Attribute;
-use Valkyrja\Event\Model\Listener as Model;
+use Valkyrja\Event\Data\Listener as Model;
 
 /**
  * Attribute Listener.
  *
  * @author Melech Mizrachi
  */
-#[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class Listener extends Model
 {
-    /**
-     * @param class-string $eventId
-     */
-    public function __construct(
-        string $eventId,
-        string|null $name = null,
-    ) {
-        $this->setEventId($eventId);
-        $this->setName($name);
-    }
 }
