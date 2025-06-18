@@ -83,13 +83,13 @@ class OptimizeCacheCommand extends Commander
         $config->app->env   = 'production';
 
         /** @var CacheableContainer $container */
-        $container = $this->container;
+        $container = clone $this->container;
         /** @var CacheableConsole $console */
-        $console = $this->console;
+        $console = clone $this->console;
         /** @var CacheableEvents $events */
-        $events = $this->eventCollection;
+        $events = clone $this->eventCollection;
         /** @var CacheableCollection $collection */
-        $collection = $this->routerCollection;
+        $collection = clone $this->routerCollection;
 
         $containerCache = $container->getCacheable();
         $consoleCache   = $console->getCacheable();
@@ -108,15 +108,6 @@ class OptimizeCacheCommand extends Commander
         $config->event->useCache = true;
 
         $config->httpRouting->cache = $routesCache;
-
-        // $containerProvided = $config->container->cache->provided
-        //     ?? [];
-        //
-        // foreach ($config->container->providers as $key => $provider) {
-        //     if (in_array($provider, $containerProvided, true)) {
-        //         unset($config->container->providers[$key]);
-        //     }
-        // }
 
         // Get the results of the cache attempt
         $result = file_put_contents($cacheFilePath, $config->asSerializedString(), LOCK_EX);
