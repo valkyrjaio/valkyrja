@@ -20,6 +20,7 @@ use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as Contract;
 use Valkyrja\Http\Message\Response\Contract\JsonResponse;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponse;
 use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Response\Contract\TextResponse;
 use Valkyrja\Http\Message\Uri\Uri;
 
 /**
@@ -38,6 +39,21 @@ class ResponseFactory implements Contract
         array|null $headers = null
     ): Response {
         return \Valkyrja\Http\Message\Response\Response::create(
+            content: $content,
+            statusCode: $statusCode,
+            headers: $headers
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createTextResponse(
+        string|null $content = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
+    ): TextResponse {
+        return \Valkyrja\Http\Message\Response\TextResponse::create(
             content: $content,
             statusCode: $statusCode,
             headers: $headers

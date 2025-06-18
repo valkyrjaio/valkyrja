@@ -17,6 +17,7 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Response\Contract\JsonResponse;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponse;
 use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Response\Contract\TextResponse;
 
 /**
  * Interface ResponseFactory.
@@ -39,6 +40,21 @@ interface ResponseFactory
         StatusCode|null $statusCode = null,
         array|null $headers = null
     ): Response;
+
+    /**
+     * Create a text response.
+     *
+     * @param string|null                  $content    [optional] The response content
+     * @param StatusCode|null              $statusCode [optional] The response status code
+     * @param array<string, string[]>|null $headers    [optional] An array of response headers
+     *
+     * @return TextResponse
+     */
+    public function createTextResponse(
+        string|null $content = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
+    ): TextResponse;
 
     /**
      * Create a JSON response.

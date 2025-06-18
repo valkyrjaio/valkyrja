@@ -56,4 +56,19 @@ class TextResponse extends Response implements Contract
             $this->injectHeader(HeaderName::CONTENT_TYPE, ContentType::TEXT_PLAIN_UTF8, $headers, true)
         );
     }
+
+    /**
+     * @inheritDoc
+     */
+    public static function create(
+        string|null $content = null,
+        StatusCode|null $statusCode = null,
+        array|null $headers = null
+    ): static {
+        return new static(
+            text: $content,
+            statusCode: $statusCode ?? static::DEFAULT_STATUS_CODE,
+            headers: $headers ?? static::DEFAULT_HEADERS
+        );
+    }
 }
