@@ -258,7 +258,7 @@ class Collector implements Contract
             );
         }
 
-        return $this->processor->route($route->withMatches());
+        return $this->processor->route($route->withArguments());
     }
 
     /**

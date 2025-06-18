@@ -223,7 +223,7 @@ class Router implements Contract
         // Attempt to dispatch the route using any one of the callable options
         $response = $this->dispatcher->dispatch(
             dispatch: $routeAfterMiddleware->getDispatch(),
-            arguments: $routeAfterMiddleware->getMatches()
+            arguments: $routeAfterMiddleware->getArguments()
         );
 
         if (! $response instanceof Response) {

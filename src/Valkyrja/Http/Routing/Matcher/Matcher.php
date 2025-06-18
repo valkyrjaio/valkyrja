@@ -127,9 +127,9 @@ class Matcher implements Contract
         }
 
         // If the preg match is successful, we've found our route!
-        if ($regex !== '' && preg_match($regex, $path, $matches)) {
-            /** @var array<int, string> $matches */
-            return $this->applyMatchesToRoute($route, $matches);
+        if ($regex !== '' && preg_match($regex, $path, $arguments)) {
+            /** @var array<int, string> $arguments */
+            return $this->applyMatchesToRoute($route, $arguments);
         }
 
         return null;
@@ -138,35 +138,35 @@ class Matcher implements Contract
     /**
      * Get a matched dynamic route.
      *
-     * @param Route              $route   The route
-     * @param array<int, string> $matches The regex matches
+     * @param Route              $route     The route
+     * @param array<int, string> $arguments The regex matches
      *
      * @throws InvalidRoutePathException
      *
      * @return Route
      */
-    protected function applyMatchesToRoute(Route $route, array $matches): Route
+    protected function applyMatchesToRoute(Route $route, array $arguments): Route
     {
         // Clone the route to avoid changing the one set in the master array
         $route = clone $route;
 
-        return $this->processMatches($route, $matches);
+        return $this->processMatches($route, $arguments);
     }
 
     /**
      * Process matches for a dynamic route.
      *
-     * @param Route              $route   The route
-     * @param array<int, string> $matches The regex matches
+     * @param Route              $route     The route
+     * @param array<int, string> $arguments The regex matches
      *
      * @throws InvalidRoutePathException
      *
      * @return Route
      */
-    protected function processMatches(Route $route, array $matches): Route
+    protected function processMatches(Route $route, array $arguments): Route
     {
         // The first match is the path itself, the rest could be empty.
-        if (array_shift($matches) === null || empty($matches)) {
+        if (array_shift($arguments) === null || empty($arguments)) {
             return $route;
         }
 
@@ -174,25 +174,25 @@ class Matcher implements Contract
         $parameters = $route->getParameters();
 
         // Iterate through the matches
-        foreach ($matches as $index => $match) {
-            $parameter = $this->getParameterForMatchIndex($parameters, $index);
+        foreach ($arguments as $index => $match) {
+            $parameter = $this->getParameterForAgumentIndex($parameters, $index);
 
-            $matches = $this->updateMatchValueWithDefault($parameter, $matches, $index, $match);
-            $matches = $this->checkAndCastMatchValue($route, $parameter, $matches, $index, $match);
+            $arguments = $this->updateArgumentValueWithDefault($parameter, $arguments, $index, $match);
+            $arguments = $this->checkAndCastMatchValue($route, $parameter, $arguments, $index, $match);
         }
 
-        return $route->withMatches($matches);
+        return $route->withArguments($arguments);
     }
 
     /**
      * @param array<array-key, Parameter> $parameters The parameters
-     * @param int                         $index      The index for this match
+     * @param int                         $index      The index for this argument
      *
      * @throws InvalidRoutePathException
      *
      * @return Parameter
      */
-    protected function getParameterForMatchIndex(array $parameters, int $index): Parameter
+    protected function getParameterForAgumentIndex(array $parameters, int $index): Parameter
     {
         return $parameters[$index]
             ?? throw new InvalidRoutePathException("No parameter for match key $index");
@@ -202,20 +202,20 @@ class Matcher implements Contract
      * Update a match's value with the default as defined in the parameter.
      *
      * @param Parameter         $parameter The parameter
-     * @param array<int, mixed> $matches   The matches
-     * @param int               $index     The index for this match
-     * @param mixed             $match     The match
+     * @param array<int, mixed> $matches   The arguments
+     * @param int               $index     The index for this argument
+     * @param mixed             $argument  The argument
      *
      * @return array<int, mixed>
      */
-    protected function updateMatchValueWithDefault(
+    protected function updateArgumentValueWithDefault(
         Parameter $parameter,
         array $matches,
         int $index,
-        mixed $match
+        mixed $argument
     ): array {
         // If there is no match (middle of regex optional group)
-        if (! $match) {
+        if (! $argument) {
             // Set the value to the parameter default
             $matches[$index] = $parameter->getDefault();
         }
@@ -226,31 +226,31 @@ class Matcher implements Contract
     /**
      * @param Route             $route     The Route
      * @param Parameter         $parameter The parameter
-     * @param array<int, mixed> $matches   The matches
-     * @param int               $index     The index for this match
-     * @param mixed             $match     The match
+     * @param array<int, mixed> $arguments The arguments
+     * @param int               $index     The index for this argument
+     * @param mixed             $argument  The argument
      *
      * @return array<int, mixed>
      */
     protected function checkAndCastMatchValue(
         Route $route,
         Parameter $parameter,
-        array $matches,
+        array $arguments,
         int $index,
-        mixed $match
+        mixed $argument
     ): array {
         $cast = $parameter->getCast();
 
         if ($cast !== null) {
             // This shouldn't ever happen as we're iterating over the array with fresh match values as the process runs
-            if (! is_string($match)) {
+            if (! is_string($argument)) {
                 throw new RuntimeException('Unexpected match value for ' . $parameter->getName());
             }
 
-            $matches[$index] = $this->castMatchValue($route, $parameter, $cast, $index, $match);
+            $arguments[$index] = $this->castMatchValue($route, $parameter, $cast, $index, $argument);
         }
 
-        return $matches;
+        return $arguments;
     }
 
     /**
@@ -259,14 +259,14 @@ class Matcher implements Contract
      * @param Route     $route     The route
      * @param Parameter $parameter The parameter
      * @param Cast      $cast      The cast
-     * @param int       $index     The match index
-     * @param string    $match     The match value
+     * @param int       $index     The argument index
+     * @param string    $argument  The argument value
      *
      * @return mixed
      */
-    protected function castMatchValue(Route $route, Parameter $parameter, Cast $cast, int $index, string $match): mixed
+    protected function castMatchValue(Route $route, Parameter $parameter, Cast $cast, int $index, string $argument): mixed
     {
-        $type = $cast->type::fromValue($match);
+        $type = $cast->type::fromValue($argument);
 
         if ($cast->convert) {
             return $type->asValue();

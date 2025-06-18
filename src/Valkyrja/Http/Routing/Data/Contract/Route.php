@@ -163,20 +163,20 @@ interface Route
     public function withRegex(string|null $regex = null): static;
 
     /**
-     * Get the dynamic route matches.
+     * Get the dynamic route arguments.
      *
      * @return array<array-key, mixed>|null
      */
-    public function getMatches(): array|null;
+    public function getArguments(): array|null;
 
     /**
-     * Create a new route with a set of dynamic route matches.
+     * Create a new route with a set of route arguments.
      *
-     * @param array<array-key, mixed>|null $matches The dynamic route matches
+     * @param array<array-key, mixed>|null $arguments The route arguments
      *
      * @return static
      */
-    public function withMatches(array|null $matches = null): static;
+    public function withArguments(array|null $arguments = null): static;
 
     /**
      * Get the parameters.

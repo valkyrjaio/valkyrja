@@ -80,19 +80,19 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
         $dispatch   = $route->getDispatch();
 
         if ($parameters !== [] && $dispatch instanceof ClassDispatch) {
-            $matches      = $route->getMatches() ?? [];
+            $arguments    = $route->getArguments() ?? [];
             $dependencies = $dispatch->getDependencies() ?? [];
 
             // Iterate through the params
             foreach ($parameters as $index => $parameter) {
-                $response = $this->checkParameterForEntity((int) $index, $parameter, $dependencies, $matches);
+                $response = $this->checkParameterForEntity((int) $index, $parameter, $dependencies, $arguments);
 
                 if ($response !== null) {
                     return $response;
                 }
             }
 
-            $route = $route->withMatches($matches);
+            $route = $route->withArguments($arguments);
             $route = $route->withDispatch($dispatch->withDependencies($dependencies));
         }
 
@@ -105,16 +105,16 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
      * @param int                     $index        The index
      * @param Parameter               $parameter    The parameter
      * @param string[]                $dependencies The route dependencies
-     * @param array<array-key, mixed> $matches      The matches
+     * @param array<array-key, mixed> $arguments    The arguments
      *
      * @return Response|null
      */
-    protected function checkParameterForEntity(int $index, Parameter $parameter, array &$dependencies, array &$matches): Response|null
+    protected function checkParameterForEntity(int $index, Parameter $parameter, array &$dependencies, array &$arguments): Response|null
     {
         $type = $parameter->getCast()->type ?? null;
 
         if ($type !== null && is_a($type, Entity::class, true)) {
-            $match = $matches[$index];
+            $match = $arguments[$index];
 
             if (! is_string($match) && ! is_int($match) && ! $match instanceof Entity) {
                 return $this->getBadRequestResponse($type, $match);
