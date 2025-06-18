@@ -53,7 +53,7 @@ class CacheableCollection extends Collection
 
         $this->setup = true;
 
-        $cache = $this->config->cache ?? null;
+        $cache = $this->config->cache;
 
         // If the application should use the routes cache
         if ($useCache && $cache !== null) {
@@ -73,7 +73,8 @@ class CacheableCollection extends Collection
     {
         $this->setup(true, false);
 
-        $config            = new Cache();
+        $config = new Cache();
+
         $config->events    = $this->events;
         $config->listeners = [];
 
