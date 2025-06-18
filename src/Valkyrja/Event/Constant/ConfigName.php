@@ -21,7 +21,4 @@ namespace Valkyrja\Event\Constant;
 final class ConfigName
 {
     public const string LISTENER_CLASSES = 'listenerClasses';
-    public const string FILE_PATH        = 'filePath';
-    public const string CACHE_FILE_PATH  = 'cacheFilePath';
-    public const string USE_CACHE        = 'useCache';
 }

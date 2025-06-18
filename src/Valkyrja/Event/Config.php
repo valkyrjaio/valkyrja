@@ -17,7 +17,6 @@ use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Event\Config\Cache;
 use Valkyrja\Event\Constant\ConfigName;
 use Valkyrja\Event\Constant\EnvName;
-use Valkyrja\Support\Directory;
 
 /**
  * Class Config.
@@ -33,9 +32,6 @@ class Config extends ParentConfig
      */
     protected static array $envNames = [
         ConfigName::LISTENER_CLASSES => EnvName::LISTENER_CLASSES,
-        ConfigName::FILE_PATH        => EnvName::FILE_PATH,
-        ConfigName::CACHE_FILE_PATH  => EnvName::CACHE_FILE_PATH,
-        ConfigName::USE_CACHE        => EnvName::USE_CACHE,
     ];
 
     /**
@@ -43,24 +39,7 @@ class Config extends ParentConfig
      */
     public function __construct(
         public array $listenerClasses = [],
-        public string $filePath = '',
-        public string $cacheFilePath = '',
-        public bool $useCache = false,
         public Cache|null $cache = null,
     ) {
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function setPropertiesBeforeSettingFromEnv(string $env): void
-    {
-        if ($this->filePath === '') {
-            $this->filePath = Directory::eventsPath('default.php');
-        }
-
-        if ($this->cacheFilePath === '') {
-            $this->filePath = Directory::cachePath('events.php');
-        }
     }
 }

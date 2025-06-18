@@ -17,9 +17,6 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Event\Attribute\Contract\Attributes;
 use Valkyrja\Event\Config;
 use Valkyrja\Event\Config\Cache;
-use Valkyrja\Exception\RuntimeException;
-
-use function is_file;
 
 /**
  * Class CacheableCollection.
@@ -55,22 +52,18 @@ class CacheableCollection extends Collection
         }
 
         $this->setup = true;
-        // The cacheable config
-        $config = $this->config;
 
-        $configUseCache = $config->useCache;
+        $cache = $this->config->cache ?? null;
 
-        // If the application should use the routes cache file
-        if ($useCache && $configUseCache) {
-            $this->setupFromCache();
+        // If the application should use the routes cache
+        if ($useCache && $cache !== null) {
+            $this->setupFromCache($cache);
 
             // Then return out of setup
             return;
         }
 
         $this->setupNotCached();
-        $this->setupAttributedListeners();
-        $this->requireFilePath();
     }
 
     /**
@@ -96,31 +89,14 @@ class CacheableCollection extends Collection
      */
     protected function setupNotCached(): void
     {
-        $this->events = [];
+        $this->setupAttributedListeners();
     }
 
     /**
      * Setup from cache.
      */
-    protected function setupFromCache(): void
+    protected function setupFromCache(Cache $cache): void
     {
-        $cache = $this->config->cache ?? null;
-
-        if ($cache === null) {
-            $cache         = [];
-            $cacheFilePath = $this->config->cacheFilePath;
-
-            if (is_file($cacheFilePath)) {
-                $cache = require $cacheFilePath;
-
-                if (! $cache instanceof Cache) {
-                    throw new RuntimeException('Invalid cache object returned');
-                }
-            } else {
-                throw new RuntimeException('No cache found');
-            }
-        }
-
         $this->events    = $cache->events;
         $this->listeners = $cache->listeners;
     }
@@ -139,19 +115,5 @@ class CacheableCollection extends Collection
             // Set the route
             $this->addListener($listener);
         }
-    }
-
-    /**
-     * Require the file path specified in the config.
-     */
-    protected function requireFilePath(): void
-    {
-        // $filePath = $this->config->filePath;
-        //
-        // if (is_file($filePath)) {
-        //     $collection = $this;
-        //
-        //     require $filePath;
-        // }
     }
 }

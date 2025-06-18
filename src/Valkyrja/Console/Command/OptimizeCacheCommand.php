@@ -104,8 +104,7 @@ class OptimizeCacheCommand extends Commander
         $config->console->cache          = $consoleCache;
         $config->console->shouldUseCache = true;
 
-        $config->event->cache    = $eventsCache;
-        $config->event->useCache = true;
+        $config->event->cache = $eventsCache;
 
         $config->httpRouting->cache = $routesCache;
 

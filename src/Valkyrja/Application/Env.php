@@ -379,12 +379,6 @@ class Env
 
     /** @var class-string[]|null */
     public const array|null EVENT_LISTENER_CLASSES = null;
-    /** @var string|null */
-    public const string|null EVENT_FILE_PATH = null;
-    /** @var string|null */
-    public const string|null EVENT_CACHE_FILE_PATH = null;
-    /** @var string|null */
-    public const string|null EVENT_USE_CACHE_FILE = null;
 
     /************************************************************
      *
