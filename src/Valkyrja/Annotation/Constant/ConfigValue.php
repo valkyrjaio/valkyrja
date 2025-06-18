@@ -23,7 +23,6 @@ final class ConfigValue
     /** @var array<string, class-string> */
     public const array MAP = [
         AnnotationName::COMMAND         => AnnotationClass::COMMAND,
-        AnnotationName::LISTENER        => AnnotationClass::LISTENER,
         AnnotationName::SERVICE         => AnnotationClass::SERVICE,
         AnnotationName::SERVICE_ALIAS   => AnnotationClass::SERVICE_ALIAS,
         AnnotationName::SERVICE_CONTEXT => AnnotationClass::SERVICE_CONTEXT,

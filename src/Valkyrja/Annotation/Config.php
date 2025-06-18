@@ -67,7 +67,6 @@ class Config extends ParentConfig
         $this->map = array_merge(
             [
                 AnnotationName::COMMAND         => AnnotationClass::COMMAND,
-                AnnotationName::LISTENER        => AnnotationClass::LISTENER,
                 AnnotationName::SERVICE         => AnnotationClass::SERVICE,
                 AnnotationName::SERVICE_ALIAS   => AnnotationClass::SERVICE_ALIAS,
                 AnnotationName::SERVICE_CONTEXT => AnnotationClass::SERVICE_CONTEXT,

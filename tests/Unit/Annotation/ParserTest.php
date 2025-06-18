@@ -24,7 +24,6 @@ use Valkyrja\Annotation\Parser\Parser;
 use Valkyrja\Console\Annotation\Command;
 use Valkyrja\Container\Annotation\Service;
 use Valkyrja\Container\Annotation\Service\Context;
-use Valkyrja\Event\Annotation\Listener;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -199,19 +198,6 @@ class ParserTest extends TestCase
         self::assertInstanceOf(
             Command::class,
             $this->parser->getAnnotationFromMap(AnnotationName::COMMAND)
-        );
-    }
-
-    /**
-     * Test the getAnnotationFromMap method with a Listener.
-     *
-     * @return void
-     */
-    public function testGetListenerAnnotationFromMap(): void
-    {
-        self::assertInstanceOf(
-            Listener::class,
-            $this->parser->getAnnotationFromMap(AnnotationName::LISTENER)
         );
     }
 

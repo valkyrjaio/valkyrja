@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Provider;
 
-use Valkyrja\Annotation\Filter\Contract\Filter;
 use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Attribute\Contract\Attributes as AttributeAttributes;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
-use Valkyrja\Event\Annotation\Contract\Annotations;
 use Valkyrja\Event\Attribute\Contract\Attributes;
 use Valkyrja\Event\Collection\CacheableCollection as EventCollection;
 use Valkyrja\Event\Collection\Contract\Collection;
@@ -40,10 +38,9 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Annotations::class => [self::class, 'publishAnnotator'],
-            Attributes::class  => [self::class, 'publishAttributes'],
-            Dispatcher::class  => [self::class, 'publishDispatcher'],
-            Collection::class  => [self::class, 'publishCollection'],
+            Attributes::class => [self::class, 'publishAttributes'],
+            Dispatcher::class => [self::class, 'publishDispatcher'],
+            Collection::class => [self::class, 'publishCollection'],
         ];
     }
 
@@ -53,25 +50,10 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Annotations::class,
             Attributes::class,
             Dispatcher::class,
             Collection::class,
         ];
-    }
-
-    /**
-     * Publish the annotator service.
-     */
-    public static function publishAnnotator(Container $container): void
-    {
-        $container->setSingleton(
-            Annotations::class,
-            new \Valkyrja\Event\Annotation\Annotations(
-                $container->getSingleton(Filter::class),
-                $container->getSingleton(Reflection::class)
-            )
-        );
     }
 
     /**
