@@ -49,10 +49,6 @@ class EnvClass extends Env
 
     /** @var bool|null */
     public const bool|null CONSOLE_SHOULD_RUN_QUIETLY = true;
-    /** @var string|null */
-    public const string|null CONSOLE_FILE_PATH = __DIR__ . '/bootstrap/commands-cache.php';
-    /** @var string|null */
-    public const string|null CONSOLE_CACHE_FILE_PATH = __DIR__ . '/bootstrap/commands/default.php';
 
     /************************************************************
      *

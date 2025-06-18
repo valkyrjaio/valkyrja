@@ -24,7 +24,4 @@ final class ConfigName
     public const string PROVIDERS          = 'providers';
     public const string DEV_PROVIDERS      = 'devProviders';
     public const string SHOULD_RUN_QUIETLY = 'shouldRunQuietly';
-    public const string FILE_PATH          = 'filePath';
-    public const string CACHE_FILE_PATH    = 'cacheFilePath';
-    public const string SHOULD_USE_CACHE   = 'shouldUseCache';
 }

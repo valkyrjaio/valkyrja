@@ -314,12 +314,6 @@ class Env
     public const array|null CONSOLE_DEV_PROVIDERS = null;
     /** @var bool|null */
     public const bool|null CONSOLE_SHOULD_RUN_QUIETLY = null;
-    /** @var string|null */
-    public const string|null CONSOLE_FILE_PATH = null;
-    /** @var string|null */
-    public const string|null CONSOLE_CACHE_FILE_PATH = null;
-    /** @var bool|null */
-    public const bool|null CONSOLE_SHOULD_USE_CACHE = null;
 
     /************************************************************
      *

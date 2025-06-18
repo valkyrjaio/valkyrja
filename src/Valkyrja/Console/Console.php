@@ -63,21 +63,21 @@ class Console implements Contract
      *
      * @var array<string, Command>
      */
-    protected static array $commands = [];
+    protected array $commands = [];
 
     /**
      * The command paths.
      *
      * @var array<non-empty-string, string>
      */
-    protected static array $paths = [];
+    protected array $paths = [];
 
     /**
      * The commands by name.
      *
      * @var array<string, string>
      */
-    protected static array $namedCommands = [];
+    protected array $namedCommands = [];
 
     /**
      * Console constructor.
@@ -121,7 +121,7 @@ class Console implements Contract
     public function getCommand(string $name): Command|null
     {
         return $this->hasCommand($name)
-            ? self::$commands[self::$namedCommands[$name]]
+            ? $this->commands[$this->namedCommands[$name]]
             : null;
     }
 
@@ -130,7 +130,7 @@ class Console implements Contract
      */
     public function hasCommand(string $name): bool
     {
-        return isset(self::$namedCommands[$name]);
+        return isset($this->namedCommands[$name]);
     }
 
     /**
@@ -139,7 +139,7 @@ class Console implements Contract
     public function removeCommand(string $name): void
     {
         if ($this->hasCommand($name)) {
-            unset(self::$commands[self::$namedCommands[$name]], self::$namedCommands[$name]);
+            unset($this->commands[$this->namedCommands[$name]], $this->namedCommands[$name]);
         }
     }
 
@@ -157,14 +157,14 @@ class Console implements Contract
     public function matchCommand(string $path): Command
     {
         // If the path matches a set command path
-        if (isset(self::$commands[$path])) {
-            return self::$commands[$path];
+        if (isset($this->commands[$path])) {
+            return $this->commands[$path];
         }
 
         $command = null;
 
         // Otherwise iterate through the commands and attempt to match via regex
-        foreach (self::$paths as $regex => $commandPath) {
+        foreach ($this->paths as $regex => $commandPath) {
             // If the preg match is successful, we've found our command!
             if (preg_match($regex, $path, $matches)) {
                 // Check if this command is provided
@@ -175,7 +175,7 @@ class Console implements Contract
 
                 // Clone the command to avoid changing the one set in the master
                 // array
-                $command = clone self::$commands[$commandPath];
+                $command = clone $this->commands[$commandPath];
                 // The first match is the path itself
                 unset($matches[0]);
 
@@ -242,7 +242,7 @@ class Console implements Contract
             $this->publishProvided($provided);
         }
 
-        return self::$commands;
+        return $this->commands;
     }
 
     /**
@@ -250,7 +250,7 @@ class Console implements Contract
      */
     public function set(Command ...$commands): void
     {
-        self::$commands = [];
+        $this->commands = [];
 
         foreach ($commands as $command) {
             $path = $command->getPath();
@@ -259,7 +259,7 @@ class Console implements Contract
                 throw new InvalidArgumentException('Path must be valid');
             }
 
-            self::$commands[$path] = $command;
+            $this->commands[$path] = $command;
         }
     }
 
@@ -268,7 +268,7 @@ class Console implements Contract
      */
     public function getNamedCommands(): array
     {
-        return self::$namedCommands;
+        return $this->namedCommands;
     }
 
     /**
@@ -289,9 +289,9 @@ class Console implements Contract
             $parsedPath = $this->pathParser->parse($provided);
 
             // Set the path and regex in the paths list
-            self::$paths[$parsedPath['regex']] = $provided;
+            $this->paths[$parsedPath['regex']] = $provided;
             // Set the path and command in the named commands list
-            self::$namedCommands[$commands[$key]] = $provided;
+            $this->namedCommands[$commands[$key]] = $provided;
         }
     }
 
@@ -318,16 +318,16 @@ class Console implements Contract
         }
 
         // Set the command in the commands list
-        self::$commands[$path] = $command;
+        $this->commands[$path] = $command;
         // Set the command in the commands paths list
-        self::$paths[$regex] = $path;
+        $this->paths[$regex] = $path;
 
         $name = $command->getName();
 
         // If the command has a name
         if ($name !== null) {
             // Set in the named commands list to find it more easily later
-            self::$namedCommands[$name] = $path;
+            $this->namedCommands[$name] = $path;
         }
     }
 }

@@ -19,7 +19,6 @@ use Valkyrja\Console\Config\Cache;
 use Valkyrja\Console\Constant\ConfigName;
 use Valkyrja\Console\Constant\ConfigValue;
 use Valkyrja\Console\Constant\EnvName;
-use Valkyrja\Support\Directory;
 
 /**
  * Class Config.
@@ -38,9 +37,6 @@ class Config extends ParentConfig
         ConfigName::PROVIDERS          => EnvName::PROVIDERS,
         ConfigName::DEV_PROVIDERS      => EnvName::DEV_PROVIDERS,
         ConfigName::SHOULD_RUN_QUIETLY => EnvName::SHOULD_RUN_QUIETLY,
-        ConfigName::FILE_PATH          => EnvName::FILE_PATH,
-        ConfigName::CACHE_FILE_PATH    => EnvName::CACHE_FILE_PATH,
-        ConfigName::SHOULD_USE_CACHE   => EnvName::SHOULD_USE_CACHE,
     ];
 
     /**
@@ -53,25 +49,8 @@ class Config extends ParentConfig
         public array $providers = [],
         public array $devProviders = [],
         public bool $shouldRunQuietly = false,
-        public string $filePath = '',
-        public string $cacheFilePath = '',
-        public bool $shouldUseCache = false,
         public Cache|null $cache = null
     ) {
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function setPropertiesBeforeSettingFromEnv(string $env): void
-    {
-        if ($this->filePath === '') {
-            $this->filePath = Directory::commandsPath('default.php');
-        }
-
-        if ($this->cacheFilePath === '') {
-            $this->cacheFilePath = Directory::cachePath('commands.php');
-        }
     }
 
     /**

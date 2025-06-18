@@ -15,11 +15,9 @@ namespace Valkyrja\Console;
 
 use Valkyrja\Console\Config\Cache;
 use Valkyrja\Console\Model\Contract\Command;
-use Valkyrja\Exception\RuntimeException;
 
 use function base64_decode;
 use function base64_encode;
-use function is_file;
 use function serialize;
 use function unserialize;
 
@@ -48,22 +46,18 @@ class CacheableConsole extends Console
         }
 
         $this->setup = true;
-        // The cacheable config
-        $config = $this->config;
 
-        $configUseCache = $config->shouldUseCache;
+        $cache = $this->config->cache ?? null;
 
         // If the application should use the routes cache file
-        if ($useCache && $configUseCache) {
-            $this->setupFromCache();
+        if ($useCache && $cache !== null) {
+            $this->setupFromCache($cache);
 
             // Then return out of setup
             return;
         }
 
         $this->setupNotCached();
-        $this->setupAttributedCommands();
-        $this->requireFilePath();
     }
 
     /**
@@ -74,36 +68,19 @@ class CacheableConsole extends Console
         $this->setup(true, false);
 
         $config                = new Cache();
-        $config->commands      = base64_encode(serialize(self::$commands));
-        $config->paths         = self::$paths;
-        $config->namedCommands = self::$namedCommands;
+        $config->commands      = base64_encode(serialize($this->commands));
+        $config->paths         = $this->paths;
+        $config->namedCommands = $this->namedCommands;
         $config->provided      = $this->deferred;
 
         return $config;
     }
 
     /**
-     * @inheritDoc
+     * Setup from cache.
      */
-    protected function setupFromCache(): void
+    protected function setupFromCache(Cache $cache): void
     {
-        $cache = $this->config->cache ?? null;
-
-        if ($cache === null) {
-            $cache         = [];
-            $cacheFilePath = $this->config->cacheFilePath;
-
-            if (is_file($cacheFilePath)) {
-                $cache = require $cacheFilePath;
-
-                if (! $cache instanceof Cache) {
-                    throw new RuntimeException('Invalid cache object returned');
-                }
-            } else {
-                throw new RuntimeException('No cache found');
-            }
-        }
-
         $decodedCommands = base64_decode($cache->commands, true);
 
         if ($decodedCommands !== false) {
@@ -117,25 +94,22 @@ class CacheableConsole extends Console
                 ]
             );
 
-            self::$commands = $commands;
+            $this->commands = $commands;
         }
 
-        self::$paths         = $cache->paths;
-        self::$namedCommands = $cache->namedCommands;
+        $this->paths         = $cache->paths;
+        $this->namedCommands = $cache->namedCommands;
         $this->deferred      = $cache->provided;
     }
 
     /**
-     * @inheritDoc
+     * Setup not cached.
      */
     protected function setupNotCached(): void
     {
-        self::$paths         = [];
-        self::$commands      = [];
-        self::$namedCommands = [];
-
         // Setup command providers
         $this->setupCommandProviders();
+        $this->setupAttributedCommands();
     }
 
     protected function setupAttributedCommands(): void
@@ -161,19 +135,5 @@ class CacheableConsole extends Console
         foreach ($this->config->devProviders as $provider) {
             $this->register($provider);
         }
-    }
-
-    /**
-     * Require the file path specified in the config.
-     */
-    protected function requireFilePath(): void
-    {
-        // $filePath = $this->config->filePath;
-        //
-        // if (is_file($filePath)) {
-        //     $console = $this;
-        //
-        //     require $filePath;
-        // }
     }
 }
