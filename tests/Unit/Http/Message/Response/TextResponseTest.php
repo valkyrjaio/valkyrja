@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\TestCase;
 
 class TextResponseTest extends TestCase
 {
-    protected const TEXT = 'test';
+    protected const string TEXT = 'test';
 
     public function testConstruct(): void
     {

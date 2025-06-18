@@ -20,5 +20,5 @@ namespace Valkyrja\Notification\Constant;
  */
 final class EnvName
 {
-    public const NOTIFICATIONS = 'NOTIFICATION_NOTIFICATIONS';
+    public const string NOTIFICATIONS = 'NOTIFICATION_NOTIFICATIONS';
 }

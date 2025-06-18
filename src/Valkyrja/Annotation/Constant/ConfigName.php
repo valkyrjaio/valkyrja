@@ -20,6 +20,6 @@ namespace Valkyrja\Annotation\Constant;
  */
 final class ConfigName
 {
-    public const ALIASES = 'aliases';
-    public const MAP     = 'map';
+    public const string ALIASES = 'aliases';
+    public const string MAP     = 'map';
 }

@@ -15,6 +15,7 @@ namespace Valkyrja\Mail\Config;
 
 use Valkyrja\Mail\Adapter\LogAdapter;
 use Valkyrja\Mail\Constant\ConfigName;
+use Valkyrja\Mail\Constant\EnvName;
 
 /**
  * Class LogConfiguration.
@@ -29,13 +30,13 @@ class LogConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        'logName'                 => 'MAIL_LOG_LOG_NAME',
-        ConfigName::ADAPTER_CLASS => 'MAIL_LOG_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'MAIL_LOG_DRIVER_CLASS',
+        ConfigName::ADAPTER_CLASS => EnvName::LOG_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::LOG_DRIVER_CLASS,
+        ConfigName::LOGGER        => EnvName::LOG_LOGGER,
     ];
 
     public function __construct(
-        public string|null $logName = null
+        public string|null $logger = null
     ) {
         parent::__construct(
             adapterClass: LogAdapter::class,

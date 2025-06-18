@@ -18,7 +18,7 @@ use Valkyrja\Type\BuiltIn\FalseT;
 
 class FalseTest extends TestCase
 {
-    protected const VALUE = false;
+    protected const false VALUE = false;
 
     public function testValue(): void
     {

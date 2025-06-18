@@ -18,7 +18,7 @@ use Valkyrja\Type\BuiltIn\IntT;
 
 class IntTest extends TestCase
 {
-    protected const VALUE = 1;
+    protected const int VALUE = 1;
 
     public function testValue(): void
     {

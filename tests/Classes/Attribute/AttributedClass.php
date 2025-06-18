@@ -28,12 +28,12 @@ class AttributedClass
     #[AttributeClass(AttributesTest::VALUE4)]
     #[AttributeClass(AttributesTest::VALUE5)]
     #[AttributeClassChildClass(AttributesTest::VALUE6, AttributesTest::SIX)]
-    public const CONST = 'Const';
+    public const string CONST = 'Const';
 
     #[AttributeClass(AttributesTest::VALUE7)]
     #[AttributeClass(AttributesTest::VALUE8)]
     #[AttributeClassChildClass(AttributesTest::VALUE9, AttributesTest::NINE)]
-    protected const PROTECTED_CONST = 'Protected Const';
+    protected const string PROTECTED_CONST = 'Protected Const';
 
     #[AttributeClass(AttributesTest::VALUE10)]
     #[AttributeClass(AttributesTest::VALUE11)]

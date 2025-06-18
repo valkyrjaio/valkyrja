@@ -20,15 +20,15 @@ namespace Valkyrja\Attribute\Constant;
  */
 final class AttributeProperty
 {
-    public const NAME       = 'name';
-    public const CLASS_NAME = 'class';
-    public const PROPERTY   = 'property';
-    public const METHOD     = 'method';
-    public const FUNCTION   = 'function';
-    public const CLOSURE    = 'closure';
-    public const CONSTANT   = 'constant';
-    public const ARGUMENTS  = 'arguments';
-    public const STATIC     = 'static';
-    public const OPTIONAL   = 'optional';
-    public const DEFAULT    = 'default';
+    public const string NAME       = 'name';
+    public const string CLASS_NAME = 'class';
+    public const string PROPERTY   = 'property';
+    public const string METHOD     = 'method';
+    public const string FUNCTION   = 'function';
+    public const string CLOSURE    = 'closure';
+    public const string CONSTANT   = 'constant';
+    public const string ARGUMENTS  = 'arguments';
+    public const string STATIC     = 'static';
+    public const string OPTIONAL   = 'optional';
+    public const string DEFAULT    = 'default';
 }

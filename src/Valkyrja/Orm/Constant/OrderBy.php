@@ -20,6 +20,6 @@ namespace Valkyrja\Orm\Constant;
  */
 final class OrderBy
 {
-    public const ASC  = 'ASC';
-    public const DESC = 'DESC';
+    public const string ASC  = 'ASC';
+    public const string DESC = 'DESC';
 }

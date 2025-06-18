@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Constant;
 
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-
 /**
  * Constant ConfigValue.
  *
@@ -22,23 +20,12 @@ use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
  */
 final class ConfigValue
 {
-    public const ENABLED = false;
-    public const MAP     = [
+    /** @var array<string, class-string> */
+    public const array MAP = [
         AnnotationName::COMMAND         => AnnotationClass::COMMAND,
         AnnotationName::LISTENER        => AnnotationClass::LISTENER,
         AnnotationName::SERVICE         => AnnotationClass::SERVICE,
         AnnotationName::SERVICE_ALIAS   => AnnotationClass::SERVICE_ALIAS,
         AnnotationName::SERVICE_CONTEXT => AnnotationClass::SERVICE_CONTEXT,
-    ];
-    public const ALIASES = [
-        Alias::REQUEST_METHOD => AliasClass::REQUEST_METHOD,
-        Alias::STATUS_CODE    => AliasClass::STATUS_CODE,
-    ];
-
-    /** @var array<string, mixed> */
-    public static array $defaults = [
-        CKP::ENABLED => self::ENABLED,
-        CKP::MAP     => self::MAP,
-        CKP::ALIASES => self::ALIASES,
     ];
 }

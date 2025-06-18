@@ -15,6 +15,7 @@ namespace Valkyrja\Client\Config;
 
 use Valkyrja\Client\Adapter\LogAdapter;
 use Valkyrja\Client\Constant\ConfigName;
+use Valkyrja\Client\Constant\EnvName;
 
 /**
  * Class LogConfiguration.
@@ -29,9 +30,9 @@ class LogConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'CLIENT_LOG_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'CLIENT_LOG_DRIVER_CLASS',
-        'logger'                  => 'CLIENT_LOG_LOGGER',
+        ConfigName::ADAPTER_CLASS => EnvName::LOG_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::LOG_DRIVER_CLASS,
+        ConfigName::LOGGER        => EnvName::LOG_LOGGER,
     ];
 
     public function __construct(

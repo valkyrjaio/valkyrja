@@ -20,13 +20,13 @@ namespace Valkyrja\Container\Constant;
  */
 final class EnvName
 {
-    public const ALIASES          = 'CONTAINER_ALIASES';
-    public const SERVICES         = 'CONTAINER_SERVICES';
-    public const CONTEXT_SERVICES = 'CONTAINER_CONTEXT_SERVICES';
-    public const PROVIDERS        = 'CONTAINER_PROVIDERS';
-    public const DEV_PROVIDERS    = 'CONTAINER_DEV_PROVIDERS';
-    public const USE_ATTRIBUTES   = 'CONTAINER_USE_ATTRIBUTES';
-    public const FILE_PATH        = 'CONTAINER_FILE_PATH';
-    public const CACHE_FILE_PATH  = 'CONTAINER_CACHE_FILE_PATH';
-    public const USE_CACHE        = 'CONTAINER_USE_CACHE';
+    public const string ALIASES          = 'CONTAINER_ALIASES';
+    public const string SERVICES         = 'CONTAINER_SERVICES';
+    public const string CONTEXT_SERVICES = 'CONTAINER_CONTEXT_SERVICES';
+    public const string PROVIDERS        = 'CONTAINER_PROVIDERS';
+    public const string DEV_PROVIDERS    = 'CONTAINER_DEV_PROVIDERS';
+    public const string USE_ATTRIBUTES   = 'CONTAINER_USE_ATTRIBUTES';
+    public const string FILE_PATH        = 'CONTAINER_FILE_PATH';
+    public const string CACHE_FILE_PATH  = 'CONTAINER_CACHE_FILE_PATH';
+    public const string USE_CACHE        = 'CONTAINER_USE_CACHE';
 }

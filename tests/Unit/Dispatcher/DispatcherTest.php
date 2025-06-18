@@ -44,7 +44,7 @@ class DispatcherTest extends TestCase
      *
      * @var string
      */
-    public const VALID_CONSTANT = 'test';
+    public const string VALID_CONSTANT = 'test';
 
     /**
      * A valid static property.

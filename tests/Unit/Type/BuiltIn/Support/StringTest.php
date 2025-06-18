@@ -19,7 +19,7 @@ use Valkyrja\Type\BuiltIn\Support\Str as Helper;
 
 class StringTest extends TestCase
 {
-    protected const VALUE = 'Some Words';
+    protected const string VALUE = 'Some Words';
 
     public function testStartsWith(): void
     {

@@ -20,19 +20,19 @@ namespace Valkyrja\Annotation\Constant;
  */
 final class Property
 {
-    public const ID           = 'id';
-    public const NAME         = 'name';
-    public const CLASS_NAME   = 'class';
-    public const PROPERTY     = 'property';
-    public const METHOD       = 'method';
-    public const STATIC       = 'static';
-    public const FUNCTION     = 'function';
-    public const CLOSURE      = 'closure';
-    public const CONSTANT     = 'constant';
-    public const VARIABLE     = 'variable';
-    public const DEPENDENCIES = 'dependencies';
-    public const ARGUMENTS    = 'arguments';
-    public const MATCHES      = 'matches';
-    public const TYPE         = 'type';
-    public const PROPERTIES   = 'properties';
+    public const string ID           = 'id';
+    public const string NAME         = 'name';
+    public const string CLASS_NAME   = 'class';
+    public const string PROPERTY     = 'property';
+    public const string METHOD       = 'method';
+    public const string STATIC       = 'static';
+    public const string FUNCTION     = 'function';
+    public const string CLOSURE      = 'closure';
+    public const string CONSTANT     = 'constant';
+    public const string VARIABLE     = 'variable';
+    public const string DEPENDENCIES = 'dependencies';
+    public const string ARGUMENTS    = 'arguments';
+    public const string MATCHES      = 'matches';
+    public const string TYPE         = 'type';
+    public const string PROPERTIES   = 'properties';
 }

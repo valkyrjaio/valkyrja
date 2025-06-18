@@ -18,9 +18,9 @@ use Valkyrja\Type\Id\Id;
 
 class IdTest extends TestCase
 {
-    protected const INT_VALUE    = 1;
-    protected const FLOAT_VALUE  = 1.0;
-    protected const STRING_VALUE = 'id';
+    protected const int    INT_VALUE    = 1;
+    protected const float  FLOAT_VALUE  = 1.0;
+    protected const string STRING_VALUE = 'id';
 
     public function testIntValue(): void
     {

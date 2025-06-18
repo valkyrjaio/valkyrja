@@ -15,6 +15,7 @@ namespace Valkyrja\Sms\Config;
 
 use Valkyrja\Sms\Adapter\LogAdapter;
 use Valkyrja\Sms\Constant\ConfigName;
+use Valkyrja\Sms\Constant\EnvName;
 
 /**
  * Class LogConfiguration.
@@ -29,9 +30,9 @@ class LogConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'SMS_LOG_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'SMS_LOG_DRIVER_CLASS',
-        ConfigName::LOGGER        => 'SMS_LOG_LOG_NAME',
+        ConfigName::ADAPTER_CLASS => EnvName::LOG_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::LOG_DRIVER_CLASS,
+        ConfigName::LOGGER        => EnvName::LOG_LOG_NAME,
     ];
 
     public function __construct(

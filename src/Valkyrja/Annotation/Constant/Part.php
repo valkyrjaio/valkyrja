@@ -20,9 +20,9 @@ namespace Valkyrja\Annotation\Constant;
  */
 final class Part
 {
-    public const TYPE          = Property::TYPE;
-    public const PROPERTIES    = Property::PROPERTIES;
-    public const VARIABLE_TYPE = 'variableType';
-    public const VARIABLE      = 'variable';
-    public const DESCRIPTION   = 'description';
+    public const string TYPE          = Property::TYPE;
+    public const string PROPERTIES    = Property::PROPERTIES;
+    public const string VARIABLE_TYPE = 'variableType';
+    public const string VARIABLE      = 'variable';
+    public const string DESCRIPTION   = 'description';
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\View\Config;
 
 use Valkyrja\View\Constant\ConfigName;
+use Valkyrja\View\Constant\EnvName;
 use Valkyrja\View\Engine\OrkaEngine;
 
 /**
@@ -29,10 +30,10 @@ class OrkaConfiguration extends PhpConfiguration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ENGINE         => 'VIEW_ORKA_ENGINE',
-        ConfigName::FILE_EXTENSION => 'VIEW_ORKA_FILE_EXTENSION',
-        ConfigName::DIR            => 'VIEW_ORKA_DIR',
-        ConfigName::PATHS          => 'VIEW_ORKA_PATHS',
+        ConfigName::ENGINE         => EnvName::ORKA_ENGINE,
+        ConfigName::FILE_EXTENSION => EnvName::ORKA_FILE_EXTENSION,
+        ConfigName::DIR            => EnvName::ORKA_DIR,
+        ConfigName::PATHS          => EnvName::ORKA_PATHS,
     ];
 
     public function __construct()

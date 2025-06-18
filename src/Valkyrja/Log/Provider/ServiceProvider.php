@@ -25,9 +25,9 @@ use Valkyrja\Log\Adapter\NullAdapter;
 use Valkyrja\Log\Adapter\PsrAdapter;
 use Valkyrja\Log\Config\NullConfiguration;
 use Valkyrja\Log\Config\PsrConfiguration;
-use Valkyrja\Log\Constant\LogLevel;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Log\Driver\Driver;
+use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Log\Factory\ContainerFactory;
 use Valkyrja\Log\Factory\Contract\Factory;
 
@@ -192,7 +192,7 @@ final class ServiceProvider extends Provider
         $name      = $config->name . date('-Y-m-d');
         $handler   = new StreamHandler(
             "$filePath/$name.log",
-            LogLevel::DEBUG
+            LogLevel::DEBUG->name
         );
         $formatter = new LineFormatter(
             null,

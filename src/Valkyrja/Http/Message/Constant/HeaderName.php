@@ -45,7 +45,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1
      */
-    public const ACCEPT = 'Accept';
+    public const string ACCEPT = 'Accept';
 
     /**
      * Accept-Charset Header.
@@ -60,7 +60,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.2
      */
-    public const ACCEPT_CHARSET = 'Accept-Charset';
+    public const string ACCEPT_CHARSET = 'Accept-Charset';
 
     /**
      * Accept-Encoding Header.
@@ -73,7 +73,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3
      */
-    public const ACCEPT_ENCODING = 'Accept-Encoding';
+    public const string ACCEPT_ENCODING = 'Accept-Encoding';
 
     /**
      * Accept-Language Header.
@@ -87,7 +87,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
      */
-    public const ACCEPT_LANGUAGE = 'Accept-Language';
+    public const string ACCEPT_LANGUAGE = 'Accept-Language';
 
     /**
      * Accept-Ranges Header.
@@ -98,7 +98,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.5
      */
-    public const ACCEPT_RANGES = 'Accept-Ranges';
+    public const string ACCEPT_RANGES = 'Accept-Ranges';
 
     /**
      * Age Header.
@@ -112,7 +112,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.6
      */
-    public const AGE = 'Age';
+    public const string AGE = 'Age';
 
     /**
      * Allow Header.
@@ -125,7 +125,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.7
      */
-    public const ALLOW = 'Allow';
+    public const string ALLOW = 'Allow';
 
     /**
      * Authorization Header.
@@ -139,7 +139,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.8
      */
-    public const AUTHORIZATION = 'Authorization';
+    public const string AUTHORIZATION = 'Authorization';
 
     /**
      * Cache-Control Header.
@@ -186,7 +186,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9
      */
-    public const CACHE_CONTROL = 'Cache-Control';
+    public const string CACHE_CONTROL = 'Cache-Control';
 
     /**
      * Connection Header.
@@ -199,7 +199,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.10
      */
-    public const CONNECTION = 'Connection';
+    public const string CONNECTION = 'Connection';
 
     /**
      * Content-Encoding Header.
@@ -214,7 +214,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.11
      */
-    public const CONTENT_ENCODING = 'Content-Encoding';
+    public const string CONTENT_ENCODING = 'Content-Encoding';
 
     /**
      * Content-Language Header.
@@ -226,7 +226,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.12
      */
-    public const CONTENT_LANGUAGE = 'Content-Language';
+    public const string CONTENT_LANGUAGE = 'Content-Language';
 
     /**
      * Content-Length Header.
@@ -238,7 +238,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.13
      */
-    public const CONTENT_LENGTH = 'Content-Length';
+    public const string CONTENT_LENGTH = 'Content-Length';
 
     /**
      * Content-Location Header.
@@ -256,7 +256,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.14
      */
-    public const CONTENT_LOCATION = 'Content-Location';
+    public const string CONTENT_LOCATION = 'Content-Location';
 
     /**
      * Content-MD5 Header.
@@ -270,7 +270,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.15
      */
-    public const CONTENT_MD5 = 'Content-MD5';
+    public const string CONTENT_MD5 = 'Content-MD5';
 
     /**
      * Content-Range Header.
@@ -288,7 +288,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.16
      */
-    public const CONTENT_RANGE = 'Content-Range';
+    public const string CONTENT_RANGE = 'Content-Range';
 
     /**
      * Content-Type Header.
@@ -299,7 +299,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17
      */
-    public const CONTENT_TYPE = 'Content-Type';
+    public const string CONTENT_TYPE = 'Content-Type';
 
     /**
      * Date Header.
@@ -311,7 +311,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.18
      */
-    public const DATE = 'Date';
+    public const string DATE = 'Date';
 
     /**
      * ETag Header.
@@ -324,7 +324,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19
      */
-    public const E_TAG = 'ETag';
+    public const string E_TAG = 'ETag';
 
     /**
      * Expect Header.
@@ -338,7 +338,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.20
      */
-    public const EXPECT = 'Expect';
+    public const string EXPECT = 'Expect';
 
     /**
      * Expires Header.
@@ -356,7 +356,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.21
      */
-    public const EXPIRES = 'Expires';
+    public const string EXPIRES = 'Expires';
 
     /**
      * From Header.
@@ -368,7 +368,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.22
      */
-    public const FROM = 'From';
+    public const string FROM = 'From';
 
     /**
      * Host Header.
@@ -384,7 +384,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.23
      */
-    public const HOST = 'Host';
+    public const string HOST = 'Host';
 
     /**
      * If-Match Header.
@@ -402,7 +402,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.24
      */
-    public const IF_MATCH = 'If-Match';
+    public const string IF_MATCH = 'If-Match';
 
     /**
      * If-Modified-Since Header.
@@ -415,7 +415,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.25
      */
-    public const IF_MODIFIED_SINCE = 'If-Modified-Since';
+    public const string IF_MODIFIED_SINCE = 'If-Modified-Since';
 
     /**
      * If-None-Match Header.
@@ -434,7 +434,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.26
      */
-    public const IF_NONE_MATCH = 'If-None-Match';
+    public const string IF_NONE_MATCH = 'If-None-Match';
 
     /**
      * If-Range Header.
@@ -453,7 +453,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.27
      */
-    public const IF_RANGE = 'If-Range';
+    public const string IF_RANGE = 'If-Range';
 
     /**
      * If-Unmodified-Since Header.
@@ -469,7 +469,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.28
      */
-    public const IF_UNMODIFIED_SINCE = 'If-Unmodified-Since';
+    public const string IF_UNMODIFIED_SINCE = 'If-Unmodified-Since';
 
     /**
      * Last-Modified Header.
@@ -479,7 +479,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.29
      */
-    public const LAST_MODIFIED = 'Last-Modified';
+    public const string LAST_MODIFIED = 'Last-Modified';
 
     /**
      * Location Header.
@@ -494,7 +494,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.30
      */
-    public const LOCATION = 'Location';
+    public const string LOCATION = 'Location';
 
     /**
      * Max-Forwards Header.
@@ -508,7 +508,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.31
      */
-    public const MAX_FORWARDS = 'Max-Forwards';
+    public const string MAX_FORWARDS = 'Max-Forwards';
 
     /**
      * Pragma Header.
@@ -523,7 +523,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.32
      */
-    public const PRAGMA = 'Pragma';
+    public const string PRAGMA = 'Pragma';
 
     /**
      * Proxy-Authenticate Header.
@@ -535,7 +535,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.33
      */
-    public const PROXY_AUTHENTICATE = 'Proxy-Authenticate';
+    public const string PROXY_AUTHENTICATE = 'Proxy-Authenticate';
 
     /**
      * Proxy-Authorization Header.
@@ -548,7 +548,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.34
      */
-    public const PROXY_AUTHORIZATION = 'Proxy-Authorization';
+    public const string PROXY_AUTHORIZATION = 'Proxy-Authorization';
 
     /**
      * Range Header.
@@ -592,7 +592,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.35
      */
-    public const RANGE = 'Range';
+    public const string RANGE = 'Range';
 
     /**
      * Referer Header.
@@ -609,7 +609,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.36
      */
-    public const REFERER = 'Referer';
+    public const string REFERER = 'Referer';
 
     /**
      * Retry-After Header.
@@ -625,7 +625,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.37
      */
-    public const RETRY_AFTER = 'Retry-After';
+    public const string RETRY_AFTER = 'Retry-After';
 
     /**
      * Server Header.
@@ -639,7 +639,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.38
      */
-    public const SERVER = 'Server';
+    public const string SERVER = 'Server';
 
     /**
      * Set-Cookie Header.
@@ -683,7 +683,7 @@ final class HeaderName
      *
      * @see https://tools.ietf.org/html/rfc6265#section-4.1
      */
-    public const SET_COOKIE = 'Set-Cookie';
+    public const string SET_COOKIE = 'Set-Cookie';
 
     /**
      * TE Header.
@@ -698,7 +698,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.39
      */
-    public const TE = 'TE';
+    public const string TE = 'TE';
 
     /**
      * Trailer Header.
@@ -709,7 +709,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.40
      */
-    public const TRAILER = 'Trailer';
+    public const string TRAILER = 'Trailer';
 
     /**
      * Transfer-Encoding Header.
@@ -722,7 +722,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.41
      */
-    public const TRANSFER_ENCODING = 'Transfer-Encoding';
+    public const string TRANSFER_ENCODING = 'Transfer-Encoding';
 
     /**
      * Upgrade Header.
@@ -736,7 +736,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.42
      */
-    public const UPGRADE = 'Upgrade';
+    public const string UPGRADE = 'Upgrade';
 
     /**
      * User-Agent Header.
@@ -754,7 +754,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.43
      */
-    public const USER_AGENT = 'User-Agent';
+    public const string USER_AGENT = 'User-Agent';
 
     /**
      * Vary Header.
@@ -772,7 +772,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.44
      */
-    public const VARY = 'Vary';
+    public const string VARY = 'Vary';
 
     /**
      * Via Header.
@@ -791,7 +791,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.45
      */
-    public const VIA = 'Via';
+    public const string VIA = 'Via';
 
     /**
      * Warning Header.
@@ -814,7 +814,7 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.46
      */
-    public const WARNING = 'Warning';
+    public const string WARNING = 'Warning';
 
     /**
      * WWW-Authenticate Header.
@@ -826,10 +826,10 @@ final class HeaderName
      *
      * @see https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.47
      */
-    public const WWW_AUTHENTICATE = 'WWW-Authenticate';
+    public const string WWW_AUTHENTICATE = 'WWW-Authenticate';
 
     /**
      * X-Requested-With Header.
      */
-    public const X_REQUESTED_WITH = 'X-Requested-With';
+    public const string X_REQUESTED_WITH = 'X-Requested-With';
 }

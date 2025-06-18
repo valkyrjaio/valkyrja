@@ -47,7 +47,7 @@ class ParserTest extends TestCase
      *
      * @var string
      */
-    public const CONSTANT = 'constant';
+    public const string CONSTANT = 'constant';
 
     /**
      * A static property to test with.

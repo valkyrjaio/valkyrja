@@ -20,7 +20,7 @@ use function json_encode;
 
 class StringTest extends TestCase
 {
-    protected const VALUE = 'foo';
+    protected const string VALUE = 'foo';
 
     public function testValue(): void
     {

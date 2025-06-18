@@ -15,6 +15,7 @@ namespace Valkyrja\Session\Config;
 
 use Valkyrja\Session\Adapter\CookieAdapter;
 use Valkyrja\Session\Constant\ConfigName;
+use Valkyrja\Session\Constant\EnvName;
 
 /**
  * Class CookieConfiguration.
@@ -29,8 +30,8 @@ class CookieConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'SESSION_COOKIE_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'SESSION_COOKIE_DRIVER_CLASS',
+        ConfigName::ADAPTER_CLASS => EnvName::COOKIE_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::COOKIE_DRIVER_CLASS,
     ];
 
     public function __construct()

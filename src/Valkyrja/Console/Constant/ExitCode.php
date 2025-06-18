@@ -20,7 +20,7 @@ namespace Valkyrja\Console\Constant;
  */
 final class ExitCode
 {
-    public const SUCCESS   = 0;
-    public const FAILURE   = 1;
-    public const AUTO_EXIT = 255;
+    public const int SUCCESS   = 0;
+    public const int FAILURE   = 1;
+    public const int AUTO_EXIT = 255;
 }

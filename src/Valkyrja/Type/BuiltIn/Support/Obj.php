@@ -15,7 +15,6 @@ namespace Valkyrja\Type\BuiltIn\Support;
 
 use JsonException;
 use stdClass;
-use Valkyrja\Config\Constant\ConfigKeyPart;
 use Valkyrja\Type\Exception\RuntimeException;
 
 use function count;
@@ -194,7 +193,7 @@ class Obj
         object $subject,
         string $key,
         mixed $defaultValue = null,
-        string $separator = ConfigKeyPart::SEP
+        string $separator = '.'
     ): mixed {
         $value    = $subject;
         $keyParts = explode($separator, $key);

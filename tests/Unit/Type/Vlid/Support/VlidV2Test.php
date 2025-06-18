@@ -23,7 +23,7 @@ use Valkyrja\Type\Vlid\Support\VlidV4;
 
 class VlidV2Test extends AbstractVlidTestCase
 {
-    protected const VERSION = Version::V2;
+    protected const Version VERSION = Version::V2;
 
     public function testDefaultVersion(): void
     {

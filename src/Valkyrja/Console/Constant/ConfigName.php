@@ -20,11 +20,11 @@ namespace Valkyrja\Console\Constant;
  */
 final class ConfigName
 {
-    public const HANDLERS           = 'handlers';
-    public const PROVIDERS          = 'providers';
-    public const DEV_PROVIDERS      = 'devProviders';
-    public const SHOULD_RUN_QUIETLY = 'shouldRunQuietly';
-    public const FILE_PATH          = 'filePath';
-    public const CACHE_FILE_PATH    = 'cacheFilePath';
-    public const SHOULD_USE_CACHE   = 'shouldUseCache';
+    public const string HANDLERS           = 'handlers';
+    public const string PROVIDERS          = 'providers';
+    public const string DEV_PROVIDERS      = 'devProviders';
+    public const string SHOULD_RUN_QUIETLY = 'shouldRunQuietly';
+    public const string FILE_PATH          = 'filePath';
+    public const string CACHE_FILE_PATH    = 'cacheFilePath';
+    public const string SHOULD_USE_CACHE   = 'shouldUseCache';
 }

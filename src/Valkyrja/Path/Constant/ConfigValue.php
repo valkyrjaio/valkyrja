@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Path\Constant;
 
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
-
 /**
  * Constant ConfigValue.
  *
@@ -22,7 +20,8 @@ use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
  */
 final class ConfigValue
 {
-    public const PATTERNS = [
+    /** @var array<string, string> */
+    public const array PATTERNS = [
         PathPattern::NUM                  => '(\d+)',
         PathPattern::ID                   => '(\d+)',
         PathPattern::SLUG                 => '([a-zA-Z0-9-]+)',
@@ -32,10 +31,5 @@ final class ConfigValue
         PathPattern::ALPHA_UPPERCASE      => '([A-Z]+)',
         PathPattern::ALPHA_NUM            => '([a-zA-Z0-9]+)',
         PathPattern::ALPHA_NUM_UNDERSCORE => '(\w+)',
-    ];
-
-    /** @var array<string, mixed> */
-    public static array $defaults = [
-        CKP::PATTERNS => self::PATTERNS,
     ];
 }

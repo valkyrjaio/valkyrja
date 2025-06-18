@@ -25,7 +25,7 @@ final class Regex
      *
      * @constant string
      */
-    public const SYMBOL = '@';
+    public const string SYMBOL = '@';
 
     /**
      * Annotation name regex.
@@ -44,7 +44,7 @@ final class Regex
      *          ]*                  Allow any number of above
      *      )                   End capture
      */
-    public const NAME_REGEX = <<<'REGEX'
+    public const string NAME_REGEX = <<<'REGEX'
                 ([a-zA-Z0-9\_\\]*)
         REGEX;
 
@@ -89,7 +89,7 @@ final class Regex
      *      \s*                 Followed by any whitespace
      * )                    Ending parenthesis for the annotation
      */
-    public const ARGUMENTS_REGEX = <<<'REGEX'
+    public const string ARGUMENTS_REGEX = <<<'REGEX'
             \(
                 \s*
                     ([a-zA-Z0-9\_\-\\\/\:\{\}\(\)\+\[\]\.\=\,\'\"\*\<\>\|\s]*)
@@ -125,7 +125,7 @@ final class Regex
      *                                  (for multiline)
      * )?                       End capture (optional capture group)
      */
-    public const LINE_REGEX = <<<'REGEX'
+    public const string LINE_REGEX = <<<'REGEX'
             \s* \*? \s*
             ([a-zA-Z0-9\\]*)?
             \s* \*? \s*
@@ -137,7 +137,7 @@ final class Regex
     /**
      * The full regex.
      */
-    public const REGEX = '/'
+    public const string REGEX = '/'
         . self::SYMBOL
         . self::NAME_REGEX
         . '(?:' . self::ARGUMENTS_REGEX . ')?'

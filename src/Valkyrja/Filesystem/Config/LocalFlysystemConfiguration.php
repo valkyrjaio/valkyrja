@@ -15,6 +15,7 @@ namespace Valkyrja\Filesystem\Config;
 
 use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
 use Valkyrja\Filesystem\Constant\ConfigName;
+use Valkyrja\Filesystem\Constant\EnvName;
 use Valkyrja\Support\Directory;
 
 /**
@@ -30,10 +31,10 @@ class LocalFlysystemConfiguration extends FlysystemConfiguration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS     => 'FILESYSTEM_FLYSYSTEM_LOCAL_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS      => 'FILESYSTEM_FLYSYSTEM_LOCAL_DRIVER_CLASS',
-        ConfigName::FLYSYSTEM_ADAPTER => 'FILESYSTEM_FLYSYSTEM_LOCAL_FLYSYSTEM_ADAPTER',
-        ConfigName::DIR               => 'FILESYSTEM_FLYSYSTEM_LOCAL_DIR',
+        ConfigName::ADAPTER_CLASS     => EnvName::FLYSYSTEM_LOCAL_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS      => EnvName::FLYSYSTEM_LOCAL_DRIVER_CLASS,
+        ConfigName::FLYSYSTEM_ADAPTER => EnvName::FLYSYSTEM_LOCAL_FLYSYSTEM_ADAPTER,
+        ConfigName::DIR               => EnvName::FLYSYSTEM_LOCAL_DIR,
     ];
 
     public function __construct(

@@ -20,12 +20,14 @@ namespace Valkyrja\View\Constant;
  */
 final class ConfigName
 {
-    public const DEFAULT_CONFIGURATION = 'defaultConfiguration';
-    public const CONFIGURATIONS        = 'configurations';
+    public const string DEFAULT_CONFIGURATION = 'defaultConfiguration';
+    public const string CONFIGURATIONS        = 'configurations';
 
-    public const DIR            = 'dir';
-    public const PATH           = 'path';
-    public const ENGINE         = 'engine';
-    public const FILE_EXTENSION = 'fileExtension';
-    public const PATHS          = 'paths';
+    public const string DIR            = 'dir';
+    public const string PATH           = 'path';
+    public const string ENGINE         = 'engine';
+    public const string FILE_EXTENSION = 'fileExtension';
+    public const string PATHS          = 'paths';
+    public const string EXTENSIONS     = 'extensions';
+    public const string COMPILED_DIR   = 'compiledDir';
 }

@@ -20,13 +20,21 @@ namespace Valkyrja\Mail\Constant;
  */
 final class ConfigName
 {
-    public const DEFAULT_CONFIGURATION         = 'defaultConfiguration';
-    public const CONFIGURATIONS                = 'configurations';
-    public const DEFAULT_MESSAGE_CONFIGURATION = 'defaultMessageConfiguration';
-    public const MESSAGE_CONFIGURATIONS        = 'messageConfigurations';
+    public const string DEFAULT_CONFIGURATION         = 'defaultConfiguration';
+    public const string CONFIGURATIONS                = 'configurations';
+    public const string DEFAULT_MESSAGE_CONFIGURATION = 'defaultMessageConfiguration';
+    public const string MESSAGE_CONFIGURATIONS        = 'messageConfigurations';
 
-    public const ADAPTER_CLASS = 'adapterClass';
-    public const DRIVER_CLASS  = 'driverClass';
-    public const MESSAGE_CLASS = 'messageClass';
-    public const FROM          = 'from';
+    public const string ADAPTER_CLASS = 'adapterClass';
+    public const string DRIVER_CLASS  = 'driverClass';
+    public const string MESSAGE_CLASS = 'messageClass';
+    public const string FROM          = 'from';
+    public const string API_KEY       = 'apiKey';
+    public const string DOMAIN        = 'domain';
+    public const string HOST          = 'host';
+    public const string PORT          = 'port';
+    public const string USERNAME      = 'username';
+    public const string PASSWORD      = 'password';
+    public const string ENCRYPTION    = 'encryption';
+    public const string LOGGER        = 'logger';
 }

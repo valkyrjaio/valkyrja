@@ -20,9 +20,9 @@ namespace Valkyrja\Orm\Constant;
  */
 final class PropertyMap
 {
-    public const ORDER_BY      = 'orderBy';
-    public const LIMIT         = 'limit';
-    public const OFFSET        = 'offset';
-    public const COLUMNS       = 'columns';
-    public const GET_RELATIONS = 'getRelations';
+    public const string ORDER_BY      = 'orderBy';
+    public const string LIMIT         = 'limit';
+    public const string OFFSET        = 'offset';
+    public const string COLUMNS       = 'columns';
+    public const string GET_RELATIONS = 'getRelations';
 }

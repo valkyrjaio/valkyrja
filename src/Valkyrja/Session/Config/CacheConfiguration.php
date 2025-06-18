@@ -15,6 +15,7 @@ namespace Valkyrja\Session\Config;
 
 use Valkyrja\Session\Adapter\CacheAdapter;
 use Valkyrja\Session\Constant\ConfigName;
+use Valkyrja\Session\Constant\EnvName;
 
 /**
  * Class CacheConfiguration.
@@ -29,9 +30,9 @@ class CacheConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'SESSION_CACHE_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'SESSION_CACHE_DRIVER_CLASS',
-        'cache'                   => 'SESSION_CACHE_CACHE',
+        ConfigName::ADAPTER_CLASS => EnvName::CACHE_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::CACHE_DRIVER_CLASS,
+        ConfigName::CACHE         => EnvName::CACHE_CACHE,
     ];
 
     public function __construct(

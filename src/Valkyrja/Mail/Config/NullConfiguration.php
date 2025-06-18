@@ -15,6 +15,7 @@ namespace Valkyrja\Mail\Config;
 
 use Valkyrja\Mail\Adapter\NullAdapter;
 use Valkyrja\Mail\Constant\ConfigName;
+use Valkyrja\Mail\Constant\EnvName;
 
 /**
  * Class NullConfiguration.
@@ -29,8 +30,8 @@ class NullConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'MAIL_NULL_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'MAIL_NULL_DRIVER_CLASS',
+        ConfigName::ADAPTER_CLASS => EnvName::NULL_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::NULL_DRIVER_CLASS,
     ];
 
     public function __construct()

@@ -20,8 +20,26 @@ namespace Valkyrja\Broadcast\Constant;
  */
 final class EnvName
 {
-    public const DEFAULT_CONFIGURATION         = 'BROADCAST_DEFAULT_CONFIGURATION';
-    public const CONFIGURATIONS                = 'BROADCAST_CONFIGURATIONS';
-    public const DEFAULT_MESSAGE_CONFIGURATION = 'BROADCAST_DEFAULT_MESSAGE_CONFIGURATION';
-    public const MESSAGE_CONFIGURATIONS        = 'BROADCAST_MESSAGE_CONFIGURATIONS';
+    public const string DEFAULT_CONFIGURATION         = 'BROADCAST_DEFAULT_CONFIGURATION';
+    public const string CONFIGURATIONS                = 'BROADCAST_CONFIGURATIONS';
+    public const string DEFAULT_MESSAGE_CONFIGURATION = 'BROADCAST_DEFAULT_MESSAGE_CONFIGURATION';
+    public const string MESSAGE_CONFIGURATIONS        = 'BROADCAST_MESSAGE_CONFIGURATIONS';
+
+    public const string PUSHER_ADAPTER_CLASS = 'BROADCAST_PUSHER_ADAPTER_CLASS';
+    public const string PUSHER_DRIVER_CLASS  = 'BROADCAST_PUSHER_DRIVER_CLASS';
+    public const string PUSHER_KEY           = 'BROADCAST_PUSHER_KEY';
+    public const string PUSHER_SECRET        = 'BROADCAST_PUSHER_SECRET';
+    public const string PUSHER_ID            = 'BROADCAST_PUSHER_ID';
+    public const string PUSHER_CLUSTER       = 'BROADCAST_PUSHER_CLUSTER';
+    public const string PUSHER_USE_TLS       = 'BROADCAST_PUSHER_USE_TLS';
+
+    public const string LOG_ADAPTER_CLASS = 'BROADCAST_LOG_ADAPTER_CLASS';
+    public const string LOG_DRIVER_CLASS  = 'BROADCAST_LOG_DRIVER_CLASS';
+    public const string LOG_LOGGER        = 'BROADCAST_LOG_LOGGER';
+
+    public const string NULL_ADAPTER_CLASS = 'BROADCAST_NULL_ADAPTER_CLASS';
+    public const string NULL_DRIVER_CLASS  = 'BROADCAST_NULL_DRIVER_CLASS';
+
+    public const string DEFAULT_MESSAGE_CHANNEL = 'BROADCAST_DEFAULT_MESSAGE_CHANNEL';
+    public const string DEFAULT_MESSAGE_CLASS   = 'BROADCAST_DEFAULT_MESSAGE_CLASS';
 }

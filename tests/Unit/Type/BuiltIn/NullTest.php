@@ -18,7 +18,7 @@ use Valkyrja\Type\BuiltIn\NullT;
 
 class NullTest extends TestCase
 {
-    protected const VALUE = null;
+    protected const null VALUE = null;
 
     public function testValue(): void
     {

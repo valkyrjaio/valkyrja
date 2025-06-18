@@ -20,10 +20,10 @@ namespace Valkyrja\Asset\Constant;
  */
 final class ConfigName
 {
-    public const DEFAULT_BUNDLE = 'defaultBundle';
+    public const string DEFAULT_BUNDLE = 'defaultBundle';
 
-    public const ADAPTER_CLASS = 'adapterClass';
-    public const HOST          = 'host';
-    public const PATH          = 'path';
-    public const MANIFEST      = 'manifest';
+    public const string ADAPTER_CLASS = 'adapterClass';
+    public const string HOST          = 'host';
+    public const string PATH          = 'path';
+    public const string MANIFEST      = 'manifest';
 }

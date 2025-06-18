@@ -16,6 +16,7 @@ namespace Valkyrja\View\Config;
 use Twig\Extension\ExtensionInterface;
 use Valkyrja\Support\Directory;
 use Valkyrja\View\Constant\ConfigName;
+use Valkyrja\View\Constant\EnvName;
 use Valkyrja\View\Engine\TwigEngine;
 
 /**
@@ -31,12 +32,12 @@ class TwigConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ENGINE         => 'VIEW_TWIG_ENGINE',
-        ConfigName::FILE_EXTENSION => 'VIEW_TWIG_FILE_EXTENSION',
-        ConfigName::DIR            => 'VIEW_TWIG_DIR',
-        ConfigName::PATHS          => 'VIEW_TWIG_PATHS',
-        'extensions'               => 'VIEW_TWIG_EXTENSIONS',
-        'compiledDir'              => 'VIEW_TWIG_COMPILED_DIR',
+        ConfigName::ENGINE         => EnvName::TWIG_ENGINE,
+        ConfigName::FILE_EXTENSION => EnvName::TWIG_FILE_EXTENSION,
+        ConfigName::DIR            => EnvName::TWIG_DIR,
+        ConfigName::PATHS          => EnvName::TWIG_PATHS,
+        ConfigName::EXTENSIONS     => EnvName::TWIG_EXTENSIONS,
+        ConfigName::COMPILED_DIR   => EnvName::TWIG_COMPILED_DIR,
     ];
 
     /**

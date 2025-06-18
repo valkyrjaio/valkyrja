@@ -15,6 +15,7 @@ namespace Valkyrja\Filesystem\Config;
 
 use Valkyrja\Filesystem\Adapter\InMemoryAdapter;
 use Valkyrja\Filesystem\Constant\ConfigName;
+use Valkyrja\Filesystem\Constant\EnvName;
 use Valkyrja\Support\Directory;
 
 /**
@@ -30,9 +31,9 @@ class InMemoryConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'FILESYSTEM_IN_MEMORY_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'FILESYSTEM_IN_MEMORY_DRIVER_CLASS',
-        ConfigName::DIR           => 'FILESYSTEM_IN_MEMORY_DIR',
+        ConfigName::ADAPTER_CLASS => EnvName::IN_MEMORY_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::IN_MEMORY_DRIVER_CLASS,
+        ConfigName::DIR           => EnvName::IN_MEMORY_DIR,
     ];
 
     public function __construct(

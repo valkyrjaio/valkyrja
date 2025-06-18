@@ -20,8 +20,8 @@ namespace Valkyrja\Event\Constant;
  */
 final class ConfigName
 {
-    public const LISTENER_CLASSES = 'listenerClasses';
-    public const FILE_PATH        = 'filePath';
-    public const CACHE_FILE_PATH  = 'cacheFilePath';
-    public const USE_CACHE        = 'useCache';
+    public const string LISTENER_CLASSES = 'listenerClasses';
+    public const string FILE_PATH        = 'filePath';
+    public const string CACHE_FILE_PATH  = 'cacheFilePath';
+    public const string USE_CACHE        = 'useCache';
 }

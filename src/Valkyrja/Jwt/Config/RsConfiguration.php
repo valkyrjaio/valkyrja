@@ -15,6 +15,7 @@ namespace Valkyrja\Jwt\Config;
 
 use Valkyrja\Jwt\Adapter\Firebase\RsAdapter;
 use Valkyrja\Jwt\Constant\ConfigName;
+use Valkyrja\Jwt\Constant\EnvName;
 use Valkyrja\Jwt\Enum\Algorithm;
 
 /**
@@ -30,13 +31,13 @@ class RsConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ALGORITHM     => 'JWT_RS_ALGORITHM',
-        ConfigName::ADAPTER_CLASS => 'JWT_RS_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'JWT_RS_DRIVER_CLASS',
-        ConfigName::PRIVATE_KEY   => 'JWT_RS_PRIVATE_KEY',
-        ConfigName::PUBLIC_KEY    => 'JWT_RS_PUBLIC_KEY',
-        ConfigName::KEY_PATH      => 'JWT_RS_KEY_PATH',
-        ConfigName::PASSPHRASE    => 'JWT_RS_PASSPHRASE',
+        ConfigName::ALGORITHM     => EnvName::RS_ALGORITHM,
+        ConfigName::ADAPTER_CLASS => EnvName::RS_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::RS_DRIVER_CLASS,
+        ConfigName::PRIVATE_KEY   => EnvName::RS_PRIVATE_KEY,
+        ConfigName::PUBLIC_KEY    => EnvName::RS_PUBLIC_KEY,
+        ConfigName::KEY_PATH      => EnvName::RS_KEY_PATH,
+        ConfigName::PASSPHRASE    => EnvName::RS_PASSPHRASE,
     ];
 
     public function __construct(

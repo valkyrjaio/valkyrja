@@ -22,6 +22,7 @@ class Configurations
 {
     public function __construct(
         public GuzzleConfiguration|null $guzzle = null,
+        public LogConfiguration|null $log = null,
         public NullConfiguration|null $null = null,
     ) {
     }

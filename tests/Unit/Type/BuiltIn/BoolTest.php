@@ -18,7 +18,7 @@ use Valkyrja\Type\BuiltIn\BoolT;
 
 class BoolTest extends TestCase
 {
-    protected const VALUE = true;
+    protected const bool VALUE = true;
 
     public function testValue(): void
     {

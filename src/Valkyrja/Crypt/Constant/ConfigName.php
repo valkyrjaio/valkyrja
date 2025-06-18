@@ -20,12 +20,12 @@ namespace Valkyrja\Crypt\Constant;
  */
 final class ConfigName
 {
-    public const DEFAULT_CONFIGURATION = 'defaultConfiguration';
-    public const CONFIGURATIONS        = 'configurations';
+    public const string DEFAULT_CONFIGURATION = 'defaultConfiguration';
+    public const string CONFIGURATIONS        = 'configurations';
 
-    public const ADAPTER_CLASS = 'adapterClass';
-    public const DRIVER_CLASS  = 'driverClass';
+    public const string ADAPTER_CLASS = 'adapterClass';
+    public const string DRIVER_CLASS  = 'driverClass';
 
-    public const KEY      = 'key';
-    public const KEY_PATH = 'keyPath';
+    public const string KEY      = 'key';
+    public const string KEY_PATH = 'keyPath';
 }

@@ -40,11 +40,4 @@ class Config extends ParentConfig
         public array $notifications = [],
     ) {
     }
-
-    /**
-     * @inheritDoc
-     */
-    protected function setPropertiesBeforeSettingFromEnv(string $env): void
-    {
-    }
 }

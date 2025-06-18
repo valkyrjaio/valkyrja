@@ -20,13 +20,13 @@ namespace Valkyrja\Path\Constant;
  */
 final class PathPattern
 {
-    public const NUM                  = 'num';
-    public const ID                   = 'id';
-    public const SLUG                 = 'slug';
-    public const UUID                 = 'uuid';
-    public const ALPHA                = 'alpha';
-    public const ALPHA_LOWERCASE      = 'alpha-lowercase';
-    public const ALPHA_UPPERCASE      = 'alpha-uppercase';
-    public const ALPHA_NUM            = 'alpha-num';
-    public const ALPHA_NUM_UNDERSCORE = 'alpha-num-underscore';
+    public const string NUM                  = 'num';
+    public const string ID                   = 'id';
+    public const string SLUG                 = 'slug';
+    public const string UUID                 = 'uuid';
+    public const string ALPHA                = 'alpha';
+    public const string ALPHA_LOWERCASE      = 'alpha-lowercase';
+    public const string ALPHA_UPPERCASE      = 'alpha-uppercase';
+    public const string ALPHA_NUM            = 'alpha-num';
+    public const string ALPHA_NUM_UNDERSCORE = 'alpha-num-underscore';
 }

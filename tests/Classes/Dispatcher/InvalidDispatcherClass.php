@@ -22,7 +22,7 @@ use Valkyrja\Application\Contract\Application;
  */
 class InvalidDispatcherClass
 {
-    public const TEST = null;
+    public const string|null TEST = null;
 
     public static string $staticProperty;
 

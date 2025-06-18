@@ -15,6 +15,7 @@ namespace Valkyrja\Mail\Config;
 
 use Valkyrja\Mail\Adapter\MailgunAdapter;
 use Valkyrja\Mail\Constant\ConfigName;
+use Valkyrja\Mail\Constant\EnvName;
 
 /**
  * Class MailgunConfiguration.
@@ -29,10 +30,10 @@ class MailgunConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'MAILGUN_MAILGUN_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'MAILGUN_MAILGUN_DRIVER_CLASS',
-        'apiKey'                  => 'MAILGUN_MAILGUN_API_KEY',
-        'domain'                  => 'MAILGUN_MAILGUN_DOMAIN',
+        ConfigName::ADAPTER_CLASS => EnvName::MAILGUN_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::MAILGUN_DRIVER_CLASS,
+        ConfigName::API_KEY       => EnvName::MAILGUN_API_KEY,
+        ConfigName::DOMAIN        => EnvName::MAILGUN_DOMAIN,
     ];
 
     public function __construct(

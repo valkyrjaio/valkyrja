@@ -20,7 +20,7 @@ namespace Valkyrja\Api\Constant;
  */
 final class Status
 {
-    public const SUCCESS = 'success';
-    public const ERROR   = 'error';
-    public const FAIL    = 'fail';
+    public const string SUCCESS = 'success';
+    public const string ERROR   = 'error';
+    public const string FAIL    = 'fail';
 }

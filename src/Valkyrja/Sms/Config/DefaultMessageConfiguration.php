@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Sms\Config;
 
 use Valkyrja\Sms\Constant\ConfigName;
+use Valkyrja\Sms\Constant\EnvName;
 
 /**
  * Class DefaultMessageConfiguration.
@@ -28,8 +29,8 @@ class DefaultMessageConfiguration extends MessageConfiguration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::FROM          => 'SMS_DEFAULT_MESSAGE_FROM',
-        ConfigName::MESSAGE_CLASS => 'SMS_DEFAULT_MESSAGE_CLASS',
+        ConfigName::FROM          => EnvName::DEFAULT_MESSAGE_FROM,
+        ConfigName::MESSAGE_CLASS => EnvName::DEFAULT_MESSAGE_CLASS,
     ];
 
     public function __construct()

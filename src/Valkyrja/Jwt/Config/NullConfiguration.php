@@ -15,6 +15,7 @@ namespace Valkyrja\Jwt\Config;
 
 use Valkyrja\Jwt\Adapter\NullAdapter;
 use Valkyrja\Jwt\Constant\ConfigName;
+use Valkyrja\Jwt\Constant\EnvName;
 use Valkyrja\Jwt\Enum\Algorithm;
 
 /**
@@ -30,8 +31,8 @@ class NullConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'JWT_NULL_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'JWT_NULL_DRIVER_CLASS',
+        ConfigName::ADAPTER_CLASS => EnvName::NULL_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::NULL_DRIVER_CLASS,
     ];
 
     public function __construct()

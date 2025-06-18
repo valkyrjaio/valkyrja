@@ -18,9 +18,9 @@ use Valkyrja\Type\BuiltIn\Support\StrCase as Helper;
 
 class StringCaseTest extends TestCase
 {
-    protected const VALUE     = 'Some Words';
-    protected const UPPERCASE = 'UPPERCASE';
-    protected const LOWERCASE = 'lowercase';
+    protected const string VALUE     = 'Some Words';
+    protected const string UPPERCASE = 'UPPERCASE';
+    protected const string LOWERCASE = 'lowercase';
 
     public function testToTitleCase(): void
     {

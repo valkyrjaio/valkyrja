@@ -18,7 +18,7 @@ use Valkyrja\Type\BuiltIn\FloatT;
 
 class FloatTest extends TestCase
 {
-    protected const VALUE = 1.25;
+    protected const float VALUE = 1.25;
 
     public function testValue(): void
     {

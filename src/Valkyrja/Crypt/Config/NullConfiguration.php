@@ -15,6 +15,7 @@ namespace Valkyrja\Crypt\Config;
 
 use Valkyrja\Crypt\Adapter\NullAdapter;
 use Valkyrja\Crypt\Constant\ConfigName;
+use Valkyrja\Crypt\Constant\EnvName;
 
 /**
  * Class NullConfiguration.
@@ -29,9 +30,9 @@ class NullConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'CRYPT_NULL_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'CRYPT_NULL_DRIVER_CLASS',
-        ConfigName::KEY           => 'CRYPT_NULL_KEY',
+        ConfigName::ADAPTER_CLASS => EnvName::NULL_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::NULL_DRIVER_CLASS,
+        ConfigName::KEY           => EnvName::NULL_KEY,
     ];
 
     public function __construct(

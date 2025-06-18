@@ -32,16 +32,16 @@ class AttributesTest extends TestCase
     /**
      * The value to test with.
      *
-     * @var string
+     * @var class-string
      */
-    public const VALUE1 = self::class;
+    public const string VALUE1 = self::class;
 
     /**
      * The value to test with.
      *
      * @var string
      */
-    public const VALUE2 = TestCase::class;
+    public const string VALUE2 = TestCase::class;
 
     /**
      * The class to test with.

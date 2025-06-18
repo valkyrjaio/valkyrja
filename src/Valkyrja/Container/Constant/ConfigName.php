@@ -20,13 +20,13 @@ namespace Valkyrja\Container\Constant;
  */
 final class ConfigName
 {
-    public const ALIASES          = 'aliases';
-    public const SERVICES         = 'services';
-    public const CONTEXT_SERVICES = 'contextServices';
-    public const PROVIDERS        = 'providers';
-    public const DEV_PROVIDERS    = 'devProviders';
-    public const USE_ATTRIBUTES   = 'useAttributes';
-    public const FILE_PATH        = 'filePath';
-    public const CACHE_FILE_PATH  = 'cacheFilePath';
-    public const USE_CACHE        = 'useCache';
+    public const string ALIASES          = 'aliases';
+    public const string SERVICES         = 'services';
+    public const string CONTEXT_SERVICES = 'contextServices';
+    public const string PROVIDERS        = 'providers';
+    public const string DEV_PROVIDERS    = 'devProviders';
+    public const string USE_ATTRIBUTES   = 'useAttributes';
+    public const string FILE_PATH        = 'filePath';
+    public const string CACHE_FILE_PATH  = 'cacheFilePath';
+    public const string USE_CACHE        = 'useCache';
 }

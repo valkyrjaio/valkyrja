@@ -27,12 +27,13 @@ class ModelClass extends AbstractModel
 {
     use PrivatePropertyTrait;
 
-    public const PUBLIC    = 'public';
-    public const PROTECTED = 'protected';
-    public const PRIVATE   = 'private';
-    public const NULLABLE  = 'nullable';
+    public const string PUBLIC    = 'public';
+    public const string PROTECTED = 'protected';
+    public const string PRIVATE   = 'private';
+    public const string NULLABLE  = 'nullable';
 
-    public const VALUES = [
+    /** @var array<string, string|null> */
+    public const array VALUES = [
         self::PUBLIC    => self::PUBLIC,
         self::NULLABLE  => null,
         self::PROTECTED => self::PROTECTED,

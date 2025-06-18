@@ -20,9 +20,9 @@ namespace Valkyrja\Annotation\Constant;
  */
 final class AnnotationName
 {
-    public const COMMAND         = 'Command';
-    public const LISTENER        = 'listener';
-    public const SERVICE         = 'Service';
-    public const SERVICE_ALIAS   = 'Service\\Alias';
-    public const SERVICE_CONTEXT = 'Service\\Context';
+    public const string COMMAND         = 'Command';
+    public const string LISTENER        = 'listener';
+    public const string SERVICE         = 'Service';
+    public const string SERVICE_ALIAS   = 'Service\\Alias';
+    public const string SERVICE_CONTEXT = 'Service\\Context';
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast\Config;
 
 use Valkyrja\Broadcast\Constant\ConfigName;
+use Valkyrja\Broadcast\Constant\EnvName;
 
 /**
  * Class DefaultMessageConfiguration.
@@ -28,8 +29,8 @@ class DefaultMessageConfiguration extends MessageConfiguration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::CHANNEL       => 'BROADCAST_DEFAULT_MESSAGE_CHANNEL',
-        ConfigName::MESSAGE_CLASS => 'BROADCAST_DEFAULT_MESSAGE_CLASS',
+        ConfigName::CHANNEL       => EnvName::DEFAULT_MESSAGE_CHANNEL,
+        ConfigName::MESSAGE_CLASS => EnvName::DEFAULT_MESSAGE_CLASS,
     ];
 
     public function __construct()

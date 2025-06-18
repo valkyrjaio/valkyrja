@@ -23,7 +23,7 @@ use function serialize;
 
 class ObjectTest extends TestCase
 {
-    protected const SERIALIZED = 'O:34:"Valkyrja\Tests\Classes\Model\Model":3:{s:55:"Valkyrja\Model\Models\ModelinternalOriginalProperties";a:1:{s:6:"public";s:4:"test";}s:58:"Valkyrja\Model\Models\ModelinternalOriginalPropertiesSet";b:1;s:6:"public";s:4:"test";}';
+    protected const string SERIALIZED = 'O:34:"Valkyrja\Tests\Classes\Model\Model":3:{s:55:"Valkyrja\Model\Models\ModelinternalOriginalProperties";a:1:{s:6:"public";s:4:"test";}s:58:"Valkyrja\Model\Models\ModelinternalOriginalPropertiesSet";b:1;s:6:"public";s:4:"test";}';
 
     /**
      * @throws JsonException

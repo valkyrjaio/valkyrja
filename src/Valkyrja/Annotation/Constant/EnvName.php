@@ -20,6 +20,6 @@ namespace Valkyrja\Annotation\Constant;
  */
 final class EnvName
 {
-    public const ALIASES = 'ANNOTATION_ALIASES';
-    public const MAP     = 'ANNOTATION_MAP';
+    public const string ALIASES = 'ANNOTATION_ALIASES';
+    public const string MAP     = 'ANNOTATION_MAP';
 }

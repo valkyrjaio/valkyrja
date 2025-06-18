@@ -21,7 +21,8 @@ use function PHPUnit\Framework\assertSame;
 
 class ArrayTest extends TestCase
 {
-    protected const VALUE = [
+    /** @var array[] */
+    protected const array VALUE = [
         'one' => [
             'two' => [
                 'three' => 'test',

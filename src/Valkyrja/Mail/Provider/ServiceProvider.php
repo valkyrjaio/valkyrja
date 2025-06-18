@@ -170,7 +170,7 @@ final class ServiceProvider extends Provider
         $logger = $container->getSingleton(Logger::class);
 
         return new LogAdapter(
-            $logger->use($config->logName),
+            $logger->use($config->logger),
             $config
         );
     }

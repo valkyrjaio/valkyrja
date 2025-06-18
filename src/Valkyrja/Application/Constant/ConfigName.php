@@ -20,12 +20,12 @@ namespace Valkyrja\Application\Constant;
  */
 final class ConfigName
 {
-    public const ENV           = 'env';
-    public const DEBUG         = 'debug';
-    public const URL           = 'url';
-    public const TIMEZONE      = 'timezone';
-    public const VERSION       = 'version';
-    public const KEY           = 'key';
-    public const ERROR_HANDLER = 'errorHandler';
-    public const PROVIDERS     = 'providers';
+    public const string ENV           = 'env';
+    public const string DEBUG         = 'debug';
+    public const string URL           = 'url';
+    public const string TIMEZONE      = 'timezone';
+    public const string VERSION       = 'version';
+    public const string KEY           = 'key';
+    public const string ERROR_HANDLER = 'errorHandler';
+    public const string PROVIDERS     = 'providers';
 }

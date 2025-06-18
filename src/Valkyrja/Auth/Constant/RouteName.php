@@ -20,10 +20,10 @@ namespace Valkyrja\Auth\Constant;
  */
 final class RouteName
 {
-    public const AUTHENTICATE     = 'auth.authenticate';
-    public const PASSWORD_CONFIRM = 'auth.password.confirm';
-    public const PASSWORD_FORGOT  = 'auth.password.forgot';
-    public const PASSWORD_REST    = 'auth.password.reset';
-    public const REGISTER         = 'auth.register';
-    public const DASHBOARD        = 'dashboard';
+    public const string AUTHENTICATE     = 'auth.authenticate';
+    public const string PASSWORD_CONFIRM = 'auth.password.confirm';
+    public const string PASSWORD_FORGOT  = 'auth.password.forgot';
+    public const string PASSWORD_REST    = 'auth.password.reset';
+    public const string REGISTER         = 'auth.register';
+    public const string DASHBOARD        = 'dashboard';
 }

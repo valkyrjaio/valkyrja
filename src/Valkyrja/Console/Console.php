@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Console;
 
 use InvalidArgumentException;
-use Valkyrja\Config\Constant\ConfigKeyPart;
 use Valkyrja\Console\Contract\Console as Contract;
 use Valkyrja\Console\Event\CommandDispatched;
 use Valkyrja\Console\Event\CommandDispatching;
@@ -290,7 +289,7 @@ class Console implements Contract
             $parsedPath = $this->pathParser->parse($provided);
 
             // Set the path and regex in the paths list
-            self::$paths[$parsedPath[ConfigKeyPart::REGEX]] = $provided;
+            self::$paths[$parsedPath['regex']] = $provided;
             // Set the path and command in the named commands list
             self::$namedCommands[$commands[$key]] = $provided;
         }

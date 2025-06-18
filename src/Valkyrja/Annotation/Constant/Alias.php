@@ -20,6 +20,6 @@ namespace Valkyrja\Annotation\Constant;
  */
 final class Alias
 {
-    public const REQUEST_METHOD = 'RequestMethod';
-    public const STATUS_CODE    = 'StatusCode';
+    public const string REQUEST_METHOD = 'RequestMethod';
+    public const string STATUS_CODE    = 'StatusCode';
 }

@@ -20,7 +20,7 @@ namespace Valkyrja\Config\Constant;
  */
 final class EnvName
 {
-    public const PROVIDERS       = 'CONFIG_PROVIDERS';
-    public const CACHE_FILE_PATH = 'CONFIG_CACHE_FILE_PATH';
-    public const USE_CACHE       = 'CONFIG_USE_CACHE';
+    public const string PROVIDERS       = 'CONFIG_PROVIDERS';
+    public const string CACHE_FILE_PATH = 'CONFIG_CACHE_FILE_PATH';
+    public const string USE_CACHE       = 'CONFIG_USE_CACHE';
 }

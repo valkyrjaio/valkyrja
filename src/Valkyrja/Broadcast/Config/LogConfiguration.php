@@ -15,6 +15,7 @@ namespace Valkyrja\Broadcast\Config;
 
 use Valkyrja\Broadcast\Adapter\LogAdapter;
 use Valkyrja\Broadcast\Constant\ConfigName;
+use Valkyrja\Broadcast\Constant\EnvName;
 
 /**
  * Class LogConfiguration.
@@ -29,13 +30,13 @@ class LogConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'BROADCAST_LOG_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'BROADCAST_LOG_DRIVER_CLASS',
-        ConfigName::LOG_NAME      => 'BROADCAST_LOG_LOG_NAME',
+        ConfigName::ADAPTER_CLASS => EnvName::LOG_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::LOG_DRIVER_CLASS,
+        ConfigName::LOGGER        => EnvName::LOG_LOGGER,
     ];
 
     public function __construct(
-        public string|null $logName = null
+        public string|null $logger = null
     ) {
         parent::__construct(
             adapterClass: LogAdapter::class,

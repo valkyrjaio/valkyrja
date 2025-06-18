@@ -20,12 +20,12 @@ namespace Valkyrja\Log\Constant;
  */
 final class ConfigName
 {
-    public const DEFAULT_CONFIGURATION = 'defaultConfiguration';
-    public const CONFIGURATIONS        = 'configurations';
+    public const string DEFAULT_CONFIGURATION = 'defaultConfiguration';
+    public const string CONFIGURATIONS        = 'configurations';
 
-    public const ADAPTER_CLASS = 'adapterClass';
-    public const DRIVER_CLASS  = 'driverClass';
+    public const string ADAPTER_CLASS = 'adapterClass';
+    public const string DRIVER_CLASS  = 'driverClass';
 
-    public const NAME      = 'name';
-    public const FILE_PATH = 'filePath';
+    public const string NAME      = 'name';
+    public const string FILE_PATH = 'filePath';
 }

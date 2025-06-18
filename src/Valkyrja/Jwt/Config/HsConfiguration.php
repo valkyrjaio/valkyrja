@@ -15,6 +15,7 @@ namespace Valkyrja\Jwt\Config;
 
 use Valkyrja\Jwt\Adapter\Firebase\HsAdapter;
 use Valkyrja\Jwt\Constant\ConfigName;
+use Valkyrja\Jwt\Constant\EnvName;
 use Valkyrja\Jwt\Enum\Algorithm;
 
 /**
@@ -30,10 +31,10 @@ class HsConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ALGORITHM     => 'JWT_HS_ALGORITHM',
-        ConfigName::ADAPTER_CLASS => 'JWT_HS_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'JWT_HS_DRIVER_CLASS',
-        ConfigName::KEY           => 'JWT_HS_KEY',
+        ConfigName::ALGORITHM     => EnvName::HS_ALGORITHM,
+        ConfigName::ADAPTER_CLASS => EnvName::HS_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::HS_DRIVER_CLASS,
+        ConfigName::KEY           => EnvName::HS_KEY,
     ];
 
     public function __construct(

@@ -20,5 +20,5 @@ namespace Valkyrja\Asset\Constant;
  */
 final class EnvName
 {
-    public const DEFAULT_BUNDLE = 'ASSET_DEFAULT_BUNDLE';
+    public const string DEFAULT_BUNDLE = 'ASSET_DEFAULT_BUNDLE';
 }

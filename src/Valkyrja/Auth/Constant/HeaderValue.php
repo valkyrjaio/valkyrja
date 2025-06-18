@@ -20,5 +20,5 @@ namespace Valkyrja\Auth\Constant;
  */
 final class HeaderValue
 {
-    public const BEARER = 'Bearer';
+    public const string BEARER = 'Bearer';
 }

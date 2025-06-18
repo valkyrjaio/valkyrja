@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\TestCase;
 
 class UriTest extends TestCase
 {
-    protected const URI_ALL_PARTS = 'https://username:password@example.com:9090/path?arg=value#anchor';
+    protected const string URI_ALL_PARTS = 'https://username:password@example.com:9090/path?arg=value#anchor';
 
     public function testGetScheme(): void
     {

@@ -15,6 +15,7 @@ namespace Valkyrja\Jwt\Config;
 
 use Valkyrja\Jwt\Adapter\Firebase\EdDsaAdapter;
 use Valkyrja\Jwt\Constant\ConfigName;
+use Valkyrja\Jwt\Constant\EnvName;
 use Valkyrja\Jwt\Enum\Algorithm;
 
 /**
@@ -30,11 +31,11 @@ class EdDsaConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ALGORITHM     => 'JWT_EDDSA_ALGORITHM',
-        ConfigName::ADAPTER_CLASS => 'JWT_EDDSA_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'JWT_EDDSA_DRIVER_CLASS',
-        ConfigName::PRIVATE_KEY   => 'JWT_EDDSA_PRIVATE_KEY',
-        ConfigName::PUBLIC_KEY    => 'JWT_EDDSA_PUBLIC_KEY',
+        ConfigName::ALGORITHM     => EnvName::EDDSA_ALGORITHM,
+        ConfigName::ADAPTER_CLASS => EnvName::EDDSA_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::EDDSA_DRIVER_CLASS,
+        ConfigName::PRIVATE_KEY   => EnvName::EDDSA_PRIVATE_KEY,
+        ConfigName::PUBLIC_KEY    => EnvName::EDDSA_PUBLIC_KEY,
     ];
 
     public function __construct(

@@ -15,6 +15,7 @@ namespace Valkyrja\Mail\Config;
 
 use Valkyrja\Mail\Adapter\PHPMailerAdapter;
 use Valkyrja\Mail\Constant\ConfigName;
+use Valkyrja\Mail\Constant\EnvName;
 
 /**
  * Class PhpMailerConfiguration.
@@ -29,13 +30,13 @@ class PhpMailerConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'PHPMAILER_PHP_MAILER_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'PHPMAILER_PHP_MAILER_DRIVER_CLASS',
-        'host'                    => 'PHPMAILER_PHP_MAILER_HOST',
-        'port'                    => 'PHPMAILER_PHP_MAILER_PORT',
-        'username'                => 'PHPMAILER_PHP_MAILER_USERNAME',
-        'password'                => 'PHPMAILER_PHP_MAILER_PASSWORD',
-        'encryption'              => 'PHPMAILER_PHP_MAILER_ENCRYPTION',
+        ConfigName::ADAPTER_CLASS => EnvName::PHP_MAILER_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::PHP_MAILER_DRIVER_CLASS,
+        ConfigName::HOST          => EnvName::PHP_MAILER_HOST,
+        ConfigName::PORT          => EnvName::PHP_MAILER_PORT,
+        ConfigName::USERNAME      => EnvName::PHP_MAILER_USERNAME,
+        ConfigName::PASSWORD      => EnvName::PHP_MAILER_PASSWORD,
+        ConfigName::ENCRYPTION    => EnvName::PHP_MAILER_ENCRYPTION,
     ];
 
     public function __construct(

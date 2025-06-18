@@ -20,7 +20,7 @@ namespace Valkyrja\Notification\Constant;
  */
 final class UserField
 {
-    public const NAME         = 'name';
-    public const PHONE_NUMBER = 'phone_number';
-    public const SECRET_ID    = 'secret_id';
+    public const string NAME         = 'name';
+    public const string PHONE_NUMBER = 'phone_number';
+    public const string SECRET_ID    = 'secret_id';
 }

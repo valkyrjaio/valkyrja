@@ -20,11 +20,11 @@ namespace Valkyrja\Http\Message\Constant;
  */
 final class Port
 {
-    public const MIN = 1;
-    public const MAX = 65535;
+    public const int MIN = 1;
+    public const int MAX = 65535;
 
-    public const HTTP  = 80;
-    public const HTTPS = 443;
+    public const int HTTP  = 80;
+    public const int HTTPS = 443;
 
     /**
      * Check if a port is valid.

@@ -15,6 +15,7 @@ namespace Valkyrja\Crypt\Config;
 
 use Valkyrja\Crypt\Adapter\SodiumAdapter;
 use Valkyrja\Crypt\Constant\ConfigName;
+use Valkyrja\Crypt\Constant\EnvName;
 
 /**
  * Class SodiumConfiguration.
@@ -29,10 +30,10 @@ class SodiumConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'CRYPT_SODIUM_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'CRYPT_SODIUM_DRIVER_CLASS',
-        ConfigName::KEY           => 'CRYPT_SODIUM_KEY',
-        ConfigName::KEY_PATH      => 'CRYPT_SODIUM_KEY_PATH',
+        ConfigName::ADAPTER_CLASS => EnvName::SODIUM_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::SODIUM_DRIVER_CLASS,
+        ConfigName::KEY           => EnvName::SODIUM_KEY,
+        ConfigName::KEY_PATH      => EnvName::SODIUM_KEY_PATH,
     ];
 
     public function __construct(

@@ -18,10 +18,10 @@ use Valkyrja\Type\Id\IntId;
 
 class IntIdTest extends TestCase
 {
-    protected const VALUE        = 1;
-    protected const STRING_VALUE = '1';
-    protected const FLOAT_VALUE  = 1.0;
-    protected const BOOL_VALUE   = true;
+    protected const int    VALUE        = 1;
+    protected const string STRING_VALUE = '1';
+    protected const float  FLOAT_VALUE  = 1.0;
+    protected const true   BOOL_VALUE   = true;
 
     public function testValue(): void
     {

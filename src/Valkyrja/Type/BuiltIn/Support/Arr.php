@@ -16,7 +16,6 @@ namespace Valkyrja\Type\BuiltIn\Support;
 use ArrayAccess;
 use JsonException;
 use Stringable;
-use Valkyrja\Config\Constant\ConfigKeyPart;
 use Valkyrja\Type\Exception\RuntimeException;
 
 use function array_filter;
@@ -42,7 +41,7 @@ class Arr
      * @param mixed|null                                      $defaultValue [optional] The default value
      * @param non-empty-string                                $separator    [optional] The separator
      *
-     * @phpstan-param ArrayAccess<string, mixed>|array<string, mixed> $subject The subject
+     * @phpstan-param ArrayAccess<string, mixed>|array<string, mixed> $subject      The subject
      *
      * @return mixed
      */
@@ -50,7 +49,7 @@ class Arr
         ArrayAccess|array $subject,
         string $key,
         mixed $defaultValue = null,
-        string $separator = ConfigKeyPart::SEP
+        string $separator = '.'
     ): mixed {
         $value    = $subject;
         $keyParts = explode($separator, $key);

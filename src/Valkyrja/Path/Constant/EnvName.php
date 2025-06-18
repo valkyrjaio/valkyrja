@@ -20,5 +20,5 @@ namespace Valkyrja\Path\Constant;
  */
 final class EnvName
 {
-    public const PATTERNS = 'PATH_PATTERNS';
+    public const string PATTERNS = 'PATH_PATTERNS';
 }

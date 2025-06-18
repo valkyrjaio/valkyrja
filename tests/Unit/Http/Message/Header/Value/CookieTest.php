@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\TestCase;
 
 class CookieTest extends TestCase
 {
-    protected const COOKIE_NAME = 'test';
+    protected const string COOKIE_NAME = 'test';
 
     public function testDefaults(): void
     {

@@ -20,5 +20,5 @@ namespace Valkyrja\Http\Server\Constant;
  */
 final class EnvName
 {
-    public const REQUEST_HANDLER = 'HTTP_SERVER_REQUEST_HANDLER';
+    public const string REQUEST_HANDLER = 'HTTP_SERVER_REQUEST_HANDLER';
 }

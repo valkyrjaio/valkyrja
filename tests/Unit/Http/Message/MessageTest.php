@@ -23,9 +23,9 @@ use function implode;
 
 class MessageTest extends TestCase
 {
-    protected const HEADER_NAME   = 'test';
-    protected const HEADER_VALUE  = 'foo';
-    protected const HEADER_VALUE2 = 'bar';
+    protected const string HEADER_NAME   = 'test';
+    protected const string HEADER_VALUE  = 'foo';
+    protected const string HEADER_VALUE2 = 'bar';
 
     protected static function assertEmptyHeaders(MessageClass $message): void
     {

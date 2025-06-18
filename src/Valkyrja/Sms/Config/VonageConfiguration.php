@@ -15,6 +15,7 @@ namespace Valkyrja\Sms\Config;
 
 use Valkyrja\Sms\Adapter\VonageAdapter;
 use Valkyrja\Sms\Constant\ConfigName;
+use Valkyrja\Sms\Constant\EnvName;
 
 /**
  * Class VonageConfiguration.
@@ -29,10 +30,10 @@ class VonageConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        'key'                     => 'SMS_VONAGE_KEY',
-        'secret'                  => 'SMS_VONAGE_SECRET',
-        ConfigName::ADAPTER_CLASS => 'SMS_VONAGE_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'SMS_VONAGE_DRIVER_CLASS',
+        ConfigName::KEY           => EnvName::VONAGE_KEY,
+        ConfigName::SECRET        => EnvName::VONAGE_SECRET,
+        ConfigName::ADAPTER_CLASS => EnvName::VONAGE_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::VONAGE_DRIVER_CLASS,
     ];
 
     public function __construct(

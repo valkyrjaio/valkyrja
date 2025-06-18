@@ -20,19 +20,20 @@ namespace Valkyrja\Session\Constant;
  */
 final class ConfigName
 {
-    public const DEFAULT_CONFIGURATION = 'defaultConfiguration';
-    public const CONFIGURATIONS        = 'configurations';
+    public const string DEFAULT_CONFIGURATION = 'defaultConfiguration';
+    public const string CONFIGURATIONS        = 'configurations';
 
-    public const ADAPTER_CLASS = 'adapterClass';
-    public const DRIVER_CLASS  = 'driverClass';
+    public const string ADAPTER_CLASS = 'adapterClass';
+    public const string DRIVER_CLASS  = 'driverClass';
 
-    public const ID   = 'id';
-    public const NAME = 'name';
-
-    public const PATH      = 'path';
-    public const DOMAIN    = 'domain';
-    public const LIFETIME  = 'lifetime';
-    public const SECURE    = 'secure';
-    public const HTTP_ONLY = 'httpOnly';
-    public const SAME_SITE = 'sameSite';
+    public const string ID        = 'id';
+    public const string NAME      = 'name';
+    public const string CACHE     = 'cache';
+    public const string LOGGER    = 'logger';
+    public const string PATH      = 'path';
+    public const string DOMAIN    = 'domain';
+    public const string LIFETIME  = 'lifetime';
+    public const string SECURE    = 'secure';
+    public const string HTTP_ONLY = 'httpOnly';
+    public const string SAME_SITE = 'sameSite';
 }

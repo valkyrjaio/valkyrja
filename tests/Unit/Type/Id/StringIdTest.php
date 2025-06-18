@@ -18,9 +18,9 @@ use Valkyrja\Type\Id\StringId;
 
 class StringIdTest extends TestCase
 {
-    protected const VALUE       = 'foo';
-    protected const INT_VALUE   = 1;
-    protected const FLOAT_VALUE = 1.1;
+    protected const string VALUE       = 'foo';
+    protected const int    INT_VALUE   = 1;
+    protected const float  FLOAT_VALUE = 1.1;
 
     public function testValue(): void
     {

@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\BuiltIn\Enum;
 
-use Valkyrja\Tests\Classes\Enum\Enum;
+use JsonException;
+use Valkyrja\Tests\Classes\Enum\Enum as EnumClass;
 use Valkyrja\Tests\Classes\Enum\IntEnum;
 use Valkyrja\Tests\Classes\Enum\StringEnum;
 use Valkyrja\Tests\Unit\TestCase;
@@ -22,27 +23,29 @@ use Valkyrja\Type\Exception\RuntimeException;
 
 use function json_encode;
 
+use const JSON_THROW_ON_ERROR;
+
 class EnumTest extends TestCase
 {
-    protected const VALUE = Enum::club;
+    protected const EnumClass VALUE = EnumClass::club;
 
     public function testFromValueStatic(): void
     {
-        $type = Enum::fromValue(self::VALUE);
+        $type = EnumClass::fromValue(self::VALUE);
 
         self::assertSame(self::VALUE, $type->asValue());
     }
 
     public function testFromValueBackedEnum(): void
     {
-        $type = Enum::fromValue(self::VALUE);
+        $type = EnumClass::fromValue(self::VALUE);
 
         self::assertSame(self::VALUE, $type->asValue());
     }
 
     public function testFromValueUnitEnum(): void
     {
-        $type = Enum::fromValue(self::VALUE->name);
+        $type = EnumClass::fromValue(self::VALUE->name);
 
         self::assertSame(self::VALUE, $type->asValue());
     }
@@ -51,7 +54,7 @@ class EnumTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $type = Enum::fromValue('invalid');
+        $type = EnumClass::fromValue('invalid');
 
         self::assertSame(self::VALUE, $type->asValue());
     }
@@ -83,13 +86,16 @@ class EnumTest extends TestCase
 
         $type = self::VALUE;
 
-        $type->modify(static fn (Enum $subject): Enum => Enum::heart);
+        $type->modify(static fn (EnumClass $subject): EnumClass => EnumClass::heart);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testJsonSerialize(): void
     {
         $type = self::VALUE;
 
-        self::assertSame(json_encode(self::VALUE), json_encode($type));
+        self::assertSame(json_encode(self::VALUE, JSON_THROW_ON_ERROR), json_encode($type, JSON_THROW_ON_ERROR));
     }
 }

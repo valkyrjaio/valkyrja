@@ -26,9 +26,9 @@ use Valkyrja\Http\Routing\Command\RoutesList;
  */
 final class Provider
 {
-    public const CLEAR_CACHE_COMMAND            = ClearCache::class;
-    public const COMMANDS_LIST_COMMAND          = CommandsList::class;
-    public const COMMANDS_LIST_FOR_BASH_COMMAND = CommandsListForBash::class;
-    public const OPTIMIZE_CACHE_COMMAND         = OptimizeCacheCommand::class;
-    public const ROUTES_LIST_COMMAND            = RoutesList::class;
+    public const string CLEAR_CACHE_COMMAND            = ClearCache::class;
+    public const string COMMANDS_LIST_COMMAND          = CommandsList::class;
+    public const string COMMANDS_LIST_FOR_BASH_COMMAND = CommandsListForBash::class;
+    public const string OPTIMIZE_CACHE_COMMAND         = OptimizeCacheCommand::class;
+    public const string ROUTES_LIST_COMMAND            = RoutesList::class;
 }

@@ -26,9 +26,9 @@ class ListenerTest extends TestCase
     /**
      * The value to test with.
      *
-     * @var string
+     * @var class-string
      */
-    protected const VALUE = self::class;
+    protected const string VALUE = self::class;
 
     /**
      * The class to test with.

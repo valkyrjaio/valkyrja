@@ -73,7 +73,8 @@ enum RequestMethod: string implements Contract
      */
     case PATCH = 'PATCH';
 
-    public const ANY = [
+    /** @var RequestMethod[] */
+    public const array ANY = [
         self::GET,
         self::HEAD,
         self::POST,

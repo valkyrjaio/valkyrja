@@ -21,7 +21,7 @@ use Valkyrja\Tests\Unit\TestCase;
 
 class XmlResponseTest extends TestCase
 {
-    protected const XML = '<?xml version="1.0" encoding="" ?><test></test>';
+    protected const string XML = '<?xml version="1.0" encoding="" ?><test></test>';
 
     public function testConstruct(): void
     {

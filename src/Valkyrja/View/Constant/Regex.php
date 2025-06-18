@@ -24,10 +24,6 @@ final class Regex
      * Annotation name regex.
      * - Matches something like @Annotation, or @Annotation\Sub.
      *
-     * @constant string
-     *
-     * @description
-     *
      * @startblock
      *      \(                  Escaped beginning parenthesis
      *      \s*                 Any amount of whitespace
@@ -55,7 +51,7 @@ final class Regex
      *
      * @endblock
      */
-    public const NAME_REGEX = <<<'REGEX'
+    public const string NAME_REGEX = <<<'REGEX'
                 @startblock\(\s*\'([a-zA-Z0-9]*)\'\s*\)\s*([\s\S.]*?)\s*@endblock
         REGEX;
 }

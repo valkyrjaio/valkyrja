@@ -19,7 +19,8 @@ use Valkyrja\Type\BuiltIn\ArrayT;
 
 class ArrayTest extends TestCase
 {
-    protected const VALUE = ['test'];
+    /** @var string[] */
+    protected const array VALUE = ['test'];
 
     public function testValue(): void
     {

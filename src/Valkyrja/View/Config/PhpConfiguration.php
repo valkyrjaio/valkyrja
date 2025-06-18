@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\View\Config;
 
 use Valkyrja\View\Constant\ConfigName;
+use Valkyrja\View\Constant\EnvName;
 use Valkyrja\View\Engine\PhpEngine;
 
 /**
@@ -29,10 +30,10 @@ class PhpConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ENGINE         => 'VIEW_PHP_ENGINE',
-        ConfigName::FILE_EXTENSION => 'VIEW_PHP_FILE_EXTENSION',
-        ConfigName::DIR            => 'VIEW_PHP_DIR',
-        ConfigName::PATHS          => 'VIEW_PHP_PATHS',
+        ConfigName::ENGINE         => EnvName::PHP_ENGINE,
+        ConfigName::FILE_EXTENSION => EnvName::PHP_FILE_EXTENSION,
+        ConfigName::DIR            => EnvName::PHP_DIR,
+        ConfigName::PATHS          => EnvName::PHP_PATHS,
     ];
 
     public function __construct()

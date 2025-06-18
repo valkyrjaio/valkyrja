@@ -15,6 +15,7 @@ namespace Valkyrja\Orm\Config;
 
 use Valkyrja\Orm\Adapter\PgsqlPdoAdapter;
 use Valkyrja\Orm\Constant\ConfigName;
+use Valkyrja\Orm\Constant\EnvName;
 use Valkyrja\Orm\Driver\PgsqlDriver;
 use Valkyrja\Orm\Pdo\PgsqlPdo;
 
@@ -31,27 +32,27 @@ class PgsqlConnection extends PdoConnection
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS       => 'ORM_PGSQL_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS        => 'ORM_PGSQL_DRIVER_CLASS',
-        ConfigName::REPOSITORY_CLASS    => 'ORM_PGSQL_REPOSITORY_CLASS',
-        ConfigName::QUERY_CLASS         => 'ORM_PGSQL_QUERY_CLASS',
-        ConfigName::QUERY_BUILDER_CLASS => 'ORM_PGSQL_QUERY_BUILDER_CLASS',
-        ConfigName::PERSISTER_CLASS     => 'ORM_PGSQL_PERSISTER_CLASS',
-        ConfigName::RETRIEVER_CLASS     => 'ORM_PGSQL_RETRIEVER_CLASS',
-        ConfigName::PDO_CLASS           => 'ORM_PGSQL_PDO_CLASS',
-        ConfigName::PDO_DRIVER          => 'ORM_PGSQL_PDO_DRIVER',
-        ConfigName::HOST                => 'ORM_PGSQL_HOST',
-        ConfigName::PORT                => 'ORM_PGSQL_PORT',
-        ConfigName::DB                  => 'ORM_PGSQL_DB',
-        ConfigName::USER                => 'ORM_PGSQL_USER',
-        ConfigName::PASSWORD            => 'ORM_PGSQL_PASSWORD',
-        ConfigName::CHARSET             => 'ORM_PGSQL_CHARSET',
-        ConfigName::OPTIONS             => 'ORM_PGSQL_OPTIONS',
-        'schema'                        => 'ORM_PGSQL_SCHEMA',
-        'sslMode'                       => 'ORM_PGSQL_SSL_MODE',
-        'sslCert'                       => 'ORM_PGSQL_SSL_CERT',
-        'sslKey'                        => 'ORM_PGSQL_KEY',
-        'sslRootKey'                    => 'ORM_PGSQL_ROOT_KEY',
+        ConfigName::ADAPTER_CLASS       => EnvName::PGSQL_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS        => EnvName::PGSQL_DRIVER_CLASS,
+        ConfigName::REPOSITORY_CLASS    => EnvName::PGSQL_REPOSITORY_CLASS,
+        ConfigName::QUERY_CLASS         => EnvName::PGSQL_QUERY_CLASS,
+        ConfigName::QUERY_BUILDER_CLASS => EnvName::PGSQL_QUERY_BUILDER_CLASS,
+        ConfigName::PERSISTER_CLASS     => EnvName::PGSQL_PERSISTER_CLASS,
+        ConfigName::RETRIEVER_CLASS     => EnvName::PGSQL_RETRIEVER_CLASS,
+        ConfigName::PDO_CLASS           => EnvName::PGSQL_PDO_CLASS,
+        ConfigName::PDO_DRIVER          => EnvName::PGSQL_PDO_DRIVER,
+        ConfigName::HOST                => EnvName::PGSQL_HOST,
+        ConfigName::PORT                => EnvName::PGSQL_PORT,
+        ConfigName::DB                  => EnvName::PGSQL_DB,
+        ConfigName::USER                => EnvName::PGSQL_USER,
+        ConfigName::PASSWORD            => EnvName::PGSQL_PASSWORD,
+        ConfigName::CHARSET             => EnvName::PGSQL_CHARSET,
+        ConfigName::OPTIONS             => EnvName::PGSQL_OPTIONS,
+        ConfigName::SCHEME              => EnvName::PGSQL_SCHEMA,
+        ConfigName::SSL_MODE            => EnvName::PGSQL_SSL_MODE,
+        ConfigName::SSL_CERT            => EnvName::PGSQL_SSL_CERT,
+        ConfigName::SSL_KEY             => EnvName::PGSQL_KEY,
+        ConfigName::SSL_ROOT_KEY        => EnvName::PGSQL_ROOT_KEY,
     ];
 
     public function __construct(

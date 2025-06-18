@@ -18,7 +18,7 @@ use Valkyrja\Tests\Unit\TestCase;
 
 class CookieFactoryTest extends TestCase
 {
-    protected const SEPARATOR = '; ';
+    protected const string SEPARATOR = '; ';
 
     public function testParseCookieHeader(): void
     {

@@ -15,6 +15,7 @@ namespace Valkyrja\Broadcast\Config;
 
 use Valkyrja\Broadcast\Adapter\CryptPusherAdapter;
 use Valkyrja\Broadcast\Constant\ConfigName;
+use Valkyrja\Broadcast\Constant\EnvName;
 
 /**
  * Class PusherConfiguration.
@@ -29,13 +30,13 @@ class PusherConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'BROADCAST_PUSHER_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'BROADCAST_PUSHER_DRIVER_CLASS',
-        'key'                     => 'BROADCAST_PUSHER_KEY',
-        'secret'                  => 'BROADCAST_PUSHER_SECRET',
-        'id'                      => 'BROADCAST_PUSHER_ID',
-        'cluster'                 => 'BROADCAST_PUSHER_CLUSTER',
-        'useTls'                  => 'BROADCAST_PUSHER_USE_TLS',
+        ConfigName::ADAPTER_CLASS => EnvName::PUSHER_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::PUSHER_DRIVER_CLASS,
+        ConfigName::KEY           => EnvName::PUSHER_KEY,
+        ConfigName::SECRET        => EnvName::PUSHER_SECRET,
+        ConfigName::ID            => EnvName::PUSHER_ID,
+        ConfigName::CLUSTER       => EnvName::PUSHER_CLUSTER,
+        ConfigName::USE_TLS       => EnvName::PUSHER_USE_TLS,
     ];
 
     public function __construct(

@@ -20,6 +20,6 @@ namespace Valkyrja\Api\Constant;
  */
 final class ConfigName
 {
-    public const JSON_MODEL = 'jsonModel';
-    public const DATA_MODEL = 'dataModel';
+    public const string JSON_MODEL = 'jsonModel';
+    public const string DATA_MODEL = 'dataModel';
 }

@@ -15,6 +15,7 @@ namespace Valkyrja\Client\Config;
 
 use Valkyrja\Client\Adapter\GuzzleAdapter;
 use Valkyrja\Client\Constant\ConfigName;
+use Valkyrja\Client\Constant\EnvName;
 
 /**
  * Class GuzzleConfiguration.
@@ -29,9 +30,9 @@ class GuzzleConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'CLIENT_GUZZLE_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'CLIENT_GUZZLE_DRIVER_CLASS',
-        ConfigName::OPTIONS       => 'CLIENT_GUZZLE_OPTIONS',
+        ConfigName::ADAPTER_CLASS => EnvName::GUZZLE_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::GUZZLE_DRIVER_CLASS,
+        ConfigName::OPTIONS       => EnvName::GUZZLE_OPTIONS,
     ];
 
     /**

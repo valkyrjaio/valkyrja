@@ -22,8 +22,8 @@ namespace Valkyrja\Tests\Classes\Config;
  */
 class ConfigClassBefore extends ConfigClass
 {
-    public const PUBLIC   = 'publicBeforeEnv';
-    public const NULLABLE = 'nullableBeforeEnv';
+    public const string PUBLIC   = 'publicBeforeEnv';
+    public const string NULLABLE = 'nullableBeforeEnv';
 
     protected function setPropertiesBeforeSettingFromEnv(string $env): void
     {

@@ -565,29 +565,29 @@ class Env
     /** @var class-string<MailMessage>|null */
     public const string|null MAIL_DEFAULT_MESSAGE_CLASS = null;
     /** @var class-string<MailAdapter>|null */
-    public const string|null MAILGUN_MAILGUN_ADAPTER_CLASS = null;
+    public const string|null MAIL_MAILGUN_ADAPTER_CLASS = null;
     /** @var class-string<MailDriver>|null */
-    public const string|null MAILGUN_MAILGUN_DRIVER_CLASS = null;
+    public const string|null MAIL_MAILGUN_DRIVER_CLASS = null;
     /** @var string|null */
-    public const string|null MAILGUN_MAILGUN_API_KEY = null;
+    public const string|null MAIL_MAILGUN_API_KEY = null;
     /** @var string|null */
-    public const string|null MAILGUN_MAILGUN_DOMAIN = null;
+    public const string|null MAIL_MAILGUN_DOMAIN = null;
     /** @var class-string<MailAdapter>|null */
-    public const string|null PHPMAILER_PHP_MAILER_ADAPTER_CLASS = null;
+    public const string|null MAIL_PHP_MAILER_ADAPTER_CLASS = null;
     /** @var class-string<MailDriver>|null */
-    public const string|null PHPMAILER_PHP_MAILER_DRIVER_CLASS = null;
+    public const string|null MAIL_PHP_MAILER_DRIVER_CLASS = null;
     /** @var string|null */
-    public const string|null PHPMAILER_PHP_MAILER_HOST = null;
+    public const string|null MAIL_PHP_MAILER_HOST = null;
     /** @var int|null */
-    public const int|null PHPMAILER_PHP_MAILER_PORT = null;
+    public const int|null MAIL_PHP_MAILER_PORT = null;
     /** @var string|null */
-    public const string|null PHPMAILER_PHP_MAILER_USERNAME = null;
+    public const string|null MAIL_PHP_MAILER_USERNAME = null;
     /** @var string|null */
-    public const string|null PHPMAILER_PHP_MAILER_PASSWORD = null;
+    public const string|null MAIL_PHP_MAILER_PASSWORD = null;
     /** @var string|null */
-    public const string|null PHPMAILER_PHP_MAILER_ENCRYPTION = null;
+    public const string|null MAIL_PHP_MAILER_ENCRYPTION = null;
     /** @var string|null */
-    public const string|null MAIL_LOG_LOG_NAME = null;
+    public const string|null MAIL_LOG_LOGGER = null;
     /** @var class-string<MailAdapter>|null */
     public const string|null MAIL_LOG_ADAPTER_CLASS = null;
     /** @var class-string<MailDriver>|null */

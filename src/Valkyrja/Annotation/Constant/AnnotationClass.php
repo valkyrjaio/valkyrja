@@ -26,9 +26,9 @@ use Valkyrja\Event\Annotation\Listener;
  */
 final class AnnotationClass
 {
-    public const COMMAND         = Command::class;
-    public const LISTENER        = Listener::class;
-    public const SERVICE         = Service::class;
-    public const SERVICE_ALIAS   = Alias::class;
-    public const SERVICE_CONTEXT = Context::class;
+    public const string COMMAND         = Command::class;
+    public const string LISTENER        = Listener::class;
+    public const string SERVICE         = Service::class;
+    public const string SERVICE_ALIAS   = Alias::class;
+    public const string SERVICE_CONTEXT = Context::class;
 }

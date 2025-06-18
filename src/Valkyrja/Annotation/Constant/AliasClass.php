@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Constant;
 
-use Valkyrja\Http\Message\Constant\RequestMethod;
-use Valkyrja\Http\Message\Constant\StatusCode;
+use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Message\Enum\StatusCode;
 
 /**
  * Constant AliasClass.
@@ -23,6 +23,6 @@ use Valkyrja\Http\Message\Constant\StatusCode;
  */
 final class AliasClass
 {
-    public const REQUEST_METHOD = RequestMethod::class;
-    public const STATUS_CODE    = StatusCode::class;
+    public const string REQUEST_METHOD = RequestMethod::class;
+    public const string STATUS_CODE    = StatusCode::class;
 }

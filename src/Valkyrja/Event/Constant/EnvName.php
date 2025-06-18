@@ -20,8 +20,8 @@ namespace Valkyrja\Event\Constant;
  */
 final class EnvName
 {
-    public const LISTENER_CLASSES = 'EVENT_LISTENER_CLASSES';
-    public const FILE_PATH        = 'EVENT_FILE_PATH';
-    public const CACHE_FILE_PATH  = 'EVENT_CACHE_FILE_PATH';
-    public const USE_CACHE        = 'EVENT_USE_CACHE_FILE';
+    public const string LISTENER_CLASSES = 'EVENT_LISTENER_CLASSES';
+    public const string FILE_PATH        = 'EVENT_FILE_PATH';
+    public const string CACHE_FILE_PATH  = 'EVENT_CACHE_FILE_PATH';
+    public const string USE_CACHE        = 'EVENT_USE_CACHE_FILE';
 }

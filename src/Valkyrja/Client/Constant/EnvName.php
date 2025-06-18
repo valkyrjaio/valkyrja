@@ -20,6 +20,17 @@ namespace Valkyrja\Client\Constant;
  */
 final class EnvName
 {
-    public const DEFAULT_CONFIGURATION = 'CLIENT_DEFAULT_CONFIGURATION';
-    public const CONFIGURATIONS        = 'CLIENT_CONFIGURATIONS';
+    public const string DEFAULT_CONFIGURATION = 'CLIENT_DEFAULT_CONFIGURATION';
+    public const string CONFIGURATIONS        = 'CLIENT_CONFIGURATIONS';
+
+    public const string GUZZLE_ADAPTER_CLASS = 'CLIENT_GUZZLE_ADAPTER_CLASS';
+    public const string GUZZLE_DRIVER_CLASS  = 'CLIENT_GUZZLE_DRIVER_CLASS';
+    public const string GUZZLE_OPTIONS       = 'CLIENT_GUZZLE_OPTIONS';
+
+    public const string LOG_ADAPTER_CLASS = 'CLIENT_LOG_ADAPTER_CLASS';
+    public const string LOG_DRIVER_CLASS  = 'CLIENT_LOG_DRIVER_CLASS';
+    public const string LOG_LOGGER        = 'CLIENT_LOG_LOGGER';
+
+    public const string NULL_ADAPTER_CLASS = 'CLIENT_NULL_ADAPTER_CLASS';
+    public const string NULL_DRIVER_CLASS  = 'CLIENT_NULL_DRIVER_CLASS';
 }

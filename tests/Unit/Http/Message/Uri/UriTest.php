@@ -23,11 +23,11 @@ use Valkyrja\Tests\Unit\TestCase;
 
 class UriTest extends TestCase
 {
-    protected const URI           = 'www.example.com';
-    protected const URI_HTTPS     = 'https://' . self::URI;
-    protected const URI_HTTP      = 'http://' . self::URI;
-    protected const URI_EMPTY     = '//' . self::URI;
-    protected const URI_ALL_PARTS = 'https://username:password@example.com:9090/path?arg=value#anchor';
+    protected const string URI           = 'www.example.com';
+    protected const string URI_HTTPS     = 'https://' . self::URI;
+    protected const string URI_HTTP      = 'http://' . self::URI;
+    protected const string URI_EMPTY     = '//' . self::URI;
+    protected const string URI_ALL_PARTS = 'https://username:password@example.com:9090/path?arg=value#anchor';
 
     public function testFromString(): void
     {

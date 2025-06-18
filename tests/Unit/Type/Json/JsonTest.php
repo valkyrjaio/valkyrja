@@ -19,9 +19,12 @@ use Valkyrja\Type\Json\Json;
 
 use function json_encode;
 
+use const JSON_THROW_ON_ERROR;
+
 class JsonTest extends TestCase
 {
-    protected const VALUE = ['test'];
+    /** @var string[] */
+    protected const array VALUE = ['test'];
 
     public function testValue(): void
     {
@@ -45,7 +48,7 @@ class JsonTest extends TestCase
      */
     public function testFromValueWithJson(): void
     {
-        $fromJsonValue = Json::fromValue(json_encode(self::VALUE));
+        $fromJsonValue = Json::fromValue(json_encode(self::VALUE, JSON_THROW_ON_ERROR));
 
         self::assertSame(self::VALUE, $fromJsonValue->asValue());
     }
@@ -57,7 +60,7 @@ class JsonTest extends TestCase
     {
         $type = new Json(self::VALUE);
 
-        self::assertSame(json_encode(self::VALUE), $type->asFlatValue());
+        self::assertSame(json_encode(self::VALUE, JSON_THROW_ON_ERROR), $type->asFlatValue());
     }
 
     public function testModify(): void
@@ -77,10 +80,13 @@ class JsonTest extends TestCase
         self::assertSame(['test', $newValue], $modified->asValue());
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testJsonSerialize(): void
     {
         $type = new Json(self::VALUE);
 
-        self::assertSame(json_encode(self::VALUE), json_encode($type));
+        self::assertSame(json_encode(self::VALUE, JSON_THROW_ON_ERROR), json_encode($type, JSON_THROW_ON_ERROR));
     }
 }

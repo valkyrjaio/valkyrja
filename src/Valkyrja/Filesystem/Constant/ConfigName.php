@@ -20,19 +20,19 @@ namespace Valkyrja\Filesystem\Constant;
  */
 final class ConfigName
 {
-    public const DEFAULT_CONFIGURATION = 'defaultConfiguration';
-    public const CONFIGURATIONS        = 'configurations';
+    public const string DEFAULT_CONFIGURATION = 'defaultConfiguration';
+    public const string CONFIGURATIONS        = 'configurations';
 
-    public const ADAPTER_CLASS = 'adapterClass';
-    public const DRIVER_CLASS  = 'driverClass';
+    public const string ADAPTER_CLASS = 'adapterClass';
+    public const string DRIVER_CLASS  = 'driverClass';
 
-    public const FLYSYSTEM_ADAPTER = 'flysystemAdapter';
-    public const DIR               = 'dir';
-    public const KEY               = 'key';
-    public const SECRET            = 'secret';
-    public const REGION            = 'region';
-    public const VERSION           = 'version';
-    public const BUCKET            = 'bucket';
-    public const PREFIX            = 'prefix';
-    public const OPTIONS           = 'options';
+    public const string FLYSYSTEM_ADAPTER = 'flysystemAdapter';
+    public const string DIR               = 'dir';
+    public const string KEY               = 'key';
+    public const string SECRET            = 'secret';
+    public const string REGION            = 'region';
+    public const string VERSION           = 'version';
+    public const string BUCKET            = 'bucket';
+    public const string PREFIX            = 'prefix';
+    public const string OPTIONS           = 'options';
 }

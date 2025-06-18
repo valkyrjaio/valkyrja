@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\TestCase;
 
 class HtmlResponseTest extends TestCase
 {
-    protected const HTML = '<html lang="en"></html>';
+    protected const string HTML = '<html lang="en"></html>';
 
     public function testConstruct(): void
     {

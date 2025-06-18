@@ -27,43 +27,43 @@ use Valkyrja\Tests\Unit\TestCase;
  */
 class AttributesTest extends TestCase
 {
-    public const VALUE1  = 1;
-    public const VALUE2  = 2;
-    public const VALUE3  = 3;
-    public const VALUE4  = 4;
-    public const VALUE5  = 5;
-    public const VALUE6  = 6;
-    public const VALUE7  = 7;
-    public const VALUE8  = 8;
-    public const VALUE9  = 9;
-    public const VALUE10 = 10;
-    public const VALUE11 = 11;
-    public const VALUE12 = 12;
-    public const VALUE13 = 13;
-    public const VALUE14 = 14;
-    public const VALUE15 = 15;
-    public const VALUE16 = 16;
-    public const VALUE17 = 17;
-    public const VALUE18 = 18;
-    public const VALUE19 = 19;
-    public const VALUE20 = 20;
-    public const VALUE21 = 21;
+    public const int VALUE1  = 1;
+    public const int VALUE2  = 2;
+    public const int VALUE3  = 3;
+    public const int VALUE4  = 4;
+    public const int VALUE5  = 5;
+    public const int VALUE6  = 6;
+    public const int VALUE7  = 7;
+    public const int VALUE8  = 8;
+    public const int VALUE9  = 9;
+    public const int VALUE10 = 10;
+    public const int VALUE11 = 11;
+    public const int VALUE12 = 12;
+    public const int VALUE13 = 13;
+    public const int VALUE14 = 14;
+    public const int VALUE15 = 15;
+    public const int VALUE16 = 16;
+    public const int VALUE17 = 17;
+    public const int VALUE18 = 18;
+    public const int VALUE19 = 19;
+    public const int VALUE20 = 20;
+    public const int VALUE21 = 21;
 
-    public const THREE      = 'three';
-    public const SIX        = 'six';
-    public const NINE       = 'nine';
-    public const TWELVE     = 'twelve';
-    public const FIFTEEN    = 'fifteen';
-    public const EIGHTEEN   = 'eighteen';
-    public const TWENTY_ONE = 'twenty one';
+    public const string THREE      = 'three';
+    public const string SIX        = 'six';
+    public const string NINE       = 'nine';
+    public const string TWELVE     = 'twelve';
+    public const string FIFTEEN    = 'fifteen';
+    public const string EIGHTEEN   = 'eighteen';
+    public const string TWENTY_ONE = 'twenty one';
 
-    protected const CONST_NAME                  = 'CONST';
-    protected const PROTECTED_CONST_NAME        = 'PROTECTED_CONST';
-    protected const STATIC_PROPERTY_NAME        = 'staticProperty';
-    protected const PROPERTY_NAME               = 'property';
-    protected const STATIC_METHOD_NAME          = 'staticMethod';
-    protected const METHOD_NAME                 = 'method';
-    protected const METHOD_WITH_PARAMETERS_NAME = 'methodWithParameter';
+    protected const string CONST_NAME                  = 'CONST';
+    protected const string PROTECTED_CONST_NAME        = 'PROTECTED_CONST';
+    protected const string STATIC_PROPERTY_NAME        = 'staticProperty';
+    protected const string PROPERTY_NAME               = 'property';
+    protected const string STATIC_METHOD_NAME          = 'staticMethod';
+    protected const string METHOD_NAME                 = 'method';
+    protected const string METHOD_WITH_PARAMETERS_NAME = 'methodWithParameter';
 
     /**
      * The attributes service.

@@ -20,11 +20,11 @@ namespace Valkyrja\Console\Constant;
  */
 final class EnvName
 {
-    public const HANDLERS           = 'CONSOLE_HANDLERS';
-    public const PROVIDERS          = 'CONSOLE_PROVIDERS';
-    public const DEV_PROVIDERS      = 'CONSOLE_DEV_PROVIDERS';
-    public const SHOULD_RUN_QUIETLY = 'CONSOLE_SHOULD_RUN_QUIETLY';
-    public const FILE_PATH          = 'CONSOLE_FILE_PATH';
-    public const CACHE_FILE_PATH    = 'CONSOLE_CACHE_FILE_PATH';
-    public const SHOULD_USE_CACHE   = 'CONSOLE_SHOULD_USE_CACHE';
+    public const string HANDLERS           = 'CONSOLE_HANDLERS';
+    public const string PROVIDERS          = 'CONSOLE_PROVIDERS';
+    public const string DEV_PROVIDERS      = 'CONSOLE_DEV_PROVIDERS';
+    public const string SHOULD_RUN_QUIETLY = 'CONSOLE_SHOULD_RUN_QUIETLY';
+    public const string FILE_PATH          = 'CONSOLE_FILE_PATH';
+    public const string CACHE_FILE_PATH    = 'CONSOLE_CACHE_FILE_PATH';
+    public const string SHOULD_USE_CACHE   = 'CONSOLE_SHOULD_USE_CACHE';
 }

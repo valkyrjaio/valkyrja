@@ -22,7 +22,7 @@ use Valkyrja\Type\BuiltIn\Enum\Support\Enum;
 
 class EnumTest extends TestCase
 {
-    protected const VALUE = TestEnum::club;
+    protected const TestEnum VALUE = TestEnum::club;
 
     public function testNames(): void
     {

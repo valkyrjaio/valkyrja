@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Constant;
 
-use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
+use Valkyrja\Console\Commander\Commander;
 
 /**
  * Constant ConfigValue.
@@ -22,30 +22,14 @@ use Valkyrja\Config\Constant\ConfigKeyPart as CKP;
  */
 final class ConfigValue
 {
-    public const HANDLERS        = [];
-    public const PROVIDERS       = [
+    /** @var array<array-key, class-string<Commander>> */
+    public const array PROVIDERS = [
         Provider::CLEAR_CACHE_COMMAND,
         Provider::COMMANDS_LIST_COMMAND,
         Provider::COMMANDS_LIST_FOR_BASH_COMMAND,
         Provider::OPTIMIZE_CACHE_COMMAND,
         Provider::ROUTES_LIST_COMMAND,
     ];
-    public const DEV_PROVIDERS   = [];
-    public const QUIET           = false;
-    public const USE_ANNOTATIONS = false;
-    public const FILE_PATH       = '';
-    public const CACHE_FILE_PATH = '';
-    public const USE_CACHE_FILE  = false;
-
-    /** @var array<string, mixed> */
-    public static array $defaults = [
-        CKP::HANDLERS        => self::HANDLERS,
-        CKP::PROVIDERS       => self::PROVIDERS,
-        CKP::DEV_PROVIDERS   => self::DEV_PROVIDERS,
-        CKP::QUIET           => self::QUIET,
-        CKP::USE_ANNOTATIONS => self::USE_ANNOTATIONS,
-        CKP::FILE_PATH       => self::FILE_PATH,
-        CKP::CACHE_FILE_PATH => self::CACHE_FILE_PATH,
-        CKP::USE_CACHE       => self::USE_CACHE_FILE,
-    ];
+    /** @var array<array-key, class-string<Commander>> */
+    public const array DEV_PROVIDERS = [];
 }

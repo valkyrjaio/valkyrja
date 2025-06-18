@@ -21,7 +21,7 @@ use Valkyrja\Type\Uuid\Support\UuidV5;
 
 class UuidV5Test extends AbstractUuidTestCase
 {
-    protected const VERSION = Version::V5;
+    protected const Version VERSION = Version::V5;
 
     public function testDefaultVersion(): void
     {

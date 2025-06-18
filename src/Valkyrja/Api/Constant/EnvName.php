@@ -20,6 +20,6 @@ namespace Valkyrja\Api\Constant;
  */
 final class EnvName
 {
-    public const JSON_MODEL = 'API_JSON_MODEL';
-    public const DATA_MODEL = 'API_DATA_MODEL';
+    public const string JSON_MODEL = 'API_JSON_MODEL';
+    public const string DATA_MODEL = 'API_DATA_MODEL';
 }

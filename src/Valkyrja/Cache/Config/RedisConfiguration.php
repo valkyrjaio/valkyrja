@@ -15,6 +15,7 @@ namespace Valkyrja\Cache\Config;
 
 use Valkyrja\Cache\Adapter\RedisAdapter;
 use Valkyrja\Cache\Constant\ConfigName;
+use Valkyrja\Cache\Constant\EnvName;
 
 /**
  * Class RedisConfiguration.
@@ -29,11 +30,11 @@ class RedisConfiguration extends Configuration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS => 'CACHE_REDIS_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS  => 'CACHE_REDIS_DRIVER_CLASS',
-        ConfigName::HOST          => 'CACHE_REDIS_HOST',
-        ConfigName::PORT          => 'CACHE_REDIS_PORT',
-        ConfigName::PREFIX        => 'CACHE_REDIS_PREFIX',
+        ConfigName::ADAPTER_CLASS => EnvName::REDIS_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS  => EnvName::REDIS_DRIVER_CLASS,
+        ConfigName::HOST          => EnvName::REDIS_HOST,
+        ConfigName::PORT          => EnvName::REDIS_PORT,
+        ConfigName::PREFIX        => EnvName::REDIS_PREFIX,
     ];
 
     public function __construct(

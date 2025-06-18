@@ -20,7 +20,7 @@ namespace Valkyrja\Orm\Constant;
  */
 final class DateFormat
 {
-    public const DEFAULT     = 'm-d-Y H:i:s T';
-    public const MILLISECOND = 'm-d-Y H:i:s.v T';
-    public const MICROSECOND = 'm-d-Y H:i:s.u T';
+    public const string DEFAULT     = 'm-d-Y H:i:s T';
+    public const string MILLISECOND = 'm-d-Y H:i:s.v T';
+    public const string MICROSECOND = 'm-d-Y H:i:s.u T';
 }

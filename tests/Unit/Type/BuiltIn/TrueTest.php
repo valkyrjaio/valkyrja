@@ -18,7 +18,7 @@ use Valkyrja\Type\BuiltIn\TrueT;
 
 class TrueTest extends TestCase
 {
-    protected const VALUE = true;
+    protected const true VALUE = true;
 
     public function testValue(): void
     {

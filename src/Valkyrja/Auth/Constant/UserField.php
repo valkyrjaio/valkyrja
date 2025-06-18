@@ -20,11 +20,11 @@ namespace Valkyrja\Auth\Constant;
  */
 final class UserField
 {
-    public const USERNAME       = 'username';
-    public const PASSWORD       = 'password';
-    public const EMAIL          = 'email';
-    public const RESET_TOKEN    = 'reset_token';
-    public const LOGIN_ATTEMPTS = 'login_attempts';
-    public const IS_LOCKED      = 'is_locked';
-    public const IS_VERIFIED    = 'is_verified';
+    public const string USERNAME       = 'username';
+    public const string PASSWORD       = 'password';
+    public const string EMAIL          = 'email';
+    public const string RESET_TOKEN    = 'reset_token';
+    public const string LOGIN_ATTEMPTS = 'login_attempts';
+    public const string IS_LOCKED      = 'is_locked';
+    public const string IS_VERIFIED    = 'is_verified';
 }

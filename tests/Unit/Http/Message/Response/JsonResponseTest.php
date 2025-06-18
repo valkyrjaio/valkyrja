@@ -22,8 +22,9 @@ use Valkyrja\Tests\Unit\TestCase;
 
 class JsonResponseTest extends TestCase
 {
-    protected const JSON         = ['test' => ['foo', 'bar']];
-    protected const JSON_AS_TEXT = '{"test":["foo","bar"]}';
+    /** @var array[] */
+    protected const array  JSON         = ['test' => ['foo', 'bar']];
+    protected const string JSON_AS_TEXT = '{"test":["foo","bar"]}';
 
     /**
      * @throws JsonException

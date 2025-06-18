@@ -20,11 +20,11 @@ namespace Valkyrja\Http\Middleware\Constant;
  */
 final class ConfigName
 {
-    public const REQUEST_RECEIVED  = 'requestReceived';
-    public const ROUTE_DISPATCHED  = 'routeDispatched';
-    public const ROUTE_MATCHED     = 'routeMatched';
-    public const ROUTE_NOT_MATCHED = 'routeNotMatched';
-    public const THROWABLE_CAUGHT  = 'throwableCaught';
-    public const SENDING_RESPONSE  = 'sendingResponse';
-    public const TERMINATED        = 'terminated';
+    public const string REQUEST_RECEIVED  = 'requestReceived';
+    public const string ROUTE_DISPATCHED  = 'routeDispatched';
+    public const string ROUTE_MATCHED     = 'routeMatched';
+    public const string ROUTE_NOT_MATCHED = 'routeNotMatched';
+    public const string THROWABLE_CAUGHT  = 'throwableCaught';
+    public const string SENDING_RESPONSE  = 'sendingResponse';
+    public const string TERMINATED        = 'terminated';
 }

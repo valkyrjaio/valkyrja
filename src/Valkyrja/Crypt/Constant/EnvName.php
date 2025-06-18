@@ -20,6 +20,15 @@ namespace Valkyrja\Crypt\Constant;
  */
 final class EnvName
 {
-    public const DEFAULT_CONFIGURATION = 'CRYPT_DEFAULT_CONFIGURATION';
-    public const CONFIGURATIONS        = 'CRYPT_CONFIGURATIONS';
+    public const string DEFAULT_CONFIGURATION = 'CRYPT_DEFAULT_CONFIGURATION';
+    public const string CONFIGURATIONS        = 'CRYPT_CONFIGURATIONS';
+
+    public const string SODIUM_ADAPTER_CLASS = 'CRYPT_SODIUM_ADAPTER_CLASS';
+    public const string SODIUM_DRIVER_CLASS  = 'CRYPT_SODIUM_DRIVER_CLASS';
+    public const string SODIUM_KEY           = 'CRYPT_SODIUM_KEY';
+    public const string SODIUM_KEY_PATH      = 'CRYPT_SODIUM_KEY_PATH';
+
+    public const string NULL_ADAPTER_CLASS = 'CRYPT_NULL_ADAPTER_CLASS';
+    public const string NULL_DRIVER_CLASS  = 'CRYPT_NULL_DRIVER_CLASS';
+    public const string NULL_KEY           = 'CRYPT_NULL_KEY';
 }

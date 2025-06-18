@@ -15,6 +15,7 @@ namespace Valkyrja\Filesystem\Config;
 
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 use Valkyrja\Filesystem\Constant\ConfigName;
+use Valkyrja\Filesystem\Constant\EnvName;
 
 /**
  * Class S3FlysystemConfiguration.
@@ -29,16 +30,16 @@ class S3FlysystemConfiguration extends FlysystemConfiguration
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ADAPTER_CLASS     => 'FILESYSTEM_FLYSYSTEM_S3_ADAPTER_CLASS',
-        ConfigName::DRIVER_CLASS      => 'FILESYSTEM_FLYSYSTEM_S3_DRIVER_CLASS',
-        ConfigName::FLYSYSTEM_ADAPTER => 'FILESYSTEM_FLYSYSTEM_S3_FLYSYSTEM_ADAPTER',
-        ConfigName::KEY               => 'FILESYSTEM_FLYSYSTEM_S3_KEY',
-        ConfigName::SECRET            => 'FILESYSTEM_FLYSYSTEM_S3_SECRET',
-        ConfigName::REGION            => 'FILESYSTEM_FLYSYSTEM_S3_REGION',
-        ConfigName::VERSION           => 'FILESYSTEM_FLYSYSTEM_S3_VERSION',
-        ConfigName::BUCKET            => 'FILESYSTEM_FLYSYSTEM_S3_BUCKET',
-        ConfigName::PREFIX            => 'FILESYSTEM_FLYSYSTEM_S3_PREFIX',
-        ConfigName::OPTIONS           => 'FILESYSTEM_FLYSYSTEM_S3_OPTIONS',
+        ConfigName::ADAPTER_CLASS     => EnvName::FLYSYSTEM_S3_ADAPTER_CLASS,
+        ConfigName::DRIVER_CLASS      => EnvName::FLYSYSTEM_S3_DRIVER_CLASS,
+        ConfigName::FLYSYSTEM_ADAPTER => EnvName::FLYSYSTEM_S3_FLYSYSTEM_ADAPTER,
+        ConfigName::KEY               => EnvName::FLYSYSTEM_S3_KEY,
+        ConfigName::SECRET            => EnvName::FLYSYSTEM_S3_SECRET,
+        ConfigName::REGION            => EnvName::FLYSYSTEM_S3_REGION,
+        ConfigName::VERSION           => EnvName::FLYSYSTEM_S3_VERSION,
+        ConfigName::BUCKET            => EnvName::FLYSYSTEM_S3_BUCKET,
+        ConfigName::PREFIX            => EnvName::FLYSYSTEM_S3_PREFIX,
+        ConfigName::OPTIONS           => EnvName::FLYSYSTEM_S3_OPTIONS,
     ];
 
     /**
