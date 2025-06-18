@@ -14,22 +14,22 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Attribute;
 
 use ReflectionException;
-use Valkyrja\Attribute\Contract\Attributes as AttributeAttributes;
-use Valkyrja\Event\Attribute\Contract\Attributes as Contract;
+use Valkyrja\Attribute\Contract\Attributes;
+use Valkyrja\Event\Attribute\Contract\Collector as Contract;
 use Valkyrja\Event\Attribute\Listener as Attribute;
 use Valkyrja\Event\Data\Contract\Listener;
 use Valkyrja\Event\Data\Listener as Model;
 use Valkyrja\Reflection\Contract\Reflection;
 
 /**
- * Class Attributes.
+ * Class Collector.
  *
  * @author Melech Mizrachi
  */
-class Attributes implements Contract
+class Collector implements Contract
 {
     public function __construct(
-        protected AttributeAttributes $attributes,
+        protected Attributes $attributes,
         protected Reflection $reflection,
     ) {
     }

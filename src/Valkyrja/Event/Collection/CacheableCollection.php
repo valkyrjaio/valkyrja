@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Collection;
 
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Event\Attribute\Contract\Attributes;
+use Valkyrja\Event\Attribute\Contract\Collector;
 use Valkyrja\Event\Config;
 use Valkyrja\Event\Config\Cache;
 
@@ -107,8 +107,8 @@ class CacheableCollection extends Collection
      */
     protected function setupAttributedListeners(): void
     {
-        /** @var Attributes $listenerAttributes */
-        $listenerAttributes = $this->container->getSingleton(Attributes::class);
+        /** @var Collector $listenerAttributes */
+        $listenerAttributes = $this->container->getSingleton(Collector::class);
 
         // Get all the annotated listeners from the list of classes
         // Iterate through the listeners

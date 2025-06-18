@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Event\Attribute;
 
 use ReflectionException;
 use Valkyrja\Attribute\Attributes as AttributesAttributes;
-use Valkyrja\Event\Attribute\Attributes;
+use Valkyrja\Event\Attribute\Collector;
 use Valkyrja\Event\Data\Contract\Listener;
 use Valkyrja\Reflection\Reflection;
 use Valkyrja\Tests\Classes\Event\Attribute\Attributed2Class;
@@ -46,7 +46,7 @@ class AttributesTest extends TestCase
     /**
      * The class to test with.
      */
-    protected Attributes $class;
+    protected Collector $class;
 
     /**
      * Setup the test.
@@ -57,7 +57,7 @@ class AttributesTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new Attributes(
+        $this->class = new Collector(
             new AttributesAttributes(),
             new Reflection()
         );

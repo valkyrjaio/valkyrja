@@ -16,11 +16,11 @@ namespace Valkyrja\Event\Attribute\Contract;
 use Valkyrja\Event\Data\Contract\Listener;
 
 /**
- * Interface Attributes.
+ * Interface Collector.
  *
  * @author Melech Mizrachi
  */
-interface Attributes
+interface Collector
 {
     /**
      * Get the listeners.

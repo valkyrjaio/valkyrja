@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Provider;
 
 use Valkyrja\Application\Config\Valkyrja;
-use Valkyrja\Attribute\Contract\Attributes as AttributeAttributes;
+use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher2 as DispatchDispatcher;
-use Valkyrja\Event\Attribute\Contract\Attributes;
+use Valkyrja\Event\Attribute\Contract\Collector;
 use Valkyrja\Event\Collection\CacheableCollection as EventCollection;
 use Valkyrja\Event\Collection\Contract\Collection;
 use Valkyrja\Event\Contract\Dispatcher;
@@ -38,7 +38,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Attributes::class => [self::class, 'publishAttributes'],
+            Collector::class  => [self::class, 'publishAttributesCollector'],
             Dispatcher::class => [self::class, 'publishDispatcher'],
             Collection::class => [self::class, 'publishCollection'],
         ];
@@ -50,7 +50,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Attributes::class,
+            Collector::class,
             Dispatcher::class,
             Collection::class,
         ];
@@ -59,12 +59,12 @@ final class ServiceProvider extends Provider
     /**
      * Publish the attributes service.
      */
-    public static function publishAttributes(Container $container): void
+    public static function publishAttributesCollector(Container $container): void
     {
         $container->setSingleton(
-            Attributes::class,
-            new \Valkyrja\Event\Attribute\Attributes(
-                $container->getSingleton(AttributeAttributes::class),
+            Collector::class,
+            new \Valkyrja\Event\Attribute\Collector(
+                $container->getSingleton(Attributes::class),
                 $container->getSingleton(Reflection::class)
             )
         );
