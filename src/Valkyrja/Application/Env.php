@@ -464,12 +464,6 @@ class Env
 
     /** @var class-string[]|null */
     public const array|null HTTP_ROUTING_CONTROLLERS = null;
-    /** @var string|null */
-    public const string|null HTTP_ROUTING_FILE_PATH = null;
-    /** @var string|null */
-    public const string|null HTTP_ROUTING_CACHE_FILE_PATH = null;
-    /** @var bool|null */
-    public const bool|null HTTP_ROUTING_USE_CACHE = null;
 
     /************************************************************
      *

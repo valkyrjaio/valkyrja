@@ -32,6 +32,6 @@ class PostTest extends TestCase
 
         $route = new Post();
 
-        self::assertSame($value, $route->methods);
+        self::assertSame($value, $route->requestMethods);
     }
 }

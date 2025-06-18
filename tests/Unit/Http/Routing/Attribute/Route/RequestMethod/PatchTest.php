@@ -32,6 +32,6 @@ class PatchTest extends TestCase
 
         $route = new Patch();
 
-        self::assertSame($value, $route->methods);
+        self::assertSame($value, $route->requestMethods);
     }
 }

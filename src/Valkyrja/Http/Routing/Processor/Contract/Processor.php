@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Processor\Contract;
 
-use Valkyrja\Http\Routing\Model\Contract\Route;
+use Valkyrja\Http\Routing\Data\Contract\Route;
 
 /**
  * Interface Processor.
@@ -27,7 +27,7 @@ interface Processor
      *
      * @param Route $route The route
      *
-     * @return void
+     * @return Route
      */
-    public function route(Route $route): void;
+    public function route(Route $route): Route;
 }

@@ -16,12 +16,12 @@ namespace Valkyrja\Http\Routing\Matcher;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Collection as RouteCollection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection;
+use Valkyrja\Http\Routing\Data\Contract\Parameter;
+use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Routing\Exception\InvalidRouteParameterException;
 use Valkyrja\Http\Routing\Exception\InvalidRoutePathException;
 use Valkyrja\Http\Routing\Exception\RuntimeException;
 use Valkyrja\Http\Routing\Matcher\Contract\Matcher as Contract;
-use Valkyrja\Http\Routing\Model\Contract\Route;
-use Valkyrja\Http\Routing\Model\Parameter\Parameter;
 use Valkyrja\Http\Routing\Support\Helpers;
 use Valkyrja\Type\Data\Cast;
 
@@ -52,20 +52,20 @@ class Matcher implements Contract
      * @throws InvalidRoutePathException
      * @throws InvalidRouteParameterException
      */
-    public function match(string $path, RequestMethod|null $method = null): Route|null
+    public function match(string $path, RequestMethod|null $requestMethod = null): Route|null
     {
         $path  = Helpers::trimPath($path);
-        $route = $this->matchStatic($path, $method);
+        $route = $this->matchStatic($path, $requestMethod);
 
-        return $route ?? $this->matchDynamic($path, $method);
+        return $route ?? $this->matchDynamic($path, $requestMethod);
     }
 
     /**
      * @inheritDoc
      */
-    public function matchStatic(string $path, RequestMethod|null $method = null): Route|null
+    public function matchStatic(string $path, RequestMethod|null $requestMethod = null): Route|null
     {
-        $route = $this->collection->getStatic($path, $method);
+        $route = $this->collection->getStatic($path, $requestMethod);
 
         if ($route !== null) {
             return clone $route;
@@ -80,9 +80,9 @@ class Matcher implements Contract
      * @throws InvalidRoutePathException
      * @throws InvalidRouteParameterException
      */
-    public function matchDynamic(string $path, RequestMethod|null $method = null): Route|null
+    public function matchDynamic(string $path, RequestMethod|null $requestMethod = null): Route|null
     {
-        return $this->matchDynamicFromArray($this->collection->allDynamic($method), $path);
+        return $this->matchDynamicFromArray($this->collection->allDynamic($requestMethod), $path);
     }
 
     /**
@@ -150,9 +150,7 @@ class Matcher implements Contract
         // Clone the route to avoid changing the one set in the master array
         $route = clone $route;
 
-        $this->processMatches($route, $matches);
-
-        return $route;
+        return $this->processMatches($route, $matches);
     }
 
     /**
@@ -163,13 +161,13 @@ class Matcher implements Contract
      *
      * @throws InvalidRoutePathException
      *
-     * @return void
+     * @return Route
      */
-    protected function processMatches(Route $route, array $matches): void
+    protected function processMatches(Route $route, array $matches): Route
     {
         // The first match is the path itself, the rest could be empty.
         if (array_shift($matches) === null || empty($matches)) {
-            return;
+            return $route;
         }
 
         // Get the parameters
@@ -183,8 +181,7 @@ class Matcher implements Contract
             $matches = $this->checkAndCastMatchValue($route, $parameter, $matches, $index, $match);
         }
 
-        // Set the matches
-        $route->setMatches($matches);
+        return $route->withMatches($matches);
     }
 
     /**

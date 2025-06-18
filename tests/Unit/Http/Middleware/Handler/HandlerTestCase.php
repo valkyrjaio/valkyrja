@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Http\Middleware\Handler;
 use Valkyrja\Container\Container;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Response;
-use Valkyrja\Http\Routing\Model\Route;
+use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -45,6 +45,6 @@ class HandlerTestCase extends TestCase
 
         $this->request  = new ServerRequest();
         $this->response = new Response();
-        $this->route    = new Route();
+        $this->route    = new Route('/', 'name');
     }
 }

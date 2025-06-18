@@ -15,9 +15,9 @@ namespace Valkyrja\Tests\Unit\Http\Routing;
 
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Config;
+use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Exception\InvalidRouteNameException;
 use Valkyrja\Http\Routing\Matcher\Matcher;
-use Valkyrja\Http\Routing\Model\Route;
 use Valkyrja\Http\Routing\Router;
 use Valkyrja\Tests\Unit\TestCase;
 
@@ -62,11 +62,10 @@ class RouterTest extends TestCase
         self::assertFalse($router->hasRoute($routeName));
         self::assertEmpty($router->getRoutes());
 
-        $route = new Route();
-        $route->setId($routeName);
-        $route->setPath('/');
-        $route->setName($routeName);
-
+        $route = new Route(
+            path: '/',
+            name: $routeName
+        );
         $router->addRoute($route);
 
         self::assertTrue($router->hasRoute($routeName));

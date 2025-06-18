@@ -16,8 +16,8 @@ namespace Valkyrja\Http\Routing\Collection;
 use JsonException;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as Contract;
+use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Routing\Exception\InvalidArgumentException;
-use Valkyrja\Http\Routing\Model\Contract\Route;
 
 use function array_map;
 use function array_merge;
@@ -77,7 +77,7 @@ class Collection implements Contract
         // Set the route to the named
         $this->setRouteToNamed($route);
 
-        $this->routes[(string) $route->getId()] = $route;
+        $this->routes[$route->getName()] = $route;
     }
 
     /**
@@ -205,7 +205,7 @@ class Collection implements Contract
      */
     protected function setRouteToRequestMethods(Route $route): void
     {
-        foreach ($route->getMethods() as $requestMethod) {
+        foreach ($route->getRequestMethods() as $requestMethod) {
             $this->setRouteToRequestMethod($route, $requestMethod);
         }
     }
@@ -220,22 +220,17 @@ class Collection implements Contract
      */
     protected function setRouteToRequestMethod(Route $route, RequestMethod $requestMethod): void
     {
-        $id = $route->getId();
-
-        assert($id !== null);
+        $name  = $route->getName();
+        $regex = $route->getRegex();
 
         // If this is a dynamic route
-        if ($route->isDynamic()) {
-            $regex = $route->getRegex();
-
-            assert(is_string($regex));
-
+        if ($regex !== null) {
             // Set the route in the dynamic routes list
-            $this->dynamic[$requestMethod->value][$regex] = $id;
+            $this->dynamic[$requestMethod->value][$regex] = $name;
         } // Otherwise set it in the static routes array
         else {
             // Set the route in the static routes list
-            $this->static[$requestMethod->value][$route->getPath()] = $id;
+            $this->static[$requestMethod->value][$route->getPath()] = $name;
         }
     }
 
@@ -248,11 +243,10 @@ class Collection implements Contract
      */
     protected function setRouteToNamed(Route $route): void
     {
-        // If this route has a name set
-        if (($name = $route->getName()) !== null && ($id = $route->getId()) !== null) {
-            // Set the route in the named routes list
-            $this->named[$name] = $id;
-        }
+        $name = $route->getName();
+
+        // Set the route in the named routes list
+        $this->named[$name] = $name;
     }
 
     /**

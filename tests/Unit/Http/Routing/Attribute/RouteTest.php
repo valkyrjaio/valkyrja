@@ -14,15 +14,16 @@ declare(strict_types=1);
 namespace Unit\Http\Routing\Attribute;
 
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Routing\Attribute\Route;
-use Valkyrja\Http\Routing\Model\Parameter\Parameter;
+use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\TerminatedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Struct\QueryRequestStructEnum;
+use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -34,23 +35,28 @@ class RouteTest extends TestCase
 {
     public function testDefaults(): void
     {
-        $route = new Route();
+        $route = new Route(
+            path: '/',
+            name: 'test'
+        );
 
         self::assertSame('/', $route->getPath());
-        self::assertNull($route->getName());
-        self::assertSame(
-            [
-                RequestMethod::GET,
-                RequestMethod::HEAD,
-            ],
-            $route->getMethods()
-        );
+        self::assertSame('test', $route->getName());
+        self::assertContains(RequestMethod::HEAD, $route->getRequestMethods());
+        self::assertContains(RequestMethod::GET, $route->getRequestMethods());
+        self::assertNotContains(RequestMethod::POST, $route->getRequestMethods());
+        self::assertNotContains(RequestMethod::PUT, $route->getRequestMethods());
+        self::assertNotContains(RequestMethod::PATCH, $route->getRequestMethods());
+        self::assertNotContains(RequestMethod::TRACE, $route->getRequestMethods());
+        self::assertNotContains(RequestMethod::OPTIONS, $route->getRequestMethods());
+        self::assertNotContains(RequestMethod::DELETE, $route->getRequestMethods());
+        self::assertNotContains(RequestMethod::CONNECT, $route->getRequestMethods());
     }
 
     public function testPath(): void
     {
         $value = '/test';
-        $route = new Route(path: $value);
+        $route = new Route(path: $value, name: 'test');
 
         self::assertSame($value, $route->getPath());
     }
@@ -58,7 +64,7 @@ class RouteTest extends TestCase
     public function testName(): void
     {
         $value = 'test';
-        $route = new Route(name: $value);
+        $route = new Route(path: '/', name: $value);
 
         self::assertSame($value, $route->getName());
     }
@@ -68,95 +74,74 @@ class RouteTest extends TestCase
         $value = [
             RequestMethod::POST,
         ];
-        $route = new Route(methods: $value);
+        $route = new Route(path: '/', name: 'test', requestMethods: $value);
 
-        self::assertSame($value, $route->getMethods());
+        self::assertSame($value, $route->getRequestMethods());
     }
 
     public function testParameters(): void
     {
         $value = [
-            new Parameter(),
+            new Parameter(name: 'test', regex: Regex::ALPHA),
         ];
-        $route = new Route(parameters: $value);
+        $route = new Route(path: '/', name: 'test', parameters: $value);
 
         self::assertSame($value, $route->getParameters());
-    }
-
-    public function testSecure(): void
-    {
-        $value = true;
-        $route = new Route(secure: $value);
-
-        self::assertSame($value, $route->isSecure());
-    }
-
-    public function testTo(): void
-    {
-        $value = '/path';
-        $route = new Route(to: $value);
-
-        self::assertSame($value, $route->getTo());
-    }
-
-    public function testCode(): void
-    {
-        $value = StatusCode::ACCEPTED;
-        $route = new Route(code: $value);
-
-        self::assertSame($value, $route->getCode());
     }
 
     public function testRequestStruct(): void
     {
         $value = QueryRequestStructEnum::class;
-        $route = new Route(requestStruct: $value);
+        $route = new Route(path: '/', name: 'test', requestStruct: $value);
 
         self::assertSame($value, $route->getRequestStruct());
+    }
+
+    public function testResponseStruct(): void
+    {
+        $value = ResponseStructEnum::class;
+        $route = new Route(path: '/', name: 'test', responseStruct: $value);
+
+        self::assertSame($value, $route->getResponseStruct());
     }
 
     public function testMatchedMiddleware(): void
     {
         $value = [RouteMatchedMiddlewareClass::class];
-        $route = new Route(matchedMiddleware: $value);
+        $route = new Route(path: '/', name: 'test', routeMatchedMiddleware: $value);
 
-        self::assertSame($value, $route->getMiddleware());
-        self::assertSame($value, $route->getMatchedMiddleware());
+        self::assertSame($value, $route->getRouteMatchedMiddleware());
     }
 
     public function testDispatchedMiddleware(): void
     {
         $value = [RouteDispatchedMiddlewareClass::class];
-        $route = new Route(dispatchedMiddleware: $value);
+        $route = new Route(path: '/', name: 'test', routeDispatchedMiddleware: $value);
 
-        self::assertSame($value, $route->getMiddleware());
-        self::assertSame($value, $route->getDispatchedMiddleware());
+        self::assertSame($value, $route->getRouteDispatchedMiddleware());
     }
 
     public function testExceptionMiddleware(): void
     {
         $value = [ThrowableCaughtMiddlewareClass::class];
-        $route = new Route(exceptionMiddleware: $value);
+        $route = new Route(path: '/', name: 'test', throwableCaughtMiddleware: $value);
 
-        self::assertSame($value, $route->getMiddleware());
-        self::assertSame($value, $route->getExceptionMiddleware());
+        self::assertSame($value, $route->getThrowableCaughtMiddleware());
     }
 
     public function testSendingMiddleware(): void
     {
         $value = [SendingResponseMiddlewareClass::class];
-        $route = new Route(sendingMiddleware: $value);
+        $route = new Route(path: '/', name: 'test', sendingResponseMiddleware: $value);
 
-        self::assertSame($value, $route->getMiddleware());
-        self::assertSame($value, $route->getSendingMiddleware());
+        self::assertSame($value, $route->getSendingResponseMiddleware());
     }
 
     public function testTerminatedMiddleware(): void
     {
         $value = [TerminatedMiddlewareClass::class];
-        $route = new Route(terminatedMiddleware: $value);
+        $route = new Route(path: '/', name: 'test', terminatedMiddleware: $value);
 
-        self::assertSame($value, $route->getMiddleware());
         self::assertSame($value, $route->getTerminatedMiddleware());
     }
 }

@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Middleware;
 
 use Valkyrja\Container\Contract\Container;
+use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler;
-use Valkyrja\Http\Routing\Model\Contract\Route;
-use Valkyrja\Http\Routing\Model\Parameter\Parameter;
+use Valkyrja\Http\Routing\Data\Contract\Parameter;
+use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Orm\Contract\Orm;
 use Valkyrja\Orm\Data\EntityCast;
 use Valkyrja\Orm\Entity\Contract\Entity;
@@ -76,10 +77,11 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     protected function checkRouteForEntities(Route $route): Response|Route
     {
         $parameters = $route->getParameters();
+        $dispatch   = $route->getDispatch();
 
-        if ($parameters !== []) {
+        if ($parameters !== [] && $dispatch instanceof ClassDispatch) {
             $matches      = $route->getMatches() ?? [];
-            $dependencies = $route->getDependencies() ?? [];
+            $dependencies = $dispatch->getDependencies() ?? [];
 
             // Iterate through the params
             foreach ($parameters as $index => $parameter) {
@@ -90,8 +92,8 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
                 }
             }
 
-            $route->setMatches($matches);
-            $route->setDependencies($dependencies);
+            $route = $route->withMatches($matches);
+            $route = $route->withDispatch($dispatch->withDependencies($dependencies));
         }
 
         return $route;

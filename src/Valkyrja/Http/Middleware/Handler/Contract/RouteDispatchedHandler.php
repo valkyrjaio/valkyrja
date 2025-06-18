@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Middleware\Handler\Contract;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Routing\Model\Contract\Route;
+use Valkyrja\Http\Routing\Data\Contract\Route;
 
 /**
  * Interface RouteDispatchedHandler.

@@ -32,6 +32,6 @@ class ConnectTest extends TestCase
 
         $route = new Connect();
 
-        self::assertSame($value, $route->methods);
+        self::assertSame($value, $route->requestMethods);
     }
 }

@@ -11,25 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Unit\Http\Routing\Attribute\Parameter\Regex;
+namespace Unit\Http\Routing\Attribute\Route;
 
-use Valkyrja\Http\Routing\Attribute\Parameter\Regex\Ulid;
-use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
+use Valkyrja\Tests\Classes\Http\Struct\QueryRequestStructEnum;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
- * Test the Ulid attribute.
+ * Test the RequestStruct attribute.
  *
  * @author Melech Mizrachi
  */
-class UlidTest extends TestCase
+class RequestStructTest extends TestCase
 {
     public function testAttribute(): void
     {
-        $value = Regex::ULID;
+        $value = QueryRequestStructEnum::class;
 
-        $attribute = new Ulid();
+        $attribute = new RequestStruct($value);
 
-        self::assertSame($value, $attribute->value);
+        self::assertSame($value, $attribute->name);
     }
 }

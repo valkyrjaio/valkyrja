@@ -32,6 +32,6 @@ class DeleteTest extends TestCase
 
         $route = new Delete();
 
-        self::assertSame($value, $route->methods);
+        self::assertSame($value, $route->requestMethods);
     }
 }

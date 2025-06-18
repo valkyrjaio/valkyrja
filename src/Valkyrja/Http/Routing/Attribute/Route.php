@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Attribute;
 
 use Attribute;
-use Valkyrja\Http\Routing\Model\Route as Model;
+use Valkyrja\Http\Routing\Data\Route as ParentRoute;
 
 /**
  * Attribute Route.
@@ -22,6 +22,6 @@ use Valkyrja\Http\Routing\Model\Route as Model;
  * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
-class Route extends Model
+class Route extends ParentRoute
 {
 }

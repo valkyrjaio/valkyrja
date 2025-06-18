@@ -32,6 +32,6 @@ class GetTest extends TestCase
 
         $route = new Get();
 
-        self::assertSame($value, $route->methods);
+        self::assertSame($value, $route->requestMethods);
     }
 }

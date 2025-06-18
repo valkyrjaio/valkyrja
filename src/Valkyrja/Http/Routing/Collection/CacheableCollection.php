@@ -14,14 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Collection;
 
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Exception\RuntimeException;
-use Valkyrja\Http\Routing\Attribute\Contract\Attributes;
+use Valkyrja\Http\Routing\Attribute\Contract\Collector;
 use Valkyrja\Http\Routing\Config;
 use Valkyrja\Http\Routing\Config\Cache;
+use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Routing\Exception\InvalidRoutePathException;
-use Valkyrja\Http\Routing\Model\Contract\Route;
-
-use function is_file;
 
 /**
  * Class CacheableCollection.
@@ -57,22 +54,18 @@ class CacheableCollection extends Collection
         }
 
         $this->setup = true;
-        // The cacheable config
-        $config = $this->config;
 
-        $configUseCache = $config->useCache;
+        $cache = $this->config->cache;
 
-        // If the application should use the routes cache file
-        if ($useCache && $configUseCache) {
-            $this->setupFromCache();
+        // If the application should use the routes cache
+        if ($useCache && $cache !== null) {
+            $this->setupFromCache($cache);
 
             // Then return out of setup
             return;
         }
 
-        $this->setupAttributedControllers();
-        $this->requireFilePath();
-        $this->afterSetup();
+        $this->setupNotCached();
     }
 
     /**
@@ -98,29 +91,21 @@ class CacheableCollection extends Collection
     /**
      * Setup from cache.
      */
-    protected function setupFromCache(): void
+    protected function setupFromCache(Cache $cache): void
     {
-        $cache = $this->config->cache ?? null;
-
-        if ($cache === null) {
-            $cache         = [];
-            $cacheFilePath = $this->config->cacheFilePath;
-
-            if (is_file($cacheFilePath)) {
-                $cache = require $cacheFilePath;
-
-                if (! $cache instanceof Cache) {
-                    throw new RuntimeException('Invalid cache object returned');
-                }
-            } else {
-                throw new RuntimeException('No cache found');
-            }
-        }
-
         $this->routes  = $cache->routes;
         $this->static  = $cache->static;
         $this->dynamic = $cache->dynamic;
         $this->named   = $cache->named;
+    }
+
+    /**
+     * Setup not cache.
+     */
+    protected function setupNotCached(): void
+    {
+        $this->setupAttributedControllers();
+        $this->afterSetup();
     }
 
     /**
@@ -130,8 +115,8 @@ class CacheableCollection extends Collection
      */
     protected function setupAttributedControllers(): void
     {
-        /** @var Attributes $routeAttributes */
-        $routeAttributes = $this->container->getSingleton(Attributes::class);
+        /** @var Collector $routeAttributes */
+        $routeAttributes = $this->container->getSingleton(Collector::class);
         $controllers     = $this->config->controllers;
 
         // Get all the attributes routes from the list of controllers
@@ -155,19 +140,5 @@ class CacheableCollection extends Collection
         foreach ($this->routes as $route) {
             $this->setRouteToRequestMethods($route);
         }
-    }
-
-    /**
-     * Require the file path specified in the config.
-     */
-    protected function requireFilePath(): void
-    {
-        // $filePath = $this->config->filePath;
-        //
-        // if (is_file($filePath)) {
-        //     $collector = $this->container->getSingleton(Collector::class);
-        //
-        //     require $filePath;
-        // }
     }
 }

@@ -32,6 +32,6 @@ class TraceTest extends TestCase
 
         $route = new Trace();
 
-        self::assertSame($value, $route->methods);
+        self::assertSame($value, $route->requestMethods);
     }
 }

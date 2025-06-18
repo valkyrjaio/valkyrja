@@ -16,8 +16,8 @@ namespace Valkyrja\Http\Routing\Url;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Routing\Contract\Router;
+use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Routing\Exception\InvalidRouteNameException;
-use Valkyrja\Http\Routing\Model\Contract\Route;
 use Valkyrja\Http\Routing\Url\Contract\Url as Contract;
 
 use function str_replace;
@@ -50,10 +50,7 @@ class Url implements Contract
     {
         // Get the matching route
         $route = $this->router->getRoute($name);
-        // Set the host to use if this is an absolute url
-        // or the config is set to always use absolute urls
-        // or the route is secure (needs https:// appended)
-        $host = $absolute || $route->isSecure()
+        $host  = $absolute
             ? $this->routeHost($route)
             : '';
         // Get the path from the generator
@@ -113,8 +110,7 @@ class Url implements Contract
      */
     protected function routeHost(Route $route): string
     {
-        return 'http'
-            . ($route->isSecure() ? 's' : '')
+        return 'https'
             . '://'
             . $this->request->getUri()->getHostPort();
     }

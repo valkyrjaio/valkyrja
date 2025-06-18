@@ -20,8 +20,5 @@ namespace Valkyrja\Http\Routing\Constant;
  */
 final class EnvName
 {
-    public const CONTROLLERS     = 'HTTP_ROUTING_CONTROLLERS';
-    public const FILE_PATH       = 'HTTP_ROUTING_FILE_PATH';
-    public const CACHE_FILE_PATH = 'HTTP_ROUTING_CACHE_FILE_PATH';
-    public const USE_CACHE       = 'HTTP_ROUTING_USE_CACHE';
+    public const string CONTROLLERS = 'HTTP_ROUTING_CONTROLLERS';
 }

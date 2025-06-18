@@ -21,7 +21,7 @@ namespace Valkyrja\Dispatcher\Data\Contract;
 interface MethodDispatch extends ClassDispatch
 {
     /**
-     * @param callable|array{0: class-string, 1: string} $callable
+     * @param callable|array{0: class-string, 1: non-empty-string} $callable
      *
      * @return static
      */
@@ -30,14 +30,14 @@ interface MethodDispatch extends ClassDispatch
     /**
      * Get the method.
      *
-     * @return string
+     * @return non-empty-string
      */
     public function getMethod(): string;
 
     /**
      * Create a new dispatch with the specified method.
      *
-     * @param string $method The method
+     * @param non-empty-string $method The method
      *
      * @return static
      */
@@ -55,7 +55,7 @@ interface MethodDispatch extends ClassDispatch
      *
      * @param bool $isStatic The static flag
      *
-     * @return $this
+     * @return static
      */
     public function withIsStatic(bool $isStatic): static;
 }

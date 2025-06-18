@@ -32,6 +32,6 @@ class HeadTest extends TestCase
 
         $route = new Head();
 
-        self::assertSame($value, $route->methods);
+        self::assertSame($value, $route->requestMethods);
     }
 }

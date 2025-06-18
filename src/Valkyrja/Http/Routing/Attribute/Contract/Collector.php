@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Attribute\Contract;
 
-use Valkyrja\Http\Routing\Model\Contract\Route;
+use Valkyrja\Http\Routing\Data\Contract\Route;
 
 /**
- * Interface Attributes.
+ * Interface Collector.
  *
  * @author Melech Mizrachi
  */
-interface Attributes
+interface Collector
 {
     /**
      * Get route attributes.

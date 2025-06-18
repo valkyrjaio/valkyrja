@@ -11,25 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Unit\Http\Routing\Attribute\Parameter\Regex;
+namespace Unit\Http\Routing\Attribute\Route;
 
-use Valkyrja\Http\Routing\Attribute\Parameter\Regex\Alpha;
-use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Http\Routing\Attribute\Route\ResponseStruct;
+use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
- * Test the Alpha attribute.
+ * Test the ResponseStruct attribute.
  *
  * @author Melech Mizrachi
  */
-class AlphaTest extends TestCase
+class ResponseStructTest extends TestCase
 {
     public function testAttribute(): void
     {
-        $value = Regex::ALPHA;
+        $value = ResponseStructEnum::class;
 
-        $attribute = new Alpha();
+        $attribute = new ResponseStruct($value);
 
-        self::assertSame($value, $attribute->value);
+        self::assertSame($value, $attribute->name);
     }
 }

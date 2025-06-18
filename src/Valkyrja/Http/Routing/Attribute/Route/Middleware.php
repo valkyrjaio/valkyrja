@@ -14,6 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Attribute\Route;
 
 use Attribute;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
 
 /**
  * Attribute Middleware.
@@ -23,6 +28,9 @@ use Attribute;
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class Middleware
 {
+    /**
+     * @param class-string<RouteMatchedMiddleware|RouteDispatchedMiddleware|ThrowableCaughtMiddleware|SendingResponseMiddleware|TerminatedMiddleware> $name
+     */
     public function __construct(
         public string $name
     ) {

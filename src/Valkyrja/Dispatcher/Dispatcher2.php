@@ -19,7 +19,7 @@ use Valkyrja\Dispatcher\Contract\Dispatcher2 as Contract;
 use Valkyrja\Dispatcher\Data\CallableDispatch;
 use Valkyrja\Dispatcher\Data\ClassDispatch;
 use Valkyrja\Dispatcher\Data\ConstantDispatch;
-use Valkyrja\Dispatcher\Data\Dispatch;
+use Valkyrja\Dispatcher\Data\Contract\Dispatch;
 use Valkyrja\Dispatcher\Data\GlobalVariableDispatch;
 use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Dispatcher\Data\PropertyDispatch;

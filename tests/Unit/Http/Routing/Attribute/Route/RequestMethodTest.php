@@ -33,6 +33,6 @@ class RequestMethodTest extends TestCase
 
         $attribute = new RequestMethod(...$value);
 
-        self::assertSame($value, $attribute->methods);
+        self::assertSame($value, $attribute->requestMethods);
     }
 }

@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Classes\Http\Middleware\Handler;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
-use Valkyrja\Http\Routing\Model\Contract\Route;
+use Valkyrja\Http\Routing\Data\Contract\Route;
 
 /**
  * Class TestRouteMatchedHandler.

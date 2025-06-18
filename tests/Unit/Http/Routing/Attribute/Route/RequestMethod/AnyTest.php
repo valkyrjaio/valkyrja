@@ -40,6 +40,6 @@ class AnyTest extends TestCase
 
         $route = new Any();
 
-        self::assertSame($value, $route->methods);
+        self::assertSame($value, $route->requestMethods);
     }
 }

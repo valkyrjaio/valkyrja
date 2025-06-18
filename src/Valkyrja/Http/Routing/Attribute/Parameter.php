@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Attribute;
 
 use Attribute;
-use Valkyrja\Http\Routing\Model\Parameter\Parameter as Model;
+use Valkyrja\Http\Routing\Data\Parameter as ParentParameter;
 
 /**
  * Attribute Parameter.
@@ -22,6 +22,6 @@ use Valkyrja\Http\Routing\Model\Parameter\Parameter as Model;
  * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_METHOD)]
-class Parameter extends Model
+class Parameter extends ParentParameter
 {
 }

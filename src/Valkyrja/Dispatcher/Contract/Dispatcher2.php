@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher\Contract;
 
-use Valkyrja\Dispatcher\Data\Dispatch;
+use Valkyrja\Dispatcher\Data\Contract\Dispatch;
 
 /**
  * Interface Dispatcher.

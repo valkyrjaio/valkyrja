@@ -17,7 +17,6 @@ use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Http\Routing\Config\Cache;
 use Valkyrja\Http\Routing\Constant\ConfigName;
 use Valkyrja\Http\Routing\Constant\EnvName;
-use Valkyrja\Support\Directory;
 
 /**
  * Class Config.
@@ -32,10 +31,7 @@ class Config extends ParentConfig
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::CONTROLLERS     => EnvName::CONTROLLERS,
-        ConfigName::FILE_PATH       => EnvName::FILE_PATH,
-        ConfigName::CACHE_FILE_PATH => EnvName::CACHE_FILE_PATH,
-        ConfigName::USE_CACHE       => EnvName::USE_CACHE,
+        ConfigName::CONTROLLERS => EnvName::CONTROLLERS,
     ];
 
     /**
@@ -43,24 +39,7 @@ class Config extends ParentConfig
      */
     public function __construct(
         public array $controllers = [],
-        public string $filePath = '',
-        public string $cacheFilePath = '',
-        public bool $useCache = false,
         public Cache|null $cache = null,
     ) {
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function setPropertiesBeforeSettingFromEnv(string $env): void
-    {
-        if ($this->filePath === '') {
-            $this->filePath = Directory::routesPath('default.php');
-        }
-
-        if ($this->cacheFilePath === '') {
-            $this->cacheFilePath = Directory::cachePath('routes.php');
-        }
     }
 }

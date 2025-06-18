@@ -107,8 +107,7 @@ class OptimizeCacheCommand extends Commander
         $config->event->cache    = $eventsCache;
         $config->event->useCache = true;
 
-        $config->httpRouting->cache    = $routesCache;
-        $config->httpRouting->useCache = true;
+        $config->httpRouting->cache = $routesCache;
 
         // $containerProvided = $config->container->cache->provided
         //     ?? [];

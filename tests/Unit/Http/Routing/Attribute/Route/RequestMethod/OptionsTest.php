@@ -32,6 +32,6 @@ class OptionsTest extends TestCase
 
         $route = new Options();
 
-        self::assertSame($value, $route->methods);
+        self::assertSame($value, $route->requestMethods);
     }
 }

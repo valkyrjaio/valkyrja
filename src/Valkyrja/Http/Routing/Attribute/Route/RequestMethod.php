@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Attribute\Route;
 
 use Attribute;
-use Valkyrja\Http\Message\Enum\RequestMethod as Enum;
+use Valkyrja\Http\Message\Enum\RequestMethod as RequestMethodEnum;
 
 /**
  * Attribute RequestMethod.
@@ -24,14 +24,14 @@ use Valkyrja\Http\Message\Enum\RequestMethod as Enum;
 #[Attribute(Attribute::TARGET_ALL)]
 class RequestMethod
 {
-    /** @var Enum[] */
-    public array $methods = [];
+    /** @var RequestMethodEnum[] */
+    public array $requestMethods = [];
 
     /**
-     * @param Enum ...$type
+     * @param RequestMethodEnum ...$requestMethods
      */
-    public function __construct(Enum ...$type)
+    public function __construct(RequestMethodEnum ...$requestMethods)
     {
-        $this->methods = $type;
+        $this->requestMethods = $requestMethods;
     }
 }

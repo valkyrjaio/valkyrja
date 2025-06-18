@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Data\Contract;
 
-use JsonSerializable;
-use Stringable;
 use Valkyrja\Dispatcher\Data\Contract\Dispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
@@ -22,7 +20,6 @@ use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Http\Routing\Model\Parameter\Parameter;
 use Valkyrja\Http\Struct\Request\Contract\RequestStruct;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStruct;
 
@@ -31,33 +28,8 @@ use Valkyrja\Http\Struct\Response\Contract\ResponseStruct;
  *
  * @author Melech Mizrachi
  */
-interface Route extends JsonSerializable, Stringable
+interface Route
 {
-    /**
-     * Create a new route from an array of data.
-     *
-     * @param array<string, mixed> $data The data
-     *
-     * @return static
-     */
-    public static function fromArray(array $data): static;
-
-    /**
-     * Get the dispatch.
-     *
-     * @return Dispatch
-     */
-    public function getDispatch(): Dispatch;
-
-    /**
-     * Create a new route with the specified dispatch.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @return static
-     */
-    public function withDispatch(Dispatch $dispatch): static;
-
     /**
      * Get the path.
      *
@@ -109,29 +81,70 @@ interface Route extends JsonSerializable, Stringable
     public function withAddedName(string $name): static;
 
     /**
+     * Get the dispatch.
+     */
+    public function getDispatch(): Dispatch;
+
+    /**
+     * Create a new request method with the specified dispatch.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return static
+     */
+    public function withDispatch(Dispatch $dispatch): static;
+
+    /**
      * Get the request methods.
      *
      * @return RequestMethod[]
      */
-    public function getMethods(): array;
+    public function getRequestMethods(): array;
+
+    /**
+     * Determine if a request method exists on this route.
+     *
+     * @param RequestMethod $requestMethod The request method
+     *
+     * @return bool
+     */
+    public function hasRequestMethod(RequestMethod $requestMethod): bool;
+
+    /**
+     * Create a new route with the specified request method.
+     *
+     * @param RequestMethod $requestMethod The request method
+     *
+     * @return static
+     */
+    public function withRequestMethod(RequestMethod $requestMethod): static;
 
     /**
      * Create a new route with the specified request methods.
      *
-     * @param RequestMethod ...$methods The request methods
+     * @param RequestMethod ...$requestMethods The request methods
      *
      * @return static
      */
-    public function withMethods(RequestMethod ...$methods): static;
+    public function withRequestMethods(RequestMethod ...$requestMethods): static;
 
     /**
-     * Set the request methods.
+     * Create a new route with an additional request method.
      *
-     * @param RequestMethod ...$methods The request methods
+     * @param RequestMethod $requestMethod The request method
      *
      * @return static
      */
-    public function withAddedMethods(RequestMethod ...$methods): static;
+    public function withAddedRequestMethod(RequestMethod $requestMethod): static;
+
+    /**
+     * Create a new route with additional request methods.
+     *
+     * @param RequestMethod ...$requestMethods The request methods
+     *
+     * @return static
+     */
+    public function withAddedRequestMethods(RequestMethod ...$requestMethods): static;
 
     /**
      * Get the regex.
@@ -150,43 +163,70 @@ interface Route extends JsonSerializable, Stringable
     public function withRegex(string|null $regex = null): static;
 
     /**
+     * Get the dynamic route matches.
+     *
+     * @return array<array-key, mixed>|null
+     */
+    public function getMatches(): array|null;
+
+    /**
+     * Create a new route with a set of dynamic route matches.
+     *
+     * @param array<array-key, mixed>|null $matches The dynamic route matches
+     *
+     * @return static
+     */
+    public function withMatches(array|null $matches = null): static;
+
+    /**
      * Get the parameters.
      *
-     * @return array<int, Parameter>
+     * @return array<array-key, Parameter>
      */
     public function getParameters(): array;
 
     /**
+     * Create a new route with given parameter.
+     *
+     * @param Parameter $parameter The parameter
+     *
+     * @return static
+     */
+    public function withParameter(Parameter $parameter): static;
+
+    /**
      * Create a new route with given parameters.
      *
-     * @param Parameter ...$parameter The parameter
+     * @param Parameter ...$parameters The parameter
      *
      * @return static
      */
-    public function withParameters(Parameter ...$parameter): static;
+    public function withParameters(Parameter ...$parameters): static;
 
     /**
-     * Create a new route with a added parameters.
+     * Create a new route with added parameter.
      *
-     * @param Parameter ...$parameter The parameter
+     * @param Parameter $parameter The parameter
      *
      * @return static
      */
-    public function withAddedParameters(Parameter ...$parameter): static;
+    public function withAddedParameter(Parameter $parameter): static;
 
     /**
-     * Get all the middleware.
+     * Create a new route with added parameters.
      *
-     * @return array<int, class-string<RouteMatchedMiddleware|RouteDispatchedMiddleware|ThrowableCaughtMiddleware|SendingResponseMiddleware|TerminatedMiddleware>>|null
+     * @param Parameter ...$parameters The parameter
+     *
+     * @return static
      */
-    public function getMiddleware(): array|null;
+    public function withAddedParameters(Parameter ...$parameters): static;
 
     /**
      * Get the matched middleware.
      *
-     * @return class-string<RouteMatchedMiddleware>[]|null
+     * @return class-string<RouteMatchedMiddleware>[]
      */
-    public function getMatchedMiddleware(): array|null;
+    public function getRouteMatchedMiddleware(): array;
 
     /**
      * Create a new route with matched middleware.
@@ -195,7 +235,7 @@ interface Route extends JsonSerializable, Stringable
      *
      * @return static
      */
-    public function withMatchedMiddleware(string ...$middleware): static;
+    public function withRouteMatchedMiddleware(string ...$middleware): static;
 
     /**
      * Create a new route with added matched middleware.
@@ -204,14 +244,14 @@ interface Route extends JsonSerializable, Stringable
      *
      * @return static
      */
-    public function withAddedMatchedMiddleware(string ...$middleware): static;
+    public function withAddedRouteMatchedMiddleware(string ...$middleware): static;
 
     /**
      * Get the dispatched middleware.
      *
-     * @return class-string<RouteDispatchedMiddleware>[]|null
+     * @return class-string<RouteDispatchedMiddleware>[]
      */
-    public function getDispatchedMiddleware(): array|null;
+    public function getRouteDispatchedMiddleware(): array;
 
     /**
      * Create a new route with dispatched middleware.
@@ -220,7 +260,7 @@ interface Route extends JsonSerializable, Stringable
      *
      * @return static
      */
-    public function withDispatchedMiddleware(string ...$middleware): static;
+    public function withRouteDispatchedMiddleware(string ...$middleware): static;
 
     /**
      * Create a new route with added dispatched middleware.
@@ -229,14 +269,14 @@ interface Route extends JsonSerializable, Stringable
      *
      * @return static
      */
-    public function withAddedDispatchedMiddleware(string ...$middleware): static;
+    public function withAddedRouteDispatchedMiddleware(string ...$middleware): static;
 
     /**
      * Get the exception middleware.
      *
-     * @return class-string<ThrowableCaughtMiddleware>[]|null
+     * @return class-string<ThrowableCaughtMiddleware>[]
      */
-    public function getExceptionMiddleware(): array|null;
+    public function getThrowableCaughtMiddleware(): array;
 
     /**
      * Create a new route with exception middleware.
@@ -245,7 +285,7 @@ interface Route extends JsonSerializable, Stringable
      *
      * @return static
      */
-    public function withExceptionMiddleware(string ...$middleware): static;
+    public function withThrowableCaughtMiddleware(string ...$middleware): static;
 
     /**
      * Create a new route with added exception middleware.
@@ -254,14 +294,14 @@ interface Route extends JsonSerializable, Stringable
      *
      * @return static
      */
-    public function withAddedExceptionMiddleware(string ...$middleware): static;
+    public function withAddedThrowableCaughtMiddleware(string ...$middleware): static;
 
     /**
      * Get the sending middleware.
      *
-     * @return class-string<SendingResponseMiddleware>[]|null
+     * @return class-string<SendingResponseMiddleware>[]
      */
-    public function getSendingMiddleware(): array|null;
+    public function getSendingResponseMiddleware(): array;
 
     /**
      * Create a new route with sending middleware.
@@ -270,7 +310,7 @@ interface Route extends JsonSerializable, Stringable
      *
      * @return static
      */
-    public function withSendingMiddleware(string ...$middleware): static;
+    public function withSendingResponseMiddleware(string ...$middleware): static;
 
     /**
      * Create a new route with added sending middleware.
@@ -279,14 +319,14 @@ interface Route extends JsonSerializable, Stringable
      *
      * @return static
      */
-    public function withAddedSendingMiddleware(string ...$middleware): static;
+    public function withAddedSendingResponseMiddleware(string ...$middleware): static;
 
     /**
      * Get the terminated middleware.
      *
-     * @return class-string<TerminatedMiddleware>[]|null
+     * @return class-string<TerminatedMiddleware>[]
      */
-    public function getTerminatedMiddleware(): array|null;
+    public function getTerminatedMiddleware(): array;
 
     /**
      * Create a new route with terminated middleware.
@@ -337,18 +377,4 @@ interface Route extends JsonSerializable, Stringable
      * @return static
      */
     public function withResponseStruct(string|null $responseStruct = null): static;
-
-    /**
-     * Get the Dispatch as a string.
-     *
-     * @return string
-     */
-    public function __toString(): string;
-
-    /**
-     * Serialize properties for json_encode.
-     *
-     * @return array<string, mixed>
-     */
-    public function jsonSerialize(): array;
 }

@@ -20,8 +20,5 @@ namespace Valkyrja\Http\Routing\Constant;
  */
 final class ConfigName
 {
-    public const CONTROLLERS     = 'controllers';
-    public const FILE_PATH       = 'filePath';
-    public const CACHE_FILE_PATH = 'cacheFilePath';
-    public const USE_CACHE       = 'useCache';
+    public const string CONTROLLERS = 'controllers';
 }

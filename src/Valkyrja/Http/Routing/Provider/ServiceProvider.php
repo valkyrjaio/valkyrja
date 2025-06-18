@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Provider;
 
 use Valkyrja\Application\Config\Valkyrja;
+use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Dispatcher\Contract\Dispatcher;
-use Valkyrja\Dispatcher\Validator\Contract\Validator;
+use Valkyrja\Dispatcher\Contract\Dispatcher2;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Middleware\Handler\Contract\Handler;
@@ -27,17 +27,14 @@ use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\Http\Routing\Attribute\Contract\Attributes;
+use Valkyrja\Http\Routing\Attribute\Contract\Collector;
 use Valkyrja\Http\Routing\Collection\CacheableCollection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection;
-use Valkyrja\Http\Routing\Collector\Contract\Collector;
 use Valkyrja\Http\Routing\Contract\Router;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Routing\Matcher\Contract\Matcher;
-use Valkyrja\Http\Routing\Middleware\RedirectRouteMiddleware;
 use Valkyrja\Http\Routing\Middleware\RequestStructMiddleware;
 use Valkyrja\Http\Routing\Middleware\ResponseStructMiddleware;
-use Valkyrja\Http\Routing\Middleware\SecureRouteMiddleware;
 use Valkyrja\Http\Routing\Middleware\ViewRouteNotMatchedMiddleware;
 use Valkyrja\Http\Routing\Processor\Contract\Processor;
 use Valkyrja\Http\Routing\Router as HttpRouter;
@@ -59,17 +56,14 @@ final class ServiceProvider extends Provider
     {
         return [
             Router::class                        => [self::class, 'publishRouter'],
-            Collector::class                     => [self::class, 'publishCollector'],
             Collection::class                    => [self::class, 'publishCollection'],
             Matcher::class                       => [self::class, 'publishMatcher'],
             Url::class                           => [self::class, 'publishUrl'],
-            Attributes::class                    => [self::class, 'publishAttributes'],
+            Collector::class                     => [self::class, 'publishAttributesCollector'],
             Processor::class                     => [self::class, 'publishProcessor'],
             ResponseFactory::class               => [self::class, 'publishResponseFactory'],
-            RedirectRouteMiddleware::class       => [self::class, 'publishRedirectRouteMiddleware'],
             RequestStructMiddleware::class       => [self::class, 'publishRequestStructMiddleware'],
             ResponseStructMiddleware::class      => [self::class, 'publishResponseStructMiddleware'],
-            SecureRouteMiddleware::class         => [self::class, 'publishSecureRouteMiddleware'],
             ViewRouteNotMatchedMiddleware::class => [self::class, 'publishViewRouteNotMatchedMiddleware'],
         ];
     }
@@ -81,17 +75,14 @@ final class ServiceProvider extends Provider
     {
         return [
             Router::class,
-            Collector::class,
             Collection::class,
             Matcher::class,
             Url::class,
-            Attributes::class,
+            Collector::class,
             Processor::class,
             ResponseFactory::class,
-            RedirectRouteMiddleware::class,
             RequestStructMiddleware::class,
             ResponseStructMiddleware::class,
-            SecureRouteMiddleware::class,
             ViewRouteNotMatchedMiddleware::class,
         ];
     }
@@ -127,7 +118,7 @@ final class ServiceProvider extends Provider
             new HttpRouter(
                 collection: $container->getSingleton(Collection::class),
                 container: $container,
-                dispatcher: $container->getSingleton(Dispatcher::class),
+                dispatcher: $container->getSingleton(Dispatcher2::class),
                 matcher: $container->getSingleton(Matcher::class),
                 responseFactory: $container->getSingleton(HttpMessageResponseFactory::class),
                 exceptionHandler: $exception,
@@ -138,25 +129,6 @@ final class ServiceProvider extends Provider
                 terminatedHandler: $terminated,
                 config: $config->httpRouting,
                 debug: $config->app->debug
-            )
-        );
-    }
-
-    /**
-     * Publish the collector service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishCollector(Container $container): void
-    {
-        $container->setSingleton(
-            Collector::class,
-            new \Valkyrja\Http\Routing\Collector\Collector(
-                collection: $container->getSingleton(Collection::class),
-                processor: $container->getSingleton(Processor::class),
-                reflection: $container->getSingleton(Reflection::class)
             )
         );
     }
@@ -225,12 +197,12 @@ final class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishAttributes(Container $container): void
+    public static function publishAttributesCollector(Container $container): void
     {
         $container->setSingleton(
-            Attributes::class,
-            new \Valkyrja\Http\Routing\Attribute\Attributes(
-                attributes: $container->getSingleton(\Valkyrja\Attribute\Contract\Attributes::class),
+            Collector::class,
+            new \Valkyrja\Http\Routing\Attribute\Collector(
+                attributes: $container->getSingleton(Attributes::class),
                 reflection: $container->getSingleton(Reflection::class),
                 processor: $container->getSingleton(Processor::class)
             )
@@ -248,9 +220,7 @@ final class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Processor::class,
-            new \Valkyrja\Http\Routing\Processor\Processor(
-                validator: $container->getSingleton(Validator::class)
-            )
+            new \Valkyrja\Http\Routing\Processor\Processor()
         );
     }
 
@@ -268,23 +238,6 @@ final class ServiceProvider extends Provider
             new \Valkyrja\Http\Routing\Factory\ResponseFactory(
                 responseFactory: $container->getSingleton(HttpMessageResponseFactory::class),
                 url: $container->getSingleton(Url::class),
-            )
-        );
-    }
-
-    /**
-     * Publish the RedirectRouteMiddleware service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishRedirectRouteMiddleware(Container $container): void
-    {
-        $container->setSingleton(
-            RedirectRouteMiddleware::class,
-            new RedirectRouteMiddleware(
-                $container->getSingleton(HttpMessageResponseFactory::class)
             )
         );
     }
@@ -316,23 +269,6 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             ResponseStructMiddleware::class,
             new ResponseStructMiddleware()
-        );
-    }
-
-    /**
-     * Publish the SecureRouteMiddleware service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishSecureRouteMiddleware(Container $container): void
-    {
-        $container->setSingleton(
-            SecureRouteMiddleware::class,
-            new SecureRouteMiddleware(
-                $container->getSingleton(HttpMessageResponseFactory::class)
-            )
         );
     }
 

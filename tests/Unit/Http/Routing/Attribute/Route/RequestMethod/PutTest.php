@@ -32,6 +32,6 @@ class PutTest extends TestCase
 
         $route = new Put();
 
-        self::assertSame($value, $route->methods);
+        self::assertSame($value, $route->requestMethods);
     }
 }

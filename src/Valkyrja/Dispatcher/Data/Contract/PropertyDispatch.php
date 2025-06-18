@@ -23,14 +23,14 @@ interface PropertyDispatch extends ClassDispatch
     /**
      * Get the property.
      *
-     * @return string
+     * @return non-empty-string
      */
     public function getProperty(): string;
 
     /**
      * Create a new dispatch with the specified property.
      *
-     * @param string $property The property
+     * @param non-empty-string $property The property
      *
      * @return static
      */
@@ -48,7 +48,7 @@ interface PropertyDispatch extends ClassDispatch
      *
      * @param bool $isStatic The static flag
      *
-     * @return $this
+     * @return static
      */
     public function withIsStatic(bool $isStatic): static;
 }

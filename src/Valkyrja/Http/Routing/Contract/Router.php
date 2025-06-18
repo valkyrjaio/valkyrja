@@ -18,9 +18,9 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Routing\Collection\Contract\Collection;
 use Valkyrja\Http\Routing\Config;
+use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Routing\Exception\InvalidRouteNameException;
 use Valkyrja\Http\Routing\Matcher\Contract\Matcher;
-use Valkyrja\Http\Routing\Model\Contract\Route;
 
 /**
  * Interface Router.

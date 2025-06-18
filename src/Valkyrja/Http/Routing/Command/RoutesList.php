@@ -21,8 +21,11 @@ use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Output\Contract\Output as OutputContract;
 use Valkyrja\Console\Output\Output;
 use Valkyrja\Console\Support\Provides;
+use Valkyrja\Dispatcher\Data\Contract\ConstantDispatch;
+use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
+use Valkyrja\Dispatcher\Data\Contract\PropertyDispatch;
 use Valkyrja\Http\Routing\Contract\Router;
-use Valkyrja\Http\Routing\Model\Contract\Route;
+use Valkyrja\Http\Routing\Data\Contract\Route;
 
 use function implode;
 use function max;
@@ -140,37 +143,33 @@ class RoutesList extends Commander
      */
     protected function setRoute(Route $route, array &$lengths): array
     {
-        $requestMethod = implode(' | ', array_column($route->getMethods(), 'value'));
-        $dispatch      = 'Closure';
+        $requestMethod = implode(' | ', array_column($route->getRequestMethods(), 'value'));
+        $dispatch      = $route->getDispatch();
         $regex         = $route->getRegex() ?? '';
         $path          = $route->getPath();
-        $name          = $route->getName() ?? '';
+        $name          = $route->getName();
 
-        if ($requestMethod === 'GET | HEAD | POST | PUT | PATCH | CONNECT | OPTIONS | TRACE | DELETE') {
+        if ($requestMethod === 'HEAD | GET | CONNECT | DELETE | OPTIONS | PATCH | POST | PUT | TRACE') {
             $requestMethod = 'ANY';
         }
 
-        if (($function = $route->getFunction()) !== null) {
-            $dispatch = $function;
-        } elseif (null !== $class = $route->getClass()) {
-            $dispatch = $class
-                . ($route->isStatic() ? '::' : '->')
-                . ((($method = $route->getMethod()) !== null)
-                    ? $method . '()'
-                    : $route->getProperty() ?? '');
-        }
+        $dispatchString = match (true) {
+            $dispatch instanceof ConstantDispatch => ($dispatch->getClass() ?? '') . '::' . $dispatch->getConstant(),
+            $dispatch instanceof PropertyDispatch => $dispatch->getClass() . ($dispatch->isStatic() ? '::' : '->') . $dispatch->getProperty(),
+            $dispatch instanceof MethodDispatch   => $dispatch->getClass() . ($dispatch->isStatic() ? '::' : '->') . $dispatch->getMethod() . '()',
+        };
 
         $lengths[0] = max($lengths[0], strlen($requestMethod));
         $lengths[1] = max($lengths[1], strlen($path));
         $lengths[2] = max($lengths[2], strlen($name));
-        $lengths[3] = max($lengths[3], strlen($dispatch));
+        $lengths[3] = max($lengths[3], strlen($dispatchString));
         $lengths[4] = max($lengths[4], strlen($regex));
 
         return [
             $requestMethod,
             $path,
             $name,
-            $dispatch,
+            $dispatchString,
             $regex,
         ];
     }

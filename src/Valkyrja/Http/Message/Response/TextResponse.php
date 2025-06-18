@@ -66,7 +66,7 @@ class TextResponse extends Response implements Contract
         array|null $headers = null
     ): static {
         return new static(
-            text: $content,
+            text: $content ?? '',
             statusCode: $statusCode ?? static::DEFAULT_STATUS_CODE,
             headers: $headers ?? static::DEFAULT_HEADERS
         );

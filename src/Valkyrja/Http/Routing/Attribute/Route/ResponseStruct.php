@@ -11,20 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Routing\Attribute;
+namespace Valkyrja\Http\Routing\Attribute\Route;
 
 use Attribute;
+use Valkyrja\Http\Struct\Response\Contract\ResponseStruct as RoutingResponseStruct;
 
 /**
- * Attribute Redirect.
+ * Attribute ResponseStruct.
  *
  * @author Melech Mizrachi
  */
-#[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
-class Redirect
+#[Attribute(Attribute::TARGET_ALL)]
+class ResponseStruct
 {
+    /**
+     * @param class-string<RoutingResponseStruct> $name
+     */
     public function __construct(
-        public string $to
+        public string $name
     ) {
     }
 }

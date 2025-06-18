@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Message\Response\Response as HttpResponse;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler;
-use Valkyrja\Http\Routing\Model\Contract\Route;
+use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Struct\Request\Contract\RequestStruct;
 use Valkyrja\Validation\Contract\Validate;
 

@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Processor;
 
 use InvalidArgumentException;
-use Valkyrja\Dispatcher\Validator\Contract\Validator;
+use Valkyrja\Dispatcher\Data\Contract\CallableDispatch;
+use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Http\Routing\Constant\Regex;
+use Valkyrja\Http\Routing\Data\Contract\Parameter;
+use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Routing\Exception\InvalidParameterRegexException;
 use Valkyrja\Http\Routing\Exception\InvalidRoutePathException;
-use Valkyrja\Http\Routing\Model\Contract\Route;
-use Valkyrja\Http\Routing\Model\Parameter\Parameter;
 use Valkyrja\Http\Routing\Processor\Contract\Processor as Contract;
 use Valkyrja\Http\Routing\Support\Helpers;
 use Valkyrja\Orm\Data\EntityCast;
@@ -36,47 +37,32 @@ use function preg_match;
 class Processor implements Contract
 {
     /**
-     * Processor constructor.
-     *
-     * @param Validator $validator
-     */
-    public function __construct(
-        protected Validator $validator,
-    ) {
-    }
-
-    /**
      * Process a route.
      *
      * @param Route $route The route
      *
      * @throws InvalidRoutePathException
      *
-     * @return void
+     * @return Route
      */
-    public function route(Route $route): void
+    public function route(Route $route): Route
     {
         // Verify the route
         $this->verifyRoute($route);
-        // Verify the dispatch
-        $this->validator->dispatch($route);
 
         // Set the id to the spl_object_id of the route
         // $route->setId((string) spl_object_id($route));
         // Set the id to an md5 hash of the route
         // $route->setId(md5(Arr::toString($route->asArray())));
         // Set the path to the validated cleaned path (/some/path)
-        $route->setPath(Helpers::trimPath($route->getPath()));
-        // Set whether the route is dynamic
-        $route->setDynamic(str_contains($route->getPath(), '{'));
+        $route = $route->withPath(Helpers::trimPath($route->getPath()));
 
         // If this is a dynamic route
-        if ($route->isDynamic()) {
-            $this->modifyRegex($route);
+        if (str_contains($route->getPath(), '{')) {
+            $route = $this->modifyRegex($route);
         }
 
-        // Set the id to an md5 hash of the route contents to ensure we have no duplicates
-        $route->setId(md5($route->__toString()));
+        return $route;
     }
 
     /**
@@ -100,13 +86,13 @@ class Processor implements Contract
      *
      * @throws InvalidRoutePathException
      *
-     * @return string
+     * @return Route
      */
-    protected function modifyRegex(Route $route): string
+    protected function modifyRegex(Route $route): Route
     {
         // If the regex has already been set then don't do anything
         if (($regex = $route->getRegex()) !== null && $regex !== '') {
-            return $regex;
+            return $route;
         }
 
         // Replace all slashes with \/
@@ -123,18 +109,15 @@ class Processor implements Contract
             }
 
             // Validate the parameter
-            $this->processParameterEntity($route, $parameter);
-            $this->processParameterInRegex($parameter, $regex);
+            $route     = $this->processParameterEntity($route, $parameter);
+            $parameter = $this->processParameterInRegex($parameter, $regex);
 
             $regex = $this->replaceParameterNameInRegex($route, $parameter, $regex);
         }
 
         $regex = Regex::START . $regex . Regex::END;
 
-        // Set the regex
-        $route->setRegex($regex);
-
-        return $regex;
+        return $route->withRegex($regex);
     }
 
     /**
@@ -143,18 +126,18 @@ class Processor implements Contract
      * @param Route     $route     The route
      * @param Parameter $parameter The parameter
      *
-     * @return void
+     * @return Route
      */
-    protected function processParameterEntity(Route $route, Parameter $parameter): void
+    protected function processParameterEntity(Route $route, Parameter $parameter): Route
     {
         $cast   = $parameter->getCast();
         $entity = $cast->type ?? null;
 
         if ($entity !== null && is_a($entity, Entity::class, true)) {
-            $this->removeEntityFromDependencies($route, $entity);
+            $route = $this->removeEntityFromDependencies($route, $entity);
 
             if (! $cast instanceof EntityCast) {
-                return;
+                return $route;
             }
 
             $entityColumn = $cast->column;
@@ -163,6 +146,8 @@ class Processor implements Contract
                 assert(property_exists($entity, $entityColumn));
             }
         }
+
+        return $route;
     }
 
     /**
@@ -171,14 +156,20 @@ class Processor implements Contract
      * @param Route                $route      The route
      * @param class-string<Entity> $entityName The entity class name
      *
-     * @return void
+     * @return Route
      */
-    protected function removeEntityFromDependencies(Route $route, string $entityName): void
+    protected function removeEntityFromDependencies(Route $route, string $entityName): Route
     {
-        $dependencies = $route->getDependencies();
+        $dispatch = $route->getDispatch();
+
+        if (! $dispatch instanceof ClassDispatch && ! $dispatch instanceof CallableDispatch) {
+            return $route;
+        }
+
+        $dependencies = $dispatch->getDependencies();
 
         if ($dependencies === null || $dependencies === []) {
-            return;
+            return $route;
         }
 
         $updatedDependencies = [];
@@ -189,7 +180,7 @@ class Processor implements Contract
             }
         }
 
-        $route->setDependencies($updatedDependencies);
+        return $route->withDispatch($dispatch->withDependencies($updatedDependencies));
     }
 
     /**
@@ -198,15 +189,17 @@ class Processor implements Contract
      * @param Parameter $parameter The parameter
      * @param string    $regex     The regex
      *
-     * @return void
+     * @return Parameter
      */
-    protected function processParameterInRegex(Parameter $parameter, string $regex): void
+    protected function processParameterInRegex(Parameter $parameter, string $regex): Parameter
     {
         // If the parameter is optional or the name has a ? affixed to it
         if ($parameter->isOptional() || str_contains($regex, $parameter->getName() . '?')) {
             // Ensure the parameter is set to optional
-            $parameter->setIsOptional(true);
+            return $parameter->withIsOptional(true);
         }
+
+        return $parameter;
     }
 
     /**
@@ -223,7 +216,6 @@ class Processor implements Contract
     protected function replaceParameterNameInRegex(Route $route, Parameter $parameter, string $regex): string
     {
         // Get whether this parameter is optional
-        /** @var bool $isOptional */
         $isOptional = $parameter->isOptional();
 
         // Get the replacement for this parameter's name (something like {name} or {name?}

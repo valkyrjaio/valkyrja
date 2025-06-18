@@ -15,14 +15,22 @@ namespace Valkyrja\Attribute;
 
 use Closure;
 use ReflectionAttribute;
+use ReflectionClass;
 use ReflectionClassConstant;
 use ReflectionException;
+use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
 use Reflector;
 use Valkyrja\Attribute\Constant\AttributeProperty;
 use Valkyrja\Attribute\Contract\Attributes as Contract;
+use Valkyrja\Attribute\Exception\RuntimeException;
+use Valkyrja\Dispatcher\Data\CallableDispatch;
+use Valkyrja\Dispatcher\Data\ClassDispatch;
+use Valkyrja\Dispatcher\Data\ConstantDispatch;
+use Valkyrja\Dispatcher\Data\MethodDispatch;
+use Valkyrja\Dispatcher\Data\PropertyDispatch;
 use Valkyrja\Reflection\Contract\Reflection;
 
 /**
@@ -381,10 +389,39 @@ class Attributes implements Contract
         $instances = [];
 
         foreach ($reflectionAttributes as $reflectionAttribute) {
-            $instances[] = $instance = $reflectionAttribute->newInstance();
+            $instance = $reflectionAttribute->newInstance();
 
             if (method_exists($instance, 'setReflection')) {
                 $instance->setReflection($reflection);
+            }
+
+            if (method_exists($instance, 'withDispatch')) {
+                /** @var object $instance */
+                $instance = $instance->withDispatch(
+                    match (true) {
+                        $reflection instanceof ReflectionMethod        => new MethodDispatch(
+                            class: $reflection->getDeclaringClass()->getName(),
+                            method: $reflection->getName(),
+                            isStatic: $reflection->isStatic()
+                        ),
+                        $reflection instanceof ReflectionProperty      => new PropertyDispatch(
+                            class: $reflection->getDeclaringClass()->getName(),
+                            property: $reflection->getName(),
+                            isStatic: $reflection->isStatic()
+                        ),
+                        $reflection instanceof ReflectionClass         => new ClassDispatch(
+                            class: $reflection->getName(),
+                        ),
+                        $reflection instanceof ReflectionClassConstant => new ConstantDispatch(
+                            constant: $reflection->getName(),
+                            class: $reflection->getDeclaringClass()->getName()
+                        ),
+                        $reflection instanceof ReflectionFunction      => new CallableDispatch(
+                            callable: $reflection->getName()
+                        ),
+                        default                                        => throw new RuntimeException('Unsupported reflection type'),
+                    }
+                );
             }
 
             if (isset($properties[AttributeProperty::CLASS_NAME]) && method_exists($instance, 'setClass')) {
@@ -418,6 +455,8 @@ class Attributes implements Contract
             if (isset($properties[AttributeProperty::NAME]) && method_exists($instance, 'setName')) {
                 $instance->setName($properties[AttributeProperty::NAME]);
             }
+
+            $instances[] = $instance;
         }
 
         return $instances;

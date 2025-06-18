@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing;
 
+use JsonException;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Dispatcher\Contract\Dispatcher;
+use Valkyrja\Dispatcher\Contract\Dispatcher2;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Factory\ResponseFactory as HttpMessageResponseFactory;
@@ -31,10 +32,14 @@ use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Collection\Collection as RouteCollection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection;
 use Valkyrja\Http\Routing\Contract\Router as Contract;
+use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Routing\Exception\InvalidRouteNameException;
 use Valkyrja\Http\Routing\Matcher\Contract\Matcher;
-use Valkyrja\Http\Routing\Model\Contract\Route;
 
+use function is_array;
+use function is_float;
+use function is_int;
+use function is_string;
 use function rawurldecode;
 
 /**
@@ -50,7 +55,7 @@ class Router implements Contract
     public function __construct(
         protected Collection $collection = new RouteCollection(),
         protected Container $container = new \Valkyrja\Container\Container(),
-        protected Dispatcher $dispatcher = new \Valkyrja\Dispatcher\Dispatcher(),
+        protected Dispatcher2 $dispatcher = new \Valkyrja\Dispatcher\Dispatcher2(),
         protected Matcher $matcher = new \Valkyrja\Http\Routing\Matcher\Matcher(),
         protected ResponseFactory $responseFactory = new HttpMessageResponseFactory(),
         protected ThrowableCaughtHandler&Handler $exceptionHandler = new Middleware\Handler\ThrowableCaughtHandler(),
@@ -140,9 +145,12 @@ class Router implements Contract
     public function attemptToMatchRoute(ServerRequest $request): Route|Response
     {
         // Decode the request uri
-        $requestUri = rawurldecode($request->getUri()->getPath());
+        $requestPath = rawurldecode($request->getUri()->getPath());
         // Try to match the route
-        $route = $this->matcher->match($requestUri, $request->getMethod());
+        $route = $this->matcher->match(
+            path: $requestPath,
+            requestMethod: $request->getMethod()
+        );
 
         // Return the route if it was found
         if ($route !== null) {
@@ -150,7 +158,7 @@ class Router implements Contract
         }
 
         // If the route matches for any method
-        if ($this->matcher->match($requestUri) !== null) {
+        if ($this->matcher->match($requestPath) !== null) {
             // Then the route exists but not for the requested method, and so it is not allowed
             return $this->responseFactory->createResponse(
                 statusCode: StatusCode::METHOD_NOT_ALLOWED,
@@ -165,6 +173,8 @@ class Router implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public function dispatch(ServerRequest $request): Response
     {
@@ -174,14 +184,22 @@ class Router implements Contract
         // If the route was not matched a response returned
         if ($matchedRoute instanceof Response) {
             // Dispatch RouteNotMatchedMiddleware
-            return $this->routeNotMatchedHandler->routeNotMatched($request, $matchedRoute);
+            return $this->routeNotMatchedHandler->routeNotMatched(
+                request: $request,
+                response: $matchedRoute
+            );
         }
 
-        return $this->dispatchRoute($request, $matchedRoute);
+        return $this->dispatchRoute(
+            request: $request,
+            route: $matchedRoute
+        );
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     public function dispatchRoute(ServerRequest $request, Route $route): Response
     {
@@ -189,7 +207,10 @@ class Router implements Contract
         $this->routeMatched($route);
 
         // Dispatch the RouteMatchedMiddleware
-        $routeAfterMiddleware = $this->routeMatchedHandler->routeMatched($request, $route);
+        $routeAfterMiddleware = $this->routeMatchedHandler->routeMatched(
+            request: $request,
+            route: $route
+        );
 
         // If the return value after middleware is a response return it
         if ($routeAfterMiddleware instanceof Response) {
@@ -200,13 +221,100 @@ class Router implements Contract
         $this->container->setSingleton(Route::class, $routeAfterMiddleware);
 
         // Attempt to dispatch the route using any one of the callable options
-        $response = $this->dispatcher->dispatch($routeAfterMiddleware, $routeAfterMiddleware->getMatches());
+        $response = $this->dispatcher->dispatch(
+            dispatch: $routeAfterMiddleware->getDispatch(),
+            arguments: $routeAfterMiddleware->getMatches()
+        );
 
         if (! $response instanceof Response) {
-            throw new InvalidRouteNameException('Dispatch must be a response');
+            return $this->getResponseForMixed($response);
         }
 
-        return $this->routeDispatchedHandler->routeDispatched($request, $response, $routeAfterMiddleware);
+        return $this->routeDispatchedHandler->routeDispatched(
+            request: $request,
+            response: $response,
+            route: $routeAfterMiddleware
+        );
+    }
+
+    /**
+     * Get a response object from a mixed response from a dispatch.
+     *
+     * @param mixed $response The response
+     *
+     * @throws JsonException
+     *
+     * @return Response
+     */
+    protected function getResponseForMixed(mixed $response): Response
+    {
+        return match (true) {
+            is_string($response) => $this->getResponseForString($response),
+            is_int($response)    => $this->getResponseForInt($response),
+            is_float($response)  => $this->getResponseForFloat($response),
+            is_array($response)  => $this->getResponseForArray($response),
+            default              => throw new InvalidRouteNameException('Dispatch must be a valid response')
+        };
+    }
+
+    /**
+     * Get a response object from a string response from a dispatch.
+     *
+     * @param string $response The response
+     *
+     * @return Response
+     */
+    protected function getResponseForString(string $response): Response
+    {
+        if (str_starts_with($response, '/')) {
+            return $this->responseFactory->createRedirectResponse(
+                uri: $response,
+            );
+        }
+
+        return $this->responseFactory->createTextResponse(
+            content: $response,
+        );
+    }
+
+    /**
+     * Get a response object from an int response from a dispatch.
+     *
+     * @param int $response The response
+     *
+     * @return Response
+     */
+    protected function getResponseForInt(int $response): Response
+    {
+        return $this->getResponseForString((string) $response);
+    }
+
+    /**
+     * Get a response object from a float response from a dispatch.
+     *
+     * @param float $response The response
+     *
+     * @return Response
+     */
+    protected function getResponseForFloat(float $response): Response
+    {
+        return $this->getResponseForString((string) $response);
+    }
+
+    /**
+     * Get a response object from an array response from a dispatch.
+     *
+     * @param array<array-key, mixed> $response The response
+     *
+     * @throws JsonException
+     *
+     * @return Response
+     */
+    protected function getResponseForArray(array $response): Response
+    {
+        return $this->responseFactory->createJsonResponse(
+            data: $response,
+        );
     }
 
     /**
@@ -218,32 +326,11 @@ class Router implements Contract
      */
     protected function routeMatched(Route $route): void
     {
-        $matchedMiddleware    = $route->getMatchedMiddleware();
-        $dispatchedMiddleware = $route->getDispatchedMiddleware();
-        $exceptionMiddleware  = $route->getExceptionMiddleware();
-        $sendingMiddleware    = $route->getSendingMiddleware();
-        $terminatedMiddleware = $route->getTerminatedMiddleware();
-
-        // Add all the middleware defined for the route to the respective middleware handlers
-        if ($matchedMiddleware !== null) {
-            $this->routeMatchedHandler->add(...$matchedMiddleware);
-        }
-
-        if ($dispatchedMiddleware !== null) {
-            $this->routeDispatchedHandler->add(...$dispatchedMiddleware);
-        }
-
-        if ($exceptionMiddleware !== null) {
-            $this->exceptionHandler->add(...$exceptionMiddleware);
-        }
-
-        if ($sendingMiddleware !== null) {
-            $this->sendingResponseHandler->add(...$sendingMiddleware);
-        }
-
-        if ($terminatedMiddleware !== null) {
-            $this->terminatedHandler->add(...$terminatedMiddleware);
-        }
+        $this->routeMatchedHandler->add(...$route->getRouteMatchedMiddleware());
+        $this->routeDispatchedHandler->add(...$route->getRouteDispatchedMiddleware());
+        $this->exceptionHandler->add(...$route->getThrowableCaughtMiddleware());
+        $this->sendingResponseHandler->add(...$route->getSendingResponseMiddleware());
+        $this->terminatedHandler->add(...$route->getTerminatedMiddleware());
 
         // Set the found route in the service container
         $this->container->setSingleton(Route::class, $route);

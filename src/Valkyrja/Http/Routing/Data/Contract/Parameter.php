@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Data\Contract;
 
-use JsonSerializable;
-use Stringable;
 use Valkyrja\Type\Data\Cast;
 
 /**
@@ -22,17 +20,8 @@ use Valkyrja\Type\Data\Cast;
  *
  * @author Melech Mizrachi
  */
-interface Parameter extends JsonSerializable, Stringable
+interface Parameter
 {
-    /**
-     * Create a new route from an array of data.
-     *
-     * @param array<string, mixed> $data The data
-     *
-     * @return static
-     */
-    public static function fromArray(array $data): static;
-
     /**
      * Get the name.
      *
@@ -128,18 +117,4 @@ interface Parameter extends JsonSerializable, Stringable
      * @return static
      */
     public function withDefault(mixed $default = null): static;
-
-    /**
-     * Get the Dispatch as a string.
-     *
-     * @return string
-     */
-    public function __toString(): string;
-
-    /**
-     * Serialize properties for json_encode.
-     *
-     * @return array<string, mixed>
-     */
-    public function jsonSerialize(): array;
 }
