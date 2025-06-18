@@ -47,7 +47,7 @@ class CacheableConsole extends Console
 
         $this->setup = true;
 
-        $cache = $this->config->cache ?? null;
+        $cache = $this->config->cache;
 
         // If the application should use the routes cache file
         if ($useCache && $cache !== null) {
@@ -67,7 +67,8 @@ class CacheableConsole extends Console
     {
         $this->setup(true, false);
 
-        $config                = new Cache();
+        $config = new Cache();
+
         $config->commands      = base64_encode(serialize($this->commands));
         $config->paths         = $this->paths;
         $config->namedCommands = $this->namedCommands;
