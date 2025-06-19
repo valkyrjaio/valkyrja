@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container;
 
-use Valkyrja\Container\Annotation\Contract\Annotations;
+use Valkyrja\Container\Attribute\Contract\Collector;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Contract\ContextAwareContainer;
 use Valkyrja\Container\Contract\Service;
+use Valkyrja\Container\Exception\InvalidArgumentException;
 use Valkyrja\Container\Support\Provider;
 
 use function array_map;
@@ -58,7 +59,6 @@ class CacheableContainer extends Container
         }
 
         $this->setupNotCached();
-        $this->setupAnnotatedServices();
         $this->setupAttributedServices();
     }
 
@@ -114,55 +114,38 @@ class CacheableContainer extends Container
     }
 
     /**
-     * Get annotated services.
-     */
-    protected function setupAnnotatedServices(): void
-    {
-        /** @var Annotations $containerAnnotations */
-        $containerAnnotations = $this->getSingleton(Annotations::class);
-
-        // Get all the annotated services from the list of controllers and iterate through the services
-        foreach ($containerAnnotations->getServices(...$this->config->services) as $service) {
-            $class = $service->getClass();
-            $id    = $service->getId();
-
-            if ($class !== null && $id !== null && $id !== '') {
-                /** @var class-string<Service> $class */
-                // Set the service
-                $this->bind($id, $class);
-            }
-        }
-
-        // Get all the annotated services from the list of controllers and iterate through the services
-        foreach ($containerAnnotations->getContextServices(...$this->config->contextServices) as $context) {
-            $class   = $context->getClass();
-            $method  = $context->getMethod();
-            $id      = $context->getId();
-            $service = $context->getService();
-
-            if ($class !== null && $id !== null && $service && $this instanceof ContextAwareContainer) {
-                // Set the service
-                $this->withContext($class, $method)->bind($id, $service);
-            }
-        }
-
-        // Get all the annotated services from the list of classes and iterate through the services
-        foreach ($containerAnnotations->getAliasServices(...$this->config->aliases) as $alias) {
-            $name = $alias->getName();
-            $id   = $alias->getId();
-
-            if ($name !== null && $name !== '' && $id !== null && $id !== '') {
-                // Set the service
-                $this->bindAlias($name, $id);
-            }
-        }
-    }
-
-    /**
      * Get attributed services.
      */
     protected function setupAttributedServices(): void
     {
+        $collector = $this->getSingleton(Collector::class);
+
+        foreach ($collector->getServices(...$this->config->services) as $service) {
+            $class = $service->dispatch->getClass();
+
+            if (! is_a($class, Service::class, true)) {
+                throw new InvalidArgumentException("Class for $class must implement " . Service::class);
+            }
+
+            $this->bind($service->serviceId, $class);
+        }
+
+        if ($this instanceof ContextAwareContainer) {
+            foreach ($collector->getContextServices(...$this->config->contextServices) as $service) {
+                $class = $service->dispatch->getClass();
+
+                if (! is_a($class, Service::class, true)) {
+                    throw new InvalidArgumentException("Class for $class must implement " . Service::class);
+                }
+
+                $this->withContext($service->contextClassName, $service->contextMemberName)
+                     ->bind($service->serviceId, $class);
+            }
+        }
+
+        foreach ($collector->getAliases(...$this->config->aliases) as $service) {
+            $this->bindAlias($service->dispatch->getClass(), $service->serviceId);
+        }
     }
 
     /**

@@ -66,10 +66,7 @@ class Config extends ParentConfig
         // Specifically done this way to allow for previously set mappings overwrite the default ones here
         $this->map = array_merge(
             [
-                AnnotationName::COMMAND         => AnnotationClass::COMMAND,
-                AnnotationName::SERVICE         => AnnotationClass::SERVICE,
-                AnnotationName::SERVICE_ALIAS   => AnnotationClass::SERVICE_ALIAS,
-                AnnotationName::SERVICE_CONTEXT => AnnotationClass::SERVICE_CONTEXT,
+                AnnotationName::COMMAND => AnnotationClass::COMMAND,
             ],
             $this->map
         );

@@ -22,8 +22,6 @@ use Valkyrja\Annotation\Constant\Regex;
 use Valkyrja\Annotation\Model\Contract\Annotation;
 use Valkyrja\Annotation\Parser\Parser;
 use Valkyrja\Console\Annotation\Command;
-use Valkyrja\Container\Annotation\Service;
-use Valkyrja\Container\Annotation\Service\Context;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -198,45 +196,6 @@ class ParserTest extends TestCase
         self::assertInstanceOf(
             Command::class,
             $this->parser->getAnnotationFromMap(AnnotationName::COMMAND)
-        );
-    }
-
-    /**
-     * Test the getAnnotationFromMap method with a Service.
-     *
-     * @return void
-     */
-    public function testGetServiceAnnotationFromMap(): void
-    {
-        self::assertInstanceOf(
-            Service::class,
-            $this->parser->getAnnotationFromMap(AnnotationName::SERVICE)
-        );
-    }
-
-    /**
-     * Test the getAnnotationFromMap method with a ServiceAlias.
-     *
-     * @return void
-     */
-    public function testGetServiceAliasAnnotationFromMap(): void
-    {
-        self::assertInstanceOf(
-            Service\Alias::class,
-            $this->parser->getAnnotationFromMap(AnnotationName::SERVICE_ALIAS)
-        );
-    }
-
-    /**
-     * Test the getAnnotationFromMap method with a ServiceContext.
-     *
-     * @return void
-     */
-    public function testGetServiceContextAnnotationFromMap(): void
-    {
-        self::assertInstanceOf(
-            Context::class,
-            $this->parser->getAnnotationFromMap(AnnotationName::SERVICE_CONTEXT)
         );
     }
 }

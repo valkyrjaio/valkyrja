@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Container\Annotation\Contract\Annotations;
+use Valkyrja\Container\Attribute\Contract\Collector;
 use Valkyrja\Container\CacheableContainer;
 use Valkyrja\Container\Config as ContainerConfig;
 use Valkyrja\Container\Constant\Provider;
@@ -35,12 +35,12 @@ class CacheableContainerTest extends TestCase
         $config    = new ContainerConfig();
         $container = new CacheableContainer($config, true);
 
-        $annotator = $this->createMock(Annotations::class);
+        $annotator = $this->createMock(Collector::class);
         $annotator->method('getServices')->willReturn([]);
         $annotator->method('getContextServices')->willReturn([]);
-        $annotator->method('getAliasServices')->willReturn([]);
+        $annotator->method('getAliases')->willReturn([]);
 
-        $container->setSingleton(Annotations::class, $annotator);
+        $container->setSingleton(Collector::class, $annotator);
 
         $config->devProviders = [
             Provider::VIEW,
@@ -59,12 +59,12 @@ class CacheableContainerTest extends TestCase
         $config    = new ContainerConfig();
         $container = new CacheableContainer($config, true);
 
-        $annotator = $this->createMock(Annotations::class);
+        $annotator = $this->createMock(Collector::class);
         $annotator->method('getServices')->willReturn([]);
         $annotator->method('getContextServices')->willReturn([]);
-        $annotator->method('getAliasServices')->willReturn([]);
+        $annotator->method('getAliases')->willReturn([]);
 
-        $container->setSingleton(Annotations::class, $annotator);
+        $container->setSingleton(Collector::class, $annotator);
 
         $cacheable = $container->getCacheable();
 

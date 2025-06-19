@@ -14,9 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Annotation\Constant;
 
 use Valkyrja\Console\Annotation\Command;
-use Valkyrja\Container\Annotation\Service;
-use Valkyrja\Container\Annotation\Service\Alias;
-use Valkyrja\Container\Annotation\Service\Context;
 
 /**
  * Constant AnnotationClass.
@@ -25,8 +22,5 @@ use Valkyrja\Container\Annotation\Service\Context;
  */
 final class AnnotationClass
 {
-    public const string COMMAND         = Command::class;
-    public const string SERVICE         = Service::class;
-    public const string SERVICE_ALIAS   = Alias::class;
-    public const string SERVICE_CONTEXT = Context::class;
+    public const string COMMAND = Command::class;
 }

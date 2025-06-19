@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Provider;
 
-use Valkyrja\Annotation\Filter\Contract\Filter;
-use Valkyrja\Container\Annotation\Contract\Annotations;
+use Valkyrja\Attribute\Contract\Attributes;
+use Valkyrja\Container\Attribute\Contract\Collector;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Reflection\Contract\Reflection;
 
 /**
  * Class ServiceProvider.
@@ -32,7 +31,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Annotations::class => [self::class, 'publishAnnotator'],
+            Collector::class => [self::class, 'publishAttributesCollector'],
         ];
     }
 
@@ -42,24 +41,19 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Annotations::class,
+            Collector::class,
         ];
     }
 
     /**
-     * Publish the annotator service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
+     * Publish the attributes service.
      */
-    public static function publishAnnotator(Container $container): void
+    public static function publishAttributesCollector(Container $container): void
     {
         $container->setSingleton(
-            Annotations::class,
-            new \Valkyrja\Container\Annotation\Annotations(
-                $container->getSingleton(Filter::class),
-                $container->getSingleton(Reflection::class)
+            Collector::class,
+            new \Valkyrja\Container\Attribute\Collector(
+                $container->getSingleton(Attributes::class)
             )
         );
     }

@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Annotation\Filter\Contract\Filter;
-use Valkyrja\Container\Annotation\Annotations;
-use Valkyrja\Container\Annotation\Contract\Annotations as Contract;
+use Valkyrja\Attribute\Contract\Attributes;
+use Valkyrja\Container\Attribute\Collector;
+use Valkyrja\Container\Attribute\Contract\Collector as AttributeCollectorContract;
 use Valkyrja\Container\Provider\ServiceProvider;
-use Valkyrja\Reflection\Contract\Reflection;
 
 /**
  * Test the ServiceProvider.
@@ -35,11 +34,10 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishAnnotator(): void
     {
-        $this->container->setSingleton(Reflection::class, $this->createMock(Reflection::class));
-        $this->container->setSingleton(Filter::class, $this->createMock(Filter::class));
+        $this->container->setSingleton(Attributes::class, $this->createMock(Attributes::class));
 
-        ServiceProvider::publishAnnotator($this->container);
+        ServiceProvider::publishAttributesCollector($this->container);
 
-        self::assertInstanceOf(Annotations::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(Collector::class, $this->container->getSingleton(AttributeCollectorContract::class));
     }
 }
