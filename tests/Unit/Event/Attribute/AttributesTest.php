@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Event\Attribute;
 
 use ReflectionException;
 use Valkyrja\Attribute\Attributes as AttributesAttributes;
+use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Event\Attribute\Collector;
 use Valkyrja\Event\Data\Contract\Listener;
 use Valkyrja\Reflection\Reflection;
@@ -70,7 +71,7 @@ class AttributesTest extends TestCase
     {
         $attributes = $this->class->getListeners(AttributedClass::class);
 
-        self::assertCount(4, $attributes);
+        self::assertCount(6, $attributes);
 
         foreach ($attributes as $attribute) {
             self::assertInstanceOf(Listener::class, $attribute);
@@ -97,10 +98,10 @@ class AttributesTest extends TestCase
         }
 
         self::assertSame(self::VALUE1, $attributes[0]->getEventId());
-        self::assertSame('__construct', $attributes[0]->getMethod());
+        self::assertInstanceOf(ClassDispatch::class, $attributes[0]->getDispatch());
 
         self::assertSame(self::VALUE2, $attributes[1]->getEventId());
-        self::assertSame('__construct', $attributes[1]->getMethod());
+        self::assertInstanceOf(ClassDispatch::class, $attributes[1]->getDispatch());
 
         self::assertSame(self::VALUE1, $attributes[2]->getEventId());
         self::assertSame(self::VALUE2, $attributes[3]->getEventId());

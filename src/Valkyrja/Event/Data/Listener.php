@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Data;
 
+use Valkyrja\Dispatcher\Data\ClassDispatch as DefaultDispatch;
 use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
-use Valkyrja\Dispatcher\Data\MethodDispatch as DefaultDispatch;
 use Valkyrja\Event\Data\Contract\Listener as Contract;
 
 /**
@@ -32,7 +32,7 @@ class Listener implements Contract
     public function __construct(
         protected string $eventId,
         protected string $name,
-        protected MethodDispatch $dispatch = new DefaultDispatch(self::class, '__construct'),
+        protected ClassDispatch|MethodDispatch $dispatch = new DefaultDispatch(self::class),
     ) {
     }
 
