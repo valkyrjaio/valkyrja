@@ -21,7 +21,7 @@ use Valkyrja\Event\Data\Listener as Model;
  *
  * @author Melech Mizrachi
  */
-#[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 class Listener extends Model
 {
 }

@@ -15,6 +15,7 @@ namespace Valkyrja\Event\Attribute;
 
 use ReflectionException;
 use Valkyrja\Attribute\Contract\Attributes;
+use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
 use Valkyrja\Event\Attribute\Contract\Collector as Contract;
 use Valkyrja\Event\Attribute\Listener as Attribute;
 use Valkyrja\Event\Data\Contract\Listener;
@@ -68,10 +69,18 @@ class Collector implements Contract
      */
     protected function setListenerProperties(Attribute $attribute): Listener
     {
-        $dispatch         = $attribute->getDispatch();
-        $methodReflection = $this->reflection->forClassMethod($dispatch->getClass(), $dispatch->getMethod());
+        $dispatch     = $attribute->getDispatch();
+        $dependencies = [];
 
-        $dependencies = $this->reflection->getDependencies($methodReflection);
+        if ($dispatch instanceof MethodDispatch) {
+            $methodReflection = $this->reflection->forClassMethod($dispatch->getClass(), $dispatch->getMethod());
+
+            $dependencies = $this->reflection->getDependencies($methodReflection);
+        } elseif (method_exists($dispatch->getClass(), '__construct')) {
+            $methodReflection = $this->reflection->forClassMethod($dispatch->getClass(), '__construct');
+
+            $dependencies = $this->reflection->getDependencies($methodReflection);
+        }
 
         return $this->getListenerFromAttribute(
             $attribute->withDispatch(

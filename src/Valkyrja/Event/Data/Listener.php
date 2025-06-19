@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Data;
 
+use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
 use Valkyrja\Dispatcher\Data\MethodDispatch as DefaultDispatch;
 use Valkyrja\Event\Data\Contract\Listener as Contract;
@@ -78,7 +79,7 @@ class Listener implements Contract
     /**
      * @inheritDoc
      */
-    public function getDispatch(): MethodDispatch
+    public function getDispatch(): ClassDispatch|MethodDispatch
     {
         return $this->dispatch;
     }
@@ -86,7 +87,7 @@ class Listener implements Contract
     /**
      * @inheritDoc
      */
-    public function withDispatch(MethodDispatch $dispatch): static
+    public function withDispatch(ClassDispatch|MethodDispatch $dispatch): static
     {
         $new = clone $this;
 

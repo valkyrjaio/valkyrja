@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Data\Contract;
 
+use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
 
 /**
@@ -57,16 +58,16 @@ interface Listener
     /**
      * Get the dispatch.
      *
-     * @return MethodDispatch
+     * @return ClassDispatch|MethodDispatch
      */
-    public function getDispatch(): MethodDispatch;
+    public function getDispatch(): ClassDispatch|MethodDispatch;
 
     /**
      * Create new listener with the specified dispatch.
      *
-     * @param MethodDispatch $dispatch The dispatch
+     * @param ClassDispatch|MethodDispatch $dispatch The dispatch
      *
      * @return static
      */
-    public function withDispatch(MethodDispatch $dispatch): static;
+    public function withDispatch(ClassDispatch|MethodDispatch $dispatch): static;
 }
