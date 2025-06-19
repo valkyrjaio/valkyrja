@@ -22,23 +22,23 @@ use Valkyrja\Tests\Unit\Event\Attribute\AttributesTest;
  * @author Melech Mizrachi
  */
 // Testing valid class attributes that will be attached to the constructor
-#[Listener(AttributesTest::VALUE1)]
-#[Listener(AttributesTest::VALUE2)]
+#[Listener(AttributesTest::VALUE1, 'Attributed2ClassValue1')]
+#[Listener(AttributesTest::VALUE2, 'Attributed2ClassValue2')]
 class Attributed2Class
 {
     public function __construct()
     {
     }
 
-    #[Listener(AttributesTest::VALUE1)]
-    #[Listener(AttributesTest::VALUE2)]
+    #[Listener(AttributesTest::VALUE1, 'Attributed2Class::staticMethodValue1')]
+    #[Listener(AttributesTest::VALUE2, 'Attributed2Class::staticMethodValue2')]
     public static function staticMethod(): string
     {
         return 'Static Method';
     }
 
-    #[Listener(AttributesTest::VALUE1)]
-    #[Listener(AttributesTest::VALUE2)]
+    #[Listener(AttributesTest::VALUE1, 'Attributed2Class->methodValue1')]
+    #[Listener(AttributesTest::VALUE2, 'Attributed2Class->methodValue1')]
     public function method(): string
     {
         return 'Method';

@@ -22,19 +22,19 @@ use Valkyrja\Tests\Unit\Event\Attribute\AttributesTest;
  * @author Melech Mizrachi
  */
 // Testing invalid attributes that have no method attached to them since this class has no constructor
-#[Listener(AttributesTest::VALUE1)]
-#[Listener(AttributesTest::VALUE2)]
+#[Listener(AttributesTest::VALUE1, 'AttributedClassValue1')]
+#[Listener(AttributesTest::VALUE2, 'AttributedClassValue2')]
 class AttributedClass
 {
-    #[Listener(AttributesTest::VALUE1)]
-    #[Listener(AttributesTest::VALUE2)]
+    #[Listener(AttributesTest::VALUE1, 'AttributedClass::staticMethodValue1')]
+    #[Listener(AttributesTest::VALUE2, 'AttributedClass::staticMethodValue2')]
     public static function staticMethod(): string
     {
         return 'Static Method';
     }
 
-    #[Listener(AttributesTest::VALUE1)]
-    #[Listener(AttributesTest::VALUE2)]
+    #[Listener(AttributesTest::VALUE1, 'AttributedClass->methodValue1')]
+    #[Listener(AttributesTest::VALUE2, 'AttributedClass->methodValue2')]
     public function method(): string
     {
         return 'Method';
