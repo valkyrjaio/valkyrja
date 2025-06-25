@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Provider;
 
 use Valkyrja\Application\Config\Valkyrja;
+use Valkyrja\Cli\Routing\Collection\Contract\Collection as CliRoutingCollection;
 use Valkyrja\Console\Command\ClearCache;
 use Valkyrja\Console\Command\CommandsList;
 use Valkyrja\Console\Command\CommandsListForBash;
@@ -24,7 +25,7 @@ use Valkyrja\Console\Output\Contract\Output;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Event\Collection\Contract\Collection as EventCollection;
-use Valkyrja\Http\Routing\Collection\Contract\Collection as RouterCollection;
+use Valkyrja\Http\Routing\Collection\Contract\Collection as HttpRoutingCollection;
 
 /**
  * Class CommandServiceProvider.
@@ -114,8 +115,9 @@ final class CommandServiceProvider extends Provider
             new OptimizeCacheCommand(
                 container: $container,
                 console: $container->getSingleton(Console::class),
+                cli: $container->getSingleton(CliRoutingCollection::class),
                 eventCollection: $container->getSingleton(EventCollection::class),
-                routerCollection: $container->getSingleton(RouterCollection::class),
+                routerCollection: $container->getSingleton(HttpRoutingCollection::class),
                 config: $container->getSingleton(Valkyrja::class),
                 input: $container->getSingleton(Input::class),
                 output: $container->getSingleton(Output::class)

@@ -11,13 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Routing\Collection\Data;
+namespace Valkyrja\Cli\Interaction\Factory;
+
+use Valkyrja\Cli\Interaction\Argument\Argument;
 
 /**
- * Class RequestMethodList.
+ * Class ArgumentFactory.
  *
  * @author Melech Mizrachi
  */
-class RequestMethodList
+abstract class ArgumentFactory
 {
+    /**
+     * @param non-empty-string $arg The arg
+     */
+    public static function fromArg(string $arg): Argument
+    {
+        return new Argument(value: $arg);
+    }
 }

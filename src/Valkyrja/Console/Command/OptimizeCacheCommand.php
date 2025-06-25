@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Command;
 
 use Valkyrja\Application\Config\Valkyrja;
+use Valkyrja\Cli\Routing\Collection\CacheableCollection as CliCollection;
+use Valkyrja\Cli\Routing\Collection\Contract\Collection as CliCollectionContract;
 use Valkyrja\Console\CacheableConsole;
 use Valkyrja\Console\Commander\Commander;
 use Valkyrja\Console\Constant\ExitCode;
@@ -28,8 +30,8 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Event\Collection\CacheableCollection as CacheableEvents;
 use Valkyrja\Event\Collection\Contract\Collection as EventCollection;
 use Valkyrja\Exception\RuntimeException;
-use Valkyrja\Http\Routing\Collection\CacheableCollection;
-use Valkyrja\Http\Routing\Collection\Contract\Collection as RouterCollection;
+use Valkyrja\Http\Routing\Collection\CacheableCollection as HttpCollection;
+use Valkyrja\Http\Routing\Collection\Contract\Collection as HttpCollectionContract;
 
 use function file_put_contents;
 use function is_file;
@@ -56,8 +58,9 @@ class OptimizeCacheCommand extends Commander
     public function __construct(
         protected Container $container,
         protected Console $console,
+        protected CliCollectionContract $cli,
         protected EventCollection $eventCollection,
-        protected RouterCollection $routerCollection,
+        protected HttpCollectionContract $routerCollection,
         protected Valkyrja $config,
         InputContract $input = new Input(),
         OutputContract $output = new Output()
@@ -86,19 +89,24 @@ class OptimizeCacheCommand extends Commander
         $container = clone $this->container;
         /** @var CacheableConsole $console */
         $console = clone $this->console;
+        /** @var CliCollection $cli */
+        $cli = clone $this->cli;
         /** @var CacheableEvents $events */
         $events = clone $this->eventCollection;
-        /** @var CacheableCollection $collection */
+        /** @var HttpCollection $collection */
         $collection = clone $this->routerCollection;
 
         $containerCache = $container->getCacheable();
         $consoleCache   = $console->getCacheable();
+        $cliCache       = $cli->getCacheable();
         $eventsCache    = $events->getCacheable();
         $routesCache    = $collection->getCacheable();
 
         $config->container->providers = $containerCache->providers;
         $config->container->cache     = $containerCache->cache
             ?? throw new RuntimeException('Container Cache should be set');
+
+        $config->cliRouting->cache = $cliCache;
 
         $config->console->cache = $consoleCache;
 

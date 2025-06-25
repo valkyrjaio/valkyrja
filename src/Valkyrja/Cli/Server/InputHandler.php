@@ -1,0 +1,165 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Valkyrja Framework package.
+ *
+ * (c) Melech Mizrachi <melechmizrachi@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Valkyrja\Cli\Server;
+
+use Throwable;
+use Valkyrja\Cli\Interaction\Enum\ExitCode;
+use Valkyrja\Cli\Interaction\Input\Contract\Input;
+use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Message\NewLine;
+use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Middleware;
+use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
+use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler;
+use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
+use Valkyrja\Cli\Routing\Contract\Router;
+use Valkyrja\Cli\Server\Contract\InputHandler as Contract;
+use Valkyrja\Container\Contract\Container;
+
+/**
+ * Class InputHandler.
+ *
+ * @author Melech Mizrachi
+ */
+class InputHandler implements Contract
+{
+    /**
+     * RequestHandler constructor.
+     */
+    public function __construct(
+        protected Container $container = new \Valkyrja\Container\Container(),
+        protected Router $router = new \Valkyrja\Cli\Routing\Router(),
+        protected InputReceivedHandler $inputReceivedHandler = new Middleware\Handler\InputReceivedHandler(),
+        protected ThrowableCaughtHandler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),
+        protected ExitedHandler $exitedHandler = new Middleware\Handler\ExitedHandler()
+    ) {
+    }
+
+    /**
+     * Handle the input.
+     *
+     * @param Input $input The input
+     *
+     * @return Output
+     */
+    public function handle(Input $input): Output
+    {
+        try {
+            $output = $this->dispatchRouter($input);
+        } catch (Throwable $throwable) {
+            $output = $this->getOutputFromThrowable($input, $throwable);
+            $output = $this->throwableCaughtHandler->throwableCaught($input, $output, $throwable);
+        }
+
+        // Set the returned output in the container
+        $this->container->setSingleton(Output::class, $output);
+
+        return $output;
+    }
+
+    /**
+     * Handle exiting the handler.
+     *
+     * @param Input  $input  The input
+     * @param Output $output The output
+     *
+     * @return void
+     */
+    public function exit(Input $input, Output $output): void
+    {
+        // Dispatch the exited middleware
+        $this->exitedHandler->exited($input, $output);
+    }
+
+    /**
+     * Run the handler.
+     *
+     * @param Input $input
+     *
+     * @return never
+     */
+    public function run(Input $input): never
+    {
+        $output = $this->handle($input);
+
+        $output
+            ->withAddedMessages(new NewLine())
+            ->writeMessages();
+
+        $this->exit($input, $output);
+
+        $exitCode = $output->getExitCode();
+
+        if ($exitCode instanceof ExitCode) {
+            exit($exitCode->value);
+        }
+
+        exit($exitCode);
+    }
+
+    /**
+     * Dispatch the input via the router.
+     *
+     * @param Input $input The input
+     *
+     * @return Output
+     */
+    protected function dispatchRouter(Input $input): Output
+    {
+        // Set the request object in the container
+        $this->container->setSingleton(Input::class, $input);
+
+        // Dispatch the before input received middleware
+        $inputAfterMiddleware = $this->inputReceivedHandler->inputReceived($input);
+
+        // If the return value after middleware is a response return it
+        if ($inputAfterMiddleware instanceof Output) {
+            return $inputAfterMiddleware;
+        }
+
+        // Set the returned request in the container
+        $this->container->setSingleton(Input::class, $inputAfterMiddleware);
+
+        return $this->router->dispatch($inputAfterMiddleware);
+    }
+
+    /**
+     * Get an output from a throwable.
+     *
+     * @param Input     $input     The input
+     * @param Throwable $throwable The throwable
+     *
+     * @return Output
+     */
+    protected function getOutputFromThrowable(Input $input, Throwable $throwable): Output
+    {
+        $commandName = $input->getCommandName();
+
+        return (new \Valkyrja\Cli\Interaction\Output\Output(
+            exitCode: ExitCode::ERROR
+        ))
+            ->withMessages(
+                new NewLine(),
+                new Message('Cli Server Error:'),
+                new NewLine(),
+                new NewLine("Url: $commandName"),
+                new NewLine(),
+                new NewLine('Message: ' . $throwable->getMessage()),
+                new NewLine(),
+                new NewLine('Line: ' . ((string) $throwable->getLine())),
+                new NewLine(),
+                new NewLine('Trace: ' . $throwable->getTraceAsString()),
+            );
+    }
+}

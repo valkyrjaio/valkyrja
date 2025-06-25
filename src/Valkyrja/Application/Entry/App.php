@@ -17,9 +17,13 @@ use Valkyrja\Application\Config\Valkyrja as ValkyrjaConfig;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Env;
 use Valkyrja\Application\Valkyrja;
+use Valkyrja\Cli\Interaction\Factory\InputFactory;
+use Valkyrja\Cli\Interaction\Input\Contract\Input;
+use Valkyrja\Cli\Server\Contract\InputHandler;
 use Valkyrja\Exception\ErrorHandler;
 use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Support\Directory;
 
 use function define;
@@ -88,7 +92,8 @@ abstract class App
             dataConfig: $dataConfig
         );
 
-        $app->kernel()->run(static::getRequest());
+        $handler = $app->container()->getSingleton(RequestHandler::class);
+        $handler->run(static::getRequest());
     }
 
     /**
@@ -111,6 +116,27 @@ abstract class App
         $exitCode = $app->consoleKernel()->run();
 
         static::exitConsole($exitCode);
+    }
+
+    /**
+     * Now that the application has been bootstrapped and setup correctly with all our requirements lets run it!
+     *
+     * @param string                       $dir        The directory
+     * @param class-string<Env>            $env        The env class to use
+     * @param class-string<ValkyrjaConfig> $dataConfig The config class to use
+     *
+     * @return void
+     */
+    public static function cli(string $dir, string $env, string $dataConfig): void
+    {
+        $app = static::start(
+            dir: $dir,
+            env: $env,
+            dataConfig: $dataConfig
+        );
+
+        $handler = $app->container()->getSingleton(InputHandler::class);
+        $handler->run(static::getInput());
     }
 
     /**
@@ -202,6 +228,16 @@ abstract class App
     protected static function getRequest(): ServerRequest
     {
         return RequestFactory::fromGlobals();
+    }
+
+    /**
+     * Get the input.
+     *
+     * @return Input
+     */
+    protected static function getInput(): Input
+    {
+        return InputFactory::fromGlobals();
     }
 
     /**

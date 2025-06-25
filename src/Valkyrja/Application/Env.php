@@ -33,6 +33,12 @@ use Valkyrja\Broadcast\Message\Contract\Message as BroadcastMessage;
 use Valkyrja\Cache\Adapter\Contract\Adapter as CacheAdapter;
 use Valkyrja\Cache\Config\Configurations as CacheConfigurations;
 use Valkyrja\Cache\Driver\Contract\Driver as CacheDriver;
+use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
+use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
+use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
+use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
+use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
+use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
 use Valkyrja\Client\Adapter\Contract\Adapter as ClientAdapter;
 use Valkyrja\Client\Config\Configurations as ClientConfigurations;
 use Valkyrja\Client\Driver\Contract\Driver as ClientDriver;
@@ -281,6 +287,34 @@ class Env
 
     /************************************************************
      *
+     * Cli Middleware component env variables.
+     *
+     ************************************************************/
+
+    /** @var class-string<InputReceivedMiddleware>[]|null */
+    public const array|null CLI_MIDDLEWARE_INPUT_RECEIVED = null;
+    /** @var class-string<CommandMatchedMiddleware>[]|null */
+    public const array|null CLI_MIDDLEWARE_COMMAND_MATCHED = null;
+    /** @var class-string<CommandNotMatchedMiddleware>[]|null */
+    public const array|null CLI_MIDDLEWARE_COMMAND_NOT_MATCHED = null;
+    /** @var class-string<CommandDispatchedMiddleware>[]|null */
+    public const array|null CLI_MIDDLEWARE_COMMAND_DISPATCHED = null;
+    /** @var class-string<ThrowableCaughtMiddleware>[]|null */
+    public const array|null CLI_MIDDLEWARE_THROWABLE_CAUGHT = null;
+    /** @var class-string<ExitedMiddleware>[]|null */
+    public const array|null CLI_MIDDLEWARE_EXITED = null;
+
+    /************************************************************
+     *
+     * Cli Routing component env variables.
+     *
+     ************************************************************/
+
+    /** @var class-string[]|null */
+    public const array|null CLI_ROUTING_CONTROLLERS = null;
+
+    /************************************************************
+     *
      * Client component env variables.
      *
      ************************************************************/
@@ -325,6 +359,8 @@ class Env
     public const array|null CONTAINER_ALIASES = null;
     /** @var class-string<ContainerService>[]|null */
     public const array|null CONTAINER_SERVICES = null;
+    /** @var class-string[]|null */
+    public const array|null CONTAINER_CONTEXT_ALIASES = null;
     /** @var class-string<ContainerService>[]|null */
     public const array|null CONTAINER_CONTEXT_SERVICES = null;
     /** @var class-string<ContainerProvider>[]|null */
