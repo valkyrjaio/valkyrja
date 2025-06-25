@@ -127,6 +127,12 @@ class CacheableContainer extends Container
                 throw new InvalidArgumentException("Class for $class must implement " . Service::class);
             }
 
+            if ($service->isSingleton) {
+                $this->bindSingleton($service->serviceId, $class);
+
+                continue;
+            }
+
             $this->bind($service->serviceId, $class);
         }
 
@@ -138,8 +144,20 @@ class CacheableContainer extends Container
                     throw new InvalidArgumentException("Class for $class must implement " . Service::class);
                 }
 
+                $contextContainer = $this->withContext($service->contextClassName, $service->contextMemberName);
+
+                if ($service->isSingleton) {
+                    $contextContainer->bindSingleton($service->serviceId, $class);
+
+                    continue;
+                }
+
+                $contextContainer->bind($service->serviceId, $class);
+            }
+
+            foreach ($collector->getContextAliases(...$this->config->aliases) as $service) {
                 $this->withContext($service->contextClassName, $service->contextMemberName)
-                     ->bind($service->serviceId, $class);
+                     ->bindAlias($service->dispatch->getClass(), $service->serviceId);
             }
         }
 

@@ -17,20 +17,24 @@ use Attribute;
 use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 
 /**
- * Attribute Service.
+ * Attribute ContextService.
  *
  * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
-class Service
+class ContextService
 {
     public ClassDispatch $dispatch;
 
     /**
-     * @param class-string $serviceId The service id to attach to
+     * @param class-string          $serviceId         The service id to attach to
+     * @param class-string          $contextClassName  The context class name
+     * @param non-empty-string|null $contextMemberName The context member
      */
     public function __construct(
         public string $serviceId,
+        public string $contextClassName,
+        public string|null $contextMemberName = null,
         public bool $isSingleton = false,
     ) {
     }

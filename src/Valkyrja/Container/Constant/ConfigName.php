@@ -22,6 +22,7 @@ final class ConfigName
 {
     public const string ALIASES          = 'aliases';
     public const string SERVICES         = 'services';
+    public const string CONTEXT_ALIASES  = 'contextAliases';
     public const string CONTEXT_SERVICES = 'contextServices';
     public const string PROVIDERS        = 'providers';
     public const string DEV_PROVIDERS    = 'devProviders';

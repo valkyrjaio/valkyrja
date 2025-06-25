@@ -36,6 +36,7 @@ class Config extends ParentConfig
     protected static array $envNames = [
         ConfigName::ALIASES          => EnvName::ALIASES,
         ConfigName::SERVICES         => EnvName::SERVICES,
+        ConfigName::CONTEXT_ALIASES  => EnvName::CONTEXT_ALIASES,
         ConfigName::CONTEXT_SERVICES => EnvName::CONTEXT_SERVICES,
         ConfigName::PROVIDERS        => EnvName::PROVIDERS,
         ConfigName::DEV_PROVIDERS    => EnvName::DEV_PROVIDERS,
@@ -45,6 +46,7 @@ class Config extends ParentConfig
     /**
      * @param class-string[]           $aliases
      * @param class-string<Service>[]  $services
+     * @param class-string[]           $contextAliases
      * @param class-string<Service>[]  $contextServices
      * @param class-string<Provider>[] $providers
      * @param class-string<Provider>[] $devProviders
@@ -52,6 +54,7 @@ class Config extends ParentConfig
     public function __construct(
         public array $aliases = [],
         public array $services = [],
+        public array $contextAliases = [],
         public array $contextServices = [],
         public array $providers = [],
         public array $devProviders = [],

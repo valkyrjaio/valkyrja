@@ -57,15 +57,27 @@ class Collector implements Contract
      *
      * @param class-string ...$classes The classes
      *
-     * @return Context[]
+     * @return ContextService[]
      */
     public function getContextServices(string ...$classes): array
     {
-        return $this->getAttributesByType(Context::class, ...$classes);
+        return $this->getAttributesByType(ContextService::class, ...$classes);
     }
 
     /**
-     * @template Attribute of Service|Alias|Context
+     * @inheritDoc
+     *
+     * @param class-string ...$classes The classes
+     *
+     * @return ContextAlias[]
+     */
+    public function getContextAliases(string ...$classes): array
+    {
+        return $this->getAttributesByType(ContextAlias::class, ...$classes);
+    }
+
+    /**
+     * @template Attribute of Service|Alias|ContextService|ContextAlias
      *
      * @param class-string<Attribute> $attributeClass The attribute class name
      * @param class-string            ...$classes     The classes

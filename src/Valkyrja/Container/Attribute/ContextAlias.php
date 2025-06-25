@@ -17,12 +17,12 @@ use Attribute;
 use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 
 /**
- * Attribute Context.
+ * Attribute ContextAlias.
  *
  * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
-class Context
+class ContextAlias
 {
     public ClassDispatch $dispatch;
 

@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Attribute\Contract;
 
 use Valkyrja\Container\Attribute\Alias;
-use Valkyrja\Container\Attribute\Context;
+use Valkyrja\Container\Attribute\ContextAlias;
+use Valkyrja\Container\Attribute\ContextService;
 use Valkyrja\Container\Attribute\Service;
 
 /**
@@ -47,7 +48,16 @@ interface Collector
      *
      * @param class-string ...$classes The classes
      *
-     * @return Context[]
+     * @return ContextService[]
      */
     public function getContextServices(string ...$classes): array;
+
+    /**
+     * Get the context aliases.
+     *
+     * @param class-string ...$classes The classes
+     *
+     * @return ContextAlias[]
+     */
+    public function getContextAliases(string ...$classes): array;
 }

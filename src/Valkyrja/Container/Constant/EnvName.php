@@ -22,6 +22,7 @@ final class EnvName
 {
     public const string ALIASES          = 'CONTAINER_ALIASES';
     public const string SERVICES         = 'CONTAINER_SERVICES';
+    public const string CONTEXT_ALIASES  = 'CONTAINER_CONTEXT_ALIASES';
     public const string CONTEXT_SERVICES = 'CONTAINER_CONTEXT_SERVICES';
     public const string PROVIDERS        = 'CONTAINER_PROVIDERS';
     public const string DEV_PROVIDERS    = 'CONTAINER_DEV_PROVIDERS';
