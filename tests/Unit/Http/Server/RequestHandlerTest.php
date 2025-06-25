@@ -159,7 +159,7 @@ class RequestHandlerTest extends TestCase
         $requestHandler = new RequestHandler(
             container: $container,
             router: $router,
-            exceptionHandler: $exceptionHandler
+            throwableCaughtHandler: $exceptionHandler
         );
 
         $handledResponse = $requestHandler->handle($request);

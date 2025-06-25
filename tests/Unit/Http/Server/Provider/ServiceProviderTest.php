@@ -25,7 +25,7 @@ use Valkyrja\Http\Server\RequestHandler;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
-use Valkyrja\View\Contract\View;
+use Valkyrja\View\Factory\Contract\ResponseFactory;
 
 /**
  * Test the ServiceProvider.
@@ -98,7 +98,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = new Container();
 
-        $container->setSingleton(View::class, $this->createMock(View::class));
+        $container->setSingleton(ResponseFactory::class, $this->createMock(ResponseFactory::class));
 
         ServiceProvider::publishViewThrowableCaughtMiddleware($container);
 

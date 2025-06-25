@@ -174,7 +174,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $container = new Container();
 
         $container->setSingleton(Valkyrja::class, new Valkyrja(env: EnvClass::class));
-        $container->setSingleton(RouterContract::class, $this->createMock(RouterContract::class));
+        $container->setSingleton(CollectionContract::class, $this->createMock(CollectionContract::class));
+        $container->setSingleton(MatcherContract::class, $this->createMock(MatcherContract::class));
         $container->setSingleton(ServerRequest::class, $this->createMock(ServerRequest::class));
 
         self::assertFalse($container->has(UrlContract::class));

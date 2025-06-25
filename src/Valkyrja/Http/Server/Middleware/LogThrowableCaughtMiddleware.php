@@ -38,7 +38,7 @@ class LogThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
     public function throwableCaught(ServerRequest $request, Response $response, Throwable $exception, ThrowableCaughtHandler $handler): Response
     {
         $url        = $request->getUri()->getPath();
-        $logMessage = "Server Error\nUrl: $url";
+        $logMessage = "Http Server Error\nUrl: $url";
 
         $this->logger->exception($exception, $logMessage);
 

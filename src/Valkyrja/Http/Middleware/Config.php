@@ -38,21 +38,21 @@ class Config extends ParentConfig
      */
     protected static array $envNames = [
         ConfigName::REQUEST_RECEIVED  => EnvName::REQUEST_RECEIVED,
-        ConfigName::ROUTE_DISPATCHED  => EnvName::ROUTE_DISPATCHED,
-        ConfigName::THROWABLE_CAUGHT  => EnvName::THROWABLE_CAUGHT,
         ConfigName::ROUTE_MATCHED     => EnvName::ROUTE_MATCHED,
         ConfigName::ROUTE_NOT_MATCHED => EnvName::ROUTE_NOT_MATCHED,
+        ConfigName::ROUTE_DISPATCHED  => EnvName::ROUTE_DISPATCHED,
+        ConfigName::THROWABLE_CAUGHT  => EnvName::THROWABLE_CAUGHT,
         ConfigName::SENDING_RESPONSE  => EnvName::SENDING_RESPONSE,
         ConfigName::TERMINATED        => EnvName::TERMINATED,
     ];
 
     /**
-     * @param class-string<RequestReceivedMiddleware>[] $requestReceived The before middleware
-     * @param class-string<RouteDispatchedMiddleware>[] $routeDispatched The dispatched middleware
+     * @param class-string<RequestReceivedMiddleware>[] $requestReceived The request received middleware
+     * @param class-string<RouteDispatchedMiddleware>[] $routeDispatched The route dispatched middleware
      * @param class-string<RouteMatchedMiddleware>[]    $routeMatched    The route matched middleware
      * @param class-string<RouteNotMatchedMiddleware>[] $routeNotMatched The route not matched middleware
-     * @param class-string<ThrowableCaughtMiddleware>[] $throwableCaught The exception middleware
-     * @param class-string<SendingResponseMiddleware>[] $sendingResponse The sending middleware
+     * @param class-string<ThrowableCaughtMiddleware>[] $throwableCaught The throwable caught middleware
+     * @param class-string<SendingResponseMiddleware>[] $sendingResponse The response sending middleware
      * @param class-string<TerminatedMiddleware>[]      $terminated      The terminated middleware
      */
     public function __construct(

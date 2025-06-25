@@ -96,8 +96,6 @@ final class ServiceProvider extends Provider
      */
     public static function publishRouter(Container $container): void
     {
-        $config = $container->getSingleton(Valkyrja::class);
-
         /** @var ThrowableCaughtHandler&Handler $exception */
         $exception = $container->getSingleton(ThrowableCaughtHandler::class);
         /** @var RouteMatchedHandler&Handler $routeMatched */
@@ -111,24 +109,19 @@ final class ServiceProvider extends Provider
         /** @var TerminatedHandler&Handler $terminated */
         $terminated = $container->getSingleton(TerminatedHandler::class);
 
-        $routeNotMatched->add(ViewRouteNotMatchedMiddleware::class);
-
         $container->setSingleton(
             Router::class,
             new HttpRouter(
-                collection: $container->getSingleton(Collection::class),
                 container: $container,
                 dispatcher: $container->getSingleton(Dispatcher2::class),
                 matcher: $container->getSingleton(Matcher::class),
                 responseFactory: $container->getSingleton(HttpMessageResponseFactory::class),
-                exceptionHandler: $exception,
+                throwableCaughtHandler: $exception,
                 routeMatchedHandler: $routeMatched,
                 routeNotMatchedHandler: $routeNotMatched,
                 routeDispatchedHandler: $routeDispatched,
                 sendingResponseHandler: $sendingResponse,
-                terminatedHandler: $terminated,
-                config: $config->httpRouting,
-                debug: $config->app->debug
+                terminatedHandler: $terminated
             )
         );
     }
@@ -185,7 +178,8 @@ final class ServiceProvider extends Provider
             Url::class,
             new \Valkyrja\Http\Routing\Url\Url(
                 request: $container->getSingleton(ServerRequest::class),
-                router: $container->getSingleton(Router::class)
+                collection: $container->getSingleton(Collection::class),
+                matcher: $container->getSingleton(Matcher::class),
             )
         );
     }

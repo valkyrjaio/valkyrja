@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\View\Contract\View;
+use Valkyrja\View\Factory\ResponseFactory;
 
 /**
  * Class ViewExceptionMiddlewareTest.
@@ -45,12 +45,12 @@ class ViewExceptionMiddlewareTest extends TestCase
 
         $templateText = 'Error: 500';
 
-        $view = $this->createMock(View::class);
-        $view->method('render')
+        $view = $this->createMock(ResponseFactory::class);
+        $view->method('createResponseFromView')
              ->with('errors/500', $args)
-             ->willReturn($templateText);
+             ->willReturn(Response::create(content: $templateText, statusCode: $statusCode));
 
-        $middleware = new ViewThrowableCaughtMiddleware(view: $view);
+        $middleware = new ViewThrowableCaughtMiddleware(viewResponseFactory: $view);
 
         $response = $middleware->throwableCaught($request, $response, $exception, $handler);
 

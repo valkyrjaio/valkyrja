@@ -13,19 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Middleware\Provider;
 
-use Closure;
 use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Filesystem\Contract\Filesystem;
 use Valkyrja\Http\Middleware\Cache\CacheResponseMiddleware;
-use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
-use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
-use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
 use Valkyrja\Http\Middleware\Handler;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler;
@@ -94,7 +86,6 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
-        $handler->add(...self::getBeforeMiddleware());
     }
 
     /**
@@ -115,7 +106,6 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
-        $handler->add(...self::getDispatchedMiddleware());
     }
 
     /**
@@ -136,7 +126,6 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
-        $handler->add(...self::getExceptionMiddleware());
     }
 
     /**
@@ -157,7 +146,6 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
-        $handler->add(...self::getRouteMatchedMiddleware());
     }
 
     /**
@@ -178,7 +166,6 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
-        $handler->add(...self::getRouteNotMatchedMiddleware());
     }
 
     /**
@@ -199,7 +186,6 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
-        $handler->add(...self::getSendingMiddleware());
     }
 
     /**
@@ -220,7 +206,6 @@ final class ServiceProvider extends Provider
         );
 
         $handler->add(...$middleware);
-        $handler->add(...self::getTerminatedMiddleware());
     }
 
     /**
@@ -241,61 +226,5 @@ final class ServiceProvider extends Provider
                 $config->app->debug
             )
         );
-    }
-
-    /**
-     * @return array<int, class-string<RequestReceivedMiddleware>|Closure(Container): RequestReceivedMiddleware>
-     */
-    protected static function getBeforeMiddleware(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<int, class-string<RouteDispatchedMiddleware>|Closure(Container): RouteDispatchedMiddleware>
-     */
-    protected static function getDispatchedMiddleware(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<int, class-string<ThrowableCaughtMiddleware>|Closure(Container): ThrowableCaughtMiddleware>
-     */
-    protected static function getExceptionMiddleware(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<int, class-string<RouteMatchedMiddleware>|Closure(Container): RouteMatchedMiddleware>
-     */
-    protected static function getRouteMatchedMiddleware(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<int, class-string<RouteNotMatchedMiddleware>|Closure(Container): RouteNotMatchedMiddleware>
-     */
-    protected static function getRouteNotMatchedMiddleware(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<int, class-string<SendingResponseMiddleware>|Closure(Container): SendingResponseMiddleware>
-     */
-    protected static function getSendingMiddleware(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<int, class-string<TerminatedMiddleware>|Closure(Container): TerminatedMiddleware>
-     */
-    protected static function getTerminatedMiddleware(): array
-    {
-        return [];
     }
 }

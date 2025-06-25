@@ -25,7 +25,7 @@ use Valkyrja\Http\Routing\Data\Contract\Route;
 interface RouteDispatchedHandler
 {
     /**
-     * Middleware handler for after a request is dispatched.
+     * Middleware handler for after a route is dispatched.
      */
     public function routeDispatched(ServerRequest $request, Response $response, Route $route): Response;
 }

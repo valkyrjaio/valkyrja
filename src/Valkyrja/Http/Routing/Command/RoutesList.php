@@ -24,7 +24,7 @@ use Valkyrja\Console\Support\Provides;
 use Valkyrja\Dispatcher\Data\Contract\ConstantDispatch;
 use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
 use Valkyrja\Dispatcher\Data\Contract\PropertyDispatch;
-use Valkyrja\Http\Routing\Contract\Router;
+use Valkyrja\Http\Routing\Collection\Contract\Collection;
 use Valkyrja\Http\Routing\Data\Contract\Route;
 
 use function implode;
@@ -57,7 +57,7 @@ class RoutesList extends Commander
     protected const string END_FORMAT = "\e[0m";
 
     public function __construct(
-        protected Router $router,
+        protected Collection $collection,
         InputContract $input = new Input(),
         OutputContract $output = new Output()
     ) {
@@ -71,7 +71,7 @@ class RoutesList extends Commander
      */
     public function run(): int
     {
-        $routerRoutes = $this->router->getRoutes();
+        $routerRoutes = $this->collection->allFlattened();
         $routes       = [];
         $headerTexts  = [
             'Request Methods',

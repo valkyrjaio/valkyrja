@@ -17,8 +17,8 @@ use Valkyrja\Console\Input\Contract\Input;
 use Valkyrja\Console\Output\Contract\Output;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
+use Valkyrja\Http\Routing\Collection\Contract\Collection;
 use Valkyrja\Http\Routing\Command\RoutesList;
-use Valkyrja\Http\Routing\Contract\Router;
 
 /**
  * Class CommandServiceProvider.
@@ -55,7 +55,7 @@ final class CommandServiceProvider extends Provider
         $container->setSingleton(
             RoutesList::class,
             new RoutesList(
-                router: $container->getSingleton(Router::class),
+                collection: $container->getSingleton(Collection::class),
                 input: $container->getSingleton(Input::class),
                 output: $container->getSingleton(Output::class)
             )

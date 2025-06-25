@@ -15,9 +15,10 @@ namespace Valkyrja\Http\Routing\Url;
 
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Routing\Contract\Router;
+use Valkyrja\Http\Routing\Collection\Contract\Collection;
 use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Routing\Exception\InvalidRouteNameException;
+use Valkyrja\Http\Routing\Matcher\Contract\Matcher;
 use Valkyrja\Http\Routing\Url\Contract\Url as Contract;
 
 use function str_replace;
@@ -33,11 +34,12 @@ use function substr;
 class Url implements Contract
 {
     /**
-     * Router constructor.
+     * Url constructor.
      */
     public function __construct(
         protected ServerRequest $request,
-        protected Router $router
+        protected Collection $collection,
+        protected Matcher $matcher
     ) {
     }
 
@@ -49,8 +51,13 @@ class Url implements Contract
     public function getUrl(string $name, array|null $data = null, bool|null $absolute = null): string
     {
         // Get the matching route
-        $route = $this->router->getRoute($name);
-        $host  = $absolute
+        $route = $this->collection->getNamed($name);
+
+        if ($route === null) {
+            throw new InvalidRouteNameException("$name is not a valid named route");
+        }
+
+        $host = $absolute
             ? $this->routeHost($route)
             : '';
         // Get the path from the generator
@@ -72,7 +79,7 @@ class Url implements Contract
      */
     public function getRouteByPath(string $path, RequestMethod|null $method = null): Route|null
     {
-        return $this->router->getMatcher()->match($path, $method ?? RequestMethod::GET);
+        return $this->matcher->match($path, $method ?? RequestMethod::GET);
     }
 
     /**

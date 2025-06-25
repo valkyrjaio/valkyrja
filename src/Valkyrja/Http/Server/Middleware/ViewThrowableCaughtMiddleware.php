@@ -16,10 +16,10 @@ namespace Valkyrja\Http\Server\Middleware;
 use Throwable;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\View\Contract\View;
+use Valkyrja\View\Factory\Contract\ResponseFactory as ViewResponseFactory;
+use Valkyrja\View\Factory\ResponseFactory as DefaultViewResponseFactory;
 
 /**
  * Class ViewExceptionMiddleware.
@@ -36,7 +36,7 @@ class ViewThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
     protected string $errorsTemplateDir = 'errors';
 
     public function __construct(
-        protected View $view = new \Valkyrja\View\View(),
+        protected ViewResponseFactory $viewResponseFactory = new DefaultViewResponseFactory(),
     ) {
     }
 
@@ -47,20 +47,14 @@ class ViewThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
     {
         $statusCode = $response->getStatusCode();
 
-        $view = $this->view
-            ->render(
-                name: "$this->errorsTemplateDir/" . ((string) $statusCode->value),
-                variables: [
-                    'exception' => $exception,
-                    'request'   => $request,
-                    'response'  => $response,
-                ]
-            );
-
-        $stream = new Stream();
-        $stream->write($view);
-        $stream->rewind();
-
-        return $response->withBody($stream);
+        return $this->viewResponseFactory->createResponseFromView(
+            template: "$this->errorsTemplateDir/" . ((string) $statusCode->value),
+            data: [
+                'exception' => $exception,
+                'request'   => $request,
+                'response'  => $response,
+            ],
+            statusCode: $statusCode
+        );
     }
 }

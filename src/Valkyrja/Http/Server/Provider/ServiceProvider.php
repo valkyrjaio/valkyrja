@@ -27,7 +27,7 @@ use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\RequestHandler as DefaultRequestHandler;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\View\Contract\View;
+use Valkyrja\View\Factory\Contract\ResponseFactory;
 
 /**
  * Class ServiceProvider.
@@ -62,10 +62,6 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the RequestHandler service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishRequestHandler(Container $container): void
     {
@@ -88,7 +84,7 @@ final class ServiceProvider extends Provider
                 container: $container,
                 router: $container->getSingleton(Router::class),
                 requestReceivedHandler: $requestReceived,
-                exceptionHandler: $exception,
+                throwableCaughtHandler: $exception,
                 sendingResponseHandler: $sendingResponse,
                 terminatedHandler: $terminated,
                 debug: $config->app->debug
@@ -98,10 +94,6 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the LogThrowableCaughtMiddleware service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishLogThrowableCaughtMiddleware(Container $container): void
     {
@@ -115,17 +107,13 @@ final class ServiceProvider extends Provider
 
     /**
      * Publish the ViewThrowableCaughtMiddleware service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
      */
     public static function publishViewThrowableCaughtMiddleware(Container $container): void
     {
         $container->setSingleton(
             ViewThrowableCaughtMiddleware::class,
             new ViewThrowableCaughtMiddleware(
-                view: $container->getSingleton(View::class),
+                viewResponseFactory: $container->getSingleton(ResponseFactory::class),
             )
         );
     }

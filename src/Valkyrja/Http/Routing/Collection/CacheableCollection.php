@@ -115,13 +115,13 @@ class CacheableCollection extends Collection
      */
     protected function setupAttributedControllers(): void
     {
-        /** @var Collector $routeAttributes */
-        $routeAttributes = $this->container->getSingleton(Collector::class);
-        $controllers     = $this->config->controllers;
+        /** @var Collector $collector */
+        $collector   = $this->container->getSingleton(Collector::class);
+        $controllers = $this->config->controllers;
 
         // Get all the attributes routes from the list of controllers
         // Iterate through the routes
-        foreach ($routeAttributes->getRoutes(...$controllers) as $route) {
+        foreach ($collector->getRoutes(...$controllers) as $route) {
             // Set the route
             $this->add($route);
         }

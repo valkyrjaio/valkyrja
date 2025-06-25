@@ -18,6 +18,7 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher2;
 use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Http\Message\Enum\StatusCode;
+use Valkyrja\Http\Message\Exception\HttpException;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Factory\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
@@ -30,8 +31,6 @@ use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\Http\Routing\Collection\Collection as RouteCollection;
-use Valkyrja\Http\Routing\Collection\Contract\Collection;
 use Valkyrja\Http\Routing\Contract\Router as Contract;
 use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Routing\Exception\InvalidRouteNameException;
@@ -54,122 +53,17 @@ class Router implements Contract
      * Router constructor.
      */
     public function __construct(
-        protected Collection $collection = new RouteCollection(),
         protected Container $container = new \Valkyrja\Container\Container(),
         protected Dispatcher2 $dispatcher = new \Valkyrja\Dispatcher\Dispatcher2(),
         protected Matcher $matcher = new \Valkyrja\Http\Routing\Matcher\Matcher(),
         protected ResponseFactory $responseFactory = new HttpMessageResponseFactory(),
-        protected ThrowableCaughtHandler&Handler $exceptionHandler = new Middleware\Handler\ThrowableCaughtHandler(),
+        protected ThrowableCaughtHandler&Handler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),
         protected RouteMatchedHandler&Handler $routeMatchedHandler = new Middleware\Handler\RouteMatchedHandler(),
         protected RouteNotMatchedHandler&Handler $routeNotMatchedHandler = new Middleware\Handler\RouteNotMatchedHandler(),
         protected RouteDispatchedHandler&Handler $routeDispatchedHandler = new Middleware\Handler\RouteDispatchedHandler(),
         protected SendingResponseHandler&Handler $sendingResponseHandler = new Middleware\Handler\SendingResponseHandler(),
-        protected TerminatedHandler&Handler $terminatedHandler = new Middleware\Handler\TerminatedHandler(),
-        protected Config $config = new Config(),
-        protected bool $debug = false
+        protected TerminatedHandler&Handler $terminatedHandler = new Middleware\Handler\TerminatedHandler()
     ) {
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getConfig(): Config
-    {
-        return $this->config;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function debug(): bool
-    {
-        return $this->debug;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCollection(): Collection
-    {
-        return $this->collection;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMatcher(): Matcher
-    {
-        return $this->matcher;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function addRoute(Route $route): void
-    {
-        // Set the route in the collection
-        $this->collection->add($route);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getRoutes(): array
-    {
-        return $this->collection->allFlattened();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getRoute(string $name): Route
-    {
-        // If no route was found
-        if (! $this->hasRoute($name) || ! $route = $this->collection->getNamed($name)) {
-            throw new InvalidRouteNameException($name);
-        }
-
-        return $route;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function hasRoute(string $name): bool
-    {
-        return $this->collection->hasNamed($name);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function attemptToMatchRoute(ServerRequest $request): Route|Response
-    {
-        // Decode the request uri
-        $requestPath = rawurldecode($request->getUri()->getPath());
-        // Try to match the route
-        $route = $this->matcher->match(
-            path: $requestPath,
-            requestMethod: $request->getMethod()
-        );
-
-        // Return the route if it was found
-        if ($route !== null) {
-            return $route;
-        }
-
-        // If the route matches for any method
-        if ($this->matcher->match($requestPath) !== null) {
-            // Then the route exists but not for the requested method, and so it is not allowed
-            return $this->responseFactory->createResponse(
-                statusCode: StatusCode::METHOD_NOT_ALLOWED,
-            );
-        }
-
-        // Otherwise return a response with a 404
-        return $this->responseFactory->createResponse(
-            statusCode: StatusCode::NOT_FOUND,
-        );
     }
 
     /**
@@ -242,6 +136,44 @@ class Router implements Contract
             request: $request,
             response: $response,
             route: $routeAfterMiddleware
+        );
+    }
+
+    /**
+     * Match a route, or a response if no route exists, from a given server request.
+     *
+     * @param ServerRequest $request The request
+     *
+     * @throws HttpException
+     *
+     * @return Route|Response
+     */
+    protected function attemptToMatchRoute(ServerRequest $request): Route|Response
+    {
+        // Decode the request uri
+        $requestPath = rawurldecode($request->getUri()->getPath());
+        // Try to match the route
+        $route = $this->matcher->match(
+            path: $requestPath,
+            requestMethod: $request->getMethod()
+        );
+
+        // Return the route if it was found
+        if ($route !== null) {
+            return $route;
+        }
+
+        // If the route matches for any method
+        if ($this->matcher->match($requestPath) !== null) {
+            // Then the route exists but not for the requested method, and so it is not allowed
+            return $this->responseFactory->createResponse(
+                statusCode: StatusCode::METHOD_NOT_ALLOWED,
+            );
+        }
+
+        // Otherwise return a response with a 404
+        return $this->responseFactory->createResponse(
+            statusCode: StatusCode::NOT_FOUND,
         );
     }
 
@@ -336,7 +268,7 @@ class Router implements Contract
     {
         $this->routeMatchedHandler->add(...$route->getRouteMatchedMiddleware());
         $this->routeDispatchedHandler->add(...$route->getRouteDispatchedMiddleware());
-        $this->exceptionHandler->add(...$route->getThrowableCaughtMiddleware());
+        $this->throwableCaughtHandler->add(...$route->getThrowableCaughtMiddleware());
         $this->sendingResponseHandler->add(...$route->getSendingResponseMiddleware());
         $this->terminatedHandler->add(...$route->getTerminatedMiddleware());
 

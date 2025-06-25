@@ -60,7 +60,7 @@ class RequestHandler implements Contract
         protected Container $container = new \Valkyrja\Container\Container(),
         protected Router $router = new \Valkyrja\Http\Routing\Router(),
         protected RequestReceivedHandler $requestReceivedHandler = new Middleware\Handler\RequestReceivedHandler(),
-        protected ThrowableCaughtHandler $exceptionHandler = new Middleware\Handler\ThrowableCaughtHandler(),
+        protected ThrowableCaughtHandler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),
         protected SendingResponseHandler $sendingResponseHandler = new Middleware\Handler\SendingResponseHandler(),
         protected TerminatedHandler $terminatedHandler = new Middleware\Handler\TerminatedHandler(),
         protected bool $debug = false
@@ -78,7 +78,7 @@ class RequestHandler implements Contract
             $response = $this->dispatchRouter($request);
         } catch (Throwable $throwable) {
             $response = $this->getResponseFromThrowable($throwable);
-            $response = $this->exceptionHandler->throwableCaught($request, $response, $throwable);
+            $response = $this->throwableCaughtHandler->throwableCaught($request, $response, $throwable);
         }
 
         // Set the returned response in the container
