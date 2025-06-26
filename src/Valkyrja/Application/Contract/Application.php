@@ -125,13 +125,6 @@ interface Application
     public function events(): Events;
 
     /**
-     * Get the console kernel instance from the container.
-     *
-     * @return ConsoleKernel
-     */
-    public function consoleKernel(): ConsoleKernel;
-
-    /**
      * Get the kernel instance from the container.
      *
      * @return RequestHandler

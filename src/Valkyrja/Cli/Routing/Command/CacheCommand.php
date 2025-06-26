@@ -24,8 +24,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Routing\Attribute\Command as CommandAttribute;
 use Valkyrja\Cli\Routing\Collection\CacheableCollection as CliCollection;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection as CliCollectionContract;
-use Valkyrja\Console\CacheableConsole;
-use Valkyrja\Console\Contract\Console;
 use Valkyrja\Container\CacheableContainer;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Event\Collection\CacheableCollection as CacheableEvents;
@@ -43,14 +41,15 @@ use const LOCK_EX;
  */
 class CacheCommand
 {
+    public const string NAME = 'config:cache';
+
     #[CommandAttribute(
-        name: 'config:cache',
+        name: self::NAME,
         description: 'Cache the config',
         helpText: new Message('A command to cache the config.'),
     )]
     public function run(
         Container $container,
-        Console $console,
         CliCollectionContract $cli,
         EventCollection $eventCollection,
         HttpCollectionContract $routerCollection,
@@ -71,8 +70,6 @@ class CacheCommand
 
         /** @var CacheableContainer $container */
         $container = clone $container;
-        /** @var CacheableConsole $console */
-        $console = clone $console;
         /** @var CliCollection $cli */
         $cli = clone $cli;
         /** @var CacheableEvents $events */
@@ -81,7 +78,6 @@ class CacheCommand
         $collection = clone $routerCollection;
 
         $containerCache = $container->getCacheable();
-        $consoleCache   = $console->getCacheable();
         $cliCache       = $cli->getCacheable();
         $eventsCache    = $events->getCacheable();
         $routesCache    = $collection->getCacheable();
@@ -91,8 +87,6 @@ class CacheCommand
             ?? throw new RuntimeException('Container Cache should be set');
 
         $config->cliRouting->cache = $cliCache;
-
-        $config->console->cache = $consoleCache;
 
         $config->event->cache = $eventsCache;
 

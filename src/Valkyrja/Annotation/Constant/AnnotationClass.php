@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Constant;
 
-use Valkyrja\Console\Annotation\Command;
-
 /**
  * Constant AnnotationClass.
  *
@@ -22,5 +20,4 @@ use Valkyrja\Console\Annotation\Command;
  */
 final class AnnotationClass
 {
-    public const string COMMAND = Command::class;
 }

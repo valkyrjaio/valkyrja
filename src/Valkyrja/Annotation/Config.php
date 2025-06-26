@@ -15,8 +15,6 @@ namespace Valkyrja\Annotation;
 
 use Valkyrja\Annotation\Constant\Alias;
 use Valkyrja\Annotation\Constant\AliasClass;
-use Valkyrja\Annotation\Constant\AnnotationClass;
-use Valkyrja\Annotation\Constant\AnnotationName;
 use Valkyrja\Annotation\Constant\ConfigName;
 use Valkyrja\Annotation\Constant\EnvName;
 use Valkyrja\Annotation\Model\Contract\Annotation;
@@ -66,7 +64,6 @@ class Config extends ParentConfig
         // Specifically done this way to allow for previously set mappings overwrite the default ones here
         $this->map = array_merge(
             [
-                AnnotationName::COMMAND => AnnotationClass::COMMAND,
             ],
             $this->map
         );

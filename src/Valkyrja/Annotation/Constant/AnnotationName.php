@@ -20,5 +20,4 @@ namespace Valkyrja\Annotation\Constant;
  */
 final class AnnotationName
 {
-    public const string COMMAND = 'Command';
 }

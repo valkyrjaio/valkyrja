@@ -17,11 +17,11 @@ use Valkyrja\Annotation\Contract\Annotations;
 use Valkyrja\Application\Config\Valkyrja as ValkyrjaConfig;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Valkyrja;
+use Valkyrja\Cli\Interaction\Input\Input;
+use Valkyrja\Cli\Routing\Command\CacheCommand;
+use Valkyrja\Cli\Routing\Contract\Router as CliRouter;
 use Valkyrja\Client\Contract\Client;
 use Valkyrja\Config\Config\Config;
-use Valkyrja\Console\Command\OptimizeCacheCommand;
-use Valkyrja\Console\Contract\Console;
-use Valkyrja\Console\Kernel\Contract\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Dispatcher as Events;
@@ -213,26 +213,6 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * Test the console() helper method.
-     *
-     * @return void
-     */
-    public function testConsole(): void
-    {
-        self::assertInstanceOf(Console::class, $this->app->container()->getSingleton(Console::class));
-    }
-
-    /**
-     * Test the consoleKernel() helper method.
-     *
-     * @return void
-     */
-    public function testConsoleKernel(): void
-    {
-        self::assertInstanceOf(ConsoleKernel::class, $this->app->container()->getSingleton(ConsoleKernel::class));
-    }
-
-    /**
      * Test the filesystem() helper method.
      *
      * @return void
@@ -382,12 +362,10 @@ class ApplicationTest extends TestCase
      */
     public function testApplicationSetupWithCachedConfig(): void
     {
-        /** @var Console $console */
-        $console = $this->app->container()->getSingleton(Console::class);
-        // Get the config cache command
-        $configCacheCommand = $console->matchCommand(OptimizeCacheCommand::COMMAND);
+        /** @var CliRouter $cliRouter */
+        $cliRouter = $this->app->container()->getSingleton(CliRouter::class);
         // Run the config cache command
-        $console->dispatchCommand($configCacheCommand);
+        $cliRouter->dispatch(new Input(commandName: CacheCommand::NAME));
 
         // Resetup the app with the new config and force
         $this->app->setup(ConfigClass::class);

@@ -30,7 +30,6 @@ use Valkyrja\Config\Config;
 use Valkyrja\Config\Config\Config as ConfigConfig;
 use Valkyrja\Config\Exception\InvalidArgumentException;
 use Valkyrja\Config\Exception\RuntimeException;
-use Valkyrja\Console\Config as Console;
 use Valkyrja\Container\Config as Container;
 use Valkyrja\Crypt\Config as Crypt;
 use Valkyrja\Event\Config as Event;
@@ -71,7 +70,6 @@ use function unserialize;
  * @property CliServer      $cliServer
  * @property Client         $client
  * @property ConfigConfig   $config
- * @property Console        $console
  * @property Container      $container
  * @property Crypt          $crypt
  * @property Event          $event
@@ -188,13 +186,6 @@ class Valkyrja implements ArrayAccess
      * @var ConfigConfig
      */
     protected ConfigConfig $config;
-
-    /**
-     * The console component config.
-     *
-     * @var Console
-     */
-    protected Console $console;
 
     /**
      * The container component config.
@@ -473,7 +464,6 @@ class Valkyrja implements ArrayAccess
         $this->cliServer      = CliServer::fromEnv($env);
         $this->client         = Client::fromEnv($env);
         $this->config         = ConfigConfig::fromEnv($env);
-        $this->console        = Console::fromEnv($env);
         $this->container      = Container::fromEnv($env);
         $this->crypt          = Crypt::fromEnv($env);
         $this->event          = Event::fromEnv($env);

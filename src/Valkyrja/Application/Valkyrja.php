@@ -18,7 +18,6 @@ use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config;
 use Valkyrja\Config\Support\Provider as ConfigProvider;
-use Valkyrja\Console\Kernel\Contract\Kernel as ConsoleKernel;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Contract\Dispatcher as Events;
@@ -219,14 +218,6 @@ class Valkyrja implements Application
     public function events(): Events
     {
         return self::$container->getSingleton(Events::class);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function consoleKernel(): ConsoleKernel
-    {
-        return self::$container->getSingleton(ConsoleKernel::class);
     }
 
     /**

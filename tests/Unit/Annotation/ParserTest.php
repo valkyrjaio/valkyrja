@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Unit\Annotation;
 use JsonException;
 use ReflectionClass;
 use Valkyrja\Annotation\Config;
-use Valkyrja\Annotation\Constant\AnnotationName;
 use Valkyrja\Annotation\Constant\ConfigValue;
 use Valkyrja\Annotation\Constant\Regex;
 use Valkyrja\Annotation\Model\Contract\Annotation;
@@ -183,19 +182,6 @@ class ParserTest extends TestCase
         self::assertInstanceOf(
             Annotation::class,
             $this->parser->getAnnotationFromMap('Bogus')
-        );
-    }
-
-    /**
-     * Test the getAnnotationFromMap method with a Command.
-     *
-     * @return void
-     */
-    public function testGetCommandAnnotationFromMap(): void
-    {
-        self::assertInstanceOf(
-            Command::class,
-            $this->parser->getAnnotationFromMap(AnnotationName::COMMAND)
         );
     }
 }

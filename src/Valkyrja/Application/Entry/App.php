@@ -103,28 +103,6 @@ abstract class App
      * @param class-string<Env>            $env        The env class to use
      * @param class-string<ValkyrjaConfig> $dataConfig The config class to use
      *
-     * @return never
-     */
-    public static function console(string $dir, string $env, string $dataConfig): never
-    {
-        $app = static::start(
-            dir: $dir,
-            env: $env,
-            dataConfig: $dataConfig
-        );
-
-        $exitCode = $app->consoleKernel()->run();
-
-        static::exitConsole($exitCode);
-    }
-
-    /**
-     * Now that the application has been bootstrapped and setup correctly with all our requirements lets run it!
-     *
-     * @param string                       $dir        The directory
-     * @param class-string<Env>            $env        The env class to use
-     * @param class-string<ValkyrjaConfig> $dataConfig The config class to use
-     *
      * @return void
      */
     public static function cli(string $dir, string $env, string $dataConfig): void
@@ -238,17 +216,5 @@ abstract class App
     protected static function getInput(): Input
     {
         return InputFactory::fromGlobals();
-    }
-
-    /**
-     * Exit to let the terminal know we're done.
-     *
-     * @param int $exitCode The exit code
-     *
-     * @return never
-     */
-    protected static function exitConsole(int $exitCode): never
-    {
-        exit($exitCode);
     }
 }

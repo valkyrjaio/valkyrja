@@ -43,7 +43,6 @@ use Valkyrja\Client\Adapter\Contract\Adapter as ClientAdapter;
 use Valkyrja\Client\Config\Configurations as ClientConfigurations;
 use Valkyrja\Client\Driver\Contract\Driver as ClientDriver;
 use Valkyrja\Config\Support\Provider as ConfigProvider;
-use Valkyrja\Console\Commander\Contract\Commander as ConsoleCommander;
 use Valkyrja\Container\Contract\Service as ContainerService;
 use Valkyrja\Container\Support\Provider as ContainerProvider;
 use Valkyrja\Crypt\Adapter\Contract\Adapter as CryptAdapter;
@@ -333,21 +332,6 @@ class Env
     public const string|null CLIENT_NULL_ADAPTER_CLASS = null;
     /** @var class-string<ClientDriver>|null */
     public const string|null CLIENT_NULL_DRIVER_CLASS = null;
-
-    /************************************************************
-     *
-     * Console component env variables.
-     *
-     ************************************************************/
-
-    /** @var class-string<ConsoleCommander>[]|null */
-    public const array|null CONSOLE_HANDLERS = null;
-    /** @var class-string[]|null */
-    public const array|null CONSOLE_PROVIDERS = null;
-    /** @var class-string[]|null */
-    public const array|null CONSOLE_DEV_PROVIDERS = null;
-    /** @var bool|null */
-    public const bool|null CONSOLE_SHOULD_RUN_QUIETLY = null;
 
     /************************************************************
      *

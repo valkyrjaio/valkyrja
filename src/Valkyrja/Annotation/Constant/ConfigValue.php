@@ -22,6 +22,5 @@ final class ConfigValue
 {
     /** @var array<string, class-string> */
     public const array MAP = [
-        AnnotationName::COMMAND => AnnotationClass::COMMAND,
     ];
 }
