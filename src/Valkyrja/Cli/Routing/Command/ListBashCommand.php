@@ -20,7 +20,6 @@ use Valkyrja\Cli\Routing\Attribute\Command as CommandAttribute;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\Contract\Command;
-use Valkyrja\Cli\Routing\Data\OptionParameter;
 
 use function is_string;
 
@@ -42,11 +41,9 @@ class ListBashCommand
                 name: 'applicationName',
                 description: 'The application name',
             ),
-            new OptionParameter(
+            new ArgumentParameter(
                 name: 'namespace',
                 description: 'An optional namespace to filter commands by',
-                valueDisplayName: 'namespace',
-                shortNames: ['n']
             ),
         ]
     )]
@@ -55,7 +52,7 @@ class ListBashCommand
         $output = $outputFactory
             ->createOutput();
 
-        $namespace = $command->getOption('namespace')?->getFirstValue();
+        $namespace = $command->getArgument('namespace')?->getFirstValue();
         $commands  = $collection->all();
         $colonAt   = false;
 

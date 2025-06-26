@@ -137,9 +137,9 @@ class Command implements Contract
      */
     public function getArgument(string $name): ArgumentParameter|null
     {
-        $argument = array_filter($this->arguments, static fn (ArgumentParameter $argument) => $argument->getName() === $name);
+        $arguments = array_filter($this->arguments, static fn (ArgumentParameter $argument) => $argument->getName() === $name);
 
-        return $argument[0] ?? null;
+        return reset($arguments) ?: null;
     }
 
     /**
@@ -192,7 +192,7 @@ class Command implements Contract
     {
         $options = array_filter($this->options, static fn (OptionParameter $option) => $option->getName() === $name);
 
-        return $options[0] ?? null;
+        return reset($options) ?: null;
     }
 
     /**
