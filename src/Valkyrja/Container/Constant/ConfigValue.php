@@ -48,7 +48,6 @@ final class ConfigValue
         Provider::MAIL,
         Provider::NOTIFICATION,
         Provider::ORM,
-        Provider::PATH,
         Provider::REFLECTION,
         Provider::HTTP_ROUTING,
         Provider::SESSION,

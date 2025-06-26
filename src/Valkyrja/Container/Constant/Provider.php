@@ -38,7 +38,6 @@ use Valkyrja\Log\Provider\ServiceProvider as LogServiceProvider;
 use Valkyrja\Mail\Provider\ServiceProvider as MailServiceProvider;
 use Valkyrja\Notification\Provider\ServiceProvider as NotificationServiceProvider;
 use Valkyrja\Orm\Provider\ServiceProvider as ORMServiceProvider;
-use Valkyrja\Path\Provider\ServiceProvider as PathServiceProvider;
 use Valkyrja\Reflection\Provider\ServiceProvider as ReflectionServiceProvider;
 use Valkyrja\Session\Provider\ServiceProvider as SessionServiceProvider;
 use Valkyrja\Sms\Provider\ServiceProvider as SMSServiceProvider;
@@ -76,7 +75,6 @@ final class Provider
     public const string MAIL            = MailServiceProvider::class;
     public const string NOTIFICATION    = NotificationServiceProvider::class;
     public const string ORM             = ORMServiceProvider::class;
-    public const string PATH            = PathServiceProvider::class;
     public const string REFLECTION      = ReflectionServiceProvider::class;
     public const string SESSION         = SessionServiceProvider::class;
     public const string SMS             = SMSServiceProvider::class;

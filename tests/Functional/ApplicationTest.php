@@ -30,8 +30,6 @@ use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Routing\Contract\Router;
 use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Path\Generator\Contract\Generator;
-use Valkyrja\Path\Parser\Contract\Parser;
 use Valkyrja\Session\Contract\Session;
 use Valkyrja\Tests\Classes\Config\ProviderClass;
 use Valkyrja\Tests\ConfigClass;
@@ -48,16 +46,6 @@ use function usleep;
  */
 class ApplicationTest extends TestCase
 {
-    /**
-     * Test the Application construct.
-     *
-     * @return void
-     */
-    public function testConstruct(): void
-    {
-        self::assertTrue($this->app instanceof Valkyrja);
-    }
-
     /**
      * Test the app() static helper method.
      *
@@ -230,26 +218,6 @@ class ApplicationTest extends TestCase
     public function testKernel(): void
     {
         self::assertInstanceOf(RequestHandler::class, $this->app->container()->getSingleton(RequestHandler::class));
-    }
-
-    /**
-     * Test the pathGenerator() helper method.
-     *
-     * @return void
-     */
-    public function testPathGenerator(): void
-    {
-        self::assertInstanceOf(Generator::class, $this->app->container()->getSingleton(Generator::class));
-    }
-
-    /**
-     * Test the pathParser() helper method.
-     *
-     * @return void
-     */
-    public function testPathParser(): void
-    {
-        self::assertInstanceOf(Parser::class, $this->app->container()->getSingleton(Parser::class));
     }
 
     /**

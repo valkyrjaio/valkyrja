@@ -42,7 +42,6 @@ use Valkyrja\Log\Config as Log;
 use Valkyrja\Mail\Config as Mail;
 use Valkyrja\Notification\Config as Notification;
 use Valkyrja\Orm\Config as Orm;
-use Valkyrja\Path\Config as Path;
 use Valkyrja\Session\Config as Session;
 use Valkyrja\Sms\Config as Sms;
 use Valkyrja\View\Config as View;
@@ -82,7 +81,6 @@ use function unserialize;
  * @property Mail           $mail
  * @property Notification   $notification
  * @property Orm            $orm
- * @property Path           $path
  * @property Session        $session
  * @property Sms            $sms
  * @property View           $view
@@ -270,13 +268,6 @@ class Valkyrja implements ArrayAccess
      * @var Orm
      */
     protected Orm $orm;
-
-    /**
-     * The path component config.
-     *
-     * @var Path
-     */
-    protected Path $path;
 
     /**
      * The session component config.
@@ -476,7 +467,6 @@ class Valkyrja implements ArrayAccess
         $this->mail           = Mail::fromEnv($env);
         $this->notification   = Notification::fromEnv($env);
         $this->orm            = Orm::fromEnv($env);
-        $this->path           = Path::fromEnv($env);
         $this->session        = Session::fromEnv($env);
         $this->sms            = Sms::fromEnv($env);
         $this->view           = View::fromEnv($env);
