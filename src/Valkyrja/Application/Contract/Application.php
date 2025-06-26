@@ -30,7 +30,7 @@ interface Application
      *
      * @var string
      */
-    public const string VERSION = '1.0.0';
+    public const string VERSION = '2025.1.0';
 
     /**
      * Get an environment variable.
