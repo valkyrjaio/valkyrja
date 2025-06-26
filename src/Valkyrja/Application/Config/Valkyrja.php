@@ -21,6 +21,7 @@ use Valkyrja\Asset\Config as Asset;
 use Valkyrja\Auth\Config as Auth;
 use Valkyrja\Broadcast\Config as Broadcast;
 use Valkyrja\Cache\Config as Cache;
+use Valkyrja\Cli\Interaction\Config as CliInteraction;
 use Valkyrja\Cli\Middleware\Config as CliMiddleware;
 use Valkyrja\Cli\Routing\Config as CliRouting;
 use Valkyrja\Cli\Server\Config as CliServer;
@@ -64,6 +65,7 @@ use function unserialize;
  * @property Auth           $auth
  * @property Broadcast      $broadcast
  * @property Cache          $cache
+ * @property CliInteraction $cliInteraction
  * @property CliMiddleware  $cliMiddleware
  * @property CliRouting     $cliRouting
  * @property CliServer      $cliServer
@@ -144,6 +146,13 @@ class Valkyrja implements ArrayAccess
      * @var Cache
      */
     protected Cache $cache;
+
+    /**
+     * The cli interaction component config.
+     *
+     * @var CliInteraction
+     */
+    protected CliInteraction $cliInteraction;
 
     /**
      * The cli middleware component config.
@@ -458,6 +467,7 @@ class Valkyrja implements ArrayAccess
         $this->auth           = Auth::fromEnv($env);
         $this->broadcast      = Broadcast::fromEnv($env);
         $this->cache          = Cache::fromEnv($env);
+        $this->cliInteraction = CliInteraction::fromEnv($env);
         $this->cliMiddleware  = CliMiddleware::fromEnv($env);
         $this->cliRouting     = CliRouting::fromEnv($env);
         $this->cliServer      = CliServer::fromEnv($env);

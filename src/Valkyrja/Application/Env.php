@@ -455,6 +455,19 @@ class Env
 
     /************************************************************
      *
+     * Http Interaction component env variables.
+     *
+     ************************************************************/
+
+    /** @var bool|null */
+    public const bool|null CLI_INTERACTION_IS_QUIET = null;
+    /** @var bool|null */
+    public const bool|null CLI_INTERACTION_IS_INTERACTIVE = null;
+    /** @var bool|null */
+    public const bool|null CLI_INTERACTION_IS_SILENT = null;
+
+    /************************************************************
+     *
      * Http Middleware component env variables.
      *
      ************************************************************/

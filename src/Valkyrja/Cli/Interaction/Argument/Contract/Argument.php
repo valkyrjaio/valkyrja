@@ -30,7 +30,7 @@ interface Argument
     /**
      * Create a new argument with the specified value.
      *
-     * @param string $value The value
+     * @param non-empty-string $value The value
      *
      * @return static
      */

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Provider;
 
+use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
@@ -49,9 +50,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishOutputFactory(Container $container): void
     {
+        $config = $container->getSingleton(Valkyrja::class);
+
         $container->setSingleton(
             OutputFactory::class,
-            new \Valkyrja\Cli\Interaction\Factory\OutputFactory()
+            new \Valkyrja\Cli\Interaction\Factory\OutputFactory(
+                config: $config->cliInteraction
+            )
         );
     }
 }

@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing;
 
-use Valkyrja\Cli\Interaction\Argument\Argument;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
+use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
+use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware;
 use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler;
@@ -27,12 +28,16 @@ use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\Handler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection;
+use Valkyrja\Cli\Routing\Command\HelpCommand;
 use Valkyrja\Cli\Routing\Contract\Router as Contract;
 use Valkyrja\Cli\Routing\Data\Contract\Command;
-use Valkyrja\Cli\Routing\Enum\ArgumentMode;
+use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
+use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Exception\RuntimeException;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher2;
+
+use function in_array;
 
 /**
  * Class Router.
@@ -71,7 +76,7 @@ class Router implements Contract
             );
         }
 
-        return $this->dispatchRoute(
+        return $this->dispatchCommand(
             input: $input,
             command: $matchedCommand
         );
@@ -80,7 +85,7 @@ class Router implements Contract
     /**
      * @inheritDoc
      */
-    public function dispatchRoute(Input $input, Command $command): Output
+    public function dispatchCommand(Input $input, Command $command): Output
     {
         // The command has been matched
         $this->commandMatched($command);
@@ -131,12 +136,22 @@ class Router implements Contract
             name: $commandName
         );
 
-        if ($command === null) {
-            $command = $this->collection->get(name: 'list');
-        }
-
         // Return the command if it was found
         if ($command !== null) {
+            if (
+                $input->hasOption(HelpOptionParameter::NAME)
+                || $input->hasOption(HelpOptionParameter::SHORT_NAME)
+            ) {
+                $command = $this->collection->get(name: HelpCommand::NAME);
+                $input   = $input->withOptions(
+                    new Option('command', $commandName),
+                );
+
+                if ($command === null) {
+                    throw new RuntimeException('Help command does not exist');
+                }
+            }
+
             return $this->addParametersToCommand($input, $command);
         }
 
@@ -145,7 +160,7 @@ class Router implements Contract
         $output = $this->outputFactory
             ->createOutput(exitCode: ExitCode::ERROR)
             ->withMessages(
-                ...(new ErrorMessage($errorText))->asBanner(),
+                new Banner(new ErrorMessage($errorText))
             );
 
         return $this->checkCommandNameForTypo($input, $output);
@@ -166,29 +181,18 @@ class Router implements Contract
      */
     protected function addArgumentsToCommand(Input $input, Command $command): Command
     {
-        $commandName = $input->getCommandName();
-        $arguments   = $input->getArguments();
-
-        if ($commandName === 'list' && $arguments === []) {
-            $arguments = [
-                new Argument($commandName),
-                ...$arguments,
-            ];
-        }
-
+        $arguments          = [...$input->getArguments()];
         $argumentParameters = $command->getArguments();
 
         foreach ($argumentParameters as $key => $argumentParameter) {
             $argumentParameterArguments = [];
 
-            $mode = $argumentParameter->getMode();
-
             // Array arguments must be last, and will take up all the remaining arguments from the input
-            if ($mode === ArgumentMode::ARRAY || $mode === ArgumentMode::REQUIRED_ARRAY) {
+            if ($argumentParameter->getValueMode() === ArgumentValueMode::ARRAY) {
                 $argumentParameterArguments = $arguments;
 
                 $arguments = [];
-                // If not an array type then we should match each argument in order of appearance
+            // If not an array type then we should match each argument in order of appearance
             } elseif (isset($arguments[$key])) {
                 $argumentParameterArguments[] = $arguments[$key];
 
@@ -210,7 +214,7 @@ class Router implements Contract
     protected function addOptionsToCommand(Input $input, Command $command): Command
     {
         $options          = $input->getOptions();
-        $optionParameters = $command->getOptions();
+        $optionParameters = [...$command->getOptions()];
 
         foreach ($optionParameters as $key => $optionParameter) {
             $optionParameterOptions = [];
@@ -249,6 +253,7 @@ class Router implements Contract
      */
     protected function commandMatched(Command $command): void
     {
+        // TODO: Add middleware to Command
         // $this->commandMatchedHandler->add(...$command->getCommandMatchedMiddleware());
         // $this->commandDispatchedHandler->add(...$command->getCommandDispatchedMiddleware());
         // $this->throwableCaughtHandler->add(...$command->getThrowableCaughtMiddleware());

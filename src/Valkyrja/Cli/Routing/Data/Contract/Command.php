@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Data\Contract;
 
+use Valkyrja\Cli\Interaction\Message\Contract\Message;
 use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
 
 /**
@@ -39,7 +40,7 @@ interface Command
     public function withName(string $name): static;
 
     /**
-     * Get the description
+     * Get the description.
      *
      * @return non-empty-string
      */
@@ -57,18 +58,25 @@ interface Command
     /**
      * Get the help text.
      *
-     * @return non-empty-string
+     * @return Message
      */
-    public function getHelpText(): string;
+    public function getHelpText(): Message;
 
     /**
      * Create a new Command with the specified help text.
      *
-     * @param non-empty-string $helpText The help text
+     * @param Message $helpText The help text
      *
      * @return static
      */
-    public function withHelpText(string $helpText): static;
+    public function withHelpText(Message $helpText): static;
+
+    /**
+     * Determine if the command has arguments.
+     *
+     * @return bool
+     */
+    public function hasArguments(): bool;
 
     /**
      * Get the arguments.
@@ -76,6 +84,15 @@ interface Command
      * @return ArgumentParameter[]
      */
     public function getArguments(): array;
+
+    /**
+     * Get an argument.
+     *
+     * @param string $name The name
+     *
+     * @return ArgumentParameter|null
+     */
+    public function getArgument(string $name): ArgumentParameter|null;
 
     /**
      * Create a new Command with the specified argument parameters.
@@ -96,11 +113,27 @@ interface Command
     public function withAddedArguments(ArgumentParameter ...$arguments): static;
 
     /**
+     * Determine if the command has options.
+     *
+     * @return bool
+     */
+    public function hasOptions(): bool;
+
+    /**
      * Get the option parameters.
      *
      * @return OptionParameter[]
      */
     public function getOptions(): array;
+
+    /**
+     * Get an option parameter by name.
+     *
+     * @param string $name The option name
+     *
+     * @return OptionParameter|null
+     */
+    public function getOption(string $name): OptionParameter|null;
 
     /**
      * Create a new Command with the specified option parameters.

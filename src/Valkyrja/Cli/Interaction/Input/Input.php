@@ -32,7 +32,7 @@ class Input implements Contract
      */
     public function __construct(
         protected string $caller = 'valkyrja',
-        protected string $commandName = '',
+        protected string $commandName = 'list',
         protected array $arguments = [],
         protected array $options = []
     ) {
@@ -165,7 +165,7 @@ class Input implements Contract
      */
     public function hasOption(string $name): bool
     {
-        return $this->getOptions() !== [];
+        return $this->getOption($name) !== [];
     }
 
     /**

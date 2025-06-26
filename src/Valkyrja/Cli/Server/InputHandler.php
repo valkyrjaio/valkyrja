@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Server;
 
 use Throwable;
+use Valkyrja\Cli\Interaction\Config as InteractionConfig;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
+use Valkyrja\Cli\Interaction\Message\Banner;
+use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
@@ -23,7 +26,12 @@ use Valkyrja\Cli\Middleware;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
+use Valkyrja\Cli\Routing\Command\VersionCommand;
 use Valkyrja\Cli\Routing\Contract\Router;
+use Valkyrja\Cli\Routing\Data\Option\NoInteractionOptionParameter;
+use Valkyrja\Cli\Routing\Data\Option\QuietOptionParameter;
+use Valkyrja\Cli\Routing\Data\Option\SilentOptionParameter;
+use Valkyrja\Cli\Routing\Data\Option\VersionOptionParameter;
 use Valkyrja\Cli\Server\Contract\InputHandler as Contract;
 use Valkyrja\Container\Contract\Container;
 
@@ -42,7 +50,8 @@ class InputHandler implements Contract
         protected Router $router = new \Valkyrja\Cli\Routing\Router(),
         protected InputReceivedHandler $inputReceivedHandler = new Middleware\Handler\InputReceivedHandler(),
         protected ThrowableCaughtHandler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),
-        protected ExitedHandler $exitedHandler = new Middleware\Handler\ExitedHandler()
+        protected ExitedHandler $exitedHandler = new Middleware\Handler\ExitedHandler(),
+        protected InteractionConfig $interactionConfig = new InteractionConfig(),
     ) {
     }
 
@@ -56,6 +65,15 @@ class InputHandler implements Contract
     public function handle(Input $input): Output
     {
         try {
+            $this->setInteractivity($input);
+
+            if (
+                $input->hasOption(VersionOptionParameter::SHORT_NAME)
+                || $input->hasOption(VersionOptionParameter::NAME)
+            ) {
+                $input = $input->withCommandName(VersionCommand::NAME);
+            }
+
             $output = $this->dispatchRouter($input);
         } catch (Throwable $throwable) {
             $output = $this->getOutputFromThrowable($input, $throwable);
@@ -109,6 +127,37 @@ class InputHandler implements Contract
     }
 
     /**
+     * Set the interactivity.
+     *
+     * @param Input $input The input
+     *
+     * @return void
+     */
+    protected function setInteractivity(Input $input): void
+    {
+        if (
+            $input->hasOption(NoInteractionOptionParameter::SHORT_NAME)
+            || $input->hasOption(NoInteractionOptionParameter::NAME)
+        ) {
+            $this->interactionConfig->isInteractive = false;
+        }
+
+        if (
+            $input->hasOption(QuietOptionParameter::SHORT_NAME)
+            || $input->hasOption(QuietOptionParameter::NAME)
+        ) {
+            $this->interactionConfig->isQuiet = true;
+        }
+
+        if (
+            $input->hasOption(SilentOptionParameter::SHORT_NAME)
+            || $input->hasOption(SilentOptionParameter::NAME)
+        ) {
+            $this->interactionConfig->isSilent = true;
+        }
+    }
+
+    /**
      * Dispatch the input via the router.
      *
      * @param Input $input The input
@@ -150,16 +199,23 @@ class InputHandler implements Contract
             exitCode: ExitCode::ERROR
         ))
             ->withMessages(
+                new Banner(new ErrorMessage('Cli Server Error:')),
                 new NewLine(),
-                new Message('Cli Server Error:'),
+                new ErrorMessage('Command:'),
+                new Message(" $commandName"),
                 new NewLine(),
-                new NewLine("Url: $commandName"),
                 new NewLine(),
-                new NewLine('Message: ' . $throwable->getMessage()),
+                new ErrorMessage('Message:'),
+                new Message(' ' . $throwable->getMessage()),
                 new NewLine(),
-                new NewLine('Line: ' . ((string) $throwable->getLine())),
                 new NewLine(),
-                new NewLine('Trace: ' . $throwable->getTraceAsString()),
+                new ErrorMessage('Line:'),
+                new Message(' ' . ((string) $throwable->getLine())),
+                new NewLine(),
+                new NewLine(),
+                new ErrorMessage('Trace:'),
+                new NewLine(),
+                new Message($throwable->getTraceAsString() . "\n"),
             );
     }
 }

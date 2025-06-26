@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Enum;
 
 /**
- * Enum ArgumentMode.
+ * Enum ArgumentValueMode.
  *
  * @author Melech Mizrachi
  */
-enum ArgumentMode
+enum ArgumentValueMode
 {
-    case REQUIRED;
-    case OPTIONAL;
+    case DEFAULT;
+    case ARRAY;
 }

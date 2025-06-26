@@ -46,8 +46,12 @@ abstract class InputFactory
             if ($key === 0) {
                 $applicationName = $arg;
             } elseif (str_starts_with($arg, '-')) {
-                $options[] = OptionFactory::fromArg($arg);
+                $options = [
+                    ...$options,
+                    ...OptionFactory::fromArg($arg),
+                ];
             } elseif ($key === 1) {
+                // The first key that also is not an option starting with -, or --
                 $commandName = $arg;
             } else {
                 $arguments[] = ArgumentFactory::fromArg($arg);

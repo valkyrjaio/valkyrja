@@ -14,8 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Output;
 
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
+use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
+use Valkyrja\Cli\Interaction\Message\Contract\Answer;
 use Valkyrja\Cli\Interaction\Message\Contract\Message;
 use Valkyrja\Cli\Interaction\Message\Contract\Question;
+use Valkyrja\Cli\Interaction\Message\Message as MessageMessage;
+use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\Output as Contract;
 
 /**
@@ -42,6 +46,7 @@ class Output implements Contract
     public function __construct(
         protected bool $isInteractive = true,
         protected bool $isQuiet = false,
+        protected bool $isSilent = false,
         protected ExitCode|int $exitCode = ExitCode::SUCCESS,
         Message ...$messages,
     ) {
@@ -143,28 +148,21 @@ class Output implements Contract
     {
         $new = clone $this;
 
-        foreach ($this->unwrittenMessages as $key => $message) {
-            // If this output isn't quiet
-            if (! $this->isQuiet) {
-                // Write the message
-                $new->writeMessage($message);
-            }
+        // Avoid writing messages twice or more if writeMessages is called in a callback within the foreach loop
+        $unwrittenMessages = $this->unwrittenMessages;
+        // Ensure all unwritten messages are truly removed
+        $new->unwrittenMessages = [];
 
-            // Add the message to the written messages array
-            $new->writtenMessages[] = $message;
-
-            // Remove the message from the unwritten message array
-            unset($new->unwrittenMessages[$key]);
-
+        foreach ($unwrittenMessages as $message) {
             // If this is a question
             if ($message instanceof Question) {
                 // Ask the question
                 $new->askQuestion($message);
+            } else {
+                // Write the message
+                $new->writeMessage($message);
             }
         }
-
-        // Ensure all unwritten messages are truly removed
-        $this->unwrittenMessages = [];
 
         return $new;
     }
@@ -212,6 +210,26 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
+    public function isSilent(): bool
+    {
+        return $this->isSilent;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withIsSilent(bool $isSilent): static
+    {
+        $new = clone $this;
+
+        $new->isSilent = $isSilent;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getExitCode(): ExitCode|int
     {
         return $this->exitCode;
@@ -238,11 +256,41 @@ class Output implements Contract
      */
     protected function writeMessage(Message $message): void
     {
+        $this->setMessageAsWritten($message);
+
+        if ($this->isQuiet && $this->exitCode === ExitCode::SUCCESS) {
+            return;
+        }
+
+        $this->outputMessage($message);
+    }
+
+    /**
+     * Set a message as written.
+     *
+     * @param Message $message The message
+     *
+     * @return void
+     */
+    protected function setMessageAsWritten(Message $message): void
+    {
+        $this->writtenMessages[] = $message;
+    }
+
+    /**
+     * Output a message.
+     *
+     * @param Message $message The message
+     *
+     * @return void
+     */
+    protected function outputMessage(Message $message): void
+    {
         echo $message->getFormattedText();
     }
 
     /**
-     * Ask a question message.
+     * Ask a question.
      *
      * @param Question $question The question
      *
@@ -250,16 +298,23 @@ class Output implements Contract
      */
     protected function askQuestion(Question $question): static
     {
+        $this->writeQuestion($question);
+
         $answer = $question->getAnswer();
 
-        if ($this->isInteractive) {
+        if ($this->isInteractive && ! $this->isQuiet) {
             $answer = $question->ask();
+
+            if (! $answer->isValidResponse()) {
+                // For posterity add the answer with the invalid user response to the written messages list
+                $this->writeAnswerAfterResponse($answer);
+
+                // Re-ask the question
+                return $this->askQuestion($question);
+            }
         }
 
-        $this->writeMessage($answer);
-
-        $this->writtenMessages[] = $question;
-        $this->writtenMessages[] = $answer;
+        $this->writeAnswerAfterResponse($answer);
 
         $callable = $question->getCallable();
 
@@ -267,5 +322,53 @@ class Output implements Contract
         $output = $callable($this, $answer);
 
         return $output;
+    }
+
+    /**
+     * Write a question.
+     *
+     * @param Question $question The question
+     *
+     * @return void
+     */
+    protected function writeQuestion(Question $question): void
+    {
+        // Write the question text
+        $this->writeMessage($question);
+
+        $answer = $question->getAnswer();
+
+        $validResponses = $answer->getAllowedResponses();
+
+        if ($validResponses !== []) {
+            // (`valid` or `also valid` or `another valid value`)
+            $this->writeMessage(new MessageMessage(' ('));
+            $this->writeMessage(new MessageMessage(implode(' or ', array_map(static fn (string $value) => "`$value`", $validResponses))));
+            $this->writeMessage(new MessageMessage(')'));
+        }
+
+        // [default: "defaultResponse"]
+        $this->writeMessage(new MessageMessage(' [default: "'));
+        $this->writeMessage(new MessageMessage($answer->getDefaultResponse(), new HighlightedTextFormatter()));
+        $this->writeMessage(new MessageMessage('"]'));
+
+        // :
+        // > response will be typed here
+        $this->writeMessage(new MessageMessage(':'));
+        $this->writeMessage(new NewLine());
+        $this->writeMessage(new MessageMessage('> '));
+    }
+
+    /**
+     * Write an answer after it has been answered.
+     *
+     * @param Answer $answer The answer
+     *
+     * @return void
+     */
+    protected function writeAnswerAfterResponse(Answer $answer): void
+    {
+        $this->setMessageAsWritten($answer);
+        $this->writeMessage(new NewLine());
     }
 }

@@ -20,6 +20,9 @@ use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 use Valkyrja\Cli\Routing\Exception\InvalidArgumentException;
 use Valkyrja\Type\Data\Cast;
 
+use function count;
+use function in_array;
+
 /**
  * Class OptionParameter.
  *
@@ -30,7 +33,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @param non-empty-string      $name             The names
      * @param non-empty-string      $description      The description
-     * @param non-empty-string      $valueDisplayName The value display name
+     * @param non-empty-string|null $valueDisplayName The value display name
      * @param non-empty-string|null $defaultValue     The default value
      * @param non-empty-string[]    $shortNames       The short names
      * @param non-empty-string[]    $validValues      The valid values
@@ -39,7 +42,7 @@ class OptionParameter extends Parameter implements Contract
     public function __construct(
         string $name,
         string $description,
-        protected string $valueDisplayName,
+        protected string|null $valueDisplayName = null,
         Cast|null $cast = null,
         protected string|null $defaultValue = null,
         protected array $shortNames = [],
@@ -48,7 +51,11 @@ class OptionParameter extends Parameter implements Contract
         protected OptionMode $mode = OptionMode::OPTIONAL,
         protected OptionValueMode $valueMode = OptionValueMode::DEFAULT,
     ) {
-        parent::__construct($name, $description, $cast);
+        parent::__construct(
+            name: $name,
+            description: $description,
+            cast: $cast
+        );
     }
 
     /**
@@ -130,7 +137,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
-    public function getValueDisplayName(): string
+    public function getValueDisplayName(): string|null
     {
         return $this->valueDisplayName;
     }
@@ -138,7 +145,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
-    public function withValueDisplayName(string $valueName): static
+    public function withValueDisplayName(string|null $valueName): static
     {
         $new = clone $this;
 
@@ -277,12 +284,23 @@ class OptionParameter extends Parameter implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @psalm-suppress DocblockTypeContradiction
+     * @psalm-suppress RedundantConditionGivenDocblockType
+     */
+    public function getFirstValue(): string|null
+    {
+        return $this->options[0]?->getValue();
+    }
+
+    /**
+     * @inheritDoc
      */
     public function areValuesValid(): bool
     {
         return match (true) {
-            OptionMode::REQUIRED === $this->mode          => $this->options !== [],
-            OptionValueMode::DEFAULT === $this->valueMode => count($this->options) === 1,
+            $this->mode === OptionMode::REQUIRED          => $this->options !== [],
+            $this->valueMode === OptionValueMode::DEFAULT => count($this->options) === 1,
             default                                       => true,
         };
     }

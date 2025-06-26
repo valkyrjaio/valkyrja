@@ -11,25 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Interaction\Message;
+namespace Valkyrja\Cli\Interaction\Formatter;
 
-use Valkyrja\Cli\Interaction\Formatter\WarningFormatter;
+use Valkyrja\Cli\Interaction\Enum\TextColor;
 
 /**
- * Class WarningMessage.
+ * Class QuestionFormatter.
  *
  * @author Melech Mizrachi
  */
-class WarningMessage extends Message
+class QuestionFormatter extends Formatter
 {
-    /**
-     * @param non-empty-string $text The text
-     */
-    public function __construct(string $text)
+    public function __construct()
     {
         parent::__construct(
-            text: $text,
-            formatter: new WarningFormatter()
+            textColor: TextColor::MAGENTA
         );
     }
 }

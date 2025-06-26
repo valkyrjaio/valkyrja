@@ -84,18 +84,18 @@ interface OptionParameter extends Parameter
     /**
      * Get the value display name.
      *
-     * @return non-empty-string
+     * @return non-empty-string|null
      */
-    public function getValueDisplayName(): string;
+    public function getValueDisplayName(): string|null;
 
     /**
      * Create a new Option parameter with the specified value display name.
      *
-     * @param non-empty-string $valueName The value name
+     * @param non-empty-string|null $valueName The value name
      *
      * @return static
      */
-    public function withValueDisplayName(string $valueName): static;
+    public function withValueDisplayName(string|null $valueName): static;
 
     /**
      * Get the valid values.
@@ -139,7 +139,7 @@ interface OptionParameter extends Parameter
     public function withDefaultValue(string|null $defaultValue = null): static;
 
     /**
-     * Get the options
+     * Get the options.
      *
      * @return Option[]
      */

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Factory;
 
+use Valkyrja\Cli\Interaction\Config;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory as Contract;
 use Valkyrja\Cli\Interaction\Message\Contract\Message;
@@ -29,18 +30,22 @@ use Valkyrja\Cli\Interaction\Output\Contract\StreamOutput;
  */
 class OutputFactory implements Contract
 {
+    public function __construct(
+        protected Config $config = new Config()
+    ) {
+    }
+
     /**
      * @inheritDoc
      */
     public function createOutput(
-        bool $isInteractive = true,
-        bool $isQuiet = false,
         ExitCode|int $exitCode = ExitCode::SUCCESS,
         Message ...$messages
     ): Output {
         return new \Valkyrja\Cli\Interaction\Output\Output(
-            $isInteractive,
-            $isQuiet,
+            $this->config->isInteractive,
+            $this->config->isQuiet,
+            $this->config->isSilent,
             $exitCode,
             ...$messages
         );
@@ -50,14 +55,13 @@ class OutputFactory implements Contract
      * @inheritDoc
      */
     public function createEmptyOutput(
-        bool $isInteractive = true,
-        bool $isQuiet = false,
         ExitCode|int $exitCode = ExitCode::SUCCESS,
         Message ...$messages
     ): EmptyOutput {
         return new \Valkyrja\Cli\Interaction\Output\EmptyOutput(
-            $isInteractive,
-            $isQuiet,
+            $this->config->isInteractive,
+            $this->config->isQuiet,
+            $this->config->isSilent,
             $exitCode,
             ...$messages
         );
@@ -67,14 +71,13 @@ class OutputFactory implements Contract
      * @inheritDoc
      */
     public function createPlainOutput(
-        bool $isInteractive = true,
-        bool $isQuiet = false,
         ExitCode|int $exitCode = ExitCode::SUCCESS,
         Message ...$messages
     ): PlainOutput {
         return new \Valkyrja\Cli\Interaction\Output\PlainOutput(
-            $isInteractive,
-            $isQuiet,
+            $this->config->isInteractive,
+            $this->config->isQuiet,
+            $this->config->isSilent,
             $exitCode,
             ...$messages
         );
@@ -85,15 +88,14 @@ class OutputFactory implements Contract
      */
     public function createFileOutput(
         string $filepath,
-        bool $isInteractive = true,
-        bool $isQuiet = false,
         ExitCode|int $exitCode = ExitCode::SUCCESS,
         Message ...$messages
     ): FileOutput {
         return new \Valkyrja\Cli\Interaction\Output\FileOutput(
             $filepath,
-            $isInteractive,
-            $isQuiet,
+            $this->config->isInteractive,
+            $this->config->isQuiet,
+            $this->config->isSilent,
             $exitCode,
             ...$messages
         );
@@ -104,15 +106,14 @@ class OutputFactory implements Contract
      */
     public function createStreamOutput(
         $stream,
-        bool $isInteractive = true,
-        bool $isQuiet = false,
         ExitCode|int $exitCode = ExitCode::SUCCESS,
         Message ...$messages
     ): StreamOutput {
         return new \Valkyrja\Cli\Interaction\Output\StreamOutput(
             $stream,
-            $isInteractive,
-            $isQuiet,
+            $this->config->isInteractive,
+            $this->config->isQuiet,
+            $this->config->isSilent,
             $exitCode,
             ...$messages
         );

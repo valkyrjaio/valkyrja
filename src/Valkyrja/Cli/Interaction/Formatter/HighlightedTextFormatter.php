@@ -11,15 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Routing;
+namespace Valkyrja\Cli\Interaction\Formatter;
 
-use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Cli\Interaction\Enum\TextColor;
 
 /**
- * Test the Router.
+ * Class HighlightedTextFormatter.
  *
  * @author Melech Mizrachi
  */
-class RouterTest extends TestCase
+class HighlightedTextFormatter extends Formatter
 {
+    public function __construct()
+    {
+        parent::__construct(
+            textColor: TextColor::YELLOW
+        );
+    }
 }

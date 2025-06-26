@@ -26,7 +26,7 @@ class EmptyOutput extends Output implements Contract
     /**
      * @inheritDoc
      */
-    protected function writeMessage(Message $message): void
+    protected function outputMessage(Message $message): void
     {
         // Empty on purpose
     }

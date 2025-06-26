@@ -78,6 +78,13 @@ interface Parameter
     public function getCastValues(): array;
 
     /**
+     * Get the first value.
+     *
+     * @return non-empty-string|null
+     */
+    public function getFirstValue(): string|null;
+
+    /**
      * Determine if the values are valid.
      *
      * @return bool

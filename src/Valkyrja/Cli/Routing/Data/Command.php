@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Data;
 
+use Valkyrja\Cli\Interaction\Message\Contract\Message;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\Contract\Command as Contract;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameter;
@@ -36,14 +37,15 @@ class Command implements Contract
     /**
      * @param non-empty-string $name        The name
      * @param non-empty-string $description The description
-     * @param non-empty-string $helpText    The help text
+     * @param Message          $helpText    The help text
+     * @param Parameter[]      $parameters  The parameters
      */
     public function __construct(
         protected string $name,
         protected string $description,
-        protected string $helpText,
+        protected Message $helpText,
         protected MethodDispatch $dispatch = new DefaultDispatch(self::class, '__construct'),
-        Parameter ...$parameters,
+        array $parameters = [],
     ) {
         foreach ($parameters as $parameter) {
             if ($parameter instanceof ArgumentParameter) {
@@ -97,7 +99,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
-    public function getHelpText(): string
+    public function getHelpText(): Message
     {
         return $this->helpText;
     }
@@ -105,7 +107,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
-    public function withHelpText(string $helpText): static
+    public function withHelpText(Message $helpText): static
     {
         $new = clone $this;
 
@@ -117,9 +119,27 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    public function hasArguments(): bool
+    {
+        return $this->arguments !== [];
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getArguments(): array
     {
         return $this->arguments;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getArgument(string $name): ArgumentParameter|null
+    {
+        $argument = array_filter($this->arguments, static fn (ArgumentParameter $argument) => $argument->getName() === $name);
+
+        return $argument[0] ?? null;
     }
 
     /**
@@ -152,9 +172,27 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    public function hasOptions(): bool
+    {
+        return $this->options !== [];
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getOptions(): array
     {
         return $this->options;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getOption(string $name): OptionParameter|null
+    {
+        $options = array_filter($this->options, static fn (OptionParameter $option) => $option->getName() === $name);
+
+        return $options[0] ?? null;
     }
 
     /**

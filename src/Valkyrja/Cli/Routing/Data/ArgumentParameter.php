@@ -16,8 +16,11 @@ namespace Valkyrja\Cli\Routing\Data;
 use Valkyrja\Cli\Interaction\Argument\Contract\Argument;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameter as Contract;
 use Valkyrja\Cli\Routing\Enum\ArgumentMode;
+use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Exception\InvalidArgumentException;
 use Valkyrja\Type\Data\Cast;
+
+use function count;
 
 /**
  * Class ArgumentParameter.
@@ -29,13 +32,22 @@ class ArgumentParameter extends Parameter implements Contract
     /** @var Argument[] */
     protected array $arguments = [];
 
+    /**
+     * @param non-empty-string $name        The name
+     * @param non-empty-string $description The description
+     */
     public function __construct(
         string $name,
         string $description,
-        ?Cast $cast = null,
+        Cast|null $cast = null,
         protected ArgumentMode $mode = ArgumentMode::OPTIONAL,
+        protected ArgumentValueMode $valueMode = ArgumentValueMode::DEFAULT,
     ) {
-        parent::__construct($name, $description, $cast);
+        parent::__construct(
+            name: $name,
+            description: $description,
+            cast: $cast
+        );
     }
 
     /**
@@ -54,6 +66,26 @@ class ArgumentParameter extends Parameter implements Contract
         $new = clone $this;
 
         $new->mode = $mode;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getValueMode(): ArgumentValueMode
+    {
+        return $this->valueMode;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withValueMode(ArgumentValueMode $valueMode): static
+    {
+        $new = clone $this;
+
+        $new->valueMode = $valueMode;
 
         return $new;
     }
@@ -124,13 +156,24 @@ class ArgumentParameter extends Parameter implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @psalm-suppress DocblockTypeContradiction
+     * @psalm-suppress RedundantConditionGivenDocblockType
+     */
+    public function getFirstValue(): string|null
+    {
+        return $this->arguments[0]?->getValue();
+    }
+
+    /**
+     * @inheritDoc
      */
     public function areValuesValid(): bool
     {
-        return match ($this->mode) {
-            ArgumentMode::REQUIRED       => count($this->arguments) === 1,
-            ArgumentMode::REQUIRED_ARRAY => $this->arguments !== [],
-            default                      => true,
+        return match (true) {
+            $this->mode === ArgumentMode::REQUIRED          => $this->arguments !== [],
+            $this->valueMode === ArgumentValueMode::DEFAULT => count($this->arguments) === 1,
+            default                                         => true,
         };
     }
 

@@ -17,6 +17,8 @@ use Valkyrja\Cli\Interaction\Enum\OptionType;
 use Valkyrja\Cli\Interaction\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Option\Option;
 
+use function strlen;
+
 /**
  * Class OptionFactory.
  *
@@ -26,8 +28,10 @@ abstract class OptionFactory
 {
     /**
      * @param non-empty-string $arg The arg
+     *
+     * @return Option[]
      */
-    public static function fromArg(string $arg): Option
+    public static function fromArg(string $arg): array
     {
         if (! str_starts_with($arg, '-')) {
             throw new InvalidArgumentException('Options must begin with either a `-` or `--`');
@@ -37,19 +41,39 @@ abstract class OptionFactory
             ? OptionType::LONG
             : OptionType::SHORT;
 
-        $parts = explode('=', trim($arg, '- '));
-
-        $name  = $parts[0];
+        $parts = explode('=', $arg);
+        $name  = trim($parts[0], '- ');
         $value = $parts[1] ?? null;
 
         if ($value === '') {
             $value = null;
         }
 
-        return new Option(
-            name: $name,
-            value: $value,
-            type: $type
-        );
+        if ($type === OptionType::SHORT && strlen($name) > 1) {
+            if ($value !== null) {
+                throw new InvalidArgumentException('Cannot combine multiple options and include a value');
+            }
+
+            $options = [];
+
+            foreach (str_split($name) as $item) {
+                $options[] = new Option(
+                    name: $item,
+                    type: $type
+                );
+            }
+
+            return $options;
+        }
+
+        /** @var non-empty-string $name */
+
+        return [
+            new Option(
+                name: $name,
+                value: $value,
+                type: $type
+            ),
+        ];
     }
 }

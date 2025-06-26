@@ -17,6 +17,10 @@ use Valkyrja\Cli\Interaction\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
 use Valkyrja\Cli\Interaction\Message\Contract\Answer as Contract;
 
+use function in_array;
+use function is_callable;
+use function sprintf;
+
 /**
  * Class Answer.
  *
@@ -31,10 +35,10 @@ class Answer extends Message implements Contract
     protected array $allowedResponses = [];
 
     /**
-     * @param non-empty-string                     $defaultResponse     The default response
-     * @param callable(non-empty-string):bool|null $validationCallable  The validation callable
-     * @param non-empty-string                     $text                The text
-     * @param non-empty-string                     ...$allowedResponses The allowed responses
+     * @param non-empty-string                     $defaultResponse    The default response
+     * @param callable(non-empty-string):bool|null $validationCallable The validation callable
+     * @param non-empty-string                     $text               The text
+     * @param non-empty-string[]                   $allowedResponses   The allowed responses
      */
     public function __construct(
         protected string $defaultResponse,
@@ -42,9 +46,9 @@ class Answer extends Message implements Contract
         protected bool $hasBeenAnswered = false,
         string $text = '%s',
         Formatter|null $formatter = null,
-        string ...$allowedResponses
+        array $allowedResponses = []
     ) {
-        if (! is_callable($this->validationCallable)) {
+        if ($this->validationCallable !== null && ! is_callable($this->validationCallable)) {
             throw new InvalidArgumentException('$validationCallable must be a valid callable');
         }
 
@@ -52,6 +56,14 @@ class Answer extends Message implements Contract
         $this->allowedResponses = $allowedResponses;
 
         parent::__construct($text, $formatter);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getText(): string
+    {
+        return sprintf($this->text, $this->userResponse);
     }
 
     /**

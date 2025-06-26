@@ -28,5 +28,5 @@ interface CommandMatchedMiddleware
     /**
      * Middleware handler for after a command has been matched but before it has been dispatched.
      */
-    public function commandMatched(Input $input, Command $command, CommandMatchedHandler $handler): Input|Output;
+    public function commandMatched(Input $input, Command $command, CommandMatchedHandler $handler): Command|Output;
 }

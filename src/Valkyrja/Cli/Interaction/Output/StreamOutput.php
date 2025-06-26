@@ -31,10 +31,17 @@ class StreamOutput extends Output implements Contract
         protected $stream,
         bool $isInteractive = true,
         bool $isQuiet = false,
+        bool $isSilent = false,
         ExitCode|int $exitCode = ExitCode::SUCCESS,
         Message ...$messages
     ) {
-        parent::__construct($isInteractive, $isQuiet, $exitCode, ...$messages);
+        parent::__construct(
+            $isInteractive,
+            $isQuiet,
+            $isSilent,
+            $exitCode,
+            ...$messages
+        );
     }
 
     /**
@@ -64,7 +71,7 @@ class StreamOutput extends Output implements Contract
     /**
      * @inheritDoc
      */
-    protected function writeMessage(Message $message): void
+    protected function outputMessage(Message $message): void
     {
         // TODO: Implement
     }

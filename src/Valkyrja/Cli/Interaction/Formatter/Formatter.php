@@ -18,6 +18,9 @@ use Valkyrja\Cli\Interaction\Enum\Style;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
 use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter as Contract;
 
+use function count;
+use function sprintf;
+
 /**
  * Class Formatter.
  *

@@ -26,7 +26,7 @@ class PlainOutput extends Output implements Contract
     /**
      * @inheritDoc
      */
-    protected function writeMessage(Message $message): void
+    protected function outputMessage(Message $message): void
     {
         echo strip_tags($message->getFormattedText());
     }

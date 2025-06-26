@@ -23,6 +23,9 @@ use Valkyrja\Cli\Interaction\Message\Contract\Progress as Contract;
  */
 class Progress extends Message implements Contract
 {
+    /**
+     * @param non-empty-string $text The text
+     */
     public function __construct(
         string $text,
         protected bool $isComplete = false,

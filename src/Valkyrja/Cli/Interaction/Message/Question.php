@@ -15,9 +15,12 @@ namespace Valkyrja\Cli\Interaction\Message;
 
 use Valkyrja\Cli\Interaction\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
+use Valkyrja\Cli\Interaction\Formatter\QuestionFormatter;
 use Valkyrja\Cli\Interaction\Message\Contract\Answer;
 use Valkyrja\Cli\Interaction\Message\Contract\Question as Contract;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
+
+use function is_callable;
 
 /**
  * Class Question.
@@ -34,7 +37,7 @@ class Question extends Message implements Contract
         string $text,
         protected $callable,
         protected Answer $answer,
-        Formatter|null $formatter = null
+        Formatter|null $formatter = new QuestionFormatter()
     ) {
         if (! is_callable($this->callable)) {
             throw new InvalidArgumentException('$callable must be a valid callable');
@@ -90,7 +93,7 @@ class Question extends Message implements Contract
     {
         $answer = $this->answer;
 
-        $handle = fopen('php://stdin', 'rb');
+        $handle = fopen('php://stdin', 'r');
 
         if ($handle === false) {
             // TODO: Determine if we want to throw RuntimeException (UnhandledStreamQuestionException) here

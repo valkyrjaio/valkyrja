@@ -125,6 +125,22 @@ interface Output
     public function withIsQuiet(bool $isQuiet): static;
 
     /**
+     * Determine whether this output should be silent.
+     *
+     * @return bool
+     */
+    public function isSilent(): bool;
+
+    /**
+     * Create a new Output with the specified silentness.
+     *
+     * @param bool $isSilent The silentness
+     *
+     * @return static
+     */
+    public function withIsSilent(bool $isSilent): static;
+
+    /**
      * Get the exit code.
      *
      * @return ExitCode|int

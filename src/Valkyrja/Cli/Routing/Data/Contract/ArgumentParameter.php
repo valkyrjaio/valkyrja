@@ -15,6 +15,7 @@ namespace Valkyrja\Cli\Routing\Data\Contract;
 
 use Valkyrja\Cli\Interaction\Argument\Contract\Argument;
 use Valkyrja\Cli\Routing\Enum\ArgumentMode;
+use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 
 /**
  * Interface ArgumentParameter.
@@ -38,6 +39,22 @@ interface ArgumentParameter extends Parameter
      * @return static
      */
     public function withMode(ArgumentMode $mode): static;
+
+    /**
+     * Get the argument value mode.
+     *
+     * @return ArgumentValueMode
+     */
+    public function getValueMode(): ArgumentValueMode;
+
+    /**
+     * Create a new Argument parameter with the specified argument value mode.
+     *
+     * @param ArgumentValueMode $valueMode The argument value mode
+     *
+     * @return static
+     */
+    public function withValueMode(ArgumentValueMode $valueMode): static;
 
     /**
      * Get the arguments.

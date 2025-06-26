@@ -16,6 +16,8 @@ namespace Valkyrja\Cli\Interaction\Message;
 use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
 use Valkyrja\Cli\Interaction\Message\Contract\Message as Contract;
 
+use function strlen;
+
 /**
  * Class Message.
  *
@@ -45,7 +47,7 @@ class Message implements Contract
      */
     public function getFormattedText(): string
     {
-        $text      = $this->text;
+        $text      = $this->getText();
         $formatter = $this->formatter;
 
         if ($formatter === null) {
@@ -85,5 +87,25 @@ class Message implements Contract
         $new->formatter = $formatter;
 
         return $new;
+    }
+
+    /**
+     * @return Message[]
+     */
+    public function asBanner(): array
+    {
+        $text       = "    $this->text    ";
+        $textLength = strlen($text);
+        $spaces     = str_repeat(' ', $textLength);
+
+        return [
+            new NewLine(),
+            $this->withText($spaces),
+            new NewLine(),
+            $this->withText($text),
+            new NewLine(),
+            $this->withText($spaces),
+            new NewLine(),
+        ];
     }
 }

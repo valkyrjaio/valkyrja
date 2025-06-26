@@ -30,7 +30,7 @@ interface Router
     public function dispatch(Input $input): Output;
 
     /**
-     * Dispatch an input for a specific route.
+     * Dispatch an input for a specific command.
      */
-    public function dispatchRoute(Input $input, Command $command): Output;
+    public function dispatchCommand(Input $input, Command $command): Output;
 }

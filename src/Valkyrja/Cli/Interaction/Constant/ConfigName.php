@@ -11,15 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing\Enum;
+namespace Valkyrja\Cli\Interaction\Constant;
 
 /**
- * Enum ArgumentMode.
+ * Class ConfigName.
  *
  * @author Melech Mizrachi
  */
-enum ArgumentMode
+final class ConfigName
 {
-    case REQUIRED;
-    case OPTIONAL;
+    public const string IS_QUIET       = 'isQuiet';
+    public const string IS_INTERACTIVE = 'isInteractive';
+    public const string IS_SILENT      = 'isSilent';
 }

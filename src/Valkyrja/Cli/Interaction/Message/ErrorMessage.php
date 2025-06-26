@@ -32,24 +32,4 @@ class ErrorMessage extends Message
             formatter: new ErrorFormatter()
         );
     }
-
-    /**
-     * @return Message[]
-     */
-    public function asBanner(): array
-    {
-        $text       = "    $this->text    ";
-        $textLength = strlen($text);
-        $spaces     = str_repeat(' ', $textLength);
-
-        return [
-            new NewLine(),
-            new self($spaces),
-            new NewLine(),
-            new self($text),
-            new NewLine(),
-            new self($spaces),
-            new NewLine(),
-        ];
-    }
 }
