@@ -173,7 +173,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function container(): Container
+    public function getContainer(): Container
     {
         return self::$container;
     }

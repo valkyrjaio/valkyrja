@@ -84,16 +84,16 @@ interface Application
     public function addConfig(Config $newConfig, string $key): void;
 
     /**
-     * Get the container instance.
+     * Get the container.
      *
      * @return Container
      */
-    public function container(): Container;
+    public function getContainer(): Container;
 
     /**
-     * Set the container instance.
+     * Set the container.
      *
-     * @param Container $container The container instance
+     * @param Container $container The container
      *
      * @return static
      */

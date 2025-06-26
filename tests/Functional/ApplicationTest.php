@@ -50,7 +50,7 @@ class ApplicationTest extends TestCase
      */
     public function testContainer(): void
     {
-        self::assertInstanceOf(Container::class, $this->app->container());
+        self::assertInstanceOf(Container::class, $this->app->getContainer());
     }
 
     /**
@@ -154,7 +154,7 @@ class ApplicationTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        self::assertInstanceOf(Annotations::class, $this->app->container()->getSingleton(Annotations::class));
+        self::assertInstanceOf(Annotations::class, $this->app->getContainer()->getSingleton(Annotations::class));
     }
 
     /**
@@ -164,7 +164,7 @@ class ApplicationTest extends TestCase
      */
     public function testClient(): void
     {
-        self::assertInstanceOf(Client::class, $this->app->container()->getSingleton(Client::class));
+        self::assertInstanceOf(Client::class, $this->app->getContainer()->getSingleton(Client::class));
     }
 
     /**
@@ -174,7 +174,7 @@ class ApplicationTest extends TestCase
      */
     public function testFilesystem(): void
     {
-        self::assertInstanceOf(Filesystem::class, $this->app->container()->getSingleton(Filesystem::class));
+        self::assertInstanceOf(Filesystem::class, $this->app->getContainer()->getSingleton(Filesystem::class));
     }
 
     /**
@@ -184,7 +184,7 @@ class ApplicationTest extends TestCase
      */
     public function testKernel(): void
     {
-        self::assertInstanceOf(RequestHandler::class, $this->app->container()->getSingleton(RequestHandler::class));
+        self::assertInstanceOf(RequestHandler::class, $this->app->getContainer()->getSingleton(RequestHandler::class));
     }
 
     /**
@@ -194,7 +194,7 @@ class ApplicationTest extends TestCase
      */
     public function testLogger(): void
     {
-        self::assertInstanceOf(Logger::class, $this->app->container()->getSingleton(Logger::class));
+        self::assertInstanceOf(Logger::class, $this->app->getContainer()->getSingleton(Logger::class));
     }
 
     /**
@@ -204,7 +204,7 @@ class ApplicationTest extends TestCase
      */
     public function testRouter(): void
     {
-        self::assertInstanceOf(Router::class, $this->app->container()->getSingleton(Router::class));
+        self::assertInstanceOf(Router::class, $this->app->getContainer()->getSingleton(Router::class));
     }
 
     /**
@@ -214,7 +214,7 @@ class ApplicationTest extends TestCase
      */
     public function testResponseBuilder(): void
     {
-        self::assertInstanceOf(ResponseFactory::class, $this->app->container()->getSingleton(ResponseFactory::class));
+        self::assertInstanceOf(ResponseFactory::class, $this->app->getContainer()->getSingleton(ResponseFactory::class));
     }
 
     /**
@@ -224,7 +224,7 @@ class ApplicationTest extends TestCase
      */
     public function testSession(): void
     {
-        self::assertInstanceOf(Session::class, $this->app->container()->getSingleton(Session::class));
+        self::assertInstanceOf(Session::class, $this->app->getContainer()->getSingleton(Session::class));
     }
 
     /**
@@ -234,7 +234,7 @@ class ApplicationTest extends TestCase
      */
     public function testView(): void
     {
-        self::assertInstanceOf(View::class, $this->app->container()->getSingleton(View::class));
+        self::assertInstanceOf(View::class, $this->app->getContainer()->getSingleton(View::class));
     }
 
     /**
@@ -298,7 +298,7 @@ class ApplicationTest extends TestCase
     public function testApplicationSetupWithCachedConfig(): void
     {
         /** @var CliRouter $cliRouter */
-        $cliRouter = $this->app->container()->getSingleton(CliRouter::class);
+        $cliRouter = $this->app->getContainer()->getSingleton(CliRouter::class);
         // Run the config cache command
         $cliRouter->dispatch(new Input(commandName: CacheCommand::NAME));
 

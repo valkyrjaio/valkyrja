@@ -92,7 +92,7 @@ abstract class App
             dataConfig: $dataConfig
         );
 
-        $handler = $app->container()->getSingleton(RequestHandler::class);
+        $handler = $app->getContainer()->getSingleton(RequestHandler::class);
         $handler->run(static::getRequest());
     }
 
@@ -113,7 +113,7 @@ abstract class App
             dataConfig: $dataConfig
         );
 
-        $handler = $app->container()->getSingleton(InputHandler::class);
+        $handler = $app->getContainer()->getSingleton(InputHandler::class);
         $handler->run(static::getInput());
     }
 

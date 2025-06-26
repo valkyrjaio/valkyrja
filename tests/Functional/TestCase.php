@@ -52,6 +52,6 @@ class TestCase extends PHPUnitTestCase
         Valkyrja::setEnv(EnvClass::class);
 
         $this->app = new Valkyrja(ConfigClass::class);
-        $this->app->container()->setSingleton(ServerRequest::class, RequestFactory::fromGlobals());
+        $this->app->getContainer()->setSingleton(ServerRequest::class, RequestFactory::fromGlobals());
     }
 }
