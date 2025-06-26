@@ -70,6 +70,7 @@ class ListBashCommand
             $commands
         );
 
+        /** @psalm-suppress ArgumentTypeCoercion */
         return $output
             ->withAddedMessages(
                 new Message(implode(' ', $commandsForBash))
