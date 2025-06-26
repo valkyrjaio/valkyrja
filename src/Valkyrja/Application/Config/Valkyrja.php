@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Config;
 
 use ArrayAccess;
-use Valkyrja\Annotation\Config as Annotation;
 use Valkyrja\Api\Config as Api;
 use Valkyrja\Application\Config as App;
 use Valkyrja\Asset\Config as Asset;
@@ -54,7 +53,6 @@ use function unserialize;
  *
  * @implements ArrayAccess<string, Config>
  *
- * @property Annotation     $annotation
  * @property Api            $api
  * @property App            $app
  * @property Asset          $asset
@@ -89,13 +87,6 @@ class Valkyrja implements ArrayAccess
      * @var array<string, class-string>
      */
     protected static array $map = [];
-
-    /**
-     * The annotation component config.
-     *
-     * @var Annotation
-     */
-    protected Annotation $annotation;
 
     /**
      * The api component config.
@@ -424,7 +415,6 @@ class Valkyrja implements ArrayAccess
      */
     protected function setConfigFromEnv(string $env): void
     {
-        $this->annotation     = Annotation::fromEnv($env);
         $this->api            = Api::fromEnv($env);
         $this->app            = App::fromEnv($env);
         $this->asset          = Asset::fromEnv($env);

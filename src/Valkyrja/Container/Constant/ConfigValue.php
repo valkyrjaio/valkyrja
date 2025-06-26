@@ -26,7 +26,6 @@ final class ConfigValue
     public const array PROVIDERS = [
         Provider::DISPATCHER,
         Provider::EVENT,
-        Provider::ANNOTATION,
         Provider::API,
         Provider::ATTRIBUTES,
         Provider::AUTH,

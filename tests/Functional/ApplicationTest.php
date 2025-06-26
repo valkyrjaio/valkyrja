@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional;
 
-use Valkyrja\Annotation\Contract\Annotations;
 use Valkyrja\Application\Config\Valkyrja as ValkyrjaConfig;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Cli\Interaction\Input\Input;
@@ -145,16 +144,6 @@ class ApplicationTest extends TestCase
     public function testDebug(): void
     {
         self::assertSame($this->app->getConfig()->app->debug, $this->app->getDebugMode());
-    }
-
-    /**
-     * Test the annotations() helper method.
-     *
-     * @return void
-     */
-    public function testAnnotations(): void
-    {
-        self::assertInstanceOf(Annotations::class, $this->app->getContainer()->getSingleton(Annotations::class));
     }
 
     /**
