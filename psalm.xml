@@ -14,6 +14,13 @@
 
         <ignoreFiles>
             <directory name="vendor" />
+            <file name="src\Valkyrja\Auth\Adapter\Adapter2.php" />
+            <file name="src\Valkyrja\Auth\Adapter\InMemoryAdapter.php" />
+            <file name="src\Valkyrja\Auth\Adapter\NullAdapter2.php" />
+            <file name="src\Valkyrja\Auth\Adapter\ORMAdapter2.php" />
+            <file name="src\Valkyrja\Auth\Data\AuthenticationIdRetrieval.php" />
+            <file name="src\Valkyrja\Auth\Data\AuthenticationResetTokenRetrieval.php" />
+            <file name="src\Valkyrja\Auth\Data\AuthenticationRetrieval.php" />
         </ignoreFiles>
     </projectFiles>
 

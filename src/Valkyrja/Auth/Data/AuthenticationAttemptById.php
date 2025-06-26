@@ -11,32 +11,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth\Models;
+namespace Valkyrja\Auth\Data;
 
-use Valkyrja\Auth\AuthenticationRetrieval as Contract;
-use Valkyrja\Auth\User;
+use Valkyrja\Auth\Data\Contract\AuthenticationAttempt as Contract;
 
 /**
  * Class AuthenticationIdRetrieval.
  *
  * @author Melech Mizrachi
  */
-class AuthenticationIdRetrieval implements Contract
+class AuthenticationAttemptById extends AuthenticationIdRetrieval implements Contract
 {
     public function __construct(
-        protected string|int $id,
+        string|int $id,
+        protected string $password,
     ) {
+        parent::__construct($id);
     }
 
     /**
      * @inheritDoc
-     *
-     * @param class-string<User> $user
      */
-    public function getRetrievalFields(string $user): array
+    public function getPassword(): string
     {
-        return [
-            $user::getIdField() => $this->id,
-        ];
+        return $this->password;
     }
 }

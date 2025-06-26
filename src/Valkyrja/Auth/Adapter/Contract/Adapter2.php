@@ -11,9 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth;
+namespace Valkyrja\Auth\Adapter\Contract;
 
-use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
+use Valkyrja\Auth\Data\Contract\AuthenticationAttempt;
+use Valkyrja\Auth\Data\Contract\AuthenticationRetrieval;
+use Valkyrja\Auth\Entity\Contract\User;
+use Valkyrja\Auth\Exception\InvalidRegistrationException;
 
 /**
  * Interface Adapter.

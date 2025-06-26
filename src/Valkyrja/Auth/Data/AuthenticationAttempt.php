@@ -11,22 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth\Models;
+namespace Valkyrja\Auth\Data;
 
-use Valkyrja\Auth\AuthenticationAttempt as Contract;
+use Valkyrja\Auth\Data\Contract\AuthenticationAttempt as Contract;
 
 /**
  * Class AuthenticationIdRetrieval.
  *
  * @author Melech Mizrachi
  */
-class AuthenticationAttemptById extends AuthenticationIdRetrieval implements Contract
+class AuthenticationAttempt extends AuthenticationRetrieval implements Contract
 {
     public function __construct(
-        string|int $id,
+        string $username,
         protected string $password,
     ) {
-        parent::__construct($id);
+        parent::__construct($username);
     }
 
     /**

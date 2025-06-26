@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Auth\Adapters;
 
-use Valkyrja\Auth\Adapters\InMemoryAdapter;
-use Valkyrja\Auth\Entities\User as UserEntity;
-use Valkyrja\Auth\Exceptions\InvalidUserException;
-use Valkyrja\Auth\Models\AuthenticationAttempt;
-use Valkyrja\Auth\Models\AuthenticationRetrieval;
-use Valkyrja\Auth\User;
+use Valkyrja\Auth\Adapter\InMemoryAdapter;
+use Valkyrja\Auth\Data\AuthenticationAttempt;
+use Valkyrja\Auth\Data\AuthenticationRetrieval;
+use Valkyrja\Auth\Entity\Contract\User;
+use Valkyrja\Auth\Entity\User as UserEntity;
+use Valkyrja\Auth\Exception\InvalidUserException;
 use Valkyrja\Tests\Unit\TestCase;
 
 use const PASSWORD_DEFAULT;
@@ -28,10 +28,10 @@ use const PASSWORD_DEFAULT;
  */
 class InMemoryAdapterTest extends TestCase
 {
-    protected const USERNAME     = 'user1';
-    protected const BAD_USERNAME = 'bad_username';
-    protected const PASSWORD     = '!!wazzaup!!';
-    protected const RESET_TOKEN  = 'reset_token';
+    protected const string USERNAME     = 'user1';
+    protected const string BAD_USERNAME = 'bad_username';
+    protected const string PASSWORD     = '!!wazzaup!!';
+    protected const string RESET_TOKEN  = 'reset_token';
 
     protected InMemoryAdapter $adapter;
     protected UserEntity $user;

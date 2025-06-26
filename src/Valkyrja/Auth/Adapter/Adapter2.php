@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth\Adapters;
+namespace Valkyrja\Auth\Adapter;
 
-use Valkyrja\Auth\Adapter2 as Contract;
-use Valkyrja\Auth\Config\Config;
-use Valkyrja\Auth\User;
+use Valkyrja\Auth\Adapter\Contract\Adapter2 as Contract;
+use Valkyrja\Auth\Config;
+use Valkyrja\Auth\Entity\Contract\User;
 
 use const PASSWORD_DEFAULT;
 

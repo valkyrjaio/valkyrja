@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth\Adapters;
+namespace Valkyrja\Auth\Adapter;
 
-use Valkyrja\Auth\AuthenticationAttempt;
-use Valkyrja\Auth\AuthenticationRetrieval;
-use Valkyrja\Auth\Exceptions\InvalidUserException;
-use Valkyrja\Auth\User;
+use Valkyrja\Auth\Data\Contract\AuthenticationAttempt;
+use Valkyrja\Auth\Data\Contract\AuthenticationRetrieval;
+use Valkyrja\Auth\Entity\Contract\User;
+use Valkyrja\Auth\Exception\InvalidUserException;
 
 /**
  * Class InMemoryAdapter.
@@ -25,8 +25,10 @@ use Valkyrja\Auth\User;
  */
 class InMemoryAdapter extends Adapter2
 {
-    public const USER_DOES_NOT_EXIST_EXCEPTION_MESSAGE = 'User does not exist.';
-    public const USER_DOES_EXIST_EXCEPTION_MESSAGE     = 'User already exists.';
+    /** @var string */
+    public const string USER_DOES_NOT_EXIST_EXCEPTION_MESSAGE = 'User does not exist.';
+    /** @var string */
+    public const string USER_DOES_EXIST_EXCEPTION_MESSAGE = 'User already exists.';
 
     /**
      * The users.
@@ -38,8 +40,8 @@ class InMemoryAdapter extends Adapter2
     /**
      * Filter users via retrieval fields.
      *
-     * @param array $retrievalFields
-     * @param User  $user
+     * @param array<string, int|string> $retrievalFields
+     * @param User                      $user
      *
      * @return bool
      */
@@ -57,7 +59,7 @@ class InMemoryAdapter extends Adapter2
             }
         }
 
-        return $match;
+        return $match ?? false;
     }
 
     /**
@@ -138,7 +140,7 @@ class InMemoryAdapter extends Adapter2
     /**
      * Get user via retrieval fields.
      *
-     * @param array $retrievalFields
+     * @param array<string, int|string> $retrievalFields
      *
      * @return User|null
      */

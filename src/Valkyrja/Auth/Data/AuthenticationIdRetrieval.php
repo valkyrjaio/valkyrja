@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth\Models;
+namespace Valkyrja\Auth\Data;
 
-use Valkyrja\Auth\AuthenticationRetrieval as Contract;
-use Valkyrja\Auth\User;
+use Valkyrja\Auth\Data\Contract\AuthenticationRetrieval as Contract;
+use Valkyrja\Auth\Entity\Contract\User;
 
 /**
- * Class AuthenticationResetTokenRetrieval.
+ * Class AuthenticationIdRetrieval.
  *
  * @author Melech Mizrachi
  */
-class AuthenticationResetTokenRetrieval implements Contract
+class AuthenticationIdRetrieval implements Contract
 {
     public function __construct(
-        protected string $resetToken,
+        protected string|int $id,
     ) {
     }
 
@@ -36,7 +36,7 @@ class AuthenticationResetTokenRetrieval implements Contract
     public function getRetrievalFields(string $user): array
     {
         return [
-            $user::getResetTokenField() => $this->resetToken,
+            $user::getIdField() => $this->id,
         ];
     }
 }

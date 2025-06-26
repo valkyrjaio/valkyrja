@@ -11,40 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth\Adapters;
+namespace Valkyrja\Auth\Adapter;
 
-use Valkyrja\Auth\AuthenticationAttempt;
-use Valkyrja\Auth\AuthenticationRetrieval;
-use Valkyrja\Auth\Config\Config;
-use Valkyrja\Auth\User;
-use Valkyrja\Orm\Orm;
+use Valkyrja\Auth\Data\Contract\AuthenticationAttempt;
+use Valkyrja\Auth\Data\Contract\AuthenticationRetrieval;
+use Valkyrja\Auth\Entity\Contract\User;
 
 /**
- * Class ORMAdapter.
+ * Class NullAdapter.
  *
  * @author Melech Mizrachi
  */
-abstract class ORMAdapter2 extends Adapter2
+abstract class NullAdapter2 extends Adapter2
 {
-    /**
-     * ORMAdapter constructor.
-     *
-     * @param class-string<User> $user
-     */
-    public function __construct(
-        protected Orm $orm,
-        string $user,
-        Config|array $config
-    ) {
-        parent::__construct($user, $config);
-    }
-
     /**
      * @inheritDoc
      */
     public function authenticate(AuthenticationAttempt $attempt): User|null
     {
-        // TODO: Implement authenticate() method.
+        return null;
     }
 
     /**
@@ -52,7 +37,7 @@ abstract class ORMAdapter2 extends Adapter2
      */
     public function retrieve(AuthenticationRetrieval $retrieval): User|null
     {
-        // TODO: Implement retrieve() method.
+        return null;
     }
 
     /**
@@ -60,7 +45,7 @@ abstract class ORMAdapter2 extends Adapter2
      */
     public function create(User $user): bool
     {
-        // TODO: Implement create() method.
+        return true;
     }
 
     /**
@@ -68,6 +53,5 @@ abstract class ORMAdapter2 extends Adapter2
      */
     public function save(User $user): void
     {
-        // TODO: Implement save() method.
     }
 }

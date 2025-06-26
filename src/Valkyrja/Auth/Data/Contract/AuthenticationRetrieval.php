@@ -11,7 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth;
+namespace Valkyrja\Auth\Data\Contract;
+
+use Valkyrja\Auth\Entity\Contract\User;
 
 /**
  * Interface AuthenticationRetrieval.
