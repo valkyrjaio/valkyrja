@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Support;
 
-use Valkyrja\Support\Provider\Contract\Provides;
+use Valkyrja\Container\Support\Contract\Provides;
 
 /**
  * Class ProviderClass.

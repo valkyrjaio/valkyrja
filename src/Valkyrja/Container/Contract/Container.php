@@ -15,7 +15,7 @@ namespace Valkyrja\Container\Contract;
 
 use ArrayAccess;
 use Psr\Container\ContainerInterface;
-use Valkyrja\Support\Provider\Contract\ProvidersAware;
+use Valkyrja\Container\Support\Contract\ProvidersAware;
 
 /**
  * Interface Container.

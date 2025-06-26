@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Support\Provider;
+namespace Valkyrja\Tests\Unit\Container\Support;
 
 use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Support\DeferredProviderClass;

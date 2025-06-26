@@ -16,8 +16,8 @@ namespace Valkyrja\Container;
 use RuntimeException;
 use Valkyrja\Container\Contract\Container as Contract;
 use Valkyrja\Container\Contract\Service;
+use Valkyrja\Container\Support\ProvidersAwareTrait;
 use Valkyrja\Exception\InvalidArgumentException;
-use Valkyrja\Support\Provider\ProvidersAwareTrait;
 
 use function assert;
 use function class_exists;
