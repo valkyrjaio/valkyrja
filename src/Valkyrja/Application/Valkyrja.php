@@ -19,10 +19,8 @@ use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config;
 use Valkyrja\Config\Support\Provider as ConfigProvider;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Event\Contract\Dispatcher as Events;
 use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Exception\RuntimeException;
-use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Support\Directory;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 
@@ -201,22 +199,6 @@ class Valkyrja implements Application
         self::$container = $container;
 
         return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function events(): Events
-    {
-        return self::$container->getSingleton(Events::class);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function kernel(): RequestHandler
-    {
-        return self::$container->getSingleton(RequestHandler::class);
     }
 
     /**

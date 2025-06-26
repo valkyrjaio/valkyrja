@@ -17,8 +17,6 @@ use Valkyrja\Application\Config\Valkyrja as ValkyrjaConfig;
 use Valkyrja\Application\Env;
 use Valkyrja\Config\Config;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Event\Contract\Dispatcher as Events;
-use Valkyrja\Http\Server\Contract\RequestHandler;
 
 /**
  * Interface Application.
@@ -107,20 +105,6 @@ interface Application
      * @return static
      */
     public function setContainer(Container $container): static;
-
-    /**
-     * Get the events instance.
-     *
-     * @return Events
-     */
-    public function events(): Events;
-
-    /**
-     * Get the kernel instance from the container.
-     *
-     * @return RequestHandler
-     */
-    public function kernel(): RequestHandler;
 
     /**
      * Whether the application is running in debug mode or not.

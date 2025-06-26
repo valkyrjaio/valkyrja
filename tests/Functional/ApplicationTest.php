@@ -22,7 +22,6 @@ use Valkyrja\Cli\Routing\Command\CacheCommand;
 use Valkyrja\Cli\Routing\Contract\Router as CliRouter;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
-use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Filesystem\Contract\Filesystem;
 use Valkyrja\Http\Client\Contract\Client;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
@@ -63,16 +62,6 @@ class ApplicationTest extends TestCase
     public function testContainer(): void
     {
         self::assertInstanceOf(Container::class, $this->app->container());
-    }
-
-    /**
-     * Test the events() helper method.
-     *
-     * @return void
-     */
-    public function testEvents(): void
-    {
-        self::assertInstanceOf(Events::class, $this->app->events());
     }
 
     /**
