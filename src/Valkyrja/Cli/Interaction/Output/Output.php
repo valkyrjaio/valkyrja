@@ -258,7 +258,7 @@ class Output implements Contract
     {
         $this->setMessageAsWritten($message);
 
-        if ($this->isQuiet && $this->exitCode === ExitCode::SUCCESS) {
+        if ($this->isSilent || ($this->isQuiet && $this->exitCode === ExitCode::SUCCESS)) {
             return;
         }
 
