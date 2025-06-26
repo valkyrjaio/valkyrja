@@ -166,9 +166,8 @@ class HelpCommand
     protected function getNameMessages(Command $command): Messages
     {
         return new Messages(
-            new Message('Name:', new HighlightedTextFormatter()),
-            new NewLine(),
-            $this->getIndentedText(new Message($command->getName())),
+            new Message('Name: ', new HighlightedTextFormatter()),
+            new Message($command->getName()),
         );
     }
 
