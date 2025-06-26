@@ -17,7 +17,7 @@ use AssertionError;
 use RuntimeException;
 use Valkyrja\Container\Config;
 use Valkyrja\Container\Container;
-use Valkyrja\Dispatcher\Contract\Dispatcher;
+use Valkyrja\Dispatcher\Contract\Dispatcher2;
 use Valkyrja\Dispatcher\Provider\ServiceProvider;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Container\SingletonClass;
@@ -206,11 +206,11 @@ class ContainerTest extends TestCase
         $this->config->providers[] = ServiceProvider::class;
 
         array_map(
-            /** @param class-string $provider */
+        /** @param class-string $provider */
             static fn (string $provider) => $container->register($provider),
             $this->config->providers
         );
 
-        self::assertTrue($container->has(Dispatcher::class));
+        self::assertTrue($container->has(Dispatcher2::class));
     }
 }

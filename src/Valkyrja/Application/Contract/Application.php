@@ -16,9 +16,7 @@ namespace Valkyrja\Application\Contract;
 use Valkyrja\Application\Config\Valkyrja as ValkyrjaConfig;
 use Valkyrja\Application\Env;
 use Valkyrja\Config\Config;
-use Valkyrja\Console\Kernel\Contract\Kernel as ConsoleKernel;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Contract\Dispatcher as Events;
 use Valkyrja\Http\Server\Contract\RequestHandler;
 
@@ -109,13 +107,6 @@ interface Application
      * @return static
      */
     public function setContainer(Container $container): static;
-
-    /**
-     * Get the dispatcher instance.
-     *
-     * @return Dispatcher
-     */
-    public function dispatcher(): Dispatcher;
 
     /**
      * Get the events instance.

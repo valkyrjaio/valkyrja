@@ -23,7 +23,6 @@ use Valkyrja\Cli\Routing\Contract\Router as CliRouter;
 use Valkyrja\Client\Contract\Client;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
-use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Dispatcher as Events;
 use Valkyrja\Filesystem\Contract\Filesystem;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
@@ -64,16 +63,6 @@ class ApplicationTest extends TestCase
     public function testContainer(): void
     {
         self::assertInstanceOf(Container::class, $this->app->container());
-    }
-
-    /**
-     * Test the dispatcher() helper method.
-     *
-     * @return void
-     */
-    public function testDispatcher(): void
-    {
-        self::assertInstanceOf(Dispatcher::class, $this->app->dispatcher());
     }
 
     /**
