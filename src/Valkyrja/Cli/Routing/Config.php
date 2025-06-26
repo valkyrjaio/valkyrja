@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing;
 
-use Valkyrja\Cli\Routing\Command\CacheCommand;
-use Valkyrja\Cli\Routing\Command\ClearCacheCommand;
+use Valkyrja\Application\Command\CacheCommand;
+use Valkyrja\Application\Command\ClearCacheCommand;
 use Valkyrja\Cli\Routing\Command\HelpCommand;
 use Valkyrja\Cli\Routing\Command\ListBashCommand;
 use Valkyrja\Cli\Routing\Command\ListCommand;

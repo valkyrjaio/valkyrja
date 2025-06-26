@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing\Command;
+namespace Valkyrja\Application\Command;
 
 use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional;
 
+use Valkyrja\Application\Command\CacheCommand;
 use Valkyrja\Application\Config\Valkyrja as ValkyrjaConfig;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Cli\Interaction\Input\Input;
-use Valkyrja\Cli\Routing\Command\CacheCommand;
 use Valkyrja\Cli\Routing\Contract\Router as CliRouter;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
