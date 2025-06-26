@@ -23,12 +23,12 @@ use Valkyrja\Cli\Interaction\Provider\ServiceProvider as CliInteractionServicePr
 use Valkyrja\Cli\Middleware\Provider\ServiceProvider as CliMiddlewareServiceProvider;
 use Valkyrja\Cli\Routing\Provider\ServiceProvider as CliRoutingServiceProvider;
 use Valkyrja\Cli\Server\Provider\ServiceProvider as CliServerServiceProvider;
-use Valkyrja\Client\Provider\ServiceProvider as ClientServiceProvider;
 use Valkyrja\Container\Provider\ServiceProvider as ContainerServiceProvider;
 use Valkyrja\Crypt\Provider\ServiceProvider as CryptServiceProvider;
 use Valkyrja\Dispatcher\Provider\ServiceProvider as DispatcherServiceProvider;
 use Valkyrja\Event\Provider\ServiceProvider as EventServiceProvider;
 use Valkyrja\Filesystem\Provider\ServiceProvider as FilesystemServiceProvider;
+use Valkyrja\Http\Client\Provider\ServiceProvider as ClientServiceProvider;
 use Valkyrja\Http\Message\Provider\ServiceProvider as HttpMessageServiceProvider;
 use Valkyrja\Http\Middleware\Provider\ServiceProvider as HttpMiddlewareServiceProvider;
 use Valkyrja\Http\Routing\Provider\ServiceProvider as HttpRoutingServiceProvider;
