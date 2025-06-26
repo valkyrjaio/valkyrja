@@ -33,13 +33,6 @@ interface Application
     public const string VERSION = '1.0.0';
 
     /**
-     * Get the application instance.
-     *
-     * @return Application
-     */
-    public static function app(): self;
-
-    /**
      * Get an environment variable.
      */
     public static function getEnvValue(string $key, mixed $default = null): mixed;

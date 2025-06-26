@@ -40,11 +40,6 @@ use function microtime;
 class Valkyrja implements Application
 {
     /**
-     * Get the instance of the application.
-     */
-    protected static Application $app;
-
-    /**
      * Application env.
      *
      * @var class-string<Env>
@@ -76,14 +71,6 @@ class Valkyrja implements Application
         $this->setup(
             dataConfig: $dataConfig
         );
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function app(): Application
-    {
-        return self::$app;
     }
 
     /**

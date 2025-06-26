@@ -16,7 +16,6 @@ namespace Valkyrja\Tests\Functional;
 use Valkyrja\Annotation\Contract\Annotations;
 use Valkyrja\Application\Config\Valkyrja as ValkyrjaConfig;
 use Valkyrja\Application\Contract\Application;
-use Valkyrja\Application\Valkyrja;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Routing\Command\CacheCommand;
 use Valkyrja\Cli\Routing\Contract\Router as CliRouter;
@@ -44,16 +43,6 @@ use function usleep;
  */
 class ApplicationTest extends TestCase
 {
-    /**
-     * Test the app() static helper method.
-     *
-     * @return void
-     */
-    public function testApp(): void
-    {
-        self::assertInstanceOf(Valkyrja::class, Valkyrja::app());
-    }
-
     /**
      * Test the container() helper method.
      *
