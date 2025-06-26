@@ -192,7 +192,7 @@ class Router implements Contract
                 $argumentParameterArguments = $arguments;
 
                 $arguments = [];
-                // If not an array type then we should match each argument in order of appearance
+            // If not an array type then we should match each argument in order of appearance
             } elseif (isset($arguments[$key])) {
                 $argumentParameterArguments[] = $arguments[$key];
 

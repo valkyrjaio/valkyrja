@@ -26,7 +26,7 @@ use Valkyrja\Dispatcher\Data\ConstantDispatch;
 use Valkyrja\Dispatcher\Data\GlobalVariableDispatch;
 use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Dispatcher\Data\PropertyDispatch;
-use Valkyrja\Dispatcher\Dispatcher as Dispatcher;
+use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Dispatcher\InvalidDispatchClass;
 use Valkyrja\Tests\Classes\Dispatcher\InvalidDispatcherClass;

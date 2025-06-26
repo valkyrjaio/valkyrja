@@ -206,7 +206,7 @@ class ContainerTest extends TestCase
         $this->config->providers[] = ServiceProvider::class;
 
         array_map(
-        /** @param class-string $provider */
+            /** @param class-string $provider */
             static fn (string $provider) => $container->register($provider),
             $this->config->providers
         );

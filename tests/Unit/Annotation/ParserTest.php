@@ -20,7 +20,6 @@ use Valkyrja\Annotation\Constant\ConfigValue;
 use Valkyrja\Annotation\Constant\Regex;
 use Valkyrja\Annotation\Model\Contract\Annotation;
 use Valkyrja\Annotation\Parser\Parser;
-use Valkyrja\Console\Annotation\Command;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
