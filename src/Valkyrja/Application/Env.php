@@ -15,7 +15,6 @@ namespace Valkyrja\Application;
 
 use League\Flysystem\FilesystemAdapter as FlysystemAdapter;
 use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
-use Valkyrja\Annotation\Model\Contract\Annotation;
 use Valkyrja\Api\Model\Contract\Json as ApiJson;
 use Valkyrja\Api\Model\Contract\JsonData as ApiJsonData;
 use Valkyrja\Application\Support\Provider as AppProvider;
@@ -133,17 +132,6 @@ class Env
     public const string|null CONFIG_CACHE_FILE_PATH = null;
     /** @var string|null */
     public const string|null CONFIG_USE_CACHE = null;
-
-    /************************************************************
-     *
-     * Annotation component env variables.
-     *
-     ************************************************************/
-
-    /** @var array<class-string|string, class-string>|null */
-    public const array|null ANNOTATION_ALIASES = null;
-    /** @var array<string, class-string<Annotation>>|null */
-    public const array|null ANNOTATION_MAP = null;
 
     /************************************************************
      *

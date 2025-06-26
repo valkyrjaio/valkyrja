@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Constant;
 
-use Valkyrja\Annotation\Provider\ServiceProvider as AnnotationServiceProvider;
 use Valkyrja\Api\Provider\ServiceProvider as ApiServiceProvider;
 use Valkyrja\Attribute\Provider\ServiceProvider as AttributesServiceProvider;
 use Valkyrja\Auth\Provider\ServiceProvider as AuthServiceProvider;
@@ -50,7 +49,6 @@ use Valkyrja\View\Provider\ServiceProvider as ViewServiceProvider;
  */
 final class Provider
 {
-    public const string ANNOTATION      = AnnotationServiceProvider::class;
     public const string API             = ApiServiceProvider::class;
     public const string ATTRIBUTES      = AttributesServiceProvider::class;
     public const string AUTH            = AuthServiceProvider::class;
