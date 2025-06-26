@@ -17,7 +17,7 @@ use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Dispatcher\Contract\Dispatcher2;
+use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Middleware\Handler\Contract\Handler;
@@ -113,7 +113,7 @@ final class ServiceProvider extends Provider
             Router::class,
             new HttpRouter(
                 container: $container,
-                dispatcher: $container->getSingleton(Dispatcher2::class),
+                dispatcher: $container->getSingleton(Dispatcher::class),
                 matcher: $container->getSingleton(Matcher::class),
                 responseFactory: $container->getSingleton(HttpMessageResponseFactory::class),
                 throwableCaughtHandler: $exception,

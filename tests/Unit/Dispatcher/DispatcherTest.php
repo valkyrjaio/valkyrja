@@ -19,14 +19,14 @@ use Valkyrja\Application\Contract\Application;
 use Valkyrja\Container\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\ContextAwareContainer;
-use Valkyrja\Dispatcher\Contract\Dispatcher2 as Contract;
+use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
 use Valkyrja\Dispatcher\Data\CallableDispatch;
 use Valkyrja\Dispatcher\Data\ClassDispatch;
 use Valkyrja\Dispatcher\Data\ConstantDispatch;
 use Valkyrja\Dispatcher\Data\GlobalVariableDispatch;
 use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Dispatcher\Data\PropertyDispatch;
-use Valkyrja\Dispatcher\Dispatcher2 as Dispatcher;
+use Valkyrja\Dispatcher\Dispatcher as Dispatcher;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Dispatcher\InvalidDispatchClass;
 use Valkyrja\Tests\Classes\Dispatcher\InvalidDispatcherClass;
@@ -43,7 +43,7 @@ use const PHP_VERSION;
  *
  * @author Melech Mizrachi
  */
-class Dispatcher2Test extends TestCase
+class DispatcherTest extends TestCase
 {
     /**
      * A valid constant.

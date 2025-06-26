@@ -15,7 +15,7 @@ namespace Valkyrja\Dispatcher;
 
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Contract\ContextAwareContainer;
-use Valkyrja\Dispatcher\Contract\Dispatcher2 as Contract;
+use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
 use Valkyrja\Dispatcher\Data\CallableDispatch;
 use Valkyrja\Dispatcher\Data\ClassDispatch;
 use Valkyrja\Dispatcher\Data\ConstantDispatch;
@@ -35,7 +35,7 @@ use function is_string;
  *
  * @author Melech Mizrachi
  */
-class Dispatcher2 implements Contract
+class Dispatcher implements Contract
 {
     /**
      * Dispatcher constructor.

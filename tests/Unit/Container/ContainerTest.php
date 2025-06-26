@@ -17,7 +17,7 @@ use AssertionError;
 use RuntimeException;
 use Valkyrja\Container\Config;
 use Valkyrja\Container\Container;
-use Valkyrja\Dispatcher\Contract\Dispatcher2;
+use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Dispatcher\Provider\ServiceProvider;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Container\SingletonClass;
@@ -211,6 +211,6 @@ class ContainerTest extends TestCase
             $this->config->providers
         );
 
-        self::assertTrue($container->has(Dispatcher2::class));
+        self::assertTrue($container->has(Dispatcher::class));
     }
 }

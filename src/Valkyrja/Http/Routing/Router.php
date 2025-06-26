@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Routing;
 
 use JsonException;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Dispatcher\Contract\Dispatcher2;
+use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Exception\HttpException;
@@ -54,7 +54,7 @@ class Router implements Contract
      */
     public function __construct(
         protected Container $container = new \Valkyrja\Container\Container(),
-        protected Dispatcher2 $dispatcher = new \Valkyrja\Dispatcher\Dispatcher2(),
+        protected Dispatcher $dispatcher = new \Valkyrja\Dispatcher\Dispatcher(),
         protected Matcher $matcher = new \Valkyrja\Http\Routing\Matcher\Matcher(),
         protected ResponseFactory $responseFactory = new HttpMessageResponseFactory(),
         protected ThrowableCaughtHandler&Handler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),

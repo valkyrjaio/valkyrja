@@ -28,7 +28,7 @@ use Valkyrja\Cli\Routing\Collection\Contract\Collection;
 use Valkyrja\Cli\Routing\Contract\Router;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Dispatcher\Contract\Dispatcher2;
+use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Reflection\Contract\Reflection;
 
 /**
@@ -96,7 +96,7 @@ final class ServiceProvider extends Provider
             Router::class,
             new \Valkyrja\Cli\Routing\Router(
                 container: $container,
-                dispatcher: $container->getSingleton(Dispatcher2::class),
+                dispatcher: $container->getSingleton(Dispatcher::class),
                 collection: $container->getSingleton(Collection::class),
                 outputFactory: $container->getSingleton(OutputFactory::class),
                 throwableCaughtHandler: $throwableCaughtHandler,

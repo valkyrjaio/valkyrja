@@ -17,7 +17,7 @@ use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Attribute\Contract\Attributes as AttributesContract;
 use Valkyrja\Container\Constant\ConfigValue;
 use Valkyrja\Container\Container;
-use Valkyrja\Dispatcher\Contract\Dispatcher2;
+use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler as RouteDispatchedHandlerContract;
@@ -125,7 +125,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $container->setSingleton(SendingResponseHandlerContract::class, new SendingResponseHandler());
         $container->setSingleton(TerminatedHandlerContract::class, new TerminatedHandler());
         $container->setSingleton(CollectionContract::class, $this->createMock(CollectionContract::class));
-        $container->setSingleton(Dispatcher2::class, $this->createMock(Dispatcher2::class));
+        $container->setSingleton(Dispatcher::class, $this->createMock(Dispatcher::class));
         $container->setSingleton(MatcherContract::class, $this->createMock(MatcherContract::class));
         $container->setSingleton(HttpMessageResponseFactory::class, $this->createMock(HttpMessageResponseFactory::class));
 

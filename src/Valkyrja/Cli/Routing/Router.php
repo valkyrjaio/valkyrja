@@ -35,7 +35,7 @@ use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Exception\RuntimeException;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Dispatcher\Contract\Dispatcher2;
+use Valkyrja\Dispatcher\Contract\Dispatcher;
 
 use function in_array;
 
@@ -48,7 +48,7 @@ class Router implements Contract
 {
     public function __construct(
         protected Container $container = new \Valkyrja\Container\Container(),
-        protected Dispatcher2 $dispatcher = new \Valkyrja\Dispatcher\Dispatcher2(),
+        protected Dispatcher $dispatcher = new \Valkyrja\Dispatcher\Dispatcher(),
         protected Collection $collection = new \Valkyrja\Cli\Routing\Collection\Collection(),
         protected OutputFactory $outputFactory = new \Valkyrja\Cli\Interaction\Factory\OutputFactory(),
         protected ThrowableCaughtHandler&Handler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),
@@ -192,7 +192,7 @@ class Router implements Contract
                 $argumentParameterArguments = $arguments;
 
                 $arguments = [];
-            // If not an array type then we should match each argument in order of appearance
+                // If not an array type then we should match each argument in order of appearance
             } elseif (isset($arguments[$key])) {
                 $argumentParameterArguments[] = $arguments[$key];
 

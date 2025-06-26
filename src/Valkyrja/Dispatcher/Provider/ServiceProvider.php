@@ -15,7 +15,7 @@ namespace Valkyrja\Dispatcher\Provider;
 
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Dispatcher\Contract\Dispatcher2;
+use Valkyrja\Dispatcher\Contract\Dispatcher;
 
 /**
  * Class ServiceProvider.
@@ -30,7 +30,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Dispatcher2::class => [self::class, 'publishDispatcher2'],
+            Dispatcher::class => [self::class, 'publishDispatcher'],
         ];
     }
 
@@ -40,7 +40,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Dispatcher2::class,
+            Dispatcher::class,
         ];
     }
 
@@ -51,11 +51,11 @@ final class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishDispatcher2(Container $container): void
+    public static function publishDispatcher(Container $container): void
     {
         $container->setSingleton(
-            Dispatcher2::class,
-            new \Valkyrja\Dispatcher\Dispatcher2(
+            Dispatcher::class,
+            new \Valkyrja\Dispatcher\Dispatcher(
                 container: $container
             )
         );

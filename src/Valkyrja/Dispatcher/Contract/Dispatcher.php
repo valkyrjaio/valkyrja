@@ -20,7 +20,7 @@ use Valkyrja\Dispatcher\Data\Contract\Dispatch;
  *
  * @author Melech Mizrachi
  */
-interface Dispatcher2
+interface Dispatcher
 {
     /**
      * Dispatch a callable.
