@@ -24,7 +24,6 @@ use Valkyrja\Cache\Config as Cache;
 use Valkyrja\Cli\Interaction\Config as CliInteraction;
 use Valkyrja\Cli\Middleware\Config as CliMiddleware;
 use Valkyrja\Cli\Routing\Config as CliRouting;
-use Valkyrja\Cli\Server\Config as CliServer;
 use Valkyrja\Config\Config;
 use Valkyrja\Config\Config\Config as ConfigConfig;
 use Valkyrja\Config\Exception\InvalidArgumentException;
@@ -36,7 +35,6 @@ use Valkyrja\Filesystem\Config as Filesystem;
 use Valkyrja\Http\Client\Config as Client;
 use Valkyrja\Http\Middleware\Config as HttpMiddleware;
 use Valkyrja\Http\Routing\Config as HttpRouting;
-use Valkyrja\Http\Server\Config as HttpServer;
 use Valkyrja\Jwt\Config as Jwt;
 use Valkyrja\Log\Config as Log;
 use Valkyrja\Mail\Config as Mail;
@@ -66,7 +64,6 @@ use function unserialize;
  * @property CliInteraction $cliInteraction
  * @property CliMiddleware  $cliMiddleware
  * @property CliRouting     $cliRouting
- * @property CliServer      $cliServer
  * @property Client         $client
  * @property ConfigConfig   $config
  * @property Container      $container
@@ -75,7 +72,6 @@ use function unserialize;
  * @property Filesystem     $filesystem
  * @property HttpMiddleware $httpMiddleware
  * @property HttpRouting    $httpRouting
- * @property HttpServer     $httpServer
  * @property Jwt            $jwt
  * @property Log            $log
  * @property Mail           $mail
@@ -165,13 +161,6 @@ class Valkyrja implements ArrayAccess
     protected CliRouting $cliRouting;
 
     /**
-     * The cli server component config.
-     *
-     * @var CliServer
-     */
-    protected CliServer $cliServer;
-
-    /**
      * The client component config.
      *
      * @var Client
@@ -226,13 +215,6 @@ class Valkyrja implements ArrayAccess
      * @var HttpRouting
      */
     protected HttpRouting $httpRouting;
-
-    /**
-     * The http server component config.
-     *
-     * @var HttpServer
-     */
-    protected HttpServer $httpServer;
 
     /**
      * The Jwt component config.
@@ -452,7 +434,6 @@ class Valkyrja implements ArrayAccess
         $this->cliInteraction = CliInteraction::fromEnv($env);
         $this->cliMiddleware  = CliMiddleware::fromEnv($env);
         $this->cliRouting     = CliRouting::fromEnv($env);
-        $this->cliServer      = CliServer::fromEnv($env);
         $this->client         = Client::fromEnv($env);
         $this->config         = ConfigConfig::fromEnv($env);
         $this->container      = Container::fromEnv($env);
@@ -461,7 +442,6 @@ class Valkyrja implements ArrayAccess
         $this->filesystem     = Filesystem::fromEnv($env);
         $this->httpMiddleware = HttpMiddleware::fromEnv($env);
         $this->httpRouting    = HttpRouting::fromEnv($env);
-        $this->httpServer     = HttpServer::fromEnv($env);
         $this->jwt            = Jwt::fromEnv($env);
         $this->log            = Log::fromEnv($env);
         $this->mail           = Mail::fromEnv($env);

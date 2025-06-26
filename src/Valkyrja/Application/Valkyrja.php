@@ -122,8 +122,6 @@ class Valkyrja implements Application
 
         // Avoid re-setting up the app later
         self::$setup = true;
-        // Set the app static
-        self::$app = $this;
 
         // Set a global constant for when the framework started
         define('VALKYRJA_START', microtime(true));
