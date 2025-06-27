@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container\Provider;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Valkyrja\Application\Config\Valkyrja;
+use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Application\Env;
+use Valkyrja\Application\Valkyrja;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Tests\ConfigClass;
@@ -73,7 +74,7 @@ class ServiceProviderTestCase extends TestCase
 
         $this->container = new Container();
 
-        $app = new \Valkyrja\Application\Valkyrja(
+        $app = new Valkyrja(
             env: Env::class,
             config: ConfigClass::class,
         );
@@ -82,7 +83,7 @@ class ServiceProviderTestCase extends TestCase
 
         $config = $app->getConfig();
 
-        $this->container->setSingleton(Valkyrja::class, $config);
+        $this->container->setSingleton(ValkyrjaConfig::class, $config);
     }
 
     /**

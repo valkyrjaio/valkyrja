@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Api\Provider;
 
 use Valkyrja\Api\Contract\Api;
-use Valkyrja\Application\Config\Valkyrja;
+use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
@@ -55,7 +55,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishApi(Container $container): void
     {
-        $config = $container->getSingleton(Valkyrja::class);
+        $config = $container->getSingleton(ValkyrjaConfig::class);
 
         $container->setSingleton(
             Api::class,

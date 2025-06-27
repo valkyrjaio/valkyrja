@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Command;
 
-use Valkyrja\Application\Config\Valkyrja;
+use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\Message;
@@ -33,7 +33,7 @@ class ClearCacheCommand
         description: 'Clear config cache',
         helpText: new Message('A command to clear the config cache.'),
     )]
-    public function run(Valkyrja $config, OutputFactory $outputFactory): Output
+    public function run(ValkyrjaConfig $config, OutputFactory $outputFactory): Output
     {
         $configCache   = $config;
         $cacheFilePath = $configCache->app->cacheFilePath;

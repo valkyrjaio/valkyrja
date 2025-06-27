@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application;
 
-use Valkyrja\Application\Config as ValkyrjaConfig;
-use Valkyrja\Application\Config\Valkyrja as AppConfig;
+use Valkyrja\Application\Config as AppConfig;
+use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Exception\InvalidArgumentException;
@@ -54,7 +54,7 @@ class Valkyrja implements Application
     /**
      * Application config.
      */
-    protected AppConfig $config;
+    protected ValkyrjaConfig $config;
 
     /**
      * Get the instance of the container.
@@ -69,8 +69,8 @@ class Valkyrja implements Application
     /**
      * Application constructor.
      *
-     * @param class-string<Env>       $env    The env file to use
-     * @param class-string<AppConfig> $config The config class to use
+     * @param class-string<Env>            $env    The env file to use
+     * @param class-string<ValkyrjaConfig> $config The config class to use
      */
     public function __construct(string $env, string $config)
     {
@@ -198,7 +198,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function setConfig(AppConfig $config): static
+    public function setConfig(ValkyrjaConfig $config): static
     {
         $this->config = $config;
 
@@ -208,7 +208,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function getConfig(): AppConfig
+    public function getConfig(): ValkyrjaConfig
     {
         return $this->config;
     }
@@ -281,7 +281,7 @@ class Valkyrja implements Application
     /**
      * Bootstrap the config.
      *
-     * @param class-string<AppConfig> $config The config class to use
+     * @param class-string<ValkyrjaConfig> $config The config class to use
      */
     protected function bootstrapConfig(string $config): void
     {
@@ -296,7 +296,7 @@ class Valkyrja implements Application
             return;
         }
 
-        if (is_a($config, AppConfig::class, true)) {
+        if (is_a($config, ValkyrjaConfig::class, true)) {
             $this->config = $newConfig = new $config(env: $this->getEnv());
 
             $this->setConfig($newConfig);
@@ -335,7 +335,7 @@ class Valkyrja implements Application
                 throw new RuntimeException('Invalid cache file contents');
             }
 
-            $this->config = AppConfig::fromSerializedString(cached: $cacheFileContents);
+            $this->config = ValkyrjaConfig::fromSerializedString(cached: $cacheFileContents);
 
             return;
         }
@@ -351,7 +351,7 @@ class Valkyrja implements Application
         $env = $this->env;
 
         // Bootstrap required configs
-        $appConfig       = ValkyrjaConfig::fromEnv(env: $env);
+        $appConfig       = AppConfig::fromEnv(env: $env);
         $containerConfig = ContainerConfig::fromEnv(env: $env);
         $cliConfig       = CliConfig::fromEnv(env: $env);
         $eventConfig     = EventConfig::fromEnv(env: $env);

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Command;
 
-use Valkyrja\Application\Config\Valkyrja;
+use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Interaction\Message\Banner;
@@ -53,7 +53,7 @@ class CacheCommand
         CliCollectionContract $cli,
         EventCollection $eventCollection,
         HttpCollectionContract $routerCollection,
-        Valkyrja $config,
+        ValkyrjaConfig $config,
         OutputFactory $outputFactory
     ): Output {
         $config = clone $config;

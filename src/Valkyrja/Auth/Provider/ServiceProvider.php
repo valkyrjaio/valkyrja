@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Provider;
 
-use Valkyrja\Application\Config\Valkyrja;
+use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Auth\Adapter\Contract\Adapter;
 use Valkyrja\Auth\Adapter\NullAdapter;
 use Valkyrja\Auth\Adapter\ORMAdapter;
@@ -96,7 +96,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishAuth(Container $container): void
     {
-        $config = $container->getSingleton(Valkyrja::class);
+        $config = $container->getSingleton(ValkyrjaConfig::class);
 
         $container->setSingleton(
             Auth::class,

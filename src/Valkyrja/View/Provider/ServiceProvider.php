@@ -16,7 +16,7 @@ namespace Valkyrja\View\Provider;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Loader\FilesystemLoader;
-use Valkyrja\Application\Config\Valkyrja;
+use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
@@ -79,7 +79,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishView(Container $container): void
     {
-        $config = $container->getSingleton(Valkyrja::class);
+        $config = $container->getSingleton(ValkyrjaConfig::class);
 
         $container->setSingleton(
             View::class,
@@ -213,7 +213,7 @@ final class ServiceProvider extends Provider
      */
     public static function createTwigEnvironment(Container $container, TwigConfiguration $config): Environment
     {
-        $globalConfig = $container->getSingleton(Valkyrja::class);
+        $globalConfig = $container->getSingleton(ValkyrjaConfig::class);
         $debug        = $globalConfig->app->debugMode;
         $paths        = $config->paths;
         $extensions   = $config->extensions;

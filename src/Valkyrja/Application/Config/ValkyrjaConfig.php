@@ -67,7 +67,7 @@ use function unserialize;
  * @property Sms          $sms
  * @property View         $view
  */
-class Valkyrja
+class ValkyrjaConfig
 {
     /**
      * An array of config classes.

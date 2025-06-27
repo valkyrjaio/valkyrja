@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Provider;
 
 use RuntimeException;
-use Valkyrja\Application\Config\Valkyrja;
+use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Cache\Contract\Cache;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
@@ -117,7 +117,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishOrm(Container $container): void
     {
-        $config = $container->getSingleton(Valkyrja::class);
+        $config = $container->getSingleton(ValkyrjaConfig::class);
 
         $container->setSingleton(
             Orm::class,

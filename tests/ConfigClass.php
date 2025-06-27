@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Tests;
 
 use Valkyrja\Application\Config;
-use Valkyrja\Application\Config\Valkyrja as AppConfig;
+use Valkyrja\Application\Config\ValkyrjaConfig;
 
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class ConfigClass extends AppConfig
+class ConfigClass extends ValkyrjaConfig
 {
     public Config $new;
 }

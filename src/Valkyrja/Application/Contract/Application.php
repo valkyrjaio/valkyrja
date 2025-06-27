@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Contract;
 
-use Valkyrja\Application\Config\Valkyrja as ValkyrjaConfig;
+use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Application\Env;
 use Valkyrja\Application\Support\Component;
 use Valkyrja\Config\Config;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Entry;
 
-use Valkyrja\Application\Config\Valkyrja as AppConfig;
+use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Env;
 use Valkyrja\Application\Valkyrja;
@@ -41,9 +41,9 @@ abstract class App
     /**
      * Start the application.
      *
-     * @param string                  $dir    The directory
-     * @param class-string<Env>       $env    The env class to use
-     * @param class-string<AppConfig> $config The config class to use
+     * @param string                       $dir    The directory
+     * @param class-string<Env>            $env    The env class to use
+     * @param class-string<ValkyrjaConfig> $config The config class to use
      *
      * @return Application
      */
@@ -53,15 +53,15 @@ abstract class App
         static::appStart();
         static::directory(dir: $dir);
 
-        return static::app(config: $config, env: $env);
+        return static::app(env: $env, config: $config);
     }
 
     /**
      * Now that the application has been bootstrapped and setup correctly with all our requirements lets run it!
      *
-     * @param string                  $dir    The directory
-     * @param class-string<Env>       $env    The env class to use
-     * @param class-string<AppConfig> $config The config class to use
+     * @param string                       $dir    The directory
+     * @param class-string<Env>            $env    The env class to use
+     * @param class-string<ValkyrjaConfig> $config The config class to use
      *
      * @return void
      */
@@ -82,9 +82,9 @@ abstract class App
     /**
      * Now that the application has been bootstrapped and setup correctly with all our requirements lets run it!
      *
-     * @param string                  $dir    The directory
-     * @param class-string<Env>       $env    The env class to use
-     * @param class-string<AppConfig> $config The config class to use
+     * @param string                       $dir    The directory
+     * @param class-string<Env>            $env    The env class to use
+     * @param class-string<ValkyrjaConfig> $config The config class to use
      *
      * @return void
      */
@@ -159,8 +159,8 @@ abstract class App
      *  when you're on a production environment definitely have
      *  your config cached and the flag set in your env class.
      *
-     * @param class-string<Env>       $env    The env class to use
-     * @param class-string<AppConfig> $config The config class to use
+     * @param class-string<Env>            $env    The env class to use
+     * @param class-string<ValkyrjaConfig> $config The config class to use
      *
      * @return Application
      */
@@ -177,7 +177,7 @@ abstract class App
         $container->setSingleton(Application::class, $app);
         $container->setSingleton(Env::class, $app->getEnv());
         $container->bindAlias('env', Env::class);
-        $container->setSingleton(AppConfig::class, $app->getConfig());
+        $container->setSingleton(ValkyrjaConfig::class, $app->getConfig());
         $container->setSingleton(Container::class, $container);
     }
 
@@ -203,7 +203,7 @@ abstract class App
     /**
      * Bootstrap the timezone.
      */
-    protected static function bootstrapTimezone(AppConfig $config): void
+    protected static function bootstrapTimezone(ValkyrjaConfig $config): void
     {
         date_default_timezone_set($config->app->timezone);
     }
