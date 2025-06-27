@@ -11,17 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Attribute;
+namespace Valkyrja\Container\Collector;
 
 use Valkyrja\Attribute\Contract\Attributes;
-use Valkyrja\Container\Attribute\Contract\Collector as Contract;
+use Valkyrja\Container\Attribute\Alias;
+use Valkyrja\Container\Attribute\ContextAlias;
+use Valkyrja\Container\Attribute\ContextService;
+use Valkyrja\Container\Attribute\Service as Attribute;
+use Valkyrja\Container\Collector\Contract\Collector as Contract;
 
 /**
- * Class Collector.
+ * Class AttributeCollector.
  *
  * @author Melech Mizrachi
  */
-class Collector implements Contract
+class AttributeCollector implements Contract
 {
     public function __construct(
         protected Attributes $attributes
@@ -33,11 +37,11 @@ class Collector implements Contract
      *
      * @param class-string ...$classes The classes
      *
-     * @return Service[]
+     * @return Attribute
      */
     public function getServices(string ...$classes): array
     {
-        return $this->getAttributesByType(Service::class, ...$classes);
+        return $this->getAttributesByType(Attribute::class, ...$classes);
     }
 
     /**
@@ -77,7 +81,7 @@ class Collector implements Contract
     }
 
     /**
-     * @template Attribute of Service|Alias|ContextService|ContextAlias
+     * @template Attribute of Attribute|Alias|ContextService|ContextAlias
      *
      * @param class-string<Attribute> $attributeClass The attribute class name
      * @param class-string            ...$classes     The classes

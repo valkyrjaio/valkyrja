@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container;
 
-use Valkyrja\Container\Attribute\Contract\Collector;
+use Valkyrja\Container\Collector\Contract\Collector;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Contract\ContextAwareContainer;
 use Valkyrja\Container\Contract\Service;

@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Provider;
 
 use Valkyrja\Attribute\Contract\Attributes;
-use Valkyrja\Container\Attribute\Contract\Collector;
+use Valkyrja\Container\Collector\AttributeCollector;
+use Valkyrja\Container\Collector\Contract\Collector;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 
@@ -52,7 +53,7 @@ final class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Collector::class,
-            new \Valkyrja\Container\Attribute\Collector(
+            new AttributeCollector(
                 $container->getSingleton(Attributes::class)
             )
         );

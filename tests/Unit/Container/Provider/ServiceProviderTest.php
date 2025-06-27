@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Container\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Attribute\Contract\Attributes;
-use Valkyrja\Container\Attribute\Collector;
-use Valkyrja\Container\Attribute\Contract\Collector as AttributeCollectorContract;
+use Valkyrja\Container\Collector\AttributeCollector;
+use Valkyrja\Container\Collector\Contract\Collector as AttributeCollectorContract;
 use Valkyrja\Container\Provider\ServiceProvider;
 
 /**
@@ -38,6 +38,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishAttributesCollector($this->container);
 
-        self::assertInstanceOf(Collector::class, $this->container->getSingleton(AttributeCollectorContract::class));
+        self::assertInstanceOf(AttributeCollector::class, $this->container->getSingleton(AttributeCollectorContract::class));
     }
 }

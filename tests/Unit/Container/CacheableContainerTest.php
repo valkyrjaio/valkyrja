@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Container\Attribute\Contract\Collector;
 use Valkyrja\Container\CacheableContainer;
+use Valkyrja\Container\Collector\Contract\Collector;
 use Valkyrja\Container\Config as ContainerConfig;
 use Valkyrja\Tests\Unit\TestCase;
 

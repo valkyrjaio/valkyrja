@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Attribute\Contract;
+namespace Valkyrja\Container\Collector\Contract;
 
 use Valkyrja\Container\Attribute\Alias;
 use Valkyrja\Container\Attribute\ContextAlias;
