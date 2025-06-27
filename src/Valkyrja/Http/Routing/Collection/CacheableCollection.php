@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Collection;
 
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Http\Routing\Attribute\Contract\Collector;
+use Valkyrja\Http\Routing\Collector\Contract\Collector;
 use Valkyrja\Http\Routing\Config;
 use Valkyrja\Http\Routing\Config\Cache;
 use Valkyrja\Http\Routing\Data\Contract\Route;

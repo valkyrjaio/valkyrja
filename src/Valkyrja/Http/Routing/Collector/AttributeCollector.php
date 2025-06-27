@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Routing\Attribute;
+namespace Valkyrja\Http\Routing\Collector;
 
 use InvalidArgumentException;
 use ReflectionException;
@@ -25,11 +25,13 @@ use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Http\Routing\Attribute\Contract\Collector as Contract;
+use Valkyrja\Http\Routing\Attribute\Parameter;
+use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Attribute\Route\Middleware;
 use Valkyrja\Http\Routing\Attribute\Route\RequestMethod;
 use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
 use Valkyrja\Http\Routing\Attribute\Route\ResponseStruct;
+use Valkyrja\Http\Routing\Collector\Contract\Collector as Contract;
 use Valkyrja\Http\Routing\Data\Contract\Route as RouteContract;
 use Valkyrja\Http\Routing\Processor\Contract\Processor;
 use Valkyrja\Http\Struct\Request\Contract\RequestStruct as RequestStructContract;
@@ -39,11 +41,11 @@ use Valkyrja\Reflection\Contract\Reflection;
 use function array_column;
 
 /**
- * Class Collector.
+ * Class AttributeCollector.
  *
  * @author Melech Mizrachi
  */
-class Collector implements Contract
+class AttributeCollector implements Contract
 {
     public function __construct(
         protected Attributes $attributes,

@@ -30,10 +30,10 @@ use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
-use Valkyrja\Http\Routing\Attribute\Collector;
-use Valkyrja\Http\Routing\Attribute\Contract\Collector as AttributesCollectorContract;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as CollectionContract;
+use Valkyrja\Http\Routing\Collector\AttributeCollector;
+use Valkyrja\Http\Routing\Collector\Contract\Collector as AttributesCollectorContract;
 use Valkyrja\Http\Routing\Contract\Router as RouterContract;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactory as ResponseFactoryContract;
 use Valkyrja\Http\Routing\Factory\ResponseFactory;
@@ -195,7 +195,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertTrue($container->has(AttributesCollectorContract::class));
         self::assertTrue($container->isSingleton(AttributesCollectorContract::class));
-        self::assertInstanceOf(Collector::class, $container->getSingleton(AttributesCollectorContract::class));
+        self::assertInstanceOf(AttributeCollector::class, $container->getSingleton(AttributesCollectorContract::class));
     }
 
     public function testPublishProcessor(): void
