@@ -22,7 +22,6 @@ use Valkyrja\Auth\Config as Auth;
 use Valkyrja\Broadcast\Config as Broadcast;
 use Valkyrja\Cache\Config as Cache;
 use Valkyrja\Cli\Config as Cli;
-use Valkyrja\Config\Config;
 use Valkyrja\Container\Config as Container;
 use Valkyrja\Crypt\Config as Crypt;
 use Valkyrja\Event\Config as Event;
@@ -36,6 +35,7 @@ use Valkyrja\Notification\Config as Notification;
 use Valkyrja\Orm\Config as Orm;
 use Valkyrja\Session\Config as Session;
 use Valkyrja\Sms\Config as Sms;
+use Valkyrja\Support\Config;
 use Valkyrja\View\Config as View;
 
 use function unserialize;

@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Jwt\Config\Configurations;
 use Valkyrja\Jwt\Config\EdDsaConfiguration;
 use Valkyrja\Jwt\Config\HsConfiguration;
 use Valkyrja\Jwt\Config\RsConfiguration;
 use Valkyrja\Jwt\Constant\ConfigName;
 use Valkyrja\Jwt\Constant\EnvName;
+use Valkyrja\Support\Config as ParentConfig;
 
 use function array_key_first;
 

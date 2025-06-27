@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Middleware;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Http\Middleware\Constant\ConfigName;
 use Valkyrja\Http\Middleware\Constant\EnvName;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
@@ -23,6 +22,7 @@ use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Class Config.

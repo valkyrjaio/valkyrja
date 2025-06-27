@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Config;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Jwt\Adapter\Contract\Adapter;
 use Valkyrja\Jwt\Driver\Contract\Driver;
 use Valkyrja\Jwt\Enum\Algorithm;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Abstract Class Configuration.

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Config;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Orm\Adapter\Contract\Adapter as AdapterContract;
 use Valkyrja\Orm\Adapter\PdoAdapter;
 use Valkyrja\Orm\Driver\Contract\Driver as DriverContract;
@@ -28,6 +27,7 @@ use Valkyrja\Orm\Repository\Contract\Repository as RepositoryContract;
 use Valkyrja\Orm\Repository\Repository;
 use Valkyrja\Orm\Retriever\Contract\Retriever as RetrieverContract;
 use Valkyrja\Orm\Retriever\Retriever;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Abstract Class Connection.

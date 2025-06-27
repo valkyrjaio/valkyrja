@@ -21,7 +21,7 @@ use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Config\Config as ParentConfig;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Class Config.

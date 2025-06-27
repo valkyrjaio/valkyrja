@@ -26,7 +26,7 @@ use Valkyrja\Auth\Policy\Contract\Policy as PolicyContract;
 use Valkyrja\Auth\Policy\UserPermissiblePolicy;
 use Valkyrja\Auth\Repository\Contract\Repository as RepositoryContract;
 use Valkyrja\Auth\Repository\Repository;
-use Valkyrja\Config\Config as ParentConfig;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Class Config.

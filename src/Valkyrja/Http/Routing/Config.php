@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Http\Routing\Config\Cache;
 use Valkyrja\Http\Routing\Constant\ConfigName;
 use Valkyrja\Http\Routing\Constant\EnvName;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Class Config.

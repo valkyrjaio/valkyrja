@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Crypt\Config\Configurations;
 use Valkyrja\Crypt\Config\NullConfiguration;
 use Valkyrja\Crypt\Config\SodiumConfiguration;
 use Valkyrja\Crypt\Constant\ConfigName;
 use Valkyrja\Crypt\Constant\EnvName;
+use Valkyrja\Support\Config as ParentConfig;
 
 use function array_key_first;
 

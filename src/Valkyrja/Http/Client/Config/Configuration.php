@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Client\Config;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Http\Client\Adapter\Contract\Adapter;
 use Valkyrja\Http\Client\Driver\Contract\Driver;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Abstract Class Configuration.

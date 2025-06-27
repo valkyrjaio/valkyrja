@@ -16,7 +16,7 @@ namespace Valkyrja\Cli\Routing;
 use Valkyrja\Cli\Routing\Config\Cache;
 use Valkyrja\Cli\Routing\Constant\ConfigName;
 use Valkyrja\Cli\Routing\Constant\EnvName;
-use Valkyrja\Config\Config as ParentConfig;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Class Config.

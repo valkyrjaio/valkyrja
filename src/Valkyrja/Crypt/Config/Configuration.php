@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Config;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Crypt\Adapter\Contract\Adapter;
 use Valkyrja\Crypt\Driver\Contract\Driver;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Abstract Class Configuration.

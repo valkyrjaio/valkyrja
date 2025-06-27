@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View;
 
-use Valkyrja\Config\Config as ParentConfig;
+use Valkyrja\Support\Config as ParentConfig;
 use Valkyrja\View\Config\Configurations;
 use Valkyrja\View\Config\OrkaConfiguration;
 use Valkyrja\View\Config\PhpConfiguration;

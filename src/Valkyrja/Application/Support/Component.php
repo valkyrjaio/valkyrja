@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Support;
 
-use Valkyrja\Config\Config;
 use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Support\Provider as ContainerProvider;
+use Valkyrja\Support\Config;
 
 /**
  * Abstract Class Component.

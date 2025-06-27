@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Config;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Mail\Adapter\Contract\Adapter;
 use Valkyrja\Mail\Driver\Contract\Driver;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Abstract Class Configuration.

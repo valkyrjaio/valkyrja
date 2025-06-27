@@ -17,7 +17,7 @@ use Valkyrja\Asset\Config\Bundles;
 use Valkyrja\Asset\Config\DefaultBundle;
 use Valkyrja\Asset\Constant\ConfigName;
 use Valkyrja\Asset\Constant\EnvName;
-use Valkyrja\Config\Config as ParentConfig;
+use Valkyrja\Support\Config as ParentConfig;
 
 use function array_key_first;
 

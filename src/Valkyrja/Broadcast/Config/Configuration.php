@@ -15,7 +15,7 @@ namespace Valkyrja\Broadcast\Config;
 
 use Valkyrja\Broadcast\Adapter\Contract\Adapter;
 use Valkyrja\Broadcast\Driver\Contract\Driver;
-use Valkyrja\Config\Config as ParentConfig;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Abstract Class Configuration.

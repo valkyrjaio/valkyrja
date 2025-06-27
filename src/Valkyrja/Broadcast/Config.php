@@ -21,7 +21,7 @@ use Valkyrja\Broadcast\Config\NullConfiguration;
 use Valkyrja\Broadcast\Config\PusherConfiguration;
 use Valkyrja\Broadcast\Constant\ConfigName;
 use Valkyrja\Broadcast\Constant\EnvName;
-use Valkyrja\Config\Config as ParentConfig;
+use Valkyrja\Support\Config as ParentConfig;
 
 use function array_key_first;
 

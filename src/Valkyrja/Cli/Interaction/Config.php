@@ -15,7 +15,7 @@ namespace Valkyrja\Cli\Interaction;
 
 use Valkyrja\Cli\Interaction\Constant\ConfigName;
 use Valkyrja\Cli\Interaction\Constant\EnvName;
-use Valkyrja\Config\Config as ParentConfig;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Class Config.

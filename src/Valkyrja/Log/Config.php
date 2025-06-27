@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Log\Config\Configurations;
 use Valkyrja\Log\Config\PsrConfiguration;
 use Valkyrja\Log\Constant\ConfigName;
 use Valkyrja\Log\Constant\EnvName;
+use Valkyrja\Support\Config as ParentConfig;
 
 use function array_key_first;
 

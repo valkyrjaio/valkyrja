@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Constant\ConfigName;
 use Valkyrja\Container\Constant\EnvName;
 use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Support\Provider;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Class Config.

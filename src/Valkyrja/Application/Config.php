@@ -18,7 +18,7 @@ use Valkyrja\Application\Constant\ConfigName;
 use Valkyrja\Application\Constant\EnvName;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Support\Component;
-use Valkyrja\Config\Config as ParentConfig;
+use Valkyrja\Support\Config as ParentConfig;
 use Valkyrja\Support\Directory;
 
 /**

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Notification\Constant\ConfigName;
 use Valkyrja\Notification\Constant\EnvName;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Class Config.

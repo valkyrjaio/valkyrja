@@ -18,7 +18,7 @@ use Valkyrja\Cli\Constant\EnvName;
 use Valkyrja\Cli\Interaction\Config as InteractionConfig;
 use Valkyrja\Cli\Middleware\Config as MiddlewareConfig;
 use Valkyrja\Cli\Routing\Config as RoutingConfig;
-use Valkyrja\Config\Config as ParentConfig;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Class Config.

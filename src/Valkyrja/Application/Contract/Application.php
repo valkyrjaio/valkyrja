@@ -16,8 +16,8 @@ namespace Valkyrja\Application\Contract;
 use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Application\Env;
 use Valkyrja\Application\Support\Component;
-use Valkyrja\Config\Config;
 use Valkyrja\Container\Contract\Container;
+use Valkyrja\Support\Config;
 
 /**
  * Interface Application.

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Filesystem\Config\Configurations;
 use Valkyrja\Filesystem\Config\InMemoryConfiguration;
 use Valkyrja\Filesystem\Config\LocalFlysystemConfiguration;
@@ -21,6 +20,7 @@ use Valkyrja\Filesystem\Config\NullConfiguration;
 use Valkyrja\Filesystem\Config\S3FlysystemConfiguration;
 use Valkyrja\Filesystem\Constant\ConfigName;
 use Valkyrja\Filesystem\Constant\EnvName;
+use Valkyrja\Support\Config as ParentConfig;
 
 use function array_key_first;
 

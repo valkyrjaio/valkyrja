@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Http\Constant\ConfigName;
 use Valkyrja\Http\Constant\EnvName;
 use Valkyrja\Http\Middleware\Config as MiddlewareConfig;
 use Valkyrja\Http\Routing\Config as RoutingConfig;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Class Config.

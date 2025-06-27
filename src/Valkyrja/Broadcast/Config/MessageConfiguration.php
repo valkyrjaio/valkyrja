@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast\Config;
 
 use Valkyrja\Broadcast\Message\Contract\Message;
-use Valkyrja\Config\Config as ParentConfig;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Abstract Class MessageConfiguration.

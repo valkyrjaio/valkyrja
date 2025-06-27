@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Mail\Config\Configurations;
 use Valkyrja\Mail\Config\DefaultMessageConfiguration;
 use Valkyrja\Mail\Config\LogConfiguration;
@@ -23,6 +22,7 @@ use Valkyrja\Mail\Config\NullConfiguration;
 use Valkyrja\Mail\Config\PhpMailerConfiguration;
 use Valkyrja\Mail\Constant\ConfigName;
 use Valkyrja\Mail\Constant\EnvName;
+use Valkyrja\Support\Config as ParentConfig;
 
 use function array_key_first;
 

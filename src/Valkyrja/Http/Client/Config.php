@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Client;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Http\Client\Config\Configurations;
 use Valkyrja\Http\Client\Config\GuzzleConfiguration;
 use Valkyrja\Http\Client\Config\NullConfiguration;
 use Valkyrja\Http\Client\Constant\ConfigName;
 use Valkyrja\Http\Client\Constant\EnvName;
+use Valkyrja\Support\Config as ParentConfig;
 
 use function array_key_first;
 

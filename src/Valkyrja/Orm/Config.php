@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Orm\Config\Connections;
 use Valkyrja\Orm\Config\MysqlConnection;
 use Valkyrja\Orm\Config\PgsqlConnection;
 use Valkyrja\Orm\Constant\ConfigName;
 use Valkyrja\Orm\Constant\EnvName;
 use Valkyrja\Orm\Schema\Contract\Migration;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Class Config.

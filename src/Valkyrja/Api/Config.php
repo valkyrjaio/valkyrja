@@ -19,7 +19,7 @@ use Valkyrja\Api\Model\Contract\Json as JsonContract;
 use Valkyrja\Api\Model\Contract\JsonData as JsonDataContract;
 use Valkyrja\Api\Model\Json;
 use Valkyrja\Api\Model\JsonData;
-use Valkyrja\Config\Config as ParentConfig;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Class Config.

@@ -20,7 +20,6 @@ use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Component as CliComponent;
 use Valkyrja\Cli\Config as CliConfig;
-use Valkyrja\Config\Config;
 use Valkyrja\Container\Component as ContainerComponent;
 use Valkyrja\Container\Config as ContainerConfig;
 use Valkyrja\Container\Contract\Container;
@@ -29,6 +28,7 @@ use Valkyrja\Event\Config as EventConfig;
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Http\Component as HttpComponent;
 use Valkyrja\Http\Config as HttpConfig;
+use Valkyrja\Support\Config;
 use Valkyrja\Support\Directory;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 

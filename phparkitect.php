@@ -105,7 +105,7 @@ return static function (Config $config): void {
                       ->because('All security classes should be final');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new Extend(Valkyrja\Config\Config::class))
+                      ->that(new Extend(Valkyrja\Support\Config::class))
                       ->andThat(new NotHaveNameMatching('*Config'))
                       ->should(new ResideInOneOfTheseNamespaces('*Config\\'))
                       ->because('All config classes should exist in an appropriate namespace');

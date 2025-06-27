@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Session\Config\Configurations;
 use Valkyrja\Session\Config\PhpConfiguration;
 use Valkyrja\Session\Constant\ConfigName;
 use Valkyrja\Session\Constant\EnvName;
+use Valkyrja\Support\Config as ParentConfig;
 
 use function array_key_first;
 

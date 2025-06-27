@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms;
 
-use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Sms\Config\Configurations;
 use Valkyrja\Sms\Config\DefaultMessageConfiguration;
 use Valkyrja\Sms\Config\LogConfiguration;
@@ -22,6 +21,7 @@ use Valkyrja\Sms\Config\NullConfiguration;
 use Valkyrja\Sms\Config\VonageConfiguration;
 use Valkyrja\Sms\Constant\ConfigName;
 use Valkyrja\Sms\Constant\EnvName;
+use Valkyrja\Support\Config as ParentConfig;
 
 use function array_key_first;
 

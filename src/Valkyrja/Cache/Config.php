@@ -19,7 +19,7 @@ use Valkyrja\Cache\Config\NullConfiguration;
 use Valkyrja\Cache\Config\RedisConfiguration;
 use Valkyrja\Cache\Constant\ConfigName;
 use Valkyrja\Cache\Constant\EnvName;
-use Valkyrja\Config\Config as ParentConfig;
+use Valkyrja\Support\Config as ParentConfig;
 
 use function array_key_first;
 

@@ -15,7 +15,7 @@ namespace Valkyrja\Cache\Config;
 
 use Valkyrja\Cache\Adapter\Contract\Adapter;
 use Valkyrja\Cache\Driver\Contract\Driver;
-use Valkyrja\Config\Config as ParentConfig;
+use Valkyrja\Support\Config as ParentConfig;
 
 /**
  * Abstract Class Configuration.

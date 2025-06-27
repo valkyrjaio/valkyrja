@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Config;
 
-use Valkyrja\Config\Config as AbstractConfig;
+use Valkyrja\Support\Config as AbstractConfig;
 
 /**
  * Config class to use to test abstract config.
