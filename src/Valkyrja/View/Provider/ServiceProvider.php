@@ -214,7 +214,7 @@ final class ServiceProvider extends Provider
     public static function createTwigEnvironment(Container $container, TwigConfiguration $config): Environment
     {
         $globalConfig = $container->getSingleton(Valkyrja::class);
-        $debug        = $globalConfig->app->debug;
+        $debug        = $globalConfig->app->debugMode;
         $paths        = $config->paths;
         $extensions   = $config->extensions;
         $compiledDir  = $config->compiledDir;

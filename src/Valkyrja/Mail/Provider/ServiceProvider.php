@@ -213,7 +213,7 @@ final class ServiceProvider extends Provider
     public static function createPHPMailer(Container $container, PhpMailerConfiguration $config): PHPMailer
     {
         $globalConfig = $container->getSingleton(Valkyrja::class);
-        $appDebug     = $globalConfig->app->debug;
+        $appDebug     = $globalConfig->app->debugMode;
 
         // Create a new instance of the PHPMailer class
         $mailer = new PHPMailer(true);

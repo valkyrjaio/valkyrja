@@ -53,6 +53,4 @@ final class ConfigValue
         Provider::SMS,
         Provider::VIEW,
     ];
-    /** @var array<array-key, class-string<ContainerProvider>> */
-    public const array DEV_PROVIDERS = [];
 }

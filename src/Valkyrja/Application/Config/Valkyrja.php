@@ -13,18 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Config;
 
-use ArrayAccess;
 use Valkyrja\Api\Config as Api;
 use Valkyrja\Application\Config as App;
 use Valkyrja\Asset\Config as Asset;
 use Valkyrja\Auth\Config as Auth;
 use Valkyrja\Broadcast\Config as Broadcast;
 use Valkyrja\Cache\Config as Cache;
-use Valkyrja\Cli\Interaction\Config as CliInteraction;
-use Valkyrja\Cli\Middleware\Config as CliMiddleware;
-use Valkyrja\Cli\Routing\Config as CliRouting;
+use Valkyrja\Cli\Config as Cli;
 use Valkyrja\Config\Config;
-use Valkyrja\Config\Config\Config as ConfigConfig;
 use Valkyrja\Config\Exception\InvalidArgumentException;
 use Valkyrja\Config\Exception\RuntimeException;
 use Valkyrja\Container\Config as Container;
@@ -32,8 +28,7 @@ use Valkyrja\Crypt\Config as Crypt;
 use Valkyrja\Event\Config as Event;
 use Valkyrja\Filesystem\Config as Filesystem;
 use Valkyrja\Http\Client\Config as Client;
-use Valkyrja\Http\Middleware\Config as HttpMiddleware;
-use Valkyrja\Http\Routing\Config as HttpRouting;
+use Valkyrja\Http\Config as Http;
 use Valkyrja\Jwt\Config as Jwt;
 use Valkyrja\Log\Config as Log;
 use Valkyrja\Mail\Config as Mail;
@@ -43,7 +38,6 @@ use Valkyrja\Session\Config as Session;
 use Valkyrja\Sms\Config as Sms;
 use Valkyrja\View\Config as View;
 
-use function is_string;
 use function unserialize;
 
 /**
@@ -51,217 +45,36 @@ use function unserialize;
  *
  * @author Melech Mizrachi
  *
- * @implements ArrayAccess<string, Config>
- *
- * @property Api            $api
- * @property App            $app
- * @property Asset          $asset
- * @property Auth           $auth
- * @property Broadcast      $broadcast
- * @property Cache          $cache
- * @property CliInteraction $cliInteraction
- * @property CliMiddleware  $cliMiddleware
- * @property CliRouting     $cliRouting
- * @property Client         $client
- * @property ConfigConfig   $config
- * @property Container      $container
- * @property Crypt          $crypt
- * @property Event          $event
- * @property Filesystem     $filesystem
- * @property HttpMiddleware $httpMiddleware
- * @property HttpRouting    $httpRouting
- * @property Jwt            $jwt
- * @property Log            $log
- * @property Mail           $mail
- * @property Notification   $notification
- * @property Orm            $orm
- * @property Session        $session
- * @property Sms            $sms
- * @property View           $view
+ * @property Api          $api
+ * @property App          $app
+ * @property Asset        $asset
+ * @property Auth         $auth
+ * @property Broadcast    $broadcast
+ * @property Cache        $cache
+ * @property Cli          $cli
+ * @property Client       $client
+ * @property Container    $container
+ * @property Crypt        $crypt
+ * @property Event        $event
+ * @property Filesystem   $filesystem
+ * @property Http         $http
+ * @property Jwt          $jwt
+ * @property Log          $log
+ * @property Mail         $mail
+ * @property Notification $notification
+ * @property Orm          $orm
+ * @property Session      $session
+ * @property Sms          $sms
+ * @property View         $view
  */
-class Valkyrja implements ArrayAccess
+class Valkyrja
 {
     /**
-     * A map of property to class.
+     * An array of config classes.
      *
-     * @var array<string, class-string>
+     * @var array<string, Config>
      */
-    protected static array $map = [];
-
-    /**
-     * The api component config.
-     *
-     * @var Api
-     */
-    protected Api $api;
-
-    /**
-     * The application component config.
-     *
-     * @var App
-     */
-    protected App $app;
-
-    /**
-     * The asset component config.
-     *
-     * @var Asset
-     */
-    protected Asset $asset;
-
-    /**
-     * The auth component config.
-     *
-     * @var Auth
-     */
-    protected Auth $auth;
-
-    /**
-     * The broadcast component config.
-     *
-     * @var Broadcast
-     */
-    protected Broadcast $broadcast;
-
-    /**
-     * The cache component config.
-     *
-     * @var Cache
-     */
-    protected Cache $cache;
-
-    /**
-     * The cli interaction component config.
-     *
-     * @var CliInteraction
-     */
-    protected CliInteraction $cliInteraction;
-
-    /**
-     * The cli middleware component config.
-     *
-     * @var CliMiddleware
-     */
-    protected CliMiddleware $cliMiddleware;
-
-    /**
-     * The cli routing component config.
-     *
-     * @var CliRouting
-     */
-    protected CliRouting $cliRouting;
-
-    /**
-     * The client component config.
-     *
-     * @var Client
-     */
-    protected Client $client;
-
-    /**
-     * The client component config.
-     *
-     * @var ConfigConfig
-     */
-    protected ConfigConfig $config;
-
-    /**
-     * The container component config.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
-     * The crypt component config.
-     *
-     * @var Crypt
-     */
-    protected Crypt $crypt;
-
-    /**
-     * The event component config.
-     *
-     * @var Event
-     */
-    protected Event $event;
-
-    /**
-     * The filesystem component config.
-     *
-     * @var Filesystem
-     */
-    protected Filesystem $filesystem;
-
-    /**
-     * The http middleware component config.
-     *
-     * @var HttpMiddleware
-     */
-    protected HttpMiddleware $httpMiddleware;
-
-    /**
-     * The http routing component config.
-     *
-     * @var HttpRouting
-     */
-    protected HttpRouting $httpRouting;
-
-    /**
-     * The Jwt component config.
-     *
-     * @var Jwt
-     */
-    protected Jwt $jwt;
-
-    /**
-     * The logging component config.
-     *
-     * @var Log
-     */
-    protected Log $log;
-
-    /**
-     * The mail component config.
-     *
-     * @var Mail
-     */
-    protected Mail $mail;
-
-    /**
-     * The notification component config.
-     *
-     * @var Notification
-     */
-    protected Notification $notification;
-
-    /**
-     * The ORM component config.
-     *
-     * @var Orm
-     */
-    protected Orm $orm;
-
-    /**
-     * The session component config.
-     *
-     * @var Session
-     */
-    protected Session $session;
-
-    /**
-     * The SMS component config.
-     *
-     * @var Sms
-     */
-    protected Sms $sms;
-
-    /**
-     * The view component config.
-     *
-     * @var View
-     */
-    protected View $view;
+    protected array $map = [];
 
     /**
      * @param array<string, string>|null $cached The cached config
@@ -274,14 +87,12 @@ class Valkyrja implements ArrayAccess
         if ($env === null && $cached === null) {
             throw new InvalidArgumentException('One of env or cached is required');
         }
-
-        if ($cached === null) {
-            $this->setConfigFromEnv($env);
-        }
     }
 
     /**
      * Get a config from a serialized string version of itself.
+     *
+     * @param non-empty-string $cached The cached config
      */
     public static function fromSerializedString(string $cached): static
     {
@@ -297,10 +108,12 @@ class Valkyrja implements ArrayAccess
 
     /**
      * Get a property.
+     *
+     * @param non-empty-string $name The name of the property
      */
     public function __get(string $name): Config|null
     {
-        if (! isset($this->$name) && $this->cached !== null) {
+        if (! isset($this->map[$name]) && $this->cached !== null) {
             $cache = $this->cached[$name];
 
             // Allow all classes, and filter for only Config classes down below since allowed_classes cannot be
@@ -311,65 +124,32 @@ class Valkyrja implements ArrayAccess
                 throw new RuntimeException("Invalid cache provided for $name");
             }
 
-            $this->$name = $config;
+            $this->map[$name] = $config;
 
             return $config;
         }
 
-        /** @psalm-suppress MixedReturnStatement Can be all sorts of config objects */
-        return $this->$name ?? null;
+        return $this->map[$name] ?? null;
     }
 
     /**
      * Set a property.
+     *
+     * @param non-empty-string $name The name of the config to add
      */
     public function __set(string $name, Config $value): void
     {
-        $this->$name = $value;
+        $this->map[$name] = $value;
     }
 
     /**
      * Determine if a property isset.
+     *
+     * @param non-empty-string $name The name of the config to check for
      */
     public function __isset(string $name): bool
     {
-        return isset($this->$name);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetExists($offset): bool
-    {
-        return $this->__isset($offset);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetGet($offset): Config|null
-    {
-        return $this->__get($offset);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetSet($offset, $value): void
-    {
-        if (! is_string($offset)) {
-            throw new RuntimeException('Offset must be a string');
-        }
-
-        $this->__set($offset, $value);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetUnset(mixed $offset): void
-    {
-        throw new RuntimeException("Cannot remove offset with name $offset from config.");
+        return isset($this->map[$name]);
     }
 
     /**
@@ -377,13 +157,7 @@ class Valkyrja implements ArrayAccess
      */
     public function cache(): void
     {
-        $cache = [];
-
-        foreach (get_object_vars($this) as $key => $item) {
-            if ($item instanceof Config) {
-                $cache[$key] = serialize($item);
-            }
-        }
+        $cache = array_map('serialize', $this->map);
 
         $this->cached = $cache;
     }
@@ -411,34 +185,11 @@ class Valkyrja implements ArrayAccess
     }
 
     /**
+     * Set config properties from env after setup.
+     *
      * @param class-string $env The env class
      */
-    protected function setConfigFromEnv(string $env): void
+    public function setConfigFromEnv(string $env): void
     {
-        $this->api            = Api::fromEnv($env);
-        $this->app            = App::fromEnv($env);
-        $this->asset          = Asset::fromEnv($env);
-        $this->auth           = Auth::fromEnv($env);
-        $this->broadcast      = Broadcast::fromEnv($env);
-        $this->cache          = Cache::fromEnv($env);
-        $this->cliInteraction = CliInteraction::fromEnv($env);
-        $this->cliMiddleware  = CliMiddleware::fromEnv($env);
-        $this->cliRouting     = CliRouting::fromEnv($env);
-        $this->client         = Client::fromEnv($env);
-        $this->config         = ConfigConfig::fromEnv($env);
-        $this->container      = Container::fromEnv($env);
-        $this->crypt          = Crypt::fromEnv($env);
-        $this->event          = Event::fromEnv($env);
-        $this->filesystem     = Filesystem::fromEnv($env);
-        $this->httpMiddleware = HttpMiddleware::fromEnv($env);
-        $this->httpRouting    = HttpRouting::fromEnv($env);
-        $this->jwt            = Jwt::fromEnv($env);
-        $this->log            = Log::fromEnv($env);
-        $this->mail           = Mail::fromEnv($env);
-        $this->notification   = Notification::fromEnv($env);
-        $this->orm            = Orm::fromEnv($env);
-        $this->session        = Session::fromEnv($env);
-        $this->sms            = Sms::fromEnv($env);
-        $this->view           = View::fromEnv($env);
     }
 }

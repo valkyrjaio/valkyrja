@@ -16,7 +16,6 @@ namespace Valkyrja\Container;
 use Valkyrja\Config\Config as ParentConfig;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Constant\ConfigName;
-use Valkyrja\Container\Constant\ConfigValue;
 use Valkyrja\Container\Constant\EnvName;
 use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Support\Provider;
@@ -39,7 +38,6 @@ class Config extends ParentConfig
         ConfigName::CONTEXT_ALIASES  => EnvName::CONTEXT_ALIASES,
         ConfigName::CONTEXT_SERVICES => EnvName::CONTEXT_SERVICES,
         ConfigName::PROVIDERS        => EnvName::PROVIDERS,
-        ConfigName::DEV_PROVIDERS    => EnvName::DEV_PROVIDERS,
         ConfigName::USE_ATTRIBUTES   => EnvName::USE_ATTRIBUTES,
     ];
 
@@ -49,7 +47,6 @@ class Config extends ParentConfig
      * @param class-string[]           $contextAliases
      * @param class-string<Service>[]  $contextServices
      * @param class-string<Provider>[] $providers
-     * @param class-string<Provider>[] $devProviders
      */
     public function __construct(
         public array $aliases = [],
@@ -57,18 +54,8 @@ class Config extends ParentConfig
         public array $contextAliases = [],
         public array $contextServices = [],
         public array $providers = [],
-        public array $devProviders = [],
         public bool $useAttributes = true,
         public Cache|null $cache = null,
     ) {
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function setPropertiesAfterSettingFromEnv(string $env): void
-    {
-        $this->providers    = array_merge(ConfigValue::PROVIDERS, $this->providers);
-        $this->devProviders = array_merge(ConfigValue::DEV_PROVIDERS, $this->devProviders);
     }
 }

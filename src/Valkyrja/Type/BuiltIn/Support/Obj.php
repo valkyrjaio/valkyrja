@@ -180,28 +180,24 @@ class Obj
     }
 
     /**
-     * Get a subject value by dot notation key.
+     * Get a subject value by dot notation name.
      *
-     * @param object           $subject      The subject to search
-     * @param string           $key          The dot notation to search for
-     * @param mixed|null       $defaultValue [optional] The default value
-     * @param non-empty-string $separator    [optional] The separator
+     * @param object           $subject   The subject to search
+     * @param non-empty-string $name      The dot notation to search for
+     * @param mixed|null       $default   [optional] The default value
+     * @param non-empty-string $separator [optional] The separator
      *
      * @return mixed
      */
-    public static function getValueDotNotation(
-        object $subject,
-        string $key,
-        mixed $defaultValue = null,
-        string $separator = '.'
-    ): mixed {
-        $value    = $subject;
-        $keyParts = explode($separator, $key);
+    public static function getValueDotNotation(object $subject, string $name, mixed $default = null, string $separator = '.'): mixed
+    {
+        $value = $subject;
+        $parts = explode($separator, $name);
 
         // Explode the keys on period and iterate through the keys
-        foreach ($keyParts as $item) {
+        foreach ($parts as $item) {
             if (! is_object($value)) {
-                return $defaultValue;
+                return $default;
             }
 
             // Trying to get the item from the current value or set the default
@@ -209,7 +205,7 @@ class Obj
 
             // If the value is ull then the dot notation doesn't exist in this array so return the default
             if ($value === null) {
-                return $defaultValue;
+                return $default;
             }
         }
 

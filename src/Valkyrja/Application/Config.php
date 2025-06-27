@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application;
 
+use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Constant\ConfigName;
 use Valkyrja\Application\Constant\EnvName;
 use Valkyrja\Application\Contract\Application;
-use Valkyrja\Application\Support\Provider;
+use Valkyrja\Application\Support\Component;
 use Valkyrja\Config\Config as ParentConfig;
-use Valkyrja\Container\Provider\AppProvider as ContainerAppProvider;
-use Valkyrja\Exception\Contract\ErrorHandler as ErrorHandlerContract;
-use Valkyrja\Exception\ErrorHandler;
+use Valkyrja\Support\Directory;
 
 /**
  * Class Config.
@@ -35,45 +34,61 @@ class Config extends ParentConfig
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::ENV           => EnvName::ENV,
-        ConfigName::DEBUG         => EnvName::DEBUG,
-        ConfigName::URL           => EnvName::ENV,
-        ConfigName::TIMEZONE      => EnvName::TIMEZONE,
-        ConfigName::VERSION       => EnvName::VERSION,
-        ConfigName::KEY           => EnvName::KEY,
-        ConfigName::ERROR_HANDLER => EnvName::ERROR_HANDLER,
-        ConfigName::PROVIDERS     => EnvName::PROVIDERS,
+        ConfigName::ENV             => EnvName::ENV,
+        ConfigName::DEBUG_MODE      => EnvName::DEBUG_MODE,
+        ConfigName::URL             => EnvName::URL,
+        ConfigName::TIMEZONE        => EnvName::TIMEZONE,
+        ConfigName::VERSION         => EnvName::VERSION,
+        ConfigName::KEY             => EnvName::KEY,
+        ConfigName::COMPONENTS      => EnvName::COMPONENTS,
+        ConfigName::CACHE_FILE_PATH => EnvName::CACHE_FILE_PATH,
     ];
 
     /**
-     * @param non-empty-string                   $timezone     The timezone
-     * @param class-string<ErrorHandlerContract> $errorHandler The error handler
-     * @param class-string<Provider>[]           $providers    The app providers
+     * @param non-empty-string          $env        The environment
+     * @param non-empty-string          $url        The url
+     * @param non-empty-string          $timezone   The timezone
+     * @param non-empty-string          $version    The version
+     * @param non-empty-string          $key        The secret key
+     * @param class-string<Component>[] $components The components
      */
     public function __construct(
         public string $env = 'production',
-        public bool $debug = false,
+        public bool $debugMode = false,
         public string $url = 'localhost',
         public string $timezone = 'UTC',
         public string $version = Application::VERSION,
         public string $key = 'some_secret_app_key',
-        public string $errorHandler = ErrorHandler::class,
-        public array $providers = [],
+        public array $components = [],
+        public string $cacheFilePath = ''
     ) {
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    public function setPropertiesFromEnv(string $env): void
     {
-    }
+        if ($this->cacheFilePath === '') {
+            $this->cacheFilePath = Directory::cachePath('config.php');
+        }
 
-    /**
-     * @inheritDoc
-     */
-    protected function setPropertiesAfterSettingFromEnv(string $env): void
-    {
-        $this->providers[] = ContainerAppProvider::class;
+        $this->components = [
+            ComponentClass::API,
+            ComponentClass::ASSET,
+            ComponentClass::AUTH,
+            ComponentClass::BROADCAST,
+            ComponentClass::CACHE,
+            ComponentClass::CRYPT,
+            ComponentClass::FILESYSTEM,
+            ComponentClass::HTTP_CLIENT,
+            ComponentClass::JWT,
+            ComponentClass::LOG,
+            ComponentClass::MAIL,
+            ComponentClass::NOTIFICATION,
+            ComponentClass::ORM,
+            ComponentClass::SESSION,
+            ComponentClass::SMS,
+            ComponentClass::VIEW,
+        ];
+
+        parent::setPropertiesFromEnv($env);
     }
 }

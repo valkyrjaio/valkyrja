@@ -18,6 +18,7 @@ use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
+use Valkyrja\Tests\ConfigClass;
 use Valkyrja\Tests\Unit\TestCase;
 
 use function array_map;
@@ -72,7 +73,16 @@ class ServiceProviderTestCase extends TestCase
 
         $this->container = new Container();
 
-        $this->container->setSingleton(Valkyrja::class, new Valkyrja(env: Env::class));
+        $app = new \Valkyrja\Application\Valkyrja(
+            env: Env::class,
+            config: ConfigClass::class,
+        );
+
+        $env = Env::class;
+
+        $config = $app->getConfig();
+
+        $this->container->setSingleton(Valkyrja::class, $config);
     }
 
     /**

@@ -11,32 +11,32 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Classes\Config;
+namespace Valkyrja\Dispatcher;
 
-use Valkyrja\Application\Config\Valkyrja;
-use Valkyrja\Config\Support\Provider;
+use Valkyrja\Application\Support\Component as AppComponent;
 
 /**
- * Class to use to test the provider.
+ * Final Class Component.
  *
  * @author Melech Mizrachi
  */
-class ProviderClass extends Provider
+class Component extends AppComponent
 {
     /**
-     * The items provided by this provider.
-     *
-     * @return array
+     * @inheritDoc
      */
-    public static function provides(): array
+    public static function getName(): string
     {
-        return [];
+        return 'dispatcher';
     }
 
     /**
      * @inheritDoc
      */
-    public static function publish(Valkyrja $config): void
+    public static function getContainerProviders(): array
     {
+        return [
+            Provider\ServiceProvider::class,
+        ];
     }
 }

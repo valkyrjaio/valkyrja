@@ -72,7 +72,7 @@ final class ServiceProvider extends Provider
     {
         /** @var Valkyrja $config */
         $config     = $container->getSingleton(Valkyrja::class);
-        $middleware = $config->cliMiddleware->inputReceived;
+        $middleware = $config->cli->middleware->inputReceived;
 
         $container->setSingleton(
             InputReceivedHandler::class,
@@ -93,7 +93,7 @@ final class ServiceProvider extends Provider
     {
         /** @var Valkyrja $config */
         $config     = $container->getSingleton(Valkyrja::class);
-        $middleware = $config->cliMiddleware->commandDispatched;
+        $middleware = $config->cli->middleware->commandDispatched;
 
         $container->setSingleton(
             CommandDispatchedHandler::class,
@@ -114,7 +114,7 @@ final class ServiceProvider extends Provider
     {
         /** @var Valkyrja $config */
         $config     = $container->getSingleton(Valkyrja::class);
-        $middleware = $config->cliMiddleware->throwableCaught;
+        $middleware = $config->cli->middleware->throwableCaught;
 
         $container->setSingleton(
             ThrowableCaughtHandler::class,
@@ -135,7 +135,7 @@ final class ServiceProvider extends Provider
     {
         /** @var Valkyrja $config */
         $config     = $container->getSingleton(Valkyrja::class);
-        $middleware = $config->cliMiddleware->commandMatched;
+        $middleware = $config->cli->middleware->commandMatched;
 
         $container->setSingleton(
             CommandMatchedHandler::class,
@@ -156,7 +156,7 @@ final class ServiceProvider extends Provider
     {
         /** @var Valkyrja $config */
         $config     = $container->getSingleton(Valkyrja::class);
-        $middleware = $config->cliMiddleware->commandNotMatched;
+        $middleware = $config->cli->middleware->commandNotMatched;
 
         $container->setSingleton(
             CommandNotMatchedHandler::class,
@@ -177,7 +177,7 @@ final class ServiceProvider extends Provider
     {
         /** @var Valkyrja $config */
         $config     = $container->getSingleton(Valkyrja::class);
-        $middleware = $config->cliMiddleware->exited;
+        $middleware = $config->cli->middleware->exited;
 
         $container->setSingleton(
             ExitedHandler::class,

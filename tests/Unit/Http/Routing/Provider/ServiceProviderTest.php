@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
-use Valkyrja\Application\Config\Valkyrja;
 use Valkyrja\Attribute\Contract\Attributes as AttributesContract;
 use Valkyrja\Container\Constant\ConfigValue;
-use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
@@ -51,7 +49,6 @@ use Valkyrja\Http\Routing\Router;
 use Valkyrja\Http\Routing\Url\Contract\Url as UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Reflection\Contract\Reflection;
-use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 use Valkyrja\View\Contract\View;
 
@@ -115,9 +112,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRouter(): void
     {
-        $container = new Container();
+        $container = $this->container;
 
-        $container->setSingleton(Valkyrja::class, new Valkyrja(env: EnvClass::class));
         $container->setSingleton(RouteDispatchedHandlerContract::class, new RouteDispatchedHandler());
         $container->setSingleton(ThrowableCaughtHandlerContract::class, new ThrowableCaughtHandler());
         $container->setSingleton(RouteMatchedHandlerContract::class, new RouteMatchedHandler());
@@ -140,9 +136,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishCollection(): void
     {
-        $container = new Container();
+        $container = $this->container;
 
-        $container->setSingleton(Valkyrja::class, new Valkyrja(env: EnvClass::class));
         $container->setSingleton(AttributesCollectorContract::class, $this->createMock(AttributesCollectorContract::class));
 
         self::assertFalse($container->has(CollectionContract::class));
@@ -156,7 +151,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishMatcher(): void
     {
-        $container = new Container();
+        $container = $this->container;
 
         $container->setSingleton(CollectionContract::class, $this->createMock(CollectionContract::class));
 
@@ -171,9 +166,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishUrl(): void
     {
-        $container = new Container();
+        $container = $this->container;
 
-        $container->setSingleton(Valkyrja::class, new Valkyrja(env: EnvClass::class));
         $container->setSingleton(CollectionContract::class, $this->createMock(CollectionContract::class));
         $container->setSingleton(MatcherContract::class, $this->createMock(MatcherContract::class));
         $container->setSingleton(ServerRequest::class, $this->createMock(ServerRequest::class));
@@ -189,7 +183,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishAttributesCollector(): void
     {
-        $container = new Container();
+        $container = $this->container;
 
         $container->setSingleton(AttributesContract::class, $this->createMock(AttributesContract::class));
         $container->setSingleton(Reflection::class, $this->createMock(Reflection::class));
@@ -206,7 +200,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishProcessor(): void
     {
-        $container = new Container();
+        $container = $this->container;
 
         self::assertFalse($container->has(ProcessorContract::class));
 
@@ -219,7 +213,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishResponseFactory(): void
     {
-        $container = new Container();
+        $container = $this->container;
 
         $container->setSingleton(UrlContract::class, $this->createMock(UrlContract::class));
         $container->setSingleton(HttpMessageResponseFactory::class, $this->createMock(HttpMessageResponseFactory::class));
@@ -235,7 +229,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRequestStructMiddleware(): void
     {
-        $container = new Container();
+        $container = $this->container;
 
         self::assertFalse($container->has(RequestStructMiddleware::class));
 
@@ -248,7 +242,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishResponseStructMiddleware(): void
     {
-        $container = new Container();
+        $container = $this->container;
 
         self::assertFalse($container->has(ResponseStructMiddleware::class));
 
@@ -261,7 +255,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishViewRouteNotMatchedMiddleware(): void
     {
-        $container = new Container();
+        $container = $this->container;
 
         $container->setSingleton(View::class, $this->createMock(View::class));
 

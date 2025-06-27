@@ -15,6 +15,7 @@ namespace Valkyrja\Application\Contract;
 
 use Valkyrja\Application\Config\Valkyrja as ValkyrjaConfig;
 use Valkyrja\Application\Env;
+use Valkyrja\Application\Support\Component;
 use Valkyrja\Config\Config;
 use Valkyrja\Container\Contract\Container;
 
@@ -33,16 +34,30 @@ interface Application
     public const string VERSION = '2025.1.0';
 
     /**
-     * Get an environment variable.
+     * Setup the application.
+     *
+     * @param class-string<ValkyrjaConfig> $config The config to use
+     * @param bool                         $force  [optional] Whether to force a setup
+     *
+     * @return void
      */
-    public static function getEnvValue(string $key, mixed $default = null): mixed;
+    public function setup(string $config, bool $force = false): void;
+
+    /**
+     * Add a component to the application.
+     *
+     * @param class-string<Component> $component The component class
+     *
+     * @return void
+     */
+    public function addComponent(string $component): void;
 
     /**
      * Get environment variables.
      *
      * @return class-string<Env>
      */
-    public static function getEnv(): string;
+    public function getEnv(): string;
 
     /**
      * Set the environment variables class.
@@ -51,17 +66,14 @@ interface Application
      *
      * @return void
      */
-    public static function setEnv(string $env): void;
+    public function setEnv(string $env): void;
 
     /**
-     * Setup the application.
+     * Get an environment variable.
      *
-     * @param class-string<ValkyrjaConfig>|null $dataConfig [optional] The config to use
-     * @param bool                              $force      [optional] Whether to force a setup
-     *
-     * @return void
+     * @param non-empty-string $name The env name
      */
-    public function setup(string|null $dataConfig = null, bool $force = false): void;
+    public function getEnvValue(string $name, mixed $default = null): mixed;
 
     /**
      * Add to the global config array.
@@ -75,13 +87,17 @@ interface Application
 
     /**
      * Get a config value.
+     *
+     * @param non-empty-string $name The config name
      */
-    public function getConfigValue(string $key, mixed $default = null): mixed;
+    public function getConfigValue(string $name, mixed $default = null): mixed;
 
     /**
      * Add to the global config array.
+     *
+     * @param non-empty-string $name The config name
      */
-    public function addConfig(Config $newConfig, string $key): void;
+    public function addConfig(string $name, Config $config): void;
 
     /**
      * Get the container.

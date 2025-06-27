@@ -22,48 +22,48 @@ class ConfigTest extends TestCase
 {
     public function testDefaults(): void
     {
-        $dataConfig = new Config();
+        $config = new Config();
 
-        self::assertEmpty($dataConfig->requestReceived);
-        self::assertEmpty($dataConfig->routeDispatched);
-        self::assertEmpty($dataConfig->throwableCaught);
-        self::assertEmpty($dataConfig->routeMatched);
-        self::assertEmpty($dataConfig->routeNotMatched);
-        self::assertEmpty($dataConfig->sendingResponse);
-        self::assertEmpty($dataConfig->terminated);
+        self::assertEmpty($config->requestReceived);
+        self::assertEmpty($config->routeDispatched);
+        self::assertEmpty($config->throwableCaught);
+        self::assertEmpty($config->routeMatched);
+        self::assertEmpty($config->routeNotMatched);
+        self::assertEmpty($config->sendingResponse);
+        self::assertEmpty($config->terminated);
     }
 
     public function testFromEnv(): void
     {
-        $dataConfig = Config::fromEnv(EnvClass::class);
+        $config = Config::fromEnv(EnvClass::class);
 
-        self::assertNotEmpty($dataConfig->requestReceived);
-        self::assertNotEmpty($dataConfig->routeDispatched);
-        self::assertNotEmpty($dataConfig->throwableCaught);
-        self::assertNotEmpty($dataConfig->routeMatched);
-        self::assertNotEmpty($dataConfig->routeNotMatched);
-        self::assertNotEmpty($dataConfig->sendingResponse);
-        self::assertNotEmpty($dataConfig->terminated);
+        self::assertNotEmpty($config->requestReceived);
+        self::assertNotEmpty($config->routeDispatched);
+        self::assertNotEmpty($config->throwableCaught);
+        self::assertNotEmpty($config->routeMatched);
+        self::assertNotEmpty($config->routeNotMatched);
+        self::assertNotEmpty($config->sendingResponse);
+        self::assertNotEmpty($config->terminated);
 
-        self::assertSame(EnvClass::HTTP_MIDDLEWARE_REQUEST_RECEIVED, $dataConfig->requestReceived);
-        self::assertSame(EnvClass::HTTP_MIDDLEWARE_ROUTE_DISPATCHED, $dataConfig->routeDispatched);
-        self::assertSame(EnvClass::HTTP_MIDDLEWARE_THROWABLE_CAUGHT, $dataConfig->throwableCaught);
-        self::assertSame(EnvClass::HTTP_MIDDLEWARE_ROUTE_MATCHED, $dataConfig->routeMatched);
-        self::assertSame(EnvClass::HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED, $dataConfig->routeNotMatched);
-        self::assertSame(EnvClass::HTTP_MIDDLEWARE_SENDING_RESPONSE, $dataConfig->sendingResponse);
-        self::assertSame(EnvClass::HTTP_MIDDLEWARE_TERMINATED, $dataConfig->terminated);
+        self::assertSame(EnvClass::HTTP_MIDDLEWARE_REQUEST_RECEIVED, $config->requestReceived);
+        self::assertSame(EnvClass::HTTP_MIDDLEWARE_ROUTE_DISPATCHED, $config->routeDispatched);
+        self::assertSame(EnvClass::HTTP_MIDDLEWARE_THROWABLE_CAUGHT, $config->throwableCaught);
+        self::assertSame(EnvClass::HTTP_MIDDLEWARE_ROUTE_MATCHED, $config->routeMatched);
+        self::assertSame(EnvClass::HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED, $config->routeNotMatched);
+        self::assertSame(EnvClass::HTTP_MIDDLEWARE_SENDING_RESPONSE, $config->sendingResponse);
+        self::assertSame(EnvClass::HTTP_MIDDLEWARE_TERMINATED, $config->terminated);
     }
 
     public function testFromEmptyEnv(): void
     {
-        $dataConfig = Config::fromEnv(EmptyEnvClass::class);
+        $config = Config::fromEnv(EmptyEnvClass::class);
 
-        self::assertEmpty($dataConfig->requestReceived);
-        self::assertEmpty($dataConfig->routeDispatched);
-        self::assertEmpty($dataConfig->throwableCaught);
-        self::assertEmpty($dataConfig->routeMatched);
-        self::assertEmpty($dataConfig->routeNotMatched);
-        self::assertEmpty($dataConfig->sendingResponse);
-        self::assertEmpty($dataConfig->terminated);
+        self::assertEmpty($config->requestReceived);
+        self::assertEmpty($config->routeDispatched);
+        self::assertEmpty($config->throwableCaught);
+        self::assertEmpty($config->routeMatched);
+        self::assertEmpty($config->routeNotMatched);
+        self::assertEmpty($config->sendingResponse);
+        self::assertEmpty($config->terminated);
     }
 }

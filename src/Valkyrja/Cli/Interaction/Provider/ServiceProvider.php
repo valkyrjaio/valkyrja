@@ -55,7 +55,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             OutputFactory::class,
             new \Valkyrja\Cli\Interaction\Factory\OutputFactory(
-                config: $config->cliInteraction
+                config: $config->cli->interaction
             )
         );
     }

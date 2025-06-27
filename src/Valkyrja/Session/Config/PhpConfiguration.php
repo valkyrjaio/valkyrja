@@ -49,8 +49,10 @@ class PhpConfiguration extends Configuration
     /**
      * @inheritDoc
      */
-    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    public function setPropertiesFromEnv(string $env): void
     {
         $this->cookieParams->setPropertiesFromEnv($env);
+
+        parent::setPropertiesFromEnv($env);
     }
 }

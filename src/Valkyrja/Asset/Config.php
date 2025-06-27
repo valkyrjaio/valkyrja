@@ -46,7 +46,7 @@ class Config extends ParentConfig
     /**
      * @inheritDoc
      */
-    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    public function setPropertiesFromEnv(string $env): void
     {
         if ($this->bundles === null) {
             $this->bundles = new Bundles(
@@ -57,5 +57,7 @@ class Config extends ParentConfig
         if ($this->defaultBundle === '') {
             $this->defaultBundle = (string) array_key_first((array) $this->bundles);
         }
+
+        parent::setPropertiesFromEnv($env);
     }
 }

@@ -62,7 +62,7 @@ final class ServiceProvider extends Provider
             new \Valkyrja\Api\Api(
                 $container->getSingleton(ResponseFactory::class),
                 $config->api,
-                $config->app->debug
+                $config->app->debugMode
             )
         );
     }

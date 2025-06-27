@@ -52,7 +52,7 @@ class Config extends ParentConfig
     /**
      * @inheritDoc
      */
-    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    public function setPropertiesFromEnv(string $env): void
     {
         if ($this->connections === null) {
             $this->connections = new Connections(
@@ -64,5 +64,7 @@ class Config extends ParentConfig
         if ($this->defaultConnection === '') {
             $this->defaultConnection = (string) array_key_first((array) $this->connections);
         }
+
+        parent::setPropertiesFromEnv($env);
     }
 }

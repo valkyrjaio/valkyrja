@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Config\Constant;
+namespace Valkyrja\Cli\Constant;
 
 /**
- * Class ConfigName.
+ * Class EnvName.
  *
  * @author Melech Mizrachi
  */
-final class ConfigName
+final class EnvName
 {
-    public const string PROVIDERS       = 'providers';
-    public const string CACHE_FILE_PATH = 'cacheFilePath';
-    public const string USE_CACHE       = 'useCache';
+    public const string INTERACTION = 'CLI_INTERACTION';
+    public const string MIDDLEWARE  = 'CLI_MIDDLEWARE';
+    public const string ROUTING     = 'CLI_ROUTING';
 }

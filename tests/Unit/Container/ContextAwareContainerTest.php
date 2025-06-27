@@ -29,7 +29,7 @@ class ContextAwareContainerTest extends TestCase
 {
     public function testService(): void
     {
-        $container = new ContextAwareContainer(debug: true);
+        $container = new ContextAwareContainer();
 
         $container->bind(ServiceClass::class, ServiceClass::class);
 
@@ -53,7 +53,7 @@ class ContextAwareContainerTest extends TestCase
 
     public function testAlias(): void
     {
-        $container = new ContextAwareContainer(debug: true);
+        $container = new ContextAwareContainer();
 
         $aliasDefault = 'foo';
         $aliasContext = 'bar';
@@ -91,7 +91,7 @@ class ContextAwareContainerTest extends TestCase
 
     public function testSingleton(): void
     {
-        $container = new ContextAwareContainer(debug: true);
+        $container = new ContextAwareContainer();
 
         $container->bindSingleton(SingletonClass::class, SingletonClass::class);
 
@@ -115,7 +115,7 @@ class ContextAwareContainerTest extends TestCase
 
     public function testClosure(): void
     {
-        $container = new ContextAwareContainer(debug: true);
+        $container = new ContextAwareContainer();
 
         $id = 'closureTest';
 

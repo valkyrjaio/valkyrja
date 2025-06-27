@@ -11,16 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Config\Constant;
+namespace Valkyrja\Http\Constant;
 
 /**
- * Class EnvName.
+ * Class ConfigName.
  *
  * @author Melech Mizrachi
  */
-final class EnvName
+final class ConfigName
 {
-    public const string PROVIDERS       = 'CONFIG_PROVIDERS';
-    public const string CACHE_FILE_PATH = 'CONFIG_CACHE_FILE_PATH';
-    public const string USE_CACHE       = 'CONFIG_USE_CACHE';
+    public const string MIDDLEWARE = 'middleware';
+    public const string ROUTING    = 'routing';
 }

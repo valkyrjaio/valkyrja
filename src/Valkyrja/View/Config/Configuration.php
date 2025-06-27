@@ -39,8 +39,10 @@ abstract class Configuration extends ParentConfig
     /**
      * @inheritDoc
      */
-    protected function setPropertiesAfterSettingFromEnv(string $env): void
+    public function setPropertiesFromEnv(string $env): void
     {
+        parent::setPropertiesFromEnv($env);
+
         if ($this->dir === '') {
             $this->dir = Directory::resourcesPath('views');
         }

@@ -112,7 +112,7 @@ class CacheableCollection extends Collection
 
         // Get all the annotated listeners from the list of classes
         // Iterate through the listeners
-        foreach ($listenerAttributes->getListeners(...$this->config->listenerClasses) as $listener) {
+        foreach ($listenerAttributes->getListeners(...$this->config->listeners) as $listener) {
             // Set the route
             $this->addListener($listener);
         }

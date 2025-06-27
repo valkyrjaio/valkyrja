@@ -49,7 +49,7 @@ class Config extends ParentConfig
     /**
      * @inheritDoc
      */
-    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    public function setPropertiesFromEnv(string $env): void
     {
         if ($this->configurations === null) {
             $this->configurations = new Configurations(
@@ -62,5 +62,7 @@ class Config extends ParentConfig
         if ($this->defaultConfiguration === '') {
             $this->defaultConfiguration = (string) array_key_first((array) $this->configurations);
         }
+
+        parent::setPropertiesFromEnv($env);
     }
 }

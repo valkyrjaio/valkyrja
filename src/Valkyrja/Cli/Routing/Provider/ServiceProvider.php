@@ -119,7 +119,7 @@ final class ServiceProvider extends Provider
             Collection::class,
             $collection = new CacheableCollection(
                 container: $container,
-                config: $config->cliRouting
+                config: $config->cli->routing
             )
         );
 

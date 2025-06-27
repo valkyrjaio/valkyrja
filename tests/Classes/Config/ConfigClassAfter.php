@@ -25,8 +25,10 @@ class ConfigClassAfter extends ConfigClass
     public const string PUBLIC   = 'publicAfterEnv';
     public const string NULLABLE = 'nullableAfterEnv';
 
-    protected function setPropertiesAfterSettingFromEnv(string $env): void
+    public function setPropertiesFromEnv(string $env): void
     {
+        parent::setPropertiesFromEnv($env);
+
         $this->public   = self::PUBLIC;
         $this->nullable = self::NULLABLE;
     }

@@ -13,24 +13,29 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application;
 
-use Valkyrja\Application\Config\Valkyrja as ValkyrjaConfig;
+use Valkyrja\Application\Config as ValkyrjaConfig;
+use Valkyrja\Application\Config\Valkyrja as AppConfig;
+use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Contract\Application;
-use Valkyrja\Application\Support\Provider;
+use Valkyrja\Application\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Component as CliComponent;
+use Valkyrja\Cli\Config as CliConfig;
 use Valkyrja\Config\Config;
-use Valkyrja\Config\Support\Provider as ConfigProvider;
+use Valkyrja\Container\Component as ContainerComponent;
+use Valkyrja\Container\Config as ContainerConfig;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Exception\InvalidArgumentException;
+use Valkyrja\Event\Component as EventComponent;
+use Valkyrja\Event\Config as EventConfig;
 use Valkyrja\Exception\RuntimeException;
+use Valkyrja\Http\Component as HttpComponent;
+use Valkyrja\Http\Config as HttpConfig;
 use Valkyrja\Support\Directory;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 
-use function assert;
 use function constant;
-use function define;
 use function defined;
 use function is_file;
 use function is_string;
-use function microtime;
 
 /**
  * Class Valkyrja.
@@ -44,46 +49,145 @@ class Valkyrja implements Application
      *
      * @var class-string<Env>
      */
-    protected static string $env;
+    protected string $env;
 
     /**
      * Application config.
      */
-    protected static ValkyrjaConfig $config;
+    protected AppConfig $config;
 
     /**
      * Get the instance of the container.
      */
-    protected static Container $container;
+    protected Container $container;
 
     /**
      * Whether the application was setup.
      */
-    protected static bool $setup = false;
+    protected bool $setup = false;
 
     /**
      * Application constructor.
      *
-     * @param class-string<ValkyrjaConfig>|null $dataConfig [optional] The config class to use
+     * @param class-string<Env>       $env    The env file to use
+     * @param class-string<AppConfig> $config The config class to use
      */
-    public function __construct(string|null $dataConfig = null)
+    public function __construct(string $env, string $config)
     {
-        $this->setup(
-            dataConfig: $dataConfig
-        );
+        $this->setEnv(env: $env);
+        $this->setup(config: $config);
     }
 
     /**
      * @inheritDoc
      */
-    public static function getEnvValue(string $key, mixed $default = null): mixed
+    public function setup(string $config, bool $force = false): void
     {
-        $env = self::$env;
+        // If the application was already setup, no need to do it again
+        if ($this->setup && ! $force) {
+            return;
+        }
+
+        // Avoid re-setting up the app later
+        $this->setup = true;
+
+        // Bootstrap debug capabilities
+        $this->bootstrapConfig(config: $config);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addComponent(string $component): void
+    {
+        $componentConfig = $component::getConfig();
+
+        if ($componentConfig !== null) {
+            $name = strtolower($component::getName());
+
+            $this->addConfig(
+                name: $name,
+                config: $componentConfig::fromEnv($this->env)
+            );
+        }
+
+        $this->config->container->aliases = [
+            ...$this->config->container->aliases,
+            ...$component::getContainerAliases(),
+        ];
+
+        $this->config->container->services = [
+            ...$this->config->container->services,
+            ...$component::getContainerServices(),
+        ];
+
+        $this->config->container->contextAliases = [
+            ...$this->config->container->contextAliases,
+            ...$component::getContainerContextAliases(),
+        ];
+
+        $this->config->container->contextServices = [
+            ...$this->config->container->contextServices,
+            ...$component::getContainerContextServices(),
+        ];
+
+        $this->config->container->providers = [
+            ...$this->config->container->providers,
+            ...$component::getContainerProviders(),
+        ];
+
+        $this->config->event->listeners = [
+            ...$this->config->event->listeners,
+            ...$component::getEventListeners(),
+        ];
+
+        $this->config->cli->routing->controllers = [
+            ...$this->config->cli->routing->controllers,
+            ...$component::getCliControllers(),
+        ];
+
+        $this->config->http->routing->controllers = [
+            ...$this->config->http->routing->controllers,
+            ...$component::getHttpControllers(),
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @return class-string<Env>
+     */
+    public function getEnv(): string
+    {
+        return $this->env;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setEnv(string $env): void
+    {
+        if (class_exists($env)) {
+            // Set the env class to use
+            $this->env = $env;
+
+            return;
+        }
+
+        throw new InvalidArgumentException('Env must be a valid class');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getEnvValue(string $name, mixed $default = null): mixed
+    {
+        $env = $this->env;
 
         // If the env has this variable defined and the variable isn't null
-        if (defined($env . '::' . $key)) {
+        if (defined($env . '::' . $name)) {
             // Return the variable
-            return constant($env . '::' . $key)
+            return constant($env . '::' . $name)
                 ?? $default;
         }
 
@@ -93,52 +197,10 @@ class Valkyrja implements Application
 
     /**
      * @inheritDoc
-     *
-     * @return class-string<Env>
      */
-    public static function getEnv(): string
+    public function setConfig(AppConfig $config): static
     {
-        return self::$env;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function setEnv(string $env): void
-    {
-        // Set the env class to use
-        self::$env = $env;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setup(string|null $dataConfig = null, bool $force = false): void
-    {
-        // If the application was already setup, no need to do it again
-        if (self::$setup && ! $force) {
-            return;
-        }
-
-        // Avoid re-setting up the app later
-        self::$setup = true;
-
-        // Set a global constant for when the framework started
-        define('VALKYRJA_START', microtime(true));
-
-        // Bootstrap debug capabilities
-        $this->bootstrapConfig(dataConfig: $dataConfig);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setConfig(ValkyrjaConfig $config): static
-    {
-        self::$config = $config;
-
-        $this->publishConfigAppProviders();
-        $this->publishConfigProviders();
+        $this->config = $config;
 
         return $this;
     }
@@ -146,26 +208,32 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function getConfig(): ValkyrjaConfig
+    public function getConfig(): AppConfig
     {
-        return self::$config;
+        return $this->config;
     }
 
     /**
      * @inheritDoc
      */
-    public function getConfigValue(string $key, mixed $default = null): mixed
+    public function getConfigValue(string $name, mixed $default = null): mixed
     {
-        return Obj::getValueDotNotation(self::$config, $key, $default);
+        return Obj::getValueDotNotation(
+            subject: $this->config,
+            name: $name,
+            default: $default
+        );
     }
 
     /**
      * @inheritDoc
      */
-    public function addConfig(Config $newConfig, string $key): void
+    public function addConfig(string $name, Config $config): void
     {
-        // Set the config within the application
-        self::$config[$key] = $newConfig;
+        if (! isset($this->config->$name)) {
+            // Set the config within the application
+            $this->config->$name = $config;
+        }
     }
 
     /**
@@ -173,7 +241,7 @@ class Valkyrja implements Application
      */
     public function getContainer(): Container
     {
-        return self::$container;
+        return $this->container;
     }
 
     /**
@@ -181,7 +249,7 @@ class Valkyrja implements Application
      */
     public function setContainer(Container $container): static
     {
-        self::$container = $container;
+        $this->container = $container;
 
         return $this;
     }
@@ -191,7 +259,7 @@ class Valkyrja implements Application
      */
     public function getDebugMode(): bool
     {
-        return self::$config->app->debug;
+        return $this->config->app->debugMode;
     }
 
     /**
@@ -199,7 +267,7 @@ class Valkyrja implements Application
      */
     public function getEnvironment(): string
     {
-        return self::$config->app->env;
+        return $this->config->app->env;
     }
 
     /**
@@ -213,9 +281,9 @@ class Valkyrja implements Application
     /**
      * Bootstrap the config.
      *
-     * @param class-string<ValkyrjaConfig>|null $dataConfig [optional] The config class to use
+     * @param class-string<AppConfig> $config The config class to use
      */
-    protected function bootstrapConfig(string|null $dataConfig = null): void
+    protected function bootstrapConfig(string $config): void
     {
         // Get the cache file
         $cacheFilePath = $this->getConfigCacheFilePath();
@@ -228,13 +296,17 @@ class Valkyrja implements Application
             return;
         }
 
-        $dataConfig ??= self::getEnvValue('DATA_CONFIG_CLASS', ValkyrjaConfig::class);
+        if (is_a($config, AppConfig::class, true)) {
+            $this->config = $newConfig = new $config(env: $this->getEnv());
 
-        assert(is_string($dataConfig) && is_a($dataConfig, ValkyrjaConfig::class, true));
+            $this->setConfig($newConfig);
 
-        self::$config = $newDataConfig = new $dataConfig(env: self::getEnv());
+            $this->bootstrapComponents();
 
-        $this->setConfig($newDataConfig);
+            return;
+        }
+
+        throw new InvalidArgumentException('Config must be an instance of AppConfig');
     }
 
     /**
@@ -242,7 +314,7 @@ class Valkyrja implements Application
      */
     protected function getConfigCacheFilePath(): string
     {
-        $cacheFilePath = self::getEnvValue('CONFIG_CACHE_FILE_PATH', Directory::cachePath('config.php'));
+        $cacheFilePath = $this->getEnvValue('CONFIG_CACHE_FILE_PATH', Directory::cachePath('config.php'));
 
         if (! is_string($cacheFilePath)) {
             throw new InvalidArgumentException('Config cache file path should be a string');
@@ -263,9 +335,7 @@ class Valkyrja implements Application
                 throw new RuntimeException('Invalid cache file contents');
             }
 
-            self::$config = ValkyrjaConfig::fromSerializedString($cacheFileContents);
-
-            $this->publishConfigAppProviders();
+            $this->config = AppConfig::fromSerializedString(cached: $cacheFileContents);
 
             return;
         }
@@ -274,28 +344,39 @@ class Valkyrja implements Application
     }
 
     /**
-     * Publish app providers.
+     * Bootstrap all the components set in the config.
      */
-    protected function publishConfigAppProviders(): void
+    protected function bootstrapComponents(): void
     {
-        foreach (self::$config->app->providers as $provider) {
-            /** @var Provider $provider */
-            // App providers are NOT deferred
-            $provider::publish($this);
-        }
-    }
+        $env = $this->env;
 
-    /**
-     * Publish config providers.
-     */
-    protected function publishConfigProviders(): void
-    {
-        $config = self::$config;
+        // Bootstrap required configs
+        $appConfig       = ValkyrjaConfig::fromEnv(env: $env);
+        $containerConfig = ContainerConfig::fromEnv(env: $env);
+        $cliConfig       = CliConfig::fromEnv(env: $env);
+        $eventConfig     = EventConfig::fromEnv(env: $env);
+        $httpConfig      = HttpConfig::fromEnv(env: $env);
 
-        /** @var class-string<ConfigProvider> $provider */
-        foreach ($config->config->providers as $provider) {
-            // Config providers are NOT deferred
-            $provider::publish($config);
+        $this->addConfig(name: Component::getName(), config: $appConfig);
+        $this->addConfig(name: ContainerComponent::getName(), config: $containerConfig);
+        $this->addConfig(name: CliComponent::getName(), config: $cliConfig);
+        $this->addConfig(name: EventComponent::getName(), config: $eventConfig);
+        $this->addConfig(name: HttpComponent::getName(), config: $httpConfig);
+
+        // All all the components
+        $this->addComponent(component: ComponentClass::CONTAINER);
+        $this->addComponent(component: ComponentClass::APPLICATION);
+        $this->addComponent(component: ComponentClass::ATTRIBUTE);
+        $this->addComponent(component: ComponentClass::CLI);
+        $this->addComponent(component: ComponentClass::DISPATCHER);
+        $this->addComponent(component: ComponentClass::EVENT);
+        $this->addComponent(component: ComponentClass::HTTP);
+        $this->addComponent(component: ComponentClass::REFLECTION);
+
+        foreach ($this->config->app->components as $component) {
+            $this->addComponent($component);
         }
+
+        $this->config->setConfigFromEnv(env: $env);
     }
 }

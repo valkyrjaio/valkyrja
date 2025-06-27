@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Functional;
 
 use Valkyrja\Application\Command\CacheCommand;
-use Valkyrja\Application\Config\Valkyrja as ValkyrjaConfig;
+use Valkyrja\Application\Config;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Routing\Contract\Router as CliRouter;
-use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Filesystem\Contract\Filesystem;
 use Valkyrja\Http\Client\Contract\Client;
@@ -27,7 +26,6 @@ use Valkyrja\Http\Routing\Contract\Router;
 use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Session\Contract\Session;
-use Valkyrja\Tests\Classes\Config\ProviderClass;
 use Valkyrja\Tests\ConfigClass;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\View\Contract\View;
@@ -80,7 +78,7 @@ class ApplicationTest extends TestCase
     public function testAddConfig(): void
     {
         $config = new Config();
-        $this->app->addConfig($config, 'new');
+        $this->app->addConfig('new', $config);
 
         self::assertSame($config, $this->app->getConfig()->new ?? null);
     }
@@ -92,7 +90,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnv(): void
     {
-        self::assertIsString($this->app::getEnv());
+        self::assertIsString($this->app->getEnv());
     }
 
     /**
@@ -102,7 +100,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnvValue(): void
     {
-        self::assertTrue($this->app::getEnvValue('CONSOLE_SHOULD_RUN_QUIETLY'));
+        self::assertTrue($this->app->getEnvValue('CLI_INTERACTION_IS_QUIET'));
     }
 
     /**
@@ -112,7 +110,7 @@ class ApplicationTest extends TestCase
      */
     public function testGetEnv(): void
     {
-        self::assertSame(EnvClass::class, $this->app::getEnv());
+        self::assertSame(EnvClass::class, $this->app->getEnv());
     }
 
     /**
@@ -122,8 +120,8 @@ class ApplicationTest extends TestCase
      */
     public function testSetEnv(): void
     {
-        $this->app::setEnv(EnvClass::class);
-        self::assertSame(EnvClass::class, $this->app::getEnv());
+        $this->app->setEnv(EnvClass::class);
+        self::assertSame(EnvClass::class, $this->app->getEnv());
     }
 
     /**
@@ -143,7 +141,7 @@ class ApplicationTest extends TestCase
      */
     public function testDebug(): void
     {
-        self::assertSame($this->app->getConfig()->app->debug, $this->app->getDebugMode());
+        self::assertSame($this->app->getConfig()->app->debugMode, $this->app->getDebugMode());
     }
 
     /**
@@ -248,35 +246,13 @@ class ApplicationTest extends TestCase
      */
     public function testDebugOn(): void
     {
-        $config = new ConfigClass(env: EnvClass::class);
+        $config = clone $this->app->getConfig();
 
-        $config->app->debug = true;
-        $this->app          = $this->app->setConfig($config);
-
-        self::assertTrue($this->app->getDebugMode());
-
-        restore_error_handler();
-        restore_exception_handler();
-    }
-
-    /**
-     * Test resetting the application with a config provider.
-     *
-     * @return void
-     */
-    public function testApplicationSetupWithConfigProvider(): void
-    {
-        $oldConfig                 = $this->app->getConfig();
-        $config                    = new ValkyrjaConfig(env: EnvClass::class);
-        $config->config->providers = [
-            ProviderClass::class,
-        ];
+        $config->app->debugMode = true;
 
         $this->app = $this->app->setConfig($config);
 
-        self::assertSame(ProviderClass::class, $this->app->getConfig()->config->providers[0]);
-
-        $this->app = $this->app->setConfig($oldConfig);
+        self::assertTrue($this->app->getDebugMode());
     }
 
     /**
@@ -300,7 +276,7 @@ class ApplicationTest extends TestCase
 
         usleep(100);
 
-        $cacheFilePath = $this->app->getConfig()->config->cacheFilePath;
+        $cacheFilePath = $this->app->getConfig()->app->cacheFilePath;
 
         if (is_file($cacheFilePath)) {
             // Delete the config cache file to avoid headaches later

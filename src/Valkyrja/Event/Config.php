@@ -31,14 +31,14 @@ class Config extends ParentConfig
      * @var array<string, string>
      */
     protected static array $envNames = [
-        ConfigName::LISTENER_CLASSES => EnvName::LISTENER_CLASSES,
+        ConfigName::LISTENERS => EnvName::LISTENERS,
     ];
 
     /**
-     * @param class-string[] $listenerClasses
+     * @param class-string[] $listeners
      */
     public function __construct(
-        public array $listenerClasses = [],
+        public array $listeners = [],
         public Cache|null $cache = null,
     ) {
     }

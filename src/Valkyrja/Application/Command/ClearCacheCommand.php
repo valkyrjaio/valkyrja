@@ -36,7 +36,7 @@ class ClearCacheCommand
     public function run(Valkyrja $config, OutputFactory $outputFactory): Output
     {
         $configCache   = $config;
-        $cacheFilePath = $configCache->config->cacheFilePath;
+        $cacheFilePath = $configCache->app->cacheFilePath;
 
         // If the cache file already exists, delete it
         if (is_file($cacheFilePath)) {

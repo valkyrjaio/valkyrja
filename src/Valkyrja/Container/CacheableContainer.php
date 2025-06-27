@@ -175,16 +175,6 @@ class CacheableContainer extends Container
             [$this, 'register'],
             $this->config->providers
         );
-
-        // If this is not a dev environment
-        if (! $this->debug) {
-            return;
-        }
-
-        array_map(
-            [$this, 'register'],
-            $this->config->devProviders
-        );
     }
 
     /**

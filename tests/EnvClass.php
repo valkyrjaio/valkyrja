@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests;
 
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env as AppEnv;
 use Valkyrja\Tests\Classes\Controller\ControllerClass;
 
 /**
- * Class Env.
+ * Class EnvClass.
  *
  * @author Melech Mizrachi
  */
-class EnvClass extends Env
+class EnvClass extends AppEnv
 {
     /************************************************************
      *
@@ -30,7 +30,7 @@ class EnvClass extends Env
      ************************************************************/
 
     /** @var bool|null */
-    public const bool|null APP_DEBUG = false;
+    public const bool|null APP_DEBUG_MODE = false;
 
     /************************************************************
      *
@@ -39,16 +39,16 @@ class EnvClass extends Env
      ************************************************************/
 
     /** @var string|null */
-    public const string|null CONFIG_CACHE_FILE_PATH = __DIR__ . '/bootstrap/cache.php';
+    public const string|null APP_CACHE_FILE_PATH = __DIR__ . '/bootstrap/cache.php';
 
     /************************************************************
      *
-     * Console component env variables.
+     * Cli Interaction component env variables.
      *
      ************************************************************/
 
     /** @var bool|null */
-    public const bool|null CONSOLE_SHOULD_RUN_QUIETLY = true;
+    public const bool|null CLI_INTERACTION_IS_QUIET = true;
 
     /************************************************************
      *

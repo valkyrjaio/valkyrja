@@ -56,10 +56,12 @@ class TwigConfiguration extends Configuration
     /**
      * @inheritDoc
      */
-    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    public function setPropertiesFromEnv(string $env): void
     {
         if ($this->compiledDir === '') {
             $this->compiledDir = Directory::storagePath('views');
         }
+
+        parent::setPropertiesFromEnv($env);
     }
 }

@@ -105,8 +105,8 @@ abstract class AuthMiddleware
     /**
      * Get the config or a config item.
      *
-     * @param string|null $key     [optional]
-     * @param mixed|null  $default [optional]
+     * @param non-empty-string|null $key     [optional]
+     * @param mixed|null            $default [optional]
      *
      * @return mixed|null
      */

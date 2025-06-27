@@ -25,6 +25,5 @@ final class ConfigName
     public const string CONTEXT_ALIASES  = 'contextAliases';
     public const string CONTEXT_SERVICES = 'contextServices';
     public const string PROVIDERS        = 'providers';
-    public const string DEV_PROVIDERS    = 'devProviders';
     public const string USE_ATTRIBUTES   = 'useAttributes';
 }

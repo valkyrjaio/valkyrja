@@ -20,12 +20,12 @@ namespace Valkyrja\Application\Constant;
  */
 final class EnvName
 {
-    public const string ENV           = 'APP_ENV';
-    public const string DEBUG         = 'APP_DEBUG';
-    public const string URL           = 'APP_URL';
-    public const string TIMEZONE      = 'APP_TIMEZONE';
-    public const string VERSION       = 'APP_VERSION';
-    public const string KEY           = 'APP_KEY';
-    public const string ERROR_HANDLER = 'APP_ERROR_HANDLER';
-    public const string PROVIDERS     = 'APP_PROVIDERS';
+    public const string ENV             = 'APP_ENV';
+    public const string DEBUG_MODE      = 'APP_DEBUG_MODE';
+    public const string URL             = 'APP_URL';
+    public const string TIMEZONE        = 'APP_TIMEZONE';
+    public const string VERSION         = 'APP_VERSION';
+    public const string KEY             = 'APP_KEY';
+    public const string COMPONENTS      = 'APP_COMPONENTS';
+    public const string CACHE_FILE_PATH = 'APP_CACHE_FILE_PATH';
 }

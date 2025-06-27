@@ -81,11 +81,4 @@ class Config extends ParentConfig
         public int $passwordTimeout = 10800,
     ) {
     }
-
-    /**
-     * @inheritDoc
-     */
-    protected function setPropertiesBeforeSettingFromEnv(string $env): void
-    {
-    }
 }

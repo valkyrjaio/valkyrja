@@ -87,7 +87,7 @@ final class ServiceProvider extends Provider
                 throwableCaughtHandler: $exception,
                 sendingResponseHandler: $sendingResponse,
                 terminatedHandler: $terminated,
-                debug: $config->app->debug
+                debug: $config->app->debugMode
             )
         );
     }

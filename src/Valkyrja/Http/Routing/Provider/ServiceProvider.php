@@ -141,7 +141,7 @@ final class ServiceProvider extends Provider
             Collection::class,
             $collection = new CacheableCollection(
                 container: $container,
-                config: $config->httpRouting
+                config: $config->http->routing
             )
         );
 

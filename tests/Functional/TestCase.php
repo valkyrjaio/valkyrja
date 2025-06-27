@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional;
 
-use JsonException;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Valkyrja\Application\Valkyrja;
+use Valkyrja\Application\Contract\Application;
+use Valkyrja\Application\Entry\App;
 use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Support\Directory;
@@ -32,26 +32,33 @@ class TestCase extends PHPUnitTestCase
     /**
      * The application.
      *
-     * @var Valkyrja
+     * @var Application
      */
-    protected Valkyrja $app;
+    protected Application $app;
 
     /**
      * Setup functional tests.
-     *
-     * @throws JsonException
      *
      * @return void
      */
     protected function setUp(): void
     {
+        App::directory(dir: __DIR__ . '/../..');
+
+        $this->app = $app = App::app(
+            env: EnvClass::class,
+            config: ConfigClass::class
+        );
+
         Directory::$BASE_PATH      = __DIR__ . '/../..';
         Directory::$BOOTSTRAP_PATH = 'tests/bootstrap';
         Directory::$STORAGE_PATH   = 'tests/storage';
 
-        Valkyrja::setEnv(EnvClass::class);
+        $container = App::getContainer($app);
 
-        $this->app = new Valkyrja(ConfigClass::class);
-        $this->app->getContainer()->setSingleton(ServerRequest::class, RequestFactory::fromGlobals());
+        // $handler = $container->getSingleton(RequestHandler::class);
+        // $handler->run(RequestFactory::fromGlobals());
+
+        $container->setSingleton(ServerRequest::class, RequestFactory::fromGlobals());
     }
 }

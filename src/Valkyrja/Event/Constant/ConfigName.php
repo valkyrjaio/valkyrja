@@ -20,5 +20,5 @@ namespace Valkyrja\Event\Constant;
  */
 final class ConfigName
 {
-    public const string LISTENER_CLASSES = 'listenerClasses';
+    public const string LISTENERS = 'listeners';
 }

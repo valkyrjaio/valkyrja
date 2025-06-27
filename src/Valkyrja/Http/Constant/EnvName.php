@@ -11,19 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Config\Support;
-
-use Valkyrja\Application\Config\Valkyrja;
+namespace Valkyrja\Http\Constant;
 
 /**
- * Abstract Class Provider.
+ * Class EnvName.
  *
  * @author Melech Mizrachi
  */
-abstract class Provider
+final class EnvName
 {
-    /**
-     * Publish the provider.
-     */
-    abstract public static function publish(Valkyrja $config): void;
+    public const string MIDDLEWARE = 'HTTP_MIDDLEWARE';
+    public const string ROUTING    = 'HTTP_ROUTING';
 }

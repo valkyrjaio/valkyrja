@@ -17,7 +17,6 @@ use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Container\Attribute\Contract\Collector;
 use Valkyrja\Container\CacheableContainer;
 use Valkyrja\Container\Config as ContainerConfig;
-use Valkyrja\Container\Constant\Provider;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -33,7 +32,7 @@ class CacheableContainerTest extends TestCase
     public function testGetCacheable(): void
     {
         $config    = new ContainerConfig();
-        $container = new CacheableContainer($config, true);
+        $container = new CacheableContainer($config);
 
         $annotator = $this->createMock(Collector::class);
         $annotator->method('getServices')->willReturn([]);
@@ -41,10 +40,6 @@ class CacheableContainerTest extends TestCase
         $annotator->method('getAliases')->willReturn([]);
 
         $container->setSingleton(Collector::class, $annotator);
-
-        $config->devProviders = [
-            Provider::VIEW,
-        ];
 
         $cacheable = $container->getCacheable();
 
@@ -57,7 +52,7 @@ class CacheableContainerTest extends TestCase
     public function testSetup(): void
     {
         $config    = new ContainerConfig();
-        $container = new CacheableContainer($config, true);
+        $container = new CacheableContainer($config);
 
         $annotator = $this->createMock(Collector::class);
         $annotator->method('getServices')->willReturn([]);

@@ -13,17 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing;
 
-use Valkyrja\Application\Command\CacheCommand;
-use Valkyrja\Application\Command\ClearCacheCommand;
-use Valkyrja\Cli\Routing\Command\HelpCommand;
-use Valkyrja\Cli\Routing\Command\ListBashCommand;
-use Valkyrja\Cli\Routing\Command\ListCommand;
-use Valkyrja\Cli\Routing\Command\VersionCommand;
 use Valkyrja\Cli\Routing\Config\Cache;
 use Valkyrja\Cli\Routing\Constant\ConfigName;
 use Valkyrja\Cli\Routing\Constant\EnvName;
 use Valkyrja\Config\Config as ParentConfig;
-use Valkyrja\Http\Routing\Command\ListCommand as HttpListCommand;
 
 /**
  * Class Config.
@@ -48,22 +41,5 @@ class Config extends ParentConfig
         public array $controllers = [],
         public Cache|null $cache = null,
     ) {
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function setPropertiesAfterSettingFromEnv(string $env): void
-    {
-        $this->controllers = [
-            ListCommand::class,
-            ListBashCommand::class,
-            VersionCommand::class,
-            HelpCommand::class,
-            CacheCommand::class,
-            ClearCacheCommand::class,
-            HttpListCommand::class,
-            ...$this->controllers,
-        ];
     }
 }

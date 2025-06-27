@@ -47,11 +47,4 @@ class Config extends ParentConfig
         public string $dataModel = JsonData::class,
     ) {
     }
-
-    /**
-     * @inheritDoc
-     */
-    protected function setPropertiesBeforeSettingFromEnv(string $env): void
-    {
-    }
 }

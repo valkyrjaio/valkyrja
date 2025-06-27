@@ -129,7 +129,7 @@ class Router implements Contract
         );
 
         if (! $response instanceof Response) {
-            return $this->getResponseForMixed($response);
+            return $this->getResponseForDispatch($response);
         }
 
         return $this->routeDispatchedHandler->routeDispatched(
@@ -186,7 +186,7 @@ class Router implements Contract
      *
      * @return Response
      */
-    protected function getResponseForMixed(mixed $response): Response
+    protected function getResponseForDispatch(mixed $response): Response
     {
         return match (true) {
             is_string($response) => $this->getResponseForString($response),

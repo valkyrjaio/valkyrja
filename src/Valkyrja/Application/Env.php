@@ -17,7 +17,7 @@ use League\Flysystem\FilesystemAdapter as FlysystemAdapter;
 use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
 use Valkyrja\Api\Model\Contract\Json as ApiJson;
 use Valkyrja\Api\Model\Contract\JsonData as ApiJsonData;
-use Valkyrja\Application\Support\Provider as AppProvider;
+use Valkyrja\Application\Support\Component;
 use Valkyrja\Asset\Adapter\Contract\Adapter as AssetAdapter;
 use Valkyrja\Auth\Adapter\Contract\Adapter as AuthAdapter;
 use Valkyrja\Auth\Entity\Contract\User as AuthUser;
@@ -32,19 +32,20 @@ use Valkyrja\Broadcast\Message\Contract\Message as BroadcastMessage;
 use Valkyrja\Cache\Adapter\Contract\Adapter as CacheAdapter;
 use Valkyrja\Cache\Config\Configurations as CacheConfigurations;
 use Valkyrja\Cache\Driver\Contract\Driver as CacheDriver;
+use Valkyrja\Cli\Interaction\Config as CliInteractionConfig;
+use Valkyrja\Cli\Middleware\Config as CliMiddlewareConfig;
 use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Config\Support\Provider as ConfigProvider;
+use Valkyrja\Cli\Routing\Config as CliRoutingConfig;
 use Valkyrja\Container\Contract\Service as ContainerService;
 use Valkyrja\Container\Support\Provider as ContainerProvider;
 use Valkyrja\Crypt\Adapter\Contract\Adapter as CryptAdapter;
 use Valkyrja\Crypt\Config\Configurations as CryptConfigurations;
 use Valkyrja\Crypt\Driver\Contract\Driver as CryptDriver;
-use Valkyrja\Exception\Contract\ErrorHandler;
 use Valkyrja\Filesystem\Adapter\Contract\Adapter as FilesystemAdapter;
 use Valkyrja\Filesystem\Config\Configurations as FilesystemConfigurations;
 use Valkyrja\Filesystem\Driver\Contract\Driver as FilesystemDriver;
@@ -52,6 +53,7 @@ use Valkyrja\Http\Client\Adapter\Contract\Adapter as ClientAdapter;
 use Valkyrja\Http\Client\Config\Configurations as ClientConfigurations;
 use Valkyrja\Http\Client\Driver\Contract\Driver as ClientDriver;
 use Valkyrja\Http\Message\Enum\SameSite;
+use Valkyrja\Http\Middleware\Config as HttpMiddlewareConfig;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware as HttpRequestReceivedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware as HttpRouteDispatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware as HttpRouteMatchedMiddleware;
@@ -59,6 +61,7 @@ use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware as HttpRouteNotM
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware as HttpSendingResponseMiddleware;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware as HttpTerminatedMiddleware;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware as HttpThrowableCaughtMiddleware;
+use Valkyrja\Http\Routing\Config as HttpRoutingConfig;
 use Valkyrja\Http\Server\Contract\RequestHandler as HttpServerRequestHandler;
 use Valkyrja\Jwt\Adapter\Contract\Adapter as JwtAdapter;
 use Valkyrja\Jwt\Config\Configurations as JwtConfiguration;
@@ -106,7 +109,7 @@ class Env
     /** @var string|null */
     public const string|null APP_ENV = 'local';
     /** @var bool|null */
-    public const bool|null APP_DEBUG = true;
+    public const bool|null APP_DEBUG_MODE = true;
     /** @var string|null */
     public const string|null APP_URL = 'localhost';
     /** @var string|null */
@@ -115,23 +118,10 @@ class Env
     public const string|null APP_VERSION = '1 (ALPHA)';
     /** @var string|null */
     public const string|null APP_KEY = null;
-    /** @var class-string<ErrorHandler>|null */
-    public const string|null APP_ERROR_HANDLER = null;
-    /** @var class-string<AppProvider>[]|null */
-    public const array|null APP_PROVIDERS = null;
-
-    /************************************************************
-     *
-     * Config component env variables.
-     *
-     ************************************************************/
-
-    /** @var class-string<ConfigProvider>[]|null */
-    public const array|null CONFIG_PROVIDERS = null;
+    /** @var class-string<Component>[]|null */
+    public const array|null APP_COMPONENTS = null;
     /** @var string|null */
-    public const string|null CONFIG_CACHE_FILE_PATH = null;
-    /** @var string|null */
-    public const string|null CONFIG_USE_CACHE = null;
+    public const string|null APP_CACHE_FILE_PATH = null;
 
     /************************************************************
      *
@@ -274,6 +264,32 @@ class Env
 
     /************************************************************
      *
+     * Cli component env variables.
+     *
+     ************************************************************/
+
+    /** @var callable():CliInteractionConfig|null */
+    public const array|null CLI_INTERACTION = null;
+    /** @var callable():CliMiddlewareConfig|null */
+    public const array|null CLI_MIDDLEWARE = null;
+    /** @var callable():CliRoutingConfig|null */
+    public const array|null CLI_ROUTING = null;
+
+    /************************************************************
+     *
+     * Cli Interaction component env variables.
+     *
+     ************************************************************/
+
+    /** @var bool|null */
+    public const bool|null CLI_INTERACTION_IS_QUIET = null;
+    /** @var bool|null */
+    public const bool|null CLI_INTERACTION_IS_INTERACTIVE = null;
+    /** @var bool|null */
+    public const bool|null CLI_INTERACTION_IS_SILENT = null;
+
+    /************************************************************
+     *
      * Cli Middleware component env variables.
      *
      ************************************************************/
@@ -337,8 +353,6 @@ class Env
     public const array|null CONTAINER_CONTEXT_SERVICES = null;
     /** @var class-string<ContainerProvider>[]|null */
     public const array|null CONTAINER_PROVIDERS = null;
-    /** @var class-string<ContainerProvider>[]|null */
-    public const array|null CONTAINER_DEV_PROVIDERS = null;
     /** @var bool|null */
     public const bool|null CONTAINER_USE_ATTRIBUTES = null;
 
@@ -374,7 +388,7 @@ class Env
      ************************************************************/
 
     /** @var class-string[]|null */
-    public const array|null EVENT_LISTENER_CLASSES = null;
+    public const array|null EVENT_LISTENERS = null;
 
     /************************************************************
      *
@@ -427,16 +441,14 @@ class Env
 
     /************************************************************
      *
-     * Http Interaction component env variables.
+     * Http component env variables.
      *
      ************************************************************/
 
-    /** @var bool|null */
-    public const bool|null CLI_INTERACTION_IS_QUIET = null;
-    /** @var bool|null */
-    public const bool|null CLI_INTERACTION_IS_INTERACTIVE = null;
-    /** @var bool|null */
-    public const bool|null CLI_INTERACTION_IS_SILENT = null;
+    /** @var callable():HttpMiddlewareConfig|null */
+    public const array|null HTTP_MIDDLEWARE = null;
+    /** @var callable():HttpRoutingConfig|null */
+    public const array|null HTTP_ROUTING = null;
 
     /************************************************************
      *

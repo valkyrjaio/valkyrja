@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Server\Provider;
 
-use Valkyrja\Application\Config\Valkyrja;
-use Valkyrja\Container\Container;
 use Valkyrja\Http\Middleware\Provider\ServiceProvider as MiddlewareServiceProvider;
 use Valkyrja\Http\Routing\Contract\Router;
 use Valkyrja\Http\Server\Contract\RequestHandler as RequestHandlerContract;
@@ -23,7 +21,6 @@ use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Provider\ServiceProvider;
 use Valkyrja\Http\Server\RequestHandler;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 use Valkyrja\View\Factory\Contract\ResponseFactory;
 
@@ -61,9 +58,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishRequestHandler(): void
     {
-        $container = new Container();
-
-        $container->setSingleton(Valkyrja::class, new Valkyrja(env: EnvClass::class));
+        $container = $this->container;
 
         MiddlewareServiceProvider::publishRequestReceivedHandler($container);
         MiddlewareServiceProvider::publishExceptionHandler($container);
@@ -82,7 +77,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishLogThrowableCaughtMiddleware(): void
     {
-        $container = new Container();
+        $container = $this->container;
 
         $container->setSingleton(Logger::class, $this->createMock(Logger::class));
 
@@ -96,7 +91,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishViewThrowableCaughtMiddleware(): void
     {
-        $container = new Container();
+        $container = $this->container;
 
         $container->setSingleton(ResponseFactory::class, $this->createMock(ResponseFactory::class));
 

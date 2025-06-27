@@ -25,9 +25,11 @@ class ConfigClassBefore extends ConfigClass
     public const string PUBLIC   = 'publicBeforeEnv';
     public const string NULLABLE = 'nullableBeforeEnv';
 
-    protected function setPropertiesBeforeSettingFromEnv(string $env): void
+    public function setPropertiesFromEnv(string $env): void
     {
         $this->public   = self::PUBLIC;
         $this->nullable = self::NULLABLE;
+
+        parent::setPropertiesFromEnv($env);
     }
 }

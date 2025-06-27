@@ -58,15 +58,15 @@ class CacheCommand
     ): Output {
         $config = clone $config;
 
-        $cacheFilePath = $config->config->cacheFilePath;
+        $cacheFilePath = $config->app->cacheFilePath;
 
         // If the cache file already exists, delete it
         if (is_file($cacheFilePath)) {
             unlink($cacheFilePath);
         }
 
-        $config->app->debug = false;
-        $config->app->env   = 'production';
+        $config->app->debugMode = false;
+        $config->app->env       = 'production';
 
         /** @var CacheableContainer $container */
         $container = clone $container;
@@ -86,11 +86,11 @@ class CacheCommand
         $config->container->cache     = $containerCache->cache
             ?? throw new RuntimeException('Container Cache should be set');
 
-        $config->cliRouting->cache = $cliCache;
+        $config->cli->routing->cache = $cliCache;
 
         $config->event->cache = $eventsCache;
 
-        $config->httpRouting->cache = $routesCache;
+        $config->http->routing->cache = $routesCache;
 
         // Get the results of the cache attempt
         $result = file_put_contents($cacheFilePath, $config->asSerializedString(), LOCK_EX);

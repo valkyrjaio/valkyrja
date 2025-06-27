@@ -68,7 +68,7 @@ final class ServiceProvider extends Provider
                 inputReceivedHandler: $container->getSingleton(InputReceivedHandler::class),
                 throwableCaughtHandler: $container->getSingleton(ThrowableCaughtHandler::class),
                 exitedHandler: $container->getSingleton(ExitedHandler::class),
-                interactionConfig: $config->cliInteraction
+                interactionConfig: $config->cli->interaction
             ),
         );
     }

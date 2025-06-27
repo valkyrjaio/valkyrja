@@ -70,8 +70,7 @@ class Container implements Contract
      * Container constructor.
      */
     public function __construct(
-        protected Config $config = new Config(),
-        protected bool $debug = false
+        protected Config $config = new Config()
     ) {
     }
 

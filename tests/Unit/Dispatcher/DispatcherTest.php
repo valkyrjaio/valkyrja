@@ -116,7 +116,7 @@ class DispatcherTest extends TestCase
         parent::setUp();
 
         $this->config     = new Config();
-        $this->container  = new Container($this->config, true);
+        $this->container  = new Container($this->config);
         $this->dispatcher = new Dispatcher($this->container);
 
         $this->container->setSingleton(self::class, $this);
@@ -406,8 +406,8 @@ class DispatcherTest extends TestCase
 
     public function testDependencies(): void
     {
-        $container  = new ContextAwareContainer($this->config, true);
-        $container2 = new ContextAwareContainer($this->config, true);
+        $container  = new ContextAwareContainer($this->config);
+        $container2 = new ContextAwareContainer($this->config);
         $dispatcher = new Dispatcher($container);
 
         $container->bind(ServiceClass::class, ServiceClass::class);

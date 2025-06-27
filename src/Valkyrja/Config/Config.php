@@ -40,9 +40,7 @@ abstract class Config
     {
         $new = new static();
 
-        $new->setPropertiesBeforeSettingFromEnv($env);
         $new->setPropertiesFromEnv($env);
-        $new->setPropertiesAfterSettingFromEnv($env);
 
         return $new;
     }
@@ -52,7 +50,7 @@ abstract class Config
      *
      * @param class-string $env The env
      */
-    protected function setPropertiesFromEnv(string $env): void
+    public function setPropertiesFromEnv(string $env): void
     {
         foreach (static::$envNames as $propertyName => $envName) {
             if (defined("$env::$envName")) {
@@ -69,23 +67,5 @@ abstract class Config
                     ?? $this->$propertyName;
             }
         }
-    }
-
-    /**
-     * Set properties' values before setting from env.
-     *
-     * @param class-string $env The env
-     */
-    protected function setPropertiesBeforeSettingFromEnv(string $env): void
-    {
-    }
-
-    /**
-     * Set properties' values after setting from env.
-     *
-     * @param class-string $env The env
-     */
-    protected function setPropertiesAfterSettingFromEnv(string $env): void
-    {
     }
 }

@@ -24,7 +24,7 @@ use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 class VersionOptionParameter extends OptionParameter
 {
     public const string NAME       = 'version';
-    public const string SHORT_NAME = 'V';
+    public const string SHORT_NAME = 'v';
 
     public function __construct()
     {
