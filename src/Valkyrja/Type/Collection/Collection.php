@@ -118,7 +118,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string|int $key, string|int|float|bool|array|object $default = null): string|int|float|bool|array|object
+    public function get(string|int $key, string|int|float|bool|array|object|null $default = null): string|int|float|bool|array|object
     {
         return $this->has($key) ? $this->collection[$key] : $default;
     }

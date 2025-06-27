@@ -99,7 +99,7 @@ interface Collection extends Stringable
      *
      * @return T
      */
-    public function get(string|int $key, string|int|float|bool|array|object $default = null): string|int|float|bool|array|object;
+    public function get(string|int $key, string|int|float|bool|array|object|null $default = null): string|int|float|bool|array|object;
 
     /**
      * Determine if an item is in the collection.
