@@ -15,13 +15,16 @@ namespace Valkyrja\Cli\Middleware\Handler\Contract;
 
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
 
 /**
  * Interface CommandNotMatchedHandler.
  *
  * @author Melech Mizrachi
+ *
+ * @extends Handler<CommandNotMatchedMiddleware>
  */
-interface CommandNotMatchedHandler
+interface CommandNotMatchedHandler extends Handler
 {
     /**
      * Middleware handler for after a command has not been matched.

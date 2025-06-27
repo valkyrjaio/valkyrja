@@ -25,7 +25,6 @@ use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\Handler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection;
 use Valkyrja\Cli\Routing\Command\HelpCommand;
@@ -51,11 +50,11 @@ class Router implements Contract
         protected Dispatcher $dispatcher = new \Valkyrja\Dispatcher\Dispatcher(),
         protected Collection $collection = new \Valkyrja\Cli\Routing\Collection\Collection(),
         protected OutputFactory $outputFactory = new \Valkyrja\Cli\Interaction\Factory\OutputFactory(),
-        protected ThrowableCaughtHandler&Handler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),
-        protected CommandMatchedHandler&Handler $commandMatchedHandler = new Middleware\Handler\CommandMatchedHandler(),
-        protected CommandNotMatchedHandler&Handler $commandNotMatchedHandler = new Middleware\Handler\CommandNotMatchedHandler(),
-        protected CommandDispatchedHandler&Handler $commandDispatchedHandler = new Middleware\Handler\CommandDispatchedHandler(),
-        protected ExitedHandler&Handler $exitedHandler = new Middleware\Handler\ExitedHandler(),
+        protected ThrowableCaughtHandler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),
+        protected CommandMatchedHandler $commandMatchedHandler = new Middleware\Handler\CommandMatchedHandler(),
+        protected CommandNotMatchedHandler $commandNotMatchedHandler = new Middleware\Handler\CommandNotMatchedHandler(),
+        protected CommandDispatchedHandler $commandDispatchedHandler = new Middleware\Handler\CommandDispatchedHandler(),
+        protected ExitedHandler $exitedHandler = new Middleware\Handler\ExitedHandler(),
     ) {
     }
 

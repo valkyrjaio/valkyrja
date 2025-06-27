@@ -15,14 +15,17 @@ namespace Valkyrja\Cli\Middleware\Handler\Contract;
 
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
 use Valkyrja\Cli\Routing\Data\Contract\Command;
 
 /**
  * Interface CommandMatchedHandler.
  *
  * @author Melech Mizrachi
+ *
+ * @extends Handler<CommandMatchedMiddleware>
  */
-interface CommandMatchedHandler
+interface CommandMatchedHandler extends Handler
 {
     /**
      * Middleware handler for after a command has been matched but before it has been dispatched.

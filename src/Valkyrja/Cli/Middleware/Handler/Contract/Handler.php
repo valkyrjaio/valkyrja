@@ -14,6 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Middleware\Handler\Contract;
 
 use Closure;
+use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
+use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
+use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
+use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
+use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
+use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
 use Valkyrja\Container\Contract\Container;
 
 /**
@@ -21,7 +27,7 @@ use Valkyrja\Container\Contract\Container;
  *
  * @author Melech Mizrachi
  *
- * @template Middleware
+ * @template Middleware of InputReceivedMiddleware|CommandMatchedMiddleware|CommandNotMatchedMiddleware|CommandDispatchedMiddleware|ThrowableCaughtMiddleware|ExitedMiddleware
  */
 interface Handler
 {

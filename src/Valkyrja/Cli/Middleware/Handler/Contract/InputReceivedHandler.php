@@ -15,13 +15,16 @@ namespace Valkyrja\Cli\Middleware\Handler\Contract;
 
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
 
 /**
  * Interface InputReceivedHandler.
  *
  * @author Melech Mizrachi
+ *
+ * @extends Handler<InputReceivedMiddleware>
  */
-interface InputReceivedHandler
+interface InputReceivedHandler extends Handler
 {
     /**
      * Middleware handler for a received input.

@@ -15,13 +15,16 @@ namespace Valkyrja\Cli\Middleware\Handler\Contract;
 
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
 
 /**
  * Interface ExitedHandler.
  *
  * @author Melech Mizrachi
+ *
+ * @extends Handler<ExitedMiddleware>
  */
-interface ExitedHandler
+interface ExitedHandler extends Handler
 {
     /**
      * Middleware handler ran when the application has exited.
