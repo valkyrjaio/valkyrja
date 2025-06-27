@@ -22,7 +22,7 @@ use Stringable;
  * @author   Melech Mizrachi
  *
  * @template K of array-key
- * @template T of string|int|float|bool|array|object
+ * @template T of string|int|float|bool|array|object|null
  */
 interface Collection extends Stringable
 {
@@ -79,7 +79,7 @@ interface Collection extends Stringable
      *
      * @return T
      */
-    public function __get(string|int $key): string|int|float|bool|array|object;
+    public function __get(string|int $key): string|int|float|bool|array|object|null;
 
     /**
      * Set a new item into the collection.
@@ -89,7 +89,7 @@ interface Collection extends Stringable
      *
      * @return void
      */
-    public function __set(string|int $key, string|int|float|bool|array|object $value): void;
+    public function __set(string|int $key, string|int|float|bool|array|object|null $value): void;
 
     /**
      * Get a single item from the collection.
@@ -99,7 +99,7 @@ interface Collection extends Stringable
      *
      * @return T
      */
-    public function get(string|int $key, string|int|float|bool|array|object|null $default = null): string|int|float|bool|array|object;
+    public function get(string|int $key, string|int|float|bool|array|object|null $default = null): string|int|float|bool|array|object|null;
 
     /**
      * Determine if an item is in the collection.
@@ -118,7 +118,7 @@ interface Collection extends Stringable
      *
      * @return static
      */
-    public function set(string|int $key, string|int|float|bool|array|object $value): static;
+    public function set(string|int $key, string|int|float|bool|array|object|null $value): static;
 
     /**
      * Determine if an item is in the collection.

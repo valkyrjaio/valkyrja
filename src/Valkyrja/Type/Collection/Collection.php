@@ -26,7 +26,7 @@ use function in_array;
  * @author Melech Mizrachi
  *
  * @template K of array-key
- * @template T of string|int|float|bool|array|object
+ * @template T of string|int|float|bool|array|object|null
  *
  * @implements Contract<K, T>
  */
@@ -102,7 +102,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function __get(string|int $key): string|int|float|bool|array|object
+    public function __get(string|int $key): string|int|float|bool|array|object|null
     {
         return $this->get($key);
     }
@@ -110,7 +110,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function __set(string|int $key, string|int|float|bool|array|object $value): void
+    public function __set(string|int $key, string|int|float|bool|array|object|null $value): void
     {
         $this->set($key, $value);
     }
@@ -118,7 +118,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string|int $key, string|int|float|bool|array|object|null $default = null): string|int|float|bool|array|object
+    public function get(string|int $key, string|int|float|bool|array|object|null $default = null): string|int|float|bool|array|object|null
     {
         return $this->has($key) ? $this->collection[$key] : $default;
     }
