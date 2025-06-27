@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing\Attribute\Contract;
+namespace Valkyrja\Cli\Routing\Collector\Contract;
 
 use Valkyrja\Cli\Routing\Data\Contract\Command;
 

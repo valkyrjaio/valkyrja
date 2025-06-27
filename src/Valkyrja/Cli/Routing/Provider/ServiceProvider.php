@@ -22,9 +22,10 @@ use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\Handler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\Cli\Routing\Attribute\Contract\Collector;
 use Valkyrja\Cli\Routing\Collection\CacheableCollection;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection;
+use Valkyrja\Cli\Routing\Collector\AttributeCollector;
+use Valkyrja\Cli\Routing\Collector\Contract\Collector;
 use Valkyrja\Cli\Routing\Contract\Router;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
@@ -69,7 +70,7 @@ final class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Collector::class,
-            new \Valkyrja\Cli\Routing\Attribute\Collector(
+            new AttributeCollector(
                 attributes: $container->getSingleton(Attributes::class),
                 reflection: $container->getSingleton(Reflection::class),
             )

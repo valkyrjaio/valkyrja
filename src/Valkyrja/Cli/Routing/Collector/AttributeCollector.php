@@ -11,22 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing\Attribute;
+namespace Valkyrja\Cli\Routing\Collector;
 
 use ReflectionException;
 use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Cli\Routing\Attribute\Command as Attribute;
-use Valkyrja\Cli\Routing\Attribute\Contract\Collector as Contract;
+use Valkyrja\Cli\Routing\Collector\Contract\Collector as Contract;
 use Valkyrja\Cli\Routing\Data\Command as Model;
 use Valkyrja\Cli\Routing\Data\Contract\Command;
 use Valkyrja\Reflection\Contract\Reflection;
 
 /**
- * Class Collector.
+ * Class AttributeCollector.
  *
  * @author Melech Mizrachi
  */
-class Collector implements Contract
+class AttributeCollector implements Contract
 {
     public function __construct(
         protected Attributes $attributes,

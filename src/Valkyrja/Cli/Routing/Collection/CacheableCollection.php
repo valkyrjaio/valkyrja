@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Collection;
 
-use Valkyrja\Cli\Routing\Attribute\Contract\Collector;
+use Valkyrja\Cli\Routing\Collector\Contract\Collector;
 use Valkyrja\Cli\Routing\Config;
 use Valkyrja\Cli\Routing\Config\Cache;
 use Valkyrja\Cli\Routing\Data\Contract\Command;
