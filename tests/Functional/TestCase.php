@@ -50,9 +50,8 @@ class TestCase extends PHPUnitTestCase
             config: ConfigClass::class
         );
 
-        Directory::$BASE_PATH      = __DIR__ . '/../..';
-        Directory::$BOOTSTRAP_PATH = 'tests/bootstrap';
-        Directory::$STORAGE_PATH   = 'tests/storage';
+        Directory::$BASE_PATH    = __DIR__ . '/../..';
+        Directory::$STORAGE_PATH = 'tests/storage';
 
         $container = App::getContainer($app);
 
