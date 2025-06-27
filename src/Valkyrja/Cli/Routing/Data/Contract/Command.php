@@ -14,6 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Data\Contract;
 
 use Valkyrja\Cli\Interaction\Message\Contract\Message;
+use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
+use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
+use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
+use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
 use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
 
 /**
@@ -152,6 +156,106 @@ interface Command
      * @return static
      */
     public function withAddedOptions(OptionParameter ...$options): static;
+
+    /**
+     * Get the command matched middleware.
+     *
+     * @return class-string<CommandMatchedMiddleware>[]
+     */
+    public function getCommandMatchedMiddleware(): array;
+
+    /**
+     * Create a new command with the specified command matched middleware.
+     *
+     * @param class-string<CommandMatchedMiddleware> ...$middleware The middleware
+     *
+     * @return static
+     */
+    public function withCommandMatchedMiddleware(string ...$middleware): static;
+
+    /**
+     * Create a new command with added command matched middleware.
+     *
+     * @param class-string<CommandMatchedMiddleware> ...$middleware The middleware
+     *
+     * @return static
+     */
+    public function withAddedCommandMatchedMiddleware(string ...$middleware): static;
+
+    /**
+     * Get the command dispatched middleware.
+     *
+     * @return class-string<CommandDispatchedMiddleware>[]
+     */
+    public function getCommandDispatchedMiddleware(): array;
+
+    /**
+     * Create a new command with the specified command dispatched middleware.
+     *
+     * @param class-string<CommandDispatchedMiddleware> ...$middleware The middleware
+     *
+     * @return static
+     */
+    public function withCommandDispatchedMiddleware(string ...$middleware): static;
+
+    /**
+     * Create a new command with added command dispatched middleware.
+     *
+     * @param class-string<CommandDispatchedMiddleware> ...$middleware The middleware
+     *
+     * @return static
+     */
+    public function withAddedCommandDispatchedMiddleware(string ...$middleware): static;
+
+    /**
+     * Get the throwable caught middleware.
+     *
+     * @return class-string<ThrowableCaughtMiddleware>[]
+     */
+    public function getThrowableCaughtMiddleware(): array;
+
+    /**
+     * Create a new command with the specified throwable caught middleware.
+     *
+     * @param class-string<ThrowableCaughtMiddleware> ...$middleware The middleware
+     *
+     * @return static
+     */
+    public function withThrowableCaughtMiddleware(string ...$middleware): static;
+
+    /**
+     * Create a new command with added throwable caught middleware.
+     *
+     * @param class-string<ThrowableCaughtMiddleware> ...$middleware The middleware
+     *
+     * @return static
+     */
+    public function withAddedThrowableCaughtMiddleware(string ...$middleware): static;
+
+    /**
+     * Get the exited middleware.
+     *
+     * @return class-string<ExitedMiddleware>[]
+     */
+    public function getExitedMiddleware(): array;
+
+    /**
+     * Create a new command with the specified exited middleware.
+     *
+     * @param class-string<ExitedMiddleware> ...$middleware The middleware
+     *
+     * @return static
+     */
+    public function withExitedMiddleware(string ...$middleware): static;
+
+    /**
+     * Create a new command with added exited middleware.
+     *
+     * @param class-string<ExitedMiddleware> ...$middleware The middleware
+     *
+     * @return static
+     */
+    public function withAddedExitedMiddleware(string ...$middleware): static;
 
     /**
      * Get the dispatch.

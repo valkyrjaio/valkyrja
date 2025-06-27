@@ -253,11 +253,10 @@ class Router implements Contract
      */
     protected function commandMatched(Command $command): void
     {
-        // TODO: Add middleware to Command
-        // $this->commandMatchedHandler->add(...$command->getCommandMatchedMiddleware());
-        // $this->commandDispatchedHandler->add(...$command->getCommandDispatchedMiddleware());
-        // $this->throwableCaughtHandler->add(...$command->getThrowableCaughtMiddleware());
-        // $this->exitedHandler->add(...$command->getExitedMiddleware());
+        $this->commandMatchedHandler->add(...$command->getCommandMatchedMiddleware());
+        $this->commandDispatchedHandler->add(...$command->getCommandDispatchedMiddleware());
+        $this->throwableCaughtHandler->add(...$command->getThrowableCaughtMiddleware());
+        $this->exitedHandler->add(...$command->getExitedMiddleware());
 
         // Set the found command in the service container
         $this->container->setSingleton(Command::class, $command);
