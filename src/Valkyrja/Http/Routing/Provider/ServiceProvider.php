@@ -20,7 +20,6 @@ use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Middleware\Handler\Contract\Handler;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler;
@@ -97,18 +96,12 @@ final class ServiceProvider extends Provider
      */
     public static function publishRouter(Container $container): void
     {
-        /** @var ThrowableCaughtHandler&Handler $exception */
-        $exception = $container->getSingleton(ThrowableCaughtHandler::class);
-        /** @var RouteMatchedHandler&Handler $routeMatched */
-        $routeMatched = $container->getSingleton(RouteMatchedHandler::class);
-        /** @var RouteNotMatchedHandler&Handler $routeNotMatched */
+        $exception       = $container->getSingleton(ThrowableCaughtHandler::class);
+        $routeMatched    = $container->getSingleton(RouteMatchedHandler::class);
         $routeNotMatched = $container->getSingleton(RouteNotMatchedHandler::class);
-        /** @var RouteDispatchedHandler&Handler $routeDispatched */
         $routeDispatched = $container->getSingleton(RouteDispatchedHandler::class);
-        /** @var SendingResponseHandler&Handler $sendingResponse */
         $sendingResponse = $container->getSingleton(SendingResponseHandler::class);
-        /** @var TerminatedHandler&Handler $terminated */
-        $terminated = $container->getSingleton(TerminatedHandler::class);
+        $terminated      = $container->getSingleton(TerminatedHandler::class);
 
         $container->setSingleton(
             Router::class,

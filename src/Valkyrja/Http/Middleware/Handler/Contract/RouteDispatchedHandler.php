@@ -15,14 +15,17 @@ namespace Valkyrja\Http\Middleware\Handler\Contract;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
 use Valkyrja\Http\Routing\Data\Contract\Route;
 
 /**
  * Interface RouteDispatchedHandler.
  *
  * @author Melech Mizrachi
+ *
+ * @extends Handler<RouteDispatchedMiddleware>
  */
-interface RouteDispatchedHandler
+interface RouteDispatchedHandler extends Handler
 {
     /**
      * Middleware handler for after a route is dispatched.

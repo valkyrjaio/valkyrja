@@ -15,13 +15,16 @@ namespace Valkyrja\Http\Middleware\Handler\Contract;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
 
 /**
  * Interface SendingResponseHandler.
  *
  * @author Melech Mizrachi
+ *
+ * @extends Handler<SendingResponseMiddleware>
  */
-interface SendingResponseHandler
+interface SendingResponseHandler extends Handler
 {
     /**
      * Middleware handler for before a response has been sent.

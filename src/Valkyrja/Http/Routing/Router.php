@@ -24,7 +24,6 @@ use Valkyrja\Http\Message\Factory\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Middleware;
-use Valkyrja\Http\Middleware\Handler\Contract\Handler;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler;
@@ -57,12 +56,12 @@ class Router implements Contract
         protected Dispatcher $dispatcher = new \Valkyrja\Dispatcher\Dispatcher(),
         protected Matcher $matcher = new \Valkyrja\Http\Routing\Matcher\Matcher(),
         protected ResponseFactory $responseFactory = new HttpMessageResponseFactory(),
-        protected ThrowableCaughtHandler&Handler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),
-        protected RouteMatchedHandler&Handler $routeMatchedHandler = new Middleware\Handler\RouteMatchedHandler(),
-        protected RouteNotMatchedHandler&Handler $routeNotMatchedHandler = new Middleware\Handler\RouteNotMatchedHandler(),
-        protected RouteDispatchedHandler&Handler $routeDispatchedHandler = new Middleware\Handler\RouteDispatchedHandler(),
-        protected SendingResponseHandler&Handler $sendingResponseHandler = new Middleware\Handler\SendingResponseHandler(),
-        protected TerminatedHandler&Handler $terminatedHandler = new Middleware\Handler\TerminatedHandler()
+        protected ThrowableCaughtHandler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),
+        protected RouteMatchedHandler $routeMatchedHandler = new Middleware\Handler\RouteMatchedHandler(),
+        protected RouteNotMatchedHandler $routeNotMatchedHandler = new Middleware\Handler\RouteNotMatchedHandler(),
+        protected RouteDispatchedHandler $routeDispatchedHandler = new Middleware\Handler\RouteDispatchedHandler(),
+        protected SendingResponseHandler $sendingResponseHandler = new Middleware\Handler\SendingResponseHandler(),
+        protected TerminatedHandler $terminatedHandler = new Middleware\Handler\TerminatedHandler()
     ) {
     }
 

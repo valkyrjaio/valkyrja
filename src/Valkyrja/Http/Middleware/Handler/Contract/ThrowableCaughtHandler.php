@@ -16,13 +16,16 @@ namespace Valkyrja\Http\Middleware\Handler\Contract;
 use Throwable;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
 
 /**
  * Interface ThrowableCaughtHandler.
  *
  * @author Melech Mizrachi
+ *
+ * @extends Handler<ThrowableCaughtMiddleware>
  */
-interface ThrowableCaughtHandler
+interface ThrowableCaughtHandler extends Handler
 {
     /**
      * Middleware handler for after a throwable has been caught during dispatch.

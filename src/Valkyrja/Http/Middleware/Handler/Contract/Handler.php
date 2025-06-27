@@ -15,13 +15,20 @@ namespace Valkyrja\Http\Middleware\Handler\Contract;
 
 use Closure;
 use Valkyrja\Container\Contract\Container;
+use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
 
 /**
  * Interface Handler.
  *
  * @author Melech Mizrachi
  *
- * @template Middleware
+ * @template Middleware of RequestReceivedMiddleware|SendingResponseMiddleware|RouteMatchedMiddleware|RouteNotMatchedMiddleware|RouteDispatchedMiddleware|ThrowableCaughtMiddleware|TerminatedMiddleware
  */
 interface Handler
 {

@@ -15,13 +15,16 @@ namespace Valkyrja\Http\Middleware\Handler\Contract;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
 
 /**
  * Interface RequestReceivedHandler.
  *
  * @author Melech Mizrachi
+ *
+ * @extends Handler<RequestReceivedMiddleware>
  */
-interface RequestReceivedHandler
+interface RequestReceivedHandler extends Handler
 {
     /**
      * Middleware handler for a received request.

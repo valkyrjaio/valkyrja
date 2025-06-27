@@ -15,13 +15,16 @@ namespace Valkyrja\Http\Middleware\Handler\Contract;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware;
 
 /**
  * Interface RouteNotMatchedHandler.
  *
  * @author Melech Mizrachi
+ *
+ * @extends Handler<RouteNotMatchedMiddleware>
  */
-interface RouteNotMatchedHandler
+interface RouteNotMatchedHandler extends Handler
 {
     /**
      * Middleware handler for after a route has not been matched.

@@ -15,13 +15,16 @@ namespace Valkyrja\Http\Middleware\Handler\Contract;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
 
 /**
  * Interface TerminatedHandler.
  *
  * @author Melech Mizrachi
+ *
+ * @extends Handler<TerminatedMiddleware>
  */
-interface TerminatedHandler
+interface TerminatedHandler extends Handler
 {
     /**
      * Middleware handler ran when the application has terminated.
