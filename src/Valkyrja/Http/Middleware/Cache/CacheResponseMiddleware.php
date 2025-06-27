@@ -24,7 +24,7 @@ use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
 use Valkyrja\Support\Directory;
-use Valkyrja\Support\Time\Time;
+use Valkyrja\Support\Time;
 
 use function base64_decode;
 use function base64_encode;

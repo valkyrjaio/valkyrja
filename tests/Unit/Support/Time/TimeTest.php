@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Support\Time;
 
-use Valkyrja\Support\Time\Time;
+use Valkyrja\Support\Time;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

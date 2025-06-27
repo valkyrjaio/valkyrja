@@ -17,7 +17,7 @@ use DateTimeInterface;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Message\Header\Value\Component\Component;
 use Valkyrja\Http\Message\Header\Value\Contract\Cookie as Contract;
-use Valkyrja\Support\Time\Time;
+use Valkyrja\Support\Time;
 
 use function array_filter;
 use function gmdate;

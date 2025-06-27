@@ -15,7 +15,7 @@ namespace Unit\Http\Message\Header\Value;
 
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Message\Header\Value\Cookie;
-use Valkyrja\Support\Time\Time;
+use Valkyrja\Support\Time;
 use Valkyrja\Tests\Unit\TestCase;
 
 class CookieTest extends TestCase

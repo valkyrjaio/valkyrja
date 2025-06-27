@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Time;
+namespace Valkyrja\Support;
 
 /**
  * Class Time.
@@ -22,21 +22,33 @@ class Time
 {
     protected static int|null $frozenTime = null;
 
+    /**
+     * Freeze the time.
+     */
     public static function freeze(int|null $time = null): void
     {
         static::$frozenTime = $time ?? static::time();
     }
 
+    /**
+     * Unfreeze the time.
+     */
     public static function unfreeze(): void
     {
         static::$frozenTime = null;
     }
 
+    /**
+     * Get the frozen, or unfrozen time.
+     */
     public static function get(): int
     {
         return static::$frozenTime ?? static::time();
     }
 
+    /**
+     * Get the time.
+     */
     protected static function time(): int
     {
         return time();
