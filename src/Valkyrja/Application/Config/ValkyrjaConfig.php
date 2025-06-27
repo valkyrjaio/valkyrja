@@ -15,14 +15,14 @@ namespace Valkyrja\Application\Config;
 
 use Valkyrja\Api\Config as Api;
 use Valkyrja\Application\Config as App;
+use Valkyrja\Application\Exception\InvalidArgumentException;
+use Valkyrja\Application\Exception\RuntimeException;
 use Valkyrja\Asset\Config as Asset;
 use Valkyrja\Auth\Config as Auth;
 use Valkyrja\Broadcast\Config as Broadcast;
 use Valkyrja\Cache\Config as Cache;
 use Valkyrja\Cli\Config as Cli;
 use Valkyrja\Config\Config;
-use Valkyrja\Config\Exception\InvalidArgumentException;
-use Valkyrja\Config\Exception\RuntimeException;
 use Valkyrja\Container\Config as Container;
 use Valkyrja\Crypt\Config as Crypt;
 use Valkyrja\Event\Config as Event;
