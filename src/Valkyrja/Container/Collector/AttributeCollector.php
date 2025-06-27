@@ -17,6 +17,7 @@ use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Container\Attribute\Alias;
 use Valkyrja\Container\Attribute\ContextAlias;
 use Valkyrja\Container\Attribute\ContextService;
+use Valkyrja\Container\Attribute\Service;
 use Valkyrja\Container\Attribute\Service as Attribute;
 use Valkyrja\Container\Collector\Contract\Collector as Contract;
 
@@ -37,7 +38,7 @@ class AttributeCollector implements Contract
      *
      * @param class-string ...$classes The classes
      *
-     * @return Attribute
+     * @return Service[]
      */
     public function getServices(string ...$classes): array
     {
