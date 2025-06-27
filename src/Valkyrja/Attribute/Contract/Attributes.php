@@ -25,7 +25,7 @@ interface Attributes
     /**
      * Get a class' attributes.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string         $class     The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
@@ -37,7 +37,7 @@ interface Attributes
     /**
      * Get a class' members' attributes.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string         $class     The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
@@ -49,7 +49,7 @@ interface Attributes
     /**
      * Get a class' and class' members' attributes.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string         $class     K The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
@@ -61,7 +61,7 @@ interface Attributes
     /**
      * Get a class' constant's attributes.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string         $class     The class
      * @param non-empty-string     $constant  The constant
@@ -74,7 +74,7 @@ interface Attributes
     /**
      * Get a class' constants' attributes.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string         $class     The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
@@ -86,7 +86,7 @@ interface Attributes
     /**
      * Get a property's attributes.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string         $class     The class
      * @param non-empty-string     $property  The property
@@ -99,7 +99,7 @@ interface Attributes
     /**
      * Get a class' properties' attributes.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string         $class     The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
@@ -111,7 +111,7 @@ interface Attributes
     /**
      * Get a method's attributes.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string         $class     The class
      * @param non-empty-string     $method    The method
@@ -124,7 +124,7 @@ interface Attributes
     /**
      * Get a method's parameters' attributes.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string         $class     The class
      * @param non-empty-string     $method    The method
@@ -137,7 +137,7 @@ interface Attributes
     /**
      * Get a method's parameters' attributes.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string         $class     The class
      * @param non-empty-string     $method    The method
@@ -151,7 +151,7 @@ interface Attributes
     /**
      * Get a class' methods' attributes.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string         $class     The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
@@ -163,7 +163,7 @@ interface Attributes
     /**
      * Get a function's attributes.
      *
-     * @template T
+     * @template T of object
      *
      * @param callable-string      $function  The function
      * @param class-string<T>|null $attribute [optional] The attribute to return
@@ -175,7 +175,7 @@ interface Attributes
     /**
      * Get a function's parameters' attributes.
      *
-     * @template T
+     * @template T of object
      *
      * @param callable-string      $function  The function
      * @param class-string<T>|null $attribute [optional] The attribute to return
@@ -187,7 +187,7 @@ interface Attributes
     /**
      * Get a closure's attributes.
      *
-     * @template T
+     * @template T of object
      *
      * @param Closure              $closure   The closure
      * @param class-string<T>|null $attribute [optional] The attribute to return
@@ -199,7 +199,7 @@ interface Attributes
     /**
      * Get a closure's parameters' attributes.
      *
-     * @template T
+     * @template T of object
      *
      * @param Closure              $closure   The closure
      * @param class-string<T>|null $attribute [optional] The attribute to return
