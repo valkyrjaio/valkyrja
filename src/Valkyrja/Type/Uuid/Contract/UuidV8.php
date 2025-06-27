@@ -17,8 +17,6 @@ namespace Valkyrja\Type\Uuid\Contract;
  * Interface UuidV8.
  *
  * @author Melech Mizrachi
- *
- * @extends Uuid<string>
  */
 interface UuidV8 extends Uuid
 {

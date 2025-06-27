@@ -23,10 +23,10 @@ use function in_array;
 /**
  * Class Collection.
  *
- * @author   Melech Mizrachi
+ * @author Melech Mizrachi
  *
  * @template K of array-key
- * @template T
+ * @template T of string|int|float|bool|array|object
  *
  * @implements Contract<K, T>
  */
@@ -102,7 +102,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function __get(string|int $key): mixed
+    public function __get(string|int $key): string|int|float|bool|array|object
     {
         return $this->get($key);
     }
@@ -110,7 +110,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function __set(string|int $key, $value): void
+    public function __set(string|int $key, string|int|float|bool|array|object $value): void
     {
         $this->set($key, $value);
     }
@@ -118,7 +118,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string|int $key, mixed $default = null): mixed
+    public function get(string|int $key, string|int|float|bool|array|object $default = null): string|int|float|bool|array|object
     {
         return $this->has($key) ? $this->collection[$key] : $default;
     }

@@ -15,6 +15,7 @@ namespace Valkyrja\Type\Collection;
 
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\Collection\Contract\Collection as Contract;
+use Valkyrja\Type\Type;
 
 use function array_keys;
 use function count;
@@ -26,7 +27,7 @@ use function in_array;
  * @author   Melech Mizrachi
  *
  * @template K of array-key
- * @template T
+ * @template T of string|int|float|bool|array|object
  *
  * @implements Contract<K, T>
  */
@@ -42,8 +43,8 @@ class TypeCollection implements Contract
     /**
      * Collection constructor.
      *
-     * @param class-string<T> $type
-     * @param array<K, T>     $collection
+     * @param class-string<Type> $type
+     * @param array<K, T>        $collection
      */
     public function __construct(protected string $type, array $collection)
     {
@@ -103,7 +104,7 @@ class TypeCollection implements Contract
     /**
      * @inheritDoc
      */
-    public function __get(string|int $key): mixed
+    public function __get(string|int $key): string|int|float|bool|array|object
     {
         return $this->get($key);
     }
@@ -119,7 +120,7 @@ class TypeCollection implements Contract
     /**
      * @inheritDoc
      */
-    public function get(string|int $key, mixed $default = null): mixed
+    public function get(string|int $key, string|int|float|bool|array|object $default = null): string|int|float|bool|array|object
     {
         return $this->has($key) ? $this->collection[$key] : $default;
     }
@@ -135,7 +136,7 @@ class TypeCollection implements Contract
     /**
      * @inheritDoc
      */
-    public function set(string|int $key, $value): static
+    public function set(string|int $key, string|int|float|bool|array|object $value): static
     {
         $this->collection[$key] = $value;
 

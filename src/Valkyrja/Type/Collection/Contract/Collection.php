@@ -22,7 +22,7 @@ use Stringable;
  * @author   Melech Mizrachi
  *
  * @template K of array-key
- * @template T
+ * @template T of string|int|float|bool|array|object
  */
 interface Collection extends Stringable
 {
@@ -77,29 +77,29 @@ interface Collection extends Stringable
      *
      * @param K $key The key
      *
-     * @return mixed
+     * @return T
      */
-    public function __get(string|int $key): mixed;
+    public function __get(string|int $key): string|int|float|bool|array|object;
 
     /**
      * Set a new item into the collection.
      *
-     * @param K     $key   The key
-     * @param mixed $value The value
+     * @param K $key   The key
+     * @param T $value The value
      *
      * @return void
      */
-    public function __set(string|int $key, mixed $value): void;
+    public function __set(string|int $key, string|int|float|bool|array|object $value): void;
 
     /**
      * Get a single item from the collection.
      *
-     * @param K     $key     The key to get
-     * @param mixed $default [optional] The default value
+     * @param K $key     The key to get
+     * @param T $default [optional] The default value
      *
-     * @return mixed
+     * @return T
      */
-    public function get(string|int $key, mixed $default = null): mixed;
+    public function get(string|int $key, string|int|float|bool|array|object $default = null): string|int|float|bool|array|object;
 
     /**
      * Determine if an item is in the collection.
@@ -113,12 +113,12 @@ interface Collection extends Stringable
     /**
      * Set a new item into the collection.
      *
-     * @param K     $key   The key
-     * @param mixed $value The value
+     * @param K $key   The key
+     * @param T $value The value
      *
      * @return static
      */
-    public function set(string|int $key, mixed $value): static;
+    public function set(string|int $key, string|int|float|bool|array|object $value): static;
 
     /**
      * Determine if an item is in the collection.

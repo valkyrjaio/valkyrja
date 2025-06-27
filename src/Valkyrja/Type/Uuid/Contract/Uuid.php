@@ -20,9 +20,7 @@ use Valkyrja\Type\Contract\Type;
  *
  * @author Melech Mizrachi
  *
- * @template T
- *
- * @extends Type<string|T>
+ * @extends Type<string>
  */
 interface Uuid extends Type
 {
