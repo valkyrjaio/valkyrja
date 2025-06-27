@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Config;
+namespace Valkyrja\Tests\Unit\Support;
 
 use Valkyrja\Tests\Classes\Config\ConfigClass;
 use Valkyrja\Tests\Classes\Config\ConfigClassAfter;
