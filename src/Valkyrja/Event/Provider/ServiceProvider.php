@@ -18,9 +18,10 @@ use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
-use Valkyrja\Event\Attribute\Contract\Collector;
 use Valkyrja\Event\Collection\CacheableCollection as EventCollection;
 use Valkyrja\Event\Collection\Contract\Collection;
+use Valkyrja\Event\Collector\AttributeCollector;
+use Valkyrja\Event\Collector\Contract\Collector;
 use Valkyrja\Event\Contract\Dispatcher;
 use Valkyrja\Event\Dispatcher as EventDispatcher;
 use Valkyrja\Reflection\Contract\Reflection;
@@ -63,7 +64,7 @@ final class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Collector::class,
-            new \Valkyrja\Event\Attribute\Collector(
+            new AttributeCollector(
                 $container->getSingleton(Attributes::class),
                 $container->getSingleton(Reflection::class)
             )

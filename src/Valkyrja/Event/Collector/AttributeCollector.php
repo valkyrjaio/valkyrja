@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Event\Attribute;
+namespace Valkyrja\Event\Collector;
 
 use ReflectionException;
 use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
-use Valkyrja\Event\Attribute\Contract\Collector as Contract;
 use Valkyrja\Event\Attribute\Listener as Attribute;
+use Valkyrja\Event\Collector\Contract\Collector as Contract;
 use Valkyrja\Event\Data\Contract\Listener;
 use Valkyrja\Event\Data\Listener as Model;
 use Valkyrja\Reflection\Contract\Reflection;
 
 /**
- * Class Collector.
+ * Class AttributeCollector.
  *
  * @author Melech Mizrachi
  */
-class Collector implements Contract
+class AttributeCollector implements Contract
 {
     public function __construct(
         protected Attributes $attributes,

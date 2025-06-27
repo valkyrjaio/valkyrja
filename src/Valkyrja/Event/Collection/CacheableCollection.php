@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Collection;
 
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Event\Attribute\Contract\Collector;
+use Valkyrja\Event\Collector\Contract\Collector;
 use Valkyrja\Event\Config;
 use Valkyrja\Event\Config\Cache;
 

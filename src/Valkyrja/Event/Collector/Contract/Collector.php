@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Event\Attribute\Contract;
+namespace Valkyrja\Event\Collector\Contract;
 
 use Valkyrja\Event\Data\Contract\Listener;
 
