@@ -43,15 +43,9 @@ use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
 use Valkyrja\Cli\Routing\Config as CliRoutingConfig;
 use Valkyrja\Container\Contract\Service as ContainerService;
 use Valkyrja\Container\Support\Provider as ContainerProvider;
-use Valkyrja\Crypt\Adapter\Contract\Adapter as CryptAdapter;
-use Valkyrja\Crypt\Config\Configurations as CryptConfigurations;
-use Valkyrja\Crypt\Driver\Contract\Driver as CryptDriver;
 use Valkyrja\Filesystem\Adapter\Contract\Adapter as FilesystemAdapter;
 use Valkyrja\Filesystem\Config\Configurations as FilesystemConfigurations;
 use Valkyrja\Filesystem\Driver\Contract\Driver as FilesystemDriver;
-use Valkyrja\Http\Client\Adapter\Contract\Adapter as ClientAdapter;
-use Valkyrja\Http\Client\Config\Configurations as ClientConfigurations;
-use Valkyrja\Http\Client\Driver\Contract\Driver as ClientDriver;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Middleware\Config as HttpMiddlewareConfig;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware as HttpRequestReceivedMiddleware;
@@ -318,27 +312,6 @@ class Env
 
     /************************************************************
      *
-     * Client component env variables.
-     *
-     ************************************************************/
-
-    /** @var string|null */
-    public const string|null CLIENT_DEFAULT_CONFIGURATION = null;
-    /** @var callable():ClientConfigurations|null */
-    public const array|null CLIENT_CONFIGURATIONS = null;
-    /** @var class-string<ClientAdapter>|null */
-    public const string|null CLIENT_GUZZLE_ADAPTER_CLASS = null;
-    /** @var class-string<ClientDriver>|null */
-    public const string|null CLIENT_GUZZLE_DRIVER_CLASS = null;
-    /** @var array<string, mixed>|null */
-    public const array|null CLIENT_GUZZLE_OPTIONS = null;
-    /** @var class-string<ClientAdapter>|null */
-    public const string|null CLIENT_NULL_ADAPTER_CLASS = null;
-    /** @var class-string<ClientDriver>|null */
-    public const string|null CLIENT_NULL_DRIVER_CLASS = null;
-
-    /************************************************************
-     *
      * Container component env variables.
      *
      ************************************************************/
@@ -355,31 +328,6 @@ class Env
     public const array|null CONTAINER_PROVIDERS = null;
     /** @var bool|null */
     public const bool|null CONTAINER_USE_ATTRIBUTES = null;
-
-    /************************************************************
-     *
-     * Crypt component env variables.
-     *
-     ************************************************************/
-
-    /** @var string|null */
-    public const string|null CRYPT_DEFAULT_CONFIGURATION = null;
-    /** @var callable():CryptConfigurations|null */
-    public const array|null CRYPT_CONFIGURATIONS = null;
-    /** @var class-string<CryptAdapter>|null */
-    public const string|null CRYPT_SODIUM_ADAPTER_CLASS = null;
-    /** @var class-string<CryptDriver>|null */
-    public const string|null CRYPT_SODIUM_DRIVER_CLASS = null;
-    /** @var string|null */
-    public const string|null CRYPT_SODIUM_KEY = null;
-    /** @var string|null */
-    public const string|null CRYPT_SODIUM_KEY_PATH = null;
-    /** @var class-string<CryptAdapter>|null */
-    public const string|null CRYPT_NULL_ADAPTER_CLASS = null;
-    /** @var class-string<CryptDriver>|null */
-    public const string|null CRYPT_NULL_DRIVER_CLASS = null;
-    /** @var string|null */
-    public const string|null CRYPT_NULL_KEY = null;
 
     /************************************************************
      *
