@@ -11,3 +11,5 @@ parameters:
             identifier: missingType.generics
         -
             identifier: trait.unused
+        -
+            identifier: function.alreadyNarrowedType
