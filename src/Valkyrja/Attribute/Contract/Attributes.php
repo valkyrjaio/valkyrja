@@ -30,7 +30,7 @@ interface Attributes
      * @param class-string         $class     The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
-     * @return object[]|T[]
+     * @return ($attribute is class-string<T> ? T[] : object[])
      */
     public function forClass(string $class, string|null $attribute = null, int|null $flags = null): array;
 
@@ -42,7 +42,7 @@ interface Attributes
      * @param class-string         $class     The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
-     * @return object[]|T[]
+     * @return ($attribute is class-string<T> ? T[] : object[])
      */
     public function forClassMembers(string $class, string|null $attribute = null, int|null $flags = null): array;
 
@@ -54,7 +54,7 @@ interface Attributes
      * @param class-string         $class     K The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
-     * @return object[]|T[]
+     * @return ($attribute is class-string<T> ? T[] : object[])
      */
     public function forClassAndMembers(string $class, string|null $attribute = null, int|null $flags = null): array;
 
@@ -67,7 +67,7 @@ interface Attributes
      * @param non-empty-string     $constant  The constant
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
-     * @return object[]|T[]
+     * @return ($attribute is class-string<T> ? T[] : object[])
      */
     public function forConstant(string $class, string $constant, string|null $attribute = null, int|null $flags = null): array;
 
@@ -79,7 +79,7 @@ interface Attributes
      * @param class-string         $class     The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
-     * @return object[]|T[]
+     * @return ($attribute is class-string<T> ? T[] : object[])
      */
     public function forConstants(string $class, string|null $attribute = null, int|null $flags = null): array;
 
@@ -92,7 +92,7 @@ interface Attributes
      * @param non-empty-string     $property  The property
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
-     * @return object[]|T[]
+     * @return ($attribute is class-string<T> ? T[] : object[])
      */
     public function forProperty(string $class, string $property, string|null $attribute = null, int|null $flags = null): array;
 
@@ -104,7 +104,7 @@ interface Attributes
      * @param class-string         $class     The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
-     * @return object[]|T[]
+     * @return ($attribute is class-string<T> ? T[] : object[])
      */
     public function forProperties(string $class, string|null $attribute = null, int|null $flags = null): array;
 
@@ -117,7 +117,7 @@ interface Attributes
      * @param non-empty-string     $method    The method
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
-     * @return object[]|T[]
+     * @return ($attribute is class-string<T> ? T[] : object[])
      */
     public function forMethod(string $class, string $method, string|null $attribute = null, int|null $flags = null): array;
 
@@ -130,7 +130,7 @@ interface Attributes
      * @param non-empty-string     $method    The method
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
-     * @return object[]|T[]
+     * @return ($attribute is class-string<T> ? T[] : object[])
      */
     public function forMethodParameters(string $class, string $method, string|null $attribute = null, int|null $flags = null): array;
 
@@ -144,7 +144,7 @@ interface Attributes
      * @param non-empty-string     $parameter The parameter
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
-     * @return object[]|T[]
+     * @return ($attribute is class-string<T> ? T[] : object[])
      */
     public function forMethodParameter(string $class, string $method, string $parameter, string|null $attribute = null, int|null $flags = null): array;
 
@@ -156,7 +156,7 @@ interface Attributes
      * @param class-string         $class     The class
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
-     * @return object[]|T[]
+     * @return ($attribute is class-string<T> ? T[] : object[])
      */
     public function forMethods(string $class, string|null $attribute = null, int|null $flags = null): array;
 
@@ -168,7 +168,7 @@ interface Attributes
      * @param callable-string      $function  The function
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
-     * @return object[]|T[]
+     * @return ($attribute is class-string<T> ? T[] : object[])
      */
     public function forFunction(string $function, string|null $attribute = null, int|null $flags = null): array;
 
@@ -180,7 +180,7 @@ interface Attributes
      * @param callable-string      $function  The function
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
-     * @return object[]|T[]
+     * @return ($attribute is class-string<T> ? T[] : object[])
      */
     public function forFunctionParameters(string $function, string|null $attribute = null, int|null $flags = null): array;
 
@@ -192,7 +192,7 @@ interface Attributes
      * @param Closure              $closure   The closure
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
-     * @return object[]|T[]
+     * @return ($attribute is class-string<T> ? T[] : object[])
      */
     public function forClosure(Closure $closure, string|null $attribute = null, int|null $flags = null): array;
 
@@ -204,7 +204,7 @@ interface Attributes
      * @param Closure              $closure   The closure
      * @param class-string<T>|null $attribute [optional] The attribute to return
      *
-     * @return object[]|T[]
+     * @return ($attribute is class-string<T> ? T[] : object[])
      */
     public function forClosureParameters(Closure $closure, string|null $attribute = null, int|null $flags = null): array;
 }

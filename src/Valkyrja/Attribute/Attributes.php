@@ -23,7 +23,6 @@ use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
 use Reflector;
-use Valkyrja\Attribute\Constant\AttributeProperty;
 use Valkyrja\Attribute\Contract\Attributes as Contract;
 use Valkyrja\Dispatcher\Data\CallableDispatch;
 use Valkyrja\Dispatcher\Data\ClassDispatch;
@@ -64,9 +63,6 @@ class Attributes implements Contract
         $reflection = $this->reflection->forClass($class);
 
         return $this->getInstances(
-            [
-                AttributeProperty::CLASS_NAME => $class,
-            ],
             $reflection,
             ...$reflection->getAttributes($attribute, $flags ?? static::$defaultFlags)
         );
@@ -238,9 +234,6 @@ class Attributes implements Contract
         $reflection = $this->reflection->forFunction($function);
 
         return $this->getInstances(
-            [
-                AttributeProperty::FUNCTION => $function,
-            ],
             $reflection,
             ...$reflection->getAttributes($attribute, $flags ?? static::$defaultFlags)
         );
@@ -270,9 +263,6 @@ class Attributes implements Contract
         $reflection = $this->reflection->forClosure($closure);
 
         return $this->getInstances(
-            [
-                AttributeProperty::CLOSURE => $closure,
-            ],
             $reflection,
             ...$reflection->getAttributes($attribute, $flags ?? static::$defaultFlags)
         );
@@ -312,21 +302,6 @@ class Attributes implements Contract
             $instances = [
                 ...$instances,
                 ...$this->getInstances(
-                    [
-                        AttributeProperty::CLASS_NAME => $member->getDeclaringClass()->getName(),
-                        AttributeProperty::CONSTANT   => $member instanceof ReflectionClassConstant
-                            ? $member->getName()
-                            : null,
-                        AttributeProperty::PROPERTY   => $member instanceof ReflectionProperty
-                            ? $member->getName()
-                            : null,
-                        AttributeProperty::METHOD     => $member instanceof ReflectionMethod
-                            ? $member->getName()
-                            : null,
-                        AttributeProperty::STATIC     => $member instanceof ReflectionProperty || $member instanceof ReflectionMethod
-                            ? $member->isStatic()
-                            : null,
-                    ],
                     $member,
                     ...$member->getAttributes($attribute, $flags ?? static::$defaultFlags)
                 ),
@@ -352,20 +327,9 @@ class Attributes implements Contract
         $instances = [];
 
         foreach ($parameters as $parameter) {
-            $className = $parameter->getDeclaringClass()?->getName();
-
             $instances = [
                 ...$instances,
                 ...$this->getInstances(
-                    [
-                        AttributeProperty::CLASS_NAME => $className,
-                        AttributeProperty::METHOD     => $className ? $parameter->getDeclaringFunction()->getName() : null,
-                        AttributeProperty::FUNCTION   => $className === null ? $parameter->getDeclaringFunction()->getName() : null,
-                        AttributeProperty::STATIC     => $parameter->getDeclaringFunction()->isStatic(),
-                        AttributeProperty::OPTIONAL   => $parameter->isOptional(),
-                        AttributeProperty::DEFAULT    => $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null,
-                        AttributeProperty::NAME       => $parameter->getName(),
-                    ],
                     $parameter,
                     ...$parameter->getAttributes($attribute, $flags ?? static::$defaultFlags)
                 ),
@@ -378,12 +342,11 @@ class Attributes implements Contract
     /**
      * Set the base annotation model values.
      *
-     * @param array<string, mixed> $properties              The properties
-     * @param ReflectionAttribute  ...$reflectionAttributes The reflection attributes
+     * @param ReflectionAttribute ...$reflectionAttributes The reflection attributes
      *
      * @return object[]
      */
-    protected function getInstances(array $properties, Reflector $reflection, ReflectionAttribute ...$reflectionAttributes): array
+    protected function getInstances(Reflector $reflection, ReflectionAttribute ...$reflectionAttributes): array
     {
         $instances = [];
 
@@ -422,38 +385,6 @@ class Attributes implements Contract
                         default                                        => $instance->getDispatch(),
                     }
                 );
-            }
-
-            if (isset($properties[AttributeProperty::CLASS_NAME]) && method_exists($instance, 'setClass')) {
-                $instance->setClass($properties[AttributeProperty::CLASS_NAME]);
-            }
-
-            if (isset($properties[AttributeProperty::CONSTANT]) && method_exists($instance, 'setConstant')) {
-                $instance->setConstant($properties[AttributeProperty::CONSTANT]);
-            }
-
-            if (isset($properties[AttributeProperty::PROPERTY]) && method_exists($instance, 'setProperty')) {
-                $instance->setProperty($properties[AttributeProperty::PROPERTY]);
-            }
-
-            if (isset($properties[AttributeProperty::METHOD]) && method_exists($instance, 'setMethod')) {
-                $instance->setMethod($properties[AttributeProperty::METHOD]);
-            }
-
-            if (isset($properties[AttributeProperty::STATIC]) && method_exists($instance, 'setStatic')) {
-                $instance->setStatic($properties[AttributeProperty::STATIC]);
-            }
-
-            if (isset($properties[AttributeProperty::OPTIONAL]) && method_exists($instance, 'setIsOptional')) {
-                $instance->setIsOptional($properties[AttributeProperty::OPTIONAL]);
-            }
-
-            if (isset($properties[AttributeProperty::DEFAULT]) && method_exists($instance, 'setDefault')) {
-                $instance->setDefault($properties[AttributeProperty::DEFAULT]);
-            }
-
-            if (isset($properties[AttributeProperty::NAME]) && method_exists($instance, 'setName')) {
-                $instance->setName($properties[AttributeProperty::NAME]);
             }
 
             $instances[] = $instance;
