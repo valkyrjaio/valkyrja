@@ -28,21 +28,21 @@ trait ProvidersAwareTrait
     /**
      * The items provided by providers that are deferred.
      *
-     * @var array<string, string>
+     * @var array<class-string, class-string>
      */
     protected array $deferred = [];
 
     /**
      * The custom publish handler for items provided by providers that are deferred.
      *
-     * @var array<string, callable>
+     * @var array<class-string, callable>
      */
     protected array $deferredCallback = [];
 
     /**
      * The items provided by providers that are published.
      *
-     * @var array<string, bool>
+     * @var array<class-string, bool>
      */
     protected array $published = [];
 
@@ -98,22 +98,28 @@ trait ProvidersAwareTrait
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
      */
-    public function isDeferred(string $itemId): bool
+    public function isDeferred(string $id): bool
     {
-        return isset($this->deferred[$itemId]);
+        return isset($this->deferred[$id]);
     }
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
      */
-    public function isPublished(string $itemId): bool
+    public function isPublished(string $id): bool
     {
-        return isset($this->published[$itemId]);
+        return isset($this->published[$id]);
     }
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $provider The provider
      */
     public function isRegistered(string $provider): bool
     {
@@ -122,11 +128,13 @@ trait ProvidersAwareTrait
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
      */
-    public function publishProvided(string $itemId): void
+    public function publishProvided(string $id): void
     {
         // The provider for this provided item
-        $provider = $this->deferred[$itemId] ?? null;
+        $provider = $this->deferred[$id] ?? null;
 
         // If there is no provider found then this provided item doesn't exist
         if ($provider === null) {
@@ -134,28 +142,28 @@ trait ProvidersAwareTrait
         }
 
         // The publish method for this provided item in the provider
-        $publishCallback = $this->deferredCallback[$itemId];
+        $publishCallback = $this->deferredCallback[$id];
 
         // Publish the service provider
         $publishCallback($this);
 
         // Set published cache only after the success of a publish (in case of error)
-        $this->published[$itemId] = true;
+        $this->published[$id] = true;
     }
 
     /**
      * Publish an unpublished provided item.
      *
-     * @param string $itemId The item id
+     * @param class-string $id The service id
      *
      * @return void
      */
-    protected function publishUnpublishedProvided(string $itemId): void
+    protected function publishUnpublishedProvided(string $id): void
     {
         // Check if the id is provided by a provider and isn't already published
-        if ($this->isDeferred($itemId) && ! $this->isPublished($itemId)) {
+        if ($this->isDeferred($id) && ! $this->isPublished($id)) {
             // Publish the provider
-            $this->publishProvided($itemId);
+            $this->publishProvided($id);
         }
     }
 
@@ -163,7 +171,7 @@ trait ProvidersAwareTrait
      * Register a deferred provider.
      *
      * @param class-string $provider    The provider
-     * @param string       ...$provides The provided items
+     * @param class-string ...$provides The provided items
      *
      * @return void
      */

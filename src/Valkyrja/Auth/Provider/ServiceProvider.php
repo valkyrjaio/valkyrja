@@ -34,6 +34,7 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Jwt\Contract\Jwt;
 use Valkyrja\Orm\Contract\Orm;
 use Valkyrja\Session\Contract\Session;
@@ -295,11 +296,13 @@ final class ServiceProvider extends Provider
      *
      * @return EntityRoutePolicy
      */
-    public static function createEntityRoutePolicy(Container $container, string $name, Repository $repository): EntityRoutePolicy
+    public static function createEntityRoutePolicy(Container $container, string $name, Route $route, Repository $repository): EntityRoutePolicy
     {
+        // Iterate over dependencies in Route to find the entity
+
         return new $name(
             $repository,
-            $container->getSingleton($name::getEntityClassName() . ((string) $name::getEntityParamNumber())),
+        // $container->getSingleton($name::getEntityClassName() . ((string) $name::getEntityParamNumber())),
         );
     }
 

@@ -18,7 +18,7 @@ use Valkyrja\Container\Attribute\Alias;
 use Valkyrja\Container\Attribute\ContextAlias;
 use Valkyrja\Container\Attribute\ContextService;
 use Valkyrja\Container\Attribute\Service;
-use Valkyrja\Container\Attribute\Service as Attribute;
+use Valkyrja\Container\Attribute\Service as ServiceAttribute;
 use Valkyrja\Container\Collector\Contract\Collector as Contract;
 
 /**
@@ -42,7 +42,7 @@ class AttributeCollector implements Contract
      */
     public function getServices(string ...$classes): array
     {
-        return $this->getAttributesByType(Attribute::class, ...$classes);
+        return $this->getAttributesByType(ServiceAttribute::class, ...$classes);
     }
 
     /**
@@ -82,7 +82,7 @@ class AttributeCollector implements Contract
     }
 
     /**
-     * @template Attribute of Attribute|Alias|ContextService|ContextAlias
+     * @template Attribute of ServiceAttribute|Alias|ContextService|ContextAlias
      *
      * @param class-string<Attribute> $attributeClass The attribute class name
      * @param class-string            ...$classes     The classes

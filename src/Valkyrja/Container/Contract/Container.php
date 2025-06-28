@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Contract;
 
-use ArrayAccess;
 use Psr\Container\ContainerInterface;
 use Valkyrja\Container\Support\Contract\ProvidersAware;
 
@@ -21,24 +20,24 @@ use Valkyrja\Container\Support\Contract\ProvidersAware;
  * Interface Container.
  *
  * @author Melech Mizrachi
- *
- * @extends ArrayAccess<class-string|string, mixed>
  */
-interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
+interface Container extends ContainerInterface, ProvidersAware
 {
     /**
      * Check whether a given service exists.
      *
-     * @param class-string|string $id The service id
+     * @param class-string $id The service id
      *
      * @return bool
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
     public function has(string $id): bool;
 
     /**
      * Bind a service to the container.
      *
-     * @param class-string|string   $id      The service id
+     * @param class-string          $id      The service id
      * @param class-string<Service> $service The service
      *
      * @return static
@@ -48,8 +47,8 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     /**
      * Bind an alias to the container.
      *
-     * @param string              $alias The alias
-     * @param class-string|string $id    The service id to alias
+     * @param class-string $alias The alias
+     * @param class-string $id    The service id to alias
      *
      * @return static
      */
@@ -58,7 +57,7 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     /**
      * Bind a singleton to the container.
      *
-     * @param class-string|string   $id        The service id
+     * @param class-string          $id        The service id
      * @param class-string<Service> $singleton The singleton service
      *
      * @return static
@@ -68,27 +67,33 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     /**
      * Set a callable in the container.
      *
-     * @param class-string|string $id       The service id
-     * @param callable            $callable The callable
+     * @template T of object
+     *
+     * @param class-string<T> $id       The service id
+     * @param callable        $callable The callable
      *
      * @return static
+     *
+     * @see https://psalm.dev/r/4431cf022b callable(Container, mixed...):T
      */
     public function setCallable(string $id, callable $callable): static;
 
     /**
      * Set a singleton in the container.
      *
-     * @param class-string|string $id        The service id
-     * @param mixed               $singleton The singleton
+     * @template T of object
+     *
+     * @param class-string<T> $id        The service id
+     * @param T               $singleton The singleton
      *
      * @return static
      */
-    public function setSingleton(string $id, mixed $singleton): static;
+    public function setSingleton(string $id, object $singleton): static;
 
     /**
      * Check whether a given service is an alias.
      *
-     * @param class-string|string $id The service id
+     * @param class-string $id The service id
      *
      * @return bool
      */
@@ -97,7 +102,7 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     /**
      * Check whether a given service is bound to a callable.
      *
-     * @param class-string|string $id The service id
+     * @param class-string $id The service id
      *
      * @return bool
      */
@@ -106,7 +111,7 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     /**
      * Check whether a given service exists.
      *
-     * @param class-string|string $id The service id
+     * @param class-string $id The service id
      *
      * @return bool
      */
@@ -115,7 +120,7 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
     /**
      * Check whether a given service is a singleton.
      *
-     * @param class-string|string $id The service id
+     * @param class-string $id The service id
      *
      * @return bool
      */
@@ -126,34 +131,36 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
      *
      * @template T of object
      *
-     * @param class-string<T>|string  $id        The service id
+     * @param class-string<T>         $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
      *
-     * @return ($id is class-string<T> ? T : mixed)
+     * @return T
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public function get(string $id, array $arguments = []): mixed;
+    public function get(string $id, array $arguments = []): object;
 
     /**
      * Get a service bound to a callable from the container.
      *
      * @template T of object
      *
-     * @param class-string<T>|string  $id        The service id
+     * @param class-string<T>         $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
      *
-     * @return ($id is class-string<T> ? T : mixed)
+     * @return T
      */
-    public function getCallable(string $id, array $arguments = []): mixed;
+    public function getCallable(string $id, array $arguments = []): object;
 
     /**
      * Get a service from the container.
      *
      * @template T of Service
      *
-     * @param class-string<T>|string  $id        The service id
+     * @param class-string<T>         $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
      *
-     * @return ($id is class-string<T> ? T : Service)
+     * @return T
      */
     public function getService(string $id, array $arguments = []): Service;
 
@@ -162,46 +169,9 @@ interface Container extends ArrayAccess, ContainerInterface, ProvidersAware
      *
      * @template T of object
      *
-     * @param class-string<T>|string $id The service id
+     * @param class-string<T> $id The service id
      *
-     * @return ($id is class-string<T> ? T : mixed)
+     * @return T
      */
-    public function getSingleton(string $id): mixed;
-
-    /**
-     * Get a service from the container.
-     *
-     * @param string $offset The service id
-     *
-     * @return mixed
-     */
-    public function offsetGet($offset): mixed;
-
-    /**
-     * Bind a service to the container.
-     *
-     * @param class-string|string   $offset The service id
-     * @param class-string<Service> $value  The service
-     *
-     * @return void
-     */
-    public function offsetSet($offset, $value): void;
-
-    /**
-     * Unbind a service to the container.
-     *
-     * @param class-string|string $offset The service id
-     *
-     * @return void
-     */
-    public function offsetUnset($offset): void;
-
-    /**
-     * Check whether a given service exists.
-     *
-     * @param class-string|string $offset The service id
-     *
-     * @return bool
-     */
-    public function offsetExists($offset): bool;
+    public function getSingleton(string $id): object;
 }

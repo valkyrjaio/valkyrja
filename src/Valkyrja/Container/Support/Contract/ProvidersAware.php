@@ -31,22 +31,22 @@ interface ProvidersAware
     public function register(string $provider, bool $force = false): void;
 
     /**
-     * Check whether a given item is provided by a deferred provider.
+     * Check whether a given service is provided by a deferred provider.
      *
-     * @param string $itemId The provided item
+     * @param class-string $id The provided service id
      *
      * @return bool
      */
-    public function isDeferred(string $itemId): bool;
+    public function isDeferred(string $id): bool;
 
     /**
-     * Check whether a given item is published.
+     * Check whether a given service is published.
      *
-     * @param string $itemId The provided item id
+     * @param class-string $id The provided service id
      *
      * @return bool
      */
-    public function isPublished(string $itemId): bool;
+    public function isPublished(string $id): bool;
 
     /**
      * Determine whether a provider has been registered.
@@ -58,11 +58,11 @@ interface ProvidersAware
     public function isRegistered(string $provider): bool;
 
     /**
-     * Initialize a provided item.
+     * Initialize a provided service.
      *
-     * @param string $itemId The provided item id
+     * @param class-string $id The provided service id
      *
      * @return void
      */
-    public function publishProvided(string $itemId): void;
+    public function publishProvided(string $id): void;
 }

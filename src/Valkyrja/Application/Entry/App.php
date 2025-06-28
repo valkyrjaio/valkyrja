@@ -174,9 +174,10 @@ abstract class App
      */
     protected static function bootstrapServices(Application $app, Container $container): void
     {
+        $env = $app->getEnv();
+
         $container->setSingleton(Application::class, $app);
-        $container->setSingleton(Env::class, $app->getEnv());
-        $container->bindAlias('env', Env::class);
+        $container->setSingleton(Env::class, new $env());
         $container->setSingleton(ValkyrjaConfig::class, $app->getConfig());
         $container->setSingleton(Container::class, $container);
     }
@@ -186,7 +187,7 @@ abstract class App
      */
     protected static function bootstrapErrorHandler(Application $app, Container $container): void
     {
-        $errorHandler = ErrorHandler::class;
+        $errorHandler = new ErrorHandler();
 
         // Set error handler in the service container
         $container->setSingleton(ErrorHandlerContract::class, $errorHandler);

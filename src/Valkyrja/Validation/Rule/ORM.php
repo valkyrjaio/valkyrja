@@ -62,9 +62,6 @@ class ORM
         // Check for a result
         $result = $this->orm->getRepository($entity)->find()->where($field, value: $subject)->getOneOrNull();
 
-        // Set a singleton of the entity in the container for later retrieval
-        $this->container->setSingleton($entity, $result);
-
         if ($result !== null) {
             throw new ValidationException("Must be a unique value in $entity for field $field");
         }
@@ -89,11 +86,11 @@ class ORM
         // Check for a result
         $result = $this->orm->getRepository($entity)->find()->where($field, value: $subject)->getOneOrNull();
 
-        // Set a singleton of the entity in the container for later retrieval
-        $this->container->setSingleton($entity, $result);
-
         if ($result === null) {
             throw new ValidationException("Must exist in $entity for field $field");
         }
+
+        // Set a singleton of the entity in the container for later retrieval
+        $this->container->setSingleton($entity, $result);
     }
 }

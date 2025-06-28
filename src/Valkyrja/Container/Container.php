@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container;
 
-use RuntimeException;
 use Valkyrja\Container\Contract\Container as Contract;
 use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Support\ProvidersAwareTrait;
@@ -34,35 +33,35 @@ class Container implements Contract
     /**
      * The aliases.
      *
-     * @var array<class-string|string, class-string|string>
+     * @var array<class-string, class-string>
      */
     protected array $aliases = [];
 
     /**
      * The instances.
      *
-     * @var array<class-string|string, mixed>
+     * @var array<class-string, object>
      */
     protected array $instances = [];
 
     /**
      * The services.
      *
-     * @var array<class-string<Service>|string, class-string<Service>>
+     * @var array<class-string<Service>, class-string<Service>>
      */
     protected array $services = [];
 
     /**
      * The service callables.
      *
-     * @var array<class-string|string, callable>
+     * @var array<class-string, callable(Container, mixed...):object>
      */
     protected array $callables = [];
 
     /**
      * The singletons.
      *
-     * @var array<class-string|string, class-string|string>
+     * @var array<class-string, class-string>
      */
     protected array $singletons = [];
 
@@ -76,6 +75,10 @@ class Container implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
     public function has(string $id): bool
     {
@@ -91,6 +94,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      *
+     * @param class-string          $id      The service id
      * @param class-string<Service> $service The service
      */
     public function bind(string $id, string $service): static
@@ -99,6 +103,8 @@ class Container implements Contract
 
         $id = $this->getServiceIdInternal($id);
 
+        /** @var class-string<Service> $id */
+
         $this->services[$id] = $service;
 
         return $this;
@@ -106,6 +112,9 @@ class Container implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $alias The alias
+     * @param class-string $id    The service id to alias
      */
     public function bindAlias(string $alias, string $id): static
     {
@@ -119,6 +128,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      *
+     * @param class-string          $id        The service id
      * @param class-string<Service> $singleton The singleton service
      */
     public function bindSingleton(string $id, string $singleton): static
@@ -134,11 +144,14 @@ class Container implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
      */
     public function setCallable(string $id, callable $callable): static
     {
         $id = $this->getServiceIdInternal($id);
 
+        /** @var callable(Contract, mixed...):object $callable */
         $this->callables[$id] = $callable;
         $this->published[$id] = true;
 
@@ -147,8 +160,10 @@ class Container implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
      */
-    public function setSingleton(string $id, mixed $singleton): static
+    public function setSingleton(string $id, object $singleton): static
     {
         $id = $this->getServiceIdInternal($id);
 
@@ -161,6 +176,8 @@ class Container implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
      */
     public function isAlias(string $id): bool
     {
@@ -169,6 +186,8 @@ class Container implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
      */
     public function isCallable(string $id): bool
     {
@@ -179,6 +198,8 @@ class Container implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
      */
     public function isService(string $id): bool
     {
@@ -189,6 +210,8 @@ class Container implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
      */
     public function isSingleton(string $id): bool
     {
@@ -199,27 +222,33 @@ class Container implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
+     *
+     * @psalm-suppress InvalidReturnType
+     * @psalm-suppress InvalidReturnStatement
+     * @psalm-suppress ImplementedReturnTypeMismatch
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public function get(string $id, array $arguments = []): mixed
+    public function get(string $id, array $arguments = []): object
     {
         $id = $this->getServiceIdAndEnsurePublished($id);
 
         // If the service is a singleton
         if ($this->isSingletonInternal($id)) {
             // Return the singleton
-            /** @psalm-suppress MixedReturnStatement Duh, up to the developer */
             return $this->getSingletonWithoutChecks($id);
         }
 
         // If the service is a singleton
         if ($this->isCallableInternal($id)) {
             // Return the closure
-            /** @psalm-suppress MixedReturnStatement Duh, up to the developer */
             return $this->getCallableWithoutChecks($id, $arguments);
         }
 
         // If the service is in the container
         if ($this->isServiceInternal($id)) {
+            /** @var class-string<Service> $id */
             // Return the made service
             return $this->getServiceWithoutChecks($id, $arguments);
         }
@@ -235,74 +264,60 @@ class Container implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
+     *
+     * @psalm-suppress InvalidReturnType
+     * @psalm-suppress InvalidReturnStatement
+     * @psalm-suppress ImplementedReturnTypeMismatch
      */
-    public function getCallable(string $id, array $arguments = []): mixed
+    public function getCallable(string $id, array $arguments = []): object
     {
         $id = $this->getServiceIdAndEnsurePublished($id);
 
-        /** @psalm-suppress MixedReturnStatement Duh, up to the developer */
         return $this->getCallableWithoutChecks($id, $arguments);
     }
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
+     *
+     * @psalm-suppress InvalidReturnType
+     * @psalm-suppress InvalidReturnStatement
+     * @psalm-suppress ImplementedReturnTypeMismatch
      */
     public function getService(string $id, array $arguments = []): Service
     {
         $id = $this->getServiceIdAndEnsurePublished($id);
+
+        /** @var class-string<Service> $id */
 
         return $this->getServiceWithoutChecks($id, $arguments);
     }
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
+     *
+     * @psalm-suppress InvalidReturnType
+     * @psalm-suppress InvalidReturnStatement
+     * @psalm-suppress ImplementedReturnTypeMismatch
      */
-    public function getSingleton(string $id): mixed
+    public function getSingleton(string $id): object
     {
         $id = $this->getServiceIdAndEnsurePublished($id);
 
-        /** @psalm-suppress MixedReturnStatement Duh, up to the developer */
         return $this->getSingletonWithoutChecks($id);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetSet($offset, $value): void
-    {
-        $this->bind($offset, $value);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetExists($offset): bool
-    {
-        return $this->has($offset);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetUnset($offset): void
-    {
-        throw new RuntimeException("Cannot remove service with name $offset from the container.");
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetGet($offset): mixed
-    {
-        return $this->get($offset);
     }
 
     /**
      * Get an aliased service id if it exists.
      *
-     * @param class-string|string $id The service id
+     * @param class-string $id The service id
      *
-     * @return string
+     * @return class-string
      */
     protected function getAliasedServiceId(string $id): string
     {
@@ -312,9 +327,9 @@ class Container implements Contract
     /**
      * Get a service id and ensure that it is published if it is provided.
      *
-     * @param class-string|string $id The service id
+     * @param class-string $id The service id
      *
-     * @return string
+     * @return class-string
      */
     protected function getServiceIdAndEnsurePublished(string $id): string
     {
@@ -329,9 +344,9 @@ class Container implements Contract
     /**
      * Get the context service id.
      *
-     * @param class-string|string $id The service id
+     * @param class-string $id The service id
      *
-     * @return string
+     * @return class-string
      */
     protected function getServiceIdInternal(string $id): string
     {
@@ -341,7 +356,7 @@ class Container implements Contract
     /**
      * Check whether a given service is an alias.
      *
-     * @param class-string|string $id The service id
+     * @param class-string $id The service id
      *
      * @return bool
      */
@@ -353,7 +368,7 @@ class Container implements Contract
     /**
      * Check whether a given service is bound to a callable.
      *
-     * @param class-string|string $id The service id
+     * @param class-string $id The service id
      *
      * @return bool
      */
@@ -365,7 +380,7 @@ class Container implements Contract
     /**
      * Check whether a given service is a singleton.
      *
-     * @param class-string|string $id The service id
+     * @param class-string $id The service id
      *
      * @return bool
      */
@@ -377,7 +392,7 @@ class Container implements Contract
     /**
      * Check whether a given service exists.
      *
-     * @param class-string|string $id The service id
+     * @param class-string $id The service id
      *
      * @return bool
      */
@@ -389,12 +404,12 @@ class Container implements Contract
     /**
      * Get a service bound to a callable from the container without trying to get an alias or ensuring published.
      *
-     * @param class-string|string     $id        The service id
+     * @param class-string            $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
      *
-     * @return mixed
+     * @return object
      */
-    protected function getCallableWithoutChecks(string $id, array $arguments = []): mixed
+    protected function getCallableWithoutChecks(string $id, array $arguments = []): object
     {
         $closure = $this->callables[$id];
 
@@ -404,42 +419,29 @@ class Container implements Contract
     /**
      * Get a singleton from the container without trying to get an alias or ensuring published.
      *
-     * @param class-string|string $id The service id
+     * @param class-string $id The service id
      *
-     * @return mixed
+     * @return object
      */
-    protected function getSingletonWithoutChecks(string $id): mixed
+    protected function getSingletonWithoutChecks(string $id): object
     {
-        /** @var mixed $instance */
-        $instance = $this->instances[$id] ??= $this->getServiceWithoutChecks($id);
-
-        return $instance;
+        return $this->instances[$id]
+            ?? throw new InvalidArgumentException("Provided $id does not exist");
     }
 
     /**
      * Get a service from the container without trying to get an alias or ensuring published.
      *
-     * @param class-string<Service>|string $id        The service id
-     * @param array<array-key, mixed>      $arguments [optional] The arguments
+     * @param class-string<Service>   $id        The service id
+     * @param array<array-key, mixed> $arguments [optional] The arguments
      *
      * @return Service
      */
     protected function getServiceWithoutChecks(string $id, array $arguments = []): Service
     {
-        $isSingleton = $this->isSingleton($id);
-        /** @var Service $service */
-        $service = $isSingleton
-            ? $this->singletons[$id]
-            : $this->services[$id];
+        $service = $this->services[$id];
+
         // Make the object by dispatching the service
-        $made = $service::make($this, $arguments);
-
-        // If the service is a singleton
-        if ($isSingleton) {
-            // Set singleton
-            $this->setSingleton($id, $made);
-        }
-
-        return $made;
+        return $service::make($this, $arguments);
     }
 }

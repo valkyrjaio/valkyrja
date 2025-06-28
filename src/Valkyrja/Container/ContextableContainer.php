@@ -84,6 +84,7 @@ trait ContextableContainer
     /**
      * @inheritDoc
      *
+     * @param class-string          $id      The service id
      * @param class-string<Service> $service The service
      */
     public function bind(string $id, string $service): static
@@ -103,6 +104,9 @@ trait ContextableContainer
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $alias The alias
+     * @param class-string $id    The service id
      */
     public function bindAlias(string $alias, string $id): static
     {
@@ -123,6 +127,7 @@ trait ContextableContainer
     /**
      * @inheritDoc
      *
+     * @param class-string          $id        The service id
      * @param class-string<Service> $singleton The singleton service
      */
     public function bindSingleton(string $id, string $singleton): static
@@ -142,6 +147,8 @@ trait ContextableContainer
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
      */
     public function setCallable(string $id, callable $callable): static
     {
@@ -160,8 +167,10 @@ trait ContextableContainer
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
      */
-    public function setSingleton(string $id, mixed $singleton): static
+    public function setSingleton(string $id, object $singleton): static
     {
         if ($this->contextContainer !== null) {
             $id = $this->getServiceIdInternal($id);
@@ -178,6 +187,8 @@ trait ContextableContainer
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
      */
     public function isAlias(string $id): bool
     {
@@ -192,6 +203,8 @@ trait ContextableContainer
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
      */
     public function isCallable(string $id): bool
     {
@@ -206,6 +219,8 @@ trait ContextableContainer
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
      */
     public function isService(string $id): bool
     {
@@ -220,6 +235,8 @@ trait ContextableContainer
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
      */
     public function isSingleton(string $id): bool
     {
@@ -234,8 +251,13 @@ trait ContextableContainer
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType
+     * @psalm-suppress ImplementedReturnTypeMismatch
      */
-    public function get(string $id, array $arguments = []): mixed
+    public function get(string $id, array $arguments = []): object
     {
         if ($this->contextContainer !== null) {
             $id = $this->getServiceIdInternal($id);
@@ -248,8 +270,12 @@ trait ContextableContainer
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
+     *
+     * @psalm-suppress ImplementedReturnTypeMismatch
      */
-    public function getCallable(string $id, array $arguments = []): mixed
+    public function getCallable(string $id, array $arguments = []): object
     {
         if ($this->contextContainer !== null) {
             $id = $this->getServiceIdInternal($id);
@@ -262,6 +288,11 @@ trait ContextableContainer
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
+     *
+     * @psalm-suppress MoreSpecificReturnType
+     * @psalm-suppress ImplementedReturnTypeMismatch
      */
     public function getService(string $id, array $arguments = []): Service
     {
@@ -276,8 +307,12 @@ trait ContextableContainer
 
     /**
      * @inheritDoc
+     *
+     * @param class-string $id The service id
+     *
+     * @psalm-suppress ImplementedReturnTypeMismatch
      */
-    public function getSingleton(string $id): mixed
+    public function getSingleton(string $id): object
     {
         if ($this->contextContainer !== null) {
             $id = $this->getServiceIdInternal($id);
@@ -304,9 +339,9 @@ trait ContextableContainer
     /**
      * Get a service id and ensure that it is published if it is provided.
      *
-     * @param class-string|string $id The service id
+     * @param class-string $id The service id
      *
-     * @return string
+     * @return class-string
      */
     protected function getServiceIdAndEnsurePublished(string $id): string
     {
@@ -321,9 +356,9 @@ trait ContextableContainer
     /**
      * Get the context service id.
      *
-     * @param class-string|string $id The service id
+     * @param class-string $id The service id
      *
-     * @return string
+     * @return class-string
      */
     protected function getServiceIdInternal(string $id): string
     {
@@ -335,6 +370,9 @@ trait ContextableContainer
 
         // serviceId@context
         // serviceId@context::method
-        return $id . ($this->contextId ?? '');
+        $id .= ($this->contextId ?? '');
+
+        /** @var class-string $id */
+        return $id;
     }
 }

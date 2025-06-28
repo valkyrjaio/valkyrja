@@ -25,42 +25,42 @@ class Cache
     /**
      * The aliases.
      *
-     * @var array<string, string>
+     * @var array<class-string, class-string>
      */
     public array $aliases;
 
     /**
      * The context services.
      *
-     * @var array<string, string>
+     * @var array<class-string, class-string>
      */
     public array $contextServices;
 
     /**
      * The deferred services.
      *
-     * @var array<string, string>
+     * @var array<class-string, class-string>
      */
     public array $deferred;
 
     /**
      * The deferred services' publish methods.
      *
-     * @var array<string, callable>
+     * @var array<class-string, callable>
      */
     public array $deferredCallback;
 
     /**
      * The services.
      *
-     * @var array<string, class-string<Service>>
+     * @var array<class-string<Service>, class-string<Service>>
      */
     public array $services;
 
     /**
      * The singletons.
      *
-     * @var array<string, string>
+     * @var array<class-string, class-string>
      */
     public array $singletons;
 }

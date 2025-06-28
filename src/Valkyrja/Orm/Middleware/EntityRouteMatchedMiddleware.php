@@ -104,7 +104,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
      *
      * @param int                     $index        The index
      * @param Parameter               $parameter    The parameter
-     * @param string[]                $dependencies The route dependencies
+     * @param class-string[]          $dependencies The route dependencies
      * @param array<array-key, mixed> $arguments    The arguments
      *
      * @return Response|null
@@ -120,7 +120,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
                 return $this->getBadRequestResponse($type, $match);
             }
 
-            return $this->findAndSetEntityFromParameter($index, $parameter, $type, $dependencies, $match);
+            return $this->findAndSetEntityFromParameter($parameter, $type, $dependencies, $match);
         }
 
         return null;
@@ -129,16 +129,14 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     /**
      * Try to find and set a route's entity dependency.
      *
-     * @param int                  $index        The index
      * @param Parameter            $parameter    The parameter
      * @param class-string<Entity> $entityName   The entity class name
-     * @param string[]             $dependencies The dependencies
+     * @param class-string[]       $dependencies The dependencies
      * @param Entity|string|int    $value        The value
      *
      * @return Response|null
      */
     protected function findAndSetEntityFromParameter(
-        int $index,
         Parameter $parameter,
         string $entityName,
         array &$dependencies,
@@ -154,9 +152,6 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
         if ($entity === null) {
             return $this->getNotFoundResponse($entityName, $value);
         }
-
-        // Set the entity with the param name as the service id into the container
-        $this->container->setSingleton($entityName . ((string) $index), $entity);
 
         // Replace the route match with this entity
         /** @param-out Entity $value */
@@ -222,8 +217,8 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     /**
      * Response for when the entity was not found with the given value.
      *
-     * @param string $entity The entity not found
-     * @param mixed  $value  [optional] The value used to check for the entity
+     * @param class-string<Entity> $entity The entity not found
+     * @param mixed                $value  [optional] The value used to check for the entity
      *
      * @return Response
      */
@@ -239,8 +234,8 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     /**
      * Response for when bad data has been provided to match for the entity.
      *
-     * @param string $entity The entity with bad data
-     * @param mixed  $value  [optional] The bad data value
+     * @param class-string<Entity> $entity The entity with bad data
+     * @param mixed                $value  [optional] The bad data value
      *
      * @return Response
      */

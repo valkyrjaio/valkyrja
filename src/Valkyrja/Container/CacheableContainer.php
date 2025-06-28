@@ -118,6 +118,7 @@ class CacheableContainer extends Container
      */
     protected function setupAttributedServices(): void
     {
+        /** @var Collector $collector */
         $collector = $this->getSingleton(Collector::class);
 
         foreach ($collector->getServices(...$this->config->services) as $service) {
