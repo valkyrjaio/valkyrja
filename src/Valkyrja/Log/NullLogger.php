@@ -11,28 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Log\Adapter;
+namespace Valkyrja\Log;
 
 use Throwable;
-use Valkyrja\Log\Adapter\Contract\Adapter as Contract;
-use Valkyrja\Log\Config\NullConfiguration;
+use Valkyrja\Log\Contract\Logger as Contract;
 use Valkyrja\Log\Enum\LogLevel;
 
 /**
- * Class NullAdapter.
+ * Class NullLogger.
  *
  * @author Melech Mizrachi
  */
-class NullAdapter implements Contract
+class NullLogger implements Contract
 {
-    /**
-     * NullAdapter constructor.
-     */
-    public function __construct(
-        protected NullConfiguration $config
-    ) {
-    }
-
     /**
      * @inheritDoc
      */

@@ -11,25 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Log\Driver;
+namespace Valkyrja\Log;
 
+use Psr\Log\LoggerInterface;
 use Throwable;
-use Valkyrja\Log\Adapter\Contract\Adapter;
-use Valkyrja\Log\Driver\Contract\Driver as Contract;
+use Valkyrja\Log\Contract\Logger as Contract;
 use Valkyrja\Log\Enum\LogLevel;
 
 /**
- * Class Driver.
+ * Class PsrLogger.
  *
  * @author Melech Mizrachi
  */
-class Driver implements Contract
+class PsrLogger implements Contract
 {
     /**
-     * Driver constructor.
+     * PsrAdapter constructor.
      */
     public function __construct(
-        protected Adapter $adapter
+        protected LoggerInterface $logger
     ) {
     }
 
@@ -38,7 +38,7 @@ class Driver implements Contract
      */
     public function debug(string $message, array $context = []): void
     {
-        $this->adapter->debug($message, $context);
+        $this->logger->debug($message, $context);
     }
 
     /**
@@ -46,7 +46,7 @@ class Driver implements Contract
      */
     public function info(string $message, array $context = []): void
     {
-        $this->adapter->info($message, $context);
+        $this->logger->info($message, $context);
     }
 
     /**
@@ -54,7 +54,7 @@ class Driver implements Contract
      */
     public function notice(string $message, array $context = []): void
     {
-        $this->adapter->notice($message, $context);
+        $this->logger->notice($message, $context);
     }
 
     /**
@@ -62,7 +62,7 @@ class Driver implements Contract
      */
     public function warning(string $message, array $context = []): void
     {
-        $this->adapter->warning($message, $context);
+        $this->logger->warning($message, $context);
     }
 
     /**
@@ -70,7 +70,7 @@ class Driver implements Contract
      */
     public function error(string $message, array $context = []): void
     {
-        $this->adapter->error($message, $context);
+        $this->logger->error($message, $context);
     }
 
     /**
@@ -78,7 +78,7 @@ class Driver implements Contract
      */
     public function critical(string $message, array $context = []): void
     {
-        $this->adapter->critical($message, $context);
+        $this->logger->critical($message, $context);
     }
 
     /**
@@ -86,7 +86,7 @@ class Driver implements Contract
      */
     public function alert(string $message, array $context = []): void
     {
-        $this->adapter->alert($message, $context);
+        $this->logger->alert($message, $context);
     }
 
     /**
@@ -94,7 +94,7 @@ class Driver implements Contract
      */
     public function emergency(string $message, array $context = []): void
     {
-        $this->adapter->emergency($message, $context);
+        $this->logger->emergency($message, $context);
     }
 
     /**
@@ -102,7 +102,7 @@ class Driver implements Contract
      */
     public function log(LogLevel $level, string $message, array $context = []): void
     {
-        $this->adapter->log($level, $message, $context);
+        $this->logger->log($level->value, $message, $context);
     }
 
     /**
@@ -110,6 +110,27 @@ class Driver implements Contract
      */
     public function exception(Throwable $exception, string $message, array $context = []): void
     {
-        $this->adapter->exception($exception, $message);
+        $traceCode  = $this->getExceptionTraceCode($exception);
+        $logMessage = "\nTrace Code: $traceCode"
+            . "\nException Message: {$exception->getMessage()}"
+            . "\nMessage: $message"
+            . "\nStack Trace:"
+            . "\n=================================="
+            . "\n{$exception->getTraceAsString()}"
+            . "\n==================================\n";
+
+        $this->error($logMessage, $context);
+    }
+
+    /**
+     * Get exception trace code.
+     *
+     * @param Throwable $exception The exception
+     *
+     * @return string
+     */
+    protected function getExceptionTraceCode(Throwable $exception): string
+    {
+        return md5($exception::class . $exception->getTraceAsString());
     }
 }

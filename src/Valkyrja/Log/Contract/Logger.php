@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Log\Contract;
 
 use Throwable;
-use Valkyrja\Log\Driver\Contract\Driver;
 use Valkyrja\Log\Enum\LogLevel;
 
 /**
@@ -24,11 +23,6 @@ use Valkyrja\Log\Enum\LogLevel;
  */
 interface Logger
 {
-    /**
-     * Use a specific configuration.
-     */
-    public function use(string|null $name = null): Driver;
-
     /**
      * Log a debug message.
      *

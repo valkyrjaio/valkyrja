@@ -17,19 +17,13 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Monolog;
 use Psr\Log\LoggerInterface;
-use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Log\Adapter\Contract\Adapter;
-use Valkyrja\Log\Adapter\NullAdapter;
-use Valkyrja\Log\Adapter\PsrAdapter;
-use Valkyrja\Log\Config\NullConfiguration;
-use Valkyrja\Log\Config\PsrConfiguration;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Log\Driver\Driver;
 use Valkyrja\Log\Enum\LogLevel;
-use Valkyrja\Log\Factory\ContainerFactory;
-use Valkyrja\Log\Factory\Contract\Factory;
+use Valkyrja\Log\NullLogger;
+use Valkyrja\Log\PsrLogger;
+use Valkyrja\Support\Directory;
 
 use function date;
 
@@ -47,11 +41,10 @@ final class ServiceProvider extends Provider
     {
         return [
             Logger::class          => [self::class, 'publishLogger'],
-            Factory::class         => [self::class, 'publishFactory'],
-            Driver::class          => [self::class, 'publishDriver'],
-            NullAdapter::class     => [self::class, 'publishNullAdapter'],
-            PsrAdapter::class      => [self::class, 'publishPsrAdapter'],
+            PsrLogger::class       => [self::class, 'publishPsrLogger'],
+            NullLogger::class      => [self::class, 'publishNullLogger'],
             LoggerInterface::class => [self::class, 'publishLoggerInterface'],
+            Monolog::class         => [self::class, 'publishMonolog'],
         ];
     }
 
@@ -62,11 +55,10 @@ final class ServiceProvider extends Provider
     {
         return [
             Logger::class,
-            Factory::class,
-            Driver::class,
-            NullAdapter::class,
-            PsrAdapter::class,
+            NullLogger::class,
+            PsrLogger::class,
             LoggerInterface::class,
+            Monolog::class,
         ];
     }
 
@@ -82,68 +74,22 @@ final class ServiceProvider extends Provider
      */
     public static function publishLogger(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
-
         $container->setSingleton(
             Logger::class,
-            new \Valkyrja\Log\Logger(
-                $container->getSingleton(Factory::class),
-                $config->log
-            )
-        );
-    }
-
-    /**
-     * Publish the factory service.
-     */
-    public static function publishFactory(Container $container): void
-    {
-        $container->setSingleton(
-            Factory::class,
-            new ContainerFactory($container),
-        );
-    }
-
-    /**
-     * Publish the default driver service.
-     */
-    public static function publishDriver(Container $container): void
-    {
-        $container->setCallable(
-            Driver::class,
-            [self::class, 'createDriver']
-        );
-    }
-
-    /**
-     * Create the driver.
-     */
-    public static function createDriver(Container $container, Adapter $adapter): Driver
-    {
-        return new Driver(
-            $adapter
+            $container->getSingleton(PsrLogger::class),
         );
     }
 
     /**
      * Publish the psr adapter service.
      */
-    public static function publishPsrAdapter(Container $container): void
+    public static function publishPsrLogger(Container $container): void
     {
-        $container->setCallable(
-            PsrAdapter::class,
-            [self::class, 'createPsrAdapter']
-        );
-    }
-
-    /**
-     * Create the psr adapter.
-     */
-    public static function createPsrAdapter(Container $container, PsrConfiguration $config): PsrAdapter
-    {
-        return new PsrAdapter(
-            $container->get(LoggerInterface::class, [$config]),
-            $config
+        $container->setSingleton(
+            PsrLogger::class,
+            new PsrLogger(
+                $container->getSingleton(LoggerInterface::class),
+            ),
         );
     }
 
@@ -154,46 +100,38 @@ final class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishNullAdapter(Container $container): void
+    public static function publishNullLogger(Container $container): void
     {
-        $container->setCallable(
-            NullAdapter::class,
-            [self::class, 'createNullAdapter']
+        $container->setSingleton(
+            NullLogger::class,
+            new NullLogger(),
         );
     }
 
     /**
-     * Create the null adapter.
-     */
-    public static function createNullAdapter(Container $container, NullConfiguration $config): NullAdapter
-    {
-        return new NullAdapter(
-            $config
-        );
-    }
-
-    /**
-     * Publish the logger interface.
+     * Publish the psr logger interface.
      */
     public static function publishLoggerInterface(Container $container): void
     {
-        $container->setCallable(
+        $container->setSingleton(
             LoggerInterface::class,
-            [self::class, 'createLoggerInterface']
+            $container->getSingleton(Monolog::class),
         );
     }
 
     /**
-     * Create the logger interface.
+     * Publish the Monolog service.
      */
-    public static function createLoggerInterface(Container $container, PsrConfiguration $config): LoggerInterface
+    public static function publishMonolog(Container $container): void
     {
-        $filePath  = $config->filePath;
-        $name      = $config->name . date('-Y-m-d');
-        $handler   = new StreamHandler(
+        $filePath = Directory::logsStoragePath();
+        $name     = 'valkyrja' . date('-Y-m-d');
+
+        $handler = new StreamHandler(
             "$filePath/$name.log",
             LogLevel::DEBUG->name
         );
+
         $formatter = new LineFormatter(
             null,
             null,
@@ -203,11 +141,14 @@ final class ServiceProvider extends Provider
 
         $handler->setFormatter($formatter);
 
-        return new Monolog(
-            $name,
-            [
-                $handler,
-            ]
+        $container->setSingleton(
+            Monolog::class,
+            new Monolog(
+                $name,
+                [
+                    $handler,
+                ]
+            )
         );
     }
 }

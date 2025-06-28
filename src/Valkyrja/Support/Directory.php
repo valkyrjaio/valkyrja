@@ -46,6 +46,7 @@ class Directory
     public static string $RESOURCES_PATH         = 'resources';
     public static string $STORAGE_PATH           = 'storage';
     public static string $FRAMEWORK_STORAGE_PATH = 'framework';
+    public static string $LOGS_STORAGE_PATH      = 'logs';
     public static string $CACHE_PATH             = 'cache';
     public static string $TESTS_PATH             = 'tests';
     public static string $VENDOR_PATH            = 'vendor';
@@ -158,6 +159,18 @@ class Directory
     public static function frameworkStoragePath(string|null $path = null): string
     {
         return static::storagePath(static::$FRAMEWORK_STORAGE_PATH . static::path($path));
+    }
+
+    /**
+     * Get the logs storage directory for the application.
+     *
+     * @param string|null $path [optional] The path to append
+     *
+     * @return string
+     */
+    public static function logsStoragePath(string|null $path = null): string
+    {
+        return static::storagePath(static::$LOGS_STORAGE_PATH . static::path($path));
     }
 
     /**

@@ -60,9 +60,6 @@ use Valkyrja\Http\Server\Contract\RequestHandler as HttpServerRequestHandler;
 use Valkyrja\Jwt\Adapter\Contract\Adapter as JwtAdapter;
 use Valkyrja\Jwt\Config\Configurations as JwtConfiguration;
 use Valkyrja\Jwt\Driver\Contract\Driver as JwtDriver;
-use Valkyrja\Log\Adapter\Contract\Adapter as LogAdapter;
-use Valkyrja\Log\Config\Configurations as LogConfigurations;
-use Valkyrja\Log\Driver\Contract\Driver as LogDriver;
 use Valkyrja\Mail\Adapter\Contract\Adapter as MailAdapter;
 use Valkyrja\Mail\Config\Configurations as MailConfigurations;
 use Valkyrja\Mail\Config\MessageConfigurations as MailMessageConfigurations;
@@ -485,29 +482,6 @@ class Env
     public const string|null JWT_NULL_ADAPTER_CLASS = null;
     /** @var class-string<JwtDriver>|null */
     public const string|null JWT_NULL_DRIVER_CLASS = null;
-
-    /************************************************************
-     *
-     * Logger component env variables.
-     *
-     ************************************************************/
-
-    /** @var string|null */
-    public const string|null LOG_DEFAULT_CONFIGURATION = null;
-    /** @var callable():LogConfigurations|null */
-    public const array|null LOG_CONFIGURATIONS = null;
-    /** @var class-string<LogAdapter>|null */
-    public const string|null LOG_PSR_ADAPTER_CLASS = null;
-    /** @var class-string<LogDriver>|null */
-    public const string|null LOG_PSR_DRIVER_CLASS = null;
-    /** @var string|null */
-    public const string|null LOG_PSR_NAME = null;
-    /** @var string|null */
-    public const string|null LOG_PSR_FILE_PATH = null;
-    /** @var class-string<LogAdapter>|null */
-    public const string|null LOG_NULL_ADAPTER_CLASS = null;
-    /** @var class-string<LogDriver>|null */
-    public const string|null LOG_NULL_DRIVER_CLASS = null;
 
     /************************************************************
      *
