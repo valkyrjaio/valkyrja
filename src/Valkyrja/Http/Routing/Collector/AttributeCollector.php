@@ -102,6 +102,7 @@ class AttributeCollector implements Contract
                             is_a($middlewareClass, TerminatedMiddleware::class, true)      => $classAttribute->withAddedTerminatedMiddleware(
                                 $middlewareClass
                             ),
+                            default                                                        => $classAttribute,
                         };
                     }
 
@@ -176,6 +177,7 @@ class AttributeCollector implements Contract
                                     is_a($middlewareClass, TerminatedMiddleware::class, true)      => $routeAttribute->withAddedTerminatedMiddleware(
                                         $middlewareClass
                                     ),
+                                    default                                                        => $routeAttribute,
                                 };
                             }
 
