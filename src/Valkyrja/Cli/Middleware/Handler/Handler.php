@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Middleware\Handler;
 
-use Closure;
 use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
@@ -23,7 +22,6 @@ use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
 use Valkyrja\Container\Contract\Container;
 
 use function array_merge;
-use function is_string;
 
 /**
  * Abstract Class Handler.
@@ -39,19 +37,19 @@ use function is_string;
  */
 abstract class Handler implements Contract\Handler
 {
-    /** @var array<array-key, class-string<Middleware>|Closure(Container):Middleware> */
+    /** @var array<array-key, class-string<Middleware>> */
     protected array $middleware = [];
-    /** @var class-string<Middleware>|Closure(Container):Middleware|null */
-    protected Closure|string|null $next = null;
+    /** @var class-string<Middleware>|null */
+    protected string|null $next = null;
     /** @var int */
     protected int $index = 0;
 
     /**
-     * @param class-string<Middleware>|Closure(Container):Middleware ...$middleware The middleware
+     * @param class-string<Middleware> ...$middleware The middleware
      */
     public function __construct(
         protected Container $container = new \Valkyrja\Container\Container(),
-        Closure|string ...$middleware,
+        string ...$middleware,
     ) {
         $this->middleware = $middleware;
 
@@ -59,9 +57,9 @@ abstract class Handler implements Contract\Handler
     }
 
     /**
-     * @param class-string<Middleware>|Closure(Container):Middleware ...$middleware The middleware to add
+     * @param class-string<Middleware> ...$middleware The middleware to add
      */
-    public function add(Closure|string ...$middleware): void
+    public function add(string ...$middleware): void
     {
         $this->middleware = array_merge($this->middleware, $middleware);
 
@@ -71,16 +69,14 @@ abstract class Handler implements Contract\Handler
     /**
      * Get the next middleware in order to continue handling.
      *
-     * @param class-string<Middleware>|Closure(Container):Middleware $middleware The middleware to handle
+     * @param class-string<Middleware> $middleware The middleware to handle
      *
      * @return Middleware
      */
-    protected function getMiddleware(Closure|string $middleware): object
+    protected function getMiddleware(string $middleware): object
     {
         /** @var Middleware $item */
-        $item = is_string($middleware)
-            ? $this->container->get($middleware)
-            : $middleware($this->container);
+        $item = $this->container->get($middleware);
 
         $this->index++;
 
