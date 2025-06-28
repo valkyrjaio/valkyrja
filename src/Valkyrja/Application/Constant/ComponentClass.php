@@ -36,7 +36,6 @@ final class ComponentClass
     public const string EVENT        = \Valkyrja\Event\Component::class;
     public const string FILESYSTEM   = \Valkyrja\Filesystem\Component::class;
     public const string HTTP         = \Valkyrja\Http\Component::class;
-    public const string HTTP_CLIENT  = \Valkyrja\Http\Client\Component::class;
     public const string JWT          = \Valkyrja\Jwt\Component::class;
     public const string LOG          = \Valkyrja\Log\Component::class;
     public const string MAIL         = \Valkyrja\Mail\Component::class;

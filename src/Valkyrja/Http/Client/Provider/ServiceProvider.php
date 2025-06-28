@@ -14,20 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Client\Provider;
 
 use GuzzleHttp\Client as Guzzle;
-use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Http\Client\Adapter\Contract\Adapter;
-use Valkyrja\Http\Client\Adapter\GuzzleAdapter;
-use Valkyrja\Http\Client\Adapter\LogAdapter;
-use Valkyrja\Http\Client\Adapter\NullAdapter;
-use Valkyrja\Http\Client\Config\GuzzleConfiguration;
-use Valkyrja\Http\Client\Config\LogConfiguration;
-use Valkyrja\Http\Client\Config\NullConfiguration;
 use Valkyrja\Http\Client\Contract\Client;
-use Valkyrja\Http\Client\Driver\Driver;
-use Valkyrja\Http\Client\Factory\ContainerFactory;
-use Valkyrja\Http\Client\Factory\Contract\Factory;
+use Valkyrja\Http\Client\GuzzleClient;
+use Valkyrja\Http\Client\LogClient;
+use Valkyrja\Http\Client\NullClient;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Log\Contract\Logger;
 
@@ -44,12 +36,11 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Client::class        => [self::class, 'publishClient'],
-            Factory::class       => [self::class, 'publishFactory'],
-            Driver::class        => [self::class, 'publishDriver'],
-            GuzzleAdapter::class => [self::class, 'publishGuzzleAdapter'],
-            LogAdapter::class    => [self::class, 'publishLogAdapter'],
-            NullAdapter::class   => [self::class, 'publishNullAdapter'],
+            Client::class       => [self::class, 'publishClient'],
+            GuzzleClient::class => [self::class, 'publishGuzzleClient'],
+            Guzzle::class       => [self::class, 'publishGuzzle'],
+            LogClient::class    => [self::class, 'publishLogClient'],
+            NullClient::class   => [self::class, 'publishNullClient'],
         ];
     }
 
@@ -60,11 +51,10 @@ final class ServiceProvider extends Provider
     {
         return [
             Client::class,
-            Factory::class,
-            Driver::class,
-            GuzzleAdapter::class,
-            LogAdapter::class,
-            NullAdapter::class,
+            GuzzleClient::class,
+            Guzzle::class,
+            LogClient::class,
+            NullClient::class,
         ];
     }
 
@@ -73,119 +63,61 @@ final class ServiceProvider extends Provider
      */
     public static function publishClient(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
-
         $container->setSingleton(
             Client::class,
-            new \Valkyrja\Http\Client\Client(
-                $container->getSingleton(Factory::class),
-                $config->client
+            $container->getSingleton(GuzzleClient::class)
+        );
+    }
+
+    /**
+     * Publish the GuzzleClient service.
+     */
+    public static function publishGuzzleClient(Container $container): void
+    {
+        $container->setSingleton(
+            GuzzleClient::class,
+            new GuzzleClient(
+                $container->getSingleton(Guzzle::class),
+                $container->getSingleton(ResponseFactory::class),
             )
         );
     }
 
     /**
-     * Publish the factory service.
+     * Publish the LogClient service.
      */
-    public static function publishFactory(Container $container): void
+    public static function publishLogClient(Container $container): void
     {
         $container->setSingleton(
-            Factory::class,
-            new ContainerFactory($container),
+            LogClient::class,
+            new LogClient(
+                $container->getSingleton(Logger::class),
+                $container->getSingleton(ResponseFactory::class),
+            )
         );
     }
 
     /**
-     * Publish the driver service.
+     * Publish the NullClient service.
      */
-    public static function publishDriver(Container $container): void
+    public static function publishNullClient(Container $container): void
     {
-        $container->setCallable(
-            Driver::class,
-            [self::class, 'createDriver']
+        $container->setSingleton(
+            NullClient::class,
+            new NullClient(
+                $container->getSingleton(ResponseFactory::class),
+            )
         );
     }
 
     /**
-     * Create a driver.
+     * Publish the Guzzle service.
      */
-    public static function createDriver(Container $container, Adapter $adapter): Driver
+    public static function publishGuzzle(Container $container): void
     {
-        return new Driver($adapter);
-    }
-
-    /**
-     * Publish the guzzle adapter service.
-     */
-    public static function publishGuzzleAdapter(Container $container): void
-    {
-        $container->setCallable(
-            GuzzleAdapter::class,
-            [self::class, 'createGuzzleAdapter']
-        );
-    }
-
-    /**
-     * Create a guzzle adapter.
-     */
-    public static function createGuzzleAdapter(Container $container, GuzzleConfiguration $config): GuzzleAdapter
-    {
-        $responseFactory = $container->getSingleton(ResponseFactory::class);
-
-        return new GuzzleAdapter(
-            new Guzzle($config->options),
-            $responseFactory,
-            $config
-        );
-    }
-
-    /**
-     * Publish the log adapter service.
-     */
-    public static function publishLogAdapter(Container $container): void
-    {
-        $container->setCallable(
-            LogAdapter::class,
-            [self::class, 'createLogAdapter']
-        );
-    }
-
-    /**
-     * Create a log adapter.
-     */
-    public static function createLogAdapter(Container $container, LogConfiguration $config): LogAdapter
-    {
-        $logger          = $container->getSingleton(Logger::class);
-        $responseFactory = $container->getSingleton(ResponseFactory::class);
-
-        return new LogAdapter(
-            $logger->use($config->logger),
-            $responseFactory,
-            $config
-        );
-    }
-
-    /**
-     * Publish the adapter service.
-     */
-    public static function publishNullAdapter(Container $container): void
-    {
-        $container->setCallable(
-            NullAdapter::class,
-            [self::class, 'createNullAdapter']
-        );
-    }
-
-    /**
-     * Create a null adapter.
-     */
-    public static function createNullAdapter(Container $container, NullConfiguration $config): NullAdapter
-    {
-        $responseFactory = $container->getSingleton(ResponseFactory::class);
-
-        return new NullAdapter(
-            $responseFactory,
-            $config
+        $container->setSingleton(
+            Guzzle::class,
+            new Guzzle()
         );
     }
 }

@@ -44,6 +44,7 @@ class Component extends AppComponent
     public static function getContainerProviders(): array
     {
         return [
+            Client\Provider\ServiceProvider::class,
             Message\Provider\ServiceProvider::class,
             Middleware\Provider\ServiceProvider::class,
             Routing\Provider\ServiceProvider::class,
