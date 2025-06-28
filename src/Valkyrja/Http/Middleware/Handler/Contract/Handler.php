@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Middleware\Handler\Contract;
 
-use Closure;
-use Valkyrja\Container\Contract\Container;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
@@ -33,7 +31,7 @@ use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
 interface Handler
 {
     /**
-     * @param class-string<Middleware>|Closure(Container): Middleware ...$middleware The middleware to add
+     * @param class-string<Middleware> ...$middleware The middleware to add
      */
-    public function add(Closure|string ...$middleware): void;
+    public function add(string ...$middleware): void;
 }
