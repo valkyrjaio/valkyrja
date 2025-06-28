@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Contract;
 
-use Valkyrja\Crypt\Driver\Contract\Driver;
 use Valkyrja\Crypt\Exception\CryptException;
 
 /**
@@ -23,11 +22,6 @@ use Valkyrja\Crypt\Exception\CryptException;
  */
 interface Crypt
 {
-    /**
-     * Use a specific configuration.
-     */
-    public function use(string|null $name = null): Driver;
-
     /**
      * Determine if an encrypted message is valid.
      *

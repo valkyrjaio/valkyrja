@@ -11,11 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt\Adapter;
+namespace Valkyrja\Crypt;
 
 use Exception;
 use JsonException;
 use SodiumException;
+use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Crypt\Exception\CryptException;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\BuiltIn\Support\Obj;
@@ -31,12 +32,20 @@ use const SODIUM_CRYPTO_SECRETBOX_MACBYTES;
 use const SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
 
 /**
- * Class SodiumAdapter.
+ * Class SodiumCrypt.
  *
  * @author Melech Mizrachi
  */
-class SodiumAdapter extends Adapter
+class SodiumCrypt implements Crypt
 {
+    /**
+     * @param non-empty-string $key The key
+     */
+    public function __construct(
+        protected string $key,
+    ) {
+    }
+
     /**
      * @inheritDoc
      */

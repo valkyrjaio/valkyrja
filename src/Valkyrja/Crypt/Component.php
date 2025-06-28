@@ -16,7 +16,7 @@ namespace Valkyrja\Crypt;
 use Valkyrja\Application\Support\Component as AppComponent;
 
 /**
- * Final Class Component.
+ * Class Component.
  *
  * @author Melech Mizrachi
  */
@@ -28,14 +28,6 @@ class Component extends AppComponent
     public static function getName(): string
     {
         return 'crypt';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function getConfig(): string
-    {
-        return Config::class;
     }
 
     /**

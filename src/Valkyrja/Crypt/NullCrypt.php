@@ -11,16 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt\Adapter;
+namespace Valkyrja\Crypt;
 
 use stdClass;
+use Valkyrja\Crypt\Contract\Crypt;
 
 /**
- * Class NullAdapter.
+ * Class NullCrypt.
  *
  * @author Melech Mizrachi
  */
-class NullAdapter extends Adapter
+class NullCrypt implements Crypt
 {
     /**
      * @inheritDoc
