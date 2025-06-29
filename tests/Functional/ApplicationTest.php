@@ -94,16 +94,6 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * Test the env() helper method.
-     *
-     * @return void
-     */
-    public function testEnvValue(): void
-    {
-        self::assertTrue($this->app->getEnvValue('CLI_INTERACTION_IS_QUIET'));
-    }
-
-    /**
      * Test the getEnv() helper method.
      *
      * @return void

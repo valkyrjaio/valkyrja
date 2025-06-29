@@ -30,10 +30,7 @@ use Valkyrja\Http\Component as HttpComponent;
 use Valkyrja\Http\Config as HttpConfig;
 use Valkyrja\Support\Config;
 use Valkyrja\Support\Directory;
-use Valkyrja\Type\BuiltIn\Support\Obj;
 
-use function constant;
-use function defined;
 use function is_file;
 use function is_string;
 
@@ -180,24 +177,6 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
-    public function getEnvValue(string $name, mixed $default = null): mixed
-    {
-        $env = $this->env;
-
-        // If the env has this variable defined and the variable isn't null
-        if (defined($env . '::' . $name)) {
-            // Return the variable
-            return constant($env . '::' . $name)
-                ?? $default;
-        }
-
-        // Otherwise return the default
-        return $default;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function setConfig(ValkyrjaConfig $config): static
     {
         $this->config = $config;
@@ -211,18 +190,6 @@ class Valkyrja implements Application
     public function getConfig(): ValkyrjaConfig
     {
         return $this->config;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getConfigValue(string $name, mixed $default = null): mixed
-    {
-        return Obj::getValueDotNotation(
-            subject: $this->config,
-            name: $name,
-            default: $default
-        );
     }
 
     /**
@@ -314,7 +281,8 @@ class Valkyrja implements Application
      */
     protected function getConfigCacheFilePath(): string
     {
-        $cacheFilePath = $this->getEnvValue('CONFIG_CACHE_FILE_PATH', Directory::cachePath('config.php'));
+        $cacheFilePath = $this->env::CONFIG_CACHE_FILE_PATH
+            ?? Directory::cachePath('config.php');
 
         if (! is_string($cacheFilePath)) {
             throw new InvalidArgumentException('Config cache file path should be a string');

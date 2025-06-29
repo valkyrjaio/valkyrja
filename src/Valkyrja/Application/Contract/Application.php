@@ -69,13 +69,6 @@ interface Application
     public function setEnv(string $env): void;
 
     /**
-     * Get an environment variable.
-     *
-     * @param non-empty-string $name The env name
-     */
-    public function getEnvValue(string $name, mixed $default = null): mixed;
-
-    /**
      * Add to the global config array.
      */
     public function setConfig(ValkyrjaConfig $config): static;
@@ -84,13 +77,6 @@ interface Application
      * Get the config.
      */
     public function getConfig(): ValkyrjaConfig;
-
-    /**
-     * Get a config value.
-     *
-     * @param non-empty-string $name The config name
-     */
-    public function getConfigValue(string $name, mixed $default = null): mixed;
 
     /**
      * Add to the global config array.
