@@ -119,11 +119,16 @@ class ContextAwareContainerTest extends TestCase
 
         $id = 'closureTest';
 
-        $valueDefault = 'foo';
-        $valueContext = 'bar';
+        $valueDefault = new class {
+            public string $value = 'foo';
+        };
 
-        $closureDefault = static fn (): string => $valueDefault;
-        $closureContext = static fn (): string => $valueContext;
+        $valueContext = new class {
+            public string $value = 'bar';
+        };
+
+        $closureDefault = static fn (): object => $valueDefault;
+        $closureContext = static fn (): object => $valueContext;
 
         $container->setCallable($id, $closureDefault);
 

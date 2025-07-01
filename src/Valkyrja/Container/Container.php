@@ -104,7 +104,6 @@ class Container implements Contract
         $id = $this->getServiceIdInternal($id);
 
         /** @var class-string<Service> $id */
-
         $this->services[$id] = $service;
 
         return $this;
@@ -133,11 +132,11 @@ class Container implements Contract
      */
     public function bindSingleton(string $id, string $singleton): static
     {
-        $id = $this->getServiceIdInternal($id);
+        $internalId = $this->getServiceIdInternal($id);
 
-        $this->singletons[$id] = $singleton;
+        $this->singletons[$internalId] = $singleton;
 
-        $this->bind($singleton, $singleton);
+        $this->bind($id, $singleton);
 
         return $this;
     }
@@ -425,8 +424,16 @@ class Container implements Contract
      */
     protected function getSingletonWithoutChecks(string $id): object
     {
-        return $this->instances[$id]
-            ?? throw new InvalidArgumentException("Provided $id does not exist");
+        if (isset($this->instances[$id])) {
+            return $this->instances[$id];
+        }
+
+        if (isset($this->services[$id])) {
+            /** @var class-string<Service> $id */
+            return $this->instances[$id] = $this->getServiceWithoutChecks($id);
+        }
+
+        throw new InvalidArgumentException("Provided $id does not exist");
     }
 
     /**

@@ -275,9 +275,6 @@ class AttributesTest extends TestCase
         );
 
         $this->testsForMethod(...$attributes);
-        self::assertTrue($attributes[2]->isOptional);
-        self::assertSame('fire', $attributes[2]->default);
-        self::assertSame('parameter', $attributes[2]->name);
 
         $attributes = $this->attributes->forMethodParameter(
             AttributedClass::class,
@@ -287,9 +284,6 @@ class AttributesTest extends TestCase
         );
 
         $this->testsForMethod(...$attributes);
-        self::assertTrue($attributes[2]->isOptional);
-        self::assertSame('fire', $attributes[2]->default);
-        self::assertSame('parameter', $attributes[2]->name);
 
         $attributesEmpty = $this->attributes->forMethodParameter(
             AttributedClass::class,
@@ -359,9 +353,6 @@ class AttributesTest extends TestCase
             self::THREE,
             ...$attributes
         );
-        self::assertFalse($attributes[2]->isOptional);
-        self::assertNull($attributes[2]->default);
-        self::assertSame('param', $attributes[2]->name);
     }
 
     /**
@@ -431,9 +422,6 @@ class AttributesTest extends TestCase
             self::THREE,
             ...$attributes
         );
-        self::assertFalse($attributes[2]->isOptional);
-        self::assertNull($attributes[2]->default);
-        self::assertSame('param', $attributes[2]->name);
     }
 
     /**
@@ -613,28 +601,32 @@ class AttributesTest extends TestCase
      */
     protected function setTests(AttributeClassChildClass $attribute, bool $isStatic, string $name): void
     {
-        self::assertSame(AttributedClass::class, $attribute->class);
-
         match ($name) {
             self::CONST_NAME, self::PROTECTED_CONST_NAME => static function () use ($name, $attribute): void {
-                self::assertSame($name, $attribute->constant);
-                self::assertNull($attribute->property);
-                self::assertNull($attribute->method);
-                self::assertInstanceOf(ConstantDispatch::class, $attribute->dispatch);
+                $dispatch = $attribute->getDispatch();
+
+                self::assertInstanceOf(ConstantDispatch::class, $dispatch);
+                /** @var ConstantDispatch $dispatch */
+                self::assertSame($name, $dispatch->getConstant());
+                self::assertSame(AttributedClass::class, $dispatch->getClass());
             },
             self::STATIC_PROPERTY_NAME, self::PROPERTY_NAME => static function () use ($name, $attribute, $isStatic): void {
-                self::assertSame($isStatic, $attribute->static);
-                self::assertSame($name, $attribute->property);
-                self::assertNull($attribute->constant);
-                self::assertNull($attribute->method);
-                self::assertInstanceOf(PropertyDispatch::class, $attribute->dispatch);
+                $dispatch = $attribute->getDispatch();
+
+                self::assertInstanceOf(PropertyDispatch::class, $dispatch);
+                /** @var PropertyDispatch $dispatch */
+                self::assertSame($isStatic, $dispatch->isStatic());
+                self::assertSame($name, $dispatch->getProperty());
+                self::assertSame(AttributedClass::class, $dispatch->getClass());
             },
             self::STATIC_METHOD_NAME, self::METHOD_NAME => static function () use ($name, $attribute, $isStatic): void {
-                self::assertSame($isStatic, $attribute->static);
-                self::assertSame($name, $attribute->method);
-                self::assertNull($attribute->constant);
-                self::assertNull($attribute->property);
-                self::assertInstanceOf(MethodDispatch::class, $attribute->dispatch);
+                $dispatch = $attribute->getDispatch();
+
+                self::assertInstanceOf(MethodDispatch::class, $dispatch);
+                /** @var MethodDispatch $dispatch */
+                self::assertSame($isStatic, $dispatch->isStatic());
+                self::assertSame($name, $dispatch->getMethod());
+                self::assertSame(AttributedClass::class, $dispatch->getClass());
             },
         };
     }

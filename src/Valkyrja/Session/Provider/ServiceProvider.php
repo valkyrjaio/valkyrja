@@ -187,10 +187,8 @@ final class ServiceProvider extends Provider
      */
     public static function createLogAdapter(Container $container, LogConfiguration $config): LogAdapter
     {
-        $logger = $container->getSingleton(Logger::class);
-
         return new LogAdapter(
-            logger: $logger->use($config->logger),
+            logger: $container->getSingleton(Logger::class),
             config: $config
         );
     }

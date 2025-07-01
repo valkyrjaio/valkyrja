@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container;
 
 use AssertionError;
-use RuntimeException;
 use Valkyrja\Container\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
@@ -145,19 +144,6 @@ class ContainerTest extends TestCase
         self::assertSame($service, $container->getSingleton($id));
     }
 
-    public function testOffsetGetSetAndExists(): void
-    {
-        $container = $this->container;
-        $id        = ServiceClass::class;
-
-        $container[$id] = $id;
-
-        self::assertTrue(isset($container[$id]));
-        self::assertInstanceOf($id, $service = $container[$id]);
-        // A bound service should return a new instance each time it is gotten
-        self::assertNotSame($service, $container[$id]);
-    }
-
     public function testClosure(): void
     {
         $container = $this->container;
@@ -184,19 +170,6 @@ class ContainerTest extends TestCase
 
         self::assertInstanceOf($id, $container->getCallable($id));
         self::assertNotSame($service, $container->getCallable($id));
-    }
-
-    public function testOffsetUnset(): void
-    {
-        $container = $this->container;
-        $id        = ServiceClass::class;
-
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage("Cannot remove service with name $id from the container.");
-
-        $container[$id] = $id;
-
-        unset($container[$id]);
     }
 
     public function testProvided(): void

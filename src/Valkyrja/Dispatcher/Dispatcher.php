@@ -248,7 +248,7 @@ class Dispatcher implements Contract
         }
 
         return array_map(
-        /** @param class-string $dependency */
+            /** @param class-string $dependency */
             static fn (string $dependency): mixed => $containerContext !== null && $containerContext->has($dependency)
                 ? $containerContext->get($dependency)
                 : $container->get($dependency),

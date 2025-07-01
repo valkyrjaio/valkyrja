@@ -302,7 +302,7 @@ final class ServiceProvider extends Provider
 
         return new $name(
             $repository,
-        // $container->getSingleton($name::getEntityClassName() . ((string) $name::getEntityParamNumber())),
+            // $container->getSingleton($name::getEntityClassName() . ((string) $name::getEntityParamNumber())),
         );
     }
 

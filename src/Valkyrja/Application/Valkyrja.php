@@ -281,7 +281,7 @@ class Valkyrja implements Application
      */
     protected function getConfigCacheFilePath(): string
     {
-        $cacheFilePath = $this->env::CONFIG_CACHE_FILE_PATH
+        $cacheFilePath = $this->env::APP_CACHE_FILE_PATH
             ?? Directory::cachePath('config.php');
 
         if (! is_string($cacheFilePath)) {
