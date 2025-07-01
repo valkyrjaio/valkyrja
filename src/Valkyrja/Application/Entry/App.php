@@ -20,9 +20,6 @@ use Valkyrja\Application\Valkyrja;
 use Valkyrja\Cli\Interaction\Factory\InputFactory;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Server\Contract\InputHandler;
-use Valkyrja\Container\CacheableContainer;
-use Valkyrja\Container\Contract\Container;
-use Valkyrja\Exception\Contract\ErrorHandler as ErrorHandlerContract;
 use Valkyrja\Exception\ErrorHandler;
 use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
@@ -73,7 +70,7 @@ abstract class App
             config: $config
         );
 
-        $container = static::getContainer($app);
+        $container = $app->getContainer();
 
         $handler = $container->getSingleton(RequestHandler::class);
         $handler->run(static::getRequest());
@@ -96,33 +93,10 @@ abstract class App
             config: $config
         );
 
-        $container = static::getContainer($app);
+        $container = $app->getContainer();
 
         $handler = $container->getSingleton(InputHandler::class);
         $handler->run(static::getInput());
-    }
-
-    /**
-     * Get the container.
-     */
-    public static function getContainer(Application $app): Container
-    {
-        $config = $app->getConfig();
-
-        $container = new CacheableContainer($config->container);
-
-        $app->setContainer($container);
-
-        self::bootstrapServices($app, $container);
-
-        $container->setup();
-
-        // Bootstrap debug capabilities
-        self::bootstrapErrorHandler($app, $container);
-        // Bootstrap the timezone
-        self::bootstrapTimezone($config);
-
-        return $container;
     }
 
     /**
@@ -167,46 +141,6 @@ abstract class App
     public static function app(string $env, string $config): Application
     {
         return new Valkyrja(env: $env, config: $config);
-    }
-
-    /**
-     * Bootstrap container services.
-     */
-    protected static function bootstrapServices(Application $app, Container $container): void
-    {
-        $env = $app->getEnv();
-
-        $container->setSingleton(Application::class, $app);
-        $container->setSingleton(Env::class, new $env());
-        $container->setSingleton(ValkyrjaConfig::class, $app->getConfig());
-        $container->setSingleton(Container::class, $container);
-    }
-
-    /**
-     * Bootstrap error handler.
-     */
-    protected static function bootstrapErrorHandler(Application $app, Container $container): void
-    {
-        $errorHandler = new ErrorHandler();
-
-        // Set error handler in the service container
-        $container->setSingleton(ErrorHandlerContract::class, $errorHandler);
-
-        // If debug is on, enable debug handling
-        if ($app->getDebugMode()) {
-            // Enable error handling
-            $errorHandler::enable(
-                displayErrors: true
-            );
-        }
-    }
-
-    /**
-     * Bootstrap the timezone.
-     */
-    protected static function bootstrapTimezone(ValkyrjaConfig $config): void
-    {
-        date_default_timezone_set($config->app->timezone);
     }
 
     /**

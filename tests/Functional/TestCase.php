@@ -53,7 +53,7 @@ class TestCase extends PHPUnitTestCase
         Directory::$BASE_PATH    = __DIR__ . '/../..';
         Directory::$STORAGE_PATH = 'tests/storage';
 
-        $container = App::getContainer($app);
+        $container = $app->getContainer();
 
         // $handler = $container->getSingleton(RequestHandler::class);
         // $handler->run(RequestFactory::fromGlobals());

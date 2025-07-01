@@ -20,11 +20,14 @@ use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Component as CliComponent;
 use Valkyrja\Cli\Config as CliConfig;
+use Valkyrja\Container\CacheableContainer;
 use Valkyrja\Container\Component as ContainerComponent;
 use Valkyrja\Container\Config as ContainerConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Event\Component as EventComponent;
 use Valkyrja\Event\Config as EventConfig;
+use Valkyrja\Exception\Contract\ErrorHandler as ErrorHandlerContract;
+use Valkyrja\Exception\ErrorHandler;
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Http\Component as HttpComponent;
 use Valkyrja\Http\Config as HttpConfig;
@@ -90,6 +93,8 @@ class Valkyrja implements Application
 
         // Bootstrap debug capabilities
         $this->bootstrapConfig(config: $config);
+
+        $this->createContainer();
     }
 
     /**
@@ -346,5 +351,64 @@ class Valkyrja implements Application
         }
 
         $this->config->setConfigFromEnv(env: $env);
+    }
+
+    /**
+     * Create the container.
+     */
+    protected function createContainer(): void
+    {
+        $container = new CacheableContainer($this->config->container);
+
+        $this->setContainer($container);
+
+        $this->bootstrapServices();
+
+        $container->setup();
+
+        // Bootstrap debug capabilities
+        $this->bootstrapErrorHandler();
+        // Bootstrap the timezone
+        $this->bootstrapTimezone();
+    }
+
+    /**
+     * Bootstrap container services.
+     */
+    protected function bootstrapServices(): void
+    {
+        $container = $this->container;
+
+        $container->setSingleton(Application::class, $this);
+        $container->setSingleton(Env::class, new $this->env());
+        $container->setSingleton(ValkyrjaConfig::class, $this->config);
+        $container->setSingleton(Container::class, $container);
+    }
+
+    /**
+     * Bootstrap error handler.
+     */
+    protected function bootstrapErrorHandler(): void
+    {
+        $errorHandler = new ErrorHandler();
+
+        // Set error handler in the service container
+        $this->container->setSingleton(ErrorHandlerContract::class, $errorHandler);
+
+        // If debug is on, enable debug handling
+        if ($this->getDebugMode()) {
+            // Enable error handling
+            $errorHandler::enable(
+                displayErrors: true
+            );
+        }
+    }
+
+    /**
+     * Bootstrap the timezone.
+     */
+    protected function bootstrapTimezone(): void
+    {
+        date_default_timezone_set($this->config->app->timezone);
     }
 }
