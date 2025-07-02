@@ -11,28 +11,26 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Adapter;
+namespace Valkyrja\Mail;
 
 use JsonException;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Mail\Adapter\Contract\LogAdapter as Contract;
-use Valkyrja\Mail\Config\LogConfiguration;
-use Valkyrja\Mail\Message\Contract\Message;
+use Valkyrja\Mail\Contract\Mailer as Contract;
+use Valkyrja\Mail\Data\Contract\Message;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
- * Class LogAdapter.
+ * Class LogMailer.
  *
  * @author Melech Mizrachi
  */
-class LogAdapter implements Contract
+class LogMailer implements Contract
 {
     /**
-     * LogAdapter constructor.
+     * LogMailer constructor.
      */
     public function __construct(
-        protected Logger $logger,
-        protected LogConfiguration $config
+        protected Logger $logger
     ) {
     }
 

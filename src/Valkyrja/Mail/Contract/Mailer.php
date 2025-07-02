@@ -13,28 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Contract;
 
-use Valkyrja\Mail\Driver\Contract\Driver;
-use Valkyrja\Mail\Message\Contract\Message;
+use Valkyrja\Mail\Data\Contract\Message;
 
 /**
- * Interface Mail.
+ * Interface Mailer.
  *
  * @author Melech Mizrachi
  */
-interface Mail
+interface Mailer
 {
-    /**
-     * Use a specific configuration.
-     */
-    public function use(string|null $name = null): Driver;
-
-    /**
-     * Create a new message.
-     *
-     * @param array<array-key, mixed> $data [optional] The data
-     */
-    public function createMessage(string|null $name = null, array $data = []): Message;
-
     /**
      * Send a message.
      *

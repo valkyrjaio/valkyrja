@@ -11,29 +11,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Adapter;
+namespace Valkyrja\Mail;
 
 use Mailgun\Mailgun;
 use Mailgun\Message\BatchMessage;
 use Mailgun\Message\Exceptions\MissingRequiredParameter;
-use Valkyrja\Exception\InvalidArgumentException;
-use Valkyrja\Mail\Adapter\Contract\MailgunAdapter as Contract;
-use Valkyrja\Mail\Config\MailgunConfiguration;
-use Valkyrja\Mail\Message\Contract\Message;
+use Valkyrja\Mail\Contract\Mailer as Contract;
+use Valkyrja\Mail\Data\Contract\Message;
 
 /**
- * Class MailGunAdapter.
+ * Class MailgunMailer.
  *
  * @author Melech Mizrachi
  */
-class MailgunAdapter implements Contract
+class MailgunMailer implements Contract
 {
     /**
-     * MailgunAdapter constructor.
+     * MailgunMailer constructor.
+     *
+     * @param non-empty-string $domain
      */
     public function __construct(
         protected Mailgun $mailgun,
-        protected MailgunConfiguration $config
+        protected string $domain,
     ) {
     }
 
@@ -44,11 +44,7 @@ class MailgunAdapter implements Contract
      */
     public function send(Message $message): void
     {
-        $domain = $this->config->domain;
-
-        if ($domain === '') {
-            throw new InvalidArgumentException('Domain in config must be a valid string');
-        }
+        $domain = $this->domain;
 
         $mailgunMessage = $this->mailgun->messages()->getBatchMessage($domain);
         $replyTo        = $message->getReplyToRecipients()[0] ?? null;

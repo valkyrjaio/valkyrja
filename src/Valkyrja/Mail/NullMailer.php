@@ -11,17 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Config;
+namespace Valkyrja\Mail;
+
+use Valkyrja\Mail\Contract\Mailer as Contract;
+use Valkyrja\Mail\Data\Contract\Message;
 
 /**
- * Class MessageConfigurations.
+ * Class NullMailer.
  *
  * @author Melech Mizrachi
  */
-class MessageConfigurations
+class NullMailer implements Contract
 {
-    public function __construct(
-        public DefaultMessageConfiguration|null $default = null,
-    ) {
+    /**
+     * @inheritDoc
+     */
+    public function send(Message $message): void
+    {
     }
 }

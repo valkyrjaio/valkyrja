@@ -11,27 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Adapter;
+namespace Valkyrja\Mail;
 
 use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
-use Valkyrja\Mail\Adapter\Contract\PHPMailerAdapter as Contract;
-use Valkyrja\Mail\Message\Contract\Message;
+use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
+use Valkyrja\Mail\Contract\Mailer as Contract;
+use Valkyrja\Mail\Data\Contract\Message;
 
 /**
- * Class PHPMailerAdapter.
+ * Class PhpMailer.
  *
  * @author Melech Mizrachi
  */
-class PHPMailerAdapter implements Contract
+class PhpMailer implements Contract
 {
     /**
-     * PHPMailerAdapter constructor.
+     * PhpMailer constructor.
      *
-     * @param PHPMailer $phpMailer
+     * @param PHPMailerClient $phpMailer
      */
     public function __construct(
-        protected PHPMailer $phpMailer
+        protected PHPMailerClient $phpMailer
     ) {
     }
 
