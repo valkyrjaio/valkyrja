@@ -17,12 +17,13 @@ use Aws\S3\S3Client as AwsS3Client;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
 use League\Flysystem\Filesystem as Flysystem;
 use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
-use Valkyrja\Application\Config\ValkyrjaConfig;
+use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Filesystem\Adapter\Contract\Adapter;
 use Valkyrja\Filesystem\Adapter\FlysystemAdapter;
 use Valkyrja\Filesystem\Adapter\InMemoryAdapter;
+use Valkyrja\Filesystem\Config;
 use Valkyrja\Filesystem\Config\FlysystemConfiguration;
 use Valkyrja\Filesystem\Config\InMemoryConfiguration;
 use Valkyrja\Filesystem\Config\LocalFlysystemConfiguration;
@@ -52,6 +53,7 @@ final class ServiceProvider extends Provider
             FlysystemLocalAdapter::class => [self::class, 'publishFlysystemLocalAdapter'],
             FlysystemAwsS3Adapter::class => [self::class, 'publishFlysystemAwsS3Adapter'],
             InMemoryAdapter::class       => [self::class, 'publishInMemoryAdapter'],
+            Config::class                => [self::class, 'publishConfig'],
         ];
     }
 
@@ -68,7 +70,18 @@ final class ServiceProvider extends Provider
             FlysystemLocalAdapter::class,
             FlysystemAwsS3Adapter::class,
             InMemoryAdapter::class,
+            Config::class,
         ];
+    }
+
+    /**
+     * Publish the Config service.
+     */
+    public static function publishConfig(Container $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+
+        $container->setSingleton(Config::class, Config::fromEnv($env::class));
     }
 
     /**
@@ -76,13 +89,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishFilesystem(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             Filesystem::class,
             new \Valkyrja\Filesystem\Filesystem(
                 $container->getSingleton(Factory::class),
-                $config->filesystem
+                $config
             )
         );
     }

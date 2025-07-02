@@ -40,7 +40,6 @@ class Api implements Contract
      */
     public function __construct(
         protected ResponseFactory $responseFactory,
-        protected Config $config,
         protected bool $debug = false
     ) {
     }
@@ -207,9 +206,7 @@ class Api implements Contract
      */
     protected function getJsonModel(): Json
     {
-        $jsonModel = $this->config->jsonModel;
-
-        return new $jsonModel();
+        return new Model\Json();
     }
 
     /**
@@ -219,9 +216,7 @@ class Api implements Contract
      */
     protected function getJsonDataModel(): JsonData
     {
-        $jsonDataModel = $this->config->dataModel;
-
-        return new $jsonDataModel();
+        return new Model\JsonData();
     }
 
     /**

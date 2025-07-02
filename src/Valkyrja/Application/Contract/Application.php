@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Contract;
 
-use Valkyrja\Application\Config\ValkyrjaConfig;
+use Valkyrja\Application\Config;
+use Valkyrja\Application\Data;
 use Valkyrja\Application\Env;
 use Valkyrja\Application\Support\Component;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Support\Config;
 
 /**
  * Interface Application.
@@ -36,12 +36,13 @@ interface Application
     /**
      * Setup the application.
      *
-     * @param class-string<ValkyrjaConfig> $config The config to use
-     * @param bool                         $force  [optional] Whether to force a setup
+     * @param Env         $env        The env to use
+     * @param Config|Data $configData The config to use
+     * @param bool        $force      [optional] Whether to force a setup
      *
      * @return void
      */
-    public function setup(string $config, bool $force = false): void;
+    public function setup(Env $env, Config|Data $configData = new Config(), bool $force = false): void;
 
     /**
      * Add a component to the application.
@@ -55,35 +56,18 @@ interface Application
     /**
      * Get environment variables.
      *
-     * @return class-string<Env>
+     * @return Env
      */
-    public function getEnv(): string;
+    public function getEnv(): Env;
 
     /**
      * Set the environment variables class.
      *
-     * @param class-string<Env> $env The env file to use
+     * @param Env $env The env file to use
      *
      * @return void
      */
-    public function setEnv(string $env): void;
-
-    /**
-     * Add to the global config array.
-     */
-    public function setConfig(ValkyrjaConfig $config): static;
-
-    /**
-     * Get the config.
-     */
-    public function getConfig(): ValkyrjaConfig;
-
-    /**
-     * Add to the global config array.
-     *
-     * @param non-empty-string $name The config name
-     */
-    public function addConfig(string $name, Config $config): void;
+    public function setEnv(Env $env): void;
 
     /**
      * Get the container.

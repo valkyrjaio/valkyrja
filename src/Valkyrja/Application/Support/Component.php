@@ -15,7 +15,6 @@ namespace Valkyrja\Application\Support;
 
 use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Support\Provider as ContainerProvider;
-use Valkyrja\Support\Config;
 
 /**
  * Abstract Class Component.
@@ -24,16 +23,6 @@ use Valkyrja\Support\Config;
  */
 abstract class Component
 {
-    /**
-     * Get the component's config class name.
-     *
-     * @return class-string<Config>|null
-     */
-    public static function getConfig(): string|null
-    {
-        return null;
-    }
-
     /**
      * Get the component's container aliases.
      *
@@ -50,26 +39,6 @@ abstract class Component
      * @return class-string<Service>[]
      */
     public static function getContainerServices(): array
-    {
-        return [];
-    }
-
-    /**
-     * Get the component's container context aliases.
-     *
-     * @return class-string[]
-     */
-    public static function getContainerContextAliases(): array
-    {
-        return [];
-    }
-
-    /**
-     * Get the component's container context services.
-     *
-     * @return class-string<Service>[]
-     */
-    public static function getContainerContextServices(): array
     {
         return [];
     }

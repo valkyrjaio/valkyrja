@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Collection\Contract;
 
 use Valkyrja\Http\Message\Enum\RequestMethod;
+use Valkyrja\Http\Routing\Data;
 use Valkyrja\Http\Routing\Data\Contract\Route;
 
 /**
@@ -31,6 +32,16 @@ use Valkyrja\Http\Routing\Data\Contract\Route;
  */
 interface Collection
 {
+    /**
+     * Get a data representation of the collection.
+     */
+    public function getData(): Data;
+
+    /**
+     * Set data from a data object.
+     */
+    public function setFromData(Data $data): void;
+
     /**
      * Add a route.
      *

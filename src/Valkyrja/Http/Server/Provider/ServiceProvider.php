@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Server\Provider;
 
-use Valkyrja\Application\Config\ValkyrjaConfig;
+use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Http\Middleware\Handler\Contract\Handler;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
@@ -65,16 +64,14 @@ final class ServiceProvider extends Provider
      */
     public static function publishRequestHandler(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
+        $env = $container->getSingleton(Env::class);
+        /** @var bool $debugMode */
+        $debugMode = $env::APP_DEBUG_MODE;
 
-        /** @var RequestReceivedHandler&Handler $requestReceived */
         $requestReceived = $container->getSingleton(RequestReceivedHandler::class);
-        /** @var ThrowableCaughtHandler&Handler $exception */
-        $exception = $container->getSingleton(ThrowableCaughtHandler::class);
-        /** @var SendingResponseHandler&Handler $sendingResponse */
+        $exception       = $container->getSingleton(ThrowableCaughtHandler::class);
         $sendingResponse = $container->getSingleton(SendingResponseHandler::class);
-        /** @var TerminatedHandler&Handler $terminated */
-        $terminated = $container->getSingleton(TerminatedHandler::class);
+        $terminated      = $container->getSingleton(TerminatedHandler::class);
 
         $exception->add(LogThrowableCaughtMiddleware::class, ViewThrowableCaughtMiddleware::class);
 
@@ -87,7 +84,7 @@ final class ServiceProvider extends Provider
                 throwableCaughtHandler: $exception,
                 sendingResponseHandler: $sendingResponse,
                 terminatedHandler: $terminated,
-                debug: $config->app->debugMode
+                debug: $debugMode
             )
         );
     }

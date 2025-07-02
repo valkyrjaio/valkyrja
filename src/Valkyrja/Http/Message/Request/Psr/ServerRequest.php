@@ -106,7 +106,6 @@ class ServerRequest extends Request implements ServerRequestInterface
         $uploadedFiles = [];
 
         foreach ($valkyrjaUploadedFiles as $valkyrjaUploadedFile) {
-            /* @phpstan-ignore instanceof.alwaysTrue */
             if (! $valkyrjaUploadedFile instanceof ValkyrjaUploadedFile) {
                 throw new RuntimeException('Invalid uploaded file');
             }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Provider;
 
-use Valkyrja\Application\Config\ValkyrjaConfig;
+use Valkyrja\Application\Env;
 use Valkyrja\Cache\Contract\Cache;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
@@ -26,6 +26,7 @@ use Valkyrja\Session\Adapter\CookieAdapter;
 use Valkyrja\Session\Adapter\LogAdapter;
 use Valkyrja\Session\Adapter\NullAdapter;
 use Valkyrja\Session\Adapter\PHPAdapter;
+use Valkyrja\Session\Config;
 use Valkyrja\Session\Config\CacheConfiguration;
 use Valkyrja\Session\Config\CookieConfiguration;
 use Valkyrja\Session\Config\LogConfiguration;
@@ -57,6 +58,7 @@ final class ServiceProvider extends Provider
             CookieAdapter::class => [self::class, 'publishCookieAdapter'],
             LogAdapter::class    => [self::class, 'publishLogAdapter'],
             PHPAdapter::class    => [self::class, 'publishPHPAdapter'],
+            Config::class        => [self::class, 'publishConfig'],
         ];
     }
 
@@ -74,7 +76,18 @@ final class ServiceProvider extends Provider
             CookieAdapter::class,
             LogAdapter::class,
             PHPAdapter::class,
+            Config::class,
         ];
+    }
+
+    /**
+     * Publish the Config service.
+     */
+    public static function publishConfig(Container $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+
+        $container->setSingleton(Config::class, Config::fromEnv($env::class));
     }
 
     /**
@@ -82,13 +95,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishSession(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             Session::class,
             new \Valkyrja\Session\Session(
                 factory: $container->getSingleton(Factory::class),
-                config: $config->session
+                config: $config
             )
         );
     }

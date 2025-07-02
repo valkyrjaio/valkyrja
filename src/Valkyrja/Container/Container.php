@@ -69,8 +69,46 @@ class Container implements Contract
      * Container constructor.
      */
     public function __construct(
-        protected Config $config = new Config()
+        protected Data $data = new Data()
     ) {
+        $this->aliases          = $data->aliases;
+        $this->deferred         = $data->deferred;
+        $this->deferredCallback = $data->deferredCallback;
+        $this->services         = $data->services;
+        $this->singletons       = $data->singletons;
+        $this->registered       = [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getData(): Data
+    {
+        return new Data(
+            aliases: $this->aliases,
+            deferred: $this->deferred,
+            deferredCallback: $this->deferredCallback,
+            services: $this->services,
+            singletons: $this->singletons,
+            providers: array_filter($this->providers, static fn (string $provider): bool => ! $provider::deferred()),
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setFromData(Data $data): void
+    {
+        $this->aliases          = array_merge($this->aliases, $data->aliases);
+        $this->deferred         = array_merge($this->deferred, $data->deferred);
+        $this->deferredCallback = array_merge($this->deferredCallback, $data->deferredCallback);
+        $this->services         = array_merge($this->services, $data->services);
+        $this->singletons       = array_merge($this->singletons, $data->singletons);
+
+        array_map(
+            [$this, 'register'],
+            $data->providers
+        );
     }
 
     /**

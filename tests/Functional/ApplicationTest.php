@@ -13,11 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional;
 
-use Valkyrja\Application\Command\CacheCommand;
-use Valkyrja\Application\Config;
 use Valkyrja\Application\Contract\Application;
-use Valkyrja\Cli\Interaction\Input\Input;
-use Valkyrja\Cli\Routing\Contract\Router as CliRouter;
 use Valkyrja\Container\Container;
 use Valkyrja\Filesystem\Contract\Filesystem;
 use Valkyrja\Http\Client\Contract\Client;
@@ -26,12 +22,8 @@ use Valkyrja\Http\Routing\Contract\Router;
 use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Session\Contract\Session;
-use Valkyrja\Tests\ConfigClass;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\View\Contract\View;
-
-use function unlink;
-use function usleep;
 
 /**
  * Test the functionality of the Application.
@@ -61,46 +53,13 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * Test the config() helper method.
-     *
-     * @return void
-     */
-    public function testConfig(): void
-    {
-        self::assertInstanceOf(ConfigClass::class, $this->app->getConfig());
-    }
-
-    /**
-     * Test the addConfig() helper method.
-     *
-     * @return void
-     */
-    public function testAddConfig(): void
-    {
-        $config = new Config();
-        $this->app->addConfig('new', $config);
-
-        self::assertSame($config, $this->app->getConfig()->new ?? null);
-    }
-
-    /**
-     * Test the env() helper method.
-     *
-     * @return void
-     */
-    public function testEnv(): void
-    {
-        self::assertIsString($this->app->getEnv());
-    }
-
-    /**
      * Test the getEnv() helper method.
      *
      * @return void
      */
     public function testGetEnv(): void
     {
-        self::assertSame(EnvClass::class, $this->app->getEnv());
+        self::assertSame($this->env, $this->app->getEnv());
     }
 
     /**
@@ -110,8 +69,8 @@ class ApplicationTest extends TestCase
      */
     public function testSetEnv(): void
     {
-        $this->app->setEnv(EnvClass::class);
-        self::assertSame(EnvClass::class, $this->app->getEnv());
+        $this->app->setEnv($env = new EnvClass());
+        self::assertSame($env, $this->app->getEnv());
     }
 
     /**
@@ -121,7 +80,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnvironment(): void
     {
-        self::assertSame($this->app->getConfig()->app->env, $this->app->getEnvironment());
+        self::assertSame($this->app->getEnv()::APP_ENV, $this->app->getEnvironment());
     }
 
     /**
@@ -131,7 +90,7 @@ class ApplicationTest extends TestCase
      */
     public function testDebug(): void
     {
-        self::assertSame($this->app->getConfig()->app->debugMode, $this->app->getDebugMode());
+        self::assertSame($this->app->getEnv()::APP_DEBUG_MODE, $this->app->getDebugMode());
     }
 
     /**
@@ -212,65 +171,5 @@ class ApplicationTest extends TestCase
     public function testView(): void
     {
         self::assertInstanceOf(View::class, $this->app->getContainer()->getSingleton(View::class));
-    }
-
-    /**
-     * Test the application setup being called a second time without forcing.
-     *
-     * @return void
-     */
-    public function testSetupTwice(): void
-    {
-        // Try to re-setup the application without forcing
-        $this->app->setup(ConfigClass::class);
-
-        // It shouldn't have used the new config settings and kept the old
-        // so debug should still be false
-        self::assertFalse($this->app->getDebugMode());
-    }
-
-    /**
-     * Test the application setup with debug on.
-     *
-     * @return void
-     */
-    public function testDebugOn(): void
-    {
-        $config = clone $this->app->getConfig();
-
-        $config->app->debugMode = true;
-
-        $this->app = $this->app->setConfig($config);
-
-        self::assertTrue($this->app->getDebugMode());
-    }
-
-    /**
-     * Test resetting the application with a config provider.
-     *
-     * @return void
-     */
-    public function testApplicationSetupWithCachedConfig(): void
-    {
-        /** @var CliRouter $cliRouter */
-        $cliRouter = $this->app->getContainer()->getSingleton(CliRouter::class);
-        // Run the config cache command
-        $cliRouter->dispatch(new Input(commandName: CacheCommand::NAME));
-
-        // Resetup the app with the new config and force
-        $this->app->setup(ConfigClass::class);
-
-        // Because the app will use the config cache the forced changes to the config made above shouldn't
-        // take effect and the value for app.debug should still be false.
-        self::assertFalse($this->app->getDebugMode());
-
-        usleep(100);
-
-        $cacheFilePath = $this->app->getConfig()->app->cacheFilePath;
-
-        if (is_file($cacheFilePath)) {
-            // Delete the config cache file to avoid headaches later
-            unlink($cacheFilePath);
-        }
     }
 }

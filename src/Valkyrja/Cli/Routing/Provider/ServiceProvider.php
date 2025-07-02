@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Provider;
 
-use Valkyrja\Application\Config\ValkyrjaConfig;
+use Valkyrja\Application\Config;
 use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler;
@@ -21,11 +21,11 @@ use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\Cli\Routing\Collection\CacheableCollection;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection;
 use Valkyrja\Cli\Routing\Collector\AttributeCollector;
 use Valkyrja\Cli\Routing\Collector\Contract\Collector;
 use Valkyrja\Cli\Routing\Contract\Router;
+use Valkyrja\Cli\Routing\Data;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
@@ -108,16 +108,28 @@ final class ServiceProvider extends Provider
      */
     public static function publishCollection(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
-
         $container->setSingleton(
             Collection::class,
-            $collection = new CacheableCollection(
-                container: $container,
-                config: $config->cli->routing
-            )
+            $collection = new \Valkyrja\Cli\Routing\Collection\Collection()
         );
 
-        $collection->setup();
+        if ($container->isSingleton(Data::class)) {
+            $data = $container->getSingleton(Data::class);
+
+            $collection->setFromData($data);
+        }
+
+        if ($container->isSingleton(Config::class)) {
+            $config = $container->getSingleton(Config::class);
+
+            /** @var Collector $collector */
+            $collector   = $container->getSingleton(Collector::class);
+            $controllers = $config->commands;
+
+            // Get all the attributes routes from the list of controllers
+            $collection->add(
+                ...$collector->getCommands(...$controllers)
+            );
+        }
     }
 }

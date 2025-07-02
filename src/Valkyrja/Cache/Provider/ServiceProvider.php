@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Provider;
 
 use Predis\Client;
-use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Cache\Adapter\Contract\Adapter;
 use Valkyrja\Cache\Adapter\LogAdapter;
 use Valkyrja\Cache\Adapter\NullAdapter;
 use Valkyrja\Cache\Adapter\RedisAdapter;
+use Valkyrja\Cache\Config;
 use Valkyrja\Cache\Config\LogConfiguration;
 use Valkyrja\Cache\Config\NullConfiguration;
 use Valkyrja\Cache\Config\RedisConfiguration;
@@ -72,13 +72,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishCache(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             Cache::class,
             new \Valkyrja\Cache\Cache(
                 $container->getSingleton(Factory::class),
-                $config->cache
+                $config
             )
         );
     }

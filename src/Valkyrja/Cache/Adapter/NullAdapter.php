@@ -123,7 +123,7 @@ class NullAdapter implements Contract
      */
     public function getPrefix(): string
     {
-        return $this->prefix ?? '';
+        return $this->prefix;
     }
 
     /**

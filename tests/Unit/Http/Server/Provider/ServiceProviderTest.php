@@ -61,7 +61,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $container = $this->container;
 
         MiddlewareServiceProvider::publishRequestReceivedHandler($container);
-        MiddlewareServiceProvider::publishExceptionHandler($container);
+        MiddlewareServiceProvider::publishThrowableCaughtHandler($container);
         MiddlewareServiceProvider::publishSendingResponseHandler($container);
         MiddlewareServiceProvider::publishTerminatedHandler($container);
 

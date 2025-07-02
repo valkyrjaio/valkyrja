@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Provider;
 
-use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Contract\Logger;
@@ -21,6 +20,7 @@ use Valkyrja\Sms\Adapter\Contract\Adapter;
 use Valkyrja\Sms\Adapter\LogAdapter;
 use Valkyrja\Sms\Adapter\NullAdapter;
 use Valkyrja\Sms\Adapter\VonageAdapter;
+use Valkyrja\Sms\Config;
 use Valkyrja\Sms\Config\LogConfiguration;
 use Valkyrja\Sms\Config\MessageConfiguration;
 use Valkyrja\Sms\Config\NullConfiguration;
@@ -79,13 +79,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishSMS(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             Sms::class,
             new \Valkyrja\Sms\Sms(
                 $container->getSingleton(Factory::class),
-                $config->sms
+                $config
             )
         );
     }

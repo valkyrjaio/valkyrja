@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Contract;
 
 use Psr\Container\ContainerInterface;
+use Valkyrja\Container\Data;
 use Valkyrja\Container\Support\Contract\ProvidersAware;
 
 /**
@@ -23,6 +24,16 @@ use Valkyrja\Container\Support\Contract\ProvidersAware;
  */
 interface Container extends ContainerInterface, ProvidersAware
 {
+    /**
+     * Get a data representation of the container.
+     */
+    public function getData(): Data;
+
+    /**
+     * Set data from a data object.
+     */
+    public function setFromData(Data $data): void;
+
     /**
      * Check whether a given service exists.
      *

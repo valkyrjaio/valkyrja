@@ -33,14 +33,6 @@ class Component extends AppComponent
     /**
      * @inheritDoc
      */
-    public static function getConfig(): string
-    {
-        return Config::class;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public static function getContainerProviders(): array
     {
         return [

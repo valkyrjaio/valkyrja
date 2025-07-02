@@ -49,9 +49,16 @@ trait ProvidersAwareTrait
     /**
      * The registered providers.
      *
-     * @var array<class-string, bool>
+     * @var array<class-string<Provider>, bool>
      */
     protected array $registered = [];
+
+    /**
+     * The providers.
+     *
+     * @var class-string<Provider>[]
+     */
+    protected array $providers = [];
 
     /**
      * The default publish method.
@@ -63,7 +70,7 @@ trait ProvidersAwareTrait
     /**
      * @inheritDoc
      *
-     * @param class-string $provider The provider
+     * @param class-string<Provider> $provider The provider
      */
     public function register(string $provider, bool $force = false): void
     {
@@ -71,6 +78,8 @@ trait ProvidersAwareTrait
         if ($this->isRegistered($provider)) {
             return;
         }
+
+        $this->providers[] = $provider;
 
         // Helpers::validateClass($provider, Provides::class);
 
@@ -119,7 +128,7 @@ trait ProvidersAwareTrait
     /**
      * @inheritDoc
      *
-     * @param class-string $provider The provider
+     * @param class-string<Provider> $provider The provider
      */
     public function isRegistered(string $provider): bool
     {
@@ -170,8 +179,8 @@ trait ProvidersAwareTrait
     /**
      * Register a deferred provider.
      *
-     * @param class-string $provider    The provider
-     * @param class-string ...$provides The provided items
+     * @param class-string<Provider> $provider    The provider
+     * @param class-string           ...$provides The provided items
      *
      * @return void
      */

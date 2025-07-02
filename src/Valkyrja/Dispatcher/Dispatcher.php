@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Dispatcher;
 
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Container\Contract\ContextAwareContainer;
 use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
 use Valkyrja\Dispatcher\Data\CallableDispatch;
 use Valkyrja\Dispatcher\Data\ClassDispatch;
@@ -239,19 +238,20 @@ class Dispatcher implements Contract
 
         $containerContext = null;
 
-        $container  = $this->container;
-        $hasContext = $context !== null && $container instanceof ContextAwareContainer;
-
-        if ($hasContext) {
-            /** @var ContextAwareContainer $container */
-            $containerContext = $container->withContext($context, $member);
-        }
+        $container = $this->container;
+        // $hasContext = $context !== null && $container instanceof ContextAwareContainer;
+        //
+        // if ($hasContext) {
+        //     /** @var ContextAwareContainer $container */
+        //     $containerContext = $container->withContext($context, $member);
+        // }
 
         return array_map(
             /** @param class-string $dependency */
-            static fn (string $dependency): mixed => $containerContext !== null && $containerContext->has($dependency)
-                ? $containerContext->get($dependency)
-                : $container->get($dependency),
+            // static fn (string $dependency): mixed => $containerContext !== null && $containerContext->has($dependency)
+            //     ? $containerContext->get($dependency)
+            //     : $container->get($dependency),
+            static fn (string $dependency): mixed => $container->get($dependency),
             $dependencies
         );
     }

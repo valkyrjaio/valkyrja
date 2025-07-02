@@ -67,10 +67,13 @@ class ListBashCommand
             $commands
         );
 
+        /** @var non-empty-string $commandsForBashString */
+        $commandsForBashString = implode(' ', $commandsForBash);
+
         /** @psalm-suppress ArgumentTypeCoercion */
         return $output
             ->withAddedMessages(
-                new Message(implode(' ', $commandsForBash))
+                new Message($commandsForBashString)
             );
     }
 }

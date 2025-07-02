@@ -284,13 +284,12 @@ class OptionParameter extends Parameter implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @psalm-suppress DocblockTypeContradiction
-     * @psalm-suppress RedundantConditionGivenDocblockType
      */
     public function getFirstValue(): string|null
     {
-        return $this->options[0]?->getValue();
+        $firstItem = $this->options[0] ?? null;
+
+        return $firstItem?->getValue();
     }
 
     /**

@@ -15,6 +15,7 @@ namespace Valkyrja\Event\Collection\Contract;
 
 use ArrayAccess;
 use Psr\EventDispatcher\ListenerProviderInterface;
+use Valkyrja\Event\Data;
 use Valkyrja\Event\Data\Contract\Listener;
 
 /**
@@ -26,6 +27,16 @@ use Valkyrja\Event\Data\Contract\Listener;
  */
 interface Collection extends ArrayAccess, ListenerProviderInterface
 {
+    /**
+     * Get a data representation of the collection.
+     */
+    public function getData(): Data;
+
+    /**
+     * Set data from a data object.
+     */
+    public function setFromData(Data $data): void;
+
     /**
      * Determine if a listener is registered.
      */

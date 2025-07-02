@@ -15,8 +15,8 @@ namespace Valkyrja\Application;
 
 use League\Flysystem\FilesystemAdapter as FlysystemAdapter;
 use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
-use Valkyrja\Api\Model\Contract\Json as ApiJson;
-use Valkyrja\Api\Model\Contract\JsonData as ApiJsonData;
+use Valkyrja\Application\Constant\ComponentClass;
+use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Support\Component;
 use Valkyrja\Asset\Adapter\Contract\Adapter as AssetAdapter;
 use Valkyrja\Auth\Adapter\Contract\Adapter as AuthAdapter;
@@ -32,22 +32,16 @@ use Valkyrja\Broadcast\Message\Contract\Message as BroadcastMessage;
 use Valkyrja\Cache\Adapter\Contract\Adapter as CacheAdapter;
 use Valkyrja\Cache\Config\Configurations as CacheConfigurations;
 use Valkyrja\Cache\Driver\Contract\Driver as CacheDriver;
-use Valkyrja\Cli\Interaction\Config as CliInteractionConfig;
-use Valkyrja\Cli\Middleware\Config as CliMiddlewareConfig;
 use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Cli\Routing\Config as CliRoutingConfig;
-use Valkyrja\Container\Contract\Service as ContainerService;
-use Valkyrja\Container\Support\Provider as ContainerProvider;
 use Valkyrja\Filesystem\Adapter\Contract\Adapter as FilesystemAdapter;
 use Valkyrja\Filesystem\Config\Configurations as FilesystemConfigurations;
 use Valkyrja\Filesystem\Driver\Contract\Driver as FilesystemDriver;
 use Valkyrja\Http\Message\Enum\SameSite;
-use Valkyrja\Http\Middleware\Config as HttpMiddlewareConfig;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware as HttpRequestReceivedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware as HttpRouteDispatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware as HttpRouteMatchedMiddleware;
@@ -55,8 +49,6 @@ use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware as HttpRouteNotM
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware as HttpSendingResponseMiddleware;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware as HttpTerminatedMiddleware;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware as HttpThrowableCaughtMiddleware;
-use Valkyrja\Http\Routing\Config as HttpRoutingConfig;
-use Valkyrja\Http\Server\Contract\RequestHandler as HttpServerRequestHandler;
 use Valkyrja\Jwt\Adapter\Contract\Adapter as JwtAdapter;
 use Valkyrja\Jwt\Config\Configurations as JwtConfiguration;
 use Valkyrja\Jwt\Driver\Contract\Driver as JwtDriver;
@@ -88,6 +80,9 @@ use Valkyrja\View\Engine\Contract\Engine as ViewEngine;
  * Class Env.
  *
  * @author Melech Mizrachi
+ *
+ * @see    https://psalm.dev/r/eb18b4d7ae This one is fine
+ * @see    https://psalm.dev/r/36fd31ac0e This on breaks, the moment we use an annotation?!!?!?
  */
 class Env
 {
@@ -97,33 +92,40 @@ class Env
      *
      ************************************************************/
 
-    /** @var string|null */
-    public const string|null APP_ENV = 'local';
-    /** @var bool|null */
-    public const bool|null APP_DEBUG_MODE = true;
-    /** @var string|null */
-    public const string|null APP_URL = 'localhost';
-    /** @var string|null */
-    public const string|null APP_TIMEZONE = 'UTC';
-    /** @var string|null */
-    public const string|null APP_VERSION = '1 (ALPHA)';
-    /** @var string|null */
-    public const string|null APP_KEY = null;
-    /** @var class-string<Component>[]|null */
-    public const array|null APP_COMPONENTS = null;
-    /** @var string|null */
-    public const string|null APP_CACHE_FILE_PATH = null;
-
-    /************************************************************
-     *
-     * Api component env variables.
-     *
-     ************************************************************/
-
-    /** @var class-string<ApiJson>|null */
-    public const string|null API_JSON_MODEL = null;
-    /** @var class-string<ApiJsonData>|null */
-    public const string|null API_DATA_MODEL = null;
+    /** @var non-empty-string */
+    public const string APP_ENV = 'local';
+    /** @var bool */
+    public const bool APP_DEBUG_MODE = true;
+    /** @var non-empty-string */
+    public const string APP_URL = 'localhost';
+    /** @var non-empty-string */
+    public const string APP_TIMEZONE = 'UTC';
+    /** @var non-empty-string */
+    public const string APP_VERSION = Application::VERSION;
+    /** @var non-empty-string */
+    public const string APP_KEY = 'some_secret_app_key';
+    /** @var class-string<Component>[] */
+    public const array APP_COMPONENTS = [
+        ComponentClass::API,
+        ComponentClass::ASSET,
+        ComponentClass::AUTH,
+        ComponentClass::BROADCAST,
+        ComponentClass::CACHE,
+        ComponentClass::CRYPT,
+        ComponentClass::FILESYSTEM,
+        ComponentClass::JWT,
+        ComponentClass::LOG,
+        ComponentClass::MAIL,
+        ComponentClass::NOTIFICATION,
+        ComponentClass::ORM,
+        ComponentClass::SESSION,
+        ComponentClass::SMS,
+        ComponentClass::VIEW,
+    ];
+    /** @var string */
+    public const string APP_DIR = __DIR__ . '/..';
+    /** @var string */
+    public const string APP_CACHE_FILE_PATH = __DIR__ . '/../storage/framework/cache/cache.php';
 
     /************************************************************
      *
@@ -255,29 +257,16 @@ class Env
 
     /************************************************************
      *
-     * Cli component env variables.
-     *
-     ************************************************************/
-
-    /** @var callable():CliInteractionConfig|null */
-    public const array|null CLI_INTERACTION = null;
-    /** @var callable():CliMiddlewareConfig|null */
-    public const array|null CLI_MIDDLEWARE = null;
-    /** @var callable():CliRoutingConfig|null */
-    public const array|null CLI_ROUTING = null;
-
-    /************************************************************
-     *
      * Cli Interaction component env variables.
      *
      ************************************************************/
 
-    /** @var bool|null */
-    public const bool|null CLI_INTERACTION_IS_QUIET = null;
-    /** @var bool|null */
-    public const bool|null CLI_INTERACTION_IS_INTERACTIVE = null;
-    /** @var bool|null */
-    public const bool|null CLI_INTERACTION_IS_SILENT = null;
+    /** @var bool */
+    public const bool CLI_INTERACTION_IS_QUIET = false;
+    /** @var bool */
+    public const bool CLI_INTERACTION_IS_INTERACTIVE = true;
+    /** @var bool */
+    public const bool CLI_INTERACTION_IS_SILENT = false;
 
     /************************************************************
      *
@@ -285,55 +274,18 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<InputReceivedMiddleware>[]|null */
-    public const array|null CLI_MIDDLEWARE_INPUT_RECEIVED = null;
-    /** @var class-string<CommandMatchedMiddleware>[]|null */
-    public const array|null CLI_MIDDLEWARE_COMMAND_MATCHED = null;
-    /** @var class-string<CommandNotMatchedMiddleware>[]|null */
-    public const array|null CLI_MIDDLEWARE_COMMAND_NOT_MATCHED = null;
-    /** @var class-string<CommandDispatchedMiddleware>[]|null */
-    public const array|null CLI_MIDDLEWARE_COMMAND_DISPATCHED = null;
-    /** @var class-string<ThrowableCaughtMiddleware>[]|null */
-    public const array|null CLI_MIDDLEWARE_THROWABLE_CAUGHT = null;
-    /** @var class-string<ExitedMiddleware>[]|null */
-    public const array|null CLI_MIDDLEWARE_EXITED = null;
-
-    /************************************************************
-     *
-     * Cli Routing component env variables.
-     *
-     ************************************************************/
-
-    /** @var class-string[]|null */
-    public const array|null CLI_ROUTING_CONTROLLERS = null;
-
-    /************************************************************
-     *
-     * Container component env variables.
-     *
-     ************************************************************/
-
-    /** @var class-string[]|null */
-    public const array|null CONTAINER_ALIASES = null;
-    /** @var class-string<ContainerService>[]|null */
-    public const array|null CONTAINER_SERVICES = null;
-    /** @var class-string[]|null */
-    public const array|null CONTAINER_CONTEXT_ALIASES = null;
-    /** @var class-string<ContainerService>[]|null */
-    public const array|null CONTAINER_CONTEXT_SERVICES = null;
-    /** @var class-string<ContainerProvider>[]|null */
-    public const array|null CONTAINER_PROVIDERS = null;
-    /** @var bool|null */
-    public const bool|null CONTAINER_USE_ATTRIBUTES = null;
-
-    /************************************************************
-     *
-     * Event component env variables.
-     *
-     ************************************************************/
-
-    /** @var class-string[]|null */
-    public const array|null EVENT_LISTENERS = null;
+    /** @var class-string<InputReceivedMiddleware>[] */
+    public const array CLI_MIDDLEWARE_INPUT_RECEIVED = [];
+    /** @var class-string<CommandMatchedMiddleware>[] */
+    public const array CLI_MIDDLEWARE_COMMAND_MATCHED = [];
+    /** @var class-string<CommandNotMatchedMiddleware>[] */
+    public const array CLI_MIDDLEWARE_COMMAND_NOT_MATCHED = [];
+    /** @var class-string<CommandDispatchedMiddleware>[] */
+    public const array CLI_MIDDLEWARE_COMMAND_DISPATCHED = [];
+    /** @var class-string<ThrowableCaughtMiddleware>[] */
+    public const array CLI_MIDDLEWARE_THROWABLE_CAUGHT = [];
+    /** @var class-string<ExitedMiddleware>[] */
+    public const array CLI_MIDDLEWARE_EXITED = [];
 
     /************************************************************
      *
@@ -386,53 +338,24 @@ class Env
 
     /************************************************************
      *
-     * Http component env variables.
-     *
-     ************************************************************/
-
-    /** @var callable():HttpMiddlewareConfig|null */
-    public const array|null HTTP_MIDDLEWARE = null;
-    /** @var callable():HttpRoutingConfig|null */
-    public const array|null HTTP_ROUTING = null;
-
-    /************************************************************
-     *
      * Http Middleware component env variables.
      *
      ************************************************************/
 
-    /** @var class-string<HttpRequestReceivedMiddleware>[]|null */
-    public const array|null HTTP_MIDDLEWARE_REQUEST_RECEIVED = null;
-    /** @var class-string<HttpRouteDispatchedMiddleware>[]|null */
-    public const array|null HTTP_MIDDLEWARE_ROUTE_DISPATCHED = null;
-    /** @var class-string<HttpRouteMatchedMiddleware>[]|null */
-    public const array|null HTTP_MIDDLEWARE_THROWABLE_CAUGHT = null;
-    /** @var class-string<HttpRouteNotMatchedMiddleware>[]|null */
-    public const array|null HTTP_MIDDLEWARE_ROUTE_MATCHED = null;
-    /** @var class-string<HttpThrowableCaughtMiddleware>[]|null */
-    public const array|null HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = null;
-    /** @var class-string<HttpSendingResponseMiddleware>[]|null */
-    public const array|null HTTP_MIDDLEWARE_SENDING_RESPONSE = null;
-    /** @var class-string<HttpTerminatedMiddleware>[]|null */
-    public const array|null HTTP_MIDDLEWARE_TERMINATED = null;
-
-    /************************************************************
-     *
-     * Http Routing component env variables.
-     *
-     ************************************************************/
-
-    /** @var class-string[]|null */
-    public const array|null HTTP_ROUTING_CONTROLLERS = null;
-
-    /************************************************************
-     *
-     * Http Server component env variables.
-     *
-     ************************************************************/
-
-    /** @var class-string<HttpServerRequestHandler>|null */
-    public const string|null HTTP_SERVER_REQUEST_HANDLER = null;
+    /** @var class-string<HttpRequestReceivedMiddleware>[] */
+    public const array HTTP_MIDDLEWARE_REQUEST_RECEIVED = [];
+    /** @var class-string<HttpRouteDispatchedMiddleware>[] */
+    public const array HTTP_MIDDLEWARE_ROUTE_DISPATCHED = [];
+    /** @var class-string<HttpThrowableCaughtMiddleware>[] */
+    public const array HTTP_MIDDLEWARE_THROWABLE_CAUGHT = [];
+    /** @var class-string<HttpRouteMatchedMiddleware>[] */
+    public const array HTTP_MIDDLEWARE_ROUTE_MATCHED = [];
+    /** @var class-string<HttpRouteNotMatchedMiddleware>[] */
+    public const array HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = [];
+    /** @var class-string<HttpSendingResponseMiddleware>[] */
+    public const array HTTP_MIDDLEWARE_SENDING_RESPONSE = [];
+    /** @var class-string<HttpTerminatedMiddleware>[] */
+    public const array HTTP_MIDDLEWARE_TERMINATED = [];
 
     /************************************************************
      *

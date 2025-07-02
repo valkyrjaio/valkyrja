@@ -13,81 +13,31 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application;
 
-use Valkyrja\Application\Constant\ComponentClass;
-use Valkyrja\Application\Constant\ConfigName;
-use Valkyrja\Application\Constant\EnvName;
-use Valkyrja\Application\Contract\Application;
-use Valkyrja\Application\Support\Component;
-use Valkyrja\Support\Config as ParentConfig;
-use Valkyrja\Support\Directory;
+use Valkyrja\Container\Contract\Service;
+use Valkyrja\Container\Support\Provider;
 
 /**
- * Class Config.
+ * Class AppConfig.
  *
  * @author Melech Mizrachi
  */
-class Config extends ParentConfig
+class Config
 {
     /**
-     * @inheritDoc
-     *
-     * @var array<string, string>
-     */
-    protected static array $envNames = [
-        ConfigName::ENV             => EnvName::ENV,
-        ConfigName::DEBUG_MODE      => EnvName::DEBUG_MODE,
-        ConfigName::URL             => EnvName::URL,
-        ConfigName::TIMEZONE        => EnvName::TIMEZONE,
-        ConfigName::VERSION         => EnvName::VERSION,
-        ConfigName::KEY             => EnvName::KEY,
-        ConfigName::COMPONENTS      => EnvName::COMPONENTS,
-        ConfigName::CACHE_FILE_PATH => EnvName::CACHE_FILE_PATH,
-    ];
-
-    /**
-     * @param non-empty-string          $env        The environment
-     * @param non-empty-string          $url        The url
-     * @param non-empty-string          $timezone   The timezone
-     * @param non-empty-string          $version    The version
-     * @param non-empty-string          $key        The secret key
-     * @param class-string<Component>[] $components The components
+     * @param class-string[]           $aliases
+     * @param class-string<Service>[]  $services
+     * @param class-string<Provider>[] $providers
+     * @param class-string[]           $listeners
+     * @param class-string[]           $commands
+     * @param class-string[]           $controllers
      */
     public function __construct(
-        public string $env = 'production',
-        public bool $debugMode = false,
-        public string $url = 'localhost',
-        public string $timezone = 'UTC',
-        public string $version = Application::VERSION,
-        public string $key = 'some_secret_app_key',
-        public array $components = [],
-        public string $cacheFilePath = ''
+        public array $aliases = [],
+        public array $services = [],
+        public array $providers = [],
+        public array $listeners = [],
+        public array $commands = [],
+        public array $controllers = [],
     ) {
-    }
-
-    public function setPropertiesFromEnv(string $env): void
-    {
-        if ($this->cacheFilePath === '') {
-            $this->cacheFilePath = Directory::cachePath('config.php');
-        }
-
-        $this->components = [
-            ComponentClass::API,
-            ComponentClass::ASSET,
-            ComponentClass::AUTH,
-            ComponentClass::BROADCAST,
-            ComponentClass::CACHE,
-            ComponentClass::CRYPT,
-            ComponentClass::FILESYSTEM,
-            ComponentClass::JWT,
-            ComponentClass::LOG,
-            ComponentClass::MAIL,
-            ComponentClass::NOTIFICATION,
-            ComponentClass::ORM,
-            ComponentClass::SESSION,
-            ComponentClass::SMS,
-            ComponentClass::VIEW,
-        ];
-
-        parent::setPropertiesFromEnv($env);
     }
 }

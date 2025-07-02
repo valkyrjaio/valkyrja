@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Provider;
 
-use Valkyrja\Application\Config\ValkyrjaConfig;
+use Valkyrja\Application\Env;
+use Valkyrja\Cli\Interaction\Config;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
@@ -31,6 +32,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
+            Config::class        => [self::class, 'publishConfig'],
             OutputFactory::class => [self::class, 'publishOutputFactory'],
         ];
     }
@@ -41,6 +43,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
+            Config::class,
             OutputFactory::class,
         ];
     }
@@ -48,14 +51,37 @@ final class ServiceProvider extends Provider
     /**
      * Publish the output factory.
      */
+    public static function publishConfig(Container $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var bool $isQuiet */
+        $isQuiet = $env::CLI_INTERACTION_IS_QUIET;
+        /** @var bool $isInteractive */
+        $isInteractive = $env::CLI_INTERACTION_IS_INTERACTIVE;
+        /** @var bool $isSilent */
+        $isSilent = $env::CLI_INTERACTION_IS_SILENT;
+
+        $container->setSingleton(
+            Config::class,
+            new Config(
+                isQuiet: $isQuiet,
+                isInteractive: $isInteractive,
+                isSilent: $isSilent,
+            )
+        );
+    }
+
+    /**
+     * Publish the output factory.
+     */
     public static function publishOutputFactory(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             OutputFactory::class,
             new \Valkyrja\Cli\Interaction\Factory\OutputFactory(
-                config: $config->cli->interaction
+                config: $config
             )
         );
     }

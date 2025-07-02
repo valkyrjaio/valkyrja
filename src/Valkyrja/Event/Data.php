@@ -11,28 +11,26 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Event\Config;
+namespace Valkyrja\Event;
 
 use Valkyrja\Event\Data\Contract\Listener;
 
 /**
- * Class Cache.
+ * Class Data.
  *
  * @author Melech Mizrachi
  */
-class Cache
+class Data
 {
-    /**
-     * The events.
-     *
-     * @var array<class-string, string[]>
-     */
-    public array $events;
-
     /**
      * The listeners.
      *
-     * @var array<string, Listener|string>
+     * @param array<class-string, string[]>  $events
+     * @param array<string, Listener|string> $listeners
      */
-    public array $listeners;
+    public function __construct(
+        public array $events = [],
+        public array $listeners = [],
+    ) {
+    }
 }

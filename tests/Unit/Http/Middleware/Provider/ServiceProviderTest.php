@@ -51,7 +51,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishThrowableCaughtHandler(): void
     {
-        ServiceProvider::publishExceptionHandler($this->container);
+        ServiceProvider::publishThrowableCaughtHandler($this->container);
 
         self::assertInstanceOf(
             Handler\ThrowableCaughtHandler::class,

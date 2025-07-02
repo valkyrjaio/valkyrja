@@ -18,6 +18,7 @@ use Valkyrja\Http\Message\File\Psr\UploadedFile as PsrUploadedFile;
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Support\Directory;
+use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\TestCase;
 
 use function unlink;
@@ -48,6 +49,8 @@ class UploadedFileTest extends TestCase
 
     public function testMoveTo(): void
     {
+        Directory::$BASE_PATH = EnvClass::APP_DIR;
+
         $file  = Directory::storagePath('/PsrUploadedFileTest-testMoveTo.txt');
         $file2 = Directory::storagePath('/PsrUploadedFileTest-testMoveTo2.txt');
 
