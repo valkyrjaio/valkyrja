@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Contract;
 
-use Valkyrja\Jwt\Driver\Contract\Driver;
-
 /**
  * Interface Jwt.
  *
@@ -22,11 +20,6 @@ use Valkyrja\Jwt\Driver\Contract\Driver;
  */
 interface Jwt
 {
-    /**
-     * Use a specific configuration.
-     */
-    public function use(string|null $name = null): Driver;
-
     /**
      * Encode a payload array into a JWT string.
      *

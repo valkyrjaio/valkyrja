@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Jwt\Adapter;
+namespace Valkyrja\Jwt;
 
 use JsonException;
-use Valkyrja\Jwt\Adapter\Contract\Adapter as Contract;
+use Valkyrja\Jwt\Contract\Jwt as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
- * Class NullAdapter.
+ * Class NullJwt.
  *
  * @author Melech Mizrachi
  */
-class NullAdapter implements Contract
+class NullJwt implements Contract
 {
     /**
      * @inheritDoc
