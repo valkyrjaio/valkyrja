@@ -66,9 +66,6 @@ use Valkyrja\Orm\Query\Contract\Query as OrmQuery;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder as OrmQueryBuilder;
 use Valkyrja\Orm\Repository\Contract\Repository as OrmRepository;
 use Valkyrja\Orm\Retriever\Contract\Retriever as OrmRetriever;
-use Valkyrja\Session\Adapter\Contract\Adapter as SessionAdapter;
-use Valkyrja\Session\Config\Configurations as SessionConfigurations;
-use Valkyrja\Session\Driver\Contract\Driver as SessionDriver;
 use Valkyrja\Sms\Adapter\Contract\Adapter as SmsAdapter;
 use Valkyrja\Sms\Config\Configurations as SmsConfigurations;
 use Valkyrja\Sms\Config\MessageConfiguration as SmsMessageConfiguration;
@@ -563,50 +560,22 @@ class Env
      *
      ************************************************************/
 
-    /** @var string|null */
-    public const string|null SESSION_DEFAULT_CONFIGURATION = null;
-    /** @var callable():SessionConfigurations|null */
-    public const array|null SESSION_CONFIGURATIONS = null;
-    /** @var class-string<SessionAdapter>|null */
-    public const string|null SESSION_PHP_ADAPTER_CLASS = null;
-    /** @var class-string<SessionDriver>|null */
-    public const string|null SESSION_PHP_DRIVER_CLASS = null;
-    /** @var string|null */
+    /** @var non-empty-string|null */
     public const string|null SESSION_PHP_ID = null;
-    /** @var string|null */
+    /** @var non-empty-string|null */
     public const string|null SESSION_PHP_NAME = null;
-    /** @var class-string<SessionAdapter>|null */
-    public const string|null SESSION_NULL_ADAPTER_CLASS = null;
-    /** @var class-string<SessionDriver>|null */
-    public const string|null SESSION_NULL_DRIVER_CLASS = null;
-    /** @var class-string<SessionAdapter>|null */
-    public const string|null SESSION_CACHE_ADAPTER_CLASS = null;
-    /** @var class-string<SessionDriver>|null */
-    public const string|null SESSION_CACHE_DRIVER_CLASS = null;
-    /** @var string|null */
-    public const string|null SESSION_CACHE_CACHE = null;
-    /** @var class-string<SessionAdapter>|null */
-    public const string|null SESSION_COOKIE_ADAPTER_CLASS = null;
-    /** @var class-string<SessionDriver>|null */
-    public const string|null SESSION_COOKIE_DRIVER_CLASS = null;
-    /** @var class-string<SessionAdapter>|null */
-    public const string|null SESSION_LOG_ADAPTER_CLASS = null;
-    /** @var class-string<SessionDriver>|null */
-    public const string|null SESSION_LOG_DRIVER_CLASS = null;
-    /** @var string|null */
-    public const string|null SESSION_LOG_LOGGER = null;
-    /** @var string|null */
-    public const string|null SESSION_COOKIE_PARAM_PATH = null;
-    /** @var string|null */
+    /** @var non-empty-string */
+    public const string SESSION_COOKIE_PARAM_PATH = '/';
+    /** @var non-empty-string|null */
     public const string|null SESSION_COOKIE_PARAM_DOMAIN = null;
-    /** @var int|null */
-    public const int|null SESSION_COOKIE_PARAM_LIFETIME = null;
-    /** @var bool|null */
-    public const bool|null SESSION_COOKIE_PARAM_SECURE = null;
-    /** @var bool|null */
-    public const bool|null SESSION_COOKIE_PARAM_HTTP_ONLY = null;
-    /** @var SameSite|null */
-    public const SameSite|null SESSION_COOKIE_PARAM_SAME_SITE = null;
+    /** @var int */
+    public const int SESSION_COOKIE_PARAM_LIFETIME = 0;
+    /** @var bool */
+    public const bool SESSION_COOKIE_PARAM_SECURE = false;
+    /** @var bool */
+    public const bool SESSION_COOKIE_PARAM_HTTP_ONLY = false;
+    /** @var SameSite */
+    public const SameSite SESSION_COOKIE_PARAM_SAME_SITE = SameSite::NONE;
 
     /************************************************************
      *

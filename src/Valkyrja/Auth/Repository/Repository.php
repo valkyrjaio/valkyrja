@@ -26,8 +26,7 @@ use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\Repository as Contract;
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Session\Contract\Session as SessionManager;
-use Valkyrja\Session\Driver\Contract\Driver as Session;
+use Valkyrja\Session\Contract\Session;
 
 use function assert;
 use function is_int;
@@ -42,13 +41,6 @@ use function unserialize;
  */
 class Repository implements Contract
 {
-    /**
-     * The session.
-     *
-     * @var Session
-     */
-    protected Session $session;
-
     /**
      * The user entity.
      *
@@ -91,13 +83,12 @@ class Repository implements Contract
      */
     public function __construct(
         protected Adapter $adapter,
-        SessionManager $session,
+        protected Session $session,
         protected Config $config,
         string $user
     ) {
         assert(is_a($user, User::class, true));
 
-        $this->session        = $session->use();
         $this->userEntityName = $user;
 
         $this->usersModel = $user::getAuthCollection() ?? \Valkyrja\Auth\Model\AuthenticatedUsers::class;

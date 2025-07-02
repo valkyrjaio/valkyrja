@@ -18,24 +18,16 @@ use Valkyrja\Cache\Contract\Cache;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Contract\Crypt;
+use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Session\Adapter\CacheAdapter;
-use Valkyrja\Session\Adapter\Contract\Adapter;
-use Valkyrja\Session\Adapter\CookieAdapter;
-use Valkyrja\Session\Adapter\LogAdapter;
-use Valkyrja\Session\Adapter\NullAdapter;
-use Valkyrja\Session\Adapter\PHPAdapter;
-use Valkyrja\Session\Config;
-use Valkyrja\Session\Config\CacheConfiguration;
-use Valkyrja\Session\Config\CookieConfiguration;
-use Valkyrja\Session\Config\LogConfiguration;
-use Valkyrja\Session\Config\NullConfiguration;
-use Valkyrja\Session\Config\PhpConfiguration;
+use Valkyrja\Session\CacheSession;
 use Valkyrja\Session\Contract\Session;
-use Valkyrja\Session\Driver\Driver;
-use Valkyrja\Session\Factory\ContainerFactory;
-use Valkyrja\Session\Factory\Contract\Factory;
+use Valkyrja\Session\CookieSession;
+use Valkyrja\Session\Data\CookieParams;
+use Valkyrja\Session\LogSession;
+use Valkyrja\Session\NullSession;
+use Valkyrja\Session\PhpSession;
 
 /**
  * Class ServiceProvider.
@@ -51,14 +43,12 @@ final class ServiceProvider extends Provider
     {
         return [
             Session::class       => [self::class, 'publishSession'],
-            Factory::class       => [self::class, 'publishFactory'],
-            Driver::class        => [self::class, 'publishDriver'],
-            NullAdapter::class   => [self::class, 'publishNullAdapter'],
-            CacheAdapter::class  => [self::class, 'publishCacheAdapter'],
-            CookieAdapter::class => [self::class, 'publishCookieAdapter'],
-            LogAdapter::class    => [self::class, 'publishLogAdapter'],
-            PHPAdapter::class    => [self::class, 'publishPHPAdapter'],
-            Config::class        => [self::class, 'publishConfig'],
+            PhpSession::class    => [self::class, 'publishPhpSession'],
+            NullSession::class   => [self::class, 'publishNullSession'],
+            CacheSession::class  => [self::class, 'publishCacheSession'],
+            CookieSession::class => [self::class, 'publishCookieSession'],
+            LogSession::class    => [self::class, 'publishLogSession'],
+            CookieParams::class  => [self::class, 'publishCookieParams'],
         ];
     }
 
@@ -69,25 +59,45 @@ final class ServiceProvider extends Provider
     {
         return [
             Session::class,
-            Factory::class,
-            Driver::class,
-            NullAdapter::class,
-            CacheAdapter::class,
-            CookieAdapter::class,
-            LogAdapter::class,
-            PHPAdapter::class,
-            Config::class,
+            PhpSession::class,
+            NullSession::class,
+            CacheSession::class,
+            CookieSession::class,
+            LogSession::class,
+            CookieParams::class,
         ];
     }
 
     /**
-     * Publish the Config service.
+     * Publish the cookie params service.
      */
-    public static function publishConfig(Container $container): void
+    public static function publishCookieParams(Container $container): void
     {
         $env = $container->getSingleton(Env::class);
+        /** @var string $path */
+        $path = $env::SESSION_COOKIE_PARAM_PATH;
+        /** @var string|null $domain */
+        $domain = $env::SESSION_COOKIE_PARAM_DOMAIN;
+        /** @var int $lifetime */
+        $lifetime = $env::SESSION_COOKIE_PARAM_LIFETIME;
+        /** @var bool $secure */
+        $secure = $env::SESSION_COOKIE_PARAM_SECURE;
+        /** @var bool $httpOnly */
+        $httpOnly = $env::SESSION_COOKIE_PARAM_HTTP_ONLY;
+        /** @var SameSite $sameSite */
+        $sameSite = $env::SESSION_COOKIE_PARAM_SAME_SITE;
 
-        $container->setSingleton(Config::class, Config::fromEnv($env::class));
+        $container->setSingleton(
+            CookieParams::class,
+            new CookieParams(
+                path: $path,
+                domain: $domain,
+                lifetime: $lifetime,
+                secure: $secure,
+                httpOnly: $httpOnly,
+                sameSite: $sameSite,
+            )
+        );
     }
 
     /**
@@ -95,161 +105,117 @@ final class ServiceProvider extends Provider
      */
     public static function publishSession(Container $container): void
     {
-        $config = $container->getSingleton(Config::class);
-
         $container->setSingleton(
             Session::class,
-            new \Valkyrja\Session\Session(
-                factory: $container->getSingleton(Factory::class),
-                config: $config
-            )
+            $container->getSingleton(PhpSession::class),
         );
     }
 
     /**
-     * Publish the factory service.
+     * Publish the php session service.
      */
-    public static function publishFactory(Container $container): void
+    public static function publishPhpSession(Container $container): void
     {
+        $env = $container->getSingleton(Env::class);
+        /** @var string|null $sessionId */
+        $sessionId = $env::SESSION_PHP_ID;
+        /** @var string|null $sessionName */
+        $sessionName = $env::SESSION_PHP_NAME;
+
         $container->setSingleton(
-            Factory::class,
-            new ContainerFactory(container: $container),
+            PhpSession::class,
+            new PhpSession(
+                cookieParams: $container->getSingleton(CookieParams::class),
+                sessionId: $sessionId,
+                sessionName: $sessionName,
+            ),
         );
     }
 
     /**
-     * Publish a driver service.
+     * Publish the null session service.
      */
-    public static function publishDriver(Container $container): void
+    public static function publishNullSession(Container $container): void
     {
-        $container->setCallable(
-            Driver::class,
-            [self::class, 'createDriver']
-        );
-    }
+        $env = $container->getSingleton(Env::class);
+        /** @var string|null $sessionId */
+        $sessionId = $env::SESSION_PHP_ID;
+        /** @var string|null $sessionName */
+        $sessionName = $env::SESSION_PHP_NAME;
 
-    public static function createDriver(Container $container, Adapter $adapter): Driver
-    {
-        return new Driver(
-            adapter: $adapter
-        );
-    }
-
-    /**
-     * Publish an adapter service.
-     */
-    public static function publishNullAdapter(Container $container): void
-    {
-        $container->setCallable(
-            Adapter::class,
-            [self::class, 'createNullAdapter']
+        $container->setSingleton(
+            NullSession::class,
+            new NullSession(
+                sessionId: $sessionId,
+                sessionName: $sessionName,
+            ),
         );
     }
 
     /**
-     * Create a null adapter.
+     * Publish the cache session service.
      */
-    public static function createNullAdapter(Container $container, NullConfiguration $config): Adapter
+    public static function publishCacheSession(Container $container): void
     {
-        return new NullAdapter(
-            config: $config
+        $env = $container->getSingleton(Env::class);
+        /** @var string|null $sessionId */
+        $sessionId = $env::SESSION_PHP_ID;
+        /** @var string|null $sessionName */
+        $sessionName = $env::SESSION_PHP_NAME;
+
+        $container->setSingleton(
+            CacheSession::class,
+            new CacheSession(
+                cache: $container->getSingleton(Cache::class)->use(),
+                cookieParams: $container->getSingleton(CookieParams::class),
+                sessionId: $sessionId,
+                sessionName: $sessionName,
+            ),
         );
     }
 
     /**
-     * Publish a cache adapter service.
+     * Publish the cookie session service.
      */
-    public static function publishCacheAdapter(Container $container): void
+    public static function publishCookieSession(Container $container): void
     {
-        $container->setCallable(
-            CacheAdapter::class,
-            [self::class, 'createCacheAdapter']
+        $env = $container->getSingleton(Env::class);
+        /** @var string|null $sessionId */
+        $sessionId = $env::SESSION_PHP_ID;
+        /** @var string|null $sessionName */
+        $sessionName = $env::SESSION_PHP_NAME;
+
+        $container->setSingleton(
+            CookieSession::class,
+            new CookieSession(
+                crypt: $container->getSingleton(Crypt::class),
+                request: $container->getSingleton(ServerRequest::class),
+                cookieParams: $container->getSingleton(CookieParams::class),
+                sessionId: $sessionId,
+                sessionName: $sessionName,
+            ),
         );
     }
 
     /**
-     * Create a cache adapter.
+     * Publish the log session service.
      */
-    public static function createCacheAdapter(Container $container, CacheConfiguration $config): CacheAdapter
+    public static function publishLogSession(Container $container): void
     {
-        $cache = $container->getSingleton(Cache::class);
+        $env = $container->getSingleton(Env::class);
+        /** @var string|null $sessionId */
+        $sessionId = $env::SESSION_PHP_ID;
+        /** @var string|null $sessionName */
+        $sessionName = $env::SESSION_PHP_NAME;
 
-        return new CacheAdapter(
-            cache: $cache->use($config->cache),
-            config: $config
-        );
-    }
-
-    /**
-     * Publish a log adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishLogAdapter(Container $container): void
-    {
-        $container->setCallable(
-            LogAdapter::class,
-            [self::class, 'createLogAdapter']
-        );
-    }
-
-    /**
-     * Create a log adapter.
-     */
-    public static function createLogAdapter(Container $container, LogConfiguration $config): LogAdapter
-    {
-        return new LogAdapter(
-            logger: $container->getSingleton(Logger::class),
-            config: $config
-        );
-    }
-
-    /**
-     * Publish the cookie adapter service.
-     */
-    public static function publishCookieAdapter(Container $container): void
-    {
-        $container->setCallable(
-            CookieAdapter::class,
-            [self::class, 'createCookieAdapter']
-        );
-    }
-
-    /**
-     * Create a cookie adapter.
-     */
-    public static function createCookieAdapter(Container $container, CookieConfiguration $config): CookieAdapter
-    {
-        $crypt   = $container->getSingleton(Crypt::class);
-        $request = $container->getSingleton(ServerRequest::class);
-
-        return new CookieAdapter(
-            crypt: $crypt,
-            request: $request,
-            config: $config
-        );
-    }
-
-    /**
-     * Publish a php adapter service.
-     */
-    public static function publishPhpAdapter(Container $container): void
-    {
-        $container->setCallable(
-            Adapter::class,
-            [self::class, 'createPhpAdapter']
-        );
-    }
-
-    /**
-     * Create a php adapter.
-     */
-    public static function createPhpAdapter(Container $container, PhpConfiguration $config): Adapter
-    {
-        return new PHPAdapter(
-            config: $config
+        $container->setSingleton(
+            LogSession::class,
+            new LogSession(
+                logger: $container->getSingleton(Logger::class),
+                cookieParams: $container->getSingleton(CookieParams::class),
+                sessionId: $sessionId,
+                sessionName: $sessionName,
+            ),
         );
     }
 }

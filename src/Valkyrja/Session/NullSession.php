@@ -11,11 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Adapter;
+namespace Valkyrja\Session;
 
 use Exception;
-use Valkyrja\Session\Adapter\Contract\Adapter as Contract;
-use Valkyrja\Session\Config\Configuration;
+use Valkyrja\Session\Contract\Session as Contract;
 use Valkyrja\Session\Exception\InvalidCsrfToken;
 use Valkyrja\Session\Exception\InvalidSessionId;
 use Valkyrja\Session\Exception\SessionStartFailure;
@@ -27,11 +26,11 @@ use function preg_match;
 use function random_bytes;
 
 /**
- * Class NullAdapter.
+ * Class NullSession.
  *
  * @author Melech Mizrachi
  */
-class NullAdapter implements Contract
+class NullSession implements Contract
 {
     /**
      * The session id.
@@ -55,19 +54,15 @@ class NullAdapter implements Contract
     protected array $data = [];
 
     /**
-     * NullAdapter constructor.
+     * NullSession constructor.
      *
      * @throws InvalidSessionId
      * @throws SessionStartFailure
      */
     public function __construct(
-        protected Configuration $config,
         string|null $sessionId = null,
         string|null $sessionName = null
     ) {
-        $sessionId ??= $config->id;
-        $sessionName ??= $config->name;
-
         // If a session id is provided
         if (is_string($sessionId)) {
             // Set the id

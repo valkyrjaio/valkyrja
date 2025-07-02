@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Adapter;
+namespace Valkyrja\Session;
 
-use Valkyrja\Session\Config\PhpConfiguration;
+use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Exception\InvalidSessionId;
 use Valkyrja\Session\Exception\SessionIdFailure;
 use Valkyrja\Session\Exception\SessionNameFailure;
@@ -30,14 +30,23 @@ use function session_unset;
 use const PHP_SESSION_ACTIVE;
 
 /**
- * Class PHPAdapter.
+ * Class PhpSession.
  *
  * @author Melech Mizrachi
- *
- * @property PhpConfiguration $config
  */
-class PHPAdapter extends NullAdapter
+class PhpSession extends NullSession
 {
+    public function __construct(
+        protected CookieParams $cookieParams,
+        string|null $sessionId = null,
+        string|null $sessionName = null,
+    ) {
+        parent::__construct(
+            sessionId: $sessionId,
+            sessionName: $sessionName
+        );
+    }
+
     /**
      * @inheritDoc
      */
@@ -51,12 +60,12 @@ class PHPAdapter extends NullAdapter
 
         // Set the session cookie parameters
         session_set_cookie_params([
-            'path'     => $this->config->cookieParams->path,
-            'domain'   => $this->config->cookieParams->domain,
-            'lifetime' => $this->config->cookieParams->lifetime,
-            'secure'   => $this->config->cookieParams->secure,
-            'httponly' => $this->config->cookieParams->httpOnly,
-            'samesite' => $this->config->cookieParams->sameSite->value,
+            'path'     => $this->cookieParams->path,
+            'domain'   => $this->cookieParams->domain,
+            'lifetime' => $this->cookieParams->lifetime,
+            'secure'   => $this->cookieParams->secure,
+            'httponly' => $this->cookieParams->httpOnly,
+            'samesite' => $this->cookieParams->sameSite->value,
         ]);
 
         // If the session failed to start

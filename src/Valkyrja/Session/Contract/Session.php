@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Contract;
 
-use Valkyrja\Session\Driver\Contract\Driver;
 use Valkyrja\Session\Exception\InvalidCsrfToken;
 
 /**
@@ -23,11 +22,6 @@ use Valkyrja\Session\Exception\InvalidCsrfToken;
  */
 interface Session
 {
-    /**
-     * Use a specific configuration.
-     */
-    public function use(string|null $name = null): Driver;
-
     /**
      * Start the session.
      *

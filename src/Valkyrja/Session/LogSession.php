@@ -11,27 +11,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Adapter;
+namespace Valkyrja\Session;
 
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Session\Config\LogConfiguration;
+use Valkyrja\Session\Data\CookieParams;
 
 /**
- * Class LogAdapter.
+ * Class LogSession.
  *
  * @author Melech Mizrachi
  */
-class LogAdapter extends PHPAdapter
+class LogSession extends PhpSession
 {
     /**
-     * LogAdapter constructor.
+     * LogSession constructor.
      */
     public function __construct(
         protected Logger $logger,
-        LogConfiguration $config,
+        CookieParams $cookieParams,
         string|null $sessionId = null,
         string|null $sessionName = null
     ) {
-        parent::__construct($config, $sessionId, $sessionName);
+        parent::__construct(
+            cookieParams: $cookieParams,
+            sessionId: $sessionId,
+            sessionName: $sessionName
+        );
     }
 }

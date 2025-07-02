@@ -11,21 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Config;
+namespace Valkyrja\Session\Data;
+
+use Valkyrja\Http\Message\Enum\SameSite;
 
 /**
- * Class Configurations.
+ * Class CookieParams.
  *
  * @author Melech Mizrachi
  */
-class Configurations
+class CookieParams
 {
     public function __construct(
-        public PhpConfiguration|null $php = null,
-        public NullConfiguration|null $null = null,
-        public CacheConfiguration|null $cache = null,
-        public CookieConfiguration|null $cookie = null,
-        public LogConfiguration|null $log = null,
+        public string $path = '/',
+        public string|null $domain = null,
+        public int $lifetime = 0,
+        public bool $secure = false,
+        public bool $httpOnly = false,
+        public SameSite $sameSite = SameSite::NONE,
     ) {
     }
 }
