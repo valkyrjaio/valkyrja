@@ -456,15 +456,6 @@ class Env
 
     /************************************************************
      *
-     * Notification component env variables.
-     *
-     ************************************************************/
-
-    /** @var array<string, mixed>|null */
-    public const array|null NOTIFICATION_NOTIFICATIONS = null;
-
-    /************************************************************
-     *
      * Orm component env variables.
      *
      ************************************************************/
