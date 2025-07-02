@@ -66,10 +66,6 @@ use Valkyrja\Orm\Query\Contract\Query as OrmQuery;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder as OrmQueryBuilder;
 use Valkyrja\Orm\Repository\Contract\Repository as OrmRepository;
 use Valkyrja\Orm\Retriever\Contract\Retriever as OrmRetriever;
-use Valkyrja\Sms\Adapter\Contract\Adapter as SmsAdapter;
-use Valkyrja\Sms\Config\Configurations as SmsConfigurations;
-use Valkyrja\Sms\Config\MessageConfiguration as SmsMessageConfiguration;
-use Valkyrja\Sms\Driver\Contract\Driver as SmsDriver;
 use Valkyrja\View\Config\Configurations as ViewConfigurations;
 use Valkyrja\View\Engine\Contract\Engine as ViewEngine;
 
@@ -574,32 +570,10 @@ class Env
      *
      ************************************************************/
 
-    /** @var string|null */
-    public const string|null SMS_DEFAULT_CONFIGURATION = null;
-    /** @var callable():SmsConfigurations|null */
-    public const array|null SMS_CONFIGURATIONS = null;
-    /** @var string|null */
-    public const string|null SMS_DEFAULT_MESSAGE_CONFIGURATION = null;
-    /** @var callable():SmsMessageConfiguration|null */
-    public const array|null SMS_MESSAGE_CONFIGURATIONS = null;
-    /** @var class-string<SmsAdapter>|null */
-    public const string|null SMS_NULL_ADAPTER_CLASS = null;
-    /** @var class-string<SmsDriver>|null */
-    public const string|null SMS_NULL_DRIVER_CLASS = null;
-    /** @var class-string<SmsAdapter>|null */
-    public const string|null SMS_LOG_ADAPTER_CLASS = null;
-    /** @var class-string<SmsDriver>|null */
-    public const string|null SMS_LOG_DRIVER_CLASS = null;
-    /** @var string|null */
-    public const string|null SMS_LOG_LOG_NAME = null;
-    /** @var string|null */
-    public const string|null SMS_VONAGE_KEY = null;
-    /** @var string|null */
-    public const string|null SMS_VONAGE_SECRET = null;
-    /** @var class-string<SmsAdapter>|null */
-    public const string|null SMS_VONAGE_ADAPTER_CLASS = null;
-    /** @var class-string<SmsDriver>|null */
-    public const string|null SMS_VONAGE_DRIVER_CLASS = null;
+    /** @var non-empty-string */
+    public const string SMS_VONAGE_KEY = 'vonage-key';
+    /** @var non-empty-string */
+    public const string SMS_VONAGE_SECRET = 'vonage-secret';
 
     /************************************************************
      *

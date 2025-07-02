@@ -11,13 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Sms\Adapter\Contract;
+namespace Valkyrja\Sms;
+
+use Valkyrja\Sms\Contract\Sms as Contract;
+use Valkyrja\Sms\Data\Contract\Message;
 
 /**
- * Interface VonageAdapter.
+ * Class NullSms.
  *
  * @author Melech Mizrachi
  */
-interface VonageAdapter extends Adapter
+class NullSms implements Contract
 {
+    /**
+     * @inheritDoc
+     */
+    public function send(Message $message): void
+    {
+    }
 }

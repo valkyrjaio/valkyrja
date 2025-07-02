@@ -11,37 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Sms\Adapter;
+namespace Valkyrja\Sms;
 
 use Exception;
 use Psr\Http\Client\ClientExceptionInterface;
-use Valkyrja\Sms\Adapter\Contract\VonageAdapter as Contract;
-use Valkyrja\Sms\Message\Contract\Message;
+use Valkyrja\Sms\Contract\Sms as Contract;
+use Valkyrja\Sms\Data\Contract\Message;
 use Vonage\Client as Vonage;
 use Vonage\SMS\Message\SMS;
 
 /**
- * Class VonageAdapter.
+ * Class VonageSms.
  *
  * @author Melech Mizrachi
  */
-class VonageAdapter implements Contract
+class VonageSms implements Contract
 {
     /**
-     * The Nexmo client.
-     *
-     * @var Vonage
+     * VonageSms constructor.
      */
-    protected Vonage $vonage;
-
-    /**
-     * VonageMessage constructor.
-     *
-     * @param Vonage $vonage The Vonage client
-     */
-    public function __construct(Vonage $vonage)
-    {
-        $this->vonage = $vonage;
+    public function __construct(
+        protected Vonage $vonage
+    ) {
     }
 
     /**

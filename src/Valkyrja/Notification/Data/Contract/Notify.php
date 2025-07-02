@@ -15,7 +15,7 @@ namespace Valkyrja\Notification\Data\Contract;
 
 use Valkyrja\Broadcast\Message\Contract\Message as BroadcastMessage;
 use Valkyrja\Mail\Message\Contract\Message as MailMessage;
-use Valkyrja\Sms\Message\Contract\Message as SMSMessage;
+use Valkyrja\Sms\Data\Contract\Message as SmsMessage;
 
 /**
  * Interface Notify.
@@ -108,9 +108,9 @@ interface Notify
     /**
      * Notify by SMS.
      *
-     * @param SMSMessage $message The SMS message
+     * @param SmsMessage $message The SMS message
      *
-     * @return SMSMessage
+     * @return SmsMessage
      */
-    public function sms(SMSMessage $message): SMSMessage;
+    public function sms(SmsMessage $message): SmsMessage;
 }

@@ -21,6 +21,7 @@ use Valkyrja\Notification\Data\Contract\Notify;
 use Valkyrja\Notification\Entity\Contract\NotifiableUser;
 use Valkyrja\Notification\Factory\Contract\Factory;
 use Valkyrja\Sms\Contract\Sms;
+use Valkyrja\Sms\Data\Message as SmsMessage;
 
 use function is_string;
 
@@ -302,17 +303,13 @@ class Notification implements Contract
      */
     protected function notifyBySms(Notify $notify): void
     {
-        $sms        = $this->sms;
-        $smsAdapter = $sms->use($notify->getSmsAdapterName());
-        $smsMessage = $notify->getSmsMessageName();
-
         foreach ($this->smsRecipients as $smsRecipient) {
-            $message = $sms->createMessage($smsMessage);
+            $message = new SmsMessage();
 
             $message->setTo($smsRecipient['to']);
             $notify->sms($message);
 
-            $smsAdapter->send($message);
+            $this->sms->send($message);
         }
     }
 }

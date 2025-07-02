@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Contract;
 
-use Valkyrja\Sms\Driver\Contract\Driver;
-use Valkyrja\Sms\Message\Contract\Message;
+use Valkyrja\Sms\Data\Contract\Message;
 
 /**
  * Interface Sms.
@@ -23,18 +22,6 @@ use Valkyrja\Sms\Message\Contract\Message;
  */
 interface Sms
 {
-    /**
-     * Use a specific configuration.
-     */
-    public function use(string|null $name = null): Driver;
-
-    /**
-     * Create a new message.
-     *
-     * @param array<array-key, mixed> $data [optional] The data
-     */
-    public function createMessage(string|null $name = null, array $data = []): Message;
-
     /**
      * Send a message.
      *

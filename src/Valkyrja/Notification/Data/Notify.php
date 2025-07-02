@@ -16,7 +16,7 @@ namespace Valkyrja\Notification\Data;
 use Valkyrja\Broadcast\Message\Contract\Message as BroadcastMessage;
 use Valkyrja\Mail\Message\Contract\Message as MailMessage;
 use Valkyrja\Notification\Data\Contract\Notify as Contract;
-use Valkyrja\Sms\Message\Contract\Message as SMSMessage;
+use Valkyrja\Sms\Data\Contract\Message as SmsMessage;
 
 /**
  * Abstract Class Notify.
@@ -179,7 +179,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
-    public function sms(SMSMessage $message): SMSMessage
+    public function sms(SmsMessage $message): SmsMessage
     {
         return $message;
     }
