@@ -21,7 +21,7 @@ use Valkyrja\Container\Support\Provider;
  *
  * @author Melech Mizrachi
  */
-class Data
+readonly class Data
 {
     /**
      * @param array<class-string, class-string>                   $aliases

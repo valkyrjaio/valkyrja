@@ -26,6 +26,7 @@ use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Routing\Attribute\Command as CommandAttribute;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection as CliCollectionContract;
 use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Data as ContainerData;
 use Valkyrja\Event\Collection\Contract\Collection as EventCollection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as HttpCollectionContract;
 
@@ -68,10 +69,16 @@ class CacheCommand
         $singletons = $containerData->singletons;
         unset($singletons[Config::class]);
 
-        $containerData->singletons = $singletons;
-
         $data = new Data(
-            container: $containerData,
+            container: new ContainerData(
+                aliases: $containerData->aliases,
+                contextServices: $containerData->contextServices,
+                deferred: $containerData->deferred,
+                deferredCallback: $containerData->deferredCallback,
+                services: $containerData->services,
+                singletons: $singletons,
+                providers: $containerData->providers,
+            ),
             event: $eventCollection->getData(),
             cli: $cliCollection->getData(),
             http: $routerCollection->getData(),

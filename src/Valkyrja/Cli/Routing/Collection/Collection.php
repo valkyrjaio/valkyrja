@@ -33,15 +33,9 @@ class Collection implements Contract
      */
     public function getData(): Data
     {
-        $data = new Data();
-
-        $data->commands = [];
-
-        foreach ($this->commands as $id => $route) {
-            $data->commands[$id] = serialize($route);
-        }
-
-        return $data;
+        return new Data(
+            commands: array_map('serialize', $this->commands),
+        );
     }
 
     /**

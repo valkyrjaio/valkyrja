@@ -71,18 +71,12 @@ class Collection implements Contract
      */
     public function getData(): Data
     {
-        $data = new Data();
-
-        $data->routes  = [];
-        $data->static  = $this->static;
-        $data->dynamic = $this->dynamic;
-        $data->named   = $this->named;
-
-        foreach ($this->routes as $id => $route) {
-            $data->routes[$id] = serialize($route);
-        }
-
-        return $data;
+        return new Data(
+            routes: array_map('serialize', $this->routes),
+            static: $this->static,
+            dynamic: $this->dynamic,
+            named: $this->named,
+        );
     }
 
     /**

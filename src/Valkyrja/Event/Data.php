@@ -20,7 +20,7 @@ use Valkyrja\Event\Data\Contract\Listener;
  *
  * @author Melech Mizrachi
  */
-class Data
+readonly class Data
 {
     /**
      * The listeners.

@@ -19,34 +19,23 @@ use Valkyrja\Http\Routing\Data\Contract\Route;
  * Class Data.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-type RequestArray array{CONNECT?: array<string, string>, DELETE?: array<string, string>, GET?: array<string, string>, HEAD?: array<string, string>, OPTIONS?: array<string, string>, PATCH?: array<string, string>, POST?: array<string, string>, PUT?: array<string, string>, TRACE?: array<string, string>}
+ * @phpstan-type RequestArray array{CONNECT?: array<string, string>, DELETE?: array<string, string>, GET?: array<string, string>, HEAD?: array<string, string>, OPTIONS?: array<string, string>, PATCH?: array<string, string>, POST?: array<string, string>, PUT?: array<string, string>, TRACE?: array<string, string>}
  */
-class Data
+readonly class Data
 {
     /**
-     * The flattened routes.
-     *
-     * @var array<string, Route|string>
+     * @param array<string, Route|string> $routes
+     * @param RequestArray                $static
+     * @param RequestArray                $dynamic
+     * @param array<string, string>       $named
      */
-    public array $routes = [];
-
-    /**
-     * The static routes.
-     *
-     * @var array{CONNECT?: array<string, string>, DELETE?: array<string, string>, GET?: array<string, string>, HEAD?: array<string, string>, OPTIONS?: array<string, string>, PATCH?: array<string, string>, POST?: array<string, string>, PUT?: array<string, string>, TRACE?: array<string, string>}
-     */
-    public array $static = [];
-
-    /**
-     * The dynamic routes.
-     *
-     * @var array{CONNECT?: array<string, string>, DELETE?: array<string, string>, GET?: array<string, string>, HEAD?: array<string, string>, OPTIONS?: array<string, string>, PATCH?: array<string, string>, POST?: array<string, string>, PUT?: array<string, string>, TRACE?: array<string, string>}
-     */
-    public array $dynamic = [];
-
-    /**
-     * The named routes.
-     *
-     * @var array<string, string>
-     */
-    public array $named = [];
+    public function __construct(
+        public array $routes = [],
+        public array $static = [],
+        public array $dynamic = [],
+        public array $named = []
+    ) {
+    }
 }

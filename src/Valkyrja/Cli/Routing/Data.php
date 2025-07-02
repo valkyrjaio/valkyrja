@@ -18,7 +18,7 @@ namespace Valkyrja\Cli\Routing;
  *
  * @author Melech Mizrachi
  */
-class Data
+readonly class Data
 {
     /**
      * @param array<string, string> $commands

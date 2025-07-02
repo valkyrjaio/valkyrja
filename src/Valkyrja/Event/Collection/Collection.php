@@ -50,16 +50,10 @@ class Collection implements Contract
      */
     public function getData(): Data
     {
-        $data = new Data();
-
-        $data->events    = $this->events;
-        $data->listeners = [];
-
-        foreach ($this->listeners as $id => $listener) {
-            $data->listeners[$id] = serialize($listener);
-        }
-
-        return $data;
+        return new Data(
+            events: $this->events,
+            listeners: array_map('serialize', $this->listeners),
+        );
     }
 
     /**
@@ -95,7 +89,7 @@ class Collection implements Contract
         $listenerId = $listener->getName();
         $eventId    = $listener->getEventId();
 
-        $this->events[$eventId] ??= [];
+        $this->events[$eventId]              ??= [];
         $this->events[$eventId][$listenerId] = $listenerId;
         $this->listeners[$listenerId]        = $listener;
     }

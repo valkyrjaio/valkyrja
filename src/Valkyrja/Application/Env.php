@@ -13,34 +13,21 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application;
 
-use League\Flysystem\FilesystemAdapter as FlysystemAdapter;
 use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
 use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Support\Component;
-use Valkyrja\Asset\Adapter\Contract\Adapter as AssetAdapter;
 use Valkyrja\Auth\Adapter\Contract\Adapter as AuthAdapter;
 use Valkyrja\Auth\Entity\Contract\User as AuthUser;
 use Valkyrja\Auth\Gate\Contract\Gate as AuthGate;
 use Valkyrja\Auth\Policy\Contract\Policy as AuthPolicy;
 use Valkyrja\Auth\Repository\Contract\Repository as AuthRepository;
-use Valkyrja\Broadcast\Adapter\Contract\Adapter as BroadcastAdapter;
-use Valkyrja\Broadcast\Config\Configurations as BroadcastConfigurations;
-use Valkyrja\Broadcast\Config\MessageConfigurations as BroadcastMessageConfigurations;
-use Valkyrja\Broadcast\Driver\Contract\Driver as BroadcastDriver;
-use Valkyrja\Broadcast\Message\Contract\Message as BroadcastMessage;
-use Valkyrja\Cache\Adapter\Contract\Adapter as CacheAdapter;
-use Valkyrja\Cache\Config\Configurations as CacheConfigurations;
-use Valkyrja\Cache\Driver\Contract\Driver as CacheDriver;
 use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Filesystem\Adapter\Contract\Adapter as FilesystemAdapter;
-use Valkyrja\Filesystem\Config\Configurations as FilesystemConfigurations;
-use Valkyrja\Filesystem\Driver\Contract\Driver as FilesystemDriver;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware as HttpRequestReceivedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware as HttpRouteDispatchedMiddleware;
@@ -49,14 +36,8 @@ use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware as HttpRouteNotM
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware as HttpSendingResponseMiddleware;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware as HttpTerminatedMiddleware;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware as HttpThrowableCaughtMiddleware;
-use Valkyrja\Jwt\Adapter\Contract\Adapter as JwtAdapter;
-use Valkyrja\Jwt\Config\Configurations as JwtConfiguration;
-use Valkyrja\Jwt\Driver\Contract\Driver as JwtDriver;
-use Valkyrja\Mail\Adapter\Contract\Adapter as MailAdapter;
-use Valkyrja\Mail\Config\Configurations as MailConfigurations;
-use Valkyrja\Mail\Config\MessageConfigurations as MailMessageConfigurations;
-use Valkyrja\Mail\Driver\Contract\Driver as MailDriver;
-use Valkyrja\Mail\Message\Contract\Message as MailMessage;
+use Valkyrja\Jwt\Enum\Algorithm;
+use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Orm\Adapter\Contract\Adapter as OrmAdapter;
 use Valkyrja\Orm\Config\Connections as OrmConnections;
 use Valkyrja\Orm\Driver\Contract\Driver as OrmDriver;
@@ -128,8 +109,6 @@ class Env
 
     /** @var string|null */
     public const string|null ASSET_DEFAULT_BUNDLE = null;
-    /** @var class-string<AssetAdapter>|null */
-    public const string|null ASSET_DFAULT_ADAPTER_CLASS = null;
     /** @var string|null */
     public const string|null ASSET_DFAULT_HOST = null;
     /** @var string|null */
@@ -179,22 +158,6 @@ class Env
      ************************************************************/
 
     /** @var string|null */
-    public const string|null BROADCAST_DEFAULT_CONFIGURATION = null;
-    /** @var callable():BroadcastConfigurations|null */
-    public const array|null BROADCAST_CONFIGURATIONS = null;
-    /** @var string|null */
-    public const string|null BROADCAST_DEFAULT_MESSAGE_CONFIGURATION = null;
-    /** @var callable():BroadcastMessageConfigurations|null */
-    public const array|null BROADCAST_MESSAGE_CONFIGURATIONS = null;
-    /** @var string|null */
-    public const string|null BROADCAST_DEFAULT_MESSAGE_CHANNEL = null;
-    /** @var class-string<BroadcastMessage>|null */
-    public const string|null BROADCAST_DEFAULT_MESSAGE_CLASS = null;
-    /** @var class-string<BroadcastAdapter>|null */
-    public const string|null BROADCAST_PUSHER_ADAPTER_CLASS = null;
-    /** @var class-string<BroadcastDriver>|null */
-    public const string|null BROADCAST_PUSHER_DRIVER_CLASS = null;
-    /** @var string|null */
     public const string|null BROADCAST_PUSHER_KEY = null;
     /** @var string|null */
     public const string|null BROADCAST_PUSHER_SECRET = null;
@@ -204,16 +167,10 @@ class Env
     public const string|null BROADCAST_PUSHER_CLUSTER = null;
     /** @var bool|null */
     public const bool|null BROADCAST_PUSHER_USE_TLS = null;
-    /** @var class-string<BroadcastAdapter>|null */
-    public const string|null BROADCAST_LOG_ADAPTER_CLASS = null;
-    /** @var class-string<BroadcastDriver>|null */
-    public const string|null BROADCAST_LOG_DRIVER_CLASS = null;
     /** @var string|null */
     public const string|null BROADCAST_LOG_LOG_NAME = null;
-    /** @var class-string<BroadcastAdapter>|null */
-    public const string|null BROADCAST_NULL_ADAPTER_CLASS = null;
-    /** @var class-string<BroadcastDriver>|null */
-    public const string|null BROADCAST_NULL_DRIVER_CLASS = null;
+    /** @var class-string<Logger> */
+    public const string BROADCAST_LOG_LOGGER = Logger::class;
 
     /************************************************************
      *
@@ -222,31 +179,15 @@ class Env
      ************************************************************/
 
     /** @var string|null */
-    public const string|null CACHE_DEFAULT_CONFIGURATION = null;
-    /** @var callable():CacheConfigurations|null */
-    public const array|null CACHE_CONFIGURATIONS = null;
-    /** @var class-string<CacheAdapter>|null */
-    public const string|null CACHE_REDIS_ADAPTER_CLASS = null;
-    /** @var class-string<CacheDriver>|null */
-    public const string|null CACHE_REDIS_DRIVER_CLASS = null;
-    /** @var string|null */
     public const string|null CACHE_REDIS_HOST = null;
     /** @var int|null */
     public const int|null CACHE_REDIS_PORT = null;
-    /** @var string|null */
-    public const string|null CACHE_REDIS_PREFIX = null;
-    /** @var class-string<CacheAdapter>|null */
-    public const string|null CACHE_LOG_ADAPTER_CLASS = null;
-    /** @var class-string<CacheDriver>|null */
-    public const string|null CACHE_LOG_DRIVER_CLASS = null;
-    /** @var string|null */
-    public const string|null CACHE_LOG_PREFIX = null;
-    /** @var string|null */
-    public const string|null CACHE_LOG_LOGGER = null;
-    /** @var class-string<CacheAdapter>|null */
-    public const string|null CACHE_NULL_ADAPTER_CLASS = null;
-    /** @var class-string<CacheDriver>|null */
-    public const string|null CACHE_NULL_DRIVER_CLASS = null;
+    /** @var string */
+    public const string CACHE_REDIS_PREFIX = '';
+    /** @var string */
+    public const string CACHE_LOG_PREFIX = '';
+    /** @var class-string<Logger> */
+    public const string CACHE_LOG_LOGGER = Logger::class;
 
     /************************************************************
      *
@@ -287,47 +228,23 @@ class Env
      ************************************************************/
 
     /** @var string|null */
-    public const string|null FILESYSTEM_DEFAULT_CONFIGURATION = null;
-    /** @var callable():FilesystemConfigurations|null */
-    public const array|null FILESYSTEM_CONFIGURATIONS = null;
-    /** @var class-string<FilesystemAdapter>|null */
-    public const string|null FILESYSTEM_FLYSYSTEM_LOCAL_ADAPTER_CLASS = null;
-    /** @var class-string<FilesystemDriver>|null */
-    public const string|null FILESYSTEM_FLYSYSTEM_LOCAL_DRIVER_CLASS = null;
-    /** @var class-string<FlysystemAdapter>|null */
-    public const string|null FILESYSTEM_FLYSYSTEM_LOCAL_FLYSYSTEM_ADAPTER = null;
-    /** @var string|null */
     public const string|null FILESYSTEM_FLYSYSTEM_LOCAL_DIR = null;
-    /** @var class-string<FilesystemAdapter>|null */
-    public const string|null FILESYSTEM_IN_MEMORY_ADAPTER_CLASS = null;
-    /** @var class-string<FilesystemDriver>|null */
-    public const string|null FILESYSTEM_IN_MEMORY_DRIVER_CLASS = null;
     /** @var string|null */
     public const string|null FILESYSTEM_IN_MEMORY_DIR = null;
-    /** @var class-string<FilesystemAdapter>|null */
-    public const string|null FILESYSTEM_FLYSYSTEM_S3_ADAPTER_CLASS = null;
-    /** @var class-string<FilesystemDriver>|null */
-    public const string|null FILESYSTEM_FLYSYSTEM_S3_DRIVER_CLASS = null;
-    /** @var class-string<FlysystemAdapter>|null */
-    public const string|null FILESYSTEM_FLYSYSTEM_S3_FLYSYSTEM_ADAPTER = null;
-    /** @var string|null */
-    public const string|null FILESYSTEM_FLYSYSTEM_S3_KEY = null;
-    /** @var string|null */
-    public const string|null FILESYSTEM_FLYSYSTEM_S3_SECRET = null;
-    /** @var string|null */
-    public const string|null FILESYSTEM_FLYSYSTEM_S3_REGION = null;
-    /** @var string|null */
-    public const string|null FILESYSTEM_FLYSYSTEM_S3_VERSION = null;
-    /** @var string|null */
-    public const string|null FILESYSTEM_FLYSYSTEM_S3_BUCKET = null;
-    /** @var string|null */
-    public const string|null FILESYSTEM_FLYSYSTEM_S3_PREFIX = null;
-    /** @var array<string, mixed>|null */
-    public const array|null FILESYSTEM_FLYSYSTEM_S3_OPTIONS = null;
-    /** @var class-string<FilesystemAdapter>|null */
-    public const string|null FILESYSTEM_NULL_ADAPTER_CLASS = null;
-    /** @var class-string<FilesystemDriver>|null */
-    public const string|null FILESYSTEM_NULL_DRIVER_CLASS = null;
+    /** @var non-empty-string */
+    public const string FILESYSTEM_FLYSYSTEM_S3_KEY = 's3-key';
+    /** @var non-empty-string */
+    public const string FILESYSTEM_FLYSYSTEM_S3_SECRET = 's3-secret';
+    /** @var non-empty-string */
+    public const string FILESYSTEM_FLYSYSTEM_S3_REGION = 's3-region';
+    /** @var non-empty-string */
+    public const string FILESYSTEM_FLYSYSTEM_S3_VERSION = 's3-version';
+    /** @var non-empty-string */
+    public const string FILESYSTEM_FLYSYSTEM_S3_BUCKET = 's3-bucket';
+    /** @var string */
+    public const string FILESYSTEM_FLYSYSTEM_S3_PREFIX = '';
+    /** @var array<string, mixed> */
+    public const array FILESYSTEM_FLYSYSTEM_S3_OPTIONS = [];
 
     /************************************************************
      *
@@ -356,48 +273,18 @@ class Env
      *
      ************************************************************/
 
-    /** @var string|null */
-    public const string|null JWT_DEFAULT_CONFIGURATION = null;
-    /** @var callable():JwtConfiguration|null */
-    public const array|null JWT_CONFIGURATIONS = null;
-    /** @var class-string<JwtAdapter>|null */
-    public const string|null JWT_HS_ADAPTER_CLASS = null;
-    /** @var class-string<JwtDriver>|null */
-    public const string|null JWT_HS_DRIVER_CLASS = null;
-    /** @var string|null */
-    public const string|null JWT_HS_ALGORITHM = null;
-    /** @var string|null */
-    public const string|null JWT_HS_KEY = null;
-    /** @var string|null */
-    public const string|null JWT_HS_DRIVER = null;
-    /** @var class-string<JwtAdapter>|null */
-    public const string|null JWT_RS_ADAPTER_CLASS = null;
-    /** @var class-string<JwtDriver>|null */
-    public const string|null JWT_RS_DRIVER_CLASS = null;
-    /** @var string|null */
-    public const string|null JWT_RS_ALGORITHM = null;
-    /** @var string|null */
-    public const string|null JWT_RS_PRIVATE_KEY = null;
-    /** @var string|null */
-    public const string|null JWT_RS_PUBLIC_KEY = null;
-    /** @var string|null */
-    public const string|null JWT_RS_KEY_PATH = null;
-    /** @var string|null */
-    public const string|null JWT_RS_PASSPHRASE = null;
-    /** @var class-string<JwtAdapter>|null */
-    public const string|null JWT_EDDSA_ADAPTER_CLASS = null;
-    /** @var class-string<JwtDriver>|null */
-    public const string|null JWT_EDDSA_DRIVER_CLASS = null;
-    /** @var string|null */
-    public const string|null JWT_EDDSA_ALGORITHM = null;
-    /** @var string|null */
-    public const string|null JWT_EDDSA_PRIVATE_KEY = null;
-    /** @var string|null */
-    public const string|null JWT_EDDSA_PUBLIC_KEY = null;
-    /** @var class-string<JwtAdapter>|null */
-    public const string|null JWT_NULL_ADAPTER_CLASS = null;
-    /** @var class-string<JwtDriver>|null */
-    public const string|null JWT_NULL_DRIVER_CLASS = null;
+    /** @var Algorithm */
+    public const Algorithm JWT_ALGORITHM = Algorithm::HS256;
+    /** @var non-empty-string */
+    public const string JWT_HS_KEY = 'key';
+    /** @var non-empty-string */
+    public const string JWT_RS_PRIVATE_KEY = 'private-key';
+    /** @var non-empty-string */
+    public const string JWT_RS_PUBLIC_KEY = 'public-key';
+    /** @var non-empty-string */
+    public const string JWT_EDDSA_PRIVATE_KEY = 'private-key';
+    /** @var non-empty-string */
+    public const string JWT_EDDSA_PUBLIC_KEY = 'public-key';
 
     /************************************************************
      *
@@ -405,50 +292,20 @@ class Env
      *
      ************************************************************/
 
-    /** @var string|null */
-    public const string|null MAIL_DEFAULT_CONFIGURATION = null;
-    /** @var callable():MailConfigurations|null */
-    public const array|null MAIL_CONFIGURATIONS = null;
-    /** @var string|null */
-    public const string|null MAIL_DEFAULT_MESSAGE_CONFIGURATION = null;
-    /** @var callable():MailMessageConfigurations|null */
-    public const array|null MAIL_MESSAGE_CONFIGURATIONS = null;
-    /** @var string|null */
-    public const string|null MAIL_DEFAULT_MESSAGE_FROM = null;
-    /** @var class-string<MailMessage>|null */
-    public const string|null MAIL_DEFAULT_MESSAGE_CLASS = null;
-    /** @var class-string<MailAdapter>|null */
-    public const string|null MAIL_MAILGUN_ADAPTER_CLASS = null;
-    /** @var class-string<MailDriver>|null */
-    public const string|null MAIL_MAILGUN_DRIVER_CLASS = null;
-    /** @var string|null */
-    public const string|null MAIL_MAILGUN_API_KEY = null;
-    /** @var string|null */
-    public const string|null MAIL_MAILGUN_DOMAIN = null;
-    /** @var class-string<MailAdapter>|null */
-    public const string|null MAIL_PHP_MAILER_ADAPTER_CLASS = null;
-    /** @var class-string<MailDriver>|null */
-    public const string|null MAIL_PHP_MAILER_DRIVER_CLASS = null;
-    /** @var string|null */
-    public const string|null MAIL_PHP_MAILER_HOST = null;
-    /** @var int|null */
-    public const int|null MAIL_PHP_MAILER_PORT = null;
-    /** @var string|null */
-    public const string|null MAIL_PHP_MAILER_USERNAME = null;
-    /** @var string|null */
-    public const string|null MAIL_PHP_MAILER_PASSWORD = null;
-    /** @var string|null */
-    public const string|null MAIL_PHP_MAILER_ENCRYPTION = null;
-    /** @var string|null */
-    public const string|null MAIL_LOG_LOGGER = null;
-    /** @var class-string<MailAdapter>|null */
-    public const string|null MAIL_LOG_ADAPTER_CLASS = null;
-    /** @var class-string<MailDriver>|null */
-    public const string|null MAIL_LOG_DRIVER_CLASS = null;
-    /** @var class-string<MailAdapter>|null */
-    public const string|null MAIL_NULL_ADAPTER_CLASS = null;
-    /** @var class-string<MailDriver>|null */
-    public const string|null MAIL_NULL_DRIVER_CLASS = null;
+    /** @var non-empty-string */
+    public const string MAIL_MAILGUN_API_KEY = 'api-key';
+    /** @var non-empty-string */
+    public const string MAIL_MAILGUN_DOMAIN = 'domain';
+    /** @var non-empty-string */
+    public const string MAIL_PHP_MAILER_HOST = 'host';
+    /** @var int */
+    public const int MAIL_PHP_MAILER_PORT = 25;
+    /** @var non-empty-string */
+    public const string MAIL_PHP_MAILER_USERNAME = 'username';
+    /** @var non-empty-string */
+    public const string MAIL_PHP_MAILER_PASSWORD = 'password';
+    /** @var non-empty-string */
+    public const string MAIL_PHP_MAILER_ENCRYPTION = 'ssl';
 
     /************************************************************
      *

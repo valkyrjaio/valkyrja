@@ -23,7 +23,7 @@ use Valkyrja\Http\Routing\Data as HttpData;
  *
  * @author Melech Mizrachi
  */
-class Data
+readonly class Data
 {
     public function __construct(
         public ContainerData $container = new ContainerData(),
