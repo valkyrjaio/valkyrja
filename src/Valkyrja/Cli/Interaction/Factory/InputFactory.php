@@ -34,6 +34,8 @@ abstract class InputFactory
     ): Input {
         $args ??= $_SERVER['argv'] ?? [];
 
+        /** @var non-empty-string[] $args */
+
         $applicationName = 'valkyrja';
         $commandName     = 'list';
         $arguments       = [];

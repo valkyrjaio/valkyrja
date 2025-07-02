@@ -16,10 +16,11 @@ namespace Valkyrja\View\Provider;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Loader\FilesystemLoader;
-use Valkyrja\Application\Config\ValkyrjaConfig;
+use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
+use Valkyrja\View\Config;
 use Valkyrja\View\Config\OrkaConfiguration;
 use Valkyrja\View\Config\PhpConfiguration;
 use Valkyrja\View\Config\TwigConfiguration;
@@ -54,6 +55,7 @@ final class ServiceProvider extends Provider
             TwigEngine::class      => [self::class, 'publishTwigEngine'],
             Environment::class     => [self::class, 'publishTwigEnvironment'],
             ResponseFactory::class => [self::class, 'publishResponseFactory'],
+            Config::class          => [self::class, 'publishConfig'],
         ];
     }
 
@@ -71,7 +73,21 @@ final class ServiceProvider extends Provider
             TwigEngine::class,
             Environment::class,
             ResponseFactory::class,
+            Config::class,
         ];
+    }
+
+    /**
+     * Publish the config service.
+     */
+    public static function publishConfig(Container $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+
+        $container->setSingleton(
+            Config::class,
+            Config::fromEnv($env::class)
+        );
     }
 
     /**
@@ -79,14 +95,14 @@ final class ServiceProvider extends Provider
      */
     public static function publishView(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             View::class,
             new \Valkyrja\View\View(
                 $container,
                 $container->getSingleton(Factory::class),
-                $config->view
+                $config
             )
         );
     }
@@ -213,11 +229,11 @@ final class ServiceProvider extends Provider
      */
     public static function createTwigEnvironment(Container $container, TwigConfiguration $config): Environment
     {
-        $globalConfig = $container->getSingleton(ValkyrjaConfig::class);
-        $debug        = $globalConfig->app->debugMode;
-        $paths        = $config->paths;
-        $extensions   = $config->extensions;
-        $compiledDir  = $config->compiledDir;
+        $env         = $container->getSingleton(Env::class);
+        $debug       = $env::APP_DEBUG_MODE;
+        $paths       = $config->paths;
+        $extensions  = $config->extensions;
+        $compiledDir = $config->compiledDir;
 
         // Get the twig filesystem loader
         $loader = new FilesystemLoader();

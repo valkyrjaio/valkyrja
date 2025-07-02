@@ -30,7 +30,7 @@ class EnvClass extends AppEnv
      ************************************************************/
 
     /** @var bool|null */
-    public const bool|null APP_DEBUG_MODE = false;
+    public const bool APP_DEBUG_MODE = false;
 
     /************************************************************
      *
@@ -38,8 +38,10 @@ class EnvClass extends AppEnv
      *
      ************************************************************/
 
-    /** @var string|null */
-    public const string|null APP_CACHE_FILE_PATH = __DIR__ . '/storage/cache.php';
+    /** @var string */
+    public const string APP_DIR = __DIR__;
+    /** @var string */
+    public const string APP_CACHE_FILE_PATH = __DIR__ . '/storage/cache.php';
 
     /************************************************************
      *
@@ -48,7 +50,7 @@ class EnvClass extends AppEnv
      ************************************************************/
 
     /** @var bool|null */
-    public const bool|null CLI_INTERACTION_IS_QUIET = true;
+    public const bool CLI_INTERACTION_IS_QUIET = true;
 
     /************************************************************
      *

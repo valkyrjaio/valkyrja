@@ -82,12 +82,12 @@ class AttributeCollector implements Contract
     }
 
     /**
-     * @template Attribute of ServiceAttribute|Alias|ContextService|ContextAlias
+     * @template T of ServiceAttribute|Alias|ContextService|ContextAlias
      *
-     * @param class-string<Attribute> $attributeClass The attribute class name
-     * @param class-string            ...$classes     The classes
+     * @param class-string<T> $attributeClass The attribute class name
+     * @param class-string    ...$classes     The classes
      *
-     * @return Attribute[]
+     * @return T[]
      */
     protected function getAttributesByType(string $attributeClass, string ...$classes): array
     {
@@ -95,7 +95,7 @@ class AttributeCollector implements Contract
 
         // Iterate through all the classes
         foreach ($classes as $class) {
-            /** @var Attribute[] $attributes */
+            /** @var T[] $attributes */
             $attributes = [
                 ...$attributes,
                 ...$this->attributes->forClassAndMembers($class, $attributeClass),

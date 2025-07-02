@@ -38,12 +38,16 @@ class CacheResponseMiddlewareTest extends TestCase
 {
     public function testThroughHandler(): void
     {
-        $filesystem = $this->getFilesystem();
+        $container  = new Container();
+        $filesystem = $this->getFilesystem($container);
 
-        $beforeHandler = new RequestReceivedHandler();
-        $beforeHandler->add(static fn () => new CacheResponseMiddleware($filesystem));
-        $terminatedHandler = new TerminatedHandler();
-        $terminatedHandler->add(static fn () => new CacheResponseMiddleware($filesystem));
+        $container->setSingleton(\Valkyrja\Filesystem\Contract\Filesystem::class, $filesystem);
+        $container->setCallable(CacheResponseMiddleware::class, static fn () => new CacheResponseMiddleware($filesystem));
+
+        $beforeHandler = new RequestReceivedHandler($container);
+        $beforeHandler->add(CacheResponseMiddleware::class);
+        $terminatedHandler = new TerminatedHandler($container);
+        $terminatedHandler->add(CacheResponseMiddleware::class);
 
         $request  = new ServerRequest();
         $response = new EmptyResponse();
@@ -55,8 +59,8 @@ class CacheResponseMiddlewareTest extends TestCase
         // Ensure the initial request doesn't get any cached response
         self::assertInstanceOf(Request::class, $beforeResponse);
 
-        $beforeHandler = new RequestReceivedHandler();
-        $beforeHandler->add(static fn () => new CacheResponseMiddleware($filesystem));
+        $beforeHandler = new RequestReceivedHandler($container);
+        $beforeHandler->add(CacheResponseMiddleware::class);
 
         $beforeResponseAfterTerminated = $beforeHandler->requestReceived($request);
 
@@ -66,21 +70,21 @@ class CacheResponseMiddlewareTest extends TestCase
         // Write a bad cache
         $filesystem->write($this->getCachePathForRequest($request), 'bad-cache-test');
 
-        $beforeHandler = new RequestReceivedHandler();
-        $beforeHandler->add(static fn () => new CacheResponseMiddleware($filesystem));
+        $beforeHandler = new RequestReceivedHandler($container);
+        $beforeHandler->add(CacheResponseMiddleware::class);
 
         $beforeResponseWithBadCache = $beforeHandler->requestReceived($request);
 
         // Test that a subsequent request gets a request when the cached response is not valid
         self::assertInstanceOf(Request::class, $beforeResponseWithBadCache);
 
-        $terminatedHandler = new TerminatedHandler();
-        $terminatedHandler->add(static fn () => new CacheResponseMiddleware($filesystem));
+        $terminatedHandler = new TerminatedHandler($container);
+        $terminatedHandler->add(CacheResponseMiddleware::class);
 
         $terminatedHandler->terminated($request, $response);
 
-        $beforeHandler = new RequestReceivedHandler();
-        $beforeHandler->add(static fn () => new CacheResponseMiddleware($filesystem));
+        $beforeHandler = new RequestReceivedHandler($container);
+        $beforeHandler->add(CacheResponseMiddleware::class);
 
         $beforeResponseAfterTerminatedAfterBadCache = $beforeHandler->requestReceived($request);
 
@@ -90,8 +94,8 @@ class CacheResponseMiddlewareTest extends TestCase
         // Freeze time to a time much later than ttl
         Time::freeze(Time::get() + 1801);
 
-        $beforeHandler = new RequestReceivedHandler();
-        $beforeHandler->add(static fn () => new CacheResponseMiddleware($filesystem));
+        $beforeHandler = new RequestReceivedHandler($container);
+        $beforeHandler->add(CacheResponseMiddleware::class);
 
         $beforeResponseAfterTtlExpired = $beforeHandler->requestReceived($request);
 
@@ -106,7 +110,8 @@ class CacheResponseMiddlewareTest extends TestCase
 
     public function testDirectly(): void
     {
-        $filesystem        = $this->getFilesystem();
+        $container         = new Container();
+        $filesystem        = $this->getFilesystem($container);
         $middleware        = new CacheResponseMiddleware($filesystem);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
@@ -159,9 +164,8 @@ class CacheResponseMiddlewareTest extends TestCase
         $filesystem->deleteDir(Directory::cachePath('response/'));
     }
 
-    protected function getFilesystem(): Filesystem
+    protected function getFilesystem(Container $container): Filesystem
     {
-        $container = new Container();
         $container->setSingleton(InMemoryAdapter::class, $adapter = new InMemoryAdapter());
         $container->setSingleton(Driver::class, new Driver($adapter));
 

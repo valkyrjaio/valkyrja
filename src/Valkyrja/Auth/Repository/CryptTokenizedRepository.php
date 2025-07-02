@@ -18,8 +18,7 @@ use Valkyrja\Auth\Config;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\CryptTokenizedRepository as Contract;
-use Valkyrja\Crypt\Contract\Crypt as CryptManager;
-use Valkyrja\Crypt\Driver\Contract\Driver as Crypt;
+use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Crypt\Exception\CryptException;
 use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Session\Contract\Session;
@@ -34,27 +33,18 @@ use function is_string;
 class CryptTokenizedRepository extends TokenizedRepository implements Contract
 {
     /**
-     * The crypt.
-     *
-     * @var Crypt
-     */
-    protected Crypt $crypt;
-
-    /**
      * CryptTokenizedRepository constructor.
      *
      * @param class-string<User> $user The user class
      */
     public function __construct(
         Adapter $adapter,
-        CryptManager $crypt,
+        protected Crypt $crypt,
         Session $session,
         Config $config,
         string $user
     ) {
         parent::__construct($adapter, $session, $config, $user);
-
-        $this->crypt = $crypt->use();
     }
 
     /**

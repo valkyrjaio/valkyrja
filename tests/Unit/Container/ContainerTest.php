@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container;
 
 use AssertionError;
-use RuntimeException;
-use Valkyrja\Container\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Dispatcher\Provider\ServiceProvider;
@@ -23,8 +21,6 @@ use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Container\SingletonClass;
 use Valkyrja\Tests\Trait\ExpectErrorTrait;
 use Valkyrja\Tests\Unit\TestCase;
-
-use function array_map;
 
 /**
  * Test the container service.
@@ -43,21 +39,13 @@ class ContainerTest extends TestCase
     protected Container $container;
 
     /**
-     * The config to test with.
-     *
-     * @var Config
-     */
-    protected Config $config;
-
-    /**
      * @inheritDoc
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->config    = $config = new Config();
-        $this->container = new Container($config);
+        $this->container = new Container();
     }
 
     public function testInvalidBind(): void
@@ -145,19 +133,6 @@ class ContainerTest extends TestCase
         self::assertSame($service, $container->getSingleton($id));
     }
 
-    public function testOffsetGetSetAndExists(): void
-    {
-        $container = $this->container;
-        $id        = ServiceClass::class;
-
-        $container[$id] = $id;
-
-        self::assertTrue(isset($container[$id]));
-        self::assertInstanceOf($id, $service = $container[$id]);
-        // A bound service should return a new instance each time it is gotten
-        self::assertNotSame($service, $container[$id]);
-    }
-
     public function testClosure(): void
     {
         $container = $this->container;
@@ -186,30 +161,11 @@ class ContainerTest extends TestCase
         self::assertNotSame($service, $container->getCallable($id));
     }
 
-    public function testOffsetUnset(): void
-    {
-        $container = $this->container;
-        $id        = ServiceClass::class;
-
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage("Cannot remove service with name $id from the container.");
-
-        $container[$id] = $id;
-
-        unset($container[$id]);
-    }
-
     public function testProvided(): void
     {
         $container = $this->container;
 
-        $this->config->providers[] = ServiceProvider::class;
-
-        array_map(
-            /** @param class-string $provider */
-            static fn (string $provider) => $container->register($provider),
-            $this->config->providers
-        );
+        $container->register(ServiceProvider::class);
 
         self::assertTrue($container->has(Dispatcher::class));
     }

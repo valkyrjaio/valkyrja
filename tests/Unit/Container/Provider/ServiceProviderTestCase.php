@@ -14,12 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container\Provider;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Application\Env;
-use Valkyrja\Application\Valkyrja;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Tests\ConfigClass;
 use Valkyrja\Tests\Unit\TestCase;
 
 use function array_map;
@@ -74,16 +71,7 @@ class ServiceProviderTestCase extends TestCase
 
         $this->container = new Container();
 
-        $app = new Valkyrja(
-            env: Env::class,
-            config: ConfigClass::class,
-        );
-
-        $env = Env::class;
-
-        $config = $app->getConfig();
-
-        $this->container->setSingleton(ValkyrjaConfig::class, $config);
+        $this->container->setSingleton(Env::class, new Env());
     }
 
     /**

@@ -13,28 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction;
 
-use Valkyrja\Cli\Interaction\Constant\ConfigName;
-use Valkyrja\Cli\Interaction\Constant\EnvName;
-use Valkyrja\Support\Config as ParentConfig;
-
 /**
  * Class Config.
  *
  * @author Melech Mizrachi
  */
-class Config extends ParentConfig
+class Config
 {
-    /**
-     * @inheritDoc
-     *
-     * @var array<string, string>
-     */
-    protected static array $envNames = [
-        ConfigName::IS_QUIET       => EnvName::IS_QUIET,
-        ConfigName::IS_INTERACTIVE => EnvName::IS_INTERACTIVE,
-        ConfigName::IS_SILENT      => EnvName::IS_SILENT,
-    ];
-
     public function __construct(
         public bool $isQuiet = false,
         public bool $isInteractive = true,

@@ -69,8 +69,46 @@ class Container implements Contract
      * Container constructor.
      */
     public function __construct(
-        protected Config $config = new Config()
+        protected Data $data = new Data()
     ) {
+        $this->aliases          = $data->aliases;
+        $this->deferred         = $data->deferred;
+        $this->deferredCallback = $data->deferredCallback;
+        $this->services         = $data->services;
+        $this->singletons       = $data->singletons;
+        $this->registered       = [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getData(): Data
+    {
+        return new Data(
+            aliases: $this->aliases,
+            deferred: $this->deferred,
+            deferredCallback: $this->deferredCallback,
+            services: $this->services,
+            singletons: $this->singletons,
+            providers: array_filter($this->providers, static fn (string $provider): bool => ! $provider::deferred()),
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setFromData(Data $data): void
+    {
+        $this->aliases          = array_merge($this->aliases, $data->aliases);
+        $this->deferred         = array_merge($this->deferred, $data->deferred);
+        $this->deferredCallback = array_merge($this->deferredCallback, $data->deferredCallback);
+        $this->services         = array_merge($this->services, $data->services);
+        $this->singletons       = array_merge($this->singletons, $data->singletons);
+
+        array_map(
+            [$this, 'register'],
+            $data->providers
+        );
     }
 
     /**
@@ -104,7 +142,6 @@ class Container implements Contract
         $id = $this->getServiceIdInternal($id);
 
         /** @var class-string<Service> $id */
-
         $this->services[$id] = $service;
 
         return $this;
@@ -133,11 +170,11 @@ class Container implements Contract
      */
     public function bindSingleton(string $id, string $singleton): static
     {
-        $id = $this->getServiceIdInternal($id);
+        $internalId = $this->getServiceIdInternal($id);
 
-        $this->singletons[$id] = $singleton;
+        $this->singletons[$internalId] = $singleton;
 
-        $this->bind($singleton, $singleton);
+        $this->bind($id, $singleton);
 
         return $this;
     }
@@ -425,8 +462,16 @@ class Container implements Contract
      */
     protected function getSingletonWithoutChecks(string $id): object
     {
-        return $this->instances[$id]
-            ?? throw new InvalidArgumentException("Provided $id does not exist");
+        if (isset($this->instances[$id])) {
+            return $this->instances[$id];
+        }
+
+        if (isset($this->services[$id])) {
+            /** @var class-string<Service> $id */
+            return $this->instances[$id] = $this->getServiceWithoutChecks($id);
+        }
+
+        throw new InvalidArgumentException("Provided $id does not exist");
     }
 
     /**

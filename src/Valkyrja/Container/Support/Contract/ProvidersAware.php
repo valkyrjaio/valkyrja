@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Support\Contract;
 
+use Valkyrja\Container\Support\Provider;
+
 /**
  * Interface ProvidersAware.
  *
@@ -23,8 +25,8 @@ interface ProvidersAware
     /**
      * Register a provider.
      *
-     * @param class-string $provider The provider
-     * @param bool         $force    [optional] Whether to force regardless of deferred status
+     * @param class-string<Provider> $provider The provider
+     * @param bool                   $force    [optional] Whether to force regardless of deferred status
      *
      * @return void
      */
@@ -51,7 +53,7 @@ interface ProvidersAware
     /**
      * Determine whether a provider has been registered.
      *
-     * @param class-string $provider The provider
+     * @param class-string<Provider> $provider The provider
      *
      * @return bool
      */

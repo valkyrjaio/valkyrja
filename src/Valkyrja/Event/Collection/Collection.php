@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Collection;
 
 use Valkyrja\Event\Collection\Contract\Collection as Contract;
+use Valkyrja\Event\Data;
 use Valkyrja\Event\Data\Contract\Listener;
 use Valkyrja\Event\Data\Listener as Model;
 use Valkyrja\Event\Exception\InvalidArgumentException;
@@ -43,6 +44,32 @@ class Collection implements Contract
      * @var array<string, Listener|string>
      */
     protected array $listeners = [];
+
+    /**
+     * @inheritDoc
+     */
+    public function getData(): Data
+    {
+        $data = new Data();
+
+        $data->events    = $this->events;
+        $data->listeners = [];
+
+        foreach ($this->listeners as $id => $listener) {
+            $data->listeners[$id] = serialize($listener);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setFromData(Data $data): void
+    {
+        $this->events    = $data->events;
+        $this->listeners = $data->listeners;
+    }
 
     /**
      * @inheritDoc

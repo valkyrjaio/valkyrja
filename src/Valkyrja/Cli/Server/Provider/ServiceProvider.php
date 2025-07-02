@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Server\Provider;
 
-use Valkyrja\Application\Config\ValkyrjaConfig;
+use Valkyrja\Cli\Interaction\Config;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
@@ -58,7 +58,7 @@ final class ServiceProvider extends Provider
      */
     public static function publishInputHandler(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             InputHandler::class,
@@ -68,7 +68,7 @@ final class ServiceProvider extends Provider
                 inputReceivedHandler: $container->getSingleton(InputReceivedHandler::class),
                 throwableCaughtHandler: $container->getSingleton(ThrowableCaughtHandler::class),
                 exitedHandler: $container->getSingleton(ExitedHandler::class),
-                interactionConfig: $config->cli->interaction
+                interactionConfig: $config
             ),
         );
     }

@@ -13,16 +13,17 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Provider;
 
-use Valkyrja\Application\Config\ValkyrjaConfig;
+use Valkyrja\Application\Config;
 use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
-use Valkyrja\Event\Collection\CacheableCollection as EventCollection;
+use Valkyrja\Event\Collection\Collection as EventCollection;
 use Valkyrja\Event\Collection\Contract\Collection;
 use Valkyrja\Event\Collector\AttributeCollector;
 use Valkyrja\Event\Collector\Contract\Collector;
 use Valkyrja\Event\Contract\Dispatcher;
+use Valkyrja\Event\Data;
 use Valkyrja\Event\Dispatcher as EventDispatcher;
 use Valkyrja\Reflection\Contract\Reflection;
 
@@ -90,16 +91,29 @@ final class ServiceProvider extends Provider
      */
     public static function publishCollection(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
-
         $container->setSingleton(
             Collection::class,
-            $collection = new EventCollection(
-                $container->getSingleton(Container::class),
-                $config->event
-            )
+            $collection = new EventCollection()
         );
 
-        $collection->setup();
+        if ($container->isSingleton(Data::class)) {
+            $data = $container->getSingleton(Data::class);
+
+            $collection->setFromData($data);
+        }
+
+        if ($container->isSingleton(Config::class)) {
+            $config = $container->getSingleton(Config::class);
+
+            /** @var Collector $listenerAttributes */
+            $listenerAttributes = $container->getSingleton(Collector::class);
+
+            // Get all the annotated listeners from the list of classes
+            // Iterate through the listeners
+            foreach ($listenerAttributes->getListeners(...$config->listeners) as $listener) {
+                // Set the route
+                $collection->addListener($listener);
+            }
+        }
     }
 }

@@ -36,6 +36,8 @@ class Messages extends Message
     /**
      * @inheritDoc
      *
+     * @return non-empty-string
+     *
      * @psalm-suppress MoreSpecificReturnType
      * @psalm-suppress LessSpecificReturnStatement
      */
@@ -52,6 +54,8 @@ class Messages extends Message
 
     /**
      * @inheritDoc
+     *
+     * @return non-empty-string
      *
      * @psalm-suppress MoreSpecificReturnType
      * @psalm-suppress LessSpecificReturnStatement

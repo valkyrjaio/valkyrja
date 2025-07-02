@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Provider;
 
 use Predis\Client;
-use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Cache\Adapter\Contract\Adapter;
 use Valkyrja\Cache\Adapter\LogAdapter;
 use Valkyrja\Cache\Adapter\NullAdapter;
 use Valkyrja\Cache\Adapter\RedisAdapter;
+use Valkyrja\Cache\Config;
 use Valkyrja\Cache\Config\LogConfiguration;
+use Valkyrja\Cache\Config\NullConfiguration;
 use Valkyrja\Cache\Config\RedisConfiguration;
 use Valkyrja\Cache\Contract\Cache;
 use Valkyrja\Cache\Driver\Driver;
@@ -27,7 +28,6 @@ use Valkyrja\Cache\Factory\ContainerFactory;
 use Valkyrja\Cache\Factory\Contract\Factory;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Log\Config\NullConfiguration;
 use Valkyrja\Log\Contract\Logger;
 
 /**
@@ -72,13 +72,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishCache(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             Cache::class,
             new \Valkyrja\Cache\Cache(
                 $container->getSingleton(Factory::class),
-                $config->cache
+                $config
             )
         );
     }
@@ -132,7 +132,7 @@ final class ServiceProvider extends Provider
     public static function createNullAdapter(Container $container, NullConfiguration $config): NullAdapter
     {
         return new NullAdapter(
-            $config->prefix
+            ''
         );
     }
 
@@ -156,10 +156,8 @@ final class ServiceProvider extends Provider
      */
     public static function createLogAdapter(Container $container, LogConfiguration $config): LogAdapter
     {
-        $logger = $container->getSingleton(Logger::class);
-
         return new LogAdapter(
-            $logger->use($config->logger),
+            $container->getSingleton(Logger::class),
             $config->prefix
         );
     }

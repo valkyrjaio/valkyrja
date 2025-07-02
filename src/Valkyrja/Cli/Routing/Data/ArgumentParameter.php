@@ -156,13 +156,12 @@ class ArgumentParameter extends Parameter implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @psalm-suppress DocblockTypeContradiction
-     * @psalm-suppress RedundantConditionGivenDocblockType
      */
     public function getFirstValue(): string|null
     {
-        return $this->arguments[0]?->getValue();
+        $firstItem = $this->arguments[0] ?? null;
+
+        return $firstItem?->getValue();
     }
 
     /**

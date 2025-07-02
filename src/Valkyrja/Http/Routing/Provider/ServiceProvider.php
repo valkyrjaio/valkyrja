@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Provider;
 
-use Valkyrja\Application\Config\ValkyrjaConfig;
+use Valkyrja\Application\Config;
 use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
@@ -26,11 +26,12 @@ use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\Http\Routing\Collection\CacheableCollection;
+use Valkyrja\Http\Routing\Collection\Collection as HttpRoutingCollection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection;
 use Valkyrja\Http\Routing\Collector\AttributeCollector;
 use Valkyrja\Http\Routing\Collector\Contract\Collector;
 use Valkyrja\Http\Routing\Contract\Router;
+use Valkyrja\Http\Routing\Data;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Routing\Matcher\Contract\Matcher;
 use Valkyrja\Http\Routing\Middleware\RequestStructMiddleware;
@@ -129,17 +130,31 @@ final class ServiceProvider extends Provider
      */
     public static function publishCollection(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
-
         $container->setSingleton(
             Collection::class,
-            $collection = new CacheableCollection(
-                container: $container,
-                config: $config->http->routing
-            )
+            $collection = new HttpRoutingCollection()
         );
 
-        $collection->setup();
+        if ($container->isSingleton(Data::class)) {
+            $data = $container->getSingleton(Data::class);
+
+            $collection->setFromData($data);
+        }
+
+        if ($container->isSingleton(Config::class)) {
+            $config = $container->getSingleton(Config::class);
+
+            /** @var Collector $collector */
+            $collector   = $container->getSingleton(Collector::class);
+            $controllers = $config->controllers;
+
+            // Get all the attributes routes from the list of controllers
+            // Iterate through the routes
+            foreach ($collector->getRoutes(...$controllers) as $route) {
+                // Set the route
+                $collection->add($route);
+            }
+        }
     }
 
     /**

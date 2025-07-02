@@ -28,7 +28,7 @@ use Valkyrja\Log\Contract\Logger;
 class LogThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
 {
     public function __construct(
-        protected Logger $logger = new \Valkyrja\Log\Logger(),
+        protected Logger $logger,
     ) {
     }
 

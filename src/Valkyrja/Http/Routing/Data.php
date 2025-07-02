@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Routing\Config;
+namespace Valkyrja\Http\Routing;
 
 use Valkyrja\Http\Routing\Data\Contract\Route;
 
 /**
- * Class Cache.
+ * Class Data.
  *
  * @author Melech Mizrachi
  */
-class Cache
+class Data
 {
     /**
      * The flattened routes.

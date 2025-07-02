@@ -15,12 +15,12 @@ namespace Valkyrja\Broadcast\Provider;
 
 use Pusher\Pusher;
 use Pusher\PusherException;
-use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Broadcast\Adapter\Contract\Adapter;
 use Valkyrja\Broadcast\Adapter\CryptPusherAdapter;
 use Valkyrja\Broadcast\Adapter\LogAdapter;
 use Valkyrja\Broadcast\Adapter\NullAdapter;
 use Valkyrja\Broadcast\Adapter\PusherAdapter;
+use Valkyrja\Broadcast\Config;
 use Valkyrja\Broadcast\Config\LogConfiguration;
 use Valkyrja\Broadcast\Config\MessageConfiguration;
 use Valkyrja\Broadcast\Config\NullConfiguration;
@@ -86,13 +86,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishBroadcaster(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             Broadcast::class,
             new \Valkyrja\Broadcast\Broadcast(
                 $container->getSingleton(Factory::class),
-                $config->broadcast
+                $config
             )
         );
     }
@@ -164,10 +164,8 @@ final class ServiceProvider extends Provider
      */
     public static function createLogAdapter(Container $container, LogConfiguration $config): LogAdapter
     {
-        $logger = $container->getSingleton(Logger::class);
-
         return new LogAdapter(
-            $logger->use($config->logger),
+            $container->getSingleton(Logger::class),
             $config
         );
     }

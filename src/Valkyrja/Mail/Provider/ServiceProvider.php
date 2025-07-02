@@ -17,7 +17,7 @@ use GuzzleHttp\Client;
 use Mailgun\HttpClient\HttpClientConfigurator;
 use Mailgun\Mailgun;
 use PHPMailer\PHPMailer\PHPMailer;
-use Valkyrja\Application\Config\ValkyrjaConfig;
+use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Contract\Logger;
@@ -26,6 +26,7 @@ use Valkyrja\Mail\Adapter\LogAdapter;
 use Valkyrja\Mail\Adapter\MailgunAdapter;
 use Valkyrja\Mail\Adapter\NullAdapter;
 use Valkyrja\Mail\Adapter\PHPMailerAdapter;
+use Valkyrja\Mail\Config;
 use Valkyrja\Mail\Config\LogConfiguration;
 use Valkyrja\Mail\Config\MailgunConfiguration;
 use Valkyrja\Mail\Config\MessageConfiguration;
@@ -87,13 +88,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishMail(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             Mail::class,
             new \Valkyrja\Mail\Mail(
                 $container->getSingleton(Factory::class),
-                $config->mail
+                $config
             )
         );
     }
@@ -167,10 +168,8 @@ final class ServiceProvider extends Provider
      */
     public static function createLogAdapter(Container $container, LogConfiguration $config): LogAdapter
     {
-        $logger = $container->getSingleton(Logger::class);
-
         return new LogAdapter(
-            $logger->use($config->logger),
+            $container->getSingleton(Logger::class),
             $config
         );
     }
@@ -212,8 +211,8 @@ final class ServiceProvider extends Provider
      */
     public static function createPHPMailer(Container $container, PhpMailerConfiguration $config): PHPMailer
     {
-        $globalConfig = $container->getSingleton(ValkyrjaConfig::class);
-        $appDebug     = $globalConfig->app->debugMode;
+        $env      = $container->getSingleton(Env::class);
+        $appDebug = $env::APP_DEBUG_MODE;
 
         // Create a new instance of the PHPMailer class
         $mailer = new PHPMailer(true);

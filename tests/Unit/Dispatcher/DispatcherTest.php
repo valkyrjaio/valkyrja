@@ -16,9 +16,7 @@ namespace Valkyrja\Tests\Unit\Dispatcher;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Contract\Application;
-use Valkyrja\Container\Config;
 use Valkyrja\Container\Container;
-use Valkyrja\Container\ContextAwareContainer;
 use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
 use Valkyrja\Dispatcher\Data\CallableDispatch;
 use Valkyrja\Dispatcher\Data\ClassDispatch;
@@ -74,13 +72,6 @@ class DispatcherTest extends TestCase
     public string|null $validPropertyNull = null;
 
     /**
-     * The config to test with.
-     *
-     * @var Config
-     */
-    protected Config $config;
-
-    /**
      * The container to test with.
      *
      * @var Container
@@ -115,8 +106,7 @@ class DispatcherTest extends TestCase
     {
         parent::setUp();
 
-        $this->config     = new Config();
-        $this->container  = new Container($this->config);
+        $this->container  = new Container();
         $this->dispatcher = new Dispatcher($this->container);
 
         $this->container->setSingleton(self::class, $this);
@@ -406,8 +396,8 @@ class DispatcherTest extends TestCase
 
     public function testDependencies(): void
     {
-        $container  = new ContextAwareContainer($this->config);
-        $container2 = new ContextAwareContainer($this->config);
+        $container  = new Container();
+        $container2 = new Container();
         $dispatcher = new Dispatcher($container);
 
         $container->bind(ServiceClass::class, ServiceClass::class);
@@ -438,7 +428,7 @@ class DispatcherTest extends TestCase
         self::assertSame($container, $result);
 
         $container
-            ->withContext(ServiceClass::class, 'make')
+            // ->withContext(ServiceClass::class, 'make')
             ->setSingleton(Container::class, $container2);
 
         $dispatch = new MethodDispatch(class: ServiceClass::class, method: 'make', isStatic: true, dependencies: [Container::class]);

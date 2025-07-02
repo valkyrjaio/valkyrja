@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Command;
 
-use Valkyrja\Application\Config\ValkyrjaConfig;
+use Valkyrja\Application\Config;
+use Valkyrja\Application\Data;
+use Valkyrja\Application\Env;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Interaction\Message\Banner;
@@ -22,14 +24,9 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Routing\Attribute\Command as CommandAttribute;
-use Valkyrja\Cli\Routing\Collection\CacheableCollection as CliCollection;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection as CliCollectionContract;
-use Valkyrja\Container\CacheableContainer;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Event\Collection\CacheableCollection as CacheableEvents;
 use Valkyrja\Event\Collection\Contract\Collection as EventCollection;
-use Valkyrja\Exception\RuntimeException;
-use Valkyrja\Http\Routing\Collection\CacheableCollection as HttpCollection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as HttpCollectionContract;
 
 use const LOCK_EX;
@@ -50,50 +47,38 @@ class CacheCommand
     )]
     public function run(
         Container $container,
-        CliCollectionContract $cli,
+        CliCollectionContract $cliCollection,
         EventCollection $eventCollection,
         HttpCollectionContract $routerCollection,
-        ValkyrjaConfig $config,
+        Env $env,
         OutputFactory $outputFactory
     ): Output {
-        $config = clone $config;
+        $env = clone $env;
 
-        $cacheFilePath = $config->app->cacheFilePath;
+        /** @var non-empty-string $cacheFilePath */
+        $cacheFilePath = $env::APP_CACHE_FILE_PATH;
 
         // If the cache file already exists, delete it
         if (is_file($cacheFilePath)) {
             unlink($cacheFilePath);
         }
 
-        $config->app->debugMode = false;
-        $config->app->env       = 'production';
+        $containerData = $container->getData();
 
-        /** @var CacheableContainer $container */
-        $container = clone $container;
-        /** @var CliCollection $cli */
-        $cli = clone $cli;
-        /** @var CacheableEvents $events */
-        $events = clone $eventCollection;
-        /** @var HttpCollection $collection */
-        $collection = clone $routerCollection;
+        $singletons = $containerData->singletons;
+        unset($singletons[Config::class]);
 
-        $containerCache = $container->getCacheable();
-        $cliCache       = $cli->getCacheable();
-        $eventsCache    = $events->getCacheable();
-        $routesCache    = $collection->getCacheable();
+        $containerData->singletons = $singletons;
 
-        $config->container->providers = $containerCache->providers;
-        $config->container->cache     = $containerCache->cache
-            ?? throw new RuntimeException('Container Cache should be set');
-
-        $config->cli->routing->cache = $cliCache;
-
-        $config->event->cache = $eventsCache;
-
-        $config->http->routing->cache = $routesCache;
+        $data = new Data(
+            container: $containerData,
+            event: $eventCollection->getData(),
+            cli: $cliCollection->getData(),
+            http: $routerCollection->getData(),
+        );
 
         // Get the results of the cache attempt
-        $result = file_put_contents($cacheFilePath, $config->asSerializedString(), LOCK_EX);
+        $result = file_put_contents($cacheFilePath, serialize($data), LOCK_EX);
 
         if ($result === false) {
             return $outputFactory

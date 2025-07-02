@@ -17,7 +17,7 @@ use JsonException;
 use Valkyrja\Cache\Adapter\Contract\LogAdapter as Contract;
 use Valkyrja\Cache\Tagger\Contract\Tagger;
 use Valkyrja\Cache\Tagger\Tagger as TagClass;
-use Valkyrja\Log\Driver\Contract\Driver as Logger;
+use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
@@ -28,29 +28,15 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 class LogAdapter implements Contract
 {
     /**
-     * The prefix to use for all keys.
-     *
-     * @var string
-     */
-    protected string $prefix;
-
-    /**
-     * The logger.
-     *
-     * @var Logger
-     */
-    protected Logger $logger;
-
-    /**
      * LogAdapter constructor.
      *
-     * @param Logger      $logger The logger service
-     * @param string|null $prefix [optional] The prefix
+     * @param Logger $logger The logger service
+     * @param string $prefix [optional] The prefix
      */
-    public function __construct(Logger $logger, string|null $prefix = null)
-    {
-        $this->logger = $logger;
-        $this->prefix = $prefix ?? '';
+    public function __construct(
+        protected Logger $logger,
+        protected string $prefix = ''
+    ) {
     }
 
     /**
@@ -160,7 +146,7 @@ class LogAdapter implements Contract
      */
     public function getPrefix(): string
     {
-        return $this->prefix ?? '';
+        return $this->prefix;
     }
 
     /**

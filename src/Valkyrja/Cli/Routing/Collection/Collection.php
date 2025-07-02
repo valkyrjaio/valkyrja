@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Collection;
 
 use Valkyrja\Cli\Routing\Collection\Contract\Collection as Contract;
+use Valkyrja\Cli\Routing\Data;
 use Valkyrja\Cli\Routing\Data\Contract\Command;
+use Valkyrja\Cli\Routing\Exception\RuntimeException;
 
 /**
  * Class Collection.
@@ -25,6 +27,38 @@ class Collection implements Contract
 {
     /** @var array<string, Command> */
     protected array $commands = [];
+
+    /**
+     * Get a data representation of the collection.
+     */
+    public function getData(): Data
+    {
+        $data = new Data();
+
+        $data->commands = [];
+
+        foreach ($this->commands as $id => $route) {
+            $data->commands[$id] = serialize($route);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Set data from a data object.
+     */
+    public function setFromData(Data $data): void
+    {
+        foreach ($data->commands as $id => $route) {
+            $command = unserialize($route, ['allowed_classes' => true]);
+
+            if (! $command instanceof Command) {
+                throw new RuntimeException('Invalid command unserialized');
+            }
+
+            $this->commands[$id] = $command;
+        }
+    }
 
     /**
      * @inheritDoc

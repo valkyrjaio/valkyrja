@@ -17,7 +17,6 @@ use Pusher\Pusher;
 use Valkyrja\Broadcast\Config\PusherConfiguration;
 use Valkyrja\Broadcast\Message\Contract\Message;
 use Valkyrja\Crypt\Contract\Crypt;
-use Valkyrja\Crypt\Driver\Contract\Driver as CryptDriver;
 use Valkyrja\Crypt\Exception\CryptException;
 
 /**
@@ -28,23 +27,14 @@ use Valkyrja\Crypt\Exception\CryptException;
 class CryptPusherAdapter extends PusherAdapter
 {
     /**
-     * The crypt driver.
-     *
-     * @var CryptDriver
-     */
-    protected CryptDriver $crypt;
-
-    /**
      * CryptPusherAdapter constructor.
      */
     public function __construct(
         Pusher $pusher,
-        Crypt $crypt,
+        protected Crypt $crypt,
         protected PusherConfiguration $config
     ) {
         parent::__construct($pusher);
-
-        $this->crypt = $crypt->use();
     }
 
     /**

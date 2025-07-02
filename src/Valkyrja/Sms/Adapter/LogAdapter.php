@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Adapter;
 
-use Valkyrja\Log\Driver\Contract\Driver as Logger;
+use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Sms\Adapter\Contract\LogAdapter as Contract;
 use Valkyrja\Sms\Config\LogConfiguration;
 use Valkyrja\Sms\Message\Contract\Message;

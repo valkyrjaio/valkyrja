@@ -16,6 +16,7 @@ namespace Valkyrja\Http\Routing\Collection;
 use JsonException;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as Contract;
+use Valkyrja\Http\Routing\Data;
 use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Routing\Exception\InvalidArgumentException;
 
@@ -64,6 +65,36 @@ class Collection implements Contract
      * @var array<string, string>
      */
     protected array $named = [];
+
+    /**
+     * @inheritDoc
+     */
+    public function getData(): Data
+    {
+        $data = new Data();
+
+        $data->routes  = [];
+        $data->static  = $this->static;
+        $data->dynamic = $this->dynamic;
+        $data->named   = $this->named;
+
+        foreach ($this->routes as $id => $route) {
+            $data->routes[$id] = serialize($route);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setFromData(Data $data): void
+    {
+        $this->routes  = $data->routes;
+        $this->static  = $data->static;
+        $this->dynamic = $data->dynamic;
+        $this->named   = $data->named;
+    }
 
     /**
      * @inheritDoc

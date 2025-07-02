@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Adapter;
 
-use Valkyrja\Log\Driver\Contract\Driver as Logger;
+use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Session\Config\LogConfiguration;
 
 /**

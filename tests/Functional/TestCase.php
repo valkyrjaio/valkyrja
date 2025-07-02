@@ -19,7 +19,6 @@ use Valkyrja\Application\Entry\App;
 use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Support\Directory;
-use Valkyrja\Tests\ConfigClass;
 use Valkyrja\Tests\EnvClass;
 
 /**
@@ -37,23 +36,28 @@ class TestCase extends PHPUnitTestCase
     protected Application $app;
 
     /**
+     * The env.
+     *
+     * @var EnvClass
+     */
+    protected EnvClass $env;
+
+    /**
      * Setup functional tests.
      *
      * @return void
      */
     protected function setUp(): void
     {
-        App::directory(dir: __DIR__ . '/../..');
+        App::directory(dir: EnvClass::APP_DIR);
 
         $this->app = $app = App::app(
-            env: EnvClass::class,
-            config: ConfigClass::class
+            $this->env = new EnvClass()
         );
 
-        Directory::$BASE_PATH    = __DIR__ . '/../..';
-        Directory::$STORAGE_PATH = 'tests/storage';
+        Directory::$BASE_PATH = EnvClass::APP_DIR;
 
-        $container = App::getContainer($app);
+        $container = $app->getContainer();
 
         // $handler = $container->getSingleton(RequestHandler::class);
         // $handler->run(RequestFactory::fromGlobals());

@@ -13,14 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Entry;
 
-use Valkyrja\Application\Config\ValkyrjaConfig;
+use Valkyrja\Application\Config;
 use Valkyrja\Application\Contract\Application;
+use Valkyrja\Application\Data;
 use Valkyrja\Application\Env;
+use Valkyrja\Application\Exception\RuntimeException;
 use Valkyrja\Application\Valkyrja;
 use Valkyrja\Cli\Interaction\Factory\InputFactory;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Server\Contract\InputHandler;
-use Valkyrja\Container\CacheableContainer;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Exception\Contract\ErrorHandler as ErrorHandlerContract;
 use Valkyrja\Exception\ErrorHandler;
@@ -41,39 +42,32 @@ abstract class App
     /**
      * Start the application.
      *
-     * @param string                       $dir    The directory
-     * @param class-string<Env>            $env    The env class to use
-     * @param class-string<ValkyrjaConfig> $config The config class to use
-     *
-     * @return Application
+     * @param non-empty-string $dir The directory
      */
-    public static function start(string $dir, string $env, string $config): Application
+    public static function start(string $dir, Env $env): Application
     {
         static::defaultErrorHandler();
         static::appStart();
         static::directory(dir: $dir);
 
-        return static::app(env: $env, config: $config);
+        return static::app(env: $env);
     }
 
     /**
      * Now that the application has been bootstrapped and setup correctly with all our requirements lets run it!
      *
-     * @param string                       $dir    The directory
-     * @param class-string<Env>            $env    The env class to use
-     * @param class-string<ValkyrjaConfig> $config The config class to use
-     *
-     * @return void
+     * @param non-empty-string $dir The directory
      */
-    public static function http(string $dir, string $env, string $config): void
+    public static function http(string $dir, Env $env): void
     {
         $app = static::start(
             dir: $dir,
             env: $env,
-            config: $config
         );
 
-        $container = static::getContainer($app);
+        $container = $app->getContainer();
+
+        self::bootstrapErrorHandler($app, $container);
 
         $handler = $container->getSingleton(RequestHandler::class);
         $handler->run(static::getRequest());
@@ -82,53 +76,25 @@ abstract class App
     /**
      * Now that the application has been bootstrapped and setup correctly with all our requirements lets run it!
      *
-     * @param string                       $dir    The directory
-     * @param class-string<Env>            $env    The env class to use
-     * @param class-string<ValkyrjaConfig> $config The config class to use
-     *
-     * @return void
+     * @param non-empty-string $dir The directory
      */
-    public static function cli(string $dir, string $env, string $config): void
+    public static function cli(string $dir, Env $env): void
     {
         $app = static::start(
             dir: $dir,
             env: $env,
-            config: $config
         );
 
-        $container = static::getContainer($app);
+        $container = $app->getContainer();
+
+        self::bootstrapErrorHandler($app, $container);
 
         $handler = $container->getSingleton(InputHandler::class);
         $handler->run(static::getInput());
     }
 
     /**
-     * Get the container.
-     */
-    public static function getContainer(Application $app): Container
-    {
-        $config = $app->getConfig();
-
-        $container = new CacheableContainer($config->container);
-
-        $app->setContainer($container);
-
-        self::bootstrapServices($app, $container);
-
-        $container->setup();
-
-        // Bootstrap debug capabilities
-        self::bootstrapErrorHandler($app, $container);
-        // Bootstrap the timezone
-        self::bootstrapTimezone($config);
-
-        return $container;
-    }
-
-    /**
      * Set a global constant for when the application as a whole started.
-     *
-     * @return void
      */
     public static function appStart(): void
     {
@@ -140,9 +106,7 @@ abstract class App
      * so that when we locate directories and files within the application
      * we have a standard location from which to do so.
      *
-     * @param string $dir The directory
-     *
-     * @return void
+     * @param non-empty-string $dir The directory
      */
     public static function directory(string $dir): void
     {
@@ -158,28 +122,51 @@ abstract class App
      *  use the default config out of the root config directory, but
      *  when you're on a production environment definitely have
      *  your config cached and the flag set in your env class.
-     *
-     * @param class-string<Env>            $env    The env class to use
-     * @param class-string<ValkyrjaConfig> $config The config class to use
-     *
-     * @return Application
      */
-    public static function app(string $env, string $config): Application
+    public static function app(Env $env): Application
     {
-        return new Valkyrja(env: $env, config: $config);
+        /** @var non-empty-string $cacheFilePath */
+        $cacheFilePath = $env::APP_CACHE_FILE_PATH;
+
+        if (is_file($cacheFilePath)) {
+            $cache = file_get_contents($cacheFilePath);
+
+            if ($cache === false || $cache === '') {
+                throw new RuntimeException('Error occurred when retrieving cache file contents');
+            }
+
+            // Allow all classes, and filter for only Config classes down below since allowed_classes cannot be
+            // a class that others extend off of, and we don't want to limit what a cached config class could be
+            $data = unserialize($cache, ['allowed_classes' => true]);
+
+            if (! $data instanceof Data) {
+                throw new RuntimeException('Invalid cache');
+            }
+
+            $configData = $data;
+        } else {
+            $configData = static::getConfig();
+        }
+
+        return new Valkyrja(env: $env, configData: $configData);
     }
 
     /**
-     * Bootstrap container services.
+     * Get the application config.
      */
-    protected static function bootstrapServices(Application $app, Container $container): void
+    protected static function getConfig(): Config
     {
-        $env = $app->getEnv();
+        return new Config();
+    }
 
-        $container->setSingleton(Application::class, $app);
-        $container->setSingleton(Env::class, new $env());
-        $container->setSingleton(ValkyrjaConfig::class, $app->getConfig());
-        $container->setSingleton(Container::class, $container);
+    /**
+     * Set a default error handler until the one specified in config is set in the Container\AppProvider.
+     */
+    protected static function defaultErrorHandler(): void
+    {
+        ErrorHandler::enable(
+            displayErrors: true
+        );
     }
 
     /**
@@ -202,29 +189,7 @@ abstract class App
     }
 
     /**
-     * Bootstrap the timezone.
-     */
-    protected static function bootstrapTimezone(ValkyrjaConfig $config): void
-    {
-        date_default_timezone_set($config->app->timezone);
-    }
-
-    /**
-     * Set a default error handler until the one specified in config is set in the Container\AppProvider.
-     *
-     * @return void
-     */
-    protected static function defaultErrorHandler(): void
-    {
-        ErrorHandler::enable(
-            displayErrors: true
-        );
-    }
-
-    /**
      * Get the request.
-     *
-     * @return ServerRequest
      */
     protected static function getRequest(): ServerRequest
     {
@@ -233,8 +198,6 @@ abstract class App
 
     /**
      * Get the input.
-     *
-     * @return Input
      */
     protected static function getInput(): Input
     {

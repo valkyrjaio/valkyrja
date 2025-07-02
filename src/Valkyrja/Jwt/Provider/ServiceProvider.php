@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Provider;
 
-use Valkyrja\Application\Config\ValkyrjaConfig;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Jwt\Adapter\Contract\Adapter;
 use Valkyrja\Jwt\Adapter\Firebase\EdDsaAdapter;
 use Valkyrja\Jwt\Adapter\Firebase\HsAdapter;
 use Valkyrja\Jwt\Adapter\Firebase\RsAdapter;
+use Valkyrja\Jwt\Config;
 use Valkyrja\Jwt\Config\EdDsaConfiguration;
 use Valkyrja\Jwt\Config\HsConfiguration;
 use Valkyrja\Jwt\Config\RsConfiguration;
@@ -70,13 +70,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishJwt(Container $container): void
     {
-        $config = $container->getSingleton(ValkyrjaConfig::class);
+        $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
             Jwt::class,
             new \Valkyrja\Jwt\Jwt(
                 $container->getSingleton(Factory::class),
-                $config->jwt
+                $config
             )
         );
     }

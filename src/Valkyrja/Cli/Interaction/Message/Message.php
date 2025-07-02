@@ -36,6 +36,8 @@ class Message implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @return non-empty-string
      */
     public function getText(): string
     {
@@ -44,6 +46,8 @@ class Message implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @return non-empty-string
      */
     public function getFormattedText(): string
     {

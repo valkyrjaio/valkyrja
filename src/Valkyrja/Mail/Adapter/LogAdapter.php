@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Mail\Adapter;
 
 use JsonException;
-use Valkyrja\Log\Driver\Contract\Driver as Logger;
+use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Mail\Adapter\Contract\LogAdapter as Contract;
 use Valkyrja\Mail\Config\LogConfiguration;
 use Valkyrja\Mail\Message\Contract\Message;

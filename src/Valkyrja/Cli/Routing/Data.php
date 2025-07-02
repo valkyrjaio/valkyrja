@@ -11,15 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Api\Constant;
+namespace Valkyrja\Cli\Routing;
 
 /**
- * Class ConfigName.
+ * Class Data.
  *
  * @author Melech Mizrachi
  */
-final class ConfigName
+class Data
 {
-    public const string JSON_MODEL = 'jsonModel';
-    public const string DATA_MODEL = 'dataModel';
+    /**
+     * @param array<string, string> $commands
+     */
+    public function __construct(
+        public array $commands = []
+    ) {
+    }
 }
