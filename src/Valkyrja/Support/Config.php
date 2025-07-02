@@ -56,7 +56,7 @@ abstract class Config
             if (defined("$env::$envName")) {
                 $constantValue = constant("$env::$envName");
 
-                if (is_callable($constantValue)) {
+                if (is_callable($constantValue) && is_array($constantValue)) {
                     $this->$propertyName = $constantValue()
                         ?? $this->$propertyName;
 
