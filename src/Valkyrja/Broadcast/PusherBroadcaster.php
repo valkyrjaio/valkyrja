@@ -11,26 +11,26 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast\Adapter;
+namespace Valkyrja\Broadcast;
 
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
 use Pusher\ApiErrorException;
 use Pusher\Pusher;
 use Pusher\PusherException;
-use Valkyrja\Broadcast\Adapter\Contract\PusherAdapter as Contract;
-use Valkyrja\Broadcast\Message\Contract\Message;
+use Valkyrja\Broadcast\Contract\Broadcaster as Contract;
+use Valkyrja\Broadcast\Data\Contract\Message;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
- * Class PusherAdapter.
+ * Class PusherBroadcaster.
  *
  * @author Melech Mizrachi
  */
-class PusherAdapter extends NullAdapter implements Contract
+class PusherBroadcaster implements Contract
 {
     /**
-     * PusherAdapter constructor.
+     * PusherBroadcaster constructor.
      *
      * @param Pusher $pusher The pusher service
      */

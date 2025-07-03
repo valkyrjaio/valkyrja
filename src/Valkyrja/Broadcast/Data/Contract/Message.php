@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast\Message\Contract;
+namespace Valkyrja\Broadcast\Data\Contract;
 
 /**
  * Interface Message.

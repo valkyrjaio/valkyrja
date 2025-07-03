@@ -11,17 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast\Config;
+namespace Valkyrja\Broadcast;
+
+use Valkyrja\Broadcast\Contract\Broadcaster as Contract;
+use Valkyrja\Broadcast\Data\Contract\Message;
 
 /**
- * Class MessageConfigurations.
+ * Class NullBroadcaster.
  *
  * @author Melech Mizrachi
  */
-class MessageConfigurations
+class NullBroadcaster implements Contract
 {
-    public function __construct(
-        public DefaultMessageConfiguration|null $default = null,
-    ) {
+    /**
+     * @inheritDoc
+     */
+    public function send(Message $message): void
+    {
     }
 }

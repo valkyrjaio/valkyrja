@@ -11,42 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast\Adapter;
+namespace Valkyrja\Broadcast;
 
 use Pusher\Pusher;
-use Valkyrja\Broadcast\Config\PusherConfiguration;
-use Valkyrja\Broadcast\Message\Contract\Message;
+use Valkyrja\Broadcast\Data\Contract\Message;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Crypt\Exception\CryptException;
 
 /**
- * Class CryptPusherAdapter.
+ * Class CryptPusherBroadcaster.
  *
  * @author Melech Mizrachi
  */
-class CryptPusherAdapter extends PusherAdapter
+class CryptPusherBroadcaster extends PusherBroadcaster
 {
     /**
-     * CryptPusherAdapter constructor.
+     * CryptPusherBroadcaster constructor.
      */
     public function __construct(
         Pusher $pusher,
-        protected Crypt $crypt,
-        protected PusherConfiguration $config
+        protected Crypt $crypt
     ) {
         parent::__construct($pusher);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @throws CryptException On a crypt failure
-     */
-    public function determineKeyValueMatch(string $key, $value, string $message): bool
-    {
-        $decryptedMessage = $this->crypt->decrypt($message);
-
-        return parent::determineKeyValueMatch($key, $value, $decryptedMessage);
     }
 
     /**

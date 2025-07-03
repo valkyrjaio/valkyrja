@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification\Data;
 
-use Valkyrja\Broadcast\Message\Contract\Message as BroadcastMessage;
+use Valkyrja\Broadcast\Data\Contract\Message as BroadcastMessage;
 use Valkyrja\Mail\Data\Contract\Message as MailMessage;
 use Valkyrja\Notification\Data\Contract\Notify as Contract;
 use Valkyrja\Sms\Data\Contract\Message as SmsMessage;

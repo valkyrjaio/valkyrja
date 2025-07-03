@@ -160,18 +160,16 @@ class Env
      *
      ************************************************************/
 
-    /** @var string|null */
-    public const string|null BROADCAST_PUSHER_KEY = null;
-    /** @var string|null */
-    public const string|null BROADCAST_PUSHER_SECRET = null;
-    /** @var string|null */
-    public const string|null BROADCAST_PUSHER_ID = null;
-    /** @var string|null */
-    public const string|null BROADCAST_PUSHER_CLUSTER = null;
-    /** @var bool|null */
-    public const bool|null BROADCAST_PUSHER_USE_TLS = null;
-    /** @var string|null */
-    public const string|null BROADCAST_LOG_LOG_NAME = null;
+    /** @var non-empty-string */
+    public const string BROADCAST_PUSHER_KEY = 'pusher-key';
+    /** @var non-empty-string */
+    public const string BROADCAST_PUSHER_SECRET = 'pusher-secret';
+    /** @var non-empty-string */
+    public const string BROADCAST_PUSHER_ID = 'pusher-id';
+    /** @var non-empty-string */
+    public const string BROADCAST_PUSHER_CLUSTER = 'us1';
+    /** @var bool */
+    public const bool BROADCAST_PUSHER_USE_TLS = true;
     /** @var class-string<Logger> */
     public const string BROADCAST_LOG_LOGGER = Logger::class;
 

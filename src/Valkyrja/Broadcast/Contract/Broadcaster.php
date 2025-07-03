@@ -11,13 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast\Adapter\Contract;
+namespace Valkyrja\Broadcast\Contract;
+
+use Valkyrja\Broadcast\Data\Contract\Message;
 
 /**
- * Interface PusherAdapter.
+ * Interface Broadcaster.
  *
  * @author Melech Mizrachi
  */
-interface PusherAdapter extends Adapter
+interface Broadcaster
 {
+    /**
+     * Send a message.
+     *
+     * @param Message $message The message to send
+     *
+     * @return void
+     */
+    public function send(Message $message): void;
 }

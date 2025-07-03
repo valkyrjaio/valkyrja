@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification;
 
-use Valkyrja\Broadcast\Contract\Broadcast;
+use Valkyrja\Broadcast\Contract\Broadcaster;
+use Valkyrja\Broadcast\Data\Message as BroadcastMessage;
 use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Mail\Contract\Mailer;
 use Valkyrja\Mail\Data\Message as MailMessage;
@@ -55,11 +56,11 @@ class Notification implements Contract
     protected array $broadcastEvents = [];
 
     /**
-     * Notifier constructor.
+     * Notification constructor.
      */
     public function __construct(
         protected Factory $factory,
-        protected Broadcast $broadcast,
+        protected Broadcaster $broadcaster,
         protected Mailer $mailer,
         protected Sms $sms,
     ) {
@@ -258,17 +259,13 @@ class Notification implements Contract
      */
     protected function notifyByBroadcast(Notify $notify): void
     {
-        $broadcast        = $this->broadcast;
-        $broadcastAdapter = $broadcast->use($notify->getBroadcastAdapterName());
-        $broadcastMessage = $notify->getBroadcastMessageName();
-
         foreach ($this->broadcastEvents as $broadcastEvent) {
-            $message = $broadcast->createMessage($broadcastMessage);
+            $message = new BroadcastMessage();
 
             $message->setEvent($broadcastEvent['event']);
             $notify->broadcast($message);
 
-            $broadcastAdapter->send($message);
+            $this->broadcaster->send($message);
         }
     }
 
