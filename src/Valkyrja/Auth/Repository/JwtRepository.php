@@ -21,7 +21,6 @@ use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Repository\Contract\JWTRepository as Contract;
 use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Jwt\Contract\Jwt as JwtManager;
-use Valkyrja\Jwt\Driver\Contract\Driver as Jwt;
 use Valkyrja\Session\Contract\Session;
 
 use function is_string;
@@ -34,22 +33,18 @@ use function is_string;
 class JwtRepository extends TokenizedRepository implements Contract
 {
     /**
-     * The Jwt.
-     *
-     * @var Jwt
-     */
-    protected Jwt $jwt;
-
-    /**
      * JWTRepository constructor.
      *
      * @param class-string<User> $user The user class
      */
-    public function __construct(Adapter $adapter, JwtManager $jwt, Session $session, Config $config, string $user)
-    {
+    public function __construct(
+        Adapter $adapter,
+        protected JwtManager $jwt,
+        Session $session,
+        Config $config,
+        string $user
+    ) {
         parent::__construct($adapter, $session, $config, $user);
-
-        $this->jwt = $jwt->use();
     }
 
     /**

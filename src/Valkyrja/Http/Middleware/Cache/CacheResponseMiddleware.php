@@ -16,6 +16,7 @@ namespace Valkyrja\Http\Middleware\Cache;
 use Throwable;
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Filesystem\Contract\Filesystem;
+use Valkyrja\Filesystem\InMemoryFilesystem;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
@@ -40,7 +41,7 @@ use function unserialize;
 class CacheResponseMiddleware implements RequestReceivedMiddleware, TerminatedMiddleware
 {
     public function __construct(
-        protected Filesystem $filesystem = new \Valkyrja\Filesystem\Filesystem(),
+        protected Filesystem $filesystem = new InMemoryFilesystem(),
         protected bool $debug = false
     ) {
     }

@@ -21,7 +21,6 @@ use Valkyrja\Auth\Repository\Contract\JWTCryptRepository as Contract;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Jwt\Contract\Jwt as JwtManager;
-use Valkyrja\Jwt\Driver\Contract\Driver as Jwt;
 use Valkyrja\Session\Contract\Session;
 
 use function is_string;
@@ -34,28 +33,19 @@ use function is_string;
 class JwtCryptRepository extends CryptTokenizedRepository implements Contract
 {
     /**
-     * The Jwt service.
-     *
-     * @var Jwt
-     */
-    protected Jwt $jwt;
-
-    /**
      * JWTCryptRepository constructor.
      *
      * @param class-string<User> $user The user class
      */
     public function __construct(
         Adapter $adapter,
-        JwtManager $jwt,
+        protected JwtManager $jwt,
         Crypt $crypt,
         Session $session,
         Config $config,
         string $user
     ) {
         parent::__construct($adapter, $crypt, $session, $config, $user);
-
-        $this->jwt = $jwt->use();
     }
 
     /**

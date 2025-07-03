@@ -85,7 +85,7 @@ final class ServiceProvider extends Provider
     public static function publishMailgunMailer(Container $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var string $domain */
+        /** @var non-empty-string $domain */
         $domain = $env::MAIL_MAILGUN_DOMAIN;
 
         $container->setSingleton(

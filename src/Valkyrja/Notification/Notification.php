@@ -15,7 +15,8 @@ namespace Valkyrja\Notification;
 
 use Valkyrja\Broadcast\Contract\Broadcast;
 use Valkyrja\Exception\InvalidArgumentException;
-use Valkyrja\Mail\Contract\Mail;
+use Valkyrja\Mail\Contract\Mailer;
+use Valkyrja\Mail\Data\Message as MailMessage;
 use Valkyrja\Notification\Contract\Notification as Contract;
 use Valkyrja\Notification\Data\Contract\Notify;
 use Valkyrja\Notification\Entity\Contract\NotifiableUser;
@@ -59,7 +60,7 @@ class Notification implements Contract
     public function __construct(
         protected Factory $factory,
         protected Broadcast $broadcast,
-        protected Mail $mail,
+        protected Mailer $mailer,
         protected Sms $sms,
     ) {
     }
@@ -125,7 +126,7 @@ class Notification implements Contract
      * @inheritDoc
      */
     public function notify(Notify $notify): void
-    // public function notify(string $notificationName, array $data = []): void
+        // public function notify(string $notificationName, array $data = []): void
     {
         // $notification = $this->getNotification($notificationName, $data);
 
@@ -280,17 +281,13 @@ class Notification implements Contract
      */
     protected function notifyByMail(Notify $notify): void
     {
-        $mail        = $this->mail;
-        $mailAdapter = $mail->use($notify->getMailAdapterName());
-        $mailMessage = $notify->getMailMessageName();
-
         foreach ($this->mailRecipients as $mailRecipient) {
-            $message = $mail->createMessage($mailMessage);
-
+            $message = new MailMessage();
             $message->addRecipient($mailRecipient['email'], $mailRecipient['name']);
+
             $notify->mail($message);
 
-            $mailAdapter->send($message);
+            $this->mailer->send($message);
         }
     }
 
@@ -305,8 +302,8 @@ class Notification implements Contract
     {
         foreach ($this->smsRecipients as $smsRecipient) {
             $message = new SmsMessage();
-
             $message->setTo($smsRecipient['to']);
+
             $notify->sms($message);
 
             $this->sms->send($message);

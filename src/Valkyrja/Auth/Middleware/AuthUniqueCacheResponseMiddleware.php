@@ -15,6 +15,7 @@ namespace Valkyrja\Auth\Middleware;
 
 use Valkyrja\Auth\Contract\Auth;
 use Valkyrja\Filesystem\Contract\Filesystem;
+use Valkyrja\Filesystem\InMemoryFilesystem;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Middleware\Cache\CacheResponseMiddleware;
 
@@ -29,7 +30,7 @@ class AuthUniqueCacheResponseMiddleware extends CacheResponseMiddleware
 {
     public function __construct(
         protected Auth $auth,
-        Filesystem $filesystem = new \Valkyrja\Filesystem\Filesystem(),
+        Filesystem $filesystem = new InMemoryFilesystem(),
         bool $debug = false
     ) {
         parent::__construct(

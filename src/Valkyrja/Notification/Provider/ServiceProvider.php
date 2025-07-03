@@ -16,7 +16,7 @@ namespace Valkyrja\Notification\Provider;
 use Valkyrja\Broadcast\Contract\Broadcast;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Mail\Contract\Mail;
+use Valkyrja\Mail\Contract\Mailer;
 use Valkyrja\Notification\Contract\Notification;
 use Valkyrja\Notification\Factory\ContainerFactory;
 use Valkyrja\Notification\Factory\Contract\Factory;
@@ -65,7 +65,7 @@ final class ServiceProvider extends Provider
             new \Valkyrja\Notification\Notification(
                 $container->getSingleton(Factory::class),
                 $container->getSingleton(Broadcast::class),
-                $container->getSingleton(Mail::class),
+                $container->getSingleton(Mailer::class),
                 $container->getSingleton(Sms::class),
             )
         );
