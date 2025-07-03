@@ -181,10 +181,10 @@ class Env
      *
      ************************************************************/
 
-    /** @var string|null */
-    public const string|null CACHE_REDIS_HOST = null;
-    /** @var int|null */
-    public const int|null CACHE_REDIS_PORT = null;
+    /** @var string */
+    public const string CACHE_REDIS_HOST = '127.0.0.1';
+    /** @var int */
+    public const int CACHE_REDIS_PORT = 6379;
     /** @var string */
     public const string CACHE_REDIS_PREFIX = '';
     /** @var string */
