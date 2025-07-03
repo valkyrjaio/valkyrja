@@ -166,7 +166,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             CacheSession::class,
             new CacheSession(
-                cache: $container->getSingleton(Cache::class)->use(),
+                cache: $container->getSingleton(Cache::class),
                 cookieParams: $container->getSingleton(CookieParams::class),
                 sessionId: $sessionId,
                 sessionName: $sessionName,

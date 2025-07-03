@@ -14,18 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Provider;
 
 use Predis\Client;
-use Valkyrja\Cache\Adapter\Contract\Adapter;
-use Valkyrja\Cache\Adapter\LogAdapter;
-use Valkyrja\Cache\Adapter\NullAdapter;
-use Valkyrja\Cache\Adapter\RedisAdapter;
-use Valkyrja\Cache\Config;
-use Valkyrja\Cache\Config\LogConfiguration;
-use Valkyrja\Cache\Config\NullConfiguration;
-use Valkyrja\Cache\Config\RedisConfiguration;
+use Valkyrja\Application\Env;
 use Valkyrja\Cache\Contract\Cache;
-use Valkyrja\Cache\Driver\Driver;
-use Valkyrja\Cache\Factory\ContainerFactory;
-use Valkyrja\Cache\Factory\Contract\Factory;
+use Valkyrja\Cache\LogCache;
+use Valkyrja\Cache\NullCache;
+use Valkyrja\Cache\RedisCache;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Contract\Logger;
@@ -43,12 +36,11 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Cache::class        => [self::class, 'publishCache'],
-            Factory::class      => [self::class, 'publishFactory'],
-            Driver::class       => [self::class, 'publishDriver'],
-            NullAdapter::class  => [self::class, 'publishNullAdapter'],
-            LogAdapter::class   => [self::class, 'publishLogAdapter'],
-            RedisAdapter::class => [self::class, 'publishRedisAdapter'],
+            Cache::class      => [self::class, 'publishCache'],
+            RedisCache::class => [self::class, 'publishRedisCache'],
+            Client::class     => [self::class, 'publishRedisClient'],
+            LogCache::class   => [self::class, 'publishLogCache'],
+            NullCache::class  => [self::class, 'publishNullCache'],
         ];
     }
 
@@ -59,11 +51,10 @@ final class ServiceProvider extends Provider
     {
         return [
             Cache::class,
-            Factory::class,
-            Driver::class,
-            NullAdapter::class,
-            LogAdapter::class,
-            RedisAdapter::class,
+            RedisCache::class,
+            Client::class,
+            LogCache::class,
+            NullCache::class,
         ];
     }
 
@@ -72,122 +63,86 @@ final class ServiceProvider extends Provider
      */
     public static function publishCache(Container $container): void
     {
-        $config = $container->getSingleton(Config::class);
-
         $container->setSingleton(
             Cache::class,
-            new \Valkyrja\Cache\Cache(
-                $container->getSingleton(Factory::class),
-                $config
+            $container->getSingleton(RedisCache::class)
+        );
+    }
+
+    /**
+     * Publish the redis cache service.
+     */
+    public static function publishRedisCache(Container $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var string $prefix */
+        $prefix = $env::CACHE_REDIS_PREFIX;
+
+        $container->setSingleton(
+            RedisCache::class,
+            new RedisCache(
+                client: $container->getSingleton(Client::class),
+                prefix: $prefix
             )
         );
     }
 
     /**
-     * Publish the factory service.
+     * Publish the redis client service.
      */
-    public static function publishFactory(Container $container): void
+    public static function publishRedisClient(Container $container): void
     {
+        $env = $container->getSingleton(Env::class);
+        /** @var non-empty-string $host */
+        $host = $env::CACHE_REDIS_HOST;
+        /** @var int $port */
+        $port = $env::CACHE_REDIS_PORT;
+
         $container->setSingleton(
-            Factory::class,
-            new ContainerFactory($container),
+            Client::class,
+            new Client(
+                parameters: [
+                    'host' => $host,
+                    'port' => $port,
+                ]
+            )
         );
     }
 
     /**
-     * Publish the default driver service.
+     * Publish the log cache service.
      */
-    public static function publishDriver(Container $container): void
+    public static function publishLogCache(Container $container): void
     {
-        $container->setCallable(
-            Driver::class,
-            [self::class, 'createDriver']
+        $env = $container->getSingleton(Env::class);
+        /** @var string $prefix */
+        $prefix = $env::CACHE_LOG_PREFIX;
+        /** @var class-string<Logger> $logger */
+        $logger = $env::CACHE_LOG_LOGGER;
+
+        $container->setSingleton(
+            LogCache::class,
+            new LogCache(
+                logger: $container->get($logger),
+                prefix: $prefix
+            )
         );
     }
 
     /**
-     * Create a driver.
+     * Publish the null cache service.
      */
-    public static function createDriver(Container $container, Adapter $adapter): Driver
+    public static function publishNullCache(Container $container): void
     {
-        return new Driver(
-            $adapter
-        );
-    }
+        $env = $container->getSingleton(Env::class);
+        /** @var string $prefix */
+        $prefix = $env::CACHE_NULL_PREFIX;
 
-    /**
-     * Publish the null adapter service.
-     */
-    public static function publishNullAdapter(Container $container): void
-    {
-        $container->setCallable(
-            NullAdapter::class,
-            [self::class, 'createNullAdapter']
-        );
-    }
-
-    /**
-     * Create a null adapter.
-     */
-    public static function createNullAdapter(Container $container, NullConfiguration $config): NullAdapter
-    {
-        return new NullAdapter(
-            ''
-        );
-    }
-
-    /**
-     * Publish the log adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishLogAdapter(Container $container): void
-    {
-        $container->setCallable(
-            LogAdapter::class,
-            [self::class, 'createLogAdapter']
-        );
-    }
-
-    /**
-     * Create a log adapter.
-     */
-    public static function createLogAdapter(Container $container, LogConfiguration $config): LogAdapter
-    {
-        return new LogAdapter(
-            $container->getSingleton(Logger::class),
-            $config->prefix
-        );
-    }
-
-    /**
-     * Publish the redis adapter service.
-     */
-    public static function publishRedisAdapter(Container $container): void
-    {
-        $container->setCallable(
-            RedisAdapter::class,
-            [self::class, 'createRedisAdapter']
-        );
-    }
-
-    /**
-     * Create a redis adapter.
-     */
-    public static function createRedisAdapter(Container $container, RedisConfiguration $config): RedisAdapter
-    {
-        $predis = new Client(
-            parameters: [
-                'host' => $config->host,
-                'port' => $config->port,
-            ]
-        );
-
-        return new RedisAdapter(
-            $predis,
-            $config->prefix
+        $container->setSingleton(
+            NullCache::class,
+            new NullCache(
+                prefix: $prefix
+            )
         );
     }
 }

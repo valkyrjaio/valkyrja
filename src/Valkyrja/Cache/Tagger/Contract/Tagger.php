@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Tagger\Contract;
 
-use Valkyrja\Cache\Adapter\Contract\Adapter;
+use Valkyrja\Cache\Contract\Cache;
 
 /**
  * Interface Tagger.
@@ -25,12 +25,12 @@ interface Tagger
     /**
      * Make a new Tag Store.
      *
-     * @param Adapter $store
-     * @param string  ...$tags
+     * @param Cache  $store
+     * @param string ...$tags
      *
      * @return static
      */
-    public static function make(Adapter $store, string ...$tags): static;
+    public static function make(Cache $store, string ...$tags): static;
 
     /**
      * Determine if an item exists in the cache.

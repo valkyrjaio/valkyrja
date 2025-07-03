@@ -173,6 +173,8 @@ class Env
     public const string CACHE_LOG_PREFIX = '';
     /** @var class-string<Logger> */
     public const string CACHE_LOG_LOGGER = Logger::class;
+    /** @var string */
+    public const string CACHE_NULL_PREFIX = '';
 
     /************************************************************
      *

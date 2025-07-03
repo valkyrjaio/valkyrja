@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Session;
 
 use JsonException;
-use Valkyrja\Cache\Driver\Contract\Driver as Cache;
+use Valkyrja\Cache\Contract\Cache;
 use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Exception\SessionStartFailure;
 use Valkyrja\Type\BuiltIn\Support\Arr;

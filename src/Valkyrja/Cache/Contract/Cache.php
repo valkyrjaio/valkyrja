@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Contract;
 
-use Valkyrja\Cache\Driver\Contract\Driver;
 use Valkyrja\Cache\Tagger\Contract\Tagger;
 
 /**
@@ -23,11 +22,6 @@ use Valkyrja\Cache\Tagger\Contract\Tagger;
  */
 interface Cache
 {
-    /**
-     * Use a specific configuration.
-     */
-    public function use(string|null $name = null): Driver;
-
     /**
      * Determine if an item exists in the cache.
      *

@@ -16,7 +16,6 @@ namespace Valkyrja\Orm\Repository;
 use JsonException;
 use Throwable;
 use Valkyrja\Cache\Contract\Cache;
-use Valkyrja\Cache\Driver\Contract\Driver as CacheDriver;
 use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Orm\Contract\Orm;
@@ -54,13 +53,6 @@ use function unserialize;
 class CacheRepository extends Repository implements Contract
 {
     /**
-     * The cache store.
-     *
-     * @var CacheDriver
-     */
-    protected CacheDriver $store;
-
-    /**
      * The id of a findOne (to tag if null returned).
      *
      * @var int|string|null
@@ -97,8 +89,6 @@ class CacheRepository extends Repository implements Contract
         protected Cache $cache,
         string $entity
     ) {
-        $this->store = $cache->use();
-
         parent::__construct(
             orm: $orm,
             driver: $driver,
@@ -150,7 +140,7 @@ class CacheRepository extends Repository implements Contract
     {
         $cacheKey = $this->getCacheKey();
 
-        if (($results = $this->store->get($cacheKey)) !== null && $results !== '') {
+        if (($results = $this->cache->get($cacheKey)) !== null && $results !== '') {
             try {
                 $decodedResults = base64_decode($results, true);
 
@@ -182,7 +172,7 @@ class CacheRepository extends Repository implements Contract
             }
 
             // Remove the bad cache
-            $this->store->forget($cacheKey);
+            $this->cache->forget($cacheKey);
         }
 
         $results = $this->retriever->getResult();
@@ -221,15 +211,15 @@ class CacheRepository extends Repository implements Contract
     {
         $cacheKey = $this->getCacheKey();
 
-        if (($results = $this->store->get($cacheKey)) !== null && $results !== '') {
+        if (($results = $this->cache->get($cacheKey)) !== null && $results !== '') {
             return (int) $results;
         }
 
         $results = parent::getCount();
 
-        $this->store->forever($cacheKey, (string) $results);
+        $this->cache->forever($cacheKey, (string) $results);
 
-        $this->store->getTagger($this->entity)->tag($cacheKey);
+        $this->cache->getTagger($this->entity)->tag($cacheKey);
 
         return $results;
     }
@@ -373,7 +363,7 @@ class CacheRepository extends Repository implements Contract
     {
         $id = $this->getEntityCacheKey($entity);
 
-        $this->store->getTagger($id)->flush();
+        $this->cache->getTagger($id)->flush();
     }
 
     /**
@@ -451,8 +441,8 @@ class CacheRepository extends Repository implements Contract
             }
         }
 
-        $this->store->forever($cacheKey, base64_encode(serialize($results)));
+        $this->cache->forever($cacheKey, base64_encode(serialize($results)));
 
-        $this->store->getTagger(...$tags)->tag($cacheKey);
+        $this->cache->getTagger(...$tags)->tag($cacheKey);
     }
 }
