@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Engine;
+namespace Valkyrja\View;
 
 use Valkyrja\Exception\RuntimeException;
-use Valkyrja\Support\Directory;
-use Valkyrja\View\Config\PhpConfiguration;
-use Valkyrja\View\Engine\Contract\Engine;
+use Valkyrja\View\Contract\Renderer as Contract;
 use Valkyrja\View\Exception\InvalidConfigPath;
+use Valkyrja\View\Template\Contract\Template;
+use Valkyrja\View\Template\Template as DefaultTemplate;
 
 use function explode;
 use function extract;
@@ -26,52 +26,26 @@ use function ob_get_clean;
 use function ob_start;
 use function trim;
 
+use const DIRECTORY_SEPARATOR;
 use const EXTR_SKIP;
 
 /**
- * Class PhpEngine.
+ * Class PhpRenderer.
  *
  * @author Melech Mizrachi
  */
-class PhpEngine implements Engine
+class PhpRenderer implements Contract
 {
     /**
-     * The template directory.
+     * PhpRenderer constructor.
      *
-     * @var string
-     */
-    protected string $dir;
-
-    /**
-     * The file extension.
-     *
-     * @var string
-     */
-    protected string $fileExtension;
-
-    /**
-     * The view variables.
-     *
-     * @var array<string, mixed>
-     */
-    protected array $variables = [];
-
-    /**
-     * The paths.
-     *
-     * @var array<string, string>
-     */
-    protected array $paths;
-
-    /**
-     * PhpEngine constructor.
+     * @param array<string, string> $paths
      */
     public function __construct(
-        protected PhpConfiguration $config
+        protected string $dir,
+        protected string $fileExtension = '.phtml',
+        protected array $paths = [],
     ) {
-        $this->paths         = $config->paths;
-        $this->dir           = $config->dir;
-        $this->fileExtension = $config->fileExtension;
     }
 
     /**
@@ -94,6 +68,26 @@ class PhpEngine implements Engine
         }
 
         return $obClean;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function render(string $name, array $variables = []): string
+    {
+        return $this->createTemplate(name: $name, variables: $variables)->render();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createTemplate(string $name, array $variables = []): Template
+    {
+        return new DefaultTemplate(
+            renderer: $this,
+            name: $name,
+            variables: $variables
+        );
     }
 
     /**
@@ -155,9 +149,8 @@ class PhpEngine implements Engine
         // If the first character of the template is an @ symbol
         // Then this is a template from a path in the config
         if (str_starts_with($template, '@')) {
-            $explodeOn = Directory::DIRECTORY_SEPARATOR;
-            $parts     = explode($explodeOn, $template);
-            $path      = $this->paths[$parts[0]] ?? null;
+            $parts = explode(DIRECTORY_SEPARATOR, $template);
+            $path  = $this->paths[$parts[0]] ?? null;
 
             // If there is no path
             if ($path === null) {
@@ -171,9 +164,9 @@ class PhpEngine implements Engine
             }
 
             // Remove any trailing slashes
-            $parts[0] = $explodeOn . trim($path, $explodeOn);
+            $parts[0] = DIRECTORY_SEPARATOR . trim($path, DIRECTORY_SEPARATOR);
 
-            $path = implode($explodeOn, $parts);
+            $path = implode(DIRECTORY_SEPARATOR, $parts);
         } else {
             $path = $this->getDir($template);
         }
@@ -192,7 +185,7 @@ class PhpEngine implements Engine
     {
         return $this->dir
             . ($path !== null && $path !== ''
-                ? Directory::DIRECTORY_SEPARATOR . $path
+                ? DIRECTORY_SEPARATOR . $path
                 : '');
     }
 }

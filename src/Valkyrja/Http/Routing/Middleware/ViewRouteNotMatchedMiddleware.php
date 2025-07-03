@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler;
-use Valkyrja\View\Contract\View;
+use Valkyrja\View\Contract\Renderer;
 
 /**
  * Class ViewRouteNotMatchedMiddleware.
@@ -35,7 +35,7 @@ class ViewRouteNotMatchedMiddleware implements RouteNotMatchedMiddleware
     protected string $errorsTemplateDir = 'errors';
 
     public function __construct(
-        protected View $view = new \Valkyrja\View\View(),
+        protected Renderer $renderer,
     ) {
     }
 
@@ -46,7 +46,7 @@ class ViewRouteNotMatchedMiddleware implements RouteNotMatchedMiddleware
     {
         $statusCode = $response->getStatusCode();
 
-        $view = $this->view
+        $view = $this->renderer
             ->render(
                 name: "$this->errorsTemplateDir/" . ((string) $statusCode->value),
                 variables: [

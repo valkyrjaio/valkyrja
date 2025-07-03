@@ -50,7 +50,7 @@ use Valkyrja\Http\Routing\Url\Contract\Url as UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
-use Valkyrja\View\Contract\View;
+use Valkyrja\View\Contract\Renderer;
 
 /**
  * Test the ServiceProviderTest.
@@ -257,7 +257,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(View::class, $this->createMock(View::class));
+        $container->setSingleton(Renderer::class, $this->createMock(Renderer::class));
 
         self::assertFalse($container->has(ViewRouteNotMatchedMiddleware::class));
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\View\Template;
 
 use Valkyrja\Exception\InvalidArgumentException;
-use Valkyrja\View\Engine\Contract\Engine;
+use Valkyrja\View\Contract\Renderer;
 use Valkyrja\View\Template\Contract\Template as Contract;
 
 use function array_merge;
@@ -52,13 +52,6 @@ class Template implements Contract
     protected array $blocks = [];
 
     /**
-     * The view variables.
-     *
-     * @var array<string, mixed>
-     */
-    protected array $variables = [];
-
-    /**
      * Whether to track layout changes.
      *
      * @var bool
@@ -74,10 +67,13 @@ class Template implements Contract
 
     /**
      * Template constructor.
+     *
+     * @param array<string, mixed> $variables The variables
      */
     public function __construct(
-        protected Engine $engine,
-        protected string $name
+        protected Renderer $renderer,
+        protected string $name,
+        protected array $variables = []
     ) {
     }
 
@@ -213,7 +209,7 @@ class Template implements Contract
     {
         $this->blockStatus[] = $name;
 
-        $this->engine->startRender();
+        $this->renderer->startRender();
     }
 
     /**
@@ -226,7 +222,7 @@ class Template implements Contract
         // Remove the last item in the array (as we are now closing it out)
         array_pop($this->blockStatus);
         // Render the block and set the value in the blocks array
-        $this->blocks[$block] = $this->engine->endRender();
+        $this->blocks[$block] = $this->renderer->endRender();
     }
 
     /**
@@ -309,6 +305,6 @@ class Template implements Contract
     {
         $variables = array_merge($this->variables, $variables);
 
-        return $this->engine->renderFile($path, $variables);
+        return $this->renderer->renderFile($path, $variables);
     }
 }

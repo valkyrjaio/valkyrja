@@ -41,7 +41,7 @@ use Valkyrja\Http\Routing\Processor\Contract\Processor;
 use Valkyrja\Http\Routing\Router as HttpRouter;
 use Valkyrja\Http\Routing\Url\Contract\Url;
 use Valkyrja\Reflection\Contract\Reflection;
-use Valkyrja\View\Contract\View;
+use Valkyrja\View\Contract\Renderer;
 
 /**
  * Class ServiceProvider.
@@ -287,7 +287,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             ViewRouteNotMatchedMiddleware::class,
             new ViewRouteNotMatchedMiddleware(
-                view: $container->getSingleton(View::class),
+                renderer: $container->getSingleton(Renderer::class),
             )
         );
     }

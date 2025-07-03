@@ -11,11 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Engine;
+namespace Valkyrja\View;
 
-use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Support\Directory;
-use Valkyrja\View\Config\OrkaConfiguration;
+use Valkyrja\View\Exception\RuntimeException;
 
 use function array_keys;
 use function file_get_contents;
@@ -25,11 +24,11 @@ use function md5;
 use function preg_replace;
 
 /**
- * Class OrkaEngine.
+ * Class OrkaRenderer.
  *
  * @author Melech Mizrachi
  */
-class OrkaEngine extends PhpEngine
+class OrkaRenderer extends PhpRenderer
 {
     /**
      * @var array<string, string>
@@ -86,14 +85,21 @@ class OrkaEngine extends PhpEngine
     ];
 
     /**
-     * OrkaEngine constructor.
+     * OrkaRenderer constructor.
+     *
+     * @param array<string, string> $paths
      */
     public function __construct(
-        OrkaConfiguration $config
+        string $dir,
+        string $fileExtension = '.orka.phtml',
+        array $paths = [],
+        protected bool $debug = false,
     ) {
-        parent::__construct($config);
-
-        $this->fileExtension = $config->fileExtension;
+        parent::__construct(
+            dir: $dir,
+            fileExtension: $fileExtension,
+            paths: $paths,
+        );
     }
 
     /**
@@ -103,7 +109,7 @@ class OrkaEngine extends PhpEngine
     {
         $cachedPath = $this->getCachedFilePath($name);
 
-        if (! is_file($cachedPath)) {
+        if ($this->debug || ! is_file($cachedPath)) {
             $fileContents = file_get_contents($this->getFullPath($name));
 
             if ($fileContents === false) {

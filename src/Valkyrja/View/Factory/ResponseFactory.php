@@ -16,8 +16,9 @@ namespace Valkyrja\View\Factory;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\View\Contract\View;
+use Valkyrja\View\Contract\Renderer;
 use Valkyrja\View\Factory\Contract\ResponseFactory as Contract;
+use Valkyrja\View\PhpRenderer;
 
 /**
  * Class ResponseFactory.
@@ -28,7 +29,7 @@ class ResponseFactory implements Contract
 {
     public function __construct(
         protected HttpMessageResponseFactory $responseFactory = new \Valkyrja\Http\Message\Factory\ResponseFactory(),
-        protected View $view = new \Valkyrja\View\View()
+        protected Renderer $renderer = new PhpRenderer('resources/views')
     ) {
     }
 
@@ -41,7 +42,7 @@ class ResponseFactory implements Contract
         StatusCode|null $statusCode = null,
         array|null $headers = null
     ): Response {
-        $content = $this->view->render($template, $data ?? []);
+        $content = $this->renderer->createTemplate($template, $data ?? [])->render();
 
         return $this->responseFactory->createResponse($content, $statusCode, $headers);
     }

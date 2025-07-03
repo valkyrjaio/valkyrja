@@ -11,36 +11,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Engine;
+namespace Valkyrja\View;
 
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use Valkyrja\View\Engine\Contract\Engine;
+use Valkyrja\View\Contract\Renderer as Contract;
+use Valkyrja\View\Template\Contract\Template;
+use Valkyrja\View\Template\Template as DefaultTemplate;
 
 /**
- * Class TwigEngine.
+ * Class TwigRenderer.
  *
  * @author Melech Mizrachi
  */
-class TwigEngine implements Engine
+class TwigRenderer implements Contract
 {
     /**
-     * The twig environment.
-     *
-     * @var Environment
-     */
-    protected Environment $twig;
-
-    /**
-     * TwigEngine constructor.
+     * TwigRenderer constructor.
      *
      * @param Environment $twig The Twig environment
      */
-    public function __construct(Environment $twig)
-    {
-        $this->twig = $twig;
+    public function __construct(
+        protected Environment $twig
+    ) {
     }
 
     /**
@@ -56,6 +51,30 @@ class TwigEngine implements Engine
     public function endRender(): string
     {
         return '';
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws LoaderError  When the template cannot be found
+     * @throws SyntaxError  When an error occurred during compilation
+     * @throws RuntimeError When an error occurred during rendering
+     */
+    public function render(string $name, array $variables = []): string
+    {
+        return $this->renderFile($name, $variables);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createTemplate(string $name, array $variables = []): Template
+    {
+        return new DefaultTemplate(
+            renderer: $this,
+            name: $name,
+            variables: $variables
+        );
     }
 
     /**

@@ -50,8 +50,6 @@ use Valkyrja\Orm\Query\Contract\Query as OrmQuery;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder as OrmQueryBuilder;
 use Valkyrja\Orm\Repository\Contract\Repository as OrmRepository;
 use Valkyrja\Orm\Retriever\Contract\Retriever as OrmRetriever;
-use Valkyrja\View\Config\Configurations as ViewConfigurations;
-use Valkyrja\View\Engine\Contract\Engine as ViewEngine;
 
 /**
  * Class Env.
@@ -427,36 +425,22 @@ class Env
      *
      ************************************************************/
 
-    /** @var string|null */
-    public const string|null VIEW_DEFAULT_CONFIGURATION = null;
-    /** @var callable():ViewConfigurations|null */
-    public const array|null VIEW_CONFIGURATIONS = null;
-    /** @var class-string<ViewEngine>|null */
-    public const string|null VIEW_ORKA_ENGINE = null;
-    /** @var string|null */
-    public const string|null VIEW_ORKA_FILE_EXTENSION = null;
-    /** @var string|null */
-    public const string|null VIEW_ORKA_DIR = null;
-    /** @var array<string, string>|null */
-    public const array|null VIEW_ORKA_PATHS = null;
-    /** @var class-string<ViewEngine>|null */
-    public const string|null VIEW_PHP_ENGINE = null;
-    /** @var string|null */
-    public const string|null VIEW_PHP_FILE_EXTENSION = null;
-    /** @var string|null */
-    public const string|null VIEW_PHP_DIR = null;
-    /** @var array<string, string>|null */
-    public const array|null VIEW_PHP_PATHS = null;
-    /** @var class-string<ViewEngine>|null */
-    public const string|null VIEW_TWIG_ENGINE = null;
-    /** @var string|null */
-    public const string|null VIEW_TWIG_FILE_EXTENSION = null;
-    /** @var string|null */
-    public const string|null VIEW_TWIG_DIR = null;
-    /** @var array<string, string>|null */
-    public const array|null VIEW_TWIG_PATHS = null;
-    /** @var class-string<TwigExtensionInterface>[]|null */
-    public const array|null VIEW_TWIG_EXTENSIONS = null;
-    /** @var string|null */
-    public const string|null VIEW_TWIG_COMPILED_DIR = null;
+    /** @var non-empty-string */
+    public const string VIEW_ORKA_FILE_EXTENSION = '.orka.phtml';
+    /** @var non-empty-string */
+    public const string VIEW_ORKA_DIR = __DIR__ . '/../resources/views';
+    /** @var array<string, string> */
+    public const array VIEW_ORKA_PATHS = [];
+    /** @var non-empty-string */
+    public const string VIEW_PHP_FILE_EXTENSION = '.phtml';
+    /** @var non-empty-string */
+    public const string VIEW_PHP_DIR = __DIR__ . '/../resources/views';
+    /** @var array<string, string> */
+    public const array VIEW_PHP_PATHS = [];
+    /** @var array<string, string> */
+    public const array VIEW_TWIG_PATHS = [];
+    /** @var class-string<TwigExtensionInterface>[] */
+    public const array VIEW_TWIG_EXTENSIONS = [];
+    /** @var non-empty-string */
+    public const string VIEW_TWIG_COMPILED_DIR = __DIR__ . '/../storage/views';
 }

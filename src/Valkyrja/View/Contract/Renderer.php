@@ -11,14 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Engine\Contract;
+namespace Valkyrja\View\Contract;
+
+use Valkyrja\View\Template\Contract\Template;
 
 /**
- * Interface Engine.
+ * Interface Renderer.
  *
  * @author Melech Mizrachi
  */
-interface Engine
+interface Renderer
 {
     /**
      * Start rendering.
@@ -35,7 +37,23 @@ interface Engine
     public function endRender(): string;
 
     /**
-     * Render a file.
+     * Render a template.
+     *
+     * @param non-empty-string     $name      The template name
+     * @param array<string, mixed> $variables [optional] The variables
+     */
+    public function render(string $name, array $variables = []): string;
+
+    /**
+     * Create a new template.
+     *
+     * @param non-empty-string     $name      The template name
+     * @param array<string, mixed> $variables [optional] The variables
+     */
+    public function createTemplate(string $name, array $variables = []): Template;
+
+    /**
+     * Render a template file.
      *
      * @param string               $name      The file name
      * @param array<string, mixed> $variables [optional] The variables

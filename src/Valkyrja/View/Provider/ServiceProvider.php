@@ -15,24 +15,17 @@ namespace Valkyrja\View\Provider;
 
 use Twig\Environment;
 use Twig\Error\LoaderError;
+use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
 use Twig\Loader\FilesystemLoader;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
-use Valkyrja\View\Config;
-use Valkyrja\View\Config\OrkaConfiguration;
-use Valkyrja\View\Config\PhpConfiguration;
-use Valkyrja\View\Config\TwigConfiguration;
-use Valkyrja\View\Contract\View;
-use Valkyrja\View\Engine\Contract\Engine;
-use Valkyrja\View\Engine\OrkaEngine;
-use Valkyrja\View\Engine\PhpEngine;
-use Valkyrja\View\Engine\TwigEngine;
-use Valkyrja\View\Factory\ContainerFactory;
-use Valkyrja\View\Factory\Contract\Factory;
+use Valkyrja\View\Contract\Renderer;
 use Valkyrja\View\Factory\Contract\ResponseFactory;
-use Valkyrja\View\Template\Contract\Template;
+use Valkyrja\View\OrkaRenderer;
+use Valkyrja\View\PhpRenderer;
+use Valkyrja\View\TwigRenderer;
 
 /**
  * Class ServiceProvider.
@@ -47,15 +40,12 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            View::class            => [self::class, 'publishView'],
-            Factory::class         => [self::class, 'publishFactory'],
-            Template::class        => [self::class, 'publishTemplate'],
-            PhpEngine::class       => [self::class, 'publishPhpEngine'],
-            OrkaEngine::class      => [self::class, 'publishOrkaEngine'],
-            TwigEngine::class      => [self::class, 'publishTwigEngine'],
+            Renderer::class        => [self::class, 'publishRenderer'],
+            PhpRenderer::class     => [self::class, 'publishPhpRenderer'],
+            OrkaRenderer::class    => [self::class, 'publishOrkaRenderer'],
+            TwigRenderer::class    => [self::class, 'publishTwigRenderer'],
             Environment::class     => [self::class, 'publishTwigEnvironment'],
             ResponseFactory::class => [self::class, 'publishResponseFactory'],
-            Config::class          => [self::class, 'publishConfig'],
         ];
     }
 
@@ -65,175 +55,104 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            View::class,
-            Factory::class,
-            Template::class,
-            PhpEngine::class,
-            OrkaEngine::class,
-            TwigEngine::class,
+            Renderer::class,
+            PhpRenderer::class,
+            OrkaRenderer::class,
+            TwigRenderer::class,
             Environment::class,
             ResponseFactory::class,
-            Config::class,
         ];
     }
 
     /**
-     * Publish the config service.
+     * Publish the renderer service.
      */
-    public static function publishConfig(Container $container): void
+    public static function publishRenderer(Container $container): void
+    {
+        $container->setSingleton(
+            Renderer::class,
+            $container->getSingleton(PhpRenderer::class)
+        );
+    }
+
+    /**
+     * Publish the renderer service.
+     */
+    public static function publishPhpRenderer(Container $container): void
     {
         $env = $container->getSingleton(Env::class);
+        /** @var non-empty-string $dir */
+        $dir = $env::VIEW_PHP_DIR;
+        /** @var non-empty-string $fileExtension */
+        $fileExtension = $env::VIEW_PHP_FILE_EXTENSION;
+        /** @var array<string, string> $paths */
+        $paths = $env::VIEW_PHP_PATHS;
 
         $container->setSingleton(
-            Config::class,
-            Config::fromEnv($env::class)
+            PhpRenderer::class,
+            new PhpRenderer(
+                dir: $dir,
+                fileExtension: $fileExtension,
+                paths: $paths
+            ),
         );
     }
 
     /**
-     * Publish the view service.
+     * Publish the renderer service.
      */
-    public static function publishView(Container $container): void
+    public static function publishOrkaRenderer(Container $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $env = $container->getSingleton(Env::class);
+        /** @var bool $debug */
+        $debug = $env::APP_DEBUG_MODE;
+        /** @var non-empty-string $dir */
+        $dir = $env::VIEW_ORKA_DIR;
+        /** @var non-empty-string $fileExtension */
+        $fileExtension = $env::VIEW_ORKA_FILE_EXTENSION;
+        /** @var array<string, string> $paths */
+        $paths = $env::VIEW_ORKA_PATHS;
 
         $container->setSingleton(
-            View::class,
-            new \Valkyrja\View\View(
-                $container,
-                $container->getSingleton(Factory::class),
-                $config
-            )
+            OrkaRenderer::class,
+            new OrkaRenderer(
+                dir: $dir,
+                fileExtension: $fileExtension,
+                paths: $paths,
+                debug: $debug
+            ),
         );
     }
 
     /**
-     * Publish the factory service.
+     * Publish the renderer service.
      */
-    public static function publishFactory(Container $container): void
+    public static function publishTwigRenderer(Container $container): void
     {
         $container->setSingleton(
-            Factory::class,
-            new ContainerFactory($container)
+            TwigRenderer::class,
+            new TwigRenderer(
+                $container->getSingleton(Environment::class),
+            ),
         );
     }
 
     /**
-     * Publish the template service.
-     */
-    public static function publishTemplate(Container $container): void
-    {
-        $container->setCallable(
-            Template::class,
-            [self::class, 'createTemplate']
-        );
-    }
-
-    /**
-     * Create a template.
-     */
-    public static function createTemplate(Container $container, Engine $engine, string $name): Template
-    {
-        return new \Valkyrja\View\Template\Template($engine, $name);
-    }
-
-    /**
-     * Publish the PHP engine service.
-     */
-    public static function publishPhpEngine(Container $container): void
-    {
-        $container->setCallable(
-            PhpEngine::class,
-            [self::class, 'createPhpEngine']
-        );
-    }
-
-    /**
-     * Create a Php engine.
-     */
-    public static function createPhpEngine(Container $container, PhpConfiguration $config): PhpEngine
-    {
-        return new PhpEngine($config);
-    }
-
-    /**
-     * Publish the Orka engine service.
-     */
-    public static function publishOrkaEngine(Container $container): void
-    {
-        $container->setCallable(
-            OrkaEngine::class,
-            [self::class, 'createOrkaEngine']
-        );
-    }
-
-    /**
-     * Create an Orka engine.
-     */
-    public static function createOrkaEngine(Container $container, OrkaConfiguration $config): OrkaEngine
-    {
-        return new OrkaEngine($config);
-    }
-
-    /**
-     * Publish the Twig engine service.
-     */
-    public static function publishTwigEngine(Container $container): void
-    {
-        $container->setCallable(
-            TwigEngine::class,
-            [self::class, 'createTwigEngine']
-        );
-    }
-
-    /**
-     * Create a Twig engine.
-     */
-    public static function createTwigEngine(Container $container, TwigConfiguration $config): TwigEngine
-    {
-        return new TwigEngine(
-            $container->get(Environment::class, [$config])
-        );
-    }
-
-    /**
-     * Publish the response factory service.
-     */
-    public static function publishResponseFactory(Container $container): void
-    {
-        $container->setSingleton(
-            ResponseFactory::class,
-            new \Valkyrja\View\Factory\ResponseFactory(
-                $container->getSingleton(HttpMessageResponseFactory::class),
-                $container->getSingleton(View::class)
-            )
-        );
-    }
-
-    /**
-     * Publish the Twig environment service.
-     */
-    public static function publishTwigEnvironment(Container $container): void
-    {
-        // Set the twig environment as a singleton in the container
-        $container->setCallable(
-            Environment::class,
-            [self::class, 'createTwigEnvironment']
-        );
-    }
-
-    /**
-     * Create a Twig environment.
+     * Publish the renderer service.
      *
      * @throws LoaderError
      */
-    public static function createTwigEnvironment(Container $container, TwigConfiguration $config): Environment
+    public static function publishTwigEnvironment(Container $container): void
     {
-        $env         = $container->getSingleton(Env::class);
-        $debug       = $env::APP_DEBUG_MODE;
-        $paths       = $config->paths;
-        $extensions  = $config->extensions;
-        $compiledDir = $config->compiledDir;
+        $env = $container->getSingleton(Env::class);
+        /** @var bool $debug */
+        $debug = $env::APP_DEBUG_MODE;
+        /** @var array<string, string> $paths */
+        $paths = $env::VIEW_TWIG_PATHS;
+        /** @var class-string<TwigExtensionInterface>[] $extensions */
+        $extensions = $env::VIEW_TWIG_EXTENSIONS;
+        /** @var non-empty-string $compiledDir */
+        $compiledDir = $env::VIEW_TWIG_COMPILED_DIR;
 
         // Get the twig filesystem loader
         $loader = new FilesystemLoader();
@@ -259,6 +178,23 @@ final class ServiceProvider extends Provider
             $twig->addExtension(new $extension());
         }
 
-        return $twig;
+        $container->setSingleton(
+            Environment::class,
+            $twig,
+        );
+    }
+
+    /**
+     * Publish the response factory service.
+     */
+    public static function publishResponseFactory(Container $container): void
+    {
+        $container->setSingleton(
+            ResponseFactory::class,
+            new \Valkyrja\View\Factory\ResponseFactory(
+                $container->getSingleton(HttpMessageResponseFactory::class),
+                $container->getSingleton(Renderer::class)
+            )
+        );
     }
 }

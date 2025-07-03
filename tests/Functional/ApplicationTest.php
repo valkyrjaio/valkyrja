@@ -23,7 +23,7 @@ use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Session\Contract\Session;
 use Valkyrja\Tests\EnvClass;
-use Valkyrja\View\Contract\View;
+use Valkyrja\View\Contract\Renderer;
 
 /**
  * Test the functionality of the Application.
@@ -168,8 +168,8 @@ class ApplicationTest extends TestCase
      *
      * @return void
      */
-    public function testView(): void
+    public function testRenderer(): void
     {
-        self::assertInstanceOf(View::class, $this->app->getContainer()->getSingleton(View::class));
+        self::assertInstanceOf(Renderer::class, $this->app->getContainer()->getSingleton(Renderer::class));
     }
 }
