@@ -84,7 +84,6 @@ class Env
     /** @var class-string<Component>[] */
     public const array APP_COMPONENTS = [
         ComponentClass::API,
-        ComponentClass::ASSET,
         ComponentClass::AUTH,
         ComponentClass::BROADCAST,
         ComponentClass::CACHE,
@@ -103,21 +102,6 @@ class Env
     public const string APP_DIR = __DIR__ . '/..';
     /** @var string */
     public const string APP_CACHE_FILE_PATH = __DIR__ . '/../storage/framework/cache/cache.php';
-
-    /************************************************************
-     *
-     * Asset component env variables.
-     *
-     ************************************************************/
-
-    /** @var string|null */
-    public const string|null ASSET_DEFAULT_BUNDLE = null;
-    /** @var string|null */
-    public const string|null ASSET_DFAULT_HOST = null;
-    /** @var string|null */
-    public const string|null ASSET_DFAULT_PATH = null;
-    /** @var string|null */
-    public const string|null ASSET_DFAULT_MANIFEST = null;
 
     /************************************************************
      *

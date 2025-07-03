@@ -24,7 +24,6 @@ final class ComponentClass
 {
     public const string APPLICATION  = Component::class;
     public const string API          = \Valkyrja\Api\Component::class;
-    public const string ASSET        = \Valkyrja\Asset\Component::class;
     public const string ATTRIBUTE    = \Valkyrja\Attribute\Component::class;
     public const string AUTH         = \Valkyrja\Auth\Component::class;
     public const string BROADCAST    = \Valkyrja\Broadcast\Component::class;
