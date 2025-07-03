@@ -11,62 +11,61 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem\Adapter;
+namespace Valkyrja\Filesystem;
 
-use Valkyrja\Exception\RuntimeException;
-use Valkyrja\Filesystem\Adapter\Contract\Adapter as Contract;
-use Valkyrja\Filesystem\Data\InMemoryFile;
-use Valkyrja\Filesystem\Data\InMemoryMetadata;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\FilesystemOperator as FlysystemInterface;
+use League\Flysystem\StorageAttributes;
+use Valkyrja\Filesystem\Contract\Filesystem as Contract;
 use Valkyrja\Filesystem\Enum\Visibility;
-use Valkyrja\Filesystem\Exception\UnableToReadContentsException;
 
-use function fread;
-use function str_starts_with;
-use function time;
+use function array_map;
 
 /**
- * Class InMemoryAdapter.
+ * Class FlysystemFilesystem.
  *
  * @author Melech Mizrachi
  */
-class InMemoryAdapter implements Contract
+class FlysystemFilesystem implements Contract
 {
     /**
-     * @var array<string, InMemoryFile>
+     * FlysystemFilesystem constructor.
+     *
+     * @param FlysystemInterface $flysystem The Flysystem filesystem
      */
-    protected array $files = [];
-
     public function __construct(
-        InMemoryFile ...$files
+        protected FlysystemInterface $flysystem
     ) {
-        foreach ($files as $file) {
-            $this->files[$file->name] = $file;
-        }
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function exists(string $path): bool
     {
-        return isset($this->files[$path]);
+        return $this->flysystem->has($path);
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function read(string $path): string
     {
-        return $this->files[$path]->contents
-            ?? throw new UnableToReadContentsException("Error reading file contents for $path");
+        return $this->flysystem->read($path);
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function write(string $path, string $contents): bool
     {
-        $this->files[$path] = new InMemoryFile($path, $contents, timestamp: time());
+        $this->flysystem->write($path, $contents);
 
         return true;
     }
@@ -74,23 +73,19 @@ class InMemoryAdapter implements Contract
     /**
      * @inheritDoc
      *
-     * @param resource $resource The resource
+     * @throws FilesystemException
      */
     public function writeStream(string $path, $resource): bool
     {
-        $pathContents = fread($resource, 4096);
-
-        if ($pathContents === false) {
-            throw new RuntimeException('Failed to read provided resource');
-        }
-
-        $this->files[$path] = new InMemoryFile($path, $pathContents, timestamp: time());
+        $this->flysystem->writeStream($path, $resource);
 
         return true;
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function update(string $path, string $contents): bool
     {
@@ -99,6 +94,8 @@ class InMemoryAdapter implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function updateStream(string $path, $resource): bool
     {
@@ -107,6 +104,8 @@ class InMemoryAdapter implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function put(string $path, string $contents): bool
     {
@@ -115,6 +114,8 @@ class InMemoryAdapter implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function putStream(string $path, $resource): bool
     {
@@ -123,40 +124,36 @@ class InMemoryAdapter implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function rename(string $path, string $newPath): bool
     {
-        if ($this->exists($newPath) || ! $this->exists($path)) {
-            return false;
-        }
-
-        $this->files[$newPath] = $this->files[$path];
-
-        $this->delete($path);
+        $this->flysystem->move($path, $newPath);
 
         return true;
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function copy(string $path, string $newPath): bool
     {
-        if ($this->exists($newPath) || ! $this->exists($path)) {
-            return false;
-        }
-
-        $this->files[$newPath] = $this->files[$path];
+        $this->flysystem->copy($path, $newPath);
 
         return true;
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function delete(string $path): bool
     {
-        unset($this->files[$path]);
+        $this->flysystem->delete($path);
 
         return true;
     }
@@ -166,118 +163,132 @@ class InMemoryAdapter implements Contract
      */
     public function metadata(string $path): array|null
     {
-        return $this->getMetadataInternal($path)?->toArray();
+        return null;
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function mimetype(string $path): string|null
     {
-        return $this->getMetadataInternal($path)->mimetype ?? null;
+        return $this->flysystem->mimeType($path);
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function size(string $path): int|null
     {
-        return $this->getMetadataInternal($path)->size ?? null;
+        return $this->flysystem->fileSize($path);
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function timestamp(string $path): int|null
     {
-        return $this->files[$path]->timestamp ?? null;
+        return $this->flysystem->lastModified($path);
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function visibility(string $path): string|null
     {
-        return $this->getMetadataInternal($path)->visibility ?? null;
+        return $this->flysystem->visibility($path);
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function setVisibility(string $path, Visibility $visibility): bool
     {
-        if (! $this->exists($path)) {
-            return false;
-        }
-
-        $this->files[$path]->metadata->visibility = $visibility->value;
+        $this->flysystem->setVisibility($path, $visibility->value);
 
         return true;
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function setVisibilityPublic(string $path): bool
     {
-        return $this->setVisibility($path, Visibility::PUBLIC);
+        $this->flysystem->setVisibility($path, Visibility::PUBLIC->value);
+
+        return true;
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function setVisibilityPrivate(string $path): bool
     {
-        return $this->setVisibility($path, Visibility::PRIVATE);
+        $this->flysystem->setVisibility($path, Visibility::PRIVATE->value);
+
+        return true;
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function createDir(string $path): bool
     {
-        $this->files[$path] = new InMemoryFile($path, timestamp: time());
+        $this->flysystem->createDirectory($path);
 
         return true;
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
      */
     public function deleteDir(string $path): bool
     {
-        foreach ($this->files as $filePath => $file) {
-            if (str_starts_with($filePath, $path)) {
-                unset($this->files[$filePath]);
-            }
-        }
+        $this->flysystem->deleteDirectory($path);
 
         return true;
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws FilesystemException
+     *
+     * @psalm-suppress MixedReturnTypeCoercion
      */
     public function listContents(string|null $directory = null, bool $recursive = false): array
     {
-        $directory ??= '';
-
-        $contents = [];
-
-        foreach ($this->files as $filePath => $file) {
-            if (str_starts_with($filePath, $directory)) {
-                $contents[] = [
-                    'path'     => $filePath,
-                    'contents' => $file->contents,
-                ];
-            }
-        }
-
-        return $contents;
+        return array_map(
+            /**
+             * @return array<string, string|int>
+             */
+            static fn (StorageAttributes $attributes): array => (array) $attributes->jsonSerialize(),
+            $this->flysystem->listContents($directory ?? '', $recursive)->toArray()
+        );
     }
 
-    protected function getMetadataInternal(string $path): InMemoryMetadata|null
+    /**
+     * @inheritDoc
+     */
+    public function getFlysystem(): FlysystemInterface
     {
-        return $this->files[$path]->metadata ?? null;
+        return $this->flysystem;
     }
 }

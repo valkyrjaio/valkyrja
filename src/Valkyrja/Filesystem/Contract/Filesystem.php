@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Contract;
 
-use Valkyrja\Filesystem\Driver\Contract\Driver;
 use Valkyrja\Filesystem\Enum\Visibility;
 
 /**
@@ -23,11 +22,6 @@ use Valkyrja\Filesystem\Enum\Visibility;
  */
 interface Filesystem
 {
-    /**
-     * Use a specific configuration.
-     */
-    public function use(string|null $name = null): Driver;
-
     /**
      * Determine whether a path exists.
      *

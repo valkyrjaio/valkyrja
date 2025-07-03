@@ -13,53 +13,22 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem;
 
-use Valkyrja\Exception\InvalidArgumentException;
-use Valkyrja\Filesystem\Config\Configuration;
 use Valkyrja\Filesystem\Contract\Filesystem as Contract;
-use Valkyrja\Filesystem\Driver\Contract\Driver;
 use Valkyrja\Filesystem\Enum\Visibility;
-use Valkyrja\Filesystem\Exception\RuntimeException;
-use Valkyrja\Filesystem\Factory\Contract\Factory;
 
 /**
- * Class Filesystem.
+ * Class NullFilesystem.
  *
  * @author Melech Mizrachi
  */
-class Filesystem implements Contract
+class NullFilesystem implements Contract
 {
-    /**
-     * @var Driver[]
-     */
-    protected array $drivers = [];
-
-    /**
-     * Filesystem constructor.
-     */
-    public function __construct(
-        protected Factory $factory = new \Valkyrja\Filesystem\Factory\Factory(),
-        protected Config $config = new Config()
-    ) {
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function use(string|null $name = null): Driver
-    {
-        // The configuration name to use
-        $name ??= $this->config->defaultConfiguration;
-
-        return $this->drivers[$name]
-            ??= $this->createDriverForName($name);
-    }
-
     /**
      * @inheritDoc
      */
     public function exists(string $path): bool
     {
-        return $this->use()->exists($path);
+        return true;
     }
 
     /**
@@ -67,7 +36,7 @@ class Filesystem implements Contract
      */
     public function read(string $path): string
     {
-        return $this->use()->read($path);
+        return '';
     }
 
     /**
@@ -75,7 +44,7 @@ class Filesystem implements Contract
      */
     public function write(string $path, string $contents): bool
     {
-        return $this->use()->write($path, $contents);
+        return true;
     }
 
     /**
@@ -83,7 +52,7 @@ class Filesystem implements Contract
      */
     public function writeStream(string $path, $resource): bool
     {
-        return $this->use()->writeStream($path, $resource);
+        return true;
     }
 
     /**
@@ -91,7 +60,7 @@ class Filesystem implements Contract
      */
     public function update(string $path, string $contents): bool
     {
-        return $this->use()->update($path, $contents);
+        return true;
     }
 
     /**
@@ -99,7 +68,7 @@ class Filesystem implements Contract
      */
     public function updateStream(string $path, $resource): bool
     {
-        return $this->use()->updateStream($path, $resource);
+        return true;
     }
 
     /**
@@ -107,7 +76,7 @@ class Filesystem implements Contract
      */
     public function put(string $path, string $contents): bool
     {
-        return $this->use()->put($path, $contents);
+        return true;
     }
 
     /**
@@ -115,7 +84,7 @@ class Filesystem implements Contract
      */
     public function putStream(string $path, $resource): bool
     {
-        return $this->use()->putStream($path, $resource);
+        return true;
     }
 
     /**
@@ -123,7 +92,7 @@ class Filesystem implements Contract
      */
     public function rename(string $path, string $newPath): bool
     {
-        return $this->use()->rename($path, $newPath);
+        return true;
     }
 
     /**
@@ -131,7 +100,7 @@ class Filesystem implements Contract
      */
     public function copy(string $path, string $newPath): bool
     {
-        return $this->use()->copy($path, $newPath);
+        return true;
     }
 
     /**
@@ -139,7 +108,7 @@ class Filesystem implements Contract
      */
     public function delete(string $path): bool
     {
-        return $this->use()->delete($path);
+        return true;
     }
 
     /**
@@ -147,7 +116,7 @@ class Filesystem implements Contract
      */
     public function metadata(string $path): array|null
     {
-        return $this->use()->metadata($path);
+        return null;
     }
 
     /**
@@ -155,7 +124,7 @@ class Filesystem implements Contract
      */
     public function mimetype(string $path): string|null
     {
-        return $this->use()->mimetype($path);
+        return null;
     }
 
     /**
@@ -163,7 +132,7 @@ class Filesystem implements Contract
      */
     public function size(string $path): int|null
     {
-        return $this->use()->size($path);
+        return null;
     }
 
     /**
@@ -171,7 +140,7 @@ class Filesystem implements Contract
      */
     public function timestamp(string $path): int|null
     {
-        return $this->use()->timestamp($path);
+        return null;
     }
 
     /**
@@ -179,7 +148,7 @@ class Filesystem implements Contract
      */
     public function visibility(string $path): string|null
     {
-        return $this->use()->visibility($path);
+        return null;
     }
 
     /**
@@ -187,7 +156,7 @@ class Filesystem implements Contract
      */
     public function setVisibility(string $path, Visibility $visibility): bool
     {
-        return $this->use()->setVisibility($path, $visibility);
+        return true;
     }
 
     /**
@@ -195,7 +164,7 @@ class Filesystem implements Contract
      */
     public function setVisibilityPublic(string $path): bool
     {
-        return $this->use()->setVisibilityPublic($path);
+        return true;
     }
 
     /**
@@ -203,7 +172,7 @@ class Filesystem implements Contract
      */
     public function setVisibilityPrivate(string $path): bool
     {
-        return $this->use()->setVisibilityPrivate($path);
+        return true;
     }
 
     /**
@@ -211,7 +180,7 @@ class Filesystem implements Contract
      */
     public function createDir(string $path): bool
     {
-        return $this->use()->createDir($path);
+        return true;
     }
 
     /**
@@ -219,7 +188,7 @@ class Filesystem implements Contract
      */
     public function deleteDir(string $path): bool
     {
-        return $this->use()->deleteDir($path);
+        return true;
     }
 
     /**
@@ -227,27 +196,6 @@ class Filesystem implements Contract
      */
     public function listContents(string|null $directory = null, bool $recursive = false): array
     {
-        return $this->use()->listContents($directory, $recursive);
-    }
-
-    /**
-     * Create a driver for a given name.
-     */
-    protected function createDriverForName(string $name): Driver
-    {
-        // The config to use
-        $config = $this->config->configurations->$name
-            ?? throw new InvalidArgumentException("$name is not a valid configuration");
-
-        if (! $config instanceof Configuration) {
-            throw new RuntimeException("$name is an invalid configuration");
-        }
-
-        // The driver to use
-        $driverClass = $config->driverClass;
-        // The adapter to use
-        $adapterClass = $config->adapterClass;
-
-        return $this->factory->createDriver($driverClass, $adapterClass, $config);
+        return [];
     }
 }

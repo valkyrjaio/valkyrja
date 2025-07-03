@@ -28,6 +28,9 @@ use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
+use Valkyrja\Filesystem\Contract\Filesystem;
+use Valkyrja\Filesystem\FlysystemFilesystem;
+use Valkyrja\Filesystem\LocalFlysystemFilesystem;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware as HttpRequestReceivedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware as HttpRouteDispatchedMiddleware;
@@ -227,10 +230,12 @@ class Env
      *
      ************************************************************/
 
-    /** @var string|null */
-    public const string|null FILESYSTEM_FLYSYSTEM_LOCAL_DIR = null;
-    /** @var string|null */
-    public const string|null FILESYSTEM_IN_MEMORY_DIR = null;
+    /** @var class-string<Filesystem> */
+    public const string FILESYSTEM_DEFAULT = FlysystemFilesystem::class;
+    /** @var class-string<FlysystemFilesystem> */
+    public const string FLYSYSTEM_FILESYSTEM_DEFAULT = LocalFlysystemFilesystem::class;
+    /** @var non-empty-string */
+    public const string FILESYSTEM_FLYSYSTEM_LOCAL_DIR = __DIR__ . '/../storage/app';
     /** @var non-empty-string */
     public const string FILESYSTEM_FLYSYSTEM_S3_KEY = 's3-key';
     /** @var non-empty-string */

@@ -20,18 +20,12 @@ use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Filesystem\Adapter\Contract\Adapter;
-use Valkyrja\Filesystem\Adapter\FlysystemAdapter;
-use Valkyrja\Filesystem\Adapter\InMemoryAdapter;
-use Valkyrja\Filesystem\Config;
-use Valkyrja\Filesystem\Config\FlysystemConfiguration;
-use Valkyrja\Filesystem\Config\InMemoryConfiguration;
-use Valkyrja\Filesystem\Config\LocalFlysystemConfiguration;
-use Valkyrja\Filesystem\Config\S3FlysystemConfiguration;
 use Valkyrja\Filesystem\Contract\Filesystem;
-use Valkyrja\Filesystem\Driver\Driver;
-use Valkyrja\Filesystem\Factory\ContainerFactory;
-use Valkyrja\Filesystem\Factory\Contract\Factory;
+use Valkyrja\Filesystem\FlysystemFilesystem;
+use Valkyrja\Filesystem\InMemoryFilesystem;
+use Valkyrja\Filesystem\LocalFlysystemFilesystem;
+use Valkyrja\Filesystem\NullFilesystem;
+use Valkyrja\Filesystem\S3FlysystemFilesystem;
 
 /**
  * Class ServiceProvider.
@@ -46,14 +40,14 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Filesystem::class            => [self::class, 'publishFilesystem'],
-            Factory::class               => [self::class, 'publishFactory'],
-            Driver::class                => [self::class, 'publishDriver'],
-            FlysystemAdapter::class      => [self::class, 'publishFlysystemAdapter'],
-            FlysystemLocalAdapter::class => [self::class, 'publishFlysystemLocalAdapter'],
-            FlysystemAwsS3Adapter::class => [self::class, 'publishFlysystemAwsS3Adapter'],
-            InMemoryAdapter::class       => [self::class, 'publishInMemoryAdapter'],
-            Config::class                => [self::class, 'publishConfig'],
+            Filesystem::class               => [self::class, 'publishFilesystem'],
+            FlysystemFilesystem::class      => [self::class, 'publishFlysystemFilesystem'],
+            LocalFlysystemFilesystem::class => [self::class, 'publishLocalFlysystemFilesystem'],
+            FlysystemLocalAdapter::class    => [self::class, 'publishFlysystemLocalAdapter'],
+            S3FlysystemFilesystem::class    => [self::class, 'publishS3FlysystemFilesystem'],
+            FlysystemAwsS3Adapter::class    => [self::class, 'publishFlysystemAwsS3Adapter'],
+            InMemoryFilesystem::class       => [self::class, 'publishInMemoryFilesystem'],
+            NullFilesystem::class           => [self::class, 'publishNullFilesystem'],
         ];
     }
 
@@ -64,24 +58,14 @@ final class ServiceProvider extends Provider
     {
         return [
             Filesystem::class,
-            Factory::class,
-            Driver::class,
-            FlysystemAdapter::class,
+            FlysystemFilesystem::class,
+            LocalFlysystemFilesystem::class,
             FlysystemLocalAdapter::class,
+            S3FlysystemFilesystem::class,
             FlysystemAwsS3Adapter::class,
-            InMemoryAdapter::class,
-            Config::class,
+            InMemoryFilesystem::class,
+            NullFilesystem::class,
         ];
-    }
-
-    /**
-     * Publish the Config service.
-     */
-    public static function publishConfig(Container $container): void
-    {
-        $env = $container->getSingleton(Env::class);
-
-        $container->setSingleton(Config::class, Config::fromEnv($env::class));
     }
 
     /**
@@ -89,88 +73,43 @@ final class ServiceProvider extends Provider
      */
     public static function publishFilesystem(Container $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<Filesystem> $default */
+        $default = $env::FILESYSTEM_DEFAULT;
 
         $container->setSingleton(
             Filesystem::class,
-            new \Valkyrja\Filesystem\Filesystem(
-                $container->getSingleton(Factory::class),
-                $config
-            )
+            $container->getSingleton($default),
         );
     }
 
     /**
-     * Publish the factory service.
+     * Publish the flysystem filesystem service.
      */
-    public static function publishFactory(Container $container): void
+    public static function publishFlysystemFilesystem(Container $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<Filesystem> $default */
+        $default = $env::FLYSYSTEM_FILESYSTEM_DEFAULT;
+
+        $container->setSingleton(
+            FlysystemFilesystem::class,
+            $container->getSingleton($default),
+        );
+    }
+
+    /**
+     * Publish the local flysystem filesystem service.
+     */
+    public static function publishLocalFlysystemFilesystem(Container $container): void
     {
         $container->setSingleton(
-            Factory::class,
-            new ContainerFactory($container),
-        );
-    }
-
-    /**
-     * Publish a driver service.
-     */
-    public static function publishDriver(Container $container): void
-    {
-        $container->setCallable(
-            Driver::class,
-            [self::class, 'createDriver']
-        );
-    }
-
-    /**
-     * Create the driver class.
-     */
-    public static function createDriver(Container $container, Adapter $adapter): Driver
-    {
-        return new Driver(
-            $adapter
-        );
-    }
-
-    /**
-     * Publish the in memory adapter service.
-     */
-    public static function publishInMemoryAdapter(Container $container): void
-    {
-        $container->setCallable(
-            InMemoryAdapter::class,
-            [self::class, 'createInMemoryAdapter']
-        );
-    }
-
-    /**
-     * Create the in memory adapter.
-     */
-    public static function createInMemoryAdapter(Container $container, InMemoryConfiguration $config): InMemoryAdapter
-    {
-        return new InMemoryAdapter();
-    }
-
-    /**
-     * Publish the flysystem adapter service.
-     */
-    public static function publishFlysystemAdapter(Container $container): void
-    {
-        $container->setCallable(
-            FlysystemAdapter::class,
-            [self::class, 'createFlysystemAdapter']
-        );
-    }
-
-    /**
-     * Create the flysystem adapter.
-     */
-    public static function createFlysystemAdapter(Container $container, FlysystemConfiguration $config): FlysystemAdapter
-    {
-        return new FlysystemAdapter(
-            new Flysystem(
-                $container->get($config->flysystemAdapter, [$config])
-            )
+            LocalFlysystemFilesystem::class,
+            new LocalFlysystemFilesystem(
+                new Flysystem(
+                    $container->getSingleton(FlysystemLocalAdapter::class),
+                )
+            ),
         );
     }
 
@@ -179,19 +118,30 @@ final class ServiceProvider extends Provider
      */
     public static function publishFlysystemLocalAdapter(Container $container): void
     {
-        $container->setCallable(
+        $env = $container->getSingleton(Env::class);
+        /** @var non-empty-string $dir */
+        $dir = $env::FILESYSTEM_FLYSYSTEM_LOCAL_DIR;
+
+        $container->setSingleton(
             FlysystemLocalAdapter::class,
-            [self::class, 'createFlysystemLocalAdapter']
+            new FlysystemLocalAdapter(
+                $dir
+            )
         );
     }
 
     /**
-     * Create the flysystem local adapter.
+     * Publish the s3 flysystem filesystem service.
      */
-    public static function createFlysystemLocalAdapter(Container $container, LocalFlysystemConfiguration $config): FlysystemLocalAdapter
+    public static function publishS3FlysystemFilesystem(Container $container): void
     {
-        return new FlysystemLocalAdapter(
-            $config->dir
+        $container->setSingleton(
+            S3FlysystemFilesystem::class,
+            new S3FlysystemFilesystem(
+                new Flysystem(
+                    $container->getSingleton(FlysystemAwsS3Adapter::class),
+                )
+            ),
         );
     }
 
@@ -200,31 +150,61 @@ final class ServiceProvider extends Provider
      */
     public static function publishFlysystemAwsS3Adapter(Container $container): void
     {
-        $container->setCallable(
+        $env = $container->getSingleton(Env::class);
+        /** @var non-empty-string $key */
+        $key = $env::FILESYSTEM_FLYSYSTEM_S3_KEY;
+        /** @var non-empty-string $secret */
+        $secret = $env::FILESYSTEM_FLYSYSTEM_S3_SECRET;
+        /** @var non-empty-string $region */
+        $region = $env::FILESYSTEM_FLYSYSTEM_S3_REGION;
+        /** @var non-empty-string $version */
+        $version = $env::FILESYSTEM_FLYSYSTEM_S3_VERSION;
+        /** @var non-empty-string $bucket */
+        $bucket = $env::FILESYSTEM_FLYSYSTEM_S3_BUCKET;
+        /** @var string $prefix */
+        $prefix = $env::FILESYSTEM_FLYSYSTEM_S3_PREFIX;
+        /** @var array<array-key, mixed> $options */
+        $options = $env::FILESYSTEM_FLYSYSTEM_S3_OPTIONS;
+
+        $clientConfig = [
+            'credentials' => [
+                'key'    => $key,
+                'secret' => $secret,
+            ],
+            'region'      => $region,
+            'version'     => $version,
+        ];
+
+        $container->setSingleton(
             FlysystemAwsS3Adapter::class,
-            [self::class, 'createFlysystemAwsS3Adapter']
+            new FlysystemAwsS3Adapter(
+                client: new AwsS3Client($clientConfig),
+                bucket: $bucket,
+                prefix: $prefix,
+                options: $options
+            ),
         );
     }
 
     /**
-     * Create the flysystem s3 adapter.
+     * Publish the in memory filesystem service.
      */
-    public static function createFlysystemAwsS3Adapter(Container $container, S3FlysystemConfiguration $config): FlysystemAwsS3Adapter
+    public static function publishInMemoryFilesystem(Container $container): void
     {
-        $clientConfig = [
-            'credentials' => [
-                'key'    => $config->key,
-                'secret' => $config->secret,
-            ],
-            'region'      => $config->region,
-            'version'     => $config->version,
-        ];
+        $container->setSingleton(
+            InMemoryFilesystem::class,
+            new InMemoryFilesystem(),
+        );
+    }
 
-        return new FlysystemAwsS3Adapter(
-            client: new AwsS3Client($clientConfig),
-            bucket: $config->bucket,
-            prefix: $config->prefix,
-            options: $config->options
+    /**
+     * Publish the null filesystem service.
+     */
+    public static function publishNullFilesystem(Container $container): void
+    {
+        $container->setSingleton(
+            NullFilesystem::class,
+            new NullFilesystem(),
         );
     }
 }
