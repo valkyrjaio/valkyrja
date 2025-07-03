@@ -15,6 +15,7 @@ namespace Valkyrja\Support;
 
 use function constant;
 use function defined;
+use function is_array;
 use function is_callable;
 
 /**
