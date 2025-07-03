@@ -24,7 +24,6 @@ use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\ArrayT;
 use Valkyrja\Type\BuiltIn\BoolT;
-use Valkyrja\Type\BuiltIn\DoubleT;
 use Valkyrja\Type\BuiltIn\FalseT;
 use Valkyrja\Type\BuiltIn\FloatT;
 use Valkyrja\Type\BuiltIn\IntT;
@@ -104,28 +103,6 @@ class CastableModelTest extends TestCase
         $this->propertyTest(CastableModelClass::BOOL_ARRAY_PROPERTY, [1], [true]);
         // Test an array of arrays
         $this->propertyTest(CastableModelClass::BOOL_ARRAY_PROPERTY, [[true]], [true]);
-    }
-
-    public function testDoubleCast(): void
-    {
-        $value = 0.02;
-
-        // Test a normal double
-        $this->propertyTest(CastableModelClass::DOUBLE_PROPERTY, $value, $value);
-        // Test a DoubleT object directly
-        $this->propertyTest(CastableModelClass::DOUBLE_PROPERTY, new DoubleT($value), $value);
-        // Test a string
-        $this->propertyTest(CastableModelClass::DOUBLE_PROPERTY, (string) $value, $value);
-        // Test an int (Notice the unexpected value from automatically casting...)
-        $this->propertyTest(CastableModelClass::DOUBLE_PROPERTY, (int) $value, 0.0);
-        // Test an array of doubles
-        $this->propertyTest(CastableModelClass::DOUBLE_ARRAY_PROPERTY, [$value], [$value]);
-        // Test an array of DoubleT objects
-        $this->propertyTest(CastableModelClass::DOUBLE_ARRAY_PROPERTY, [new DoubleT($value)], [$value]);
-        // Test an array of strings
-        $this->propertyTest(CastableModelClass::DOUBLE_ARRAY_PROPERTY, [(string) $value], [$value]);
-        // Test an array of ints (Notice the unexpected value from automatically casting...)
-        $this->propertyTest(CastableModelClass::DOUBLE_ARRAY_PROPERTY, [(int) $value], [0.0]);
     }
 
     public function testFloatCast(): void

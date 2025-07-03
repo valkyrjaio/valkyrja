@@ -11,12 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Unit\Type\Enum;
+namespace Valkyrja\Tests\Unit\Type\Enum;
 
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\ArrayT;
 use Valkyrja\Type\BuiltIn\BoolT;
-use Valkyrja\Type\BuiltIn\DoubleT;
 use Valkyrja\Type\BuiltIn\FalseT;
 use Valkyrja\Type\BuiltIn\FloatT;
 use Valkyrja\Type\BuiltIn\IntT;
@@ -35,7 +34,7 @@ class CastTypeTest extends TestCase
 {
     public function testTotalCaseCount(): void
     {
-        self::assertCount(13, CastType::cases());
+        self::assertCount(12, CastType::cases());
     }
 
     public function testValues(): void
@@ -43,7 +42,6 @@ class CastTypeTest extends TestCase
         self::assertSame(StringT::class, CastType::string->value);
         self::assertSame(IntT::class, CastType::int->value);
         self::assertSame(FloatT::class, CastType::float->value);
-        self::assertSame(DoubleT::class, CastType::double->value);
         self::assertSame(BoolT::class, CastType::bool->value);
         self::assertSame(ArrayT::class, CastType::array->value);
         self::assertSame(ObjectT::class, CastType::object->value);
@@ -60,7 +58,6 @@ class CastTypeTest extends TestCase
         self::assertSame(StringT::class, CastType::string->jsonSerialize());
         self::assertSame(IntT::class, CastType::int->jsonSerialize());
         self::assertSame(FloatT::class, CastType::float->jsonSerialize());
-        self::assertSame(DoubleT::class, CastType::double->jsonSerialize());
         self::assertSame(BoolT::class, CastType::bool->jsonSerialize());
         self::assertSame(ArrayT::class, CastType::array->jsonSerialize());
         self::assertSame(ObjectT::class, CastType::object->jsonSerialize());
@@ -74,7 +71,6 @@ class CastTypeTest extends TestCase
         self::assertSame(json_encode(StringT::class), json_encode(CastType::string));
         self::assertSame(json_encode(IntT::class), json_encode(CastType::int));
         self::assertSame(json_encode(FloatT::class), json_encode(CastType::float));
-        self::assertSame(json_encode(DoubleT::class), json_encode(CastType::double));
         self::assertSame(json_encode(BoolT::class), json_encode(CastType::bool));
         self::assertSame(json_encode(ArrayT::class), json_encode(CastType::array));
         self::assertSame(json_encode(ObjectT::class), json_encode(CastType::object));

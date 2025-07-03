@@ -36,8 +36,6 @@ class CastableModelClass extends AbstractModel
     public const ARRAY_ARRAY_PROPERTY             = 'arrayArray';
     public const BOOL_PROPERTY                    = 'bool';
     public const BOOL_ARRAY_PROPERTY              = 'boolArray';
-    public const DOUBLE_PROPERTY                  = 'double';
-    public const DOUBLE_ARRAY_PROPERTY            = 'doubleArray';
     public const FLOAT_PROPERTY                   = 'float';
     public const FLOAT_ARRAY_PROPERTY             = 'floatArray';
     public const INT_PROPERTY                     = 'int';
@@ -80,10 +78,6 @@ class CastableModelClass extends AbstractModel
     public bool $bool;
     /** @var bool[] */
     public array $boolArray;
-
-    public float $double;
-    /** @var float[] */
-    public array $doubleArray;
 
     public float $float;
     /** @var float[] */
@@ -156,8 +150,6 @@ class CastableModelClass extends AbstractModel
             self::ARRAY_ARRAY_PROPERTY             => new ArrayCast(CastType::array),
             self::BOOL_PROPERTY                    => new Cast(CastType::bool),
             self::BOOL_ARRAY_PROPERTY              => new ArrayCast(CastType::bool),
-            self::DOUBLE_PROPERTY                  => new Cast(CastType::double),
-            self::DOUBLE_ARRAY_PROPERTY            => new ArrayCast(CastType::double),
             self::FLOAT_PROPERTY                   => new Cast(CastType::float),
             self::FLOAT_ARRAY_PROPERTY             => new ArrayCast(CastType::float),
             self::INT_PROPERTY                     => new Cast(CastType::int),

@@ -16,7 +16,6 @@ namespace Valkyrja\Type\Enum;
 use JsonSerializable;
 use Valkyrja\Type\BuiltIn\ArrayT;
 use Valkyrja\Type\BuiltIn\BoolT;
-use Valkyrja\Type\BuiltIn\DoubleT;
 use Valkyrja\Type\BuiltIn\FalseT;
 use Valkyrja\Type\BuiltIn\FloatT;
 use Valkyrja\Type\BuiltIn\IntT;
@@ -38,7 +37,6 @@ enum CastType: string implements JsonSerializable
     case string            = StringT::class;
     case int               = IntT::class;
     case float             = FloatT::class;
-    case double            = DoubleT::class;
     case bool              = BoolT::class;
     case array             = ArrayT::class;
     case object            = ObjectT::class;
