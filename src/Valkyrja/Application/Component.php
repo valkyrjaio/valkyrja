@@ -25,14 +25,6 @@ class Component extends AppComponent
     /**
      * @inheritDoc
      */
-    public static function getName(): string
-    {
-        return 'app';
-    }
-
-    /**
-     * @inheritDoc
-     */
     public static function getCliControllers(): array
     {
         return [

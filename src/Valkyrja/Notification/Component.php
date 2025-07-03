@@ -25,14 +25,6 @@ class Component extends AppComponent
     /**
      * @inheritDoc
      */
-    public static function getName(): string
-    {
-        return 'notification';
-    }
-
-    /**
-     * @inheritDoc
-     */
     public static function getContainerProviders(): array
     {
         return [

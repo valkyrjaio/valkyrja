@@ -82,11 +82,4 @@ abstract class Component
     {
         return [];
     }
-
-    /**
-     * Get the component's name.
-     *
-     * @return non-empty-string
-     */
-    abstract public static function getName(): string;
 }
