@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests;
 
 use Valkyrja\Application\Env as AppEnv;
-use Valkyrja\Tests\Classes\Controller\ControllerClass;
+use Valkyrja\Filesystem\Contract\Filesystem;
+use Valkyrja\Filesystem\InMemoryFilesystem;
 
 /**
  * Class EnvClass.
@@ -29,7 +30,7 @@ class EnvClass extends AppEnv
      *
      ************************************************************/
 
-    /** @var bool|null */
+    /** @var bool */
     public const bool APP_DEBUG_MODE = false;
 
     /************************************************************
@@ -49,15 +50,15 @@ class EnvClass extends AppEnv
      *
      ************************************************************/
 
-    /** @var bool|null */
+    /** @var bool */
     public const bool CLI_INTERACTION_IS_QUIET = true;
 
     /************************************************************
      *
-     * Http Routing component env variables.
+     * Filesystem component env variables.
      *
      ************************************************************/
 
-    /** @var class-string[]|null */
-    public const array|null HTTP_ROUTING_CONTROLLERS = [ControllerClass::class];
+    /** @var class-string<Filesystem> */
+    public const string FILESYSTEM_DEFAULT = InMemoryFilesystem::class;
 }

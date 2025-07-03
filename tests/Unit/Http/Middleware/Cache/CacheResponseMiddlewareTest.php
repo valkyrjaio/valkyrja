@@ -14,13 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Middleware\Cache;
 
 use Valkyrja\Container\Container;
-use Valkyrja\Filesystem\Adapter\InMemoryAdapter;
-use Valkyrja\Filesystem\Config;
-use Valkyrja\Filesystem\Config\Configurations;
-use Valkyrja\Filesystem\Config\InMemoryConfiguration;
-use Valkyrja\Filesystem\Driver\Driver;
-use Valkyrja\Filesystem\Factory\ContainerFactory;
-use Valkyrja\Filesystem\Filesystem;
+use Valkyrja\Filesystem\Contract\Filesystem;
+use Valkyrja\Filesystem\InMemoryFilesystem;
 use Valkyrja\Http\Message\Request\Contract\Request;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
@@ -39,9 +34,9 @@ class CacheResponseMiddlewareTest extends TestCase
     public function testThroughHandler(): void
     {
         $container  = new Container();
-        $filesystem = $this->getFilesystem($container);
+        $filesystem = new InMemoryFilesystem();
 
-        $container->setSingleton(\Valkyrja\Filesystem\Contract\Filesystem::class, $filesystem);
+        $container->setSingleton(Filesystem::class, $filesystem);
         $container->setCallable(CacheResponseMiddleware::class, static fn () => new CacheResponseMiddleware($filesystem));
 
         $beforeHandler = new RequestReceivedHandler($container);
@@ -110,8 +105,7 @@ class CacheResponseMiddlewareTest extends TestCase
 
     public function testDirectly(): void
     {
-        $container         = new Container();
-        $filesystem        = $this->getFilesystem($container);
+        $filesystem        = new InMemoryFilesystem();
         $middleware        = new CacheResponseMiddleware($filesystem);
         $beforeHandler     = new RequestReceivedHandler();
         $terminatedHandler = new TerminatedHandler();
@@ -162,22 +156,6 @@ class CacheResponseMiddlewareTest extends TestCase
         Time::unfreeze();
 
         $filesystem->deleteDir(Directory::cachePath('response/'));
-    }
-
-    protected function getFilesystem(Container $container): Filesystem
-    {
-        $container->setSingleton(InMemoryAdapter::class, $adapter = new InMemoryAdapter());
-        $container->setSingleton(Driver::class, new Driver($adapter));
-
-        return new Filesystem(
-            new ContainerFactory($container),
-            config: new Config(
-                defaultConfiguration: 'memory',
-                configurations: new Configurations(
-                    memory: new InMemoryConfiguration()
-                )
-            )
-        );
     }
 
     /**
