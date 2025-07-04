@@ -71,9 +71,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishBroadcaster(Container $container): void
     {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<Broadcaster> $default */
+        $default = $env::BROADCAST_DEFAULT_BROADCASTER;
+
         $container->setSingleton(
             Broadcaster::class,
-            $container->getSingleton(PusherBroadcaster::class),
+            $container->getSingleton($default),
         );
     }
 

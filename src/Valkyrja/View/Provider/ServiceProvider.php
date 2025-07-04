@@ -69,9 +69,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishRenderer(Container $container): void
     {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<Renderer> $default */
+        $default = $env::VIEW_DEFAULT_RENDERER;
+
         $container->setSingleton(
             Renderer::class,
-            $container->getSingleton(PhpRenderer::class)
+            $container->getSingleton($default)
         );
     }
 

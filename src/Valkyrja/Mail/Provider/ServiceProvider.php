@@ -73,9 +73,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishMailer(Container $container): void
     {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<Mailer> $default */
+        $default = $env::MAIL_DEFAULT_MAILER;
+
         $container->setSingleton(
             Mailer::class,
-            $container->getSingleton(MailgunMailer::class),
+            $container->getSingleton($default),
         );
     }
 

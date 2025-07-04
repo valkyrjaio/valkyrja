@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Client\Provider;
 
 use GuzzleHttp\Client as Guzzle;
+use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\Client\Contract\Client;
@@ -63,9 +64,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishClient(Container $container): void
     {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<Client> $default */
+        $default = $env::HTTP_CLIENT_DEFAULT;
+
         $container->setSingleton(
             Client::class,
-            $container->getSingleton(GuzzleClient::class)
+            $container->getSingleton($default)
         );
     }
 

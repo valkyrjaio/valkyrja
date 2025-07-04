@@ -56,9 +56,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishCrypt(Container $container): void
     {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<Crypt> $default */
+        $default = $env::CRYPT_DEFAULT;
+
         $container->setSingleton(
             Crypt::class,
-            $container->getSingleton(SodiumCrypt::class),
+            $container->getSingleton($default),
         );
     }
 

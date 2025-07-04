@@ -63,9 +63,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishCache(Container $container): void
     {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<Cache> $default */
+        $default = $env::CACHE_DEFAULT;
+
         $container->setSingleton(
             Cache::class,
-            $container->getSingleton(RedisCache::class)
+            $container->getSingleton($default)
         );
     }
 

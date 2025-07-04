@@ -22,15 +22,23 @@ use Valkyrja\Auth\Entity\Contract\User as AuthUser;
 use Valkyrja\Auth\Gate\Contract\Gate as AuthGate;
 use Valkyrja\Auth\Policy\Contract\Policy as AuthPolicy;
 use Valkyrja\Auth\Repository\Contract\Repository as AuthRepository;
+use Valkyrja\Broadcast\Contract\Broadcaster;
+use Valkyrja\Broadcast\PusherBroadcaster;
+use Valkyrja\Cache\Contract\Cache;
+use Valkyrja\Cache\RedisCache;
 use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
+use Valkyrja\Crypt\Contract\Crypt;
+use Valkyrja\Crypt\SodiumCrypt;
 use Valkyrja\Filesystem\Contract\Filesystem;
 use Valkyrja\Filesystem\FlysystemFilesystem;
 use Valkyrja\Filesystem\LocalFlysystemFilesystem;
+use Valkyrja\Http\Client\Contract\Client;
+use Valkyrja\Http\Client\GuzzleClient;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware as HttpRequestReceivedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware as HttpRouteDispatchedMiddleware;
@@ -39,17 +47,18 @@ use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware as HttpRouteNotM
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware as HttpSendingResponseMiddleware;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware as HttpTerminatedMiddleware;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware as HttpThrowableCaughtMiddleware;
+use Valkyrja\Jwt\Contract\Jwt;
 use Valkyrja\Jwt\Enum\Algorithm;
+use Valkyrja\Jwt\FirebaseJwt;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Orm\Adapter\Contract\Adapter as OrmAdapter;
-use Valkyrja\Orm\Config\Connections as OrmConnections;
-use Valkyrja\Orm\Driver\Contract\Driver as OrmDriver;
-use Valkyrja\Orm\Pdo\Pdo as OrmPdo;
-use Valkyrja\Orm\Persister\Contract\Persister as OrmPersister;
-use Valkyrja\Orm\Query\Contract\Query as OrmQuery;
-use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder as OrmQueryBuilder;
-use Valkyrja\Orm\Repository\Contract\Repository as OrmRepository;
-use Valkyrja\Orm\Retriever\Contract\Retriever as OrmRetriever;
+use Valkyrja\Mail\Contract\Mailer;
+use Valkyrja\Mail\MailgunMailer;
+use Valkyrja\Session\Contract\Session;
+use Valkyrja\Session\PhpSession;
+use Valkyrja\Sms\Contract\Sms;
+use Valkyrja\Sms\VonageSms;
+use Valkyrja\View\Contract\Renderer;
+use Valkyrja\View\PhpRenderer;
 
 /**
  * Class Env.
@@ -142,6 +151,8 @@ class Env
      *
      ************************************************************/
 
+    /** @var class-string<Broadcaster> */
+    public const string BROADCAST_DEFAULT_BROADCASTER = PusherBroadcaster::class;
     /** @var non-empty-string */
     public const string BROADCAST_PUSHER_KEY = 'pusher-key';
     /** @var non-empty-string */
@@ -161,6 +172,8 @@ class Env
      *
      ************************************************************/
 
+    /** @var class-string<Cache> */
+    public const string CACHE_DEFAULT = RedisCache::class;
     /** @var string */
     public const string CACHE_REDIS_HOST = '127.0.0.1';
     /** @var int */
@@ -208,6 +221,15 @@ class Env
 
     /************************************************************
      *
+     * Crypt component env variables.
+     *
+     ************************************************************/
+
+    /** @var class-string<Crypt> */
+    public const string CRYPT_DEFAULT = SodiumCrypt::class;
+
+    /************************************************************
+     *
      * Filesystem component env variables.
      *
      ************************************************************/
@@ -232,6 +254,15 @@ class Env
     public const string FILESYSTEM_FLYSYSTEM_S3_PREFIX = '';
     /** @var array<string, mixed> */
     public const array FILESYSTEM_FLYSYSTEM_S3_OPTIONS = [];
+
+    /************************************************************
+     *
+     * Http Client component env variables.
+     *
+     ************************************************************/
+
+    /** @var class-string<Client> */
+    public const string HTTP_CLIENT_DEFAULT = GuzzleClient::class;
 
     /************************************************************
      *
@@ -260,6 +291,8 @@ class Env
      *
      ************************************************************/
 
+    /** @var class-string<Jwt> */
+    public const string JWT_DEFAULT = FirebaseJwt::class;
     /** @var Algorithm */
     public const Algorithm JWT_ALGORITHM = Algorithm::HS256;
     /** @var non-empty-string */
@@ -279,6 +312,8 @@ class Env
      *
      ************************************************************/
 
+    /** @var class-string<Mailer> */
+    public const string MAIL_DEFAULT_MAILER = MailgunMailer::class;
     /** @var non-empty-string */
     public const string MAIL_MAILGUN_API_KEY = 'api-key';
     /** @var non-empty-string */
@@ -302,26 +337,6 @@ class Env
 
     /** @var string|null */
     public const string|null ORM_DEFAULT_CONNECTION = null;
-    /** @var callable():OrmConnections|null */
-    public const array|null ORM_CONNECTIONS = null;
-    /** @var string|null */
-    public const string|null ORM_MIGRATIONS = null;
-    /** @var class-string<OrmAdapter>|null */
-    public const string|null ORM_PGSQL_ADAPTER_CLASS = null;
-    /** @var class-string<OrmDriver>|null */
-    public const string|null ORM_PGSQL_DRIVER_CLASS = null;
-    /** @var class-string<OrmRepository>|null */
-    public const string|null ORM_PGSQL_REPOSITORY_CLASS = null;
-    /** @var class-string<OrmQuery>|null */
-    public const string|null ORM_PGSQL_QUERY_CLASS = null;
-    /** @var class-string<OrmQueryBuilder>|null */
-    public const string|null ORM_PGSQL_QUERY_BUILDER_CLASS = null;
-    /** @var class-string<OrmPersister>|null */
-    public const string|null ORM_PGSQL_PERSISTER_CLASS = null;
-    /** @var class-string<OrmRetriever>|null */
-    public const string|null ORM_PGSQL_RETRIEVER_CLASS = null;
-    /** @var class-string<OrmPdo>|null */
-    public const string|null ORM_PGSQL_PDO_CLASS = null;
     /** @var string|null */
     public const string|null ORM_PGSQL_PDO_DRIVER = null;
     /** @var string|null */
@@ -348,22 +363,6 @@ class Env
     public const string|null ORM_PGSQL_KEY = null;
     /** @var string|null */
     public const string|null ORM_PGSQL_ROOT_KEY = null;
-    /** @var class-string<OrmAdapter>|null */
-    public const string|null ORM_MYSQL_ADAPTER_CLASS = null;
-    /** @var class-string<OrmDriver>|null */
-    public const string|null ORM_MYSQL_DRIVER_CLASS = null;
-    /** @var class-string<OrmRepository>|null */
-    public const string|null ORM_MYSQL_REPOSITORY_CLASS = null;
-    /** @var class-string<OrmQuery>|null */
-    public const string|null ORM_MYSQL_QUERY_CLASS = null;
-    /** @var class-string<OrmQueryBuilder>|null */
-    public const string|null ORM_MYSQL_QUERY_BUILDER_CLASS = null;
-    /** @var class-string<OrmPersister>|null */
-    public const string|null ORM_MYSQL_PERSISTER_CLASS = null;
-    /** @var class-string<OrmRetriever>|null */
-    public const string|null ORM_MYSQL_RETRIEVER_CLASS = null;
-    /** @var class-string<OrmPdo>|null */
-    public const string|null ORM_MYSQL_PDO_CLASS = null;
     /** @var string|null */
     public const string|null ORM_MYSQL_PDO_DRIVER = null;
     /** @var string|null */
@@ -391,6 +390,8 @@ class Env
      *
      ************************************************************/
 
+    /** @var class-string<Session> */
+    public const string SESSION_DEFAULT = PhpSession::class;
     /** @var non-empty-string|null */
     public const string|null SESSION_PHP_ID = null;
     /** @var non-empty-string|null */
@@ -413,7 +414,8 @@ class Env
      * SMS component env variables.
      *
      ************************************************************/
-
+    /** @var class-string<Sms> */
+    public const string SMS_DEFAULT_MESSENGER = VonageSms::class;
     /** @var non-empty-string */
     public const string SMS_VONAGE_KEY = 'vonage-key';
     /** @var non-empty-string */
@@ -424,7 +426,8 @@ class Env
      * View component env variables.
      *
      ************************************************************/
-
+    /** @var class-string<Renderer> */
+    public const string VIEW_DEFAULT_RENDERER = PhpRenderer::class;
     /** @var non-empty-string */
     public const string VIEW_ORKA_FILE_EXTENSION = '.orka.phtml';
     /** @var non-empty-string */

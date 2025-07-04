@@ -105,9 +105,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishSession(Container $container): void
     {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<Session> $default */
+        $default = $env::SESSION_DEFAULT;
+
         $container->setSingleton(
             Session::class,
-            $container->getSingleton(PhpSession::class),
+            $container->getSingleton($default),
         );
     }
 

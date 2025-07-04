@@ -67,9 +67,13 @@ final class ServiceProvider extends Provider
      */
     public static function publishSms(Container $container): void
     {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<Sms> $default */
+        $default = $env::SMS_DEFAULT_MESSENGER;
+
         $container->setSingleton(
             Sms::class,
-            $container->getSingleton(VonageSms::class),
+            $container->getSingleton($default),
         );
     }
 
