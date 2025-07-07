@@ -22,10 +22,11 @@ use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler;
 use Valkyrja\Http\Routing\Data\Contract\Parameter;
 use Valkyrja\Http\Routing\Data\Contract\Route;
-use Valkyrja\Orm\Contract\Orm;
+use Valkyrja\Orm\Contract\Manager;
 use Valkyrja\Orm\Data\EntityCast;
+use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\Repository\Contract\RelationshipRepository;
 use Valkyrja\View\Factory\Contract\ResponseFactory;
 
 use function is_a;
@@ -48,7 +49,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
 
     public function __construct(
         protected Container $container,
-        protected Orm $orm,
+        protected Manager $orm,
         protected ResponseFactory $responseFactory,
     ) {
     }
@@ -116,11 +117,12 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
         if ($type !== null && is_a($type, Entity::class, true)) {
             $match = $arguments[$index];
 
-            if (! is_string($match) && ! is_int($match) && ! $match instanceof Entity) {
-                return $this->getBadRequestResponse($type, $match);
+            if ((is_string($match) && $match !== '') || is_int($match) || $match instanceof Entity) {
+                /** @var Entity|non-empty-string|int $match */
+                return $this->findAndSetEntityFromParameter($parameter, $type, $dependencies, $match);
             }
 
-            return $this->findAndSetEntityFromParameter($parameter, $type, $dependencies, $match);
+            return $this->getBadRequestResponse($type, $match);
         }
 
         return null;
@@ -129,10 +131,10 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     /**
      * Try to find and set a route's entity dependency.
      *
-     * @param Parameter            $parameter    The parameter
-     * @param class-string<Entity> $entityName   The entity class name
-     * @param class-string[]       $dependencies The dependencies
-     * @param Entity|string|int    $value        The value
+     * @param Parameter                   $parameter    The parameter
+     * @param class-string<Entity>        $entityName   The entity class name
+     * @param class-string[]              $dependencies The dependencies
+     * @param Entity|non-empty-string|int $value        The value
      *
      * @return Response|null
      */
@@ -175,7 +177,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
      *
      * @param Parameter            $parameter  The parameter
      * @param class-string<Entity> $entityName The entity class name
-     * @param string|int           $value      The value
+     * @param non-empty-string|int $value      The value
      *
      * @return Entity|null
      */
@@ -185,7 +187,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
         string|int $value
     ): Entity|null {
         $cast          = $parameter->getCast();
-        $repository    = $this->orm->getRepository($entityName);
+        $repository    = $this->orm->createRepository($entityName);
         $field         = null;
         $relationships = [];
 
@@ -196,22 +198,10 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
 
         // If there is a field specified to use
         if ($field !== null && $field !== '') {
-            $find = $repository->find()->where($field, null, $value);
-
-            if (is_a($find, RelationshipRepository::class)) {
-                $find->withRelationships($relationships);
-            }
-
-            return $find->getOneOrNull();
+            return $repository->findBy(new Where(new Value(name: $field, value: $value)));
         }
 
-        $find = $repository->findOne($value);
-
-        if (is_a($find, RelationshipRepository::class)) {
-            $find->withRelationships($relationships);
-        }
-
-        return $find->getOneOrNull();
+        return $repository->find($value);
     }
 
     /**

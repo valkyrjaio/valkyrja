@@ -13,345 +13,154 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Repository;
 
-use InvalidArgumentException;
-use Valkyrja\Orm\Contract\Orm;
-use Valkyrja\Orm\Driver\Contract\Driver;
+use Valkyrja\Orm\Contract\Manager;
+use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\Entity\Contract\SoftDeleteEntity;
-use Valkyrja\Orm\Enum\WhereType;
-use Valkyrja\Orm\Exception\InvalidEntityException;
-use Valkyrja\Orm\Persister\Contract\Persister;
-use Valkyrja\Orm\Query\Contract\Query;
-use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
 use Valkyrja\Orm\Repository\Contract\Repository as Contract;
-use Valkyrja\Orm\Retriever\Contract\Retriever;
-
-use function assert;
 
 /**
  * Class Repository.
  *
  * @author Melech Mizrachi
  *
- * @template Entity of Entity
+ * @template T of Entity
  *
- * @implements Contract<Entity>
+ * @implements Contract<T>
  */
 class Repository implements Contract
 {
     /**
-     * The retriever.
-     *
-     * @var Retriever<Entity>
-     */
-    protected Retriever $retriever;
-
-    /**
-     * The relationships to get with each result.
-     *
-     * @var string[]|null
-     */
-    protected array|null $relationships = null;
-
-    /**
-     * Whether to get relations.
-     *
-     * @var bool
-     */
-    protected bool $getRelations = false;
-
-    /**
-     * Repository constructor.
-     *
-     * @param Orm                  $orm       The orm manager
-     * @param Driver               $driver    The driver
-     * @param Persister<Entity>    $persister The persister
-     * @param class-string<Entity> $entity    The entity class name
-     *
-     * @throws InvalidArgumentException
+     * @param class-string<T> $entity
      */
     public function __construct(
-        protected Orm $orm,
-        protected Driver $driver,
-        protected Persister $persister,
-        protected string $entity
+        protected Manager $manager,
+        protected string $entity,
     ) {
-        assert(is_a($entity, Entity::class, true));
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function find(): static
-    {
-        $this->retriever = $this->driver->createRetriever()->find($this->entity);
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function findOne(int|string $id): static
-    {
-        $this->retriever = $this->driver->createRetriever()->findOne($this->entity, $id);
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function count(): static
-    {
-        $this->retriever = $this->driver->createRetriever()->count($this->entity);
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function columns(string ...$columns): static
-    {
-        $this->retriever->columns(...$columns);
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function where(
-        string $column,
-        string|null $operator = null,
-        QueryBuilder|array|string|float|int|bool|null $value = null,
-        bool $setType = true
-    ): static {
-        $this->retriever->where($column, $operator, $value, $setType);
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function startWhereGroup(): static
-    {
-        $this->retriever->startWhereGroup();
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function endWhereGroup(): static
-    {
-        $this->retriever->endWhereGroup();
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function whereType(WhereType $type = WhereType::AND): static
-    {
-        $this->retriever->whereType($type);
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function join(
-        string $table,
-        string $column1,
-        string $column2,
-        string|null $operator = null,
-        string|null $type = null,
-        bool|null $isWhere = null
-    ): static {
-        $this->retriever->join($table, $column1, $column2, $operator, $type, $isWhere);
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function orderBy(string $column, string|null $direction = null): static
-    {
-        $this->retriever->orderBy($column, $direction);
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function limit(int $limit): static
-    {
-        $this->retriever->limit($limit);
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offset(int $offset): static
-    {
-        $this->retriever->offset($offset);
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getResult(): array
-    {
-        return $this->retriever->getResult();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getOneOrNull(): Entity|null
-    {
-        return $this->getResult()[0] ?? null;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getOneOrFail(): Entity
-    {
-        return $this->retriever->getOneOrFail();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCount(): int
-    {
-        return $this->retriever->getCount();
     }
 
     /**
      * @inheritDoc
      *
-     * @throws InvalidEntityException
+     * @return T|null
      */
-    public function create(Entity $entity, bool $defer = true): void
+    public function find(int|string $id): Entity|null
     {
-        $this->validateEntity($entity);
+        /** @var T $entity */
+        $entity = $this->entity;
+        $where  = new Where(
+            value: new Value(
+                name: $entity::getIdField(),
+                value: $id
+            ),
+        );
 
-        $this->persister->create($entity, $defer);
+        // TODO: Implement find() method.
+
+        return $this->findBy($where);
     }
 
     /**
      * @inheritDoc
      *
-     * @throws InvalidEntityException
+     * @return T|null
      */
-    public function save(Entity $entity, bool $defer = true): void
+    public function findBy(Where ...$where): Entity|null
     {
-        $this->validateEntity($entity);
+        $table  = $this->entity::getTableName();
+        $select = $this->manager->createQueryBuilder()->select($table);
+        $select->withWhere(...$where);
+        // TODO: Implement findBy() method.
 
-        $this->persister->save($entity, $defer);
+        $statement = $this->manager->prepare((string) $select);
+
+        return $this->mapResultsToEntity($statement->fetchAll())[0] ?? null;
     }
 
     /**
      * @inheritDoc
      *
-     * @throws InvalidEntityException
+     * @return T[]
      */
-    public function delete(Entity $entity, bool $defer = true): void
+    public function all(): array
     {
-        $this->validateEntity($entity);
-
-        if ($entity instanceof SoftDeleteEntity) {
-            $this->persister->save($entity, $defer);
-
-            return;
-        }
-
-        $this->persister->delete($entity, $defer);
+        return $this->allBy();
     }
 
     /**
      * @inheritDoc
      *
-     * @throws InvalidEntityException
+     * @return T[]
      */
-    public function clear(Entity|null $entity = null): void
+    public function allBy(Where ...$where): array
     {
-        if ($entity !== null) {
-            $this->validateEntity($entity);
-        }
+        $table  = $this->entity::getTableName();
+        $select = $this->manager->createQueryBuilder()->select($table);
+        $select->withWhere(...$where);
+        // TODO: Implement allBy() method.
 
-        $this->persister->clear($entity);
+        $statement = $this->manager->prepare((string) $select);
+
+        return $this->mapResultsToEntity($statement->fetchAll());
     }
 
     /**
      * @inheritDoc
-     */
-    public function persist(): bool
-    {
-        return $this->persister->persist();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function createQueryBuilder(string|null $alias = null): QueryBuilder
-    {
-        return $this->driver->createQueryBuilder($this->entity, $alias);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function createQuery(string $query): Query
-    {
-        return $this->driver->createQuery($query, $this->entity);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getRetriever(): Retriever
-    {
-        return $this->retriever;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getPersister(): Persister
-    {
-        return $this->persister;
-    }
-
-    /**
-     * Validate the passed entity.
      *
-     * @throws InvalidEntityException
+     * @param T $entity The entity
      */
-    protected function validateEntity(Entity $entity): void
+    public function create(Entity $entity): void
     {
-        if (! ($entity instanceof $this->entity)) {
-            throw new InvalidEntityException(
-                'This repository expects entities to be instances of '
-                . $this->entity
-                . '. Entity instanced from '
-                . $entity::class
-                . ' provided instead.'
-            );
-        }
+        $table  = $entity::getTableName();
+        $create = $this->manager->createQueryBuilder()->insert($table);
+        // TODO: Implement create() method.
+
+        $statement = $this->manager->prepare((string) $create);
+
+        $this->manager->lastInsertId($table, $entity::getIdField());
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @param T $entity The entity
+     */
+    public function update(Entity $entity): void
+    {
+        $table  = $entity::getTableName();
+        $update = $this->manager->createQueryBuilder()->update($table);
+        // TODO: Implement update() method.
+
+        $this->manager->prepare((string) $update);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @param T $entity The entity
+     */
+    public function delete(Entity $entity): void
+    {
+        $table  = $entity::getTableName();
+        $delete = $this->manager->createQueryBuilder()->delete($table);
+        // TODO: Implement delete() method.
+
+        $this->manager->prepare((string) $delete);
+    }
+
+    /**
+     * @param array<string, mixed>[] $results The results
+     *
+     * @return T[]
+     */
+    protected function mapResultsToEntity(array $results): array
+    {
+        /** @var T $entity */
+        $entity = $this->entity;
+
+        return array_map(
+            static fn (array $data): Entity => $entity::fromArray($data),
+            $results
+        );
     }
 }

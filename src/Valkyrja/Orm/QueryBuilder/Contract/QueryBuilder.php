@@ -13,208 +13,76 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\QueryBuilder\Contract;
 
+use Stringable;
+use Valkyrja\Orm\Data\Join;
+use Valkyrja\Orm\Data\Where;
+use Valkyrja\Orm\Data\WhereGroup;
+
 /**
  * Interface QueryBuilder.
  *
  * @author Melech Mizrachi
  */
-interface QueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
+interface QueryBuilder extends Stringable
 {
     /**
-     * Create a SELECT query statement.
+     * Create a new query builder with the specified table.
      *
-     * <code>
-     *      $queryBuilder->select();
-     *      $queryBuilder->select(
-     *          [
-     *              'column1',
-     *              'column2',
-     *              ...
-     *          ]
-     *      );
-     * </code>
-     *
-     * @param string ...$columns
+     * @param non-empty-string $table The table to query from
      *
      * @return static
      */
-    public function select(string ...$columns): static;
+    public function withFrom(string $table): static;
 
     /**
-     * Create an INSERT query statement.
+     * Create a new query builder with the specified alias.
      *
-     * <code>
-     *      $queryBuilder->insert();
-     * </code>
+     * @param non-empty-string $alias The alias for the table
      *
      * @return static
      */
-    public function insert(): static;
+    public function withAlias(string $alias): static;
 
     /**
-     * Create an UPDATE query statement.
+     * Create a new query builder with the specified join clauses.
      *
-     * <code>
-     *      $queryBuilder->update();
-     * </code>
+     * @param Join ...$joins The join clauses
      *
      * @return static
      */
-    public function update(): static;
+    public function withJoin(Join ...$joins): static;
 
     /**
-     * Create an DELETE query statement.
+     * Create a new query builder with the added join clauses.
      *
-     * <code>
-     *      $queryBuilder->delete();
-     * </code>
+     * @param Join ...$joins The join clauses
      *
      * @return static
      */
-    public function delete(): static;
+    public function withAddedJoin(Join ...$joins): static;
 
     /**
-     * Add a value for a column to set.
+     * Create a new query builder with the specified where clauses.
      *
-     * <code>
-     *      $queryBuilder
-     *          ->insert()
-     *          ->table('table')
-     *          ->set('column', ':column');
-     *      $queryBuilder
-     *          ->update()
-     *          ->table('table')
-     *          ->set('column', ':column');
-     * </code>
-     *
-     * @param string                     $column
-     * @param string|float|int|bool|null $value  [optional]
+     * @param Where|WhereGroup ...$where The where clauses
      *
      * @return static
      */
-    public function set(string $column, string|float|int|bool|null $value = null): static;
+    public function withWhere(Where|WhereGroup ...$where): static;
 
     /**
-     * Join with another table.
+     * Create a new query builder with the added where clauses.
      *
-     * @param string      $table    The table to join on
-     * @param string      $column1  The column to join on
-     * @param string      $column2  The secondary column to join on
-     * @param string|null $operator [optional] The operator
-     * @param string|null $type     [optional] The type of join
-     * @param bool|null   $isWhere  [optional] Whether this is a where join
+     * @param Where|WhereGroup ...$where The where clauses
      *
      * @return static
      */
-    public function join(
-        string $table,
-        string $column1,
-        string $column2,
-        string|null $operator = null,
-        string|null $type = null,
-        bool|null $isWhere = null
-    ): static;
+    public function withAddedWhere(Where|WhereGroup ...$where): static;
 
     /**
-     * Add an groupBy by to the query statement.
+     * Get the builder as a query string.
      *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->groupBy('column');
-     * </code>
-     *
-     * @param string $column
-     *
-     * @return static
+     * @return non-empty-string
      */
-    public function groupBy(string $column): static;
-
-    /**
-     * Add an order by to the query statement.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->orderBy('column');
-     * </code>
-     *
-     * @param string      $column
-     * @param string|null $type   [optional]
-     *
-     * @return static
-     */
-    public function orderBy(string $column, string|null $type = null): static;
-
-    /**
-     * Add an order by ascending to the query statement.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->orderByAsc('column');
-     * </code>
-     *
-     * @param string $column
-     *
-     * @return static
-     */
-    public function orderByAsc(string $column): static;
-
-    /**
-     * Add an order by descending to the query statement.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->orderByDesc('column');
-     * </code>
-     *
-     * @param string $column
-     *
-     * @return static
-     */
-    public function orderByDesc(string $column): static;
-
-    /**
-     * Add limit to the query statement.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->limit(1);
-     * </code>
-     *
-     * @param int $limit
-     *
-     * @return static
-     */
-    public function limit(int $limit): static;
-
-    /**
-     * Add offset to the query statement.
-     *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->offset(1);
-     * </code>
-     *
-     * @param int $offset
-     *
-     * @return static
-     */
-    public function offset(int $offset): static;
+    public function __toString(): string;
 }

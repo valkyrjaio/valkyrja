@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Statement;
 
-use stdClass;
+use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Statement\Contract\Statement as Contract;
 
 /**
@@ -26,7 +26,7 @@ class NullStatement implements Contract
     /**
      * @inheritDoc
      */
-    public function bindValue(string $parameter, string|float|int|bool|null $value): bool
+    public function bindValue(Value $value): bool
     {
         return true;
     }
@@ -74,10 +74,9 @@ class NullStatement implements Contract
     /**
      * @inheritDoc
      */
-    public function fetchObject(string $className = stdClass::class): object
+    public function getCount(): int
     {
-        /** @psalm-suppress MixedMethodCall This NullAdapter should really only be used for testing */
-        return new $className();
+        return 0;
     }
 
     /**

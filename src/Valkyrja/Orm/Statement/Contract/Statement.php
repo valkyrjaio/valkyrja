@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Statement\Contract;
 
-use stdClass;
+use Valkyrja\Orm\Data\Value;
 
 /**
  * Interface Statement.
@@ -25,12 +25,11 @@ interface Statement
     /**
      * Bind a value.
      *
-     * @param string                     $parameter
-     * @param string|float|int|bool|null $value
+     * @param Value $value The value to bind
      *
      * @return bool
      */
-    public function bindValue(string $parameter, string|float|int|bool|null $value): bool;
+    public function bindValue(Value $value): bool;
 
     /**
      * Execute the statement.
@@ -72,13 +71,11 @@ interface Statement
     public function fetchAll(): array;
 
     /**
-     * Fetch the results as an object.
+     * Get the count.
      *
-     * @param class-string $className
-     *
-     * @return object
+     * @return int
      */
-    public function fetchObject(string $className = stdClass::class): object;
+    public function getCount(): int;
 
     /**
      * The number of rows returned.

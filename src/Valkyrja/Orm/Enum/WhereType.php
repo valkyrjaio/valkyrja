@@ -20,6 +20,7 @@ namespace Valkyrja\Orm\Enum;
  */
 enum WhereType: string
 {
+    case DEFAULT = '';
     case AND     = 'AND';
     case OR      = 'OR';
     case NOT     = 'NOT';

@@ -27,14 +27,14 @@ interface Entity extends CastableModel, ExposableModel
     /**
      * Get the table.
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function getTableName(): string;
 
     /**
      * Get the id field.
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function getIdField(): string;
 
@@ -44,13 +44,6 @@ interface Entity extends CastableModel, ExposableModel
      * @return class-string<Repository>|null
      */
     public static function getRepository(): string|null;
-
-    /**
-     * Get the connection to use for this entity.
-     *
-     * @return string|null
-     */
-    public static function getConnection(): string|null;
 
     /**
      * Entity relationship properties.
@@ -63,21 +56,21 @@ interface Entity extends CastableModel, ExposableModel
      *      ]
      * </code>
      *
-     * @return string[]
+     * @return non-empty-string[]
      */
     public static function getRelationshipProperties(): array;
 
     /**
      * Get a list of fields we do not want for storage.
      *
-     * @return string[]
+     * @return non-empty-string[]
      */
     public static function getUnStorableFields(): array;
 
     /**
      * Get the id field's value.
      *
-     * @return string|int
+     * @return non-empty-string|int
      */
     public function getIdValue(): string|int;
 

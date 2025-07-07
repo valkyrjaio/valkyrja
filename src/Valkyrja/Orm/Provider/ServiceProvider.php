@@ -13,36 +13,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Provider;
 
-use RuntimeException;
-use Valkyrja\Cache\Contract\Cache;
+use PDO;
+use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Orm\Adapter\Contract\Adapter;
-use Valkyrja\Orm\Adapter\Contract\PdoAdapter;
-use Valkyrja\Orm\Config;
-use Valkyrja\Orm\Config\Connection;
-use Valkyrja\Orm\Config\PdoConnection;
-use Valkyrja\Orm\Contract\Orm;
-use Valkyrja\Orm\Driver\Contract\Driver;
+use Valkyrja\Orm\Contract\Manager;
 use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\Factory\ContainerFactory;
-use Valkyrja\Orm\Factory\Contract\Factory;
-use Valkyrja\Orm\Middleware\EntityRouteMatchedMiddleware;
-use Valkyrja\Orm\Migration\Migration;
-use Valkyrja\Orm\Pdo\Pdo;
-use Valkyrja\Orm\Persister\Contract\Persister;
-use Valkyrja\Orm\Query\Contract\Query;
-use Valkyrja\Orm\QueryBuilder\Contract\DeleteQueryBuilder;
-use Valkyrja\Orm\QueryBuilder\Contract\InsertQueryBuilder;
-use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
-use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilder;
-use Valkyrja\Orm\QueryBuilder\Contract\UpdateQueryBuilder;
-use Valkyrja\Orm\Repository\Contract\CacheRepository;
-use Valkyrja\Orm\Repository\Contract\Repository;
-use Valkyrja\Orm\Retriever\LocalCacheRetriever;
-use Valkyrja\Orm\Retriever\Retriever;
-use Valkyrja\Orm\Statement\Contract\Statement;
-use Valkyrja\View\Factory\Contract\ResponseFactory as ViewResponseFactory;
+use Valkyrja\Orm\InMemoryManager;
+use Valkyrja\Orm\MysqlManager;
+use Valkyrja\Orm\NullManager;
+use Valkyrja\Orm\PgsqlManager;
+use Valkyrja\Orm\Repository\Repository;
+use Valkyrja\Orm\SqliteManager;
 
 /**
  * Class ServiceProvider.
@@ -57,26 +39,13 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Orm::class                          => [self::class, 'publishOrm'],
-            Factory::class                      => [self::class, 'publishFactory'],
-            Driver::class                       => [self::class, 'publishDriver'],
-            Adapter::class                      => [self::class, 'publishAdapter'],
-            PdoAdapter::class                   => [self::class, 'publishPdoAdapter'],
-            Repository::class                   => [self::class, 'publishRepository'],
-            CacheRepository::class              => [self::class, 'publishCacheRepository'],
-            Persister::class                    => [self::class, 'publishPersister'],
-            Retriever::class                    => [self::class, 'publishRetriever'],
-            LocalCacheRetriever::class          => [self::class, 'publishLocalCacheRetriever'],
-            Query::class                        => [self::class, 'publishQuery'],
-            QueryBuilder::class                 => [self::class, 'publishQueryBuilder'],
-            DeleteQueryBuilder::class           => [self::class, 'publishDeleteQueryBuilder'],
-            InsertQueryBuilder::class           => [self::class, 'publishInsertQueryBuilder'],
-            SelectQueryBuilder::class           => [self::class, 'publishSelectQueryBuilder'],
-            UpdateQueryBuilder::class           => [self::class, 'publishUpdateQueryBuilder'],
-            Statement::class                    => [self::class, 'publishStatement'],
-            Pdo::class                          => [self::class, 'publishPdo'],
-            Migration::class                    => [self::class, 'publishMigration'],
-            EntityRouteMatchedMiddleware::class => [self::class, 'publishEntityRouteMatchedMiddleware'],
+            Manager::class         => [self::class, 'publishManager'],
+            MysqlManager::class    => [self::class, 'publishMysqlManager'],
+            PgsqlManager::class    => [self::class, 'publishPgsqlManager'],
+            SqliteManager::class   => [self::class, 'publishSqliteManager'],
+            InMemoryManager::class => [self::class, 'publishInMemoryManager'],
+            NullManager::class     => [self::class, 'publishNullManager'],
+            Repository::class      => [self::class, 'publishRepository'],
         ];
     }
 
@@ -86,186 +55,207 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Orm::class,
-            Factory::class,
-            Driver::class,
-            Adapter::class,
-            PdoAdapter::class,
+            Manager::class,
+            MysqlManager::class,
+            PgsqlManager::class,
+            SqliteManager::class,
+            InMemoryManager::class,
+            NullManager::class,
             Repository::class,
-            CacheRepository::class,
-            Persister::class,
-            Retriever::class,
-            Query::class,
-            QueryBuilder::class,
-            DeleteQueryBuilder::class,
-            InsertQueryBuilder::class,
-            SelectQueryBuilder::class,
-            UpdateQueryBuilder::class,
-            Statement::class,
-            Pdo::class,
-            Migration::class,
-            EntityRouteMatchedMiddleware::class,
         ];
     }
 
     /**
-     * Publish the ORM service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
+     * Publish the manager service.
      */
-    public static function publishOrm(Container $container): void
+    public static function publishManager(Container $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<Manager> $default */
+        $default = $env::ORM_DEFAULT_MANAGER;
 
         $container->setSingleton(
-            Orm::class,
-            new \Valkyrja\Orm\Orm(
-                $container->getSingleton(Factory::class),
-                $config
-            )
+            Manager::class,
+            $container->getSingleton($default),
         );
     }
 
     /**
-     * Publish the factory.
-     *
-     * @param Container $container The container
-     *
-     * @return void
+     * Publish the mysql manager service.
      */
-    public static function publishFactory(Container $container): void
+    public static function publishMysqlManager(Container $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var non-empty-string $db */
+        $db = $env::ORM_MYSQL_DB;
+        /** @var non-empty-string $host */
+        $host = $env::ORM_MYSQL_HOST;
+        /** @var positive-int $port */
+        $port = $env::ORM_MYSQL_PORT;
+        /** @var non-empty-string $user */
+        $user = $env::ORM_MYSQL_USER;
+        /** @var non-empty-string $password */
+        $password = $env::ORM_MYSQL_PASSWORD;
+        /** @var non-empty-string $charset */
+        $charset = $env::ORM_MYSQL_CHARSET;
+        /** @var non-empty-string|null $strict */
+        $strict = $env::ORM_MYSQL_STRICT;
+        /** @var non-empty-string|null $engine */
+        $engine = $env::ORM_MYSQL_ENGINE;
+        /** @var array<int, int|bool>|null $options */
+        $options = $env::ORM_MYSQL_OPTIONS;
+
+        $options ??= [
+            PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+            PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+            PDO::ATTR_STRINGIFY_FETCHES => false,
+            PDO::ATTR_EMULATE_PREPARES  => false,
+        ];
+
+        $dsn = 'mysql'
+            . ":dbname=$db}"
+            . ";host=$host"
+            . ";port=$port"
+            . ";user=$user"
+            . ";password=$password"
+            . ";charset=$charset"
+            . ($strict !== null ? ";strict=$strict" : '')
+            . ($engine !== null ? ";engine=$engine" : '');
+
+        $pdo = new PDO(
+            dsn: $dsn,
+            options: $options
+        );
+
+        $container->setSingleton(
+            MysqlManager::class,
+            new MysqlManager($pdo, $container)
+        );
+    }
+
+    /**
+     * Publish the pgsql manager service.
+     */
+    public static function publishPgsqlManager(Container $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var non-empty-string $db */
+        $db = $env::ORM_PGSQL_DB;
+        /** @var non-empty-string $host */
+        $host = $env::ORM_PGSQL_HOST;
+        /** @var positive-int $port */
+        $port = $env::ORM_PGSQL_PORT;
+        /** @var non-empty-string $user */
+        $user = $env::ORM_PGSQL_USER;
+        /** @var non-empty-string $password */
+        $password = $env::ORM_PGSQL_PASSWORD;
+        /** @var non-empty-string $charset */
+        $charset = $env::ORM_PGSQL_CHARSET;
+        /** @var non-empty-string $schema */
+        $schema = $env::ORM_PGSQL_SCHEMA;
+        /** @var non-empty-string $sslmode */
+        $sslmode = $env::ORM_PGSQL_SSL_MODE;
+        /** @var array<int, int|bool>|null $options */
+        $options = $env::ORM_PGSQL_OPTIONS;
+
+        $options ??= [
+            PDO::ATTR_PERSISTENT        => true,
+            PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+            PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+            PDO::ATTR_STRINGIFY_FETCHES => false,
+        ];
+
+        $dsn = 'pgsql'
+            . ":dbname=$db}"
+            . ";host=$host"
+            . ";port=$port"
+            . ";user=$user"
+            . ";password=$password"
+            . ";sslmode=$sslmode"
+            . ";options='--client_encoding=$charset";
+
+        $pdo = new PDO(
+            dsn: $dsn,
+            options: $options
+        );
+
+        $pdo->query("set search_path to $schema");
+
+        $container->setSingleton(
+            PgsqlManager::class,
+            new PgsqlManager($pdo, $container)
+        );
+    }
+
+    /**
+     * Publish the sqlite manager service.
+     */
+    public static function publishSqliteManager(Container $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var non-empty-string $db */
+        $db = $env::ORM_SQLITE_DB;
+        /** @var non-empty-string $host */
+        $host = $env::ORM_SQLITE_HOST;
+        /** @var positive-int $port */
+        $port = $env::ORM_SQLITE_PORT;
+        /** @var non-empty-string $user */
+        $user = $env::ORM_SQLITE_USER;
+        /** @var non-empty-string $password */
+        $password = $env::ORM_SQLITE_PASSWORD;
+        /** @var non-empty-string $charset */
+        $charset = $env::ORM_SQLITE_CHARSET;
+        /** @var array<int, int|bool>|null $options */
+        $options = $env::ORM_SQLITE_OPTIONS;
+
+        $options ??= [
+            PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+            PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+            PDO::ATTR_STRINGIFY_FETCHES => false,
+            PDO::ATTR_EMULATE_PREPARES  => false,
+        ];
+
+        $dsn = 'sqlite'
+            . ":dbname=$db}"
+            . ";host=$host"
+            . ";port=$port"
+            . ";user=$user"
+            . ";charset=$charset"
+            . ";password=$password";
+
+        $pdo = new PDO(
+            dsn: $dsn,
+            options: $options
+        );
+
+        $container->setSingleton(
+            SqliteManager::class,
+            new SqliteManager($pdo, $container)
+        );
+    }
+
+    /**
+     * Publish the in memory manager service.
+     */
+    public static function publishInMemoryManager(Container $container): void
     {
         $container->setSingleton(
-            Factory::class,
-            new ContainerFactory($container)
+            InMemoryManager::class,
+            new InMemoryManager()
         );
     }
 
     /**
-     * Publish the driver service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
+     * Publish the null manager service.
      */
-    public static function publishDriver(Container $container): void
+    public static function publishNullManager(Container $container): void
     {
-        $container->setCallable(
-            Driver::class,
-            [self::class, 'createDriver']
-        );
-    }
-
-    /**
-     * Create a driver.
-     *
-     * @template Driver of Driver
-     *
-     * @param class-string<Driver> $name
-     *
-     * @return Driver
-     */
-    public static function createDriver(Container $container, string $name, Adapter $adapter, Connection $config): Driver
-    {
-        return new $name(
-            $adapter,
-            $config
-        );
-    }
-
-    /**
-     * Publish the adapter service.
-     */
-    public static function publishAdapter(Container $container): void
-    {
-        $container->setCallable(
-            Adapter::class,
-            [self::class, 'createAdapter']
-        );
-    }
-
-    /**
-     * Create an adapter.
-     *
-     * @template Adapter of Adapter
-     *
-     * @param class-string<Adapter> $name
-     *
-     * @return Adapter
-     */
-    public static function createAdapter(Container $container, string $name, Connection $config): Adapter
-    {
-        $orm = $container->getSingleton(Orm::class);
-
-        return new $name(
-            $orm,
-            $config
-        );
-    }
-
-    /**
-     * Publish the PDO adapter service.
-     */
-    public static function publishPdoAdapter(Container $container): void
-    {
-        $container->setCallable(
-            PdoAdapter::class,
-            [self::class, 'createPdoAdapter']
-        );
-    }
-
-    /**
-     * Create a PDO adapter.
-     *
-     * @template PdoAdapter of PdoAdapter
-     *
-     * @param class-string<PdoAdapter> $name
-     *
-     * @return PdoAdapter
-     */
-    public static function createPdoAdapter(Container $container, string $name, PdoConnection $config): PdoAdapter
-    {
-        $orm = $container->getSingleton(Orm::class);
-
-        $pdo = $container->get($config->pdoClass, [$config]);
-
-        return new $name(
-            $orm,
-            $pdo,
-            $config
-        );
-    }
-
-    /**
-     * Publish the PDO service.
-     */
-    public static function publishPdo(Container $container): void
-    {
-        $container->setCallable(
-            Pdo::class,
-            [self::class, 'createPdo']
-        );
-    }
-
-    /**
-     * Create a PDO.
-     *
-     * @param class-string<Pdo> $name
-     */
-    public static function createPdo(string $name, PdoConnection $config): Pdo
-    {
-        if ($name === \PDO::class) {
-            // If we got here then that means the developer has opted to use the default PDO
-            // but has not defined a PDO in the service container. The reason for this requirement
-            // is that the Valkyrja PDO constructors take in a config array, whereas the default
-            // PDO takes in a DSN as the first param.
-            throw new RuntimeException('Default PDO service not found in container.');
-        }
-
-        return new $name(
-            $config
+        $container->setSingleton(
+            NullManager::class,
+            new NullManager()
         );
     }
 
@@ -276,330 +266,20 @@ final class ServiceProvider extends Provider
     {
         $container->setCallable(
             Repository::class,
-            [self::class, 'createRepository']
+            [self::class, 'createRepository'],
         );
     }
 
     /**
-     * Create a repository.
+     * Create a repository service.
      *
-     * @param class-string<Repository> $name
-     * @param class-string<Entity>     $entity
-     *
-     * @return Repository<Entity>
+     * @param class-string<Entity> $entity The entity
      */
-    public static function createRepository(Container $container, string $name, Driver $driver, string $entity): Repository
+    public static function createRepository(Container $container, Manager $manager, string $entity): Repository
     {
-        $orm = $container->getSingleton(Orm::class);
-
-        return new $name(
-            orm: $orm,
-            driver: $driver,
-            persister: $driver->getPersister(),
+        return new Repository(
+            manager: $manager,
             entity: $entity
-        );
-    }
-
-    /**
-     * Publish the cache repository service.
-     */
-    public static function publishCacheRepository(Container $container): void
-    {
-        $container->setCallable(
-            CacheRepository::class,
-            [self::class, 'createCacheRepository']
-        );
-    }
-
-    /**
-     * @param class-string<CacheRepository> $name
-     * @param class-string<Entity>          $entity
-     *
-     * @return CacheRepository<Entity>
-     */
-    public static function createCacheRepository(Container $container, string $name, Driver $driver, string $entity): CacheRepository
-    {
-        $orm   = $container->getSingleton(Orm::class);
-        $cache = $container->getSingleton(Cache::class);
-
-        return new $name(
-            orm: $orm,
-            driver: $driver,
-            persister: $driver->getPersister(),
-            cache: $cache,
-            entity: $entity
-        );
-    }
-
-    /**
-     * Publish the persister service.
-     */
-    public static function publishPersister(Container $container): void
-    {
-        $container->setCallable(
-            Persister::class,
-            [self::class, 'createPersister']
-        );
-    }
-
-    /**
-     * Create a persister.
-     *
-     * @param class-string<Persister> $name
-     *
-     * @return Persister<Entity>
-     */
-    public static function createPersister(Container $container, string $name, Adapter $adapter): Persister
-    {
-        return new $name(
-            $adapter
-        );
-    }
-
-    /**
-     * Publish the retriever service.
-     */
-    public static function publishRetriever(Container $container): void
-    {
-        $container->setCallable(
-            Retriever::class,
-            [self::class, 'createRetriever']
-        );
-    }
-
-    /**
-     * Create a retriever.
-     *
-     * @return Retriever<Entity>
-     */
-    public static function createRetriever(Container $container, Adapter $adapter): Retriever
-    {
-        return new Retriever(
-            $adapter
-        );
-    }
-
-    /**
-     * Publish the retriever service.
-     */
-    public static function publishLocalCacheRetriever(Container $container): void
-    {
-        $container->setCallable(
-            LocalCacheRetriever::class,
-            [self::class, 'createLocalCacheRetriever']
-        );
-    }
-
-    /**
-     * Create a local cache retriever.
-     *
-     * @return LocalCacheRetriever<Entity>
-     */
-    public static function createLocalCacheRetriever(Container $container, Adapter $adapter): LocalCacheRetriever
-    {
-        return new LocalCacheRetriever(
-            $adapter
-        );
-    }
-
-    /**
-     * Publish the query service.
-     */
-    public static function publishQuery(Container $container): void
-    {
-        $container->setCallable(
-            Query::class,
-            [self::class, 'createQuery']
-        );
-    }
-
-    /**
-     * Create a query.
-     *
-     * @param class-string<Query> $name
-     */
-    public static function createQuery(Container $container, string $name, Adapter $adapter): Query
-    {
-        return new $name(
-            $adapter
-        );
-    }
-
-    /**
-     * Publish the query builder service.
-     */
-    public static function publishQueryBuilder(Container $container): void
-    {
-        $container->setCallable(
-            QueryBuilder::class,
-            [self::class, 'createQueryBuilder']
-        );
-    }
-
-    /**
-     * Create a query builder.
-     *
-     * @param class-string<QueryBuilder> $name
-     */
-    public static function createQueryBuilder(Container $container, string $name, Adapter $adapter): QueryBuilder
-    {
-        return new $name(
-            $adapter
-        );
-    }
-
-    /**
-     * Publish the delete query builder service.
-     */
-    public static function publishDeleteQueryBuilder(Container $container): void
-    {
-        $container->setCallable(
-            DeleteQueryBuilder::class,
-            [self::class, 'createDeleteQueryBuilder']
-        );
-    }
-
-    /**
-     * Create a delete query builder.
-     *
-     * @param class-string<DeleteQueryBuilder> $name
-     */
-    public static function createDeleteQueryBuilder(Container $container, string $name, Adapter $adapter): DeleteQueryBuilder
-    {
-        return new $name(
-            $adapter
-        );
-    }
-
-    /**
-     * Publish the insert query builder service.
-     */
-    public static function publishInsertQueryBuilder(Container $container): void
-    {
-        $container->setCallable(
-            InsertQueryBuilder::class,
-            [self::class, 'createInsertQueryBuilder']
-        );
-    }
-
-    /**
-     * Create an insert query builder.
-     *
-     * @param class-string<InsertQueryBuilder> $name
-     */
-    public static function createInsertQueryBuilder(Container $container, string $name, Adapter $adapter): InsertQueryBuilder
-    {
-        return new $name(
-            $adapter
-        );
-    }
-
-    /**
-     * Publish the select query builder service.
-     */
-    public static function publishSelectQueryBuilder(Container $container): void
-    {
-        $container->setCallable(
-            SelectQueryBuilder::class,
-            [self::class, 'createSelectQueryBuilder']
-        );
-    }
-
-    /**
-     * @param class-string<SelectQueryBuilder> $name
-     */
-    public static function createSelectQueryBuilder(Container $container, string $name, Adapter $adapter): SelectQueryBuilder
-    {
-        return new $name(
-            $adapter
-        );
-    }
-
-    /**
-     * Publish the update query builder service.
-     */
-    public static function publishUpdateQueryBuilder(Container $container): void
-    {
-        $container->setCallable(
-            UpdateQueryBuilder::class,
-            [self::class, 'createUpdateQueryBuilder']
-        );
-    }
-
-    /**
-     * Create an update query builder.
-     *
-     * @param class-string<UpdateQueryBuilder> $name
-     */
-    public static function createUpdateQueryBuilder(Container $container, string $name, Adapter $adapter): UpdateQueryBuilder
-    {
-        return new $name(
-            $adapter
-        );
-    }
-
-    /**
-     * Publish the statement service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishStatement(Container $container): void
-    {
-        $container->setCallable(
-            Statement::class,
-            [self::class, 'createStatement']
-        );
-    }
-
-    /**
-     * Create a statement service.
-     *
-     * @param class-string<Statement> $name
-     * @param array<string, mixed>    $data
-     */
-    public static function createStatement(Container $container, string $name, Adapter $adapter, array $data = []): Statement
-    {
-        return new $name(...$data);
-    }
-
-    /**
-     * Publish the migration service.
-     */
-    public static function publishMigration(Container $container): void
-    {
-        $container->setCallable(
-            Migration::class,
-            [self::class, 'createMigration']
-        );
-    }
-
-    /**
-     * Create a migration.
-     *
-     * @param class-string<Migration> $name
-     * @param array<string, mixed>    $data
-     */
-    public static function createMigration(Container $container, string $name, array $data = []): Migration
-    {
-        $orm = $container->getSingleton(Orm::class);
-
-        return new $name($orm, ...$data);
-    }
-
-    /**
-     * Publish the EntityRouteMatchedMiddleware service.
-     */
-    public static function publishEntityRouteMatchedMiddleware(Container $container): void
-    {
-        $container->setSingleton(
-            EntityRouteMatchedMiddleware::class,
-            new EntityRouteMatchedMiddleware(
-                container: $container,
-                orm: $container->getSingleton(Orm::class),
-                responseFactory: $container->getSingleton(ViewResponseFactory::class),
-            )
         );
     }
 }

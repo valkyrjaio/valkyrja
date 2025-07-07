@@ -13,154 +13,84 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\QueryBuilder\Contract;
 
+use Valkyrja\Orm\Data\OrderBy;
+
 /**
  * Interface SelectQueryBuilder.
  *
  * @author Melech Mizrachi
  */
-interface SelectQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
+interface SelectQueryBuilder extends QueryBuilder
 {
     /**
-     * Set the columns to return.
+     * Create a new query builder with the specified columns.
      *
-     * <code>
-     *      $queryBuilder->columns();
-     *      $queryBuilder->columns(
-     *          [
-     *              'column1',
-     *              'column2',
-     *              ...
-     *          ]
-     *      );
-     * </code>
-     *
-     * @param string[]|null $columns [optional] The columns to return. Defaults to ['*'].
+     * @param non-empty-string ...$columns The columns
      *
      * @return static
      */
-    public function columns(array|null $columns = null): static;
+    public function withColumns(string ...$columns): static;
 
     /**
-     * Join with another table.
+     * Create a new query builder with the added columns.
      *
-     * @param string      $table    The table to join on
-     * @param string      $column1  The column to join on
-     * @param string      $column2  The secondary column to join on
-     * @param string|null $operator [optional] The operator
-     * @param string|null $type     [optional] The type of join
-     * @param bool|null   $isWhere  [optional] Whether this is a where join
+     * @param non-empty-string ...$columns The columns
      *
      * @return static
      */
-    public function join(
-        string $table,
-        string $column1,
-        string $column2,
-        string|null $operator = null,
-        string|null $type = null,
-        bool|null $isWhere = null
-    ): static;
+    public function withAddedColumns(string ...$columns): static;
 
     /**
-     * Add an groupBy by to the query statement.
+     * Create a new query builder with the specified group by.
      *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->groupBy('column');
-     * </code>
-     *
-     * @param string $column
+     * @param string ...$groupBy The group by columns
      *
      * @return static
      */
-    public function groupBy(string $column): static;
+    public function withGroupBy(string ...$groupBy): static;
 
     /**
-     * Add an order by to the query statement.
+     * Create a new query builder with the added group by.
      *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->orderBy('column');
-     * </code>
-     *
-     * @param string      $column
-     * @param string|null $type   [optional]
+     * @param string ...$groupBy The group by columns
      *
      * @return static
      */
-    public function orderBy(string $column, string|null $type = null): static;
+    public function withAddedGroupBy(string ...$groupBy): static;
 
     /**
-     * Add an order by ascending to the query statement.
+     * Create a new query builder with the specified order by.
      *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->orderByAsc('column');
-     * </code>
-     *
-     * @param string $column
+     * @param OrderBy ...$orderBy The order by
      *
      * @return static
      */
-    public function orderByAsc(string $column): static;
+    public function withOrderBy(OrderBy ...$orderBy): static;
 
     /**
-     * Add an order by descending to the query statement.
+     * Create a new query builder with the added order by.
      *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->orderByDesc('column');
-     * </code>
-     *
-     * @param string $column
+     * @param OrderBy ...$orderBy The order by
      *
      * @return static
      */
-    public function orderByDesc(string $column): static;
+    public function withAddedOrderBy(OrderBy ...$orderBy): static;
 
     /**
-     * Add limit to the query statement.
+     * Create a new query builder with the specified limit.
      *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->limit(1);
-     * </code>
-     *
-     * @param int $limit
+     * @param int $limit The limit
      *
      * @return static
      */
-    public function limit(int $limit): static;
+    public function withLimit(int $limit): static;
 
     /**
-     * Add offset to the query statement.
+     * Create a new query builder with the specified offset.
      *
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column', '=', ':column')
-     *          ->offset(1);
-     * </code>
-     *
-     * @param int $offset
+     * @param int $offset The offset
      *
      * @return static
      */
-    public function offset(int $offset): static;
+    public function withOffset(int $offset): static;
 }

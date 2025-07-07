@@ -50,6 +50,8 @@ trait UserTrait
 
     /**
      * @inheritDoc
+     *
+     * @return non-empty-string
      */
     public static function getUserSessionId(): string
     {
@@ -58,6 +60,8 @@ trait UserTrait
 
     /**
      * @inheritDoc
+     *
+     * @return non-empty-string
      */
     public static function getUsernameField(): string
     {
@@ -66,6 +70,8 @@ trait UserTrait
 
     /**
      * @inheritDoc
+     *
+     * @return non-empty-string
      */
     public static function getPasswordField(): string
     {
@@ -74,6 +80,8 @@ trait UserTrait
 
     /**
      * @inheritDoc
+     *
+     * @return non-empty-string
      */
     public static function getResetTokenField(): string
     {
@@ -83,7 +91,7 @@ trait UserTrait
     /**
      * @inheritDoc
      *
-     * @return string[]
+     * @return non-empty-string[]
      */
     public static function getAuthenticationFields(): array
     {
@@ -94,29 +102,35 @@ trait UserTrait
 
     /**
      * @inheritDoc
+     *
+     * @return non-empty-string
      */
     public function getUsernameValue(): string
     {
         $value = $this->__get(static::getUsernameField());
 
-        if (! is_string($value)) {
-            throw new RuntimeException('Username field value should be a string');
+        if (is_string($value) && $value !== '') {
+            /** @var non-empty-string $value */
+            return $value;
         }
 
-        return $value;
+        throw new RuntimeException('Username field value should be a string');
     }
 
     /**
      * @inheritDoc
+     *
+     * @return non-empty-string
      */
     public function getPasswordValue(): string
     {
         $value = $this->__get(static::getPasswordField());
 
-        if (! is_string($value)) {
-            throw new RuntimeException('Username field value should be a string');
+        if (is_string($value) && $value !== '') {
+            /** @var non-empty-string $value */
+            return $value;
         }
 
-        return $value;
+        throw new RuntimeException('Username field value should be a string');
     }
 }

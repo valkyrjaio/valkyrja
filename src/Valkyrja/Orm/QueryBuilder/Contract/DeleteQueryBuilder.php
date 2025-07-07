@@ -18,26 +18,6 @@ namespace Valkyrja\Orm\QueryBuilder\Contract;
  *
  * @author Melech Mizrachi
  */
-interface DeleteQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
+interface DeleteQueryBuilder extends QueryBuilder
 {
-    /**
-     * Join with another table.
-     *
-     * @param string      $table    The table to join on
-     * @param string      $column1  The column to join on
-     * @param string      $column2  The secondary column to join on
-     * @param string|null $operator [optional] The operator
-     * @param string|null $type     [optional] The type of join
-     * @param bool|null   $isWhere  [optional] Whether this is a where join
-     *
-     * @return static
-     */
-    public function join(
-        string $table,
-        string $column1,
-        string $column2,
-        string|null $operator = null,
-        string|null $type = null,
-        bool|null $isWhere = null
-    ): static;
 }

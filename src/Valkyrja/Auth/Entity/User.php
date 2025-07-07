@@ -28,6 +28,8 @@ class User extends Entity implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @var non-empty-string
      */
     protected static string $tableName = 'users';
 }

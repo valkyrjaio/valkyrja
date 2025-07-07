@@ -14,34 +14,69 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\QueryBuilder;
 
 use Valkyrja\Orm\Constant\Statement;
+use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\QueryBuilder\Contract\InsertQueryBuilder as Contract;
-use Valkyrja\Orm\QueryBuilder\Traits\Join;
-use Valkyrja\Orm\QueryBuilder\Traits\Set;
-
-use function array_keys;
-use function implode;
 
 /**
  * Class SqlInsertQueryBuilder.
  *
  * @author Melech Mizrachi
  */
-class SqlInsertQueryBuilder extends SqlBaseQueryBuilder implements Contract
+class SqlInsertQueryBuilder extends SqlQueryBuilder implements Contract
 {
-    use Join;
-    use Set;
+    /** @var Value[] */
+    protected array $values = [];
 
     /**
      * @inheritDoc
      */
-    public function getQueryString(): string
+    public function withSet(Value ...$values): static
     {
-        return Statement::INSERT
+        $new = clone $this;
+
+        $new->values = $values;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withAddedSet(Value ...$values): static
+    {
+        $new = clone $this;
+
+        $new->values = array_merge($new->values, $values);
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function __toString(): string
+    {
+        $query = Statement::INSERT
             . ' ' . Statement::INTO
-            . ' ' . $this->table
-            . ' (' . implode(', ', array_keys($this->values)) . ')'
+            . " $this->from"
+            . $this->getAliasQuery();
+
+        $columns = [];
+        $values  = [];
+
+        foreach ($this->values as $value) {
+            $columns[] = $value->name;
+            $values[]  = (string) $value;
+        }
+
+        $columns = implode(', ', $columns);
+        $values  = implode(', ', $values);
+
+        return $query
+            . " ($columns)"
             . ' ' . Statement::VALUES
-            . ' (' . implode(', ', $this->values) . ')'
-            . ' ' . $this->getJoinQuery();
+            . " ($values)"
+            . $this->getWhereQuery()
+            . $this->getJoinQuery();
     }
 }

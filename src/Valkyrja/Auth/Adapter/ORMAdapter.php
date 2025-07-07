@@ -19,7 +19,9 @@ use Valkyrja\Auth\Config;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Exception\InvalidRegistrationException;
 use Valkyrja\Exception\InvalidArgumentException;
-use Valkyrja\Orm\Contract\Orm;
+use Valkyrja\Orm\Contract\Manager;
+use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
 use Valkyrja\Orm\Repository\Contract\Repository;
 
@@ -38,10 +40,10 @@ class ORMAdapter extends Adapter implements Contract
     /**
      * Adapter constructor.
      *
-     * @param Orm $orm The orm
+     * @param Manager $orm The orm
      */
     public function __construct(
-        protected Orm $orm,
+        protected Manager $orm,
         Config $config
     ) {
         parent::__construct($config);
@@ -71,7 +73,7 @@ class ORMAdapter extends Adapter implements Contract
     public function retrieve(User $user): User|null
     {
         $loginFields = $user::getAuthenticationFields();
-        $find        = $this->getUserRepository($user)->find();
+        $where       = [];
 
         // Iterate through the login fields
         foreach ($loginFields as $loginField) {
@@ -88,11 +90,11 @@ class ORMAdapter extends Adapter implements Contract
             }
 
             // Set a where clause for each field
-            $find->where($loginField, null, $userField);
+            $where[] = new Where(new Value(name: $loginField, value: $userField));
         }
 
         /** @var User|null $result */
-        $result = $find->getOneOrNull();
+        $result = $this->getUserRepository($user)->findBy(...$where);
 
         return $result;
     }
@@ -116,11 +118,11 @@ class ORMAdapter extends Adapter implements Contract
             throw new InvalidArgumentException('Login fields should be QueryBuilder|array|string|float|int|bool|null');
         }
 
+        $where = new Where(new Value(name: $resetTokenField, value: $userField));
+
         /** @var User|null $result */
         $result = $this->getUserRepository($user)
-                       ->find()
-                       ->where($resetTokenField, null, $userField)
-                       ->getOneOrNull();
+                       ->findBy($where);
 
         return $result;
     }
@@ -132,8 +134,7 @@ class ORMAdapter extends Adapter implements Contract
     {
         /** @var User $result */
         $result = $this->getUserRepository($user)
-                       ->findOne($user->getIdValue())
-                       ->getOneOrFail();
+                       ->find($user->getIdValue());
 
         return $result;
     }
@@ -146,8 +147,9 @@ class ORMAdapter extends Adapter implements Contract
         // Get the ORM repository
         $repository = $this->getUserRepository($user);
 
-        $repository->save($user, false);
-        $repository->persist();
+        $this->orm->ensureTransaction();
+        $repository->update($user);
+        $this->orm->commit();
     }
 
     /**
@@ -167,7 +169,7 @@ class ORMAdapter extends Adapter implements Contract
 
             $this->orm->ensureTransaction();
             $repository->create($user);
-            $repository->persist();
+            $this->orm->commit();
 
             return true;
         } catch (Exception $exception) {
@@ -178,7 +180,7 @@ class ORMAdapter extends Adapter implements Contract
     /**
      * @inheritDoc
      */
-    public function getOrm(): Orm
+    public function getOrm(): Manager
     {
         return $this->orm;
     }
@@ -192,6 +194,6 @@ class ORMAdapter extends Adapter implements Contract
      */
     protected function getUserRepository(User $user): Repository
     {
-        return $this->orm->getRepositoryFromClass($user);
+        return $this->orm->createRepository($user::class);
     }
 }

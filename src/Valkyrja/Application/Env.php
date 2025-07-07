@@ -53,6 +53,8 @@ use Valkyrja\Jwt\FirebaseJwt;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Mail\Contract\Mailer;
 use Valkyrja\Mail\MailgunMailer;
+use Valkyrja\Orm\Contract\Manager;
+use Valkyrja\Orm\MysqlManager;
 use Valkyrja\Session\Contract\Session;
 use Valkyrja\Session\PhpSession;
 use Valkyrja\Sms\Contract\Sms;
@@ -335,54 +337,58 @@ class Env
      *
      ************************************************************/
 
+    /** @var class-string<Manager> */
+    public const string ORM_DEFAULT_MANAGER = MysqlManager::class;
+    /** @var non-empty-string */
+    public const string ORM_PGSQL_HOST = '127.0.0.1';
+    /** @var positive-int */
+    public const int ORM_PGSQL_PORT = 6379;
     /** @var string|null */
-    public const string|null ORM_DEFAULT_CONNECTION = null;
+    public const string|null ORM_PGSQL_DB = 'valkyrja';
     /** @var string|null */
-    public const string|null ORM_PGSQL_PDO_DRIVER = null;
+    public const string|null ORM_PGSQL_USER = 'valkyrja';
     /** @var string|null */
-    public const string|null ORM_PGSQL_HOST = null;
+    public const string|null ORM_PGSQL_PASSWORD = 'pgsql-password';
     /** @var string|null */
-    public const string|null ORM_PGSQL_PORT = null;
-    /** @var string|null */
-    public const string|null ORM_PGSQL_DB = null;
-    /** @var string|null */
-    public const string|null ORM_PGSQL_USER = null;
-    /** @var string|null */
-    public const string|null ORM_PGSQL_PASSWORD = null;
-    /** @var string|null */
-    public const string|null ORM_PGSQL_CHARSET = null;
+    public const string|null ORM_PGSQL_CHARSET = 'utf8';
     /** @var array<int, int|bool>|null */
     public const array|null ORM_PGSQL_OPTIONS = null;
-    /** @var string|null */
-    public const string|null ORM_PGSQL_SCHEMA = null;
-    /** @var string|null */
-    public const string|null ORM_PGSQL_SSL_MODE = null;
-    /** @var string|null */
-    public const string|null ORM_PGSQL_SSL_CERT = null;
-    /** @var string|null */
-    public const string|null ORM_PGSQL_KEY = null;
-    /** @var string|null */
-    public const string|null ORM_PGSQL_ROOT_KEY = null;
-    /** @var string|null */
-    public const string|null ORM_MYSQL_PDO_DRIVER = null;
-    /** @var string|null */
-    public const string|null ORM_MYSQL_HOST = null;
-    /** @var string|null */
-    public const string|null ORM_MYSQL_PORT = null;
-    /** @var string|null */
-    public const string|null ORM_MYSQL_DB = null;
-    /** @var string|null */
-    public const string|null ORM_MYSQL_USER = null;
-    /** @var string|null */
-    public const string|null ORM_MYSQL_PASSWORD = null;
-    /** @var string|null */
-    public const string|null ORM_MYSQL_CHARSET = null;
+    /** @var non-empty-string */
+    public const string ORM_PGSQL_SCHEMA = 'public';
+    /** @var non-empty-string */
+    public const string ORM_PGSQL_SSL_MODE = 'prefer';
+    /** @var non-empty-string */
+    public const string ORM_MYSQL_HOST = '127.0.0.1';
+    /** @var positive-int */
+    public const int ORM_MYSQL_PORT = 3306;
+    /** @var non-empty-string */
+    public const string ORM_MYSQL_DB = 'valkyrja';
+    /** @var non-empty-string */
+    public const string ORM_MYSQL_USER = 'valkyrja';
+    /** @var non-empty-string */
+    public const string ORM_MYSQL_PASSWORD = 'mysql-password';
+    /** @var non-empty-string */
+    public const string ORM_MYSQL_CHARSET = 'utf8mb4';
     /** @var array<int, int|bool>|null */
     public const array|null ORM_MYSQL_OPTIONS = null;
     /** @var bool|null */
     public const bool|null ORM_MYSQL_STRICT = null;
     /** @var string|null */
     public const string|null ORM_MYSQL_ENGINE = null;
+    /** @var non-empty-string */
+    public const string ORM_SQLITE_HOST = '127.0.0.1';
+    /** @var positive-int */
+    public const int ORM_SQLITE_PORT = 3306;
+    /** @var non-empty-string */
+    public const string ORM_SQLITE_DB = 'valkyrja';
+    /** @var non-empty-string */
+    public const string ORM_SQLITE_USER = 'valkyrja';
+    /** @var non-empty-string */
+    public const string ORM_SQLITE_PASSWORD = 'sqlite-password';
+    /** @var non-empty-string */
+    public const string ORM_SQLITE_CHARSET = 'utf8';
+    /** @var array<int, int|bool>|null */
+    public const array|null ORM_SQLITE_OPTIONS = null;
 
     /************************************************************
      *

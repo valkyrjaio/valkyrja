@@ -13,314 +13,133 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\QueryBuilder;
 
-use Valkyrja\Orm\Constant\OrderBy;
 use Valkyrja\Orm\Constant\Statement;
-use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
-use Valkyrja\Orm\QueryBuilder\Traits\Join;
-use Valkyrja\Orm\QueryBuilder\Traits\Set;
-use Valkyrja\Orm\QueryBuilder\Traits\Where;
-
-use function array_keys;
-use function implode;
+use Valkyrja\Orm\Data\Join;
+use Valkyrja\Orm\Data\Where;
+use Valkyrja\Orm\Data\WhereGroup;
+use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder as Contract;
 
 /**
  * Class SqlQueryBuilder.
  *
  * @author Melech Mizrachi
  */
-class SqlQueryBuilder extends SqlBaseQueryBuilder implements QueryBuilder
+abstract class SqlQueryBuilder implements Contract
 {
-    use Join;
-    use Set;
-    use Where;
+    /** @var string */
+    protected string $alias = '';
+    /** @var Join[] */
+    protected array $joins = [];
+    /** @var array<Where|WhereGroup> */
+    protected array $where = [];
 
     /**
-     * The type of statement to build.
-     *
-     * @var string
+     * @param non-empty-string $from The table
      */
-    protected string $type;
-
-    /**
-     * The columns for use in a select statement.
-     *
-     * @var string[]
-     */
-    protected array $columns = [];
-
-    /**
-     * Order by conditions for the query statement.
-     *
-     * @var string[]
-     */
-    protected array $orderBy = [];
-
-    /**
-     * Group by conditions for the query statement.
-     *
-     * @var string[]
-     */
-    protected array $groupBy = [];
-
-    /**
-     * Limit condition for the query statement.
-     *
-     * @var int|null
-     */
-    protected int|null $limit = null;
-
-    /**
-     * Offset condition for the query statement.
-     *
-     * @var int|null
-     */
-    protected int|null $offset = null;
-
-    /**
-     * @inheritDoc
-     */
-    public function select(string ...$columns): static
-    {
-        $this->type    = Statement::SELECT;
-        $this->columns = $columns !== []
-            ? $columns
-            : ['*'];
-
-        return $this;
+    public function __construct(
+        protected string $from,
+    ) {
     }
 
     /**
      * @inheritDoc
      */
-    public function insert(): static
+    public function withFrom(string $table): static
     {
-        $this->type = Statement::INSERT;
+        $new = clone $this;
 
-        return $this;
+        $new->from = $table;
+
+        return $new;
     }
 
     /**
      * @inheritDoc
      */
-    public function update(): static
+    public function withAlias(string $alias): static
     {
-        $this->type = Statement::UPDATE;
+        $new = clone $this;
 
-        return $this;
+        $new->alias = $alias;
+
+        return $new;
     }
 
     /**
      * @inheritDoc
      */
-    public function delete(): static
+    public function withJoin(Join ...$joins): static
     {
-        $this->type = Statement::DELETE;
+        $new = clone $this;
 
-        return $this;
+        $new->joins = $joins;
+
+        return $new;
     }
 
     /**
      * @inheritDoc
      */
-    public function groupBy(string $column): static
+    public function withAddedJoin(Join ...$joins): static
     {
-        $this->groupBy[] = $column;
+        $new = clone $this;
 
-        return $this;
+        $new->joins = array_merge($new->joins, $joins);
+
+        return $new;
+    }
+
+    public function withWhere(Where|WhereGroup ...$where): static
+    {
+        $new = clone $this;
+
+        $new->where = $where;
+
+        return $new;
+    }
+
+    public function withAddedWhere(Where|WhereGroup ...$where): static
+    {
+        $new = clone $this;
+
+        $new->where = array_merge($new->where, $where);
+
+        return $new;
     }
 
     /**
-     * @inheritDoc
-     */
-    public function orderBy(string $column, string|null $type = null): static
-    {
-        $this->orderBy[] = $column . ' ' . ((string) $type);
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function orderByAsc(string $column): static
-    {
-        return $this->orderBy($column, OrderBy::ASC);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function orderByDesc(string $column): static
-    {
-        return $this->orderBy($column, OrderBy::DESC);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function limit(int $limit): static
-    {
-        $this->limit = $limit;
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offset(int $offset): static
-    {
-        $this->offset = $offset;
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getQueryString(): string
-    {
-        $queryString = '';
-
-        switch ($this->type) {
-            case Statement::SELECT:
-                $queryString = $this->getSelectQuery();
-
-                break;
-            case Statement::UPDATE:
-                $queryString = $this->getUpdateQuery();
-
-                break;
-            case Statement::INSERT:
-                $queryString = $this->getInsertQuery();
-
-                break;
-            case Statement::DELETE:
-                $queryString = $this->getDeleteQuery();
-
-                break;
-        }
-
-        return $queryString;
-    }
-
-    /**
-     * Get a SELECT query.
+     * Get the alias of a query statement.
      *
      * @return string
      */
-    protected function getSelectQuery(): string
+    protected function getAliasQuery(): string
     {
-        return Statement::SELECT
-            . ' ' . implode(', ', $this->columns)
-            . ' ' . Statement::FROM
-            . ' ' . $this->table
-            . ' ' . $this->getJoinQuery()
-            . ' ' . $this->getWhereQuery()
-            . ' ' . $this->getOrderByQuery()
-            . ' ' . $this->getLimitQuery()
-            . ' ' . $this->getOffsetQuery();
-    }
-
-    /**
-     * Get an INSERT query.
-     *
-     * @return string
-     */
-    protected function getInsertQuery(): string
-    {
-        return Statement::INSERT
-            . ' ' . Statement::INTO
-            . ' ' . $this->table
-            . ' (' . implode(', ', array_keys($this->values)) . ')'
-            . ' ' . Statement::VALUES
-            . ' (' . implode(', ', $this->values) . ')'
-            . ' ' . $this->getJoinQuery();
-    }
-
-    /**
-     * Get an UPDATE query.
-     *
-     * @return string
-     */
-    protected function getUpdateQuery(): string
-    {
-        return Statement::UPDATE
-            . ' ' . $this->table
-            . ' ' . $this->getSetQuery()
-            . ' ' . $this->getWhereQuery()
-            . ' ' . $this->getJoinQuery();
-    }
-
-    /**
-     * Get an DELETE query.
-     *
-     * @return string
-     */
-    protected function getDeleteQuery(): string
-    {
-        return Statement::DELETE
-            . ' ' . Statement::FROM
-            . ' ' . $this->table
-            . ' ' . $this->getWhereQuery()
-            . ' ' . $this->getJoinQuery();
-    }
-
-    /**
-     * Get the GROUP BY part of a query statement.
-     *
-     * @return string
-     */
-    protected function getGroupByQuery(): string
-    {
-        return empty($this->orderBy) || $this->isCount()
+        return $this->alias === ''
             ? ''
-            : Statement::GROUP_BY . ' ' . implode(', ', $this->groupBy);
+            : " $this->alias";
     }
 
     /**
-     * Get the ORDER BY part of a query statement.
+     * Get the where of a query statement.
      *
      * @return string
      */
-    protected function getOrderByQuery(): string
+    protected function getWhereQuery(): string
     {
-        return empty($this->orderBy) || $this->isCount()
+        return empty($this->where)
             ? ''
-            : Statement::ORDER_BY . ' ' . implode(', ', $this->orderBy);
+            : ' ' . Statement::WHERE . ' ' . implode(' ', $this->where);
     }
 
     /**
-     * Get the LIMIT part of a query statement.
+     * Get the joins of a query statement.
      *
      * @return string
      */
-    protected function getLimitQuery(): string
+    protected function getJoinQuery(): string
     {
-        return $this->limit === null || $this->isCount()
+        return empty($this->joins)
             ? ''
-            : Statement::LIMIT . ' ' . ((string) $this->limit);
-    }
-
-    /**
-     * Get the OFFSET part of a query statement.
-     *
-     * @return string
-     */
-    protected function getOffsetQuery(): string
-    {
-        return $this->offset === null || $this->isCount()
-            ? ''
-            : Statement::OFFSET . ' ' . ((string) $this->offset);
-    }
-
-    /**
-     * Determine whether this is a count statement.
-     *
-     * @return bool
-     */
-    protected function isCount(): bool
-    {
-        return $this->columns[0] === Statement::COUNT_ALL;
+            : ' ' . implode(' ', $this->joins);
     }
 }

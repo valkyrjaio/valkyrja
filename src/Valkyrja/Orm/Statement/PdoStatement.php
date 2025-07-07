@@ -15,26 +15,27 @@ namespace Valkyrja\Orm\Statement;
 
 use PDO;
 use PDOStatement as Statement;
-use stdClass;
-use Valkyrja\Exception\RuntimeException;
-use Valkyrja\Orm\Statement\Contract\PdoStatement as Contract;
+use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\Exception\RuntimeException;
+use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
+use Valkyrja\Orm\Statement\Contract\Statement as Contract;
 
 use function is_array;
 use function is_bool;
 use function is_int;
-use function is_object;
+use function is_string;
 
 /**
- * Class PDOStatement.
+ * Class PdoStatement.
  *
  * @author Melech Mizrachi
  */
 class PdoStatement implements Contract
 {
     /**
-     * PDOStatement constructor.
+     * PdoStatement constructor.
      *
-     * @param Statement $statement
+     * @param Statement $statement The pdo statement
      */
     public function __construct(
         protected Statement $statement
@@ -44,12 +45,30 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      */
-    public function bindValue(string $parameter, string|float|int|bool|null $value): bool
+    public function bindValue(Value $value): bool
     {
+        if ($value->value instanceof QueryBuilder) {
+            return true;
+        }
+
+        if (is_array($value->value)) {
+            $ret = false;
+
+            foreach ($value->value as $key => $item) {
+                $ret = $this->statement->bindValue(
+                    param: ":$value->name$key",
+                    value: $item,
+                    type: $this->getBindValueType($item)
+                );
+            }
+
+            return $ret;
+        }
+
         return $this->statement->bindValue(
-            $parameter,
-            $value,
-            $this->getBindValueType($value)
+            param: ":$value->name",
+            value: $value->value,
+            type: $this->getBindValueType($value->value)
         );
     }
 
@@ -70,7 +89,10 @@ class PdoStatement implements Contract
         $columnMeta = $this->statement->getColumnMeta($columnNumber);
 
         if ($columnMeta === false) {
-            throw new RuntimeException($this->errorMessage() ?? "Error occurred when getting column meta for column number $columnNumber");
+            throw new RuntimeException(
+                $this->errorMessage()
+                ?? "Error occurred when getting column meta for column number $columnNumber"
+            );
         }
 
         return $columnMeta;
@@ -112,15 +134,30 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      */
-    public function fetchObject(string $className = stdClass::class): object
+    public function getCount(): int
     {
-        $object = $this->statement->fetchObject($className);
+        $results = $this->statement->fetchAll();
 
-        if (! is_object($object)) {
-            throw new RuntimeException($this->errorMessage() ?? "Error occurred when fetching object of type $className");
+        $firstResults = $results[0] ?? null;
+
+        if ($firstResults === null) {
+            return 0;
         }
 
-        return $object;
+        /** @var array<string, int|string|mixed> $firstResults */
+        $count = $firstResults['COUNT(*)']
+            ?? $firstResults['count']
+            ?? 0;
+
+        if (is_int($count)) {
+            return $count;
+        }
+
+        if (is_string($count)) {
+            return (int) $count;
+        }
+
+        throw new RuntimeException('Unsupported count results');
     }
 
     /**

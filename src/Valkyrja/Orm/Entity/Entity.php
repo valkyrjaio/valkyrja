@@ -44,14 +44,14 @@ abstract class Entity extends Model implements Contract
     /**
      * The table name.
      *
-     * @var string
+     * @var non-empty-string
      */
     protected static string $tableName;
 
     /**
      * The id field.
      *
-     * @var string
+     * @var non-empty-string
      */
     protected static string $idField = 'id';
 
@@ -65,23 +65,16 @@ abstract class Entity extends Model implements Contract
     /**
      * A list of hidden fields we can expose for storage.
      *
-     * @var string[]
+     * @var non-empty-string[]
      */
     protected static array $relationshipProperties = [];
 
     /**
      * A list of fields we do not want to store.
      *
-     * @var string[]
+     * @var non-empty-string[]
      */
     protected static array $unStorableFields = [];
-
-    /**
-     * The connection to use.
-     *
-     * @var string|null
-     */
-    protected static string|null $connection = null;
 
     /**
      * @inheritDoc
@@ -110,14 +103,6 @@ abstract class Entity extends Model implements Contract
     /**
      * @inheritDoc
      */
-    public static function getConnection(): string|null
-    {
-        return static::$connection;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public static function getRelationshipProperties(): array
     {
         return static::$relationshipProperties;
@@ -133,18 +118,17 @@ abstract class Entity extends Model implements Contract
 
     /**
      * Get the id field's value.
-     *
-     * @return string|int
      */
     public function getIdValue(): string|int
     {
         $id = $this->__get(static::getIdField());
 
-        if (! is_int($id) && ! is_string($id)) {
-            throw new RuntimeException('Id field value should be a string or int');
+        if (is_int($id) || (is_string($id) && $id !== '')) {
+            /** @var non-empty-string|int $id */
+            return $id;
         }
 
-        return $id;
+        throw new RuntimeException('Id field value should be a string or int');
     }
 
     /**

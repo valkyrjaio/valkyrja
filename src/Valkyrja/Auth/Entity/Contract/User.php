@@ -41,49 +41,49 @@ interface User extends Entity
     /**
      * Get the user session id.
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function getUserSessionId(): string;
 
     /**
      * Get the username field.
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function getUsernameField(): string;
 
     /**
      * Get the hashed password field.
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function getPasswordField(): string;
 
     /**
      * Get the reset token field.
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function getResetTokenField(): string;
 
     /**
      * Get the login fields to use.
      *
-     * @return string[]
+     * @return non-empty-string[]
      */
     public static function getAuthenticationFields(): array;
 
     /**
      * Get the username value.
      *
-     * @return string
+     * @return non-empty-string
      */
     public function getUsernameValue(): string;
 
     /**
      * Get the password value.
      *
-     * @return string
+     * @return non-empty-string
      */
     public function getPasswordValue(): string;
 }

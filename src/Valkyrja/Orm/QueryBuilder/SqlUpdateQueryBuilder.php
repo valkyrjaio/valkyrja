@@ -14,31 +14,69 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\QueryBuilder;
 
 use Valkyrja\Orm\Constant\Statement;
-use Valkyrja\Orm\QueryBuilder\Contract\UpdateQueryBuilder as Contract;
-use Valkyrja\Orm\QueryBuilder\Traits\Join;
-use Valkyrja\Orm\QueryBuilder\Traits\Set;
-use Valkyrja\Orm\QueryBuilder\Traits\Where;
+use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\QueryBuilder\Contract\UpdateQueryBuilder;
 
 /**
  * Class SqlUpdateQueryBuilder.
  *
  * @author Melech Mizrachi
  */
-class SqlUpdateQueryBuilder extends SqlBaseQueryBuilder implements Contract
+class SqlUpdateQueryBuilder extends SqlQueryBuilder implements UpdateQueryBuilder
 {
-    use Join;
-    use Set;
-    use Where;
+    /** @var Value[] */
+    protected array $values = [];
 
     /**
      * @inheritDoc
      */
-    public function getQueryString(): string
+    public function withSet(Value ...$values): static
+    {
+        $new = clone $this;
+
+        $new->values = $values;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function withAddedSet(Value ...$values): static
+    {
+        $new = clone $this;
+
+        $new->values = array_merge($new->values, $values);
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function __toString(): string
     {
         return Statement::UPDATE
-            . ' ' . $this->table
-            . ' ' . $this->getSetQuery()
-            . ' ' . $this->getWhereQuery()
-            . ' ' . $this->getJoinQuery();
+            . " $this->from"
+            . $this->getAliasQuery()
+            . $this->getSetQuery()
+            . $this->getWhereQuery()
+            . $this->getJoinQuery();
+    }
+
+    /**
+     * Get the SET part of an INSERT query.
+     *
+     * @return string
+     */
+    protected function getSetQuery(): string
+    {
+        $values = [];
+
+        foreach ($this->values as $value) {
+            $values[] = "$value->name = " . ((string) $value);
+        }
+
+        return Statement::SET . ' ' . implode(', ', $values);
     }
 }

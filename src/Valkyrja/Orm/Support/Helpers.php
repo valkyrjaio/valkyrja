@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Support;
 
 use DateTime;
-use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Orm\Constant\DateFormat;
+use Valkyrja\Orm\Exception\RuntimeException;
 
 use function microtime;
 use function str_replace;
@@ -27,19 +27,6 @@ use function str_replace;
  */
 class Helpers
 {
-    /**
-     * Get a combined table.column string.
-     *
-     * @param string $table  The table
-     * @param string $column The column
-     *
-     * @return string
-     */
-    public static function getTableColumn(string $table, string $column): string
-    {
-        return "$table.$column";
-    }
-
     /**
      * Get a column for a value bind.
      *

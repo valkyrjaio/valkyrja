@@ -13,52 +13,30 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\QueryBuilder\Contract;
 
+use Valkyrja\Orm\Data\Value;
+
 /**
  * Interface UpdateQueryBuilder.
  *
  * @author Melech Mizrachi
  */
-interface UpdateQueryBuilder extends BaseQueryBuilder, WhereQueryBuilder
+interface UpdateQueryBuilder extends QueryBuilder
 {
     /**
-     * Add a value for a column to set.
+     * Create a new query builder with the specified values.
      *
-     * <code>
-     *      $queryBuilder
-     *          ->insert()
-     *          ->table('table')
-     *          ->set('column', ':column');
-     *      $queryBuilder
-     *          ->update()
-     *          ->table('table')
-     *          ->set('column', ':column');
-     * </code>
-     *
-     * @param string                     $column
-     * @param string|float|int|bool|null $value
+     * @param Value ...$values The values
      *
      * @return static
      */
-    public function set(string $column, string|float|int|bool|null $value = null): static;
+    public function withSet(Value ...$values): static;
 
     /**
-     * Join with another table.
+     * Create a new query builder with added values.
      *
-     * @param string      $table    The table to join on
-     * @param string      $column1  The column to join on
-     * @param string      $column2  The secondary column to join on
-     * @param string|null $operator [optional] The operator
-     * @param string|null $type     [optional] The type of join
-     * @param bool|null   $isWhere  [optional] Whether this is a where join
+     * @param Value ...$values The values
      *
      * @return static
      */
-    public function join(
-        string $table,
-        string $column1,
-        string $column2,
-        string|null $operator = null,
-        string|null $type = null,
-        bool|null $isWhere = null
-    ): static;
+    public function withAddedSet(Value ...$values): static;
 }

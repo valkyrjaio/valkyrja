@@ -13,139 +13,139 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\QueryBuilder;
 
-use Valkyrja\Orm\Constant\OrderBy;
 use Valkyrja\Orm\Constant\Statement;
+use Valkyrja\Orm\Data\OrderBy;
 use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilder as Contract;
-use Valkyrja\Orm\QueryBuilder\Traits\Join;
-use Valkyrja\Orm\QueryBuilder\Traits\Where;
-
-use function implode;
 
 /**
  * Class SqlSelectQueryBuilder.
  *
  * @author Melech Mizrachi
  */
-class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
+class SqlSelectQueryBuilder extends SqlQueryBuilder implements Contract
 {
-    use Join;
-    use Where;
-
-    /**
-     * The columns for use in a select statement.
-     *
-     * @var string[]
-     */
-    protected array $columns = [];
-
-    /**
-     * Order by conditions for the query statement.
-     *
-     * @var string[]
-     */
-    protected array $orderBy = [];
-
-    /**
-     * Group by conditions for the query statement.
-     *
-     * @var string[]
-     */
+    /** @var non-empty-string[] */
+    protected array $columns = ['*'];
+    /** @var string[] */
     protected array $groupBy = [];
-
-    /**
-     * Limit condition for the query statement.
-     *
-     * @var int|null
-     */
+    /** @var OrderBy[] */
+    protected array $orderBy = [];
+    /** @var int|null */
     protected int|null $limit = null;
-
-    /**
-     * Offset condition for the query statement.
-     *
-     * @var int|null
-     */
+    /** @var int|null */
     protected int|null $offset = null;
 
     /**
      * @inheritDoc
      */
-    public function columns(array|null $columns = null): static
+    public function withColumns(string ...$columns): static
     {
-        $this->columns = $columns ?? ['*'];
+        $new = clone $this;
 
-        return $this;
+        $new->columns = $columns;
+
+        return $new;
     }
 
     /**
      * @inheritDoc
      */
-    public function groupBy(string $column): static
+    public function withAddedColumns(string ...$columns): static
     {
-        $this->groupBy[] = $column;
+        $new = clone $this;
 
-        return $this;
+        $new->columns = array_merge($new->columns, $columns);
+
+        return $new;
     }
 
     /**
      * @inheritDoc
      */
-    public function orderBy(string $column, string|null $type = null): static
+    public function withGroupBy(string ...$groupBy): static
     {
-        $this->orderBy[] = $column . ' ' . ((string) $type);
+        $new = clone $this;
 
-        return $this;
+        $new->groupBy = $groupBy;
+
+        return $new;
     }
 
     /**
      * @inheritDoc
      */
-    public function orderByAsc(string $column): static
+    public function withAddedGroupBy(string ...$groupBy): static
     {
-        return $this->orderBy($column, OrderBy::ASC);
+        $new = clone $this;
+
+        $new->groupBy = array_merge($new->groupBy, $groupBy);
+
+        return $new;
     }
 
     /**
      * @inheritDoc
      */
-    public function orderByDesc(string $column): static
+    public function withOrderBy(OrderBy ...$orderBy): static
     {
-        return $this->orderBy($column, OrderBy::DESC);
+        $new = clone $this;
+
+        $new->orderBy = $orderBy;
+
+        return $new;
     }
 
     /**
      * @inheritDoc
      */
-    public function limit(int $limit): static
+    public function withAddedOrderBy(OrderBy ...$orderBy): static
     {
-        $this->limit = $limit;
+        $new = clone $this;
 
-        return $this;
+        $new->orderBy = array_merge($new->orderBy, $orderBy);
+
+        return $new;
     }
 
     /**
      * @inheritDoc
      */
-    public function offset(int $offset): static
+    public function withLimit(int $limit): static
     {
-        $this->offset = $offset;
+        $new = clone $this;
 
-        return $this;
+        $new->limit = $limit;
+
+        return $new;
     }
 
     /**
      * @inheritDoc
      */
-    public function getQueryString(): string
+    public function withOffset(int $offset): static
+    {
+        $new = clone $this;
+
+        $new->offset = $offset;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function __toString(): string
     {
         return Statement::SELECT
             . ' ' . implode(', ', $this->columns)
             . ' ' . Statement::FROM
-            . ' ' . $this->table
-            . ' ' . $this->getJoinQuery()
-            . ' ' . $this->getWhereQuery()
-            . ' ' . $this->getOrderByQuery()
-            . ' ' . $this->getLimitQuery()
-            . ' ' . $this->getOffsetQuery();
+            . " $this->from"
+            . $this->getJoinQuery()
+            . $this->getWhereQuery()
+            . $this->getGroupByQuery()
+            . $this->getOrderByQuery()
+            . $this->getLimitQuery()
+            . $this->getOffsetQuery();
     }
 
     /**
@@ -157,7 +157,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     {
         return empty($this->orderBy) || $this->isCount()
             ? ''
-            : Statement::GROUP_BY . ' ' . implode(', ', $this->groupBy);
+            : ' ' . Statement::GROUP_BY . ' ' . implode(', ', $this->groupBy);
     }
 
     /**
@@ -169,7 +169,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     {
         return empty($this->orderBy) || $this->isCount()
             ? ''
-            : Statement::ORDER_BY . ' ' . implode(', ', $this->orderBy);
+            : ' ' . Statement::ORDER_BY . ' ' . implode(', ', $this->orderBy);
     }
 
     /**
@@ -181,7 +181,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     {
         return $this->limit === null || $this->isCount()
             ? ''
-            : Statement::LIMIT . ' ' . ((string) $this->limit);
+            : ' ' . Statement::LIMIT . ' ' . ((string) $this->limit);
     }
 
     /**
@@ -193,7 +193,7 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
     {
         return $this->offset === null || $this->isCount()
             ? ''
-            : Statement::OFFSET . ' ' . ((string) $this->offset);
+            : ' ' . Statement::OFFSET . ' ' . ((string) $this->offset);
     }
 
     /**
@@ -203,6 +203,6 @@ class SqlSelectQueryBuilder extends SqlBaseQueryBuilder implements Contract
      */
     protected function isCount(): bool
     {
-        return $this->columns[0] === Statement::COUNT_ALL;
+        return str_starts_with($this->columns[0], 'COUNT');
     }
 }

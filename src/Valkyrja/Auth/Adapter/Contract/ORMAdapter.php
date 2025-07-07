@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Adapter\Contract;
 
-use Valkyrja\Orm\Contract\Orm;
+use Valkyrja\Orm\Contract\Manager;
 
 /**
  * Interface ORMAdapter.
@@ -25,7 +25,7 @@ interface ORMAdapter extends Adapter
     /**
      * Get the ORM service.
      *
-     * @return Orm
+     * @return Manager
      */
-    public function getOrm(): Orm;
+    public function getOrm(): Manager;
 }

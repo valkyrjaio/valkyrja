@@ -35,7 +35,7 @@ use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Jwt\Contract\Jwt;
-use Valkyrja\Orm\Contract\Orm;
+use Valkyrja\Orm\Contract\Manager;
 use Valkyrja\Session\Contract\Session;
 
 /**
@@ -170,7 +170,7 @@ final class ServiceProvider extends Provider
      */
     public static function createOrmAdapter(Container $container, Config $config): ORMAdapter
     {
-        $orm = $container->getSingleton(Orm::class);
+        $orm = $container->getSingleton(Manager::class);
 
         return new ORMAdapter(
             $orm,

@@ -15,28 +15,24 @@ namespace Valkyrja\Orm\QueryBuilder;
 
 use Valkyrja\Orm\Constant\Statement;
 use Valkyrja\Orm\QueryBuilder\Contract\DeleteQueryBuilder as Contract;
-use Valkyrja\Orm\QueryBuilder\Traits\Join;
-use Valkyrja\Orm\QueryBuilder\Traits\Where;
 
 /**
  * Class SqlDeleteQueryBuilder.
  *
  * @author Melech Mizrachi
  */
-class SqlDeleteQueryBuilder extends SqlBaseQueryBuilder implements Contract
+class SqlDeleteQueryBuilder extends SqlQueryBuilder implements Contract
 {
-    use Join;
-    use Where;
-
     /**
      * @inheritDoc
      */
-    public function getQueryString(): string
+    public function __toString(): string
     {
         return Statement::DELETE
             . ' ' . Statement::FROM
-            . ' ' . $this->table
-            . ' ' . $this->getWhereQuery()
-            . ' ' . $this->getJoinQuery();
+            . " $this->from"
+            . $this->getAliasQuery()
+            . $this->getWhereQuery()
+            . $this->getJoinQuery();
     }
 }
