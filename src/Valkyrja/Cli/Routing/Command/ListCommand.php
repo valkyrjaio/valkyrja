@@ -87,9 +87,8 @@ class ListCommand
                 new Message('  '),
                 new Message($item->getName(), new Formatter(textColor: TextColor::MAGENTA)),
                 new NewLine(),
-                new Message('      '),
-                new Message($item->getDescription()),
-                new NewLine(),
+                new Message('    - '),
+                new Message($item->getDescription(), new HighlightedTextFormatter()),
                 new NewLine(),
             );
         }
