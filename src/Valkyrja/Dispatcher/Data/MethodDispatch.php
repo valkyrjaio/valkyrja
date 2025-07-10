@@ -118,4 +118,15 @@ class MethodDispatch extends ClassDispatch implements Contract
 
         return $new;
     }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function __toString(): string
+    {
+        return $this->class
+            . ($this->isStatic ? '::' : '->')
+            . "$this->method()";
+    }
 }

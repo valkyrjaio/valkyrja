@@ -76,4 +76,14 @@ class ConstantDispatch extends Dispatch implements Contract
 
         return $new;
     }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function __toString(): string
+    {
+        return ($this->class !== null ? $this->class . '::' : '')
+            . $this->constant;
+    }
 }
