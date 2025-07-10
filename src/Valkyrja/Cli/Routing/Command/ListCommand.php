@@ -13,14 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Command;
 
-use Valkyrja\Application\Contract\Application;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
+use Valkyrja\Cli\Interaction\Enum\TextColor;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
+use Valkyrja\Cli\Interaction\Formatter\Formatter;
+use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
-use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Routing\Attribute\Command as CommandAttribute;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection;
@@ -51,17 +52,8 @@ class ListCommand
             ),
         ]
     )]
-    public function run(Command $command, Collection $collection, OutputFactory $outputFactory): Output
+    public function run(VersionCommand $version, Command $command, Collection $collection, OutputFactory $outputFactory): Output
     {
-        $output = $outputFactory
-            ->createOutput()
-            ->withMessages(
-                new NewLine(),
-                new Message('Valkyrja version ' . Application::VERSION),
-                new NewLine(),
-            )
-            ->writeMessages();
-
         $namespace = $command->getOption('namespace')?->getFirstValue();
         $commands  = $collection->all();
 
@@ -70,7 +62,8 @@ class ListCommand
         }
 
         if ($commands === []) {
-            return $output
+            return $outputFactory
+                ->createOutput()
                 ->withExitCode(ExitCode::ERROR)
                 ->withAddedMessages(
                     new Banner(new ErrorMessage("Namespace `$namespace` was not found."))
@@ -79,9 +72,28 @@ class ListCommand
 
         $namespace ??= '';
 
-        return $output
+        usort($commands, static fn (Command $a, Command $b): int => $a->getName() <=> $b->getName());
+
+        $output = $version
+            ->run($outputFactory)
             ->withAddedMessages(
-                new Banner(new SuccessMessage("Namespace `$namespace`")),
+                new NewLine(),
+                new Message('Commands' . ($namespace !== '' ? " [$namespace]:" : ':'), new HighlightedTextFormatter()),
+                new NewLine()
             );
+
+        foreach ($commands as $item) {
+            $output = $output->withAddedMessages(
+                new Message('  '),
+                new Message($item->getName(), new Formatter(textColor: TextColor::MAGENTA)),
+                new NewLine(),
+                new Message('      '),
+                new Message($item->getDescription()),
+                new NewLine(),
+                new NewLine(),
+            );
+        }
+
+        return $output;
     }
 }
