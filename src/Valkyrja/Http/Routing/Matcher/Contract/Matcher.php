@@ -26,7 +26,7 @@ interface Matcher
     /**
      * Match a route by path.
      *
-     * @param string             $path          The path
+     * @param non-empty-string   $path          The path
      * @param RequestMethod|null $requestMethod [optional] The request method
      *
      * @return Route|null
@@ -38,7 +38,7 @@ interface Matcher
     /**
      * Match a static route by path.
      *
-     * @param string             $path          The path
+     * @param non-empty-string   $path          The path
      * @param RequestMethod|null $requestMethod [optional] The request method
      *
      * @return Route|null
@@ -50,7 +50,7 @@ interface Matcher
     /**
      * Match a dynamic route by path.
      *
-     * @param string             $path          The path
+     * @param non-empty-string   $path          The path
      * @param RequestMethod|null $requestMethod [optional] The request method
      *
      * @return Route|null

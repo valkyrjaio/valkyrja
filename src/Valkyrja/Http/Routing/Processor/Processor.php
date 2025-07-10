@@ -93,7 +93,7 @@ class Processor implements Contract
     protected function modifyRegex(Route $route): Route
     {
         // If the regex has already been set then don't do anything
-        if (($regex = $route->getRegex()) !== null && $regex !== '') {
+        if (($regex = $route->getRegex()) !== null) {
             return $route;
         }
 

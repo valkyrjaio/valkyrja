@@ -33,14 +33,14 @@ interface Route
     /**
      * Get the path.
      *
-     * @return string
+     * @return non-empty-string
      */
     public function getPath(): string;
 
     /**
      * Create a new route with the specified path.
      *
-     * @param string $path The path
+     * @param non-empty-string $path The path
      *
      * @return static
      */
@@ -49,7 +49,7 @@ interface Route
     /**
      * Create a new route by appending a path to the existing path.
      *
-     * @param string $path The path to append
+     * @param non-empty-string $path The path to append
      *
      * @return static
      */
@@ -58,14 +58,14 @@ interface Route
     /**
      * Get the name.
      *
-     * @return string
+     * @return non-empty-string
      */
     public function getName(): string;
 
     /**
      * Create a new route with the specified name.
      *
-     * @param string $name The name
+     * @param non-empty-string $name The name
      *
      * @return static
      */
@@ -74,7 +74,7 @@ interface Route
     /**
      * Create a new route by appending a name to the existing name.
      *
-     * @param string $name The name to append
+     * @param non-empty-string $name The name to append
      *
      * @return static
      */
@@ -149,14 +149,14 @@ interface Route
     /**
      * Get the regex.
      *
-     * @return string|null
+     * @return non-empty-string|null
      */
     public function getRegex(): string|null;
 
     /**
      * Set the regex.
      *
-     * @param string|null $regex The regex
+     * @param non-empty-string|null $regex The regex
      *
      * @return static
      */

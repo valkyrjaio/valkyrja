@@ -23,6 +23,9 @@ use Valkyrja\Dispatcher\Data\Contract\GlobalVariableDispatch as Contract;
  */
 class GlobalVariableDispatch extends Dispatch implements Contract
 {
+    /**
+     * @param non-empty-string $variable The variable name
+     */
     public function __construct(
         protected string $variable
     ) {

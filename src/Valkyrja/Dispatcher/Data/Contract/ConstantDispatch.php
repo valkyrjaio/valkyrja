@@ -23,14 +23,14 @@ interface ConstantDispatch extends Dispatch
     /**
      * Get the constant.
      *
-     * @return string
+     * @return non-empty-string
      */
     public function getConstant(): string;
 
     /**
      * Create a new dispatch with the specified constant.
      *
-     * @param string $constant The constant
+     * @param non-empty-string $constant The constant
      *
      * @return static
      */

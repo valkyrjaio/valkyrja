@@ -153,6 +153,7 @@ class Router implements Contract
     protected function attemptToMatchRoute(ServerRequest $request): Route|Response
     {
         // Decode the request uri
+        /** @var non-empty-string $requestPath */
         $requestPath = rawurldecode($request->getUri()->getPath());
         // Try to match the route
         $route = $this->matcher->match(

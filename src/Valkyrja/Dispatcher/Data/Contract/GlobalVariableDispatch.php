@@ -23,14 +23,14 @@ interface GlobalVariableDispatch extends Dispatch
     /**
      * Get the variable.
      *
-     * @return string
+     * @return non-empty-string
      */
     public function getVariable(): string;
 
     /**
      * Create a new dispatch with the specified variable.
      *
-     * @param string $variable
+     * @param non-empty-string $variable
      *
      * @return static
      */

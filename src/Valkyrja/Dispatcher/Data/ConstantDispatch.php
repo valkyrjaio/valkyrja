@@ -24,7 +24,8 @@ use Valkyrja\Dispatcher\Data\Contract\ConstantDispatch as Contract;
 class ConstantDispatch extends Dispatch implements Contract
 {
     /**
-     * @param class-string|null $class The class name
+     * @param non-empty-string  $constant The constant name
+     * @param class-string|null $class    The class name
      */
     public function __construct(
         protected string $constant,

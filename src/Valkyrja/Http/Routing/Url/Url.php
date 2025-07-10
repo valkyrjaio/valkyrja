@@ -103,6 +103,7 @@ class Url implements Contract
             return false;
         }
 
+        /** @var non-empty-string $uri */
         // Get only the path (full string from the first slash to the end of the path)
         $uri = substr($uri, (int) strpos($uri, '/'), strlen($uri));
 

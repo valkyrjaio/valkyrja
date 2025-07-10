@@ -26,7 +26,7 @@ interface Url
     /**
      * Get a route url by name.
      *
-     * @param string                         $name     The name of the route to get
+     * @param non-empty-string               $name     The name of the route to get
      * @param array<string, string|int>|null $data     [optional] The route data if dynamic
      * @param bool                           $absolute [optional] Whether this url should be absolute
      *
@@ -37,7 +37,7 @@ interface Url
     /**
      * Get a route by path.
      *
-     * @param string             $path   The path
+     * @param non-empty-string   $path   The path
      * @param RequestMethod|null $method [optional] The method type of get
      *
      * @return Route|null
@@ -49,7 +49,7 @@ interface Url
     /**
      * Determine if a uri is internal.
      *
-     * @param string $uri The uri to check
+     * @param non-empty-string $uri The uri to check
      *
      * @return bool
      */

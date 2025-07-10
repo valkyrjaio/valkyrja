@@ -330,9 +330,9 @@ class AttributeCollector implements Contract
     /**
      * Validate a path.
      *
-     * @param string $path The path
+     * @param non-empty-string $path The path
      *
-     * @return string
+     * @return non-empty-string
      */
     protected function getFilteredPath(string $path): string
     {

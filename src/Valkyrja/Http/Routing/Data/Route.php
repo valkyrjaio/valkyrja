@@ -37,6 +37,9 @@ use function in_array;
 class Route implements Contract
 {
     /**
+     * @param non-empty-string                          $path                      The path
+     * @param non-empty-string                          $name                      The name
+     * @param non-empty-string|null                     $regex                     The regex
      * @param RequestMethod[]                           $requestMethods            The request methods
      * @param Parameter[]                               $parameters                The parameters
      * @param class-string<RouteMatchedMiddleware>[]    $routeMatchedMiddleware    The route matched middleware
@@ -571,9 +574,9 @@ class Route implements Contract
     /**
      * Validate a path.
      *
-     * @param string $path The path
+     * @param non-empty-string $path The path
      *
-     * @return string
+     * @return non-empty-string
      */
     protected function getFilteredPath(string $path): string
     {

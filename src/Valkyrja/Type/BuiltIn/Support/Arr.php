@@ -80,7 +80,7 @@ class Arr
      *
      * @throws JsonException
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function toString(array $subject): string
     {

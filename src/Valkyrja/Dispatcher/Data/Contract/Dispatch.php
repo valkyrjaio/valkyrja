@@ -27,7 +27,7 @@ interface Dispatch extends JsonSerializable, Stringable
     /**
      * Get the Dispatch as a string.
      *
-     * @return string
+     * @return non-empty-string
      */
     public function __toString(): string;
 
