@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entity\Contract;
 
-use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
-use Valkyrja\Auth\Repository\Contract\Repository;
 use Valkyrja\Orm\Entity\Contract\Entity;
 
 /**
@@ -24,27 +22,6 @@ use Valkyrja\Orm\Entity\Contract\Entity;
  */
 interface User extends Entity
 {
-    /**
-     * Get the auth repository.
-     *
-     * @return class-string<Repository>|null
-     */
-    public static function getAuthRepository(): string|null;
-
-    /**
-     * Get the authenticated users collection class.
-     *
-     * @return class-string<AuthenticatedUsers>|null
-     */
-    public static function getAuthCollection(): string|null;
-
-    /**
-     * Get the user session id.
-     *
-     * @return non-empty-string
-     */
-    public static function getUserSessionId(): string;
-
     /**
      * Get the username field.
      *
@@ -65,13 +42,6 @@ interface User extends Entity
      * @return non-empty-string
      */
     public static function getResetTokenField(): string;
-
-    /**
-     * Get the login fields to use.
-     *
-     * @return non-empty-string[]
-     */
-    public static function getAuthenticationFields(): array;
 
     /**
      * Get the username value.

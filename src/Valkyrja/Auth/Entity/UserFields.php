@@ -21,23 +21,30 @@ namespace Valkyrja\Auth\Entity;
 trait UserFields
 {
     /**
+     * The id.
+     *
+     * @var non-empty-string
+     */
+    public string $id;
+
+    /**
      * The username.
      *
-     * @var string
+     * @var non-empty-string
      */
     public string $username;
 
     /**
      * The password.
      *
-     * @var string
+     * @var non-empty-string
      */
     protected string $password;
 
     /**
      * The password reset token.
      *
-     * @var string|null
+     * @var non-empty-string|null
      */
     protected string|null $reset_token = null;
 }

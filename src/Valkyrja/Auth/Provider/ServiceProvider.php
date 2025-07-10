@@ -13,27 +13,23 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Provider;
 
-use Valkyrja\Auth\Adapter\Contract\Adapter;
-use Valkyrja\Auth\Adapter\NullAdapter;
-use Valkyrja\Auth\Adapter\ORMAdapter;
-use Valkyrja\Auth\Config;
-use Valkyrja\Auth\Contract\Auth;
+use Valkyrja\Application\Env;
+use Valkyrja\Auth\Contract\Authenticator;
+use Valkyrja\Auth\EncryptedJwtAuthenticator;
+use Valkyrja\Auth\EncryptedTokenAuthenticator;
 use Valkyrja\Auth\Entity\Contract\User;
-use Valkyrja\Auth\Factory\ContainerFactory;
-use Valkyrja\Auth\Factory\Contract\Factory;
-use Valkyrja\Auth\Gate\Contract\Gate;
-use Valkyrja\Auth\Policy\Contract\EntityPolicy;
-use Valkyrja\Auth\Policy\Contract\Policy;
-use Valkyrja\Auth\Policy\EntityRoutePolicy;
-use Valkyrja\Auth\Repository\CryptTokenizedRepository;
-use Valkyrja\Auth\Repository\JwtCryptRepository;
-use Valkyrja\Auth\Repository\JwtRepository;
-use Valkyrja\Auth\Repository\Repository;
+use Valkyrja\Auth\Hasher\Contract\PasswordHasher;
+use Valkyrja\Auth\JwtAuthenticator;
+use Valkyrja\Auth\SessionAuthenticator;
+use Valkyrja\Auth\Store\Contract\Store;
+use Valkyrja\Auth\Store\InMemoryStore;
+use Valkyrja\Auth\Store\NullStore;
+use Valkyrja\Auth\Store\OrmStore;
+use Valkyrja\Auth\TokenAuthenticator;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Jwt\Contract\Jwt;
 use Valkyrja\Orm\Contract\Manager;
 use Valkyrja\Session\Contract\Session;
@@ -51,18 +47,17 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Auth::class                     => [self::class, 'publishAuth'],
-            Factory::class                  => [self::class, 'publishFactory'],
-            Gate::class                     => [self::class, 'publishGate'],
-            Repository::class               => [self::class, 'publishRepository'],
-            CryptTokenizedRepository::class => [self::class, 'publishCryptTokenizedRepository'],
-            JwtRepository::class            => [self::class, 'publishJwtRepository'],
-            JwtCryptRepository::class       => [self::class, 'publishJwtCryptRepository'],
-            NullAdapter::class              => [self::class, 'publishNullAdapter'],
-            ORMAdapter::class               => [self::class, 'publishOrmAdapter'],
-            Policy::class                   => [self::class, 'publishPolicy'],
-            EntityPolicy::class             => [self::class, 'publishEntityPolicy'],
-            EntityRoutePolicy::class        => [self::class, 'publishEntityRoutePolicy'],
+            Authenticator::class               => [self::class, 'publishAuthenticator'],
+            EncryptedJwtAuthenticator::class   => [self::class, 'publishEncryptedJwtAuthenticator'],
+            EncryptedTokenAuthenticator::class => [self::class, 'publishEncryptedTokenAuthenticator'],
+            JwtAuthenticator::class            => [self::class, 'publishJwtAuthenticator'],
+            SessionAuthenticator::class        => [self::class, 'publishSessionAuthenticator'],
+            TokenAuthenticator::class          => [self::class, 'publishTokenAuthenticator'],
+            Store::class                       => [self::class, 'publishStore'],
+            OrmStore::class                    => [self::class, 'publishOrmStore'],
+            InMemoryStore::class               => [self::class, 'publishInMemoryStore'],
+            NullStore::class                   => [self::class, 'publishNullStore'],
+            PasswordHasher::class              => [self::class, 'publishPasswordHasher'],
         ];
     }
 
@@ -72,360 +67,207 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Auth::class,
-            Factory::class,
-            Gate::class,
-            Repository::class,
-            CryptTokenizedRepository::class,
-            JwtRepository::class,
-            JwtCryptRepository::class,
-            NullAdapter::class,
-            ORMAdapter::class,
-            Policy::class,
-            EntityPolicy::class,
-            EntityRoutePolicy::class,
+            Authenticator::class,
+            Store::class,
+            OrmStore::class,
+            InMemoryStore::class,
+            NullStore::class,
+            PasswordHasher::class,
         ];
     }
 
     /**
-     * Publish the auth service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
+     * Publish the authenticator service.
      */
-    public static function publishAuth(Container $container): void
+    public static function publishAuthenticator(Container $container): void
     {
-        $config = $container->getSingleton(Config::class);
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<Authenticator> $default */
+        $default = $env::AUTH_DEFAULT_AUTHENTICATOR;
 
         $container->setSingleton(
-            Auth::class,
-            new \Valkyrja\Auth\Auth(
-                $container->getSingleton(Factory::class),
-                $container->getSingleton(ServerRequest::class),
-                $config
-            )
+            Authenticator::class,
+            $container->getSingleton($default),
         );
     }
 
     /**
-     * Publish the factory service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
+     * Publish the encrypted jwt authenticator service.
      */
-    public static function publishFactory(Container $container): void
+    public static function publishEncryptedJwtAuthenticator(Container $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<User> $entity */
+        $entity = $env::AUTH_DEFAULT_USER_ENTITY;
+        /** @var non-empty-string $headerName */
+        $headerName = $env::AUTH_DEFAULT_AUTHORIZATION_HEADER;
+
+        $container->setSingleton(
+            EncryptedJwtAuthenticator::class,
+            new EncryptedJwtAuthenticator(
+                crypt: $container->getSingleton(Crypt::class),
+                jwt: $container->getSingleton(Jwt::class),
+                request: $container->getSingleton(ServerRequest::class),
+                store: $container->getSingleton(Store::class),
+                hasher: $container->getSingleton(PasswordHasher::class),
+                entity: $entity,
+                headerName: $headerName,
+            ),
+        );
+    }
+
+    /**
+     * Publish the encrypted token authenticator service.
+     */
+    public static function publishEncryptedTokenAuthenticator(Container $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<User> $entity */
+        $entity = $env::AUTH_DEFAULT_USER_ENTITY;
+        /** @var non-empty-string $headerName */
+        $headerName = $env::AUTH_DEFAULT_AUTHORIZATION_HEADER;
+
+        $container->setSingleton(
+            EncryptedTokenAuthenticator::class,
+            new EncryptedTokenAuthenticator(
+                crypt: $container->getSingleton(Crypt::class),
+                request: $container->getSingleton(ServerRequest::class),
+                store: $container->getSingleton(Store::class),
+                hasher: $container->getSingleton(PasswordHasher::class),
+                entity: $entity,
+                headerName: $headerName,
+            ),
+        );
+    }
+
+    /**
+     * Publish the jwt authenticator service.
+     */
+    public static function publishJwtAuthenticator(Container $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<User> $entity */
+        $entity = $env::AUTH_DEFAULT_USER_ENTITY;
+        /** @var non-empty-string $headerName */
+        $headerName = $env::AUTH_DEFAULT_AUTHORIZATION_HEADER;
+
+        $container->setSingleton(
+            JwtAuthenticator::class,
+            new JwtAuthenticator(
+                jwt: $container->getSingleton(Jwt::class),
+                request: $container->getSingleton(ServerRequest::class),
+                store: $container->getSingleton(Store::class),
+                hasher: $container->getSingleton(PasswordHasher::class),
+                entity: $entity,
+                headerName: $headerName,
+            ),
+        );
+    }
+
+    /**
+     * Publish the session authenticator service.
+     */
+    public static function publishSessionAuthenticator(Container $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<User> $entity */
+        $entity = $env::AUTH_DEFAULT_USER_ENTITY;
+        /** @var non-empty-string $sessionId */
+        $sessionId = $env::AUTH_DEFAULT_SESSION_ID;
+
+        $container->setSingleton(
+            SessionAuthenticator::class,
+            new SessionAuthenticator(
+                session: $container->getSingleton(Session::class),
+                store: $container->getSingleton(Store::class),
+                hasher: $container->getSingleton(PasswordHasher::class),
+                entity: $entity,
+                sessionId: $sessionId,
+            ),
+        );
+    }
+
+    /**
+     * Publish the token authenticator service.
+     */
+    public static function publishTokenAuthenticator(Container $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<User> $entity */
+        $entity = $env::AUTH_DEFAULT_USER_ENTITY;
+        /** @var non-empty-string $headerName */
+        $headerName = $env::AUTH_DEFAULT_AUTHORIZATION_HEADER;
+
+        $container->setSingleton(
+            TokenAuthenticator::class,
+            new TokenAuthenticator(
+                request: $container->getSingleton(ServerRequest::class),
+                store: $container->getSingleton(Store::class),
+                hasher: $container->getSingleton(PasswordHasher::class),
+                entity: $entity,
+                headerName: $headerName,
+            ),
+        );
+    }
+
+    /**
+     * Publish the store service.
+     */
+    public static function publishStore(Container $container): void
+    {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<Store> $default */
+        $default = $env::AUTH_DEFAULT_STORE;
+
+        $container->setSingleton(
+            Store::class,
+            $container->getSingleton($default),
+        );
+    }
+
+    /**
+     * Publish the orm store service.
+     */
+    public static function publishOrmStore(Container $container): void
     {
         $container->setSingleton(
-            Factory::class,
-            new ContainerFactory(
-                $container,
-            )
+            OrmStore::class,
+            new OrmStore(
+                orm: $container->getSingleton(Manager::class)
+            ),
         );
     }
 
     /**
-     * Publish the null adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
+     * Publish the in memory store service.
      */
-    public static function publishNullAdapter(Container $container): void
+    public static function publishInMemoryStore(Container $container): void
     {
-        $container->setCallable(
-            NullAdapter::class,
-            [self::class, 'createNullAdapter']
+        $container->setSingleton(
+            InMemoryStore::class,
+            new InMemoryStore(),
         );
     }
 
     /**
-     * Create a null adapter.
+     * Publish the null store service.
      */
-    public static function createNullAdapter(Container $container, Config $config): NullAdapter
+    public static function publishNullStore(Container $container): void
     {
-        return new NullAdapter(
-            $config,
+        $container->setSingleton(
+            NullStore::class,
+            new NullStore(),
         );
     }
 
     /**
-     * Publish the orm adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
+     * Publish the password hasher service.
      */
-    public static function publishOrmAdapter(Container $container): void
+    public static function publishPasswordHasher(Container $container): void
     {
-        $container->setCallable(
-            ORMAdapter::class,
-            [self::class, 'createOrmAdapter']
-        );
-    }
-
-    /**
-     * Create an ORM adapter.
-     */
-    public static function createOrmAdapter(Container $container, Config $config): ORMAdapter
-    {
-        $orm = $container->getSingleton(Manager::class);
-
-        return new ORMAdapter(
-            $orm,
-            $config
-        );
-    }
-
-    /**
-     * Publish a gate service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishGate(Container $container): void
-    {
-        $container->setCallable(
-            Gate::class,
-            [self::class, 'createGate']
-        );
-    }
-
-    /**
-     * @param Container          $container
-     * @param class-string<Gate> $name
-     * @param Repository         $repository
-     *
-     * @return Gate
-     */
-    public static function createGate(Container $container, string $name, Repository $repository): Gate
-    {
-        return new $name(
-            $container->getSingleton(Auth::class),
-            $repository,
-        );
-    }
-
-    /**
-     * Publish the policy service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishPolicy(Container $container): void
-    {
-        $container->setCallable(
-            Policy::class,
-            [self::class, 'createPolicy']
-        );
-    }
-
-    /**
-     * Create a policy.
-     *
-     * @param Container            $container
-     * @param class-string<Policy> $name
-     * @param Repository           $repository
-     *
-     * @return Policy
-     */
-    public static function createPolicy(Container $container, string $name, Repository $repository): Policy
-    {
-        return new $name(
-            $repository,
-        );
-    }
-
-    /**
-     * Publish the entity policy service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishEntityPolicy(Container $container): void
-    {
-        $container->setCallable(
-            EntityPolicy::class,
-            [self::class, 'createEntityPolicy']
-        );
-    }
-
-    /**
-     * Create an entity policy.
-     *
-     * @param Container                  $container
-     * @param class-string<EntityPolicy> $name
-     * @param Repository                 $repository
-     *
-     * @return EntityPolicy
-     */
-    public static function createEntityPolicy(Container $container, string $name, Repository $repository): EntityPolicy
-    {
-        return new $name(
-            $repository,
-            $container->getSingleton($name::getEntityClassName()),
-        );
-    }
-
-    /**
-     * Publish the entity route policy service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishEntityRoutePolicy(Container $container): void
-    {
-        $container->setCallable(
-            EntityRoutePolicy::class,
-            [self::class, 'createEntityRoutePolicy']
-        );
-    }
-
-    /**
-     * Create an entity route policy.
-     *
-     * @param Container                       $container
-     * @param class-string<EntityRoutePolicy> $name
-     * @param Repository                      $repository
-     *
-     * @return EntityRoutePolicy
-     */
-    public static function createEntityRoutePolicy(Container $container, string $name, Route $route, Repository $repository): EntityRoutePolicy
-    {
-        // Iterate over dependencies in Route to find the entity
-
-        return new $name(
-            $repository,
-            // $container->getSingleton($name::getEntityClassName() . ((string) $name::getEntityParamNumber())),
-        );
-    }
-
-    /**
-     * Publish the repository service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishRepository(Container $container): void
-    {
-        $container->setCallable(
-            Repository::class,
-            [self::class, 'createRepository']
-        );
-    }
-
-    /**
-     * Create a repository.
-     *
-     * @param class-string<User> $user The user entity class
-     */
-    public static function createRepository(Container $container, Adapter $adapter, string $user, Config $config): Repository
-    {
-        return new Repository(
-            $adapter,
-            $container->getSingleton(Session::class),
-            $config,
-            $user
-        );
-    }
-
-    /**
-     * Publish the crypt tokenized repository service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishCryptTokenizedRepository(Container $container): void
-    {
-        $container->setCallable(
-            CryptTokenizedRepository::class,
-            [self::class, 'createCryptTokenizedRepository']
-        );
-    }
-
-    /**
-     * Create a crypt tokenized repository.
-     *
-     * @param class-string<User> $user The user entity class
-     */
-    public static function createCryptTokenizedRepository(Container $container, Adapter $adapter, string $user, Config $config): CryptTokenizedRepository
-    {
-        return new CryptTokenizedRepository(
-            $adapter,
-            $container->getSingleton(Crypt::class),
-            $container->getSingleton(Session::class),
-            $config,
-            $user
-        );
-    }
-
-    /**
-     * Publish the JWT crypt tokenized repository service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishJwtCryptRepository(Container $container): void
-    {
-        $container->setCallable(
-            JwtCryptRepository::class,
-            [self::class, 'createJwtCryptRepository']
-        );
-    }
-
-    /**
-     * Create a JWT crypt tokenized repository.
-     *
-     * @param class-string<User> $user THe user entity class
-     */
-    public static function createJwtCryptRepository(Container $container, Adapter $adapter, string $user, Config $config): JwtCryptRepository
-    {
-        return new JwtCryptRepository(
-            $adapter,
-            $container->getSingleton(Jwt::class),
-            $container->getSingleton(Crypt::class),
-            $container->getSingleton(Session::class),
-            $config,
-            $user
-        );
-    }
-
-    /**
-     * Publish the JWT tokenized repository service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishJwtRepository(Container $container): void
-    {
-        $container->setCallable(
-            JwtRepository::class,
-            [self::class, 'createJwtRepository']
-        );
-    }
-
-    /**
-     * Create a JWT tokenized repository.
-     *
-     * @param class-string<User> $user The user entity class
-     */
-    public static function createJwtRepository(Container $container, Adapter $adapter, string $user, Config $config): JwtRepository
-    {
-        return new JwtRepository(
-            $adapter,
-            $container->getSingleton(Jwt::class),
-            $container->getSingleton(Session::class),
-            $config,
-            $user
+        $container->setSingleton(
+            PasswordHasher::class,
+            new \Valkyrja\Auth\Hasher\PasswordHasher()
         );
     }
 }

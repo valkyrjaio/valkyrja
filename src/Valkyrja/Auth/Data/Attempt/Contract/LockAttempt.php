@@ -11,15 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth\Constant;
+namespace Valkyrja\Auth\Data\Attempt\Contract;
+
+use Valkyrja\Auth\Data\Retrieval\Contract\Retrieval;
 
 /**
- * Constant SessionId.
+ * Interface LockAttempt.
  *
  * @author Melech Mizrachi
  */
-final class SessionId
+interface LockAttempt
 {
-    public const string AUTHENTICATED_USERS          = 'authenticated.users';
-    public const string PASSWORD_CONFIRMED_TIMESTAMP = 'auth.passwordConfirmedTimestamp';
+    /**
+     * Get the authentication retrieval.
+     *
+     * @return Retrieval
+     */
+    public function getRetrieval(): Retrieval;
 }

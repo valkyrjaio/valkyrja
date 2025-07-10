@@ -17,11 +17,11 @@ use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
 use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Support\Component;
-use Valkyrja\Auth\Adapter\Contract\Adapter as AuthAdapter;
-use Valkyrja\Auth\Entity\Contract\User as AuthUser;
-use Valkyrja\Auth\Gate\Contract\Gate as AuthGate;
-use Valkyrja\Auth\Policy\Contract\Policy as AuthPolicy;
-use Valkyrja\Auth\Repository\Contract\Repository as AuthRepository;
+use Valkyrja\Auth\Constant\RouteName;
+use Valkyrja\Auth\Constant\SessionId;
+use Valkyrja\Auth\Contract\Authenticator;
+use Valkyrja\Auth\Entity\Contract\User;
+use Valkyrja\Auth\Store\Contract\Store;
 use Valkyrja\Broadcast\Contract\Broadcaster;
 use Valkyrja\Broadcast\PusherBroadcaster;
 use Valkyrja\Cache\Contract\Cache;
@@ -39,6 +39,7 @@ use Valkyrja\Filesystem\FlysystemFilesystem;
 use Valkyrja\Filesystem\LocalFlysystemFilesystem;
 use Valkyrja\Http\Client\Contract\Client;
 use Valkyrja\Http\Client\GuzzleClient;
+use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware as HttpRequestReceivedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware as HttpRouteDispatchedMiddleware;
@@ -118,34 +119,28 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<AuthAdapter>|null */
-    public const string|null AUTH_DEFAULT_ADAPTER = null;
-    /** @var class-string<AuthUser>|null */
-    public const string|null AUTH_DEFAULT_USER_ENTITY = null;
-    /** @var class-string<AuthRepository>|null */
-    public const string|null AUTH_DEFAULT_REPOSITORY = null;
-    /** @var class-string<AuthGate>|null */
-    public const string|null AUTH_DEFAULT_GATE = null;
-    /** @var class-string<AuthPolicy>|null */
-    public const string|null AUTH_DEFAULT_POLICY = null;
-    /** @var bool|null */
-    public const bool|null AUTH_SHOULD_ALWAYS_AUTHENTICATE = null;
-    /** @var bool|null */
-    public const bool|null AUTH_SHOULD_KEEP_USER_FRESH = null;
-    /** @var bool|null */
-    public const bool|null AUTH_SHOULD_USE_SESSION = null;
-    /** @var string|null */
-    public const string|null AUTH_AUTHENTICATE_ROUTE = null;
-    /** @var string|null */
+    /** @var class-string<Authenticator> */
+    public const string AUTH_DEFAULT_AUTHENTICATOR = Authenticator::class;
+    /** @var class-string<Store> */
+    public const string AUTH_DEFAULT_STORE = Store::class;
+    /** @var class-string<User> */
+    public const string AUTH_DEFAULT_USER_ENTITY = \Valkyrja\Auth\Entity\User::class;
+    /** @var non-empty-string */
+    public const string AUTH_DEFAULT_SESSION_ID = SessionId::AUTHENTICATED_USERS;
+    /** @var non-empty-string */
+    public const string AUTH_DEFAULT_AUTHORIZATION_HEADER = HeaderName::AUTHORIZATION;
+    /** @var non-empty-string */
+    public const string AUTH_AUTHENTICATE_ROUTE = RouteName::AUTHENTICATE;
+    /** @var non-empty-string|null */
     public const string|null AUTH_AUTHENTICATE_URL = null;
-    /** @var string|null */
-    public const string|null AUTH_NOT_AUTHENTICATED_ROUTE = null;
-    /** @var string|null */
+    /** @var non-empty-string */
+    public const string AUTH_NOT_AUTHENTICATED_ROUTE = RouteName::DASHBOARD;
+    /** @var non-empty-string|null */
     public const string|null AUTH_NOT_AUTHENTICATED_URL = null;
-    /** @var string|null */
-    public const string|null AUTH_PASSWORD_CONFIRM_ROUTE = null;
-    /** @var int|null */
-    public const int|null AUTH_PASSWORD_TIMEOUT = null;
+    /** @var non-empty-string */
+    public const string AUTH_PASSWORD_CONFIRM_ROUTE = RouteName::PASSWORD_CONFIRM;
+    /** @var positive-int */
+    public const int AUTH_PASSWORD_TIMEOUT = 10800;
 
     /************************************************************
      *

@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entity;
 
-use Valkyrja\Auth\Constant\SessionId;
 use Valkyrja\Auth\Constant\UserField;
-use Valkyrja\Auth\Model\Contract\AuthenticatedUsers;
-use Valkyrja\Auth\Repository\Contract\Repository;
-use Valkyrja\Exception\RuntimeException;
+use Valkyrja\Auth\Exception\RuntimeException;
 
 use function is_string;
 
@@ -28,36 +25,6 @@ use function is_string;
  */
 trait UserTrait
 {
-    /**
-     * @inheritDoc
-     *
-     * @return class-string<Repository>|null
-     */
-    public static function getAuthRepository(): string|null
-    {
-        return null;
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @return class-string<AuthenticatedUsers>|null
-     */
-    public static function getAuthCollection(): string|null
-    {
-        return null;
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @return non-empty-string
-     */
-    public static function getUserSessionId(): string
-    {
-        return SessionId::USER;
-    }
-
     /**
      * @inheritDoc
      *
@@ -91,22 +58,11 @@ trait UserTrait
     /**
      * @inheritDoc
      *
-     * @return non-empty-string[]
-     */
-    public static function getAuthenticationFields(): array
-    {
-        return [
-            static::getUsernameField(),
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     *
      * @return non-empty-string
      */
     public function getUsernameValue(): string
     {
+        /** @var mixed $value */
         $value = $this->__get(static::getUsernameField());
 
         if (is_string($value) && $value !== '') {
@@ -124,6 +80,7 @@ trait UserTrait
      */
     public function getPasswordValue(): string
     {
+        /** @var mixed $value */
         $value = $this->__get(static::getPasswordField());
 
         if (is_string($value) && $value !== '') {
