@@ -321,7 +321,7 @@ class OptionParameter extends Parameter implements Contract
     {
         return match (true) {
             $this->mode === OptionMode::REQUIRED          => $this->options !== [],
-            $this->valueMode === OptionValueMode::DEFAULT => count($this->options) === 1,
+            $this->valueMode === OptionValueMode::DEFAULT => count($this->options) <= 1,
             default                                       => true,
         };
     }

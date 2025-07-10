@@ -183,7 +183,7 @@ class ArgumentParameter extends Parameter implements Contract
     {
         return match (true) {
             $this->mode === ArgumentMode::REQUIRED          => $this->arguments !== [],
-            $this->valueMode === ArgumentValueMode::DEFAULT => count($this->arguments) === 1,
+            $this->valueMode === ArgumentValueMode::DEFAULT => count($this->arguments) <= 1,
             default                                         => true,
         };
     }
