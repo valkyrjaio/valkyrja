@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Formatter;
 
+use Override;
 use Valkyrja\Cli\Interaction\Enum\BackgroundColor;
 use Valkyrja\Cli\Interaction\Enum\Style;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
@@ -38,6 +39,7 @@ class Formatter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getStyle(): Style|null
     {
         return $this->style;
@@ -46,6 +48,7 @@ class Formatter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withStyle(Style|null $style): static
     {
         $new = clone $this;
@@ -58,6 +61,7 @@ class Formatter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getTextColor(): TextColor|null
     {
         return $this->textColor;
@@ -66,6 +70,7 @@ class Formatter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withTextColor(TextColor|null $textColor): static
     {
         $new = clone $this;
@@ -78,6 +83,7 @@ class Formatter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getBackgroundColor(): BackgroundColor|null
     {
         return $this->backgroundColor;
@@ -86,6 +92,7 @@ class Formatter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withBackgroundColor(BackgroundColor|null $backgroundColor): static
     {
         $new = clone $this;
@@ -98,6 +105,7 @@ class Formatter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function formatText(string $text): string
     {
         $set   = [];

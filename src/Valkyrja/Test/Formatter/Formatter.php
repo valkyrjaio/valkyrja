@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Formatter;
 
+use Override;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Test\Contract\Test;
 use Valkyrja\Test\Exception\AssertFailureException;
@@ -34,6 +35,7 @@ class Formatter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function title(): string
     {
         return "Valkyrja Unit Testing {$this->getTitleVersion()} by Melech Mizrachi and contributors.";
@@ -42,6 +44,7 @@ class Formatter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function meta(): string
     {
         return "Time: {$this->getMetaTime()}, Memory: {$this->getMetaMemory()}";
@@ -50,6 +53,7 @@ class Formatter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function tests(Results $results): string
     {
         $tests = $results->getTests();
@@ -85,6 +89,7 @@ class Formatter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function completed(Results $results): string
     {
         $tests  = $results->getTests();
@@ -109,6 +114,7 @@ class Formatter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function results(Results $results): string
     {
         $tests  = $results->getTests();
@@ -148,6 +154,7 @@ class Formatter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function issues(Results $results): string
     {
         $tests  = $results->getTests();
@@ -175,6 +182,7 @@ class Formatter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function sectionSpacing(): string
     {
         return PHP_EOL . PHP_EOL;

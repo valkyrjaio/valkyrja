@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Client\Provider;
 
 use GuzzleHttp\Client as Guzzle;
+use Override;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
@@ -34,6 +35,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function publishers(): array
     {
         return [
@@ -48,6 +50,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function provides(): array
     {
         return [

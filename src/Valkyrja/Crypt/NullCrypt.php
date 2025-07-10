@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt;
 
+use Override;
 use stdClass;
 use Valkyrja\Crypt\Contract\Crypt;
 
@@ -26,6 +27,7 @@ class NullCrypt implements Crypt
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isValidEncryptedMessage(string $encrypted): bool
     {
         return true;
@@ -34,6 +36,7 @@ class NullCrypt implements Crypt
     /**
      * @inheritDoc
      */
+    #[Override]
     public function encrypt(string $message, string|null $key = null): string
     {
         return '';
@@ -42,6 +45,7 @@ class NullCrypt implements Crypt
     /**
      * @inheritDoc
      */
+    #[Override]
     public function encryptArray(array $array, string|null $key = null): string
     {
         return '';
@@ -50,6 +54,7 @@ class NullCrypt implements Crypt
     /**
      * @inheritDoc
      */
+    #[Override]
     public function encryptObject(object $object, string|null $key = null): string
     {
         return '';
@@ -58,6 +63,7 @@ class NullCrypt implements Crypt
     /**
      * @inheritDoc
      */
+    #[Override]
     public function decrypt(string $encrypted, string|null $key = null): string
     {
         return '';
@@ -66,6 +72,7 @@ class NullCrypt implements Crypt
     /**
      * @inheritDoc
      */
+    #[Override]
     public function decryptArray(string $encrypted, string|null $key = null): array
     {
         return [];
@@ -74,6 +81,7 @@ class NullCrypt implements Crypt
     /**
      * @inheritDoc
      */
+    #[Override]
     public function decryptObject(string $encrypted, string|null $key = null): object
     {
         return new stdClass();

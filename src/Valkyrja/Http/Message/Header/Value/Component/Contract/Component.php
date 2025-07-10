@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Header\Value\Component\Contract;
 
 use JsonSerializable;
+use Override;
 use Stringable;
 
 /**
@@ -48,6 +49,7 @@ interface Component extends JsonSerializable, Stringable
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonSerialize(): string;
 
     /**

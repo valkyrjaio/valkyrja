@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast;
 
+use Override;
 use Pusher\Pusher;
 use Valkyrja\Broadcast\Data\Contract\Message;
 use Valkyrja\Crypt\Contract\Crypt;
@@ -40,6 +41,7 @@ class CryptPusherBroadcaster extends PusherBroadcaster
      *
      * @throws CryptException On a crypt failure
      */
+    #[Override]
     protected function prepareMessage(Message $message): void
     {
         parent::prepareMessage($message);

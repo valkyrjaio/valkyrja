@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Header;
 
+use Override;
 use Valkyrja\Http\Message\Header\Contract\Header as Contract;
 use Valkyrja\Http\Message\Header\Exception\UnsupportedOffsetSetException;
 use Valkyrja\Http\Message\Header\Exception\UnsupportedOffsetUnsetException;
@@ -93,6 +94,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function fromValue(string $value): static
     {
         $header         = $value;
@@ -114,6 +116,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getName(): string
     {
         return $this->name;
@@ -122,6 +125,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getNormalizedName(): string
     {
         return $this->normalizedName;
@@ -130,6 +134,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withName(string $name): static
     {
         $new = clone $this;
@@ -142,6 +147,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getValues(): array
     {
         return $this->values;
@@ -150,6 +156,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withValues(Value|string ...$values): static
     {
         $new = clone $this;
@@ -162,6 +169,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedValues(Value|string ...$values): static
     {
         $new = $this->withValues(...$values);
@@ -174,6 +182,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getValuesAsString(): string
     {
         return $this->valuesToString();
@@ -182,6 +191,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): string
     {
         return $this->__toString();
@@ -190,6 +200,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asFlatValue(): string
     {
         return $this->__toString();
@@ -198,6 +209,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonSerialize(): string
     {
         return $this->asValue();
@@ -214,6 +226,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function offsetExists(mixed $offset): bool
     {
         return isset($this->values[$offset]);
@@ -222,6 +235,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function offsetGet(mixed $offset): Value
     {
         return $this->values[$offset];
@@ -230,6 +244,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new UnsupportedOffsetSetException('Use withValues or withAddedValues');
@@ -238,6 +253,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function offsetUnset(mixed $offset): void
     {
         throw new UnsupportedOffsetUnsetException('Use withValues or withAddedValues');
@@ -246,6 +262,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function count(): int
     {
         return count($this->values);
@@ -254,6 +271,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function current(): Value
     {
         return $this->values[$this->position];
@@ -262,6 +280,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function next(): void
     {
         $this->position++;
@@ -270,6 +289,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function key(): int
     {
         return $this->position;
@@ -278,6 +298,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function valid(): bool
     {
         return isset($this->values[$this->position]);
@@ -286,6 +307,7 @@ class Header implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function rewind(): void
     {
         $this->position = 0;

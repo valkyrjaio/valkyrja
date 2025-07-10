@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Response;
 
 use JsonException;
+use Override;
 use RuntimeException;
 use Valkyrja\Http\Message\Constant\ContentType;
 use Valkyrja\Http\Message\Constant\HeaderName;
@@ -87,6 +88,7 @@ class JsonResponse extends Response implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public static function createFromData(
         array|null $data = null,
         StatusCode|null $statusCode = null,
@@ -105,6 +107,7 @@ class JsonResponse extends Response implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function getBodyAsJson(): array
     {
         return Arr::fromString((string) $this->getBody());
@@ -115,6 +118,7 @@ class JsonResponse extends Response implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function withJsonAsBody(array $data): static
     {
         $body = new Stream();
@@ -127,6 +131,7 @@ class JsonResponse extends Response implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withCallback(string $callback): static
     {
         $this->verifyCallback($callback);
@@ -147,6 +152,7 @@ class JsonResponse extends Response implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function withoutCallback(): static
     {
         // Not using application/javascript for compatibility reasons with older browsers.

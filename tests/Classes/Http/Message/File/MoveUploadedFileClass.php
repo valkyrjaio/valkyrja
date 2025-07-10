@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Message\File;
 
+use Override;
 use Valkyrja\Http\Message\File\UploadedFile;
 
 /**
@@ -25,6 +26,7 @@ class MoveUploadedFileClass extends UploadedFile
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function shouldWriteStream(): bool
     {
         return false;
@@ -33,6 +35,7 @@ class MoveUploadedFileClass extends UploadedFile
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function moveUploadedFile(string $from, string $to): bool
     {
         // Simulate the results of move_uploaded_file

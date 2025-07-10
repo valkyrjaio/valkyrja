@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Exception;
 
+use Override;
+
 /**
  * Class InvalidArgumentException.
  *
@@ -23,6 +25,7 @@ class InvalidArgumentException extends \InvalidArgumentException implements Thro
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getTraceCode(): string
     {
         return ErrorHandler::getTraceCode($this);

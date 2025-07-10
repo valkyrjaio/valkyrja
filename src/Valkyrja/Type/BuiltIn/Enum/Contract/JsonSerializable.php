@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\BuiltIn\Enum\Contract;
 
 use JsonSerializable as BuiltInJsonSerializable;
+use Override;
 use UnitEnum;
 
 /**
@@ -28,5 +29,6 @@ interface JsonSerializable extends BuiltInJsonSerializable, UnitEnum
      *
      * @return string|int
      */
+    #[Override]
     public function jsonSerialize(): string|int;
 }

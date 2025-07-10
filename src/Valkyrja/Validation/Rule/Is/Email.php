@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Rule\Is;
 
+use Override;
 use Valkyrja\Type\BuiltIn\Support\Str;
 use Valkyrja\Validation\Rule\Rule;
 
@@ -25,12 +26,14 @@ use function is_string;
  */
 class Email extends Rule
 {
+    #[Override]
     public function isValid(): bool
     {
         return is_string($this->subject)
             && Str::isEmail($this->subject);
     }
 
+    #[Override]
     public function getDefaultErrorMessage(): string
     {
         return 'Must be a valid email';

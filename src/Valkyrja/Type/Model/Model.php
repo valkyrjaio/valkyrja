@@ -15,6 +15,7 @@ namespace Valkyrja\Type\Model;
 
 use Closure;
 use JsonException;
+use Override;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\BuiltIn\Support\StrCase;
 use Valkyrja\Type\Model\Contract\Model as Contract;
@@ -86,6 +87,7 @@ abstract class Model implements Contract
      *
      * @return static
      */
+    #[Override]
     public static function fromArray(array $properties): static
     {
         $model = static::internalGetNew($properties);
@@ -100,6 +102,7 @@ abstract class Model implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public static function fromValue(mixed $value): static
     {
         if ($value instanceof static) {
@@ -143,6 +146,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function __get(string $name)
     {
         $methodName = $this->internalGetPropertyTypeMethodName($name, 'get');
@@ -157,6 +161,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function __set(string $name, mixed $value): void
     {
         $methodName = $this->internalGetPropertyTypeMethodName($name, 'set');
@@ -175,6 +180,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function __isset(string $name): bool
     {
         $methodName = $this->internalGetPropertyTypeMethodName($name, 'isset');
@@ -195,6 +201,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function offsetExists($offset): bool
     {
         /** @var string $offset */
@@ -204,6 +211,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function offsetGet($offset): mixed
     {
         /** @var string $offset */
@@ -213,6 +221,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function offsetSet($offset, $value): void
     {
         /** @var string $offset */
@@ -222,6 +231,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function offsetUnset(mixed $offset): void
     {
         unset($this->{$offset});
@@ -234,6 +244,7 @@ abstract class Model implements Contract
      *
      * @return bool
      */
+    #[Override]
     public function hasProperty(string $property): bool
     {
         return self::$cachedExistsValidations[static::class . $property] ??= property_exists($this, $property);
@@ -242,6 +253,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function updateProperties(array $properties): void
     {
         $this->internalSetProperties($properties);
@@ -250,6 +262,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withProperties(array $properties): static
     {
         $model = clone $this;
@@ -262,6 +275,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function modify(callable $closure): static
     {
         $new = clone $this;
@@ -272,6 +286,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): static
     {
         return $this;
@@ -282,6 +297,7 @@ abstract class Model implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function asFlatValue(): string
     {
         return $this->__toString();
@@ -294,6 +310,7 @@ abstract class Model implements Contract
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function asArray(string ...$properties): array
     {
         // Get the public properties
@@ -309,6 +326,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asChangedArray(): array
     {
         return $this->internalGetChangedProperties($this->asArray());
@@ -317,6 +335,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getOriginalPropertyValue(string $name): mixed
     {
         return $this->internalOriginalProperties[$name] ?? null;
@@ -325,6 +344,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asOriginalArray(): array
     {
         return $this->internalOriginalProperties;
@@ -333,6 +353,7 @@ abstract class Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonSerialize(): array
     {
         $allProperties = $this->internalGetAllProperties();

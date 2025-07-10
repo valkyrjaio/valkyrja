@@ -15,6 +15,7 @@ namespace Valkyrja\Broadcast;
 
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
+use Override;
 use Pusher\ApiErrorException;
 use Pusher\Pusher;
 use Pusher\PusherException;
@@ -47,6 +48,7 @@ class PusherBroadcaster implements Contract
      * @throws ApiErrorException
      * @throws PusherException
      */
+    #[Override]
     public function send(Message $message): void
     {
         $this->pusher->trigger(

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Rule\String;
 
+use Override;
 use Valkyrja\Validation\Rule\Rule;
 
 use function is_string;
@@ -33,6 +34,7 @@ class Regex extends Rule
         parent::__construct($subject, $errorMessage);
     }
 
+    #[Override]
     public function isValid(): bool
     {
         /** @var mixed $subject */
@@ -45,6 +47,7 @@ class Regex extends Rule
             && preg_match($regex, $subject);
     }
 
+    #[Override]
     public function getDefaultErrorMessage(): string
     {
         return "Must match the given regex $this->regex";

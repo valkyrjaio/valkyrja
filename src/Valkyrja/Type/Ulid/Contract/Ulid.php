@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Ulid\Contract;
 
+use Override;
 use Valkyrja\Type\Contract\Type;
 
 /**
@@ -27,10 +28,12 @@ interface Ulid extends Type
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): string;
 
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asFlatValue(): string;
 }

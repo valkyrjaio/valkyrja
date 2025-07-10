@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Contract;
 
+use Override;
 use Psr\Container\ContainerInterface;
 use Valkyrja\Container\Data;
 use Valkyrja\Container\Support\Contract\ProvidersAware;
@@ -43,6 +44,7 @@ interface Container extends ContainerInterface, ProvidersAware
      *
      * @psalm-suppress MoreSpecificImplementedParamType
      */
+    #[Override]
     public function has(string $id): bool;
 
     /**
@@ -149,6 +151,7 @@ interface Container extends ContainerInterface, ProvidersAware
      *
      * @psalm-suppress MoreSpecificImplementedParamType
      */
+    #[Override]
     public function get(string $id, array $arguments = []): object;
 
     /**

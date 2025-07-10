@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View;
 
+use Override;
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\View\Contract\Renderer as Contract;
 use Valkyrja\View\Exception\InvalidConfigPath;
@@ -51,6 +52,7 @@ class PhpRenderer implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function startRender(): void
     {
         ob_start();
@@ -59,6 +61,7 @@ class PhpRenderer implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function endRender(): string
     {
         $obClean = ob_get_clean();
@@ -73,6 +76,7 @@ class PhpRenderer implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function render(string $name, array $variables = []): string
     {
         return $this->createTemplate(name: $name, variables: $variables)->render();
@@ -81,6 +85,7 @@ class PhpRenderer implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function createTemplate(string $name, array $variables = []): Template
     {
         return new DefaultTemplate(
@@ -93,6 +98,7 @@ class PhpRenderer implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function renderFile(string $name, array $variables = []): string
     {
         return $this->renderFullPath($this->getFullPath($name), $variables);

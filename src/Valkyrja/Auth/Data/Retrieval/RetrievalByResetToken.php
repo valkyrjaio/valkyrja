@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Data\Retrieval;
 
+use Override;
 use Valkyrja\Auth\Data\Retrieval\Contract\Retrieval as Contract;
 use Valkyrja\Auth\Entity\Contract\User;
 
@@ -38,6 +39,7 @@ class RetrievalByResetToken implements Contract
      *
      * @psalm-suppress LessSpecificImplementedReturnType
      */
+    #[Override]
     public function getRetrievalFields(string $user): array
     {
         return [

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Output;
 
+use Override;
 use Valkyrja\Test\Result\Contract\Results;
 
 /**
@@ -25,6 +26,7 @@ class EchoOutput extends Output
     /**
      * @inheritDoc
      */
+    #[Override]
     public function title(): void
     {
         echo $this->formatter->title();
@@ -33,6 +35,7 @@ class EchoOutput extends Output
     /**
      * @inheritDoc
      */
+    #[Override]
     public function meta(): void
     {
         echo $this->formatter->meta();
@@ -41,6 +44,7 @@ class EchoOutput extends Output
     /**
      * @inheritDoc
      */
+    #[Override]
     public function tests(Results $results): void
     {
         echo $this->formatter->tests($results);
@@ -49,6 +53,7 @@ class EchoOutput extends Output
     /**
      * @inheritDoc
      */
+    #[Override]
     public function completed(Results $results): void
     {
         echo $this->formatter->completed($results);
@@ -57,6 +62,7 @@ class EchoOutput extends Output
     /**
      * @inheritDoc
      */
+    #[Override]
     public function results(Results $results): void
     {
         echo $this->formatter->results($results);
@@ -65,6 +71,7 @@ class EchoOutput extends Output
     /**
      * @inheritDoc
      */
+    #[Override]
     public function issues(Results $results): void
     {
         echo $this->formatter->issues($results);
@@ -73,6 +80,7 @@ class EchoOutput extends Output
     /**
      * @inheritDoc
      */
+    #[Override]
     public function sectionSpacing(): void
     {
         echo $this->formatter->sectionSpacing();

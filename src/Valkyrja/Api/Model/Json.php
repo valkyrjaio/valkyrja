@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api\Model;
 
+use Override;
 use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Model\Contract\Json as Contract;
 use Valkyrja\Http\Message\Enum\StatusCode;
@@ -70,6 +71,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getMessage(): string|null
     {
         return $this->message;
@@ -78,6 +80,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setMessage(string|null $message = null): static
     {
         $this->message = $message;
@@ -88,6 +91,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getErrors(): array
     {
         return $this->errors;
@@ -96,6 +100,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setErrors(array $errors): static
     {
         $this->errors = $errors;
@@ -106,6 +111,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setError(string $error): static
     {
         $this->errors[] = $error;
@@ -116,6 +122,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getWarnings(): array
     {
         return $this->warnings;
@@ -124,6 +131,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setWarnings(array $warnings): static
     {
         $this->warnings = $warnings;
@@ -134,6 +142,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setWarning(string $warning): static
     {
         $this->warnings[] = $warning;
@@ -144,6 +153,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getData(): array|null
     {
         return $this->data;
@@ -152,6 +162,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setData(array|null $data = null): static
     {
         $this->data = $data;
@@ -162,6 +173,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getStatusCode(): StatusCode
     {
         return $this->statusCode;
@@ -170,6 +182,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setStatusCode(StatusCode $statusCode): static
     {
         $this->statusCode = $statusCode;
@@ -180,6 +193,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getStatus(): string
     {
         return $this->status;
@@ -188,6 +202,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setStatus(string $status): static
     {
         $this->status = $status;
@@ -198,6 +213,7 @@ class Json extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonSerialize(): array
     {
         $array = [

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Message;
 
+use Override;
 use Valkyrja\Cli\Interaction\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
 use Valkyrja\Cli\Interaction\Message\Contract\Answer as Contract;
@@ -61,6 +62,7 @@ class Answer extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getText(): string
     {
         return sprintf($this->text, $this->userResponse);
@@ -69,6 +71,7 @@ class Answer extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getDefaultResponse(): string
     {
         return $this->defaultResponse;
@@ -77,6 +80,7 @@ class Answer extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withDefaultResponse(string $defaultResponse): static
     {
         $new = clone $this;
@@ -93,6 +97,7 @@ class Answer extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getAllowedResponses(): array
     {
         return $this->allowedResponses;
@@ -101,6 +106,7 @@ class Answer extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAllowedResponses(string ...$allowedResponses): static
     {
         $new = clone $this;
@@ -113,6 +119,7 @@ class Answer extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getUserResponse(): string
     {
         return $this->userResponse;
@@ -121,6 +128,7 @@ class Answer extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withUserResponse(string $userResponse): static
     {
         $new = clone $this;
@@ -134,6 +142,7 @@ class Answer extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getValidationCallable(): callable|null
     {
         return $this->validationCallable;
@@ -144,6 +153,7 @@ class Answer extends Message implements Contract
      *
      * @param callable(non-empty-string):bool|null $validationCallable The validation callable
      */
+    #[Override]
     public function withValidationCallable(callable|null $validationCallable): static
     {
         $new = clone $this;
@@ -156,6 +166,7 @@ class Answer extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasBeenAnswered(): bool
     {
         return $this->hasBeenAnswered;
@@ -164,6 +175,7 @@ class Answer extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withHasBeenAnswered(bool $hasBeenAnswered): static
     {
         $new = clone $this;
@@ -176,6 +188,7 @@ class Answer extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isValidResponse(): bool
     {
         $validationCallable = $this->validationCallable;

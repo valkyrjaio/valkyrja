@@ -17,6 +17,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use OpenSSLAsymmetricKey;
 use OpenSSLCertificate;
+use Override;
 use Valkyrja\Jwt\Contract\Jwt as Contract;
 use Valkyrja\Jwt\Enum\Algorithm;
 
@@ -40,6 +41,7 @@ class FirebaseJwt implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function encode(array $payload): string
     {
         return JWT::encode($payload, $this->encodeKey, $this->algorithm->name);
@@ -48,6 +50,7 @@ class FirebaseJwt implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function decode(string $jwt): array
     {
         return (array) JWT::decode($jwt, new Key($this->decodeKey, $this->algorithm->name));

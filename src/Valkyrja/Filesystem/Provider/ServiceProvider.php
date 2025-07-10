@@ -17,6 +17,7 @@ use Aws\S3\S3Client as AwsS3Client;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
 use League\Flysystem\Filesystem as Flysystem;
 use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
+use Override;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
@@ -37,6 +38,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function publishers(): array
     {
         return [
@@ -54,6 +56,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function provides(): array
     {
         return [

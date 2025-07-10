@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Message\File;
 
+use Override;
 use Valkyrja\Http\Message\File\UploadedFile;
 
 /**
@@ -25,6 +26,7 @@ class UnableToWriteFileExceptionClass extends UploadedFile
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function openStream(string $filename)
     {
         return false;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Output;
 
+use Override;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\Message;
 use Valkyrja\Cli\Interaction\Output\Contract\FileOutput as Contract;
@@ -47,6 +48,7 @@ class FileOutput extends Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getFilepath(): string
     {
         return $this->filepath;
@@ -55,6 +57,7 @@ class FileOutput extends Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withFilepath(string $filepath): static
     {
         $new = clone $this;
@@ -67,6 +70,7 @@ class FileOutput extends Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function outputMessage(Message $message): void
     {
         // TODO: Implement

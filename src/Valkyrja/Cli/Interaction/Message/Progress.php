@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Message;
 
+use Override;
 use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
 use Valkyrja\Cli\Interaction\Message\Contract\Progress as Contract;
 
@@ -38,6 +39,7 @@ class Progress extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isComplete(): bool
     {
         return $this->isComplete;
@@ -46,6 +48,7 @@ class Progress extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withIsComplete(bool $isComplete): static
     {
         $new = clone $this;
@@ -58,6 +61,7 @@ class Progress extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getPercentage(): int
     {
         return $this->percentage;
@@ -66,6 +70,7 @@ class Progress extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withPercentage(int $percentage): static
     {
         $new = clone $this;

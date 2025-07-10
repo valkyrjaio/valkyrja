@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Model\Contract;
 
 use ArrayAccess;
+use Override;
 use Stringable;
 use Valkyrja\Type\Contract\Type;
 
@@ -94,6 +95,7 @@ interface Model extends ArrayAccess, Stringable, Type
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): static;
 
     /**
@@ -101,6 +103,7 @@ interface Model extends ArrayAccess, Stringable, Type
      *
      * @return string
      */
+    #[Override]
     public function asFlatValue(): string;
 
     /**
@@ -140,6 +143,7 @@ interface Model extends ArrayAccess, Stringable, Type
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function jsonSerialize(): array;
 
     /**

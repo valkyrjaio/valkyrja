@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Provider;
 
+use Override;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
@@ -27,6 +28,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function publishers(): array
     {
         return [
@@ -37,6 +39,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function provides(): array
     {
         return [

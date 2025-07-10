@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Middleware\Cache;
 
+use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
@@ -38,6 +39,7 @@ class NoCacheResponseMiddleware implements SendingResponseMiddleware
     /**
      * @inheritDoc
      */
+    #[Override]
     public function sendingResponse(ServerRequest $request, Response $response, SendingResponseHandler $handler): Response
     {
         return $handler->sendingResponse(

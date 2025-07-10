@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Rule\String;
 
+use Override;
 use Valkyrja\Type\BuiltIn\Support\Str;
 use Valkyrja\Validation\Rule\Rule;
 
@@ -25,12 +26,14 @@ use function is_string;
  */
 class Lowercase extends Rule
 {
+    #[Override]
     public function isValid(): bool
     {
         return is_string($this->subject)
             && Str::isLowercase($this->subject);
     }
 
+    #[Override]
     public function getDefaultErrorMessage(): string
     {
         return 'Must be lowercase';

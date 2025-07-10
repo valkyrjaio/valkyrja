@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\BuiltIn\Contract;
 
+use Override;
 use Valkyrja\Type\Contract\Type;
 
 /**
@@ -29,6 +30,7 @@ interface TrueT extends Type
      *
      * @return true
      */
+    #[Override]
     public function asValue(): bool;
 
     /**
@@ -36,5 +38,6 @@ interface TrueT extends Type
      *
      * @return true
      */
+    #[Override]
     public function asFlatValue(): bool;
 }

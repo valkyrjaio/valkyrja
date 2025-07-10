@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Assert;
 
+use Override;
 use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Test\Assert\Asserter as AbstractAsserter;
 use Valkyrja\Test\Assert\Compare as CompareAsserter;
@@ -61,6 +62,7 @@ class Assert extends AbstractAsserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function compare(): Compare
     {
         $compare = $this->__call(AsserterName::compare->name, []);
@@ -75,6 +77,7 @@ class Assert extends AbstractAsserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function exceptions(): Exceptions
     {
         $exceptions = $this->__call(AsserterName::exceptions->name, []);
@@ -89,6 +92,7 @@ class Assert extends AbstractAsserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function string(): Str
     {
         $str = $this->__call(AsserterName::string->name, []);
@@ -103,6 +107,7 @@ class Assert extends AbstractAsserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAsserters(array $asserters): void
     {
         $this->asserters = array_merge($this->asserters, $asserters);
@@ -111,6 +116,7 @@ class Assert extends AbstractAsserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getAssertions(): array
     {
         $assertions = [];
@@ -125,6 +131,7 @@ class Assert extends AbstractAsserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getErrors(): array
     {
         $assertions = [];
@@ -139,6 +146,7 @@ class Assert extends AbstractAsserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getSuccesses(): array
     {
         $assertions = [];
@@ -153,6 +161,7 @@ class Assert extends AbstractAsserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getWarnings(): array
     {
         $assertions = [];
@@ -167,6 +176,7 @@ class Assert extends AbstractAsserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function __get(string $name): mixed
     {
         return match ($name) {
@@ -181,6 +191,7 @@ class Assert extends AbstractAsserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function __call(string $name, array $arguments): Asserter
     {
         return $this->asserterInstances[$name]

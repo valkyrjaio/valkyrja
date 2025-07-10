@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Json;
 
 use JsonException;
+use Override;
 use Valkyrja\Type\BuiltIn\Support\Arr as Helper;
 use Valkyrja\Type\Json\Contract\Json as Contract;
 use Valkyrja\Type\Type;
@@ -42,6 +43,7 @@ class Json extends Type implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public static function fromValue(mixed $value): static
     {
         if (is_string($value)) {
@@ -54,6 +56,7 @@ class Json extends Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): array
     {
         return $this->subject;
@@ -64,6 +67,7 @@ class Json extends Type implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function asFlatValue(): string
     {
         return Helper::toString($this->subject);

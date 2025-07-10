@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Entity;
 
 use JsonException;
+use Override;
 use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Orm\Entity\Contract\Entity as Contract;
@@ -79,6 +80,7 @@ abstract class Entity extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function getTableName(): string
     {
         return static::$tableName;
@@ -87,6 +89,7 @@ abstract class Entity extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function getIdField(): string
     {
         return static::$idField;
@@ -95,6 +98,7 @@ abstract class Entity extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function getRepository(): string|null
     {
         return static::$repository;
@@ -103,6 +107,7 @@ abstract class Entity extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function getRelationshipProperties(): array
     {
         return static::$relationshipProperties;
@@ -111,6 +116,7 @@ abstract class Entity extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function getUnStorableFields(): array
     {
         return static::$unStorableFields;
@@ -119,6 +125,7 @@ abstract class Entity extends Model implements Contract
     /**
      * Get the id field's value.
      */
+    #[Override]
     public function getIdValue(): string|int
     {
         /** @var mixed $id */
@@ -141,6 +148,7 @@ abstract class Entity extends Model implements Contract
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function asStorableArray(string ...$properties): array
     {
         $unStorableFields = array_merge(static::getUnStorableFields(), static::getRelationshipProperties());
@@ -163,6 +171,7 @@ abstract class Entity extends Model implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function asStorableChangedArray(): array
     {
         return $this->internalGetChangedProperties($this->asStorableArray());

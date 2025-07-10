@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\QueryBuilder;
 
+use Override;
 use Valkyrja\Orm\Constant\Statement;
 use Valkyrja\Orm\Data\Join;
 use Valkyrja\Orm\Data\Where;
@@ -44,6 +45,7 @@ abstract class SqlQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withFrom(string $table): static
     {
         $new = clone $this;
@@ -56,6 +58,7 @@ abstract class SqlQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAlias(string $alias): static
     {
         $new = clone $this;
@@ -68,6 +71,7 @@ abstract class SqlQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withJoin(Join ...$joins): static
     {
         $new = clone $this;
@@ -80,6 +84,7 @@ abstract class SqlQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedJoin(Join ...$joins): static
     {
         $new = clone $this;
@@ -89,6 +94,7 @@ abstract class SqlQueryBuilder implements Contract
         return $new;
     }
 
+    #[Override]
     public function withWhere(Where|WhereGroup ...$where): static
     {
         $new = clone $this;
@@ -98,6 +104,7 @@ abstract class SqlQueryBuilder implements Contract
         return $new;
     }
 
+    #[Override]
     public function withAddedWhere(Where|WhereGroup ...$where): static
     {
         $new = clone $this;

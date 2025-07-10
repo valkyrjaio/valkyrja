@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Argument;
 
+use Override;
 use Valkyrja\Cli\Interaction\Argument\Contract\Argument as Contract;
 
 /**
@@ -33,6 +34,7 @@ class Argument implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getValue(): string
     {
         return $this->value;
@@ -41,6 +43,7 @@ class Argument implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withValue(string $value): static
     {
         $new = clone $this;

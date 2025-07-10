@@ -16,6 +16,7 @@ namespace Valkyrja\Type\Ulid\Support;
 use DateTimeInterface;
 use Exception;
 use InvalidArgumentException;
+use Override;
 use Valkyrja\Type\Exception\RuntimeException;
 use Valkyrja\Type\Uid\Support\Uid;
 use Valkyrja\Type\Ulid\Exception\InvalidUlidException;
@@ -354,6 +355,7 @@ class Ulid extends Uid
     /**
      * @inheritDoc
      */
+    #[Override]
     protected static function throwInvalidException(string $uid): never
     {
         throw new InvalidUlidException("Invalid ULID $uid provided.");

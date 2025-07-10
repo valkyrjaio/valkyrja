@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Suite;
 
+use Override;
 use Valkyrja\Test\Enum\Argument;
 use Valkyrja\Test\Output\Contract\Output;
 use Valkyrja\Test\Output\EchoOutput;
@@ -35,6 +36,7 @@ class Suite implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function run(array|null $args = null): void
     {
         $args ??= $this->getServerArgs();

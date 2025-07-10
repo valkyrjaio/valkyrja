@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Header\Value;
 
 use DateTimeInterface;
+use Override;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Message\Header\Value\Component\Component;
 use Valkyrja\Http\Message\Header\Value\Contract\Cookie as Contract;
@@ -66,6 +67,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function __toString(): string
     {
         $value  = $this->value;
@@ -103,6 +105,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function delete(): static
     {
         $new = clone $this;
@@ -115,6 +118,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getMaxAge(): int
     {
         return $this->expire > 0
@@ -125,6 +129,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getName(): string
     {
         return $this->name;
@@ -133,6 +138,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withName(string $name): static
     {
         $new = clone $this;
@@ -145,6 +151,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getValue(): string|null
     {
         return $this->value;
@@ -153,6 +160,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withValue(string|null $value = null): static
     {
         $new = clone $this;
@@ -165,6 +173,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getExpire(): int
     {
         return $this->expire;
@@ -173,6 +182,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withExpire(int $expire): static
     {
         $new = clone $this;
@@ -185,6 +195,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getPath(): string
     {
         return $this->path;
@@ -193,6 +204,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withPath(string $path): static
     {
         $new = clone $this;
@@ -205,6 +217,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getDomain(): string|null
     {
         return $this->domain;
@@ -213,6 +226,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withDomain(string|null $domain = null): static
     {
         $new = clone $this;
@@ -225,6 +239,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isSecure(): bool
     {
         return $this->secure;
@@ -233,6 +248,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withSecure(bool $secure): static
     {
         $new = clone $this;
@@ -245,6 +261,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isHttpOnly(): bool
     {
         return $this->httpOnly;
@@ -253,6 +270,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withHttpOnly(bool $httpOnly = false): static
     {
         $new = clone $this;
@@ -265,6 +283,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isRaw(): bool
     {
         return $this->raw;
@@ -273,6 +292,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withRaw(bool $raw): static
     {
         $new = clone $this;
@@ -285,6 +305,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getSameSite(): SameSite|null
     {
         return $this->sameSite;
@@ -293,6 +314,7 @@ class Cookie extends Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withSameSite(SameSite|null $sameSite = null): static
     {
         $new = clone $this;

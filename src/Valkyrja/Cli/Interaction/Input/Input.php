@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Input;
 
+use Override;
 use Valkyrja\Cli\Interaction\Argument\Contract\Argument;
 use Valkyrja\Cli\Interaction\Input\Contract\Input as Contract;
 use Valkyrja\Cli\Interaction\Option\Contract\Option;
@@ -41,6 +42,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getCaller(): string
     {
         return $this->caller;
@@ -49,6 +51,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withCaller(string $caller): static
     {
         $new = clone $this;
@@ -61,6 +64,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getCommandName(): string
     {
         return $this->commandName;
@@ -69,6 +73,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withCommandName(string $commandName): static
     {
         $new = clone $this;
@@ -83,6 +88,7 @@ class Input implements Contract
      *
      * @return Argument[]
      */
+    #[Override]
     public function getArguments(): array
     {
         return $this->arguments;
@@ -91,6 +97,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withArguments(Argument ...$arguments): static
     {
         $new = clone $this;
@@ -103,6 +110,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedArgument(Argument $argument): static
     {
         $new = clone $this;
@@ -115,6 +123,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withoutArgument(string $value): static
     {
         $new = clone $this;
@@ -130,6 +139,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withoutArguments(): static
     {
         $new = clone $this;
@@ -144,6 +154,7 @@ class Input implements Contract
      *
      * @return Option[]
      */
+    #[Override]
     public function getOptions(): array
     {
         return $this->options;
@@ -152,6 +163,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getOption(string $name): array
     {
         return array_filter(
@@ -163,6 +175,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasOption(string $name): bool
     {
         return $this->getOption($name) !== [];
@@ -171,6 +184,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withOptions(Option ...$options): static
     {
         $new = clone $this;
@@ -183,6 +197,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedOption(Option $option): static
     {
         $new = clone $this;
@@ -195,6 +210,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withoutOption(string $name): static
     {
         $new = clone $this;
@@ -210,6 +226,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withoutOptions(): static
     {
         $new = clone $this;

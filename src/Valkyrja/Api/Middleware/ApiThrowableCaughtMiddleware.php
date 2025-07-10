@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api\Middleware;
 
+use Override;
 use Throwable;
 use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Contract\Api;
@@ -39,6 +40,7 @@ class ApiThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
     /**
      * @inheritDoc
      */
+    #[Override]
     public function throwableCaught(ServerRequest $request, Response $response, Throwable $exception, ThrowableCaughtHandler $handler): Response
     {
         $json = $this->api->jsonFromArray([

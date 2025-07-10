@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Exception;
 
+use Override;
+
 /**
  * Class TypeError.
  *
@@ -23,6 +25,7 @@ class TypeError extends \TypeError implements Throwable
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getTraceCode(): string
     {
         return ErrorHandler::getTraceCode($this);

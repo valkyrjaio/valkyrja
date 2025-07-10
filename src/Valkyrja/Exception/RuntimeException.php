@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Exception;
 
+use Override;
+
 /**
  * Class RuntimeException.
  *
@@ -23,6 +25,7 @@ class RuntimeException extends \RuntimeException implements Throwable
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getTraceCode(): string
     {
         return ErrorHandler::getTraceCode($this);

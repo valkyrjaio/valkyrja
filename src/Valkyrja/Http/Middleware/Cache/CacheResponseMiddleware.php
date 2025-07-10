@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Middleware\Cache;
 
+use Override;
 use Throwable;
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Filesystem\Contract\Filesystem;
@@ -49,6 +50,7 @@ class CacheResponseMiddleware implements RequestReceivedMiddleware, TerminatedMi
     /**
      * @inheritDoc
      */
+    #[Override]
     public function requestReceived(ServerRequest $request, RequestReceivedHandler $handler): ServerRequest|Response
     {
         $filesystem = $this->filesystem;
@@ -100,6 +102,7 @@ class CacheResponseMiddleware implements RequestReceivedMiddleware, TerminatedMi
     /**
      * @inheritDoc
      */
+    #[Override]
     public function terminated(ServerRequest $request, Response $response, TerminatedHandler $handler): void
     {
         $this->filesystem->write(

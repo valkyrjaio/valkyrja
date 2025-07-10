@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Message;
 
+use Override;
 use Valkyrja\Cli\Interaction\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Message\Contract\Message as Contract;
 
@@ -39,6 +40,7 @@ class Messages extends Message
      *
      * @return non-empty-string
      */
+    #[Override]
     public function getText(): string
     {
         $text = implode(
@@ -61,6 +63,7 @@ class Messages extends Message
      *
      * @return non-empty-string
      */
+    #[Override]
     public function getFormattedText(): string
     {
         $text = implode(

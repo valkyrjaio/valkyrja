@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Middleware\Handler;
 
+use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
@@ -29,6 +30,7 @@ class TerminatedHandler extends Handler implements Contract\TerminatedHandler
     /**
      * @inheritDoc
      */
+    #[Override]
     public function terminated(ServerRequest $request, Response $response): void
     {
         $next = $this->next;

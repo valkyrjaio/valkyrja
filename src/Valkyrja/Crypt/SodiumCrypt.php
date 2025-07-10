@@ -15,6 +15,7 @@ namespace Valkyrja\Crypt;
 
 use Exception;
 use JsonException;
+use Override;
 use SodiumException;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Crypt\Exception\CryptException;
@@ -49,6 +50,7 @@ class SodiumCrypt implements Crypt
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isValidEncryptedMessage(string $encrypted): bool
     {
         try {
@@ -68,6 +70,7 @@ class SodiumCrypt implements Crypt
      * @throws Exception
      * @throws SodiumException
      */
+    #[Override]
     public function encrypt(string $message, string|null $key = null): string
     {
         $key    = $this->getKeyAsBytes($key);
@@ -86,6 +89,7 @@ class SodiumCrypt implements Crypt
      * @throws JsonException
      * @throws SodiumException
      */
+    #[Override]
     public function encryptArray(array $array, string|null $key = null): string
     {
         return $this->encrypt(Arr::toString($array), $key);
@@ -97,6 +101,7 @@ class SodiumCrypt implements Crypt
      * @throws JsonException
      * @throws SodiumException
      */
+    #[Override]
     public function encryptObject(object $object, string|null $key = null): string
     {
         return $this->encrypt(Obj::toString($object), $key);
@@ -107,6 +112,7 @@ class SodiumCrypt implements Crypt
      *
      * @throws SodiumException
      */
+    #[Override]
     public function decrypt(string $encrypted, string|null $key = null): string
     {
         $key   = $this->getKeyAsBytes($key);
@@ -123,6 +129,7 @@ class SodiumCrypt implements Crypt
      * @throws JsonException
      * @throws SodiumException
      */
+    #[Override]
     public function decryptArray(string $encrypted, string|null $key = null): array
     {
         return Arr::fromString($this->decrypt($encrypted, $key));
@@ -134,6 +141,7 @@ class SodiumCrypt implements Crypt
      * @throws JsonException
      * @throws SodiumException
      */
+    #[Override]
     public function decryptObject(string $encrypted, string|null $key = null): object
     {
         return Obj::fromString($this->decrypt($encrypted, $key));

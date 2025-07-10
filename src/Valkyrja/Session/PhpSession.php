@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session;
 
+use Override;
 use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Exception\InvalidSessionId;
 use Valkyrja\Session\Exception\SessionIdFailure;
@@ -50,6 +51,7 @@ class PhpSession extends NullSession
     /**
      * @inheritDoc
      */
+    #[Override]
     public function start(): void
     {
         // If the session is already active
@@ -81,6 +83,7 @@ class PhpSession extends NullSession
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getId(): string
     {
         $sessionId = session_id();
@@ -95,6 +98,7 @@ class PhpSession extends NullSession
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setId(string $id): void
     {
         if (! preg_match('/^[-,a-zA-Z0-9]{1,128}$/', $id)) {
@@ -111,6 +115,7 @@ class PhpSession extends NullSession
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getName(): string
     {
         $sessionName = session_name();
@@ -125,6 +130,7 @@ class PhpSession extends NullSession
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setName(string $name): void
     {
         session_name($name);
@@ -133,6 +139,7 @@ class PhpSession extends NullSession
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isActive(): bool
     {
         return session_status() === PHP_SESSION_ACTIVE;
@@ -141,6 +148,7 @@ class PhpSession extends NullSession
     /**
      * @inheritDoc
      */
+    #[Override]
     public function clear(): void
     {
         parent::clear();
@@ -151,6 +159,7 @@ class PhpSession extends NullSession
     /**
      * @inheritDoc
      */
+    #[Override]
     public function destroy(): void
     {
         parent::destroy();

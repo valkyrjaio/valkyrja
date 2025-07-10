@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Header\Value;
 
+use Override;
 use Valkyrja\Http\Message\Header\Exception\UnsupportedOffsetSetException;
 use Valkyrja\Http\Message\Header\Exception\UnsupportedOffsetUnsetException;
 use Valkyrja\Http\Message\Header\Value\Component\Component as HeaderPart;
@@ -64,6 +65,7 @@ class Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function fromValue(string $value): static
     {
         $parts = [$value];
@@ -78,6 +80,7 @@ class Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getComponents(): array
     {
         return $this->components;
@@ -86,6 +89,7 @@ class Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withComponents(Component|string ...$components): static
     {
         $new = clone $this;
@@ -98,6 +102,7 @@ class Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedComponents(Component|string ...$components): static
     {
         $new = $this->withComponents(...$components);
@@ -110,6 +115,7 @@ class Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonSerialize(): string
     {
         return $this->__toString();
@@ -128,6 +134,7 @@ class Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function offsetExists(mixed $offset): bool
     {
         return isset($this->components[$offset]);
@@ -136,6 +143,7 @@ class Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function offsetGet(mixed $offset): Component
     {
         return $this->components[$offset];
@@ -144,6 +152,7 @@ class Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new UnsupportedOffsetSetException('Use withValues or withAddedValues');
@@ -152,6 +161,7 @@ class Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function offsetUnset(mixed $offset): void
     {
         throw new UnsupportedOffsetUnsetException('Use withValues or withAddedValues');
@@ -160,6 +170,7 @@ class Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function count(): int
     {
         return count($this->components);
@@ -168,6 +179,7 @@ class Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function current(): Component
     {
         return $this->components[$this->position];
@@ -176,6 +188,7 @@ class Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function next(): void
     {
         $this->position++;
@@ -184,6 +197,7 @@ class Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function key(): int
     {
         return $this->position;
@@ -192,6 +206,7 @@ class Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function valid(): bool
     {
         return isset($this->components[$this->position]);
@@ -200,6 +215,7 @@ class Value implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function rewind(): void
     {
         $this->position = 0;

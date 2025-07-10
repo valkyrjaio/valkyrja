@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail;
 
+use Override;
 use Valkyrja\Mail\Contract\Mailer as Contract;
 use Valkyrja\Mail\Data\Contract\Message;
 
@@ -26,6 +27,7 @@ class NullMailer implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function send(Message $message): void
     {
     }

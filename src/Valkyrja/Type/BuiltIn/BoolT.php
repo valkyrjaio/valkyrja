@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\BuiltIn;
 
+use Override;
 use Valkyrja\Type\BuiltIn\Contract\BoolT as Contract;
 use Valkyrja\Type\Type;
 
@@ -33,6 +34,7 @@ class BoolT extends Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function fromValue(mixed $value): static
     {
         return new static((bool) $value);
@@ -41,6 +43,7 @@ class BoolT extends Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): bool
     {
         return $this->subject;
@@ -49,6 +52,7 @@ class BoolT extends Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asFlatValue(): bool
     {
         return $this->asValue();

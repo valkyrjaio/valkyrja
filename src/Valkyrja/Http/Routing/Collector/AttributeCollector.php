@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Collector;
 
 use InvalidArgumentException;
+use Override;
 use ReflectionException;
 use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
@@ -59,6 +60,7 @@ class AttributeCollector implements Contract
      *
      * @throws ReflectionException
      */
+    #[Override]
     public function getRoutes(string ...$classes): array
     {
         $routes     = [];

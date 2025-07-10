@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Collector;
 
+use Override;
 use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Container\Attribute\Alias;
 use Valkyrja\Container\Attribute\ContextAlias;
@@ -40,6 +41,7 @@ class AttributeCollector implements Contract
      *
      * @return Service[]
      */
+    #[Override]
     public function getServices(string ...$classes): array
     {
         return $this->getAttributesByType(ServiceAttribute::class, ...$classes);
@@ -52,6 +54,7 @@ class AttributeCollector implements Contract
      *
      * @return Alias[]
      */
+    #[Override]
     public function getAliases(string ...$classes): array
     {
         return $this->getAttributesByType(Alias::class, ...$classes);
@@ -64,6 +67,7 @@ class AttributeCollector implements Contract
      *
      * @return ContextService[]
      */
+    #[Override]
     public function getContextServices(string ...$classes): array
     {
         return $this->getAttributesByType(ContextService::class, ...$classes);
@@ -76,6 +80,7 @@ class AttributeCollector implements Contract
      *
      * @return ContextAlias[]
      */
+    #[Override]
     public function getContextAliases(string ...$classes): array
     {
         return $this->getAttributesByType(ContextAlias::class, ...$classes);

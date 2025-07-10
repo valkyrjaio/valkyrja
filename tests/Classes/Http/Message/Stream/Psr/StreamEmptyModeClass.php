@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Message\Stream\Psr;
 
+use Override;
 use Valkyrja\Http\Message\Stream\Psr\Stream;
 
 /**
@@ -22,6 +23,7 @@ use Valkyrja\Http\Message\Stream\Psr\Stream;
  */
 class StreamEmptyModeClass extends Stream
 {
+    #[Override]
     public function getMetadata(string|null $key = null): mixed
     {
         if ($key === 'mode') {

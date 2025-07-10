@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Server;
 
+use Override;
 use Throwable;
 use Valkyrja\Http\Server\RequestHandler;
 
@@ -30,11 +31,13 @@ class LitespeedRequestHandlerClass extends RequestHandler
         return $this->hasRequestBeenFinishedWithLitespeed;
     }
 
+    #[Override]
     protected function shouldUseLitespeedToFinishRequest(): bool
     {
         return true;
     }
 
+    #[Override]
     protected function finishRequestWithLitespeed(): void
     {
         $this->hasRequestBeenFinishedWithLitespeed = true;

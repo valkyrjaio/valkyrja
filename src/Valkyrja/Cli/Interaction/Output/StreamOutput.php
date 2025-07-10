@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Output;
 
+use Override;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\Message;
 use Valkyrja\Cli\Interaction\Output\Contract\StreamOutput as Contract;
@@ -49,6 +50,7 @@ class StreamOutput extends Output implements Contract
      *
      * @return resource
      */
+    #[Override]
     public function getStream()
     {
         return $this->stream;
@@ -59,6 +61,7 @@ class StreamOutput extends Output implements Contract
      *
      * @param resource $stream The stream
      */
+    #[Override]
     public function withStream($stream): static
     {
         $new = clone $this;
@@ -71,6 +74,7 @@ class StreamOutput extends Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function outputMessage(Message $message): void
     {
         // TODO: Implement

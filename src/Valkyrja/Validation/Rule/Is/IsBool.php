@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Rule\Is;
 
+use Override;
 use Valkyrja\Validation\Rule\Rule;
 
 use function is_bool;
@@ -24,11 +25,13 @@ use function is_bool;
  */
 class IsBool extends Rule
 {
+    #[Override]
     public function isValid(): bool
     {
         return is_bool($this->subject);
     }
 
+    #[Override]
     public function getDefaultErrorMessage(): string
     {
         return 'Must be a boolean';

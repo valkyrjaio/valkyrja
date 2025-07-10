@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Output;
 
+use Override;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Contract\Answer;
@@ -58,6 +59,7 @@ class Output implements Contract
      *
      * @return Message[]
      */
+    #[Override]
     public function getMessages(): array
     {
         return [
@@ -71,6 +73,7 @@ class Output implements Contract
      *
      * @return Message[]
      */
+    #[Override]
     public function getWrittenMessages(): array
     {
         return $this->writtenMessages;
@@ -79,6 +82,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasWrittenMessage(): bool
     {
         return $this->writtenMessages !== [];
@@ -89,6 +93,7 @@ class Output implements Contract
      *
      * @return Message[]
      */
+    #[Override]
     public function getUnwrittenMessages(): array
     {
         return $this->unwrittenMessages;
@@ -97,6 +102,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasUnwrittenMessage(): bool
     {
         return $this->unwrittenMessages !== [];
@@ -105,6 +111,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withMessages(Message ...$messages): static
     {
         $new = clone $this;
@@ -117,6 +124,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedMessages(Message ...$messages): static
     {
         $new = clone $this;
@@ -132,6 +140,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedMessage(Message $message): static
     {
         $new = clone $this;
@@ -144,6 +153,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function writeMessages(): static
     {
         $new = clone $this;
@@ -170,6 +180,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isInteractive(): bool
     {
         return $this->isInteractive;
@@ -178,6 +189,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withIsInteractive(bool $isInteractive): static
     {
         $new = clone $this;
@@ -190,6 +202,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isQuiet(): bool
     {
         return $this->isQuiet;
@@ -198,6 +211,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withIsQuiet(bool $isQuiet): static
     {
         $new = clone $this;
@@ -210,6 +224,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isSilent(): bool
     {
         return $this->isSilent;
@@ -218,6 +233,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withIsSilent(bool $isSilent): static
     {
         $new = clone $this;
@@ -230,6 +246,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getExitCode(): ExitCode|int
     {
         return $this->exitCode;
@@ -238,6 +255,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withExitCode(ExitCode|int $exitCode): static
     {
         $new = clone $this;

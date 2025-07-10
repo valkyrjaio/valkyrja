@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\File;
 
+use Override;
 use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\File\Contract\UploadedFile as Contract;
 use Valkyrja\Http\Message\File\Enum\UploadError;
@@ -83,6 +84,7 @@ class UploadedFile implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getStream(): Stream
     {
         // If the error status is not OK
@@ -117,6 +119,7 @@ class UploadedFile implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function moveTo(string $targetPath): void
     {
         // If the error status is not OK
@@ -166,6 +169,7 @@ class UploadedFile implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getSize(): int|null
     {
         return $this->size;
@@ -174,6 +178,7 @@ class UploadedFile implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getError(): UploadError
     {
         return $this->uploadError;
@@ -182,6 +187,7 @@ class UploadedFile implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getClientFilename(): string|null
     {
         return $this->fileName;
@@ -190,6 +196,7 @@ class UploadedFile implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getClientMediaType(): string|null
     {
         return $this->mediaType;

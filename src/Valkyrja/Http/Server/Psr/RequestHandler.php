@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Server\Psr;
 
+use Override;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -35,6 +36,7 @@ class RequestHandler implements RequestHandlerInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $response = $this->requestHandler->handle(RequestFactory::fromPsr($request));

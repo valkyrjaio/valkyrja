@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Response;
 
+use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Exception\HttpRedirectException;
@@ -75,6 +76,7 @@ class RedirectResponse extends Response implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function createFromUri(
         UriContract|null $uri = null,
         StatusCode|null $statusCode = null,
@@ -90,6 +92,7 @@ class RedirectResponse extends Response implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getUri(): UriContract
     {
         return $this->uri;
@@ -98,6 +101,7 @@ class RedirectResponse extends Response implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withUri(UriContract $uri): static
     {
         // Set the location header for the redirect
@@ -111,6 +115,7 @@ class RedirectResponse extends Response implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function secure(string $path, ServerRequest $request): static
     {
         $uri = new Uri(
@@ -125,6 +130,7 @@ class RedirectResponse extends Response implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function back(ServerRequest $request): static
     {
         $refererHeaderLine = $request->getHeaderLine('Referer') ?: '/';
@@ -140,6 +146,7 @@ class RedirectResponse extends Response implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function throw(): void
     {
         throw new HttpRedirectException($this->uri, $this->statusCode, $this->getHeaders(), $this);

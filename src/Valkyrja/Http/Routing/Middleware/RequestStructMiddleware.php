@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Middleware;
 
+use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
@@ -36,6 +37,7 @@ class RequestStructMiddleware implements RouteMatchedMiddleware
     /**
      * @inheritDoc
      */
+    #[Override]
     public function routeMatched(ServerRequest $request, Route $route, RouteMatchedHandler $handler): Route|Response
     {
         $message = $route->getRequestStruct();

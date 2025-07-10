@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification\Factory;
 
+use Override;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Notification\Data\Contract\Notify;
 use Valkyrja\Notification\Factory\Contract\Factory;
@@ -42,6 +43,7 @@ class ContainerFactory implements Factory
      *
      * @return Notify
      */
+    #[Override]
     public function createNotification(string $name, array $data = []): Notify
     {
         return $this->container->get($name, $data);

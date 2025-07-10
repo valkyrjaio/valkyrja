@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event;
 
+use Override;
 use Psr\EventDispatcher\StoppableEventInterface;
 use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
 use Valkyrja\Event\Collection\Contract\Collection;
@@ -36,6 +37,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function dispatch(object $event): object
     {
         // Get all the listeners for the event
@@ -47,6 +49,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function dispatchIfHasListeners(object $event): object|null
     {
         if ($this->collection->hasListenersForEvent($event)) {
@@ -59,6 +62,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function dispatchById(string $eventId, array $arguments = []): object
     {
         return $this->dispatch(
@@ -69,6 +73,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function dispatchByIdIfHasListeners(string $eventId, array $arguments = []): object|null
     {
         if ($this->collection->hasListenersForEventById($eventId)) {
@@ -81,6 +86,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function dispatchListeners(object $event, Listener ...$listeners): object
     {
         // Iterate through all the listeners
@@ -100,6 +106,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function dispatchListenersGivenId(string $eventId, Listener ...$listeners): object
     {
         return $this->dispatchListeners(
@@ -111,6 +118,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function dispatchListener(object $event, Listener $listener): object
     {
         // Dispatch the listener with the event
@@ -129,6 +137,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function dispatchListenerGivenId(string $eventId, Listener $listener): object
     {
         return $this->dispatchListener(

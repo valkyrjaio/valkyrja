@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher\Data;
 
+use Override;
 use Valkyrja\Dispatcher\Data\Contract\MethodDispatch as Contract;
 use Valkyrja\Dispatcher\Exception\InvalidArgumentException;
 
@@ -49,6 +50,7 @@ class MethodDispatch extends ClassDispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function fromCallableOrArray(callable|array $callable): static
     {
         if (! is_array($callable)) {
@@ -76,6 +78,7 @@ class MethodDispatch extends ClassDispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getMethod(): string
     {
         return $this->method;
@@ -84,6 +87,7 @@ class MethodDispatch extends ClassDispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withMethod(string $method): static
     {
         $new = clone $this;
@@ -96,6 +100,7 @@ class MethodDispatch extends ClassDispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isStatic(): bool
     {
         return $this->isStatic;
@@ -104,6 +109,7 @@ class MethodDispatch extends ClassDispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withIsStatic(bool $isStatic): static
     {
         $new = clone $this;

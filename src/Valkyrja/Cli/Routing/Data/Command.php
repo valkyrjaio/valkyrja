@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Data;
 
+use Override;
 use Valkyrja\Cli\Interaction\Message\Contract\Message;
 use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
@@ -71,6 +72,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getName(): string
     {
         return $this->name;
@@ -79,6 +81,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withName(string $name): static
     {
         $new = clone $this;
@@ -91,6 +94,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getDescription(): string
     {
         return $this->description;
@@ -99,6 +103,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withDescription(string $description): static
     {
         $new = clone $this;
@@ -111,6 +116,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getHelpText(): Message
     {
         return $this->helpText;
@@ -119,6 +125,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withHelpText(Message $helpText): static
     {
         $new = clone $this;
@@ -131,6 +138,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasArguments(): bool
     {
         return $this->arguments !== [];
@@ -139,6 +147,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getArguments(): array
     {
         return $this->arguments;
@@ -147,6 +156,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getArgument(string $name): ArgumentParameter|null
     {
         $arguments = array_filter($this->arguments, static fn (ArgumentParameter $argument) => $argument->getName() === $name);
@@ -157,6 +167,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withArguments(ArgumentParameter ...$arguments): static
     {
         $new = clone $this;
@@ -169,6 +180,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedArguments(ArgumentParameter ...$arguments): static
     {
         $new = clone $this;
@@ -184,6 +196,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasOptions(): bool
     {
         return $this->options !== [];
@@ -192,6 +205,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getOptions(): array
     {
         return $this->options;
@@ -200,6 +214,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getOption(string $name): OptionParameter|null
     {
         $options = array_filter($this->options, static fn (OptionParameter $option) => $option->getName() === $name);
@@ -210,6 +225,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withOptions(OptionParameter ...$options): static
     {
         $new = clone $this;
@@ -222,6 +238,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedOptions(OptionParameter ...$options): static
     {
         $new = clone $this;
@@ -239,6 +256,7 @@ class Command implements Contract
      *
      * @return class-string<CommandMatchedMiddleware>[]
      */
+    #[Override]
     public function getCommandMatchedMiddleware(): array
     {
         return $this->commandMatchedMiddleware;
@@ -251,6 +269,7 @@ class Command implements Contract
      *
      * @return static
      */
+    #[Override]
     public function withCommandMatchedMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -267,6 +286,7 @@ class Command implements Contract
      *
      * @return static
      */
+    #[Override]
     public function withAddedCommandMatchedMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -281,6 +301,7 @@ class Command implements Contract
      *
      * @return class-string<CommandDispatchedMiddleware>[]
      */
+    #[Override]
     public function getCommandDispatchedMiddleware(): array
     {
         return $this->commandDispatchedMiddleware;
@@ -293,6 +314,7 @@ class Command implements Contract
      *
      * @return static
      */
+    #[Override]
     public function withCommandDispatchedMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -309,6 +331,7 @@ class Command implements Contract
      *
      * @return static
      */
+    #[Override]
     public function withAddedCommandDispatchedMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -323,6 +346,7 @@ class Command implements Contract
      *
      * @return class-string<ThrowableCaughtMiddleware>[]
      */
+    #[Override]
     public function getThrowableCaughtMiddleware(): array
     {
         return $this->throwableCaughtMiddleware;
@@ -335,6 +359,7 @@ class Command implements Contract
      *
      * @return static
      */
+    #[Override]
     public function withThrowableCaughtMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -351,6 +376,7 @@ class Command implements Contract
      *
      * @return static
      */
+    #[Override]
     public function withAddedThrowableCaughtMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -365,6 +391,7 @@ class Command implements Contract
      *
      * @return class-string<ExitedMiddleware>[]
      */
+    #[Override]
     public function getExitedMiddleware(): array
     {
         return $this->exitedMiddleware;
@@ -377,6 +404,7 @@ class Command implements Contract
      *
      * @return static
      */
+    #[Override]
     public function withExitedMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -393,6 +421,7 @@ class Command implements Contract
      *
      * @return static
      */
+    #[Override]
     public function withAddedExitedMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -405,6 +434,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getDispatch(): MethodDispatch
     {
         return $this->dispatch;
@@ -413,6 +443,7 @@ class Command implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withDispatch(MethodDispatch $dispatch): static
     {
         $new = clone $this;

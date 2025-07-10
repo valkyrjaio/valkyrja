@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Header\Value\Component;
 
+use Override;
 use Valkyrja\Http\Message\Header\Value\Component\Contract\Component as Contract;
 
 use function explode;
@@ -55,6 +56,7 @@ class Component implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getToken(): string
     {
         return $this->token;
@@ -63,6 +65,7 @@ class Component implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withToken(string $token): static
     {
         $new = clone $this;
@@ -75,6 +78,7 @@ class Component implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getText(): string|null
     {
         return $this->text ?? null;
@@ -83,6 +87,7 @@ class Component implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withText(string|null $text = null): static
     {
         $new = clone $this;
@@ -95,6 +100,7 @@ class Component implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonSerialize(): string
     {
         return $this->__toString();

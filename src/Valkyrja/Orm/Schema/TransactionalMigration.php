@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Schema;
 
+use Override;
 use Throwable;
 
 /**
@@ -27,6 +28,7 @@ abstract class TransactionalMigration extends Migration
      *
      * @throws Throwable
      */
+    #[Override]
     public function run(): void
     {
         $orm = $this->orm;
@@ -51,6 +53,7 @@ abstract class TransactionalMigration extends Migration
      *
      * @throws Throwable
      */
+    #[Override]
     public function rollback(): void
     {
         $orm = $this->orm;

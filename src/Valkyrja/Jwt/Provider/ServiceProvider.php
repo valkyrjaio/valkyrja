@@ -15,6 +15,7 @@ namespace Valkyrja\Jwt\Provider;
 
 use OpenSSLAsymmetricKey;
 use OpenSSLCertificate;
+use Override;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
@@ -33,6 +34,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function publishers(): array
     {
         return [
@@ -45,6 +47,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function provides(): array
     {
         return [

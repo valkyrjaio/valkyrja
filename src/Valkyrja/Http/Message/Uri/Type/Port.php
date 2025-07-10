@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Uri\Type;
 
+use Override;
 use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Type\Type;
 
@@ -43,6 +44,7 @@ class Port extends Type
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function fromValue(mixed $value): static
     {
         if ($value !== null && ! is_int($value)) {
@@ -57,6 +59,7 @@ class Port extends Type
      *
      * @return int|null
      */
+    #[Override]
     public function asFlatValue(): int|null
     {
         return $this->subject;

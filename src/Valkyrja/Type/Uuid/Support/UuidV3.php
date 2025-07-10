@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Uuid\Support;
 
+use Override;
 use RuntimeException;
 use Valkyrja\Type\Uuid\Enum\Version;
 use Valkyrja\Type\Uuid\Exception\InvalidUuidV3Exception;
@@ -81,6 +82,7 @@ class UuidV3 extends Uuid
     /**
      * @inheritDoc
      */
+    #[Override]
     protected static function throwInvalidException(string $uid): never
     {
         throw new InvalidUuidV3Exception("Invalid UUID V3 $uid provided.");

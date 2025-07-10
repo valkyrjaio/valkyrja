@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Json\Contract;
 
+use Override;
 use Valkyrja\Type\Contract\Type;
 
 /**
@@ -27,10 +28,12 @@ interface Json extends Type
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): array;
 
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asFlatValue(): string;
 }

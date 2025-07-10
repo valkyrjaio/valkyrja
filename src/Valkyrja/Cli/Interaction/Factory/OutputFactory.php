@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Factory;
 
+use Override;
 use Valkyrja\Cli\Interaction\Config;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory as Contract;
@@ -38,6 +39,7 @@ class OutputFactory implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function createOutput(
         ExitCode|int $exitCode = ExitCode::SUCCESS,
         Message ...$messages
@@ -54,6 +56,7 @@ class OutputFactory implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function createEmptyOutput(
         ExitCode|int $exitCode = ExitCode::SUCCESS,
         Message ...$messages
@@ -70,6 +73,7 @@ class OutputFactory implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function createPlainOutput(
         ExitCode|int $exitCode = ExitCode::SUCCESS,
         Message ...$messages
@@ -86,6 +90,7 @@ class OutputFactory implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function createFileOutput(
         string $filepath,
         ExitCode|int $exitCode = ExitCode::SUCCESS,
@@ -104,6 +109,7 @@ class OutputFactory implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function createStreamOutput(
         $stream,
         ExitCode|int $exitCode = ExitCode::SUCCESS,

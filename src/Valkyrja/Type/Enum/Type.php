@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Enum;
 
 use JsonSerializable;
+use Override;
 
 /**
  * Enum Type.
@@ -35,6 +36,7 @@ enum Type implements JsonSerializable
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonSerialize(): string
     {
         return $this->name;

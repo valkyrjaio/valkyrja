@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Server\Middleware;
 
+use Override;
 use Throwable;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
@@ -35,6 +36,7 @@ class LogThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
     /**
      * @inheritDoc
      */
+    #[Override]
     public function throwableCaught(Input $input, Output $output, Throwable $exception, ThrowableCaughtHandler $handler): Output
     {
         $commandName = $input->getCommandName();

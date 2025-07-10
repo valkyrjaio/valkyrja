@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Provider;
 
+use Override;
 use Predis\Client;
 use Valkyrja\Application\Env;
 use Valkyrja\Cache\Contract\Cache;
@@ -33,6 +34,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function publishers(): array
     {
         return [
@@ -47,6 +49,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function provides(): array
     {
         return [

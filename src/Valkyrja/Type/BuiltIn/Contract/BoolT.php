@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\BuiltIn\Contract;
 
+use Override;
 use Valkyrja\Type\Contract\Type;
 
 /**
@@ -27,10 +28,12 @@ interface BoolT extends Type
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): bool;
 
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asFlatValue(): bool;
 }

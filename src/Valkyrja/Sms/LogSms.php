@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms;
 
+use Override;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Sms\Contract\Sms as Contract;
 use Valkyrja\Sms\Data\Contract\Message;
@@ -35,6 +36,7 @@ class LogSms implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function send(Message $message): void
     {
         $this->logger->info(static::class . ' Send');

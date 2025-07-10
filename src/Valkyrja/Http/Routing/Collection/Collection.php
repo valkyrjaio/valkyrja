@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Collection;
 
 use JsonException;
+use Override;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as Contract;
 use Valkyrja\Http\Routing\Data;
@@ -69,6 +70,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getData(): Data
     {
         return new Data(
@@ -82,6 +84,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setFromData(Data $data): void
     {
         $this->routes  = $data->routes;
@@ -93,6 +96,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function add(Route $route): void
     {
         assert($route->getPath());
@@ -110,6 +114,7 @@ class Collection implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function get(string $path, RequestMethod|null $method = null): Route|null
     {
         return $this->getStatic($path, $method) ?? $this->getDynamic($path, $method);
@@ -118,6 +123,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isset(string $path, RequestMethod|null $method = null): bool
     {
         return $this->hasStatic($path, $method) || $this->hasDynamic($path, $method);
@@ -126,6 +132,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function all(): array
     {
         return $this->ensureMethodRoutes(array_merge($this->static, $this->dynamic));
@@ -134,6 +141,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function allFlattened(): array
     {
         return $this->ensureRoutes($this->routes);
@@ -144,6 +152,7 @@ class Collection implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function getStatic(string $path, RequestMethod|null $method = null): Route|null
     {
         return $this->getOfType($this->static, $path, $method);
@@ -152,6 +161,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasStatic(string $path, RequestMethod|null $method = null): bool
     {
         return $this->hasOfType($this->static, $path, $method);
@@ -160,6 +170,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function allStatic(RequestMethod|null $method = null): array
     {
         return $this->allOfType($this->static, $method);
@@ -170,6 +181,7 @@ class Collection implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function getDynamic(string $regex, RequestMethod|null $method = null): Route|null
     {
         return $this->getOfType($this->dynamic, $regex, $method);
@@ -178,6 +190,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasDynamic(string $regex, RequestMethod|null $method = null): bool
     {
         return $this->hasOfType($this->dynamic, $regex, $method);
@@ -186,6 +199,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function allDynamic(RequestMethod|null $method = null): array
     {
         return $this->allOfType($this->dynamic, $method);
@@ -194,6 +208,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getNamed(string $name): Route|null
     {
         $named = $this->named[$name] ?? null;
@@ -208,6 +223,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasNamed(string $name): bool
     {
         return isset($this->named[$name]);
@@ -216,6 +232,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function allNamed(): array
     {
         return $this->ensureRoutes($this->named);

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Server;
 
+use Override;
 use Throwable;
 use Valkyrja\Http\Server\RequestHandler;
 
@@ -30,11 +31,13 @@ class SessionCloseRequestHandlerClass extends RequestHandler
         return $this->hasSessionBeenClosed;
     }
 
+    #[Override]
     protected function shouldCloseSession(): bool
     {
         return true;
     }
 
+    #[Override]
     protected function closeSession(): void
     {
         $this->hasSessionBeenClosed = true;

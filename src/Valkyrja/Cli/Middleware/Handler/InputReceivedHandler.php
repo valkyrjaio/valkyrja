@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Middleware\Handler;
 
+use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
@@ -29,6 +30,7 @@ class InputReceivedHandler extends Handler implements Contract\InputReceivedHand
     /**
      * @inheritDoc
      */
+    #[Override]
     public function inputReceived(Input $input): Input|Output
     {
         $next = $this->next;

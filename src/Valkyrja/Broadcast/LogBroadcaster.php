@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast;
 
 use JsonException;
+use Override;
 use Valkyrja\Broadcast\Contract\Broadcaster as Contract;
 use Valkyrja\Broadcast\Data\Contract\Message;
 use Valkyrja\Log\Contract\Logger;
@@ -39,6 +40,7 @@ class LogBroadcaster implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function send(Message $message): void
     {
         $this->logger->info(static::class . ' Send');

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Vlid\Support;
 
+use Override;
 use Valkyrja\Type\Vlid\Enum\Version;
 use Valkyrja\Type\Vlid\Exception\InvalidVlidV2Exception;
 
@@ -50,6 +51,7 @@ class VlidV2 extends Vlid
     /**
      * @inheritDoc
      */
+    #[Override]
     protected static function areAllRandomBytesMax(): bool
     {
         return static::$randomBytes === [1 => static::MAX_PART, static::MAX_PART, static::MAX_PART, static::MAX_PART];
@@ -58,6 +60,7 @@ class VlidV2 extends Vlid
     /**
      * @inheritDoc
      */
+    #[Override]
     protected static function unsetRandomByteParts(array &$randomBytes): void
     {
         unset($randomBytes[5]);
@@ -66,6 +69,7 @@ class VlidV2 extends Vlid
     /**
      * @inheritDoc
      */
+    #[Override]
     protected static function throwInvalidException(string $uid): never
     {
         throw new InvalidVlidV2Exception("Invalid VLID V2 $uid provided.");

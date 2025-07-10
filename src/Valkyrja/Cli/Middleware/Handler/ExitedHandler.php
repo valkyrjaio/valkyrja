@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Middleware\Handler;
 
+use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
@@ -29,6 +30,7 @@ class ExitedHandler extends Handler implements Contract\ExitedHandler
     /**
      * @inheritDoc
      */
+    #[Override]
     public function exited(Input $input, Output $output): void
     {
         $next = $this->next;

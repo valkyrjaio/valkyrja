@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Id;
 
+use Override;
 use Valkyrja\Type\Exception\InvalidArgumentException;
 use Valkyrja\Type\Id\Contract\Id as Contract;
 use Valkyrja\Type\Type;
@@ -38,6 +39,7 @@ class Id extends Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function fromValue(mixed $value): static
     {
         return match (true) {
@@ -50,6 +52,7 @@ class Id extends Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): string|int
     {
         return $this->subject;
@@ -58,6 +61,7 @@ class Id extends Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asFlatValue(): string|int
     {
         return $this->asValue();

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\BuiltIn\Contract;
 
+use Override;
 use Valkyrja\Type\Contract\Type;
 
 /**
@@ -27,10 +28,12 @@ interface SerializedObject extends Type
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): object;
 
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asFlatValue(): string;
 }

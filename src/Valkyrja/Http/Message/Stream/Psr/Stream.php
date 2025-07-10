@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Stream\Psr;
 
+use Override;
 use Psr\Http\Message\StreamInterface;
 use Valkyrja\Http\Message\Stream\Contract\Stream as ValkyrjaStreamContract;
 use Valkyrja\Http\Message\Stream\Stream as ValkyrjaStream;
@@ -42,6 +43,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function close(): void
     {
         $this->stream->close();
@@ -50,6 +52,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function detach()
     {
         return $this->stream->detach();
@@ -58,6 +61,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getSize(): int|null
     {
         return $this->stream->getSize();
@@ -66,6 +70,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function tell(): int
     {
         return $this->stream->tell();
@@ -74,6 +79,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function eof(): bool
     {
         return $this->stream->eof();
@@ -82,6 +88,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isSeekable(): bool
     {
         return $this->stream->isSeekable();
@@ -90,6 +97,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function seek(int $offset, int $whence = SEEK_SET): void
     {
         $this->stream->seek($offset, $whence);
@@ -98,6 +106,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function rewind(): void
     {
         $this->stream->rewind();
@@ -106,6 +115,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isWritable(): bool
     {
         return $this->stream->isWritable();
@@ -114,6 +124,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function write(string $string): int
     {
         return $this->stream->write($string);
@@ -122,6 +133,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isReadable(): bool
     {
         return $this->stream->isReadable();
@@ -130,6 +142,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function read(int $length): string
     {
         return $this->stream->read($length);
@@ -138,6 +151,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getContents(): string
     {
         return $this->stream->getContents();
@@ -146,6 +160,7 @@ class Stream implements StreamInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getMetadata(string|null $key = null): mixed
     {
         return $this->stream->getMetadata($key);

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher\Data;
 
+use Override;
 use Valkyrja\Dispatcher\Data\Contract\PropertyDispatch as Contract;
 
 /**
@@ -45,6 +46,7 @@ class PropertyDispatch extends ClassDispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getProperty(): string
     {
         return $this->property;
@@ -53,6 +55,7 @@ class PropertyDispatch extends ClassDispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withProperty(string $property): static
     {
         $new = clone $this;
@@ -65,6 +68,7 @@ class PropertyDispatch extends ClassDispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isStatic(): bool
     {
         return $this->isStatic;
@@ -73,6 +77,7 @@ class PropertyDispatch extends ClassDispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withIsStatic(bool $isStatic): static
     {
         $new = clone $this;

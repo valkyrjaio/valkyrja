@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Middleware\Handler;
 
+use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware;
@@ -29,6 +30,7 @@ class RouteNotMatchedHandler extends Handler implements Contract\RouteNotMatched
     /**
      * @inheritDoc
      */
+    #[Override]
     public function routeNotMatched(ServerRequest $request, Response $response): Response
     {
         $next = $this->next;

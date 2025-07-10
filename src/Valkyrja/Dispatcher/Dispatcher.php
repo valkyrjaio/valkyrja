@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher;
 
+use Override;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
 use Valkyrja\Dispatcher\Data\CallableDispatch;
@@ -47,6 +48,7 @@ class Dispatcher implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function dispatch(Dispatch $dispatch, array|null $arguments = null): mixed
     {
         return match (true) {

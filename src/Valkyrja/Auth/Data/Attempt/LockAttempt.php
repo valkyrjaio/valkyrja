@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Data\Attempt;
 
+use Override;
 use Valkyrja\Auth\Data\Attempt\Contract\LockAttempt as Contract;
 use Valkyrja\Auth\Data\Retrieval\Contract\Retrieval;
 
@@ -31,6 +32,7 @@ class LockAttempt implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getRetrieval(): Retrieval
     {
         return $this->retrieval;

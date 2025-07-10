@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Uri\Psr;
 
+use Override;
 use Psr\Http\Message\UriInterface;
 use Valkyrja\Http\Message\Uri\Contract\Uri as ValkyrjaUri;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
@@ -32,6 +33,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getScheme(): string
     {
         return $this->uri->getScheme()->value;
@@ -40,6 +42,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getAuthority(): string
     {
         return $this->uri->getAuthority();
@@ -48,6 +51,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getUserInfo(): string
     {
         return $this->uri->getUserInfo();
@@ -56,6 +60,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getHost(): string
     {
         return $this->uri->getHost();
@@ -64,6 +69,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getPort(): int|null
     {
         return $this->uri->getPort();
@@ -72,6 +78,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getPath(): string
     {
         return $this->uri->getPath();
@@ -80,6 +87,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getQuery(): string
     {
         return $this->uri->getQuery();
@@ -88,6 +96,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getFragment(): string
     {
         return $this->uri->getFragment();
@@ -96,6 +105,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withScheme(string $scheme): UriInterface
     {
         $new = clone $this;
@@ -108,6 +118,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withUserInfo(string $user, string|null $password = null): UriInterface
     {
         $new = clone $this;
@@ -120,6 +131,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withHost(string $host): UriInterface
     {
         $new = clone $this;
@@ -132,6 +144,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withPort(int|null $port): UriInterface
     {
         $new = clone $this;
@@ -144,6 +157,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withPath(string $path): UriInterface
     {
         $new = clone $this;
@@ -156,6 +170,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withQuery(string $query): UriInterface
     {
         $new = clone $this;
@@ -168,6 +183,7 @@ class Uri implements UriInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withFragment(string $fragment): UriInterface
     {
         $new = clone $this;

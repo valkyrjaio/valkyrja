@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Data;
 
+use Override;
 use Valkyrja\Broadcast\Data\Contract\Message as Contract;
 
 /**
@@ -53,6 +54,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getChannel(): string
     {
         return $this->channel;
@@ -61,6 +63,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setChannel(string $channel): static
     {
         $this->channel = $channel;
@@ -71,6 +74,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getEvent(): string
     {
         return $this->event;
@@ -79,6 +83,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setEvent(string $event): static
     {
         $this->event = $event;
@@ -89,6 +94,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getData(): array|null
     {
         return $this->data;
@@ -97,6 +103,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setData(array|null $data = null): static
     {
         $this->data = $data;
@@ -107,6 +114,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getMessage(): string
     {
         return $this->message;
@@ -115,6 +123,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setMessage(string $message): static
     {
         $this->message = $message;

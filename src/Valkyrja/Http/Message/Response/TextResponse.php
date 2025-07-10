@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Response;
 
 use InvalidArgumentException;
+use Override;
 use RuntimeException;
 use Valkyrja\Http\Message\Constant\ContentType;
 use Valkyrja\Http\Message\Constant\HeaderName;
@@ -60,6 +61,7 @@ class TextResponse extends Response implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function create(
         string|null $content = null,
         StatusCode|null $statusCode = null,

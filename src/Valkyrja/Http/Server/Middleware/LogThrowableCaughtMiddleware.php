@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Server\Middleware;
 
+use Override;
 use Throwable;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
@@ -35,6 +36,7 @@ class LogThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
     /**
      * @inheritDoc
      */
+    #[Override]
     public function throwableCaught(ServerRequest $request, Response $response, Throwable $exception, ThrowableCaughtHandler $handler): Response
     {
         $url        = $request->getUri()->getPath();

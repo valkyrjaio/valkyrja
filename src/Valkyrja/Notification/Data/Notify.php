@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification\Data;
 
+use Override;
 use Valkyrja\Broadcast\Data\Contract\Message as BroadcastMessage;
 use Valkyrja\Mail\Data\Contract\Message as MailMessage;
 use Valkyrja\Notification\Data\Contract\Notify as Contract;
@@ -91,6 +92,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getBroadcastAdapterName(): string|null
     {
         return static::$broadcastAdapter;
@@ -99,6 +101,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getBroadcastMessageName(): string|null
     {
         return static::$broadcastMessage;
@@ -107,6 +110,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function shouldSendBroadcastMessage(): bool
     {
         return static::$shouldSendBroadcast;
@@ -115,6 +119,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getMailAdapterName(): string|null
     {
         return static::$mailAdapter;
@@ -123,6 +128,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getMailMessageName(): string|null
     {
         return static::$mailMessage;
@@ -131,6 +137,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function shouldSendMailMessage(): bool
     {
         return static::$shouldSendMail;
@@ -139,6 +146,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getSmsAdapterName(): string|null
     {
         return static::$smsAdapter;
@@ -147,6 +155,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getSmsMessageName(): string|null
     {
         return static::$smsMessage;
@@ -155,6 +164,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function shouldSendSmsMessage(): bool
     {
         return static::$shouldSendSms;
@@ -163,6 +173,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function broadcast(BroadcastMessage $broadcastMessage): BroadcastMessage
     {
         return $broadcastMessage;
@@ -171,6 +182,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function mail(MailMessage $mailMessage): MailMessage
     {
         return $mailMessage;
@@ -179,6 +191,7 @@ abstract class Notify implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function sms(SmsMessage $message): SmsMessage
     {
         return $message;

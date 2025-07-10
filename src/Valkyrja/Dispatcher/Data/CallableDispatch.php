@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher\Data;
 
+use Override;
 use Valkyrja\Dispatcher\Data\Contract\CallableDispatch as Contract;
 
 /**
@@ -41,6 +42,7 @@ class CallableDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getCallable(): callable
     {
         return $this->callable;
@@ -49,6 +51,7 @@ class CallableDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withCallable(callable $callable): static
     {
         $new = clone $this;
@@ -61,6 +64,7 @@ class CallableDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getArguments(): array|null
     {
         return $this->arguments;
@@ -69,6 +73,7 @@ class CallableDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withArguments(array|null $arguments = null): static
     {
         $new = clone $this;
@@ -81,6 +86,7 @@ class CallableDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getDependencies(): array|null
     {
         return $this->dependencies;
@@ -89,6 +95,7 @@ class CallableDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withDependencies(array|null $dependencies = null): static
     {
         $new = clone $this;

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Uuid\Support;
 
 use Exception;
+use Override;
 use Valkyrja\Type\Uuid\Enum\Version;
 use Valkyrja\Type\Uuid\Exception\InvalidUuidV8Exception;
 
@@ -67,6 +68,7 @@ abstract class UuidV8 extends Uuid
     /**
      * @inheritDoc
      */
+    #[Override]
     protected static function throwInvalidException(string $uid): never
     {
         throw new InvalidUuidV8Exception("Invalid UUID V8 $uid provided.");

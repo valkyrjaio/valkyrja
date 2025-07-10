@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Middleware\Redirect;
 
+use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponse;
 use Valkyrja\Http\Message\Response\Contract\Response;
@@ -34,6 +35,7 @@ class RedirectTrailingSlashMiddleware implements RequestReceivedMiddleware
     /**
      * @inheritDoc
      */
+    #[Override]
     public function requestReceived(ServerRequest $request, RequestReceivedHandler $handler): ServerRequest|Response
     {
         if ($this->shouldRedirectRequest($request)) {

@@ -17,6 +17,7 @@ use ArrayAccess;
 use Countable;
 use Iterator;
 use JsonSerializable;
+use Override;
 use Stringable;
 use Valkyrja\Http\Message\Header\Value\Component\Contract\Component;
 
@@ -63,6 +64,7 @@ interface Value extends ArrayAccess, Countable, Iterator, JsonSerializable, Stri
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonSerialize(): string;
 
     /**

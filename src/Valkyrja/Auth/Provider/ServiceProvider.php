@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Provider;
 
+use Override;
 use Valkyrja\Application\Env;
 use Valkyrja\Auth\Contract\Authenticator;
 use Valkyrja\Auth\EncryptedJwtAuthenticator;
@@ -44,6 +45,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function publishers(): array
     {
         return [
@@ -64,6 +66,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function provides(): array
     {
         return [

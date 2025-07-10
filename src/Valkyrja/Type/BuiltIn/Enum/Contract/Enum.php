@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\BuiltIn\Enum\Contract;
 
+use Override;
 use UnitEnum;
 use Valkyrja\Type\Contract\Type;
 
@@ -28,6 +29,7 @@ interface Enum extends Type, UnitEnum
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): static;
 
     /**
@@ -35,5 +37,6 @@ interface Enum extends Type, UnitEnum
      *
      * @return string|int
      */
+    #[Override]
     public function asFlatValue(): string|int;
 }

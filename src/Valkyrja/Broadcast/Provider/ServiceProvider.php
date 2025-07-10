@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Provider;
 
+use Override;
 use Pusher\Pusher;
 use Pusher\PusherException;
 use Valkyrja\Application\Env;
@@ -39,6 +40,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function publishers(): array
     {
         return [
@@ -54,6 +56,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function provides(): array
     {
         return [

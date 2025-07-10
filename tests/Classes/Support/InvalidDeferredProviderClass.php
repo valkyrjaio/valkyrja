@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Support;
 
+use Override;
+
 /**
  * Class InvalidDeferredProviderClass.
  *
@@ -20,6 +22,7 @@ namespace Valkyrja\Tests\Classes\Support;
  */
 class InvalidDeferredProviderClass extends DeferredProviderClass
 {
+    #[Override]
     public static function publishers(): array
     {
         return [

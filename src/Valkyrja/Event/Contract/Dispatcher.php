@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Contract;
 
+use Override;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Valkyrja\Event\Data\Contract\Listener;
 
@@ -26,6 +27,7 @@ interface Dispatcher extends EventDispatcherInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function dispatch(object $event): object;
 
     /**

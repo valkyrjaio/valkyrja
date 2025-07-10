@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Middleware\Handler;
 
+use Override;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
@@ -60,6 +61,7 @@ abstract class Handler implements Contract\Handler
     /**
      * @param class-string<Middleware> ...$middleware The middleware to add
      */
+    #[Override]
     public function add(string ...$middleware): void
     {
         $this->middleware = array_merge($this->middleware, $middleware);

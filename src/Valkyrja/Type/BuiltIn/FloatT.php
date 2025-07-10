@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\BuiltIn;
 
+use Override;
 use Valkyrja\Type\BuiltIn\Contract\FloatT as Contract;
 use Valkyrja\Type\Exception\InvalidArgumentException;
 use Valkyrja\Type\Type;
@@ -40,6 +41,7 @@ class FloatT extends Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function fromValue(mixed $value): static
     {
         return match (true) {
@@ -53,6 +55,7 @@ class FloatT extends Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): float
     {
         return $this->subject;
@@ -61,6 +64,7 @@ class FloatT extends Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asFlatValue(): float
     {
         return $this->asValue();

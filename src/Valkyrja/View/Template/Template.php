@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Template;
 
+use Override;
 use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\View\Contract\Renderer;
 use Valkyrja\View\Template\Contract\Template as Contract;
@@ -80,6 +81,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getName(): string
     {
         return $this->name;
@@ -88,6 +90,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setName(string $name): static
     {
         $this->name = $name;
@@ -98,6 +101,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getVariables(): array
     {
         return $this->variables;
@@ -106,6 +110,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setVariables(array $variables = []): static
     {
         $this->variables = array_merge($this->variables, $variables);
@@ -116,6 +121,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getVariable(string $key): mixed
     {
         return $this->variables[$key] ?? null;
@@ -124,6 +130,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setVariable(string $key, $value): static
     {
         $this->variables[$key] = $value;
@@ -134,6 +141,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function escape(string|int|float $value): string
     {
         /** @var string|false $encodedValue */
@@ -149,6 +157,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setLayout(string|null $layout = null): static
     {
         // If no layout has been set
@@ -171,6 +180,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withoutLayout(): static
     {
         $this->layout = null;
@@ -181,6 +191,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getPartial(string $partial, array $variables = []): string
     {
         return $this->renderFile($partial, $variables);
@@ -189,6 +200,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getBlock(string $name): string
     {
         return $this->blocks[$name] ?? '';
@@ -197,6 +209,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasBlock(string $name): bool
     {
         return isset($this->blocks[$name]);
@@ -205,6 +218,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function startBlock(string $name): void
     {
         $this->blockStatus[] = $name;
@@ -215,6 +229,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function endBlock(): void
     {
         // Get the last item in the array (newest block to close)
@@ -228,6 +243,7 @@ class Template implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function render(array $variables = []): string
     {
         return $this->renderFile($this->name, $variables, true);

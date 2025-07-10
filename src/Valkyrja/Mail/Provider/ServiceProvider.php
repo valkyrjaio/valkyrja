@@ -16,6 +16,7 @@ namespace Valkyrja\Mail\Provider;
 use GuzzleHttp\Client;
 use Mailgun\HttpClient\HttpClientConfigurator;
 use Mailgun\Mailgun;
+use Override;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
@@ -37,6 +38,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function publishers(): array
     {
         return [
@@ -54,6 +56,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function provides(): array
     {
         return [

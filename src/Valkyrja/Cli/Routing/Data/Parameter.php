@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Data;
 
+use Override;
 use Valkyrja\Cli\Routing\Data\Contract\Parameter as Contract;
 use Valkyrja\Type\Data\Cast;
 
@@ -37,6 +38,7 @@ abstract class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getName(): string
     {
         return $this->name;
@@ -45,6 +47,7 @@ abstract class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withName(string $name): static
     {
         $new = clone $this;
@@ -57,6 +60,7 @@ abstract class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getCast(): Cast|null
     {
         return $this->cast;
@@ -65,6 +69,7 @@ abstract class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withCast(Cast|null $cast = null): static
     {
         $new = clone $this;
@@ -77,6 +82,7 @@ abstract class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getDescription(): string
     {
         return $this->description;
@@ -85,6 +91,7 @@ abstract class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withDescription(string $description): static
     {
         $new = clone $this;
@@ -97,5 +104,6 @@ abstract class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     abstract public function getCastValues(): array;
 }

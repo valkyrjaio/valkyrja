@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Message;
 
+use Override;
 use Valkyrja\Cli\Interaction\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
 use Valkyrja\Cli\Interaction\Formatter\QuestionFormatter;
@@ -49,6 +50,7 @@ class Question extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getCallable(): callable
     {
         return $this->callable;
@@ -57,6 +59,7 @@ class Question extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withCallable(callable $callable): static
     {
         $new = clone $this;
@@ -69,6 +72,7 @@ class Question extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getAnswer(): Answer
     {
         return $this->answer;
@@ -77,6 +81,7 @@ class Question extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAnswer(Answer $answer): static
     {
         $new = clone $this;
@@ -89,6 +94,7 @@ class Question extends Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function ask(): Answer
     {
         $answer = $this->answer;

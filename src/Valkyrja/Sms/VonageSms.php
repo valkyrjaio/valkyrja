@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Sms;
 
 use Exception;
+use Override;
 use Psr\Http\Client\ClientExceptionInterface;
 use Valkyrja\Sms\Contract\Sms as Contract;
 use Valkyrja\Sms\Data\Contract\Message;
@@ -41,6 +42,7 @@ class VonageSms implements Contract
      * @throws Exception
      * @throws ClientExceptionInterface
      */
+    #[Override]
     public function send(Message $message): void
     {
         $this->vonage->sms()->send(

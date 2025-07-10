@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Data\Attempt;
 
+use Override;
 use Valkyrja\Auth\Data\Attempt\Contract\ResetPasswordAttempt as Contract;
 use Valkyrja\Auth\Data\Retrieval\Contract\Retrieval;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByResetToken;
@@ -33,6 +34,7 @@ class ResetPasswordAttempt implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getRetrieval(): Retrieval
     {
         return $this->retrieval;
@@ -41,6 +43,7 @@ class ResetPasswordAttempt implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getPassword(): string
     {
         return $this->password;

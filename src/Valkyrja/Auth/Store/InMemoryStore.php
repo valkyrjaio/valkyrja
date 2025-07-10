@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Store;
 
+use Override;
 use Valkyrja\Auth\Data\Retrieval\Contract\Retrieval;
 use Valkyrja\Auth\Data\Retrieval\RetrievalById;
 use Valkyrja\Auth\Entity\Contract\User;
@@ -43,6 +44,7 @@ class InMemoryStore implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function retrieve(Retrieval $retrieval, string $user): User|null
     {
         $retrievalFields = $retrieval->getRetrievalFields($user);
@@ -53,6 +55,7 @@ class InMemoryStore implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function create(User $user): void
     {
         $this->users[] = clone $user;
@@ -61,6 +64,7 @@ class InMemoryStore implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function update(User $user): void
     {
         $existingUser = $this->retrieve(new RetrievalById($user->getIdValue()), $user::class);

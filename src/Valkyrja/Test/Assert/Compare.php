@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Test\Assert;
 
 use JsonException;
+use Override;
 use Valkyrja\Test\Assert\Contract\Compare as Contract;
 use Valkyrja\Test\Exception\AssertFailureException;
 use Valkyrja\Type\BuiltIn\Support\Str as StrSupport;
@@ -32,6 +33,7 @@ class Compare extends Asserter implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function equals(mixed $expected, mixed $actual): void
     {
         $this->assertions[] = 'equals';
@@ -56,6 +58,7 @@ class Compare extends Asserter implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function notEquals(mixed $unexpected, mixed $actual): void
     {
         $this->assertions[] = 'notequals';

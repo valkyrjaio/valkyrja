@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\BuiltIn;
 
 use JsonException;
+use Override;
 use Valkyrja\Type\BuiltIn\Contract\SerializedObject as Contract;
 use Valkyrja\Type\BuiltIn\Support\Obj as Helper;
 use Valkyrja\Type\Type;
@@ -53,6 +54,7 @@ class SerializedObject extends Type implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public static function fromValue(mixed $value): static
     {
         if (is_string($value)) {
@@ -68,6 +70,7 @@ class SerializedObject extends Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): object
     {
         return $this->subject;
@@ -78,6 +81,7 @@ class SerializedObject extends Type implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function asFlatValue(): string
     {
         return Helper::toSerializedString($this->subject);
@@ -88,6 +92,7 @@ class SerializedObject extends Type implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function modify(callable $closure): static
     {
         return static::fromValue($closure(clone $this->subject));

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Data;
 
+use Override;
 use Stringable;
 use Valkyrja\Orm\Constant\Statement;
 use Valkyrja\Orm\Enum\Comparison;
@@ -46,6 +47,7 @@ readonly class Join implements Stringable
      *
      * @return non-empty-string
      */
+    #[Override]
     public function __toString(): string
     {
         $type       = $this->type->value;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache;
 
+use Override;
 use Predis\Client;
 use Valkyrja\Cache\Contract\Cache as Contract;
 use Valkyrja\Cache\Tagger\Contract\Tagger;
@@ -40,6 +41,7 @@ class RedisCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function has(string $key): bool
     {
         return (bool) $this->client->exists($this->getKey($key));
@@ -48,6 +50,7 @@ class RedisCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function get(string $key): string|null
     {
         return $this->client->get($this->getKey($key));
@@ -58,6 +61,7 @@ class RedisCache implements Contract
      *
      * @psalm-suppress MixedReturnTypeCoercion
      */
+    #[Override]
     public function many(string ...$keys): array
     {
         $prefixedKeys = [];
@@ -72,6 +76,7 @@ class RedisCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function put(string $key, string $value, int $minutes): void
     {
         $this->client->setex($this->getKey($key), $minutes * 60, $value);
@@ -80,6 +85,7 @@ class RedisCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function putMany(array $values, int $minutes): void
     {
         $seconds = $minutes * 60;
@@ -96,6 +102,7 @@ class RedisCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function increment(string $key, int $value = 1): int
     {
         return $this->client->incrby($this->getKey($key), $value);
@@ -104,6 +111,7 @@ class RedisCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function decrement(string $key, int $value = 1): int
     {
         return $this->client->decrby($this->getKey($key), $value);
@@ -112,6 +120,7 @@ class RedisCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function forever(string $key, $value): void
     {
         $this->client->set($this->getKey($key), $value);
@@ -120,6 +129,7 @@ class RedisCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function forget(string $key): bool
     {
         return (bool) $this->client->del([$this->getKey($key)]);
@@ -128,6 +138,7 @@ class RedisCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function flush(): bool
     {
         return (bool) $this->client->flushdb();
@@ -136,6 +147,7 @@ class RedisCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getPrefix(): string
     {
         return $this->prefix;
@@ -144,6 +156,7 @@ class RedisCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getTagger(string ...$tags): Tagger
     {
         return TagClass::make($this, ...$tags);

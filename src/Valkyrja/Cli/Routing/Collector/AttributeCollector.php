@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Collector;
 
+use Override;
 use ReflectionException;
 use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Cli\Routing\Attribute\Command as Attribute;
@@ -43,6 +44,7 @@ class AttributeCollector implements Contract
      *
      * @return Command[]
      */
+    #[Override]
     public function getCommands(string ...$classes): array
     {
         $commands = [];

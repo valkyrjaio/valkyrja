@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Server;
 
+use Override;
 use Throwable;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Http\Message\Enum\StatusCode;
@@ -72,6 +73,7 @@ class RequestHandler implements Contract
      *
      * @throws Throwable
      */
+    #[Override]
     public function handle(ServerRequest $request): Response
     {
         try {
@@ -90,6 +92,7 @@ class RequestHandler implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function send(Response $response): static
     {
         $response->send();
@@ -103,6 +106,7 @@ class RequestHandler implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function terminate(ServerRequest $request, Response $response): void
     {
         // Dispatch the terminable middleware
@@ -114,6 +118,7 @@ class RequestHandler implements Contract
      *
      * @throws Throwable
      */
+    #[Override]
     public function run(ServerRequest $request): void
     {
         // Handle the request, dispatch the after request middleware

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Vlid\Support;
 
+use Override;
 use Valkyrja\Type\Vlid\Enum\Version;
 use Valkyrja\Type\Vlid\Exception\InvalidVlidV1Exception;
 
@@ -48,6 +49,7 @@ class VlidV1 extends Vlid
     /**
      * @inheritDoc
      */
+    #[Override]
     protected static function throwInvalidException(string $uid): never
     {
         throw new InvalidVlidV1Exception("Invalid VLID V1 $uid provided.");

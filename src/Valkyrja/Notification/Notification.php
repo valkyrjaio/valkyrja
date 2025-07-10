@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification;
 
+use Override;
 use Valkyrja\Broadcast\Contract\Broadcaster;
 use Valkyrja\Broadcast\Data\Message as BroadcastMessage;
 use Valkyrja\Exception\InvalidArgumentException;
@@ -69,6 +70,7 @@ class Notification implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function createNotification(string $name, array $data = []): Notify
     {
         return $this->factory->createNotification($name, $data);
@@ -77,6 +79,7 @@ class Notification implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function addMailRecipient(string $email, string $name = ''): static
     {
         $this->mailRecipients[] = [
@@ -90,6 +93,7 @@ class Notification implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function addSmsRecipient(string $phoneNumber): static
     {
         // TODO: Figure this out
@@ -105,6 +109,7 @@ class Notification implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function addBroadcastEvent(string $event): static
     {
         $this->broadcastEvents[] = [
@@ -117,6 +122,7 @@ class Notification implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function addUserRecipient(NotifiableUser $user): static
     {
         $this->addSmsUserRecipient($user);
@@ -129,6 +135,7 @@ class Notification implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function notify(Notify $notify): void
     // public function notify(string $notificationName, array $data = []): void
     {
@@ -152,6 +159,7 @@ class Notification implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function notifyUser(Notify $notify, NotifiableUser $user): void
     {
         $this->addUserRecipient($user);
@@ -161,6 +169,7 @@ class Notification implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function notifyUsers(Notify $notify, NotifiableUser ...$users): void
     {
         foreach ($users as $user) {

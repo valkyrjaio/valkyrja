@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Matcher;
 
+use Override;
 use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Collection as RouteCollection;
@@ -53,6 +54,7 @@ class Matcher implements Contract
      * @throws InvalidRoutePathException
      * @throws InvalidRouteParameterException
      */
+    #[Override]
     public function match(string $path, RequestMethod|null $requestMethod = null): Route|null
     {
         $path  = Helpers::trimPath($path);
@@ -64,6 +66,7 @@ class Matcher implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function matchStatic(string $path, RequestMethod|null $requestMethod = null): Route|null
     {
         $route = $this->collection->getStatic($path, $requestMethod);
@@ -81,6 +84,7 @@ class Matcher implements Contract
      * @throws InvalidRoutePathException
      * @throws InvalidRouteParameterException
      */
+    #[Override]
     public function matchDynamic(string $path, RequestMethod|null $requestMethod = null): Route|null
     {
         return $this->matchDynamicFromArray($this->collection->allDynamic($requestMethod), $path);

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Message;
 
+use Override;
+
 use function strlen;
 
 /**
@@ -47,6 +49,7 @@ class Banner extends Message
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getText(): string
     {
         return $this->messages->getText();
@@ -55,6 +58,7 @@ class Banner extends Message
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getFormattedText(): string
     {
         return $this->messages->getFormattedText();

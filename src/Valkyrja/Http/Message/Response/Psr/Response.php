@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Response\Psr;
 
+use Override;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
@@ -39,6 +40,7 @@ class Response implements ResponseInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getProtocolVersion(): string
     {
         return $this->response->getProtocolVersion()->value;
@@ -47,6 +49,7 @@ class Response implements ResponseInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withProtocolVersion(string $version): ResponseInterface
     {
         $new = clone $this;
@@ -59,6 +62,7 @@ class Response implements ResponseInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getHeaders(): array
     {
         return $this->response->getHeaders();
@@ -67,6 +71,7 @@ class Response implements ResponseInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasHeader(string $name): bool
     {
         return $this->response->hasHeader($name);
@@ -75,6 +80,7 @@ class Response implements ResponseInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getHeader(string $name): array
     {
         return $this->response->getHeader($name);
@@ -83,6 +89,7 @@ class Response implements ResponseInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getHeaderLine(string $name): string
     {
         return $this->response->getHeaderLine($name);
@@ -91,6 +98,7 @@ class Response implements ResponseInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withHeader(string $name, $value): ResponseInterface
     {
         $new = clone $this;
@@ -105,6 +113,7 @@ class Response implements ResponseInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedHeader(string $name, $value): ResponseInterface
     {
         $new = clone $this;
@@ -119,6 +128,7 @@ class Response implements ResponseInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withoutHeader(string $name): ResponseInterface
     {
         $new = clone $this;
@@ -131,6 +141,7 @@ class Response implements ResponseInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getBody(): StreamInterface
     {
         $stream = $this->response->getBody();
@@ -141,6 +152,7 @@ class Response implements ResponseInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withBody(StreamInterface $body): ResponseInterface
     {
         $new = clone $this;
@@ -156,6 +168,7 @@ class Response implements ResponseInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getStatusCode(): int
     {
         return $this->response->getStatusCode()->value;
@@ -164,6 +177,7 @@ class Response implements ResponseInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withStatus(int $code, string $reasonPhrase = ''): ResponseInterface
     {
         $new = clone $this;
@@ -176,6 +190,7 @@ class Response implements ResponseInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getReasonPhrase(): string
     {
         return $this->response->getReasonPhrase();

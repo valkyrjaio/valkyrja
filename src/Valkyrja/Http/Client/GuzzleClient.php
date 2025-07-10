@@ -17,6 +17,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
+use Override;
 use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Http\Client\Contract\Client as Contract;
 use Valkyrja\Http\Message\Enum\StatusCode;
@@ -44,6 +45,7 @@ class GuzzleClient implements Contract
      *
      * @throws GuzzleException
      */
+    #[Override]
     public function sendRequest(Request $request): Response
     {
         return $this->fromPsr7($this->getGuzzleResponse($request));

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\File\Psr;
 
+use Override;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Valkyrja\Http\Message\File\Contract\UploadedFile as ValkyrjaUploadedFile;
@@ -33,6 +34,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getStream(): StreamInterface
     {
         $stream = $this->file->getStream();
@@ -43,6 +45,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function moveTo(string $targetPath): void
     {
         $this->file->moveTo($targetPath);
@@ -51,6 +54,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getSize(): int|null
     {
         return $this->file->getSize();
@@ -59,6 +63,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getError(): int
     {
         return $this->file->getError()->value;
@@ -67,6 +72,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getClientFilename(): string|null
     {
         return $this->file->getClientFilename();
@@ -75,6 +81,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getClientMediaType(): string|null
     {
         return $this->file->getClientMediaType();

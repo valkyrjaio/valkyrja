@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api\Model;
 
+use Override;
 use Valkyrja\Api\Model\Contract\JsonData as Contract;
 use Valkyrja\Type\Model\Model;
 
@@ -75,6 +76,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getItem(): object|null
     {
         return $this->item;
@@ -83,6 +85,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setItem(object|null $item = null): static
     {
         $this->item = $item;
@@ -93,6 +96,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getItemKey(): string
     {
         return $this->itemKey;
@@ -101,6 +105,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setItemKey(string $itemKey): static
     {
         $this->itemKey = $itemKey;
@@ -111,6 +116,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getItems(): array|null
     {
         return $this->items;
@@ -119,6 +125,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setItems(array|null $items = null): static
     {
         $this->items = $items;
@@ -129,6 +136,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getItemsKey(): string
     {
         return $this->itemsKey;
@@ -137,6 +145,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setItemsKey(string $itemsKey): static
     {
         $this->itemsKey = $itemsKey;
@@ -147,6 +156,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getTotal(): int|null
     {
         return $this->total;
@@ -155,6 +165,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setTotal(int|null $total = null): static
     {
         $this->total = $total;
@@ -165,6 +176,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getMessages(): array|null
     {
         return $this->messages;
@@ -173,6 +185,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setMessages(array|null $messages = null): static
     {
         $this->messages = $messages;
@@ -183,6 +196,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getData(): array|null
     {
         return $this->data;
@@ -191,6 +205,7 @@ class JsonData extends Model implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setData(array|null $data = null): static
     {
         $this->data = $data;
@@ -203,6 +218,7 @@ class JsonData extends Model implements Contract
      *
      * @psalm-suppress MixedReturnTypeCoercion
      */
+    #[Override]
     public function asArray(string ...$properties): array
     {
         $data = $this->data ?? [];

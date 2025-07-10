@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Collection;
 
+use Override;
 use Valkyrja\Event\Collection\Contract\Collection as Contract;
 use Valkyrja\Event\Data;
 use Valkyrja\Event\Data\Contract\Listener;
@@ -48,6 +49,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getData(): Data
     {
         return new Data(
@@ -59,6 +61,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setFromData(Data $data): void
     {
         $this->events    = $data->events;
@@ -68,6 +71,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasListener(Listener $listener): bool
     {
         return $this->hasListenerById($listener->getName());
@@ -76,6 +80,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasListenerById(string $listenerId): bool
     {
         return isset($this->listeners[$listenerId]);
@@ -84,6 +89,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function addListener(Listener $listener): void
     {
         $listenerId = $listener->getName();
@@ -97,6 +103,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function removeListener(Listener $listener): void
     {
         $listenerId = $listener->getName();
@@ -108,6 +115,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function removeListenerById(string $listenerId): void
     {
         foreach ($this->events as $eventId => $listeners) {
@@ -120,6 +128,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasListenersForEvent(object $event): bool
     {
         return isset($this->events[$event::class]);
@@ -128,6 +137,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasListenersForEventById(string $eventId): bool
     {
         return isset($this->events[$eventId]);
@@ -136,6 +146,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getListenersForEvent(object $event): array
     {
         return $this->getListenersForEventById($event::class);
@@ -144,6 +155,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getListenersForEventById(string $eventId): array
     {
         $listenerIds = $this->events[$eventId];
@@ -160,6 +172,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setListenersForEvent(object $event, Listener ...$listeners): void
     {
         $this->setListenersForEventById($event::class, ...$listeners);
@@ -168,6 +181,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setListenersForEventById(string $eventId, Listener ...$listeners): void
     {
         foreach ($listeners as $listener) {
@@ -180,6 +194,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function removeListenersForEvent(object $event): void
     {
         $this->removeListenersForEventById($event::class);
@@ -188,6 +203,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function removeListenersForEventById(string $eventId): void
     {
         unset($this->events[$eventId]);
@@ -196,6 +212,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getListeners(): array
     {
         return array_map(
@@ -207,6 +224,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getEvents(): array
     {
         return array_keys($this->events);
@@ -215,6 +233,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getEventsWithListeners(): array
     {
         $eventsWithListeners = [];
@@ -230,6 +249,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function offsetGet($offset): array
     {
         if (is_object($offset)) {
@@ -242,6 +262,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function offsetSet($offset, $value): void
     {
         $listeners = is_array($value) ? $value : [$value];
@@ -258,6 +279,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function offsetUnset($offset): void
     {
         if (is_object($offset)) {
@@ -272,6 +294,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function offsetExists($offset): bool
     {
         if (is_object($offset)) {

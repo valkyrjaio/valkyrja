@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Data;
 
+use Override;
 use Stringable;
 use Valkyrja\Orm\Enum\Comparison;
 use Valkyrja\Orm\Enum\WhereType;
@@ -36,6 +37,7 @@ readonly class Where implements Stringable
      *
      * @return non-empty-string
      */
+    #[Override]
     public function __toString(): string
     {
         return $this->type->value

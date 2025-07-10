@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem;
 
+use Override;
 use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Filesystem\Contract\Filesystem as Contract;
 use Valkyrja\Filesystem\Data\InMemoryFile;
@@ -47,6 +48,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function exists(string $path): bool
     {
         return isset($this->files[$path]);
@@ -55,6 +57,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function read(string $path): string
     {
         return $this->files[$path]->contents
@@ -64,6 +67,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function write(string $path, string $contents): bool
     {
         $this->files[$path] = new InMemoryFile($path, $contents, timestamp: time());
@@ -76,6 +80,7 @@ class InMemoryFilesystem implements Contract
      *
      * @param resource $resource The resource
      */
+    #[Override]
     public function writeStream(string $path, $resource): bool
     {
         $pathContents = fread($resource, 4096);
@@ -92,6 +97,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function update(string $path, string $contents): bool
     {
         return $this->write($path, $contents);
@@ -100,6 +106,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function updateStream(string $path, $resource): bool
     {
         return $this->writeStream($path, $resource);
@@ -108,6 +115,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function put(string $path, string $contents): bool
     {
         return $this->write($path, $contents);
@@ -116,6 +124,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function putStream(string $path, $resource): bool
     {
         return $this->writeStream($path, $resource);
@@ -124,6 +133,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function rename(string $path, string $newPath): bool
     {
         if ($this->exists($newPath) || ! $this->exists($path)) {
@@ -140,6 +150,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function copy(string $path, string $newPath): bool
     {
         if ($this->exists($newPath) || ! $this->exists($path)) {
@@ -154,6 +165,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function delete(string $path): bool
     {
         unset($this->files[$path]);
@@ -164,6 +176,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function metadata(string $path): array|null
     {
         return $this->getMetadataInternal($path)?->toArray();
@@ -172,6 +185,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function mimetype(string $path): string|null
     {
         return $this->getMetadataInternal($path)->mimetype ?? null;
@@ -180,6 +194,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function size(string $path): int|null
     {
         return $this->getMetadataInternal($path)->size ?? null;
@@ -188,6 +203,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function timestamp(string $path): int|null
     {
         return $this->files[$path]->timestamp ?? null;
@@ -196,6 +212,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function visibility(string $path): string|null
     {
         return $this->getMetadataInternal($path)->visibility ?? null;
@@ -204,6 +221,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setVisibility(string $path, Visibility $visibility): bool
     {
         if (! $this->exists($path)) {
@@ -218,6 +236,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setVisibilityPublic(string $path): bool
     {
         return $this->setVisibility($path, Visibility::PUBLIC);
@@ -226,6 +245,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setVisibilityPrivate(string $path): bool
     {
         return $this->setVisibility($path, Visibility::PRIVATE);
@@ -234,6 +254,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function createDir(string $path): bool
     {
         $this->files[$path] = new InMemoryFile($path, timestamp: time());
@@ -244,6 +265,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function deleteDir(string $path): bool
     {
         foreach ($this->files as $filePath => $file) {
@@ -258,6 +280,7 @@ class InMemoryFilesystem implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function listContents(string|null $directory = null, bool $recursive = false): array
     {
         $directory ??= '';

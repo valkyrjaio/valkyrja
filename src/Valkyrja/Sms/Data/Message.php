@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Data;
 
+use Override;
 use Valkyrja\Sms\Data\Contract\Message as Contract;
 
 /**
@@ -33,6 +34,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getTo(): string
     {
         return $this->to;
@@ -41,6 +43,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setTo(string $to): static
     {
         $this->to = $to;
@@ -51,6 +54,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getFrom(): string
     {
         return $this->from;
@@ -59,6 +63,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setFrom(string $from): static
     {
         $this->from = $from;
@@ -69,6 +74,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getText(): string
     {
         return $this->text;
@@ -77,6 +83,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setText(string $text): static
     {
         $this->text = $text;
@@ -87,6 +94,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isUnicode(): bool
     {
         return $this->isUnicode;
@@ -95,6 +103,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setIsUnicode(bool $isUnicode = true): static
     {
         $this->isUnicode = $isUnicode;

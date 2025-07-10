@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Message\Stream;
 
+use Override;
 use Valkyrja\Http\Message\Stream\Stream;
 
 use const SEEK_SET;
@@ -24,6 +25,7 @@ use const SEEK_SET;
  */
 class StreamSeekExceptionClass extends Stream
 {
+    #[Override]
     protected function seekStream($stream, int $offset, int $whence = SEEK_SET): int
     {
         return -1;

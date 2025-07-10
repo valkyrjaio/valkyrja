@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Rule\String;
 
+use Override;
 use Valkyrja\Type\BuiltIn\Support\Str;
 use Valkyrja\Validation\Rule\Rule;
 
@@ -33,12 +34,14 @@ class EndsWith extends Rule
         parent::__construct($subject, $errorMessage);
     }
 
+    #[Override]
     public function isValid(): bool
     {
         return is_string($this->subject)
             && Str::endsWith($this->subject, $this->needle);
     }
 
+    #[Override]
     public function getDefaultErrorMessage(): string
     {
         return "Must end with $this->needle";

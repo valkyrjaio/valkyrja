@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Rule;
 
+use Override;
 use Valkyrja\Validation\Exception\ValidationException;
 use Valkyrja\Validation\Rule\Contract\Rule as Contract;
 
@@ -29,11 +30,13 @@ abstract class Rule implements Contract
     ) {
     }
 
+    #[Override]
     public function getSubject(): mixed
     {
         return $this->subject;
     }
 
+    #[Override]
     public function validate(): void
     {
         if (! $this->isValid()) {

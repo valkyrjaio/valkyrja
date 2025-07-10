@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\QueryBuilder;
 
+use Override;
 use Valkyrja\Orm\Constant\Statement;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\QueryBuilder\Contract\UpdateQueryBuilder;
@@ -30,6 +31,7 @@ class SqlUpdateQueryBuilder extends SqlQueryBuilder implements UpdateQueryBuilde
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withSet(Value ...$values): static
     {
         $new = clone $this;
@@ -42,6 +44,7 @@ class SqlUpdateQueryBuilder extends SqlQueryBuilder implements UpdateQueryBuilde
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedSet(Value ...$values): static
     {
         $new = clone $this;

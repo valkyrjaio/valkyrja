@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Rule\Is;
 
+use Override;
 use Valkyrja\Validation\Rule\Rule;
 
 /**
@@ -30,11 +31,13 @@ class Equal extends Rule
         parent::__construct($subject, $errorMessage);
     }
 
+    #[Override]
     public function isValid(): bool
     {
         return $this->subject === $this->value;
     }
 
+    #[Override]
     public function getDefaultErrorMessage(): string
     {
         return 'Must equal';

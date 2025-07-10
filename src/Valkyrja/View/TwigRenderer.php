@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View;
 
+use Override;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -41,6 +42,7 @@ class TwigRenderer implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function startRender(): void
     {
     }
@@ -48,6 +50,7 @@ class TwigRenderer implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function endRender(): string
     {
         return '';
@@ -60,6 +63,7 @@ class TwigRenderer implements Contract
      * @throws SyntaxError  When an error occurred during compilation
      * @throws RuntimeError When an error occurred during rendering
      */
+    #[Override]
     public function render(string $name, array $variables = []): string
     {
         return $this->renderFile($name, $variables);
@@ -68,6 +72,7 @@ class TwigRenderer implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function createTemplate(string $name, array $variables = []): Template
     {
         return new DefaultTemplate(
@@ -84,6 +89,7 @@ class TwigRenderer implements Contract
      * @throws SyntaxError  When an error occurred during compilation
      * @throws RuntimeError When an error occurred during rendering
      */
+    #[Override]
     public function renderFile(string $name, array $variables = []): string
     {
         return $this->twig->render($name, $variables);

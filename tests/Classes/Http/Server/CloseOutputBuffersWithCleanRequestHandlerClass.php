@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Server;
 
+use Override;
+
 /**
  * Class CloseOutputBuffersRequestHandler.
  *
@@ -20,6 +22,7 @@ namespace Valkyrja\Tests\Classes\Http\Server;
  */
 class CloseOutputBuffersWithCleanRequestHandlerClass extends CloseOutputBuffersRequestHandlerClass
 {
+    #[Override]
     protected function finishRequest(): void
     {
         $this->closeOutputBuffers(0, false);

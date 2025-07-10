@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Data;
 
+use Override;
 use Valkyrja\Mail\Data\Contract\Message as Contract;
 
 /**
@@ -94,6 +95,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getFromEmail(): string
     {
         return $this->fromEmail;
@@ -102,6 +104,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getFromName(): string
     {
         return $this->fromName;
@@ -110,6 +113,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setFrom(string $email, string $name = ''): static
     {
         $this->fromEmail = $email;
@@ -121,6 +125,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getRecipients(): array
     {
         return $this->recipients;
@@ -129,6 +134,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function addRecipient(string $email, string $name = ''): static
     {
         $this->recipients[] = [
@@ -142,6 +148,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getReplyToRecipients(): array
     {
         return $this->replyToRecipients;
@@ -150,6 +157,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function addReplyTo(string $email, string $name = ''): static
     {
         $this->replyToRecipients[] = [
@@ -163,6 +171,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getCopyRecipients(): array
     {
         return $this->copyRecipients;
@@ -171,6 +180,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function addCopyRecipient(string $email, string $name = ''): static
     {
         $this->copyRecipients[] = [
@@ -184,6 +194,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getBlindCopyRecipients(): array
     {
         return $this->blindCopyRecipients;
@@ -192,6 +203,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function addBlindCopyRecipient(string $email, string $name = ''): static
     {
         $this->blindCopyRecipients[] = [
@@ -205,6 +217,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getAttachments(): array
     {
         return $this->attachments;
@@ -213,6 +226,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function addAttachment(string $path, string $name = ''): static
     {
         $this->attachments[] = [
@@ -226,6 +240,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getSubject(): string
     {
         return $this->subject;
@@ -234,6 +249,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setSubject(string $subject): static
     {
         $this->subject = $subject;
@@ -244,6 +260,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getBody(): string
     {
         return $this->body;
@@ -252,6 +269,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setBody(string $body): static
     {
         $this->body = $body;
@@ -262,6 +280,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isHtml(): bool
     {
         return $this->isHtml;
@@ -270,6 +289,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setIsHtml(bool $isHtml = true): static
     {
         $this->isHtml = $isHtml;
@@ -280,6 +300,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getPlainBody(): string|null
     {
         return $this->plainBody;
@@ -288,6 +309,7 @@ class Message implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setPlainBody(string|null $plainBody = null): static
     {
         $this->plainBody = $plainBody;

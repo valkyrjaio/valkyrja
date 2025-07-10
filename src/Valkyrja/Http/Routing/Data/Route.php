@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Data;
 
+use Override;
 use Valkyrja\Dispatcher\Data\ClassDispatch;
 use Valkyrja\Dispatcher\Data\Contract\Dispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
@@ -66,6 +67,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getPath(): string
     {
         return $this->path;
@@ -74,6 +76,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withPath(string $path): static
     {
         $new = clone $this;
@@ -86,6 +89,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedPath(string $path): static
     {
         $new = clone $this;
@@ -98,6 +102,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getName(): string
     {
         return $this->name;
@@ -106,6 +111,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withName(string $name): static
     {
         $new = clone $this;
@@ -118,6 +124,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedName(string $name): static
     {
         $new = clone $this;
@@ -130,6 +137,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getDispatch(): Dispatch
     {
         return $this->dispatch;
@@ -138,6 +146,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withDispatch(Dispatch $dispatch): static
     {
         $new = clone $this;
@@ -152,6 +161,7 @@ class Route implements Contract
      *
      * @return RequestMethod[]
      */
+    #[Override]
     public function getRequestMethods(): array
     {
         return $this->requestMethods;
@@ -160,6 +170,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasRequestMethod(RequestMethod $requestMethod): bool
     {
         return in_array($requestMethod, $this->requestMethods, true);
@@ -168,6 +179,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withRequestMethod(RequestMethod $requestMethod): static
     {
         $new = clone $this;
@@ -180,6 +192,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withRequestMethods(RequestMethod ...$requestMethods): static
     {
         $new = clone $this;
@@ -192,6 +205,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedRequestMethod(RequestMethod $requestMethod): static
     {
         $new = clone $this;
@@ -206,6 +220,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedRequestMethods(RequestMethod ...$requestMethods): static
     {
         $new = clone $this;
@@ -222,6 +237,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getRegex(): string|null
     {
         return $this->regex;
@@ -230,6 +246,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withRegex(string|null $regex = null): static
     {
         $new = clone $this;
@@ -244,6 +261,7 @@ class Route implements Contract
      *
      * @return array<array-key, Parameter>
      */
+    #[Override]
     public function getParameters(): array
     {
         return $this->parameters;
@@ -252,6 +270,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withParameter(Parameter $parameter): static
     {
         $new = clone $this;
@@ -264,6 +283,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withParameters(Parameter ...$parameters): static
     {
         $new = clone $this;
@@ -276,6 +296,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedParameter(Parameter $parameter): static
     {
         $new = clone $this;
@@ -288,6 +309,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedParameters(Parameter ...$parameters): static
     {
         $new = clone $this;
@@ -302,6 +324,7 @@ class Route implements Contract
      *
      * @return class-string<RouteMatchedMiddleware>[]
      */
+    #[Override]
     public function getRouteMatchedMiddleware(): array
     {
         return $this->routeMatchedMiddleware;
@@ -312,6 +335,7 @@ class Route implements Contract
      *
      * @param class-string<RouteMatchedMiddleware> ...$middleware The middleware
      */
+    #[Override]
     public function withRouteMatchedMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -326,6 +350,7 @@ class Route implements Contract
      *
      * @param class-string<RouteMatchedMiddleware> ...$middleware The middleware
      */
+    #[Override]
     public function withAddedRouteMatchedMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -340,6 +365,7 @@ class Route implements Contract
      *
      * @return class-string<RouteDispatchedMiddleware>[]
      */
+    #[Override]
     public function getRouteDispatchedMiddleware(): array
     {
         return $this->routeDispatchedMiddleware;
@@ -350,6 +376,7 @@ class Route implements Contract
      *
      * @param class-string<RouteDispatchedMiddleware> ...$middleware The middleware
      */
+    #[Override]
     public function withRouteDispatchedMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -364,6 +391,7 @@ class Route implements Contract
      *
      * @param class-string<RouteDispatchedMiddleware> ...$middleware The middleware
      */
+    #[Override]
     public function withAddedRouteDispatchedMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -378,6 +406,7 @@ class Route implements Contract
      *
      * @return class-string<ThrowableCaughtMiddleware>[]
      */
+    #[Override]
     public function getThrowableCaughtMiddleware(): array
     {
         return $this->throwableCaughtMiddleware;
@@ -388,6 +417,7 @@ class Route implements Contract
      *
      * @param class-string<ThrowableCaughtMiddleware> ...$middleware The middleware
      */
+    #[Override]
     public function withThrowableCaughtMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -402,6 +432,7 @@ class Route implements Contract
      *
      * @param class-string<ThrowableCaughtMiddleware> ...$middleware The middleware
      */
+    #[Override]
     public function withAddedThrowableCaughtMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -416,6 +447,7 @@ class Route implements Contract
      *
      * @return class-string<SendingResponseMiddleware>[]
      */
+    #[Override]
     public function getSendingResponseMiddleware(): array
     {
         return $this->sendingResponseMiddleware;
@@ -426,6 +458,7 @@ class Route implements Contract
      *
      * @param class-string<SendingResponseMiddleware> ...$middleware The middleware
      */
+    #[Override]
     public function withSendingResponseMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -440,6 +473,7 @@ class Route implements Contract
      *
      * @param class-string<SendingResponseMiddleware> ...$middleware The middleware
      */
+    #[Override]
     public function withAddedSendingResponseMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -454,6 +488,7 @@ class Route implements Contract
      *
      * @return class-string<TerminatedMiddleware>[]
      */
+    #[Override]
     public function getTerminatedMiddleware(): array
     {
         return $this->terminatedMiddleware;
@@ -464,6 +499,7 @@ class Route implements Contract
      *
      * @param class-string<TerminatedMiddleware> ...$middleware The middleware
      */
+    #[Override]
     public function withTerminatedMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -478,6 +514,7 @@ class Route implements Contract
      *
      * @param class-string<TerminatedMiddleware> ...$middleware The middleware
      */
+    #[Override]
     public function withAddedTerminatedMiddleware(string ...$middleware): static
     {
         $new = clone $this;
@@ -490,6 +527,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getRequestStruct(): string|null
     {
         return $this->requestStruct;
@@ -498,6 +536,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withRequestStruct(string|null $requestStruct = null): static
     {
         $new = clone $this;
@@ -510,6 +549,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getResponseStruct(): string|null
     {
         return $this->responseStruct;
@@ -518,6 +558,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withResponseStruct(string|null $responseStruct = null): static
     {
         $new = clone $this;

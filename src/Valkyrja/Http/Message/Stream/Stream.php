@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Stream;
 
+use Override;
 use Throwable;
 use Valkyrja\Http\Message\Stream\Contract\Stream as Contract;
 use Valkyrja\Http\Message\Stream\Enum\Mode;
@@ -62,6 +63,7 @@ class Stream implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isSeekable(): bool
     {
         // If there is no stream
@@ -76,6 +78,7 @@ class Stream implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function seek(int $offset, int $whence = SEEK_SET): void
     {
         $this->verifyStream();
@@ -93,6 +96,7 @@ class Stream implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function rewind(): void
     {
         $this->seek(0);
@@ -101,6 +105,7 @@ class Stream implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isReadable(): bool
     {
         // If there is no stream
@@ -119,6 +124,7 @@ class Stream implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function read(int $length): string
     {
         if ($length < 0) {
@@ -145,6 +151,7 @@ class Stream implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isWritable(): bool
     {
         // If there is no stream
@@ -163,6 +170,7 @@ class Stream implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function write(string $string): int
     {
         $this->verifyStream();
@@ -208,6 +216,7 @@ class Stream implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function close(): void
     {
         // If there is no stream
@@ -227,6 +236,7 @@ class Stream implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function detach()
     {
         $resource = $this->resource ?? null;
@@ -239,6 +249,7 @@ class Stream implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getSize(): int|null
     {
         // If the stream isn't set
@@ -263,6 +274,7 @@ class Stream implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function tell(): int
     {
         $this->verifyStream();
@@ -283,6 +295,7 @@ class Stream implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function eof(): bool
     {
         // If there is no stream
@@ -300,6 +313,7 @@ class Stream implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getContents(): string
     {
         $this->verifyReadable();
@@ -320,6 +334,7 @@ class Stream implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getMetadata(string|null $key = null): mixed
     {
         // Ensure the stream is valid

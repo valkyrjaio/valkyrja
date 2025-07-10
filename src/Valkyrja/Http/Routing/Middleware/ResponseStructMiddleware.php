@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Middleware;
 
+use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\JsonResponse;
 use Valkyrja\Http\Message\Response\Contract\Response;
@@ -31,6 +32,7 @@ class ResponseStructMiddleware implements RouteDispatchedMiddleware
     /**
      * @inheritDoc
      */
+    #[Override]
     public function routeDispatched(ServerRequest $request, Response $response, Route $route, RouteDispatchedHandler $handler): Response
     {
         $responseStruct = $route->getResponseStruct();

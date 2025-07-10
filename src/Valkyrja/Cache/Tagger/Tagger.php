@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Tagger;
 
 use JsonException;
+use Override;
 use Valkyrja\Cache\Contract\Cache;
 use Valkyrja\Cache\Tagger\Contract\Tagger as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
@@ -48,6 +49,7 @@ class Tagger implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function make(Cache $store, string ...$tags): static
     {
         return new static($store, ...$tags);
@@ -58,6 +60,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function has(string $key): bool
     {
         foreach ($this->tags as $tag) {
@@ -74,6 +77,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function get(string $key): string|null
     {
         foreach ($this->tags as $tag) {
@@ -90,6 +94,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function many(string ...$keys): array
     {
         $items = [];
@@ -118,6 +123,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function put(string $key, string $value, int $minutes): void
     {
         $this->tag($key);
@@ -130,6 +136,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function putMany(array $values, int $minutes): void
     {
         foreach ($values as $key => $value) {
@@ -142,6 +149,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function increment(string $key, int $value = 1): int
     {
         $this->tag($key);
@@ -154,6 +162,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function decrement(string $key, int $value = 1): int
     {
         $this->tag($key);
@@ -166,6 +175,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function forever(string $key, string $value): void
     {
         $this->tag($key);
@@ -178,6 +188,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function forget(string $key): bool
     {
         $this->untag($key);
@@ -190,6 +201,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function flush(): bool
     {
         foreach ($this->tags as $tag) {
@@ -206,6 +218,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function tag(string $key): static
     {
         foreach ($this->tags as $tag) {
@@ -224,6 +237,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function untag(string $key): static
     {
         foreach ($this->tags as $tag) {
@@ -242,6 +256,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function tagMany(string ...$keys): static
     {
         foreach ($keys as $key) {
@@ -256,6 +271,7 @@ class Tagger implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function untagMany(string ...$keys): static
     {
         foreach ($keys as $key) {

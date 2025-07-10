@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Dispatcher\Data;
 
 use JsonException;
+use Override;
 use Valkyrja\Dispatcher\Data\Contract\Dispatch as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
@@ -39,6 +40,7 @@ abstract class Dispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonSerialize(): array
     {
         return get_object_vars($this);

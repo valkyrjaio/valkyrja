@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Processor;
 
 use InvalidArgumentException;
+use Override;
 use Valkyrja\Dispatcher\Data\Contract\CallableDispatch;
 use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Http\Routing\Constant\Regex;
@@ -45,6 +46,7 @@ class Processor implements Contract
      *
      * @return Route
      */
+    #[Override]
     public function route(Route $route): Route
     {
         // Verify the route

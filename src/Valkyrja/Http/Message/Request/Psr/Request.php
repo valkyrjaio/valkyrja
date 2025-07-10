@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Request\Psr;
 
+use Override;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
@@ -41,6 +42,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getProtocolVersion(): string
     {
         return $this->request->getProtocolVersion()->value;
@@ -49,6 +51,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withProtocolVersion(string $version): RequestInterface
     {
         $new = clone $this;
@@ -61,6 +64,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getHeaders(): array
     {
         return $this->request->getHeaders();
@@ -69,6 +73,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasHeader(string $name): bool
     {
         return $this->request->hasHeader($name);
@@ -77,6 +82,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getHeader(string $name): array
     {
         return $this->request->getHeader($name);
@@ -85,6 +91,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getHeaderLine(string $name): string
     {
         return $this->request->getHeaderLine($name);
@@ -93,6 +100,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withHeader(string $name, $value): RequestInterface
     {
         $new = clone $this;
@@ -107,6 +115,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedHeader(string $name, $value): RequestInterface
     {
         $new = clone $this;
@@ -121,6 +130,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withoutHeader(string $name): RequestInterface
     {
         $new = clone $this;
@@ -133,6 +143,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getBody(): StreamInterface
     {
         $stream = $this->request->getBody();
@@ -143,6 +154,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withBody(StreamInterface $body): RequestInterface
     {
         $new = clone $this;
@@ -156,6 +168,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getRequestTarget(): string
     {
         return $this->request->getRequestTarget();
@@ -164,6 +177,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withRequestTarget(string $requestTarget): RequestInterface
     {
         $new = clone $this;
@@ -176,6 +190,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getMethod(): string
     {
         return $this->request->getMethod()->value;
@@ -184,6 +199,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withMethod(string $method): RequestInterface
     {
         $new = clone $this;
@@ -196,6 +212,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getUri(): UriInterface
     {
         $uri = $this->request->getUri();
@@ -206,6 +223,7 @@ class Request implements RequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withUri(UriInterface $uri, bool $preserveHost = false): RequestInterface
     {
         $new = clone $this;

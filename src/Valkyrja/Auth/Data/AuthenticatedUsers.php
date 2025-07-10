@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Data;
 
+use Override;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsers as Contract;
 
 use function in_array;
@@ -49,6 +50,7 @@ class AuthenticatedUsers implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasCurrent(): bool
     {
         return $this->currentId !== null;
@@ -57,6 +59,7 @@ class AuthenticatedUsers implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getCurrent(): string|int|null
     {
         return $this->currentId ?? null;
@@ -67,6 +70,7 @@ class AuthenticatedUsers implements Contract
      *
      * @param non-empty-string|int $id The user
      */
+    #[Override]
     public function setCurrent(string|int $id): static
     {
         $this->currentId = $id;
@@ -79,6 +83,7 @@ class AuthenticatedUsers implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isImpersonating(): bool
     {
         return $this->impersonatedId !== null;
@@ -87,6 +92,7 @@ class AuthenticatedUsers implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getImpersonated(): string|int|null
     {
         return $this->impersonatedId ?? null;
@@ -97,6 +103,7 @@ class AuthenticatedUsers implements Contract
      *
      * @param non-empty-string|int $id The user
      */
+    #[Override]
     public function setImpersonated(string|int $id): static
     {
         $this->impersonatedId = $id;
@@ -109,6 +116,7 @@ class AuthenticatedUsers implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isUserAuthenticated(string|int $id): bool
     {
         if ($this->currentId === $id) {
@@ -131,6 +139,7 @@ class AuthenticatedUsers implements Contract
      *
      * @param non-empty-string|int $id The user
      */
+    #[Override]
     public function add(string|int $id): static
     {
         $this->users[$id] = $id;
@@ -143,6 +152,7 @@ class AuthenticatedUsers implements Contract
      *
      * @param non-empty-string|int $id The id of the user to remove
      */
+    #[Override]
     public function remove(string|int $id): static
     {
         unset($this->users[$id]);
@@ -165,6 +175,7 @@ class AuthenticatedUsers implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function all(): array
     {
         return $this->users;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log;
 
+use Override;
 use Throwable;
 use Valkyrja\Log\Contract\Logger as Contract;
 use Valkyrja\Log\Enum\LogLevel;
@@ -27,6 +28,7 @@ class NullLogger implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function debug(string $message, array $context = []): void
     {
     }
@@ -34,6 +36,7 @@ class NullLogger implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function info(string $message, array $context = []): void
     {
     }
@@ -41,6 +44,7 @@ class NullLogger implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function notice(string $message, array $context = []): void
     {
     }
@@ -48,6 +52,7 @@ class NullLogger implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function warning(string $message, array $context = []): void
     {
     }
@@ -55,6 +60,7 @@ class NullLogger implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function error(string $message, array $context = []): void
     {
     }
@@ -62,6 +68,7 @@ class NullLogger implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function critical(string $message, array $context = []): void
     {
     }
@@ -69,6 +76,7 @@ class NullLogger implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function alert(string $message, array $context = []): void
     {
     }
@@ -76,6 +84,7 @@ class NullLogger implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function emergency(string $message, array $context = []): void
     {
     }
@@ -83,6 +92,7 @@ class NullLogger implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function log(LogLevel $level, string $message, array $context = []): void
     {
     }
@@ -90,6 +100,7 @@ class NullLogger implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function exception(Throwable $exception, string $message, array $context = []): void
     {
     }

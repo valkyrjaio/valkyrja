@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Data;
 
+use Override;
 use Stringable;
 use Valkyrja\Orm\Enum\SortOrder;
 
@@ -37,6 +38,7 @@ readonly class OrderBy implements Stringable
      *
      * @return non-empty-string
      */
+    #[Override]
     public function __toString(): string
     {
         return $this->field

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application;
 
+use Override;
 use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Exception\RuntimeException;
@@ -66,6 +67,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setup(Env $env, Config|Data $configData = new Config(), bool $force = false): void
     {
         // If the application was already setup, no need to do it again
@@ -93,6 +95,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
+    #[Override]
     public function addComponent(string $component): void
     {
         if ($this->config === null) {
@@ -135,6 +138,7 @@ class Valkyrja implements Application
      *
      * @return Env
      */
+    #[Override]
     public function getEnv(): Env
     {
         return $this->env;
@@ -143,6 +147,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setEnv(Env $env): void
     {
         // Set the env class to use
@@ -152,6 +157,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getContainer(): Container
     {
         return $this->container;
@@ -160,6 +166,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setContainer(Container $container): static
     {
         $this->container = $container;
@@ -170,6 +177,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getDebugMode(): bool
     {
         /** @var bool $debugMode */
@@ -181,6 +189,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getEnvironment(): string
     {
         /** @var non-empty-string $env */
@@ -192,6 +201,7 @@ class Valkyrja implements Application
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getVersion(): string
     {
         /** @var non-empty-string $version */

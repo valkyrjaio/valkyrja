@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm;
 
+use Override;
 use Valkyrja\Orm\Contract\Manager as Contract;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactory;
 use Valkyrja\Orm\QueryBuilder\Factory\SqlQueryBuilderFactory;
@@ -30,6 +31,7 @@ class NullManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function createRepository(string $entity): Repository
     {
         return new \Valkyrja\Orm\Repository\Repository($this, $entity);
@@ -38,6 +40,7 @@ class NullManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function createQueryBuilder(): QueryBuilderFactory
     {
         return new SqlQueryBuilderFactory();
@@ -46,6 +49,7 @@ class NullManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function beginTransaction(): bool
     {
         return true;
@@ -54,6 +58,7 @@ class NullManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function inTransaction(): bool
     {
         return true;
@@ -62,6 +67,7 @@ class NullManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function ensureTransaction(): void
     {
     }
@@ -69,6 +75,7 @@ class NullManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function prepare(string $query): Statement
     {
         return new NullStatement();
@@ -77,6 +84,7 @@ class NullManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function query(string $query): Statement
     {
         return new NullStatement();
@@ -85,6 +93,7 @@ class NullManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function commit(): bool
     {
         return true;
@@ -93,6 +102,7 @@ class NullManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function rollback(): bool
     {
         return true;
@@ -101,6 +111,7 @@ class NullManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function lastInsertId(string|null $table = null, string|null $idField = null): string
     {
         return 'id';

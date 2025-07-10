@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm;
 
+use Override;
 use PDO;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Orm\Contract\Manager as Contract;
@@ -50,6 +51,7 @@ abstract class PdoManager implements Contract
      *
      * @return Repository<T>
      */
+    #[Override]
     public function createRepository(string $entity): Repository
     {
         $repositoryClass = $entity::getRepository()
@@ -64,6 +66,7 @@ abstract class PdoManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function createQueryBuilder(): QueryBuilderFactory
     {
         return new SqlQueryBuilderFactory();
@@ -72,6 +75,7 @@ abstract class PdoManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function beginTransaction(): bool
     {
         return $this->pdo->beginTransaction();
@@ -80,6 +84,7 @@ abstract class PdoManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function inTransaction(): bool
     {
         return $this->pdo->inTransaction();
@@ -88,6 +93,7 @@ abstract class PdoManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function ensureTransaction(): void
     {
         if (! $this->inTransaction()) {
@@ -98,6 +104,7 @@ abstract class PdoManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function prepare(string $query): Statement
     {
         $statement = $this->pdo->prepare($query);
@@ -112,6 +119,7 @@ abstract class PdoManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function query(string $query): Statement
     {
         $statement = $this->pdo->prepare($query);
@@ -126,6 +134,7 @@ abstract class PdoManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function commit(): bool
     {
         return $this->pdo->commit();
@@ -134,6 +143,7 @@ abstract class PdoManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function rollback(): bool
     {
         return $this->pdo->rollBack();
@@ -142,6 +152,7 @@ abstract class PdoManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function lastInsertId(string|null $table = null, string|null $idField = null): string
     {
         /** @var non-empty-string|false $lastInsertId */

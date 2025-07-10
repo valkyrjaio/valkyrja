@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Collection;
 
+use Override;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\Collection\Contract\Collection as Contract;
 
@@ -52,6 +53,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setAll(array $collection): static
     {
         $this->collection = $collection;
@@ -62,6 +64,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function exists($value): bool
     {
         return in_array($value, $this->collection, true);
@@ -70,6 +73,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function all(): array
     {
         return $this->collection;
@@ -78,6 +82,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function keys(): array
     {
         return array_keys($this->collection);
@@ -86,6 +91,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function count(): int
     {
         return count($this->collection);
@@ -94,6 +100,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isEmpty(): bool
     {
         return empty($this->collection);
@@ -102,6 +109,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function __get(string|int $key): string|int|float|bool|array|object|null
     {
         return $this->get($key);
@@ -110,6 +118,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function __set(string|int $key, string|int|float|bool|array|object|null $value): void
     {
         $this->set($key, $value);
@@ -118,6 +127,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function get(string|int $key, string|int|float|bool|array|object|null $default = null): string|int|float|bool|array|object|null
     {
         return $this->has($key) ? $this->collection[$key] : $default;
@@ -126,6 +136,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function has(string|int $key): bool
     {
         return isset($this->collection[$key]);
@@ -134,6 +145,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function set(string|int $key, $value): static
     {
         $this->collection[$key] = $value;
@@ -144,6 +156,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function __isset(string|int $key): bool
     {
         return $this->has($key);
@@ -152,6 +165,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function __unset(string|int $key): void
     {
         $this->remove($key);
@@ -160,6 +174,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function remove(string|int $key): static
     {
         if (! $this->has($key)) {

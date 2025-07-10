@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Uuid\Contract;
 
+use Override;
+
 /**
  * Interface UuidV1.
  *
@@ -23,10 +25,12 @@ interface UuidV1 extends Uuid
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): string;
 
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asFlatValue(): string;
 }

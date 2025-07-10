@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Middleware\Handler;
 
+use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
@@ -37,6 +38,7 @@ class SendingResponseHandlerClass extends SendingResponseHandler
     /**
      * @inheritDoc
      */
+    #[Override]
     public function sendingResponse(ServerRequest $request, Response $response): Response
     {
         $this->count++;

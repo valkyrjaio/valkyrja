@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth;
 
+use Override;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Exception\InvalidAuthenticationException;
@@ -63,6 +64,7 @@ class EncryptedTokenAuthenticator extends TokenAuthenticator
      *
      * @return AuthenticatedUsers|null
      */
+    #[Override]
     protected function getAuthenticatedUsersFromToken(string $token): AuthenticatedUsers|null
     {
         $decryptedUsers    = $this->crypt->decrypt($token);

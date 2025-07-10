@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Middleware\Handler;
 
+use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
@@ -29,6 +30,7 @@ class CommandNotMatchedHandler extends Handler implements Contract\CommandNotMat
     /**
      * @inheritDoc
      */
+    #[Override]
     public function commandNotMatched(Input $input, Output $output): Output
     {
         $next = $this->next;

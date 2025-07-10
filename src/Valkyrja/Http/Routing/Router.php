@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing;
 
 use JsonException;
+use Override;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
@@ -70,6 +71,7 @@ class Router implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function dispatch(ServerRequest $request): Response
     {
         // Attempt to match the route
@@ -95,6 +97,7 @@ class Router implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function dispatchRoute(ServerRequest $request, Route $route): Response
     {
         // The route has been matched

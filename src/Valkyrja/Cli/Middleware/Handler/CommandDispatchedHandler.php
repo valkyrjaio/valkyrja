@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Middleware\Handler;
 
+use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
@@ -30,6 +31,7 @@ class CommandDispatchedHandler extends Handler implements Contract\CommandDispat
     /**
      * @inheritDoc
      */
+    #[Override]
     public function commandDispatched(Input $input, Output $output, Command $command): Output
     {
         $next = $this->next;

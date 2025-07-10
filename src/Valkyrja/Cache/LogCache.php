@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cache;
 
 use JsonException;
+use Override;
 use Valkyrja\Cache\Contract\Cache as Contract;
 use Valkyrja\Cache\Tagger\Contract\Tagger;
 use Valkyrja\Cache\Tagger\Tagger as TagClass;
@@ -42,6 +43,7 @@ class LogCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function has(string $key): bool
     {
         $this->logger->info(self::class . " has: $key");
@@ -52,6 +54,7 @@ class LogCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function get(string $key): string|null
     {
         $this->logger->info(self::class . " get: $key");
@@ -64,6 +67,7 @@ class LogCache implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function many(string ...$keys): array
     {
         $keysString = Arr::toString($keys);
@@ -76,6 +80,7 @@ class LogCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function put(string $key, string $value, int $minutes): void
     {
         $this->logger->info(self::class . " put: $key, value $value, minutes $minutes");
@@ -86,6 +91,7 @@ class LogCache implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function putMany(array $values, int $minutes): void
     {
         $valuesString = Arr::toString($values);
@@ -96,6 +102,7 @@ class LogCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function increment(string $key, int $value = 1): int
     {
         $this->logger->info(self::class . " increment: $key, value $value");
@@ -106,6 +113,7 @@ class LogCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function decrement(string $key, int $value = 1): int
     {
         $this->logger->info(self::class . " decrement: $key, value $value");
@@ -116,6 +124,7 @@ class LogCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function forever(string $key, $value): void
     {
         $this->logger->info(self::class . " forever: $key, value $value");
@@ -124,6 +133,7 @@ class LogCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function forget(string $key): bool
     {
         $this->logger->info(self::class . " forget: $key");
@@ -134,6 +144,7 @@ class LogCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function flush(): bool
     {
         $this->logger->info(self::class . ' flush');
@@ -144,6 +155,7 @@ class LogCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getPrefix(): string
     {
         return $this->prefix;
@@ -152,6 +164,7 @@ class LogCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getTagger(string ...$tags): Tagger
     {
         return TagClass::make($this, ...$tags);

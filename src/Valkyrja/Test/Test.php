@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test;
 
+use Override;
 use Throwable;
 use Valkyrja\Test\Assert\Contract\Assert;
 use Valkyrja\Test\Contract\Test as Contract;
@@ -37,6 +38,7 @@ class Test implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getAssert(): Assert
     {
         return $this->assert;
@@ -45,6 +47,7 @@ class Test implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getName(): string
     {
         return $this->name ?? '';
@@ -53,6 +56,7 @@ class Test implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function shouldSkip(): bool
     {
         return $this->shouldSkip;
@@ -61,6 +65,7 @@ class Test implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function run(callable $callable, array $data = []): void
     {
         $assert    = $this->assert;

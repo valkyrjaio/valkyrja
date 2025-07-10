@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container;
 
+use Override;
 use Valkyrja\Container\Contract\Container as Contract;
 use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Support\ProvidersAwareTrait;
@@ -82,6 +83,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getData(): Data
     {
         return new Data(
@@ -97,6 +99,7 @@ class Container implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setFromData(Data $data): void
     {
         $this->aliases          = array_merge($this->aliases, $data->aliases);
@@ -118,6 +121,7 @@ class Container implements Contract
      *
      * @psalm-suppress MoreSpecificImplementedParamType
      */
+    #[Override]
     public function has(string $id): bool
     {
         $id = $this->getServiceIdInternal($id);
@@ -135,6 +139,7 @@ class Container implements Contract
      * @param class-string          $id      The service id
      * @param class-string<Service> $service The service
      */
+    #[Override]
     public function bind(string $id, string $service): static
     {
         assert(is_a($service, Service::class, true));
@@ -153,6 +158,7 @@ class Container implements Contract
      * @param class-string $alias The alias
      * @param class-string $id    The service id to alias
      */
+    #[Override]
     public function bindAlias(string $alias, string $id): static
     {
         $id = $this->getServiceIdInternal($id);
@@ -168,6 +174,7 @@ class Container implements Contract
      * @param class-string          $id        The service id
      * @param class-string<Service> $singleton The singleton service
      */
+    #[Override]
     public function bindSingleton(string $id, string $singleton): static
     {
         $internalId = $this->getServiceIdInternal($id);
@@ -184,6 +191,7 @@ class Container implements Contract
      *
      * @param class-string $id The service id
      */
+    #[Override]
     public function setCallable(string $id, callable $callable): static
     {
         $id = $this->getServiceIdInternal($id);
@@ -200,6 +208,7 @@ class Container implements Contract
      *
      * @param class-string $id The service id
      */
+    #[Override]
     public function setSingleton(string $id, object $singleton): static
     {
         $id = $this->getServiceIdInternal($id);
@@ -216,6 +225,7 @@ class Container implements Contract
      *
      * @param class-string $id The service id
      */
+    #[Override]
     public function isAlias(string $id): bool
     {
         return $this->isAliasInternal($id);
@@ -226,6 +236,7 @@ class Container implements Contract
      *
      * @param class-string $id The service id
      */
+    #[Override]
     public function isCallable(string $id): bool
     {
         $id = $this->getServiceIdInternal($id);
@@ -238,6 +249,7 @@ class Container implements Contract
      *
      * @param class-string $id The service id
      */
+    #[Override]
     public function isService(string $id): bool
     {
         $id = $this->getServiceIdInternal($id);
@@ -250,6 +262,7 @@ class Container implements Contract
      *
      * @param class-string $id The service id
      */
+    #[Override]
     public function isSingleton(string $id): bool
     {
         $id = $this->getServiceIdInternal($id);
@@ -267,6 +280,7 @@ class Container implements Contract
      * @psalm-suppress ImplementedReturnTypeMismatch
      * @psalm-suppress MoreSpecificImplementedParamType
      */
+    #[Override]
     public function get(string $id, array $arguments = []): object
     {
         $id = $this->getServiceIdAndEnsurePublished($id);
@@ -308,6 +322,7 @@ class Container implements Contract
      * @psalm-suppress InvalidReturnStatement
      * @psalm-suppress ImplementedReturnTypeMismatch
      */
+    #[Override]
     public function getCallable(string $id, array $arguments = []): object
     {
         $id = $this->getServiceIdAndEnsurePublished($id);
@@ -324,6 +339,7 @@ class Container implements Contract
      * @psalm-suppress InvalidReturnStatement
      * @psalm-suppress ImplementedReturnTypeMismatch
      */
+    #[Override]
     public function getService(string $id, array $arguments = []): Service
     {
         $id = $this->getServiceIdAndEnsurePublished($id);
@@ -342,6 +358,7 @@ class Container implements Contract
      * @psalm-suppress InvalidReturnStatement
      * @psalm-suppress ImplementedReturnTypeMismatch
      */
+    #[Override]
     public function getSingleton(string $id): object
     {
         $id = $this->getServiceIdAndEnsurePublished($id);

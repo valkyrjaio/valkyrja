@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type;
 
+use Override;
 use Valkyrja\Type\Contract\Type as Contract;
 
 /**
@@ -34,11 +35,13 @@ abstract class Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     abstract public static function fromValue(mixed $value): static;
 
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): mixed
     {
         return $this->subject;
@@ -47,6 +50,7 @@ abstract class Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function modify(callable $closure): static
     {
         return static::fromValue($closure($this->subject));
@@ -55,6 +59,7 @@ abstract class Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonSerialize(): mixed
     {
         return $this->asValue();
@@ -63,5 +68,6 @@ abstract class Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     abstract public function asFlatValue(): string|int|float|bool|null;
 }

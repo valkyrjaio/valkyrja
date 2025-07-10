@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm;
 
+use Override;
 use Valkyrja\Orm\Contract\Manager as Contract;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactory;
 use Valkyrja\Orm\QueryBuilder\Factory\SqlQueryBuilderFactory;
@@ -30,6 +31,7 @@ class InMemoryManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function createRepository(string $entity): Repository
     {
         return new \Valkyrja\Orm\Repository\Repository($this, $entity);
@@ -38,6 +40,7 @@ class InMemoryManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function createQueryBuilder(): QueryBuilderFactory
     {
         return new SqlQueryBuilderFactory();
@@ -46,6 +49,7 @@ class InMemoryManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function beginTransaction(): bool
     {
         // TODO: Implement beginTransaction() method.
@@ -55,6 +59,7 @@ class InMemoryManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function inTransaction(): bool
     {
         // TODO: Implement inTransaction() method.
@@ -64,6 +69,7 @@ class InMemoryManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function ensureTransaction(): void
     {
         // TODO: Implement ensureTransaction() method.
@@ -72,6 +78,7 @@ class InMemoryManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function prepare(string $query): Statement
     {
         // TODO: Implement prepare() method.
@@ -81,6 +88,7 @@ class InMemoryManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function query(string $query): Statement
     {
         // TODO: Implement query() method.
@@ -90,6 +98,7 @@ class InMemoryManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function commit(): bool
     {
         // TODO: Implement commit() method.
@@ -99,6 +108,7 @@ class InMemoryManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function rollback(): bool
     {
         // TODO: Implement rollback() method.
@@ -108,6 +118,7 @@ class InMemoryManager implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function lastInsertId(string|null $table = null, string|null $idField = null): string
     {
         // TODO: Implement lastInsertId() method.

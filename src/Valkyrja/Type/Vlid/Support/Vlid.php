@@ -15,6 +15,7 @@ namespace Valkyrja\Type\Vlid\Support;
 
 use DateTimeInterface;
 use Exception;
+use Override;
 use Valkyrja\Type\Ulid\Support\Ulid;
 use Valkyrja\Type\Vlid\Enum\Version;
 use Valkyrja\Type\Vlid\Exception\InvalidVlidException;
@@ -119,6 +120,7 @@ class Vlid extends Ulid
     /**
      * @inheritDoc
      */
+    #[Override]
     protected static function getTimeFromMicroTime(string $time): string
     {
         return substr($time, 11) . substr($time, 2, 8);
@@ -127,6 +129,7 @@ class Vlid extends Ulid
     /**
      * @inheritDoc
      */
+    #[Override]
     protected static function getTimeFromDateTime(DateTimeInterface $dateTime): string
     {
         return $dateTime->format('Uu');
@@ -139,6 +142,7 @@ class Vlid extends Ulid
      *
      * @return string
      */
+    #[Override]
     protected static function formatTimeWithRandomBytes(string $time): string
     {
         return sprintf(static::FORMAT, $time, static::VERSION->value, ...static::getConvertedRandomBytesForFormat());
@@ -147,6 +151,7 @@ class Vlid extends Ulid
     /**
      * @inheritDoc
      */
+    #[Override]
     protected static function areAllRandomBytesMax(): bool
     {
         return static::$randomBytes === [1 => self::MAX_PART, self::MAX_PART, self::MAX_PART];
@@ -155,6 +160,7 @@ class Vlid extends Ulid
     /**
      * @inheritDoc
      */
+    #[Override]
     protected static function unsetRandomByteParts(array &$randomBytes): void
     {
         unset($randomBytes[4], $randomBytes[5]);
@@ -163,6 +169,7 @@ class Vlid extends Ulid
     /**
      * @inheritDoc
      */
+    #[Override]
     protected static function throwInvalidException(string $uid): never
     {
         throw new InvalidVlidException("Invalid VLID $uid provided.");

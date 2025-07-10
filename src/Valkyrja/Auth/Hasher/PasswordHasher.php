@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Hasher;
 
+use Override;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasher as Contract;
 
 use const PASSWORD_DEFAULT;
@@ -31,6 +32,7 @@ class PasswordHasher implements Contract
      *
      * @return non-empty-string
      */
+    #[Override]
     public function hashPassword(string $password): string
     {
         /** @var non-empty-string $hashedPassword */
@@ -47,6 +49,7 @@ class PasswordHasher implements Contract
      *
      * @return bool
      */
+    #[Override]
     public function confirmPassword(string $password, string $hashedPassword): bool
     {
         return password_verify($password, $hashedPassword);

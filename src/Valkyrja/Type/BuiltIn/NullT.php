@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\BuiltIn;
 
+use Override;
 use Valkyrja\Type\BuiltIn\Contract\NullT as Contract;
 use Valkyrja\Type\Type;
 
@@ -33,6 +34,7 @@ class NullT extends Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function fromValue(mixed $value): static
     {
         return new static();
@@ -41,6 +43,7 @@ class NullT extends Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): mixed
     {
         return null;
@@ -49,6 +52,7 @@ class NullT extends Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asFlatValue(): string|int|float|bool|null
     {
         return null;

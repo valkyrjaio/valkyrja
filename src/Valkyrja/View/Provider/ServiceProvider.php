@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Provider;
 
+use Override;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
@@ -37,6 +38,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function publishers(): array
     {
         return [
@@ -52,6 +54,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function provides(): array
     {
         return [

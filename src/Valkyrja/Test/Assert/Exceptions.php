@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Assert;
 
+use Override;
 use Throwable;
 use Valkyrja\Test\Assert\Contract\Exceptions as Contract;
 use Valkyrja\Test\Exception\AssertFailureException;
@@ -44,6 +45,7 @@ class Exceptions extends Asserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function getExpectedErrorMessage(): string
     {
         return 'An exception was expected. Got none.';
@@ -52,6 +54,7 @@ class Exceptions extends Asserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function getUnexpectedErrorMessage(string $actualClassName, string $actualMessage): string
     {
         return "An unexpected exception $actualClassName with message $actualMessage was thrown.";
@@ -60,6 +63,7 @@ class Exceptions extends Asserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function getIncorrectClassNameErrorMessage(string $expected, string $actual): string
     {
         return "Expected $expected exception does not match actual $actual.";
@@ -68,6 +72,7 @@ class Exceptions extends Asserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function getIncorrectMessageErrorMessage(string $expected, string $actual): string
     {
         return "Expected $expected message does not match actual $actual.";
@@ -76,6 +81,7 @@ class Exceptions extends Asserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function className(string $className): void
     {
         $this->assertions[] = $className;
@@ -88,6 +94,7 @@ class Exceptions extends Asserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function message(string $message): void
     {
         $this->assertions[] = $message;
@@ -100,6 +107,7 @@ class Exceptions extends Asserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function expecting(): void
     {
         $this->expecting = true;
@@ -108,6 +116,7 @@ class Exceptions extends Asserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function verify(Throwable|null $exception = null): void
     {
         if ($exception === null) {

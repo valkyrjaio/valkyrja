@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Request\Psr;
 
+use Override;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Valkyrja\Http\Message\Factory\UploadedFileFactory;
@@ -40,6 +41,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @return array<array-key, mixed>
      */
+    #[Override]
     public function getServerParams(): array
     {
         return $this->request->getServerParams();
@@ -50,6 +52,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @return array<array-key, mixed>
      */
+    #[Override]
     public function getCookieParams(): array
     {
         return $this->request->getCookieParams();
@@ -60,6 +63,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @param array<array-key, mixed> $cookies The cookies
      */
+    #[Override]
     public function withCookieParams(array $cookies): static
     {
         $new = clone $this;
@@ -75,6 +79,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @return array<array-key, mixed>
      */
+    #[Override]
     public function getQueryParams(): array
     {
         return $this->request->getQueryParams();
@@ -85,6 +90,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @param array<array-key, mixed> $query The query
      */
+    #[Override]
     public function withQueryParams(array $query): static
     {
         $new = clone $this;
@@ -99,6 +105,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @return array<array-key, UploadedFile>
      */
+    #[Override]
     public function getUploadedFiles(): array
     {
         $valkyrjaUploadedFiles = $this->request->getUploadedFiles();
@@ -121,6 +128,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @param array<array-key, mixed> $uploadedFiles The uploaded files
      */
+    #[Override]
     public function withUploadedFiles(array $uploadedFiles): static
     {
         $new = clone $this;
@@ -138,6 +146,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @return array<array-key, mixed>|object|null
      */
+    #[Override]
     public function getParsedBody(): object|array|null
     {
         return $this->request->getParsedBody();
@@ -148,6 +157,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @param array<array-key, mixed>|object|null $data The data
      */
+    #[Override]
     public function withParsedBody($data): static
     {
         $new = clone $this;
@@ -162,6 +172,7 @@ class ServerRequest extends Request implements ServerRequestInterface
      *
      * @return array<array-key, mixed>
      */
+    #[Override]
     public function getAttributes(): array
     {
         return $this->request->getAttributes();
@@ -170,6 +181,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getAttribute(string $name, $default = null)
     {
         return $this->request->getAttribute($name, $default);
@@ -178,6 +190,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAttribute(string $name, $value): ServerRequestInterface
     {
         $new = clone $this;
@@ -190,6 +203,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withoutAttribute(string $name): ServerRequestInterface
     {
         $new = clone $this;

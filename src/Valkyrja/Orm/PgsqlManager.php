@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm;
 
+use Override;
 use Valkyrja\Orm\Exception\RuntimeException;
 
 use function is_string;
@@ -27,6 +28,7 @@ class PgsqlManager extends PdoManager
     /**
      * @inheritDoc
      */
+    #[Override]
     public function lastInsertId(string|null $table = null, string|null $idField = null): string
     {
         $name = null;

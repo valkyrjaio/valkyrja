@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli;
 
+use Override;
 use Valkyrja\Application\Support\Component as AppComponent;
 
 /**
@@ -25,6 +26,7 @@ class Component extends AppComponent
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function getContainerProviders(): array
     {
         return [
@@ -38,6 +40,7 @@ class Component extends AppComponent
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function getCliControllers(): array
     {
         return [

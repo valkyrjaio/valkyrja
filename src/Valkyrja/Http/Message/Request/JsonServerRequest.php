@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Request;
 
 use JsonException;
+use Override;
 use Valkyrja\Http\Message\Constant\ContentType;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
@@ -105,6 +106,7 @@ class JsonServerRequest extends ServerRequest implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getParsedJson(): array
     {
         return $this->parsedJson;
@@ -113,6 +115,7 @@ class JsonServerRequest extends ServerRequest implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function onlyParsedJson(string|int ...$names): array
     {
         return $this->onlyParams($this->parsedJson, ...$names);
@@ -121,6 +124,7 @@ class JsonServerRequest extends ServerRequest implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function exceptParsedJson(string|int ...$names): array
     {
         return $this->exceptParams($this->parsedJson, ...$names);
@@ -129,6 +133,7 @@ class JsonServerRequest extends ServerRequest implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withParsedJson(array $data): static
     {
         $new = clone $this;
@@ -145,6 +150,7 @@ class JsonServerRequest extends ServerRequest implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedParsedJsonParam(string|int $name, mixed $value): static
     {
         $new = clone $this;
@@ -161,6 +167,7 @@ class JsonServerRequest extends ServerRequest implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getParsedJsonParam(string|int $name, mixed $default = null): mixed
     {
         return $this->parsedJson[$name] ?? $default;
@@ -169,6 +176,7 @@ class JsonServerRequest extends ServerRequest implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasParsedJsonParam(string|int $name): bool
     {
         return isset($this->parsedJson[$name])

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Middleware;
 
+use Override;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Http\Message\Enum\StatusCode;
@@ -57,6 +58,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     /**
      * @inheritDoc
      */
+    #[Override]
     public function routeMatched(ServerRequest $request, Route $route, RouteMatchedHandler $handler): Route|Response
     {
         $routeOrResponse = $this->checkRouteForEntities($route);

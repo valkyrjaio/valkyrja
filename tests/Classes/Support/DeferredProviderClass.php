@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Support;
 
+use Override;
+
 /**
  * Class DeferredProviderClass.
  *
@@ -24,6 +26,7 @@ class DeferredProviderClass extends ProviderClass
 
     public static bool $publishSecondaryCalled = false;
 
+    #[Override]
     public static function deferred(): bool
     {
         return true;

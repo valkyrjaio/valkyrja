@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Rule\Int;
 
+use Override;
 use Valkyrja\Type\BuiltIn\Support\Integer;
 use Valkyrja\Validation\Rule\Rule;
 
@@ -33,12 +34,14 @@ class GreaterThan extends Rule
         parent::__construct($subject, $errorMessage);
     }
 
+    #[Override]
     public function isValid(): bool
     {
         return is_int($this->subject)
             && Integer::greaterThan($this->subject, $this->min);
     }
 
+    #[Override]
     public function getDefaultErrorMessage(): string
     {
         return "Must be greater than $this->min";

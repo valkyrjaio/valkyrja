@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Mail;
 
 use JsonException;
+use Override;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Mail\Contract\Mailer as Contract;
 use Valkyrja\Mail\Data\Contract\Message;
@@ -39,6 +40,7 @@ class LogMailer implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function send(Message $message): void
     {
         $this->logger->info(static::class . ' Send');

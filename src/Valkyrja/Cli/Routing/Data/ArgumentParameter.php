@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Data;
 
+use Override;
 use Valkyrja\Cli\Interaction\Argument\Contract\Argument;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameter as Contract;
 use Valkyrja\Cli\Routing\Enum\ArgumentMode;
@@ -53,6 +54,7 @@ class ArgumentParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getMode(): ArgumentMode
     {
         return $this->mode;
@@ -61,6 +63,7 @@ class ArgumentParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withMode(ArgumentMode $mode): static
     {
         $new = clone $this;
@@ -73,6 +76,7 @@ class ArgumentParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getValueMode(): ArgumentValueMode
     {
         return $this->valueMode;
@@ -81,6 +85,7 @@ class ArgumentParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withValueMode(ArgumentValueMode $valueMode): static
     {
         $new = clone $this;
@@ -93,6 +98,7 @@ class ArgumentParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getArguments(): array
     {
         return $this->arguments;
@@ -101,6 +107,7 @@ class ArgumentParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withArguments(Argument ...$arguments): static
     {
         $new = clone $this;
@@ -113,6 +120,7 @@ class ArgumentParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedArguments(Argument ...$arguments): static
     {
         $new = clone $this;
@@ -127,6 +135,7 @@ class ArgumentParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getCastValues(): array
     {
         $values   = [];
@@ -158,6 +167,7 @@ class ArgumentParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getFirstValue(): string|null
     {
         $firstItem = $this->arguments[0] ?? null;
@@ -168,6 +178,7 @@ class ArgumentParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function areValuesValid(): bool
     {
         return match (true) {
@@ -180,6 +191,7 @@ class ArgumentParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function validateValues(): static
     {
         if (! $this->areValuesValid()) {

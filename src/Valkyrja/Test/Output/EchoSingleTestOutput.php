@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Output;
 
+use Override;
 use Valkyrja\Test\Result\Contract\Results;
 
 /**
@@ -25,6 +26,7 @@ class EchoSingleTestOutput extends EchoOutput
     /**
      * @inheritDoc
      */
+    #[Override]
     public function full(Results $results): void
     {
         $this->tests($results);

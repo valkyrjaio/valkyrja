@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Url;
 
+use Override;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Routing\Collection\Contract\Collection;
@@ -48,6 +49,7 @@ class Url implements Contract
      *
      * @throws InvalidRouteNameException
      */
+    #[Override]
     public function getUrl(string $name, array|null $data = null, bool|null $absolute = null): string
     {
         // Get the matching route
@@ -77,6 +79,7 @@ class Url implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getRouteByPath(string $path, RequestMethod|null $method = null): Route|null
     {
         return $this->matcher->match($path, $method ?? RequestMethod::GET);
@@ -85,6 +88,7 @@ class Url implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isInternalUri(string $uri): bool
     {
         // Replace the scheme if it exists

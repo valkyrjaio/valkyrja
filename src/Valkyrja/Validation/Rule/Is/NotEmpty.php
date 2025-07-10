@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Rule\Is;
 
+use Override;
 use Valkyrja\Validation\Rule\Rule;
 
 /**
@@ -22,6 +23,7 @@ use Valkyrja\Validation\Rule\Rule;
  */
 class NotEmpty extends Rule
 {
+    #[Override]
     public function isValid(): bool
     {
         /** @var mixed $subject */
@@ -32,6 +34,7 @@ class NotEmpty extends Rule
             && ! empty($subject);
     }
 
+    #[Override]
     public function getDefaultErrorMessage(): string
     {
         return 'Must not be empty';

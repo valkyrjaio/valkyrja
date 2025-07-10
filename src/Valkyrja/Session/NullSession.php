@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Session;
 
 use Exception;
+use Override;
 use Valkyrja\Session\Contract\Session as Contract;
 use Valkyrja\Session\Exception\InvalidCsrfToken;
 use Valkyrja\Session\Exception\InvalidSessionId;
@@ -84,6 +85,7 @@ class NullSession implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function start(): void
     {
     }
@@ -91,6 +93,7 @@ class NullSession implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getId(): string
     {
         return $this->id;
@@ -99,6 +102,7 @@ class NullSession implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setId(string $id): void
     {
         $this->validateId($id);
@@ -109,6 +113,7 @@ class NullSession implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getName(): string
     {
         return $this->name;
@@ -117,6 +122,7 @@ class NullSession implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setName(string $name): void
     {
         $this->name = $name;
@@ -125,6 +131,7 @@ class NullSession implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isActive(): bool
     {
         return true;
@@ -133,6 +140,7 @@ class NullSession implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function has(string $id): bool
     {
         return isset($this->data[$id]);
@@ -141,6 +149,7 @@ class NullSession implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function get(string $id, mixed $default = null): mixed
     {
         return $this->data[$id] ?? $default;
@@ -149,6 +158,7 @@ class NullSession implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function set(string $id, $value): void
     {
         $this->data[$id] = $value;
@@ -157,6 +167,7 @@ class NullSession implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function remove(string $id): bool
     {
         if (! $this->has($id)) {
@@ -171,6 +182,7 @@ class NullSession implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function all(): array
     {
         return $this->data;
@@ -181,6 +193,7 @@ class NullSession implements Contract
      *
      * @throws Exception
      */
+    #[Override]
     public function generateCsrfToken(string $id): string
     {
         $token = bin2hex(random_bytes(64));
@@ -193,6 +206,7 @@ class NullSession implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function validateCsrfToken(string $id, string $token): void
     {
         if (! $this->isCsrfTokenValid($id, $token)) {
@@ -203,6 +217,7 @@ class NullSession implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isCsrfTokenValid(string $id, string $token): bool
     {
         if (! $this->has($id)) {
@@ -224,6 +239,7 @@ class NullSession implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function clear(): void
     {
         $this->data = [];
@@ -232,6 +248,7 @@ class NullSession implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function destroy(): void
     {
         $this->data = [];

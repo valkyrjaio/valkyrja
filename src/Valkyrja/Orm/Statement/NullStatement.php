@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Statement;
 
+use Override;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Statement\Contract\Statement as Contract;
 
@@ -26,6 +27,7 @@ class NullStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function bindValue(Value $value): bool
     {
         return true;
@@ -34,6 +36,7 @@ class NullStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function execute(): bool
     {
         return true;
@@ -42,6 +45,7 @@ class NullStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getColumnMeta(int $columnNumber): array
     {
         return [];
@@ -50,6 +54,7 @@ class NullStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function fetch(): array
     {
         return [];
@@ -58,6 +63,7 @@ class NullStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function fetchColumn(int $columnNumber = 0): mixed
     {
         return null;
@@ -66,6 +72,7 @@ class NullStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function fetchAll(): array
     {
         return [];
@@ -74,6 +81,7 @@ class NullStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getCount(): int
     {
         return 0;
@@ -82,6 +90,7 @@ class NullStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function rowCount(): int
     {
         return 0;
@@ -90,6 +99,7 @@ class NullStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function columnCount(): int
     {
         return 0;
@@ -98,6 +108,7 @@ class NullStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function errorCode(): string
     {
         return '00000';
@@ -106,6 +117,7 @@ class NullStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function errorMessage(): string|null
     {
         return null;

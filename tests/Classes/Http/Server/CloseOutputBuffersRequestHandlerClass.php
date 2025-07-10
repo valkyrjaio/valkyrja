@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Server;
 
+use Override;
 use Valkyrja\Http\Server\RequestHandler;
 
 use function ob_start;
@@ -31,11 +32,13 @@ class CloseOutputBuffersRequestHandlerClass extends RequestHandler
         return $this->hasRequestBeenFinishedByClosingOutputBuffers;
     }
 
+    #[Override]
     protected function shouldCloseOutputBuffersToFinishRequest(): bool
     {
         return true;
     }
 
+    #[Override]
     protected function closeOutputBuffers(int $targetLevel, bool $flush): void
     {
         $this->hasRequestBeenFinishedByClosingOutputBuffers = true;
@@ -43,6 +46,7 @@ class CloseOutputBuffersRequestHandlerClass extends RequestHandler
         parent::closeOutputBuffers($targetLevel, $flush);
     }
 
+    #[Override]
     protected function closeOutputBuffersWithFlush(): void
     {
         // Start an output buffer to ensure that only this new one is closed, not one that is opened outside this test
@@ -51,6 +55,7 @@ class CloseOutputBuffersRequestHandlerClass extends RequestHandler
         parent::closeOutputBuffersWithFlush();
     }
 
+    #[Override]
     protected function closeOutputBuffersWithClean(): void
     {
         // Start an output buffer to ensure that only this new one is closed, not one that is opened outside this test

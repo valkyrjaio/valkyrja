@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\BuiltIn\Enum\Contract;
 
 use BackedEnum;
+use Override;
 use Valkyrja\Type\Contract\Type;
 
 /**
@@ -28,5 +29,6 @@ interface BackedEnumT extends Type
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): BackedEnum;
 }

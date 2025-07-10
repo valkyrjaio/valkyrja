@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Factory;
 
+use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\Http\Message\Response\Contract\Response;
@@ -36,6 +37,7 @@ class ResponseFactory implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function createResponseFromView(
         string $template,
         array|null $data = null,

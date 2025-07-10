@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Middleware\Handler;
 
+use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
@@ -30,6 +31,7 @@ class RouteDispatchedHandler extends Handler implements Contract\RouteDispatched
     /**
      * @inheritDoc
      */
+    #[Override]
     public function routeDispatched(ServerRequest $request, Response $response, Route $route): Response
     {
         $next = $this->next;

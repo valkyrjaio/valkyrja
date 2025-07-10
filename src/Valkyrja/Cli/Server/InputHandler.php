@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Server;
 
+use Override;
 use Throwable;
 use Valkyrja\Cli\Interaction\Config as InteractionConfig;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
@@ -62,6 +63,7 @@ class InputHandler implements Contract
      *
      * @return Output
      */
+    #[Override]
     public function handle(Input $input): Output
     {
         try {
@@ -94,6 +96,7 @@ class InputHandler implements Contract
      *
      * @return void
      */
+    #[Override]
     public function exit(Input $input, Output $output): void
     {
         // Dispatch the exited middleware
@@ -107,6 +110,7 @@ class InputHandler implements Contract
      *
      * @return never
      */
+    #[Override]
     public function run(Input $input): never
     {
         $output = $this->handle($input);

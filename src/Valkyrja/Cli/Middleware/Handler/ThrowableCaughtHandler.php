@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Middleware\Handler;
 
+use Override;
 use Throwable;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
@@ -30,6 +31,7 @@ class ThrowableCaughtHandler extends Handler implements Contract\ThrowableCaught
     /**
      * @inheritDoc
      */
+    #[Override]
     public function throwableCaught(Input $input, Output $output, Throwable $exception): Output
     {
         $next = $this->next;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\BuiltIn\Contract;
 
+use Override;
 use Valkyrja\Type\Contract\Type;
 
 /**
@@ -27,11 +28,13 @@ interface StringT extends Type
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): string;
 
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asFlatValue(): string;
 
     /**

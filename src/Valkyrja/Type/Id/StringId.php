@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Id;
 
 use JsonException;
+use Override;
 use Valkyrja\Type\Exception\InvalidArgumentException;
 use Valkyrja\Type\Id\Contract\StringId as Contract;
 use Valkyrja\Type\Type;
@@ -41,6 +42,7 @@ class StringId extends Type implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public static function fromValue(mixed $value): static
     {
         return match (true) {
@@ -53,6 +55,7 @@ class StringId extends Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asValue(): string
     {
         return $this->subject;
@@ -61,6 +64,7 @@ class StringId extends Type implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function asFlatValue(): string
     {
         return $this->asValue();

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session;
 
+use Override;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Crypt\Exception\CryptException;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
@@ -51,6 +52,7 @@ class CookieSession extends PhpSession
      *
      * @throws CryptException
      */
+    #[Override]
     public function start(): void
     {
         // If the session is already active
@@ -79,6 +81,7 @@ class CookieSession extends PhpSession
      *
      * @throws CryptException
      */
+    #[Override]
     public function set(string $id, $value): void
     {
         $this->data[$id] = $value;
@@ -91,6 +94,7 @@ class CookieSession extends PhpSession
      *
      * @throws CryptException
      */
+    #[Override]
     public function remove(string $id): bool
     {
         if (! $this->has($id)) {
@@ -109,6 +113,7 @@ class CookieSession extends PhpSession
      *
      * @throws CryptException
      */
+    #[Override]
     public function clear(): void
     {
         parent::clear();
@@ -121,6 +126,7 @@ class CookieSession extends PhpSession
      *
      * @throws CryptException
      */
+    #[Override]
     public function destroy(): void
     {
         parent::destroy();

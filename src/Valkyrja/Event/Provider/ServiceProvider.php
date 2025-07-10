@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Provider;
 
+use Override;
 use Valkyrja\Application\Config;
 use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Container\Contract\Container;
@@ -37,6 +38,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function publishers(): array
     {
         return [
@@ -49,6 +51,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function provides(): array
     {
         return [

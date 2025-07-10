@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms;
 
+use Override;
 use Valkyrja\Sms\Contract\Sms as Contract;
 use Valkyrja\Sms\Data\Contract\Message;
 
@@ -26,6 +27,7 @@ class NullSms implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function send(Message $message): void
     {
     }

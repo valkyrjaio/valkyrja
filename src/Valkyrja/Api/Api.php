@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Api;
 
 use Exception;
+use Override;
 use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Contract\Api as Contract;
 use Valkyrja\Api\Model\Contract\Json;
@@ -47,6 +48,7 @@ class Api implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonFromException(Exception $exception): Json
     {
         $json = $this->getJsonModel();
@@ -77,6 +79,7 @@ class Api implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonResponseFromException(Exception $exception): JsonResponse
     {
         return $this->getResponseFromModel($this->jsonFromException($exception));
@@ -85,6 +88,7 @@ class Api implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonFromObject(object $object): Json
     {
         $json     = $this->getJsonModel();
@@ -100,6 +104,7 @@ class Api implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonResponseFromObject(object $object): JsonResponse
     {
         return $this->getResponseFromModel($this->jsonFromObject($object));
@@ -108,6 +113,7 @@ class Api implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonFromObjects(object ...$objects): Json
     {
         $json     = $this->getJsonModel();
@@ -127,6 +133,7 @@ class Api implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonResponseFromObjects(object ...$objects): JsonResponse
     {
         return $this->getResponseFromModel($this->jsonFromObjects(...$objects));
@@ -135,6 +142,7 @@ class Api implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonFromArray(array $array): Json
     {
         $json     = $this->getJsonModel();
@@ -150,6 +158,7 @@ class Api implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonResponseFromArray(array $array): JsonResponse
     {
         return $this->getResponseFromModel($this->jsonFromArray($array));
@@ -158,6 +167,7 @@ class Api implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonFromEntity(Entity $entity): Json
     {
         return $this->jsonFromObject($entity);
@@ -166,6 +176,7 @@ class Api implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonResponseFromEntity(Entity $entity): JsonResponse
     {
         return $this->getResponseFromModel($this->jsonFromEntity($entity));
@@ -174,6 +185,7 @@ class Api implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonFromEntities(Entity ...$entities): Json
     {
         return $this->jsonFromObjects(...$entities);
@@ -182,6 +194,7 @@ class Api implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function jsonResponseFromEntities(Entity ...$entities): JsonResponse
     {
         return $this->getResponseFromModel($this->jsonFromEntities(...$entities));

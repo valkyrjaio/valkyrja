@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing;
 
+use Override;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
@@ -61,6 +62,7 @@ class Router implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function dispatch(Input $input): Output
     {
         // Attempt to match the command
@@ -84,6 +86,7 @@ class Router implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function dispatchCommand(Input $input, Command $command): Output
     {
         // The command has been matched

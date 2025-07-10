@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\BuiltIn\Support;
 
+use Override;
+
 use function mb_convert_case;
 use function mb_strtolower;
 use function mb_strtoupper;
@@ -43,6 +45,7 @@ class MbStr extends Str
      *
      * @return string
      */
+    #[Override]
     public static function substr(string $subject, int $start, int|null $length = null): string
     {
         return mb_substr($subject, $start, $length, static::$charset);

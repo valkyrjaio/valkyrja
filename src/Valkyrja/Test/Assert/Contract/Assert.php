@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Assert\Contract;
 
+use Override;
+
 /**
  * Interface Assert.
  *
@@ -48,6 +50,7 @@ interface Assert extends Asserter
     /**
      * Get an asserter by name.
      */
+    #[Override]
     public function __get(string $name): mixed;
 
     /**

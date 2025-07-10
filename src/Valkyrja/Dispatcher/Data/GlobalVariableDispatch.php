@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher\Data;
 
+use Override;
 use Valkyrja\Dispatcher\Data\Contract\GlobalVariableDispatch as Contract;
 
 /**
@@ -30,6 +31,7 @@ class GlobalVariableDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getVariable(): string
     {
         return $this->variable;
@@ -38,6 +40,7 @@ class GlobalVariableDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withVariable(string $variable): static
     {
         $new = clone $this;

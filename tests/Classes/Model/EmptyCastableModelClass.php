@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Model;
 
 use Closure;
+use Override;
 use RuntimeException;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Model\CastableModel as AbstractModel;
@@ -29,6 +30,7 @@ use const JSON_THROW_ON_ERROR;
  */
 class EmptyCastableModelClass extends AbstractModel
 {
+    #[Override]
     protected function internalSetProperties(array $properties, Closure|null $modifyValue = null): void
     {
         parent::internalSetProperties(

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Request;
 
+use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
@@ -81,6 +82,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getServerParams(): array
     {
         return $this->server;
@@ -89,6 +91,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getServerParam(string $name, mixed $default = null): mixed
     {
         return $this->server[$name] ?? $default;
@@ -97,6 +100,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasServerParam(string $name): bool
     {
         return isset($this->server[$name])
@@ -106,6 +110,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getCookieParams(): array
     {
         return $this->cookies;
@@ -114,6 +119,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withCookieParams(array $cookies): static
     {
         $new = clone $this;
@@ -126,6 +132,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedCookieParam(string $name, string|null $value = null): static
     {
         $new = clone $this;
@@ -138,6 +145,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getCookieParam(string $name, string|null $default = null): string|null
     {
         return $this->cookies[$name] ?? $default;
@@ -146,6 +154,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasCookieParam(string $name): bool
     {
         return isset($this->cookies[$name])
@@ -155,6 +164,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getQueryParams(): array
     {
         return $this->query;
@@ -163,6 +173,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function onlyQueryParams(string|int ...$names): array
     {
         return $this->onlyParams($this->query, ...$names);
@@ -171,6 +182,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function exceptQueryParams(string|int ...$names): array
     {
         return $this->exceptParams($this->query, ...$names);
@@ -179,6 +191,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withQueryParams(array $query): static
     {
         $new = clone $this;
@@ -191,6 +204,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedQueryParam(string|int $name, mixed $value): static
     {
         $new = clone $this;
@@ -203,6 +217,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getQueryParam(string|int $name, mixed $default = null): mixed
     {
         return $this->query[$name] ?? $default;
@@ -211,6 +226,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasQueryParam(string|int $name): bool
     {
         return isset($this->query[$name])
@@ -220,6 +236,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getUploadedFiles(): array
     {
         return $this->files;
@@ -228,6 +245,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withUploadedFiles(array $uploadedFiles): static
     {
         $new = clone $this;
@@ -240,6 +258,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedUploadedFile(UploadedFile $uploadedFile): static
     {
         $new = clone $this;
@@ -252,6 +271,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getParsedBody(): array
     {
         return $this->parsedBody;
@@ -260,6 +280,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function onlyParsedBody(string|int ...$names): array
     {
         return $this->onlyParams($this->parsedBody, ...$names);
@@ -268,6 +289,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function exceptParsedBody(string|int ...$names): array
     {
         return $this->exceptParams($this->parsedBody, ...$names);
@@ -276,6 +298,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withParsedBody(array $data): static
     {
         $new = clone $this;
@@ -288,6 +311,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedParsedBodyParam(string|int $name, mixed $value): static
     {
         $new = clone $this;
@@ -300,6 +324,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getParsedBodyParam(string|int $name, mixed $default = null): mixed
     {
         return $this->parsedBody[$name] ?? $default;
@@ -308,6 +333,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function hasParsedBodyParam(string|int $name): bool
     {
         return isset($this->parsedBody[$name])
@@ -317,6 +343,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getAttributes(): array
     {
         return $this->attributes;
@@ -325,6 +352,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function onlyAttributes(string ...$names): array
     {
         return $this->onlyParams($this->attributes, ...$names);
@@ -333,6 +361,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function exceptAttributes(string ...$names): array
     {
         return $this->exceptParams($this->attributes, ...$names);
@@ -341,6 +370,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getAttribute(string $name, mixed $default = null): mixed
     {
         return $this->attributes[$name] ?? $default;
@@ -349,6 +379,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAttribute(string $name, mixed $value): static
     {
         $new = clone $this;
@@ -361,6 +392,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withoutAttribute(string $name): static
     {
         $new = clone $this;
@@ -373,6 +405,7 @@ class ServerRequest extends Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isXmlHttpRequest(): bool
     {
         return $this->getHeaderLine(HeaderName::X_REQUESTED_WITH) === 'XMLHttpRequest';

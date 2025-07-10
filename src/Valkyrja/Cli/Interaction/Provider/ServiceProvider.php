@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Provider;
 
+use Override;
 use Valkyrja\Application\Env;
 use Valkyrja\Cli\Interaction\Config;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
@@ -29,6 +30,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function publishers(): array
     {
         return [
@@ -40,6 +42,7 @@ final class ServiceProvider extends Provider
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function provides(): array
     {
         return [

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Server;
 
+use Override;
 use Throwable;
 use Valkyrja\Http\Server\RequestHandler;
 
@@ -30,11 +31,13 @@ class FastCgiRequestHandlerClass extends RequestHandler
         return $this->hasRequestBeenFinishedWithFastCgi;
     }
 
+    #[Override]
     protected function shouldUseFastcgiToFinishRequest(): bool
     {
         return true;
     }
 
+    #[Override]
     protected function finishRequestWithFastcgi(): void
     {
         $this->hasRequestBeenFinishedWithFastCgi = true;

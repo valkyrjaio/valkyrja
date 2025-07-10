@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Option;
 
+use Override;
 use Valkyrja\Cli\Interaction\Enum\OptionType;
 use Valkyrja\Cli\Interaction\Option\Contract\Option as Contract;
 
@@ -37,6 +38,7 @@ class Option implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getName(): string
     {
         return $this->name;
@@ -45,6 +47,7 @@ class Option implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withName(string $name): static
     {
         $new = clone $this;
@@ -57,6 +60,7 @@ class Option implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getValue(): string|null
     {
         return $this->value;
@@ -65,6 +69,7 @@ class Option implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withValue(string|null $value): static
     {
         $new = clone $this;
@@ -77,6 +82,7 @@ class Option implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getType(): OptionType
     {
         return $this->type;
@@ -85,6 +91,7 @@ class Option implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withType(OptionType $type): static
     {
         $new = clone $this;

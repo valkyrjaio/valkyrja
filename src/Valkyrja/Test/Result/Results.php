@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Result;
 
+use Override;
 use Valkyrja\Test\Contract\Test;
 use Valkyrja\Test\Result\Contract\Results as Contract;
 
@@ -34,6 +35,7 @@ class Results implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getTests(): array
     {
         return $this->results;

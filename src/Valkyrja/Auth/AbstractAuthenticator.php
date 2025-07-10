@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth;
 
+use Override;
 use Valkyrja\Auth\Contract\Authenticator as Contract;
 use Valkyrja\Auth\Data\Attempt\Contract\AuthenticationAttempt;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsers;
@@ -53,6 +54,7 @@ abstract class AbstractAuthenticator implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isAuthenticated(): bool
     {
         return $this->authenticatedUsers->hasCurrent()
@@ -64,6 +66,7 @@ abstract class AbstractAuthenticator implements Contract
      *
      * @return U|null
      */
+    #[Override]
     public function getAuthenticated(): User|null
     {
         $id = $this->authenticatedUsers->getCurrent();
@@ -83,6 +86,7 @@ abstract class AbstractAuthenticator implements Contract
      *
      * @return U|null
      */
+    #[Override]
     public function getImpersonated(): User|null
     {
         $id = $this->authenticatedUsers->getImpersonated();
@@ -100,6 +104,7 @@ abstract class AbstractAuthenticator implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getAuthenticatedUsers(): AuthenticatedUsers
     {
         return $this->authenticatedUsers;
@@ -108,6 +113,7 @@ abstract class AbstractAuthenticator implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setAuthenticatedUsers(AuthenticatedUsers $authenticatedUsers): static
     {
         $this->authenticatedUsers = $authenticatedUsers;
@@ -118,6 +124,7 @@ abstract class AbstractAuthenticator implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function authenticate(AuthenticationAttempt $attempt): User
     {
         $user = $this->store->retrieve($attempt->getRetrieval(), $this->entity);
@@ -140,6 +147,7 @@ abstract class AbstractAuthenticator implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function unauthenticate(int|string $id): static
     {
         $this->authenticatedUsers->remove($id);

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Schema;
 
+use Override;
 use Valkyrja\Orm\Contract\Manager;
 use Valkyrja\Orm\Schema\Contract\Migration as Contract;
 
@@ -34,10 +35,12 @@ abstract class Migration implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     abstract public function run(): void;
 
     /**
      * @inheritDoc
      */
+    #[Override]
     abstract public function rollback(): void;
 }

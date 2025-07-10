@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Repository;
 
+use Override;
 use Valkyrja\Orm\Contract\Manager;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
@@ -44,6 +45,7 @@ class Repository implements Contract
      *
      * @return T|null
      */
+    #[Override]
     public function find(int|string $id): Entity|null
     {
         /** @var class-string<T> $entity */
@@ -63,6 +65,7 @@ class Repository implements Contract
      *
      * @return T|null
      */
+    #[Override]
     public function findBy(Where ...$where): Entity|null
     {
         $table  = $this->entity::getTableName();
@@ -79,6 +82,7 @@ class Repository implements Contract
      *
      * @return T[]
      */
+    #[Override]
     public function all(): array
     {
         return $this->allBy();
@@ -89,6 +93,7 @@ class Repository implements Contract
      *
      * @return T[]
      */
+    #[Override]
     public function allBy(Where ...$where): array
     {
         $table  = $this->entity::getTableName();
@@ -106,6 +111,7 @@ class Repository implements Contract
      *
      * @param T $entity The entity
      */
+    #[Override]
     public function create(Entity $entity): void
     {
         $table  = $entity::getTableName();
@@ -126,6 +132,7 @@ class Repository implements Contract
      *
      * @param T $entity The entity
      */
+    #[Override]
     public function update(Entity $entity): void
     {
         $table  = $entity::getTableName();
@@ -151,6 +158,7 @@ class Repository implements Contract
      *
      * @param T $entity The entity
      */
+    #[Override]
     public function delete(Entity $entity): void
     {
         $table  = $entity::getTableName();

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache;
 
+use Override;
 use Valkyrja\Cache\Contract\Cache as Contract;
 use Valkyrja\Cache\Tagger\Contract\Tagger;
 use Valkyrja\Cache\Tagger\Tagger as TagClass;
@@ -35,6 +36,7 @@ class NullCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function has(string $key): bool
     {
         return true;
@@ -43,6 +45,7 @@ class NullCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function get(string $key): string|null
     {
         return '';
@@ -51,6 +54,7 @@ class NullCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function many(string ...$keys): array
     {
         return [];
@@ -59,6 +63,7 @@ class NullCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function put(string $key, string $value, int $minutes): void
     {
     }
@@ -66,6 +71,7 @@ class NullCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function putMany(array $values, int $minutes): void
     {
     }
@@ -73,6 +79,7 @@ class NullCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function increment(string $key, int $value = 1): int
     {
         return $value;
@@ -81,6 +88,7 @@ class NullCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function decrement(string $key, int $value = 1): int
     {
         return $value;
@@ -89,6 +97,7 @@ class NullCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function forever(string $key, string $value): void
     {
     }
@@ -96,6 +105,7 @@ class NullCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function forget(string $key): bool
     {
         return true;
@@ -104,6 +114,7 @@ class NullCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function flush(): bool
     {
         return true;
@@ -112,6 +123,7 @@ class NullCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getPrefix(): string
     {
         return $this->prefix;
@@ -120,6 +132,7 @@ class NullCache implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getTagger(string ...$tags): Tagger
     {
         return TagClass::make($this, ...$tags);

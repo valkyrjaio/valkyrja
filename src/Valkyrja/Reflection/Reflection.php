@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Reflection;
 
 use Closure;
+use Override;
 use ReflectionClass;
 use ReflectionClassConstant;
 use ReflectionFunction;
@@ -75,6 +76,7 @@ class Reflection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function forClass(string $class): ReflectionClass
     {
         $index = $class;
@@ -86,6 +88,7 @@ class Reflection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function forClassConstant(string $class, string $const): ReflectionClassConstant
     {
         $index = $class . $const;
@@ -98,6 +101,7 @@ class Reflection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function forClassProperty(string $class, string $property): ReflectionProperty
     {
         $index = $class . $property;
@@ -109,6 +113,7 @@ class Reflection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function forClassMethod(string $class, string $method): ReflectionMethod
     {
         $index = $class . $method;
@@ -120,6 +125,7 @@ class Reflection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function forFunction(string $function): ReflectionFunction
     {
         $index = $function;
@@ -131,6 +137,7 @@ class Reflection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function forClosure(Closure $closure): ReflectionFunction
     {
         return new ReflectionFunction($closure);
@@ -139,6 +146,7 @@ class Reflection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getDependencies(ReflectionFunctionAbstract $reflection): array
     {
         return $this->getDependenciesFromParameters(...$reflection->getParameters());
@@ -147,6 +155,7 @@ class Reflection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getDependenciesFromParameters(ReflectionParameter ...$parameters): array
     {
         // Setup to find any injectable objects through the service container

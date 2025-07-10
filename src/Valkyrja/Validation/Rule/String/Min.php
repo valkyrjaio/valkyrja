@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Rule\String;
 
+use Override;
 use Valkyrja\Type\BuiltIn\Support\Str;
 use Valkyrja\Validation\Rule\Rule;
 
@@ -33,6 +34,7 @@ class Min extends Rule
         parent::__construct($subject, $errorMessage);
     }
 
+    #[Override]
     public function isValid(): bool
     {
         /** @var mixed $subject */
@@ -41,6 +43,7 @@ class Min extends Rule
         return is_string($subject) && Str::min($subject, $this->min);
     }
 
+    #[Override]
     public function getDefaultErrorMessage(): string
     {
         return "Must be longer than $this->min";

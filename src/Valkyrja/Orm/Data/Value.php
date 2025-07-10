@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Data;
 
+use Override;
 use Stringable;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
 
@@ -44,6 +45,7 @@ readonly class Value implements Stringable
      *
      * @return non-empty-string
      */
+    #[Override]
     public function __toString(): string
     {
         $nameBind = ":$this->name";

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View;
 
+use Override;
 use Valkyrja\Support\Directory;
 use Valkyrja\View\Exception\RuntimeException;
 
@@ -105,6 +106,7 @@ class OrkaRenderer extends PhpRenderer
     /**
      * @inheritDoc
      */
+    #[Override]
     public function renderFile(string $name, array $variables = []): string
     {
         $cachedPath = $this->getCachedFilePath($name);

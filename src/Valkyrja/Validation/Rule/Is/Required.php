@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Rule\Is;
 
+use Override;
 use Valkyrja\Validation\Rule\Rule;
 
 /**
@@ -22,11 +23,13 @@ use Valkyrja\Validation\Rule\Rule;
  */
 class Required extends Rule
 {
+    #[Override]
     public function isValid(): bool
     {
         return (bool) $this->subject;
     }
 
+    #[Override]
     public function getDefaultErrorMessage(): string
     {
         return 'Must be provided';

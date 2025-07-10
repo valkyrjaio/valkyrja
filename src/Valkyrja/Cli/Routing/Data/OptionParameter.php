@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Data;
 
+use Override;
 use Valkyrja\Cli\Interaction\Option\Contract\Option;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameter as Contract;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
@@ -61,6 +62,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getShortNames(): array
     {
         return $this->shortNames;
@@ -69,6 +71,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withShortNames(string ...$shortNames): static
     {
         $new = clone $this;
@@ -81,6 +84,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedShortNames(string ...$shortNames): static
     {
         $new = clone $this;
@@ -97,6 +101,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getMode(): OptionMode
     {
         return $this->mode;
@@ -105,6 +110,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withMode(OptionMode $mode): static
     {
         $new = clone $this;
@@ -117,6 +123,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getValueMode(): OptionValueMode
     {
         return $this->valueMode;
@@ -125,6 +132,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withValueMode(OptionValueMode $valueMode): static
     {
         $new = clone $this;
@@ -137,6 +145,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getValueDisplayName(): string|null
     {
         return $this->valueDisplayName;
@@ -145,6 +154,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withValueDisplayName(string|null $valueName): static
     {
         $new = clone $this;
@@ -157,6 +167,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getValidValues(): array
     {
         return $this->validValues;
@@ -165,6 +176,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withValidValues(string ...$validValues): static
     {
         $new = clone $this;
@@ -177,6 +189,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedValidValues(string ...$validValues): static
     {
         $new = clone $this;
@@ -193,6 +206,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getDefaultValue(): string|null
     {
         return $this->defaultValue;
@@ -201,6 +215,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withDefaultValue(string|null $defaultValue = null): static
     {
         $new = clone $this;
@@ -213,6 +228,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getOptions(): array
     {
         return $this->options;
@@ -221,6 +237,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withOptions(Option ...$options): static
     {
         $new = clone $this;
@@ -241,6 +258,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedOptions(Option ...$options): static
     {
         $new = clone $this;
@@ -255,6 +273,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getCastValues(): array
     {
         $values   = [];
@@ -286,6 +305,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getFirstValue(): string|null
     {
         $firstItem = $this->options[0] ?? null;
@@ -296,6 +316,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function areValuesValid(): bool
     {
         return match (true) {
@@ -308,6 +329,7 @@ class OptionParameter extends Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function validateValues(): static
     {
         if (! $this->areValuesValid()) {

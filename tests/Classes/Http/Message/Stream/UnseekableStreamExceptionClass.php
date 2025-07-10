@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Message\Stream;
 
+use Override;
 use Valkyrja\Http\Message\Stream\Stream;
 
 /**
@@ -22,6 +23,7 @@ use Valkyrja\Http\Message\Stream\Stream;
  */
 class UnseekableStreamExceptionClass extends Stream
 {
+    #[Override]
     public function isSeekable(): bool
     {
         return false;

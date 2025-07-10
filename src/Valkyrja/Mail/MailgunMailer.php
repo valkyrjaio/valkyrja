@@ -16,6 +16,7 @@ namespace Valkyrja\Mail;
 use Mailgun\Mailgun;
 use Mailgun\Message\BatchMessage;
 use Mailgun\Message\Exceptions\MissingRequiredParameter;
+use Override;
 use Valkyrja\Mail\Contract\Mailer as Contract;
 use Valkyrja\Mail\Data\Contract\Message;
 
@@ -42,6 +43,7 @@ class MailgunMailer implements Contract
      *
      * @throws MissingRequiredParameter
      */
+    #[Override]
     public function send(Message $message): void
     {
         $domain = $this->domain;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Uri;
 
+use Override;
 use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\Uri as Contract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
@@ -89,6 +90,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function fromString(string $uri): static
     {
         if (
@@ -121,6 +123,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isSecure(): bool
     {
         return $this->scheme === Scheme::HTTPS;
@@ -129,6 +132,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getScheme(): Scheme
     {
         return $this->scheme;
@@ -137,6 +141,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getAuthority(): string
     {
         if (empty($this->host)) {
@@ -159,6 +164,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getUsername(): string
     {
         return $this->username;
@@ -167,6 +173,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getPassword(): string
     {
         return $this->password;
@@ -175,6 +182,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getUserInfo(): string
     {
         return $this->userInfo;
@@ -183,6 +191,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getHost(): string
     {
         return $this->host;
@@ -191,6 +200,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getPort(): int|null
     {
         return $this->isStandardPort() ? null : $this->port;
@@ -199,6 +209,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getHostPort(): string
     {
         $host = $this->host;
@@ -213,6 +224,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getSchemeHostPort(): string
     {
         $hostPort = $this->getHostPort();
@@ -224,6 +236,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getPath(): string
     {
         return $this->path;
@@ -232,6 +245,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getQuery(): string
     {
         return $this->query;
@@ -240,6 +254,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getFragment(): string
     {
         return $this->fragment;
@@ -248,6 +263,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withScheme(Scheme $scheme): static
     {
         $new = clone $this;
@@ -260,6 +276,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withUsername(string $username): static
     {
         return $this->withUserInfo($username, $this->password);
@@ -268,6 +285,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withPassword(string $password): static
     {
         return $this->withUserInfo($this->username, $password);
@@ -276,6 +294,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withUserInfo(string $user, string|null $password = null): static
     {
         $info = $user;
@@ -300,6 +319,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withHost(string $host): static
     {
         $new = clone $this;
@@ -312,6 +332,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withPort(int|null $port = null): static
     {
         $this->validatePort($port);
@@ -326,6 +347,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withPath(string $path): static
     {
         $path = $this->filterPath($path);
@@ -340,6 +362,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withQuery(string $query): static
     {
         $query = $this->filterQuery($query);
@@ -354,6 +377,7 @@ class Uri implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withFragment(string $fragment): static
     {
         $fragment = $this->filterFragment($fragment);

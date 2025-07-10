@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher\Data;
 
+use Override;
 use Valkyrja\Dispatcher\Data\Contract\ConstantDispatch as Contract;
 
 /**
@@ -34,6 +35,7 @@ class ConstantDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getConstant(): string
     {
         return $this->constant;
@@ -42,6 +44,7 @@ class ConstantDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withConstant(string $constant): static
     {
         $new = clone $this;
@@ -54,6 +57,7 @@ class ConstantDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getClass(): string|null
     {
         return $this->class;
@@ -62,6 +66,7 @@ class ConstantDispatch extends Dispatch implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withClass(string|null $class = null): static
     {
         $new = clone $this;

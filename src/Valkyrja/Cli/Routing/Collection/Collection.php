@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Collection;
 
+use Override;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection as Contract;
 use Valkyrja\Cli\Routing\Data;
 use Valkyrja\Cli\Routing\Data\Contract\Command;
@@ -31,6 +32,7 @@ class Collection implements Contract
     /**
      * Get a data representation of the collection.
      */
+    #[Override]
     public function getData(): Data
     {
         return new Data(
@@ -41,6 +43,7 @@ class Collection implements Contract
     /**
      * Set data from a data object.
      */
+    #[Override]
     public function setFromData(Data $data): void
     {
         foreach ($data->commands as $id => $route) {
@@ -57,6 +60,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function add(Command ...$commands): static
     {
         foreach ($commands as $command) {
@@ -69,6 +73,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function get(string $name): Command|null
     {
         return $this->commands[$name]
@@ -78,6 +83,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function has(string $name): bool
     {
         return isset($this->commands[$name]);
@@ -86,6 +92,7 @@ class Collection implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function all(): array
     {
         return $this->commands;

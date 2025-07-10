@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Request;
 
+use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Exception\InvalidArgumentException;
@@ -67,6 +68,7 @@ class Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getRequestTarget(): string
     {
         if ($this->requestTarget !== null) {
@@ -89,6 +91,7 @@ class Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withRequestTarget(string $requestTarget): static
     {
         $this->validateRequestTarget($requestTarget);
@@ -103,6 +106,7 @@ class Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getMethod(): RequestMethod
     {
         return $this->method;
@@ -111,6 +115,7 @@ class Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withMethod(RequestMethod $method): static
     {
         $new = clone $this;
@@ -123,6 +128,7 @@ class Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getUri(): Uri
     {
         return $this->uri;
@@ -131,6 +137,7 @@ class Request implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withUri(Uri $uri, bool $preserveHost = false): static
     {
         $new = clone $this;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\QueryBuilder\Factory;
 
+use Override;
 use Valkyrja\Orm\QueryBuilder\Contract\DeleteQueryBuilder;
 use Valkyrja\Orm\QueryBuilder\Contract\InsertQueryBuilder;
 use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilder;
@@ -33,6 +34,7 @@ class SqlQueryBuilderFactory implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function select(string $table): SelectQueryBuilder
     {
         return new SqlSelectQueryBuilder(from: $table);
@@ -41,6 +43,7 @@ class SqlQueryBuilderFactory implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function insert(string $table): InsertQueryBuilder
     {
         return new SqlInsertQueryBuilder(from: $table);
@@ -49,6 +52,7 @@ class SqlQueryBuilderFactory implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function update(string $table): UpdateQueryBuilder
     {
         return new SqlUpdateQueryBuilder(from: $table);
@@ -57,6 +61,7 @@ class SqlQueryBuilderFactory implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function delete(string $table): DeleteQueryBuilder
     {
         return new SqlDeleteQueryBuilder(from: $table);

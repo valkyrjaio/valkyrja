@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Session;
 
 use JsonException;
+use Override;
 use Valkyrja\Cache\Contract\Cache;
 use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Exception\SessionStartFailure;
@@ -50,6 +51,7 @@ class CacheSession extends PhpSession
      *
      * @throws JsonException
      */
+    #[Override]
     public function start(): void
     {
         // If the session is already active
@@ -78,6 +80,7 @@ class CacheSession extends PhpSession
      *
      * @throws JsonException
      */
+    #[Override]
     public function set(string $id, $value): void
     {
         $this->data[$id] = $value;
@@ -90,6 +93,7 @@ class CacheSession extends PhpSession
      *
      * @throws JsonException
      */
+    #[Override]
     public function remove(string $id): bool
     {
         if (! $this->has($id)) {
@@ -108,6 +112,7 @@ class CacheSession extends PhpSession
      *
      * @throws JsonException
      */
+    #[Override]
     public function clear(): void
     {
         parent::clear();
@@ -120,6 +125,7 @@ class CacheSession extends PhpSession
      *
      * @throws JsonException
      */
+    #[Override]
     public function destroy(): void
     {
         parent::destroy();

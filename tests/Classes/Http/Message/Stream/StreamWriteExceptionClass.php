@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Message\Stream;
 
+use Override;
 use Valkyrja\Http\Message\Stream\Stream;
 
 /**
@@ -22,6 +23,7 @@ use Valkyrja\Http\Message\Stream\Stream;
  */
 class StreamWriteExceptionClass extends Stream
 {
+    #[Override]
     protected function writeToStream($stream, string $data): int|false
     {
         return false;

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Client;
 
 use JsonException;
+use Override;
 use Valkyrja\Http\Client\Contract\Client as Contract;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\Request;
@@ -39,6 +40,7 @@ class LogClient implements Contract
      *
      * @throws JsonException
      */
+    #[Override]
     public function sendRequest(Request $request): Response
     {
         $optionsString = Obj::toString($request);

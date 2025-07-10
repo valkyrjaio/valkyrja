@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Dispatcher\Data\Contract;
 
 use JsonSerializable;
+use Override;
 use Stringable;
 
 /**
@@ -35,5 +36,6 @@ interface Dispatch extends JsonSerializable, Stringable
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function jsonSerialize(): array;
 }

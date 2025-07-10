@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Statement;
 
+use Override;
 use PDO;
 use PDOStatement as Statement;
 use Valkyrja\Orm\Data\Value;
@@ -45,6 +46,7 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function bindValue(Value $value): bool
     {
         if ($value->value instanceof QueryBuilder) {
@@ -75,6 +77,7 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function execute(): bool
     {
         return $this->statement->execute();
@@ -83,6 +86,7 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getColumnMeta(int $columnNumber): array
     {
         /** @var array<string, mixed>|false $columnMeta */
@@ -101,6 +105,7 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function fetch(): array
     {
         /** @var array<string, mixed>|false $fetch */
@@ -116,6 +121,7 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function fetchColumn(int $columnNumber = 0): mixed
     {
         return $this->statement->fetchColumn($columnNumber);
@@ -126,6 +132,7 @@ class PdoStatement implements Contract
      *
      * @psalm-suppress MixedReturnTypeCoercion
      */
+    #[Override]
     public function fetchAll(): array
     {
         return $this->statement->fetchAll(PDO::FETCH_ASSOC);
@@ -134,6 +141,7 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getCount(): int
     {
         $results = $this->statement->fetchAll();
@@ -164,6 +172,7 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function rowCount(): int
     {
         return $this->statement->rowCount();
@@ -172,6 +181,7 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function columnCount(): int
     {
         return $this->statement->columnCount();
@@ -180,6 +190,7 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function errorCode(): string
     {
         return $this->statement->errorInfo()[0] ?? '00000';
@@ -188,6 +199,7 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function errorMessage(): string|null
     {
         return $this->statement->errorInfo()[2] ?? null;

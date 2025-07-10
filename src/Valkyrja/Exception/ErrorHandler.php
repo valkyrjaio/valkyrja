@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Exception;
 
+use Override;
 use Throwable;
 use Valkyrja\Exception\Contract\ErrorHandler as Contract;
 use Whoops\Handler\JsonResponseHandler;
@@ -44,6 +45,7 @@ class ErrorHandler implements Contract
      *
      * @return void
      */
+    #[Override]
     public static function enable(int $errorReportingLevel = E_ALL, bool $displayErrors = false): void
     {
         // If debug is already enabled
@@ -90,6 +92,7 @@ class ErrorHandler implements Contract
      *
      * @return string
      */
+    #[Override]
     public static function getTraceCode(Throwable $exception): string
     {
         return md5($exception->getTraceAsString());

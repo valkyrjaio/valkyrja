@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Data;
 
 use JsonSerializable;
+use Override;
 use Valkyrja\Type\Contract\Type;
 use Valkyrja\Type\Enum\CastType;
 
@@ -56,6 +57,7 @@ class Cast implements JsonSerializable
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function jsonSerialize(): array
     {
         return get_object_vars($this);

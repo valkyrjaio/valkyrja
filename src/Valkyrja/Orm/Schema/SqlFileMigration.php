@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Schema;
 
+use Override;
 use Throwable;
 use Valkyrja\Exception\RuntimeException;
 
@@ -28,6 +29,7 @@ abstract class SqlFileMigration extends TransactionalMigration
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function runMigration(): void
     {
         $this->executeSql($this->getRunMigrationFilePath());
@@ -36,6 +38,7 @@ abstract class SqlFileMigration extends TransactionalMigration
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function rollbackMigration(): void
     {
         $this->executeSql($this->getRollbackMigrationFilePath());
@@ -76,6 +79,7 @@ abstract class SqlFileMigration extends TransactionalMigration
      *
      * @return void
      */
+    #[Override]
     protected function runFailure(Throwable $exception): void
     {
     }

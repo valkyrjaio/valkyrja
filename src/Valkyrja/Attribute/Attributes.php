@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Attribute;
 
 use Closure;
+use Override;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionClassConstant;
@@ -58,6 +59,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
+    #[Override]
     public function forClass(string $class, string|null $attribute = null, int|null $flags = null): array
     {
         $reflection = $this->reflection->forClass($class);
@@ -73,6 +75,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
+    #[Override]
     public function forClassMembers(string $class, string|null $attribute = null, int|null $flags = null): array
     {
         return [
@@ -87,6 +90,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
+    #[Override]
     public function forClassAndMembers(string $class, string|null $attribute = null, int|null $flags = null): array
     {
         return [
@@ -100,6 +104,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
+    #[Override]
     public function forConstant(
         string $class,
         string $constant,
@@ -114,6 +119,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
+    #[Override]
     public function forConstants(string $class, string|null $attribute = null, int|null $flags = null): array
     {
         return $this->forClassMember(
@@ -128,6 +134,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
+    #[Override]
     public function forProperty(
         string $class,
         string $property,
@@ -142,6 +149,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
+    #[Override]
     public function forProperties(string $class, string|null $attribute = null, int|null $flags = null): array
     {
         return $this->forClassMember(
@@ -156,6 +164,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
+    #[Override]
     public function forMethod(
         string $class,
         string $method,
@@ -170,6 +179,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
+    #[Override]
     public function forMethodParameters(
         string $class,
         string $method,
@@ -188,6 +198,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
+    #[Override]
     public function forMethodParameter(
         string $class,
         string $method,
@@ -215,6 +226,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
+    #[Override]
     public function forMethods(string $class, string|null $attribute = null, int|null $flags = null): array
     {
         return $this->forClassMember(
@@ -229,6 +241,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
+    #[Override]
     public function forFunction(string $function, string|null $attribute = null, int|null $flags = null): array
     {
         $reflection = $this->reflection->forFunction($function);
@@ -244,6 +257,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
+    #[Override]
     public function forFunctionParameters(string $function, string|null $attribute = null, int|null $flags = null): array
     {
         return $this->forParameter(
@@ -258,6 +272,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
+    #[Override]
     public function forClosure(Closure $closure, string|null $attribute = null, int|null $flags = null): array
     {
         $reflection = $this->reflection->forClosure($closure);
@@ -273,6 +288,7 @@ class Attributes implements Contract
      *
      * @throws ReflectionException
      */
+    #[Override]
     public function forClosureParameters(Closure $closure, string|null $attribute = null, int|null $flags = null): array
     {
         return $this->forParameter(

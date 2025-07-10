@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Data;
 
+use Override;
 use Valkyrja\Http\Routing\Constant\Regex as RegexConstant;
 use Valkyrja\Http\Routing\Data\Contract\Parameter as Contract;
 use Valkyrja\Http\Routing\Exception\InvalidParameterRegexException;
@@ -38,6 +39,7 @@ class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getName(): string
     {
         return $this->name;
@@ -46,6 +48,7 @@ class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withName(string $name): static
     {
         $new = clone $this;
@@ -58,6 +61,7 @@ class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getRegex(): string
     {
         return $this->regex;
@@ -66,6 +70,7 @@ class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withRegex(string $regex): static
     {
         if (@preg_match(RegexConstant::START . $regex . RegexConstant::END, '') === false) {
@@ -84,6 +89,7 @@ class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getCast(): Cast|null
     {
         return $this->cast;
@@ -92,6 +98,7 @@ class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withCast(Cast|null $cast = null): static
     {
         $new = clone $this;
@@ -104,6 +111,7 @@ class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function isOptional(): bool
     {
         return $this->isOptional;
@@ -112,6 +120,7 @@ class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withIsOptional(bool $isOptional): static
     {
         $new = clone $this;
@@ -124,6 +133,7 @@ class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function shouldCapture(): bool
     {
         return $this->shouldCapture;
@@ -132,6 +142,7 @@ class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withShouldCapture(bool $shouldCapture): static
     {
         $new = clone $this;
@@ -144,6 +155,7 @@ class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getDefault(): mixed
     {
         return $this->default;
@@ -152,6 +164,7 @@ class Parameter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withDefault(mixed $default = null): static
     {
         $new = clone $this;

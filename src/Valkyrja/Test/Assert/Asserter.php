@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Assert;
 
+use Override;
 use Valkyrja\Test\Assert\Contract\Asserter as Contract;
 use Valkyrja\Test\Assert\Enum\ResultType;
 use Valkyrja\Test\Exception\AssertFailureException;
@@ -57,6 +58,7 @@ abstract class Asserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getAssertions(): array
     {
         return $this->assertions;
@@ -65,6 +67,7 @@ abstract class Asserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getErrors(): array
     {
         return $this->errors;
@@ -73,6 +76,7 @@ abstract class Asserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getSuccesses(): array
     {
         return $this->successes;
@@ -81,6 +85,7 @@ abstract class Asserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getWarnings(): array
     {
         return $this->warnings;
@@ -89,6 +94,7 @@ abstract class Asserter implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function __get(string $name): mixed
     {
         if (Enum::isValidName(ResultType::class, $name)) {

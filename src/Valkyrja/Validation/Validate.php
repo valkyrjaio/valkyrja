@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation;
 
+use Override;
 use Valkyrja\Validation\Contract\Validate as Contract;
 use Valkyrja\Validation\Exception\ValidationException;
 use Valkyrja\Validation\Rule\Contract\Rule;
@@ -42,6 +43,7 @@ class Validate implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function rules(array|null $rules = null): bool
     {
         $rules ??= $this->rules;
@@ -58,6 +60,7 @@ class Validate implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function setRules(array $rules): void
     {
         $this->rules = $rules;
@@ -66,6 +69,7 @@ class Validate implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getErrorMessages(): array
     {
         return $this->errorMessages;
@@ -74,6 +78,7 @@ class Validate implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getFirstErrorMessage(): string|null
     {
         if (! empty($errorMessages = $this->errorMessages)) {

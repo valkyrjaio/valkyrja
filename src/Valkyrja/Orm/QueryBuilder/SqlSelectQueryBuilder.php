@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\QueryBuilder;
 
+use Override;
 use Valkyrja\Orm\Constant\Statement;
 use Valkyrja\Orm\Data\OrderBy;
 use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilder as Contract;
@@ -38,6 +39,7 @@ class SqlSelectQueryBuilder extends SqlQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withColumns(string ...$columns): static
     {
         $new = clone $this;
@@ -50,6 +52,7 @@ class SqlSelectQueryBuilder extends SqlQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedColumns(string ...$columns): static
     {
         $new = clone $this;
@@ -62,6 +65,7 @@ class SqlSelectQueryBuilder extends SqlQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withGroupBy(string ...$groupBy): static
     {
         $new = clone $this;
@@ -74,6 +78,7 @@ class SqlSelectQueryBuilder extends SqlQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedGroupBy(string ...$groupBy): static
     {
         $new = clone $this;
@@ -86,6 +91,7 @@ class SqlSelectQueryBuilder extends SqlQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withOrderBy(OrderBy ...$orderBy): static
     {
         $new = clone $this;
@@ -98,6 +104,7 @@ class SqlSelectQueryBuilder extends SqlQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withAddedOrderBy(OrderBy ...$orderBy): static
     {
         $new = clone $this;
@@ -110,6 +117,7 @@ class SqlSelectQueryBuilder extends SqlQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withLimit(int $limit): static
     {
         $new = clone $this;
@@ -122,6 +130,7 @@ class SqlSelectQueryBuilder extends SqlQueryBuilder implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function withOffset(int $offset): static
     {
         $new = clone $this;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Message\Stream;
 
+use Override;
 use Valkyrja\Http\Message\Stream\Stream;
 
 /**
@@ -22,11 +23,13 @@ use Valkyrja\Http\Message\Stream\Stream;
  */
 class StreamReadExceptionClass extends Stream
 {
+    #[Override]
     protected function readFromStream($stream, int $length): string|false
     {
         return false;
     }
 
+    #[Override]
     protected function getStreamContents($stream): string|false
     {
         return false;

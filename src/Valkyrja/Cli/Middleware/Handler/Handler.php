@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Middleware\Handler;
 
+use Override;
 use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
@@ -59,6 +60,7 @@ abstract class Handler implements Contract\Handler
     /**
      * @param class-string<Middleware> ...$middleware The middleware to add
      */
+    #[Override]
     public function add(string ...$middleware): void
     {
         $this->middleware = array_merge($this->middleware, $middleware);

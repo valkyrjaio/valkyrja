@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Middleware;
 
+use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Message\Stream\Stream;
@@ -42,6 +43,7 @@ class ViewRouteNotMatchedMiddleware implements RouteNotMatchedMiddleware
     /**
      * @inheritDoc
      */
+    #[Override]
     public function routeNotMatched(ServerRequest $request, Response $response, RouteNotMatchedHandler $handler): Response
     {
         $statusCode = $response->getStatusCode();

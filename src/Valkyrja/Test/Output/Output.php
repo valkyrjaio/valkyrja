@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Test\Output;
 
+use Override;
 use Valkyrja\Test\Formatter\Contract\Formatter;
 use Valkyrja\Test\Formatter\Formatter as DefaultFormatter;
 use Valkyrja\Test\Output\Contract\Output as Contract;
@@ -33,6 +34,7 @@ abstract class Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     public function full(Results $results): void
     {
         $this->title();
@@ -50,35 +52,42 @@ abstract class Output implements Contract
     /**
      * @inheritDoc
      */
+    #[Override]
     abstract public function title(): void;
 
     /**
      * @inheritDoc
      */
+    #[Override]
     abstract public function meta(): void;
 
     /**
      * @inheritDoc
      */
+    #[Override]
     abstract public function tests(Results $results): void;
 
     /**
      * @inheritDoc
      */
+    #[Override]
     abstract public function completed(Results $results): void;
 
     /**
      * @inheritDoc
      */
+    #[Override]
     abstract public function results(Results $results): void;
 
     /**
      * @inheritDoc
      */
+    #[Override]
     abstract public function issues(Results $results): void;
 
     /**
      * @inheritDoc
      */
+    #[Override]
     abstract public function sectionSpacing(): void;
 }

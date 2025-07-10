@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Collection\Contract;
 
 use ArrayAccess;
+use Override;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Valkyrja\Event\Data;
 use Valkyrja\Event\Data\Contract\Listener;
@@ -79,6 +80,7 @@ interface Collection extends ArrayAccess, ListenerProviderInterface
      *
      * @return Listener[]
      */
+    #[Override]
     public function getListenersForEvent(object $event): array;
 
     /**
@@ -142,6 +144,7 @@ interface Collection extends ArrayAccess, ListenerProviderInterface
      *
      * @return Listener[]
      */
+    #[Override]
     public function offsetGet(mixed $offset): array;
 
     /**
@@ -152,6 +155,7 @@ interface Collection extends ArrayAccess, ListenerProviderInterface
      *
      * @return void
      */
+    #[Override]
     public function offsetSet(mixed $offset, mixed $value): void;
 
     /**
@@ -161,6 +165,7 @@ interface Collection extends ArrayAccess, ListenerProviderInterface
      *
      * @return void
      */
+    #[Override]
     public function offsetUnset(mixed $offset): void;
 
     /**
@@ -170,5 +175,6 @@ interface Collection extends ArrayAccess, ListenerProviderInterface
      *
      * @return bool
      */
+    #[Override]
     public function offsetExists(mixed $offset): bool;
 }
