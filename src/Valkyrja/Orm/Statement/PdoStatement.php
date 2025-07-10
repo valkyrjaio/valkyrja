@@ -17,6 +17,7 @@ use Override;
 use PDO;
 use PDOStatement as Statement;
 use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\Entity\Contract\Entity;
 use Valkyrja\Orm\Exception\RuntimeException;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
 use Valkyrja\Orm\Statement\Contract\Statement as Contract;
@@ -104,15 +105,28 @@ class PdoStatement implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @template T of Entity
+     *
+     * @param class-string<T>|null $entity The entity class name
+     *
+     * @return ($entity is class-string<T> ? T : array<string, mixed>)
      */
     #[Override]
-    public function fetch(): array
+    public function fetch(string|null $entity = null): Entity|array
     {
         /** @var array<string, mixed>|false $fetch */
         $fetch = $this->statement->fetch(PDO::FETCH_ASSOC);
 
         if (! is_array($fetch)) {
             throw new RuntimeException($this->errorMessage() ?? 'Error occurred when fetching');
+        }
+
+        if ($entity !== null) {
+            /** @var T $entityClass */
+            $entityClass = $entity::fromArray($fetch);
+
+            return $entityClass;
         }
 
         return $fetch;
@@ -130,12 +144,26 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      *
-     * @psalm-suppress MixedReturnTypeCoercion
+     * @template T of Entity
+     *
+     * @param class-string<T>|null $entity The entity class name
+     *
+     * @return ($entity is class-string<T> ? T[] : array<string, mixed>[])
      */
     #[Override]
-    public function fetchAll(): array
+    public function fetchAll(string|null $entity = null): array
     {
-        return $this->statement->fetchAll(PDO::FETCH_ASSOC);
+        /** @var array<string, mixed>[] $fetch */
+        $fetch = $this->statement->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($entity !== null) {
+            /** @var T[] $entities */
+            $entities = $this->mapResultsToEntity($entity, $fetch);
+
+            return $entities;
+        }
+
+        return $fetch;
     }
 
     /**
@@ -220,5 +248,21 @@ class PdoStatement implements Contract
             $value === null => PDO::PARAM_NULL,
             default         => PDO::PARAM_STR,
         };
+    }
+
+    /**
+     * @template T of Entity
+     *
+     * @param class-string<T>        $entity  The entity class name
+     * @param array<string, mixed>[] $results The results
+     *
+     * @return T[]
+     */
+    protected function mapResultsToEntity(string $entity, array $results): array
+    {
+        return array_map(
+            static fn (array $data): Entity => $entity::fromArray($data),
+            $results
+        );
     }
 }

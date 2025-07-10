@@ -21,6 +21,10 @@ use Valkyrja\Type\Model\Contract\ExposableModel;
  * Interface Entity.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-type StorableValue array<array-key, scalar|null>|scalar|null
+ *
+ * @phpstan-type StorableValue array<array-key, scalar|null>|scalar|null
  */
 interface Entity extends CastableModel, ExposableModel
 {
@@ -79,14 +83,14 @@ interface Entity extends CastableModel, ExposableModel
      *
      * @param string ...$properties [optional] An array of properties to return
      *
-     * @return array<string, mixed>
+     * @return array<non-empty-string, StorableValue>
      */
     public function asStorableArray(string ...$properties): array;
 
     /**
      * Get the entity as an array for saving to the data store including only changed properties.
      *
-     * @return array<string, mixed>
+     * @return array<non-empty-string, StorableValue>
      */
     public function asStorableChangedArray(): array;
 }

@@ -24,9 +24,9 @@ use function is_array;
  *
  * @author Melech Mizrachi
  *
- * @psalm-type ValueType QueryBuilder|array<string|float|int|bool|null>|string|float|int|bool|null
+ * @psalm-type ValueType QueryBuilder|array<array-key, scalar|null>|scalar|null
  *
- * @phpstan-type ValueType QueryBuilder|array<string|float|int|bool|null>|string|float|int|bool|null
+ * @phpstan-type ValueType QueryBuilder|array<array-key, scalar|null>|scalar|null
  */
 readonly class Value implements Stringable
 {

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Statement\Contract;
 
 use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\Entity\Contract\Entity;
 
 /**
  * Interface Statement.
@@ -50,9 +51,13 @@ interface Statement
     /**
      * Fetch the results.
      *
-     * @return array<string, mixed>
+     * @template T of Entity
+     *
+     * @param class-string<T>|null $entity The entity class name
+     *
+     * @return ($entity is class-string<T> ? T : array<string, mixed>)
      */
-    public function fetch(): array;
+    public function fetch(string|null $entity = null): Entity|array;
 
     /**
      * Fetch a single column.
@@ -66,9 +71,13 @@ interface Statement
     /**
      * Fetch all the results.
      *
-     * @return array<string, mixed>[]
+     * @template T of Entity
+     *
+     * @param class-string<T>|null $entity The entity class name
+     *
+     * @return ($entity is class-string<T> ? T[] : array<string, mixed>[])
      */
-    public function fetchAll(): array;
+    public function fetchAll(string|null $entity = null): array;
 
     /**
      * Get the count.

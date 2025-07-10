@@ -74,7 +74,9 @@ class Repository implements Contract
 
         $statement = $this->manager->prepare((string) $select);
 
-        return $this->mapResultsToEntity($statement->fetchAll())[0] ?? null;
+        $fetch = $statement->fetchAll($this->entity);
+
+        return $fetch[0] ?? null;
     }
 
     /**
@@ -99,11 +101,10 @@ class Repository implements Contract
         $table  = $this->entity::getTableName();
         $select = $this->manager->createQueryBuilder()->select($table);
         $select->withWhere(...$where);
-        // TODO: Implement allBy() method.
 
         $statement = $this->manager->prepare((string) $select);
 
-        return $this->mapResultsToEntity($statement->fetchAll());
+        return $statement->fetchAll($this->entity);
     }
 
     /**
@@ -114,11 +115,21 @@ class Repository implements Contract
     #[Override]
     public function create(Entity $entity): void
     {
-        $table  = $entity::getTableName();
-        $create = $this->manager->createQueryBuilder()->insert($table);
+        $table = $entity::getTableName();
 
-        // TODO: Implement create() method.
-        // SET all values
+        $set = [];
+
+        foreach ($entity->asStorableArray() as $key => $value) {
+            $set[] = new Value(
+                name: $key,
+                value: $value
+            );
+        }
+
+        $create = $this->manager
+            ->createQueryBuilder()
+            ->insert($table)
+            ->withSet(...$set);
 
         $this->manager->prepare((string) $create);
 
@@ -135,8 +146,7 @@ class Repository implements Contract
     #[Override]
     public function update(Entity $entity): void
     {
-        $table  = $entity::getTableName();
-        $update = $this->manager->createQueryBuilder()->update($table);
+        $table = $entity::getTableName();
 
         $where = new Where(
             value: new Value(
@@ -145,10 +155,20 @@ class Repository implements Contract
             ),
         );
 
-        $update->withWhere($where);
+        $set = [];
 
-        // TODO: Implement update() method.
-        // SET all values
+        foreach ($entity->asStorableChangedArray() as $key => $value) {
+            $set[] = new Value(
+                name: $key,
+                value: $value
+            );
+        }
+
+        $update = $this->manager
+            ->createQueryBuilder()
+            ->update($table)
+            ->withWhere($where)
+            ->withSet(...$set);
 
         $this->manager->prepare((string) $update);
     }
@@ -161,8 +181,7 @@ class Repository implements Contract
     #[Override]
     public function delete(Entity $entity): void
     {
-        $table  = $entity::getTableName();
-        $delete = $this->manager->createQueryBuilder()->delete($table);
+        $table = $entity::getTableName();
 
         $where = new Where(
             value: new Value(
@@ -171,24 +190,11 @@ class Repository implements Contract
             ),
         );
 
-        $delete->withWhere($where);
+        $delete = $this->manager
+            ->createQueryBuilder()
+            ->delete($table)
+            ->withWhere($where);
 
         $this->manager->prepare((string) $delete);
-    }
-
-    /**
-     * @param array<string, mixed>[] $results The results
-     *
-     * @return T[]
-     */
-    protected function mapResultsToEntity(array $results): array
-    {
-        /** @var class-string<T> $entity */
-        $entity = $this->entity;
-
-        return array_map(
-            static fn (array $data): Entity => $entity::fromArray($data),
-            $results
-        );
     }
 }

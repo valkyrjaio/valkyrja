@@ -36,6 +36,9 @@ use function is_string;
  * Class Entity.
  *
  * @author Melech Mizrachi
+ *
+ * @psalm-import-type StorableValue from Contract
+ * @phpstan-import-type StorableValue from Contract
  */
 abstract class Entity extends Model implements Contract
 {
@@ -146,7 +149,7 @@ abstract class Entity extends Model implements Contract
      *
      * @throws JsonException
      *
-     * @return array<string, mixed>
+     * @return array<non-empty-string, StorableValue>
      */
     #[Override]
     public function asStorableArray(string ...$properties): array
@@ -163,7 +166,10 @@ abstract class Entity extends Model implements Contract
 
         $this->internalRemoveUnStorableFields($allProperties, $unStorableFields);
 
-        return $this->internalGetPropertyValuesForDataStore($allProperties, $castings);
+        /** @var array<non-empty-string, StorableValue> $properties */
+        $properties = $this->internalGetPropertyValuesForDataStore($allProperties, $castings);
+
+        return $properties;
     }
 
     /**
@@ -174,7 +180,10 @@ abstract class Entity extends Model implements Contract
     #[Override]
     public function asStorableChangedArray(): array
     {
-        return $this->internalGetChangedProperties($this->asStorableArray());
+        /** @var array<non-empty-string, StorableValue> $properties */
+        $properties = $this->internalGetChangedProperties($this->asStorableArray());
+
+        return $properties;
     }
 
     /**
@@ -212,7 +221,7 @@ abstract class Entity extends Model implements Contract
      *
      * @throws JsonException
      *
-     * @return array<string, mixed>
+     * @return array<non-empty-string, StorableValue>
      */
     protected function internalGetPropertyValuesForDataStore(array $allProperties, array $castings): array
     {
@@ -222,7 +231,7 @@ abstract class Entity extends Model implements Contract
                 = $this->internalGetPropertyValueForDataStore($castings, $property)
         );
 
-        /** @var array<string, mixed> $allProperties */
+        /** @var array<non-empty-string, StorableValue> $allProperties */
         return $allProperties;
     }
 
