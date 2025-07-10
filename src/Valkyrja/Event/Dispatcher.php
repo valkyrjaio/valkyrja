@@ -114,6 +114,7 @@ class Dispatcher implements Contract
     public function dispatchListener(object $event, Listener $listener): object
     {
         // Dispatch the listener with the event
+        /** @var mixed $dispatch */
         $dispatch = $this->dispatcher->dispatch($listener->getDispatch(), [$event]);
 
         // If the event is a dispatch collectable event

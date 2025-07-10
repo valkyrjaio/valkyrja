@@ -68,10 +68,15 @@ trait Indexable
         $indexes          = static::getIndexes();
         $reversedIndexes  = static::getReversedIndexes();
 
+        /**
+         * @var int   $index
+         * @var mixed $value
+         */
         foreach ($properties as $index => $value) {
             $name = $reversedIndexes[$index] ?? null;
 
             if ($name !== null) {
+                /** @psalm-suppress MixedAssignment */
                 $mappedProperties[$name] = $value;
             }
         }
@@ -94,10 +99,15 @@ trait Indexable
         $indexedArray = [];
         $indexes      = static::getIndexes();
 
+        /**
+         * @var string $name
+         * @var mixed  $value
+         */
         foreach ($properties as $name => $value) {
             $index = $indexes[$name] ?? null;
 
             if ($index !== null) {
+                /** @psalm-suppress MixedAssignment */
                 $indexedArray[$index] = $value;
             }
         }

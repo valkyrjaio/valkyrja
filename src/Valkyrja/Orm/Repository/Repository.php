@@ -46,7 +46,7 @@ class Repository implements Contract
      */
     public function find(int|string $id): Entity|null
     {
-        /** @var T $entity */
+        /** @var class-string<T> $entity */
         $entity = $this->entity;
         $where  = new Where(
             value: new Value(
@@ -54,8 +54,6 @@ class Repository implements Contract
                 value: $id
             ),
         );
-
-        // TODO: Implement find() method.
 
         return $this->findBy($where);
     }
@@ -70,7 +68,6 @@ class Repository implements Contract
         $table  = $this->entity::getTableName();
         $select = $this->manager->createQueryBuilder()->select($table);
         $select->withWhere(...$where);
-        // TODO: Implement findBy() method.
 
         $statement = $this->manager->prepare((string) $select);
 
@@ -113,11 +110,15 @@ class Repository implements Contract
     {
         $table  = $entity::getTableName();
         $create = $this->manager->createQueryBuilder()->insert($table);
+
         // TODO: Implement create() method.
+        // SET all values
 
-        $statement = $this->manager->prepare((string) $create);
+        $this->manager->prepare((string) $create);
 
-        $this->manager->lastInsertId($table, $entity::getIdField());
+        $id = $this->manager->lastInsertId($table, $entity::getIdField());
+
+        $entity->__set($entity::getIdField(), $id);
     }
 
     /**
@@ -129,7 +130,18 @@ class Repository implements Contract
     {
         $table  = $entity::getTableName();
         $update = $this->manager->createQueryBuilder()->update($table);
+
+        $where = new Where(
+            value: new Value(
+                name: $entity::getIdField(),
+                value: $entity->getIdValue()
+            ),
+        );
+
+        $update->withWhere($where);
+
         // TODO: Implement update() method.
+        // SET all values
 
         $this->manager->prepare((string) $update);
     }
@@ -143,7 +155,15 @@ class Repository implements Contract
     {
         $table  = $entity::getTableName();
         $delete = $this->manager->createQueryBuilder()->delete($table);
-        // TODO: Implement delete() method.
+
+        $where = new Where(
+            value: new Value(
+                name: $entity::getIdField(),
+                value: $entity->getIdValue()
+            ),
+        );
+
+        $delete->withWhere($where);
 
         $this->manager->prepare((string) $delete);
     }
@@ -155,7 +175,7 @@ class Repository implements Contract
      */
     protected function mapResultsToEntity(array $results): array
     {
-        /** @var T $entity */
+        /** @var class-string<T> $entity */
         $entity = $this->entity;
 
         return array_map(

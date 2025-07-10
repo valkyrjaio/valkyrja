@@ -72,6 +72,7 @@ class CacheResponseMiddleware implements RequestReceivedMiddleware, TerminatedMi
                     throw new RuntimeException('Failed to decode cache');
                 }
 
+                /** @var object $response */
                 $response = unserialize(
                     $decodedCache,
                     [

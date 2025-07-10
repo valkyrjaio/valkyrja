@@ -143,6 +143,7 @@ class ArgumentParameter extends Parameter implements Contract
             $value = $castType::fromValue($argument->getValue());
 
             if ($cast->convert) {
+                /** @psalm-suppress MixedAssignment */
                 $values[] = $value->asValue();
 
                 continue;

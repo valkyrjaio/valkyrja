@@ -26,8 +26,6 @@ use Valkyrja\Dispatcher\Exception\InvalidArgumentException;
 
 use function array_map;
 use function constant;
-use function is_array;
-use function is_string;
 
 /**
  * Class Dispatcher.
@@ -200,8 +198,10 @@ class Dispatcher implements Contract
         }
 
         // Iterate through the arguments
+        /** @var mixed $argument */
         foreach ($arguments as $argument) {
             // Append the argument to the arguments list
+            /** @psalm-suppress MixedAssignment */
             $dependencies[] = $this->getArgumentValue($argument);
         }
 
@@ -222,21 +222,21 @@ class Dispatcher implements Contract
             return [];
         }
 
-        $context = match (true) {
-            $dispatch instanceof ClassDispatch    => $dispatch->getClass(),
-            $dispatch instanceof CallableDispatch => is_array($callable = $dispatch->getCallable()) && is_string($callable[0])
-                ? $callable[0]
-                : null,
-        };
-        $member  = match (true) {
-            $dispatch instanceof MethodDispatch   => $dispatch->getMethod(),
-            $dispatch instanceof CallableDispatch => is_array($callable = $dispatch->getCallable()) && is_string($callable[1])
-                ? $callable[1]
-                : null,
-            default                               => null
-        };
+        // $context = match (true) {
+        //     $dispatch instanceof ClassDispatch    => $dispatch->getClass(),
+        //     $dispatch instanceof CallableDispatch => is_array($callable = $dispatch->getCallable()) && is_string($callable[0])
+        //         ? $callable[0]
+        //         : null,
+        // };
+        // $member  = match (true) {
+        //     $dispatch instanceof MethodDispatch   => $dispatch->getMethod(),
+        //     $dispatch instanceof CallableDispatch => is_array($callable = $dispatch->getCallable()) && is_string($callable[1])
+        //         ? $callable[1]
+        //         : null,
+        //     default                               => null
+        // };
 
-        $containerContext = null;
+        // $containerContext = null;
 
         $container = $this->container;
         // $hasContext = $context !== null && $container instanceof ContextAwareContainer;
@@ -266,6 +266,7 @@ class Dispatcher implements Contract
     protected function getArgumentValue(mixed $argument): mixed
     {
         if ($argument instanceof Dispatch) {
+            /** @var mixed $argument */
             // Dispatch the argument and set the results to the argument
             $argument = $this->dispatch($argument);
         }

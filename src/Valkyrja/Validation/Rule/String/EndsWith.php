@@ -35,9 +35,8 @@ class EndsWith extends Rule
 
     public function isValid(): bool
     {
-        $subject = $this->subject;
-
-        return is_string($subject) && Str::endsWith($subject, $this->needle);
+        return is_string($this->subject)
+            && Str::endsWith($this->subject, $this->needle);
     }
 
     public function getDefaultErrorMessage(): string

@@ -60,6 +60,7 @@ class Arr
                 return $defaultValue;
             }
 
+            /** @var mixed $value */
             // Trying to get the item from the current value or set the default
             $value = $value[$item] ?? null;
 
@@ -129,6 +130,10 @@ class Arr
      */
     public static function withoutNull(array &$subject): array
     {
+        /**
+         * @var array-key $key
+         * @var mixed     $value
+         */
         foreach ($subject as $key => &$value) {
             if (is_array($value)) {
                 static::withoutNull($value);

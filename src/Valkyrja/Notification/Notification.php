@@ -44,7 +44,7 @@ class Notification implements Contract
     /**
      * The SMS recipients.
      *
-     * @var array<int, array{to: string, user?: NotifiableUser}>
+     * @var array<int, array{to: non-empty-string, from: non-empty-string, text: non-empty-string, user?: NotifiableUser}>
      */
     protected array $smsRecipients = [];
 
@@ -92,8 +92,11 @@ class Notification implements Contract
      */
     public function addSmsRecipient(string $phoneNumber): static
     {
+        // TODO: Figure this out
         $this->smsRecipients[] = [
-            'to' => $phoneNumber,
+            'to'   => $phoneNumber,
+            'from' => 'us',
+            'text' => 'text',
         ];
 
         return $this;
@@ -188,6 +191,7 @@ class Notification implements Contract
      */
     protected function addBroadcastUserRecipient(NotifiableUser $user): void
     {
+        /** @var mixed $secretId */
         $secretId = $user::hasSecretIdField()
             ? $user->__get($user::getSecretIdField())
             : null;
@@ -238,13 +242,16 @@ class Notification implements Contract
      */
     protected function addSmsUserRecipient(NotifiableUser $user): void
     {
+        /** @var mixed $phoneNumber */
         $phoneNumber = $user::hasPhoneNumberField()
             ? $user->__get($user::getPhoneNumberField())
             : null;
 
-        if (is_string($phoneNumber)) {
+        if (is_string($phoneNumber) && $phoneNumber !== '') {
             $this->smsRecipients[] = [
                 'to'   => $phoneNumber,
+                'from' => 'us',
+                'text' => 'test',
                 'user' => $user,
             ];
         }
@@ -279,8 +286,10 @@ class Notification implements Contract
     protected function notifyByMail(Notify $notify): void
     {
         foreach ($this->mailRecipients as $mailRecipient) {
-            $message = new MailMessage();
-            $message->addRecipient($mailRecipient['email'], $mailRecipient['name']);
+            $message = new MailMessage(
+                $mailRecipient['email'],
+                $mailRecipient['name']
+            );
 
             $notify->mail($message);
 
@@ -298,8 +307,11 @@ class Notification implements Contract
     protected function notifyBySms(Notify $notify): void
     {
         foreach ($this->smsRecipients as $smsRecipient) {
-            $message = new SmsMessage();
-            $message->setTo($smsRecipient['to']);
+            $message = new SmsMessage(
+                $smsRecipient['to'],
+                $smsRecipient['from'],
+                $smsRecipient['text']
+            );
 
             $notify->sms($message);
 

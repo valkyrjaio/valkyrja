@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Message;
 
+use Valkyrja\Cli\Interaction\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Message\Contract\Message as Contract;
 
 /**
@@ -37,37 +38,43 @@ class Messages extends Message
      * @inheritDoc
      *
      * @return non-empty-string
-     *
-     * @psalm-suppress MoreSpecificReturnType
-     * @psalm-suppress LessSpecificReturnStatement
      */
     public function getText(): string
     {
-        return implode(
+        $text = implode(
             '',
             array_map(
                 static fn (Contract $message) => $message->getText(),
                 $this->messages
             )
         );
+
+        if ($text === '') {
+            throw new InvalidArgumentException('No text found');
+        }
+
+        return $text;
     }
 
     /**
      * @inheritDoc
      *
      * @return non-empty-string
-     *
-     * @psalm-suppress MoreSpecificReturnType
-     * @psalm-suppress LessSpecificReturnStatement
      */
     public function getFormattedText(): string
     {
-        return implode(
+        $text = implode(
             '',
             array_map(
                 static fn (Contract $message) => $message->getFormattedText(),
                 $this->messages
             )
         );
+
+        if ($text === '') {
+            throw new InvalidArgumentException('No text found');
+        }
+
+        return $text;
     }
 }

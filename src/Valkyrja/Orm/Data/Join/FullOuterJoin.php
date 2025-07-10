@@ -31,11 +31,11 @@ readonly class FullOuterJoin extends Join
      * @param non-empty-string $joinColumn The join table column
      */
     public function __construct(
-        public string $table,
-        public string $column,
-        public string $joinColumn,
-        public Comparison $comparison,
-        public JoinOperator $operator,
+        string $table,
+        string $column,
+        string $joinColumn,
+        Comparison $comparison,
+        JoinOperator $operator,
     ) {
         parent::__construct(
             table: $table,

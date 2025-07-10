@@ -52,11 +52,13 @@ abstract class PdoManager implements Contract
      */
     public function createRepository(string $entity): Repository
     {
-        /** @var class-string<Repository<T>> $repositoryClass */
         $repositoryClass = $entity::getRepository()
             ?? DefaultRepository::class;
 
-        return $this->container->get($repositoryClass, [$this, $entity]);
+        /** @var Repository<T> $repository */
+        $repository = $this->container->get($repositoryClass, [$this, $entity]);
+
+        return $repository;
     }
 
     /**

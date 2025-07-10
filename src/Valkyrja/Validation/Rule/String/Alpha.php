@@ -27,9 +27,8 @@ class Alpha extends Rule
 {
     public function isValid(): bool
     {
-        $subject = $this->subject;
-
-        return is_string($subject) && Str::isAlphabetic($subject);
+        return is_string($this->subject)
+            && Str::isAlphabetic($this->subject);
     }
 
     public function getDefaultErrorMessage(): string

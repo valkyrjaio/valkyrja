@@ -22,33 +22,13 @@ use Valkyrja\Sms\Data\Contract\Message as Contract;
  */
 class Message implements Contract
 {
-    /**
-     * The message to.
-     *
-     * @var string
-     */
-    protected string $to;
-
-    /**
-     * The message from.
-     *
-     * @var string
-     */
-    protected string $from;
-
-    /**
-     * The message text.
-     *
-     * @var string
-     */
-    protected string $text;
-
-    /**
-     * Whether the text is unicode.
-     *
-     * @var bool
-     */
-    protected bool $isUnicode = true;
+    public function __construct(
+        protected string $to,
+        protected string $from,
+        protected string $text,
+        protected bool $isUnicode = true
+    ) {
+    }
 
     /**
      * @inheritDoc

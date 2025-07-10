@@ -121,6 +121,7 @@ abstract class Entity extends Model implements Contract
      */
     public function getIdValue(): string|int
     {
+        /** @var mixed $id */
         $id = $this->__get(static::getIdField());
 
         if (is_int($id) || (is_string($id) && $id !== '')) {
@@ -208,7 +209,7 @@ abstract class Entity extends Model implements Contract
     {
         array_walk(
             $allProperties,
-            fn (mixed &$value, string $property): mixed => $value
+            fn (mixed &$value, string $property): mixed => /** @var mixed $value */ $value
                 = $this->internalGetPropertyValueForDataStore($castings, $property)
         );
 

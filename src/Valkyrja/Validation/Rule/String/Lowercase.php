@@ -27,9 +27,8 @@ class Lowercase extends Rule
 {
     public function isValid(): bool
     {
-        $subject = $this->subject;
-
-        return is_string($subject) && Str::isLowercase($subject);
+        return is_string($this->subject)
+            && Str::isLowercase($this->subject);
     }
 
     public function getDefaultErrorMessage(): string

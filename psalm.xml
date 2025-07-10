@@ -26,12 +26,6 @@
         <!-- A bunch of false-positives with ??= -->
         <RedundantPropertyInitializationCheck errorLevel="suppress" />
 
-        <!-- Using class names as templates -->
-        <ReservedWord errorLevel="suppress" />
-
-        <!-- As a framework things have to be dynamic -->
-        <MixedAssignment errorLevel="suppress" />
-
         <!-- Up to the developers to ensure params for child classes match, not us -->
         <UnsafeInstantiation errorLevel="suppress" />
     </issueHandlers>

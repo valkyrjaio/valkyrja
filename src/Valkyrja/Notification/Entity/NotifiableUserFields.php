@@ -25,19 +25,19 @@ trait NotifiableUserFields
      *
      * @var string
      */
-    public string $name;
+    public string $name = '';
 
     /**
      * The phone number.
      *
      * @var string
      */
-    public string $phone_number;
+    public string $phone_number = '';
 
     /**
      * The secret id.
      *
      * @var string
      */
-    public string $secret_id;
+    public string $secret_id = '';
 }

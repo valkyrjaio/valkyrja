@@ -23,20 +23,6 @@ use Valkyrja\Mail\Data\Contract\Message as Contract;
 class Message implements Contract
 {
     /**
-     * The from email.
-     *
-     * @var string
-     */
-    protected string $fromEmail = '';
-
-    /**
-     * The from name.
-     *
-     * @var string
-     */
-    protected string $fromName = '';
-
-    /**
      * The recipients.
      *
      * @var array<int, array{email: string, name: string}>
@@ -98,6 +84,12 @@ class Message implements Contract
      * @var string|null
      */
     protected string|null $plainBody = null;
+
+    public function __construct(
+        protected string $fromEmail = '',
+        protected string $fromName = ''
+    ) {
+    }
 
     /**
      * @inheritDoc

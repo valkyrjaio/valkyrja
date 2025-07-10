@@ -24,9 +24,12 @@ class NotEmpty extends Rule
 {
     public function isValid(): bool
     {
+        /** @var mixed $subject */
         $subject = $this->subject;
 
-        return $subject !== null && $subject !== '' && ! empty($subject);
+        return $subject !== null
+            && $subject !== ''
+            && ! empty($subject);
     }
 
     public function getDefaultErrorMessage(): string

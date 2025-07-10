@@ -32,14 +32,14 @@ class Exceptions extends Asserter implements Contract
     /**
      * The expected class name.
      *
-     * @var class-string
+     * @var class-string|null
      */
-    protected string $className;
+    protected string|null $className = null;
 
     /**
      * The expected message.
      */
-    protected string $message;
+    protected string|null $message = null;
 
     /**
      * @inheritDoc

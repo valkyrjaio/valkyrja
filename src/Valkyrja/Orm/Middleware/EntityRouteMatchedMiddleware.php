@@ -115,6 +115,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
         $type = $parameter->getCast()->type ?? null;
 
         if ($type !== null && is_a($type, Entity::class, true)) {
+            /** @var mixed $match */
             $match = $arguments[$index];
 
             if ((is_string($match) && $match !== '') || is_int($match) || $match instanceof Entity) {

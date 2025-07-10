@@ -37,14 +37,14 @@ class NullSession implements Contract
      *
      * @var string
      */
-    protected string $id;
+    protected string $id = '';
 
     /**
      * The session name.
      *
      * @var string
      */
-    protected string $name;
+    protected string $name = '';
 
     /**
      * The session data.
@@ -65,14 +65,16 @@ class NullSession implements Contract
     ) {
         // If a session id is provided
         if (is_string($sessionId)) {
+            $this->validateId($sessionId);
+
             // Set the id
-            $this->setId($sessionId);
+            $this->id = $sessionId;
         }
 
         // If a session name is provided
         if (is_string($sessionName)) {
             // Set the name
-            $this->setName($sessionName);
+            $this->name = $sessionName;
         }
 
         // Start the session
@@ -99,13 +101,7 @@ class NullSession implements Contract
      */
     public function setId(string $id): void
     {
-        if (! preg_match('/^[-,a-zA-Z0-9]{1,128}$/', $id)) {
-            throw new InvalidSessionId(
-                "The session id, '$id', is invalid! "
-                . 'Session id can only contain alpha numeric characters, dashes, commas, '
-                . 'and be at least 1 character in length but up to 128 characters long.'
-            );
-        }
+        $this->validateId($id);
 
         $this->id = $id;
     }
@@ -213,6 +209,7 @@ class NullSession implements Contract
             return false;
         }
 
+        /** @var mixed $sessionToken */
         $sessionToken = $this->get($id);
 
         if (is_string($sessionToken) && hash_equals($token, $sessionToken)) {
@@ -238,5 +235,23 @@ class NullSession implements Contract
     public function destroy(): void
     {
         $this->data = [];
+    }
+
+    /**
+     * Validate an id.
+     *
+     * @param string $id The id
+     *
+     * @return void
+     */
+    protected function validateId(string $id): void
+    {
+        if (! preg_match('/^[-,a-zA-Z0-9]{1,128}$/', $id)) {
+            throw new InvalidSessionId(
+                "The session id, '$id', is invalid! "
+                . 'Session id can only contain alpha numeric characters, dashes, commas, '
+                . 'and be at least 1 character in length but up to 128 characters long.'
+            );
+        }
     }
 }

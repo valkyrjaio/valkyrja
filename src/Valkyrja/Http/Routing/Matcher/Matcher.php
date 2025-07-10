@@ -220,6 +220,7 @@ class Matcher implements Contract
         // If there is no match (middle of regex optional group)
         if (! $argument) {
             // Set the value to the parameter default
+            /** @psalm-suppress MixedAssignment */
             $matches[$index] = $parameter->getDefault();
         }
 
@@ -250,6 +251,7 @@ class Matcher implements Contract
                 throw new RuntimeException('Unexpected match value for ' . $parameter->getName());
             }
 
+            /** @psalm-suppress MixedAssignment */
             $arguments[$index] = $this->castMatchValue($route, $parameter, $cast, $index, $argument);
         }
 

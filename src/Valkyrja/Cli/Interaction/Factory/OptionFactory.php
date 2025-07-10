@@ -57,6 +57,7 @@ abstract class OptionFactory
             $options = [];
 
             foreach (str_split($name) as $item) {
+                /** @var non-empty-string $item */
                 $options[] = new Option(
                     name: $item,
                     type: $type

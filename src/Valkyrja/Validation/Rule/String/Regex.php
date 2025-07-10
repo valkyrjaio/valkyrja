@@ -35,10 +35,14 @@ class Regex extends Rule
 
     public function isValid(): bool
     {
+        /** @var mixed $subject */
         $subject = $this->subject;
         $regex   = $this->regex;
 
-        return is_string($subject) && $subject !== '' && $regex !== '' && preg_match($regex, $subject);
+        return is_string($subject)
+            && $subject !== ''
+            && $regex !== ''
+            && preg_match($regex, $subject);
     }
 
     public function getDefaultErrorMessage(): string

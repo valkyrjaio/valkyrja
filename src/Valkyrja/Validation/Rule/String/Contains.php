@@ -35,9 +35,8 @@ class Contains extends Rule
 
     public function isValid(): bool
     {
-        $subject = $this->subject;
-
-        return is_string($subject) && Str::contains($subject, $this->needle);
+        return is_string($this->subject)
+            && Str::contains($this->subject, $this->needle);
     }
 
     public function getDefaultErrorMessage(): string

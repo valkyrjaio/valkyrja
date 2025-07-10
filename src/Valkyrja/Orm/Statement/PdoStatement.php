@@ -138,13 +138,14 @@ class PdoStatement implements Contract
     {
         $results = $this->statement->fetchAll();
 
+        /** @var array<string, int|string|mixed>|null $firstResults */
         $firstResults = $results[0] ?? null;
 
         if ($firstResults === null) {
             return 0;
         }
 
-        /** @var array<string, int|string|mixed> $firstResults */
+        /** @var mixed $count */
         $count = $firstResults['COUNT(*)']
             ?? $firstResults['count']
             ?? 0;

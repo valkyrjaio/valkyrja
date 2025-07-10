@@ -138,6 +138,10 @@ class Obj
         $array = [];
 
         // Iterate through each subject
+        /**
+         * @var string $key
+         * @var mixed  $value
+         */
         foreach ($castSubject as $key => $value) {
             // Explode the key on the \0 character
             /*
@@ -159,6 +163,7 @@ class Obj
             }
 
             // Set the property and value
+            /** @psalm-suppress MixedAssignment */
             $array[end($keyParts)] = $value;
         }
 
@@ -200,6 +205,7 @@ class Obj
                 return $default;
             }
 
+            /** @var mixed $value */
             // Trying to get the item from the current value or set the default
             $value = $value->$item ?? null;
 

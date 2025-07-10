@@ -522,6 +522,7 @@ abstract class Model implements Contract
         return array_filter(
             $properties,
             function (mixed $value, string $property) {
+                /** @var mixed $originalProperty */
                 $originalProperty = $this->internalOriginalProperties[$property] ?? null;
 
                 return $originalProperty !== $value;
@@ -540,7 +541,7 @@ abstract class Model implements Contract
      */
     protected function internalSetPropertyValues(array $properties, callable $callable): array
     {
-        array_walk($properties, static fn (mixed &$value, string $property): mixed => $value = $callable($property));
+        array_walk($properties, static fn (mixed &$value, string $property): mixed => /** @var mixed $value */ $value = $callable($property));
 
         /** @var array<string, mixed> $properties */
         return $properties;

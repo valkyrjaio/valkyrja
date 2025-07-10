@@ -35,6 +35,7 @@ class Min extends Rule
 
     public function isValid(): bool
     {
+        /** @var mixed $subject */
         $subject = $this->subject;
 
         return is_string($subject) && Str::min($subject, $this->min);

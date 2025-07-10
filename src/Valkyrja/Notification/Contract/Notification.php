@@ -46,7 +46,7 @@ interface Notification
     /**
      * Add an SMS recipient to send a notification to.
      *
-     * @param string $phoneNumber The phone number
+     * @param non-empty-string $phoneNumber The phone number
      *
      * @return static
      */

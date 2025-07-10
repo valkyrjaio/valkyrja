@@ -35,9 +35,8 @@ class GreaterThan extends Rule
 
     public function isValid(): bool
     {
-        $subject = $this->subject;
-
-        return is_int($subject) && Integer::greaterThan($subject, $this->min);
+        return is_int($this->subject)
+            && Integer::greaterThan($this->subject, $this->min);
     }
 
     public function getDefaultErrorMessage(): string

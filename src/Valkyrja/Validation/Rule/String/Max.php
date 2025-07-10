@@ -35,9 +35,8 @@ class Max extends Rule
 
     public function isValid(): bool
     {
-        $subject = $this->subject;
-
-        return is_string($subject) && Str::min($subject, $this->max);
+        return is_string($this->subject)
+            && Str::min($this->subject, $this->max);
     }
 
     public function getDefaultErrorMessage(): string

@@ -357,7 +357,7 @@ class Attributes implements Contract
                 $instance->setReflection($reflection);
             }
 
-            if (method_exists($instance, 'withDispatch')) {
+            if (method_exists($instance, 'withDispatch') && method_exists($instance, 'getDispatch')) {
                 /** @var object $instance */
                 $instance = $instance->withDispatch(
                     match (true) {

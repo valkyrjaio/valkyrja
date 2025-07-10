@@ -27,9 +27,7 @@ class Uppercase extends Rule
 {
     public function isValid(): bool
     {
-        $subject = $this->subject;
-
-        return is_string($subject) && Str::isUppercase($subject);
+        return is_string($this->subject) && Str::isUppercase($this->subject);
     }
 
     public function getDefaultErrorMessage(): string

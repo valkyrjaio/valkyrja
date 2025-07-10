@@ -27,9 +27,8 @@ class Email extends Rule
 {
     public function isValid(): bool
     {
-        $subject = $this->subject;
-
-        return is_string($subject) && Str::isEmail($subject);
+        return is_string($this->subject)
+            && Str::isEmail($this->subject);
     }
 
     public function getDefaultErrorMessage(): string

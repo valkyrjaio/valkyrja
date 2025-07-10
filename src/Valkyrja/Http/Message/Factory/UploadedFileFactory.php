@@ -46,6 +46,10 @@ abstract class UploadedFileFactory
     {
         $normalized = [];
 
+        /**
+         * @var array-key $key
+         * @var mixed     $value
+         */
         foreach ($files as $key => $value) {
             if ($value instanceof UploadedFile) {
                 $normalized[$key] = $value;

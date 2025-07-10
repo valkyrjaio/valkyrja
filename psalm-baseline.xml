@@ -5,11 +5,6 @@
             <code><![CDATA[$member]]></code>
         </PossiblyInvalidArgument>
     </file>
-    <file src="src/Valkyrja/Console/Kernel/Kernel.php">
-        <ForbiddenCode>
-            <code><![CDATA[var_dump($exception)]]></code>
-        </ForbiddenCode>
-    </file>
     <file src="src/Valkyrja/Http/Server/RequestHandler.php">
         <UndefinedFunction>
             <code><![CDATA[litespeed_finish_request()]]></code>
@@ -32,14 +27,6 @@
         </InvalidReturnStatement>
         <InvalidReturnType>
             <code><![CDATA[UploadedFile[]]]></code>
-        </InvalidReturnType>
-    </file>
-    <file src="src/Valkyrja/Orm/Retriever/Retriever.php">
-        <InvalidReturnStatement>
-            <code><![CDATA[$self]]></code>
-        </InvalidReturnStatement>
-        <InvalidReturnType>
-            <code><![CDATA[static<SetQueryEntity>]]></code>
         </InvalidReturnType>
     </file>
 </files>
