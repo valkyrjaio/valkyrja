@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Command;
 
-use Valkyrja\Application\Contract\Application;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
@@ -65,23 +64,13 @@ class HelpCommand
             ),
         ]
     )]
-    public function run(Command $command, Collection $collection, OutputFactory $outputFactory): Output
+    public function run(VersionCommand $version, Command $command, Collection $collection, OutputFactory $outputFactory): Output
     {
-        $output = $outputFactory
-            ->createOutput()
-            ->withMessages(
-                new NewLine(),
-                new Message('Valkyrja', new Formatter(textColor: TextColor::CYAN)),
-                new Message(' version '),
-                new Message(Application::VERSION, new Formatter(textColor: TextColor::MAGENTA)),
-                new NewLine(),
-            )
-            ->writeMessages();
-
         $commandName = $command->getOption('command')?->getFirstValue();
 
         if (! is_string($commandName)) {
-            return $output
+            return $outputFactory
+                ->createOutput()
                 ->withExitCode(ExitCode::ERROR)
                 ->withAddedMessages(
                     new Banner(new ErrorMessage('Command name is required.'))
@@ -91,12 +80,15 @@ class HelpCommand
         $helpCommand = $collection->get($commandName);
 
         if ($helpCommand === null) {
-            return $output
+            return $outputFactory
+                ->createOutput()
                 ->withExitCode(ExitCode::ERROR)
                 ->withAddedMessages(
                     new Banner(new ErrorMessage("Command `$commandName` was not found."))
                 );
         }
+
+        $output = $version->run($outputFactory);
 
         return $this->getHelpText($output, $helpCommand);
     }
