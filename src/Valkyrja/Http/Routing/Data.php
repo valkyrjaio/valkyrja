@@ -30,13 +30,11 @@ readonly class Data
      * @param array<string, Route|string> $routes
      * @param RequestArray                $static
      * @param RequestArray                $dynamic
-     * @param array<string, string>       $named
      */
     public function __construct(
         public array $routes = [],
         public array $static = [],
         public array $dynamic = [],
-        public array $named = []
     ) {
     }
 }

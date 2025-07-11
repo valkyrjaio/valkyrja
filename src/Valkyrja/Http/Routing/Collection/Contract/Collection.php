@@ -83,7 +83,7 @@ interface Collection
     /**
      * Get a flat array of routes.
      *
-     * @return Route[]
+     * @return array<string, Route>
      */
     public function allFlattened(): array;
 
@@ -150,7 +150,7 @@ interface Collection
     public function allDynamic(RequestMethod|null $method = null): array;
 
     /**
-     * Get a named route.
+     * Get a route by name.
      *
      * @param string $name The name
      *
@@ -158,7 +158,7 @@ interface Collection
      *                    The route if found or null when no named route is
      *                    found for the path and method combination specified
      */
-    public function getNamed(string $name): Route|null;
+    public function getRouteByName(string $name): Route|null;
 
     /**
      * Determine if a named route exists.
@@ -168,11 +168,4 @@ interface Collection
      * @return bool
      */
     public function hasNamed(string $name): bool;
-
-    /**
-     * Get the named routes in this collection.
-     *
-     * @return array<string, Route>
-     */
-    public function allNamed(): array;
 }

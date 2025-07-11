@@ -53,7 +53,7 @@ class Url implements Contract
     public function getUrl(string $name, array|null $data = null, bool|null $absolute = null): string
     {
         // Get the matching route
-        $route = $this->collection->getNamed($name);
+        $route = $this->collection->getRouteByName($name);
 
         if ($route === null) {
             throw new InvalidRouteNameException("$name is not a valid named route");

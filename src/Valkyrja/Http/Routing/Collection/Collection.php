@@ -61,13 +61,6 @@ class Collection implements Contract
     protected array $dynamic = [];
 
     /**
-     * The named routes.
-     *
-     * @var array<string, string>
-     */
-    protected array $named = [];
-
-    /**
      * @inheritDoc
      */
     #[Override]
@@ -77,7 +70,6 @@ class Collection implements Contract
             routes: array_map('serialize', $this->routes),
             static: $this->static,
             dynamic: $this->dynamic,
-            named: $this->named,
         );
     }
 
@@ -90,7 +82,6 @@ class Collection implements Contract
         $this->routes  = $data->routes;
         $this->static  = $data->static;
         $this->dynamic = $data->dynamic;
-        $this->named   = $data->named;
     }
 
     /**
@@ -103,8 +94,6 @@ class Collection implements Contract
 
         // Set the route to its request methods
         $this->setRouteToRequestMethods($route);
-        // Set the route to the named
-        $this->setRouteToNamed($route);
 
         $this->routes[$route->getName()] = $route;
     }
@@ -209,9 +198,9 @@ class Collection implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getNamed(string $name): Route|null
+    public function getRouteByName(string $name): Route|null
     {
-        $named = $this->named[$name] ?? null;
+        $named = $this->routes[$name] ?? null;
 
         if ($named === null) {
             return null;
@@ -226,16 +215,7 @@ class Collection implements Contract
     #[Override]
     public function hasNamed(string $name): bool
     {
-        return isset($this->named[$name]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function allNamed(): array
-    {
-        return $this->ensureRoutes($this->named);
+        return isset($this->routes[$name]);
     }
 
     /**
@@ -274,21 +254,6 @@ class Collection implements Contract
             // Set the route in the static routes list
             $this->static[$requestMethod->value][$route->getPath()] = $name;
         }
-    }
-
-    /**
-     * Set the route to the named.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    protected function setRouteToNamed(Route $route): void
-    {
-        $name = $route->getName();
-
-        // Set the route in the named routes list
-        $this->named[$name] = $name;
     }
 
     /**
