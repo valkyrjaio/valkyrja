@@ -33,6 +33,8 @@ use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Dispatcher\Data\PropertyDispatch;
 use Valkyrja\Reflection\Contract\Reflection;
 
+use function is_callable;
+
 /**
  * Class Attributes.
  *
