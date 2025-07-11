@@ -17,8 +17,12 @@ use Override;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
+use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Message\Banner;
+use Valkyrja\Cli\Interaction\Message\Contract\Answer as AnswerContract;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
+use Valkyrja\Cli\Interaction\Message\NewLine;
+use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware;
@@ -243,11 +247,61 @@ class Router implements Contract
     /**
      * Check the command name from the input for a typo.
      */
-    protected function checkCommandNameForTypo(Input $input, Output $output): Output
+    protected function checkCommandNameForTypo(Input $input, Output $output): Command|Output
     {
-        // TODO: See if a command has the same letters typed (in case a typo was made)
+        $name = $input->getCommandName();
+
+        $commands = [];
+
+        foreach ($this->collection->all() as $command) {
+            similar_text($command->getName(), $name, $percent);
+
+            if ($percent >= 60) {
+                $commands[] = $command;
+            }
+        }
+
+        if ($commands !== []) {
+            return $this->askToRunSimilarCommands($output, $commands);
+        }
 
         return $output;
+    }
+
+    /**
+     * Ask the user if they want to run similar commands.
+     *
+     * @param Command[] $commands The list of commands
+     */
+    protected function askToRunSimilarCommands(Output $output, array $commands): Command|Output
+    {
+        $command = null;
+
+        $commandNames = array_map(static fn (Command $command) => $command->getName(), $commands);
+
+        $output
+            ->withAddedMessages(
+                new NewLine(),
+                new Question(
+                    'Did you mean to run one of the following commands?',
+                    function (Output $output, AnswerContract $answer) use (&$command, $commands): Output {
+                        $response = $answer->getUserResponse();
+                        $command  = $response !== 'no'
+                            ? array_filter($commands, static fn (Command $command): bool => $command->getName() === $response)[0] ?? null
+                            : null;
+
+                        return $output;
+                    },
+                    new Answer(
+                        defaultResponse: 'no',
+                        allowedResponses: $commandNames
+                    ),
+                ),
+            )
+            ->writeMessages();
+
+        return $command
+            ?? $output;
     }
 
     /**
