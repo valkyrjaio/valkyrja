@@ -53,6 +53,10 @@ class Answer extends Message implements Contract
             throw new InvalidArgumentException('$validationCallable must be a valid callable');
         }
 
+        if (! in_array($defaultResponse, $allowedResponses)) {
+            $allowedResponses[] = $defaultResponse;
+        }
+
         $this->userResponse     = $defaultResponse;
         $this->allowedResponses = $allowedResponses;
 
@@ -194,7 +198,8 @@ class Answer extends Message implements Contract
         $validationCallable = $this->validationCallable;
         $userResponse       = $this->userResponse;
 
-        return in_array($userResponse, $this->allowedResponses, true)
+        return ($this->allowedResponses === [] && $validationCallable === null)
+            || in_array($userResponse, $this->allowedResponses, true)
             || (
                 $validationCallable !== null
                 && $validationCallable($userResponse)
