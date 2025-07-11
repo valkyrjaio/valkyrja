@@ -279,7 +279,7 @@ class Router implements Contract
 
         $commandNames = array_map(static fn (Command $command) => $command->getName(), $commands);
 
-        $output
+        $output = $output
             ->withAddedMessages(
                 new NewLine(),
                 new Question(
