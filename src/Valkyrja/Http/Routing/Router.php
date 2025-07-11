@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing;
 
-use JsonException;
 use Override;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
-use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Exception\HttpException;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
@@ -36,10 +34,6 @@ use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Routing\Exception\InvalidRouteNameException;
 use Valkyrja\Http\Routing\Matcher\Contract\Matcher;
 
-use function is_array;
-use function is_float;
-use function is_int;
-use function is_string;
 use function rawurldecode;
 
 /**
@@ -68,8 +62,6 @@ class Router implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     #[Override]
     public function dispatch(ServerRequest $request): Response
@@ -94,8 +86,6 @@ class Router implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     #[Override]
     public function dispatchRoute(ServerRequest $request, Route $route): Response
@@ -118,11 +108,7 @@ class Router implements Contract
         $this->container->setSingleton(Route::class, $routeAfterMiddleware);
 
         $dispatch  = $routeAfterMiddleware->getDispatch();
-        $arguments = null;
-
-        if ($dispatch instanceof ClassDispatch) {
-            $arguments = $dispatch->getArguments();
-        }
+        $arguments = $dispatch->getArguments();
 
         // Attempt to dispatch the route using any one of the callable options
         $response = $this->dispatcher->dispatch(
@@ -131,7 +117,7 @@ class Router implements Contract
         );
 
         if (! $response instanceof Response) {
-            return $this->getResponseForDispatch($response);
+            throw new InvalidRouteNameException('Dispatch must be a valid response');
         }
 
         return $this->routeDispatchedHandler->routeDispatched(
@@ -177,86 +163,6 @@ class Router implements Contract
         // Otherwise return a response with a 404
         return $this->responseFactory->createResponse(
             statusCode: StatusCode::NOT_FOUND,
-        );
-    }
-
-    /**
-     * Get a response object from a mixed response from a dispatch.
-     *
-     * @param mixed $response The response
-     *
-     * @throws JsonException
-     *
-     * @return Response
-     */
-    protected function getResponseForDispatch(mixed $response): Response
-    {
-        return match (true) {
-            is_string($response) => $this->getResponseForString($response),
-            is_int($response)    => $this->getResponseForInt($response),
-            is_float($response)  => $this->getResponseForFloat($response),
-            is_array($response)  => $this->getResponseForArray($response),
-            default              => throw new InvalidRouteNameException('Dispatch must be a valid response')
-        };
-    }
-
-    /**
-     * Get a response object from a string response from a dispatch.
-     *
-     * @param string $response The response
-     *
-     * @return Response
-     */
-    protected function getResponseForString(string $response): Response
-    {
-        if (str_starts_with($response, '/')) {
-            return $this->responseFactory->createRedirectResponse(
-                uri: $response,
-            );
-        }
-
-        return $this->responseFactory->createTextResponse(
-            content: $response,
-        );
-    }
-
-    /**
-     * Get a response object from an int response from a dispatch.
-     *
-     * @param int $response The response
-     *
-     * @return Response
-     */
-    protected function getResponseForInt(int $response): Response
-    {
-        return $this->getResponseForString((string) $response);
-    }
-
-    /**
-     * Get a response object from a float response from a dispatch.
-     *
-     * @param float $response The response
-     *
-     * @return Response
-     */
-    protected function getResponseForFloat(float $response): Response
-    {
-        return $this->getResponseForString((string) $response);
-    }
-
-    /**
-     * Get a response object from an array response from a dispatch.
-     *
-     * @param array<array-key, mixed> $response The response
-     *
-     * @throws JsonException
-     *
-     * @return Response
-     */
-    protected function getResponseForArray(array $response): Response
-    {
-        return $this->responseFactory->createJsonResponse(
-            data: $response,
         );
     }
 

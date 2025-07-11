@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Routing\Processor;
 
 use InvalidArgumentException;
 use Override;
-use Valkyrja\Dispatcher\Data\Contract\CallableDispatch;
-use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Contract\Parameter;
 use Valkyrja\Http\Routing\Data\Contract\Route;
@@ -93,7 +91,7 @@ class Processor implements Contract
     protected function modifyRegex(Route $route): Route
     {
         // If the regex has already been set then don't do anything
-        if (($regex = $route->getRegex()) !== null) {
+        if ($route->getRegex() !== null) {
             return $route;
         }
 
@@ -162,12 +160,7 @@ class Processor implements Contract
      */
     protected function removeEntityFromDependencies(Route $route, string $entityName): Route
     {
-        $dispatch = $route->getDispatch();
-
-        if (! $dispatch instanceof ClassDispatch && ! $dispatch instanceof CallableDispatch) {
-            return $route;
-        }
-
+        $dispatch     = $route->getDispatch();
         $dependencies = $dispatch->getDependencies();
 
         if ($dependencies === null || $dependencies === []) {

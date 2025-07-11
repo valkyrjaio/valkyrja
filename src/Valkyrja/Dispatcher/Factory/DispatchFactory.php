@@ -37,27 +37,30 @@ class DispatchFactory
     public static function fromReflection(
         ReflectionClassConstant|ReflectionProperty|ReflectionMethod|ReflectionClass|ReflectionFunction $reflection
     ): ConstantDispatch|PropertyDispatch|MethodDispatch|ClassDispatch|CallableDispatch {
+        /** @var non-empty-string $name */
+        $name = $reflection->getName();
+
         return match (true) {
             $reflection instanceof ReflectionClassConstant => new ConstantDispatch(
-                constant: $reflection->getName(),
+                constant: $name,
                 class: $reflection->getDeclaringClass()->getName(),
             ),
             $reflection instanceof ReflectionProperty      => new PropertyDispatch(
                 class: $reflection->getDeclaringClass()->getName(),
-                property: $reflection->getName(),
+                property: $name,
                 isStatic: $reflection->isStatic()
             ),
             $reflection instanceof ReflectionMethod        => new MethodDispatch(
                 class: $reflection->getDeclaringClass()->getName(),
-                method: $reflection->getName(),
+                method: $name,
                 isStatic: $reflection->isStatic()
             ),
             $reflection instanceof ReflectionClass         => new ClassDispatch(
                 class: $reflection->getName(),
             ),
             $reflection instanceof ReflectionFunction      => new CallableDispatch(
-                callable: is_callable($functionName = $reflection->getName())
-                    ? $functionName
+                callable: is_callable($name)
+                    ? $name
                     : throw new RuntimeException('ReflectionFunction has no valid callable'),
             ),
         };

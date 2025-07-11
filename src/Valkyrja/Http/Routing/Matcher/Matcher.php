@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Matcher;
 
+use JsonException;
 use Override;
-use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Collection as RouteCollection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection;
@@ -53,6 +53,7 @@ class Matcher implements Contract
      *
      * @throws InvalidRoutePathException
      * @throws InvalidRouteParameterException
+     * @throws JsonException
      */
     #[Override]
     public function match(string $path, RequestMethod|null $requestMethod = null): Route|null
@@ -65,6 +66,8 @@ class Matcher implements Contract
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     #[Override]
     public function matchStatic(string $path, RequestMethod|null $requestMethod = null): Route|null
@@ -173,7 +176,7 @@ class Matcher implements Contract
         $dispatch = $route->getDispatch();
 
         // The first match is the path itself, the rest could be empty.
-        if (array_shift($arguments) === null || empty($arguments) || ! $dispatch instanceof ClassDispatch) {
+        if (array_shift($arguments) === null || empty($arguments)) {
             return $route;
         }
 

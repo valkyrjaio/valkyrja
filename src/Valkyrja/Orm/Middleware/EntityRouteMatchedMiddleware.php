@@ -15,7 +15,6 @@ namespace Valkyrja\Orm\Middleware;
 
 use Override;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
@@ -82,7 +81,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
         $parameters = $route->getParameters();
         $dispatch   = $route->getDispatch();
 
-        if ($parameters !== [] && $dispatch instanceof ClassDispatch) {
+        if ($parameters !== []) {
             $arguments    = $dispatch->getArguments() ?? [];
             $dependencies = $dispatch->getDependencies() ?? [];
 

@@ -25,6 +25,7 @@ use ReflectionParameter;
 use ReflectionProperty;
 use Reflector;
 use Valkyrja\Attribute\Contract\Attributes as Contract;
+use Valkyrja\Attribute\Exception\RuntimeException;
 use Valkyrja\Dispatcher\Data\CallableDispatch;
 use Valkyrja\Dispatcher\Data\ClassDispatch;
 use Valkyrja\Dispatcher\Data\ConstantDispatch;
@@ -373,30 +374,38 @@ class Attributes implements Contract
                 $instance->setReflection($reflection);
             }
 
-            if (method_exists($instance, 'withDispatch') && method_exists($instance, 'getDispatch')) {
+            if (
+                method_exists($instance, 'withDispatch')
+                && method_exists($instance, 'getDispatch')
+                && method_exists($reflection, 'getName')
+            ) {
+                /** @var non-empty-string $name */
+                $name = $reflection->getName();
                 /** @var object $instance */
                 $instance = $instance->withDispatch(
                     match (true) {
                         $reflection instanceof ReflectionMethod        => new MethodDispatch(
                             class: $reflection->getDeclaringClass()->getName(),
-                            method: $reflection->getName(),
+                            method: $name,
                             isStatic: $reflection->isStatic()
                         ),
                         $reflection instanceof ReflectionProperty      => new PropertyDispatch(
                             class: $reflection->getDeclaringClass()->getName(),
-                            property: $reflection->getName(),
+                            property: $name,
                             isStatic: $reflection->isStatic()
                         ),
                         $reflection instanceof ReflectionClass         => new ClassDispatch(
                             class: $reflection->getName(),
                         ),
                         $reflection instanceof ReflectionClassConstant => new ConstantDispatch(
-                            constant: $reflection->getName(),
+                            constant: $name,
                             class: $reflection->getDeclaringClass()->getName()
                         ),
                         $reflection instanceof ReflectionFunction
                         && ! $reflection->isClosure()                  => new CallableDispatch(
-                            callable: $reflection->getName()
+                            callable: is_callable($name)
+                                ? $name
+                                : throw new RuntimeException('ReflectionFunction has no valid callable'),
                         ),
                         default                                        => $instance->getDispatch(),
                     }
