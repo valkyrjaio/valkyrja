@@ -43,15 +43,7 @@ class VersionCommand
         return $outputFactory
             ->createOutput()
             ->withMessages(
-                new Message(
-                    "
-             _ _               _
- /\   /\__ _| | | ___   _ _ __(_) __ _
- \ \ / / _` | | |/ / | | | '__| |/ _` |
-  \ V / (_| | |   <| |_| | |  | | (_| |
-   \_/ \__,_|_|_|\_\\__, |_| _/ |\__,_|
-                    |___/   |__/       "
-                ),
+                new Message(Application::ASCII),
                 new NewLine(),
                 new NewLine(),
                 new Message('Valkyrja Framework', new Formatter(textColor: TextColor::CYAN)),
@@ -63,6 +55,7 @@ class VersionCommand
                 new Message('Github https://github.com/valkyrjaio/valkyrja'),
                 new NewLine(),
                 new Message('Running on PHP ' . PHP_VERSION),
+                new NewLine(),
                 new NewLine(),
             )
             ->writeMessages();

@@ -17,6 +17,7 @@ use Valkyrja\Application\Env;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Routing\Attribute\Command as CommandAttribute;
@@ -46,7 +47,8 @@ class ClearCacheCommand
         return $outputFactory
             ->createOutput()
             ->withMessages(
-                new Banner(new SuccessMessage('Application cache cleared successfully.'))
+                new Banner(new SuccessMessage('Application cache cleared successfully.')),
+                new NewLine(),
             );
     }
 }

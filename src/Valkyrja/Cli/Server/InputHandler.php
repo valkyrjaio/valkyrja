@@ -115,9 +115,7 @@ class InputHandler implements Contract
     {
         $output = $this->handle($input);
 
-        $output
-            ->withAddedMessages(new NewLine())
-            ->writeMessages();
+        $output->writeMessages();
 
         $this->exit($input, $output);
 

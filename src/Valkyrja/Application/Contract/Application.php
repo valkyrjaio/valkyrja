@@ -29,9 +29,23 @@ interface Application
     /**
      * The Application framework version.
      *
-     * @var string
+     * @var non-empty-string
      */
     public const string VERSION = '2025.1.0';
+
+    /**
+     * The valkyrja framework ascii art.
+     *
+     * @var non-empty-string
+     */
+    public const string ASCII = <<<'TEXT'
+             _ _               _
+ /\   /\__ _| | | ___   _ _ __(_) __ _
+ \ \ / / _` | | |/ / | | | '__| |/ _` |
+  \ V / (_| | |   <| |_| | |  | | (_| |
+   \_/ \__,_|_|_|\_\\__, |_| _/ |\__,_|
+                    |___/   |__/               
+TEXT;
 
     /**
      * Setup the application.

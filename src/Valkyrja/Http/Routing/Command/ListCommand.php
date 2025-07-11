@@ -83,6 +83,6 @@ class ListCommand
             );
         }
 
-        return $output;
+        return $output->withAddedMessages(new NewLine());
     }
 }

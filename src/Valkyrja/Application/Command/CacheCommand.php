@@ -21,6 +21,7 @@ use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Routing\Attribute\Command as CommandAttribute;
@@ -91,14 +92,16 @@ class CacheCommand
             return $outputFactory
                 ->createOutput(exitCode: ExitCode::ERROR)
                 ->withMessages(
-                    new Banner(new ErrorMessage('An error occurred while caching the config.'))
+                    new Banner(new ErrorMessage('An error occurred while caching the config.')),
+                    new NewLine(),
                 );
         }
 
         return $outputFactory
             ->createOutput()
             ->withMessages(
-                new Banner(new SuccessMessage('Application config cached successfully.'))
+                new Banner(new SuccessMessage('Application config cached successfully.')),
+                new NewLine(),
             );
     }
 }

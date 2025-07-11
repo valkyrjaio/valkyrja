@@ -184,6 +184,7 @@ class HelpCommand
             new Message('Help:', new HighlightedTextFormatter()),
             new NewLine(),
             $this->getIndentedText($command->getHelpText()),
+            new NewLine(),
         );
     }
 
