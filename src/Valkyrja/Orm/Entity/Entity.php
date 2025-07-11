@@ -38,6 +38,7 @@ use function is_string;
  * @author Melech Mizrachi
  *
  * @psalm-import-type StorableValue from Contract
+ *
  * @phpstan-import-type StorableValue from Contract
  */
 abstract class Entity extends Model implements Contract

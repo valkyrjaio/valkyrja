@@ -53,7 +53,7 @@ class Answer extends Message implements Contract
             throw new InvalidArgumentException('$validationCallable must be a valid callable');
         }
 
-        if (! in_array($defaultResponse, $allowedResponses)) {
+        if (! in_array($defaultResponse, $allowedResponses, true)) {
             $allowedResponses[] = $defaultResponse;
         }
 

@@ -284,7 +284,7 @@ class Router implements Contract
                 new NewLine(),
                 new Question(
                     'Did you mean to run one of the following commands?',
-                    function (Output $output, AnswerContract $answer) use (&$command, $commands): Output {
+                    static function (Output $output, AnswerContract $answer) use (&$command, $commands): Output {
                         $response = $answer->getUserResponse();
                         $command  = $response !== 'no'
                             ? array_filter($commands, static fn (Command $command): bool => $command->getName() === $response)[0] ?? null
