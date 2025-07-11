@@ -21,7 +21,7 @@ use Valkyrja\Http\Struct\Request\Contract\RequestStruct as RoutingRequestStruct;
  *
  * @author Melech Mizrachi
  */
-#[Attribute(Attribute::TARGET_ALL)]
+#[Attribute(Attribute::TARGET_METHOD)]
 class RequestStruct
 {
     /**

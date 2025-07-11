@@ -25,7 +25,7 @@ use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
  *
  * @author Melech Mizrachi
  */
-#[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class Middleware
 {
     /**

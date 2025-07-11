@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Enum\RequestMethod as RequestMethodEnum;
  *
  * @author Melech Mizrachi
  */
-#[Attribute(Attribute::TARGET_ALL)]
+#[Attribute(Attribute::TARGET_METHOD)]
 class RequestMethod
 {
     /** @var RequestMethodEnum[] */

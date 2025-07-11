@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Data\Contract;
 
-use Valkyrja\Dispatcher\Data\Contract\Dispatch;
+use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
@@ -83,16 +83,16 @@ interface Route
     /**
      * Get the dispatch.
      */
-    public function getDispatch(): Dispatch;
+    public function getDispatch(): MethodDispatch;
 
     /**
      * Create a new request method with the specified dispatch.
      *
-     * @param Dispatch $dispatch The dispatch
+     * @param MethodDispatch $dispatch The dispatch
      *
      * @return static
      */
-    public function withDispatch(Dispatch $dispatch): static;
+    public function withDispatch(MethodDispatch $dispatch): static;
 
     /**
      * Get the request methods.

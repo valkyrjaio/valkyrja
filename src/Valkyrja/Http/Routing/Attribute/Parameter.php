@@ -21,7 +21,7 @@ use Valkyrja\Http\Routing\Data\Parameter as ParentParameter;
  *
  * @author Melech Mizrachi
  */
-#[Attribute(Attribute::TARGET_METHOD)]
+#[Attribute(Attribute::TARGET_PARAMETER)]
 class Parameter extends ParentParameter
 {
 }

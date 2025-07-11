@@ -22,7 +22,7 @@ use Valkyrja\Http\Routing\Attribute\Route\RequestMethod as ParentAttribute;
  *
  * @author Melech Mizrachi
  */
-#[Attribute(Attribute::TARGET_ALL)]
+#[Attribute(Attribute::TARGET_METHOD)]
 class Trace extends ParentAttribute
 {
     public function __construct()

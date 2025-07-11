@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Data;
 
 use Override;
-use Valkyrja\Dispatcher\Data\ClassDispatch;
-use Valkyrja\Dispatcher\Data\Contract\Dispatch;
+use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
@@ -53,7 +52,7 @@ class Route implements Contract
     public function __construct(
         protected string $path,
         protected string $name,
-        protected Dispatch $dispatch = new ClassDispatch(self::class),
+        protected MethodDispatch $dispatch = new \Valkyrja\Dispatcher\Data\MethodDispatch(self::class, 'getPath'),
         protected array $requestMethods = [RequestMethod::HEAD, RequestMethod::GET],
         protected string|null $regex = null,
         protected array $parameters = [],
@@ -141,7 +140,7 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getDispatch(): Dispatch
+    public function getDispatch(): MethodDispatch
     {
         return $this->dispatch;
     }
@@ -150,7 +149,7 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withDispatch(Dispatch $dispatch): static
+    public function withDispatch(MethodDispatch $dispatch): static
     {
         $new = clone $this;
 
