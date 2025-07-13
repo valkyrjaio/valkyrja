@@ -54,7 +54,12 @@ class Collection implements Contract
     {
         return new Data(
             events: $this->events,
-            listeners: array_map('serialize', $this->listeners),
+            listeners: array_map(
+                static fn (Listener|string $listener): string => ! is_string($listener)
+                    ? serialize($listener)
+                    : $listener,
+                $this->listeners
+            ),
         );
     }
 
