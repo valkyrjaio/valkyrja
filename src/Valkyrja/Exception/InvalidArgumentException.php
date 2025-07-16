@@ -28,6 +28,6 @@ class InvalidArgumentException extends \InvalidArgumentException implements Thro
     #[Override]
     public function getTraceCode(): string
     {
-        return ErrorHandler::getTraceCode($this);
+        return ExceptionHandler::getTraceCode($this);
     }
 }

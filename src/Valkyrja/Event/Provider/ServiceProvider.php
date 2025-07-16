@@ -19,8 +19,8 @@ use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
-use Valkyrja\Event\Collection\Collection as EventCollection;
-use Valkyrja\Event\Collection\Contract\Collection;
+use Valkyrja\Event\Collection\Collection;
+use Valkyrja\Event\Collection\Contract\Collection as CollectionContract;
 use Valkyrja\Event\Collector\AttributeCollector;
 use Valkyrja\Event\Collector\Contract\Collector;
 use Valkyrja\Event\Contract\Dispatcher;
@@ -42,9 +42,9 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Collector::class  => [self::class, 'publishAttributesCollector'],
-            Dispatcher::class => [self::class, 'publishDispatcher'],
-            Collection::class => [self::class, 'publishCollection'],
+            Collector::class          => [self::class, 'publishAttributesCollector'],
+            Dispatcher::class         => [self::class, 'publishDispatcher'],
+            CollectionContract::class => [self::class, 'publishCollection'],
         ];
     }
 
@@ -57,7 +57,7 @@ final class ServiceProvider extends Provider
         return [
             Collector::class,
             Dispatcher::class,
-            Collection::class,
+            CollectionContract::class,
         ];
     }
 
@@ -83,7 +83,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             Dispatcher::class,
             new EventDispatcher(
-                $container->getSingleton(Collection::class),
+                $container->getSingleton(CollectionContract::class),
                 $container->getSingleton(DispatchDispatcher::class),
             )
         );
@@ -95,8 +95,8 @@ final class ServiceProvider extends Provider
     public static function publishCollection(Container $container): void
     {
         $container->setSingleton(
-            Collection::class,
-            $collection = new EventCollection()
+            CollectionContract::class,
+            $collection = new Collection()
         );
 
         if ($container->isSingleton(Data::class)) {

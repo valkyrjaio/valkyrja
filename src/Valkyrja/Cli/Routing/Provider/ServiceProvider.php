@@ -22,11 +22,13 @@ use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\Cli\Routing\Collection\Contract\Collection;
+use Valkyrja\Cli\Routing\Collection\Collection;
+use Valkyrja\Cli\Routing\Collection\Contract\Collection as CollectionContract;
 use Valkyrja\Cli\Routing\Collector\AttributeCollector;
 use Valkyrja\Cli\Routing\Collector\Contract\Collector;
-use Valkyrja\Cli\Routing\Contract\Router;
+use Valkyrja\Cli\Routing\Contract\Router as RouterContract;
 use Valkyrja\Cli\Routing\Data;
+use Valkyrja\Cli\Routing\Router;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
@@ -46,9 +48,9 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Collection::class => [self::class, 'publishCollection'],
-            Collector::class  => [self::class, 'publishAttributeCollector'],
-            Router::class     => [self::class, 'publishRouter'],
+            Collector::class          => [self::class, 'publishAttributeCollector'],
+            RouterContract::class     => [self::class, 'publishRouter'],
+            CollectionContract::class => [self::class, 'publishCollection'],
         ];
     }
 
@@ -59,9 +61,9 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Collection::class,
             Collector::class,
-            Router::class,
+            RouterContract::class,
+            CollectionContract::class,
         ];
     }
 
@@ -91,11 +93,11 @@ final class ServiceProvider extends Provider
         $exitedHandler            = $container->getSingleton(ExitedHandler::class);
 
         $container->setSingleton(
-            Router::class,
-            new \Valkyrja\Cli\Routing\Router(
+            RouterContract::class,
+            new Router(
                 container: $container,
                 dispatcher: $container->getSingleton(Dispatcher::class),
-                collection: $container->getSingleton(Collection::class),
+                collection: $container->getSingleton(CollectionContract::class),
                 outputFactory: $container->getSingleton(OutputFactory::class),
                 throwableCaughtHandler: $throwableCaughtHandler,
                 commandMatchedHandler: $commandMatchedHandler,
@@ -112,8 +114,8 @@ final class ServiceProvider extends Provider
     public static function publishCollection(Container $container): void
     {
         $container->setSingleton(
-            Collection::class,
-            $collection = new \Valkyrja\Cli\Routing\Collection\Collection()
+            CollectionContract::class,
+            $collection = new Collection()
         );
 
         if ($container->isSingleton(Data::class)) {

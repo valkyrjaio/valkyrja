@@ -16,9 +16,10 @@ namespace Valkyrja\Http\Routing\Controller;
 use Throwable;
 use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Contract\Api;
-use Valkyrja\Exception\ErrorHandler;
+use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\JsonResponse;
 
 /**
@@ -26,12 +27,17 @@ use Valkyrja\Http\Message\Response\Contract\JsonResponse;
  *
  * @author Melech Mizrachi
  */
-abstract class ApiController
+abstract class ApiController extends Controller
 {
     public function __construct(
         protected Api $api,
-        protected ResponseFactory $responseFactory,
+        ServerRequest $request,
+        ResponseFactory $responseFactory,
     ) {
+        parent::__construct(
+            request: $request,
+            responseFactory: $responseFactory
+        );
     }
 
     /**
@@ -87,7 +93,7 @@ abstract class ApiController
     ): JsonResponse {
         return $this->createApiJsonResponse(
             [
-                'traceCode' => ErrorHandler::getTraceCode($exception),
+                'traceCode' => ExceptionHandler::getTraceCode($exception),
             ],
             $message ?? $exception->getMessage(),
             $status ?? Status::ERROR,

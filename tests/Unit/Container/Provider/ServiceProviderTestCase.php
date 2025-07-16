@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Provider;
 
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Container;
@@ -27,7 +28,7 @@ use function class_exists;
  *
  * @author Melech Mizrachi
  */
-class ServiceProviderTestCase extends TestCase
+abstract class ServiceProviderTestCase extends TestCase
 {
     /** @var class-string<Provider> */
     protected static string $provider;
@@ -65,6 +66,7 @@ class ServiceProviderTestCase extends TestCase
         self::assertInterfaceExists($provided);
     }
 
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

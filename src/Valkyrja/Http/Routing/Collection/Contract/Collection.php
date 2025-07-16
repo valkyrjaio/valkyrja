@@ -71,7 +71,7 @@ interface Collection
      *
      * @return bool
      */
-    public function isset(string $path, RequestMethod|null $method = null): bool;
+    public function has(string $path, RequestMethod|null $method = null): bool;
 
     /**
      * Get all routes.
@@ -158,7 +158,7 @@ interface Collection
      *                    The route if found or null when no named route is
      *                    found for the path and method combination specified
      */
-    public function getRouteByName(string $name): Route|null;
+    public function getByName(string $name): Route|null;
 
     /**
      * Determine if a named route exists.

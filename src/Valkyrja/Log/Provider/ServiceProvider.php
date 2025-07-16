@@ -18,6 +18,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Monolog;
 use Override;
 use Psr\Log\LoggerInterface;
+use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Contract\Logger;
@@ -66,21 +67,17 @@ final class ServiceProvider extends Provider
     }
 
     /**
-     * @inheritDoc
-     */
-    #[Override]
-    public static function publish(Container $container): void
-    {
-    }
-
-    /**
      * Publish the logger service.
      */
     public static function publishLogger(Container $container): void
     {
+        $env = $container->getSingleton(Env::class);
+        /** @var class-string<Logger> $default */
+        $default = $env::LOG_DEFAULT_LOGGER;
+
         $container->setSingleton(
             Logger::class,
-            $container->getSingleton(PsrLogger::class),
+            $container->getSingleton($default),
         );
     }
 

@@ -110,7 +110,7 @@ final class ServiceProvider extends Provider
     public static function publishMailgun(Container $container): void
     {
         $container->setSingleton(
-            Mailer::class,
+            Mailgun::class,
             new Mailgun(
                 $container->getSingleton(HttpClientConfigurator::class),
             )

@@ -20,6 +20,7 @@ use Valkyrja\Auth\EncryptedJwtAuthenticator;
 use Valkyrja\Auth\EncryptedTokenAuthenticator;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasher;
+use Valkyrja\Auth\Hasher\PhpPasswordHasher;
 use Valkyrja\Auth\JwtAuthenticator;
 use Valkyrja\Auth\SessionAuthenticator;
 use Valkyrja\Auth\Store\Contract\Store;
@@ -270,7 +271,7 @@ final class ServiceProvider extends Provider
     {
         $container->setSingleton(
             PasswordHasher::class,
-            new \Valkyrja\Auth\Hasher\PasswordHasher()
+            new PhpPasswordHasher()
         );
     }
 }

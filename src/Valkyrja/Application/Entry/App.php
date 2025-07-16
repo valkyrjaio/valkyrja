@@ -23,14 +23,16 @@ use Valkyrja\Cli\Interaction\Factory\InputFactory;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Server\Contract\InputHandler;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Exception\Contract\ErrorHandler as ErrorHandlerContract;
-use Valkyrja\Exception\ErrorHandler;
+use Valkyrja\Exception\Contract\ExceptionHandler as ErrorHandlerContract;
+use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Support\Directory;
+use Valkyrja\Support\Microtime;
 
 use function define;
+use function defined;
 
 /**
  * Abstract Class App.
@@ -46,7 +48,7 @@ abstract class App
      */
     public static function start(string $dir, Env $env): Application
     {
-        static::defaultErrorHandler();
+        static::defaultExceptionHandler();
         static::appStart();
         static::directory(dir: $dir);
 
@@ -67,10 +69,11 @@ abstract class App
 
         $container = $app->getContainer();
 
-        self::bootstrapErrorHandler($app, $container);
+        self::bootstrapExceptionHandler($app, $container);
 
         $handler = $container->getSingleton(RequestHandler::class);
-        $handler->run(static::getRequest());
+        $request = static::getRequest();
+        $handler->run($request);
     }
 
     /**
@@ -87,10 +90,11 @@ abstract class App
 
         $container = $app->getContainer();
 
-        self::bootstrapErrorHandler($app, $container);
+        self::bootstrapExceptionHandler($app, $container);
 
         $handler = $container->getSingleton(InputHandler::class);
-        $handler->run(static::getInput());
+        $input   = static::getInput();
+        $handler->run($input);
     }
 
     /**
@@ -98,7 +102,9 @@ abstract class App
      */
     public static function appStart(): void
     {
-        define('APP_START', microtime(true));
+        if (! defined('APP_START')) {
+            define('APP_START', Microtime::get());
+        }
     }
 
     /**
@@ -125,25 +131,11 @@ abstract class App
      */
     public static function app(Env $env): Application
     {
-        /** @var non-empty-string $cacheFilePath */
-        $cacheFilePath = $env::APP_CACHE_FILE_PATH;
+        /** @var non-empty-string $cacheFilepath */
+        $cacheFilepath = $env::APP_CACHE_FILE_PATH;
 
-        if (is_file($cacheFilePath)) {
-            $cache = file_get_contents($cacheFilePath);
-
-            if ($cache === false || $cache === '') {
-                throw new RuntimeException('Error occurred when retrieving cache file contents');
-            }
-
-            // Allow all classes, and filter for only Config classes down below since allowed_classes cannot be
-            // a class that others extend off of, and we don't want to limit what a cached config class could be
-            $data = unserialize($cache, ['allowed_classes' => true]);
-
-            if (! $data instanceof Data) {
-                throw new RuntimeException('Invalid cache');
-            }
-
-            $configData = $data;
+        if (is_file($cacheFilepath)) {
+            $configData = static::getData(cacheFilePath: $cacheFilepath);
         } else {
             $configData = static::getConfig();
         }
@@ -160,21 +152,45 @@ abstract class App
     }
 
     /**
-     * Set a default error handler until the one specified in config is set in the Container\AppProvider.
+     * Get the application data.
+     *
+     * @param non-empty-string $cacheFilePath The cache file path
      */
-    protected static function defaultErrorHandler(): void
+    protected static function getData(string $cacheFilePath): Data
     {
-        ErrorHandler::enable(
+        $cache = file_get_contents($cacheFilePath);
+
+        if ($cache === false || $cache === '') {
+            throw new RuntimeException('Error occurred when retrieving cache file contents');
+        }
+
+        // Allow all classes, and filter for only Data classes down below since allowed_classes cannot be
+        // a class that others extend off of, and we don't want to limit what a cached data class could be
+        $data = unserialize($cache, ['allowed_classes' => true]);
+
+        if (! $data instanceof Data) {
+            throw new RuntimeException('Invalid cache');
+        }
+
+        return $data;
+    }
+
+    /**
+     * Set a default exception handler until the one specified in config is set in the Container\AppProvider.
+     */
+    protected static function defaultExceptionHandler(): void
+    {
+        ExceptionHandler::enable(
             displayErrors: true
         );
     }
 
     /**
-     * Bootstrap error handler.
+     * Bootstrap exception handler.
      */
-    protected static function bootstrapErrorHandler(Application $app, Container $container): void
+    protected static function bootstrapExceptionHandler(Application $app, Container $container): void
     {
-        $errorHandler = new ErrorHandler();
+        $errorHandler = static::getExceptionHandler();
 
         // Set error handler in the service container
         $container->setSingleton(ErrorHandlerContract::class, $errorHandler);
@@ -186,6 +202,14 @@ abstract class App
                 displayErrors: true
             );
         }
+    }
+
+    /**
+     * Get the exception handler.
+     */
+    protected static function getExceptionHandler(): ErrorHandlerContract
+    {
+        return new ExceptionHandler();
     }
 
     /**

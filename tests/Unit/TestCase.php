@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit;
 
-use Error;
+use Override;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Throwable;
+use Valkyrja\Tests\EnvClass;
 
 use function class_exists;
 use function interface_exists;
@@ -28,8 +28,16 @@ use function trait_exists;
  *
  * @author Melech Mizrachi
  */
-class TestCase extends PHPUnitTestCase
+abstract class TestCase extends PHPUnitTestCase
 {
+    /**
+     * Assert if a class is of expected class or has the expected class as one of its parents.
+     *
+     * @param class-string $expected The expected class
+     * @param class-string $actual   The actual string
+     *
+     * @return void
+     */
     protected static function assertIsA(string $expected, string $actual): void
     {
         self::assertTrue(is_a($actual, $expected, true));
@@ -62,11 +70,6 @@ class TestCase extends PHPUnitTestCase
         self::assertTrue(trait_exists($trait));
     }
 
-    protected static function assertError(Throwable $throwable): void
-    {
-        self::assertTrue($throwable instanceof Error);
-    }
-
     /**
      * @param class-string $expected The class inherited
      * @param class-string $actual   The class to test
@@ -74,5 +77,27 @@ class TestCase extends PHPUnitTestCase
     protected static function isA(string $expected, string $actual): void
     {
         self::assertTrue(is_a($actual, $expected, true));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $dir = EnvClass::APP_DIR . '/storage';
+
+        /** @var string[] $files */
+        $files = scandir($dir);
+
+        foreach ($files as $file) {
+            $filepath = $dir . '/' . $file;
+
+            if ($file !== '.gitignore' && ! is_dir($filepath)) {
+                @unlink($filepath);
+            }
+        }
     }
 }

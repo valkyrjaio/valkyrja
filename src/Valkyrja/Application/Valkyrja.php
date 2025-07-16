@@ -89,7 +89,6 @@ class Valkyrja implements Application
         }
 
         $this->bootstrapServices();
-        $this->bootstrapTimezone();
     }
 
     /**
@@ -152,6 +151,8 @@ class Valkyrja implements Application
     {
         // Set the env class to use
         $this->env = $env;
+
+        $this->bootstrapTimezone();
     }
 
     /**
@@ -239,7 +240,7 @@ class Valkyrja implements Application
         $components = $this->env::APP_COMPONENTS;
 
         foreach ($components as $component) {
-            $this->addComponent($component);
+            $this->addComponent(component: $component);
         }
     }
 

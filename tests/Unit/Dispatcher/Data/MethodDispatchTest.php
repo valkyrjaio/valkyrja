@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Unit\Dispatcher\Data;
+namespace Valkyrja\Tests\Unit\Dispatcher\Data;
 
 use stdClass;
 use Valkyrja\Dispatcher\Data\MethodDispatch as Dispatch;
@@ -82,6 +82,8 @@ class MethodDispatchTest extends TestCase
         self::assertNotSame($dispatch, $newDispatch);
         self::assertSame($method, $dispatch->getMethod());
         self::assertSame($method2, $newDispatch->getMethod());
+        self::assertSame("$class->$method()", $dispatch->__toString());
+        self::assertSame("$class->$method2()", $newDispatch->__toString());
     }
 
     public function testIsStatic(): void
@@ -97,5 +99,7 @@ class MethodDispatchTest extends TestCase
         self::assertNotSame($dispatch, $newDispatch);
         self::assertFalse($dispatch->isStatic());
         self::assertTrue($newDispatch->isStatic());
+        self::assertSame("$class->$method()", $dispatch->__toString());
+        self::assertSame("$class::$method()", $newDispatch->__toString());
     }
 }

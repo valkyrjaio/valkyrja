@@ -112,7 +112,8 @@ trait ProvidersAwareTrait
      */
     public function isDeferred(string $id): bool
     {
-        return isset($this->deferred[$id]);
+        return isset($this->deferred[$id])
+            || isset($this->deferredCallback[$id]);
     }
 
     /**

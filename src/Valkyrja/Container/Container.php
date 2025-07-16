@@ -16,8 +16,8 @@ namespace Valkyrja\Container;
 use Override;
 use Valkyrja\Container\Contract\Container as Contract;
 use Valkyrja\Container\Contract\Service;
+use Valkyrja\Container\Exception\InvalidArgumentException;
 use Valkyrja\Container\Support\ProvidersAwareTrait;
-use Valkyrja\Exception\InvalidArgumentException;
 
 use function assert;
 use function class_exists;
@@ -90,8 +90,8 @@ class Container implements Contract
             aliases: $this->aliases,
             deferred: $this->deferred,
             deferredCallback: $this->deferredCallback,
-            services: $this->services,
-            singletons: $this->singletons,
+            services: [],
+            singletons: [],
             providers: array_filter($this->providers, static fn (string $provider): bool => ! $provider::deferred()),
         );
     }

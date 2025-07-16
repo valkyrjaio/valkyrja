@@ -96,7 +96,10 @@ class Route implements Contract
     {
         $new = clone $this;
 
-        $new->path = $this->getFilteredPath($this->path) . $this->getFilteredPath($path);
+        $filteredExistingPath = $this->getFilteredPath($this->path);
+        $filteredPath         = $this->getFilteredPath($path);
+
+        $new->path = $this->getFilteredPath($filteredExistingPath . $filteredPath);
 
         return $new;
     }
@@ -565,7 +568,7 @@ class Route implements Contract
     {
         $new = clone $this;
 
-        $this->responseStruct = $responseStruct;
+        $new->responseStruct = $responseStruct;
 
         return $new;
     }
@@ -585,12 +588,7 @@ class Route implements Contract
             return '/';
         }
 
-        // If the route doesn't begin with an optional or required group
-        if ($path[0] !== '[' && $path[0] !== '<') {
-            // Append a slash
-            return '/' . $path;
-        }
-
-        return $path;
+        // Prepend a slash
+        return '/' . $path;
     }
 }

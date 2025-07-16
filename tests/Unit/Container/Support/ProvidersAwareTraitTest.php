@@ -43,6 +43,8 @@ class ProvidersAwareTraitTest extends TestCase
         self::assertFalse($providersAware->isRegistered(ProviderClass::class));
 
         $providersAware->register(ProviderClass::class);
+        // Testing the fact a registered provider isn't registered more than once
+        $providersAware->register(ProviderClass::class);
 
         self::assertTrue(ProviderClass::$publishCalled);
         self::assertFalse(ProviderClass::$publishSecondaryCalled);

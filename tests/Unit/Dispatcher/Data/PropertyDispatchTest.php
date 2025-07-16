@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Unit\Dispatcher\Data;
+namespace Valkyrja\Tests\Unit\Dispatcher\Data;
 
 use Valkyrja\Dispatcher\Data\PropertyDispatch as Dispatch;
 use Valkyrja\Tests\Classes\Dispatcher\InvalidDispatcherClass;
@@ -39,6 +39,8 @@ class PropertyDispatchTest extends TestCase
         self::assertNotSame($dispatch, $newDispatch);
         self::assertSame($property, $dispatch->getProperty());
         self::assertSame($property2, $newDispatch->getProperty());
+        self::assertSame("$class->$property", $dispatch->__toString());
+        self::assertSame("$class->$property2", $newDispatch->__toString());
     }
 
     public function testIsStatic(): void
@@ -54,5 +56,7 @@ class PropertyDispatchTest extends TestCase
         self::assertNotSame($dispatch, $newDispatch);
         self::assertFalse($dispatch->isStatic());
         self::assertTrue($newDispatch->isStatic());
+        self::assertSame("$class->$property", $dispatch->__toString());
+        self::assertSame("$class::$property", $newDispatch->__toString());
     }
 }

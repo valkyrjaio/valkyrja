@@ -14,10 +14,19 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
+use Valkyrja\Application\Config;
 use Valkyrja\Attribute\Contract\Attributes;
+use Valkyrja\Container\Attribute\Alias;
+use Valkyrja\Container\Attribute\Service;
 use Valkyrja\Container\Collector\AttributeCollector;
-use Valkyrja\Container\Collector\Contract\Collector as AttributeCollectorContract;
+use Valkyrja\Container\Collector\Contract\Collector as CollectorContract;
+use Valkyrja\Container\Data;
+use Valkyrja\Container\Exception\InvalidArgumentException;
 use Valkyrja\Container\Provider\ServiceProvider;
+use Valkyrja\Dispatcher\Data\ClassDispatch;
+use Valkyrja\Tests\Classes\Container\ServiceClass;
+use Valkyrja\Tests\Classes\Container\Singleton2Class;
+use Valkyrja\Tests\Classes\Container\SingletonClass;
 
 /**
  * Test the ServiceProvider.
@@ -38,6 +47,44 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishAttributesCollector($this->container);
 
-        self::assertInstanceOf(AttributeCollector::class, $this->container->getSingleton(AttributeCollectorContract::class));
+        self::assertInstanceOf(AttributeCollector::class, $this->container->getSingleton(CollectorContract::class));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testPublishData(): void
+    {
+        $this->container->setSingleton(Config::class, new Config());
+        $this->container->setSingleton(CollectorContract::class, $collector = $this->createMock(CollectorContract::class));
+
+        $service   = (new Service(serviceId: ServiceClass::class))->withDispatch(new ClassDispatch(ServiceClass::class));
+        $singleton = (new Service(serviceId: SingletonClass::class, isSingleton: true))->withDispatch(new ClassDispatch(SingletonClass::class));
+        $collector->method('getServices')->willReturn([$service, $singleton]);
+
+        $alias = (new Alias(serviceId: Singleton2Class::class))->withDispatch(new ClassDispatch(SingletonClass::class));
+        $collector->method('getAliases')->willReturn([$alias]);
+
+        ServiceProvider::publishData($this->container);
+
+        self::assertInstanceOf(Data::class, $this->container->getSingleton(Data::class));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testPublishDataInvalidService(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->container->setSingleton(Config::class, new Config());
+        $this->container->setSingleton(CollectorContract::class, $collector = $this->createMock(CollectorContract::class));
+
+        $service = (new Service(serviceId: self::class))->withDispatch(new ClassDispatch(self::class));
+        $collector->method('getServices')->willReturn([$service]);
+
+        ServiceProvider::publishData($this->container);
+
+        self::assertInstanceOf(Data::class, $this->container->getSingleton(Data::class));
     }
 }

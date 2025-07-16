@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Container;
 
+use Valkyrja\Container\Attribute\Service;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Contract\Service as Contract;
 
@@ -21,6 +22,7 @@ use Valkyrja\Container\Contract\Service as Contract;
  *
  * @author Melech Mizrachi
  */
+#[Service(self::class)]
 class ServiceClass implements Contract
 {
     public function __construct(

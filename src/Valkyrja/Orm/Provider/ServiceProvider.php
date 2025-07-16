@@ -45,6 +45,7 @@ final class ServiceProvider extends Provider
             MysqlManager::class    => [self::class, 'publishMysqlManager'],
             PgsqlManager::class    => [self::class, 'publishPgsqlManager'],
             SqliteManager::class   => [self::class, 'publishSqliteManager'],
+            PDO::class             => [self::class, 'publishPdo'],
             InMemoryManager::class => [self::class, 'publishInMemoryManager'],
             NullManager::class     => [self::class, 'publishNullManager'],
             Repository::class      => [self::class, 'publishRepository'],
@@ -62,6 +63,7 @@ final class ServiceProvider extends Provider
             MysqlManager::class,
             PgsqlManager::class,
             SqliteManager::class,
+            PDO::class,
             InMemoryManager::class,
             NullManager::class,
             Repository::class,
@@ -126,14 +128,12 @@ final class ServiceProvider extends Provider
             . ($strict !== null ? ";strict=$strict" : '')
             . ($engine !== null ? ";engine=$engine" : '');
 
-        $pdo = new PDO(
-            dsn: $dsn,
-            options: $options
-        );
-
         $container->setSingleton(
             MysqlManager::class,
-            new MysqlManager($pdo, $container)
+            new MysqlManager(
+                pdo: $container->getCallable(PDO::class, [$dsn, $options]),
+                container: $container
+            )
         );
     }
 
@@ -179,17 +179,15 @@ final class ServiceProvider extends Provider
             . ";sslmode=$sslmode"
             . ";options='--client_encoding=$charset";
 
-        $pdo = new PDO(
-            dsn: $dsn,
-            options: $options
+        $container->setSingleton(
+            PgsqlManager::class,
+            new PgsqlManager(
+                pdo: $pdo = $container->getCallable(PDO::class, [$dsn, $options]),
+                container: $container
+            )
         );
 
         $pdo->query("set search_path to $schema");
-
-        $container->setSingleton(
-            PgsqlManager::class,
-            new PgsqlManager($pdo, $container)
-        );
     }
 
     /**
@@ -229,14 +227,37 @@ final class ServiceProvider extends Provider
             . ";charset=$charset"
             . ";password=$password";
 
-        $pdo = new PDO(
-            dsn: $dsn,
-            options: $options
-        );
-
         $container->setSingleton(
             SqliteManager::class,
-            new SqliteManager($pdo, $container)
+            new SqliteManager(
+                pdo: $container->getCallable(PDO::class, [$dsn, $options]),
+                container: $container
+            )
+        );
+    }
+
+    /**
+     * Publish the PDO service.
+     */
+    public static function publishPdo(Container $container): void
+    {
+        $container->setCallable(
+            PDO::class,
+            [self::class, 'createPdo'],
+        );
+    }
+
+    /**
+     * Create a PDO.
+     *
+     * @param non-empty-string     $dsn     The dsn
+     * @param array<int, int|bool> $options The options
+     */
+    public static function createPdo(Container $container, string $dsn, array $options): PDO
+    {
+        return new PDO(
+            dsn: $dsn,
+            options: $options
         );
     }
 

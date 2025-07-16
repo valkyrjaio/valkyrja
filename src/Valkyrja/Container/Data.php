@@ -25,7 +25,6 @@ readonly class Data
 {
     /**
      * @param array<class-string, class-string>                   $aliases
-     * @param array<class-string, class-string>                   $contextServices
      * @param array<class-string, class-string>                   $deferred
      * @param array<class-string, callable>                       $deferredCallback
      * @param array<class-string<Service>, class-string<Service>> $services
@@ -34,7 +33,6 @@ readonly class Data
      */
     public function __construct(
         public array $aliases = [],
-        public array $contextServices = [],
         public array $deferred = [],
         public array $deferredCallback = [],
         public array $services = [],

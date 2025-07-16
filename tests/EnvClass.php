@@ -39,9 +39,9 @@ class EnvClass extends AppEnv
      *
      ************************************************************/
 
-    /** @var string */
+    /** @var non-empty-string */
     public const string APP_DIR = __DIR__;
-    /** @var string */
+    /** @var non-empty-string */
     public const string APP_CACHE_FILE_PATH = __DIR__ . '/storage/cache.php';
 
     /************************************************************

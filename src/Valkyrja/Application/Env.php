@@ -21,7 +21,10 @@ use Valkyrja\Auth\Constant\RouteName;
 use Valkyrja\Auth\Constant\SessionId;
 use Valkyrja\Auth\Contract\Authenticator;
 use Valkyrja\Auth\Entity\Contract\User;
+use Valkyrja\Auth\Entity\User as UserEntity;
+use Valkyrja\Auth\SessionAuthenticator;
 use Valkyrja\Auth\Store\Contract\Store;
+use Valkyrja\Auth\Store\OrmStore;
 use Valkyrja\Broadcast\Contract\Broadcaster;
 use Valkyrja\Broadcast\PusherBroadcaster;
 use Valkyrja\Cache\Contract\Cache;
@@ -52,6 +55,7 @@ use Valkyrja\Jwt\Contract\Jwt;
 use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Jwt\FirebaseJwt;
 use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\PsrLogger;
 use Valkyrja\Mail\Contract\Mailer;
 use Valkyrja\Mail\MailgunMailer;
 use Valkyrja\Orm\Contract\Manager;
@@ -81,6 +85,8 @@ class Env
 
     /** @var non-empty-string */
     public const string APP_ENV = 'local';
+    /** @var non-empty-string */
+    public const string APP_NAMESPACE = 'App';
     /** @var bool */
     public const bool APP_DEBUG_MODE = true;
     /** @var non-empty-string */
@@ -108,9 +114,9 @@ class Env
         ComponentClass::SMS,
         ComponentClass::VIEW,
     ];
-    /** @var string */
+    /** @var non-empty-string */
     public const string APP_DIR = __DIR__ . '/..';
-    /** @var string */
+    /** @var non-empty-string */
     public const string APP_CACHE_FILE_PATH = __DIR__ . '/../storage/framework/cache/cache.php';
 
     /************************************************************
@@ -120,11 +126,11 @@ class Env
      ************************************************************/
 
     /** @var class-string<Authenticator> */
-    public const string AUTH_DEFAULT_AUTHENTICATOR = Authenticator::class;
+    public const string AUTH_DEFAULT_AUTHENTICATOR = SessionAuthenticator::class;
     /** @var class-string<Store> */
-    public const string AUTH_DEFAULT_STORE = Store::class;
+    public const string AUTH_DEFAULT_STORE = OrmStore::class;
     /** @var class-string<User> */
-    public const string AUTH_DEFAULT_USER_ENTITY = \Valkyrja\Auth\Entity\User::class;
+    public const string AUTH_DEFAULT_USER_ENTITY = UserEntity::class;
     /** @var non-empty-string */
     public const string AUTH_DEFAULT_SESSION_ID = SessionId::AUTHENTICATED_USERS;
     /** @var non-empty-string */
@@ -171,7 +177,7 @@ class Env
 
     /** @var class-string<Cache> */
     public const string CACHE_DEFAULT = RedisCache::class;
-    /** @var string */
+    /** @var non-empty-string */
     public const string CACHE_REDIS_HOST = '127.0.0.1';
     /** @var int */
     public const int CACHE_REDIS_PORT = 6379;
@@ -242,9 +248,9 @@ class Env
     /** @var non-empty-string */
     public const string FILESYSTEM_FLYSYSTEM_S3_SECRET = 's3-secret';
     /** @var non-empty-string */
-    public const string FILESYSTEM_FLYSYSTEM_S3_REGION = 's3-region';
+    public const string FILESYSTEM_FLYSYSTEM_S3_REGION = 'us-east-1';
     /** @var non-empty-string */
-    public const string FILESYSTEM_FLYSYSTEM_S3_VERSION = 's3-version';
+    public const string FILESYSTEM_FLYSYSTEM_S3_VERSION = 'latest';
     /** @var non-empty-string */
     public const string FILESYSTEM_FLYSYSTEM_S3_BUCKET = 's3-bucket';
     /** @var string */
@@ -305,6 +311,15 @@ class Env
 
     /************************************************************
      *
+     * Log component env variables.
+     *
+     ************************************************************/
+
+    /** @var class-string<Logger> */
+    public const string LOG_DEFAULT_LOGGER = PsrLogger::class;
+
+    /************************************************************
+     *
      * Mail component env variables.
      *
      ************************************************************/
@@ -338,13 +353,13 @@ class Env
     public const string ORM_PGSQL_HOST = '127.0.0.1';
     /** @var positive-int */
     public const int ORM_PGSQL_PORT = 6379;
-    /** @var string|null */
+    /** @var non-empty-string|null */
     public const string|null ORM_PGSQL_DB = 'valkyrja';
-    /** @var string|null */
+    /** @var non-empty-string|null */
     public const string|null ORM_PGSQL_USER = 'valkyrja';
-    /** @var string|null */
+    /** @var non-empty-string|null */
     public const string|null ORM_PGSQL_PASSWORD = 'pgsql-password';
-    /** @var string|null */
+    /** @var non-empty-string|null */
     public const string|null ORM_PGSQL_CHARSET = 'utf8';
     /** @var array<int, int|bool>|null */
     public const array|null ORM_PGSQL_OPTIONS = null;
@@ -368,7 +383,7 @@ class Env
     public const array|null ORM_MYSQL_OPTIONS = null;
     /** @var bool|null */
     public const bool|null ORM_MYSQL_STRICT = null;
-    /** @var string|null */
+    /** @var non-empty-string|null */
     public const string|null ORM_MYSQL_ENGINE = null;
     /** @var non-empty-string */
     public const string ORM_SQLITE_HOST = '127.0.0.1';

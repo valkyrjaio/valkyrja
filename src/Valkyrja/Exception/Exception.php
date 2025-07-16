@@ -28,6 +28,6 @@ class Exception extends \Exception implements Throwable
     #[Override]
     public function getTraceCode(): string
     {
-        return ErrorHandler::getTraceCode($this);
+        return ExceptionHandler::getTraceCode($this);
     }
 }

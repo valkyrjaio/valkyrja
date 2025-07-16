@@ -21,8 +21,6 @@ use Valkyrja\Event\Data\Listener as Model;
 use Valkyrja\Event\Exception\InvalidArgumentException;
 
 use function array_keys;
-use function is_array;
-use function is_object;
 use function is_string;
 
 /**
@@ -136,7 +134,8 @@ class Collection implements Contract
     #[Override]
     public function hasListenersForEvent(object $event): bool
     {
-        return isset($this->events[$event::class]);
+        return isset($this->events[$event::class])
+            && $this->events[$event::class] !== [];
     }
 
     /**
@@ -145,7 +144,8 @@ class Collection implements Contract
     #[Override]
     public function hasListenersForEventById(string $eventId): bool
     {
-        return isset($this->events[$eventId]);
+        return isset($this->events[$eventId])
+            && $this->events[$eventId] !== [];
     }
 
     /**
@@ -163,8 +163,12 @@ class Collection implements Contract
     #[Override]
     public function getListenersForEventById(string $eventId): array
     {
-        $listenerIds = $this->events[$eventId];
+        $listenerIds = $this->events[$eventId] ?? null;
         $listeners   = [];
+
+        if ($listenerIds === null) {
+            return [];
+        }
 
         foreach ($listenerIds as $listenerId) {
             $listener               = $this->listeners[$listenerId];
@@ -211,6 +215,12 @@ class Collection implements Contract
     #[Override]
     public function removeListenersForEventById(string $eventId): void
     {
+        $listeners = $this->getListenersForEventById($eventId);
+
+        foreach ($listeners as $listener) {
+            $this->removeListener($listener);
+        }
+
         unset($this->events[$eventId]);
     }
 
@@ -249,64 +259,6 @@ class Collection implements Contract
         }
 
         return $eventsWithListeners;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function offsetGet($offset): array
-    {
-        if (is_object($offset)) {
-            return $this->getListenersForEvent($offset);
-        }
-
-        return $this->getListenersForEventById($offset);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function offsetSet($offset, $value): void
-    {
-        $listeners = is_array($value) ? $value : [$value];
-
-        if (is_object($offset)) {
-            $this->setListenersForEvent($offset, ...$listeners);
-
-            return;
-        }
-
-        $this->setListenersForEventById($offset, ...$listeners);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function offsetUnset($offset): void
-    {
-        if (is_object($offset)) {
-            $this->removeListenersForEvent($offset);
-
-            return;
-        }
-
-        $this->removeListenersForEventById($offset);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function offsetExists($offset): bool
-    {
-        if (is_object($offset)) {
-            return $this->hasListenersForEvent($offset);
-        }
-
-        return $this->hasListenersForEventById($offset);
     }
 
     /**

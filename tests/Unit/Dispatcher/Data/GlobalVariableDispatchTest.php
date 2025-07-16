@@ -11,8 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Unit\Dispatcher\Data;
+namespace Valkyrja\Tests\Unit\Dispatcher\Data;
 
+use JsonException;
 use Valkyrja\Dispatcher\Data\GlobalVariableDispatch as Dispatch;
 use Valkyrja\Tests\Unit\TestCase;
 
@@ -23,6 +24,9 @@ use Valkyrja\Tests\Unit\TestCase;
  */
 class GlobalVariableDispatchTest extends TestCase
 {
+    /**
+     * @throws JsonException
+     */
     public function testVariable(): void
     {
         $variable  = '_GET';
@@ -37,5 +41,7 @@ class GlobalVariableDispatchTest extends TestCase
         self::assertNotSame($dispatch, $newDispatch);
         self::assertSame($variable, $dispatch->getVariable());
         self::assertSame($variable2, $newDispatch->getVariable());
+        self::assertSame($variable, $dispatch->__toString());
+        self::assertSame($variable2, $newDispatch->__toString());
     }
 }

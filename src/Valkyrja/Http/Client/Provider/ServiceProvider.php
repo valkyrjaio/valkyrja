@@ -85,8 +85,8 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             GuzzleClient::class,
             new GuzzleClient(
-                $container->getSingleton(Guzzle::class),
-                $container->getSingleton(ResponseFactory::class),
+                client: $container->getSingleton(Guzzle::class),
+                responseFactory: $container->getSingleton(ResponseFactory::class),
             )
         );
     }
@@ -99,8 +99,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             LogClient::class,
             new LogClient(
-                $container->getSingleton(Logger::class),
-                $container->getSingleton(ResponseFactory::class),
+                logger: $container->getSingleton(Logger::class),
             )
         );
     }
@@ -112,9 +111,7 @@ final class ServiceProvider extends Provider
     {
         $container->setSingleton(
             NullClient::class,
-            new NullClient(
-                $container->getSingleton(ResponseFactory::class),
-            )
+            new NullClient()
         );
     }
 

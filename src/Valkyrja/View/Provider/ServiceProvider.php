@@ -23,7 +23,8 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\View\Contract\Renderer;
-use Valkyrja\View\Factory\Contract\ResponseFactory;
+use Valkyrja\View\Factory\Contract\ResponseFactory as ResponseFactoryContract;
+use Valkyrja\View\Factory\ResponseFactory;
 use Valkyrja\View\OrkaRenderer;
 use Valkyrja\View\PhpRenderer;
 use Valkyrja\View\TwigRenderer;
@@ -42,12 +43,12 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Renderer::class        => [self::class, 'publishRenderer'],
-            PhpRenderer::class     => [self::class, 'publishPhpRenderer'],
-            OrkaRenderer::class    => [self::class, 'publishOrkaRenderer'],
-            TwigRenderer::class    => [self::class, 'publishTwigRenderer'],
-            Environment::class     => [self::class, 'publishTwigEnvironment'],
-            ResponseFactory::class => [self::class, 'publishResponseFactory'],
+            Renderer::class                => [self::class, 'publishRenderer'],
+            PhpRenderer::class             => [self::class, 'publishPhpRenderer'],
+            OrkaRenderer::class            => [self::class, 'publishOrkaRenderer'],
+            TwigRenderer::class            => [self::class, 'publishTwigRenderer'],
+            Environment::class             => [self::class, 'publishTwigEnvironment'],
+            ResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
         ];
     }
 
@@ -63,7 +64,7 @@ final class ServiceProvider extends Provider
             OrkaRenderer::class,
             TwigRenderer::class,
             Environment::class,
-            ResponseFactory::class,
+            ResponseFactoryContract::class,
         ];
     }
 
@@ -197,8 +198,8 @@ final class ServiceProvider extends Provider
     public static function publishResponseFactory(Container $container): void
     {
         $container->setSingleton(
-            ResponseFactory::class,
-            new \Valkyrja\View\Factory\ResponseFactory(
+            ResponseFactoryContract::class,
+            new ResponseFactory(
                 $container->getSingleton(HttpMessageResponseFactory::class),
                 $container->getSingleton(Renderer::class)
             )

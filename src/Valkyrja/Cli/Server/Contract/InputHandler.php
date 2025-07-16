@@ -47,7 +47,7 @@ interface InputHandler
      *
      * @param Input $input
      *
-     * @return never
+     * @return void
      */
-    public function run(Input $input): never;
+    public function run(Input $input): void;
 }

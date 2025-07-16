@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Collection\Contract;
 
-use ArrayAccess;
 use Override;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Valkyrja\Event\Data;
@@ -23,10 +22,8 @@ use Valkyrja\Event\Data\Contract\Listener;
  * Interface Dispatcher.
  *
  * @author Melech Mizrachi
- *
- * @extends ArrayAccess<string|object, Listener[]|Listener>
  */
-interface Collection extends ArrayAccess, ListenerProviderInterface
+interface Collection extends ListenerProviderInterface
 {
     /**
      * Get a data representation of the collection.
@@ -136,45 +133,4 @@ interface Collection extends ArrayAccess, ListenerProviderInterface
      * @return array<class-string, Listener[]>
      */
     public function getEventsWithListeners(): array;
-
-    /**
-     * Get an event's listeners.
-     *
-     * @param class-string|object $offset The event id
-     *
-     * @return Listener[]
-     */
-    #[Override]
-    public function offsetGet(mixed $offset): array;
-
-    /**
-     * Set a listener to an event.
-     *
-     * @param class-string|object $offset The event id
-     * @param Listener|Listener[] $value  The listener
-     *
-     * @return void
-     */
-    #[Override]
-    public function offsetSet(mixed $offset, mixed $value): void;
-
-    /**
-     * Remove all listeners for an event.
-     *
-     * @param class-string|object $offset The event id
-     *
-     * @return void
-     */
-    #[Override]
-    public function offsetUnset(mixed $offset): void;
-
-    /**
-     * Check whether an event has listeners.
-     *
-     * @param class-string|object $offset The event id
-     *
-     * @return bool
-     */
-    #[Override]
-    public function offsetExists(mixed $offset): bool;
 }

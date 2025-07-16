@@ -45,7 +45,7 @@ class Component extends AppComponent
     public static function getCliControllers(): array
     {
         return [
-            Routing\Command\ListCommand::class,
+            Routing\Cli\Command\ListCommand::class,
         ];
     }
 }

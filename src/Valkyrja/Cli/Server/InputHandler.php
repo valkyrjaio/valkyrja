@@ -35,6 +35,7 @@ use Valkyrja\Cli\Routing\Data\Option\SilentOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\VersionOptionParameter;
 use Valkyrja\Cli\Server\Contract\InputHandler as Contract;
 use Valkyrja\Container\Contract\Container;
+use Valkyrja\Support\Exiter;
 
 /**
  * Class InputHandler.
@@ -108,10 +109,10 @@ class InputHandler implements Contract
      *
      * @param Input $input
      *
-     * @return never
+     * @return void
      */
     #[Override]
-    public function run(Input $input): never
+    public function run(Input $input): void
     {
         $output = $this->handle($input);
 
@@ -122,10 +123,10 @@ class InputHandler implements Contract
         $exitCode = $output->getExitCode();
 
         if ($exitCode instanceof ExitCode) {
-            exit($exitCode->value);
+            $exitCode = $exitCode->value;
         }
 
-        exit($exitCode);
+        Exiter::exit($exitCode);
     }
 
     /**

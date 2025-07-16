@@ -15,9 +15,9 @@ namespace Valkyrja\Http\Client;
 
 use Override;
 use Valkyrja\Http\Client\Contract\Client as Contract;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\Request;
 use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Response\EmptyResponse;
 
 /**
  * Class NullClient.
@@ -26,17 +26,12 @@ use Valkyrja\Http\Message\Response\Contract\Response;
  */
 class NullClient implements Contract
 {
-    public function __construct(
-        protected ResponseFactory $responseFactory,
-    ) {
-    }
-
     /**
      * @inheritDoc
      */
     #[Override]
     public function sendRequest(Request $request): Response
     {
-        return $this->responseFactory->createResponse();
+        return new EmptyResponse();
     }
 }

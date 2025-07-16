@@ -15,8 +15,10 @@ namespace Valkyrja\Event;
 
 use Override;
 use Psr\EventDispatcher\StoppableEventInterface;
-use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
-use Valkyrja\Event\Collection\Contract\Collection;
+use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcherContract;
+use Valkyrja\Dispatcher\Dispatcher as DispatchDispatcher;
+use Valkyrja\Event\Collection\Collection;
+use Valkyrja\Event\Collection\Contract\Collection as CollectionContract;
 use Valkyrja\Event\Contract\DispatchCollectableEvent;
 use Valkyrja\Event\Contract\Dispatcher as Contract;
 use Valkyrja\Event\Data\Contract\Listener;
@@ -29,8 +31,8 @@ use Valkyrja\Event\Data\Contract\Listener;
 class Dispatcher implements Contract
 {
     public function __construct(
-        protected Collection $collection,
-        protected DispatchDispatcher $dispatcher,
+        protected CollectionContract $collection = new Collection(),
+        protected DispatchDispatcherContract $dispatcher = new DispatchDispatcher(),
     ) {
     }
 
@@ -94,25 +96,13 @@ class Dispatcher implements Contract
             // Dispatch the listener with the event
             $event = $this->dispatchListener($event, $listener);
 
-            // If the listener is a stoppable event and is marked to stop propagation then stop propagation
-            if ($listener instanceof StoppableEventInterface && $listener->isPropagationStopped()) {
+            // If the event is a stoppable event and is marked to stop propagation by the listener that just ran then stop propagation
+            if ($event instanceof StoppableEventInterface && $event->isPropagationStopped()) {
                 return $event;
             }
         }
 
         return $event;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function dispatchListenersGivenId(string $eventId, Listener ...$listeners): object
-    {
-        return $this->dispatchListeners(
-            $this->getEventClassFromId($eventId),
-            ...$listeners
-        );
     }
 
     /**
@@ -132,18 +122,6 @@ class Dispatcher implements Contract
         }
 
         return $event;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function dispatchListenerGivenId(string $eventId, Listener $listener): object
-    {
-        return $this->dispatchListener(
-            $this->getEventClassFromId($eventId),
-            $listener
-        );
     }
 
     /**

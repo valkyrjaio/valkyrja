@@ -215,9 +215,9 @@ class Dispatcher implements Contract
      *
      * @param CallableDispatch|ClassDispatch|MethodDispatch $dispatch The dispatch
      *
-     * @return array<array-key, mixed>|null
+     * @return array<array-key, mixed>
      */
-    protected function getDependencies(CallableDispatch|ClassDispatch|MethodDispatch $dispatch): array|null
+    protected function getDependencies(CallableDispatch|ClassDispatch|MethodDispatch $dispatch): array
     {
         // If there are dependencies
         if (($dependencies = $dispatch->getDependencies()) === null) {

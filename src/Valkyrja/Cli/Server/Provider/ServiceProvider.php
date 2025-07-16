@@ -19,7 +19,8 @@ use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
 use Valkyrja\Cli\Routing\Contract\Router;
-use Valkyrja\Cli\Server\Contract\InputHandler;
+use Valkyrja\Cli\Server\Contract\InputHandler as InputHandlerContract;
+use Valkyrja\Cli\Server\InputHandler;
 use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
@@ -39,7 +40,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            InputHandler::class                 => [self::class, 'publishInputHandler'],
+            InputHandlerContract::class         => [self::class, 'publishInputHandler'],
             LogThrowableCaughtMiddleware::class => [self::class, 'publishLogThrowableCaughtMiddleware'],
         ];
     }
@@ -51,7 +52,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            InputHandler::class,
+            InputHandlerContract::class,
             LogThrowableCaughtMiddleware::class,
         ];
     }
@@ -64,8 +65,8 @@ final class ServiceProvider extends Provider
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
-            InputHandler::class,
-            new \Valkyrja\Cli\Server\InputHandler(
+            InputHandlerContract::class,
+            new InputHandler(
                 container: $container,
                 router: $container->getSingleton(Router::class),
                 inputReceivedHandler: $container->getSingleton(InputReceivedHandler::class),

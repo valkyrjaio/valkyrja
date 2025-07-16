@@ -59,21 +59,7 @@ interface Dispatcher extends EventDispatcherInterface
     public function dispatchListeners(object $event, Listener ...$listeners): object;
 
     /**
-     * Dispatch a set of listeners given an event id.
-     *
-     * @param class-string $eventId The event class name
-     */
-    public function dispatchListenersGivenId(string $eventId, Listener ...$listeners): object;
-
-    /**
      * Dispatch a listener.
      */
     public function dispatchListener(object $event, Listener $listener): object;
-
-    /**
-     * Dispatch a listener given an event id.
-     *
-     * @param class-string $eventId The event class name
-     */
-    public function dispatchListenerGivenId(string $eventId, Listener $listener): object;
 }

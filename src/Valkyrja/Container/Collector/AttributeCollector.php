@@ -16,8 +16,6 @@ namespace Valkyrja\Container\Collector;
 use Override;
 use Valkyrja\Attribute\Contract\Attributes;
 use Valkyrja\Container\Attribute\Alias;
-use Valkyrja\Container\Attribute\ContextAlias;
-use Valkyrja\Container\Attribute\ContextService;
 use Valkyrja\Container\Attribute\Service;
 use Valkyrja\Container\Attribute\Service as ServiceAttribute;
 use Valkyrja\Container\Collector\Contract\Collector as Contract;
@@ -29,8 +27,11 @@ use Valkyrja\Container\Collector\Contract\Collector as Contract;
  */
 class AttributeCollector implements Contract
 {
+    /**
+     * AttributeCollector constructor.
+     */
     public function __construct(
-        protected Attributes $attributes
+        protected Attributes $attributes = new \Valkyrja\Attribute\Attributes()
     ) {
     }
 
@@ -61,33 +62,7 @@ class AttributeCollector implements Contract
     }
 
     /**
-     * @inheritDoc
-     *
-     * @param class-string ...$classes The classes
-     *
-     * @return ContextService[]
-     */
-    #[Override]
-    public function getContextServices(string ...$classes): array
-    {
-        return $this->getAttributesByType(ContextService::class, ...$classes);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param class-string ...$classes The classes
-     *
-     * @return ContextAlias[]
-     */
-    #[Override]
-    public function getContextAliases(string ...$classes): array
-    {
-        return $this->getAttributesByType(ContextAlias::class, ...$classes);
-    }
-
-    /**
-     * @template T of ServiceAttribute|Alias|ContextService|ContextAlias
+     * @template T of ServiceAttribute|Alias
      *
      * @param class-string<T> $attributeClass The attribute class name
      * @param class-string    ...$classes     The classes

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Collection;
 
-use JsonException;
 use Override;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as Contract;
@@ -22,8 +21,6 @@ use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Routing\Exception\InvalidArgumentException;
 
 use function array_map;
-use function array_merge;
-use function assert;
 use function is_string;
 
 /**
@@ -67,7 +64,12 @@ class Collection implements Contract
     public function getData(): Data
     {
         return new Data(
-            routes: array_map('serialize', $this->routes),
+            routes: array_map(
+                static fn (Route|string $route): string => ! is_string($route)
+                    ? serialize($route)
+                    : $route,
+                $this->routes
+            ),
             static: $this->static,
             dynamic: $this->dynamic,
         );
@@ -90,8 +92,6 @@ class Collection implements Contract
     #[Override]
     public function add(Route $route): void
     {
-        assert($route->getPath());
-
         // Set the route to its request methods
         $this->setRouteToRequestMethods($route);
 
@@ -100,22 +100,22 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     #[Override]
     public function get(string $path, RequestMethod|null $method = null): Route|null
     {
-        return $this->getStatic($path, $method) ?? $this->getDynamic($path, $method);
+        return $this->getStatic($path, $method)
+            ?? $this->getDynamic($path, $method);
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function isset(string $path, RequestMethod|null $method = null): bool
+    public function has(string $path, RequestMethod|null $method = null): bool
     {
-        return $this->hasStatic($path, $method) || $this->hasDynamic($path, $method);
+        return $this->hasStatic($path, $method)
+            || $this->hasDynamic($path, $method);
     }
 
     /**
@@ -124,7 +124,7 @@ class Collection implements Contract
     #[Override]
     public function all(): array
     {
-        return $this->ensureMethodRoutes(array_merge($this->static, $this->dynamic));
+        return $this->ensureMethodRoutes(array_merge_recursive($this->static, $this->dynamic));
     }
 
     /**
@@ -138,8 +138,6 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     #[Override]
     public function getStatic(string $path, RequestMethod|null $method = null): Route|null
@@ -167,8 +165,6 @@ class Collection implements Contract
 
     /**
      * @inheritDoc
-     *
-     * @throws JsonException
      */
     #[Override]
     public function getDynamic(string $regex, RequestMethod|null $method = null): Route|null
@@ -198,7 +194,7 @@ class Collection implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getRouteByName(string $name): Route|null
+    public function getByName(string $name): Route|null
     {
         $named = $this->routes[$name] ?? null;
 
@@ -263,8 +259,6 @@ class Collection implements Contract
      * @param string             $path   The path
      * @param RequestMethod|null $method [optional] The request method
      *
-     * @throws JsonException
-     *
      * @return Route|null
      */
     protected function getOfType(array $type, string $path, RequestMethod|null $method = null): Route|null
@@ -287,8 +281,6 @@ class Collection implements Contract
      *
      * @param RequestMethodList $type The type [static|dynamic]
      * @param string            $path The path
-     *
-     * @throws JsonException
      *
      * @return Route|null
      */

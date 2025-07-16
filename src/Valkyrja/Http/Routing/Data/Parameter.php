@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Data;
 
 use Override;
-use Valkyrja\Http\Routing\Constant\Regex as RegexConstant;
 use Valkyrja\Http\Routing\Data\Contract\Parameter as Contract;
-use Valkyrja\Http\Routing\Exception\InvalidParameterRegexException;
 use Valkyrja\Type\Data\Cast;
 
 /**
@@ -73,12 +71,6 @@ class Parameter implements Contract
     #[Override]
     public function withRegex(string $regex): static
     {
-        if (@preg_match(RegexConstant::START . $regex . RegexConstant::END, '') === false) {
-            throw new InvalidParameterRegexException(
-                message: "Invalid parameter regex of `$regex` provided"
-            );
-        }
-
         $new = clone $this;
 
         $new->regex = $regex;

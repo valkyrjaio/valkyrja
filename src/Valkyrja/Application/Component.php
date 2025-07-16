@@ -30,8 +30,8 @@ class Component extends AppComponent
     public static function getCliControllers(): array
     {
         return [
-            Command\CacheCommand::class,
-            Command\ClearCacheCommand::class,
+            Cli\Command\CacheCommand::class,
+            Cli\Command\ClearCacheCommand::class,
         ];
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
+use Valkyrja\Application\Config;
 use Valkyrja\Attribute\Contract\Attributes as AttributesContract;
 use Valkyrja\Container\Constant\ConfigValue;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
@@ -33,8 +34,9 @@ use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as CollectionContract;
 use Valkyrja\Http\Routing\Collector\AttributeCollector;
-use Valkyrja\Http\Routing\Collector\Contract\Collector as AttributesCollectorContract;
+use Valkyrja\Http\Routing\Collector\Contract\Collector as CollectorContract;
 use Valkyrja\Http\Routing\Contract\Router as RouterContract;
+use Valkyrja\Http\Routing\Data;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactory as ResponseFactoryContract;
 use Valkyrja\Http\Routing\Factory\ResponseFactory;
 use Valkyrja\Http\Routing\Matcher\Contract\Matcher as MatcherContract;
@@ -75,7 +77,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertArrayHasKey(CollectionContract::class, $publishers);
         self::assertArrayHasKey(MatcherContract::class, $publishers);
         self::assertArrayHasKey(UrlContract::class, $publishers);
-        self::assertArrayHasKey(AttributesCollectorContract::class, $publishers);
+        self::assertArrayHasKey(CollectorContract::class, $publishers);
         self::assertArrayHasKey(ProcessorContract::class, $publishers);
         self::assertArrayHasKey(ResponseFactoryContract::class, $publishers);
         self::assertArrayHasKey(RequestStructMiddleware::class, $publishers);
@@ -86,7 +88,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertSame([ServiceProvider::class, 'publishCollection'], $publishers[CollectionContract::class]);
         self::assertSame([ServiceProvider::class, 'publishMatcher'], $publishers[MatcherContract::class]);
         self::assertSame([ServiceProvider::class, 'publishUrl'], $publishers[UrlContract::class]);
-        self::assertSame([ServiceProvider::class, 'publishAttributesCollector'], $publishers[AttributesCollectorContract::class]);
+        self::assertSame([ServiceProvider::class, 'publishAttributesCollector'], $publishers[CollectorContract::class]);
         self::assertSame([ServiceProvider::class, 'publishProcessor'], $publishers[ProcessorContract::class]);
         self::assertSame([ServiceProvider::class, 'publishResponseFactory'], $publishers[ResponseFactoryContract::class]);
         self::assertSame([ServiceProvider::class, 'publishRequestStructMiddleware'], $publishers[RequestStructMiddleware::class]);
@@ -102,7 +104,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertContains(CollectionContract::class, $provides);
         self::assertContains(MatcherContract::class, $provides);
         self::assertContains(UrlContract::class, $provides);
-        self::assertContains(AttributesCollectorContract::class, $provides);
+        self::assertContains(CollectorContract::class, $provides);
         self::assertContains(ProcessorContract::class, $provides);
         self::assertContains(ResponseFactoryContract::class, $provides);
         self::assertContains(RequestStructMiddleware::class, $provides);
@@ -134,11 +136,12 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertInstanceOf(Router::class, $container->getSingleton(RouterContract::class));
     }
 
-    public function testPublishCollection(): void
+    public function testPublishCollectionData(): void
     {
         $container = $this->container;
 
-        $container->setSingleton(AttributesCollectorContract::class, $this->createMock(AttributesCollectorContract::class));
+        $container->setSingleton(CollectorContract::class, $this->createMock(CollectorContract::class));
+        $container->setSingleton(Data::class, new Data());
 
         self::assertFalse($container->has(CollectionContract::class));
 
@@ -147,6 +150,26 @@ class ServiceProviderTest extends ServiceProviderTestCase
         self::assertTrue($container->has(CollectionContract::class));
         self::assertTrue($container->isSingleton(CollectionContract::class));
         self::assertInstanceOf(Collection::class, $container->getSingleton(CollectionContract::class));
+    }
+
+    public function testPublishCollectionConfig(): void
+    {
+        $container = $this->container;
+
+        $container->setSingleton(CollectorContract::class, $collector = $this->createMock(CollectorContract::class));
+        $container->setSingleton(Config::class, new Config());
+
+        self::assertFalse($container->has(CollectionContract::class));
+
+        $route = new Data\Route(path: '/', name: 'route');
+        $collector->method('getRoutes')->willReturn([$route]);
+
+        ServiceProvider::publishCollection($container);
+
+        self::assertTrue($container->has(CollectionContract::class));
+        self::assertTrue($container->isSingleton(CollectionContract::class));
+        self::assertInstanceOf(Collection::class, $collection = $container->getSingleton(CollectionContract::class));
+        self::assertNotNull($collection->get('/'));
     }
 
     public function testPublishMatcher(): void
@@ -189,13 +212,13 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $container->setSingleton(Reflection::class, $this->createMock(Reflection::class));
         $container->setSingleton(ProcessorContract::class, $this->createMock(ProcessorContract::class));
 
-        self::assertFalse($container->has(AttributesCollectorContract::class));
+        self::assertFalse($container->has(CollectorContract::class));
 
         ServiceProvider::publishAttributesCollector($container);
 
-        self::assertTrue($container->has(AttributesCollectorContract::class));
-        self::assertTrue($container->isSingleton(AttributesCollectorContract::class));
-        self::assertInstanceOf(AttributeCollector::class, $container->getSingleton(AttributesCollectorContract::class));
+        self::assertTrue($container->has(CollectorContract::class));
+        self::assertTrue($container->isSingleton(CollectorContract::class));
+        self::assertInstanceOf(AttributeCollector::class, $container->getSingleton(CollectorContract::class));
     }
 
     public function testPublishProcessor(): void

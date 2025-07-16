@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container;
 
 use AssertionError;
+use Valkyrja\Application\Contract\Application;
 use Valkyrja\Container\Container;
+use Valkyrja\Container\Exception\InvalidArgumentException;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Dispatcher\Provider\ServiceProvider;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
@@ -168,5 +170,49 @@ class ContainerTest extends TestCase
         $container->register(ServiceProvider::class);
 
         self::assertTrue($container->has(Dispatcher::class));
+    }
+
+    public function testGetNonExistent(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->container->get(Application::class);
+    }
+
+    public function testGetNonExistentSingleton(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->container->getSingleton(self::class);
+    }
+
+    public function testGetData(): void
+    {
+        $container = $this->container;
+
+        $container->register(ServiceProvider::class);
+
+        self::assertTrue($container->has(Dispatcher::class));
+
+        $data = $this->container->getData();
+
+        self::assertSame(
+            [
+                Dispatcher::class => [ServiceProvider::class, 'publishDispatcher'],
+            ],
+            $data->deferredCallback
+        );
+
+        self::assertSame(
+            [
+                Dispatcher::class => ServiceProvider::class,
+            ],
+            $data->deferred
+        );
+
+        self::assertEmpty($data->aliases);
+        self::assertEmpty($data->providers);
+        self::assertEmpty($data->services);
+        self::assertEmpty($data->singletons);
     }
 }

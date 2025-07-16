@@ -15,7 +15,8 @@ namespace Valkyrja\Http\Routing\Collector;
 
 use Override;
 use ReflectionException;
-use Valkyrja\Attribute\Contract\Attributes;
+use Valkyrja\Attribute\Attributes;
+use Valkyrja\Attribute\Contract\Attributes as AttributeContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
@@ -29,10 +30,13 @@ use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
 use Valkyrja\Http\Routing\Attribute\Route\ResponseStruct;
 use Valkyrja\Http\Routing\Collector\Contract\Collector as Contract;
 use Valkyrja\Http\Routing\Data\Contract\Route as RouteContract;
-use Valkyrja\Http\Routing\Processor\Contract\Processor;
+use Valkyrja\Http\Routing\Exception\InvalidArgumentException;
+use Valkyrja\Http\Routing\Processor\Contract\Processor as ProcessorContract;
+use Valkyrja\Http\Routing\Processor\Processor;
 use Valkyrja\Http\Struct\Request\Contract\RequestStruct as RequestStructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStruct as ResponseStructContract;
-use Valkyrja\Reflection\Contract\Reflection;
+use Valkyrja\Reflection\Contract\Reflection as ReflectionContract;
+use Valkyrja\Reflection\Reflection;
 
 use function array_column;
 
@@ -44,9 +48,9 @@ use function array_column;
 class AttributeCollector implements Contract
 {
     public function __construct(
-        protected Attributes $attributes,
-        protected Reflection $reflection,
-        protected Processor $processor
+        protected AttributeContract $attributes = new Attributes(),
+        protected ReflectionContract $reflection = new Reflection(),
+        protected ProcessorContract $processor = new Processor()
     ) {
     }
 
@@ -99,7 +103,9 @@ class AttributeCollector implements Contract
                         is_a($middlewareClass, TerminatedMiddleware::class, true)      => $routeAttribute->withAddedTerminatedMiddleware(
                             $middlewareClass
                         ),
-                        default                                                        => $routeAttribute,
+                        default                                                        => throw new InvalidArgumentException(
+                            "Unsupported middleware class `$middlewareClass`"
+                        ),
                     };
                 }
 
