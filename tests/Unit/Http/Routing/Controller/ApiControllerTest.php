@@ -25,6 +25,8 @@ use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Tests\Classes\Http\Routing\Controller\ApiControllerClass;
 use Valkyrja\Tests\Unit\TestCase;
 
+use const JSON_THROW_ON_ERROR;
+
 /**
  * Test the Controller service.
  *
