@@ -139,4 +139,24 @@ class MessageTest extends TestCase
         self::assertNotSame($message, $message2);
         self::assertNotSame($message->getBody(), $message2->getBody());
     }
+
+    public function testOverrideHeaders(): void
+    {
+        $testHeader         = 'test-header-override';
+        $testHeaderOverride = 'test-header-override-override';
+
+        $message = new MessageClass(
+            headers: [
+                'Test-Header'          => ['test-header-original'],
+                'Test-Header-Override' => ['test-header-override-original'],
+            ],
+            testHeader: $testHeader,
+            testHeaderOverride: $testHeaderOverride
+        );
+
+        // This shouldn't be overriden since injectHeader is called without the override flag
+        self::assertNotSame('test-header-original', $message->getHeaderLine('Test-Header'));
+        // This should be overriden since injectHeader is called with the override flag
+        self::assertNotSame($testHeaderOverride, $message->getHeaderLine('Test-Header-Override'));
+    }
 }

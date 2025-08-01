@@ -32,7 +32,7 @@ class ResponseFactoryTest extends TestCase
 
         $default  = $responseFactory->createResponse();
         $response = $responseFactory->createResponse(
-            content: $content       = 'test',
+            content: $content = 'test',
             statusCode: $statusCode = StatusCode::CREATED,
             headers: [
                 'test' => 'foo',
@@ -53,6 +53,34 @@ class ResponseFactoryTest extends TestCase
         );
     }
 
+    public function testCreateTextResponse(): void
+    {
+        $responseFactory = new ResponseFactory();
+
+        $default  = $responseFactory->createTextResponse();
+        $response = $responseFactory->createTextResponse(
+            content: $content = 'test',
+            statusCode: $statusCode = StatusCode::CREATED,
+            headers: [
+                'test' => 'foo',
+            ]
+        );
+
+        self::assertSame('', $default->getBody()->getContents());
+        self::assertSame(StatusCode::OK, $default->getStatusCode());
+        self::assertSame(['Content-Type' => ['text/plain; charset=utf-8']], $default->getHeaders());
+
+        self::assertSame($content, $response->getBody()->getContents());
+        self::assertSame($statusCode, $response->getStatusCode());
+        self::assertSame(
+            [
+                'test'         => ['foo'],
+                'Content-Type' => ['text/plain; charset=utf-8'],
+            ],
+            $response->getHeaders()
+        );
+    }
+
     /**
      * @throws JsonException
      */
@@ -62,7 +90,7 @@ class ResponseFactoryTest extends TestCase
 
         $default  = $responseFactory->createJsonResponse();
         $response = $responseFactory->createJsonResponse(
-            data: $data             = ['test' => 'bar'],
+            data: $data = ['test' => 'bar'],
             statusCode: $statusCode = StatusCode::CREATED,
             headers: [
                 'test' => 'foo',
@@ -123,7 +151,7 @@ class ResponseFactoryTest extends TestCase
 
         $default  = $responseFactory->createRedirectResponse();
         $response = $responseFactory->createRedirectResponse(
-            uri: $uri               = '/redirect-path',
+            uri: $uri = '/redirect-path',
             statusCode: $statusCode = StatusCode::PERMANENT_REDIRECT,
             headers: [
                 'test' => 'foo',

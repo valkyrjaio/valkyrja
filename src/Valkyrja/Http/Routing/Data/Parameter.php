@@ -24,13 +24,16 @@ use Valkyrja\Type\Data\Cast;
  */
 class Parameter implements Contract
 {
+    /**
+     * @param array<scalar|object>|scalar|object|null $default The default value
+     */
     public function __construct(
         protected string $name,
         protected string $regex,
         protected Cast|null $cast = null,
         protected bool $isOptional = false,
         protected bool $shouldCapture = true,
-        protected mixed $default = null,
+        protected array|string|int|bool|float|object|null $default = null,
     ) {
     }
 
@@ -148,7 +151,7 @@ class Parameter implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getDefault(): mixed
+    public function getDefault(): array|string|int|bool|float|object|null
     {
         return $this->default;
     }
@@ -157,7 +160,7 @@ class Parameter implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withDefault(mixed $default = null): static
+    public function withDefault(array|string|int|bool|float|object|null $default = null): static
     {
         $new = clone $this;
 

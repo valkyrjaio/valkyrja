@@ -67,20 +67,31 @@ class ListCommand
                 new NewLine()
             );
 
-        foreach ($routes as $item) {
+        foreach ($routes as $route) {
             $output = $output->withAddedMessages(
                 new Message('  '),
-                new Message($item->getPath(), new Formatter(textColor: TextColor::MAGENTA)),
+                new Message($route->getPath(), new Formatter(textColor: TextColor::MAGENTA)),
                 new NewLine(),
                 new Message('    - '),
                 new Message('Name: '),
-                new Message($item->getName(), new HighlightedTextFormatter()),
+                new Message($route->getName(), new HighlightedTextFormatter()),
                 new NewLine(),
                 new Message('    - '),
                 new Message('Dispatch: '),
-                new Message($item->getDispatch()->__toString(), new HighlightedTextFormatter()),
+                new Message($route->getDispatch()->__toString(), new HighlightedTextFormatter()),
                 new NewLine(),
             );
+
+            $regex = $route->getRegex();
+
+            if ($regex !== null) {
+                $output = $output->withAddedMessages(
+                    new Message('    - '),
+                    new Message('Regex: '),
+                    new Message($regex, new HighlightedTextFormatter()),
+                    new NewLine(),
+                );
+            }
         }
 
         return $output->withAddedMessages(new NewLine());

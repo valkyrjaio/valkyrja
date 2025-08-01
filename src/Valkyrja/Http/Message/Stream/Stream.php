@@ -262,7 +262,7 @@ class Stream implements Contract
         $stream = $this->resource;
 
         // Get the stream's fstat
-        $fstat = fstat($stream);
+        $fstat = $this->getStreamStats($stream);
 
         if ($fstat === false) {
             return null;
@@ -454,5 +454,17 @@ class Stream implements Contract
     protected function closeStream($stream): bool
     {
         return fclose($stream);
+    }
+
+    /**
+     * Get a stream's stats.
+     *
+     * @param resource $stream The stream.
+     *
+     * @return array{0: int, 10: int, 11: int, 12: int, 1: int, 2: int, 3: int, 4: int, 5: int, 6: int, 7: int, 8: int, 9: int, atime: int, blksize: int, blocks: int, ctime: int, dev: int, gid: int, ino: int, mode: int, mtime: int, nlink: int, rdev: int, size: int, uid: int}|false
+     */
+    protected function getStreamStats($stream): array|false
+    {
+        return fstat($stream);
     }
 }

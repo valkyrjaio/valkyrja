@@ -13,20 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Processor;
 
-use InvalidArgumentException;
 use Override;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Contract\Parameter;
 use Valkyrja\Http\Routing\Data\Contract\Route;
-use Valkyrja\Http\Routing\Exception\InvalidParameterRegexException;
 use Valkyrja\Http\Routing\Exception\InvalidRoutePathException;
 use Valkyrja\Http\Routing\Processor\Contract\Processor as Contract;
 use Valkyrja\Http\Routing\Support\Helpers;
 use Valkyrja\Orm\Data\EntityCast;
 use Valkyrja\Orm\Entity\Contract\Entity;
-
-use function assert;
-use function preg_match;
 
 /**
  * Class Processor.
@@ -47,13 +42,6 @@ class Processor implements Contract
     #[Override]
     public function route(Route $route): Route
     {
-        // Verify the route
-        $this->verifyRoute($route);
-
-        // Set the id to the spl_object_id of the route
-        // $route->setId((string) spl_object_id($route));
-        // Set the id to an md5 hash of the route
-        // $route->setId(md5(Arr::toString($route->asArray())));
         // Set the path to the validated cleaned path (/some/path)
         $route = $route->withPath(Helpers::trimPath($route->getPath()));
 
@@ -63,20 +51,6 @@ class Processor implements Contract
         }
 
         return $route;
-    }
-
-    /**
-     * Verify a route.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    protected function verifyRoute(Route $route): void
-    {
-        if (! $route->getPath()) {
-            throw new InvalidArgumentException('Invalid path defined in route.');
-        }
     }
 
     /**
@@ -100,14 +74,6 @@ class Processor implements Contract
 
         // Iterate through the route's parameters
         foreach ($route->getParameters() as $parameter) {
-            $parameterRegex = $parameter->getRegex();
-
-            if (@preg_match(Regex::START . $parameterRegex . Regex::END, '') === false) {
-                throw new InvalidParameterRegexException(
-                    message: "Invalid parameter regex of `$parameterRegex` provided for " . $parameter->getName()
-                );
-            }
-
             // Validate the parameter
             $route     = $this->processParameterEntity($route, $parameter);
             $parameter = $this->processParameterInRegex($parameter, $regex);
@@ -142,8 +108,8 @@ class Processor implements Contract
 
             $entityColumn = $cast->column;
 
-            if ($entityColumn !== null) {
-                assert(property_exists($entity, $entityColumn));
+            if ($entityColumn !== null && ! property_exists($entity, $entityColumn)) {
+                throw new InvalidRoutePathException('Entity column ' . $entityColumn . ' does not exist');
             }
         }
 

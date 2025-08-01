@@ -105,16 +105,16 @@ interface Parameter
     /**
      * Get the default value.
      *
-     * @return mixed
+     * @return array<scalar|object>|scalar|object|null
      */
-    public function getDefault(): mixed;
+    public function getDefault(): array|string|int|bool|float|object|null;
 
     /**
      * Create a new parameter with the specified default value.
      *
-     * @param mixed $default The default value
+     * @param array<scalar|object>|scalar|object|null $default The default value
      *
      * @return static
      */
-    public function withDefault(mixed $default = null): static;
+    public function withDefault(array|string|int|bool|float|object|null $default = null): static;
 }

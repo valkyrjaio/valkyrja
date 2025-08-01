@@ -56,6 +56,8 @@ trait JsonRequestStruct
      * @param JsonServerRequest|ServerRequest $request The request
      *
      * @return void
+     *
+     * @psalm-assert JsonServerRequest        $request
      */
     protected static function ensureJsonRequest(JsonServerRequest|ServerRequest $request): void
     {

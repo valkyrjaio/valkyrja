@@ -29,9 +29,14 @@ class ListCommandTest extends TestCase
 {
     public function testListCommand(): void
     {
+        $path  = '/';
+        $name  = 'route';
+        $regex = 'regex';
+
         $route = new Route(
-            path: '/',
-            name: 'route',
+            path: $path,
+            name: $name,
+            regex: $regex,
         );
 
         $version       = new VersionCommand();
@@ -52,8 +57,9 @@ class ListCommandTest extends TestCase
         $contents = ob_get_clean();
 
         self::assertIsString($contents);
-        self::assertStringContainsString($route->getPath(), $contents);
-        self::assertStringContainsString($route->getName(), $contents);
+        self::assertStringContainsString($path, $contents);
+        self::assertStringContainsString($name, $contents);
+        self::assertStringContainsString($regex, $contents);
         self::assertStringContainsString($route->getDispatch()->__toString(), $contents);
     }
 

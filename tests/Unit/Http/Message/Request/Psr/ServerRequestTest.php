@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Request\Psr;
 
+use stdClass;
+use Valkyrja\Http\Message\Exception\RuntimeException;
 use Valkyrja\Http\Message\File\Psr\UploadedFile as PsrUploadedFile;
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Request\Psr\ServerRequest as PsrServerRequest;
@@ -80,6 +82,20 @@ class ServerRequestTest extends TestCase
         self::assertNotSame($psrRequest, $psrRequest2);
         self::assertCount(2, $psrRequest->getUploadedFiles());
         self::assertCount(2, $psrRequest2->getUploadedFiles());
+    }
+
+    public function testUploadedFilesInvalid(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $uploadedFiles = [
+            new UploadedFile(file: 'test'),
+            new stdClass(),
+        ];
+        $request       = (new ServerRequest())->withUploadedFiles($uploadedFiles);
+        $psrRequest    = new PsrServerRequest($request);
+
+        $psrRequest->getUploadedFiles();
     }
 
     public function testParsedBody(): void

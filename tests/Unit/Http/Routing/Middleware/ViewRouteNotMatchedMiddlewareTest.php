@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Middleware;
 
+use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Response;
@@ -28,6 +29,9 @@ use Valkyrja\View\Contract\Renderer;
  */
 class ViewRouteNotMatchedMiddlewareTest extends TestCase
 {
+    /**
+     * @throws Exception
+     */
     public function testRouteNotMatched(): void
     {
         $statusCode = StatusCode::NOT_FOUND;

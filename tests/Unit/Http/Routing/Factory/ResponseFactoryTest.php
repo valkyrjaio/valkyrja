@@ -16,11 +16,9 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Factory;
 use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\ResponseFactory as MessageResponseFactory;
-use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Factory\ResponseFactory;
-use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Tests\Unit\TestCase;
 
@@ -42,13 +40,9 @@ class ResponseFactoryTest extends TestCase
 
         $route           = new Route(path: '/', name: self::ROUTE_NAME);
         $collection      = new Collection();
-        $request         = new ServerRequest();
-        $matcher         = new Matcher();
         $responseFactory = new MessageResponseFactory();
         $url             = new Url(
-            request: $request,
             collection: $collection,
-            matcher: $matcher,
         );
         $collection->add($route);
 

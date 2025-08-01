@@ -20,7 +20,6 @@ use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler;
@@ -189,9 +188,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             Url::class,
             new \Valkyrja\Http\Routing\Url\Url(
-                request: $container->getSingleton(ServerRequest::class),
                 collection: $container->getSingleton(Collection::class),
-                matcher: $container->getSingleton(Matcher::class),
             )
         );
     }

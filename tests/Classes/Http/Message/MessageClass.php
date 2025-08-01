@@ -28,15 +28,23 @@ class MessageClass
     use Message;
 
     /**
-     * @param Stream                  $stream
-     * @param ProtocolVersion         $protocol
      * @param array<string, string[]> $headers
      */
     public function __construct(
         protected Stream $stream = new HttpStream(),
         protected ProtocolVersion $protocol = ProtocolVersion::V1_1,
-        array $headers = []
+        array $headers = [],
+        string|null $testHeader = null,
+        string|null $testHeaderOverride = null,
     ) {
         $this->headers = $headers;
+
+        if ($testHeader !== null) {
+            $this->headers = $this->injectHeader('Test-Header', $testHeader, $this->headers);
+        }
+
+        if ($testHeaderOverride !== null) {
+            $this->headers = $this->injectHeader('Test-Header-Override', $testHeaderOverride, $this->headers, true);
+        }
     }
 }

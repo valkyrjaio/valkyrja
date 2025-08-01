@@ -185,13 +185,13 @@ class UriFactoryTest extends TestCase
     public function testFromPsrArray(): void
     {
         $stream = new Uri(
-            scheme: $scheme     = Scheme::HTTPS,
+            scheme: $scheme = Scheme::HTTPS,
             username: $username = 'username',
             password: $password = 'password',
-            host: $host         = 'host',
-            port: $port         = 20,
-            path: $path         = '/path',
-            query: $query       = 'test=test',
+            host: $host = 'host',
+            port: $port = 20,
+            path: $path = '/path',
+            query: $query = 'test=test',
             fragment: $fragment = 'fragment',
         );
 
@@ -207,5 +207,16 @@ class UriFactoryTest extends TestCase
         self::assertSame($path, $fromPsr->getPath());
         self::assertSame($query, $fromPsr->getQuery());
         self::assertSame($fragment, $fromPsr->getFragment());
+    }
+
+    public function testGetHeader(): void
+    {
+        $headers = [
+            'Array'  => ['test1', 'test2'],
+            'String' => 'string',
+        ];
+
+        self::assertSame('string', UriFactory::getHeader('String', $headers));
+        self::assertSame('test1, test2', UriFactory::getHeader('Array', $headers));
     }
 }

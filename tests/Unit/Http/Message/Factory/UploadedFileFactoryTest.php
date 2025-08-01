@@ -40,6 +40,22 @@ class UploadedFileFactoryTest extends TestCase
         self::assertInstanceOf(UploadedFile::class, $uploadedFiles['avatar']);
     }
 
+    public function testNormalizeFilesSingleUploadInvalidTmpName(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $files = [
+            'avatar' => [
+                'tmp_name' => 0,
+                'name'     => 'my-avatar.png',
+                'size'     => 90996,
+                'type'     => 'image/png',
+                'error'    => 0,
+            ],
+        ];
+        UploadedFileFactory::normalizeFiles($files);
+    }
+
     public function testNormalizeFilesNextedFiles(): void
     {
         $nestedFiles = [
@@ -204,9 +220,9 @@ class UploadedFileFactoryTest extends TestCase
 
         $uploadedFile    = new UploadedFile(
             stream: $stream,
-            uploadError: $error   = UploadError::OK,
-            size: $size           = 1,
-            fileName: $fileName   = 'test',
+            uploadError: $error = UploadError::OK,
+            size: $size = 1,
+            fileName: $fileName = 'test',
             mediaType: $mediaType = 'txt',
         );
         $psrUploadedFile = new PsrUploadedFile($uploadedFile);
@@ -230,18 +246,18 @@ class UploadedFileFactoryTest extends TestCase
 
         $uploadedFile    = new UploadedFile(
             stream: $stream,
-            uploadError: $error   = UploadError::OK,
-            size: $size           = 1,
-            fileName: $fileName   = 'test',
+            uploadError: $error = UploadError::OK,
+            size: $size = 1,
+            fileName: $fileName = 'test',
             mediaType: $mediaType = 'txt',
         );
         $psrUploadedFile = new PsrUploadedFile($uploadedFile);
 
         $uploadedFile2    = new UploadedFile(
             stream: $stream2,
-            uploadError: $error2   = UploadError::OK,
-            size: $size2           = 1,
-            fileName: $fileName2   = 'test',
+            uploadError: $error2 = UploadError::OK,
+            size: $size2 = 1,
+            fileName: $fileName2 = 'test',
             mediaType: $mediaType2 = 'txt',
         );
         $psrUploadedFile2 = new PsrUploadedFile($uploadedFile2);

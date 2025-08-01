@@ -55,6 +55,11 @@ class PortTest extends TestCase
 
         self::assertSame($portNum, $port->asFlatValue());
         self::assertSame($portNum, $port->asValue());
+
+        $port2 = Port::fromValue($portNum);
+
+        self::assertSame($portNum, $port2->asFlatValue());
+        self::assertSame($portNum, $port2->asValue());
     }
 
     public function testNullIsValidPorts(): void
@@ -63,6 +68,11 @@ class PortTest extends TestCase
 
         self::assertNull($port->asFlatValue());
         self::assertNull($port->asValue());
+
+        $port2 = Port::fromValue(null);
+
+        self::assertNull($port2->asFlatValue());
+        self::assertNull($port2->asValue());
     }
 
     /**
@@ -76,5 +86,12 @@ class PortTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         new Port($portNum);
+    }
+
+    public function testFromValueInvalid(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        Port::fromValue('test');
     }
 }

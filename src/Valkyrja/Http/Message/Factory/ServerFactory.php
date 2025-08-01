@@ -34,7 +34,7 @@ abstract class ServerFactory
     {
         $apacheRequestHeaders = self::apacheRequestHeaders();
 
-        if (isset($server['HTTP_AUTHORIZATION']) || $apacheRequestHeaders === null) {
+        if (isset($server['HTTP_AUTHORIZATION'])) {
             return $server;
         }
 
@@ -54,18 +54,18 @@ abstract class ServerFactory
     }
 
     /**
-     * @return array{Authorization?: string, authorization?: string}|null
+     * @return array{Authorization?: string, authorization?: string}
      */
-    private static function apacheRequestHeaders(): array|null
+    private static function apacheRequestHeaders(): array
     {
+        $headers = [];
+
         if (function_exists('apache_request_headers')) {
             /** @var array{Authorization?: string, authorization?: string} $headers */
-            $headers = apache_request_headers();
-
             // This seems to be the only way to get the Authorization header on Apache
-            return $headers;
+            $headers = apache_request_headers();
         }
 
-        return null;
+        return $headers;
     }
 }

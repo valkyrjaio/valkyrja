@@ -80,7 +80,7 @@ jobs:
       - name: Run PHPArkitect
         if: ${{ matrix.php == '8.3' }}
         run: |
-          .github/ci/phparkitect/vendor/bin/phparkitect check --config=phparkitect.php
+          vendor/bin/phparkitect check --config=phparkitect.php
 
       - name: Upload Codecov Coverage Report
         if: ${{ matrix.php == '8.3' }}
@@ -94,6 +94,12 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           php vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
+
+      - uses: qltysh/qlty-action/coverage@v1
+        if: ${{ matrix.php == '8.3' }}
+        with:
+          token: {{secrets.QLTY_COVERAGE_TOKEN}}
+          files: coverage/clover.xml
 
       - name: Run PHP CS Fixer
         if: ${{ matrix.php == '8.3' }}

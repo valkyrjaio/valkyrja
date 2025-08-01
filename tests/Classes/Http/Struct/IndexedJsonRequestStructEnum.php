@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Struct;
 
+use Override;
+use Valkyrja\Http\Message\Request\Contract\JsonServerRequest;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Struct\Request\Contract\RequestStruct;
 use Valkyrja\Http\Struct\Request\JsonRequestStruct;
@@ -37,11 +39,14 @@ enum IndexedJsonRequestStructEnum: int implements RequestStruct
     /**
      * @inheritDoc
      */
-    public static function getValidationRules(ServerRequest $request): array|null
+    #[Override]
+    public static function getValidationRules(JsonServerRequest|ServerRequest $request): array|null
     {
-        $first  = $request->getParsedBodyParam(self::first->value);
-        $second = $request->getParsedBodyParam(self::second->value);
-        $third  = $request->getParsedBodyParam(self::third->value);
+        self::ensureJsonRequest($request);
+
+        $first  = $request->getParsedJsonParam(self::first->value);
+        $second = $request->getParsedJsonParam(self::second->value);
+        $third  = $request->getParsedJsonParam(self::third->value);
 
         return [
             self::first->name  => [

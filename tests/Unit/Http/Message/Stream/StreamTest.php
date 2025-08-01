@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Stream;
 
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
+use Valkyrja\Http\Message\Stream\Exception\InvalidLengthException;
 use Valkyrja\Http\Message\Stream\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Stream\Exception\NoStreamAvailableException;
 use Valkyrja\Http\Message\Stream\Exception\StreamReadException;
@@ -25,6 +26,7 @@ use Valkyrja\Http\Message\Stream\Exception\UnreadableStreamException;
 use Valkyrja\Http\Message\Stream\Exception\UnseekableStreamException;
 use Valkyrja\Http\Message\Stream\Exception\UnwritableStreamException;
 use Valkyrja\Http\Message\Stream\Stream;
+use Valkyrja\Tests\Classes\Http\Message\Stream\FalseFstatStreamClass;
 use Valkyrja\Tests\Classes\Http\Message\Stream\StreamReadExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\Stream\StreamSeekExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\Stream\StreamTellExceptionClass;
@@ -92,6 +94,15 @@ class StreamTest extends TestCase
         $result = $stream->read(4096);
 
         self::assertEmpty($result);
+    }
+
+    public function testReadInvalidLength(): void
+    {
+        $this->expectException(InvalidLengthException::class);
+
+        $stream = new Stream();
+
+        $stream->read(-1);
     }
 
     public function testReadFailure(): void
@@ -250,6 +261,10 @@ class StreamTest extends TestCase
         $stream->detach();
 
         self::assertNull($stream->getSize());
+
+        $stream2 = new FalseFstatStreamClass();
+
+        self::assertNull($stream2->getSize());
     }
 
     public function testTell(): void

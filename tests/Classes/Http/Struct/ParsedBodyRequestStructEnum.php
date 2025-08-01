@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Struct;
 
+use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Struct\Request\Contract\RequestStruct;
 use Valkyrja\Http\Struct\Request\ParsedBodyRequestStruct;
@@ -37,6 +38,7 @@ enum ParsedBodyRequestStructEnum implements RequestStruct
     /**
      * @inheritDoc
      */
+    #[Override]
     public static function getValidationRules(ServerRequest $request): array|null
     {
         $first  = $request->getParsedBodyParam(self::first->name);

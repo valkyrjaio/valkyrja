@@ -99,18 +99,6 @@ class Abort
     }
 
     /**
-     * Abort with a response.
-     *
-     * @param Response $response The response
-     *
-     * @return never
-     */
-    public static function response(Response $response): never
-    {
-        static::abort(null, null, null, $response);
-    }
-
-    /**
      * Redirect to a given uri, and abort.
      *
      * @param Uri|null                     $uri        [optional] The URI to redirect to
