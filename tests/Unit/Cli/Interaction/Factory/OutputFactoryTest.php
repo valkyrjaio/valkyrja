@@ -108,8 +108,8 @@ class OutputFactoryTest extends TestCase
 
     public function testCreateStreamOutput(): void
     {
-        $stream  = fopen('php://input', 'rb');
-        $stream2 = fopen('php://memory', 'rb');
+        $stream  = fopen(filename: 'php://input', mode: 'rb');
+        $stream2 = fopen(filename: 'php://memory', mode: 'rb');
 
         $factory = new OutputFactory();
         $output  = $factory->createStreamOutput($stream);
