@@ -11,20 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Interaction\Message;
+namespace Valkyrja\Tests\Classes\Cli\Interaction\Message;
 
-use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
+use Valkyrja\Cli\Interaction\Message\Question;
 
 /**
- * Class NewLine.
+ * Testable Question class.
  *
  * @author Melech Mizrachi
  */
-class NewLine extends Message
+class QuestionFalseFopenClass extends Question
 {
-    public function __construct(
-        Formatter|null $formatter = null
-    ) {
-        parent::__construct("\n", $formatter);
+    protected function fopen(string $filename, string $mode)
+    {
+        return false;
     }
 }

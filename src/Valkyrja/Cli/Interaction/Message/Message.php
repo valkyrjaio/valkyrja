@@ -17,8 +17,6 @@ use Override;
 use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
 use Valkyrja\Cli\Interaction\Message\Contract\Message as Contract;
 
-use function strlen;
-
 /**
  * Class Message.
  *
@@ -97,26 +95,5 @@ class Message implements Contract
         $new->formatter = $formatter;
 
         return $new;
-    }
-
-    /**
-     * @return Message[]
-     */
-    #[Override]
-    public function asBanner(): array
-    {
-        $text       = "    $this->text    ";
-        $textLength = strlen($text);
-        $spaces     = str_repeat(' ', $textLength);
-
-        return [
-            new NewLine(),
-            $this->withText($spaces),
-            new NewLine(),
-            $this->withText($text),
-            new NewLine(),
-            $this->withText($spaces),
-            new NewLine(),
-        ];
     }
 }

@@ -37,5 +37,5 @@ enum TextColor: int
     case LIGHT_CYAN    = 96;
     case LIGHT_WHITE   = 97;
 
-    case DEFAULT = 39;
+    public const int DEFAULT = 39;
 }

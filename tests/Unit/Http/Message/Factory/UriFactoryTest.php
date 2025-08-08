@@ -185,13 +185,13 @@ class UriFactoryTest extends TestCase
     public function testFromPsrArray(): void
     {
         $stream = new Uri(
-            scheme: $scheme = Scheme::HTTPS,
+            scheme: $scheme     = Scheme::HTTPS,
             username: $username = 'username',
             password: $password = 'password',
-            host: $host = 'host',
-            port: $port = 20,
-            path: $path = '/path',
-            query: $query = 'test=test',
+            host: $host         = 'host',
+            port: $port         = 20,
+            path: $path         = '/path',
+            query: $query       = 'test=test',
             fragment: $fragment = 'fragment',
         );
 

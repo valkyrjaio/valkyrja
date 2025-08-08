@@ -40,13 +40,13 @@ class OutputThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
         $output->withAddedMessages(
             new Message('Cli Server Error:'),
             new NewLine(),
-            new NewLine("Url: $commandName"),
+            new Message("Url: $commandName"),
             new NewLine(),
-            new NewLine('Message: ' . $exception->getMessage()),
+            new Message('Message: ' . $exception->getMessage()),
             new NewLine(),
-            new NewLine('Line: ' . ((string) $exception->getLine())),
+            new Message('Line: ' . ((string) $exception->getLine())),
             new NewLine(),
-            new NewLine('Trace: ' . $exception->getTraceAsString()),
+            new Message('Trace: ' . $exception->getTraceAsString()),
         );
 
         return $output;

@@ -37,5 +37,5 @@ enum BackgroundColor: int
     case LIGHT_CYAN    = 106;
     case LIGHT_WHITE   = 107;
 
-    case DEFAULT = 49;
+    public const int DEFAULT = 49;
 }

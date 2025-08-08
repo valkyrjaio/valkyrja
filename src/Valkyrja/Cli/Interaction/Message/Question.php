@@ -21,6 +21,8 @@ use Valkyrja\Cli\Interaction\Message\Contract\Answer;
 use Valkyrja\Cli\Interaction\Message\Contract\Question as Contract;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 
+use function fgets;
+use function fopen;
 use function is_callable;
 
 /**
@@ -98,15 +100,14 @@ class Question extends Message implements Contract
     public function ask(): Answer
     {
         $answer = $this->answer;
-
-        $handle = fopen('php://stdin', 'r');
+        $handle = $this->fopen(filename: 'php://stdin', mode: 'rb');
 
         if ($handle === false) {
             // TODO: Determine if we want to throw RuntimeException (UnhandledStreamQuestionException) here
             return $answer;
         }
 
-        $line = fgets($handle);
+        $line = $this->fgets($handle);
 
         if ($line === false) {
             // TODO: Determine if we want to throw RuntimeException (UnhandledLineQuestionException) here
@@ -116,10 +117,28 @@ class Question extends Message implements Contract
         $response = trim($line);
 
         if ($response === '') {
-            // TODO: Determine if we want to throw InvalidArgumentException (InvalidQuestionAnswerException) here
             return $answer;
         }
 
         return $answer->withUserResponse($response);
+    }
+
+    /**
+     * @param non-empty-string $filename The filename to open
+     * @param non-empty-string $mode     The mode
+     *
+     * @return resource|false
+     */
+    protected function fopen(string $filename, string $mode)
+    {
+        return fopen(filename: $filename, mode: $mode);
+    }
+
+    /**
+     * @param resource $stream The stream
+     */
+    protected function fgets($stream): string|false
+    {
+        return fgets($stream);
     }
 }

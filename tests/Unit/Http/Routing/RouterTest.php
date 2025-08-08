@@ -37,6 +37,16 @@ use Valkyrja\Tests\Unit\TestCase;
  */
 class RouterTest extends TestCase
 {
+    public static function dispatch(): Response
+    {
+        return new \Valkyrja\Http\Message\Response\Response(statusCode: StatusCode::I_AM_A_TEAPOT);
+    }
+
+    public static function invalidDispatch(): string
+    {
+        return 'invalid';
+    }
+
     public function testNotFound(): void
     {
         $router  = new Router();
@@ -198,15 +208,5 @@ class RouterTest extends TestCase
         $collection->add($route);
 
         $router->dispatch(request: $request);
-    }
-
-    public static function dispatch(): Response
-    {
-        return new \Valkyrja\Http\Message\Response\Response(statusCode: StatusCode::I_AM_A_TEAPOT);
-    }
-
-    public static function invalidDispatch(): string
-    {
-        return 'invalid';
     }
 }

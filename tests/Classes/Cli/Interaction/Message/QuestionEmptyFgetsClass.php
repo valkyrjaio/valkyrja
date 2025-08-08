@@ -11,20 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Interaction\Message;
-
-use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
+namespace Valkyrja\Tests\Classes\Cli\Interaction\Message;
 
 /**
- * Class NewLine.
+ * Testable Question class.
  *
  * @author Melech Mizrachi
  */
-class NewLine extends Message
+class QuestionEmptyFgetsClass extends QuestionClass
 {
-    public function __construct(
-        Formatter|null $formatter = null
-    ) {
-        parent::__construct("\n", $formatter);
+    protected function fgets($stream): string|false
+    {
+        return '';
     }
 }

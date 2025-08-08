@@ -26,9 +26,20 @@ enum Style: int
     case INVERSE    = 7;
     case CONCEAL    = 8;
 
-    case BOLD_DEFAULT       = 22;
-    case UNDERSCORE_DEFAULT = 24;
-    case BLINK_DEFAULT      = 25;
-    case INVERSE_DEFAULT    = 27;
-    case CONCEAL_DEFAULT    = 28;
+    public const int BOLD_DEFAULT       = 22;
+    public const int UNDERSCORE_DEFAULT = 24;
+    public const int BLINK_DEFAULT      = 25;
+    public const int INVERSE_DEFAULT    = 27;
+    public const int CONCEAL_DEFAULT    = 28;
+
+    /**
+     * @var array<int, int>
+     */
+    public const array DEFAULTS = [
+        1 => self::BOLD_DEFAULT,
+        4 => self::UNDERSCORE_DEFAULT,
+        5 => self::BLINK_DEFAULT,
+        7 => self::INVERSE_DEFAULT,
+        8 => self::CONCEAL_DEFAULT,
+    ];
 }

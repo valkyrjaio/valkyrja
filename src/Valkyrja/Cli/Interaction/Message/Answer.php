@@ -95,6 +95,10 @@ class Answer extends Message implements Contract
 
         $new->defaultResponse = $defaultResponse;
 
+        if (! in_array($defaultResponse, $new->allowedResponses, true)) {
+            $new->allowedResponses[] = $defaultResponse;
+        }
+
         return $new;
     }
 
@@ -116,6 +120,10 @@ class Answer extends Message implements Contract
         $new = clone $this;
 
         $new->allowedResponses = $allowedResponses;
+
+        if (! in_array($new->defaultResponse, $new->allowedResponses, true)) {
+            $new->allowedResponses[] = $new->defaultResponse;
+        }
 
         return $new;
     }

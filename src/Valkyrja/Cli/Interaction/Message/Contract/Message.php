@@ -60,11 +60,4 @@ interface Message
      * @return static
      */
     public function withFormatter(Formatter|null $formatter): static;
-
-    /**
-     * Get this message as a banner.
-     *
-     * @return Message[]
-     */
-    public function asBanner(): array;
 }

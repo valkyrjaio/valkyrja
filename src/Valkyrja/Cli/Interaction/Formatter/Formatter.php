@@ -30,9 +30,9 @@ use function sprintf;
 class Formatter implements Contract
 {
     public function __construct(
-        protected Style|null $style = null,
         protected TextColor|null $textColor = null,
         protected BackgroundColor|null $backgroundColor = null,
+        protected Style|null $style = null,
     ) {
     }
 
@@ -53,7 +53,7 @@ class Formatter implements Contract
     {
         $new = clone $this;
 
-        $this->style = $style;
+        $new->style = $style;
 
         return $new;
     }
@@ -75,7 +75,7 @@ class Formatter implements Contract
     {
         $new = clone $this;
 
-        $this->textColor = $textColor;
+        $new->textColor = $textColor;
 
         return $new;
     }
@@ -97,7 +97,7 @@ class Formatter implements Contract
     {
         $new = clone $this;
 
-        $this->backgroundColor = $backgroundColor;
+        $new->backgroundColor = $backgroundColor;
 
         return $new;
     }
@@ -114,13 +114,19 @@ class Formatter implements Contract
         // Check if a foreground was specified
         if ($this->textColor !== null) {
             $set[]   = $this->textColor->value;
-            $unset[] = TextColor::DEFAULT->value;
+            $unset[] = TextColor::DEFAULT;
         }
 
         // Check if a background was specified
         if ($this->backgroundColor !== null) {
             $set[]   = $this->backgroundColor->value;
-            $unset[] = BackgroundColor::DEFAULT->value;
+            $unset[] = BackgroundColor::DEFAULT;
+        }
+
+        // Check if a style was specified
+        if ($this->style !== null) {
+            $set[]   = $this->style->value;
+            $unset[] = Style::DEFAULTS[$this->style->value];
         }
 
         // // Check if options were specified
