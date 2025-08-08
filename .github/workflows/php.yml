@@ -98,7 +98,7 @@ jobs:
       - uses: qltysh/qlty-action/coverage@v1
         if: ${{ matrix.php == '8.3' }}
         with:
-          token: {{secrets.QLTY_COVERAGE_TOKEN}}
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: coverage/clover.xml
 
       - name: Run PHP CS Fixer
