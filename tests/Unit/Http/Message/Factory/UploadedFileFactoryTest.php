@@ -213,6 +213,17 @@ class UploadedFileFactoryTest extends TestCase
         ]);
     }
 
+    public function testNormalizeNestedFileSpecInvalid(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        UploadedFileFactory::normalizeNestedFileSpec([
+            [
+                'test',
+            ],
+        ]);
+    }
+
     public function testFromPsr(): void
     {
         $stream = new Stream();

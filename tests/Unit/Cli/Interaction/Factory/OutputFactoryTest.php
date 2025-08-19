@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Factory;
 
+use Valkyrja\Cli\Interaction\Config;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Factory\OutputFactory;
 use Valkyrja\Cli\Interaction\Message\NewLine;
@@ -34,13 +35,21 @@ class OutputFactoryTest extends TestCase
 {
     public function testCreateOutput(): void
     {
-        $factory = new OutputFactory();
+        $config  = new Config(
+            isQuiet: true,
+            isInteractive: false,
+            isSilent: true
+        );
+        $factory = new OutputFactory(config: $config);
         $output  = $factory->createOutput();
         $output2 = $factory->createOutput(ExitCode::AUTO_EXIT, new NewLine());
 
         self::assertInstanceOf(Output::class, $output);
         self::assertInstanceOf(Output::class, $output2);
         self::assertSame(ExitCode::SUCCESS, $output->getExitCode());
+        self::assertTrue($output->isQuiet());
+        self::assertFalse($output->isInteractive());
+        self::assertTrue($output->isSilent());
         self::assertEmpty($output->getMessages());
         self::assertEmpty($output->getUnwrittenMessages());
         self::assertEmpty($output->getWrittenMessages());
@@ -48,17 +57,28 @@ class OutputFactoryTest extends TestCase
         self::assertCount(1, $output2->getMessages());
         self::assertCount(1, $output2->getUnwrittenMessages());
         self::assertEmpty($output2->getWrittenMessages());
+        self::assertTrue($output2->isQuiet());
+        self::assertFalse($output2->isInteractive());
+        self::assertTrue($output2->isSilent());
     }
 
     public function testCreateEmptyOutput(): void
     {
-        $factory = new OutputFactory();
+        $config  = new Config(
+            isQuiet: true,
+            isInteractive: false,
+            isSilent: true
+        );
+        $factory = new OutputFactory(config: $config);
         $output  = $factory->createEmptyOutput();
         $output2 = $factory->createEmptyOutput(ExitCode::AUTO_EXIT, new NewLine());
 
         self::assertInstanceOf(EmptyOutput::class, $output);
         self::assertInstanceOf(EmptyOutput::class, $output2);
         self::assertSame(ExitCode::SUCCESS, $output->getExitCode());
+        self::assertTrue($output->isQuiet());
+        self::assertFalse($output->isInteractive());
+        self::assertTrue($output->isSilent());
         self::assertEmpty($output->getMessages());
         self::assertEmpty($output->getUnwrittenMessages());
         self::assertEmpty($output->getWrittenMessages());
@@ -66,17 +86,28 @@ class OutputFactoryTest extends TestCase
         self::assertCount(1, $output2->getMessages());
         self::assertCount(1, $output2->getUnwrittenMessages());
         self::assertEmpty($output2->getWrittenMessages());
+        self::assertTrue($output2->isQuiet());
+        self::assertFalse($output2->isInteractive());
+        self::assertTrue($output2->isSilent());
     }
 
     public function testCreatePlainOutput(): void
     {
-        $factory = new OutputFactory();
+        $config  = new Config(
+            isQuiet: true,
+            isInteractive: false,
+            isSilent: true
+        );
+        $factory = new OutputFactory(config: $config);
         $output  = $factory->createPlainOutput();
         $output2 = $factory->createPlainOutput(ExitCode::AUTO_EXIT, new NewLine());
 
         self::assertInstanceOf(PlainOutput::class, $output);
         self::assertInstanceOf(PlainOutput::class, $output2);
         self::assertSame(ExitCode::SUCCESS, $output->getExitCode());
+        self::assertTrue($output->isQuiet());
+        self::assertFalse($output->isInteractive());
+        self::assertTrue($output->isSilent());
         self::assertEmpty($output->getMessages());
         self::assertEmpty($output->getUnwrittenMessages());
         self::assertEmpty($output->getWrittenMessages());
@@ -84,11 +115,19 @@ class OutputFactoryTest extends TestCase
         self::assertCount(1, $output2->getMessages());
         self::assertCount(1, $output2->getUnwrittenMessages());
         self::assertEmpty($output2->getWrittenMessages());
+        self::assertTrue($output2->isQuiet());
+        self::assertFalse($output2->isInteractive());
+        self::assertTrue($output2->isSilent());
     }
 
     public function testCreateFileOutput(): void
     {
-        $factory = new OutputFactory();
+        $config  = new Config(
+            isQuiet: true,
+            isInteractive: false,
+            isSilent: true
+        );
+        $factory = new OutputFactory(config: $config);
         $output  = $factory->createFileOutput('filepath');
         $output2 = $factory->createFileOutput('filepath2', ExitCode::AUTO_EXIT, new NewLine());
 
@@ -96,6 +135,9 @@ class OutputFactoryTest extends TestCase
         self::assertInstanceOf(FileOutput::class, $output2);
         self::assertSame(ExitCode::SUCCESS, $output->getExitCode());
         self::assertSame('filepath', $output->getFilepath());
+        self::assertTrue($output->isQuiet());
+        self::assertFalse($output->isInteractive());
+        self::assertTrue($output->isSilent());
         self::assertEmpty($output->getMessages());
         self::assertEmpty($output->getUnwrittenMessages());
         self::assertEmpty($output->getWrittenMessages());
@@ -104,6 +146,9 @@ class OutputFactoryTest extends TestCase
         self::assertCount(1, $output2->getMessages());
         self::assertCount(1, $output2->getUnwrittenMessages());
         self::assertEmpty($output2->getWrittenMessages());
+        self::assertTrue($output2->isQuiet());
+        self::assertFalse($output2->isInteractive());
+        self::assertTrue($output2->isSilent());
     }
 
     public function testCreateStreamOutput(): void
@@ -111,7 +156,12 @@ class OutputFactoryTest extends TestCase
         $stream  = fopen(filename: 'php://input', mode: 'rb');
         $stream2 = fopen(filename: 'php://memory', mode: 'rb');
 
-        $factory = new OutputFactory();
+        $config  = new Config(
+            isQuiet: true,
+            isInteractive: false,
+            isSilent: true
+        );
+        $factory = new OutputFactory(config: $config);
         $output  = $factory->createStreamOutput($stream);
         $output2 = $factory->createStreamOutput($stream2, ExitCode::AUTO_EXIT, new NewLine());
 
@@ -119,6 +169,9 @@ class OutputFactoryTest extends TestCase
         self::assertInstanceOf(StreamOutput::class, $output2);
         self::assertSame(ExitCode::SUCCESS, $output->getExitCode());
         self::assertSame($stream, $output->getStream());
+        self::assertTrue($output->isQuiet());
+        self::assertFalse($output->isInteractive());
+        self::assertTrue($output->isSilent());
         self::assertEmpty($output->getMessages());
         self::assertEmpty($output->getUnwrittenMessages());
         self::assertEmpty($output->getWrittenMessages());
@@ -127,5 +180,8 @@ class OutputFactoryTest extends TestCase
         self::assertCount(1, $output2->getMessages());
         self::assertCount(1, $output2->getUnwrittenMessages());
         self::assertEmpty($output2->getWrittenMessages());
+        self::assertTrue($output2->isQuiet());
+        self::assertFalse($output2->isInteractive());
+        self::assertTrue($output2->isSilent());
     }
 }

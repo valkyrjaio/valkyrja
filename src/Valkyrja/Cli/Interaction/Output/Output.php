@@ -320,7 +320,7 @@ class Output implements Contract
 
         $answer = $question->getAnswer();
 
-        if ($this->isInteractive && ! $this->isQuiet) {
+        if ($this->isInteractive && ! $this->isQuiet && ! $this->isSilent) {
             $answer = $question->ask();
 
             if (! $answer->isValidResponse()) {

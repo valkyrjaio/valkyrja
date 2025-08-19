@@ -110,7 +110,7 @@ abstract class UploadedFileFactory
      *
      * @return UploadedFile|UploadedFile[]
      */
-    private static function createUploadedFileFromSpec(array $value): UploadedFile|array
+    public static function createUploadedFileFromSpec(array $value): UploadedFile|array
     {
         $tmpName = $value['tmp_name'] ?? null;
 
@@ -147,10 +147,10 @@ abstract class UploadedFileFactory
      * @psalm-suppress InvalidReturnStatement Cannot do recursive return type
      * @psalm-suppress MixedArrayAccess tmp_name should exist
      */
-    private static function normalizeNestedFileSpec(array $files = []): array
+    public static function normalizeNestedFileSpec(array $files = []): array
     {
         $normalizedFiles = [];
-        $filesTmpName    = $files['tmp_name'];
+        $filesTmpName    = $files['tmp_name'] ?? null;
 
         if (! is_array($filesTmpName)) {
             throw new InvalidArgumentException('Expecting tmp name to be a nested array of files');
