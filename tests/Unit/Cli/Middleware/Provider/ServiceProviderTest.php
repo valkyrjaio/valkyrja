@@ -13,12 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Provider;
 
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
+use Valkyrja\Cli\Middleware\Handler;
 use Valkyrja\Cli\Middleware\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
@@ -36,41 +31,59 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         ServiceProvider::publishInputReceivedHandler($this->container);
 
-        self::assertInstanceOf(InputReceivedHandler::class, $this->container->getSingleton(InputReceivedHandler::class));
-    }
-
-    public function testPublishThrowableCaughtHandler(): void
-    {
-        ServiceProvider::publishThrowableCaughtHandler($this->container);
-
-        self::assertInstanceOf(ThrowableCaughtHandler::class, $this->container->getSingleton(ThrowableCaughtHandler::class));
-    }
-
-    public function testPublishCommandMatchedHandler(): void
-    {
-        ServiceProvider::publishCommandMatchedHandler($this->container);
-
-        self::assertInstanceOf(CommandMatchedHandler::class, $this->container->getSingleton(CommandMatchedHandler::class));
-    }
-
-    public function testPublishCommandNotMatchedHandler(): void
-    {
-        ServiceProvider::publishCommandNotMatchedHandler($this->container);
-
-        self::assertInstanceOf(CommandNotMatchedHandler::class, $this->container->getSingleton(CommandNotMatchedHandler::class));
+        self::assertInstanceOf(
+            Handler\InputReceivedHandler::class,
+            $this->container->getSingleton(Handler\Contract\InputReceivedHandler::class)
+        );
     }
 
     public function testPublishCommandDispatchedHandler(): void
     {
         ServiceProvider::publishCommandDispatchedHandler($this->container);
 
-        self::assertInstanceOf(CommandDispatchedHandler::class, $this->container->getSingleton(CommandDispatchedHandler::class));
+        self::assertInstanceOf(
+            Handler\CommandDispatchedHandler::class,
+            $this->container->getSingleton(Handler\Contract\CommandDispatchedHandler::class)
+        );
+    }
+
+    public function testPublishThrowableCaughtHandler(): void
+    {
+        ServiceProvider::publishThrowableCaughtHandler($this->container);
+
+        self::assertInstanceOf(
+            Handler\ThrowableCaughtHandler::class,
+            $this->container->getSingleton(Handler\Contract\ThrowableCaughtHandler::class)
+        );
+    }
+
+    public function testPublishCommandMatchedHandler(): void
+    {
+        ServiceProvider::publishCommandMatchedHandler($this->container);
+
+        self::assertInstanceOf(
+            Handler\CommandMatchedHandler::class,
+            $this->container->getSingleton(Handler\Contract\CommandMatchedHandler::class)
+        );
+    }
+
+    public function testPublishCommandNotMatchedHandler(): void
+    {
+        ServiceProvider::publishCommandNotMatchedHandler($this->container);
+
+        self::assertInstanceOf(
+            Handler\CommandNotMatchedHandler::class,
+            $this->container->getSingleton(Handler\Contract\CommandNotMatchedHandler::class)
+        );
     }
 
     public function testPublishExitedHandler(): void
     {
         ServiceProvider::publishExitedHandler($this->container);
 
-        self::assertInstanceOf(ExitedHandler::class, $this->container->getSingleton(ExitedHandler::class));
+        self::assertInstanceOf(
+            Handler\ExitedHandler::class,
+            $this->container->getSingleton(Handler\Contract\ExitedHandler::class)
+        );
     }
 }
