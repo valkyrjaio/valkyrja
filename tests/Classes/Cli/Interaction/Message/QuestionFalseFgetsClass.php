@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Cli\Interaction\Message;
 
+use Override;
 use Valkyrja\Cli\Interaction\Message\Question;
 
 /**
@@ -22,11 +23,13 @@ use Valkyrja\Cli\Interaction\Message\Question;
  */
 class QuestionFalseFgetsClass extends Question
 {
+    #[Override]
     protected function fopen(string $filename, string $mode)
     {
         return parent::fopen(filename: 'php://memory', mode: 'rb');
     }
 
+    #[Override]
     protected function fgets($stream): string|false
     {
         return false;

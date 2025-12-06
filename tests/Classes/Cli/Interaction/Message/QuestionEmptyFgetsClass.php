@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Cli\Interaction\Message;
 
+use Override;
+
 /**
  * Testable Question class.
  *
@@ -20,6 +22,7 @@ namespace Valkyrja\Tests\Classes\Cli\Interaction\Message;
  */
 class QuestionEmptyFgetsClass extends QuestionClass
 {
+    #[Override]
     protected function fgets($stream): string|false
     {
         return '';

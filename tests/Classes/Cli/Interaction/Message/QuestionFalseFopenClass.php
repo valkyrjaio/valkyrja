@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Cli\Interaction\Message;
 
+use Override;
 use Valkyrja\Cli\Interaction\Message\Question;
 
 /**
@@ -22,6 +23,7 @@ use Valkyrja\Cli\Interaction\Message\Question;
  */
 class QuestionFalseFopenClass extends Question
 {
+    #[Override]
     protected function fopen(string $filename, string $mode)
     {
         return false;
