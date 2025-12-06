@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Handler;
 
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Tests\Classes\Cli\Middleware\Handler\CommandNotMatchedHandlerClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\CommandNotMatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\CommandNotMatchedMiddlewareClass;
+use Valkyrja\Tests\Classes\Cli\Middleware\Handler\CommandNotMatchedHandlerClass;
 
 /**
  * Test the command not matched handler.

@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Handler;
 
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Tests\Classes\Cli\Middleware\Handler\CommandDispatchedHandlerClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\CommandDispatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\CommandDispatchedMiddlewareClass;
+use Valkyrja\Tests\Classes\Cli\Middleware\Handler\CommandDispatchedHandlerClass;
 
 /**
  * Test the command dispatched handler.
