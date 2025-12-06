@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Handler;
 
 use Exception;
+use Override;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Tests\Classes\Cli\Middleware\Handler\ThrowableCaughtHandlerClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\ThrowableCaughtMiddlewareChangedClass;
@@ -31,6 +32,7 @@ class ThrowableCaughtHandlerTest extends HandlerTestCase
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
