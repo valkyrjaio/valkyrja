@@ -46,8 +46,8 @@ class Collection implements Contract
     #[Override]
     public function setFromData(Data $data): void
     {
-        foreach ($data->commands as $id => $route) {
-            $command = unserialize($route, ['allowed_classes' => true]);
+        foreach ($data->commands as $id => $commandSerialized) {
+            $command = unserialize($commandSerialized, ['allowed_classes' => true]);
 
             if (! $command instanceof Command) {
                 throw new RuntimeException('Invalid command unserialized');
