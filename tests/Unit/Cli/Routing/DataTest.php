@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Routing;
 
+use stdClass;
 use Valkyrja\Cli\Routing\Data;
 use Valkyrja\Tests\Unit\TestCase;
+
+use function serialize;
 
 /**
  * Test the Data service.
@@ -28,5 +31,17 @@ class DataTest extends TestCase
         $data = new Data();
 
         self::assertEmpty($data->commands);
+    }
+
+    public function testWithCommands(): void
+    {
+        $commands = [
+            'command1' => serialize(new stdClass()),
+            'command2' => serialize(new stdClass()),
+        ];
+
+        $data = new Data($commands);
+
+        self::assertSame($commands, $data->commands);
     }
 }
