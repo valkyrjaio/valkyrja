@@ -30,7 +30,7 @@ class Directory
     /**
      * Base directory path.
      *
-     * @constant string
+     * @var string
      */
     public static string $BASE_PATH = '';
 
