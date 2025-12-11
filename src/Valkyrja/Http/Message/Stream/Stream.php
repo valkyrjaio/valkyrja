@@ -206,8 +206,7 @@ class Stream implements Contract
 
             // Get the stream's contents
             return $this->getContents();
-        } // On a runtime exception
-        catch (Throwable) {
+        } catch (Throwable) {
             // Return a string
             return '';
         }

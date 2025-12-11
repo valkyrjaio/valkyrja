@@ -155,10 +155,9 @@ class UploadedFile implements Contract
             if ($this->file !== null && is_file($this->file)) {
                 $this->deleteFile($this->file);
             }
-        }
-        // Otherwise try to use the move_uploaded_file function
-        // and if the move_uploaded_file function call failed
-        elseif (! $this->moveUploadedFile($this->file ?? '', $targetPath)) {
+        } elseif (! $this->moveUploadedFile($this->file ?? '', $targetPath)) {
+            // Otherwise try to use the move_uploaded_file function
+            // and if the move_uploaded_file function call failed
             // Throw a runtime exception
             throw new MoveFailureException('Error occurred while moving uploaded file');
         }

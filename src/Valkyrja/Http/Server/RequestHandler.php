@@ -257,12 +257,12 @@ class RequestHandler implements Contract
         if ($this->shouldUseFastcgiToFinishRequest()) {
             // Use it to finish the request
             $this->finishRequestWithFastcgi();
-        } // If litespeed is enabled
-        elseif ($this->shouldUseLitespeedToFinishRequest()) {
+        } elseif ($this->shouldUseLitespeedToFinishRequest()) {
+            // If litespeed is enabled
             // Use it to finish the request
             $this->finishRequestWithLitespeed();
-        } // Otherwise if this isn't a cli request
-        elseif ($this->shouldCloseOutputBuffersToFinishRequest()) {
+        } elseif ($this->shouldCloseOutputBuffersToFinishRequest()) {
+            // Otherwise if this isn't a cli request
             // Use an internal method to finish the request
             $this->closeOutputBuffers(0, true);
         } else {

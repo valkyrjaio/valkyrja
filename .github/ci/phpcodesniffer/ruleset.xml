@@ -1,0 +1,31 @@
+<ruleset name="ValkyrjaProjectStandards">
+    <!-- Include the Slevomat standard -->
+    <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
+        <properties>
+            <property name="rootNamespaces" type="array">
+                <!-- Map your source directories to their root namespaces -->
+                <element key="src/Valkyrja" value="Valkyrja"/>
+                <element key="tests" value="Valkyrja\Tests"/>
+            </property>
+            <property name="skipDirs" type="array">
+                <element value=".github"/>
+                <element value="docs"/>
+                <element value="functions"/>
+                <element value="pre-commit-hooks"/>
+                <element value="vendor"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- You can still include other standards if needed -->
+    <rule ref="PSR12"/>
+
+    <exclude-pattern>*/.github/*</exclude-pattern>
+    <exclude-pattern>*/.phpunit.cache/*</exclude-pattern>
+    <exclude-pattern>*/build/*</exclude-pattern>
+    <exclude-pattern>*/coverage-html/*</exclude-pattern>
+    <exclude-pattern>*/docs/*</exclude-pattern>
+    <exclude-pattern>*/functions/*</exclude-pattern>
+    <exclude-pattern>*/pre-commit-hooks/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+</ruleset>

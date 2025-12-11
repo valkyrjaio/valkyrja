@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Unit\Http\Routing\Attribute\Route\RequestMethod;
+namespace Valkyrja\Tests\Unit\Http\Routing\Attribute\Route\RequestMethod;
 
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Attribute\Route\RequestMethod\Get;

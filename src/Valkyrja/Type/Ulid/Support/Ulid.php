@@ -84,15 +84,14 @@ class Ulid extends Uid
         // time was passed in
         if (static::doesTimeMatch($time, $dateTime)) {
             static::randomize($time);
-        } // Otherwise if the entire array's worth of random bytes is at max (we've generated A LOT of ids)
-        elseif (static::areAllRandomBytesMax()) {
+        } elseif (static::areAllRandomBytesMax()) {
+            // Otherwise if the entire array's worth of random bytes is at max (we've generated A LOT of ids)
             $time = static::increaseTime($time);
 
             static::randomize($time);
-        }
-        // Otherwise if the time matches and a date time wasn't passed in, or one was passed but the time ended up
-        // matching anyway
-        else {
+        } else {
+            // Otherwise if the time matches and a date time wasn't passed in, or one was passed but the time ended up
+            // matching anyway
             static::updateRandomBytes();
 
             // Set the time from the previous time

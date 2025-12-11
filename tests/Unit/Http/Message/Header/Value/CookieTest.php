@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Unit\Http\Message\Header\Value;
+namespace Valkyrja\Tests\Unit\Http\Message\Header\Value;
 
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Message\Header\Value\Cookie;

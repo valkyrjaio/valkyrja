@@ -245,8 +245,8 @@ class Collection implements Contract
         if ($regex !== null) {
             // Set the route in the dynamic routes list
             $this->dynamic[$requestMethod->value][$regex] = $name;
-        } // Otherwise set it in the static routes array
-        else {
+        } else {
+            // Otherwise set it in the static routes array
             // Set the route in the static routes list
             $this->static[$requestMethod->value][$route->getPath()] = $name;
         }

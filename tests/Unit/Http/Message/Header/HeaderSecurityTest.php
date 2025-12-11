@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Unit\Http\Message\Header;
+namespace Valkyrja\Tests\Unit\Http\Message\Header;
 
 use Valkyrja\Http\Message\Header\Exception\InvalidNameException;
 use Valkyrja\Http\Message\Header\Exception\InvalidValueException;

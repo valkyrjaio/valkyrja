@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Unit\Http\Message\Header\Exception;
+namespace Valkyrja\Tests\Unit\Http\Message\Header\Exception;
 
 use Throwable as PHPThrowable;
 use Valkyrja\Http\Message\Exception\InvalidArgumentException as MessageInvalidArgumentException;

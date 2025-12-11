@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Unit\Http\Routing\Attribute\Route;
+namespace Valkyrja\Tests\Unit\Http\Routing\Attribute\Route;
 
 use Valkyrja\Http\Routing\Attribute\Route\ResponseStruct;
 use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
