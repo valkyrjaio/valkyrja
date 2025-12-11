@@ -43,8 +43,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishAttributesCollector(): void
     {
-        $this->container->setSingleton(Attributes::class, $this->createMock(Attributes::class));
-        $this->container->setSingleton(Reflection::class, $this->createMock(Reflection::class));
+        $this->container->setSingleton(Attributes::class, $this->createStub(Attributes::class));
+        $this->container->setSingleton(Reflection::class, $this->createStub(Reflection::class));
 
         ServiceProvider::publishAttributesCollector($this->container);
 
@@ -56,8 +56,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishDispatcher(): void
     {
-        $this->container->setSingleton(DispatchDispatcher::class, $this->createMock(DispatchDispatcher::class));
-        $this->container->setSingleton(CollectionContract::class, $this->createMock(CollectionContract::class));
+        $this->container->setSingleton(DispatchDispatcher::class, $this->createStub(DispatchDispatcher::class));
+        $this->container->setSingleton(CollectionContract::class, $this->createStub(CollectionContract::class));
 
         ServiceProvider::publishDispatcher($this->container);
 
@@ -79,7 +79,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishCollectionWithConfig(): void
     {
         $this->container->setSingleton(Config::class, new Config());
-        $this->container->setSingleton(Collector::class, $collector = $this->createMock(Collector::class));
+        $this->container->setSingleton(Collector::class, $collector = $this->createStub(Collector::class));
 
         $eventId      = self::class;
         $listenerName = 'listener-name';

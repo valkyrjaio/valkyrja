@@ -269,7 +269,7 @@ class DispatcherTest extends TestCase
     {
         $dispatch = new ClassDispatch(class: InvalidDispatcherClass::class);
 
-        $app = $this->createMock(Application::class);
+        $app = $this->createStub(Application::class);
 
         self::assertInstanceOf(
             InvalidDispatcherClass::class,

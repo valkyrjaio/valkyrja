@@ -41,11 +41,11 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishInputHandler(): void
     {
-        $this->container->setSingleton(Config::class, $this->createMock(Config::class));
-        $this->container->setSingleton(Router::class, $this->createMock(Router::class));
-        $this->container->setSingleton(InputReceivedHandler::class, $this->createMock(InputReceivedHandler::class));
-        $this->container->setSingleton(ThrowableCaughtHandler::class, $this->createMock(ThrowableCaughtHandler::class));
-        $this->container->setSingleton(ExitedHandler::class, $this->createMock(ExitedHandler::class));
+        $this->container->setSingleton(Config::class, $this->createStub(Config::class));
+        $this->container->setSingleton(Router::class, $this->createStub(Router::class));
+        $this->container->setSingleton(InputReceivedHandler::class, $this->createStub(InputReceivedHandler::class));
+        $this->container->setSingleton(ThrowableCaughtHandler::class, $this->createStub(ThrowableCaughtHandler::class));
+        $this->container->setSingleton(ExitedHandler::class, $this->createStub(ExitedHandler::class));
 
         ServiceProvider::publishInputHandler($this->container);
 
@@ -57,7 +57,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogThrowableCaughtMiddleware(): void
     {
-        $this->container->setSingleton(Logger::class, $this->createMock(Logger::class));
+        $this->container->setSingleton(Logger::class, $this->createStub(Logger::class));
 
         ServiceProvider::publishLogThrowableCaughtMiddleware($this->container);
 

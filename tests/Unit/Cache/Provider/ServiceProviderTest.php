@@ -38,7 +38,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishCache(): void
     {
-        $this->container->setSingleton(RedisCache::class, $this->createMock(RedisCache::class));
+        $this->container->setSingleton(RedisCache::class, $this->createStub(RedisCache::class));
 
         ServiceProvider::publishCache($this->container);
 
@@ -50,7 +50,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishRedisCache(): void
     {
-        $this->container->setSingleton(Client::class, $this->createMock(Client::class));
+        $this->container->setSingleton(Client::class, $this->createStub(Client::class));
 
         ServiceProvider::publishRedisCache($this->container);
 
@@ -69,7 +69,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogCache(): void
     {
-        $this->container->setSingleton(Logger::class, $this->createMock(Logger::class));
+        $this->container->setSingleton(Logger::class, $this->createStub(Logger::class));
 
         ServiceProvider::publishLogCache($this->container);
 

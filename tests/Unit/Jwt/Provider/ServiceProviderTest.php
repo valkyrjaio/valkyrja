@@ -37,7 +37,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishJwt(): void
     {
-        $this->container->setSingleton(FirebaseJwt::class, $this->createMock(FirebaseJwt::class));
+        $this->container->setSingleton(FirebaseJwt::class, $this->createStub(FirebaseJwt::class));
 
         ServiceProvider::publishJwt($this->container);
 

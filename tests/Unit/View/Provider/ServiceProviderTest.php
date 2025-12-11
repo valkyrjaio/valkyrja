@@ -45,7 +45,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishRenderer(): void
     {
-        $this->container->setSingleton(PhpRenderer::class, $this->createMock(PhpRenderer::class));
+        $this->container->setSingleton(PhpRenderer::class, $this->createStub(PhpRenderer::class));
 
         ServiceProvider::publishRenderer($this->container);
 
@@ -71,7 +71,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishTwigRenderer(): void
     {
-        $this->container->setSingleton(Environment::class, $this->createMock(Environment::class));
+        $this->container->setSingleton(Environment::class, $this->createStub(Environment::class));
 
         ServiceProvider::publishTwigRenderer($this->container);
 
@@ -107,8 +107,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishResponseFactory(): void
     {
-        $this->container->setSingleton(HttpMessageResponseFactory::class, $this->createMock(HttpMessageResponseFactory::class));
-        $this->container->setSingleton(Contract::class, $this->createMock(Contract::class));
+        $this->container->setSingleton(HttpMessageResponseFactory::class, $this->createStub(HttpMessageResponseFactory::class));
+        $this->container->setSingleton(Contract::class, $this->createStub(Contract::class));
 
         ServiceProvider::publishResponseFactory($this->container);
 

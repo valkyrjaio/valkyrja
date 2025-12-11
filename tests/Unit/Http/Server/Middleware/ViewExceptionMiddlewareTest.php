@@ -45,7 +45,7 @@ class ViewExceptionMiddlewareTest extends TestCase
 
         $templateText = 'Error: 500';
 
-        $view = $this->createMock(ResponseFactory::class);
+        $view = $this->createStub(ResponseFactory::class);
         $view->method('createResponseFromView')
              ->with('errors/500', $args)
              ->willReturn(Response::create(content: $templateText, statusCode: $statusCode));

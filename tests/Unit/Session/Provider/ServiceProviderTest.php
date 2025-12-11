@@ -44,7 +44,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishSession(): void
     {
-        $this->container->setSingleton(PhpSession::class, $this->createMock(PhpSession::class));
+        $this->container->setSingleton(PhpSession::class, $this->createStub(PhpSession::class));
 
         ServiceProvider::publishSession($this->container);
 
@@ -72,7 +72,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishCacheSession(): void
     {
-        $this->container->setSingleton(Cache::class, $this->createMock(Cache::class));
+        $this->container->setSingleton(Cache::class, $this->createStub(Cache::class));
         $this->container->setSingleton(CookieParams::class, new CookieParams());
 
         ServiceProvider::publishCacheSession($this->container);
@@ -85,8 +85,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishCookieSession(): void
     {
-        $this->container->setSingleton(Crypt::class, $this->createMock(Crypt::class));
-        $this->container->setSingleton(ServerRequest::class, $this->createMock(ServerRequest::class));
+        $this->container->setSingleton(Crypt::class, $this->createStub(Crypt::class));
+        $this->container->setSingleton(ServerRequest::class, $this->createStub(ServerRequest::class));
         $this->container->setSingleton(CookieParams::class, new CookieParams());
 
         ServiceProvider::publishCookieSession($this->container);
@@ -99,7 +99,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogSession(): void
     {
-        $this->container->setSingleton(Logger::class, $this->createMock(Logger::class));
+        $this->container->setSingleton(Logger::class, $this->createStub(Logger::class));
         $this->container->setSingleton(CookieParams::class, new CookieParams());
 
         ServiceProvider::publishLogSession($this->container);

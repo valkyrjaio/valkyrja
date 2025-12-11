@@ -37,7 +37,7 @@ class LogExceptionMiddlewareTest extends TestCase
         $handler    = new ThrowableCaughtHandler();
         $exception  = new Exception();
 
-        $logger = $this->createMock(Logger::class);
+        $logger = $this->createStub(Logger::class);
 
         $middleware = new LogThrowableCaughtMiddleware(logger: $logger);
 

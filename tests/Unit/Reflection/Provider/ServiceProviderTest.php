@@ -35,7 +35,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishApi(): void
     {
-        $this->container->setSingleton(ResponseFactory::class, $this->createMock(ResponseFactory::class));
+        $this->container->setSingleton(ResponseFactory::class, $this->createStub(ResponseFactory::class));
 
         ServiceProvider::publishReflection($this->container);
 
