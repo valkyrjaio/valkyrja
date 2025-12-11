@@ -41,7 +41,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishBroadcaster(): void
     {
-        $this->container->setSingleton(PusherBroadcaster::class, $this->createStub(PusherBroadcaster::class));
+        $this->container->setSingleton(PusherBroadcaster::class, self::createStub(PusherBroadcaster::class));
 
         ServiceProvider::publishBroadcaster($this->container);
 
@@ -53,7 +53,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishPusherBroadcaster(): void
     {
-        $this->container->setSingleton(Pusher::class, $this->createStub(Pusher::class));
+        $this->container->setSingleton(Pusher::class, self::createStub(Pusher::class));
 
         ServiceProvider::publishPusherBroadcaster($this->container);
 
@@ -65,8 +65,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishCryptPusherBroadcaster(): void
     {
-        $this->container->setSingleton(Pusher::class, $this->createStub(Pusher::class));
-        $this->container->setSingleton(Crypt::class, $this->createStub(Crypt::class));
+        $this->container->setSingleton(Pusher::class, self::createStub(Pusher::class));
+        $this->container->setSingleton(Crypt::class, self::createStub(Crypt::class));
 
         ServiceProvider::publishCryptPusherBroadcaster($this->container);
 
@@ -88,7 +88,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogBroadcaster(): void
     {
-        $this->container->setSingleton(Logger::class, $this->createStub(Logger::class));
+        $this->container->setSingleton(Logger::class, self::createStub(Logger::class));
 
         ServiceProvider::publishLogBroadcaster($this->container);
 

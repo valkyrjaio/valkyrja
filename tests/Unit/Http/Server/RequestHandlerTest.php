@@ -47,7 +47,7 @@ class RequestHandlerTest extends TestCase
         $response = new Response();
         $request  = new ServerRequest();
 
-        $router = $this->createStub(Router::class);
+        $router = self::createStub(Router::class);
         $router
             ->method('dispatch')
             ->with($request)
@@ -76,13 +76,13 @@ class RequestHandlerTest extends TestCase
         $response2 = new Response();
         $request   = new ServerRequest();
 
-        $router = $this->createStub(Router::class);
+        $router = self::createStub(Router::class);
         $router
             ->method('dispatch')
             ->with($request)
             ->willReturn($response);
 
-        $beforeHandler = $this->createStub(RequestReceivedHandler::class);
+        $beforeHandler = self::createStub(RequestReceivedHandler::class);
         $beforeHandler
             ->method('requestReceived')
             ->with($request)
@@ -112,7 +112,7 @@ class RequestHandlerTest extends TestCase
         $request   = new ServerRequest();
         $exception = new HttpException(response: $response);
 
-        $router = $this->createStub(Router::class);
+        $router = self::createStub(Router::class);
         $router
             ->method('dispatch')
             ->with($request)
@@ -142,13 +142,13 @@ class RequestHandlerTest extends TestCase
         $request   = new ServerRequest();
         $exception = new HttpException(response: $response);
 
-        $router = $this->createStub(Router::class);
+        $router = self::createStub(Router::class);
         $router
             ->method('dispatch')
             ->with($request)
             ->willThrowException($exception);
 
-        $exceptionHandler = $this->createStub(ThrowableCaughtHandler::class);
+        $exceptionHandler = self::createStub(ThrowableCaughtHandler::class);
         $exceptionHandler
             ->method('throwableCaught')
             ->with($request, $response)
@@ -181,7 +181,7 @@ class RequestHandlerTest extends TestCase
 
         $request = new ServerRequest();
 
-        $router = $this->createStub(Router::class);
+        $router = self::createStub(Router::class);
         $router
             ->method('dispatch')
             ->with($request)
@@ -208,7 +208,7 @@ class RequestHandlerTest extends TestCase
 
         $exception = new HttpException(message: 'test');
 
-        $router = $this->createStub(Router::class);
+        $router = self::createStub(Router::class);
         $router
             ->method('dispatch')
             ->with($request)
@@ -236,7 +236,7 @@ class RequestHandlerTest extends TestCase
 
         $exception = new Exception(message: 'test');
 
-        $router = $this->createStub(Router::class);
+        $router = self::createStub(Router::class);
         $router
             ->method('dispatch')
             ->with($request)
@@ -263,7 +263,7 @@ class RequestHandlerTest extends TestCase
         $response = new Response();
         $request  = new ServerRequest();
 
-        $router = $this->createStub(Router::class);
+        $router = self::createStub(Router::class);
         $router
             ->method('dispatch')
             ->with($request)
@@ -290,7 +290,7 @@ class RequestHandlerTest extends TestCase
         $response = new Response();
         $request  = new ServerRequest();
 
-        $router = $this->createStub(Router::class);
+        $router = self::createStub(Router::class);
         $router
             ->method('dispatch')
             ->with($request)
@@ -320,7 +320,7 @@ class RequestHandlerTest extends TestCase
         $response = new Response();
         $request  = new ServerRequest();
 
-        $router = $this->createStub(Router::class);
+        $router = self::createStub(Router::class);
         $router
             ->method('dispatch')
             ->with($request)
@@ -350,7 +350,7 @@ class RequestHandlerTest extends TestCase
         $response = new Response();
         $request  = new ServerRequest();
 
-        $router = $this->createStub(Router::class);
+        $router = self::createStub(Router::class);
         $router
             ->method('dispatch')
             ->with($request)
@@ -380,7 +380,7 @@ class RequestHandlerTest extends TestCase
         $response = new Response();
         $request  = new ServerRequest();
 
-        $router = $this->createStub(Router::class);
+        $router = self::createStub(Router::class);
         $router
             ->method('dispatch')
             ->with($request)
@@ -410,7 +410,7 @@ class RequestHandlerTest extends TestCase
         $response = new Response();
         $request  = new ServerRequest();
 
-        $router = $this->createStub(Router::class);
+        $router = self::createStub(Router::class);
         $router
             ->method('dispatch')
             ->with($request)

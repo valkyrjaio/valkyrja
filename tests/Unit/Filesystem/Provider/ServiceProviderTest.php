@@ -40,7 +40,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishFilesystem(): void
     {
-        $this->container->setSingleton(FlysystemFilesystem::class, $this->createStub(FlysystemFilesystem::class));
+        $this->container->setSingleton(FlysystemFilesystem::class, self::createStub(FlysystemFilesystem::class));
 
         ServiceProvider::publishFilesystem($this->container);
 
@@ -52,7 +52,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishFlysystemFilesystem(): void
     {
-        $this->container->setSingleton(LocalFlysystemFilesystem::class, $this->createStub(LocalFlysystemFilesystem::class));
+        $this->container->setSingleton(LocalFlysystemFilesystem::class, self::createStub(LocalFlysystemFilesystem::class));
 
         ServiceProvider::publishFlysystemFilesystem($this->container);
 
@@ -64,7 +64,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLocalFlysystemFilesystem(): void
     {
-        $this->container->setSingleton(FlysystemLocalAdapter::class, $this->createStub(FlysystemLocalAdapter::class));
+        $this->container->setSingleton(FlysystemLocalAdapter::class, self::createStub(FlysystemLocalAdapter::class));
 
         ServiceProvider::publishLocalFlysystemFilesystem($this->container);
 
@@ -83,7 +83,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishS3FlysystemFilesystem(): void
     {
-        $this->container->setSingleton(FlysystemAwsS3Adapter::class, $this->createStub(FlysystemAwsS3Adapter::class));
+        $this->container->setSingleton(FlysystemAwsS3Adapter::class, self::createStub(FlysystemAwsS3Adapter::class));
 
         ServiceProvider::publishS3FlysystemFilesystem($this->container);
 

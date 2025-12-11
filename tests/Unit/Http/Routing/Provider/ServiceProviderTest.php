@@ -122,10 +122,10 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $container->setSingleton(RouteNotMatchedHandlerContract::class, new RouteNotMatchedHandler());
         $container->setSingleton(SendingResponseHandlerContract::class, new SendingResponseHandler());
         $container->setSingleton(TerminatedHandlerContract::class, new TerminatedHandler());
-        $container->setSingleton(CollectionContract::class, $this->createStub(CollectionContract::class));
-        $container->setSingleton(Dispatcher::class, $this->createStub(Dispatcher::class));
-        $container->setSingleton(MatcherContract::class, $this->createStub(MatcherContract::class));
-        $container->setSingleton(HttpMessageResponseFactory::class, $this->createStub(HttpMessageResponseFactory::class));
+        $container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
+        $container->setSingleton(Dispatcher::class, self::createStub(Dispatcher::class));
+        $container->setSingleton(MatcherContract::class, self::createStub(MatcherContract::class));
+        $container->setSingleton(HttpMessageResponseFactory::class, self::createStub(HttpMessageResponseFactory::class));
 
         self::assertFalse($container->has(RouterContract::class));
 
@@ -140,7 +140,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(CollectorContract::class, $this->createStub(CollectorContract::class));
+        $container->setSingleton(CollectorContract::class, self::createStub(CollectorContract::class));
         $container->setSingleton(Data::class, new Data());
 
         self::assertFalse($container->has(CollectionContract::class));
@@ -156,7 +156,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(CollectorContract::class, $collector = $this->createStub(CollectorContract::class));
+        $container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
         $container->setSingleton(Config::class, new Config());
 
         self::assertFalse($container->has(CollectionContract::class));
@@ -176,7 +176,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(CollectionContract::class, $this->createStub(CollectionContract::class));
+        $container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
 
         self::assertFalse($container->has(MatcherContract::class));
 
@@ -191,9 +191,9 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(CollectionContract::class, $this->createStub(CollectionContract::class));
-        $container->setSingleton(MatcherContract::class, $this->createStub(MatcherContract::class));
-        $container->setSingleton(ServerRequest::class, $this->createStub(ServerRequest::class));
+        $container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
+        $container->setSingleton(MatcherContract::class, self::createStub(MatcherContract::class));
+        $container->setSingleton(ServerRequest::class, self::createStub(ServerRequest::class));
 
         self::assertFalse($container->has(UrlContract::class));
 
@@ -208,9 +208,9 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(AttributesContract::class, $this->createStub(AttributesContract::class));
-        $container->setSingleton(Reflection::class, $this->createStub(Reflection::class));
-        $container->setSingleton(ProcessorContract::class, $this->createStub(ProcessorContract::class));
+        $container->setSingleton(AttributesContract::class, self::createStub(AttributesContract::class));
+        $container->setSingleton(Reflection::class, self::createStub(Reflection::class));
+        $container->setSingleton(ProcessorContract::class, self::createStub(ProcessorContract::class));
 
         self::assertFalse($container->has(CollectorContract::class));
 
@@ -238,8 +238,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(UrlContract::class, $this->createStub(UrlContract::class));
-        $container->setSingleton(HttpMessageResponseFactory::class, $this->createStub(HttpMessageResponseFactory::class));
+        $container->setSingleton(UrlContract::class, self::createStub(UrlContract::class));
+        $container->setSingleton(HttpMessageResponseFactory::class, self::createStub(HttpMessageResponseFactory::class));
 
         self::assertFalse($container->has(ResponseFactoryContract::class));
 
@@ -280,7 +280,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(Renderer::class, $this->createStub(Renderer::class));
+        $container->setSingleton(Renderer::class, self::createStub(Renderer::class));
 
         self::assertFalse($container->has(ViewRouteNotMatchedMiddleware::class));
 

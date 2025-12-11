@@ -65,7 +65,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         MiddlewareServiceProvider::publishSendingResponseHandler($container);
         MiddlewareServiceProvider::publishTerminatedHandler($container);
 
-        $container->setSingleton(Router::class, $this->createStub(Router::class));
+        $container->setSingleton(Router::class, self::createStub(Router::class));
 
         ServiceProvider::publishRequestHandler($container);
 
@@ -79,7 +79,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(Logger::class, $this->createStub(Logger::class));
+        $container->setSingleton(Logger::class, self::createStub(Logger::class));
 
         ServiceProvider::publishLogThrowableCaughtMiddleware($container);
 
@@ -93,7 +93,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(ResponseFactory::class, $this->createStub(ResponseFactory::class));
+        $container->setSingleton(ResponseFactory::class, self::createStub(ResponseFactory::class));
 
         ServiceProvider::publishViewThrowableCaughtMiddleware($container);
 

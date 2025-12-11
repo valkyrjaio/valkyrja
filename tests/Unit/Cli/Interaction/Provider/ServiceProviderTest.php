@@ -46,7 +46,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishOutputFactory(): void
     {
-        $this->container->setSingleton(Config::class, $this->createStub(Config::class));
+        $this->container->setSingleton(Config::class, self::createStub(Config::class));
 
         ServiceProvider::publishOutputFactory($this->container);
 

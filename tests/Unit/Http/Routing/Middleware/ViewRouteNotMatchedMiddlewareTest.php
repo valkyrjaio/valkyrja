@@ -46,7 +46,7 @@ class ViewRouteNotMatchedMiddlewareTest extends TestCase
 
         $templateText = 'Error: 404';
 
-        $view = $this->createStub(Renderer::class);
+        $view = self::createStub(Renderer::class);
         $view->method('render')
              ->with('errors/404', $args)
              ->willReturn($templateText);

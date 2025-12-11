@@ -43,7 +43,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishManager(): void
     {
-        $this->container->setSingleton(MysqlManager::class, $this->createStub(MysqlManager::class));
+        $this->container->setSingleton(MysqlManager::class, self::createStub(MysqlManager::class));
 
         ServiceProvider::publishManager($this->container);
 
@@ -95,7 +95,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishRepository(): void
     {
-        $manager = $this->createStub(MysqlManager::class);
+        $manager = self::createStub(MysqlManager::class);
         $entity  = Entity::class;
 
         ServiceProvider::publishRepository($this->container);

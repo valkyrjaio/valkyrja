@@ -43,7 +43,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishAnnotator(): void
     {
-        $this->container->setSingleton(Attributes::class, $this->createStub(Attributes::class));
+        $this->container->setSingleton(Attributes::class, self::createStub(Attributes::class));
 
         ServiceProvider::publishAttributesCollector($this->container);
 
@@ -56,7 +56,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishData(): void
     {
         $this->container->setSingleton(Config::class, new Config());
-        $this->container->setSingleton(CollectorContract::class, $collector = $this->createStub(CollectorContract::class));
+        $this->container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
 
         $service   = (new Service(serviceId: ServiceClass::class))->withDispatch(new ClassDispatch(ServiceClass::class));
         $singleton = (new Service(serviceId: SingletonClass::class, isSingleton: true))->withDispatch(new ClassDispatch(SingletonClass::class));
@@ -78,7 +78,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->expectException(InvalidArgumentException::class);
 
         $this->container->setSingleton(Config::class, new Config());
-        $this->container->setSingleton(CollectorContract::class, $collector = $this->createStub(CollectorContract::class));
+        $this->container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
 
         $service = (new Service(serviceId: self::class))->withDispatch(new ClassDispatch(self::class));
         $collector->method('getServices')->willReturn([$service]);

@@ -37,7 +37,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogger(): void
     {
-        $this->container->setSingleton(PsrLogger::class, $this->createStub(PsrLogger::class));
+        $this->container->setSingleton(PsrLogger::class, self::createStub(PsrLogger::class));
 
         ServiceProvider::publishLogger($this->container);
 
@@ -49,7 +49,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishPsrLogger(): void
     {
-        $this->container->setSingleton(LoggerInterface::class, $this->createStub(LoggerInterface::class));
+        $this->container->setSingleton(LoggerInterface::class, self::createStub(LoggerInterface::class));
 
         ServiceProvider::publishPsrLogger($this->container);
 
@@ -61,7 +61,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLoggerInterface(): void
     {
-        $this->container->setSingleton(Monolog::class, $this->createStub(Monolog::class));
+        $this->container->setSingleton(Monolog::class, self::createStub(Monolog::class));
 
         ServiceProvider::publishLoggerInterface($this->container);
 

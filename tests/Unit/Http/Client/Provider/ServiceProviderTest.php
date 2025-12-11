@@ -39,7 +39,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishClient(): void
     {
-        $this->container->setSingleton(GuzzleClient::class, $this->createStub(GuzzleClient::class));
+        $this->container->setSingleton(GuzzleClient::class, self::createStub(GuzzleClient::class));
 
         ServiceProvider::publishClient($this->container);
 
@@ -51,8 +51,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishGuzzleClient(): void
     {
-        $this->container->setSingleton(Guzzle::class, $this->createStub(Guzzle::class));
-        $this->container->setSingleton(ResponseFactory::class, $this->createStub(ResponseFactory::class));
+        $this->container->setSingleton(Guzzle::class, self::createStub(Guzzle::class));
+        $this->container->setSingleton(ResponseFactory::class, self::createStub(ResponseFactory::class));
 
         ServiceProvider::publishGuzzleClient($this->container);
 
@@ -64,7 +64,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogClient(): void
     {
-        $this->container->setSingleton(Logger::class, $this->createStub(Logger::class));
+        $this->container->setSingleton(Logger::class, self::createStub(Logger::class));
 
         ServiceProvider::publishLogClient($this->container);
 

@@ -35,7 +35,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishCrypt(): void
     {
-        $this->container->setSingleton(SodiumCrypt::class, $this->createStub(SodiumCrypt::class));
+        $this->container->setSingleton(SodiumCrypt::class, self::createStub(SodiumCrypt::class));
 
         ServiceProvider::publishCrypt($this->container);
 

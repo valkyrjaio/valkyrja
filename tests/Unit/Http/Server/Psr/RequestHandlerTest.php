@@ -50,7 +50,7 @@ class RequestHandlerTest extends TestCase
         $request    = new ServerRequest();
         $psrRequest = new PsrServerRequest(request: $request);
 
-        $router = $this->createStub(Router::class);
+        $router = self::createStub(Router::class);
         $router
             ->method('dispatch')
             ->withAnyParameters()

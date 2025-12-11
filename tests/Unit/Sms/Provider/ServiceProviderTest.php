@@ -40,7 +40,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishSms(): void
     {
-        $this->container->setSingleton(VonageSms::class, $this->createStub(VonageSms::class));
+        $this->container->setSingleton(VonageSms::class, self::createStub(VonageSms::class));
 
         ServiceProvider::publishSms($this->container);
 
@@ -52,7 +52,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishVonageSms(): void
     {
-        $this->container->setSingleton(Vonage::class, $this->createStub(Vonage::class));
+        $this->container->setSingleton(Vonage::class, self::createStub(Vonage::class));
 
         ServiceProvider::publishVonageSms($this->container);
 
@@ -83,7 +83,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogSms(): void
     {
-        $this->container->setSingleton(Logger::class, $this->createStub(Logger::class));
+        $this->container->setSingleton(Logger::class, self::createStub(Logger::class));
 
         ServiceProvider::publishLogSms($this->container);
 

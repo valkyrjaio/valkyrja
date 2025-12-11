@@ -50,8 +50,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishAttributeCollector(): void
     {
-        $this->container->setSingleton(Attributes::class, $this->createStub(Attributes::class));
-        $this->container->setSingleton(Reflection::class, $this->createStub(Reflection::class));
+        $this->container->setSingleton(Attributes::class, self::createStub(Attributes::class));
+        $this->container->setSingleton(Reflection::class, self::createStub(Reflection::class));
 
         ServiceProvider::publishAttributeCollector($this->container);
 
@@ -63,14 +63,14 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishRouter(): void
     {
-        $this->container->setSingleton(ThrowableCaughtHandler::class, $this->createStub(ThrowableCaughtHandler::class));
-        $this->container->setSingleton(CommandMatchedHandler::class, $this->createStub(CommandMatchedHandler::class));
-        $this->container->setSingleton(CommandNotMatchedHandler::class, $this->createStub(CommandNotMatchedHandler::class));
-        $this->container->setSingleton(CommandDispatchedHandler::class, $this->createStub(CommandDispatchedHandler::class));
-        $this->container->setSingleton(ExitedHandler::class, $this->createStub(ExitedHandler::class));
-        $this->container->setSingleton(Dispatcher::class, $this->createStub(Dispatcher::class));
-        $this->container->setSingleton(CollectionContract::class, $this->createStub(CollectionContract::class));
-        $this->container->setSingleton(OutputFactory::class, $this->createStub(OutputFactory::class));
+        $this->container->setSingleton(ThrowableCaughtHandler::class, self::createStub(ThrowableCaughtHandler::class));
+        $this->container->setSingleton(CommandMatchedHandler::class, self::createStub(CommandMatchedHandler::class));
+        $this->container->setSingleton(CommandNotMatchedHandler::class, self::createStub(CommandNotMatchedHandler::class));
+        $this->container->setSingleton(CommandDispatchedHandler::class, self::createStub(CommandDispatchedHandler::class));
+        $this->container->setSingleton(ExitedHandler::class, self::createStub(ExitedHandler::class));
+        $this->container->setSingleton(Dispatcher::class, self::createStub(Dispatcher::class));
+        $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
+        $this->container->setSingleton(OutputFactory::class, self::createStub(OutputFactory::class));
 
         ServiceProvider::publishRouter($this->container);
 
@@ -92,7 +92,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishCollectionWithConfig(): void
     {
         $this->container->setSingleton(Config::class, new Config());
-        $this->container->setSingleton(Collector::class, $collector = $this->createStub(Collector::class));
+        $this->container->setSingleton(Collector::class, $collector = self::createStub(Collector::class));
 
         $command = new Data\Command(name: 'test', description: 'test', helpText: new Message('test'));
         $collector->method('getCommands')->willReturn([$command]);

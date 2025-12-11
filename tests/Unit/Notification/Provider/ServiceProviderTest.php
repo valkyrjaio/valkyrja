@@ -39,10 +39,10 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishNotifier(): void
     {
-        $this->container->setSingleton(Factory::class, $this->createStub(Factory::class));
-        $this->container->setSingleton(Broadcaster::class, $this->createStub(Broadcaster::class));
-        $this->container->setSingleton(Mailer::class, $this->createStub(Mailer::class));
-        $this->container->setSingleton(Sms::class, $this->createStub(Sms::class));
+        $this->container->setSingleton(Factory::class, self::createStub(Factory::class));
+        $this->container->setSingleton(Broadcaster::class, self::createStub(Broadcaster::class));
+        $this->container->setSingleton(Mailer::class, self::createStub(Mailer::class));
+        $this->container->setSingleton(Sms::class, self::createStub(Sms::class));
 
         ServiceProvider::publishNotifier($this->container);
 

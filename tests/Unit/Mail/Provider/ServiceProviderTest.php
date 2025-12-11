@@ -41,7 +41,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishMailer(): void
     {
-        $this->container->setSingleton(MailgunMailer::class, $this->createStub(MailgunMailer::class));
+        $this->container->setSingleton(MailgunMailer::class, self::createStub(MailgunMailer::class));
 
         ServiceProvider::publishMailer($this->container);
 
@@ -53,7 +53,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishMailgunMailer(): void
     {
-        $this->container->setSingleton(Mailgun::class, $this->createStub(Mailgun::class));
+        $this->container->setSingleton(Mailgun::class, self::createStub(Mailgun::class));
 
         ServiceProvider::publishMailgunMailer($this->container);
 
@@ -80,7 +80,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishPhpMailer(): void
     {
-        $this->container->setSingleton(PHPMailerClient::class, $this->createStub(PHPMailerClient::class));
+        $this->container->setSingleton(PHPMailerClient::class, self::createStub(PHPMailerClient::class));
 
         ServiceProvider::publishPhpMailer($this->container);
 
@@ -99,7 +99,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogMailer(): void
     {
-        $this->container->setSingleton(Logger::class, $this->createStub(Logger::class));
+        $this->container->setSingleton(Logger::class, self::createStub(Logger::class));
 
         ServiceProvider::publishLogMailer($this->container);
 

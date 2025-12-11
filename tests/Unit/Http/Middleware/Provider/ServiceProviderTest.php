@@ -103,7 +103,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $this->container->setSingleton(
             Filesystem::class,
-            $this->createStub(Filesystem::class)
+            self::createStub(Filesystem::class)
         );
 
         ServiceProvider::publishCacheResponseMiddleware($this->container);

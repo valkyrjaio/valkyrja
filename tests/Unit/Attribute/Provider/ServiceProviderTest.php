@@ -35,7 +35,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishAttributes(): void
     {
-        $this->container->setSingleton(Reflection::class, $this->createStub(Reflection::class));
+        $this->container->setSingleton(Reflection::class, self::createStub(Reflection::class));
 
         ServiceProvider::publishAttributes($this->container);
 

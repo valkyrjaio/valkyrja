@@ -161,7 +161,7 @@ class OutputTest extends TestCase
     public function testQuestion(): void
     {
         $callableCalled = false;
-        $callable       = function (Contract $output, Answer $answer) use (&$callableCalled): Contract {
+        $callable       = static function (Contract $output, Answer $answer) use (&$callableCalled): Contract {
             $callableCalled = true;
 
             return $output;
@@ -195,7 +195,7 @@ class OutputTest extends TestCase
     public function testReAskQuestionOnInvalidAnswer(): void
     {
         $callableCalled = false;
-        $callable       = function (Contract $output, Answer $answer) use (&$callableCalled): Contract {
+        $callable       = static function (Contract $output, Answer $answer) use (&$callableCalled): Contract {
             $callableCalled = true;
 
             return $output;

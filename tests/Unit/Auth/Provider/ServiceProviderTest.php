@@ -49,7 +49,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishAuthenticator(): void
     {
-        $this->container->setSingleton(SessionAuthenticator::class, $this->createStub(SessionAuthenticator::class));
+        $this->container->setSingleton(SessionAuthenticator::class, self::createStub(SessionAuthenticator::class));
 
         ServiceProvider::publishAuthenticator($this->container);
 
@@ -61,11 +61,11 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishEncryptedJwtAuthenticator(): void
     {
-        $this->container->setSingleton(Crypt::class, $this->createStub(Crypt::class));
-        $this->container->setSingleton(Jwt::class, $this->createStub(Jwt::class));
-        $this->container->setSingleton(ServerRequest::class, $this->createStub(ServerRequest::class));
-        $this->container->setSingleton(Store::class, $this->createStub(Store::class));
-        $this->container->setSingleton(PasswordHasher::class, $this->createStub(PasswordHasher::class));
+        $this->container->setSingleton(Crypt::class, self::createStub(Crypt::class));
+        $this->container->setSingleton(Jwt::class, self::createStub(Jwt::class));
+        $this->container->setSingleton(ServerRequest::class, self::createStub(ServerRequest::class));
+        $this->container->setSingleton(Store::class, self::createStub(Store::class));
+        $this->container->setSingleton(PasswordHasher::class, self::createStub(PasswordHasher::class));
 
         ServiceProvider::publishEncryptedJwtAuthenticator($this->container);
 
@@ -77,10 +77,10 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishEncryptedTokenAuthenticator(): void
     {
-        $this->container->setSingleton(Crypt::class, $this->createStub(Crypt::class));
-        $this->container->setSingleton(ServerRequest::class, $this->createStub(ServerRequest::class));
-        $this->container->setSingleton(Store::class, $this->createStub(Store::class));
-        $this->container->setSingleton(PasswordHasher::class, $this->createStub(PasswordHasher::class));
+        $this->container->setSingleton(Crypt::class, self::createStub(Crypt::class));
+        $this->container->setSingleton(ServerRequest::class, self::createStub(ServerRequest::class));
+        $this->container->setSingleton(Store::class, self::createStub(Store::class));
+        $this->container->setSingleton(PasswordHasher::class, self::createStub(PasswordHasher::class));
 
         ServiceProvider::publishEncryptedTokenAuthenticator($this->container);
 
@@ -92,10 +92,10 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishJwtAuthenticator(): void
     {
-        $this->container->setSingleton(Jwt::class, $this->createStub(Jwt::class));
-        $this->container->setSingleton(ServerRequest::class, $this->createStub(ServerRequest::class));
-        $this->container->setSingleton(Store::class, $this->createStub(Store::class));
-        $this->container->setSingleton(PasswordHasher::class, $this->createStub(PasswordHasher::class));
+        $this->container->setSingleton(Jwt::class, self::createStub(Jwt::class));
+        $this->container->setSingleton(ServerRequest::class, self::createStub(ServerRequest::class));
+        $this->container->setSingleton(Store::class, self::createStub(Store::class));
+        $this->container->setSingleton(PasswordHasher::class, self::createStub(PasswordHasher::class));
 
         ServiceProvider::publishJwtAuthenticator($this->container);
 
@@ -107,9 +107,9 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishSessionAuthenticator(): void
     {
-        $this->container->setSingleton(Session::class, $this->createStub(Session::class));
-        $this->container->setSingleton(Store::class, $this->createStub(Store::class));
-        $this->container->setSingleton(PasswordHasher::class, $this->createStub(PasswordHasher::class));
+        $this->container->setSingleton(Session::class, self::createStub(Session::class));
+        $this->container->setSingleton(Store::class, self::createStub(Store::class));
+        $this->container->setSingleton(PasswordHasher::class, self::createStub(PasswordHasher::class));
 
         ServiceProvider::publishSessionAuthenticator($this->container);
 
@@ -121,9 +121,9 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishTokenAuthenticator(): void
     {
-        $this->container->setSingleton(ServerRequest::class, $this->createStub(ServerRequest::class));
-        $this->container->setSingleton(Store::class, $this->createStub(Store::class));
-        $this->container->setSingleton(PasswordHasher::class, $this->createStub(PasswordHasher::class));
+        $this->container->setSingleton(ServerRequest::class, self::createStub(ServerRequest::class));
+        $this->container->setSingleton(Store::class, self::createStub(Store::class));
+        $this->container->setSingleton(PasswordHasher::class, self::createStub(PasswordHasher::class));
 
         ServiceProvider::publishTokenAuthenticator($this->container);
 
@@ -135,7 +135,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishStore(): void
     {
-        $this->container->setSingleton(OrmStore::class, $this->createStub(OrmStore::class));
+        $this->container->setSingleton(OrmStore::class, self::createStub(OrmStore::class));
 
         ServiceProvider::publishStore($this->container);
 
@@ -147,7 +147,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishOrmStore(): void
     {
-        $this->container->setSingleton(Manager::class, $this->createStub(Manager::class));
+        $this->container->setSingleton(Manager::class, self::createStub(Manager::class));
 
         ServiceProvider::publishOrmStore($this->container);
 
