@@ -49,6 +49,6 @@ class CommandClass
     )]
     public function run(OutputFactory $outputFactory): Output
     {
-
+        return $outputFactory->createOutput()->withMessages(new Message(self::NAME));
     }
 }
