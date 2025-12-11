@@ -5,7 +5,7 @@ color_reset="\033[0m"
 
 title="PHP CS Fixer"
 
-vendor_command="vendor/bin/php-cs-fixer"
+vendor_command=".github/ci/phpcsfixer/vendor/bin/php-cs-fixer"
 system_command="php-cs-fixer"
 
 exec_command=""

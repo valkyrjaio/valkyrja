@@ -1,6 +1,6 @@
 {
   "require-dev"       : {
-    "rector/rector" : "^2.2.14"
+    "friendsofphp/php-cs-fixer" : "^3.91.3"
   },
   "minimum-stability" : "dev",
   "prefer-stable"     : true

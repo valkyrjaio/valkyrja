@@ -24,7 +24,7 @@ $finder = PhpCsFixer\Finder::create()
                            ->exclude('.github')
                            ->exclude('docs')
                            ->exclude('vendor')
-                           ->in(__DIR__);
+                           ->in(__DIR__ . '/../../../');
 
 return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)

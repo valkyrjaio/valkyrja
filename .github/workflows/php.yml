@@ -49,7 +49,24 @@ jobs:
         run: composer install --prefer-dist --no-progress
 
       - name: Install dependencies for PHP Arkitect
-        run: cd .github/ci/phparkitect && composer install --prefer-dist --no-progress
+        run: |
+          cd .github/ci/phparkitect
+          composer install --prefer-dist --no-progress
+
+      - name: Install dependencies for Psalm
+        run: |
+          cd .github/ci/psalm
+          composer install --prefer-dist --no-progress
+
+      - name: Install dependencies for PHP CS Fixer
+        run: |
+          cd .github/ci/phpcsfixer
+          composer install --prefer-dist --no-progress
+
+      - name: Install dependencies for PHPUnit
+        run: |
+          cd .github/ci/phpunit
+          composer install --prefer-dist --no-progress
 
       # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"fan
       # Docs: https://getcomposer.org/doc/articles/scripts.md
@@ -57,51 +74,52 @@ jobs:
       - name: Make build logs dir
         run: mkdir -p build/logs
 
-      - name: Run PHPUnit tests
-        if: ${{ matrix.php != '8.3' }}
-        run: |
-          vendor/bin/phpunit --no-coverage
-
-      - name: Run PHPUnit tests
-        if: ${{ matrix.php == '8.3' }}
-        run: |
-          XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --stderr
-
       - name: Run Psalm
-        if: ${{ matrix.php != '8.3' }}
+        if: ${{ matrix.php != '8.5' }}
         run: |
+          cd .github/ci/psalm/
           vendor/bin/psalm --no-cache
 
       - name: Run Psalm with Shepherd
-        if: ${{ matrix.php == '8.3' }}
+        if: ${{ matrix.php == '8.5' }}
         run: |
+          cd .github/ci/psalm/
           vendor/bin/psalm --no-cache --shepherd
 
       - name: Run PHPArkitect
-        if: ${{ matrix.php == '8.3' }}
+        if: ${{ matrix.php == '8.5' }}
         run: |
+          cd .github/ci/phparkitect/
           vendor/bin/phparkitect check --config=phparkitect.php
 
+      - name: Run PHP CS Fixer
+        if: ${{ matrix.php == '8.5' }}
+        run: |
+          cd .github/ci/phpcsfixer/
+          php -dmemory_limit=-1 ./vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.dist.php
+
+      - name: Run PHPUnit tests
+        if: ${{ matrix.php != '8.5' }}
+        run: |
+          cd .github/ci/phpunit/
+          vendor/bin/phpunit --no-coverage
+
+      - name: Run PHPUnit tests
+        if: ${{ matrix.php == '8.5' }}
+        run: |
+          cd .github/ci/phpunit/
+          XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --stderr
+
       - name: Upload Codecov Coverage Report
-        if: ${{ matrix.php == '8.3' }}
+        if: ${{ matrix.php == '8.5' }}
         uses: codecov/test-results-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload Coveralls Coverage Report
-        if: ${{ matrix.php == '8.3' }}
+        if: ${{ matrix.php == '8.5' }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          cd .github/ci/phpunit/
           php vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
-
-      - uses: qltysh/qlty-action/coverage@v1
-        if: ${{ matrix.php == '8.3' }}
-        with:
-          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-          files: coverage/clover.xml
-
-      - name: Run PHP CS Fixer
-        if: ${{ matrix.php == '8.3' }}
-        run: |
-          php -dmemory_limit=-1 ./vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.dist.php

@@ -2,4 +2,4 @@
 !.gitignore
 !composer.json
 !composer.lock
-!ruleset.xml
+!.php_cs.dist.php

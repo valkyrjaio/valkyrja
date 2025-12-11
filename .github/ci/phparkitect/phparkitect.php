@@ -34,8 +34,8 @@ use Valkyrja\Type\Model\Model;
 use Valkyrja\Type\Type;
 
 return static function (Config $config): void {
-    $srcClassSet  = ClassSet::fromDir(__DIR__ . '/src');
-    $testClassSet = ClassSet::fromDir(__DIR__ . '/tests');
+    $srcClassSet  = ClassSet::fromDir(__DIR__ . '/../../../src');
+    $testClassSet = ClassSet::fromDir(__DIR__ . '/../../../tests');
 
     $srcRules  = [];
     $testRules = [];

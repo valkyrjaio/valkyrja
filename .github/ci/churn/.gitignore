@@ -1,3 +1,5 @@
 *
 !.gitignore
+!churn.yml
 !composer.json
+!composer.lock

@@ -2,7 +2,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
          backupGlobals="false"
-         bootstrap="tests/bootstrap.php"
+         bootstrap="../../../tests/bootstrap.php"
          colors="true"
          processIsolation="false"
          stopOnError="false"
@@ -25,7 +25,7 @@
 
     <testsuites>
         <testsuite name="Valkyrja Framework Test Suite">
-            <directory suffix="Test.php">./tests</directory>
+            <directory suffix="Test.php">../../../tests</directory>
         </testsuite>
     </testsuites>
 

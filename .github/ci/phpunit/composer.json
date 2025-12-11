@@ -1,0 +1,11 @@
+{
+  "require-dev"       : {
+    "fakerphp/faker"              : "^1.24.1",
+    "mockery/mockery"             : "^1.6.12",
+    "php-coveralls/php-coveralls" : "^2.9.0",
+    "phpunit/phpcov"              : "^11.0.3",
+    "phpunit/phpunit"             : "^12.5.2"
+  },
+  "minimum-stability" : "dev",
+  "prefer-stable"     : true
+}

@@ -2,4 +2,5 @@
 !.gitignore
 !composer.json
 !composer.lock
-!ruleset.xml
+!phpstan-baseline.neon
+!phpstan.neon

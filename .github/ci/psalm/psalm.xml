@@ -6,13 +6,14 @@
        errorLevel="1"
        findUnusedBaselineEntry="false"
        findUnusedCode="false"
+       autoloader="../../../vendor/autoload.php"
 >
     <projectFiles>
-        <directory name="src" />
+        <directory name="../../../src" />
         <!--<directory name="tests" />-->
 
         <ignoreFiles>
-            <directory name="vendor" />
+            <directory name="../../../vendor" />
         </ignoreFiles>
     </projectFiles>
 

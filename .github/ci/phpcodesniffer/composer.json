@@ -1,17 +1,4 @@
 {
-  "name"              : "valkyrja/valkyrja",
-  "type"              : "project",
-  "description"       : "The Valkyrja Framework.",
-  "license"           : "MIT",
-  "authors"           : [
-    {
-      "name"  : "Melech Mizrachi",
-      "email" : "mel@valkyrja.io"
-    }
-  ],
-  "require"           : {
-    "php"          : ">=8.1"
-  },
   "require-dev"       : {
     "squizlabs/php_codesniffer" : "^4.0.1",
     "slevomat/coding-standard": "^8.25"

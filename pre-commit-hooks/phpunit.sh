@@ -5,7 +5,7 @@ color_reset="\033[0m"
 
 title="PHPUnit"
 
-vendor_command="vendor/bin/phpunit"
+vendor_command=".github/ci/phpunit/vendor/bin/phpunit"
 system_command="phpunit"
 
 exec_command=""

@@ -1,4 +1,4 @@
 filesToShow: 10
 
 directoriesToScan:
-  - src
+  - ../../../src

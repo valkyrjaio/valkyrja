@@ -1,6 +1,6 @@
 {
   "require-dev"       : {
-    "rector/rector" : "^2.2.14"
+    "vimeo/psalm" : "^6.14.1"
   },
   "minimum-stability" : "dev",
   "prefer-stable"     : true

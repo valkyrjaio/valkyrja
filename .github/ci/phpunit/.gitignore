@@ -2,4 +2,4 @@
 !.gitignore
 !composer.json
 !composer.lock
-!ruleset.xml
+!phpunit.xml.dist

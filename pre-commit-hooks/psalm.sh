@@ -5,7 +5,7 @@ color_reset="\033[0m"
 
 title="Psalm"
 
-vendor_command="vendor/bin/psalm"
+vendor_command=".github/ci/psalm/vendor/bin/psalm"
 system_command="psalm"
 
 exec_command=""
