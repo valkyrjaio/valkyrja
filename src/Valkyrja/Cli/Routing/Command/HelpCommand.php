@@ -52,7 +52,7 @@ class HelpCommand
     public const string NAME = 'help';
 
     #[CommandAttribute(
-        name: 'help',
+        name: self::NAME,
         description: 'Help for a command',
         helpText: new Message('A command to get help for a specific command.'),
         parameters: [
