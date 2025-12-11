@@ -14,8 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Output;
 
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
+use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Message\Question;
+use Valkyrja\Cli\Interaction\Output\Contract\Output as Contract;
+use Valkyrja\Cli\Interaction\Output\EmptyOutput;
 use Valkyrja\Cli\Interaction\Output\Output;
+use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionAskManipulationClass;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -93,7 +98,7 @@ class OutputTest extends TestCase
         $text    = 'text';
         $message = new Message($text);
 
-        $output = new Output(isSilent: true);
+        $output = new Output();
 
         self::assertEmpty($output->getMessages());
         self::assertEmpty($output->getWrittenMessages());
@@ -119,26 +124,100 @@ class OutputTest extends TestCase
         self::assertFalse($output3->hasWrittenMessage());
         self::assertTrue($output3->hasUnwrittenMessage());
 
-        $output  = $output->writeMessages();
-        $output2 = $output2->writeMessages();
-        $output3 = $output3->writeMessages();
+        ob_start();
+        $outputWritten  = $output->writeMessages();
+        $outputContents = ob_get_clean();
 
-        self::assertEmpty($output->getMessages());
+        ob_start();
+        $output2Written  = $output2->writeMessages();
+        $output2Contents = ob_get_clean();
+
+        ob_start();
+        $output3Written  = $output3->writeMessages();
+        $output3Contents = ob_get_clean();
+
+        self::assertEmpty($outputWritten->getMessages());
+        self::assertEmpty($outputWritten->getWrittenMessages());
+        self::assertEmpty($outputWritten->getUnwrittenMessages());
+        self::assertFalse($outputWritten->hasWrittenMessage());
+        self::assertFalse($outputWritten->hasUnwrittenMessage());
+        self::assertEmpty($outputContents);
+
+        self::assertSame([$message], $output2Written->getMessages());
+        self::assertCount(1, $output2Written->getWrittenMessages());
+        self::assertEmpty($output2Written->getUnwrittenMessages());
+        self::assertTrue($output2Written->hasWrittenMessage());
+        self::assertFalse($output2Written->hasUnwrittenMessage());
+        self::assertNotEmpty($output2Contents);
+
+        self::assertSame([$message], $output3Written->getMessages());
+        self::assertCount(1, $output3Written->getWrittenMessages());
+        self::assertEmpty($output3Written->getUnwrittenMessages());
+        self::assertTrue($output3Written->hasWrittenMessage());
+        self::assertFalse($output3Written->hasUnwrittenMessage());
+        self::assertNotEmpty($output3Contents);
+    }
+
+    public function testQuestion(): void
+    {
+        $callableCalled = false;
+        $callable       = function (Contract $output, Answer $answer) use (&$callableCalled): Contract {
+            $callableCalled = true;
+
+            return $output;
+        };
+        $question       = new Question(
+            text: 'text',
+            callable: $callable,
+            answer: new Answer('defaultResponse')
+        );
+
+        $output = (new Output(isSilent: true))
+            ->withAddedMessages($question);
+
+        self::assertSame([$question], $output->getMessages());
         self::assertEmpty($output->getWrittenMessages());
-        self::assertEmpty($output->getUnwrittenMessages());
+        self::assertSame([$question], $output->getUnwrittenMessages());
         self::assertFalse($output->hasWrittenMessage());
-        self::assertFalse($output->hasUnwrittenMessage());
+        self::assertTrue($output->hasUnwrittenMessage());
 
-        self::assertSame([$message], $output2->getMessages());
-        self::assertCount(1, $output2->getWrittenMessages());
-        self::assertEmpty($output2->getUnwrittenMessages());
-        self::assertTrue($output2->hasWrittenMessage());
-        self::assertFalse($output2->hasUnwrittenMessage());
+        ob_start();
+        $outputWritten  = $output->writeMessages();
+        $outputContents = ob_get_clean();
 
-        self::assertSame([$message], $output3->getMessages());
-        self::assertCount(1, $output3->getWrittenMessages());
-        self::assertEmpty($output3->getUnwrittenMessages());
-        self::assertTrue($output3->hasWrittenMessage());
-        self::assertFalse($output3->hasUnwrittenMessage());
+        self::assertTrue($callableCalled);
+        self::assertNotEmpty($outputWritten->getWrittenMessages());
+        self::assertTrue($outputWritten->hasWrittenMessage());
+        self::assertFalse($outputWritten->hasUnwrittenMessage());
+        self::assertEmpty($outputContents);
+    }
+
+    public function testReAskQuestionOnInvalidAnswer(): void
+    {
+        $callableCalled = false;
+        $callable       = function (Contract $output, Answer $answer) use (&$callableCalled): Contract {
+            $callableCalled = true;
+
+            return $output;
+        };
+        $question       = new QuestionAskManipulationClass(
+            text: 'text',
+            callable: $callable,
+            answer: new Answer(
+                defaultResponse: 'defaultResponse',
+                allowedResponses: ['defaultResponse']
+            )
+        );
+
+        $output = (new EmptyOutput())
+            ->withAddedMessages($question);
+
+        $outputWritten = $output->writeMessages();
+
+        self::assertTrue($callableCalled);
+        self::assertSame(2, $question->getTimesAsked());
+        self::assertNotEmpty($outputWritten->getWrittenMessages());
+        self::assertTrue($outputWritten->hasWrittenMessage());
+        self::assertFalse($outputWritten->hasUnwrittenMessage());
     }
 }

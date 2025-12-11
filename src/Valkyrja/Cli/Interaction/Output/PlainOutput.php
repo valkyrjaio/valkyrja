@@ -30,6 +30,6 @@ class PlainOutput extends Output implements Contract
     #[Override]
     protected function outputMessage(Message $message): void
     {
-        echo strip_tags($message->getFormattedText());
+        echo strip_tags($message->getText());
     }
 }

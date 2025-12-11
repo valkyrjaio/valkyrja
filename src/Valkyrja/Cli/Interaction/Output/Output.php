@@ -164,14 +164,7 @@ class Output implements Contract
         $new->unwrittenMessages = [];
 
         foreach ($unwrittenMessages as $message) {
-            // If this is a question
-            if ($message instanceof Question) {
-                // Ask the question
-                $new->askQuestion($message);
-            } else {
-                // Write the message
-                $new->writeMessage($message);
-            }
+            $new->determineQuestionType($message);
         }
 
         return $new;
@@ -263,6 +256,21 @@ class Output implements Contract
         $new->exitCode = $exitCode;
 
         return $new;
+    }
+
+    /**
+     * Determine the type of message and write it.
+     *
+     * @param Message $message The message
+     *
+     * @return void
+     */
+    protected function determineQuestionType(Message $message): void
+    {
+        match (true) {
+            $message instanceof Question => $this->askQuestion($message),
+            default                      => $this->writeMessage($message),
+        };
     }
 
     /**
