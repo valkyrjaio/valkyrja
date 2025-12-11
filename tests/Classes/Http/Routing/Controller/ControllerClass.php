@@ -17,6 +17,12 @@ use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Routing\Attribute\Parameter;
 use Valkyrja\Http\Routing\Attribute\Route;
+use Valkyrja\Http\Routing\Attribute\Route\Middleware;
+use Valkyrja\Http\Routing\Attribute\Route\RequestMethod\Get;
+use Valkyrja\Http\Routing\Attribute\Route\RequestMethod\Head;
+use Valkyrja\Http\Routing\Attribute\Route\RequestMethod\Post;
+use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
+use Valkyrja\Http\Routing\Attribute\Route\ResponseStruct;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareClass;
@@ -50,17 +56,17 @@ class ControllerClass
         return \Valkyrja\Http\Message\Response\Response::create('welcome');
     }
 
-    #[Route\RequestMethod\Get]
-    #[Route\RequestMethod\Head]
-    #[Route\RequestMethod\Post]
+    #[Get]
+    #[Head]
+    #[Post]
     #[Route(path: self::PARAMETERS_PATH, name: self::PARAMETERS_NAME)]
-    #[Route\Middleware(RouteDispatchedMiddlewareClass::class)]
-    #[Route\Middleware(RouteMatchedMiddlewareClass::class)]
-    #[Route\Middleware(SendingResponseMiddlewareClass::class)]
-    #[Route\Middleware(TerminatedMiddlewareClass::class)]
-    #[Route\Middleware(ThrowableCaughtMiddlewareClass::class)]
-    #[Route\RequestStruct(IndexedJsonRequestStructEnum::class)]
-    #[Route\ResponseStruct(ResponseStructEnum::class)]
+    #[Middleware(RouteDispatchedMiddlewareClass::class)]
+    #[Middleware(RouteMatchedMiddlewareClass::class)]
+    #[Middleware(SendingResponseMiddlewareClass::class)]
+    #[Middleware(TerminatedMiddlewareClass::class)]
+    #[Middleware(ThrowableCaughtMiddlewareClass::class)]
+    #[RequestStruct(IndexedJsonRequestStructEnum::class)]
+    #[ResponseStruct(ResponseStructEnum::class)]
     public function parameters(
         ResponseFactory $responseFactory,
         #[Parameter(name: self::PARAMETERS_PARAMETER_NAME, regex: Regex::ALPHA)]
