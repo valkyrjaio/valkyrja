@@ -87,37 +87,37 @@ jobs:
           vendor/bin/psalm --no-cache --shepherd
 
       - name: Run PHPArkitect
-        if: ${{ matrix.php == '8.5' }}
+        if: ${{ matrix.php == '8.4' }}
         run: |
           cd .github/ci/phparkitect/
           vendor/bin/phparkitect check --config=phparkitect.php
 
       - name: Run PHP CS Fixer
-        if: ${{ matrix.php == '8.5' }}
+        if: ${{ matrix.php == '8.4' }}
         run: |
           cd .github/ci/phpcsfixer/
           php -dmemory_limit=-1 ./vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.dist.php
 
       - name: Run PHPUnit tests
-        if: ${{ matrix.php != '8.5' }}
+        if: ${{ matrix.php != '8.4' }}
         run: |
           cd .github/ci/phpunit/
           vendor/bin/phpunit --no-coverage
 
       - name: Run PHPUnit tests
-        if: ${{ matrix.php == '8.5' }}
+        if: ${{ matrix.php == '8.4' }}
         run: |
           cd .github/ci/phpunit/
           XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --stderr
 
       - name: Upload Codecov Coverage Report
-        if: ${{ matrix.php == '8.5' }}
+        if: ${{ matrix.php == '8.4' }}
         uses: codecov/test-results-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload Coveralls Coverage Report
-        if: ${{ matrix.php == '8.5' }}
+        if: ${{ matrix.php == '8.4' }}
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
