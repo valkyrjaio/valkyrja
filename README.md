@@ -3,18 +3,17 @@
 </a></p>
 <p align="center">
     <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/php.yml"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/php.yml/badge.svg" alt="Build Status"></a>
-    <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/v/stable.svg" alt="Latest Stable Version"></a>
-    <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/d/total.svg" alt="Total Downloads"></a>
-    <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/license.svg" alt="License"></a>
+    [![Latest Stable Version](http://poser.pugx.org/valkyrja/valkyrja/v)](https://packagist.org/packages/valkyrja/valkyrja)
+    [![Total Downloads](http://poser.pugx.org/valkyrja/valkyrja/downloads)](https://packagist.org/packages/valkyrja/valkyrja)
+    [![License](http://poser.pugx.org/valkyrja/valkyrja/license)](https://packagist.org/packages/valkyrja/valkyrja)
+    [![PHP Version Require](http://poser.pugx.org/valkyrja/valkyrja/require/php)](https://packagist.org/packages/valkyrja/valkyrja)
 </p>
 <p align="center">
-    <!-- <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/v/unstable" alt="Unstable Version"></a> -->
     <a href="https://scrutinizer-ci.com/g/valkyrjaio/valkyrja/"><img src="https://scrutinizer-ci.com/g/valkyrjaio/valkyrja/badges/quality-score.png?b=master" alt="Scrutinizer"></a>
     <a href="https://styleci.io/repos/304247237"><img src="https://styleci.io/repos/304247237/shield?branch=master&style=flat" alt="StyleCI"></a>
     <a href='https://coveralls.io/github/valkyrjaio/valkyrja'><img src='https://coveralls.io/repos/github/valkyrjaio/valkyrja/badge.svg' alt='Coverage Status' /></a>
-    <!-- <a href="https://codecov.io/gh/valkyrjaio/valkyrja"><img src="https://codecov.io/gh/valkyrjaio/valkyrja/branch/master/graph/badge.svg" alt="Codecov" /></a> -->
-    <a href="https://codeclimate.com/github/valkyrjaio/valkyrja/maintainability"><img src="https://api.codeclimate.com/v1/badges/189da2b7011afb23f518/maintainability" /></a>
-    <a href="https://shepherd.dev/github/valkyrjaio/valkyrja"><img src="https://shepherd.dev/github/valkyrjaio/valkyrja/coverage.svg" /></a>
+    <a href="https://codecov.io/gh/valkyrjaio/valkyrja"><img src="https://codecov.io/gh/valkyrjaio/valkyrja/branch/master/graph/badge.svg" alt="Codecov" /></a>
+    <a href="https://shepherd.dev/github/valkyrjaio/valkyrja"><img src="https://shepherd.dev/github/valkyrjaio/valkyrja/coverage.svg" alt="Psalm Shepherd" /></a>
 </p>
 
 About Valkyrja
