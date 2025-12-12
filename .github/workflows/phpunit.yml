@@ -1,0 +1,75 @@
+name: PHPUnit
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      fail-fast: true
+      matrix:
+        operating-system: [ 'ubuntu-22.04' ]
+        php: [ '8.4', '8.5' ]
+
+    name: PHP ${{ matrix.php }}
+
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, intl
+          ini-values: zend.assertions=1
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies for PHPUnit
+        run: |
+          composer install --prefer-dist --no-progress
+          cd .github/ci/phpunit
+          composer install --prefer-dist --no-progress
+
+      - name: Make build logs dir
+        run: mkdir -p .github/ci/phpunit/build/logs
+
+      - name: Run PHPUnit tests with no coverage
+        if: ${{ matrix.php != '8.4' }}
+        run: |
+          composer phpunit-no-cov
+
+      - name: Run PHPUnit tests with full coverage
+        if: ${{ matrix.php == '8.4' }}
+        run: |
+          composer phpunit-coverage
+
+      - name: Upload Codecov coverage report
+        if: ${{ matrix.php == '8.4' }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload Coveralls coverage report
+        uses: coverallsapp/github-action@v2.3.6
+        if: ${{ matrix.php == '8.4' }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          file: ".github/ci/phpunit/build/logs/clover.xml"
+          format: "clover"

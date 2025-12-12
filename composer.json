@@ -16,18 +16,12 @@
   ],
   "require"           : {
     "php"                     : ">=8.4",
-    "ext-json"                : "*",
-    "ext-mbstring"            : "*",
     "psr/container"           : "^2.0.2",
     "psr/event-dispatcher"    : "^1.0.0",
     "psr/http-message"        : "^2.0",
     "psr/http-server-handler" : "^1.0.2"
   },
   "require-dev"       : {
-    "ext-curl"                   : "*",
-    "ext-pdo"                    : "*",
-    "ext-openssl"                : "*",
-    "ext-sodium"                 : "*",
     "filp/whoops"                : "^2.18.4",
     "firebase/php-jwt"           : "^6.11.1",
     "guzzlehttp/guzzle"          : "^7.10.0",
@@ -74,7 +68,6 @@
   },
   "scripts"           : {
     "churn"            : "cd .github/ci/churn && composer check",
-    "coveralls"        : "cd .github/ci/phpunit && composer coveralls",
     "phparkitect"      : "cd .github/ci/phparkitect && composer check",
     "phpcodesniffer"   : "cd .github/ci/phpcodesniffer && composer check",
     "phpcsfixer"       : "cd .github/ci/phpcsfixer && composer fix",
@@ -94,7 +87,7 @@
   "prefer-stable"     : true,
   "extra"             : {
     "branch-alias" : {
-      "dev-master" : "2.x-dev"
+      "dev-master" : "25.x-dev"
     }
   },
   "config"            : {
