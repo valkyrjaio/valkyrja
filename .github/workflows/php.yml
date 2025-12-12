@@ -115,4 +115,5 @@ jobs:
         if: ${{ matrix.php == '8.4' }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          file: ".github/ci/phpunit/build/cov/coverage.cov"
+          file: ".github/ci/phpunit/build/logs/clover.xml"
+          format: "clover"
