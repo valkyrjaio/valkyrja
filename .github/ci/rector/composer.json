@@ -5,6 +5,10 @@
   "require-dev"       : {
     "rector/rector" : "^2.2.14"
   },
+  "scripts"           : {
+    "fix"   : "vendor/bin/rector",
+    "check" : "vendor/bin/rector --dry-run"
+  },
   "minimum-stability" : "dev",
   "prefer-stable"     : true
 }

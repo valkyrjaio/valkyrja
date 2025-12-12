@@ -5,6 +5,9 @@
   "require-dev"       : {
     "phpstan/phpstan" : "^2.1.33"
   },
+  "scripts"           : {
+    "check" : "vendor/bin/phpstan --memory-limit=-1"
+  },
   "minimum-stability" : "dev",
   "prefer-stable"     : true
 }

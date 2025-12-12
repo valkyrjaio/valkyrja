@@ -4,13 +4,17 @@
   },
   "require-dev"       : {
     "squizlabs/php_codesniffer" : "^4.0.1",
-    "slevomat/coding-standard": "^8.25"
+    "slevomat/coding-standard"  : "^8.25"
+  },
+  "scripts"           : {
+    "check"    : "vendor/bin/phpcs --standard=./ruleset.xml ../../../src -n",
+    "warnings" : "vendor/bin/phpcs --standard=./ruleset.xml ../../../src"
   },
   "minimum-stability" : "dev",
   "prefer-stable"     : true,
-  "config": {
-    "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true
+  "config"            : {
+    "allow-plugins" : {
+      "dealerdirect/phpcodesniffer-composer-installer" : true
     }
   }
 }

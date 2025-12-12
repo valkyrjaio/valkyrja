@@ -26,7 +26,14 @@ $finder = PhpCsFixer\Finder::create()
                            ->exclude('vendor')
                            ->in(__DIR__ . '/../../../');
 
-return (new PhpCsFixer\Config())
+return new PhpCsFixer\Config()
+    ->setParallelConfig(
+        new PhpCsFixer\Runner\Parallel\ParallelConfig(
+            maxProcesses: 5,
+            filesPerProcess: 10,
+            processTimeout: 240
+        )
+    )
     ->setRiskyAllowed(true)
     ->registerCustomFixers(
         [

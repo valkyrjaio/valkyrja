@@ -5,6 +5,9 @@
   "require-dev"       : {
     "bmitch/churn-php" : "^1.7.1"
   },
+  "scripts"           : {
+    "check" : "vendor/bin/churn run --configuration=churn.yml"
+  },
   "minimum-stability" : "dev",
   "prefer-stable"     : true
 }

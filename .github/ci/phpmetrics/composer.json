@@ -5,6 +5,9 @@
   "require-dev"       : {
     "phpmetrics/phpmetrics" : "^3.0.0rc8"
   },
+  "scripts"           : {
+    "check" : "vendor/bin/phpmetrics --report-html=./report ../../../src"
+  },
   "minimum-stability" : "dev",
   "prefer-stable"     : true
 }

@@ -72,43 +72,37 @@ jobs:
       # Docs: https://getcomposer.org/doc/articles/scripts.md
 
       - name: Make build logs dir
-        run: mkdir -p build/logs
+        run: mkdir -p .github/ci/phpunit/build/logs
 
       - name: Run Psalm
         if: ${{ matrix.php != '8.4' }}
         run: |
-          cd .github/ci/psalm/
-          vendor/bin/psalm --no-cache
+          composer psalm-no-cache
 
       - name: Run Psalm with Shepherd
         if: ${{ matrix.php == '8.4' }}
         run: |
-          cd .github/ci/psalm/
-          vendor/bin/psalm --no-cache --shepherd
+          composer psalm-shepherd
 
       - name: Run PHPArkitect
         if: ${{ matrix.php == '8.4' }}
         run: |
-          cd .github/ci/phparkitect/
-          vendor/bin/phparkitect check --config=phparkitect.php
+          composer phparkitect
 
       - name: Run PHP CS Fixer
         if: ${{ matrix.php == '8.4' }}
         run: |
-          cd .github/ci/phpcsfixer/
-          php -dmemory_limit=-1 ./vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.dist.php
+          composer phpcsfixer check
 
       - name: Run PHPUnit tests
         if: ${{ matrix.php != '8.4' }}
         run: |
-          cd .github/ci/phpunit/
-          vendor/bin/phpunit --no-coverage
+          composer phpunit-no-cov
 
       - name: Run PHPUnit tests
         if: ${{ matrix.php == '8.4' }}
         run: |
-          cd .github/ci/phpunit/
-          XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text --stderr
+          composer phpunit-coverage
 
       - name: Upload Codecov Coverage Report
         if: ${{ matrix.php == '8.4' }}
@@ -121,5 +115,4 @@ jobs:
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd .github/ci/phpunit/
-          php vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
+          composer coveralls

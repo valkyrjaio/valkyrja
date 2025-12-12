@@ -5,6 +5,9 @@
   "require-dev"       : {
     "phparkitect/phparkitect" : "^0.4.0"
   },
+  "scripts"           : {
+    "check" : "vendor/bin/phparkitect check --config=phparkitect.php"
+  },
   "minimum-stability" : "dev",
   "prefer-stable"     : true
 }

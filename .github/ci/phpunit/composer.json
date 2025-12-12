@@ -7,7 +7,13 @@
     "mockery/mockery"             : "^1.6.12",
     "php-coveralls/php-coveralls" : "^2.9.0",
     "phpunit/phpcov"              : "^11.0.3",
-    "phpunit/phpunit"             : "^12.5.2"
+    "phpunit/phpunit"             : "^12.5.3"
+  },
+  "scripts"           : {
+    "check"       : "vendor/bin/phpunit",
+    "coverage"    : "php -d xdebug.mode=coverage vendor/bin/phpunit --coverage-text --stderr",
+    "no-coverage" : "vendor/bin/phpunit --no-coverage",
+    "coveralls"   : "vendor/bin/php-coveralls --coverage_clover=.github/ci/phpunit/build/logs/clover.xml  --json_path=.github/ci/phpunit/build/logs/coveralls-upload.json -v --root_dir=../../../"
   },
   "minimum-stability" : "dev",
   "prefer-stable"     : true
