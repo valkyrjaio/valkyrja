@@ -428,6 +428,7 @@ class Stream implements Contract
      */
     protected function getStreamMetadata($stream): array
     {
+        // @phpstan-ignore-next-line
         return stream_get_meta_data($stream);
     }
 

@@ -288,12 +288,14 @@ class Container implements Contract
         // If the service is a singleton
         if ($this->isSingletonInternal($id)) {
             // Return the singleton
+            // @phpstan-ignore-next-line
             return $this->getSingletonWithoutChecks($id);
         }
 
         // If the service is a singleton
         if ($this->isCallableInternal($id)) {
             // Return the closure
+            // @phpstan-ignore-next-line
             return $this->getCallableWithoutChecks($id, $arguments);
         }
 
@@ -301,12 +303,14 @@ class Container implements Contract
         if ($this->isServiceInternal($id)) {
             /** @var class-string<Service> $id */
             // Return the made service
+            // @phpstan-ignore-next-line
             return $this->getServiceWithoutChecks($id, $arguments);
         }
 
         if (class_exists($id)) {
             /** @psalm-suppress MixedMethodCall The developer should have passed the proper arguments */
             // Return a new object with the arguments
+            // @phpstan-ignore-next-line
             return new $id(...$arguments);
         }
 
@@ -327,6 +331,7 @@ class Container implements Contract
     {
         $id = $this->getServiceIdAndEnsurePublished($id);
 
+        // @phpstan-ignore-next-line
         return $this->getCallableWithoutChecks($id, $arguments);
     }
 
@@ -346,6 +351,7 @@ class Container implements Contract
 
         /** @var class-string<Service> $id */
 
+        // @phpstan-ignore-next-line
         return $this->getServiceWithoutChecks($id, $arguments);
     }
 
@@ -363,6 +369,7 @@ class Container implements Contract
     {
         $id = $this->getServiceIdAndEnsurePublished($id);
 
+        // @phpstan-ignore-next-line
         return $this->getSingletonWithoutChecks($id);
     }
 
