@@ -49,6 +49,9 @@
       "functions/helpers.php"
     ]
   },
+  "bin": [
+    "bin/valkyrja"
+  ],
   "suggest"           : {
     "firebase/php-jwt"           : "Required to use the default JWT adapter (^6.11.1)",
     "guzzlehttp/guzzle"          : "Required to use the default Client adapter (^7.10.0).",
