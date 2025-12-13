@@ -86,25 +86,11 @@ jobs:
         env:
           RELEASE_NOTES: ${{ steps.generated-notes.outputs.release-notes }}
 
-      - name: Create release
-        uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ steps.version.outputs.version }}
-          name: v${{ steps.version.outputs.version }}
-          body: ${{ steps.cleaned-notes.outputs.notes }}
-          target_commitish: ${{ github.ref_name }}
-          make_latest: "${{ github.ref_name == github.event.repository.default_branch }}"
-
       - name: Extract release date from git tag
         id: release_date
         run: |
-          # Get UNIX timestamp from git-tag
-          TIMESTAMP_OF_RELEASE_COMMIT=$(git log -1 --date=unix --format=%ad '${{ steps.version.outputs.version }}');
-
-          # Convert timestamp to UTC date in Y-m-d format
-          FORMATED_DATE=$(TZ='America/Phoenix' date -d @$TIMESTAMP_OF_RELEASE_COMMIT +%Y-%m-%d)
+          # Convert timestamp to MST date in Y-m-d format
+          FORMATED_DATE=$(TZ='America/Phoenix' date +%Y-%m-%d)
 
           # Make date available to other steps
           echo "date=$(echo $FORMATED_DATE)" >> $GITHUB_OUTPUT;
@@ -126,3 +112,14 @@ jobs:
           branch: ${{ github.ref_name }}
           commit_message: "[Release] Update CHANGELOG for ${{ steps.version.outputs.version }}"
           file_pattern: CHANGELOG.md
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
+          body: ${{ steps.cleaned-notes.outputs.notes }}
+          target_commitish: ${{ github.ref_name }}
+          make_latest: "${{ github.ref_name == github.event.repository.default_branch }}"
