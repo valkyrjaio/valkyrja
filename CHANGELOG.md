@@ -1,6 +1,13 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/laravel/framework/compare/25.1.4...master)
+## [Unreleased](https://github.com/laravel/framework/compare/v25.1.5...master)
+
+## [v25.1.5](https://github.com/laravel/framework/compare/25.1.4...v25.1.5) - 2025-12-12
+
+* [CI] Update release workflow to include changelog updates. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/52
+* [CI] Update release workflow to include changelog updates. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/53
+* [CI] Update release workflow to include changelog updates. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/54
+* Fix changelog and release notes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/55
 
 ## [25.1.4](https://github.com/laravel/framework/compare/v25.1.3...25.1.4) - 2025-12-12
 
