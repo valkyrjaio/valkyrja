@@ -1,6 +1,11 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/laravel/framework/compare/v25.1.5...master)
+## [Unreleased](https://github.com/laravel/framework/compare/v25.1.6...master)
+
+## [v25.1.6](https://github.com/laravel/framework/compare/v25.1.5...v25.1.6) - 2025-12-12
+
+* [Docs] Add a guide for how to release with commits using a GitHub App… by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/56
+* [GHA] Remove unused action. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/57
 
 ## [v25.1.5](https://github.com/laravel/framework/compare/25.1.4...v25.1.5) - 2025-12-12
 
