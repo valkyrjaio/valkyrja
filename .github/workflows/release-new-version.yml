@@ -116,7 +116,7 @@ jobs:
         env:
           RELEASE_NOTES: ${{ steps.generated-notes.outputs.release-notes }}
 
-      - name: Extract release date from git tag
+      - name: Get date for release
         id: release_date
         run: |
           # Convert timestamp to MST date in Y-m-d format
