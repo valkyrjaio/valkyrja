@@ -47,7 +47,7 @@ jobs:
         run: |
           echo $VERSION
 
-          git tag -l "$VERSION"
+          echo $(git tag -l "$VERSION")
 
           if [ $(git tag -l "$VERSION") ]; then
             echo "Version exists! Aborting."
