@@ -60,13 +60,6 @@ jobs:
         run: |
           composer phpunit-coverage
 
-      - name: Upload Codecov coverage report
-        if: ${{ matrix.php == '8.4' }}
-        uses: codecov/codecov-action@v5
-        with:
-          files: ".github/ci/phpunit/build/logs/clover.xml"
-          token: ${{ secrets.CODECOV_TOKEN }}
-
       - name: Upload Coveralls coverage report
         uses: coverallsapp/github-action@v2.3.6
         if: ${{ matrix.php == '8.4' }}

@@ -29,7 +29,6 @@ lifting for your app.
 <p>
     <a href="https://scrutinizer-ci.com/g/valkyrjaio/valkyrja/"><img src="https://scrutinizer-ci.com/g/valkyrjaio/valkyrja/badges/quality-score.png?b=master" alt="Scrutinizer"></a>
     <a href='https://coveralls.io/github/valkyrjaio/valkyrja'><img src='https://coveralls.io/repos/github/valkyrjaio/valkyrja/badge.svg' alt='Coverage Status' /></a>
-    <!-- <a href="https://codecov.io/gh/valkyrjaio/valkyrja"><img src="https://codecov.io/gh/valkyrjaio/valkyrja/branch/master/graph/badge.svg" alt="Codecov" /></a>-->
     <a href="https://shepherd.dev/github/valkyrjaio/valkyrja"><img src="https://shepherd.dev/github/valkyrjaio/valkyrja/coverage.svg" alt="Psalm Shepherd" /></a>
 </p>
 
