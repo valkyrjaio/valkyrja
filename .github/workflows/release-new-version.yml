@@ -37,7 +37,7 @@ jobs:
       - name: Commit version change
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Update version to v${{ steps.version.outputs.version }}"
+          commit_message: "[Release] Update version to v${{ steps.version.outputs.version }}"
 
       - name: Generate release notes
         id: generated-notes
