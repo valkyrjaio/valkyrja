@@ -21,10 +21,17 @@ jobs:
       notes: ${{ steps.cleaned-notes.outputs.notes }}
 
     steps:
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.VALKYRJA_GHA_APP_ID }}
+          private-key: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
+
       - name: Checkout repository
         uses: actions/checkout@v6
-        # with:
-          # token: ${{ secrets.VALKYRJA_GHA_BOT }}
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
 
       - name: Remove optional "v" prefix
         id: version
