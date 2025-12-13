@@ -42,6 +42,15 @@ jobs:
         env:
           VERSION: ${{ inputs.version }}
 
+      - uses: octokit/request-action@v2.x
+        id: get_latest_release
+        with:
+          route: GET /repos/${{ github.repository }}/git/matching-refs/tags
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+
+      - run: "echo latest release: '${{ steps.get_latest_release.outputs.data }}'"
+
       - name: Check if version already exists
         id: version-guard
         run: |
