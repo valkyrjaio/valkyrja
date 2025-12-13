@@ -16,10 +16,10 @@ namespace Valkyrja\Cli\Routing\Collector;
 use Override;
 use ReflectionException;
 use Valkyrja\Attribute\Contract\Attributes;
-use Valkyrja\Cli\Routing\Attribute\Command as Attribute;
+use Valkyrja\Cli\Routing\Attribute\Route as Attribute;
 use Valkyrja\Cli\Routing\Collector\Contract\Collector as Contract;
-use Valkyrja\Cli\Routing\Data\Command as Model;
-use Valkyrja\Cli\Routing\Data\Contract\Command;
+use Valkyrja\Cli\Routing\Data\Contract\Route;
+use Valkyrja\Cli\Routing\Data\Route as Model;
 use Valkyrja\Reflection\Contract\Reflection;
 
 /**
@@ -42,7 +42,7 @@ class AttributeCollector implements Contract
      *
      * @throws ReflectionException
      *
-     * @return Command[]
+     * @return Route[]
      */
     #[Override]
     public function getCommands(string ...$classes): array
@@ -66,13 +66,13 @@ class AttributeCollector implements Contract
     /**
      * Get a command from an attribute.
      *
-     * @param Command $attribute The attribute
+     * @param Route $attribute The attribute
      *
      * @throws ReflectionException
      *
-     * @return Command
+     * @return Route
      */
-    protected function getCommandFromAttribute(Command $attribute): Command
+    protected function getCommandFromAttribute(Route $attribute): Route
     {
         $dispatch = $attribute->getDispatch();
 

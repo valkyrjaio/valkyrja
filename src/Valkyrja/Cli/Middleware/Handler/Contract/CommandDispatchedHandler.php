@@ -16,7 +16,7 @@ namespace Valkyrja\Cli\Middleware\Handler\Contract;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
-use Valkyrja\Cli\Routing\Data\Contract\Command;
+use Valkyrja\Cli\Routing\Data\Contract\Route;
 
 /**
  * Interface CommandDispatchedHandler.
@@ -30,5 +30,5 @@ interface CommandDispatchedHandler extends Handler
     /**
      * Middleware handler for after a command is dispatched.
      */
-    public function commandDispatched(Input $input, Output $output, Command $command): Output;
+    public function commandDispatched(Input $input, Output $output, Route $command): Output;
 }

@@ -20,18 +20,18 @@ use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameter;
-use Valkyrja\Cli\Routing\Data\Contract\Command as Contract;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Contract\Parameter;
+use Valkyrja\Cli\Routing\Data\Contract\Route as Contract;
 use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
 use Valkyrja\Dispatcher\Data\MethodDispatch as DefaultDispatch;
 
 /**
- * Class Command.
+ * Class Route.
  *
  * @author Melech Mizrachi
  */
-class Command implements Contract
+class Route implements Contract
 {
     /** @var ArgumentParameter[] */
     protected array $arguments = [];

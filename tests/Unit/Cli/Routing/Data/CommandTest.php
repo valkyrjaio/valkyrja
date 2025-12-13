@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Routing\Data;
 
 use Valkyrja\Cli\Interaction\Message\Message;
-use Valkyrja\Cli\Routing\Data\Command;
+use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -26,7 +26,7 @@ class CommandTest extends TestCase
 {
     public function testDefaults(): void
     {
-        $command = new Command(
+        $command = new Route(
             name: 'test-command',
             description: 'Test Command',
             helpText: new Message('Help text')

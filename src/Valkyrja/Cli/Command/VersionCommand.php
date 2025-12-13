@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing\Command;
+namespace Valkyrja\Cli\Command;
 
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
@@ -20,7 +20,7 @@ use Valkyrja\Cli\Interaction\Formatter\Formatter;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Routing\Attribute\Command as CommandAttribute;
+use Valkyrja\Cli\Routing\Attribute\Route;
 
 use const PHP_VERSION;
 
@@ -33,7 +33,7 @@ class VersionCommand
 {
     public const string NAME = 'version';
 
-    #[CommandAttribute(
+    #[Route(
         name: self::NAME,
         description: 'Get the application version',
         helpText: new Message('A command to show the application version and info'),

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing\Command;
+namespace Valkyrja\Cli\Command;
 
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
@@ -25,11 +25,11 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\Messages;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Routing\Attribute\Command as CommandAttribute;
+use Valkyrja\Cli\Routing\Attribute\Route as RouteAttribute;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameter;
-use Valkyrja\Cli\Routing\Data\Contract\Command;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameter as OptionContract;
+use Valkyrja\Cli\Routing\Data\Contract\Route;
 use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\NoInteractionOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\QuietOptionParameter;
@@ -51,7 +51,7 @@ class HelpCommand
 {
     public const string NAME = 'help';
 
-    #[CommandAttribute(
+    #[RouteAttribute(
         name: self::NAME,
         description: 'Help for a command',
         helpText: new Message('A command to get help for a specific command.'),
@@ -64,9 +64,9 @@ class HelpCommand
             ),
         ]
     )]
-    public function run(VersionCommand $version, Command $command, Collection $collection, OutputFactory $outputFactory): Output
+    public function run(VersionCommand $version, Route $route, Collection $collection, OutputFactory $outputFactory): Output
     {
-        $commandName = $command->getOption('command')?->getFirstValue();
+        $commandName = $route->getOption('command')?->getFirstValue();
 
         if (! is_string($commandName)) {
             return $outputFactory
@@ -96,21 +96,21 @@ class HelpCommand
     /**
      * Get the help text for a given command.
      */
-    protected function getHelpText(Output $output, Command $command): Output
+    protected function getHelpText(Output $output, Route $route): Output
     {
         $argumentMessages = [];
         $optionMessages   = [];
 
-        if ($command->hasOptions()) {
-            $optionMessages[] = $this->getOptionsHeadingMessages($command);
+        if ($route->hasOptions()) {
+            $optionMessages[] = $this->getOptionsHeadingMessages($route);
             $optionMessages[] = new NewLine();
 
-            foreach ($command->getOptions() as $option) {
+            foreach ($route->getOptions() as $option) {
                 $optionMessages[] = $this->getOptionMessages($option);
             }
         }
 
-        $optionMessages[] = $this->getGlobalOptionsHeadingMessages($command);
+        $optionMessages[] = $this->getGlobalOptionsHeadingMessages($route);
         $optionMessages[] = new NewLine();
 
         $optionMessages[] = $this->getOptionMessages(new QuietOptionParameter());
@@ -119,11 +119,11 @@ class HelpCommand
         $optionMessages[] = $this->getOptionMessages(new HelpOptionParameter());
         $optionMessages[] = $this->getOptionMessages(new VersionOptionParameter());
 
-        if ($command->hasArguments()) {
-            $argumentMessages[] = $this->getArgumentsHeadingMessages($command);
+        if ($route->hasArguments()) {
+            $argumentMessages[] = $this->getArgumentsHeadingMessages($route);
             $argumentMessages[] = new NewLine();
 
-            foreach ($command->getArguments() as $argument) {
+            foreach ($route->getArguments() as $argument) {
                 $optionMessages[] = $this->getArgumentMessages($argument);
             }
 
@@ -133,20 +133,20 @@ class HelpCommand
         return $output
             ->withAddedMessages(
                 new NewLine(),
-                $this->getNameMessages($command),
+                $this->getNameMessages($route),
                 new NewLine(),
                 new NewLine(),
-                $this->getDescriptionMessages($command),
+                $this->getDescriptionMessages($route),
                 new NewLine(),
                 new NewLine(),
-                $this->getUsageMessages($command),
+                $this->getUsageMessages($route),
                 new NewLine(),
                 new NewLine(),
                 ...$argumentMessages,
                 ...$optionMessages,
             )
             ->withAddedMessages(
-                $this->getHelpTextMessages($command),
+                $this->getHelpTextMessages($route),
                 new NewLine(),
             )
             ->writeMessages();
@@ -155,35 +155,35 @@ class HelpCommand
     /**
      * Get name messages.
      */
-    protected function getNameMessages(Command $command): Messages
+    protected function getNameMessages(Route $route): Messages
     {
         return new Messages(
             new Message('Name: ', new HighlightedTextFormatter()),
-            new Message($command->getName()),
+            new Message($route->getName()),
         );
     }
 
     /**
      * Get description messages.
      */
-    protected function getDescriptionMessages(Command $command): Messages
+    protected function getDescriptionMessages(Route $route): Messages
     {
         return new Messages(
             new Message('Description:', new HighlightedTextFormatter()),
             new NewLine(),
-            $this->getIndentedText(new Message($command->getDescription())),
+            $this->getIndentedText(new Message($route->getDescription())),
         );
     }
 
     /**
      * Get help text messages.
      */
-    protected function getHelpTextMessages(Command $command): Messages
+    protected function getHelpTextMessages(Route $route): Messages
     {
         return new Messages(
             new Message('Help:', new HighlightedTextFormatter()),
             new NewLine(),
-            $this->getIndentedText($command->getHelpText()),
+            $this->getIndentedText($route->getHelpText()),
             new NewLine(),
         );
     }
@@ -191,18 +191,18 @@ class HelpCommand
     /**
      * Get usage messages.
      */
-    protected function getUsageMessages(Command $command): Messages
+    protected function getUsageMessages(Route $route): Messages
     {
-        $usage = $command->getName();
+        $usage = $route->getName();
 
-        if ($command->hasOptions()) {
+        if ($route->hasOptions()) {
             $usage .= ' [options]';
         }
 
         $usage .= ' [global options]';
 
-        if ($command->hasArguments()) {
-            foreach ($command->getArguments() as $argument) {
+        if ($route->hasArguments()) {
+            foreach ($route->getArguments() as $argument) {
                 $usage .= ' ['
                     . $argument->getName()
                     . ($argument->getValueMode() === ArgumentValueMode::ARRAY ? '...' : '')
@@ -220,7 +220,7 @@ class HelpCommand
     /**
      * Get options heading messages.
      */
-    protected function getOptionsHeadingMessages(Command $command): Messages
+    protected function getOptionsHeadingMessages(Route $route): Messages
     {
         return new Messages(
             new Message('Options:', new HighlightedTextFormatter()),
@@ -230,7 +230,7 @@ class HelpCommand
     /**
      * Get global options heading messages.
      */
-    protected function getGlobalOptionsHeadingMessages(Command $command): Messages
+    protected function getGlobalOptionsHeadingMessages(Route $route): Messages
     {
         return new Messages(
             new Message('Global Options:', new HighlightedTextFormatter()),
@@ -303,7 +303,7 @@ class HelpCommand
     /**
      * Get arguments heading messages.
      */
-    protected function getArgumentsHeadingMessages(Command $command): Messages
+    protected function getArgumentsHeadingMessages(Route $route): Messages
     {
         return new Messages(
             new Message('Arguments:', new HighlightedTextFormatter()),

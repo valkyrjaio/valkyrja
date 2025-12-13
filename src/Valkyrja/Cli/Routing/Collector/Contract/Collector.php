@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Collector\Contract;
 
-use Valkyrja\Cli\Routing\Data\Contract\Command;
+use Valkyrja\Cli\Routing\Data\Contract\Route;
 
 /**
  * Interface Collector.
@@ -27,7 +27,7 @@ interface Collector
      *
      * @param class-string ...$classes The classes
      *
-     * @return Command[]
+     * @return Route[]
      */
     public function getCommands(string ...$classes): array;
 }

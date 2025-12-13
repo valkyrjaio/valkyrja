@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Cli\Command;
 
+use Valkyrja\Cli\Command\VersionCommand;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
@@ -23,8 +24,7 @@ use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Routing\Attribute\Command as CommandAttribute;
-use Valkyrja\Cli\Routing\Command\VersionCommand;
+use Valkyrja\Cli\Routing\Attribute\Route as RouteAttribute;
 use Valkyrja\Http\Routing\Collection\Contract\Collection;
 use Valkyrja\Http\Routing\Data\Contract\Route;
 
@@ -37,7 +37,7 @@ class ListCommand
 {
     public const string NAME = 'http:list';
 
-    #[CommandAttribute(
+    #[RouteAttribute(
         name: self::NAME,
         description: 'List all routes',
         helpText: new Message('A command to list all the routes present within the Http component.'),

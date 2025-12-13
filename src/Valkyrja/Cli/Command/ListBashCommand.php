@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing\Command;
+namespace Valkyrja\Cli\Command;
 
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Routing\Attribute\Command as CommandAttribute;
+use Valkyrja\Cli\Routing\Attribute\Route as RouteAttribute;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
-use Valkyrja\Cli\Routing\Data\Contract\Command;
+use Valkyrja\Cli\Routing\Data\Contract\Route;
 
 use function is_string;
 
@@ -32,7 +32,7 @@ class ListBashCommand
 {
     public const string NAME = 'list:bash';
 
-    #[CommandAttribute(
+    #[RouteAttribute(
         name: self::NAME,
         description: 'List all commands for bash completion',
         helpText: new Message('A command to list all the commands present within the Cli component for bash completion.'),
@@ -47,33 +47,33 @@ class ListBashCommand
             ),
         ]
     )]
-    public function run(Command $command, Collection $collection, OutputFactory $outputFactory): Output
+    public function run(Route $route, Collection $collection, OutputFactory $outputFactory): Output
     {
         $output = $outputFactory
             ->createOutput();
 
-        $namespace = $command->getArgument('namespace')?->getFirstValue();
-        $commands  = $collection->all();
+        $namespace = $route->getArgument('namespace')?->getFirstValue();
+        $routes    = $collection->all();
         $colonAt   = false;
 
         if (is_string($namespace)) {
             $colonAt = strpos($namespace, ':');
 
-            $commands = array_filter($commands, static fn (Command $filterCommand) => str_starts_with($filterCommand->getName(), $namespace));
+            $routes = array_filter($routes, static fn (Route $filterCommand) => str_starts_with($filterCommand->getName(), $namespace));
         }
 
-        $commandsForBash = array_map(
-            static fn (Command $command): string => $colonAt !== false ? substr($command->getName(), $colonAt + 1) : $command->getName(),
-            $commands
+        $routesForBash = array_map(
+            static fn (Route $route): string => $colonAt !== false ? substr($route->getName(), $colonAt + 1) : $route->getName(),
+            $routes
         );
 
-        /** @var non-empty-string $commandsForBashString */
-        $commandsForBashString = implode(' ', $commandsForBash);
+        /** @var non-empty-string $routesForBashString */
+        $routesForBashString = implode(' ', $routesForBash);
 
         /** @psalm-suppress ArgumentTypeCoercion */
         return $output
             ->withAddedMessages(
-                new Message($commandsForBashString)
+                new Message($routesForBashString)
             );
     }
 }

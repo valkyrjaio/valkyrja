@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
-use Valkyrja\Cli\Routing\Data\Contract\Command;
+use Valkyrja\Cli\Routing\Data\Contract\Route;
 
 /**
  * Class DispatchedHandler.
@@ -32,7 +32,7 @@ class CommandDispatchedHandler extends Handler implements Contract\CommandDispat
      * @inheritDoc
      */
     #[Override]
-    public function commandDispatched(Input $input, Output $output, Command $command): Output
+    public function commandDispatched(Input $input, Output $output, Route $command): Output
     {
         $next = $this->next;
 

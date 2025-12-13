@@ -16,7 +16,7 @@ namespace Valkyrja\Cli\Middleware\Contract;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandler;
-use Valkyrja\Cli\Routing\Data\Contract\Command;
+use Valkyrja\Cli\Routing\Data\Contract\Route;
 
 /**
  * Interface CommandMatchedMiddleware.
@@ -28,5 +28,5 @@ interface CommandMatchedMiddleware
     /**
      * Middleware handler for after a command has been matched but before it has been dispatched.
      */
-    public function commandMatched(Input $input, Command $command, CommandMatchedHandler $handler): Command|Output;
+    public function commandMatched(Input $input, Route $command, CommandMatchedHandler $handler): Route|Output;
 }

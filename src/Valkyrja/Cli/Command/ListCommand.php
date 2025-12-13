@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing\Command;
+namespace Valkyrja\Cli\Command;
 
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
@@ -23,9 +23,9 @@ use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Routing\Attribute\Command as CommandAttribute;
+use Valkyrja\Cli\Routing\Attribute\Route as RouteAttribute;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection;
-use Valkyrja\Cli\Routing\Data\Contract\Command;
+use Valkyrja\Cli\Routing\Data\Contract\Route;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 
 use function is_string;
@@ -39,7 +39,7 @@ class ListCommand
 {
     public const string NAME = 'list';
 
-    #[CommandAttribute(
+    #[RouteAttribute(
         name: self::NAME,
         description: 'List all commands',
         helpText: new Message('A command to list all the commands present within the Cli component.'),
@@ -52,16 +52,16 @@ class ListCommand
             ),
         ]
     )]
-    public function run(VersionCommand $version, Command $command, Collection $collection, OutputFactory $outputFactory): Output
+    public function run(VersionCommand $version, Route $route, Collection $collection, OutputFactory $outputFactory): Output
     {
-        $namespace = $command->getOption('namespace')?->getFirstValue();
-        $commands  = $collection->all();
+        $namespace = $route->getOption('namespace')?->getFirstValue();
+        $routes    = $collection->all();
 
         if (is_string($namespace)) {
-            $commands = array_filter($commands, static fn (Command $filterCommand) => str_starts_with($filterCommand->getName(), $namespace));
+            $routes = array_filter($routes, static fn (Route $filterCommand) => str_starts_with($filterCommand->getName(), $namespace));
         }
 
-        if ($commands === []) {
+        if ($routes === []) {
             return $outputFactory
                 ->createOutput()
                 ->withExitCode(ExitCode::ERROR)
@@ -72,7 +72,7 @@ class ListCommand
 
         $namespace ??= '';
 
-        usort($commands, static fn (Command $a, Command $b): int => $a->getName() <=> $b->getName());
+        usort($routes, static fn (Route $a, Route $b): int => $a->getName() <=> $b->getName());
 
         $output = $version
             ->run($outputFactory)
@@ -82,7 +82,7 @@ class ListCommand
                 new NewLine()
             );
 
-        foreach ($commands as $item) {
+        foreach ($routes as $item) {
             $output = $output->withAddedMessages(
                 new Message('  '),
                 new Message($item->getName(), new Formatter(textColor: TextColor::MAGENTA)),

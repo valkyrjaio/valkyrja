@@ -17,7 +17,7 @@ use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
 use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler;
-use Valkyrja\Cli\Routing\Data\Contract\Command;
+use Valkyrja\Cli\Routing\Data\Contract\Route;
 use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
@@ -29,7 +29,7 @@ class CommandDispatchedMiddlewareChangedClass implements CommandDispatchedMiddle
 {
     use MiddlewareCounterTrait;
 
-    public function commandDispatched(Input $input, Output $output, Command $command, CommandDispatchedHandler $handler): Output
+    public function commandDispatched(Input $input, Output $output, Route $command, CommandDispatchedHandler $handler): Output
     {
         $this->updateCounter();
 

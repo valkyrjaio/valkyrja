@@ -15,7 +15,7 @@ namespace Valkyrja\Cli\Routing\Contract;
 
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Routing\Data\Contract\Command;
+use Valkyrja\Cli\Routing\Data\Contract\Route;
 
 /**
  * Interface Router.
@@ -32,5 +32,5 @@ interface Router
     /**
      * Dispatch an input for a specific command.
      */
-    public function dispatchCommand(Input $input, Command $command): Output;
+    public function dispatchCommand(Input $input, Route $command): Output;
 }

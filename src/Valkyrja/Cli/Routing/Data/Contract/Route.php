@@ -21,11 +21,11 @@ use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
 use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
 
 /**
- * Interface Command.
+ * Interface Route.
  *
  * @author Melech Mizrachi
  */
-interface Command
+interface Route
 {
     /**
      * Get the name.
