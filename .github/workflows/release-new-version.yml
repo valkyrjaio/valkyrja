@@ -40,6 +40,28 @@ jobs:
         env:
           VERSION: ${{ inputs.version }}
 
+      - name: Check if version already exists
+        id: version-guard
+        run: |
+          if [ -z "'cd /git/repo/path && git rev-list $VERSION..'" ]; then
+            echo "Version exists! Aborting."
+            VERSION_EXISTS='true';
+          else
+            echo "Version does not exist! Proceeding."
+            VERSION_EXISTS='false';
+          fi
+
+          echo "VERSION_EXISTS=$(echo VERSION_EXISTS)" >> "$GITHUB_OUTPUT";
+        env:
+          VERSION: v${{ steps.version.outputs.version }}
+
+      - name: Fail if version already exists
+        if: ${{ steps.version-guard.outputs.VERSION_EXISTS == 'true' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.setFailed('Workflow failed. Release version already exists.')
+
       - name: Check if branch and version match
         if: ${{ github.ref_name != 'main' && github.ref_name != 'master' }}
         id: guard
