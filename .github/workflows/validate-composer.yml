@@ -20,8 +20,31 @@ jobs:
         os: [ 'ubuntu-latest' ]
         # os: [ 'ubuntu-latest', 'windows-latest' ]
         php: [ '8.4', '8.5', '8.6' ]
+        paths:
+          - name: Root
+            path: ./
+          - name: Churn
+            path: .github/ci/churn
+          - name: PHPArkitect
+            path: .github/ci/phparkitect
+          - name: PHP Code Sniffer
+            path: .github/ci/phpcodesniffer
+          - name: PHP CS Fixer
+            path: .github/ci/phpcsfixer
+          - name: PHP Metrics
+            path: .github/ci/phpmetrics
+          - name: PHPStan
+            path: .github/ci/phparkitect
+          - name: PHPUnit
+            path: .github/ci/phpunit
+          - name: Psalm
+            path: .github/ci/psalm
+          - name: Rector
+            path: .github/ci/rector
+          - name: Suggested Packages
+            path: .github/ci/suggested
 
-    name: PHP ${{ matrix.php }} (${{ matrix.os == 'ubuntu-latest' && 'Linux' || 'Windows'  }})
+    name: ${{ matrix.paths.name }} PHP ${{ matrix.php }} (${{ matrix.os == 'ubuntu-latest' && 'Linux' || 'Windows'  }})
 
     continue-on-error: ${{ matrix.php == '8.6' }}
 
@@ -34,5 +57,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Validate composer.json and composer.lock
-        run: composer validate --strict
+      - name: Validate composer.json
+        run: |
+          cd ${{ matrix.paths.path }}
+          composer validate --strict
