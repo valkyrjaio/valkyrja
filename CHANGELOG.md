@@ -1,6 +1,13 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/laravel/framework/compare/v25.2.1...master)
+## [Unreleased](https://github.com/laravel/framework/compare/v25.2.2...master)
+
+## [v25.2.2](https://github.com/laravel/framework/compare/v25.2.1...v25.2.2) - 2025-12-13
+
+* [CI] Add version and branch matching safeguard to release workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/63
+* [CI] Standardize release commit messages by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/64
+* [CI] Fix the name of the date step by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/65
+* [CI] Ensure the release version input doesn't already exist by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/66
 
 ## [v25.2.1](https://github.com/laravel/framework/compare/v25.2.0...v25.2.1) - 2025-12-13
 
