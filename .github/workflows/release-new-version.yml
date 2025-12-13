@@ -49,32 +49,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
 
-      - run: "echo get_tag tag: '${{ steps.get_tags.outputs.data }}'"
-
       - name: Check if version already exists
         id: version-guard
         run: |
-          echo "Version Passed In: refs/tags/$VERSION"
-
           if [[ $TAGS == *"refs/tags/$VERSION"* ]]; then
             echo "Version exists! Aborting."
-            VERSION_EXISTS='true';
+            
+            exit 1
           else
             echo "Version does not exist! Proceeding."
-            VERSION_EXISTS='false';
           fi
-
-          echo "VERSION_EXISTS=$(echo VERSION_EXISTS)" >> "$GITHUB_OUTPUT";
         env:
           VERSION: v${{ steps.version.outputs.version }}
           TAGS: ${{ steps.get_tags.outputs.data }}
-
-      - name: Fail if version already exists
-        if: ${{ steps.version-guard.outputs.VERSION_EXISTS == 'true' }}
-        uses: actions/github-script@v7
-        with:
-          script: |
-            core.setFailed('Workflow failed. Release version already exists.')
 
       - name: Check if branch and version match
         if: ${{ github.ref_name != 'main' && github.ref_name != 'master' }}
@@ -85,23 +72,14 @@ jobs:
 
           if [ "$MAJOR_VERSION" != "$BRANCH_MAJOR_VERSION" ]; then
             echo "Mismatched versions! Aborting."
-            VERSION_MISMATCH='true';
+          
+            exit 1
           else
             echo "Versions match! Proceeding."
-            VERSION_MISMATCH='false';
           fi
-
-          echo "VERSION_MISMATCH=$(echo $VERSION_MISMATCH)" >> "$GITHUB_OUTPUT";
         env:
           BRANCH: ${{ github.ref_name }}
           NUMERIC_VERSION: ${{ steps.version.outputs.version }}
-
-      - name: Fail if branch and release tag do not match
-        if: ${{ steps.guard.outputs.VERSION_MISMATCH == 'true' }}
-        uses: actions/github-script@v7
-        with:
-          script: |
-            core.setFailed('Workflow failed. Release version does not match with selected target branch. Did you select the correct branch?')
 
       - name: Update Application.php version
         run: sed -i "s/const string VERSION = '.*';/const string VERSION = '${{ steps.version.outputs.version }}';/g" src/Valkyrja/Application/Contract/Application.php
