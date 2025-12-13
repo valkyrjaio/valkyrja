@@ -31,20 +31,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Cache Composer packages
-        id: composer-cache
-        uses: actions/cache@v3
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v3
         with:
-          path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-
+          composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }} --prefer-dist --no-progress
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
-      - name: Install dependencies
-        run: |
-          composer install --prefer-dist --no-progress
-          cd .github/ci/phparkitect
-          composer install --prefer-dist --no-progress
+      - name: Install PHPArkitect Composer dependencies
+        uses: ramsey/composer-install@v3
+        with:
+          composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }} --prefer-dist --no-progress
+          custom-cache-suffix: $(date -u "+%Y-%m")
+          working-directory: .github/ci/phparkitect
 
       - name: Run PHPArkitect
         run: |
