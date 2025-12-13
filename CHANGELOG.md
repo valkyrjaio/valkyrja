@@ -1,6 +1,16 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/laravel/framework/compare/v25.1.3...master)
+## [Unreleased](https://github.com/laravel/framework/compare/25.1.4...master)
+
+## [25.1.4](https://github.com/laravel/framework/compare/v25.1.3...25.1.4) - 2025-12-12
+
+### What's Changed
+
+* [CI] Use Valkyrja GHA Bot token by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/49
+* [CI] Need to figure out GitHub app token for Valkyrja GHA Bot. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/50
+* [CI] Use Valkyrja GHA App token. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/51
+
+**Full Changelog**: https://github.com/valkyrjaio/valkyrja/compare/v25.1.3...v25.1.4
 
 ## [v25.1.3](https://github.com/laravel/framework/compare/v25.1.2...v25.1.3) - 2025-12-12
 
