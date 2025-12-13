@@ -43,33 +43,20 @@ jobs:
           VERSION: ${{ inputs.version }}
 
       - uses: octokit/request-action@v2.x
-        id: get_tag
+        id: get_tags
         with:
-          route: GET /repos/${{ github.repository }}/git/ref/tags/v${{ steps.version.outputs.version }}
+          route: GET /repos/${{ github.repository }}/git/matching-refs/tags
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
 
-      - uses: octokit/request-action@v2.x
-        id: get_nonexistent_tag
-        with:
-          route: GET /repos/${{ github.repository }}/git/ref/tags/noexisttag
-        env:
-          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
-
-      - run: "echo nonexisttag tag: '${{ steps.get_nonexistent_tag.outputs.data }}'"
-
-      - run: "echo get_tag tag: '${{ steps.get_tag.outputs.data }}'"
+      - run: "echo get_tag tag: '${{ steps.get_tags.outputs.data }}'"
 
       - name: Check if version already exists
         id: version-guard
         run: |
-          echo "Version Passed In: $VERSION"
-          
-          GIT_TAG_VERSION=$(git tag -l "$VERSION")
+          echo "Version Passed In: refs/tags/$VERSION"
 
-          echo "Git Tag Version: $GIT_TAG_VERSION"
-
-          if [ $(git tag -l "$VERSION") ]; then
+          if [[ $TAGS == *"refs/tags/$VERSION"* ]]; then
             echo "Version exists! Aborting."
             VERSION_EXISTS='true';
           else
@@ -80,6 +67,7 @@ jobs:
           echo "VERSION_EXISTS=$(echo VERSION_EXISTS)" >> "$GITHUB_OUTPUT";
         env:
           VERSION: v${{ steps.version.outputs.version }}
+          TAGS: ${{ steps.get_tags.outputs.data }}
 
       - name: Fail if version already exists
         if: ${{ steps.version-guard.outputs.VERSION_EXISTS == 'true' }}
