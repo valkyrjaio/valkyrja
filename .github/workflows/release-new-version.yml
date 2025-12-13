@@ -101,7 +101,7 @@ jobs:
           # Pass extracted release date, release notes and version to the Action.
           release-date: ${{ steps.release_date.outputs.date }}
           release-notes: ${{ steps.cleaned-notes.outputs.notes }}
-          latest-version: ${{ steps.version.outputs.version }}
+          latest-version: v${{ steps.version.outputs.version }}
           compare-url-target-revision: ${{ github.ref_name }}
           parse-github-usernames: true
 
