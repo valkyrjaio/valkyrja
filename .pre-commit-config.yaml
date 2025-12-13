@@ -3,21 +3,21 @@ repos:
     hooks:
       - id: psalm
         name: Psalm
-        description: Run Psalm to statically analyze a PHP code base.
+        description: Run Psalm to statically analyze the codebase
         entry: pre-commit-hooks/psalm.sh
         language: script
         files: \.php$
         pass_filenames: true
       - id: php-cs-fixer
         name: PHP CS Fixer
-        description: Run PHP CS Fixer to lint code
+        description: Run PHP CS Fixer to lint codebase
         entry: pre-commit-hooks/php-cs-fixer.sh
         language: script
         files: \.php$
         pass_filenames: true
       - id: phpunit
         name: PHPUnit
-        description: Run PHPUnit to test site code
+        description: Run PHPUnit to test codebase
         entry: pre-commit-hooks/phpunit.sh
         language: script
         files: \.php$
