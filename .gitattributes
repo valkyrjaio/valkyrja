@@ -1,7 +1,14 @@
-* text=auto
+*                       text=auto
 
-*.phtml diff=html
-*.css diff=css
-*.html diff=html
-*.md diff=markdown
-*.php diff=php
+*.phtml                 diff=html
+*.css                   diff=css
+*.html                  diff=html
+*.md                    diff=markdown
+*.php                   diff=php
+
+.github/                export-ignore
+pre-commit-hooks/       export-ignore
+.gitattributes          export-ignore
+.gitignore              export-ignore
+.pre-commit-config.yaml export-ignore
+.styleci.yml            export-ignore
