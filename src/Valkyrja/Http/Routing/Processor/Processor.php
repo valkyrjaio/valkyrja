@@ -20,8 +20,6 @@ use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Routing\Exception\InvalidRoutePathException;
 use Valkyrja\Http\Routing\Processor\Contract\Processor as Contract;
 use Valkyrja\Http\Routing\Support\Helpers;
-use Valkyrja\Orm\Data\EntityCast;
-use Valkyrja\Orm\Entity\Contract\Entity;
 
 /**
  * Class Processor.
@@ -75,7 +73,6 @@ class Processor implements Contract
         // Iterate through the route's parameters
         foreach ($route->getParameters() as $parameter) {
             // Validate the parameter
-            $route     = $this->processParameterEntity($route, $parameter);
             $parameter = $this->processParameterInRegex($parameter, $regex);
 
             $regex = $this->replaceParameterNameInRegex($route, $parameter, $regex);
@@ -84,64 +81,6 @@ class Processor implements Contract
         $regex = Regex::START . $regex . Regex::END;
 
         return $route->withRegex($regex);
-    }
-
-    /**
-     * Validate the parameter entity.
-     *
-     * @param Route     $route     The route
-     * @param Parameter $parameter The parameter
-     *
-     * @return Route
-     */
-    protected function processParameterEntity(Route $route, Parameter $parameter): Route
-    {
-        $cast   = $parameter->getCast();
-        $entity = $cast->type ?? null;
-
-        if ($entity !== null && is_a($entity, Entity::class, true)) {
-            $route = $this->removeEntityFromDependencies($route, $entity);
-
-            if (! $cast instanceof EntityCast) {
-                return $route;
-            }
-
-            $entityColumn = $cast->column;
-
-            if ($entityColumn !== null && ! property_exists($entity, $entityColumn)) {
-                throw new InvalidRoutePathException('Entity column ' . $entityColumn . ' does not exist');
-            }
-        }
-
-        return $route;
-    }
-
-    /**
-     * Remove the entity from the route's dependencies list.
-     *
-     * @param Route                $route      The route
-     * @param class-string<Entity> $entityName The entity class name
-     *
-     * @return Route
-     */
-    protected function removeEntityFromDependencies(Route $route, string $entityName): Route
-    {
-        $dispatch     = $route->getDispatch();
-        $dependencies = $dispatch->getDependencies();
-
-        if ($dependencies === null || $dependencies === []) {
-            return $route;
-        }
-
-        $updatedDependencies = [];
-
-        foreach ($dependencies as $dependency) {
-            if ($dependency !== $entityName) {
-                $updatedDependencies[] = $dependency;
-            }
-        }
-
-        return $route->withDispatch($dispatch->withDependencies($updatedDependencies));
     }
 
     /**

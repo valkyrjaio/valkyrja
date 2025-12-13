@@ -180,7 +180,7 @@ class Reflection implements Contract
                 && ! $type->isBuiltin()
             ) {
                 // Set the injectable in the array
-                $dependencies[] = $name;
+                $dependencies[$parameter->getName()] = $name;
             }
         }
 

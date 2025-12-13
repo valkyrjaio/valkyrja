@@ -21,6 +21,7 @@ use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Exception\InvalidRoutePathException;
 use Valkyrja\Http\Routing\Processor\Processor;
 use Valkyrja\Orm\Data\EntityCast;
+use Valkyrja\Orm\Middleware\EntityRouteMatchedMiddleware;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\Data\Cast;
 
@@ -175,6 +176,8 @@ class ProcessorTest extends TestCase
 
     public function testDynamicRouteEntityParameter(): void
     {
+        self::markTestSkipped('This needs to be moved to a test for ' . EntityRouteMatchedMiddleware::class);
+
         $processor = new Processor();
 
         $route = new Route(
@@ -184,7 +187,7 @@ class ProcessorTest extends TestCase
                 class: Route::class,
                 method: 'test',
                 dependencies: [
-                    User::class,
+                    'user' => User::class,
                 ]
             ),
             parameters: [
@@ -206,6 +209,8 @@ class ProcessorTest extends TestCase
 
     public function testDynamicRouteEntityParameterWithNoDependencies(): void
     {
+        self::markTestSkipped('This needs to be moved to a test for ' . EntityRouteMatchedMiddleware::class);
+
         $processor = new Processor();
 
         $route = new Route(
@@ -215,8 +220,8 @@ class ProcessorTest extends TestCase
                 class: Route::class,
                 method: 'test',
                 dependencies: [
-                    Route::class,
-                    User::class,
+                    'route' => Route::class,
+                    'user'  => User::class,
                 ]
             ),
             parameters: [
@@ -238,6 +243,8 @@ class ProcessorTest extends TestCase
 
     public function testDynamicRouteEntityParameterWithDependencies(): void
     {
+        self::markTestSkipped('This needs to be moved to a test for ' . EntityRouteMatchedMiddleware::class);
+
         $processor = new Processor();
 
         $route = new Route(
@@ -267,6 +274,8 @@ class ProcessorTest extends TestCase
 
     public function testDynamicRouteEntityParameterWithEntityCast(): void
     {
+        self::markTestSkipped('This needs to be moved to a test for ' . EntityRouteMatchedMiddleware::class);
+
         $processor = new Processor();
 
         $route = new Route(
@@ -276,7 +285,7 @@ class ProcessorTest extends TestCase
                 class: Route::class,
                 method: 'test',
                 dependencies: [
-                    User::class,
+                    'user' => User::class,
                 ]
             ),
             parameters: [
@@ -298,6 +307,8 @@ class ProcessorTest extends TestCase
 
     public function testDynamicRouteEntityParameterWithEntityCastWithInvalidColumn(): void
     {
+        self::markTestSkipped('This needs to be moved to a test for ' . EntityRouteMatchedMiddleware::class);
+
         $this->expectException(InvalidRoutePathException::class);
 
         $processor = new Processor();
@@ -309,7 +320,7 @@ class ProcessorTest extends TestCase
                 class: Route::class,
                 method: 'test',
                 dependencies: [
-                    User::class,
+                    'user' => User::class,
                 ]
             ),
             parameters: [

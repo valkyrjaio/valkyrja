@@ -55,14 +55,14 @@ interface CallableDispatch extends Dispatch
     /**
      * Get the dependencies.
      *
-     * @return class-string[]|null
+     * @return array<non-empty-string, class-string>|null
      */
     public function getDependencies(): array|null;
 
     /**
      * Create a new dispatch with the specified dependencies.
      *
-     * @param class-string[]|null $dependencies The dependencies
+     * @param array<non-empty-string, class-string>|null $dependencies The dependencies
      *
      * @return static
      */

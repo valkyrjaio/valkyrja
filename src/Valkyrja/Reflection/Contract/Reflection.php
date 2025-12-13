@@ -104,7 +104,7 @@ interface Reflection
      *
      * @param ReflectionFunctionAbstract $reflection The reflection
      *
-     * @return class-string[]
+     * @return array<non-empty-string, class-string>
      */
     public function getDependencies(ReflectionFunctionAbstract $reflection): array;
 
@@ -113,7 +113,7 @@ interface Reflection
      *
      * @param ReflectionParameter ...$parameters The parameters
      *
-     * @return class-string[]
+     * @return array<non-empty-string, class-string>
      */
     public function getDependenciesFromParameters(ReflectionParameter ...$parameters): array;
 }
