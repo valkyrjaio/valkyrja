@@ -71,4 +71,4 @@ jobs:
       - name: Validate composer.json
         run: |
           cd ${{ matrix.paths.path }}
-          composer validate --strict
+          composer validate ${{ matrix.paths.options }}
