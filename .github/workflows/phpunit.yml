@@ -17,8 +17,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ 'ubuntu-latest' ]
-        # os: [ 'ubuntu-latest', 'windows-latest' ]
+        # os: [ 'ubuntu-latest' ]
+        os: [ 'ubuntu-latest', 'windows-latest' ]
         php: [ '8.4', '8.5', '8.6' ]
 
     name: PHP ${{ matrix.php }} (${{ matrix.os == 'ubuntu-latest' && 'Linux' || 'Windows'  }})
@@ -30,7 +30,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring, intl, sodium, fileinfo, pdo, php-mysql, php-sqlite3, php-pgsql, xdebug
+          extensions: mbstring, intl, sodium, fileinfo, pdo, php-mysql, php-sqlite3, php-pgsql, pdo_sqlite, pdo_pgsql, pdo_mysql xdebug
           ini-values: zend.assertions=1
       - name: Checkout code
         uses: actions/checkout@v6
