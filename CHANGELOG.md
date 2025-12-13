@@ -1,6 +1,10 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/laravel/framework/compare/v25.1.2...master)
+## [Unreleased](https://github.com/laravel/framework/compare/v25.1.3...master)
+
+## [v25.1.3](https://github.com/laravel/framework/compare/v25.1.2...v25.1.3) - 2025-12-12
+
+* [CI] Update release-new-version.yml application version commit messag… by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/48
 
 ## [v25.1.2](https://github.com/laravel/framework/compare/v25.1.1...v25.1.2) - 2025-12-12
 
