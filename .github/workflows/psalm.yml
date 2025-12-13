@@ -46,6 +46,8 @@ jobs:
           composer install --prefer-dist --no-progress
           cd .github/ci/psalm
           composer install --prefer-dist --no-progress
+          cd ../suggested
+          composer install --prefer-dist --no-progress
 
       - name: Run Psalm with Shepherd
         run: |

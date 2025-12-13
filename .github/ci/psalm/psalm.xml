@@ -6,7 +6,7 @@
        errorLevel="1"
        findUnusedBaselineEntry="false"
        findUnusedCode="false"
-       autoloader="../../../vendor/autoload.php"
+       autoloader="./autoload.php"
 >
     <projectFiles>
         <directory name="../../../src" />

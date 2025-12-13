@@ -22,19 +22,9 @@
     "psr/http-server-handler" : "^1.0.2"
   },
   "require-dev"       : {
-    "filp/whoops"                : "^2.18.4",
-    "firebase/php-jwt"           : "^6.11.1",
-    "guzzlehttp/guzzle"          : "^7.10.0",
-    "league/flysystem"           : "^3.30.2",
-    "league/flysystem-aws-s3-v3" : "^3.30.1",
-    "mailgun/mailgun-php"        : "^4.3.5",
-    "monolog/monolog"            : "^3.9.0",
-    "phpmailer/phpmailer"        : "^6.12.0",
-    "predis/predis"              : "^2.4.1",
-    "psr/log"                    : "^2.0.0",
-    "pusher/pusher-php-server"   : "^7.2.7",
-    "twig/twig"                  : "^3.22.1",
-    "vonage/client-core"         : "^4.11.2"
+    "filp/whoops"     : "^2.18.4",
+    "monolog/monolog" : "^3.9.0",
+    "psr/log"         : "^2.0.0 || ^3.0.2"
   },
   "autoload"          : {
     "psr-4" : {
@@ -49,7 +39,7 @@
       "functions/helpers.php"
     ]
   },
-  "bin": [
+  "bin"               : [
     "bin/valkyrja"
   ],
   "suggest"           : {
@@ -91,11 +81,6 @@
   "extra"             : {
     "branch-alias" : {
       "dev-master" : "25.x-dev"
-    }
-  },
-  "config"            : {
-    "allow-plugins" : {
-      "php-http/discovery" : true
     }
   }
 }
