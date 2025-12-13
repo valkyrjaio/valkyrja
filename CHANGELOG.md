@@ -1,6 +1,10 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/laravel/framework/compare/v25.2.9...master)
+## [Unreleased](https://github.com/laravel/framework/compare/v25.2.10...master)
+
+## [v25.2.10](https://github.com/laravel/framework/compare/v25.2.9...v25.2.10) - 2025-12-13
+
+* [CI] Update to use action to get tags by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/76
 
 ## [v25.2.9](https://github.com/laravel/framework/compare/v25.2.8...v25.2.9) - 2025-12-13
 
