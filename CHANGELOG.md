@@ -1,6 +1,10 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/laravel/framework/compare/v25.2.11...master)
+## [Unreleased](https://github.com/laravel/framework/compare/v25.2.12...master)
+
+## [v25.2.12](https://github.com/laravel/framework/compare/v25.2.11...v25.2.12) - 2025-12-13
+
+* [CI] Cleanup release guard steps by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/79
 
 ## [v25.2.11](https://github.com/laravel/framework/compare/v25.2.10...v25.2.11) - 2025-12-13
 
