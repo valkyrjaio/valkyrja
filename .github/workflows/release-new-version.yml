@@ -47,14 +47,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref_name }}
 
-      - name: Generate release notes
-        id: generated-notes
-        uses: RedCrafter07/release-notes-action@main
-        with:
-          tag-name: v${{ steps.version.outputs.version }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref_name }}
-
       - name: Cleanup release notes
         id: cleaned-notes
         run: |
