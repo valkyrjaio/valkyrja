@@ -1,6 +1,11 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/laravel/framework/compare/v25.2.0...master)
+## [Unreleased](https://github.com/laravel/framework/compare/v25.2.1...master)
+
+## [v25.2.1](https://github.com/laravel/framework/compare/v25.2.0...v25.2.1) - 2025-12-13
+
+* [Git] Updating gitattributes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/61
+* [CI] Update the VERSION.md file on release by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/62
 
 ## [v25.2.0](https://github.com/laravel/framework/compare/v25.1.6...v25.2.0) - 2025-12-13
 
