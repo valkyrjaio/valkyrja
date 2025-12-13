@@ -28,7 +28,6 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, intl
-          ini-values: zend.assertions=1
       - name: Checkout code
         uses: actions/checkout@v6
 
