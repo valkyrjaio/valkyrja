@@ -29,27 +29,30 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring, intl
+          extensions: mbstring, intl, sodium, fileinfo
           ini-values: zend.assertions=1
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Cache Composer packages
-        id: composer-cache
-        uses: actions/cache@v3
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v3
         with:
-          path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-
+          composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }} --prefer-dist --no-progress
+          custom-cache-suffix: $(date -u "+%Y-%m")
 
-      - name: Install dependencies for PHPUnit
-        run: |
-          composer install --prefer-dist --no-progress
-          cd .github/ci/phpunit
-          composer install --prefer-dist --no-progress
-          cd ../suggested
-          composer install --prefer-dist --no-progress
+      - name: Install PHPUnit Composer dependencies
+        uses: ramsey/composer-install@v3
+        with:
+          composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }} --prefer-dist --no-progress
+          custom-cache-suffix: $(date -u "+%Y-%m")
+          working-directory: .github/ci/phpunit
+
+      - name: Install Suggested Packages Composer dependencies
+        uses: ramsey/composer-install@v3
+        with:
+          composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }} --prefer-dist --no-progress
+          custom-cache-suffix: $(date -u "+%Y-%m")
+          working-directory: .github/ci/suggested
 
       - name: Make build logs dir
         run: mkdir -p .github/ci/phpunit/build/logs
