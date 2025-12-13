@@ -1,11 +1,11 @@
-name: Release New Version
-
 on:
   workflow_dispatch:
     inputs:
       version:
         description: 'Version to release'
         required: true
+
+run-name: Release New Version ${{ inputs.version }} by @${{ github.actor }}
 
 permissions:
   contents: write
