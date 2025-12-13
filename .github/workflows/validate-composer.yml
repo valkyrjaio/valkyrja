@@ -22,6 +22,8 @@ jobs:
 
     name: PHP ${{ matrix.php }} (${{ matrix.os == 'ubuntu-latest' && 'Linux' || 'Windows'  }})
 
+    continue-on-error: ${{ matrix.php == '8.6' }}
+
     steps:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
