@@ -2,7 +2,7 @@
 
 ## [Unreleased](https://github.com/laravel/framework/compare/v25.1.0...master)
 
-## [v25.1.0](https://github.com/laravel/framework/compare/v25.0.0...v25.1.0) - 2025-12-13
+## [v25.1.0](https://github.com/laravel/framework/compare/v25.0.0...v25.1.0) - 2025-12-12
 
 * Documentation: Update all documentation. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/40
 * Cli: Updating routing; change Command to Route, Controller to Command… by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/39
