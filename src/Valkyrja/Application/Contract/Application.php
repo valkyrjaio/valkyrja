@@ -31,7 +31,7 @@ interface Application
      *
      * @var non-empty-string
      */
-    public const string VERSION = '25.2.10';
+    public const string VERSION = '25.2.11';
 
     /**
      * The valkyrja framework ascii art.
