@@ -1,6 +1,10 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/laravel/framework/compare/v25.2.3...master)
+## [Unreleased](https://github.com/laravel/framework/compare/v25.2.4...master)
+
+## [v25.2.4](https://github.com/laravel/framework/compare/v25.2.3...v25.2.4) - 2025-12-13
+
+* [CI] Use run-name instead of name for dynamic name by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/69
 
 ## [v25.2.3](https://github.com/laravel/framework/compare/v25.2.2...v25.2.3) - 2025-12-13
 
