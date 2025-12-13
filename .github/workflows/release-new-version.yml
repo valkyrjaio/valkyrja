@@ -43,7 +43,7 @@ jobs:
       - name: Check if version already exists
         id: version-guard
         run: |
-          if [ -z "'cd /git/repo/path && git rev-list $VERSION..'" ]; then
+          if [ $(git tag -l "$VERSION") ]; then
             echo "Version exists! Aborting."
             VERSION_EXISTS='true';
           else
