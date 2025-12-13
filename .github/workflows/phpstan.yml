@@ -46,6 +46,8 @@ jobs:
           composer install --prefer-dist --no-progress
           cd .github/ci/phpstan
           composer install --prefer-dist --no-progress
+          cd ../suggested
+          composer install --prefer-dist --no-progress
 
       - name: Run PHPStan
         run: |

@@ -46,6 +46,8 @@ jobs:
           composer install --prefer-dist --no-progress
           cd .github/ci/phpunit
           composer install --prefer-dist --no-progress
+          cd ../suggested
+          composer install --prefer-dist --no-progress
 
       - name: Make build logs dir
         run: mkdir -p .github/ci/phpunit/build/logs
