@@ -7,7 +7,7 @@ on:
         description: 'Version to release'
         required: true
 
-run-name: Release ${{ inputs.version }} by @${{ github.actor }}
+run-name: Release ${{ inputs.version }}
 
 permissions:
   contents: write
@@ -42,7 +42,8 @@ jobs:
         env:
           VERSION: ${{ inputs.version }}
 
-      - uses: octokit/request-action@v2.x
+      - name: Get all tags for repository
+        uses: octokit/request-action@v2.x
         id: get_tags
         with:
           route: GET /repos/${{ github.repository }}/git/matching-refs/tags
