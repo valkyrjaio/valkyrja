@@ -162,7 +162,7 @@ jobs:
         with:
           # Push updated CHANGELOG to release target branch.
           branch: ${{ github.ref_name }}
-          commit_message: "[Release] Update CHANGELOG for ${{ steps.version.outputs.version }} release"
+          commit_message: "[Release] Update CHANGELOG for v${{ steps.version.outputs.version }} release"
           file_pattern: CHANGELOG.md
 
       - name: Create release
