@@ -45,9 +45,11 @@ jobs:
       - name: Check if version already exists
         id: version-guard
         run: |
-          echo $VERSION
+          echo "Version Passed In: $VERSION"
+          
+          GIT_TAG_VERSION = $(git tag -l "$VERSION")
 
-          echo $(git tag -l "$VERSION")
+          echo "Git Tag Version: $GIT_TAG_VERSION"
 
           if [ $(git tag -l "$VERSION") ]; then
             echo "Version exists! Aborting."
