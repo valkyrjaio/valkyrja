@@ -1,6 +1,12 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/laravel/framework/compare/v25.1.6...master)
+## [Unreleased](https://github.com/laravel/framework/compare/v25.2.0...master)
+
+## [v25.2.0](https://github.com/laravel/framework/compare/v25.1.6...v25.2.0) - 2025-12-13
+
+* [Composer] Adding a bin and entry point to run commands within the fr… by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/58
+* [Composer] Updating homepage to https. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/59
+* [Composer] Removing suggested packages from require-dev by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/60
 
 ## [v25.1.6](https://github.com/laravel/framework/compare/v25.1.5...v25.1.6) - 2025-12-12
 
