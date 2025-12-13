@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.VALKYRJA_GHA_BOT }}
 
       - name: Remove optional "v" prefix
         id: version
