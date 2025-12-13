@@ -1,0 +1,18 @@
+build:
+    nodes:
+        analysis:
+            image: default-jammy
+            environment:
+                php:
+                    version: 8.4
+filter:
+    excluded_paths:
+        - 'tests/*'
+checks:
+    php:
+        parse_doc_comments: false
+        verify_property_names: false
+        verify_access_scope_valid: false
+        property_assignments: false
+        method_calls_on_non_object: false
+        argument_type_checks: false
