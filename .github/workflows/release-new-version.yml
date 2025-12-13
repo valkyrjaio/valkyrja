@@ -1,3 +1,5 @@
+name: Release New Version
+
 on:
   workflow_dispatch:
     inputs:
@@ -5,7 +7,7 @@ on:
         description: 'Version to release'
         required: true
 
-run-name: Release New Version ${{ inputs.version }} by @${{ github.actor }}
+run-name: Release ${{ inputs.version }} by @${{ github.actor }}
 
 permissions:
   contents: write
