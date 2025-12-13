@@ -1,6 +1,11 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/laravel/framework/compare/v25.2.10...master)
+## [Unreleased](https://github.com/laravel/framework/compare/v25.2.11...master)
+
+## [v25.2.11](https://github.com/laravel/framework/compare/v25.2.10...v25.2.11) - 2025-12-13
+
+* [CI] Update get tag debug by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/77
+* [CI] Use api tags for version guard by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/78
 
 ## [v25.2.10](https://github.com/laravel/framework/compare/v25.2.9...v25.2.10) - 2025-12-13
 
