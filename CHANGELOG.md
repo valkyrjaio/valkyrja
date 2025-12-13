@@ -1,6 +1,10 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/laravel/framework/compare/v25.2.4...master)
+## [Unreleased](https://github.com/laravel/framework/compare/v25.2.5...master)
+
+## [v25.2.5](https://github.com/laravel/framework/compare/v25.2.4...v25.2.5) - 2025-12-13
+
+* [CI] Update release workflow names by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/70
 
 ## [v25.2.4](https://github.com/laravel/framework/compare/v25.2.3...v25.2.4) - 2025-12-13
 
