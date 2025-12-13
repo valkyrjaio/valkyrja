@@ -15,6 +15,7 @@ namespace Valkyrja\Cli\Server;
 
 use Override;
 use Throwable;
+use Valkyrja\Cli\Command\VersionCommand;
 use Valkyrja\Cli\Interaction\Config as InteractionConfig;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
@@ -27,7 +28,6 @@ use Valkyrja\Cli\Middleware;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\Cli\Routing\Command\VersionCommand;
 use Valkyrja\Cli\Routing\Contract\Router;
 use Valkyrja\Cli\Routing\Data\Option\NoInteractionOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\QuietOptionParameter;

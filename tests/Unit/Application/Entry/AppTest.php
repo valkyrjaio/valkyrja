@@ -261,7 +261,7 @@ class AppTest extends TestCase
         $cli = $container->getSingleton(CliCollection::class);
 
         $cli->add(
-            new CliData\Command(
+            new CliData\Route(
                 name: 'version',
                 description: 'test',
                 helpText: new Message('test'),

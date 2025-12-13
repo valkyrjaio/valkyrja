@@ -17,7 +17,7 @@ use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandler;
-use Valkyrja\Cli\Routing\Data\Contract\Command;
+use Valkyrja\Cli\Routing\Data\Contract\Route;
 use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
@@ -29,7 +29,7 @@ class CommandMatchedMiddlewareClass implements CommandMatchedMiddleware
 {
     use MiddlewareCounterTrait;
 
-    public function commandMatched(Input $input, Command $command, CommandMatchedHandler $handler): Command|Output
+    public function commandMatched(Input $input, Route $command, CommandMatchedHandler $handler): Route|Output
     {
         $this->updateCounter();
 

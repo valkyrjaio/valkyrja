@@ -94,14 +94,14 @@ return static function (Config $config): void {
                       ->should(new ResideInOneOfTheseNamespaces('*Factory\\'))
                       ->because('All factories should exist in an appropriate namespace');
 
-    // $srcRules[] = Rule::allClasses()
-    //                   ->that(new HaveNameMatching('*Command'))
-    //                   ->andThat(new NotResideInTheseNamespaces('*Cli\\Routing\\Attribute\\'))
-    //                   ->andThat(new NotResideInTheseNamespaces('*Cli\\Routing\\Data\\'))
-    //                   ->andThat(new NotHaveNameMatching('*Handler'))
-    //                   ->andThat(new NotHaveNameMatching('*Middleware'))
-    //                   ->should(new ResideInOneOfTheseNamespaces('*Cli\\Command\\'))
-    //                   ->because('All cli commands should exist in an appropriate namespace');
+    $srcRules[] = Rule::allClasses()
+                      ->that(new HaveNameMatching('*Command'))
+                      ->andThat(new NotResideInTheseNamespaces('*Cli\\Routing\\Attribute\\'))
+                      ->andThat(new NotResideInTheseNamespaces('*Cli\\Routing\\Data\\'))
+                      ->andThat(new NotHaveNameMatching('*Handler'))
+                      ->andThat(new NotHaveNameMatching('*Middleware'))
+                      ->should(new ResideInOneOfTheseNamespaces('*Cli\\Command\\'))
+                      ->because('All cli commands should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
                       ->that(new HaveNameMatching('*Security'))

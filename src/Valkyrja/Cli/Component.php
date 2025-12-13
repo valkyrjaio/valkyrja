@@ -44,10 +44,10 @@ class Component extends AppComponent
     public static function getCliControllers(): array
     {
         return [
-            Routing\Command\HelpCommand::class,
-            Routing\Command\ListBashCommand::class,
-            Routing\Command\ListCommand::class,
-            Routing\Command\VersionCommand::class,
+            Command\HelpCommand::class,
+            Command\ListBashCommand::class,
+            Command\ListCommand::class,
+            Command\VersionCommand::class,
         ];
     }
 }

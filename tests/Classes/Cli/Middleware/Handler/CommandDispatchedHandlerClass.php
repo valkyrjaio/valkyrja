@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Handler\CommandDispatchedHandler;
-use Valkyrja\Cli\Routing\Data\Contract\Command;
+use Valkyrja\Cli\Routing\Data\Contract\Route;
 
 /**
  * Class TestCommandDispatchedHandler.
@@ -40,7 +40,7 @@ class CommandDispatchedHandlerClass extends CommandDispatchedHandler
      * @inheritDoc
      */
     #[Override]
-    public function commandDispatched(Input $input, Output $output, Command $command): Output
+    public function commandDispatched(Input $input, Output $output, Route $command): Output
     {
         $this->count++;
 

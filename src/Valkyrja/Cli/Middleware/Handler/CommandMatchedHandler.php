@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
-use Valkyrja\Cli\Routing\Data\Contract\Command;
+use Valkyrja\Cli\Routing\Data\Contract\Route;
 
 /**
  * Class CommandMatchedHandler.
@@ -32,7 +32,7 @@ class CommandMatchedHandler extends Handler implements Contract\CommandMatchedHa
      * @inheritDoc
      */
     #[Override]
-    public function commandMatched(Input $input, Command $command): Command|Output
+    public function commandMatched(Input $input, Route $command): Route|Output
     {
         $next = $this->next;
 

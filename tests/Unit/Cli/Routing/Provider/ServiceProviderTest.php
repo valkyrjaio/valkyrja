@@ -94,7 +94,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(Config::class, new Config());
         $this->container->setSingleton(Collector::class, $collector = self::createStub(Collector::class));
 
-        $command = new Data\Command(name: 'test', description: 'test', helpText: new Message('test'));
+        $command = new Data\Route(name: 'test', description: 'test', helpText: new Message('test'));
         $collector->method('getCommands')->willReturn([$command]);
 
         ServiceProvider::publishCollection($this->container);

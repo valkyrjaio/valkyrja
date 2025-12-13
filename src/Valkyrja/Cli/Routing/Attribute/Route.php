@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Attribute;
 
 use Attribute;
-use Valkyrja\Cli\Routing\Data\Command as Model;
+use Valkyrja\Cli\Routing\Data\Route as Model;
 
 /**
- * Attribute Command.
+ * Attribute Route.
  *
  * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
-class Command extends Model
+class Route extends Model
 {
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Collection\Contract;
 
 use Valkyrja\Cli\Routing\Data;
-use Valkyrja\Cli\Routing\Data\Contract\Command;
+use Valkyrja\Cli\Routing\Data\Contract\Route;
 
 /**
  * Interface Collection.
@@ -36,20 +36,20 @@ interface Collection
     /**
      * Add commands.
      *
-     * @param Command ...$commands The commands
+     * @param Route ...$commands The commands
      *
      * @return static
      */
-    public function add(Command ...$commands): static;
+    public function add(Route ...$commands): static;
 
     /**
      * Get a command.
      *
      * @param string $name The command name
      *
-     * @return Command|null
+     * @return Route|null
      */
-    public function get(string $name): Command|null;
+    public function get(string $name): Route|null;
 
     /**
      * Determine if a command exists.
@@ -63,7 +63,7 @@ interface Collection
     /**
      * Get all the commands.
      *
-     * @return array<string, Command>
+     * @return array<string, Route>
      */
     public function all(): array;
 }

@@ -22,7 +22,7 @@ use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Middleware\Handler\CommandMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\CommandNotMatchedHandler;
 use Valkyrja\Cli\Routing\Collection\Collection;
-use Valkyrja\Cli\Routing\Data\Command;
+use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Router;
 use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Tests\Classes\Cli\Middleware\CommandMatchedMiddlewareChangedClass;
@@ -77,7 +77,7 @@ class RouterTest extends TestCase
         $router     = new Router(collection: $collection);
         $input      = new Input(commandName: 'test-command');
 
-        $command = new Command(
+        $command = new Route(
             name: 'test-command',
             description: 'Test Command',
             helpText: new Message('Help text'),
@@ -104,7 +104,7 @@ class RouterTest extends TestCase
         );
         $input      = new Input(commandName: 'test-command');
 
-        $command = new Command(
+        $command = new Route(
             name: 'test-command',
             description: 'Test Command',
             helpText: new Message('Help text'),
@@ -122,7 +122,7 @@ class RouterTest extends TestCase
         $router = new Router();
         $input  = new Input(commandName: 'test-command');
 
-        $command = new Command(
+        $command = new Route(
             name: 'test-command',
             description: 'Test Command',
             helpText: new Message('Help text'),
@@ -139,7 +139,7 @@ class RouterTest extends TestCase
         $router = new Router();
         $input  = new Input(commandName: 'test-command', arguments: [new Argument(value: 'arg1')]);
 
-        $command = new Command(
+        $command = new Route(
             name: 'test-command',
             description: 'Test Command',
             helpText: new Message('Help text'),
@@ -156,7 +156,7 @@ class RouterTest extends TestCase
         $router = new Router();
         $input  = new Input(commandName: 'test-command', options: [new Option(name: 'option', value: 'value')]);
 
-        $command = new Command(
+        $command = new Route(
             name: 'test-command',
             description: 'Test Command',
             helpText: new Message('Help text'),
@@ -174,7 +174,7 @@ class RouterTest extends TestCase
         $router     = new Router(collection: $collection);
         $input      = new Input(commandName: 'help');
 
-        $command = new Command(
+        $command = new Route(
             name: 'help',
             description: 'Help Command',
             helpText: new Message('Help text'),
@@ -193,7 +193,7 @@ class RouterTest extends TestCase
         $router     = new Router(collection: $collection);
         $input      = new Input(commandName: 'help', arguments: [new Argument(value: 'test-command')]);
 
-        $command = new Command(
+        $command = new Route(
             name: 'help',
             description: 'Help Command',
             helpText: new Message('Help text'),
@@ -201,7 +201,7 @@ class RouterTest extends TestCase
         );
         $collection->add($command);
 
-        $command2 = new Command(
+        $command2 = new Route(
             name: 'test-command',
             description: 'Test Command',
             helpText: new Message('Help text'),
