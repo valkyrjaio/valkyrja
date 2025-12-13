@@ -23,26 +23,37 @@ jobs:
         paths:
           - name: Root
             path: ./
+            options: '--strict'
           - name: Churn
             path: .github/ci/churn
+            options: '--no-check-publish'
           - name: PHPArkitect
             path: .github/ci/phparkitect
+            options: '--no-check-publish'
           - name: PHP Code Sniffer
             path: .github/ci/phpcodesniffer
+            options: '--no-check-publish'
           - name: PHP CS Fixer
             path: .github/ci/phpcsfixer
+            options: '--no-check-publish'
           - name: PHP Metrics
             path: .github/ci/phpmetrics
+            options: '--no-check-publish'
           - name: PHPStan
             path: .github/ci/phparkitect
+            options: '--no-check-publish'
           - name: PHPUnit
             path: .github/ci/phpunit
+            options: '--no-check-publish'
           - name: Psalm
             path: .github/ci/psalm
+            options: '--no-check-publish'
           - name: Rector
             path: .github/ci/rector
+            options: '--no-check-publish'
           - name: Suggested Packages
             path: .github/ci/suggested
+            options: '--no-check-publish'
 
     name: ${{ matrix.paths.name }} PHP ${{ matrix.php }} (${{ matrix.os == 'ubuntu-latest' && 'Linux' || 'Windows'  }})
 
