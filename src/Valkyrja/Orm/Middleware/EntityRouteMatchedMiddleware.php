@@ -104,10 +104,10 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     /**
      * Check a route's parameters for an entity.
      *
-     * @param int                     $index        The index
-     * @param Parameter               $parameter    The parameter
-     * @param class-string[]          $dependencies The route dependencies
-     * @param array<array-key, mixed> $arguments    The arguments
+     * @param int                                   $index        The index
+     * @param Parameter                             $parameter    The parameter
+     * @param array<non-empty-string, class-string> $dependencies The route dependencies
+     * @param array<array-key, mixed>               $arguments    The arguments
      *
      * @return Response|null
      */
@@ -133,10 +133,10 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     /**
      * Try to find and set a route's entity dependency.
      *
-     * @param Parameter                   $parameter    The parameter
-     * @param class-string<Entity>        $entityName   The entity class name
-     * @param class-string[]              $dependencies The dependencies
-     * @param Entity|non-empty-string|int $value        The value
+     * @param Parameter                             $parameter    The parameter
+     * @param class-string<Entity>                  $entityName   The entity class name
+     * @param array<non-empty-string, class-string> $dependencies The dependencies
+     * @param Entity|non-empty-string|int           $value        The value
      *
      * @return Response|null
      */
@@ -161,13 +161,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
         /** @param-out Entity $value */
         $value = $entity;
 
-        $updatedDependencies = [];
-
-        foreach ($dependencies as $dependency) {
-            if ($dependency !== $entityName) {
-                $updatedDependencies[] = $dependency;
-            }
-        }
+        $updatedDependencies = array_filter($dependencies, static fn ($dependency) => $dependency !== $entityName);
 
         $dependencies = $updatedDependencies;
 

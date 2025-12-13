@@ -24,10 +24,10 @@ use Valkyrja\Dispatcher\Data\Contract\PropertyDispatch as Contract;
 class PropertyDispatch extends ClassDispatch implements Contract
 {
     /**
-     * @param class-string                 $class        The class name
-     * @param non-empty-string             $property     The property name
-     * @param array<array-key, mixed>|null $arguments    The arguments
-     * @param class-string[]|null          $dependencies The dependencies
+     * @param class-string                               $class        The class name
+     * @param non-empty-string                           $property     The property name
+     * @param array<array-key, mixed>|null               $arguments    The arguments
+     * @param array<non-empty-string, class-string>|null $dependencies The dependencies
      */
     public function __construct(
         string $class,

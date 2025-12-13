@@ -137,6 +137,6 @@ class ReflectionTest extends TestCase
         $reflection   = $reflector->forClassMethod(ReflectableClass::class, 'test');
         $dependencies = $reflector->getDependencies($reflection);
 
-        self::assertSame([Container::class], $dependencies);
+        self::assertSame(['container' => Container::class], $dependencies);
     }
 }

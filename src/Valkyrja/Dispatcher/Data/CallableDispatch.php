@@ -27,9 +27,9 @@ class CallableDispatch extends Dispatch implements Contract
     protected $callable;
 
     /**
-     * @param callable                     $callable     The callable
-     * @param array<array-key, mixed>|null $arguments    The arguments
-     * @param class-string[]|null          $dependencies The dependencies
+     * @param callable                                   $callable     The callable
+     * @param array<array-key, mixed>|null               $arguments    The arguments
+     * @param array<non-empty-string, class-string>|null $dependencies The dependencies
      */
     public function __construct(
         callable $callable,
