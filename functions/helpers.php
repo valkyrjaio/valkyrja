@@ -18,13 +18,13 @@ use function var_dump;
 /**
  * A handy debug helper to dump vars and exit.
  *
- * @param mixed ...$args The arguments to dump
+ * @param mixed ...$arguments The arguments to dump
  *
  * @return never
  */
-function dd(...$args): never
+function dd(...$arguments): never
 {
-    var_dump($args);
+    var_dump($arguments);
 
     exit(1);
 }
