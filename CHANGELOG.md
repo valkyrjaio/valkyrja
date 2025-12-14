@@ -1,6 +1,25 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.2.13...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.2.14...master)
+
+## [v25.2.14](https://github.com/valkyrjaio/valkyrja/compare/v25.2.13...v25.2.14) - 2025-12-13
+
+* [CI] Update all workflows' OS and PHP by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/81
+* [CI] Adding the Scrutinizer CI config to the repo for better control by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/82
+* [CI] Update pre-commit hooks by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/83
+* [Documentation] Add date to LICENSE by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/84
+* [CI] Validate all composer files by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/85
+* [Functions] Update the dd() helper function by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/86
+* [CI] Fix path filtering and still allow required checks to run by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/87
+* [CI] Fix steps order in validate-composer workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/88
+* [CI] Fix steps order in workflows by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/89
+* [CI] Add paths-filter to all workflows by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/90
+* [Documentation] Add build status for validate composer workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/91
+* [Git] Remove outdated files and directories from .gitignore by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/92
+* [CI] Removing random whitespace in release workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/93
+* [Editor] Update .editorconfig end_of_line to `lf` from `LF` by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/94
+* [CI] Update StyleCI config to include tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/95
+* [Documentation] Fix changelog urls by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/96
 
 ## [v25.2.13](https://github.com/valkyrjaio/valkyrja/compare/v25.2.12...v25.2.13) - 2025-12-13
 
