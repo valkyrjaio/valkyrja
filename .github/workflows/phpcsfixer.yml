@@ -35,9 +35,9 @@ jobs:
               - '.github/ci/phpcsfixer/**'
               - '.github/workflows/phpcsfixer.yml'
               - 'bin/valkyrja'
-              - 'functions/**.php'
-              - 'src/**.php'
-              - 'tests/**.php'
+              - 'functions/**/*.php'
+              - 'src/**/*.php'
+              - 'tests/**/*.php'
               - 'composer.json'
 
       - name: Setup PHP

@@ -39,9 +39,9 @@ jobs:
               - '.github/ci/suggested/**'
               - '.github/workflows/phpunit.yml'
               - 'bin/valkyrja'
-              - 'functions/**.php'
-              - 'src/**.php'
-              - 'tests/**.php'
+              - 'functions/**/*.php'
+              - 'src/**/*.php'
+              - 'tests/**/*.php'
               - 'composer.json'
 
       - name: Setup PHP
