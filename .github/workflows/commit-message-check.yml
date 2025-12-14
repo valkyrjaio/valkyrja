@@ -24,7 +24,6 @@ jobs:
         with:
           # Example pattern: requires a type like "[BUGFIX]" at the start
           pattern: '\[[^\]]+\] .+$'
-          flags: 'gm'
           error: 'Your first line has to contain a commit type like "[BUGFIX]".'
           excludeDescription: 'true'
 
@@ -41,7 +40,6 @@ jobs:
       - name: Check Period at end
         uses: gsactions/commit-message-checker@v2
         with:
-          # Example pattern: requires a type like "[BUGFIX]" at the start
           pattern: '.*.'
           error: 'Your first line has to end in a period.'
           excludeDescription: 'true'
