@@ -80,4 +80,4 @@ jobs:
             exit 0
           fi
 
-          gh pr comment "$PR_URL" --body "Please run \`composer rector\` locally and commit the changes."
+          gh pr comment "$PR_URL" --body "Rector failed. Please run \`composer rector\` locally and commit the changes."
