@@ -1,19 +1,52 @@
-| Q             | A
-| ------------- | ---
-| Branch?       | master for features / version branch (ex: 1.0) for bug fixes <!-- see below -->
-| Bug fix?      | yes/no
-| New feature?  | yes/no <!-- please update src/**/CHANGELOG.md files -->
-| Deprecations? | yes/no <!-- please update UPGRADE-*.md and src/**/CHANGELOG.md files -->
-| Tickets       | Fix #... <!-- prefix each issue number with "Fix #", if any -->
-| License       | MIT
-<!--
-Replace this notice by a short README for your feature/bugfix. This will help people
-understand your PR and can be used as a start for the documentation.
+<!-- Provide a general summary of your changes in the title above. -->
 
-Additionally:
- - Always add tests and ensure they pass.
- - Never break backward compatibility.
- - Bug fixes must be submitted against the lowest maintained branch where they apply
-   (lowest branches are regularly merged to upper ones so they get the fixes too.)
- - Features and deprecations must be submitted against branch master.
+# Description
+
+<!--
+What do you want to achieve with this PR?
+Why did you write this code?
+What problem does this PR solve?
+Describe your changes in detail.
+If relevant, explain which choices you have made and why.
+If this fixes an open issue, link it here in the description.
+-->
+
+## Types of changes
+
+<!-- 
+What types of changes does your code introduce? 
+Put an `x` in all the boxes that apply:
+-->
+
+- [ ] Bug fix _(non-breaking change which fixes an issue)_
+    <!-- Target the lowest major affected branch -->
+- [ ] New feature _(non-breaking change which adds functionality)_
+    <!-- Target master -->
+- [ ] Deprecation _(breaking change which removes functionality)_
+    <!-- Target master -->
+- [ ] Breaking change _(fix or feature that would cause existing functionality
+  to change)_
+    <!-- Target master, unless this is a bug fix in which case let's chat -->
+- [ ] Documentation improvement
+    <!-- Target appropriate branch -->
+
+<!--
+
+By submitting a PR you grant the projec the right to include and distribute your
+written code under the MIT license.
+
+You also understand the contributing guidelines.
+https://github.com/valkyrjaio/valkyrja/blob/master/CONTRIBUTING.md
+
+Please ensure a PR doesn't already exist that covers your change.
+
+PRs with no tests will be ignored, or a comment will be left asking you to add
+test.
+
+PRs must pass all CI checks. Please ensure they do, otherwise your PR will be
+ignored until it does pass.
+
+Small PRs using atomic, descriptive commits are hugely appreciated as it will 
+make reviewing your changes easier for the maintainers.
+
 -->
