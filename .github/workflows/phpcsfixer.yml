@@ -32,15 +32,16 @@ jobs:
         with:
           filters: |
             files:
-              - '.github/ci/phpcsfixer/*'
+              - '.github/ci/phpcsfixer/**'
               - '.github/workflows/phpcsfixer.yml'
               - 'bin/valkyrja'
-              - 'functions/*.php'
-              - 'src/*.php'
-              - 'tests/*.php'
+              - 'functions/**.php'
+              - 'src/**.php'
+              - 'tests/**.php'
               - 'composer.json'
 
       - name: Setup PHP
+        if: steps.changes.outputs.files == 'true'
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}

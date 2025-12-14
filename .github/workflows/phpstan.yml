@@ -32,13 +32,13 @@ jobs:
         with:
           filters: |
             files:
-              - '.github/ci/phpstan/*'
-              - '.github/ci/suggested/*'
+              - '.github/ci/phpstan/**'
+              - '.github/ci/suggested/**'
               - '.github/workflows/phpstan.yml'
               - 'bin/valkyrja'
-              - 'functions/*.php'
-              - 'src/*.php'
-              - 'tests/*.php'
+              - 'functions/**.php'
+              - 'src/**.php'
+              - 'tests/**.php'
               - 'composer.json'
 
       - name: Setup PHP
