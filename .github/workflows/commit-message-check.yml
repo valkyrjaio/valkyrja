@@ -23,7 +23,8 @@ jobs:
         uses: gsactions/commit-message-checker@v2
         with:
           # Example pattern: requires a type like "[BUGFIX]" at the start
-          pattern: '\[[^]]+\] .*'
+          pattern: '\[[^]]+\] .+$'
+          flags: 'gm'
           error: 'Your first line has to contain a commit type like "[BUGFIX]".'
 
       - name: Check Line Length
