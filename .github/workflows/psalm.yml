@@ -2,9 +2,9 @@ name: Psalm
 
 on:
   push:
-    branches: [ 'master', '??.x' ]
+    branches: [ 'master', '*.x' ]
   pull_request:
-    branches: [ 'master', '??.x' ]
+    branches: [ 'master', '*.x' ]
 
 permissions:
   # Required for commenting on pull requests
