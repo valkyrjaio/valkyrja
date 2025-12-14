@@ -7,6 +7,8 @@ on:
     branches: [ "master" ]
 
 permissions:
+  # Required for commenting on pull requests
+  pull-requests: write
   contents: read
 
 jobs:
@@ -83,3 +85,20 @@ jobs:
         run: |
           cd ${{ matrix.paths.path }}
           composer validate ${{ matrix.paths.options }}
+
+      - name: Report failure in PR comment
+        #if: steps.build_step.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          NAME: ${{ matrix.paths.name }}
+          PATH: ${{ matrix.paths.path }}
+          OPTIONS: ${{ matrix.paths.options }}
+        run: |
+          # Check if it's a pull request event
+          if [ -z "$PR_URL" ]; then
+            echo "Not a pull request, skipping comment."
+            exit 0
+          fi
+
+          gh pr comment "$PR_URL" --body "Composer for $NAME is not valid. Please run \`composer validate $OPTIONS\` locally in the \`$PATH\` directory, fix the issues, and commit the changes."
