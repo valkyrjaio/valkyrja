@@ -91,9 +91,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           PR_URL: ${{ github.event.pull_request.html_url }}
-          NAME: ${{ matrix.paths.name }}
-          PATH: ${{ matrix.paths.path }}
-          OPTIONS: ${{ matrix.paths.options }}
+          COMPOSER_NAME: ${{ matrix.paths.name }}
+          COMPOSER_PATH: ${{ matrix.paths.path }}
+          COMPOSER_OPTIONS: ${{ matrix.paths.options }}
         run: |
           # Check if it's a pull request event
           if [ -z "$PR_URL" ]; then
@@ -101,4 +101,4 @@ jobs:
             exit 0
           fi
 
-          gh pr comment "$PR_URL" --body "Composer for $NAME is not valid. Please run \`composer validate $OPTIONS\` locally in the \`$PATH\` directory, fix the issues, and commit the changes."
+          gh pr comment "$PR_URL" --body "Composer for $COMPOSER_NAME is not valid. Please run \`composer validate $COMPOSER_OPTIONS\` locally in the \`$COMPOSER_PATH\` directory, fix the issues, and commit the changes."
