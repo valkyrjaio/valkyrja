@@ -50,14 +50,14 @@ jobs:
         if: steps.changes.outputs.files == 'true'
         uses: ramsey/composer-install@v3
         with:
-          composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }} --prefer-dist --no-progress
+          composer-options: --prefer-dist --no-progress
           custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: Install PHPArkitect Composer dependencies
         if: steps.changes.outputs.files == 'true'
         uses: ramsey/composer-install@v3
         with:
-          composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }} --prefer-dist --no-progress
+          composer-options: --prefer-dist --no-progress
           custom-cache-suffix: $(date -u "+%Y-%m")
           working-directory: .github/ci/phparkitect
 
