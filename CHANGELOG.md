@@ -1,6 +1,31 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.2.16...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.2.17...master)
+
+## [v25.2.17](https://github.com/valkyrjaio/valkyrja/compare/v25.2.16...v25.2.17) - 2025-12-14
+
+* [Documentation] Updating the security documentation by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/99
+* [Documentation] Update security documentation formatting by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/100
+* [Documentation] Update code of conduct by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/101
+* [Documentation] Update the pull request template by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/102
+* [CI] Add failure comment for phpcsfixer and rector workflows by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/103
+* [CI] Update, and standardize, workflows formatting by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/104
+* [Documentation] Fix a typo in a comment in the pull request template by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/105
+* [Documentation] Update contributing documentation by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/106
+* [CI] Add a PR comment on composer validation failure by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/107
+* [CI] Update composer validation to only run on minimum supported PHP version by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/108
+* [CI] Add a PR comment on psalm failure by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/109
+* [CI] Add a period to the end of PR comment by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/110
+* [CI] Remove an unused check for PHP 8.6 in composer install step by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/111
+* [CI] Add a PR comment on phpunit failure by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/112
+* [CI] Update PR comment for phpunit only on failure by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/113
+* [CI] Add a PR comment on phpstan failure by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/114
+* [CI] Add a PR comment on php code sniffer failure by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/115
+* [CI] Add a PR comment on phparkitect failure by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/116
+* [CI] Fix incorrect paths for paths filter in rector workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/117
+* [CI] Add the name to distinguish more easily which check failed by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/118
+* [CI] Add a new commit message check workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/119
+* [Functions] Change parameter name in dd function by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/120
 
 ## [v25.2.16](https://github.com/valkyrjaio/valkyrja/compare/v25.2.15...v25.2.16) - 2025-12-13
 
