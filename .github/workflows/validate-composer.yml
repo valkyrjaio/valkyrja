@@ -3,12 +3,8 @@ name: Validate Composer
 on:
   push:
     branches: [ "master" ]
-    paths:
-      - '**/composer.*'
   pull_request:
     branches: [ "master" ]
-    paths:
-      - '**/composer.*'
 
 permissions:
   contents: read
@@ -64,7 +60,15 @@ jobs:
     continue-on-error: ${{ matrix.php == '8.6' }}
 
     steps:
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            composer:
+              - '**/composer.*'
+
       - name: Setup PHP
+        if: steps.changes.outputs.composer == 'true'
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
@@ -73,6 +77,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Validate composer.json
+        if: steps.changes.outputs.composer == 'true'
         run: |
           cd ${{ matrix.paths.path }}
           composer validate ${{ matrix.paths.options }}
