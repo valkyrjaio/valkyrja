@@ -60,6 +60,9 @@ jobs:
     continue-on-error: ${{ matrix.php == '8.6' }}
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
       - uses: dorny/paths-filter@v3
         id: changes
         with:
@@ -73,8 +76,6 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, intl, sodium, fileinfo
-      - name: Checkout code
-        uses: actions/checkout@v6
 
       - name: Validate composer.json
         if: steps.changes.outputs.composer == 'true'
