@@ -32,12 +32,12 @@ jobs:
         with:
           filters: |
             files:
-              - '.github/ci/phparkitect/*'
+              - '.github/ci/phparkitect/**'
               - '.github/workflows/phparkitect.yml'
               - 'bin/valkyrja'
-              - 'functions/*.php'
-              - 'src/*.php'
-              - 'tests/*.php'
+              - 'functions/**.php'
+              - 'src/**.php'
+              - 'tests/**.php'
               - 'composer.json'
 
       - name: Setup PHP
