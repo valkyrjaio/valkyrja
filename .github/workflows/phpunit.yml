@@ -112,4 +112,4 @@ jobs:
             exit 0
           fi
 
-          gh pr comment "$PR_URL" --body "PHPUnit failed on for PHP $PHP_VERSION on $OS. Please run \`composer phpunit\` locally, fix all the issues, and commit the changes."
+          gh pr comment "$PR_URL" --body "PHPUnit failed for PHP $PHP_VERSION on $OS. Please run \`composer phpunit\` locally, fix all the issues, and commit the changes."
