@@ -16,7 +16,7 @@ namespace Valkyrja;
 use function var_dump;
 
 /**
- * Dump the passed variables and die.
+ * A handy debug helper to dump vars and exit.
  *
  * @param mixed ...$args The arguments to dump
  *
