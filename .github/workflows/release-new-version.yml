@@ -20,6 +20,7 @@ jobs:
 
     outputs:
       version: ${{ steps.version.outputs.version }}
+      major-version: ${{ steps.major-version.outputs.version }}
 
     steps:
       - name: Validate Format
@@ -55,6 +56,13 @@ jobs:
         run: |
           echo "version=${VERSION#v}" >> "$GITHUB_OUTPUT"
 
+      - name: Get major version number
+        id: major-version
+        env:
+          NUMERIC_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          echo "version=${NUMERIC_VERSION%%.*}" >> "$GITHUB_OUTPUT"
+
       - name: Get all tags for repository
         id: get_tags
         uses: octokit/request-action@v2.x
@@ -83,9 +91,12 @@ jobs:
         env:
           BRANCH: ${{ github.ref_name }}
           NUMERIC_VERSION: ${{ steps.version.outputs.version }}
+          MAJOR_VERSION: ${{ steps.major-version.outputs.version }}
         run: |
-          MAJOR_VERSION="${NUMERIC_VERSION%%.*}"
           BRANCH_MAJOR_VERSION="${BRANCH%%.*}"
+
+          echo "Release major version: $MAJOR_VERSION"
+          echo "Branch major version: $BRANCH_MAJOR_VERSION"
 
           if [ "$MAJOR_VERSION" != "$BRANCH_MAJOR_VERSION" ]; then
             echo "Mismatched versions! Aborting."
@@ -165,7 +176,7 @@ jobs:
           fi
 
   release:
-    needs: [check-composer, check-version]
+    needs: [ check-composer, check-version ]
 
     name: Release ${{ inputs.version }}
 
