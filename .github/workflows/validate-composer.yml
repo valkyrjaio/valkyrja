@@ -63,7 +63,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - uses: dorny/paths-filter@v3
+      - name: Determine if workflow should run based on files changed
+        uses: dorny/paths-filter@v3
         id: changes
         with:
           filters: |
