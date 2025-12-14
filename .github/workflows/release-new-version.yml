@@ -70,6 +70,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, intl
+
       - name: Check Composer For Updates
         env:
           COMPOSER_NAME: ${{ matrix.paths.name }}
