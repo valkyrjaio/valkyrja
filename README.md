@@ -42,6 +42,7 @@ lifting for your app.
     <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpunit.yml"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpunit.yml/badge.svg" alt="PHPUnit Build Status"></a>
     <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/psalm.yml"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/psalm.yml/badge.svg" alt="Psalm Build Status"></a>
     <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/rector.yml"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/rector.yml/badge.svg" alt="Rector Build Status"></a>
+    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/validate-composer.yml"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/validate-composer.yml/badge.svg" alt="Validate Composer Build Status"></a>
     <!--<a href="https://styleci.io/repos/304247237"><img src="https://styleci.io/repos/304247237/shield?branch=master&style=flat" alt="StyleCI Status"></a>-->
 </p>
 
