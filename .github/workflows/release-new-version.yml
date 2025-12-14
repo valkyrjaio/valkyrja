@@ -13,7 +13,29 @@ permissions:
   contents: write
 
 jobs:
+  check-version:
+    name: Validate Release Version
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate Format
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          # Update this when new major releases are made (25|26) for example.
+          # Format is (MINIMUM_MAJOR_VERSION_SUPPORTED|CURRENT_MAJOR_VERSION_SUPPORTED)
+          if [[ $VERSION =~ ^v(25).([0-9]+).([0-9]+)$ ]]; then
+            echo "Valid version"
+          else
+            echo "Invalid version passed"
+
+            exit 1
+          fi
+
   check-composer:
+    needs: check-version
+
     strategy:
       matrix:
         paths:
