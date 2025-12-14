@@ -83,10 +83,4 @@ jobs:
             exit 0
           fi
 
-          # Extract relevant failure info, e.g., last 50 lines of log
-          # tail -n 50 build.log > build_tail.log
-
-          # Post the comment using the GitHub CLI
-          # The `gh pr comment` command requires the PR number or URL
-          # --body-file build_tail.log
           gh pr comment "$PR_URL" --body "Please run \`composer phpcsfixer\` locally and commit the changes"
