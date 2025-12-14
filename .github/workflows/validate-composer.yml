@@ -69,6 +69,7 @@ jobs:
           filters: |
             composer:
               - '**/composer.*'
+              - '.github/workflows/validate-composer.yml'
 
       - name: Setup PHP
         if: steps.changes.outputs.composer == 'true'
