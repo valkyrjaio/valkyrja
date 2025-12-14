@@ -103,6 +103,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           PR_URL: ${{ github.event.pull_request.html_url }}
+          OS: ${{ matrix.os }}
+          PHP_VERSION: ${{ matrix.php }}
         run: |
           # Check if it's a pull request event
           if [ -z "$PR_URL" ]; then
@@ -110,4 +112,4 @@ jobs:
             exit 0
           fi
 
-          gh pr comment "$PR_URL" --body "Please run \`composer phpunit\` locally, fix all the issues, and commit the changes."
+          gh pr comment "$PR_URL" --body "PHPUnit failed on for $PHP_VERSION on $OS. Please run \`composer phpunit\` locally, fix all the issues, and commit the changes."
