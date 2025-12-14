@@ -99,7 +99,7 @@ jobs:
           format: "clover"
 
       - name: Report failure in PR comment
-        #if: steps.build_step.outcome == 'failure'
+        if: steps.build_step.outcome == 'failure'
         env:
           GH_TOKEN: ${{ github.token }}
           PR_URL: ${{ github.event.pull_request.html_url }}
