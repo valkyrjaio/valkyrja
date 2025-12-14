@@ -1,6 +1,11 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.2.18...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.2.19...master)
+
+## [v25.2.19](https://github.com/valkyrjaio/valkyrja/compare/v25.2.18...v25.2.19) - 2025-12-14
+
+* [Documentation] Update README badges to point to master by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/130
+* [CI] Add major version as an output for version check step by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/131
 
 ## [v25.2.18](https://github.com/valkyrjaio/valkyrja/compare/v25.2.17...v25.2.18) - 2025-12-14
 
