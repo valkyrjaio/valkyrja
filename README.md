@@ -35,15 +35,15 @@ lifting for your app.
 ### Build Status
 
 <p>
-    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phparkitect.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phparkitect.yml/badge.svg?query=branch%3Amaster" alt="PHPArkitect Build Status"></a>
-    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcodesniffer.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcodesniffer.yml/badge.svg?query=branch%3Amaster" alt="PHP Code Sniffer Build Status"></a>
-    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcsfixer.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcsfixer.yml/badge.svg?query=branch%3Amaster" alt="PHP CS Fixer Build Status"></a>
-    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpstan.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpstan.yml/badge.svg?query=branch%3Amaster" alt="PHPStan Build Status"></a>
-    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpunit.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpunit.yml/badge.svg?query=branch%3Amaster" alt="PHPUnit Build Status"></a>
-    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/psalm.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/psalm.yml/badge.svg?query=branch%3Amaster" alt="Psalm Build Status"></a>
-    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/rector.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/rector.yml/badge.svg?query=branch%3Amaster" alt="Rector Build Status"></a>
-    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/validate-composer.yml?query=branch%3Amaster"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/validate-composer.yml/badge.svg?query=branch%3Amaster" alt="Validate Composer Build Status"></a>
-    <!--<a href="https://styleci.io/repos/304247237"><img src="https://styleci.io/repos/304247237/shield?query=branch%3Amaster&style=flat" alt="StyleCI Status"></a>-->
+    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phparkitect.yml?query=branch%3A25.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phparkitect.yml/badge.svg?branch=25.x" alt="PHPArkitect Build Status"></a>
+    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcodesniffer.yml?query=branch%3A25.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcodesniffer.yml/badge.svg?branch=25.x" alt="PHP Code Sniffer Build Status"></a>
+    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcsfixer.yml?query=branch%3A25.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpcsfixer.yml/badge.svg?branch=25.x" alt="PHP CS Fixer Build Status"></a>
+    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpstan.yml?query=branch%3A25.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpstan.yml/badge.svg?branch=25.x" alt="PHPStan Build Status"></a>
+    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpunit.yml?query=branch%3A25.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/phpunit.yml/badge.svg?branch=25.x" alt="PHPUnit Build Status"></a>
+    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/psalm.yml?query=branch%3A25.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/psalm.yml/badge.svg?branch=25.x" alt="Psalm Build Status"></a>
+    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/rector.yml?query=branch%3A25.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/rector.yml/badge.svg?branch=25.x" alt="Rector Build Status"></a>
+    <a href="https://github.com/valkyrjaio/valkyrja/actions/workflows/validate-composer.yml?query=branch%3A25.x"><img src="https://github.com/valkyrjaio/valkyrja/actions/workflows/validate-composer.yml/badge.svg?branch=25.x" alt="Validate Composer Build Status"></a>
+    <!--<a href="https://styleci.io/repos/304247237"><img src="https://styleci.io/repos/304247237/shield?query=branch%3A25.x&style=flat" alt="StyleCI Status"></a>-->
 </p>
 
 Documentation
