@@ -165,15 +165,11 @@ jobs:
           fi
 
   release:
-    needs: check-composer
+    needs: [check-composer, check-version]
 
     name: Release ${{ inputs.version }}
 
     runs-on: ubuntu-latest
-
-    outputs:
-      version: ${{ steps.version.outputs.version }}
-      notes: ${{ steps.cleaned-notes.outputs.notes }}
 
     steps:
       - name: Generate a token
@@ -189,21 +185,21 @@ jobs:
           token: ${{ steps.generate-token.outputs.token }}
 
       - name: Update Application.php version
-        run: sed -i "s/const string VERSION = '.*';/const string VERSION = '${{ needs.check-composer.outputs.version }}';/g" src/Valkyrja/Application/Contract/Application.php
+        run: sed -i "s/const string VERSION = '.*';/const string VERSION = '${{ needs.check-version.outputs.version }}';/g" src/Valkyrja/Application/Contract/Application.php
 
       - name: Update VERSION.md version
-        run: sed -i "s/.*/${{ needs.check-composer.outputs.version }}/g" VERSION.md
+        run: sed -i "s/.*/${{ needs.check-version.outputs.version }}/g" VERSION.md
 
       - name: Commit version change
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "[Release] Update version for v${{ needs.check-composer.outputs.version }} release"
+          commit_message: "[Release] Update version for ${{ inputs.version }} release"
 
       - name: Generate release notes
         id: generated-notes
         uses: RedCrafter07/release-notes-action@main
         with:
-          tag-name: v${{ needs.check-composer.outputs.version }}
+          tag-name: ${{ inputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref_name }}
 
@@ -252,7 +248,7 @@ jobs:
           # Pass extracted release date, release notes and version to the Action.
           release-date: ${{ steps.release_date.outputs.date }}
           release-notes: ${{ steps.cleaned-notes.outputs.notes }}
-          latest-version: v${{ needs.check-composer.outputs.version }}
+          latest-version: ${{ inputs.version }}
           compare-url-target-revision: ${{ github.ref_name }}
           parse-github-usernames: true
 
@@ -261,7 +257,7 @@ jobs:
         with:
           # Push updated CHANGELOG to release target branch.
           branch: ${{ github.ref_name }}
-          commit_message: "[Release] Update CHANGELOG for v${{ needs.check-composer.outputs.version }} release"
+          commit_message: "[Release] Update CHANGELOG for ${{ inputs.version }} release"
           file_pattern: CHANGELOG.md
 
       - name: Create release
@@ -269,8 +265,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ needs.check-composer.outputs.version }}
-          name: v${{ needs.check-composer.outputs.version }}
+          tag_name: ${{ inputs.version }}
+          name: ${{ inputs.version }}
           body: ${{ steps.generated-notes.outputs.release-notes }}
           target_commitish: ${{ github.ref_name }}
           make_latest: "${{ github.ref_name == github.event.repository.default_branch }}"
