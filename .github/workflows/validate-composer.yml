@@ -3,8 +3,12 @@ name: Validate Composer
 on:
   push:
     branches: [ "master" ]
+    paths:
+      - '**/composer.*'
   pull_request:
     branches: [ "master" ]
+    paths:
+      - '**/composer.*'
 
 permissions:
   contents: read
