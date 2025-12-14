@@ -1,14 +1,7 @@
 /.idea
 /.phpunit.cache
-/build
-/coverage-html
-/metrics
 /vendor
 composer.lock
 .DS_Store
-.php_cs.cache
-.php-cs-fixer.cache
-.phpunit.result.cache
 dbname*
-phpunit.xml
 Thumbs.db
