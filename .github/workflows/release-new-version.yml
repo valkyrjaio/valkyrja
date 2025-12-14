@@ -18,6 +18,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      token: ${{ steps.generate-token.outputs.token }}
+
     steps:
       - name: Validate Format
         env:
@@ -31,6 +35,65 @@ jobs:
             echo "Invalid version passed"
 
             exit 1
+          fi
+
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.VALKYRJA_GHA_APP_ID }}
+          private-key: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+
+      - name: Remove optional "v" prefix
+        id: version
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          echo "version=${VERSION#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Get all tags for repository
+        id: get_tags
+        uses: octokit/request-action@v2.x
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+        with:
+          route: GET /repos/${{ github.repository }}/git/matching-refs/tags
+
+      - name: Check if version already exists
+        id: version-guard
+        env:
+          VERSION: v${{ steps.version.outputs.version }}
+          TAGS: ${{ steps.get_tags.outputs.data }}
+        run: |
+          if [[ $TAGS == *"refs/tags/$VERSION"* ]]; then
+            echo "Version exists! Aborting."
+
+            exit 1
+          else
+            echo "Version does not exist! Proceeding."
+          fi
+
+      - name: Check if branch and version match
+        if: ${{ github.ref_name != 'main' && github.ref_name != 'master' }}
+        id: guard
+        env:
+          BRANCH: ${{ github.ref_name }}
+          NUMERIC_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          MAJOR_VERSION="${NUMERIC_VERSION%%.*}"
+          BRANCH_MAJOR_VERSION="${BRANCH%%.*}"
+
+          if [ "$MAJOR_VERSION" != "$BRANCH_MAJOR_VERSION" ]; then
+            echo "Mismatched versions! Aborting."
+          
+            exit 1
+          else
+            echo "Versions match! Proceeding."
           fi
 
   check-composer:
@@ -114,81 +177,27 @@ jobs:
       notes: ${{ steps.cleaned-notes.outputs.notes }}
 
     steps:
-      - name: Generate a token
-        id: generate-token
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: ${{ secrets.VALKYRJA_GHA_APP_ID }}
-          private-key: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
-
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
-          token: ${{ steps.generate-token.outputs.token }}
-
-      - name: Remove optional "v" prefix
-        id: version
-        env:
-          VERSION: ${{ inputs.version }}
-        run: |
-          echo "version=${VERSION#v}" >> "$GITHUB_OUTPUT"
-
-      - name: Get all tags for repository
-        id: get_tags
-        uses: octokit/request-action@v2.x
-        env:
-          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
-        with:
-          route: GET /repos/${{ github.repository }}/git/matching-refs/tags
-
-      - name: Check if version already exists
-        id: version-guard
-        env:
-          VERSION: v${{ steps.version.outputs.version }}
-          TAGS: ${{ steps.get_tags.outputs.data }}
-        run: |
-          if [[ $TAGS == *"refs/tags/$VERSION"* ]]; then
-            echo "Version exists! Aborting."
-
-            exit 1
-          else
-            echo "Version does not exist! Proceeding."
-          fi
-
-      - name: Check if branch and version match
-        if: ${{ github.ref_name != 'main' && github.ref_name != 'master' }}
-        id: guard
-        env:
-          BRANCH: ${{ github.ref_name }}
-          NUMERIC_VERSION: ${{ steps.version.outputs.version }}
-        run: |
-          MAJOR_VERSION="${NUMERIC_VERSION%%.*}"
-          BRANCH_MAJOR_VERSION="${BRANCH%%.*}"
-
-          if [ "$MAJOR_VERSION" != "$BRANCH_MAJOR_VERSION" ]; then
-            echo "Mismatched versions! Aborting."
-          
-            exit 1
-          else
-            echo "Versions match! Proceeding."
-          fi
+          token: ${{ needs.check-composer.outputs.token }}
 
       - name: Update Application.php version
-        run: sed -i "s/const string VERSION = '.*';/const string VERSION = '${{ steps.version.outputs.version }}';/g" src/Valkyrja/Application/Contract/Application.php
+        run: sed -i "s/const string VERSION = '.*';/const string VERSION = '${{ needs.check-composer.outputs.version }}';/g" src/Valkyrja/Application/Contract/Application.php
 
       - name: Update VERSION.md version
-        run: sed -i "s/.*/${{ steps.version.outputs.version }}/g" VERSION.md
+        run: sed -i "s/.*/${{ needs.check-composer.outputs.version }}/g" VERSION.md
 
       - name: Commit version change
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "[Release] Update version for v${{ steps.version.outputs.version }} release"
+          commit_message: "[Release] Update version for v${{ needs.check-composer.outputs.version }} release"
 
       - name: Generate release notes
         id: generated-notes
         uses: RedCrafter07/release-notes-action@main
         with:
-          tag-name: v${{ steps.version.outputs.version }}
+          tag-name: v${{ needs.check-composer.outputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref_name }}
 
@@ -237,7 +246,7 @@ jobs:
           # Pass extracted release date, release notes and version to the Action.
           release-date: ${{ steps.release_date.outputs.date }}
           release-notes: ${{ steps.cleaned-notes.outputs.notes }}
-          latest-version: v${{ steps.version.outputs.version }}
+          latest-version: v${{ needs.check-composer.outputs.version }}
           compare-url-target-revision: ${{ github.ref_name }}
           parse-github-usernames: true
 
@@ -246,7 +255,7 @@ jobs:
         with:
           # Push updated CHANGELOG to release target branch.
           branch: ${{ github.ref_name }}
-          commit_message: "[Release] Update CHANGELOG for v${{ steps.version.outputs.version }} release"
+          commit_message: "[Release] Update CHANGELOG for v${{ needs.check-composer.outputs.version }} release"
           file_pattern: CHANGELOG.md
 
       - name: Create release
@@ -254,8 +263,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.version.outputs.version }}
-          name: v${{ steps.version.outputs.version }}
+          tag_name: v${{ needs.check-composer.outputs.version }}
+          name: v${{ needs.check-composer.outputs.version }}
           body: ${{ steps.generated-notes.outputs.release-notes }}
           target_commitish: ${{ github.ref_name }}
           make_latest: "${{ github.ref_name == github.event.repository.default_branch }}"
