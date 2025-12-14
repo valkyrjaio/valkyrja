@@ -22,7 +22,6 @@ jobs:
 
     steps:
       - name: Ensure not using master
-        id: determine-merge-branch
         env:
           BRANCH: ${{ github.ref_name }}
         run: |
