@@ -11,9 +11,6 @@ permissions:
 
 jobs:
   build:
-
-    runs-on: ${{ matrix.os }}
-
     strategy:
       fail-fast: true
       matrix:
@@ -23,6 +20,8 @@ jobs:
 
     name: PHP ${{ matrix.php }} (${{ matrix.os == 'ubuntu-latest' && 'Linux' || 'Windows'  }})
 
+    runs-on: ${{ matrix.os }}
+
     continue-on-error: ${{ matrix.php == '8.6' }}
 
     steps:
@@ -30,8 +29,8 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Determine if workflow should run based on files changed
-        uses: dorny/paths-filter@v3
         id: changes
+        uses: dorny/paths-filter@v3
         with:
           filters: |
             files:

@@ -7,17 +7,12 @@ on:
     branches: [ "master" ]
 
 permissions:
+  # Required for commenting on pull requests
+  pull-requests: write
   contents: read
 
 jobs:
   build:
-
-    runs-on: ${{ matrix.os }}
-
-    permissions:
-      # Required for commenting on pull requests
-      pull-requests: write
-
     strategy:
       fail-fast: true
       matrix:
@@ -26,13 +21,15 @@ jobs:
 
     name: PHP ${{ matrix.php }}
 
+    runs-on: ${{ matrix.os }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
 
       - name: Determine if workflow should run based on files changed
-        uses: dorny/paths-filter@v3
         id: changes
+        uses: dorny/paths-filter@v3
         with:
           filters: |
             files:

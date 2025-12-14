@@ -11,9 +11,6 @@ permissions:
 
 jobs:
   build:
-
-    runs-on: ${{ matrix.os }}
-
     strategy:
       fail-fast: true
       matrix:
@@ -22,13 +19,15 @@ jobs:
 
     name: PHP ${{ matrix.php }}
 
+    runs-on: ${{ matrix.os }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
 
       - name: Determine if workflow should run based on files changed
-        uses: dorny/paths-filter@v3
         id: changes
+        uses: dorny/paths-filter@v3
         with:
           filters: |
             files:
