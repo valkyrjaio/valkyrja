@@ -89,4 +89,4 @@ jobs:
             exit 0
           fi
 
-          gh pr comment "$PR_URL" --body "Please run \`composer psalm\` locally, fix all the issues, and commit the changes."
+          gh pr comment "$PR_URL" --body "Psalm failed. Please run \`composer psalm\` locally, fix all the issues, and commit the changes."
