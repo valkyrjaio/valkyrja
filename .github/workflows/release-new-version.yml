@@ -14,9 +14,9 @@ permissions:
 
 jobs:
   release:
-    runs-on: ubuntu-24.04
-
     name: Release ${{ inputs.version }}
+
+    runs-on: ubuntu-24.04
 
     outputs:
       version: ${{ steps.version.outputs.version }}
@@ -37,21 +37,24 @@ jobs:
 
       - name: Remove optional "v" prefix
         id: version
-        run: |
-          echo "version=${VERSION#v}" >> "$GITHUB_OUTPUT"
         env:
           VERSION: ${{ inputs.version }}
+        run: |
+          echo "version=${VERSION#v}" >> "$GITHUB_OUTPUT"
 
       - name: Get all tags for repository
-        uses: octokit/request-action@v2.x
         id: get_tags
-        with:
-          route: GET /repos/${{ github.repository }}/git/matching-refs/tags
+        uses: octokit/request-action@v2.x
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+        with:
+          route: GET /repos/${{ github.repository }}/git/matching-refs/tags
 
       - name: Check if version already exists
         id: version-guard
+        env:
+          VERSION: v${{ steps.version.outputs.version }}
+          TAGS: ${{ steps.get_tags.outputs.data }}
         run: |
           if [[ $TAGS == *"refs/tags/$VERSION"* ]]; then
             echo "Version exists! Aborting."
@@ -60,13 +63,13 @@ jobs:
           else
             echo "Version does not exist! Proceeding."
           fi
-        env:
-          VERSION: v${{ steps.version.outputs.version }}
-          TAGS: ${{ steps.get_tags.outputs.data }}
 
       - name: Check if branch and version match
         if: ${{ github.ref_name != 'main' && github.ref_name != 'master' }}
         id: guard
+        env:
+          BRANCH: ${{ github.ref_name }}
+          NUMERIC_VERSION: ${{ steps.version.outputs.version }}
         run: |
           MAJOR_VERSION="${NUMERIC_VERSION%%.*}"
           BRANCH_MAJOR_VERSION="${BRANCH%%.*}"
@@ -78,9 +81,6 @@ jobs:
           else
             echo "Versions match! Proceeding."
           fi
-        env:
-          BRANCH: ${{ github.ref_name }}
-          NUMERIC_VERSION: ${{ steps.version.outputs.version }}
 
       - name: Update Application.php version
         run: sed -i "s/const string VERSION = '.*';/const string VERSION = '${{ steps.version.outputs.version }}';/g" src/Valkyrja/Application/Contract/Application.php
@@ -103,6 +103,8 @@ jobs:
 
       - name: Cleanup release notes
         id: cleaned-notes
+        env:
+          RELEASE_NOTES: ${{ steps.generated-notes.outputs.release-notes }}
         run: |
           START_FROM=$(echo -n "$RELEASE_NOTES" | awk "/What's Changed/{ print NR; exit }" -)
           DROP_FROM_CONTRIBUTORS=$(echo -n "$RELEASE_NOTES" | awk "/New Contributors/{ print NR; exit }" -)
@@ -128,8 +130,6 @@ jobs:
             echo "$RELEASE_NOTES"
             echo EOF
           } >> "$GITHUB_OUTPUT";
-        env:
-          RELEASE_NOTES: ${{ steps.generated-notes.outputs.release-notes }}
 
       - name: Get date for release
         id: release_date
