@@ -26,18 +26,36 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
+      - name: Determine if workflow should run based on files changed
+        uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            files:
+              - '.github/ci/phpcodesniffer/*'
+              - '.github/workflows/phpcodesniffer.yml'
+              - 'bin/valkyrja'
+              - 'functions/*.php'
+              - 'src/*.php'
+              - 'tests/*.php'
+              - 'composer.json'
+
       - name: Setup PHP
+        if: steps.changes.outputs.files == 'true'
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, intl
+
       - name: Install Composer dependencies
+        if: steps.changes.outputs.files == 'true'
         uses: ramsey/composer-install@v3
         with:
           composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }} --prefer-dist --no-progress
           custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: Install PHP Code Sniffer Composer dependencies
+        if: steps.changes.outputs.files == 'true'
         uses: ramsey/composer-install@v3
         with:
           composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }} --prefer-dist --no-progress
@@ -45,5 +63,6 @@ jobs:
           working-directory: .github/ci/phpcodesniffer
 
       - name: Run PHP Code Sniffer
+        if: steps.changes.outputs.files == 'true'
         run: |
           composer phpcodesniffer

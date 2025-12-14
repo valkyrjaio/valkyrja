@@ -29,19 +29,38 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
+      - name: Determine if workflow should run based on files changed
+        uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            files:
+              - '.github/ci/phpunit/*'
+              - '.github/ci/suggested/*'
+              - '.github/workflows/phpunit.yml'
+              - 'bin/valkyrja'
+              - 'functions/*.php'
+              - 'src/*.php'
+              - 'tests/*.php'
+              - 'composer.json'
+
       - name: Setup PHP
+        if: steps.changes.outputs.files == 'true'
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, intl, sodium, fileinfo, pdo, php-mysql, php-sqlite3, php-pgsql, pdo_sqlite, pdo_pgsql, pdo_mysql xdebug
           ini-values: zend.assertions=1
+
       - name: Install Composer dependencies
+        if: steps.changes.outputs.files == 'true'
         uses: ramsey/composer-install@v3
         with:
           composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }} --prefer-dist --no-progress
           custom-cache-suffix: $(date -u "+%Y-%m")
 
       - name: Install PHPUnit Composer dependencies
+        if: steps.changes.outputs.files == 'true'
         uses: ramsey/composer-install@v3
         with:
           composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }} --prefer-dist --no-progress
@@ -49,6 +68,7 @@ jobs:
           working-directory: .github/ci/phpunit
 
       - name: Install Suggested Packages Composer dependencies
+        if: steps.changes.outputs.files == 'true'
         uses: ramsey/composer-install@v3
         with:
           composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=php+' || '' }} --prefer-dist --no-progress
@@ -56,21 +76,22 @@ jobs:
           working-directory: .github/ci/suggested
 
       - name: Make build logs dir
+        if: steps.changes.outputs.files == 'true'
         run: mkdir -p .github/ci/phpunit/build/logs
 
       - name: Run PHPUnit tests with no coverage
-        if: ${{ matrix.php != '8.4' }}
+        if: ${{ matrix.php != '8.4' && steps.changes.outputs.files == 'true' }}
         run: |
           composer phpunit-no-cov
 
       - name: Run PHPUnit tests with full coverage
-        if: ${{ matrix.php == '8.4' }}
+        if: ${{ matrix.php == '8.4' && steps.changes.outputs.files == 'true' }}
         run: |
           composer phpunit-coverage
 
       - name: Upload Coveralls coverage report
         uses: coverallsapp/github-action@v2.3.6
-        if: ${{ matrix.php == '8.4' }}
+        if: ${{ matrix.php == '8.4' && steps.changes.outputs.files == 'true' }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           file: ".github/ci/phpunit/build/logs/clover.xml"
