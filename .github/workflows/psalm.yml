@@ -7,6 +7,8 @@ on:
     branches: [ "master" ]
 
 permissions:
+  # Required for commenting on pull requests
+  pull-requests: write
   contents: read
 
 jobs:
@@ -74,3 +76,17 @@ jobs:
         if: steps.changes.outputs.files == 'true'
         run: |
           composer psalm-shepherd
+
+      - name: Report failure in PR comment
+        #if: steps.build_step.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          # Check if it's a pull request event
+          if [ -z "$PR_URL" ]; then
+            echo "Not a pull request, skipping comment."
+            exit 0
+          fi
+
+          gh pr comment "$PR_URL" --body "Please run \`composer psalm\` locally, fix all the issues, and commit the changes."
