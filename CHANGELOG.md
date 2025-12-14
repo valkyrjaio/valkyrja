@@ -1,6 +1,10 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.2.17...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.2.18...master)
+
+## [v25.2.18](https://github.com/valkyrjaio/valkyrja/compare/v25.2.17...v25.2.18) - 2025-12-14
+
+* [CI] Fix versioning in release workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/129
 
 ## [v25.2.17](https://github.com/valkyrjaio/valkyrja/compare/v25.2.16...v25.2.17) - 2025-12-14
 
