@@ -2,9 +2,9 @@ name: PHPStan
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ 'master', '??.x' ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ 'master', '??.x' ]
 
 permissions:
   # Required for commenting on pull requests
