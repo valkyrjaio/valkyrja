@@ -66,3 +66,23 @@ jobs:
         if: steps.changes.outputs.files == 'true'
         run: |
           composer phpcsfixer-check
+
+      - name: Report failure in PR comment
+        # if: steps.build_step.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          # Check if it's a pull request event
+          if [ -z "$PR_URL" ]; then
+            echo "Not a pull request, skipping comment."
+            exit 0
+          fi
+
+          # Extract relevant failure info, e.g., last 50 lines of log
+          # tail -n 50 build.log > build_tail.log
+
+          # Post the comment using the GitHub CLI
+          # The `gh pr comment` command requires the PR number or URL
+          # --body-file build_tail.log
+          gh pr comment "$PR_URL" --body "Please run composer phpcsfixer-fix locally and commit the changes"
