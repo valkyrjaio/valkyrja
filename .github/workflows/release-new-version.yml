@@ -40,7 +40,7 @@ jobs:
       matrix:
         paths:
           - name: Root
-            path: ./
+            path: .github/ci/root
           - name: Churn
             path: .github/ci/churn
           - name: PHPArkitect
