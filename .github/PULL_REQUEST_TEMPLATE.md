@@ -32,8 +32,8 @@ Put an `x` in all the boxes that apply:
 
 <!--
 
-By submitting a PR you grant the projec the right to include and distribute your
-written code under the MIT license.
+By submitting a PR you grant the project the right to include and distribute
+your written code under the MIT license.
 
 You also understand the contributing guidelines.
 https://github.com/valkyrjaio/valkyrja/blob/master/CONTRIBUTING.md
