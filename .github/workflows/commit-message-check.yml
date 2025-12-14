@@ -40,10 +40,12 @@ jobs:
       - name: Check Period at end
         uses: gsactions/commit-message-checker@v2
         with:
-          pattern: '.*.'
+          pattern: '(.*).'
           error: 'Your first line has to end in a period.'
           excludeDescription: 'true'
           excludeTitle: 'true'
+          checkAllCommitMessages: 'true'
+          accessToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Report failure in PR comment
         if: steps.build_step.outcome == 'failure'
