@@ -1,6 +1,10 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.2.14...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.2.15...master)
+
+## [v25.2.15](https://github.com/valkyrjaio/valkyrja/compare/v25.2.14...v25.2.15) - 2025-12-13
+
+* [CI] Fixing path filtering by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/97
 
 ## [v25.2.14](https://github.com/valkyrjaio/valkyrja/compare/v25.2.13...v25.2.14) - 2025-12-13
 
