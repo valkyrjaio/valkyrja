@@ -23,14 +23,14 @@ jobs:
     name: PHP ${{ matrix.php }}
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, intl
-      - name: Checkout code
-        uses: actions/checkout@v6
-
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v3
         with:

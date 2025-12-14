@@ -26,15 +26,15 @@ jobs:
     continue-on-error: ${{ matrix.php == '8.6' }}
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, intl, sodium, fileinfo, pdo, php-mysql, php-sqlite3, php-pgsql, pdo_sqlite, pdo_pgsql, pdo_mysql xdebug
           ini-values: zend.assertions=1
-      - name: Checkout code
-        uses: actions/checkout@v6
-
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v3
         with:
