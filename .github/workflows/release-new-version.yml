@@ -83,6 +83,9 @@ jobs:
         run: |
           cd $COMPOSER_PATH
 
+          # First install so update would be as clean as possible
+          composer install
+
           COMPOSER=$(composer update 2>&1)
           NO_CHANGES_TEXT="Nothing to install, update or remove"
 
