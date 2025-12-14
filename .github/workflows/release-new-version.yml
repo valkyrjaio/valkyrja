@@ -55,7 +55,7 @@ jobs:
         run: |
           if [[ $TAGS == *"refs/tags/$VERSION"* ]]; then
             echo "Version exists! Aborting."
-            
+
             exit 1
           else
             echo "Version does not exist! Proceeding."
