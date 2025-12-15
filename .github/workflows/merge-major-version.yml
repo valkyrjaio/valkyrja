@@ -89,6 +89,11 @@ jobs:
           token: ${{ steps.generate-token.outputs.token }}
           fetch-depth: 0
 
+      - name: Configure Git Identity
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - name: Merge ${{ github.ref_name }} into ${{ needs.process-version.outputs.merge-into-branch }}
         env:
           FROM_BRANCH: ${{ github.ref_name }}
@@ -103,7 +108,7 @@ jobs:
             git add "$IGNORED_FILE"
           done
 
-      - name: Commit README.md badge change
+      - name: Commit merge
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "[Merge] Merge branch `${{ github.ref_name }}` into `${{ needs.process-version.outputs.merge-into-branch }}"
