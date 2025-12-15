@@ -87,14 +87,13 @@ jobs:
         with:
           ref: ${{ needs.process-version.outputs.merge-into-branch }}
           token: ${{ steps.generate-token.outputs.token }}
+          fetch-depth: 0
 
       - name: Merge ${{ github.ref_name }} into ${{ needs.process-version.outputs.merge-into-branch }}
         env:
           FROM_BRANCH: ${{ github.ref_name }}
           TARGET_BRANCH: ${{ needs.process-version.outputs.merge-into-branch }}
         run: |
-          git checkout $FROM_BRANCH
-          git checkout $TARGET_BRANCH
           git merge --no-commit "$FROM_BRANCH"
 
           IGNORED_FILES=("CHANGELOG.md" "VERSION.md" "composer.json" "README.md")
