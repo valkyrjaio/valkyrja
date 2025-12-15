@@ -85,53 +85,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
-#          ref: ${{ needs.process-version.outputs.merge-into-branch }}
-          token: ${{ steps.generate-token.outputs.token }}
-
-      - name: Merge ${{ github.ref_name }} into ${{ needs.process-version.outputs.merge-into-branch }}
-        uses: devmasx/merge-branch@master
-        with:
-          type: now
-          message: "[Merge] Merge branch `${{ github.ref_name }}` into `${{ needs.process-version.outputs.merge-into-branch }}`."
-          from_branch: ${{ github.ref_name }}
-          target_branch: ${{ needs.process-version.outputs.merge-into-branch }}
-          github_token: ${{ steps.generate-token.outputs.token }}
-
-#      - name: Merge ${{ github.ref_name }} into ${{ needs.process-version.outputs.merge-into-branch }}
-#        env:
-#          FROM_BRANCH: ${{ github.ref_name }}
-#          TARGET_BRANCH: ${{ needs.process-version.outputs.merge-into-branch }}
-#        run: |
-#          git merge --no-commit "$FROM_BRANCH"
-#          git checkout --ours -- CHANGELOG.md
-#          git checkout --ours -- VERSION.md
-#          git checkout --ours -- composer.json
-
-  update-readme-post-merge:
-    needs: [merge, process-version]
-
-    name: Update README for ${{ needs.process-version.outputs.merge-into-branch }} after merging ${{ github.ref_name }}
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Generate a token
-        id: generate-token
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: ${{ secrets.VALKYRJA_GHA_APP_ID }}
-          private-key: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
-
-      - name: Checkout repository
-        uses: actions/checkout@v6
-        with:
           ref: ${{ needs.process-version.outputs.merge-into-branch }}
           token: ${{ steps.generate-token.outputs.token }}
 
-      - name: Update README.md badges
-        run: sed -i "s/${{ github.ref_name }}/${{ needs.process-version.outputs.merge-into-branch }}/g" README.md
+      - name: Merge ${{ github.ref_name }} into ${{ needs.process-version.outputs.merge-into-branch }}
+        env:
+          FROM_BRANCH: ${{ github.ref_name }}
+          TARGET_BRANCH: ${{ needs.process-version.outputs.merge-into-branch }}
+        run: |
+          git merge --no-commit "$FROM_BRANCH"
+          
+          IGNORED_FILES=("CHANGELOG.md" "VERSION.md" "composer.json" "README.md")
+
+          for IGNORED_FILE in "${IGNORED_FILES[@]}"; do
+            git checkout --ours -- "$IGNORED_FILE"
+            git add "$IGNORED_FILE"
+          done
 
       - name: Commit README.md badge change
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "[Merge] Update README badges from ${{ github.ref_name }} to ${{ needs.process-version.outputs.merge-into-branch }}."
+          commit_message: "[Merge] Merge branch `${{ github.ref_name }}` into `${{ needs.process-version.outputs.merge-into-branch }}"
