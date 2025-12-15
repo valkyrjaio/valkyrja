@@ -85,6 +85,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
+#          ref: ${{ needs.process-version.outputs.merge-into-branch }}
           token: ${{ steps.generate-token.outputs.token }}
 
       - name: Merge ${{ github.ref_name }} into ${{ needs.process-version.outputs.merge-into-branch }}
@@ -95,6 +96,16 @@ jobs:
           from_branch: ${{ github.ref_name }}
           target_branch: ${{ needs.process-version.outputs.merge-into-branch }}
           github_token: ${{ steps.generate-token.outputs.token }}
+
+#      - name: Merge ${{ github.ref_name }} into ${{ needs.process-version.outputs.merge-into-branch }}
+#        env:
+#          FROM_BRANCH: ${{ github.ref_name }}
+#          TARGET_BRANCH: ${{ needs.process-version.outputs.merge-into-branch }}
+#        run: |
+#          git merge --no-commit "$FROM_BRANCH"
+#          git checkout --ours -- CHANGELOG.md
+#          git checkout --ours -- VERSION.md
+#          git checkout --ours -- composer.json
 
   update-readme-post-merge:
     needs: [merge, process-version]
