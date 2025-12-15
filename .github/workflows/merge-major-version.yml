@@ -93,6 +93,8 @@ jobs:
           FROM_BRANCH: ${{ github.ref_name }}
           TARGET_BRANCH: ${{ needs.process-version.outputs.merge-into-branch }}
         run: |
+          git branch
+          git fetch
           git merge --no-commit origin/"$FROM_BRANCH"
 
           IGNORED_FILES=("CHANGELOG.md" "VERSION.md" "composer.json" "README.md")
