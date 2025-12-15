@@ -111,4 +111,4 @@ jobs:
       - name: Commit merge
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "[Merge] Merge branch `${{ github.ref_name }}` into `${{ needs.process-version.outputs.merge-into-branch }}"
+          commit_message: "[Merge] Merge branch `${{ github.ref_name }}` into `${{ needs.process-version.outputs.merge-into-branch }}`"
