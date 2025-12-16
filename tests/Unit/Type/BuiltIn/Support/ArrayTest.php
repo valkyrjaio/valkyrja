@@ -16,6 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\BuiltIn\Support;
 use JsonException;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Support\Arr;
+use Valkyrja\Type\Exception\RuntimeException;
 
 use function PHPUnit\Framework\assertSame;
 
@@ -23,11 +24,12 @@ class ArrayTest extends TestCase
 {
     /** @var array[] */
     protected const array VALUE = [
-        'one' => [
+        'one'      => [
             'two' => [
                 'three' => 'test',
             ],
         ],
+        'notarray' => 'notarrayvalue',
     ];
 
     public function testGetValueDotNotation(): void
@@ -37,8 +39,11 @@ class ArrayTest extends TestCase
         $result        = Arr::getValueDotNotation(self::VALUE, 'one.two.three', $default);
         $resultDefault = Arr::getValueDotNotation(self::VALUE, 'one.two.non_existent', $default);
 
+        $resultDefaultNonArray = Arr::getValueDotNotation(self::VALUE, 'notarray.nonexistent', $default);
+
         self::assertSame(self::VALUE['one']['two']['three'], $result);
         self::assertSame($default, $resultDefault);
+        self::assertSame($default, $resultDefaultNonArray);
     }
 
     /**
@@ -65,6 +70,16 @@ class ArrayTest extends TestCase
 
         self::assertSame(self::VALUE, $result);
         self::assertSame($arrEmpty, $resultEmpty);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testFromStringInvalidString(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        Arr::fromString('"validbutnotarray"');
     }
 
     public function testWithoutNull(): void

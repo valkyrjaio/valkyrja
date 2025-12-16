@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\BuiltIn\Support;
 
 use Exception;
+use JsonException;
+use stdClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Support\Str as Helper;
 
@@ -141,5 +143,26 @@ class StringTest extends TestCase
         self::assertFalse(Helper::isUppercase('lowercase'));
         self::assertFalse(Helper::isUppercase('Capitalized'));
         self::assertTrue(Helper::isUppercase('UPPERCASE'));
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testFromMixed(): void
+    {
+        $obj      = new stdClass();
+        $obj->foo = 'bar';
+
+        $resource = fopen(filename: __DIR__ . '/../../../../storage/.gitignore', mode: 'rb');
+
+        self::assertSame('string', Helper::fromMixed('string'));
+        self::assertSame('3', Helper::fromMixed(3));
+        self::assertSame('3.04', Helper::fromMixed(3.04));
+        self::assertSame('true', Helper::fromMixed(true));
+        self::assertSame('false', Helper::fromMixed(false));
+        self::assertSame('null', Helper::fromMixed(null));
+        self::assertSame('{"foo":"bar"}', Helper::fromMixed(['foo' => 'bar']));
+        self::assertSame('{"foo":"bar"}', Helper::fromMixed($obj));
+        self::assertSame('resource', Helper::fromMixed($resource));
     }
 }
