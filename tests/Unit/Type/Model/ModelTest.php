@@ -17,10 +17,12 @@ use ArrayAccess;
 use Error;
 use JsonException;
 use Valkyrja\Tests\Classes\Model\ModelClass;
+use Valkyrja\Tests\Classes\Model\ModelInvalidIssetMethodClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\Contract\Type;
 use Valkyrja\Type\Model\Contract\Model as Contract;
+use Valkyrja\Type\Model\Exception\RuntimeException;
 
 use function json_encode;
 use function method_exists;
@@ -144,6 +146,14 @@ class ModelTest extends TestCase
         self::assertTrue($model->offsetExists(ModelClass::PRIVATE));
     }
 
+    public function testInvalidIssetReturn(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $model = new ModelInvalidIssetMethodClass();
+        $model->__isset('test');
+    }
+
     /**
      * @throws JsonException
      */
@@ -156,6 +166,12 @@ class ModelTest extends TestCase
         self::assertFalse(isset($model->private));
 
         $model = ModelClass::fromValue(ModelClass::VALUES);
+
+        self::assertTrue(isset($model->public));
+        self::assertTrue(isset($model->protected));
+        self::assertTrue(isset($model->private));
+
+        $model = ModelClass::fromValue((object) ModelClass::VALUES);
 
         self::assertTrue(isset($model->public));
         self::assertTrue(isset($model->protected));

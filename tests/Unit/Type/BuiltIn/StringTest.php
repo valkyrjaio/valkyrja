@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\BuiltIn;
 
+use stdClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\StringT;
 
@@ -32,8 +33,13 @@ class StringTest extends TestCase
     public function testFromValue(): void
     {
         $typeFromValue = StringT::fromValue(self::VALUE);
+        $array         = ['foo' => 'bar'];
+        $obj           = new stdClass();
+        $obj->foo      = 'bar';
 
         self::assertSame(self::VALUE, $typeFromValue->asValue());
+        self::assertSame('{"foo":"bar"}', StringT::fromValue($array)->asValue());
+        self::assertSame('{"foo":"bar"}', StringT::fromValue($obj)->asValue());
     }
 
     public function testAsFlatValue(): void

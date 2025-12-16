@@ -50,6 +50,13 @@ class EnumTest extends TestCase
         self::assertSame(self::VALUE, $type->asValue());
     }
 
+    public function testFromNonStringOrIntValue(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        EnumClass::fromValue(true);
+    }
+
     public function testFromValueInvalidValue(): void
     {
         $this->expectException(InvalidArgumentException::class);
