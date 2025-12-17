@@ -133,6 +133,8 @@ class Processor implements Contract
         $parameterRegex = ($isOptional ? Regex::START_OPTIONAL_CAPTURE_GROUP : '')
             // Start the actual value's capture group
             . (! $parameter->shouldCapture() ? Regex::START_NON_CAPTURE_GROUP : Regex::START_CAPTURE_GROUP)
+            // Add the parameter name only for a capture group (non capture groups won't be captured so we don't need them to be attributed to a param name)
+            . ($parameter->shouldCapture() ? Regex::START_CAPTURE_GROUP_NAME . $parameter->getName() . Regex::END_CAPTURE_GROUP_NAME : '')
             // Set the parameter's regex to match the value
             . $parameter->getRegex()
             // End the capture group

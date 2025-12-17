@@ -33,7 +33,7 @@ class DispatcherTest extends TestCase
     /**
      * Callback test.
      */
-    public static function dispatchCallback(): string
+    public static function dispatchCallback(DispatchCollectableEventClass|StoppableEventClass $event): string
     {
         self::$dispatched = true;
 

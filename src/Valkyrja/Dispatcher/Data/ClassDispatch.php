@@ -25,7 +25,7 @@ class ClassDispatch extends Dispatch implements Contract
 {
     /**
      * @param class-string                               $class        The class name
-     * @param array<array-key, mixed>|null               $arguments    The arguments
+     * @param array<non-empty-string, mixed>|null        $arguments    The arguments
      * @param array<non-empty-string, class-string>|null $dependencies The dependencies
      */
     public function __construct(

@@ -113,7 +113,7 @@ class Dispatcher implements Contract
     {
         // Dispatch the listener with the event
         /** @var mixed $dispatch */
-        $dispatch = $this->dispatcher->dispatch($listener->getDispatch(), [$event]);
+        $dispatch = $this->dispatcher->dispatch($listener->getDispatch(), ['event' => $event]);
 
         // If the event is a dispatch collectable event
         if ($event instanceof DispatchCollectableEvent) {

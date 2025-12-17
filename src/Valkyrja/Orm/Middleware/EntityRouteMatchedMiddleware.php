@@ -86,86 +86,67 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
             $dependencies = $dispatch->getDependencies() ?? [];
 
             // Iterate through the params
-            foreach ($parameters as $index => $parameter) {
-                $response = $this->checkParameterForEntity((int) $index, $parameter, $dependencies, $arguments);
+            foreach ($parameters as $parameter) {
+                $name = $parameter->getName();
+                /** @psalm-suppress MixedAssignment */
+                $value = $arguments[$name];
+                $type  = $parameter->getCast()->type ?? null;
 
-                if ($response !== null) {
+                if ($type === null || ! is_a($type, Entity::class, true)) {
+                    continue;
+                }
+
+                $response = $this->checkParameterForEntity(
+                    parameter: $parameter,
+                    type: $type,
+                    value: $value
+                );
+
+                if ($response instanceof Response) {
                     return $response;
                 }
+
+                unset($dependencies[$name]);
+
+                $arguments[$name] = $response;
             }
 
-            $route = $route->withDispatch($dispatch->withArguments($arguments));
-            $route = $route->withDispatch($dispatch->withDependencies($dependencies));
+            $route = $route->withDispatch(
+                $dispatch
+                    ->withDependencies($dependencies)
+                    ->withArguments($arguments)
+            );
         }
 
         return $route;
     }
 
     /**
-     * Check a route's parameters for an entity.
+     * Check a route's parameter for valid entity values.
      *
-     * @param int                                   $index        The index
-     * @param Parameter                             $parameter    The parameter
-     * @param array<non-empty-string, class-string> $dependencies The route dependencies
-     * @param array<array-key, mixed>               $arguments    The arguments
+     * @param Parameter            $parameter The parameter
+     * @param class-string<Entity> $type      The entity type
+     * @param mixed                $value     The argument value
      *
-     * @return Response|null
+     * @return Entity|Response
      */
-    protected function checkParameterForEntity(int $index, Parameter $parameter, array &$dependencies, array &$arguments): Response|null
+    protected function checkParameterForEntity(Parameter $parameter, string $type, mixed $value): Entity|Response
     {
-        $type = $parameter->getCast()->type ?? null;
-
-        if ($type !== null && is_a($type, Entity::class, true)) {
-            /** @var mixed $match */
-            $match = $arguments[$index];
-
-            if ((is_string($match) && $match !== '') || is_int($match) || $match instanceof Entity) {
-                /** @var Entity|non-empty-string|int $match */
-                return $this->findAndSetEntityFromParameter($parameter, $type, $dependencies, $match);
-            }
-
-            return $this->getBadRequestResponse($type, $match);
-        }
-
-        return null;
-    }
-
-    /**
-     * Try to find and set a route's entity dependency.
-     *
-     * @param Parameter                             $parameter    The parameter
-     * @param class-string<Entity>                  $entityName   The entity class name
-     * @param array<non-empty-string, class-string> $dependencies The dependencies
-     * @param Entity|non-empty-string|int           $value        The value
-     *
-     * @return Response|null
-     */
-    protected function findAndSetEntityFromParameter(
-        Parameter $parameter,
-        string $entityName,
-        array &$dependencies,
-        Entity|string|int &$value
-    ): Response|null {
         if ($value instanceof Entity) {
-            return null;
+            return $value;
         }
 
-        // Attempt to get the entity from the ORM repository
-        $entity = $this->findEntityFromParameter($parameter, $entityName, $value);
-
-        if ($entity === null) {
-            return $this->getNotFoundResponse($entityName, $value);
+        if ((is_string($value) && $value !== '') || is_int($value)) {
+            /** @var non-empty-string|int $value */
+            return $this->findEntityFromParameter(
+                parameter: $parameter,
+                entityName: $type,
+                value: $value
+            )
+                ?? $this->getNotFoundResponse(parameter: $parameter);
         }
 
-        // Replace the route match with this entity
-        /** @param-out Entity $value */
-        $value = $entity;
-
-        $updatedDependencies = array_filter($dependencies, static fn ($dependency) => $dependency !== $entityName);
-
-        $dependencies = $updatedDependencies;
-
-        return null;
+        return $this->getBadRequestResponse(parameter: $parameter);
     }
 
     /**
@@ -203,12 +184,11 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     /**
      * Response for when the entity was not found with the given value.
      *
-     * @param class-string<Entity> $entity The entity not found
-     * @param mixed                $value  [optional] The value used to check for the entity
+     * @param Parameter $parameter The parameter
      *
      * @return Response
      */
-    protected function getNotFoundResponse(string $entity, mixed $value): Response
+    protected function getNotFoundResponse(Parameter $parameter): Response
     {
         return $this->responseFactory
             ->createResponseFromView(
@@ -220,12 +200,11 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     /**
      * Response for when bad data has been provided to match for the entity.
      *
-     * @param class-string<Entity> $entity The entity with bad data
-     * @param mixed                $value  [optional] The bad data value
+     * @param Parameter $parameter The parameter
      *
      * @return Response
      */
-    protected function getBadRequestResponse(string $entity, mixed $value): Response
+    protected function getBadRequestResponse(Parameter $parameter): Response
     {
         return $this->responseFactory
             ->createResponseFromView(

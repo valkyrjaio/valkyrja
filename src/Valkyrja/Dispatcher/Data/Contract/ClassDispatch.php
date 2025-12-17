@@ -37,14 +37,14 @@ interface ClassDispatch extends Dispatch
     /**
      * Get the arguments.
      *
-     * @return array<array-key, mixed>|null
+     * @return array<non-empty-string, mixed>|null
      */
     public function getArguments(): array|null;
 
     /**
      * Create a new dispatch with the specified arguments.
      *
-     * @param array<array-key, mixed>|null $arguments The arguments
+     * @param array<non-empty-string, mixed>|null $arguments The arguments
      *
      * @return static
      */

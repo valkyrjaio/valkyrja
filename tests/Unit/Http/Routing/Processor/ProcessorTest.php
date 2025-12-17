@@ -81,7 +81,7 @@ class ProcessorTest extends TestCase
 
         self::assertSame($route->getPath(), $routeAfterProcessing->getPath());
         self::assertSame($route->getName(), $routeAfterProcessing->getName());
-        self::assertSame('/^\/([a-zA-Z]+)$/', $routeAfterProcessing->getRegex());
+        self::assertSame('/^\/(?<value>[a-zA-Z]+)$/', $routeAfterProcessing->getRegex());
     }
 
     public function testDynamicRouteInvalidPath(): void
@@ -148,7 +148,7 @@ class ProcessorTest extends TestCase
 
         self::assertSame($route->getPath(), $routeAfterProcessing->getPath());
         self::assertSame($route->getName(), $routeAfterProcessing->getName());
-        self::assertSame('/^(?:\/)?([a-zA-Z]+)?$/', $routeAfterProcessing->getRegex());
+        self::assertSame('/^(?:\/)?(?<optional>[a-zA-Z]+)?$/', $routeAfterProcessing->getRegex());
     }
 
     public function testDynamicRouteWithNonCaptureParam(): void

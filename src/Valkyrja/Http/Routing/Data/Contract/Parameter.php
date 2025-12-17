@@ -25,14 +25,14 @@ interface Parameter
     /**
      * Get the name.
      *
-     * @return string
+     * @return non-empty-string
      */
     public function getName(): string;
 
     /**
      * Create a new parameter with the specified name.
      *
-     * @param string $name The name
+     * @param non-empty-string $name The name
      *
      * @return static
      */
@@ -41,14 +41,14 @@ interface Parameter
     /**
      * Get the regex.
      *
-     * @return string
+     * @return non-empty-string
      */
     public function getRegex(): string;
 
     /**
      * Create a new parameter with the specified regex.
      *
-     * @param string $regex The regex
+     * @param non-empty-string $regex The regex
      *
      * @return static
      */

@@ -38,21 +38,25 @@ class MatcherTest extends TestCase
     protected const string STATIC_PATH = '/';
     protected const string STATIC_NAME = 'static';
 
-    protected const string DYNAMIC_PATH  = '/dynamic';
-    protected const string DYNAMIC_NAME  = 'dynamic';
-    protected const string DYNAMIC_REGEX = '/^\/([a-zA-Z]+)$/';
+    protected const string DYNAMIC_PATH       = '/dynamic';
+    protected const string DYNAMIC_ROUTE_NAME = 'dynamic';
+    protected const string DYNAMIC_REGEX      = '/^\/(?<dynamic>[a-zA-Z]+)$/';
 
-    protected const string OPTIONAL_DYNAMIC_PATH  = '/optional';
-    protected const string OPTIONAL_DYNAMIC_NAME  = 'optional-dynamic';
-    protected const string OPTIONAL_DYNAMIC_REGEX = '/^\/optional(?:\/)?([a-zA-Z]+)?$/';
+    protected const string OPTIONAL_DYNAMIC_PATH       = '/optional';
+    protected const string OPTIONAL_DYNAMIC_ROUTE_NAME = 'optional-dynamic';
+    protected const string OPTIONAL_DYNAMIC_REGEX      = '/^\/optional(?:\/)?(?<dynamic>[a-zA-Z]+)?$/';
 
-    protected const string CAST_DYNAMIC_PATH  = '/cast/2/235';
-    protected const string CAST_DYNAMIC_NAME  = 'cast-dynamic';
-    protected const string CAST_DYNAMIC_REGEX = '/^\/cast\/(\d+)\/(\d+)$/';
+    protected const string OPTIONAL_NULL_DYNAMIC_PATH       = '/optional-null';
+    protected const string OPTIONAL_NULL_DYNAMIC_ROUTE_NAME = 'optional-null-dynamic';
+    protected const string OPTIONAL_NULL_DYNAMIC_REGEX      = '/^\/optional-null(?:\/)?(?<dynamic>[a-zA-Z]+)?$/';
 
-    protected const string INVALID_DYNAMIC_PATH  = '/invalid/dynamic';
-    protected const string INVALID_DYNAMIC_NAME  = 'invalid-dynamic';
-    protected const string INVALID_DYNAMIC_REGEX = '/^\/invalid\/([a-zA-Z]+)$/';
+    protected const string CAST_DYNAMIC_PATH       = '/cast/2/235';
+    protected const string CAST_DYNAMIC_ROUTE_NAME = 'cast-dynamic';
+    protected const string CAST_DYNAMIC_REGEX      = '/^\/cast\/(?<dynamic1>\d+)\/(?<dynamic2>\d+)$/';
+
+    protected const string INVALID_DYNAMIC_PATH       = '/invalid/dynamic';
+    protected const string INVALID_DYNAMIC_ROUTE_NAME = 'invalid-dynamic';
+    protected const string INVALID_DYNAMIC_REGEX      = '/^\/invalid\/(?<invalid>[a-zA-Z]+)$/';
 
     protected Matcher $matcher;
 
@@ -75,7 +79,7 @@ class MatcherTest extends TestCase
 
         $dynamicRoute = new Route(
             path: self::DYNAMIC_PATH,
-            name: self::DYNAMIC_NAME,
+            name: self::DYNAMIC_ROUTE_NAME,
             dispatch: new MethodDispatch(
                 class: ControllerClass::class,
                 method: 'parameters',
@@ -86,7 +90,7 @@ class MatcherTest extends TestCase
             regex: self::DYNAMIC_REGEX,
             parameters: [
                 new Parameter(
-                    name: self::DYNAMIC_NAME,
+                    name: self::DYNAMIC_ROUTE_NAME,
                     regex: Regex::ALPHA
                 ),
             ]
@@ -94,7 +98,7 @@ class MatcherTest extends TestCase
 
         $optionalDynamicRoute = new Route(
             path: self::OPTIONAL_DYNAMIC_PATH,
-            name: self::OPTIONAL_DYNAMIC_NAME,
+            name: self::OPTIONAL_DYNAMIC_ROUTE_NAME,
             dispatch: new MethodDispatch(
                 class: ControllerClass::class,
                 method: 'parameters',
@@ -105,7 +109,7 @@ class MatcherTest extends TestCase
             regex: self::OPTIONAL_DYNAMIC_REGEX,
             parameters: [
                 new Parameter(
-                    name: self::DYNAMIC_NAME,
+                    name: self::DYNAMIC_ROUTE_NAME,
                     regex: Regex::ALPHA,
                     isOptional: true,
                     default: 'default'
@@ -113,9 +117,29 @@ class MatcherTest extends TestCase
             ]
         );
 
+        $optionalDynamicRouteNullDefault = new Route(
+            path: self::OPTIONAL_NULL_DYNAMIC_PATH,
+            name: self::OPTIONAL_NULL_DYNAMIC_ROUTE_NAME,
+            dispatch: new MethodDispatch(
+                class: ControllerClass::class,
+                method: 'parameters',
+                dependencies: [
+                    ResponseFactory::class,
+                ]
+            ),
+            regex: self::OPTIONAL_NULL_DYNAMIC_REGEX,
+            parameters: [
+                new Parameter(
+                    name: self::DYNAMIC_ROUTE_NAME,
+                    regex: Regex::ALPHA,
+                    isOptional: true
+                ),
+            ]
+        );
+
         $castDynamicRoute = new Route(
             path: self::CAST_DYNAMIC_PATH,
-            name: self::CAST_DYNAMIC_NAME,
+            name: self::CAST_DYNAMIC_ROUTE_NAME,
             dispatch: new MethodDispatch(
                 class: ControllerClass::class,
                 method: 'parameters',
@@ -126,7 +150,7 @@ class MatcherTest extends TestCase
             regex: self::CAST_DYNAMIC_REGEX,
             parameters: [
                 new Parameter(
-                    name: self::DYNAMIC_NAME,
+                    name: self::DYNAMIC_ROUTE_NAME . '1',
                     regex: Regex::NUM,
                     cast: new Cast(
                         type: CastType::int,
@@ -134,7 +158,7 @@ class MatcherTest extends TestCase
                     ),
                 ),
                 new Parameter(
-                    name: self::DYNAMIC_NAME,
+                    name: self::DYNAMIC_ROUTE_NAME . '2',
                     regex: Regex::NUM,
                     cast: new Cast(
                         type: CastType::int,
@@ -146,7 +170,7 @@ class MatcherTest extends TestCase
 
         $invalidDynamicRoute = new Route(
             path: self::INVALID_DYNAMIC_PATH,
-            name: self::INVALID_DYNAMIC_NAME,
+            name: self::INVALID_DYNAMIC_ROUTE_NAME,
             dispatch: new MethodDispatch(
                 class: ControllerClass::class,
                 method: 'parameters',
@@ -161,6 +185,7 @@ class MatcherTest extends TestCase
         $collection->add($route);
         $collection->add($castDynamicRoute);
         $collection->add($optionalDynamicRoute);
+        $collection->add($optionalDynamicRouteNullDefault);
         $collection->add($invalidDynamicRoute);
         $collection->add($dynamicRoute);
 
@@ -216,8 +241,8 @@ class MatcherTest extends TestCase
         $arguments = $route->getDispatch()->getArguments();
 
         self::assertNotEmpty($arguments);
-        self::assertIsString($arguments[0]);
-        self::assertSame('dynamic', $arguments[0]);
+        self::assertIsString($arguments['dynamic']);
+        self::assertSame('dynamic', $arguments['dynamic']);
     }
 
     public function testOptionalDynamicMatch(): void
@@ -234,8 +259,8 @@ class MatcherTest extends TestCase
         $arguments = $route->getDispatch()->getArguments();
 
         self::assertNotEmpty($arguments);
-        self::assertIsString($arguments[0]);
-        self::assertSame('default', $arguments[0]);
+        self::assertIsString($arguments['dynamic']);
+        self::assertSame('default', $arguments['dynamic']);
 
         $route2 = $matcher->match($dynamicPath . '/optionalvalue');
 
@@ -245,8 +270,36 @@ class MatcherTest extends TestCase
         $arguments2 = $route2->getDispatch()->getArguments();
 
         self::assertNotEmpty($arguments2);
-        self::assertIsString($arguments2[0]);
-        self::assertSame('optionalvalue', $arguments2[0]);
+        self::assertIsString($arguments2['dynamic']);
+        self::assertSame('optionalvalue', $arguments2['dynamic']);
+    }
+
+    public function testOptionalNullDefaultDynamicMatch(): void
+    {
+        $dynamicPath = self::OPTIONAL_NULL_DYNAMIC_PATH;
+
+        $matcher = $this->matcher;
+
+        $route = $matcher->match($dynamicPath);
+
+        self::assertNotNull($route);
+        self::assertNotNull($matcher->matchDynamic($dynamicPath));
+
+        $arguments = $route->getDispatch()->getArguments();
+
+        self::assertEmpty($arguments);
+        self::assertNull($arguments['dynamic'] ?? null);
+
+        $route2 = $matcher->match($dynamicPath . '/optionalvalue');
+
+        self::assertNotNull($route2);
+        self::assertNotNull($matcher->matchDynamic($dynamicPath . '/optionalvalue'));
+
+        $arguments2 = $route2->getDispatch()->getArguments();
+
+        self::assertNotEmpty($arguments2);
+        self::assertIsString($arguments2['dynamic']);
+        self::assertSame('optionalvalue', $arguments2['dynamic']);
     }
 
     public function testCastDynamicMatch(): void
@@ -263,9 +316,9 @@ class MatcherTest extends TestCase
         $arguments = $route->getDispatch()->getArguments();
 
         self::assertNotEmpty($arguments);
-        self::assertIsInt($arguments[0]);
-        self::assertInstanceOf(IntT::class, $arguments[1]);
-        self::assertIsInt($arguments[1]->asValue());
+        self::assertIsInt($arguments['dynamic1']);
+        self::assertInstanceOf(IntT::class, $arguments['dynamic2']);
+        self::assertIsInt($arguments['dynamic2']->asValue());
     }
 
     public function testInvalidDynamicMatch(): void
