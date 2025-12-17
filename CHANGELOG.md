@@ -1,6 +1,22 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.2.19...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.3.0...master)
+
+## [v25.3.0](https://github.com/valkyrjaio/valkyrja/compare/v25.2.19...v25.3.0) - 2025-12-17
+
+* [CI] Add a workflow to merge major version up by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/132
+* [Documentation] Update badges in README for 25.x branch by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/133
+* [CI] Add a check in merge workflow to not allow master by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/134
+* [CI] Update workflows to work on major branches by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/135
+* [CI] Fix the merge major version workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/136
+* [CI] Fix readme update after merge by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/137
+* [Documentation] Update badges in README for 25.x branch by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/138
+* [Type] Add missing tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/148
+* [Documentation] Update the Coveralls badge by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/149
+* [Documentation] Update the Coveralls badge svg to master by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/150
+* [Documentation] Update the Scrutinizer badge svg to master by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/151
+* [Dispatcher] Update arguments to require argument name by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/152
+* [CI] Update the composer check to only check direct dependencies by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/153
 
 ## [v25.2.19](https://github.com/valkyrjaio/valkyrja/compare/v25.2.18...v25.2.19) - 2025-12-14
 
