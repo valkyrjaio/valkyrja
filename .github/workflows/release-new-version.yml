@@ -37,19 +37,7 @@ jobs:
             exit 1
           fi
 
-      - name: Generate a token
-        id: generate-token
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: ${{ secrets.VALKYRJA_GHA_APP_ID }}
-          private-key: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
-
-      - name: Checkout repository
-        uses: actions/checkout@v6
-        with:
-          token: ${{ steps.generate-token.outputs.token }}
-
-      - name: Remove optional "v" prefix
+      - name: Remove "v" prefix
         id: version
         env:
           VERSION: ${{ inputs.version }}
@@ -62,6 +50,18 @@ jobs:
           NUMERIC_VERSION: ${{ steps.version.outputs.version }}
         run: |
           echo "version=${NUMERIC_VERSION%%.*}" >> "$GITHUB_OUTPUT"
+
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.VALKYRJA_GHA_APP_ID }}
+          private-key: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
 
       - name: Get all tags for repository
         id: get_tags
