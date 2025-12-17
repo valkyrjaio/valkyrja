@@ -22,9 +22,6 @@ jobs:
           - name: Root
             path: ./
             options: '--strict'
-          - name: CI Root
-            path: .github/ci/root
-            options: '--no-check-publish'
           - name: Churn
             path: .github/ci/churn
             options: '--no-check-publish'
