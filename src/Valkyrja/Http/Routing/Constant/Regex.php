@@ -74,4 +74,7 @@ final class Regex
     public const string START_OPTIONAL_CAPTURE_GROUP = self::START_NON_CAPTURE_GROUP . self::PATH . self::END_OPTIONAL_CAPTURE_GROUP;
     public const string END_CAPTURE_GROUP            = ')';
     public const string END_OPTIONAL_CAPTURE_GROUP   = ')?';
+
+    public const string START_CAPTURE_GROUP_NAME = '?<';
+    public const string END_CAPTURE_GROUP_NAME   = '>';
 }

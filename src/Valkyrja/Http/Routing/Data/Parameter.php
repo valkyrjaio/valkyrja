@@ -25,6 +25,8 @@ use Valkyrja\Type\Data\Cast;
 class Parameter implements Contract
 {
     /**
+     * @param non-empty-string                        $name    The parameter's name
+     * @param non-empty-string                        $regex   The parameter's regex
      * @param array<scalar|object>|scalar|object|null $default The default value
      */
     public function __construct(

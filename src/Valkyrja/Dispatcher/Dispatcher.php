@@ -65,8 +65,8 @@ class Dispatcher implements Contract
     /**
      * Dispatch a class method.
      *
-     * @param MethodDispatch               $dispatch  The dispatch
-     * @param array<array-key, mixed>|null $arguments The arguments
+     * @param MethodDispatch                      $dispatch  The dispatch
+     * @param array<non-empty-string, mixed>|null $arguments The arguments
      *
      * @return mixed
      */
@@ -129,8 +129,8 @@ class Dispatcher implements Contract
     /**
      * Dispatch a class.
      *
-     * @param ClassDispatch                $dispatch  The dispatch
-     * @param array<array-key, mixed>|null $arguments The arguments
+     * @param ClassDispatch                       $dispatch  The dispatch
+     * @param array<non-empty-string, mixed>|null $arguments The arguments
      *
      * @return mixed
      */
@@ -147,8 +147,8 @@ class Dispatcher implements Contract
     /**
      * Dispatch a function.
      *
-     * @param CallableDispatch             $dispatch  The dispatch
-     * @param array<array-key, mixed>|null $arguments The arguments
+     * @param CallableDispatch                    $dispatch  The dispatch
+     * @param array<non-empty-string, mixed>|null $arguments The arguments
      *
      * @return mixed
      */
@@ -181,9 +181,9 @@ class Dispatcher implements Contract
      * Get a dispatch's arguments.
      *
      * @param CallableDispatch|ClassDispatch|MethodDispatch $dispatch  The dispatch
-     * @param array<array-key, mixed>|null                  $arguments [optional] The arguments
+     * @param array<non-empty-string, mixed>|null           $arguments [optional] The arguments
      *
-     * @return array<array-key, mixed>|null
+     * @return array<non-empty-string, mixed>|null
      */
     protected function getArguments(CallableDispatch|ClassDispatch|MethodDispatch $dispatch, array|null $arguments = null): array|null
     {
@@ -201,10 +201,10 @@ class Dispatcher implements Contract
 
         // Iterate through the arguments
         /** @var mixed $argument */
-        foreach ($arguments as $argument) {
+        foreach ($arguments as $key => $argument) {
             // Append the argument to the arguments list
             /** @psalm-suppress MixedAssignment */
-            $dependencies[] = $this->getArgumentValue($argument);
+            $dependencies[$key] = $this->getArgumentValue($argument);
         }
 
         return $dependencies;

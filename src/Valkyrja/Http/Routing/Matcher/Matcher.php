@@ -131,36 +131,18 @@ class Matcher implements Contract
 
         // If the preg match is successful, we've found our route!
         if ($regex !== '' && preg_match($regex, $path, $matches)) {
-            /** @var array<int, string> $matches */
-            return $this->applyArgumentsToRoute($route, $matches);
+            /** @var array<int|non-empty-string, string> $matches */
+            return $this->processArguments($route, $matches);
         }
 
         return null;
     }
 
     /**
-     * Get a matched dynamic route.
-     *
-     * @param Route              $route   The route
-     * @param array<int, string> $matches The regex matches
-     *
-     * @throws InvalidRoutePathException
-     *
-     * @return Route
-     */
-    protected function applyArgumentsToRoute(Route $route, array $matches): Route
-    {
-        // Clone the route to avoid changing the one set in the master array
-        $route = clone $route;
-
-        return $this->processArguments($route, $matches);
-    }
-
-    /**
      * Process matches for a dynamic route.
      *
-     * @param Route              $route   The route
-     * @param array<int, string> $matches The regex matches
+     * @param Route                               $route   The route
+     * @param array<int|non-empty-string, string> $matches The regex matches
      *
      * @throws InvalidRoutePathException
      *
@@ -180,64 +162,60 @@ class Matcher implements Contract
             throw new InvalidRoutePathException('Route parameters must not be empty');
         }
 
-        // Parameters aren't guaranteed to be int indexed
-        $index = 0;
+        $arguments = [];
 
         // Iterate through the matches
         foreach ($parameters as $parameter) {
-            $match = $matches[$index]
+            $name  = $parameter->getName();
+            $match = $matches[$name]
                 ??= $parameter->getDefault();
 
-            $matches = $this->checkAndCastMatchValue(
+            if ($match === null) {
+                continue;
+            }
+
+            $arguments[$name] = $this->checkAndCastMatchValue(
                 parameter: $parameter,
-                matches: $matches,
-                index: $index,
                 match: $match
             );
-
-            $index++;
         }
 
-        return $route->withDispatch($dispatch->withArguments($matches));
+        return $route->withDispatch($dispatch->withArguments($arguments));
     }
 
     /**
-     * @param Parameter                                           $parameter The parameter
-     * @param array<int, array<scalar|object>|scalar|object|null> $matches   The regex matches
-     * @param int                                                 $index     The index for this match
-     * @param array<scalar|object>|scalar|object|null             $match     The match
+     * @param Parameter                          $parameter The parameter
+     * @param array<scalar|object>|scalar|object $match     The match
      *
-     * @return array<int, array<scalar|object>|scalar|object|null>
+     * @return array<scalar|object>|scalar|object|null
      */
     protected function checkAndCastMatchValue(
         Parameter $parameter,
-        array $matches,
-        int $index,
-        array|string|int|bool|float|object|null $match
-    ): array {
+        array|string|int|bool|float|object $match
+    ): array|string|int|bool|float|object|null {
         $cast = $parameter->getCast();
 
         if ($cast !== null) {
-            $matches[$index] = $this->castMatchValue(
+            return $this->castMatchValue(
                 cast: $cast,
                 match: $match
             );
         }
 
-        return $matches;
+        return $match;
     }
 
     /**
      * Get a match value for the given cast type.
      *
-     * @param Cast                                    $cast  The cast
-     * @param array<scalar|object>|scalar|object|null $match The match value
+     * @param Cast                               $cast  The cast
+     * @param array<scalar|object>|scalar|object $match The match value
      *
      * @return array<scalar|object>|scalar|object|null
      */
     protected function castMatchValue(
         Cast $cast,
-        array|string|int|bool|float|object|null $match
+        array|string|int|bool|float|object $match
     ): array|string|int|bool|float|object|null {
         $type = $cast->type::fromValue($match);
 
