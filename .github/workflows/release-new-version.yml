@@ -113,29 +113,29 @@ jobs:
       matrix:
         paths:
           - name: Root
-            path: .github/ci/root
+            path: outdated --direct
           - name: Churn
-            path: .github/ci/churn
+            command: churn-outdated-check
           - name: PHPArkitect
-            path: .github/ci/phparkitect
+            command: phparkitect-outdated-check
           - name: PHP Code Sniffer
-            path: .github/ci/phpcodesniffer
+            command: phpcodesniffer-outdated-check
           - name: PHP CS Fixer
-            path: .github/ci/phpcsfixer
+            command: phpcsfixer-outdated-check
           - name: PHP Metrics
-            path: .github/ci/phpmetrics
+            command: phpmetrics-outdated-check
           - name: PHPStan
-            path: .github/ci/phparkitect
+            command: phparkitect-outdated-check
           - name: PHPUnit
-            path: .github/ci/phpunit
+            command: phpunit-outdated-check
           - name: Psalm
-            path: .github/ci/psalm
+            command: psalm-outdated-check
           - name: Rector
-            path: .github/ci/rector
+            command: rector-outdated-check
           - name: Suggested Packages
-            path: .github/ci/suggested
+            command: suggested-outdated-check
 
-    name: "Check ${{ matrix.paths.name }} Composer For Updates"
+    name: "Check ${{ matrix.paths.name }} Composer For Outdated Direct Dependencies"
 
     runs-on: ubuntu-latest
 
@@ -152,28 +152,9 @@ jobs:
       - name: Check Composer For Updates
         env:
           COMPOSER_NAME: ${{ matrix.paths.name }}
-          COMPOSER_PATH: ${{ matrix.paths.path }}
+          COMPOSER_COMMAND: ${{ matrix.paths.command }}
         run: |
-          cd $COMPOSER_PATH
-
-          # First install so update would be as clean as possible
-          composer install
-
-          COMPOSER=$(composer update 2>&1)
-          NO_CHANGES_TEXT="Nothing to install, update or remove"
-
-          if echo "$COMPOSER" | grep -q "$NO_CHANGES_TEXT"; then
-            echo "$COMPOSER_NAME Composer packages are up to date"
-
-            exit 0
-          else
-            echo "$COMPOSER_NAME Composer packages need to be updated"
-
-            # Display the results so we can see what may need to be updated
-            echo "$COMPOSER"
-          
-            exit 1
-          fi
+          composer "$COMPOSER_COMMAND"
 
   release:
     needs: [ check-composer, check-version ]
