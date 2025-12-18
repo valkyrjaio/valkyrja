@@ -142,8 +142,9 @@ jobs:
       - name: Update CHANGELOG.md
         env:
           BRANCH: ${{ needs.get-version.outputs.branch }}
+          VERSION: ${{ needs.get-version.outputs.version }}
         run: |
-          echo -e "# Release Notes for $BRANCH\n## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/$BRANCH...master)" > CHANGELOG.md
+          echo -e "# Release Notes for $BRANCH\n## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/$VERSION.0.0...$BRANCH)" > CHANGELOG.md
 
       - name: Commit version specific updates
         uses: stefanzweifel/git-auto-commit-action@v5
