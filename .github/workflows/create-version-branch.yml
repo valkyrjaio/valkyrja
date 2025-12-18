@@ -143,11 +143,23 @@ jobs:
           ref: ${{ needs.check-version.outputs.branch }}
           token: ${{ steps.generate-token.outputs.token }}
 
-      - name: Update README.md badges
+      - name: Update README.md
         run: |
           sed -i "s/${{ github.ref_name }}/${{ needs.process-version.outputs.merge-into-branch }}/g" README.md
 
-      - name: Commit README.md badge change
+      - name: Update composer.json
+        env:
+          BRANCH: ${{ needs.check-version.outputs.branch }}
+        run: |
+          sed -i "s/"dev-master" : "*-dev"/"dev-master" : "$BRANCH-dev"/g" composer.json
+
+      - name: Update CHANGELOG.md
+        env:
+          BRANCH: ${{ needs.check-version.outputs.branch }}
+        run: |
+          echo "# Release Notes for $BRANCH\n## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/$BRANCH...master)" > composer.json
+
+      - name: Commit version specific updates
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "[${{ needs.check-version.outputs.branch }}] Update references for v${{ needs.check-version.outputs.version }}"
