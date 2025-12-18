@@ -1,4 +1,4 @@
-name: Create Major Release Verion Branch
+name: Create Major Release Version Branch
 
 on: workflow_dispatch
 
