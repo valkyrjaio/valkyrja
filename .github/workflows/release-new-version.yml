@@ -180,7 +180,7 @@ jobs:
         id: build_date
         run: |
           # Convert timestamp to MST date in Y-m-d format
-          FORMATED_DATE=$(TZ='America/Phoenix' date '+%B %-d %Y %T')
+          FORMATED_DATE=$(TZ='America/Phoenix' date '+%B %-d %Y %T MST')
 
           # Make date available to other steps
           echo "date=$(echo $FORMATED_DATE)" >> $GITHUB_OUTPUT;
