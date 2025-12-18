@@ -55,7 +55,7 @@ class VersionCommand
                 new NewLine(),
                 new Message('Copyright (c) Melech Mizrachi'),
                 new NewLine(),
-                new Message('Github https://github.com/valkyrjaio/valkyrja'),
+                new Message('GitHub https://github.com/valkyrjaio/valkyrja'),
                 new NewLine(),
                 new Message('Running on PHP ' . PHP_VERSION),
                 new NewLine(),
