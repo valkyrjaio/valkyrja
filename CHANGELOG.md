@@ -1,6 +1,10 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.3.2...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.3.3...master)
+
+## [v25.3.3](https://github.com/valkyrjaio/valkyrja/compare/v25.3.2...v25.3.3) - 2025-12-17
+
+* [CI] Fix build date update step by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/173
 
 ## [v25.3.2](https://github.com/valkyrjaio/valkyrja/compare/v25.3.1...v25.3.2) - 2025-12-17
 
