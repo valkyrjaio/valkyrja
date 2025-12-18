@@ -125,7 +125,7 @@ jobs:
   update-files-post-branch-create:
     needs: [create, check-version]
 
-    name: Update README for ${{ needs.process-version.outputs.merge-into-branch }} after merging ${{ github.ref_name }}
+    name: Update files for ${{ needs.check-version.outputs.branch }} after creation
 
     runs-on: ubuntu-latest
 
