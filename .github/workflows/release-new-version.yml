@@ -188,7 +188,7 @@ jobs:
       - name: Update Application.php version
         run: |
           sed -i "s/const string VERSION = '.*';/const string VERSION = '${{ needs.check-version.outputs.version }}';/g" src/Valkyrja/Application/Contract/Application.php
-          sed -i "s/const string VERSION_BUILD_DATE_TIME = '.*';/const string VERSION_BUILD_DATE_TIME = '${{ needs.build_date.outputs.date }}';/g" src/Valkyrja/Application/Contract/Application.php
+          sed -i "s/const string VERSION_BUILD_DATE_TIME = '.*';/const string VERSION_BUILD_DATE_TIME = '${{ steps.build_date.outputs.date }}';/g" src/Valkyrja/Application/Contract/Application.php
 
       - name: Update VERSION.md version
         run: |
