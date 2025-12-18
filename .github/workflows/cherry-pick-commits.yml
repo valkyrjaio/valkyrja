@@ -1,0 +1,52 @@
+name: Cherry-pick pull-requests to Branches
+
+on:
+  workflow_dispatch:
+    inputs:
+      hash:
+        description: 'Hash to cherry-pick'
+        required: true
+
+run-name: Cherry Pick ${{ inputs.hash }} To ${{ github.ref_name }}
+
+permissions:
+  contents: write
+
+jobs:
+  cherry-pick:
+    name: Cherry Pick ${{ inputs.hash }} to ${{ github.ref_name }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ensure using master or major version branch
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          if [[ "$BRANCH" == "master" ] || [ $BRANCH =~ ^(2[5-9].x)$ ]]; then
+            echo "All new major release version branches must be made from latest master."
+            echo "Using master or major version branch. Proceed."
+
+            exit 0
+          else
+            echo "Using invalid branch. Exiting."
+
+            exit 1
+          fi
+
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.VALKYRJA_GHA_APP_ID }}
+          private-key: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+
+      - name: Cherry Pick ${{ inputs.hash }} to ${{ github.ref_name }}
+        run: |
+          git cherry-pick ${{ inputs.hash }}
+          git push origin ${{ github.ref_name }}
