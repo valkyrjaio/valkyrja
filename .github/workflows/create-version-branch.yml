@@ -98,7 +98,7 @@ jobs:
   create:
     needs: check-version
 
-    name: Creating branch for v${{ needs.check-version.outputs.version }} `(${{ needs.check-version.outputs.branch }})` from `${{ github.ref_name }}`
+    name: Creating branch for v${{ needs.check-version.outputs.version }} (${{ needs.check-version.outputs.branch }}) from ${{ github.ref_name }}
 
     runs-on: ubuntu-latest
 
