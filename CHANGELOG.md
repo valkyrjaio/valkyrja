@@ -1,6 +1,10 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.3.3...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.3.4...master)
+
+## [v25.3.4](https://github.com/valkyrjaio/valkyrja/compare/v25.3.3...v25.3.4) - 2025-12-18
+
+* [CI] Add MST to release build date by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/174
 
 ## [v25.3.3](https://github.com/valkyrjaio/valkyrja/compare/v25.3.2...v25.3.3) - 2025-12-17
 
