@@ -51,6 +51,11 @@ these few things before submitting a PR:
         4. Use `[Git]` for any git related changes
         5. Use `[ModuleName]` for any module changes
            (for example: Container, Http, Cli, etc.)
+       6. Use `[Composer]` for composer related changes
+       7. Use `[Depcrecation]` for any deprecations
+       8. Use `[Functions]` for helper function changes
+       9. Use `[VERSION.x]` for version specific changes (`[25.x]` for example)
+       10. `[Release]` is reserved for releases
     2. End your commit messages with a period
     3. PR titles should not end in a period
 
