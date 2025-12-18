@@ -1,6 +1,27 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.3.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.3.1...master)
+
+## [v25.3.1](https://github.com/valkyrjaio/valkyrja/compare/v25.3.0...v25.3.1) - 2025-12-17
+
+* [Exception] Add tests for the exception module by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/154
+* [CI] Cleanup the release workflow for better readability by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/155
+* [CI] Add new workflow to create major version branch by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/156
+* [CI] Fix major version branch workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/157
+* [CI] More fixes for the major version branch create workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/158
+* [CI] Fix major version branch create workflow changelog step by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/159
+* [CI] Add cherry-pick workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/160
+* [Documentation] Update contributing with more info by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/161
+* [Deprecation] Removing unused ConfigClass file in tests by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/162
+* [Documentation] Add more commit message tag examples by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/163
+* [CI] Deprecate and remove the merge workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/164
+* [CI] Use new LATEST_MAJOR_VERSION environment var by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/165
+* [CI] Fix an issue with the create version workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/166
+* [CI] Fix name in create version branch workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/167
+* [CI] Fix update var via cli step in create version branch workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/168
+* [CI] Use dedicated action for GH variable update by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/169
+* [Revert] "[CI] Use dedicated action for GH variable update" by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/170
+* [CI] Update the unrelease url in create-version-branch workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/171
 
 ## [v25.3.0](https://github.com/valkyrjaio/valkyrja/compare/v25.2.19...v25.3.0) - 2025-12-17
 
