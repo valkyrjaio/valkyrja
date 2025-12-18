@@ -1,13 +1,8 @@
 name: Create Major Release Verion Branch
 
-on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version to create'
-        required: true
+on: workflow_dispatch
 
-run-name: Create new version for upcoming major release ${{ inputs.version }}
+run-name: Create new version for upcoming major release
 
 permissions:
   contents: write
@@ -35,24 +30,19 @@ jobs:
             echo "Using master. Proceed."
           fi
 
-      - name: Validate Format
-        env:
-          VERSION: ${{ inputs.version }}
-        run: |
-          if [[ $VERSION =~ ^v(2[5-9])$ ]]; then
-            echo "Valid version"
-          else
-            echo "Invalid version passed"
-
-            exit 1
-          fi
-
       - name: Remove "v" prefix
         id: version
         env:
           VERSION: ${{ inputs.version }}
         run: |
           echo "version=${VERSION#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Get Version for upcoming release based on latest
+        env:
+          LATEST_MAJOR_VERSION: ${{ vars.LATEST_MAJOR_VERSION }}
+        run: |
+          NEW_VERSION=$((LATEST_MAJOR_VERSION + 1))
+          echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Format the Major Branch Version
         id: branch
@@ -165,3 +155,10 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "[${{ needs.check-version.outputs.branch }}] Update references for v${{ needs.check-version.outputs.version }}"
+
+      - name: Update LATEST_MAJOR_VERSION variable using GitHub CLI
+        env:
+          TOKEN: ${{ steps.generate-token.outputs.token }}
+          VERSION: ${{ needs.check-version.outputs.version }}
+        run: |
+          gh variable set LATEST_MAJOR_VERSION --body "$VERSION"
