@@ -8,8 +8,8 @@ permissions:
   contents: write
 
 jobs:
-  check-version:
-    name: Check Version
+  get-version:
+    name: Get Version
 
     runs-on: ubuntu-latest
 
@@ -30,14 +30,8 @@ jobs:
             echo "Using master. Proceed."
           fi
 
-      - name: Remove "v" prefix
-        id: version
-        env:
-          VERSION: ${{ inputs.version }}
-        run: |
-          echo "version=${VERSION#v}" >> "$GITHUB_OUTPUT"
-
       - name: Get Version for upcoming release based on latest
+        id: version
         env:
           LATEST_MAJOR_VERSION: ${{ vars.LATEST_MAJOR_VERSION }}
         run: |
@@ -86,9 +80,9 @@ jobs:
           fi
 
   create:
-    needs: check-version
+    needs: get-version
 
-    name: Creating branch for v${{ needs.check-version.outputs.version }} (${{ needs.check-version.outputs.branch }}) from ${{ github.ref_name }}
+    name: Creating branch for v${{ needs.get-version.outputs.version }} (${{ needs.get-version.outputs.branch }}) from ${{ github.ref_name }}
 
     runs-on: ubuntu-latest
 
@@ -105,17 +99,17 @@ jobs:
         with:
           token: ${{ steps.generate-token.outputs.token }}
 
-      - name: Create branch ${{ needs.check-version.outputs.branch }} from ${{ github.ref_name }}
+      - name: Create branch ${{ needs.get-version.outputs.branch }} from ${{ github.ref_name }}
         env:
-          BRANCH: ${{ needs.check-version.outputs.branch }}
+          BRANCH: ${{ needs.get-version.outputs.branch }}
         run: |
           git checkout -b "$BRANCH"
           git push origin "$BRANCH"
 
   update-files-post-branch-create:
-    needs: [create, check-version]
+    needs: [create, get-version]
 
-    name: Update files for ${{ needs.check-version.outputs.branch }} after creation
+    name: Update files for ${{ needs.get-version.outputs.branch }} after creation
 
     runs-on: ubuntu-latest
 
@@ -130,35 +124,35 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
-          ref: ${{ needs.check-version.outputs.branch }}
+          ref: ${{ needs.get-version.outputs.branch }}
           token: ${{ steps.generate-token.outputs.token }}
 
       - name: Update README.md
         env:
-          BRANCH: ${{ needs.check-version.outputs.branch }}
+          BRANCH: ${{ needs.get-version.outputs.branch }}
         run: |
           sed -i "s/${{ github.ref_name }}/$BRANCH/g" README.md
 
       - name: Update composer.json
         env:
-          BRANCH: ${{ needs.check-version.outputs.branch }}
+          BRANCH: ${{ needs.get-version.outputs.branch }}
         run: |
           sed -i "s/"dev-master" : "*-dev"/"dev-master" : "$BRANCH-dev"/g" composer.json
 
       - name: Update CHANGELOG.md
         env:
-          BRANCH: ${{ needs.check-version.outputs.branch }}
+          BRANCH: ${{ needs.get-version.outputs.branch }}
         run: |
           echo -e "# Release Notes for $BRANCH\n## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/$BRANCH...master)" > CHANGELOG.md
 
       - name: Commit version specific updates
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "[${{ needs.check-version.outputs.branch }}] Update references for v${{ needs.check-version.outputs.version }}"
+          commit_message: "[${{ needs.get-version.outputs.branch }}] Update references for v${{ needs.get-version.outputs.version }}"
 
       - name: Update LATEST_MAJOR_VERSION variable using GitHub CLI
         env:
           TOKEN: ${{ steps.generate-token.outputs.token }}
-          VERSION: ${{ needs.check-version.outputs.version }}
+          VERSION: ${{ needs.get-version.outputs.version }}
         run: |
           gh variable set LATEST_MAJOR_VERSION --body "$VERSION"
