@@ -150,9 +150,9 @@ jobs:
         with:
           commit_message: "[${{ needs.get-version.outputs.branch }}] Update references for v${{ needs.get-version.outputs.version }}"
 
-      - name: Update repository variable with community action
-        uses: mmoyaferrer/set-github-variable@v1.0.0
-        with:
-          name: 'LATEST_MAJOR_VERSION'
-          value: ${{ needs.get-version.outputs.version }}
-          token: ${{ steps.generate-token.outputs.token }}
+      - name: Update LATEST_MAJOR_VERSION variable using GitHub CLI
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+          VERSION: ${{ needs.get-version.outputs.version }}
+        run: |
+          gh variable set LATEST_MAJOR_VERSION --body "$VERSION"
