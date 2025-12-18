@@ -157,7 +157,7 @@ jobs:
         env:
           BRANCH: ${{ needs.check-version.outputs.branch }}
         run: |
-          echo "# Release Notes for $BRANCH\n## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/$BRANCH...master)" > composer.json
+          echo "# Release Notes for $BRANCH\n## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/$BRANCH...master)" > CHANGELOG.md
 
       - name: Commit version specific updates
         uses: stefanzweifel/git-auto-commit-action@v5
