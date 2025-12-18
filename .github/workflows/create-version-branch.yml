@@ -122,7 +122,7 @@ jobs:
           git checkout -b "$BRANCH"
           git push origin "$BRANCH"
 
-  update-readme-post-merge:
+  update-files-post-branch-create:
     needs: [create, check-version]
 
     name: Update README for ${{ needs.process-version.outputs.merge-into-branch }} after merging ${{ github.ref_name }}
