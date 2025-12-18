@@ -1,0 +1,165 @@
+name: Create Major Release Verion Branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to create'
+        required: true
+
+run-name: Create new version for upcoming major release ${{ inputs.version }}
+
+permissions:
+  contents: write
+
+jobs:
+  check-version:
+    name: Check Version
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      branch: ${{ steps.branch.outputs.branch }}
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - name: Ensure using master
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          if [ "$BRANCH" != "master" ]; then
+            echo "All new major release version branches must be made from latest master."
+
+            exit 1
+          else
+            echo "Using master. Proceed."
+          fi
+
+      - name: Validate Format
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          if [[ $VERSION =~ ^v(2[5-9])$ ]]; then
+            echo "Valid version"
+          else
+            echo "Invalid version passed"
+
+            exit 1
+          fi
+
+      - name: Remove "v" prefix
+        id: version
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          echo "version=${VERSION#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Format the Major Branch Version
+        id: branch
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          echo "branch=${VERSION}.x" >> "$GITHUB_OUTPUT"
+
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.VALKYRJA_GHA_APP_ID }}
+          private-key: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+
+      - name: Get all branches for repository
+        id: get_branches
+        uses: octokit/request-action@v2.x
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+        with:
+          route: GET /repos/${{ github.repository }}/git/matching-refs/heads
+
+      - name: Check if major version branch already exists
+        id: version-guard
+        env:
+          BRANCH: v${{ steps.branch.outputs.branch }}
+          BRANCHES: ${{ steps.get_branches.outputs.data }}
+        run: |
+          if [[ $BRANCHES == *"refs/heads/$BRANCH"* ]]; then
+            echo "Major version branch exists! Aborting."
+
+            exit 1
+          else
+            echo "Major version branch does not exist! Proceeding."
+          fi
+
+  create:
+    needs: check-version
+
+    name: Creating branch for v${{ needs.check-version.outputs.version }} `(${{ needs.check-version.outputs.branch }})` from `${{ github.ref_name }}`
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.VALKYRJA_GHA_APP_ID }}
+          private-key: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+
+      - name: Create branch ${{ needs.check-version.outputs.branch }} from ${{ github.ref_name }}
+        env:
+          BRANCH: ${{ needs.check-version.outputs.branch }}
+        run: |
+          git checkout -b "$BRANCH"
+          git push origin "$BRANCH"
+
+  update-readme-post-merge:
+    needs: [create, check-version]
+
+    name: Update README for ${{ needs.process-version.outputs.merge-into-branch }} after merging ${{ github.ref_name }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.VALKYRJA_GHA_APP_ID }}
+          private-key: ${{ secrets.VALKYRJA_GHA_PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.check-version.outputs.branch }}
+          token: ${{ steps.generate-token.outputs.token }}
+
+      - name: Update README.md
+        run: |
+          sed -i "s/${{ github.ref_name }}/${{ needs.process-version.outputs.merge-into-branch }}/g" README.md
+
+      - name: Update composer.json
+        env:
+          BRANCH: ${{ needs.check-version.outputs.branch }}
+        run: |
+          sed -i "s/"dev-master" : "*-dev"/"dev-master" : "$BRANCH-dev"/g" composer.json
+
+      - name: Update CHANGELOG.md
+        env:
+          BRANCH: ${{ needs.check-version.outputs.branch }}
+        run: |
+          echo "# Release Notes for $BRANCH\n## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/$BRANCH...master)" > composer.json
+
+      - name: Commit version specific updates
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "[${{ needs.check-version.outputs.branch }}] Update references for v${{ needs.check-version.outputs.version }}"
