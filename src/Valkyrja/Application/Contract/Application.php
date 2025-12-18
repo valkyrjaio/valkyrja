@@ -34,6 +34,13 @@ interface Application
     public const string VERSION = '25.3.1';
 
     /**
+     * The Application framework version build datetime.
+     *
+     * @var non-empty-string
+     */
+    public const string VERSION_BUILD_DATE_TIME = 'December 17 2025 23:03:00 MST';
+
+    /**
      * The valkyrja framework ascii art.
      *
      * @var non-empty-string
