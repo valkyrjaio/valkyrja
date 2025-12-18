@@ -31,14 +31,14 @@ interface Application
      *
      * @var non-empty-string
      */
-    public const string VERSION = '25.3.3';
+    public const string VERSION = '25.3.4';
 
     /**
      * The Application framework version build datetime.
      *
      * @var non-empty-string
      */
-    public const string VERSION_BUILD_DATE_TIME = 'December 17 2025 23:59:46';
+    public const string VERSION_BUILD_DATE_TIME = 'December 18 2025 00:04:03 MST';
 
     /**
      * The valkyrja framework ascii art.
