@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Application;
 
 use Override;
-use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Exception\RuntimeException;
 use Valkyrja\Application\Support\Component;
@@ -101,35 +100,14 @@ class Valkyrja implements Application
             throw new RuntimeException('Cannot add components to an app setup with Data');
         }
 
-        $this->config->aliases = [
-            ...$this->config->aliases,
-            ...$component::getContainerAliases(),
-        ];
+        $config = $this->config;
 
-        $this->config->services = [
-            ...$this->config->services,
-            ...$component::getContainerServices(),
-        ];
-
-        array_map(
-            [$this->container, 'register'],
-            $component::getContainerProviders(),
-        );
-
-        $this->config->listeners = [
-            ...$this->config->listeners,
-            ...$component::getEventListeners(),
-        ];
-
-        $this->config->commands = [
-            ...$this->config->commands,
-            ...$component::getCliControllers(),
-        ];
-
-        $this->config->controllers = [
-            ...$this->config->controllers,
-            ...$component::getHttpControllers(),
-        ];
+        $this->addComponentContainerAliases($config, $component);
+        $this->addComponentContainerServices($config, $component);
+        $this->addComponentContainerProviders($component);
+        $this->addComponentEventListeners($config, $component);
+        $this->addComponentCliControllers($config, $component);
+        $this->addComponentHttpControllers($config, $component);
     }
 
     /**
@@ -222,25 +200,135 @@ class Valkyrja implements Application
     }
 
     /**
-     * Bootstrap all the components set in the config.
+     * Bootstrap all the components types for the application.
      */
     protected function bootstrapComponents(): void
     {
-        // All all the components
-        $this->addComponent(component: ComponentClass::CONTAINER);
-        $this->addComponent(component: ComponentClass::APPLICATION);
-        $this->addComponent(component: ComponentClass::ATTRIBUTE);
-        $this->addComponent(component: ComponentClass::CLI);
-        $this->addComponent(component: ComponentClass::DISPATCHER);
-        $this->addComponent(component: ComponentClass::EVENT);
-        $this->addComponent(component: ComponentClass::HTTP);
-        $this->addComponent(component: ComponentClass::REFLECTION);
+        $this->bootstrapRequiredComponents();
+        $this->bootstrapCoreComponents();
+        $this->bootstrapOptionalComponents();
+    }
 
+    /**
+     * Bootstrap all the required components for the application to run.
+     */
+    protected function bootstrapRequiredComponents(): void
+    {
+        /** @var class-string<Component>[] $components */
+        $components = $this->env::APP_REQUIRED_COMPONENTS;
+
+        foreach ($components as $component) {
+            $this->addComponent(component: $component);
+        }
+    }
+
+    /**
+     * Bootstrap all the core components to run specific parts of the application.
+     */
+    protected function bootstrapCoreComponents(): void
+    {
+        /** @var class-string<Component>[] $components */
+        $components = $this->env::APP_CORE_COMPONENTS;
+
+        foreach ($components as $component) {
+            $this->addComponent(component: $component);
+        }
+    }
+
+    /**
+     * Bootstrap all the optional components.
+     */
+    protected function bootstrapOptionalComponents(): void
+    {
         /** @var class-string<Component>[] $components */
         $components = $this->env::APP_COMPONENTS;
 
         foreach ($components as $component) {
             $this->addComponent(component: $component);
+        }
+    }
+
+    /**
+     * Add a component's container aliases.
+     *
+     * @param class-string<Component> $component The component class
+     */
+    protected function addComponentContainerAliases(Config $config, string $component): void
+    {
+        $config->aliases = [
+            ...$config->aliases,
+            ...$component::getContainerAliases(),
+        ];
+    }
+
+    /**
+     * Add a component's container services.
+     *
+     * @param class-string<Component> $component The component class
+     */
+    protected function addComponentContainerServices(Config $config, string $component): void
+    {
+        $config->services = [
+            ...$config->services,
+            ...$component::getContainerServices(),
+        ];
+    }
+
+    /**
+     * Add a component's container services.
+     *
+     * @param class-string<Component> $component The component class
+     */
+    protected function addComponentContainerProviders(string $component): void
+    {
+        array_map(
+            [$this->container, 'register'],
+            $component::getContainerProviders(),
+        );
+    }
+
+    /**
+     * Add a component's event listeners.
+     *
+     * @param class-string<Component> $component The component class
+     */
+    protected function addComponentEventListeners(Config $config, string $component): void
+    {
+        if ($this->env::APP_ADD_EVENT_LISTENERS) {
+            $config->listeners = [
+                ...$config->listeners,
+                ...$component::getEventListeners(),
+            ];
+        }
+    }
+
+    /**
+     * Add a component's cli controllers.
+     *
+     * @param class-string<Component> $component The component class
+     */
+    protected function addComponentCliControllers(Config $config, string $component): void
+    {
+        if ($this->env::APP_ADD_CLI_CONTROLLERS) {
+            $config->commands = [
+                ...$config->commands,
+                ...$component::getCliControllers(),
+            ];
+        }
+    }
+
+    /**
+     * Add a component's http controllers.
+     *
+     * @param class-string<Component> $component The component class
+     */
+    protected function addComponentHttpControllers(Config $config, string $component): void
+    {
+        if ($this->env::APP_ADD_HTTP_CONTROLLERS) {
+            $config->controllers = [
+                ...$config->controllers,
+                ...$component::getHttpControllers(),
+            ];
         }
     }
 
