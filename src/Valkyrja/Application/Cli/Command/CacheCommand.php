@@ -55,10 +55,17 @@ class CacheCommand
     ): Output {
         /** @var non-empty-string $cacheFilePath */
         $cacheFilePath = $env::APP_CACHE_FILE_PATH;
+        /** @var non-empty-string $httpCacheFilePath */
+        $httpCacheFilePath = $env::APP_HTTP_CACHE_FILE_PATH;
 
         // If the cache file already exists, delete it
         if (is_file($cacheFilePath)) {
             @unlink($cacheFilePath);
+        }
+
+        // If the cache file already exists, delete it
+        if (is_file($httpCacheFilePath)) {
+            @unlink($httpCacheFilePath);
         }
 
         $data = new Data(
@@ -67,11 +74,19 @@ class CacheCommand
             cli: $cliCollection->getData(),
             http: $routerCollection->getData(),
         );
+        // Same data just no cli data
+        $dataHttp = new Data(
+            container: $container->getData(),
+            event: $eventCollection->getData(),
+            http: $routerCollection->getData(),
+        );
 
         // Get the results of the cache attempt
         $result = @file_put_contents($cacheFilePath, serialize($data), LOCK_EX);
+        // Get the results of the cache attempt
+        $resultHttp = @file_put_contents($cacheFilePath, serialize($dataHttp), LOCK_EX);
 
-        if ($result === false) {
+        if ($result === false || $resultHttp === false) {
             return $outputFactory
                 ->createOutput(exitCode: ExitCode::ERROR)
                 ->withMessages(

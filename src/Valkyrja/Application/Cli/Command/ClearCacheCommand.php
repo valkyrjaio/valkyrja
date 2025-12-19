@@ -38,10 +38,17 @@ class ClearCacheCommand
     {
         /** @var non-empty-string $cacheFilePath */
         $cacheFilePath = $env::APP_CACHE_FILE_PATH;
+        /** @var non-empty-string $httpCacheFilePath */
+        $httpCacheFilePath = $env::APP_HTTP_CACHE_FILE_PATH;
 
         // If the cache file already exists, delete it
         if (is_file($cacheFilePath)) {
             @unlink($cacheFilePath);
+        }
+
+        // If the http cache file already exists, delete it
+        if (is_file($httpCacheFilePath)) {
+            @unlink($httpCacheFilePath);
         }
 
         return $outputFactory

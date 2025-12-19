@@ -118,6 +118,8 @@ class Env
     public const string APP_DIR = __DIR__ . '/..';
     /** @var non-empty-string */
     public const string APP_CACHE_FILE_PATH = __DIR__ . '/../storage/framework/cache/cache.php';
+    /** @var non-empty-string */
+    public const string APP_HTTP_CACHE_FILE_PATH = __DIR__ . '/../storage/framework/cache/http-cache.php';
 
     /************************************************************
      *

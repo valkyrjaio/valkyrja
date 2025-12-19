@@ -44,15 +44,19 @@ abstract class App
     /**
      * Start the application.
      *
-     * @param non-empty-string $dir The directory
+     * @param non-empty-string      $dir           The directory
+     * @param non-empty-string|null $cacheFilepath The cache file path
      */
-    public static function start(string $dir, Env $env): Application
+    public static function start(string $dir, Env $env, string|null $cacheFilepath = null): Application
     {
         static::defaultExceptionHandler();
         static::appStart();
         static::directory(dir: $dir);
 
-        return static::app(env: $env);
+        return static::app(
+            env: $env,
+            cacheFilepath: $cacheFilepath
+        );
     }
 
     /**
@@ -62,9 +66,13 @@ abstract class App
      */
     public static function http(string $dir, Env $env): void
     {
+        /** @var non-empty-string $cacheFilepath */
+        $cacheFilepath = $env::APP_HTTP_CACHE_FILE_PATH;
+
         $app = static::start(
             dir: $dir,
             env: $env,
+            cacheFilepath: $cacheFilepath
         );
 
         $container = $app->getContainer();
@@ -128,11 +136,15 @@ abstract class App
      *  use the default config out of the root config directory, but
      *  when you're on a production environment definitely have
      *  your config cached and the flag set in your env class.
+     *
+     * @param non-empty-string|null $cacheFilepath The cache file path
      */
-    public static function app(Env $env): Application
+    public static function app(Env $env, string|null $cacheFilepath = null): Application
     {
-        /** @var non-empty-string $cacheFilepath */
-        $cacheFilepath = $env::APP_CACHE_FILE_PATH;
+        /** @var non-empty-string $appCacheFilePath */
+        $appCacheFilePath = $env::APP_CACHE_FILE_PATH;
+
+        $cacheFilepath ??= $appCacheFilePath;
 
         if (is_file($cacheFilepath)) {
             $configData = static::getData(cacheFilePath: $cacheFilepath);
