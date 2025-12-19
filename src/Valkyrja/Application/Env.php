@@ -98,6 +98,20 @@ class Env
     /** @var non-empty-string */
     public const string APP_KEY = 'some_secret_app_key';
     /** @var class-string<Component>[] */
+    public const array APP_REQUIRED_COMPONENTS = [
+        ComponentClass::CONTAINER,
+        ComponentClass::APPLICATION,
+        ComponentClass::ATTRIBUTE,
+        ComponentClass::DISPATCHER,
+        ComponentClass::REFLECTION,
+    ];
+    /** @var class-string<Component>[] */
+    public const array APP_CORE_COMPONENTS = [
+        ComponentClass::CLI,
+        ComponentClass::EVENT,
+        ComponentClass::HTTP,
+    ];
+    /** @var class-string<Component>[] */
     public const array APP_COMPONENTS = [
         ComponentClass::API,
         ComponentClass::AUTH,
@@ -114,6 +128,12 @@ class Env
         ComponentClass::SMS,
         ComponentClass::VIEW,
     ];
+    /** @var bool */
+    public const bool APP_ADD_CLI_CONTROLLERS = true;
+    /** @var bool */
+    public const bool APP_ADD_HTTP_CONTROLLERS = true;
+    /** @var bool */
+    public const bool APP_ADD_EVENT_LISTENERS = true;
     /** @var non-empty-string */
     public const string APP_DIR = __DIR__ . '/..';
     /** @var non-empty-string */

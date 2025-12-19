@@ -318,4 +318,29 @@ class ApplicationTest extends TestCase
         self::assertContains(VersionCommand::class, $config->commands);
         self::assertContains(HttpListCommand::class, $config->commands);
     }
+
+    /**
+     * Ensure that event listeners, Cli/Http controllers do not get added to config when env settings are false.
+     */
+    public function testFalseEventListenersAndHttpCliComponents(): void
+    {
+        $env    = new class extends Env {
+            /** @var bool */
+            public const bool APP_ADD_CLI_CONTROLLERS = false;
+            /** @var bool */
+            public const bool APP_ADD_HTTP_CONTROLLERS = false;
+            /** @var bool */
+            public const bool APP_ADD_EVENT_LISTENERS = false;
+        };
+        $config = new Config();
+
+        new Valkyrja(
+            env: $env,
+            configData: $config
+        );
+
+        self::assertEmpty($config->listeners);
+        self::assertEmpty($config->commands);
+        self::assertEmpty($config->controllers);
+    }
 }
