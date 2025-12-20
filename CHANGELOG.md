@@ -1,6 +1,11 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.3.4...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.4.0...master)
+
+## [v25.4.0](https://github.com/valkyrjaio/valkyrja/compare/v25.3.4...v25.4.0) - 2025-12-20
+
+* [Cli] Fix version command typo by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/175
+* [Application] Add capability to env to turn off certain components by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/178
 
 ## [v25.3.4](https://github.com/valkyrjaio/valkyrja/compare/v25.3.3...v25.3.4) - 2025-12-18
 
