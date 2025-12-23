@@ -1,6 +1,10 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.4.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.4.1...master)
+
+## [v25.4.1](https://github.com/valkyrjaio/valkyrja/compare/v25.4.0...v25.4.1) - 2025-12-22
+
+* [Application] Add custom component to env by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/179
 
 ## [v25.4.0](https://github.com/valkyrjaio/valkyrja/compare/v25.3.4...v25.4.0) - 2025-12-20
 
