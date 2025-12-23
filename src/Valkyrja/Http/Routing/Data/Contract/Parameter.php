@@ -117,4 +117,20 @@ interface Parameter
      * @return static
      */
     public function withDefault(array|string|int|bool|float|object|null $default = null): static;
+
+    /**
+     * Get the value.
+     *
+     * @return array<scalar|object>|scalar|object|null
+     */
+    public function getValue(): array|string|int|bool|float|object|null;
+
+    /**
+     * Create a new parameter with the specified value.
+     *
+     * @param array<scalar|object>|scalar|object|null $value The value
+     *
+     * @return static
+     */
+    public function withValue(array|string|int|bool|float|object|null $value = null): static;
 }

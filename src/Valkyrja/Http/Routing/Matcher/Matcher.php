@@ -162,7 +162,8 @@ class Matcher implements Contract
             throw new InvalidRoutePathException('Route parameters must not be empty');
         }
 
-        $arguments = [];
+        $arguments            = [];
+        $parametersWithValues = [];
 
         // Iterate through the matches
         foreach ($parameters as $parameter) {
@@ -171,6 +172,8 @@ class Matcher implements Contract
                 ??= $parameter->getDefault();
 
             if ($match === null) {
+                $parametersWithValues[] = $parameter;
+
                 continue;
             }
 
@@ -178,9 +181,13 @@ class Matcher implements Contract
                 parameter: $parameter,
                 match: $match
             );
+
+            $parametersWithValues[] = $parameter->withValue($arguments[$name]);
         }
 
-        return $route->withDispatch($dispatch->withArguments($arguments));
+        return $route
+            ->withParameters(...$parametersWithValues)
+            ->withDispatch($dispatch->withArguments($arguments));
     }
 
     /**

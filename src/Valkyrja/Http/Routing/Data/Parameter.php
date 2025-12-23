@@ -28,6 +28,7 @@ class Parameter implements Contract
      * @param non-empty-string                        $name    The parameter's name
      * @param non-empty-string                        $regex   The parameter's regex
      * @param array<scalar|object>|scalar|object|null $default The default value
+     * @param array<scalar|object>|scalar|object|null $value   The value
      */
     public function __construct(
         protected string $name,
@@ -36,6 +37,7 @@ class Parameter implements Contract
         protected bool $isOptional = false,
         protected bool $shouldCapture = true,
         protected array|string|int|bool|float|object|null $default = null,
+        protected array|string|int|bool|float|object|null $value = null,
     ) {
     }
 
@@ -167,6 +169,28 @@ class Parameter implements Contract
         $new = clone $this;
 
         $new->default = $default;
+
+        return $new;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getValue(): array|string|int|bool|float|object|null
+    {
+        return $this->value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function withValue(array|string|int|bool|float|object|null $value = null): static
+    {
+        $new = clone $this;
+
+        $new->value = $value;
 
         return $new;
     }

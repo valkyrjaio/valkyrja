@@ -124,4 +124,19 @@ class ParameterTest extends TestCase
         self::assertNull($parameter->getDefault());
         self::assertSame($default, $parameter2->getDefault());
     }
+
+    public function testValue(): void
+    {
+        $name  = 'name';
+        $regex = Regex::ALPHA;
+
+        $value = 'test';
+
+        $parameter  = new Parameter(name: $name, regex: $regex);
+        $parameter2 = $parameter->withValue($value);
+
+        self::assertNotSame($parameter, $parameter2);
+        self::assertNull($parameter->getValue());
+        self::assertSame($value, $parameter2->getValue());
+    }
 }
