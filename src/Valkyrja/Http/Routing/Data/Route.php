@@ -52,7 +52,7 @@ class Route implements Contract
     public function __construct(
         protected string $path,
         protected string $name,
-        protected MethodDispatch $dispatch = new \Valkyrja\Dispatcher\Data\MethodDispatch(self::class, 'getPath'),
+        protected MethodDispatch $dispatch,
         protected array $requestMethods = [RequestMethod::HEAD, RequestMethod::GET],
         protected string|null $regex = null,
         protected array $parameters = [],
