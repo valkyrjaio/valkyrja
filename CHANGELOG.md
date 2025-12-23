@@ -1,6 +1,12 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.4.1...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.5.0...master)
+
+## [v25.5.0](https://github.com/valkyrjaio/valkyrja/compare/v25.4.1...v25.5.0) - 2025-12-22
+
+* [Http] Update data route object to require dispatch by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/180
+* [Cli] Require dispatch in cli route data object by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/181
+* [Http] Add value to the route parameter data object by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/182
 
 ## [v25.4.1](https://github.com/valkyrjaio/valkyrja/compare/v25.4.0...v25.4.1) - 2025-12-22
 
