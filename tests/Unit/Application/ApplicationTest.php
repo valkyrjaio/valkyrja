@@ -79,6 +79,8 @@ use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\View\Contract\Renderer;
+use Valkyrja\View\Template\Contract\Template;
 
 /**
  * Test the Application service.
@@ -342,5 +344,47 @@ class ApplicationTest extends TestCase
         self::assertEmpty($config->listeners);
         self::assertEmpty($config->commands);
         self::assertEmpty($config->controllers);
+    }
+
+    /**
+     * Testing custom components capability.
+     */
+    public function testCustomComponents(): void
+    {
+        $env    = new class extends Env {
+            /** @var class-string<\Valkyrja\Application\Support\Component>[] */
+            public const array APP_COMPONENTS = [];
+            /** @var class-string<\Valkyrja\Application\Support\Component>[] */
+            public const array APP_CUSTOM_COMPONENTS = [];
+        };
+        $config = new Config();
+
+        $application = new Valkyrja(
+            env: $env,
+            configData: $config
+        );
+
+        $container = $application->getContainer();
+
+        self::assertFalse($container->has(Template::class));
+
+        $env2    = new class extends Env {
+            /** @var class-string<\Valkyrja\Application\Support\Component>[] */
+            public const array APP_COMPONENTS = [];
+            /** @var class-string<\Valkyrja\Application\Support\Component>[] */
+            public const array APP_CUSTOM_COMPONENTS = [
+                \Valkyrja\View\Component::class,
+            ];
+        };
+        $config2 = new Config();
+
+        $application2 = new Valkyrja(
+            env: $env2,
+            configData: $config2
+        );
+
+        $container2 = $application2->getContainer();
+
+        self::assertTrue($container2->has(Renderer::class));
     }
 }

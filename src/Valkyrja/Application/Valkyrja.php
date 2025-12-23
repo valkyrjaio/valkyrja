@@ -207,6 +207,7 @@ class Valkyrja implements Application
         $this->bootstrapRequiredComponents();
         $this->bootstrapCoreComponents();
         $this->bootstrapOptionalComponents();
+        $this->bootstrapCustomComponents();
     }
 
     /**
@@ -242,6 +243,19 @@ class Valkyrja implements Application
     {
         /** @var class-string<Component>[] $components */
         $components = $this->env::APP_COMPONENTS;
+
+        foreach ($components as $component) {
+            $this->addComponent(component: $component);
+        }
+    }
+
+    /**
+     * Bootstrap all the custom components.
+     */
+    protected function bootstrapCustomComponents(): void
+    {
+        /** @var class-string<Component>[] $components */
+        $components = $this->env::APP_CUSTOM_COMPONENTS;
 
         foreach ($components as $component) {
             $this->addComponent(component: $component);
