@@ -38,7 +38,8 @@ class ProcessorTest extends TestCase
 
         $route = new Route(
             path: '/',
-            name: 'route'
+            name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -53,7 +54,8 @@ class ProcessorTest extends TestCase
 
         $route = new Route(
             path: 'some/path',
-            name: 'route'
+            name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
         );
 
         $routeAfterProcessing = $processor->route($route);
@@ -69,6 +71,7 @@ class ProcessorTest extends TestCase
         $route = new Route(
             path: '/{value}',
             name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
             parameters: [
                 new Parameter(
                     name: 'value',
@@ -93,6 +96,7 @@ class ProcessorTest extends TestCase
         $route = new Route(
             path: '/{val}',
             name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
             parameters: [
                 new Parameter(
                     name: 'value',
@@ -111,6 +115,7 @@ class ProcessorTest extends TestCase
         $route = new Route(
             path: '/{value}',
             name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
             regex: Regex::ALPHA,
             parameters: [
                 new Parameter(
@@ -135,6 +140,7 @@ class ProcessorTest extends TestCase
         $route = new Route(
             path: '/{optional?}',
             name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
             parameters: [
                 new Parameter(
                     name: 'optional',
@@ -158,6 +164,7 @@ class ProcessorTest extends TestCase
         $route = new Route(
             path: '/{noncapture}',
             name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
             parameters: [
                 new Parameter(
                     name: 'noncapture',

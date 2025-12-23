@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Middleware;
 
 use JsonException;
+use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\JsonResponse;
 use Valkyrja\Http\Message\Response\Response;
@@ -34,7 +35,11 @@ class ResponseStructMiddlewareTest extends TestCase
     {
         $request  = new ServerRequest();
         $response = new JsonResponse();
-        $route    = new Route(path: '/', name: 'route');
+        $route    = new Route(
+            path: '/',
+            name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+        );
         $handler  = new RouteDispatchedHandler();
 
         $middleware = new ResponseStructMiddleware();
@@ -53,7 +58,12 @@ class ResponseStructMiddlewareTest extends TestCase
     {
         $request  = new ServerRequest();
         $response = new Response();
-        $route    = new Route(path: '/', name: 'route', responseStruct: IndexedResponseStructEnum::class);
+        $route    = new Route(
+            path: '/',
+            name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            responseStruct: IndexedResponseStructEnum::class
+        );
         $handler  = new RouteDispatchedHandler();
 
         $middleware = new ResponseStructMiddleware();
@@ -75,7 +85,12 @@ class ResponseStructMiddlewareTest extends TestCase
     {
         $request  = new ServerRequest();
         $response = new JsonResponse(data: ['first' => 'test', 'second' => 'test2', 'third' => 'test3']);
-        $route    = new Route(path: '/', name: 'route', responseStruct: IndexedResponseStructEnum::class);
+        $route    = new Route(
+            path: '/',
+            name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            responseStruct: IndexedResponseStructEnum::class
+        );
         $handler  = new RouteDispatchedHandler();
 
         $middleware = new ResponseStructMiddleware();

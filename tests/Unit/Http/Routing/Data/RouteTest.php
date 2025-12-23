@@ -46,12 +46,16 @@ class RouteTest extends TestCase
         $path = '/';
         $name = 'route';
 
-        $route = new Route(path: $path, name: $name);
+        $route = new Route(
+            path: $path,
+            name: $name,
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+        );
 
         self::assertSame($path, $route->getPath());
         self::assertSame($name, $route->getName());
-        self::assertSame(Route::class, $route->getDispatch()->getClass());
-        self::assertSame('getPath', $route->getDispatch()->getMethod());
+        self::assertSame(self::class, $route->getDispatch()->getClass());
+        self::assertSame('dispatch', $route->getDispatch()->getMethod());
         self::assertSame([RequestMethod::HEAD, RequestMethod::GET], $route->getRequestMethods());
         self::assertNull($route->getRegex());
         self::assertEmpty($route->getParameters());
@@ -70,7 +74,11 @@ class RouteTest extends TestCase
         $path2 = '/another';
         $name  = 'route';
 
-        $route  = new Route(path: $path, name: $name);
+        $route  = new Route(
+            path: $path,
+            name: $name,
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+        );
         $route2 = $route->withPath($path2);
         $route3 = $route->withAddedPath('version');
         $route4 = $route2->withAddedPath('/more');
@@ -94,7 +102,11 @@ class RouteTest extends TestCase
         $name  = 'route';
         $name2 = 'route2';
 
-        $route  = new Route(path: $path, name: $name);
+        $route  = new Route(
+            path: $path,
+            name: $name,
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+        );
         $route2 = $route->withName($name2);
         $route3 = $route->withAddedName('.version');
         $route4 = $route2->withAddedName('.more');
@@ -141,7 +153,11 @@ class RouteTest extends TestCase
         $methods        = [RequestMethod::GET, RequestMethod::POST];
         $methods2       = [RequestMethod::PUT, RequestMethod::POST];
 
-        $route  = new Route(path: $path, name: $name);
+        $route  = new Route(
+            path: $path,
+            name: $name,
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+        );
         $route2 = $route->withRequestMethods(...$methods);
         $route3 = $route->withRequestMethods(...$methods2);
         $route4 = $route->withRequestMethod(RequestMethod::DELETE);
@@ -189,7 +205,12 @@ class RouteTest extends TestCase
         $parameter3 = new Parameter(name: 'test3', regex: Regex::ALPHA);
         $parameter4 = new Parameter(name: 'test4', regex: Regex::ALPHA);
 
-        $route  = new Route(path: $path, name: $name, parameters: [$parameter]);
+        $route  = new Route(
+            path: $path,
+            name: $name,
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            parameters: [$parameter]
+        );
         $route2 = $route->withParameter($parameter2);
         $route3 = $route->withParameters($parameter3);
         $route4 = $route->withAddedParameter($parameter2);
@@ -214,7 +235,12 @@ class RouteTest extends TestCase
         $middleware  = RouteMatchedMiddlewareClass::class;
         $middleware2 = RouteMatchedMiddlewareChangedClass::class;
 
-        $route  = new Route(path: $path, name: $name, routeMatchedMiddleware: [$middleware]);
+        $route  = new Route(
+            path: $path,
+            name: $name,
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            routeMatchedMiddleware: [$middleware]
+        );
         $route2 = $route->withRouteMatchedMiddleware($middleware2);
         $route3 = $route->withAddedRouteMatchedMiddleware($middleware2);
 
@@ -233,7 +259,12 @@ class RouteTest extends TestCase
         $middleware  = RouteDispatchedMiddlewareClass::class;
         $middleware2 = RouteDispatchedMiddlewareChangedClass::class;
 
-        $route  = new Route(path: $path, name: $name, routeDispatchedMiddleware: [$middleware]);
+        $route  = new Route(
+            path: $path,
+            name: $name,
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            routeDispatchedMiddleware: [$middleware]
+        );
         $route2 = $route->withRouteDispatchedMiddleware($middleware2);
         $route3 = $route->withAddedRouteDispatchedMiddleware($middleware2);
 
@@ -252,7 +283,12 @@ class RouteTest extends TestCase
         $middleware  = ThrowableCaughtMiddlewareClass::class;
         $middleware2 = ThrowableCaughtMiddlewareChangedClass::class;
 
-        $route  = new Route(path: $path, name: $name, throwableCaughtMiddleware: [$middleware]);
+        $route  = new Route(
+            path: $path,
+            name: $name,
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            throwableCaughtMiddleware: [$middleware]
+        );
         $route2 = $route->withThrowableCaughtMiddleware($middleware2);
         $route3 = $route->withAddedThrowableCaughtMiddleware($middleware2);
 
@@ -271,7 +307,12 @@ class RouteTest extends TestCase
         $middleware  = SendingResponseMiddlewareClass::class;
         $middleware2 = SendingResponseMiddlewareChangedClass::class;
 
-        $route  = new Route(path: $path, name: $name, sendingResponseMiddleware: [$middleware]);
+        $route  = new Route(
+            path: $path,
+            name: $name,
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            sendingResponseMiddleware: [$middleware]
+        );
         $route2 = $route->withSendingResponseMiddleware($middleware2);
         $route3 = $route->withAddedSendingResponseMiddleware($middleware2);
 
@@ -290,7 +331,12 @@ class RouteTest extends TestCase
         $middleware  = TerminatedMiddlewareClass::class;
         $middleware2 = TerminatedMiddlewareChangedClass::class;
 
-        $route  = new Route(path: $path, name: $name, terminatedMiddleware: [$middleware]);
+        $route  = new Route(
+            path: $path,
+            name: $name,
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            terminatedMiddleware: [$middleware]
+        );
         $route2 = $route->withTerminatedMiddleware($middleware2);
         $route3 = $route->withAddedTerminatedMiddleware($middleware2);
 
@@ -309,7 +355,12 @@ class RouteTest extends TestCase
         $requestStruct  = IndexedJsonRequestStructEnum::class;
         $requestStruct2 = IndexedParsedBodyRequestStructEnum::class;
 
-        $route  = new Route(path: $path, name: $name, requestStruct: $requestStruct);
+        $route  = new Route(
+            path: $path,
+            name: $name,
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            requestStruct: $requestStruct
+        );
         $route2 = $route->withRequestStruct($requestStruct2);
 
         self::assertNotSame($route, $route2);
@@ -325,7 +376,12 @@ class RouteTest extends TestCase
         $responseStruct  = ResponseStructEnum::class;
         $responseStruct2 = IndexedResponseStructEnum::class;
 
-        $route  = new Route(path: $path, name: $name, responseStruct: $responseStruct);
+        $route  = new Route(
+            path: $path,
+            name: $name,
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            responseStruct: $responseStruct
+        );
         $route2 = $route->withResponseStruct($responseStruct2);
 
         self::assertNotSame($route, $route2);

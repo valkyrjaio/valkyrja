@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Url;
 
 use Override;
+use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Parameter;
@@ -41,11 +42,13 @@ class UrlTest extends TestCase
 
         $route      = new Route(
             path: '/',
-            name: self::ROUTE_NAME
+            name: self::ROUTE_NAME,
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
         );
         $route2     = new Route(
             path: '/{value}',
             name: self::ROUTE2_NAME,
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
             parameters: [
                 new Parameter(
                     name: 'value',

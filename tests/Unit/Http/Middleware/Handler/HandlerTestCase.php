@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Middleware\Handler;
 
 use Valkyrja\Container\Container;
+use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Data\Route;
@@ -45,6 +46,10 @@ class HandlerTestCase extends TestCase
 
         $this->request  = new ServerRequest();
         $this->response = new Response();
-        $this->route    = new Route('/', 'name');
+        $this->route    = new Route(
+            '/',
+            'name',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+        );
     }
 }
