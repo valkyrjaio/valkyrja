@@ -24,7 +24,6 @@ use Valkyrja\Cli\Routing\Data\Contract\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Contract\Parameter;
 use Valkyrja\Cli\Routing\Data\Contract\Route as Contract;
 use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
-use Valkyrja\Dispatcher\Data\MethodDispatch as DefaultDispatch;
 
 /**
  * Class Route.
@@ -53,7 +52,7 @@ class Route implements Contract
         protected string $name,
         protected string $description,
         protected Message $helpText,
-        protected MethodDispatch $dispatch = new DefaultDispatch(self::class, '__construct'),
+        protected MethodDispatch $dispatch,
         protected array $commandMatchedMiddleware = [],
         protected array $commandDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],
