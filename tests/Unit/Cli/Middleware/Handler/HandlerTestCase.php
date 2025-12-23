@@ -18,6 +18,7 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Container\Container;
+use Valkyrja\Dispatcher\Data\MethodDispatch as DefaultDispatch;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -46,6 +47,11 @@ class HandlerTestCase extends TestCase
 
         $this->input   = new Input();
         $this->output  = new Output();
-        $this->command = new Route(name: 'test', description: 'Test Command', helpText: new Message('text'));
+        $this->command = new Route(
+            name: 'test',
+            description: 'Test Command',
+            helpText: new Message('text'),
+            dispatch: new DefaultDispatch(self::class, 'dispatch')
+        );
     }
 }

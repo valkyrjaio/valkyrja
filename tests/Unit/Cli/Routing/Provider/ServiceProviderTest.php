@@ -32,6 +32,7 @@ use Valkyrja\Cli\Routing\Data;
 use Valkyrja\Cli\Routing\Provider\ServiceProvider;
 use Valkyrja\Cli\Routing\Router;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
+use Valkyrja\Dispatcher\Data\MethodDispatch as DefaultDispatch;
 use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
@@ -94,7 +95,12 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(Config::class, new Config());
         $this->container->setSingleton(Collector::class, $collector = self::createStub(Collector::class));
 
-        $command = new Data\Route(name: 'test', description: 'test', helpText: new Message('test'));
+        $command = new Data\Route(
+            name: 'test',
+            description: 'test',
+            helpText: new Message('test'),
+            dispatch: new DefaultDispatch(self::class, 'dispatch')
+        );
         $collector->method('getCommands')->willReturn([$command]);
 
         ServiceProvider::publishCollection($this->container);
