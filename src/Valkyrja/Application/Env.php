@@ -128,6 +128,8 @@ class Env
         ComponentClass::SMS,
         ComponentClass::VIEW,
     ];
+    /** @var class-string<Component>[] */
+    public const array APP_CUSTOM_COMPONENTS = [];
     /** @var bool */
     public const bool APP_ADD_CLI_CONTROLLERS = true;
     /** @var bool */
