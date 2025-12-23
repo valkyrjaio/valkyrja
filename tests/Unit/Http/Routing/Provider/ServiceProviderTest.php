@@ -17,6 +17,7 @@ use Valkyrja\Application\Config;
 use Valkyrja\Attribute\Contract\Attributes as AttributesContract;
 use Valkyrja\Container\Constant\ConfigValue;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
+use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler as RouteDispatchedHandlerContract;
@@ -161,7 +162,11 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(CollectionContract::class));
 
-        $route = new Data\Route(path: '/', name: 'route');
+        $route = new Data\Route(
+            path: '/',
+            name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+        );
         $collector->method('getRoutes')->willReturn([$route]);
 
         ServiceProvider::publishCollection($container);

@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Cli\Command;
 
 use Valkyrja\Cli\Command\VersionCommand;
 use Valkyrja\Cli\Interaction\Factory\OutputFactory;
+use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Data\Route;
@@ -36,6 +37,7 @@ class ListCommandTest extends TestCase
         $route = new Route(
             path: $path,
             name: $name,
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
             regex: $regex,
         );
 

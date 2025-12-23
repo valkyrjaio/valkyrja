@@ -88,7 +88,11 @@ class RouterTest extends TestCase
             method: RequestMethod::POST
         );
 
-        $route = new Route(path: '/', name: 'route');
+        $route = new Route(
+            path: '/',
+            name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+        );
         $collection->add($route);
 
         $response = $router->dispatch(request: $request);
@@ -111,7 +115,11 @@ class RouterTest extends TestCase
             method: RequestMethod::POST
         );
 
-        $route = new Route(path: '/', name: 'route');
+        $route = new Route(
+            path: '/',
+            name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+        );
         $collection->add($route);
 
         $router->dispatch(request: $request);
@@ -134,7 +142,11 @@ class RouterTest extends TestCase
             method: RequestMethod::GET
         );
 
-        $route = new Route(path: '/', name: 'route');
+        $route = new Route(
+            path: '/',
+            name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+        );
         $collection->add($route);
 
         $router->dispatch(request: $request);
@@ -157,6 +169,7 @@ class RouterTest extends TestCase
         $route = new Route(
             path: '/',
             name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
             routeMatchedMiddleware: [RouteMatchedMiddlewareChangedClass::class]
         );
         $collection->add($route);

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Middleware;
 
 use JsonException;
+use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
@@ -34,7 +35,11 @@ class RequestStructMiddlewareTest extends TestCase
     public function testRouteMatchedNoRequestStruct(): void
     {
         $request = new ServerRequest();
-        $route   = new Route(path: '/', name: 'route');
+        $route   = new Route(
+            path: '/',
+            name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+        );
         $handler = new RouteMatchedHandler();
 
         $middleware = new RequestStructMiddleware();
@@ -61,7 +66,12 @@ class RequestStructMiddlewareTest extends TestCase
                 4 => 'test4',
             ]
         );
-        $route   = new Route(path: '/', name: 'route', requestStruct: IndexedJsonRequestStructEnum::class);
+        $route   = new Route(
+            path: '/',
+            name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            requestStruct: IndexedJsonRequestStructEnum::class
+        );
         $handler = new RouteMatchedHandler();
 
         $middleware = new RequestStructMiddleware();
@@ -88,7 +98,12 @@ class RequestStructMiddlewareTest extends TestCase
                 3 => 'test3',
             ]
         );
-        $route   = new Route(path: '/', name: 'route', requestStruct: IndexedJsonRequestStructEnum::class);
+        $route   = new Route(
+            path: '/',
+            name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            requestStruct: IndexedJsonRequestStructEnum::class
+        );
         $handler = new RouteMatchedHandler();
 
         $middleware = new RequestStructMiddleware();
@@ -115,7 +130,12 @@ class RequestStructMiddlewareTest extends TestCase
                 3 => 'test3',
             ]
         );
-        $route   = new Route(path: '/', name: 'route', requestStruct: IndexedJsonRequestStructEnum::class);
+        $route   = new Route(
+            path: '/',
+            name: 'route',
+            dispatch: new MethodDispatch(self::class, 'dispatch'),
+            requestStruct: IndexedJsonRequestStructEnum::class
+        );
         $handler = new RouteMatchedHandler();
 
         $middleware = new RequestStructMiddleware();
