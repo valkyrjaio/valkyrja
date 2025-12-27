@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt;
 
-use Exception;
 use JsonException;
 use Override;
+use Random\RandomException;
 use SodiumException;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Crypt\Exception\CryptException;
@@ -67,7 +67,7 @@ class SodiumCrypt implements Crypt
     /**
      * @inheritDoc
      *
-     * @throws Exception
+     * @throws RandomException
      * @throws SodiumException
      */
     #[Override]
