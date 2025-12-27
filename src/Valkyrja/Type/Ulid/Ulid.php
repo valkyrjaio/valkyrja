@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Ulid;
 
-use Exception;
 use Override;
+use Random\RandomException;
 use Valkyrja\Type\Exception\InvalidArgumentException;
 use Valkyrja\Type\Type;
 use Valkyrja\Type\Ulid\Contract\Ulid as Contract;
+use Valkyrja\Type\Ulid\Exception\InvalidUlidException;
 use Valkyrja\Type\Ulid\Support\Ulid as Helper;
 
 use function gettype;
@@ -34,7 +35,8 @@ use function sprintf;
 class Ulid extends Type implements Contract
 {
     /**
-     * @throws Exception
+     * @throws InvalidUlidException
+     * @throws RandomException
      */
     public function __construct(string|null $subject = null)
     {
@@ -49,7 +51,8 @@ class Ulid extends Type implements Contract
     /**
      * @inheritDoc
      *
-     * @throws Exception
+     * @throws InvalidUlidException
+     * @throws RandomException
      */
     #[Override]
     public static function fromValue(mixed $value): static

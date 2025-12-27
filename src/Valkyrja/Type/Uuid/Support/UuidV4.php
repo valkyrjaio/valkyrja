@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Uuid\Support;
 
-use Exception;
 use Override;
+use Random\RandomException;
 use Valkyrja\Type\Uuid\Enum\Version;
 use Valkyrja\Type\Uuid\Exception\InvalidUuidV4Exception;
 
@@ -42,7 +42,7 @@ class UuidV4 extends Uuid
     /**
      * Generate a v4 UUID.
      *
-     * @throws Exception
+     * @throws RandomException
      *
      * @return string
      */

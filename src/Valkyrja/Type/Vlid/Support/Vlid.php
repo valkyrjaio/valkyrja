@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Vlid\Support;
 
 use DateTimeInterface;
-use Exception;
+use InvalidArgumentException;
 use Override;
+use Random\RandomException;
+use Valkyrja\Type\Exception\RuntimeException;
 use Valkyrja\Type\Ulid\Support\Ulid;
 use Valkyrja\Type\Vlid\Enum\Version;
 use Valkyrja\Type\Vlid\Exception\InvalidVlidException;
@@ -63,7 +65,9 @@ class Vlid extends Ulid
      * @param DateTimeInterface|null $dateTime  [optional] The date time to use when generating the ULID
      * @param bool                   $lowerCase [optional] Whether to return as lower case
      *
-     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws RandomException
+     * @throws RuntimeException
      *
      * @return string
      */
@@ -78,7 +82,9 @@ class Vlid extends Ulid
      * @param DateTimeInterface|null $dateTime  [optional] The date time to use when generating the ULID
      * @param bool                   $lowerCase [optional] Whether to return as lower case
      *
-     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws RandomException
+     * @throws RuntimeException
      *
      * @return string
      */
@@ -93,7 +99,9 @@ class Vlid extends Ulid
      * @param DateTimeInterface|null $dateTime  [optional] The date time to use when generating the ULID
      * @param bool                   $lowerCase [optional] Whether to return as lower case
      *
-     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws RandomException
+     * @throws RuntimeException
      *
      * @return string
      */
@@ -108,7 +116,9 @@ class Vlid extends Ulid
      * @param DateTimeInterface|null $dateTime  [optional] The date time to use when generating the ULID
      * @param bool                   $lowerCase [optional] Whether to return as lower case
      *
-     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws RandomException
+     * @throws RuntimeException
      *
      * @return string
      */
