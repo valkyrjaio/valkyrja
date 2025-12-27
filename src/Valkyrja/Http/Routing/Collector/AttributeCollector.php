@@ -190,7 +190,7 @@ class AttributeCollector implements Contract
 
         foreach ($middlewareClassNames as $middlewareClass) {
             $route = match (true) {
-                is_a($middlewareClass, RouteMatchedMiddleware::class, true) => $route->withAddedRouteMatchedMiddleware(
+                is_a($middlewareClass, RouteMatchedMiddleware::class, true)    => $route->withAddedRouteMatchedMiddleware(
                     $middlewareClass
                 ),
                 is_a($middlewareClass, RouteDispatchedMiddleware::class, true) => $route->withAddedRouteDispatchedMiddleware(
@@ -202,10 +202,10 @@ class AttributeCollector implements Contract
                 is_a($middlewareClass, SendingResponseMiddleware::class, true) => $route->withAddedSendingResponseMiddleware(
                     $middlewareClass
                 ),
-                is_a($middlewareClass, TerminatedMiddleware::class, true) => $route->withAddedTerminatedMiddleware(
+                is_a($middlewareClass, TerminatedMiddleware::class, true)      => $route->withAddedTerminatedMiddleware(
                     $middlewareClass
                 ),
-                default => throw new InvalidArgumentException(
+                default                                                        => throw new InvalidArgumentException(
                     "Unsupported middleware class `$middlewareClass`"
                 ),
             };
@@ -293,7 +293,6 @@ class AttributeCollector implements Contract
         foreach ($parameterAttributes as $parameterAttribute) {
             $parameters[] = $this->convertParameterAttributesToDataClass($parameterAttribute);
         }
-
 
         return $route->withParameters(...$parameters);
     }
