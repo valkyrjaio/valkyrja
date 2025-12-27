@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session;
 
-use Exception;
 use Override;
+use Random\RandomException;
 use Valkyrja\Session\Contract\Session as Contract;
 use Valkyrja\Session\Exception\InvalidCsrfToken;
 use Valkyrja\Session\Exception\InvalidSessionId;
@@ -191,7 +191,7 @@ class NullSession implements Contract
     /**
      * @inheritDoc
      *
-     * @throws Exception
+     * @throws RandomException
      */
     #[Override]
     public function generateCsrfToken(string $id): string
