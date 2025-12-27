@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api;
 
-use Exception;
 use Override;
+use Throwable;
 use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Contract\Api as Contract;
 use Valkyrja\Api\Model\Contract\Json;
@@ -49,7 +49,7 @@ class Api implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function jsonFromException(Exception $exception): Json
+    public function jsonFromException(Throwable $exception): Json
     {
         $json = $this->getJsonModel();
 
@@ -80,7 +80,7 @@ class Api implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function jsonResponseFromException(Exception $exception): JsonResponse
+    public function jsonResponseFromException(Throwable $exception): JsonResponse
     {
         return $this->getResponseFromModel($this->jsonFromException($exception));
     }
