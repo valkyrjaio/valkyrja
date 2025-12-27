@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\BuiltIn\Support;
 
-use Exception;
 use JsonException;
+use Random\RandomException;
 
 use function base64_encode;
 use function bin2hex;
@@ -217,7 +217,7 @@ class Str
      *
      * @param int<1, max> $length [optional] The length
      *
-     * @throws Exception
+     * @throws RandomException
      *
      * @return string
      */
@@ -231,7 +231,7 @@ class Str
      *
      * @param int<1, max> $length [optional] The length
      *
-     * @throws Exception
+     * @throws RandomException
      *
      * @return string
      */
@@ -245,7 +245,7 @@ class Str
      *
      * @param int<1, max> $length [optional] The length
      *
-     * @throws Exception
+     * @throws RandomException
      *
      * @return string
      */

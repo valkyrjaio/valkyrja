@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Ulid\Support;
 
 use DateTimeInterface;
-use Exception;
 use InvalidArgumentException;
 use Override;
+use Random\RandomException;
 use Valkyrja\Type\Exception\RuntimeException;
 use Valkyrja\Type\Uid\Support\Uid;
 use Valkyrja\Type\Ulid\Exception\InvalidUlidException;
@@ -72,7 +72,9 @@ class Ulid extends Uid
      * @param DateTimeInterface|null $dateTime  [optional] The date time to use when generating the ULID
      * @param bool                   $lowerCase [optional] Whether to return as lower case
      *
-     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws RandomException
+     * @throws RuntimeException
      *
      * @return string
      */
@@ -118,7 +120,9 @@ class Ulid extends Uid
      *
      * @param DateTimeInterface|null $dateTime [optional] The date time to use when generating the ULID
      *
-     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws RandomException
+     * @throws RuntimeException
      *
      * @return string
      */
@@ -131,6 +135,8 @@ class Ulid extends Uid
      * Get a time to generate a ULID with.
      *
      * @param DateTimeInterface|null $dateTime [optional] The date time to use when generating the ULID
+     *
+     * @throws InvalidArgumentException
      *
      * @return string
      */
@@ -231,7 +237,8 @@ class Ulid extends Uid
      *
      * @param string $time The time to use
      *
-     * @throws Exception
+     * @throws RandomException
+     * @throws RuntimeException
      *
      * @return void
      */
@@ -250,7 +257,8 @@ class Ulid extends Uid
     /**
      * Generate a randomized bytes array.
      *
-     * @throws Exception
+     * @throws RandomException
+     * @throws RuntimeException
      *
      * @return array<int, int>
      */

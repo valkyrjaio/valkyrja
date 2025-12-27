@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Uuid\Support;
 
-use Exception;
 use Override;
+use Random\RandomException;
 use Valkyrja\Type\Uuid\Enum\Version;
 use Valkyrja\Type\Uuid\Exception\InvalidUuidV1Exception;
 
@@ -53,7 +53,7 @@ class UuidV1 extends Uuid
      *
      * @param string|null $node
      *
-     * @throws Exception
+     * @throws RandomException
      *
      * @return string
      */

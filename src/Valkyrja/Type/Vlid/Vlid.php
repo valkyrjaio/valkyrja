@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Vlid;
 
-use Exception;
 use Override;
+use Random\RandomException;
 use Valkyrja\Type\Exception\InvalidArgumentException;
+use Valkyrja\Type\Exception\RuntimeException;
 use Valkyrja\Type\Type;
 use Valkyrja\Type\Vlid\Contract\Vlid as Contract;
 use Valkyrja\Type\Vlid\Support\Vlid as Helper;
@@ -34,7 +35,9 @@ use function sprintf;
 class Vlid extends Type implements Contract
 {
     /**
-     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws RandomException
+     * @throws RuntimeException
      */
     public function __construct(string|null $subject = null)
     {
@@ -49,7 +52,9 @@ class Vlid extends Type implements Contract
     /**
      * @inheritDoc
      *
-     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws RandomException
+     * @throws RuntimeException
      */
     #[Override]
     public static function fromValue(mixed $value): static
