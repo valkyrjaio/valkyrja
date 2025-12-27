@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api\Contract;
 
-use Exception;
+use Throwable;
 use Valkyrja\Api\Model\Contract\Json;
 use Valkyrja\Http\Message\Response\Contract\JsonResponse;
 use Valkyrja\Orm\Entity\Contract\Entity;
@@ -28,20 +28,20 @@ interface Api
     /**
      * Make a new JSON model from an exception.
      *
-     * @param Exception $exception
+     * @param Throwable $exception
      *
      * @return Json
      */
-    public function jsonFromException(Exception $exception): Json;
+    public function jsonFromException(Throwable $exception): Json;
 
     /**
      * Make a new JSON response from an exception.
      *
-     * @param Exception $exception
+     * @param Throwable $exception
      *
      * @return JsonResponse
      */
-    public function jsonResponseFromException(Exception $exception): JsonResponse;
+    public function jsonResponseFromException(Throwable $exception): JsonResponse;
 
     /**
      * Make a new JSON model from an object.
