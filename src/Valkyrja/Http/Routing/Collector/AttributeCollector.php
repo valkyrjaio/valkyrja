@@ -23,13 +23,18 @@ use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
 use Valkyrja\Http\Routing\Attribute\Parameter;
-use Valkyrja\Http\Routing\Attribute\Route;
+use Valkyrja\Http\Routing\Attribute\Route as RouteAttribute;
 use Valkyrja\Http\Routing\Attribute\Route\Middleware;
+use Valkyrja\Http\Routing\Attribute\Route\Name;
+use Valkyrja\Http\Routing\Attribute\Route\Path;
 use Valkyrja\Http\Routing\Attribute\Route\RequestMethod;
 use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
 use Valkyrja\Http\Routing\Attribute\Route\ResponseStruct;
 use Valkyrja\Http\Routing\Collector\Contract\Collector as Contract;
+use Valkyrja\Http\Routing\Data\Contract\Parameter as ParameterContract;
 use Valkyrja\Http\Routing\Data\Contract\Route as RouteContract;
+use Valkyrja\Http\Routing\Data\Parameter as DataParameter;
+use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Exception\InvalidArgumentException;
 use Valkyrja\Http\Routing\Processor\Contract\Processor as ProcessorContract;
 use Valkyrja\Http\Routing\Processor\Processor;
@@ -39,6 +44,7 @@ use Valkyrja\Reflection\Contract\Reflection as ReflectionContract;
 use Valkyrja\Reflection\Reflection;
 
 use function array_column;
+use function is_a;
 
 /**
  * Class AttributeCollector.
@@ -62,100 +68,28 @@ class AttributeCollector implements Contract
     #[Override]
     public function getRoutes(string ...$classes): array
     {
-        $routes     = [];
-        $attributes = [];
+        $routes = [];
 
         foreach ($classes as $class) {
             /** @var Route[] $memberAttributes */
-            $memberAttributes = $this->attributes->forClassMembers($class, Route::class);
+            $memberAttributes = $this->attributes->forClassMembers($class, RouteAttribute::class);
 
             // Iterate through all the members' attributes
             foreach ($memberAttributes as $routeAttribute) {
-                $routeDispatch = $routeAttribute->getDispatch();
+                $method = $routeAttribute->getDispatch()->getMethod();
+                $route  = $this->convertRouteAttributesToDataClass($routeAttribute);
 
-                $method              = $routeDispatch->getMethod();
-                $routeParameters     = $this->attributes->forMethod($class, $method, Parameter::class);
-                $routeMiddleware     = $this->attributes->forMethod($class, $method, Middleware::class);
-                $routeRequestStruct  = $this->attributes->forMethod($class, $method, RequestStruct::class);
-                $routeResponseStruct = $this->attributes->forMethod($class, $method, ResponseStruct::class);
-                $requestMethods      = $this->attributes->forMethod($class, $method, RequestMethod::class);
-
-                /** @var class-string[] $middlewareClasses */
-                $middlewareClasses = array_column(
-                    $routeMiddleware,
-                    'name'
-                );
-
-                foreach ($middlewareClasses as $middlewareClass) {
-                    $routeAttribute = match (true) {
-                        is_a($middlewareClass, RouteMatchedMiddleware::class, true)    => $routeAttribute->withAddedRouteMatchedMiddleware(
-                            $middlewareClass
-                        ),
-                        is_a($middlewareClass, RouteDispatchedMiddleware::class, true) => $routeAttribute->withAddedRouteDispatchedMiddleware(
-                            $middlewareClass
-                        ),
-                        is_a($middlewareClass, ThrowableCaughtMiddleware::class, true) => $routeAttribute->withAddedThrowableCaughtMiddleware(
-                            $middlewareClass
-                        ),
-                        is_a($middlewareClass, SendingResponseMiddleware::class, true) => $routeAttribute->withAddedSendingResponseMiddleware(
-                            $middlewareClass
-                        ),
-                        is_a($middlewareClass, TerminatedMiddleware::class, true)      => $routeAttribute->withAddedTerminatedMiddleware(
-                            $middlewareClass
-                        ),
-                        default                                                        => throw new InvalidArgumentException(
-                            "Unsupported middleware class `$middlewareClass`"
-                        ),
-                    };
-                }
-
-                foreach ($requestMethods as $requestMethod) {
-                    /** @psalm-suppress MixedArgument Unsure why Psalm doesn't realize that the requestMethods property is an array of RequestMethod enums */
-                    $routeAttribute = $routeAttribute->withAddedRequestMethods(...$requestMethod->requestMethods);
-                }
-
-                /** @var class-string<RequestStructContract>[] $requestStruct */
-                $requestStruct = array_column($routeRequestStruct, 'name');
-
-                if ($requestStruct !== []) {
-                    $routeAttribute = $routeAttribute->withRequestStruct($requestStruct[0]);
-                }
-
-                /** @var class-string<ResponseStructContract>[] $responseStruct */
-                $responseStruct = array_column($routeResponseStruct, 'name');
-
-                if ($responseStruct !== []) {
-                    $routeAttribute = $routeAttribute->withResponseStruct($responseStruct[0]);
-                }
-
-                $routeAttribute = $routeAttribute->withParameters(
-                    ...$this->attributes->forMethodParameters($class, $method, Parameter::class),
-                    ...$routeParameters
-                );
+                $route = $this->updatePath($route, $class, $method);
+                $route = $this->updateName($route, $class, $method);
+                $route = $this->updateMiddleware($route, $class, $method);
+                $route = $this->updateRequestStruct($route, $class, $method);
+                $route = $this->updateResponseStruct($route, $class, $method);
+                $route = $this->updateRequestMethods($route, $class, $method);
+                $route = $this->updateParameters($route, $class, $method);
 
                 // And set a new route with the controller defined annotation additions
-                $attributes[] = $routeAttribute;
+                $routes[] = $this->setRouteProperties($route);
             }
-        }
-
-        foreach ($attributes as $attribute) {
-            $attribute = $this->setRouteProperties($attribute);
-
-            $routes[] = new \Valkyrja\Http\Routing\Data\Route(
-                path: $attribute->getPath(),
-                name: $attribute->getName(),
-                dispatch: $attribute->getDispatch(),
-                requestMethods: $attribute->getRequestMethods(),
-                regex: $attribute->getRegex(),
-                parameters: $attribute->getParameters(),
-                routeMatchedMiddleware: $attribute->getRouteMatchedMiddleware(),
-                routeDispatchedMiddleware: $attribute->getRouteDispatchedMiddleware(),
-                throwableCaughtMiddleware: $attribute->getThrowableCaughtMiddleware(),
-                sendingResponseMiddleware: $attribute->getSendingResponseMiddleware(),
-                terminatedMiddleware: $attribute->getTerminatedMiddleware(),
-                requestStruct: $attribute->getRequestStruct(),
-                responseStruct: $attribute->getResponseStruct()
-            );
         }
 
         return $routes;
@@ -181,5 +115,216 @@ class AttributeCollector implements Contract
         );
 
         return $this->processor->route($route);
+    }
+
+    /**
+     * @param class-string     $class  The class name
+     * @param non-empty-string $method The method name
+     *
+     * @throws ReflectionException
+     */
+    protected function updatePath(Route $route, string $class, string $method): Route
+    {
+        /** @var Path[] $classPaths */
+        $classPaths = $this->attributes->forClass($class, Path::class);
+        $routePaths = $this->attributes->forMethod($class, $method, Path::class);
+
+        /** @var non-empty-string[] $classPath */
+        $classPath = array_column($classPaths, 'value');
+
+        if ($classPath !== []) {
+            $route = $route->withPath($classPath[0] . $route->getPath());
+        }
+
+        /** @var non-empty-string[] $routePath */
+        $routePath = array_column($routePaths, 'value');
+
+        if ($routePath !== []) {
+            $route = $route->withAddedPath($routePath[0]);
+        }
+
+        return $route;
+    }
+
+    /**
+     * @param class-string     $class  The class name
+     * @param non-empty-string $method The method name
+     *
+     * @throws ReflectionException
+     */
+    protected function updateName(Route $route, string $class, string $method): Route
+    {
+        /** @var Name[] $classNames */
+        $classNames = $this->attributes->forClass($class, Name::class);
+        $routeNames = $this->attributes->forMethod($class, $method, Name::class);
+
+        /** @var non-empty-string[] $className */
+        $className = array_column($classNames, 'value');
+
+        if ($className !== []) {
+            $route = $route->withName($className[0] . '.' . $route->getName());
+        }
+
+        /** @var non-empty-string[] $routeName */
+        $routeName = array_column($routeNames, 'value');
+
+        if ($routeName !== []) {
+            $route = $route->withName($route->getName() . '.' . $routeName[0]);
+        }
+
+        return $route;
+    }
+
+    /**
+     * @param class-string     $class  The class name
+     * @param non-empty-string $method The method name
+     *
+     * @throws ReflectionException
+     */
+    protected function updateMiddleware(Route $route, string $class, string $method): Route
+    {
+        $middleware = $this->attributes->forMethod($class, $method, Middleware::class);
+
+        /** @var class-string[] $middlewareClassNames */
+        $middlewareClassNames = array_column($middleware, 'name');
+
+        foreach ($middlewareClassNames as $middlewareClass) {
+            $route = match (true) {
+                is_a($middlewareClass, RouteMatchedMiddleware::class, true)    => $route->withAddedRouteMatchedMiddleware(
+                    $middlewareClass
+                ),
+                is_a($middlewareClass, RouteDispatchedMiddleware::class, true) => $route->withAddedRouteDispatchedMiddleware(
+                    $middlewareClass
+                ),
+                is_a($middlewareClass, ThrowableCaughtMiddleware::class, true) => $route->withAddedThrowableCaughtMiddleware(
+                    $middlewareClass
+                ),
+                is_a($middlewareClass, SendingResponseMiddleware::class, true) => $route->withAddedSendingResponseMiddleware(
+                    $middlewareClass
+                ),
+                is_a($middlewareClass, TerminatedMiddleware::class, true)      => $route->withAddedTerminatedMiddleware(
+                    $middlewareClass
+                ),
+                default                                                        => throw new InvalidArgumentException(
+                    "Unsupported middleware class `$middlewareClass`"
+                ),
+            };
+        }
+
+        return $route;
+    }
+
+    /**
+     * @param class-string     $class  The class name
+     * @param non-empty-string $method The method name
+     *
+     * @throws ReflectionException
+     */
+    protected function updateRequestStruct(Route $route, string $class, string $method): Route
+    {
+        $requestStruct = $this->attributes->forMethod($class, $method, RequestStruct::class);
+
+        /** @var class-string<RequestStructContract>[] $requestStructName */
+        $requestStructName = array_column($requestStruct, 'name');
+
+        if ($requestStructName !== []) {
+            $route = $route->withRequestStruct($requestStructName[0]);
+        }
+
+        return $route;
+    }
+
+    /**
+     * @param class-string     $class  The class name
+     * @param non-empty-string $method The method name
+     *
+     * @throws ReflectionException
+     */
+    protected function updateResponseStruct(Route $route, string $class, string $method): Route
+    {
+        $responseStruct = $this->attributes->forMethod($class, $method, ResponseStruct::class);
+
+        /** @var class-string<ResponseStructContract>[] $responseStructName */
+        $responseStructName = array_column($responseStruct, 'name');
+
+        if ($responseStructName !== []) {
+            $route = $route->withResponseStruct($responseStructName[0]);
+        }
+
+        return $route;
+    }
+
+    /**
+     * @param class-string     $class  The class name
+     * @param non-empty-string $method The method name
+     *
+     * @throws ReflectionException
+     */
+    protected function updateRequestMethods(Route $route, string $class, string $method): Route
+    {
+        $requestMethods = $this->attributes->forMethod($class, $method, RequestMethod::class);
+
+        foreach ($requestMethods as $requestMethod) {
+            /** @psalm-suppress MixedArgument Unsure why Psalm doesn't realize that the requestMethods property is an array of RequestMethod enums */
+            $route = $route->withAddedRequestMethods(...$requestMethod->requestMethods);
+        }
+
+        return $route;
+    }
+
+    /**
+     * @param class-string     $class  The class name
+     * @param non-empty-string $method The method name
+     *
+     * @throws ReflectionException
+     */
+    protected function updateParameters(Route $route, string $class, string $method): Route
+    {
+        $methodParameters = $this->attributes->forMethod($class, $method, Parameter::class);
+
+        $route = $route->withParameters(
+            ...$this->attributes->forMethodParameters($class, $method, Parameter::class),
+            ...$methodParameters
+        );
+
+        $parameterAttributes = $route->getParameters();
+        $parameters          = [];
+
+        foreach ($parameterAttributes as $parameterAttribute) {
+            $parameters[] = $this->convertParameterAttributesToDataClass($parameterAttribute);
+        }
+
+        return $route->withParameters(...$parameters);
+    }
+
+    protected function convertRouteAttributesToDataClass(RouteContract $route): Route
+    {
+        return new Route(
+            path: $route->getPath(),
+            name: $route->getName(),
+            dispatch: $route->getDispatch(),
+            requestMethods: $route->getRequestMethods(),
+            regex: $route->getRegex(),
+            parameters: $route->getParameters(),
+            routeMatchedMiddleware: $route->getRouteMatchedMiddleware(),
+            routeDispatchedMiddleware: $route->getRouteDispatchedMiddleware(),
+            throwableCaughtMiddleware: $route->getThrowableCaughtMiddleware(),
+            sendingResponseMiddleware: $route->getSendingResponseMiddleware(),
+            terminatedMiddleware: $route->getTerminatedMiddleware(),
+            requestStruct: $route->getRequestStruct(),
+            responseStruct: $route->getResponseStruct()
+        );
+    }
+
+    protected function convertParameterAttributesToDataClass(ParameterContract $parameter): DataParameter
+    {
+        return new DataParameter(
+            name: $parameter->getName(),
+            regex: $parameter->getRegex(),
+            cast: $parameter->getCast(),
+            isOptional: $parameter->isOptional(),
+            shouldCapture: $parameter->shouldCapture(),
+            default: $parameter->getDefault()
+        );
     }
 }

@@ -22,6 +22,7 @@ use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\SendingResponseMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\TerminatedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
+use Valkyrja\Tests\Classes\Http\Routing\Controller\ControllerAttributedClass;
 use Valkyrja\Tests\Classes\Http\Routing\Controller\ControllerClass;
 use Valkyrja\Tests\Classes\Http\Routing\Controller\InvalidControllerClass;
 use Valkyrja\Tests\Classes\Http\Struct\IndexedJsonRequestStructEnum;
@@ -40,9 +41,7 @@ class AttributeCollectorTest extends TestCase
      */
     public function testGetRoutes(): void
     {
-        $collector = new AttributeCollector();
-
-        $routes = $collector->getRoutes(ControllerClass::class);
+        $routes = new AttributeCollector()->getRoutes(ControllerClass::class);
 
         self::assertCount(2, $routes);
 
@@ -55,6 +54,7 @@ class AttributeCollectorTest extends TestCase
 
         self::assertSame(ControllerClass::PARAMETERS_PATH, $parametersRoute->getPath());
         self::assertSame(ControllerClass::PARAMETERS_NAME, $parametersRoute->getName());
+        self::assertSame('/^\/parameters\/(?<name>[a-zA-Z]+)$/', $parametersRoute->getRegex());
         self::assertSame([RouteDispatchedMiddlewareClass::class], $parametersRoute->getRouteDispatchedMiddleware());
         self::assertSame([RouteMatchedMiddlewareClass::class], $parametersRoute->getRouteMatchedMiddleware());
         self::assertSame([SendingResponseMiddlewareClass::class], $parametersRoute->getSendingResponseMiddleware());
@@ -62,6 +62,22 @@ class AttributeCollectorTest extends TestCase
         self::assertSame([ThrowableCaughtMiddlewareClass::class], $parametersRoute->getThrowableCaughtMiddleware());
         self::assertSame(IndexedJsonRequestStructEnum::class, $parametersRoute->getRequestStruct());
         self::assertSame(ResponseStructEnum::class, $parametersRoute->getResponseStruct());
+        self::assertCount(1, $parametersRoute->getParameters());
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function testGetRoutesWithControllerAttributes(): void
+    {
+        $routes = new AttributeCollector()->getRoutes(ControllerAttributedClass::class);
+
+        self::assertCount(1, $routes);
+
+        $welcomeRoute = $routes[0];
+
+        self::assertSame('/controller/welcome/path', $welcomeRoute->getPath());
+        self::assertSame('controller.' . ControllerAttributedClass::WELCOME_NAME . '.name', $welcomeRoute->getName());
     }
 
     /**

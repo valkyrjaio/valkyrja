@@ -83,7 +83,7 @@ class Route implements Contract
     {
         $new = clone $this;
 
-        $new->path = $path;
+        $new->path = $this->getFilteredPath($path);
 
         return $new;
     }
