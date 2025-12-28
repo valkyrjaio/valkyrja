@@ -1,6 +1,11 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.6.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.6.1...master)
+
+## [v25.6.1](https://github.com/valkyrjaio/valkyrja/compare/v25.6.0...v25.6.1) - 2025-12-27
+
+* [Cli] Refactor the InputHandler::setInteractivity method by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/192
+* [Http] Refactor the Mode::isReadable and Mode::isWriteable methods by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/193
 
 ## [v25.6.0](https://github.com/valkyrjaio/valkyrja/compare/v25.5.0...v25.6.0) - 2025-12-27
 
