@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Notification\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Broadcast\Contract\Broadcaster;
+use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster;
 use Valkyrja\Mail\Manager\Contract\Mailer;
 use Valkyrja\Notification\Factory\ContainerFactory;
 use Valkyrja\Notification\Factory\Contract\Factory;

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast;
+namespace Valkyrja\Broadcast\Broadcaster;
 
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
@@ -19,7 +19,7 @@ use Override;
 use Pusher\ApiErrorException;
 use Pusher\Pusher;
 use Pusher\PusherException;
-use Valkyrja\Broadcast\Contract\Broadcaster as Contract;
+use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster as Contract;
 use Valkyrja\Broadcast\Data\Contract\Message;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 

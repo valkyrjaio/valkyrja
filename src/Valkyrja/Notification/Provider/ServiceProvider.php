@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Notification\Provider;
 
 use Override;
-use Valkyrja\Broadcast\Contract\Broadcaster;
+use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Mail\Manager\Contract\Mailer;
