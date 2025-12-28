@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Middleware\Provider;
 
-use Valkyrja\Filesystem\Contract\Filesystem;
+use Valkyrja\Filesystem\Manager\Contract\Filesystem;
 use Valkyrja\Http\Middleware\Cache\CacheResponseMiddleware;
 use Valkyrja\Http\Middleware\Handler;
 use Valkyrja\Http\Middleware\Provider\ServiceProvider;

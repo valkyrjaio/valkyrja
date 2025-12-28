@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Functional;
 
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Container\Container;
-use Valkyrja\Filesystem\Contract\Filesystem;
+use Valkyrja\Filesystem\Manager\Contract\Filesystem;
 use Valkyrja\Http\Client\Contract\Client;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Routing\Contract\Router;

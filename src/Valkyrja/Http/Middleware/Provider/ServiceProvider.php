@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Filesystem\Contract\Filesystem;
+use Valkyrja\Filesystem\Manager\Contract\Filesystem;
 use Valkyrja\Http\Middleware\Cache\CacheResponseMiddleware;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware as HttpRequestReceivedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware as HttpRouteDispatchedMiddleware;

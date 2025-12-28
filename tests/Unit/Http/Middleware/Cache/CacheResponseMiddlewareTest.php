@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Middleware\Cache;
 
 use Valkyrja\Container\Container;
-use Valkyrja\Filesystem\Contract\Filesystem;
-use Valkyrja\Filesystem\InMemoryFilesystem;
+use Valkyrja\Filesystem\Manager\Contract\Filesystem;
+use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
 use Valkyrja\Http\Message\Request\Contract\Request;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
