@@ -1,6 +1,18 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.5.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.6.0...master)
+
+## [v25.6.0](https://github.com/valkyrjaio/valkyrja/compare/v25.5.0...v25.6.0) - 2025-12-27
+
+* [Type] Update exceptions to be more specific by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/183
+* [Session] Update exceptions to be more specific by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/184
+* [Crypt] Update exceptions to be more specific by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/185
+* [Api] Update methods to take a throwable instead of exception by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/186
+* [Sms] Update exceptions to be more specific by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/187
+* [Http] Update route collector and add new attributes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/188
+* [Http] Fix a bug with the routing collector parameters by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/189
+* [Cli] Update attribute collector and add more attributes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/190
+* [Auth] Avoid duplicate code where possible by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/191
 
 ## [v25.5.0](https://github.com/valkyrjaio/valkyrja/compare/v25.4.1...v25.5.0) - 2025-12-22
 
