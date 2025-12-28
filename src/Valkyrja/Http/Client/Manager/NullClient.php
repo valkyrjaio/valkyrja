@@ -11,24 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Client\Contract;
+namespace Valkyrja\Http\Client\Manager;
 
+use Override;
+use Valkyrja\Http\Client\Manager\Contract\Client as Contract;
 use Valkyrja\Http\Message\Request\Contract\Request;
 use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Response\EmptyResponse;
 
 /**
- * Interface Client.
+ * Class NullClient.
  *
  * @author Melech Mizrachi
  */
-interface Client
+class NullClient implements Contract
 {
     /**
-     * Send a request and recieve a response.
-     *
-     * @param Request $request
-     *
-     * @return Response
+     * @inheritDoc
      */
-    public function sendRequest(Request $request): Response;
+    #[Override]
+    public function sendRequest(Request $request): Response
+    {
+        return new EmptyResponse();
+    }
 }

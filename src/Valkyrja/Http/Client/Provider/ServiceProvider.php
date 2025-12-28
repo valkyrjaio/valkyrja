@@ -18,10 +18,10 @@ use Override;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Http\Client\Contract\Client;
-use Valkyrja\Http\Client\GuzzleClient;
-use Valkyrja\Http\Client\LogClient;
-use Valkyrja\Http\Client\NullClient;
+use Valkyrja\Http\Client\Manager\Contract\Client;
+use Valkyrja\Http\Client\Manager\GuzzleClient;
+use Valkyrja\Http\Client\Manager\LogClient;
+use Valkyrja\Http\Client\Manager\NullClient;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Log\Logger\Contract\Logger;
 
