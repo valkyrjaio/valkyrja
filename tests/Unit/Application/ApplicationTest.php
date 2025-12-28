@@ -65,8 +65,8 @@ use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler as HttpThro
 use Valkyrja\Http\Routing\Cli\Command\ListCommand as HttpListCommand;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as HttpRoutingCollection;
 use Valkyrja\Http\Routing\Collector\Contract\Collector;
-use Valkyrja\Http\Routing\Contract\Router as HttpRoutingRouter;
 use Valkyrja\Http\Routing\Data as HttpData;
+use Valkyrja\Http\Routing\Dispatcher\Contract\Router as HttpRoutingRouter;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactory as HttpRoutingResponseFactory;
 use Valkyrja\Http\Routing\Matcher\Contract\Matcher;
 use Valkyrja\Http\Routing\Middleware\RequestStructMiddleware;

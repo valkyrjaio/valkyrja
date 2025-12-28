@@ -18,7 +18,7 @@ use Valkyrja\Container\Container;
 use Valkyrja\Filesystem\Manager\Contract\Filesystem;
 use Valkyrja\Http\Client\Manager\Contract\Client;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
-use Valkyrja\Http\Routing\Contract\Router;
+use Valkyrja\Http\Routing\Dispatcher\Contract\Router;
 use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Session\Manager\Contract\Session;

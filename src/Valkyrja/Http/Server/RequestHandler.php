@@ -27,7 +27,7 @@ use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\Http\Routing\Contract\Router;
+use Valkyrja\Http\Routing\Dispatcher\Contract\Router;
 use Valkyrja\Http\Server\Contract\RequestHandler as Contract;
 
 use function count;
@@ -59,7 +59,7 @@ class RequestHandler implements Contract
      */
     public function __construct(
         protected Container $container = new \Valkyrja\Container\Container(),
-        protected Router $router = new \Valkyrja\Http\Routing\Router(),
+        protected Router $router = new \Valkyrja\Http\Routing\Dispatcher\Router(),
         protected RequestReceivedHandler $requestReceivedHandler = new Middleware\Handler\RequestReceivedHandler(),
         protected ThrowableCaughtHandler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),
         protected SendingResponseHandler $sendingResponseHandler = new Middleware\Handler\SendingResponseHandler(),

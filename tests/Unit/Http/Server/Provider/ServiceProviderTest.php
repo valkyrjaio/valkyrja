@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Server\Provider;
 
 use Valkyrja\Http\Middleware\Provider\ServiceProvider as MiddlewareServiceProvider;
-use Valkyrja\Http\Routing\Contract\Router;
+use Valkyrja\Http\Routing\Dispatcher\Contract\Router;
 use Valkyrja\Http\Server\Contract\RequestHandler as RequestHandlerContract;
 use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
