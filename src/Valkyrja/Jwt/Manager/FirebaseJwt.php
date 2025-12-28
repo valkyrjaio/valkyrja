@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Jwt;
+namespace Valkyrja\Jwt\Manager;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use OpenSSLAsymmetricKey;
 use OpenSSLCertificate;
 use Override;
-use Valkyrja\Jwt\Contract\Jwt as Contract;
 use Valkyrja\Jwt\Enum\Algorithm;
+use Valkyrja\Jwt\Manager\Contract\Jwt as Contract;
 
 /**
  * Class RsFirebaseJwt.

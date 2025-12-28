@@ -15,10 +15,10 @@ namespace Valkyrja\Tests\Unit\Jwt\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Env;
-use Valkyrja\Jwt\Contract\Jwt as Contract;
 use Valkyrja\Jwt\Enum\Algorithm;
-use Valkyrja\Jwt\FirebaseJwt;
-use Valkyrja\Jwt\NullJwt;
+use Valkyrja\Jwt\Manager\Contract\Jwt as Contract;
+use Valkyrja\Jwt\Manager\FirebaseJwt;
+use Valkyrja\Jwt\Manager\NullJwt;
 use Valkyrja\Jwt\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
