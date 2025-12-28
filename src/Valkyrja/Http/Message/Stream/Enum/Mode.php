@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Stream\Enum;
 
+use function in_array;
+
 /**
  * Enum Mode.
  *
@@ -36,24 +38,36 @@ enum Mode: string
 
     public function isReadable(): bool
     {
-        return $this === self::READ
-            || $this === self::READ_WRITE
-            || $this === self::WRITE_READ
-            || $this === self::WRITE_READ_END
-            || $this === self::CREATE_WRITE_READ
-            || $this === self::WRITE_READ_CREATE;
+        return in_array(
+            $this,
+            [
+                self::READ,
+                self::READ_WRITE,
+                self::WRITE_READ,
+                self::WRITE_READ_END,
+                self::CREATE_WRITE_READ,
+                self::WRITE_READ_CREATE,
+            ],
+            true
+        );
     }
 
     public function isWriteable(): bool
     {
-        return $this === self::READ_WRITE
-            || $this === self::WRITE
-            || $this === self::WRITE_READ
-            || $this === self::WRITE_END
-            || $this === self::WRITE_READ_END
-            || $this === self::CREATE_WRITE
-            || $this === self::CREATE_WRITE_READ
-            || $this === self::WRITE_CREATE
-            || $this === self::WRITE_READ_CREATE;
+        return in_array(
+            $this,
+            [
+                self::READ_WRITE,
+                self::WRITE,
+                self::WRITE_READ,
+                self::WRITE_END,
+                self::WRITE_READ_END,
+                self::CREATE_WRITE,
+                self::CREATE_WRITE_READ,
+                self::WRITE_CREATE,
+                self::WRITE_READ_CREATE,
+            ],
+            true
+        );
     }
 }
