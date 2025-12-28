@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Sms;
+namespace Valkyrja\Sms\Messenger;
 
 use Override;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Sms\Contract\Sms as Contract;
 use Valkyrja\Sms\Data\Contract\Message;
+use Valkyrja\Sms\Messenger\Contract\Messenger as Contract;
 
 /**
  * Class LogSms.
  *
  * @author Melech Mizrachi
  */
-class LogSms implements Contract
+class LogMessenger implements Contract
 {
     /**
      * LogSms constructor.

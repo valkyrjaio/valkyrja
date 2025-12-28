@@ -21,7 +21,7 @@ use Valkyrja\Notification\Factory\ContainerFactory;
 use Valkyrja\Notification\Factory\Contract\Factory;
 use Valkyrja\Notification\Notification;
 use Valkyrja\Notification\Provider\ServiceProvider;
-use Valkyrja\Sms\Contract\Sms;
+use Valkyrja\Sms\Messenger\Contract\Messenger;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**
@@ -42,7 +42,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(Factory::class, self::createStub(Factory::class));
         $this->container->setSingleton(Broadcaster::class, self::createStub(Broadcaster::class));
         $this->container->setSingleton(Mailer::class, self::createStub(Mailer::class));
-        $this->container->setSingleton(Sms::class, self::createStub(Sms::class));
+        $this->container->setSingleton(Messenger::class, self::createStub(Messenger::class));
 
         ServiceProvider::publishNotifier($this->container);
 

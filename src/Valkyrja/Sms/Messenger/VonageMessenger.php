@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Sms;
+namespace Valkyrja\Sms\Messenger;
 
 use Override;
 use Psr\Http\Client\ClientExceptionInterface;
-use Valkyrja\Sms\Contract\Sms as Contract;
 use Valkyrja\Sms\Data\Contract\Message;
+use Valkyrja\Sms\Messenger\Contract\Messenger as Contract;
 use Vonage\Client as Vonage;
 use Vonage\Client\Exception\Exception as ClientException;
 use Vonage\SMS\Message\SMS;
@@ -26,7 +26,7 @@ use Vonage\SMS\Message\SMS;
  *
  * @author Melech Mizrachi
  */
-class VonageSms implements Contract
+class VonageMessenger implements Contract
 {
     /**
      * VonageSms constructor.

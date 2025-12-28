@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Sms;
+namespace Valkyrja\Sms\Messenger;
 
 use Override;
-use Valkyrja\Sms\Contract\Sms as Contract;
 use Valkyrja\Sms\Data\Contract\Message;
+use Valkyrja\Sms\Messenger\Contract\Messenger as Contract;
 
 /**
  * Class NullSms.
  *
  * @author Melech Mizrachi
  */
-class NullSms implements Contract
+class NullMessenger implements Contract
 {
     /**
      * @inheritDoc
