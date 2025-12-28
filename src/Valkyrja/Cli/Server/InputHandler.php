@@ -49,7 +49,7 @@ class InputHandler implements Contract
      */
     public function __construct(
         protected Container $container = new \Valkyrja\Container\Container(),
-        protected Router $router = new \Valkyrja\Cli\Routing\Router(),
+        protected Router $router = new \Valkyrja\Cli\Routing\Dispatcher\Router(),
         protected InputReceivedHandler $inputReceivedHandler = new Middleware\Handler\InputReceivedHandler(),
         protected ThrowableCaughtHandler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),
         protected ExitedHandler $exitedHandler = new Middleware\Handler\ExitedHandler(),

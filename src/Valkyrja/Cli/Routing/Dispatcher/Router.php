@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing;
+namespace Valkyrja\Cli\Routing\Dispatcher;
 
 use Override;
 use Valkyrja\Cli\Command\HelpCommand;

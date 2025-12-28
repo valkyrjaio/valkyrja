@@ -28,7 +28,7 @@ use Valkyrja\Cli\Routing\Collector\AttributeCollector;
 use Valkyrja\Cli\Routing\Collector\Contract\Collector;
 use Valkyrja\Cli\Routing\Contract\Router as RouterContract;
 use Valkyrja\Cli\Routing\Data;
-use Valkyrja\Cli\Routing\Router;
+use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
