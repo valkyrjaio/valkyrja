@@ -284,7 +284,8 @@ class AttributeCollector implements Contract
 
         $route = $route->withParameters(
             ...$this->attributes->forMethodParameters($class, $method, Parameter::class),
-            ...$methodParameters
+            ...$methodParameters,
+            ...$route->getParameters()
         );
 
         $parameterAttributes = $route->getParameters();
