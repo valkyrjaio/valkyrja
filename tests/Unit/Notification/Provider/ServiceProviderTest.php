@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Notification\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster;
-use Valkyrja\Mail\Manager\Contract\Mailer;
+use Valkyrja\Mail\Mailer\Contract\Mailer;
 use Valkyrja\Notification\Factory\ContainerFactory;
 use Valkyrja\Notification\Factory\Contract\Factory;
 use Valkyrja\Notification\Manager\Contract\Notification as Contract;

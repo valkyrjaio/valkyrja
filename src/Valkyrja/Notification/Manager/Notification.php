@@ -18,7 +18,7 @@ use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster;
 use Valkyrja\Broadcast\Data\Message as BroadcastMessage;
 use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Mail\Data\Message as MailMessage;
-use Valkyrja\Mail\Manager\Contract\Mailer;
+use Valkyrja\Mail\Mailer\Contract\Mailer;
 use Valkyrja\Notification\Data\Contract\Notify;
 use Valkyrja\Notification\Entity\Contract\NotifiableUser;
 use Valkyrja\Notification\Factory\Contract\Factory;

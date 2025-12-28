@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Manager;
+namespace Valkyrja\Mail\Mailer;
 
 use Override;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use Valkyrja\Mail\Data\Contract\Message;
-use Valkyrja\Mail\Manager\Contract\Mailer as Contract;
+use Valkyrja\Mail\Mailer\Contract\Mailer as Contract;
 
 /**
  * Class PhpMailer.
