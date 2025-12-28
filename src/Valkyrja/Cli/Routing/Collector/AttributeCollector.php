@@ -150,19 +150,19 @@ class AttributeCollector implements Contract
 
         foreach ($middlewareClassNames as $middlewareClass) {
             $route = match (true) {
-                is_a($middlewareClass, CommandMatchedMiddleware::class, true) => $route->withAddedCommandMatchedMiddleware(
+                is_a($middlewareClass, CommandMatchedMiddleware::class, true)    => $route->withAddedCommandMatchedMiddleware(
                     $middlewareClass
                 ),
                 is_a($middlewareClass, CommandDispatchedMiddleware::class, true) => $route->withAddedCommandDispatchedMiddleware(
                     $middlewareClass
                 ),
-                is_a($middlewareClass, ThrowableCaughtMiddleware::class, true) => $route->withAddedThrowableCaughtMiddleware(
+                is_a($middlewareClass, ThrowableCaughtMiddleware::class, true)   => $route->withAddedThrowableCaughtMiddleware(
                     $middlewareClass
                 ),
-                is_a($middlewareClass, ExitedMiddleware::class, true) => $route->withExitedExitedMiddleware(
+                is_a($middlewareClass, ExitedMiddleware::class, true)            => $route->withExitedExitedMiddleware(
                     $middlewareClass
                 ),
-                default => throw new InvalidArgumentException(
+                default                                                          => throw new InvalidArgumentException(
                     "Unsupported middleware class `$middlewareClass`"
                 ),
             };
