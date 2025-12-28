@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Config;
-use Valkyrja\Attribute\Contract\Attributes;
+use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler;
@@ -51,7 +51,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishAttributeCollector(): void
     {
-        $this->container->setSingleton(Attributes::class, self::createStub(Attributes::class));
+        $this->container->setSingleton(AttributeCollectorContract::class, self::createStub(AttributeCollectorContract::class));
         $this->container->setSingleton(Reflection::class, self::createStub(Reflection::class));
 
         ServiceProvider::publishAttributeCollector($this->container);

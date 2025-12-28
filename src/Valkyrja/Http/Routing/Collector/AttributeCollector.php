@@ -15,8 +15,8 @@ namespace Valkyrja\Http\Routing\Collector;
 
 use Override;
 use ReflectionException;
-use Valkyrja\Attribute\Attributes;
-use Valkyrja\Attribute\Contract\Attributes as AttributeContract;
+use Valkyrja\Attribute\Collector\Collector;
+use Valkyrja\Attribute\Collector\Contract\Collector as AttributeContract;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
@@ -54,7 +54,7 @@ use function is_a;
 class AttributeCollector implements Contract
 {
     public function __construct(
-        protected AttributeContract $attributes = new Attributes(),
+        protected AttributeContract $attributes = new Collector(),
         protected ReflectionContract $reflection = new Reflection(),
         protected ProcessorContract $processor = new Processor()
     ) {

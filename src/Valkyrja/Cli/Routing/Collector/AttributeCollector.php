@@ -15,7 +15,7 @@ namespace Valkyrja\Cli\Routing\Collector;
 
 use Override;
 use ReflectionException;
-use Valkyrja\Attribute\Contract\Attributes;
+use Valkyrja\Attribute\Collector\Contract\Collector;
 use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
@@ -47,7 +47,7 @@ use function is_a;
 class AttributeCollector implements Contract
 {
     public function __construct(
-        protected Attributes $attributes,
+        protected Collector $attributes,
         protected Reflection $reflection,
     ) {
     }

@@ -15,7 +15,7 @@ namespace Valkyrja\Event\Collector;
 
 use Override;
 use ReflectionException;
-use Valkyrja\Attribute\Contract\Attributes;
+use Valkyrja\Attribute\Collector\Contract\Collector;
 use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
 use Valkyrja\Event\Attribute\Listener as Attribute;
 use Valkyrja\Event\Collector\Contract\Collector as Contract;
@@ -31,7 +31,7 @@ use Valkyrja\Reflection\Contract\Reflection;
 class AttributeCollector implements Contract
 {
     public function __construct(
-        protected Attributes $attributes,
+        protected Collector $attributes,
         protected Reflection $reflection,
     ) {
     }

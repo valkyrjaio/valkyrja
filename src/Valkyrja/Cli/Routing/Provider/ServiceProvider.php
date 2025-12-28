@@ -15,7 +15,7 @@ namespace Valkyrja\Cli\Routing\Provider;
 
 use Override;
 use Valkyrja\Application\Config;
-use Valkyrja\Attribute\Contract\Attributes;
+use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandler;
@@ -75,7 +75,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             Collector::class,
             new AttributeCollector(
-                attributes: $container->getSingleton(Attributes::class),
+                attributes: $container->getSingleton(AttributeCollectorContract::class),
                 reflection: $container->getSingleton(Reflection::class),
             )
         );

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Collector;
 
 use Override;
-use Valkyrja\Attribute\Contract\Attributes;
+use Valkyrja\Attribute\Collector\Contract\Collector;
 use Valkyrja\Container\Attribute\Alias;
 use Valkyrja\Container\Attribute\Service;
 use Valkyrja\Container\Attribute\Service as ServiceAttribute;
@@ -31,7 +31,7 @@ class AttributeCollector implements Contract
      * AttributeCollector constructor.
      */
     public function __construct(
-        protected Attributes $attributes = new \Valkyrja\Attribute\Attributes()
+        protected Collector $attributes = new \Valkyrja\Attribute\Collector\Collector()
     ) {
     }
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Routing\Collector;
 
 use ReflectionException;
-use Valkyrja\Attribute\Attributes;
+use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Cli\Routing\Collector\AttributeCollector;
 use Valkyrja\Reflection\Reflection;
 use Valkyrja\Tests\Classes\Cli\Routing\Command\CommandClass;
@@ -33,7 +33,7 @@ class AttributeCollectorTest extends TestCase
     public function testDefaults(): void
     {
         $collector = new AttributeCollector(
-            attributes: new Attributes(),
+            attributes: new Collector(),
             reflection: new Reflection()
         );
 
@@ -46,7 +46,7 @@ class AttributeCollectorTest extends TestCase
     public function testGetCommands(): void
     {
         $collector = new AttributeCollector(
-            attributes: new Attributes(),
+            attributes: new Collector(),
             reflection: new Reflection()
         );
 
