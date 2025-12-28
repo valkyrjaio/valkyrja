@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth\Contract;
+namespace Valkyrja\Auth\Authenticator\Contract;
 
 use Valkyrja\Auth\Data\Attempt\Contract\AuthenticationAttempt;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsers;
@@ -36,14 +36,14 @@ interface Authenticator
     /**
      * Get the current authenticated user if one exists.
      *
-     * @return U|null
+     * @return User|null
      */
     public function getAuthenticated(): User|null;
 
     /**
      * Get the current impersonated user if one exists.
      *
-     * @return U|null
+     * @return User|null
      */
     public function getImpersonated(): User|null;
 
