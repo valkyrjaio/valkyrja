@@ -332,7 +332,7 @@ class CollectorTest extends TestCase
         ): void {
         }
 
-        $attributes = $this->attributes->forFunction('\Valkyrja\Tests\Unit\Attribute\testFunction', AttributeClass::class);
+        $attributes = $this->attributes->forFunction('\Valkyrja\Tests\Unit\Attribute\Collector\testFunction', AttributeClass::class);
 
         $this->baseTests(...$attributes);
         $this->valueTests(
@@ -343,7 +343,7 @@ class CollectorTest extends TestCase
             ...$attributes
         );
 
-        $attributes = $this->attributes->forFunctionParameters('\Valkyrja\Tests\Unit\Attribute\testFunction', AttributeClass::class);
+        $attributes = $this->attributes->forFunctionParameters('\Valkyrja\Tests\Unit\Attribute\Collector\testFunction', AttributeClass::class);
 
         $this->baseTests(...$attributes);
         $this->valueTests(
