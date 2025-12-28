@@ -22,10 +22,10 @@ use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Dispatcher\Contract\Router;
-use Valkyrja\Http\Server\Contract\RequestHandler;
+use Valkyrja\Http\Server\Handler\Contract\RequestHandler;
+use Valkyrja\Http\Server\Handler\RequestHandler as DefaultRequestHandler;
 use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
-use Valkyrja\Http\Server\RequestHandler as DefaultRequestHandler;
 use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\View\Factory\Contract\ResponseFactory;
 

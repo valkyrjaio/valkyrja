@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Server;
 
-use Valkyrja\Http\Server\RequestHandler;
+use Valkyrja\Http\Server\Handler\RequestHandler;
 
 /**
  * Class RequestHandlerClass.

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Server;
+namespace Valkyrja\Tests\Unit\Http\Server\Handler;
 
 use Exception;
 use Throwable;
@@ -23,7 +23,7 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Dispatcher\Router;
-use Valkyrja\Http\Server\RequestHandler;
+use Valkyrja\Http\Server\Handler\RequestHandler;
 use Valkyrja\Tests\Classes\Http\Server\CloseOutputBuffersRequestHandlerClass;
 use Valkyrja\Tests\Classes\Http\Server\CloseOutputBuffersWithCleanRequestHandlerClass;
 use Valkyrja\Tests\Classes\Http\Server\FastCgiRequestHandlerClass;
