@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Cli\Routing;
+namespace Valkyrja\Tests\Unit\Cli\Routing\Dispatcher;
 
 use Valkyrja\Cli\Interaction\Argument\Argument;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
@@ -23,7 +23,7 @@ use Valkyrja\Cli\Middleware\Handler\CommandMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\CommandNotMatchedHandler;
 use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Data\Route;
-use Valkyrja\Cli\Routing\Router;
+use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Tests\Classes\Cli\Middleware\CommandMatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\CommandNotMatchedMiddlewareChangedClass;

@@ -18,7 +18,7 @@ use Valkyrja\Cli\Interaction\Config;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\Cli\Routing\Contract\Router;
+use Valkyrja\Cli\Routing\Dispatcher\Contract\Router;
 use Valkyrja\Cli\Server\Contract\InputHandler as InputHandlerContract;
 use Valkyrja\Cli\Server\InputHandler;
 use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware;

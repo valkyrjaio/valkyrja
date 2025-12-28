@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing;
+namespace Valkyrja\Cli\Routing\Dispatcher;
 
 use Override;
 use Valkyrja\Cli\Command\HelpCommand;
@@ -33,9 +33,9 @@ use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection;
-use Valkyrja\Cli\Routing\Contract\Router as Contract;
 use Valkyrja\Cli\Routing\Data\Contract\Route;
 use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
+use Valkyrja\Cli\Routing\Dispatcher\Contract\Router as Contract;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Exception\RuntimeException;
 use Valkyrja\Container\Contract\Container;
