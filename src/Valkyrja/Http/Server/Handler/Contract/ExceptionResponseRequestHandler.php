@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Server\Contract;
+namespace Valkyrja\Http\Server\Handler\Contract;
 
 use Throwable;
 use Valkyrja\Http\Message\Response\Contract\Response;

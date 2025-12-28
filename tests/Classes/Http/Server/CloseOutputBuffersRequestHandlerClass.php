@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Http\Server;
 
 use Override;
-use Valkyrja\Http\Server\RequestHandler;
+use Valkyrja\Http\Server\Handler\RequestHandler;
 
 use function ob_start;
 

@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Classes\Http\Server;
 
 use Override;
 use Throwable;
-use Valkyrja\Http\Server\RequestHandler;
+use Valkyrja\Http\Server\Handler\RequestHandler;
 
 /**
  * Class SessionCloseRequestHandler.

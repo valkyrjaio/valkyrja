@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Server;
+namespace Valkyrja\Http\Server\Handler;
 
 use Override;
 use Throwable;
@@ -28,7 +28,7 @@ use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Dispatcher\Contract\Router;
-use Valkyrja\Http\Server\Contract\RequestHandler as Contract;
+use Valkyrja\Http\Server\Handler\Contract\RequestHandler as Contract;
 
 use function count;
 use function defined;

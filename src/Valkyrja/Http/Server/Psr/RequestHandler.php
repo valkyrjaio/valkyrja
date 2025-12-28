@@ -19,7 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Response\Psr\Response;
-use Valkyrja\Http\Server\Contract\RequestHandler as RequestHandlerContract;
+use Valkyrja\Http\Server\Handler\Contract\RequestHandler as RequestHandlerContract;
 
 /**
  * Class RequestHandler.

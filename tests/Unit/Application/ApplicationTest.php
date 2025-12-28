@@ -74,7 +74,7 @@ use Valkyrja\Http\Routing\Middleware\ResponseStructMiddleware;
 use Valkyrja\Http\Routing\Middleware\ViewRouteNotMatchedMiddleware;
 use Valkyrja\Http\Routing\Processor\Contract\Processor;
 use Valkyrja\Http\Routing\Url\Contract\Url;
-use Valkyrja\Http\Server\Contract\RequestHandler;
+use Valkyrja\Http\Server\Handler\Contract\RequestHandler;
 use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Reflection\Contract\Reflection;

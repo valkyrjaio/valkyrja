@@ -23,8 +23,8 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Http\Routing\Dispatcher\Router;
+use Valkyrja\Http\Server\Handler\RequestHandler;
 use Valkyrja\Http\Server\Psr\RequestHandler as PsrRequestHandler;
-use Valkyrja\Http\Server\RequestHandler;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

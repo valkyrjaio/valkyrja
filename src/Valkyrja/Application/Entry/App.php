@@ -27,7 +27,7 @@ use Valkyrja\Exception\Contract\ExceptionHandler as ErrorHandlerContract;
 use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Server\Contract\RequestHandler;
+use Valkyrja\Http\Server\Handler\Contract\RequestHandler;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Microtime;
 

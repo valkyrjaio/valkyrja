@@ -15,11 +15,11 @@ namespace Valkyrja\Tests\Unit\Http\Server\Provider;
 
 use Valkyrja\Http\Middleware\Provider\ServiceProvider as MiddlewareServiceProvider;
 use Valkyrja\Http\Routing\Dispatcher\Contract\Router;
-use Valkyrja\Http\Server\Contract\RequestHandler as RequestHandlerContract;
+use Valkyrja\Http\Server\Handler\Contract\RequestHandler as RequestHandlerContract;
+use Valkyrja\Http\Server\Handler\RequestHandler;
 use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Provider\ServiceProvider;
-use Valkyrja\Http\Server\RequestHandler;
 use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 use Valkyrja\View\Factory\Contract\ResponseFactory;
