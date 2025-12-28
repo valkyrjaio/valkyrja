@@ -37,7 +37,7 @@ class AttributeCollectorTest extends TestCase
             reflection: new Reflection()
         );
 
-        self::assertEmpty($collector->getCommands(self::class));
+        self::assertEmpty($collector->getRoutes(self::class));
     }
 
     /**
@@ -50,7 +50,7 @@ class AttributeCollectorTest extends TestCase
             reflection: new Reflection()
         );
 
-        $commands = $collector->getCommands(CommandClass::class);
+        $commands = $collector->getRoutes(CommandClass::class);
 
         self::assertNotEmpty($commands);
         self::assertCount(1, $commands);
