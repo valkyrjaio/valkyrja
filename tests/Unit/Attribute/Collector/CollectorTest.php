@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Attribute;
+namespace Valkyrja\Tests\Unit\Attribute\Collector;
 
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Collector;
@@ -24,11 +24,11 @@ use Valkyrja\Tests\Classes\Attribute\AttributedClass;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
- * Test the Attributes service.
+ * Test the Collector service.
  *
  * @author Melech Mizrachi
  */
-class AttributesTest extends TestCase
+class CollectorTest extends TestCase
 {
     public const int VALUE1  = 1;
     public const int VALUE2  = 2;
@@ -405,9 +405,9 @@ class AttributesTest extends TestCase
             #[AttributeClass(self::VALUE5)]
             #[AttributeClassChildClass(self::VALUE6, self::SIX)]
             static function (
-                #[AttributeClass(AttributesTest::VALUE1)]
-                #[AttributeClass(AttributesTest::VALUE2)]
-                #[AttributeClassChildClass(AttributesTest::VALUE3, AttributesTest::THREE)]
+                #[AttributeClass(CollectorTest::VALUE1)]
+                #[AttributeClass(CollectorTest::VALUE2)]
+                #[AttributeClassChildClass(CollectorTest::VALUE3, CollectorTest::THREE)]
                 string $param
             ): void {
             },
