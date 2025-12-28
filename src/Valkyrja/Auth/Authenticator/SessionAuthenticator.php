@@ -11,9 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth;
+namespace Valkyrja\Auth\Authenticator;
 
 use Valkyrja\Auth\Constant\SessionId;
+use Valkyrja\Auth\Data;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasher;

@@ -11,10 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth;
+namespace Valkyrja\Auth\Authenticator;
 
 use Override;
-use Valkyrja\Auth\Contract\Authenticator as Contract;
+use Valkyrja\Auth\Authenticator\Contract\Authenticator as Contract;
+use Valkyrja\Auth\Data;
 use Valkyrja\Auth\Data\Attempt\Contract\AuthenticationAttempt;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Data\Retrieval\RetrievalById;
@@ -34,9 +35,9 @@ use Valkyrja\Auth\Store\Contract\Store;
  */
 abstract class AbstractAuthenticator implements Contract
 {
-    /** @var U|null */
+    /** @var User|null */
     protected User|null $current = null;
-    /** @var U|null */
+    /** @var User|null */
     protected User|null $impersonated = null;
 
     /**
@@ -64,7 +65,7 @@ abstract class AbstractAuthenticator implements Contract
     /**
      * Get the current authenticated user if one exists.
      *
-     * @return U|null
+     * @return User|null
      */
     #[Override]
     public function getAuthenticated(): User|null
@@ -84,7 +85,7 @@ abstract class AbstractAuthenticator implements Contract
     /**
      * Get the current impersonated user if one exists.
      *
-     * @return U|null
+     * @return User|null
      */
     #[Override]
     public function getImpersonated(): User|null

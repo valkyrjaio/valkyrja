@@ -11,9 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth;
+namespace Valkyrja\Auth\Authenticator;
 
 use Valkyrja\Auth\Constant\HeaderValue;
+use Valkyrja\Auth\Data;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Exception\InvalidAuthenticationException;
@@ -21,12 +22,9 @@ use Valkyrja\Auth\Hasher\Contract\PasswordHasher;
 use Valkyrja\Auth\Store\Contract\Store;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Jwt\Manager\Contract\Jwt;
-
-use function is_string;
 
 /**
- * Class JwtAuthenticator.
+ * Class TokenAuthenticator.
  *
  * @author Melech Mizrachi
  *
@@ -34,14 +32,13 @@ use function is_string;
  *
  * @extends AbstractAuthenticator<U>
  */
-class JwtAuthenticator extends AbstractAuthenticator
+class TokenAuthenticator extends AbstractAuthenticator
 {
     /**
      * @param Store<U>        $store  The store
      * @param class-string<U> $entity The user entity
      */
     public function __construct(
-        protected Jwt $jwt,
         protected ServerRequest $request,
         Store $store,
         PasswordHasher $hasher,
@@ -88,15 +85,8 @@ class JwtAuthenticator extends AbstractAuthenticator
      */
     protected function getAuthenticatedUsersFromToken(string $token): AuthenticatedUsers|null
     {
-        $jwtPayload = $this->jwt->decode($token);
-        $users      = $jwtPayload['users'] ?? null;
-
-        if (! is_string($users)) {
-            throw new InvalidAuthenticationException('Invalid token structure. Expecting users');
-        }
-
         $unserializedUsers = unserialize(
-            $users,
+            $token,
             ['allowed_classes' => true]
         );
 
