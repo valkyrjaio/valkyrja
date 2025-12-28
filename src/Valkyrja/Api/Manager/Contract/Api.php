@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Api\Contract;
+namespace Valkyrja\Api\Manager\Contract;
 
 use Throwable;
 use Valkyrja\Api\Model\Contract\Json;
