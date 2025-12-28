@@ -79,7 +79,7 @@ class UuidV1 extends Uuid
             }
 
             if (is_numeric($node)) {
-                $node = sprintf('%012x', $node);
+                $node = sprintf('%012x', (int) $node);
             }
 
             $len = strlen($node);
