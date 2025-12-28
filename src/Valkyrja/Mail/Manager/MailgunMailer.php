@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail;
+namespace Valkyrja\Mail\Manager;
 
 use Mailgun\Mailgun;
 use Mailgun\Message\BatchMessage;
 use Mailgun\Message\Exceptions\MissingRequiredParameter;
 use Override;
-use Valkyrja\Mail\Contract\Mailer as Contract;
 use Valkyrja\Mail\Data\Contract\Message;
+use Valkyrja\Mail\Manager\Contract\Mailer as Contract;
 
 /**
  * Class MailgunMailer.
