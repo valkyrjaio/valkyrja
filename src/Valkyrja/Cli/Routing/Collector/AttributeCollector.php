@@ -20,6 +20,8 @@ use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
+use Valkyrja\Cli\Routing\Attribute\ArgumentParameter as ArgumentAttribute;
+use Valkyrja\Cli\Routing\Attribute\OptionParameter as OptionAttribute;
 use Valkyrja\Cli\Routing\Attribute\Route as Attribute;
 use Valkyrja\Cli\Routing\Attribute\Route\Middleware;
 use Valkyrja\Cli\Routing\Attribute\Route\Name;
@@ -175,10 +177,10 @@ class AttributeCollector implements Contract
      */
     protected function updateArguments(Route $route, string $class, string $method): Route
     {
-        $methodParameters = $this->attributes->forMethod($class, $method, ArgumentParameter::class);
+        $methodParameters = $this->attributes->forMethod($class, $method, ArgumentAttribute::class);
 
         $route = $route->withArguments(
-            ...$this->attributes->forMethodParameters($class, $method, ArgumentParameter::class),
+            ...$this->attributes->forMethodParameters($class, $method, ArgumentAttribute::class),
             ...$methodParameters,
             ...$route->getArguments()
         );
@@ -199,10 +201,10 @@ class AttributeCollector implements Contract
      */
     protected function updateOptions(Route $route, string $class, string $method): Route
     {
-        $methodParameters = $this->attributes->forMethod($class, $method, OptionParameter::class);
+        $methodParameters = $this->attributes->forMethod($class, $method, OptionAttribute::class);
 
         $route = $route->withOptions(
-            ...$this->attributes->forMethodParameters($class, $method, OptionParameter::class),
+            ...$this->attributes->forMethodParameters($class, $method, OptionAttribute::class),
             ...$methodParameters,
             ...$route->getOptions()
         );
