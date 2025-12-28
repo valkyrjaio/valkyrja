@@ -11,29 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache;
+namespace Valkyrja\Cache\Manager;
 
 use Override;
-use Predis\Client;
-use Valkyrja\Cache\Contract\Cache as Contract;
+use Valkyrja\Cache\Manager\Contract\Cache as Contract;
 use Valkyrja\Cache\Tagger\Contract\Tagger;
 use Valkyrja\Cache\Tagger\Tagger as TagClass;
 
 /**
- * Class RedisCache.
+ * Class NullCache.
  *
  * @author Melech Mizrachi
  */
-class RedisCache implements Contract
+class NullCache implements Contract
 {
     /**
-     * RedisCache constructor.
-     *
-     * @param Client $client The predis client
-     * @param string $prefix The prefix
+     * NullCache constructor.
      */
     public function __construct(
-        protected Client $client,
         protected string $prefix = ''
     ) {
     }
@@ -44,7 +39,7 @@ class RedisCache implements Contract
     #[Override]
     public function has(string $key): bool
     {
-        return (bool) $this->client->exists($this->getKey($key));
+        return true;
     }
 
     /**
@@ -53,24 +48,16 @@ class RedisCache implements Contract
     #[Override]
     public function get(string $key): string|null
     {
-        return $this->client->get($this->getKey($key));
+        return '';
     }
 
     /**
      * @inheritDoc
-     *
-     * @psalm-suppress MixedReturnTypeCoercion
      */
     #[Override]
     public function many(string ...$keys): array
     {
-        $prefixedKeys = [];
-
-        foreach ($keys as $key) {
-            $prefixedKeys[] = $this->getKey($key);
-        }
-
-        return $this->client->mget($prefixedKeys);
+        return [];
     }
 
     /**
@@ -79,7 +66,6 @@ class RedisCache implements Contract
     #[Override]
     public function put(string $key, string $value, int $minutes): void
     {
-        $this->client->setex($this->getKey($key), $minutes * 60, $value);
     }
 
     /**
@@ -88,15 +74,6 @@ class RedisCache implements Contract
     #[Override]
     public function putMany(array $values, int $minutes): void
     {
-        $seconds = $minutes * 60;
-
-        $this->client->transaction(
-            function (Client $client) use ($values, $seconds): void {
-                foreach ($values as $key => $value) {
-                    $client->setex($this->getKey($key), $seconds, $value);
-                }
-            }
-        );
     }
 
     /**
@@ -105,7 +82,7 @@ class RedisCache implements Contract
     #[Override]
     public function increment(string $key, int $value = 1): int
     {
-        return $this->client->incrby($this->getKey($key), $value);
+        return $value;
     }
 
     /**
@@ -114,16 +91,15 @@ class RedisCache implements Contract
     #[Override]
     public function decrement(string $key, int $value = 1): int
     {
-        return $this->client->decrby($this->getKey($key), $value);
+        return $value;
     }
 
     /**
      * @inheritDoc
      */
     #[Override]
-    public function forever(string $key, $value): void
+    public function forever(string $key, string $value): void
     {
-        $this->client->set($this->getKey($key), $value);
     }
 
     /**
@@ -132,7 +108,7 @@ class RedisCache implements Contract
     #[Override]
     public function forget(string $key): bool
     {
-        return (bool) $this->client->del([$this->getKey($key)]);
+        return true;
     }
 
     /**
@@ -141,7 +117,7 @@ class RedisCache implements Contract
     #[Override]
     public function flush(): bool
     {
-        return (bool) $this->client->flushdb();
+        return true;
     }
 
     /**

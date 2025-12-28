@@ -15,7 +15,7 @@ namespace Valkyrja\Cache\Tagger;
 
 use JsonException;
 use Override;
-use Valkyrja\Cache\Contract\Cache;
+use Valkyrja\Cache\Manager\Contract\Cache;
 use Valkyrja\Cache\Tagger\Contract\Tagger as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 

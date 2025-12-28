@@ -15,7 +15,7 @@ namespace Valkyrja\Session\Manager;
 
 use JsonException;
 use Override;
-use Valkyrja\Cache\Contract\Cache;
+use Valkyrja\Cache\Manager\Contract\Cache;
 use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Exception\SessionStartFailure;
 use Valkyrja\Type\BuiltIn\Support\Arr;

@@ -15,11 +15,11 @@ namespace Valkyrja\Tests\Unit\Cache\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Predis\Client;
-use Valkyrja\Cache\Contract\Cache as Contract;
-use Valkyrja\Cache\LogCache;
-use Valkyrja\Cache\NullCache;
+use Valkyrja\Cache\Manager\Contract\Cache as Contract;
+use Valkyrja\Cache\Manager\LogCache;
+use Valkyrja\Cache\Manager\NullCache;
+use Valkyrja\Cache\Manager\RedisCache;
 use Valkyrja\Cache\Provider\ServiceProvider;
-use Valkyrja\Cache\RedisCache;
 use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
