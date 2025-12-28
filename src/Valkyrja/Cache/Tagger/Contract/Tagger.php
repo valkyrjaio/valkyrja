@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Tagger\Contract;
 
-use Valkyrja\Cache\Contract\Cache;
+use Valkyrja\Cache\Manager\Contract\Cache;
 
 /**
  * Interface Tagger.

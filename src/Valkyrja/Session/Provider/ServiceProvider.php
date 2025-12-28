@@ -15,7 +15,7 @@ namespace Valkyrja\Session\Provider;
 
 use Override;
 use Valkyrja\Application\Env;
-use Valkyrja\Cache\Contract\Cache;
+use Valkyrja\Cache\Manager\Contract\Cache;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Manager\Contract\Crypt;

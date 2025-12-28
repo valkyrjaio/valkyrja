@@ -11,24 +11,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache;
+namespace Valkyrja\Cache\Manager;
 
+use JsonException;
 use Override;
-use Valkyrja\Cache\Contract\Cache as Contract;
+use Valkyrja\Cache\Manager\Contract\Cache as Contract;
 use Valkyrja\Cache\Tagger\Contract\Tagger;
 use Valkyrja\Cache\Tagger\Tagger as TagClass;
+use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
- * Class NullCache.
+ * Class LogCache.
  *
  * @author Melech Mizrachi
  */
-class NullCache implements Contract
+class LogCache implements Contract
 {
     /**
-     * NullCache constructor.
+     * LogCache constructor.
+     *
+     * @param Logger $logger The logger service
+     * @param string $prefix [optional] The prefix
      */
     public function __construct(
+        protected Logger $logger,
         protected string $prefix = ''
     ) {
     }
@@ -39,6 +46,8 @@ class NullCache implements Contract
     #[Override]
     public function has(string $key): bool
     {
+        $this->logger->info(self::class . " has: $key");
+
         return true;
     }
 
@@ -48,15 +57,23 @@ class NullCache implements Contract
     #[Override]
     public function get(string $key): string|null
     {
+        $this->logger->info(self::class . " get: $key");
+
         return '';
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     #[Override]
     public function many(string ...$keys): array
     {
+        $keysString = Arr::toString($keys);
+
+        $this->logger->info(self::class . " many: $keysString");
+
         return [];
     }
 
@@ -66,14 +83,20 @@ class NullCache implements Contract
     #[Override]
     public function put(string $key, string $value, int $minutes): void
     {
+        $this->logger->info(self::class . " put: $key, value $value, minutes $minutes");
     }
 
     /**
      * @inheritDoc
+     *
+     * @throws JsonException
      */
     #[Override]
     public function putMany(array $values, int $minutes): void
     {
+        $valuesString = Arr::toString($values);
+
+        $this->logger->info(self::class . " putMany: $valuesString, minutes $minutes");
     }
 
     /**
@@ -82,6 +105,8 @@ class NullCache implements Contract
     #[Override]
     public function increment(string $key, int $value = 1): int
     {
+        $this->logger->info(self::class . " increment: $key, value $value");
+
         return $value;
     }
 
@@ -91,6 +116,8 @@ class NullCache implements Contract
     #[Override]
     public function decrement(string $key, int $value = 1): int
     {
+        $this->logger->info(self::class . " decrement: $key, value $value");
+
         return $value;
     }
 
@@ -98,8 +125,9 @@ class NullCache implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function forever(string $key, string $value): void
+    public function forever(string $key, $value): void
     {
+        $this->logger->info(self::class . " forever: $key, value $value");
     }
 
     /**
@@ -108,6 +136,8 @@ class NullCache implements Contract
     #[Override]
     public function forget(string $key): bool
     {
+        $this->logger->info(self::class . " forget: $key");
+
         return true;
     }
 
@@ -117,6 +147,8 @@ class NullCache implements Contract
     #[Override]
     public function flush(): bool
     {
+        $this->logger->info(self::class . ' flush');
+
         return true;
     }
 
