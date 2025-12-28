@@ -18,11 +18,11 @@ use Mailgun\Mailgun;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Log\Logger\Contract\Logger;
-use Valkyrja\Mail\Manager\Contract\Mailer as Contract;
-use Valkyrja\Mail\Manager\LogMailer;
-use Valkyrja\Mail\Manager\MailgunMailer;
-use Valkyrja\Mail\Manager\NullMailer;
-use Valkyrja\Mail\Manager\PhpMailer;
+use Valkyrja\Mail\Mailer\Contract\Mailer as Contract;
+use Valkyrja\Mail\Mailer\LogMailer;
+use Valkyrja\Mail\Mailer\MailgunMailer;
+use Valkyrja\Mail\Mailer\NullMailer;
+use Valkyrja\Mail\Mailer\PhpMailer;
 use Valkyrja\Mail\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 

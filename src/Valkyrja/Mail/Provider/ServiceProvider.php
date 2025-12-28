@@ -22,11 +22,11 @@ use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger\Contract\Logger;
-use Valkyrja\Mail\Manager\Contract\Mailer;
-use Valkyrja\Mail\Manager\LogMailer;
-use Valkyrja\Mail\Manager\MailgunMailer;
-use Valkyrja\Mail\Manager\NullMailer;
-use Valkyrja\Mail\Manager\PhpMailer;
+use Valkyrja\Mail\Mailer\Contract\Mailer;
+use Valkyrja\Mail\Mailer\LogMailer;
+use Valkyrja\Mail\Mailer\MailgunMailer;
+use Valkyrja\Mail\Mailer\NullMailer;
+use Valkyrja\Mail\Mailer\PhpMailer;
 
 /**
  * Class ServiceProvider.

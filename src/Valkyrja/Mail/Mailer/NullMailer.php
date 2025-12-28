@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Manager;
+namespace Valkyrja\Mail\Mailer;
 
 use Override;
 use Valkyrja\Mail\Data\Contract\Message;
-use Valkyrja\Mail\Manager\Contract\Mailer as Contract;
+use Valkyrja\Mail\Mailer\Contract\Mailer as Contract;
 
 /**
  * Class NullMailer.
