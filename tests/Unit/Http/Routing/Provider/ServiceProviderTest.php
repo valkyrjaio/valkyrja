@@ -53,7 +53,7 @@ use Valkyrja\Http\Routing\Url\Contract\Url as UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
-use Valkyrja\View\Contract\Renderer;
+use Valkyrja\View\Renderer\Contract\Renderer;
 
 /**
  * Test the ServiceProviderTest.

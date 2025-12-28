@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View;
+namespace Valkyrja\View\Renderer;
 
 use Override;
 use Valkyrja\Exception\RuntimeException;
-use Valkyrja\View\Contract\Renderer as Contract;
 use Valkyrja\View\Exception\InvalidConfigPath;
+use Valkyrja\View\Renderer\Contract\Renderer as Contract;
 use Valkyrja\View\Template\Contract\Template;
 use Valkyrja\View\Template\Template as DefaultTemplate;
 

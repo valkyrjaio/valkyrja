@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Http\Routing\Middleware\ViewRouteNotMatchedMiddleware;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\View\Contract\Renderer;
+use Valkyrja\View\Renderer\Contract\Renderer;
 
 /**
  * Class ViewRouteNotMatchedMiddlewareTest.

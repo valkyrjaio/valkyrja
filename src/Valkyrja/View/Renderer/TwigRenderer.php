@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View;
+namespace Valkyrja\View\Renderer;
 
 use Override;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use Valkyrja\View\Contract\Renderer as Contract;
+use Valkyrja\View\Renderer\Contract\Renderer as Contract;
 use Valkyrja\View\Template\Contract\Template;
 use Valkyrja\View\Template\Template as DefaultTemplate;
 

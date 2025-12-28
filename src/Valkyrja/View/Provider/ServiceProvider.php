@@ -22,12 +22,12 @@ use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
-use Valkyrja\View\Contract\Renderer;
 use Valkyrja\View\Factory\Contract\ResponseFactory as ResponseFactoryContract;
 use Valkyrja\View\Factory\ResponseFactory;
-use Valkyrja\View\OrkaRenderer;
-use Valkyrja\View\PhpRenderer;
-use Valkyrja\View\TwigRenderer;
+use Valkyrja\View\Renderer\Contract\Renderer;
+use Valkyrja\View\Renderer\OrkaRenderer;
+use Valkyrja\View\Renderer\PhpRenderer;
+use Valkyrja\View\Renderer\TwigRenderer;
 
 /**
  * Class ServiceProvider.

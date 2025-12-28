@@ -79,7 +79,7 @@ use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\View\Contract\Renderer;
+use Valkyrja\View\Renderer\Contract\Renderer;
 use Valkyrja\View\Template\Contract\Template;
 
 /**

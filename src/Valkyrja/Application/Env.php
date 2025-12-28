@@ -64,8 +64,8 @@ use Valkyrja\Session\Contract\Session;
 use Valkyrja\Session\PhpSession;
 use Valkyrja\Sms\Messenger\Contract\Messenger;
 use Valkyrja\Sms\Messenger\VonageMessenger;
-use Valkyrja\View\Contract\Renderer;
-use Valkyrja\View\PhpRenderer;
+use Valkyrja\View\Renderer\Contract\Renderer;
+use Valkyrja\View\Renderer\PhpRenderer;
 
 /**
  * Class Env.

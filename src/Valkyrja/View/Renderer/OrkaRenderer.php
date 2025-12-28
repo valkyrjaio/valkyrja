@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View;
+namespace Valkyrja\View\Renderer;
 
 use Override;
 use Valkyrja\Support\Directory;

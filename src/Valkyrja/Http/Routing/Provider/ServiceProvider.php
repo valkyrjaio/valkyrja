@@ -41,7 +41,7 @@ use Valkyrja\Http\Routing\Processor\Contract\Processor;
 use Valkyrja\Http\Routing\Router as HttpRouter;
 use Valkyrja\Http\Routing\Url\Contract\Url;
 use Valkyrja\Reflection\Contract\Reflection;
-use Valkyrja\View\Contract\Renderer;
+use Valkyrja\View\Renderer\Contract\Renderer;
 
 /**
  * Class ServiceProvider.
