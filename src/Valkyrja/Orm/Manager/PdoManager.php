@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Orm;
+namespace Valkyrja\Orm\Manager;
 
 use Override;
 use PDO;
 use Valkyrja\Container\Contract\Container;
-use Valkyrja\Orm\Contract\Manager as Contract;
 use Valkyrja\Orm\Entity\Contract\Entity;
 use Valkyrja\Orm\Exception\RuntimeException;
+use Valkyrja\Orm\Manager\Contract\Manager as Contract;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactory;
 use Valkyrja\Orm\QueryBuilder\Factory\SqlQueryBuilderFactory;
 use Valkyrja\Orm\Repository\Contract\Repository;

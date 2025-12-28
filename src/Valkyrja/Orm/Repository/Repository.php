@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Repository;
 
 use Override;
-use Valkyrja\Orm\Contract\Manager;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Entity\Contract\Entity;
+use Valkyrja\Orm\Manager\Contract\Manager;
 use Valkyrja\Orm\Repository\Contract\Repository as Contract;
 
 /**

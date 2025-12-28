@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Orm\Contract;
+namespace Valkyrja\Orm\Manager\Contract;
 
 use Valkyrja\Orm\Entity\Contract\Entity;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactory;

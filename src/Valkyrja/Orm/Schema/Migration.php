@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Schema;
 
 use Override;
-use Valkyrja\Orm\Contract\Manager;
+use Valkyrja\Orm\Manager\Contract\Manager;
 use Valkyrja\Orm\Schema\Contract\Migration as Contract;
 
 /**

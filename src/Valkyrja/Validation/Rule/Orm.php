@@ -15,10 +15,10 @@ namespace Valkyrja\Validation\Rule;
 
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Exception\InvalidArgumentException;
-use Valkyrja\Orm\Contract\Manager as OrmManager;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Entity\Contract\Entity;
+use Valkyrja\Orm\Manager\Contract\Manager as OrmManager;
 use Valkyrja\Validation\Exception\ValidationException;
 
 use function is_bool;
