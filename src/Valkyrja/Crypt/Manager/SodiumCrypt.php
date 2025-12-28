@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt;
+namespace Valkyrja\Crypt\Manager;
 
 use JsonException;
 use Override;
 use Random\RandomException;
 use SodiumException;
-use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Crypt\Exception\CryptException;
+use Valkyrja\Crypt\Manager\Contract\Crypt;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 

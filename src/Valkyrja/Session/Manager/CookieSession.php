@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Manager;
 
 use Override;
-use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Crypt\Exception\CryptException;
+use Valkyrja\Crypt\Manager\Contract\Crypt;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Exception\SessionStartFailure;

@@ -19,7 +19,7 @@ use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Exception\InvalidAuthenticationException;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasher;
 use Valkyrja\Auth\Store\Contract\Store;
-use Valkyrja\Crypt\Contract\Crypt;
+use Valkyrja\Crypt\Manager\Contract\Crypt;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Jwt\Manager\Contract\Jwt;

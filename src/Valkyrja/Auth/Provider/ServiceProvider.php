@@ -30,7 +30,7 @@ use Valkyrja\Auth\Store\OrmStore;
 use Valkyrja\Auth\TokenAuthenticator;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Crypt\Contract\Crypt;
+use Valkyrja\Crypt\Manager\Contract\Crypt;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Jwt\Manager\Contract\Jwt;
 use Valkyrja\Orm\Manager\Contract\Manager;

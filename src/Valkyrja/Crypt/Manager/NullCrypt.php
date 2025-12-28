@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt;
+namespace Valkyrja\Crypt\Manager;
 
 use Override;
 use stdClass;
-use Valkyrja\Crypt\Contract\Crypt;
+use Valkyrja\Crypt\Manager\Contract\Crypt;
 
 /**
  * Class NullCrypt.
