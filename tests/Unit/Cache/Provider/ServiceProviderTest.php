@@ -20,7 +20,7 @@ use Valkyrja\Cache\LogCache;
 use Valkyrja\Cache\NullCache;
 use Valkyrja\Cache\Provider\ServiceProvider;
 use Valkyrja\Cache\RedisCache;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**

@@ -17,7 +17,7 @@ use Mailgun\HttpClient\HttpClientConfigurator;
 use Mailgun\Mailgun;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Mail\Manager\Contract\Mailer as Contract;
 use Valkyrja\Mail\Manager\LogMailer;
 use Valkyrja\Mail\Manager\MailgunMailer;

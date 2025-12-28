@@ -17,7 +17,7 @@ use JsonException;
 use Override;
 use Valkyrja\Broadcast\Contract\Broadcaster as Contract;
 use Valkyrja\Broadcast\Data\Contract\Message;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**

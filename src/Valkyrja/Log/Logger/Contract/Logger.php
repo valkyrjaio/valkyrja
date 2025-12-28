@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Log\Contract;
+namespace Valkyrja\Log\Logger\Contract;
 
 use Throwable;
 use Valkyrja\Log\Enum\LogLevel;

@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Log;
+namespace Valkyrja\Log\Logger;
 
 use Override;
 use Psr\Log\LoggerInterface;
 use Throwable;
-use Valkyrja\Log\Contract\Logger as Contract;
 use Valkyrja\Log\Enum\LogLevel;
+use Valkyrja\Log\Logger\Contract\Logger as Contract;
 
 /**
  * Class PsrLogger.

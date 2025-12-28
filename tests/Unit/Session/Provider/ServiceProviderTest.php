@@ -18,7 +18,7 @@ use Valkyrja\Application\Env;
 use Valkyrja\Cache\Contract\Cache;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Manager\CacheSession;
 use Valkyrja\Session\Manager\Contract\Session as Contract;

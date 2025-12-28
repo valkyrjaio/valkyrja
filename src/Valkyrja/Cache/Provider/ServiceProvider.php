@@ -22,7 +22,7 @@ use Valkyrja\Cache\NullCache;
 use Valkyrja\Cache\RedisCache;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 
 /**
  * Class ServiceProvider.

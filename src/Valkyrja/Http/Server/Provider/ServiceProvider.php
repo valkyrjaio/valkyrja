@@ -26,7 +26,7 @@ use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\RequestHandler as DefaultRequestHandler;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\View\Factory\Contract\ResponseFactory;
 
 /**

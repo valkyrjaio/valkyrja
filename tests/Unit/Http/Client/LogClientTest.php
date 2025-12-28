@@ -18,7 +18,7 @@ use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Http\Client\LogClient;
 use Valkyrja\Http\Message\Request\Request;
 use Valkyrja\Http\Message\Response\EmptyResponse;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

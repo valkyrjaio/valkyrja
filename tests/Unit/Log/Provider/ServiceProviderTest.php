@@ -16,10 +16,10 @@ namespace Valkyrja\Tests\Unit\Log\Provider;
 use Monolog\Logger as Monolog;
 use PHPUnit\Framework\MockObject\Exception;
 use Psr\Log\LoggerInterface;
-use Valkyrja\Log\Contract\Logger as Contract;
-use Valkyrja\Log\NullLogger;
+use Valkyrja\Log\Logger\Contract\Logger as Contract;
+use Valkyrja\Log\Logger\NullLogger;
+use Valkyrja\Log\Logger\PsrLogger;
 use Valkyrja\Log\Provider\ServiceProvider;
-use Valkyrja\Log\PsrLogger;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**

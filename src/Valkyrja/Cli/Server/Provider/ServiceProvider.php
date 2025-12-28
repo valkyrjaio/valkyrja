@@ -24,7 +24,7 @@ use Valkyrja\Cli\Server\InputHandler;
 use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 
 /**
  * Class ServiceProvider.

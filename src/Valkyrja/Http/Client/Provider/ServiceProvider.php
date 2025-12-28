@@ -23,7 +23,7 @@ use Valkyrja\Http\Client\GuzzleClient;
 use Valkyrja\Http\Client\LogClient;
 use Valkyrja\Http\Client\NullClient;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 
 /**
  * Class ServiceProvider.

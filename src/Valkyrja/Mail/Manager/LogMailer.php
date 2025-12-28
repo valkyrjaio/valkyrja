@@ -15,7 +15,7 @@ namespace Valkyrja\Mail\Manager;
 
 use JsonException;
 use Override;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Mail\Data\Contract\Message;
 use Valkyrja\Mail\Manager\Contract\Mailer as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;

@@ -19,7 +19,7 @@ use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 
 /**
  * Class LogExceptionMiddleware.
