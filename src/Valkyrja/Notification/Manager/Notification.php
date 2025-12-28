@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification;
+namespace Valkyrja\Notification\Manager;
 
 use Override;
 use Valkyrja\Broadcast\Contract\Broadcaster;
@@ -19,10 +19,10 @@ use Valkyrja\Broadcast\Data\Message as BroadcastMessage;
 use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Mail\Contract\Mailer;
 use Valkyrja\Mail\Data\Message as MailMessage;
-use Valkyrja\Notification\Contract\Notification as Contract;
 use Valkyrja\Notification\Data\Contract\Notify;
 use Valkyrja\Notification\Entity\Contract\NotifiableUser;
 use Valkyrja\Notification\Factory\Contract\Factory;
+use Valkyrja\Notification\Manager\Contract\Notification as Contract;
 use Valkyrja\Sms\Data\Message as SmsMessage;
 use Valkyrja\Sms\Messenger\Contract\Messenger;
 
