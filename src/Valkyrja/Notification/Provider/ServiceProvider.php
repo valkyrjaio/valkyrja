@@ -18,9 +18,9 @@ use Valkyrja\Broadcast\Contract\Broadcaster;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Mail\Contract\Mailer;
-use Valkyrja\Notification\Contract\Notification;
 use Valkyrja\Notification\Factory\ContainerFactory;
 use Valkyrja\Notification\Factory\Contract\Factory;
+use Valkyrja\Notification\Manager\Contract\Notification;
 use Valkyrja\Sms\Messenger\Contract\Messenger;
 
 /**
@@ -65,7 +65,7 @@ final class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Notification::class,
-            new \Valkyrja\Notification\Notification(
+            new \Valkyrja\Notification\Manager\Notification(
                 $container->getSingleton(Factory::class),
                 $container->getSingleton(Broadcaster::class),
                 $container->getSingleton(Mailer::class),
