@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Event;
 use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Data\Listener;
-use Valkyrja\Event\Dispatcher;
+use Valkyrja\Event\Dispatcher\Dispatcher;
 use Valkyrja\Tests\Classes\Event\DispatchCollectableEventClass;
 use Valkyrja\Tests\Classes\Event\StoppableEventClass;
 use Valkyrja\Tests\Unit\TestCase;

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Event;
+namespace Valkyrja\Event\Dispatcher;
 
 use Override;
 use Psr\EventDispatcher\StoppableEventInterface;
@@ -20,8 +20,8 @@ use Valkyrja\Dispatcher\Dispatcher as DispatchDispatcher;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\Collection as CollectionContract;
 use Valkyrja\Event\Contract\DispatchCollectableEvent;
-use Valkyrja\Event\Contract\Dispatcher as Contract;
 use Valkyrja\Event\Data\Contract\Listener;
+use Valkyrja\Event\Dispatcher\Contract\Dispatcher as Contract;
 
 /**
  * Class Dispatcher.
