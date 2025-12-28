@@ -22,13 +22,13 @@ use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Session\CacheSession;
-use Valkyrja\Session\Contract\Session;
-use Valkyrja\Session\CookieSession;
 use Valkyrja\Session\Data\CookieParams;
-use Valkyrja\Session\LogSession;
-use Valkyrja\Session\NullSession;
-use Valkyrja\Session\PhpSession;
+use Valkyrja\Session\Manager\CacheSession;
+use Valkyrja\Session\Manager\Contract\Session;
+use Valkyrja\Session\Manager\CookieSession;
+use Valkyrja\Session\Manager\LogSession;
+use Valkyrja\Session\Manager\NullSession;
+use Valkyrja\Session\Manager\PhpSession;
 
 /**
  * Class ServiceProvider.

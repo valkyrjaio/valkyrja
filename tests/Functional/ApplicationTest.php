@@ -21,7 +21,7 @@ use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Routing\Contract\Router;
 use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Session\Contract\Session;
+use Valkyrja\Session\Manager\Contract\Session;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\View\Renderer\Contract\Renderer;
 

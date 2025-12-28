@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session;
+namespace Valkyrja\Session\Manager;
 
 use Override;
 use Random\RandomException;
-use Valkyrja\Session\Contract\Session as Contract;
 use Valkyrja\Session\Exception\InvalidCsrfToken;
 use Valkyrja\Session\Exception\InvalidSessionId;
 use Valkyrja\Session\Exception\SessionStartFailure;
+use Valkyrja\Session\Manager\Contract\Session as Contract;
 
 use function bin2hex;
 use function hash_equals;
