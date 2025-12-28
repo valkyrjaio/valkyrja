@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Sms\Messenger;
 
 use Override;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Sms\Data\Contract\Message;
 use Valkyrja\Sms\Messenger\Contract\Messenger as Contract;
 

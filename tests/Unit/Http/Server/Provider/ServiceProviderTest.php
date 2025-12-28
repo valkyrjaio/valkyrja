@@ -20,7 +20,7 @@ use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Provider\ServiceProvider;
 use Valkyrja\Http\Server\RequestHandler;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 use Valkyrja\View\Factory\Contract\ResponseFactory;
 

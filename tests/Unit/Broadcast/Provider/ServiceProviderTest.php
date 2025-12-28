@@ -23,7 +23,7 @@ use Valkyrja\Broadcast\NullBroadcaster;
 use Valkyrja\Broadcast\Provider\ServiceProvider;
 use Valkyrja\Broadcast\PusherBroadcaster;
 use Valkyrja\Crypt\Contract\Crypt;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**

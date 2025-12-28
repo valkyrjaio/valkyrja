@@ -54,8 +54,8 @@ use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware as HttpThrowable
 use Valkyrja\Jwt\Contract\Jwt;
 use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Jwt\FirebaseJwt;
-use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Log\PsrLogger;
+use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Log\Logger\PsrLogger;
 use Valkyrja\Mail\Manager\Contract\Mailer;
 use Valkyrja\Mail\Manager\MailgunMailer;
 use Valkyrja\Orm\Manager\Contract\Manager;

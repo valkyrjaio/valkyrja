@@ -23,7 +23,7 @@ use Valkyrja\Cli\Server\Contract\InputHandler as InputHandlerContract;
 use Valkyrja\Cli\Server\InputHandler;
 use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Provider\ServiceProvider;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**

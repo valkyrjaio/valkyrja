@@ -19,7 +19,7 @@ use Valkyrja\Http\Client\Contract\Client as Contract;
 use Valkyrja\Http\Message\Request\Contract\Request;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Message\Response\EmptyResponse;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 
 /**

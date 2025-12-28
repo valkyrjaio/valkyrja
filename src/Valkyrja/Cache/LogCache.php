@@ -18,7 +18,7 @@ use Override;
 use Valkyrja\Cache\Contract\Cache as Contract;
 use Valkyrja\Cache\Tagger\Contract\Tagger;
 use Valkyrja\Cache\Tagger\Tagger as TagClass;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**

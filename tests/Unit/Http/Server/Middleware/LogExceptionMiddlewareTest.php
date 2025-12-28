@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

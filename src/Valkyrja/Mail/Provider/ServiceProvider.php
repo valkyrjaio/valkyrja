@@ -21,7 +21,7 @@ use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Mail\Manager\Contract\Mailer;
 use Valkyrja\Mail\Manager\LogMailer;
 use Valkyrja\Mail\Manager\MailgunMailer;

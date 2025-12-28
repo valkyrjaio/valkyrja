@@ -21,10 +21,10 @@ use Psr\Log\LoggerInterface;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Log\Enum\LogLevel;
-use Valkyrja\Log\NullLogger;
-use Valkyrja\Log\PsrLogger;
+use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Log\Logger\NullLogger;
+use Valkyrja\Log\Logger\PsrLogger;
 use Valkyrja\Support\Directory;
 
 use function date;

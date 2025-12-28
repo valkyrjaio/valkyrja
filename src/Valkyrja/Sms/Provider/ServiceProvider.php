@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Sms\Messenger\Contract\Messenger;
 use Valkyrja\Sms\Messenger\LogMessenger;
 use Valkyrja\Sms\Messenger\NullMessenger;

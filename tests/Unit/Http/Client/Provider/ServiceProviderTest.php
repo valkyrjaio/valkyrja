@@ -21,7 +21,7 @@ use Valkyrja\Http\Client\LogClient;
 use Valkyrja\Http\Client\NullClient;
 use Valkyrja\Http\Client\Provider\ServiceProvider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**

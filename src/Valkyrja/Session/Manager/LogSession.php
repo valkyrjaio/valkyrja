@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Manager;
 
-use Valkyrja\Log\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Session\Data\CookieParams;
 
 /**
