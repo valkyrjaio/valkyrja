@@ -68,7 +68,9 @@ class InputHandler implements Contract
     public function handle(Input $input): Output
     {
         try {
-            $this->setInteractivity($input);
+            $this->setIsInteractive($input);
+            $this->setIsQuiet($input);
+            $this->setIsSilent($input);
 
             if (
                 $input->hasOption(VersionOptionParameter::SHORT_NAME)
@@ -136,7 +138,7 @@ class InputHandler implements Contract
      *
      * @return void
      */
-    protected function setInteractivity(Input $input): void
+    protected function setIsInteractive(Input $input): void
     {
         if (
             $input->hasOption(NoInteractionOptionParameter::SHORT_NAME)
@@ -144,14 +146,34 @@ class InputHandler implements Contract
         ) {
             $this->interactionConfig->isInteractive = false;
         }
+    }
 
+    /**
+     * Set whether output is quiet.
+     *
+     * @param Input $input The input
+     *
+     * @return void
+     */
+    protected function setIsQuiet(Input $input): void
+    {
         if (
             $input->hasOption(QuietOptionParameter::SHORT_NAME)
             || $input->hasOption(QuietOptionParameter::NAME)
         ) {
             $this->interactionConfig->isQuiet = true;
         }
+    }
 
+    /**
+     * Set whether the output is entirely silent.
+     *
+     * @param Input $input The input
+     *
+     * @return void
+     */
+    protected function setIsSilent(Input $input): void
+    {
         if (
             $input->hasOption(SilentOptionParameter::SHORT_NAME)
             || $input->hasOption(SilentOptionParameter::NAME)
