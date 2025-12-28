@@ -15,7 +15,7 @@ namespace Valkyrja\Container\Provider;
 
 use Override;
 use Valkyrja\Application\Config;
-use Valkyrja\Attribute\Contract\Attributes;
+use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
 use Valkyrja\Container\Collector\AttributeCollector;
 use Valkyrja\Container\Collector\Contract\Collector;
 use Valkyrja\Container\Contract\Container;
@@ -63,7 +63,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             Collector::class,
             new AttributeCollector(
-                $container->getSingleton(Attributes::class)
+                $container->getSingleton(AttributeCollectorContract::class)
             )
         );
     }

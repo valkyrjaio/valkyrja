@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Attribute\Provider;
 
 use Override;
-use Valkyrja\Attribute\Contract\Attributes;
+use Valkyrja\Attribute\Collector\Contract\Collector;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Reflection\Contract\Reflection;
@@ -33,7 +33,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Attributes::class => [self::class, 'publishAttributes'],
+            Collector::class => [self::class, 'publishAttributes'],
         ];
     }
 
@@ -44,7 +44,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Attributes::class,
+            Collector::class,
         ];
     }
 
@@ -58,8 +58,8 @@ final class ServiceProvider extends Provider
     public static function publishAttributes(Container $container): void
     {
         $container->setSingleton(
-            Attributes::class,
-            new \Valkyrja\Attribute\Attributes(
+            Collector::class,
+            new \Valkyrja\Attribute\Collector\Collector(
                 $container->getSingleton(Reflection::class),
             )
         );

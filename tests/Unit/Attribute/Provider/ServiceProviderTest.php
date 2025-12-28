@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Attribute\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Attribute\Attributes;
-use Valkyrja\Attribute\Contract\Attributes as Contract;
+use Valkyrja\Attribute\Collector\Collector;
+use Valkyrja\Attribute\Collector\Contract\Collector as Contract;
 use Valkyrja\Attribute\Provider\ServiceProvider;
 use Valkyrja\Reflection\Contract\Reflection;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
@@ -39,6 +39,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishAttributes($this->container);
 
-        self::assertInstanceOf(Attributes::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(Collector::class, $this->container->getSingleton(Contract::class));
     }
 }

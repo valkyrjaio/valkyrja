@@ -23,7 +23,7 @@ use Valkyrja\Application\Data;
 use Valkyrja\Application\Env;
 use Valkyrja\Application\Exception\RuntimeException;
 use Valkyrja\Application\Valkyrja;
-use Valkyrja\Attribute\Contract\Attributes;
+use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
 use Valkyrja\Cli\Command\HelpCommand;
 use Valkyrja\Cli\Command\ListBashCommand;
 use Valkyrja\Cli\Command\ListCommand as CliListCommand;
@@ -265,7 +265,7 @@ class ApplicationTest extends TestCase
         self::assertTrue($container->has(Application::class));
         self::assertTrue($container->has(ContainerData::class));
         self::assertTrue($container->has(ContainerCollector::class));
-        self::assertTrue($container->has(Attributes::class));
+        self::assertTrue($container->has(AttributeCollectorContract::class));
         self::assertTrue($container->has(CliInteractionConfig::class));
         self::assertTrue($container->has(OutputFactory::class));
         self::assertTrue($container->has(InputReceivedHandler::class));

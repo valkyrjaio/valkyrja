@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Attribute\Contract;
+namespace Valkyrja\Attribute\Collector\Contract;
 
 use Closure;
 
@@ -20,7 +20,7 @@ use Closure;
  *
  * @author Melech Mizrachi
  */
-interface Attributes
+interface Collector
 {
     /**
      * Get a class' attributes.

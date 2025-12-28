@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Attribute;
+namespace Valkyrja\Attribute\Collector;
 
 use Closure;
 use Override;
@@ -24,7 +24,7 @@ use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
 use Reflector;
-use Valkyrja\Attribute\Contract\Attributes as Contract;
+use Valkyrja\Attribute\Collector\Contract\Collector as Contract;
 use Valkyrja\Attribute\Exception\RuntimeException;
 use Valkyrja\Dispatcher\Data\CallableDispatch;
 use Valkyrja\Dispatcher\Data\ClassDispatch;
@@ -40,7 +40,7 @@ use function is_callable;
  *
  * @author Melech Mizrachi
  */
-class Attributes implements Contract
+class Collector implements Contract
 {
     /**
      * Default flags for the getAttributes() method.

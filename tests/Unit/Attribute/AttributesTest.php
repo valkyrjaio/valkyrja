@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Attribute;
 
 use ReflectionException;
-use Valkyrja\Attribute\Attributes;
+use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Dispatcher\Data\Contract\ConstantDispatch;
 use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
 use Valkyrja\Dispatcher\Data\Contract\PropertyDispatch;
@@ -71,9 +71,9 @@ class AttributesTest extends TestCase
     /**
      * The attributes service.
      *
-     * @var Attributes
+     * @var Collector
      */
-    protected Attributes $attributes;
+    protected Collector $attributes;
 
     /**
      * The class to test with.
@@ -91,7 +91,7 @@ class AttributesTest extends TestCase
     {
         parent::setUp();
 
-        $this->attributes = new Attributes();
+        $this->attributes = new Collector();
         $this->class      = new AttributedClass();
     }
 
