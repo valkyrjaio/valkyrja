@@ -23,8 +23,8 @@ use Valkyrja\Notification\Contract\Notification as Contract;
 use Valkyrja\Notification\Data\Contract\Notify;
 use Valkyrja\Notification\Entity\Contract\NotifiableUser;
 use Valkyrja\Notification\Factory\Contract\Factory;
-use Valkyrja\Sms\Contract\Sms;
 use Valkyrja\Sms\Data\Message as SmsMessage;
+use Valkyrja\Sms\Messenger\Contract\Messenger;
 
 use function is_string;
 
@@ -63,7 +63,7 @@ class Notification implements Contract
         protected Factory $factory,
         protected Broadcaster $broadcaster,
         protected Mailer $mailer,
-        protected Sms $sms,
+        protected Messenger $sms,
     ) {
     }
 

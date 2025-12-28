@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Sms\Contract;
+namespace Valkyrja\Sms\Messenger\Contract;
 
 use Valkyrja\Sms\Data\Contract\Message;
 
@@ -20,7 +20,7 @@ use Valkyrja\Sms\Data\Contract\Message;
  *
  * @author Melech Mizrachi
  */
-interface Sms
+interface Messenger
 {
     /**
      * Send a message.

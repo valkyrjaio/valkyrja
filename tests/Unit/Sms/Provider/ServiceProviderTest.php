@@ -15,11 +15,11 @@ namespace Valkyrja\Tests\Unit\Sms\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Sms\Contract\Sms as Contract;
-use Valkyrja\Sms\LogSms;
-use Valkyrja\Sms\NullSms;
+use Valkyrja\Sms\Messenger\Contract\Messenger as Contract;
+use Valkyrja\Sms\Messenger\LogMessenger;
+use Valkyrja\Sms\Messenger\NullMessenger;
+use Valkyrja\Sms\Messenger\VonageMessenger;
 use Valkyrja\Sms\Provider\ServiceProvider;
-use Valkyrja\Sms\VonageSms;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 use Vonage\Client as Vonage;
 use Vonage\Client\Credentials\Basic;
@@ -40,11 +40,11 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishSms(): void
     {
-        $this->container->setSingleton(VonageSms::class, self::createStub(VonageSms::class));
+        $this->container->setSingleton(VonageMessenger::class, self::createStub(VonageMessenger::class));
 
         ServiceProvider::publishSms($this->container);
 
-        self::assertInstanceOf(VonageSms::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(VonageMessenger::class, $this->container->getSingleton(Contract::class));
     }
 
     /**
@@ -56,7 +56,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishVonageSms($this->container);
 
-        self::assertInstanceOf(VonageSms::class, $this->container->getSingleton(VonageSms::class));
+        self::assertInstanceOf(VonageMessenger::class, $this->container->getSingleton(VonageMessenger::class));
     }
 
     /**
@@ -87,13 +87,13 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishLogSms($this->container);
 
-        self::assertInstanceOf(LogSms::class, $this->container->getSingleton(LogSms::class));
+        self::assertInstanceOf(LogMessenger::class, $this->container->getSingleton(LogMessenger::class));
     }
 
     public function testPublishNullSms(): void
     {
         ServiceProvider::publishNullSms($this->container);
 
-        self::assertInstanceOf(NullSms::class, $this->container->getSingleton(NullSms::class));
+        self::assertInstanceOf(NullMessenger::class, $this->container->getSingleton(NullMessenger::class));
     }
 }
