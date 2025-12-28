@@ -21,7 +21,7 @@ use Valkyrja\Application\Exception\RuntimeException;
 use Valkyrja\Application\Valkyrja;
 use Valkyrja\Cli\Interaction\Factory\InputFactory;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
-use Valkyrja\Cli\Server\Contract\InputHandler;
+use Valkyrja\Cli\Server\Handler\Contract\InputHandler;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Exception\Contract\ExceptionHandler as ErrorHandlerContract;
 use Valkyrja\Exception\ExceptionHandler;

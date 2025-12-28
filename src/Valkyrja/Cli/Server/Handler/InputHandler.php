@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Server;
+namespace Valkyrja\Cli\Server\Handler;
 
 use Override;
 use Throwable;
@@ -33,7 +33,7 @@ use Valkyrja\Cli\Routing\Data\Option\QuietOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\SilentOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\VersionOptionParameter;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\Router;
-use Valkyrja\Cli\Server\Contract\InputHandler as Contract;
+use Valkyrja\Cli\Server\Handler\Contract\InputHandler as Contract;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Support\Exiter;
 
