@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast;
+namespace Valkyrja\Broadcast\Broadcaster;
 
 use Override;
 use Pusher\Pusher;

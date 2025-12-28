@@ -11,24 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast;
+namespace Valkyrja\Broadcast\Broadcaster\Contract;
 
-use Override;
-use Valkyrja\Broadcast\Contract\Broadcaster as Contract;
 use Valkyrja\Broadcast\Data\Contract\Message;
 
 /**
- * Class NullBroadcaster.
+ * Interface Broadcaster.
  *
  * @author Melech Mizrachi
  */
-class NullBroadcaster implements Contract
+interface Broadcaster
 {
     /**
-     * @inheritDoc
+     * Send a message.
+     *
+     * @param Message $message The message to send
+     *
+     * @return void
      */
-    #[Override]
-    public function send(Message $message): void
-    {
-    }
+    public function send(Message $message): void;
 }

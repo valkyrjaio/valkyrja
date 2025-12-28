@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Notification\Manager;
 
 use Override;
-use Valkyrja\Broadcast\Contract\Broadcaster;
+use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster;
 use Valkyrja\Broadcast\Data\Message as BroadcastMessage;
 use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Mail\Data\Message as MailMessage;
