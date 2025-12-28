@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Event;
+namespace Valkyrja\Tests\Unit\Event\Dispatcher;
 
 use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Event\Collection\Collection;
