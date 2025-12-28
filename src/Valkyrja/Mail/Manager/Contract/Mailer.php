@@ -11,24 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail;
+namespace Valkyrja\Mail\Manager\Contract;
 
-use Override;
-use Valkyrja\Mail\Contract\Mailer as Contract;
 use Valkyrja\Mail\Data\Contract\Message;
 
 /**
- * Class NullMailer.
+ * Interface Mailer.
  *
  * @author Melech Mizrachi
  */
-class NullMailer implements Contract
+interface Mailer
 {
     /**
-     * @inheritDoc
+     * Send a message.
+     *
+     * @param Message $message The message to send
+     *
+     * @return void
      */
-    #[Override]
-    public function send(Message $message): void
-    {
-    }
+    public function send(Message $message): void;
 }

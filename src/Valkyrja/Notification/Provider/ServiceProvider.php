@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Broadcast\Contract\Broadcaster;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Mail\Contract\Mailer;
+use Valkyrja\Mail\Manager\Contract\Mailer;
 use Valkyrja\Notification\Factory\ContainerFactory;
 use Valkyrja\Notification\Factory\Contract\Factory;
 use Valkyrja\Notification\Manager\Contract\Notification;

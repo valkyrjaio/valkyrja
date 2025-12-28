@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail;
+namespace Valkyrja\Mail\Manager;
 
 use JsonException;
 use Override;
 use Valkyrja\Log\Contract\Logger;
-use Valkyrja\Mail\Contract\Mailer as Contract;
 use Valkyrja\Mail\Data\Contract\Message;
+use Valkyrja\Mail\Manager\Contract\Mailer as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
