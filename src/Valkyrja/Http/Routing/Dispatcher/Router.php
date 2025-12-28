@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Routing;
+namespace Valkyrja\Http\Routing\Dispatcher;
 
 use Override;
 use Valkyrja\Container\Contract\Container;
@@ -29,8 +29,8 @@ use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\Http\Routing\Contract\Router as Contract;
 use Valkyrja\Http\Routing\Data\Contract\Route;
+use Valkyrja\Http\Routing\Dispatcher\Contract\Router as Contract;
 use Valkyrja\Http\Routing\Exception\InvalidRouteNameException;
 use Valkyrja\Http\Routing\Matcher\Contract\Matcher;
 

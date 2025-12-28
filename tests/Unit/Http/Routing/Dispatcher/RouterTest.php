@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Routing;
+namespace Valkyrja\Tests\Unit\Http\Routing\Dispatcher;
 
 use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
@@ -23,9 +23,9 @@ use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Data\Route;
+use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Routing\Exception\InvalidRouteNameException;
 use Valkyrja\Http\Routing\Matcher\Matcher;
-use Valkyrja\Http\Routing\Router;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteNotMatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Unit\TestCase;

@@ -22,7 +22,7 @@ use Valkyrja\Http\Message\Response\Contract\Response as ResponseContract;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
-use Valkyrja\Http\Routing\Router;
+use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Server\RequestHandler;
 use Valkyrja\Tests\Classes\Http\Server\CloseOutputBuffersRequestHandlerClass;
 use Valkyrja\Tests\Classes\Http\Server\CloseOutputBuffersWithCleanRequestHandlerClass;
