@@ -101,7 +101,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
             helpText: new Message('test'),
             dispatch: new DefaultDispatch(self::class, 'dispatch')
         );
-        $collector->method('getCommands')->willReturn([$command]);
+        $collector->method('getRoutes')->willReturn([$command]);
 
         ServiceProvider::publishCollection($this->container);
 

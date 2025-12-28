@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing\Collector\Contract;
+namespace Valkyrja\Cli\Routing\Attribute\Route;
 
-use Valkyrja\Cli\Routing\Data\Contract\Route;
+use Attribute;
 
 /**
- * Interface Collector.
+ * Attribute Name.
  *
  * @author Melech Mizrachi
  */
-interface Collector
+#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
+class Name
 {
     /**
-     * Get the commands.
-     *
-     * @param class-string ...$classes The classes
-     *
-     * @return Route[]
+     * @param non-empty-string $value The name value
      */
-    public function getRoutes(string ...$classes): array;
+    public function __construct(
+        public string $value,
+    ) {
+    }
 }

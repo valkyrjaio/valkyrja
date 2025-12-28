@@ -133,7 +133,7 @@ final class ServiceProvider extends Provider
 
             // Get all the attributes routes from the list of controllers
             $collection->add(
-                ...$collector->getCommands(...$controllers)
+                ...$collector->getRoutes(...$controllers)
             );
         }
     }
