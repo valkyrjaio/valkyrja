@@ -21,12 +21,12 @@ use Override;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Filesystem\Contract\Filesystem;
-use Valkyrja\Filesystem\FlysystemFilesystem;
-use Valkyrja\Filesystem\InMemoryFilesystem;
-use Valkyrja\Filesystem\LocalFlysystemFilesystem;
-use Valkyrja\Filesystem\NullFilesystem;
-use Valkyrja\Filesystem\S3FlysystemFilesystem;
+use Valkyrja\Filesystem\Manager\Contract\Filesystem;
+use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
+use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
+use Valkyrja\Filesystem\Manager\LocalFlysystemFilesystem;
+use Valkyrja\Filesystem\Manager\NullFilesystem;
+use Valkyrja\Filesystem\Manager\S3FlysystemFilesystem;
 
 /**
  * Class ServiceProvider.

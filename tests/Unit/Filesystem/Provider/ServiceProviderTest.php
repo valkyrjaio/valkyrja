@@ -16,13 +16,13 @@ namespace Valkyrja\Tests\Unit\Filesystem\Provider;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
 use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Filesystem\Contract\Filesystem as Contract;
-use Valkyrja\Filesystem\FlysystemFilesystem;
-use Valkyrja\Filesystem\InMemoryFilesystem;
-use Valkyrja\Filesystem\LocalFlysystemFilesystem;
-use Valkyrja\Filesystem\NullFilesystem;
+use Valkyrja\Filesystem\Manager\Contract\Filesystem as Contract;
+use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
+use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
+use Valkyrja\Filesystem\Manager\LocalFlysystemFilesystem;
+use Valkyrja\Filesystem\Manager\NullFilesystem;
+use Valkyrja\Filesystem\Manager\S3FlysystemFilesystem;
 use Valkyrja\Filesystem\Provider\ServiceProvider;
-use Valkyrja\Filesystem\S3FlysystemFilesystem;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**
