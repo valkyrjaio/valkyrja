@@ -16,7 +16,6 @@ namespace Valkyrja\Auth;
 use Override;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Entity\Contract\User;
-use Valkyrja\Auth\Exception\InvalidAuthenticationException;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasher;
 use Valkyrja\Auth\Store\Contract\Store;
 use Valkyrja\Crypt\Contract\Crypt;
@@ -67,16 +66,8 @@ class EncryptedTokenAuthenticator extends TokenAuthenticator
     #[Override]
     protected function getAuthenticatedUsersFromToken(string $token): AuthenticatedUsers|null
     {
-        $decryptedUsers    = $this->crypt->decrypt($token);
-        $unserializedUsers = unserialize(
-            $decryptedUsers,
-            ['allowed_classes' => true]
-        );
+        $decryptedToken = $this->crypt->decrypt($token);
 
-        if (! $unserializedUsers instanceof AuthenticatedUsers) {
-            throw new InvalidAuthenticationException('Invalid token structure. Expecting ' . AuthenticatedUsers::class);
-        }
-
-        return $unserializedUsers;
+        return parent::getAuthenticatedUsersFromToken($decryptedToken);
     }
 }
