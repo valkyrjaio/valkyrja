@@ -22,11 +22,11 @@ use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler;
 use Valkyrja\Http\Routing\Data\Contract\Parameter;
 use Valkyrja\Http\Routing\Data\Contract\Route;
-use Valkyrja\Orm\Contract\Manager;
 use Valkyrja\Orm\Data\EntityCast;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Entity\Contract\Entity;
+use Valkyrja\Orm\Manager\Contract\Manager;
 use Valkyrja\View\Factory\Contract\ResponseFactory;
 
 use function is_a;

@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Orm;
+namespace Valkyrja\Orm\Manager;
 
 use Override;
-use Valkyrja\Orm\Contract\Manager as Contract;
+use Valkyrja\Orm\Manager\Contract\Manager as Contract;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactory;
 use Valkyrja\Orm\QueryBuilder\Factory\SqlQueryBuilderFactory;
 use Valkyrja\Orm\Repository\Contract\Repository;

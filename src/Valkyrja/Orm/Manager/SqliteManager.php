@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Orm;
+namespace Valkyrja\Orm\Manager;
 
 /**
- * Class MysqlManager.
+ * Class SqliteManager.
  *
  * @author Melech Mizrachi
  */
-class MysqlManager extends PdoManager
+class SqliteManager extends PdoManager
 {
 }

@@ -18,14 +18,14 @@ use PDO;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Orm\Contract\Manager;
 use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\InMemoryManager;
-use Valkyrja\Orm\MysqlManager;
-use Valkyrja\Orm\NullManager;
-use Valkyrja\Orm\PgsqlManager;
+use Valkyrja\Orm\Manager\Contract\Manager;
+use Valkyrja\Orm\Manager\InMemoryManager;
+use Valkyrja\Orm\Manager\MysqlManager;
+use Valkyrja\Orm\Manager\NullManager;
+use Valkyrja\Orm\Manager\PgsqlManager;
+use Valkyrja\Orm\Manager\SqliteManager;
 use Valkyrja\Orm\Repository\Repository;
-use Valkyrja\Orm\SqliteManager;
 
 /**
  * Class ServiceProvider.

@@ -17,9 +17,9 @@ use Override;
 use Valkyrja\Auth\Data\Retrieval\Contract\Retrieval;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Store\Contract\Store as Contract;
-use Valkyrja\Orm\Contract\Manager;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
+use Valkyrja\Orm\Manager\Contract\Manager;
 use Valkyrja\Orm\Repository\Contract\Repository;
 
 /**
