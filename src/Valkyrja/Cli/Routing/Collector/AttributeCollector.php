@@ -58,6 +58,8 @@ class AttributeCollector implements Contract
      * @param class-string ...$classes The classes
      *
      * @throws ReflectionException
+     *
+     * @return RouteContract[]
      */
     #[Override]
     public function getRoutes(string ...$classes): array
@@ -159,7 +161,7 @@ class AttributeCollector implements Contract
                 is_a($middlewareClass, ThrowableCaughtMiddleware::class, true)   => $route->withAddedThrowableCaughtMiddleware(
                     $middlewareClass
                 ),
-                is_a($middlewareClass, ExitedMiddleware::class, true)            => $route->withExitedExitedMiddleware(
+                is_a($middlewareClass, ExitedMiddleware::class, true)            => $route->withAddedExitedMiddleware(
                     $middlewareClass
                 ),
                 default                                                          => throw new InvalidArgumentException(
