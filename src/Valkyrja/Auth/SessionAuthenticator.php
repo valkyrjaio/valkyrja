@@ -18,7 +18,7 @@ use Valkyrja\Auth\Data\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Entity\Contract\User;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasher;
 use Valkyrja\Auth\Store\Contract\Store;
-use Valkyrja\Session\Contract\Session;
+use Valkyrja\Session\Manager\Contract\Session;
 
 use function is_string;
 
