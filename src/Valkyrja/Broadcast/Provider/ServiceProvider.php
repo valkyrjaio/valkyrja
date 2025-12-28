@@ -24,7 +24,7 @@ use Valkyrja\Broadcast\NullBroadcaster;
 use Valkyrja\Broadcast\PusherBroadcaster;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Crypt\Contract\Crypt;
+use Valkyrja\Crypt\Manager\Contract\Crypt;
 use Valkyrja\Log\Logger\Contract\Logger;
 
 use const CURL_IPRESOLVE_V4;

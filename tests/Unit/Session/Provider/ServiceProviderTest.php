@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Session\Provider;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Env;
 use Valkyrja\Cache\Contract\Cache;
-use Valkyrja\Crypt\Contract\Crypt;
+use Valkyrja\Crypt\Manager\Contract\Crypt;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Session\Data\CookieParams;

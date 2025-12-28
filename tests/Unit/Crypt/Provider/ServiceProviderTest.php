@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Crypt\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Crypt\Contract\Crypt as Contract;
-use Valkyrja\Crypt\NullCrypt;
+use Valkyrja\Crypt\Manager\Contract\Crypt as Contract;
+use Valkyrja\Crypt\Manager\NullCrypt;
+use Valkyrja\Crypt\Manager\SodiumCrypt;
 use Valkyrja\Crypt\Provider\ServiceProvider;
-use Valkyrja\Crypt\SodiumCrypt;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**

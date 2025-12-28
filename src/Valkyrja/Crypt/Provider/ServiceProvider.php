@@ -17,9 +17,9 @@ use Override;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Crypt\Contract\Crypt;
-use Valkyrja\Crypt\NullCrypt;
-use Valkyrja\Crypt\SodiumCrypt;
+use Valkyrja\Crypt\Manager\Contract\Crypt;
+use Valkyrja\Crypt\Manager\NullCrypt;
+use Valkyrja\Crypt\Manager\SodiumCrypt;
 
 /**
  * Class ServiceProvider.
