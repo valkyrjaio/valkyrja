@@ -23,7 +23,7 @@ use Valkyrja\Http\Server\Contract\RequestHandler;
 use Valkyrja\Log\Contract\Logger;
 use Valkyrja\Session\Contract\Session;
 use Valkyrja\Tests\EnvClass;
-use Valkyrja\View\Contract\Renderer;
+use Valkyrja\View\Renderer\Contract\Renderer;
 
 /**
  * Test the functionality of the Application.

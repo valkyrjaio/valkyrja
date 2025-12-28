@@ -15,7 +15,7 @@ namespace Valkyrja\View\Template;
 
 use Override;
 use Valkyrja\Exception\InvalidArgumentException;
-use Valkyrja\View\Contract\Renderer;
+use Valkyrja\View\Renderer\Contract\Renderer;
 use Valkyrja\View\Template\Contract\Template as Contract;
 
 use function array_merge;

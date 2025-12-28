@@ -19,7 +19,7 @@ use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler;
-use Valkyrja\View\Contract\Renderer;
+use Valkyrja\View\Renderer\Contract\Renderer;
 
 /**
  * Class ViewRouteNotMatchedMiddleware.

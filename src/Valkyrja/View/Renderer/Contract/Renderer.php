@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Contract;
+namespace Valkyrja\View\Renderer\Contract;
 
 use Valkyrja\View\Template\Contract\Template;
 

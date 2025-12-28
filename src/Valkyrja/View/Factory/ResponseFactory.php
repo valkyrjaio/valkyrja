@@ -17,9 +17,9 @@ use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\View\Contract\Renderer;
 use Valkyrja\View\Factory\Contract\ResponseFactory as Contract;
-use Valkyrja\View\PhpRenderer;
+use Valkyrja\View\Renderer\Contract\Renderer;
+use Valkyrja\View\Renderer\PhpRenderer;
 
 /**
  * Class ResponseFactory.

@@ -22,13 +22,13 @@ use Valkyrja\Application\Env;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
-use Valkyrja\View\Contract\Renderer as Contract;
 use Valkyrja\View\Factory\Contract\ResponseFactory as ResponseFactoryContract;
 use Valkyrja\View\Factory\ResponseFactory;
-use Valkyrja\View\OrkaRenderer;
-use Valkyrja\View\PhpRenderer;
 use Valkyrja\View\Provider\ServiceProvider;
-use Valkyrja\View\TwigRenderer;
+use Valkyrja\View\Renderer\Contract\Renderer as Contract;
+use Valkyrja\View\Renderer\OrkaRenderer;
+use Valkyrja\View\Renderer\PhpRenderer;
+use Valkyrja\View\Renderer\TwigRenderer;
 
 /**
  * Test the ServiceProvider.
