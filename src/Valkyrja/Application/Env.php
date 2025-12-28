@@ -51,9 +51,9 @@ use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware as HttpRouteNotM
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware as HttpSendingResponseMiddleware;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware as HttpTerminatedMiddleware;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware as HttpThrowableCaughtMiddleware;
-use Valkyrja\Jwt\Contract\Jwt;
 use Valkyrja\Jwt\Enum\Algorithm;
-use Valkyrja\Jwt\FirebaseJwt;
+use Valkyrja\Jwt\Manager\Contract\Jwt;
+use Valkyrja\Jwt\Manager\FirebaseJwt;
 use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Log\Logger\PsrLogger;
 use Valkyrja\Mail\Manager\Contract\Mailer;

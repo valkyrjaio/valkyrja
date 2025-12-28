@@ -22,7 +22,7 @@ use Valkyrja\Auth\Store\Contract\Store;
 use Valkyrja\Crypt\Contract\Crypt;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Jwt\Contract\Jwt;
+use Valkyrja\Jwt\Manager\Contract\Jwt;
 
 use function is_string;
 

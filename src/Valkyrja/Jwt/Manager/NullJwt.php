@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Jwt;
+namespace Valkyrja\Jwt\Manager;
 
 use JsonException;
 use Override;
-use Valkyrja\Jwt\Contract\Jwt as Contract;
+use Valkyrja\Jwt\Manager\Contract\Jwt as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
