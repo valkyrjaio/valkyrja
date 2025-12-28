@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Client;
+namespace Valkyrja\Http\Client\Manager;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
@@ -19,7 +19,7 @@ use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
 use Override;
 use Psr\Http\Message\ResponseInterface;
-use Valkyrja\Http\Client\Contract\Client as Contract;
+use Valkyrja\Http\Client\Manager\Contract\Client as Contract;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\JsonServerRequest;

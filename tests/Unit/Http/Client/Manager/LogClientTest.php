@@ -11,24 +11,35 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Client;
+namespace Valkyrja\Tests\Unit\Http\Client\Manager;
 
-use Valkyrja\Http\Client\NullClient;
+use JsonException;
+use PHPUnit\Framework\MockObject\Exception;
+use Valkyrja\Http\Client\Manager\LogClient;
 use Valkyrja\Http\Message\Request\Request;
 use Valkyrja\Http\Message\Response\EmptyResponse;
+use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
- * Test the NullClient service.
+ * Test the LogClient service.
  *
  * @author Melech Mizrachi
  */
-class NullClientTest extends TestCase
+class LogClientTest extends TestCase
 {
+    /**
+     * @throws Exception
+     * @throws JsonException
+     */
     public function testSendRequest(): void
     {
-        $client  = new NullClient();
+        $logger = $this->createMock(Logger::class);
+
+        $client  = new LogClient($logger);
         $request = new Request();
+
+        $logger->expects(self::once())->method('info');
 
         $response = $client->sendRequest($request);
 

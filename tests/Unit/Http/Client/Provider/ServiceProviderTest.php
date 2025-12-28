@@ -15,10 +15,10 @@ namespace Valkyrja\Tests\Unit\Http\Client\Provider;
 
 use GuzzleHttp\Client as Guzzle;
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Http\Client\Contract\Client as Contract;
-use Valkyrja\Http\Client\GuzzleClient;
-use Valkyrja\Http\Client\LogClient;
-use Valkyrja\Http\Client\NullClient;
+use Valkyrja\Http\Client\Manager\Contract\Client as Contract;
+use Valkyrja\Http\Client\Manager\GuzzleClient;
+use Valkyrja\Http\Client\Manager\LogClient;
+use Valkyrja\Http\Client\Manager\NullClient;
 use Valkyrja\Http\Client\Provider\ServiceProvider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Log\Logger\Contract\Logger;

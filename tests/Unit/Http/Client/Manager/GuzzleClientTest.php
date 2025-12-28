@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Client;
+namespace Valkyrja\Tests\Unit\Http\Client\Manager;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use PHPUnit\Framework\MockObject\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Valkyrja\Http\Client\GuzzleClient;
+use Valkyrja\Http\Client\Manager\GuzzleClient;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Request\ServerRequest;
