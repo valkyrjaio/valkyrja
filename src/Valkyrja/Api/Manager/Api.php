@@ -11,12 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Api;
+namespace Valkyrja\Api\Manager;
 
 use Override;
 use Throwable;
 use Valkyrja\Api\Constant\Status;
-use Valkyrja\Api\Contract\Api as Contract;
+use Valkyrja\Api\Manager\Contract\Api as Contract;
+use Valkyrja\Api\Model;
 use Valkyrja\Api\Model\Contract\Json;
 use Valkyrja\Api\Model\Contract\JsonData;
 use Valkyrja\Http\Message\Enum\StatusCode;

@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Routing\Controller;
 
 use Throwable;
 use Valkyrja\Api\Constant\Status;
-use Valkyrja\Api\Contract\Api;
+use Valkyrja\Api\Manager\Contract\Api;
 use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;

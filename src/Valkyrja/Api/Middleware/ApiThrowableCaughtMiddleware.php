@@ -16,7 +16,7 @@ namespace Valkyrja\Api\Middleware;
 use Override;
 use Throwable;
 use Valkyrja\Api\Constant\Status;
-use Valkyrja\Api\Contract\Api;
+use Valkyrja\Api\Manager\Contract\Api;
 use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;

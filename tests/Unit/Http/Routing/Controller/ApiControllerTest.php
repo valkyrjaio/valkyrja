@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Controller;
 
 use JsonException;
 use Override;
-use Valkyrja\Api\Api;
 use Valkyrja\Api\Constant\Status;
+use Valkyrja\Api\Manager\Api;
 use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Exception\HttpException;

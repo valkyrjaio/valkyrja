@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Api\Provider;
 
 use Override;
-use Valkyrja\Api\Contract\Api;
+use Valkyrja\Api\Manager\Contract\Api;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Support\Provider;
@@ -64,7 +64,7 @@ final class ServiceProvider extends Provider
 
         $container->setSingleton(
             Api::class,
-            new \Valkyrja\Api\Api(
+            new \Valkyrja\Api\Manager\Api(
                 responseFactory: $container->getSingleton(ResponseFactory::class),
                 debug: $debugMode
             )
