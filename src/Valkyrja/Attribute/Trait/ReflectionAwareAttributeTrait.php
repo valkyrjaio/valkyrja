@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Reflection\Trait;
+namespace Valkyrja\Attribute\Trait;
 
 use Reflector;
 
 /**
- * Trait ReflectionProperty.
+ * Trait ReflectionAwareAttributeTrait.
  *
  * @author Melech Mizrachi
  */
-trait ReflectionProperty
+trait ReflectionAwareAttributeTrait
 {
     protected Reflector|null $reflection = null;
 
