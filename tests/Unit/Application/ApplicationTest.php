@@ -38,7 +38,7 @@ use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection as CliRoutingCollection;
 use Valkyrja\Cli\Routing\Collector\Contract\Collector as CliRoutingCollector;
-use Valkyrja\Cli\Routing\Data as CliData;
+use Valkyrja\Cli\Routing\Data\Data as CliData;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\Router as CliRoutingRouter;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandler as InputHandlerContract;
 use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;

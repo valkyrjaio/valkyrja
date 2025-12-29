@@ -22,7 +22,7 @@ use Valkyrja\Application\Exception\RuntimeException;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection as CliCollection;
-use Valkyrja\Cli\Routing\Data as CliData;
+use Valkyrja\Cli\Routing\Data\Data as CliData;
 use Valkyrja\Container\Data as ContainerData;
 use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Event\Data as EventData;

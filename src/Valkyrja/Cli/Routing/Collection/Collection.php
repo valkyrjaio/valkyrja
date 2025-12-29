@@ -15,8 +15,8 @@ namespace Valkyrja\Cli\Routing\Collection;
 
 use Override;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection as Contract;
-use Valkyrja\Cli\Routing\Data;
 use Valkyrja\Cli\Routing\Data\Contract\Route;
+use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Exception\RuntimeException;
 
 /**
