@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Data;
 
 use Valkyrja\Cli\Routing\Data\Data as CliData;
-use Valkyrja\Container\Data as ContainerData;
+use Valkyrja\Container\Data\Data as ContainerData;
 use Valkyrja\Event\Data as EventData;
 use Valkyrja\Http\Routing\Data as HttpData;
 

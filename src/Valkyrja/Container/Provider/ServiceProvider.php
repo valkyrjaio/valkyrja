@@ -19,7 +19,7 @@ use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContrac
 use Valkyrja\Container\Collector\AttributeCollector;
 use Valkyrja\Container\Collector\Contract\Collector;
 use Valkyrja\Container\Contract\Service;
-use Valkyrja\Container\Data;
+use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Exception\InvalidArgumentException;
 use Valkyrja\Container\Manager\Contract\Container;
 
