@@ -18,6 +18,8 @@ use Valkyrja\Dispatch\Data\CallableDispatch as Dispatch;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\TestCase;
 
+use const JSON_THROW_ON_ERROR;
+
 /**
  * Test the CallableDispatch.
  *
