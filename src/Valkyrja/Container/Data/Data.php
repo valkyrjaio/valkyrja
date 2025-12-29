@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container;
+namespace Valkyrja\Container\Data;
 
 use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Provider\Provider;

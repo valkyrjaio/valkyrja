@@ -20,7 +20,7 @@ use Valkyrja\Container\Attribute\Alias;
 use Valkyrja\Container\Attribute\Service;
 use Valkyrja\Container\Collector\AttributeCollector;
 use Valkyrja\Container\Collector\Contract\Collector as CollectorContract;
-use Valkyrja\Container\Data;
+use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Exception\InvalidArgumentException;
 use Valkyrja\Container\Provider\ServiceProvider;
 use Valkyrja\Dispatcher\Data\ClassDispatch;

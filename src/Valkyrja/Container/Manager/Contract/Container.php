@@ -16,7 +16,7 @@ namespace Valkyrja\Container\Manager\Contract;
 use Override;
 use Psr\Container\ContainerInterface;
 use Valkyrja\Container\Contract\Service;
-use Valkyrja\Container\Data;
+use Valkyrja\Container\Data\Data;
 
 /**
  * Interface Container.

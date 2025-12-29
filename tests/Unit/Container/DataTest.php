@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container;
 
-use Valkyrja\Container\Data;
+use Valkyrja\Container\Data\Data;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
