@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Uid;
 
 use Override;
-use Valkyrja\Type\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Type;
 use Valkyrja\Type\Uid\Contract\Uid as Contract;
 use Valkyrja\Type\Uid\Support\Uid as Helper;
-use Valkyrja\Type\Ulid\Exception\InvalidUlidException;
+use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
 
 use function gettype;
 use function is_string;

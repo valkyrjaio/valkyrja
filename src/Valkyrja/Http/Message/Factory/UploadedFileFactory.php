@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Factory;
 
 use Psr\Http\Message\UploadedFileInterface;
-use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\File\Contract\UploadedFile;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\UploadedFile as HttpUploadedFile;
+use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 
 use function array_keys;
 use function array_map;

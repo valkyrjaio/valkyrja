@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Manager\Contract;
 
-use Valkyrja\Session\Exception\InvalidCsrfToken;
+use Valkyrja\Session\Throwable\Exception\InvalidCsrfToken;
 
 /**
  * Interface Session.

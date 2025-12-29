@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Type\Model;
 
 use Throwable as PHPThrowable;
-use Valkyrja\Exception\Exception as ValkyrjaException;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Exception\InvalidArgumentException as TypeInvalidArgumentException;
-use Valkyrja\Type\Exception\RuntimeException as TypeRuntimeException;
-use Valkyrja\Type\Exception\Throwable as TypeThrowable;
-use Valkyrja\Type\Model\Exception\Exception;
-use Valkyrja\Type\Model\Exception\InvalidArgumentException;
-use Valkyrja\Type\Model\Exception\RuntimeException;
-use Valkyrja\Type\Model\Exception\Throwable;
+use Valkyrja\Throwable\Exception\Exception as ValkyrjaException;
+use Valkyrja\Type\Model\Throwable\Contract\Throwable;
+use Valkyrja\Type\Model\Throwable\Exception\Exception;
+use Valkyrja\Type\Model\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Type\Model\Throwable\Exception\RuntimeException;
+use Valkyrja\Type\Throwable\Contract\Throwable as TypeThrowable;
+use Valkyrja\Type\Throwable\Exception\InvalidArgumentException as TypeInvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\RuntimeException as TypeRuntimeException;
 
 class ExceptionsTest extends TestCase
 {

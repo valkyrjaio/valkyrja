@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Uuid;
 
 use Exception;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Uuid\Support\Uuid;
 use Valkyrja\Type\Uuid\Support\UuidV5 as Helper;
 use Valkyrja\Type\Uuid\UuidV5 as Id;

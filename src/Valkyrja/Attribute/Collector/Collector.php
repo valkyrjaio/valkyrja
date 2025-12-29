@@ -25,7 +25,7 @@ use ReflectionParameter;
 use ReflectionProperty;
 use Reflector;
 use Valkyrja\Attribute\Collector\Contract\Collector as Contract;
-use Valkyrja\Attribute\Exception\RuntimeException;
+use Valkyrja\Attribute\Throwable\Exception\RuntimeException;
 use Valkyrja\Dispatch\Data\CallableDispatch;
 use Valkyrja\Dispatch\Data\ClassDispatch;
 use Valkyrja\Dispatch\Data\ConstantDispatch;

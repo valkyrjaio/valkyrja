@@ -16,12 +16,12 @@ namespace Valkyrja\Http\Message\Factory;
 use JsonException;
 use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as Contract;
 use Valkyrja\Http\Message\Response\Contract\JsonResponse;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponse;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Message\Response\Contract\TextResponse;
+use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Uri;
 
 /**

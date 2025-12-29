@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Uri\Exception;
 
 use Throwable as PHPThrowable;
-use Valkyrja\Http\Message\Exception\InvalidArgumentException as MessageInvalidArgumentException;
-use Valkyrja\Http\Message\Exception\RuntimeException as MessageRuntimeException;
-use Valkyrja\Http\Message\Exception\Throwable as MessageThrowable;
+use Valkyrja\Http\Message\Throwable\Contract\Throwable as MessageThrowable;
+use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException as MessageInvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\RuntimeException as MessageRuntimeException;
 use Valkyrja\Http\Message\Uri\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Exception\InvalidPathException;
 use Valkyrja\Http\Message\Uri\Exception\InvalidPortException;

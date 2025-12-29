@@ -18,7 +18,7 @@ use stdClass;
 use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Support\Obj as Helper;
-use Valkyrja\Type\Exception\RuntimeException;
+use Valkyrja\Type\Throwable\Exception\RuntimeException;
 
 use function serialize;
 

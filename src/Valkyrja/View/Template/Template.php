@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\View\Template;
 
 use Override;
-use Valkyrja\Exception\InvalidArgumentException;
+use Valkyrja\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\View\Renderer\Contract\Renderer;
 use Valkyrja\View\Template\Contract\Template as Contract;
 

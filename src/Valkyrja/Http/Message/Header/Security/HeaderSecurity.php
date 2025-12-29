@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Header\Security;
 
-use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Header\Exception\InvalidNameException;
 use Valkyrja\Http\Message\Header\Exception\InvalidValueException;
+use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 
 use function in_array;
 use function ord;

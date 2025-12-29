@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Server\Middleware;
 
-use Valkyrja\Exception\Exception;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Throwable\Exception\Exception;
 use Valkyrja\View\Factory\ResponseFactory;
 
 /**

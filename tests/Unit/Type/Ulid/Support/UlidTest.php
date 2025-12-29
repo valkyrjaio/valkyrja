@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Type\Ulid\Support;
 
 use Exception;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Ulid\Exception\InvalidUlidException;
 use Valkyrja\Type\Ulid\Support\Ulid;
+use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
 use Valkyrja\Type\Vlid\Support\VlidV1;
 use Valkyrja\Type\Vlid\Support\VlidV2;
 use Valkyrja\Type\Vlid\Support\VlidV3;

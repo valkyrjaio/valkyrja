@@ -23,7 +23,7 @@ use Valkyrja\Dispatch\Data\ClassDispatch;
 use Valkyrja\Dispatch\Data\ConstantDispatch;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Data\PropertyDispatch;
-use Valkyrja\Dispatch\Exception\RuntimeException;
+use Valkyrja\Dispatch\Throwable\Exception\RuntimeException;
 
 use function is_callable;
 

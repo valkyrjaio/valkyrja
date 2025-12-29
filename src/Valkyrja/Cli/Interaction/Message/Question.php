@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Message;
 
 use Override;
-use Valkyrja\Cli\Interaction\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
 use Valkyrja\Cli\Interaction\Formatter\QuestionFormatter;
 use Valkyrja\Cli\Interaction\Message\Contract\Answer;
 use Valkyrja\Cli\Interaction\Message\Contract\Question as Contract;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 
 use function fgets;
 use function fopen;

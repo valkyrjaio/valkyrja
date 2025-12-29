@@ -32,7 +32,7 @@ use Valkyrja\Cli\Routing\Data\Contract\OptionParameter as OptionContract;
 use Valkyrja\Cli\Routing\Data\Contract\Route as RouteContract;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
-use Valkyrja\Cli\Routing\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Reflection\Reflector\Contract\Reflector;
 
 use function array_column;

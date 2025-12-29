@@ -16,8 +16,8 @@ namespace Valkyrja\Broadcast\Broadcaster;
 use Override;
 use Pusher\Pusher;
 use Valkyrja\Broadcast\Data\Contract\Message;
-use Valkyrja\Crypt\Exception\CryptException;
 use Valkyrja\Crypt\Manager\Contract\Crypt;
+use Valkyrja\Crypt\Throwable\Exception\CryptException;
 
 /**
  * Class CryptPusherBroadcaster.

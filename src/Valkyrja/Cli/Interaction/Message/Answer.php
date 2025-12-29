@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Message;
 
 use Override;
-use Valkyrja\Cli\Interaction\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
 use Valkyrja\Cli\Interaction\Message\Contract\Answer as Contract;
+use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 
 use function in_array;
 use function is_callable;

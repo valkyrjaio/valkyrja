@@ -15,7 +15,7 @@ namespace Valkyrja\View\Renderer;
 
 use Override;
 use Valkyrja\Support\Directory;
-use Valkyrja\View\Exception\RuntimeException;
+use Valkyrja\View\Throwable\Exception\RuntimeException;
 
 use function array_keys;
 use function file_get_contents;

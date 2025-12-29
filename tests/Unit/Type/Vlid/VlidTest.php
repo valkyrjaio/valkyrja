@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\Vlid;
 
 use Exception;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Vlid\Support\Vlid as Helper;
 use Valkyrja\Type\Vlid\Vlid as Id;
 

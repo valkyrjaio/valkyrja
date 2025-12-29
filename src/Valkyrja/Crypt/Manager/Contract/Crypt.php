@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Manager\Contract;
 
-use Valkyrja\Crypt\Exception\CryptException;
+use Valkyrja\Crypt\Throwable\Exception\CryptException;
 
 /**
  * Interface Crypt.

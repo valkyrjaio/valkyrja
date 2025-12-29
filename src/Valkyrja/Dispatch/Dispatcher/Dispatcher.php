@@ -23,7 +23,7 @@ use Valkyrja\Dispatch\Data\GlobalVariableDispatch;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Data\PropertyDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher as Contract;
-use Valkyrja\Dispatch\Exception\InvalidArgumentException;
+use Valkyrja\Dispatch\Throwable\Exception\InvalidArgumentException;
 
 use function array_map;
 use function constant;

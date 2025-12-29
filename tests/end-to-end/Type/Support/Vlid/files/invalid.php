@@ -16,8 +16,8 @@ require_once __DIR__ . '/../../../../../bootstrap.php';
 use Valkyrja\Test\Assert\Contract\Assert;
 use Valkyrja\Test\Output\EchoOutput;
 use Valkyrja\Test\Test;
-use Valkyrja\Type\Vlid\Exception\InvalidVlidException;
 use Valkyrja\Type\Vlid\Support\Vlid;
+use Valkyrja\Type\Vlid\Throwable\Exception\InvalidVlidException;
 
 (new Test(__FILE__, new EchoOutput()))->run(
     static function (Assert $assert): void {

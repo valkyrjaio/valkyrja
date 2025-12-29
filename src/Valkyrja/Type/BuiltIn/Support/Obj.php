@@ -15,7 +15,7 @@ namespace Valkyrja\Type\BuiltIn\Support;
 
 use JsonException;
 use stdClass;
-use Valkyrja\Type\Exception\RuntimeException;
+use Valkyrja\Type\Throwable\Exception\RuntimeException;
 
 use function count;
 use function explode;

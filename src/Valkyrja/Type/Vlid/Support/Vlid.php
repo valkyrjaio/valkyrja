@@ -17,10 +17,10 @@ use DateTimeInterface;
 use InvalidArgumentException;
 use Override;
 use Random\RandomException;
-use Valkyrja\Type\Exception\RuntimeException;
+use Valkyrja\Type\Throwable\Exception\RuntimeException;
 use Valkyrja\Type\Ulid\Support\Ulid;
 use Valkyrja\Type\Vlid\Enum\Version;
-use Valkyrja\Type\Vlid\Exception\InvalidVlidException;
+use Valkyrja\Type\Vlid\Throwable\Exception\InvalidVlidException;
 
 use function sprintf;
 

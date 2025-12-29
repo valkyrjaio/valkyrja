@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Message;
 
-use Valkyrja\Cli\Interaction\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\Messages;
+use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

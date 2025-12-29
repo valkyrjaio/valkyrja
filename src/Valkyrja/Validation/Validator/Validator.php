@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Validator;
 
 use Override;
-use Valkyrja\Validation\Exception\ValidationException;
 use Valkyrja\Validation\Rule\Contract\Rule;
+use Valkyrja\Validation\Throwable\Exception\ValidationException;
 use Valkyrja\Validation\Validator\Contract\Validator as Contract;
 
 /**

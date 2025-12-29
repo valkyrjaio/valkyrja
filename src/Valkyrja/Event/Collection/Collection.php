@@ -18,7 +18,7 @@ use Valkyrja\Event\Collection\Contract\Collection as Contract;
 use Valkyrja\Event\Data\Contract\Listener;
 use Valkyrja\Event\Data\Data;
 use Valkyrja\Event\Data\Listener as Model;
-use Valkyrja\Event\Exception\InvalidArgumentException;
+use Valkyrja\Event\Throwable\Exception\InvalidArgumentException;
 
 use function array_keys;
 use function is_string;

@@ -18,7 +18,7 @@ use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Entry\App;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Application\Exception\RuntimeException;
+use Valkyrja\Application\Throwable\Exception\RuntimeException;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection as CliCollection;

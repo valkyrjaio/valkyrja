@@ -15,8 +15,8 @@ namespace Valkyrja\Type\Id;
 
 use JsonException;
 use Override;
-use Valkyrja\Type\Exception\InvalidArgumentException;
 use Valkyrja\Type\Id\Contract\StringId as Contract;
+use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Type;
 
 use function is_float;

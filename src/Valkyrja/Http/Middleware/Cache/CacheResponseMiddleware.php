@@ -15,7 +15,6 @@ namespace Valkyrja\Http\Middleware\Cache;
 
 use Override;
 use Throwable;
-use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Filesystem\Manager\Contract\Filesystem;
 use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
 use Valkyrja\Http\Message\Enum\StatusCode;
@@ -27,6 +26,7 @@ use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Time;
+use Valkyrja\Throwable\Exception\RuntimeException;
 
 use function base64_decode;
 use function base64_encode;

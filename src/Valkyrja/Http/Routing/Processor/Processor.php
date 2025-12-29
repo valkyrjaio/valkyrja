@@ -17,9 +17,9 @@ use Override;
 use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Contract\Parameter;
 use Valkyrja\Http\Routing\Data\Contract\Route;
-use Valkyrja\Http\Routing\Exception\InvalidRoutePathException;
 use Valkyrja\Http\Routing\Processor\Contract\Processor as Contract;
 use Valkyrja\Http\Routing\Support\Helpers;
+use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
 
 /**
  * Class Processor.

@@ -15,10 +15,10 @@ namespace Valkyrja\Session\Manager;
 
 use Override;
 use Random\RandomException;
-use Valkyrja\Session\Exception\InvalidCsrfToken;
-use Valkyrja\Session\Exception\InvalidSessionId;
-use Valkyrja\Session\Exception\SessionStartFailure;
 use Valkyrja\Session\Manager\Contract\Session as Contract;
+use Valkyrja\Session\Throwable\Exception\InvalidCsrfToken;
+use Valkyrja\Session\Throwable\Exception\InvalidSessionId;
+use Valkyrja\Session\Throwable\Exception\SessionStartFailure;
 
 use function bin2hex;
 use function hash_equals;

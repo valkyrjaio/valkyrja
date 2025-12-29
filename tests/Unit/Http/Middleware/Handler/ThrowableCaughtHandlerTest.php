@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Middleware\Handler;
 
-use Valkyrja\Exception\Exception;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Tests\Classes\Http\Middleware\Handler\ThrowableCaughtHandlerClass;
 use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
+use Valkyrja\Throwable\Exception\Exception;
 
 /**
  * Test the throwable caught handler.

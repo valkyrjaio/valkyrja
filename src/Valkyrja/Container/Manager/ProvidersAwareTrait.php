@@ -15,7 +15,7 @@ namespace Valkyrja\Container\Manager;
 
 use Valkyrja\Container\Provider\Contract\Provides;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Exception\InvalidArgumentException;
+use Valkyrja\Throwable\Exception\InvalidArgumentException;
 
 use function is_callable;
 

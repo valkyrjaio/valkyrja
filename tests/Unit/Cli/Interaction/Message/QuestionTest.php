@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Message;
 
-use Valkyrja\Cli\Interaction\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Formatter\QuestionFormatter;
 use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionClass;
 use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionEmptyFgetsClass;
 use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionFalseFgetsClass;

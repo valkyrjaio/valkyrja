@@ -17,13 +17,13 @@ use JsonException;
 use Override;
 use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Manager\Api;
-use Valkyrja\Exception\Handler\ExceptionHandler;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Exception\HttpException;
 use Valkyrja\Http\Message\Factory\ResponseFactory;
 use Valkyrja\Http\Message\Request\ServerRequest;
+use Valkyrja\Http\Message\Throwable\Exception\HttpException;
 use Valkyrja\Tests\Classes\Http\Routing\Controller\ApiControllerClass;
 use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Throwable\Handler\ThrowableHandler;
 
 use const JSON_THROW_ON_ERROR;
 
@@ -113,7 +113,7 @@ class ApiControllerTest extends TestCase
         $body = $jsonFromException->getBody()->getContents();
 
         $json = [
-            'traceCode' => ExceptionHandler::getTraceCode($exception),
+            'traceCode' => ThrowableHandler::getTraceCode($exception),
         ];
 
         self::assertStringContainsString(json_encode($json, JSON_THROW_ON_ERROR), $body);
@@ -144,7 +144,7 @@ class ApiControllerTest extends TestCase
         $body = $jsonFromException->getBody()->getContents();
 
         $json = [
-            'traceCode' => ExceptionHandler::getTraceCode($exception),
+            'traceCode' => ThrowableHandler::getTraceCode($exception),
         ];
 
         self::assertStringContainsString(json_encode($json, JSON_THROW_ON_ERROR), $body);

@@ -15,7 +15,7 @@ namespace Valkyrja\Type\Vlid\Support;
 
 use Override;
 use Valkyrja\Type\Vlid\Enum\Version;
-use Valkyrja\Type\Vlid\Exception\InvalidVlidV4Exception;
+use Valkyrja\Type\Vlid\Throwable\Exception\InvalidVlidV4Exception;
 
 /**
  * Class VlidV4.

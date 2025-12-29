@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem\Manager;
 
 use Override;
-use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Filesystem\Data\InMemoryFile;
 use Valkyrja\Filesystem\Data\InMemoryMetadata;
 use Valkyrja\Filesystem\Enum\Visibility;
-use Valkyrja\Filesystem\Exception\UnableToReadContentsException;
 use Valkyrja\Filesystem\Manager\Contract\Filesystem as Contract;
+use Valkyrja\Filesystem\Throwable\Exception\UnableToReadContentsException;
+use Valkyrja\Throwable\Exception\RuntimeException;
 
 use function fread;
 use function str_starts_with;

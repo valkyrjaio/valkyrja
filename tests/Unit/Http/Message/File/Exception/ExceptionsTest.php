@@ -14,9 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\File\Exception;
 
 use Throwable as PHPThrowable;
-use Valkyrja\Http\Message\Exception\InvalidArgumentException as MessageInvalidArgumentException;
-use Valkyrja\Http\Message\Exception\RuntimeException as MessageRuntimeException;
-use Valkyrja\Http\Message\Exception\Throwable as MessageThrowable;
 use Valkyrja\Http\Message\File\Exception\AlreadyMovedException;
 use Valkyrja\Http\Message\File\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\File\Exception\InvalidDirectoryException;
@@ -26,6 +23,9 @@ use Valkyrja\Http\Message\File\Exception\RuntimeException;
 use Valkyrja\Http\Message\File\Exception\Throwable;
 use Valkyrja\Http\Message\File\Exception\UnableToWriteFileException;
 use Valkyrja\Http\Message\File\Exception\UploadErrorException;
+use Valkyrja\Http\Message\Throwable\Contract\Throwable as MessageThrowable;
+use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException as MessageInvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\RuntimeException as MessageRuntimeException;
 use Valkyrja\Tests\Unit\TestCase;
 
 class ExceptionsTest extends TestCase

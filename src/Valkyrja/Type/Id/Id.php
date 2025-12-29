@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Id;
 
 use Override;
-use Valkyrja\Type\Exception\InvalidArgumentException;
 use Valkyrja\Type\Id\Contract\Id as Contract;
+use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Type;
 
 use function is_float;

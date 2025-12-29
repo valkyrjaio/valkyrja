@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\BuiltIn\Array;
 
 use Valkyrja\Type\BuiltIn\ArrayT;
-use Valkyrja\Type\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 
 /**
  * Class NonEmptyArray.

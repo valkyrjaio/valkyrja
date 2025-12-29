@@ -15,13 +15,13 @@ namespace Valkyrja\Tests\Unit\Type\Uuid\Support;
 
 use Exception;
 use Valkyrja\Type\Uuid\Enum\Version;
-use Valkyrja\Type\Uuid\Exception\InvalidUuidException;
 use Valkyrja\Type\Uuid\Support\Uuid;
 use Valkyrja\Type\Uuid\Support\UuidV1;
 use Valkyrja\Type\Uuid\Support\UuidV3;
 use Valkyrja\Type\Uuid\Support\UuidV4;
 use Valkyrja\Type\Uuid\Support\UuidV5;
 use Valkyrja\Type\Uuid\Support\UuidV6;
+use Valkyrja\Type\Uuid\Throwable\Exception\InvalidUuidException;
 
 class UuidTest extends AbstractUuidTestCase
 {

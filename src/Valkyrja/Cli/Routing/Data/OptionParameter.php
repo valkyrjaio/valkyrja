@@ -18,7 +18,7 @@ use Valkyrja\Cli\Interaction\Option\Contract\Option;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameter as Contract;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
-use Valkyrja\Cli\Routing\Exception\InvalidArgumentException;
+use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Data\Cast;
 
 use function count;

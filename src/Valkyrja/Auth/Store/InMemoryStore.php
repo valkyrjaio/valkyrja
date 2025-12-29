@@ -17,8 +17,8 @@ use Override;
 use Valkyrja\Auth\Data\Retrieval\Contract\Retrieval;
 use Valkyrja\Auth\Data\Retrieval\RetrievalById;
 use Valkyrja\Auth\Entity\Contract\User;
-use Valkyrja\Auth\Exception\InvalidUserException;
 use Valkyrja\Auth\Store\Contract\Store as Contract;
+use Valkyrja\Auth\Throwable\Exception\InvalidUserException;
 
 /**
  * Class InMemoryStore.

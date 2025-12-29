@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\File\Exception;
 
-use Valkyrja\Http\Message\Exception\InvalidArgumentException as ParentException;
+use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException as ParentException;
 
 /**
  * Class InvalidArgumentException.

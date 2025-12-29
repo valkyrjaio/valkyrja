@@ -17,9 +17,9 @@ use DateTimeInterface;
 use InvalidArgumentException;
 use Override;
 use Random\RandomException;
-use Valkyrja\Type\Exception\RuntimeException;
+use Valkyrja\Type\Throwable\Exception\RuntimeException;
 use Valkyrja\Type\Uid\Support\Uid;
-use Valkyrja\Type\Ulid\Exception\InvalidUlidException;
+use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
 
 use function microtime;
 use function random_bytes;

@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Container\Manager;
 
 use AssertionError;
 use Valkyrja\Application\Kernel\Contract\Application;
-use Valkyrja\Container\Exception\InvalidArgumentException;
 use Valkyrja\Container\Manager\Container;
+use Valkyrja\Container\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Dispatch\Provider\ServiceProvider;
 use Valkyrja\Tests\Classes\Container\ServiceClass;

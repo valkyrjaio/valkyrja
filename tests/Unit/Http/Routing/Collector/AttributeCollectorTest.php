@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Collector;
 
 use ReflectionException;
 use Valkyrja\Http\Routing\Collector\AttributeCollector;
-use Valkyrja\Http\Routing\Exception\InvalidArgumentException;
+use Valkyrja\Http\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Http\Middleware\RequestReceivedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteDispatchedMiddlewareClass;
 use Valkyrja\Tests\Classes\Http\Middleware\RouteMatchedMiddlewareClass;

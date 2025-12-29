@@ -19,7 +19,7 @@ use Override;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\BuiltIn\Support\StrCase;
 use Valkyrja\Type\Model\Contract\Model as Contract;
-use Valkyrja\Type\Model\Exception\RuntimeException;
+use Valkyrja\Type\Model\Throwable\Exception\RuntimeException;
 
 use function array_filter;
 use function array_walk;

@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Unit\Reflection\Reflector;
 
 use ReflectionException;
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Reflection\Exception\RuntimeException;
 use Valkyrja\Reflection\Reflector\Reflector;
+use Valkyrja\Reflection\Throwable\Exception\RuntimeException;
 use Valkyrja\Tests\Classes\Reflection\ReflectableClass;
 use Valkyrja\Tests\Unit\TestCase;
 

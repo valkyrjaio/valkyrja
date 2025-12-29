@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Factory;
 
 use Valkyrja\Cli\Interaction\Enum\OptionType;
-use Valkyrja\Cli\Interaction\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Factory\OptionFactory;
+use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
