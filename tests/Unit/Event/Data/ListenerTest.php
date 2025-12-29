@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event\Data;
 
-use Valkyrja\Dispatcher\Data\MethodDispatch;
+use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Tests\Unit\TestCase;
 

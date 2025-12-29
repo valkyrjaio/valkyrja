@@ -25,7 +25,7 @@ use Valkyrja\Cli\Routing\Collection\Contract\Collection as CliCollection;
 use Valkyrja\Cli\Routing\Data\Data as CliData;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Container\Data\Data as ContainerData;
-use Valkyrja\Dispatcher\Data\MethodDispatch;
+use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Event\Data\Data as EventData;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as HttpCollection;

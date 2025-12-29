@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Data\Contract;
 
-use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
+use Valkyrja\Dispatch\Data\Contract\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;

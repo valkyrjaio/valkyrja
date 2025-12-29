@@ -26,11 +26,11 @@ use ReflectionProperty;
 use Reflector;
 use Valkyrja\Attribute\Collector\Contract\Collector as Contract;
 use Valkyrja\Attribute\Exception\RuntimeException;
-use Valkyrja\Dispatcher\Data\CallableDispatch;
-use Valkyrja\Dispatcher\Data\ClassDispatch;
-use Valkyrja\Dispatcher\Data\ConstantDispatch;
-use Valkyrja\Dispatcher\Data\MethodDispatch;
-use Valkyrja\Dispatcher\Data\PropertyDispatch;
+use Valkyrja\Dispatch\Data\CallableDispatch;
+use Valkyrja\Dispatch\Data\ClassDispatch;
+use Valkyrja\Dispatch\Data\ConstantDispatch;
+use Valkyrja\Dispatch\Data\MethodDispatch;
+use Valkyrja\Dispatch\Data\PropertyDispatch;
 use Valkyrja\Reflection\Reflector\Contract\Reflector as ReflectorContract;
 
 use function is_callable;

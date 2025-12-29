@@ -15,9 +15,9 @@ namespace Valkyrja\Tests\Unit\Attribute\Collector;
 
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Collector;
-use Valkyrja\Dispatcher\Data\Contract\ConstantDispatch;
-use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
-use Valkyrja\Dispatcher\Data\Contract\PropertyDispatch;
+use Valkyrja\Dispatch\Data\Contract\ConstantDispatch;
+use Valkyrja\Dispatch\Data\Contract\MethodDispatch;
+use Valkyrja\Dispatch\Data\Contract\PropertyDispatch;
 use Valkyrja\Tests\Classes\Attribute\AttributeClass;
 use Valkyrja\Tests\Classes\Attribute\AttributeClassChildClass;
 use Valkyrja\Tests\Classes\Attribute\AttributedClass;

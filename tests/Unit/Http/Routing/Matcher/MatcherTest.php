@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Matcher;
 
 use Override;
-use Valkyrja\Dispatcher\Data\MethodDispatch;
+use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Factory\ResponseFactory;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Constant\Regex;

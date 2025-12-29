@@ -32,8 +32,8 @@ use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\Router as RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Routing\Provider\ServiceProvider;
-use Valkyrja\Dispatcher\Contract\Dispatcher;
-use Valkyrja\Dispatcher\Data\MethodDispatch as DefaultDispatch;
+use Valkyrja\Dispatch\Data\MethodDispatch as DefaultDispatch;
+use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Reflection\Reflector\Contract\Reflector;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 

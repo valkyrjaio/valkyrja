@@ -18,7 +18,7 @@ use Valkyrja\Application\Data\Config;
 use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
+use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\Collection as CollectionContract;
 use Valkyrja\Event\Collector\AttributeCollector;

@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Routing\Dispatcher;
 
 use Override;
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Dispatcher\Contract\Dispatcher;
+use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Exception\HttpException;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
@@ -48,7 +48,7 @@ class Router implements Contract
      */
     public function __construct(
         protected Container $container = new \Valkyrja\Container\Manager\Container(),
-        protected Dispatcher $dispatcher = new \Valkyrja\Dispatcher\Dispatcher(),
+        protected Dispatcher $dispatcher = new \Valkyrja\Dispatch\Dispatcher\Dispatcher(),
         protected Matcher $matcher = new \Valkyrja\Http\Routing\Matcher\Matcher(),
         protected ResponseFactory $responseFactory = new HttpMessageResponseFactory(),
         protected ThrowableCaughtHandler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),

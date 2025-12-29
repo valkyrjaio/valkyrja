@@ -31,7 +31,7 @@ final class ComponentClass
     public const string CLI          = \Valkyrja\Cli\Component::class;
     public const string CONTAINER    = \Valkyrja\Container\Component::class;
     public const string CRYPT        = \Valkyrja\Crypt\Component::class;
-    public const string DISPATCHER   = \Valkyrja\Dispatcher\Component::class;
+    public const string DISPATCHER   = \Valkyrja\Dispatch\Component::class;
     public const string EVENT        = \Valkyrja\Event\Component::class;
     public const string FILESYSTEM   = \Valkyrja\Filesystem\Component::class;
     public const string HTTP         = \Valkyrja\Http\Component::class;

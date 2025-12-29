@@ -16,7 +16,7 @@ namespace Valkyrja\Event\Collector;
 use Override;
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Contract\Collector;
-use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
+use Valkyrja\Dispatch\Data\Contract\MethodDispatch;
 use Valkyrja\Event\Attribute\Listener as Attribute;
 use Valkyrja\Event\Collector\Contract\Collector as Contract;
 use Valkyrja\Event\Data\Contract\Listener;

@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Event\Provider;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
-use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
+use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\Collection as CollectionContract;
 use Valkyrja\Event\Collector\AttributeCollector;

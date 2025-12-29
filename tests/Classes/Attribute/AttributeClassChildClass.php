@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Attribute;
 
 use Attribute;
-use Valkyrja\Dispatcher\Data\Contract\Dispatch;
+use Valkyrja\Dispatch\Data\Contract\Dispatch;
 
 /**
  * Attribute child class used for unit testing.

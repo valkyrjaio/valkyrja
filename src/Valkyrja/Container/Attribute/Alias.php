@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Attribute;
 
 use Attribute;
-use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
+use Valkyrja\Dispatch\Data\Contract\ClassDispatch;
 
 /**
  * Attribute Alias.
