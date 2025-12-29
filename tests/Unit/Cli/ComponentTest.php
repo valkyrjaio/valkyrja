@@ -17,7 +17,7 @@ use Valkyrja\Cli\Command\HelpCommand;
 use Valkyrja\Cli\Command\ListBashCommand;
 use Valkyrja\Cli\Command\ListCommand;
 use Valkyrja\Cli\Command\VersionCommand;
-use Valkyrja\Cli\Component;
+use Valkyrja\Cli\ComponentProvider;
 use Valkyrja\Cli\Interaction\Provider\ServiceProvider as InteractionServiceProvider;
 use Valkyrja\Cli\Middleware\Provider\ServiceProvider as MiddlewareServiceProvider;
 use Valkyrja\Cli\Routing\Provider\ServiceProvider as RoutingServiceProvider;
@@ -33,17 +33,17 @@ class ComponentTest extends TestCase
 {
     public function testGetContainerProvider(): void
     {
-        self::assertContains(InteractionServiceProvider::class, Component::getContainerProviders());
-        self::assertContains(MiddlewareServiceProvider::class, Component::getContainerProviders());
-        self::assertContains(RoutingServiceProvider::class, Component::getContainerProviders());
-        self::assertContains(ServerServiceProvider::class, Component::getContainerProviders());
+        self::assertContains(InteractionServiceProvider::class, ComponentProvider::getContainerProviders());
+        self::assertContains(MiddlewareServiceProvider::class, ComponentProvider::getContainerProviders());
+        self::assertContains(RoutingServiceProvider::class, ComponentProvider::getContainerProviders());
+        self::assertContains(ServerServiceProvider::class, ComponentProvider::getContainerProviders());
     }
 
     public function testGetCliControllers(): void
     {
-        self::assertContains(HelpCommand::class, Component::getCliControllers());
-        self::assertContains(ListBashCommand::class, Component::getCliControllers());
-        self::assertContains(ListCommand::class, Component::getCliControllers());
-        self::assertContains(VersionCommand::class, Component::getCliControllers());
+        self::assertContains(HelpCommand::class, ComponentProvider::getCliControllers());
+        self::assertContains(ListBashCommand::class, ComponentProvider::getCliControllers());
+        self::assertContains(ListCommand::class, ComponentProvider::getCliControllers());
+        self::assertContains(VersionCommand::class, ComponentProvider::getCliControllers());
     }
 }

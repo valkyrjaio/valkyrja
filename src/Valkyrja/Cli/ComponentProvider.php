@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Cli;
 
 use Override;
-use Valkyrja\Application\Support\Component as AppComponent;
+use Valkyrja\Application\Provider\Provider as AppComponent;
 
 /**
  * Final Class Component.
  *
  * @author Melech Mizrachi
  */
-class Component extends AppComponent
+class ComponentProvider extends AppComponent
 {
     /**
      * @inheritDoc

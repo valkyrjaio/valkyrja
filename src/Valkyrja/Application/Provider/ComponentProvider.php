@@ -11,26 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem;
+namespace Valkyrja\Application\Provider;
 
 use Override;
-use Valkyrja\Application\Support\Component as AppComponent;
+use Valkyrja\Application\Cli;
+use Valkyrja\Application\Provider\Provider as AppComponent;
 
 /**
  * Final Class Component.
  *
  * @author Melech Mizrachi
  */
-class Component extends AppComponent
+class ComponentProvider extends AppComponent
 {
     /**
      * @inheritDoc
      */
     #[Override]
-    public static function getContainerProviders(): array
+    public static function getCliControllers(): array
     {
         return [
-            Provider\ServiceProvider::class,
+            Cli\Command\CacheCommand::class,
+            Cli\Command\ClearCacheCommand::class,
         ];
     }
 }
