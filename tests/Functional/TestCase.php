@@ -18,7 +18,7 @@ use Valkyrja\Application\Entry\App;
 use Valkyrja\Application\Kernel\Contract\Application;
 use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Support\Directory;
+use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Tests\EnvClass;
 
 /**

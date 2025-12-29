@@ -26,7 +26,7 @@ use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandler;
-use Valkyrja\Support\Directory;
+use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Throwable\Handler\Contract\ThrowableHandler as ThrowableHandlerContract;
 use Valkyrja\Throwable\Handler\ThrowableHandler;

@@ -24,7 +24,7 @@ use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
-use Valkyrja\Support\Directory;
+use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Time;
 use Valkyrja\Throwable\Exception\RuntimeException;
 

@@ -24,7 +24,7 @@ use Valkyrja\Http\Message\File\Exception\UploadErrorException;
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Support\Directory;
+use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Tests\Classes\Http\Message\File\InvalidDirectoryExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\File\InvalidUploadedFileExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\File\MoveFailureExceptionClass;

@@ -17,7 +17,7 @@ use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\Psr\UploadedFile as PsrUploadedFile;
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Stream\Stream;
-use Valkyrja\Support\Directory;
+use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\TestCase;
 

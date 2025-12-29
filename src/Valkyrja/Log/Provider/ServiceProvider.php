@@ -25,7 +25,7 @@ use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Log\Logger\NullLogger;
 use Valkyrja\Log\Logger\PsrLogger;
-use Valkyrja\Support\Directory;
+use Valkyrja\Support\Directory\Directory;
 
 use function date;
 

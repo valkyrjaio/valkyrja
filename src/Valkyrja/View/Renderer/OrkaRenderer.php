@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\View\Renderer;
 
 use Override;
-use Valkyrja\Support\Directory;
+use Valkyrja\Support\Directory\Directory;
 use Valkyrja\View\Throwable\Exception\RuntimeException;
 
 use function array_keys;
