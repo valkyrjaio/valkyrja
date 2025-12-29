@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\View;
+namespace Valkyrja\Tests\Unit\Dispatch\Provider;
 
+use Valkyrja\Dispatch\Provider\ComponentProvider;
+use Valkyrja\Dispatch\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\View\Provider\ComponentProvider;
-use Valkyrja\View\Provider\ServiceProvider;
 
 /**
  * Test the Component service.
  *
  * @author Melech Mizrachi
  */
-class ComponentTest extends TestCase
+class ComponentProviderTest extends TestCase
 {
     public function testGetContainerProvider(): void
     {

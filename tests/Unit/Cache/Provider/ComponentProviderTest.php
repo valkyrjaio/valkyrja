@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Cache;
+namespace Valkyrja\Tests\Unit\Cache\Provider;
 
 use Valkyrja\Cache\Provider\ComponentProvider;
 use Valkyrja\Cache\Provider\ServiceProvider;
@@ -22,7 +22,7 @@ use Valkyrja\Tests\Unit\TestCase;
  *
  * @author Melech Mizrachi
  */
-class ComponentTest extends TestCase
+class ComponentProviderTest extends TestCase
 {
     public function testGetContainerProvider(): void
     {
