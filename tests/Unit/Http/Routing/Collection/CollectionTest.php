@@ -19,7 +19,8 @@ use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Constant\Regex;
-use Valkyrja\Http\Routing\Data;
+use Valkyrja\Http\Routing\Data\Data;
+use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\TestCase;
@@ -59,7 +60,7 @@ class CollectionTest extends TestCase
             dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback']),
             regex: self::DYNAMIC_ROUTE_REGEX,
             parameters: [
-                new Data\Parameter(name: 'value', regex: Regex::ALPHA),
+                new Parameter(name: 'value', regex: Regex::ALPHA),
             ]
         );
 

@@ -36,7 +36,8 @@ use Valkyrja\Http\Routing\Collection\Collection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as CollectionContract;
 use Valkyrja\Http\Routing\Collector\AttributeCollector;
 use Valkyrja\Http\Routing\Collector\Contract\Collector as CollectorContract;
-use Valkyrja\Http\Routing\Data;
+use Valkyrja\Http\Routing\Data\Data;
+use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Dispatcher\Contract\Router as RouterContract;
 use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactory as ResponseFactoryContract;
@@ -162,7 +163,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertFalse($container->has(CollectionContract::class));
 
-        $route = new Data\Route(
+        $route = new Route(
             path: '/',
             name: 'route',
             dispatch: new MethodDispatch(self::class, 'dispatch'),

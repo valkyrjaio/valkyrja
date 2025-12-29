@@ -30,7 +30,7 @@ use Valkyrja\Http\Routing\Collection\Collection as HttpRoutingCollection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection;
 use Valkyrja\Http\Routing\Collector\AttributeCollector;
 use Valkyrja\Http\Routing\Collector\Contract\Collector;
-use Valkyrja\Http\Routing\Data;
+use Valkyrja\Http\Routing\Data\Data;
 use Valkyrja\Http\Routing\Dispatcher\Contract\Router;
 use Valkyrja\Http\Routing\Dispatcher\Router as HttpRouter;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactory;

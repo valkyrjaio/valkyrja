@@ -16,8 +16,8 @@ namespace Valkyrja\Http\Routing\Collection;
 use Override;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as Contract;
-use Valkyrja\Http\Routing\Data;
 use Valkyrja\Http\Routing\Data\Contract\Route;
+use Valkyrja\Http\Routing\Data\Data;
 use Valkyrja\Http\Routing\Exception\InvalidArgumentException;
 
 use function array_map;

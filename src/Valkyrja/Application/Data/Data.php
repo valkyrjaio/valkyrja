@@ -16,7 +16,7 @@ namespace Valkyrja\Application\Data;
 use Valkyrja\Cli\Routing\Data\Data as CliData;
 use Valkyrja\Container\Data\Data as ContainerData;
 use Valkyrja\Event\Data\Data as EventData;
-use Valkyrja\Http\Routing\Data as HttpData;
+use Valkyrja\Http\Routing\Data\Data as HttpData;
 
 /**
  * Class AppData.
