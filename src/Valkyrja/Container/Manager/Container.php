@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container;
+namespace Valkyrja\Container\Manager;
 
 use Override;
-use Valkyrja\Container\Contract\Container as Contract;
 use Valkyrja\Container\Contract\Service;
+use Valkyrja\Container\Data;
 use Valkyrja\Container\Exception\InvalidArgumentException;
-use Valkyrja\Container\Support\ProvidersAwareTrait;
+use Valkyrja\Container\Manager\Contract\Container as Contract;
 
 use function assert;
 use function class_exists;

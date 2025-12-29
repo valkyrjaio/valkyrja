@@ -17,7 +17,7 @@ use Valkyrja\Application\Config;
 use Valkyrja\Application\Data;
 use Valkyrja\Application\Env;
 use Valkyrja\Application\Support\Component;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 
 /**
  * Interface Application.

@@ -17,7 +17,7 @@ use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Data\Route;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Manager\Container;
 use Valkyrja\Dispatcher\Data\MethodDispatch as DefaultDispatch;
 use Valkyrja\Tests\Unit\TestCase;
 

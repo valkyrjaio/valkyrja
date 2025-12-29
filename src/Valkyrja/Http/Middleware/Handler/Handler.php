@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Middleware\Handler;
 
 use Override;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
@@ -50,7 +50,7 @@ abstract class Handler implements Contract\Handler
      * @param class-string<Middleware> ...$middleware The middleware
      */
     public function __construct(
-        protected Container $container = new \Valkyrja\Container\Container(),
+        protected Container $container = new \Valkyrja\Container\Manager\Container(),
         string ...$middleware,
     ) {
         $this->middleware = $middleware;

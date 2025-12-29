@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Dispatcher\Provider;
 
 use Override;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 

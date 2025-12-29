@@ -28,7 +28,7 @@ use Valkyrja\Auth\Store\Contract\Store;
 use Valkyrja\Auth\Store\InMemoryStore;
 use Valkyrja\Auth\Store\NullStore;
 use Valkyrja\Auth\Store\OrmStore;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Manager\Contract\Crypt;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;

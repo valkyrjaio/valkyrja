@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Server\Handler;
 
 use Override;
 use Throwable;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Exception\HttpException;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
@@ -58,7 +58,7 @@ class RequestHandler implements Contract
      * RequestHandler constructor.
      */
     public function __construct(
-        protected Container $container = new \Valkyrja\Container\Container(),
+        protected Container $container = new \Valkyrja\Container\Manager\Container(),
         protected Router $router = new \Valkyrja\Http\Routing\Dispatcher\Router(),
         protected RequestReceivedHandler $requestReceivedHandler = new Middleware\Handler\RequestReceivedHandler(),
         protected ThrowableCaughtHandler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),

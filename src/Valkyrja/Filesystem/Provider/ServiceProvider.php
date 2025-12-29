@@ -19,7 +19,7 @@ use League\Flysystem\Filesystem as Flysystem;
 use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
 use Override;
 use Valkyrja\Application\Env;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Filesystem\Manager\Contract\Filesystem;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;

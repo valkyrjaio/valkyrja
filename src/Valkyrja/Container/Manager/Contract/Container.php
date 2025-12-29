@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Contract;
+namespace Valkyrja\Container\Manager\Contract;
 
 use Override;
 use Psr\Container\ContainerInterface;
+use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Data;
-use Valkyrja\Container\Support\Contract\ProvidersAware;
 
 /**
  * Interface Container.
@@ -174,7 +174,7 @@ interface Container extends ContainerInterface, ProvidersAware
      * @param class-string<T>         $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
      *
-     * @return T
+     * @return Service
      */
     public function getService(string $id, array $arguments = []): Service;
 

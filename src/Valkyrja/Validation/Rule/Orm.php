@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Rule;
 
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;

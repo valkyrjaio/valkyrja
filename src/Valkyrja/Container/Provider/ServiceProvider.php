@@ -18,10 +18,10 @@ use Valkyrja\Application\Config;
 use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
 use Valkyrja\Container\Collector\AttributeCollector;
 use Valkyrja\Container\Collector\Contract\Collector;
-use Valkyrja\Container\Contract\Container;
 use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Data;
 use Valkyrja\Container\Exception\InvalidArgumentException;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 
 /**

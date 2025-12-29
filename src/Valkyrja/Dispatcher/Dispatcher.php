@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Dispatcher;
 
 use Override;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
 use Valkyrja\Dispatcher\Data\CallableDispatch;
 use Valkyrja\Dispatcher\Data\ClassDispatch;
@@ -41,7 +41,7 @@ class Dispatcher implements Contract
      * @param Container $container The container
      */
     public function __construct(
-        protected Container $container = new \Valkyrja\Container\Container()
+        protected Container $container = new \Valkyrja\Container\Manager\Container()
     ) {
     }
 

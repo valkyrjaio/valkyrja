@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Container;
+namespace Valkyrja\Tests\Unit\Container\Manager;
 
 use AssertionError;
 use Valkyrja\Application\Contract\Application;
-use Valkyrja\Container\Container;
 use Valkyrja\Container\Exception\InvalidArgumentException;
+use Valkyrja\Container\Manager\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Dispatcher\Provider\ServiceProvider;
 use Valkyrja\Tests\Classes\Container\ServiceClass;

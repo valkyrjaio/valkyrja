@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Notification\Factory;
 
 use Override;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Notification\Data\Contract\Notify;
 use Valkyrja\Notification\Factory\Contract\Factory;
 

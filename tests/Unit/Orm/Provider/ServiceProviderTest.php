@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Orm\Provider;
 
 use PDO;
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Orm\Entity\Entity;
 use Valkyrja\Orm\Manager\Contract\Manager as Contract;
 use Valkyrja\Orm\Manager\InMemoryManager;

@@ -22,7 +22,7 @@ use Valkyrja\Cli\Routing\Dispatcher\Contract\Router;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandler as InputHandlerContract;
 use Valkyrja\Cli\Server\Handler\InputHandler;
 use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger\Contract\Logger;
 

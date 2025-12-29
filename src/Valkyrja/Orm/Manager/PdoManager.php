@@ -15,7 +15,7 @@ namespace Valkyrja\Orm\Manager;
 
 use Override;
 use PDO;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Orm\Entity\Contract\Entity;
 use Valkyrja\Orm\Exception\RuntimeException;
 use Valkyrja\Orm\Manager\Contract\Manager as Contract;
