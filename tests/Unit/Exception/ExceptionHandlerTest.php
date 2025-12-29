@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Exception;
 
 use Valkyrja\Exception\Exception;
-use Valkyrja\Exception\ExceptionHandler;
+use Valkyrja\Exception\Handler\ExceptionHandler;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Exception;
 
 use Override;
+use Valkyrja\Exception\Handler\ExceptionHandler;
 
 /**
  * Class RuntimeException.

@@ -17,7 +17,7 @@ use JsonException;
 use Override;
 use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Manager\Api;
-use Valkyrja\Exception\ExceptionHandler;
+use Valkyrja\Exception\Handler\ExceptionHandler;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Exception\HttpException;
 use Valkyrja\Http\Message\Factory\ResponseFactory;
