@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification\Manager\Contract;
+namespace Valkyrja\Notification\Notifier\Contract;
 
 use Valkyrja\Notification\Data\Contract\Notify;
 use Valkyrja\Notification\Entity\Contract\NotifiableUser;
@@ -21,7 +21,7 @@ use Valkyrja\Notification\Entity\Contract\NotifiableUser;
  *
  * @author Melech Mizrachi
  */
-interface Notification
+interface Notifier
 {
     /**
      * Create a new notification.

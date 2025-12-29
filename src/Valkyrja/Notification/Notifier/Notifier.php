@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification\Manager;
+namespace Valkyrja\Notification\Notifier;
 
 use Override;
 use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster;
@@ -22,7 +22,7 @@ use Valkyrja\Mail\Mailer\Contract\Mailer;
 use Valkyrja\Notification\Data\Contract\Notify;
 use Valkyrja\Notification\Entity\Contract\NotifiableUser;
 use Valkyrja\Notification\Factory\Contract\Factory;
-use Valkyrja\Notification\Manager\Contract\Notification as Contract;
+use Valkyrja\Notification\Notifier\Contract\Notifier as Contract;
 use Valkyrja\Sms\Data\Message as SmsMessage;
 use Valkyrja\Sms\Messenger\Contract\Messenger;
 
@@ -33,7 +33,7 @@ use function is_string;
  *
  * @author Melech Mizrachi
  */
-class Notification implements Contract
+class Notifier implements Contract
 {
     /**
      * The mail recipients.

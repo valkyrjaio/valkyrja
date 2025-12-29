@@ -18,8 +18,8 @@ use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster;
 use Valkyrja\Mail\Mailer\Contract\Mailer;
 use Valkyrja\Notification\Factory\ContainerFactory;
 use Valkyrja\Notification\Factory\Contract\Factory;
-use Valkyrja\Notification\Manager\Contract\Notification as Contract;
-use Valkyrja\Notification\Manager\Notification;
+use Valkyrja\Notification\Notifier\Contract\Notifier as Contract;
+use Valkyrja\Notification\Notifier\Notifier;
 use Valkyrja\Notification\Provider\ServiceProvider;
 use Valkyrja\Sms\Messenger\Contract\Messenger;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
@@ -46,7 +46,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         ServiceProvider::publishNotifier($this->container);
 
-        self::assertInstanceOf(Notification::class, $this->container->getSingleton(Contract::class));
+        self::assertInstanceOf(Notifier::class, $this->container->getSingleton(Contract::class));
     }
 
     public function testPublishFactory(): void
