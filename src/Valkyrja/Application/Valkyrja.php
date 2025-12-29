@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Data;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Exception\RuntimeException;
 use Valkyrja\Application\Support\Component;
 use Valkyrja\Cli\Routing\Data\Data as CliData;

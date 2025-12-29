@@ -16,7 +16,7 @@ namespace Valkyrja\Broadcast\Provider;
 use Override;
 use Pusher\Pusher;
 use Pusher\PusherException;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster;
 use Valkyrja\Broadcast\Broadcaster\CryptPusherBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\LogBroadcaster;

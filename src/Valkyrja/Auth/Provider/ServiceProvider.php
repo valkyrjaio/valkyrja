@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Provider;
 
 use Override;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Auth\Authenticator\Contract\Authenticator;
 use Valkyrja\Auth\Authenticator\EncryptedJwtAuthenticator;
 use Valkyrja\Auth\Authenticator\EncryptedTokenAuthenticator;

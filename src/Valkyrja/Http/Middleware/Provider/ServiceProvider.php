@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Middleware\Provider;
 
 use Override;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Filesystem\Manager\Contract\Filesystem;

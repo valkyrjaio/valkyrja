@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Provider;
 
 use Override;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Interaction\Factory\OutputFactory as DefaultOutputFactory;

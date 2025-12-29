@@ -18,7 +18,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Monolog;
 use Override;
 use Psr\Log\LoggerInterface;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Log\Enum\LogLevel;

@@ -16,7 +16,7 @@ namespace Valkyrja\Jwt\Provider;
 use OpenSSLAsymmetricKey;
 use OpenSSLCertificate;
 use Override;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Jwt\Enum\Algorithm;

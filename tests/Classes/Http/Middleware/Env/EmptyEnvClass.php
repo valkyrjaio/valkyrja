@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Middleware\Env;
 
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 
 /**
  * Class Env.

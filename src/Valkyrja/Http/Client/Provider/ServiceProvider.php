@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Client\Provider;
 
 use GuzzleHttp\Client as Guzzle;
 use Override;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Http\Client\Manager\Contract\Client;

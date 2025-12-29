@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Cli\Command;
 
 use Valkyrja\Application\Data\Data;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Interaction\Message\Banner;

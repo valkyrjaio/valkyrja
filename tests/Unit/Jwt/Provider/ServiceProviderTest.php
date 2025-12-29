@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Jwt\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Jwt\Manager\Contract\Jwt as Contract;
 use Valkyrja\Jwt\Manager\FirebaseJwt;

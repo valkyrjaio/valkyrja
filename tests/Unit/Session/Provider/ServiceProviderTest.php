@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Session\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Cache\Manager\Contract\Cache;
 use Valkyrja\Crypt\Manager\Contract\Crypt;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
