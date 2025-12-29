@@ -23,6 +23,7 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection as CliCollection;
 use Valkyrja\Cli\Routing\Data\Data as CliData;
+use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Container\Data as ContainerData;
 use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Event\Data as EventData;
@@ -261,7 +262,7 @@ class AppTest extends TestCase
         $cli = $container->getSingleton(CliCollection::class);
 
         $cli->add(
-            new CliData\Route(
+            new Route(
                 name: 'version',
                 description: 'test',
                 helpText: new Message('test'),
