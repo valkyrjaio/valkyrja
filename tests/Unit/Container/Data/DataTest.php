@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Container;
+namespace Valkyrja\Tests\Unit\Container\Data;
 
 use Valkyrja\Container\Data\Data;
 use Valkyrja\Tests\Unit\TestCase;
