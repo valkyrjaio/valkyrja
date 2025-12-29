@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Routing;
+namespace Valkyrja\Tests\Unit\Http\Routing\Data;
 
 use Valkyrja\Http\Routing\Data\Data;
 use Valkyrja\Tests\Unit\TestCase;
