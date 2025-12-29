@@ -351,7 +351,6 @@ class Container implements Contract
 
         /** @var class-string<Service> $id */
 
-        // @phpstan-ignore-next-line
         return $this->getServiceWithoutChecks($id, $arguments);
     }
 
