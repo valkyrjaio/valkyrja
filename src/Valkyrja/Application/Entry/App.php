@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Entry;
 
 use Valkyrja\Application\Contract\Application;
-use Valkyrja\Application\Data;
 use Valkyrja\Application\Data\Config;
+use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Env;
 use Valkyrja\Application\Exception\RuntimeException;
 use Valkyrja\Application\Valkyrja;
