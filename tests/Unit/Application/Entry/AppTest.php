@@ -29,7 +29,8 @@ use Valkyrja\Dispatcher\Data\MethodDispatch;
 use Valkyrja\Event\Data\Data as EventData;
 use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as HttpCollection;
-use Valkyrja\Http\Routing\Data as HttpData;
+use Valkyrja\Http\Routing\Data\Data as HttpData;
+use Valkyrja\Http\Routing\Data\Route as HttpRoute;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Exiter;
 use Valkyrja\Support\Microtime;
@@ -215,7 +216,7 @@ class AppTest extends TestCase
         $http = $container->getSingleton(HttpCollection::class);
 
         $http->add(
-            new HttpData\Route(
+            new HttpRoute(
                 path: '/version',
                 name: 'version',
                 dispatch: MethodDispatch::fromCallableOrArray([self::class, 'httpCallback'])

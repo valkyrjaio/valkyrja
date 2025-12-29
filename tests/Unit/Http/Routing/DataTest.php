@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing;
 
-use Valkyrja\Http\Routing\Data;
+use Valkyrja\Http\Routing\Data\Data;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Routing;
+namespace Valkyrja\Http\Routing\Data;
 
 use Valkyrja\Http\Routing\Data\Contract\Route;
 
