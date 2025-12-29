@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Application;
+namespace Valkyrja\Application\Data;
 
 use Valkyrja\Cli\Routing\Data as CliData;
 use Valkyrja\Container\Data as ContainerData;
