@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container\Manager;
 
 use AssertionError;
-use Valkyrja\Application\Contract\Application;
+use Valkyrja\Application\Kernel\Contract\Application;
 use Valkyrja\Container\Exception\InvalidArgumentException;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher;

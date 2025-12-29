@@ -15,7 +15,7 @@ namespace Valkyrja\Application\Env;
 
 use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
 use Valkyrja\Application\Constant\ComponentClass;
-use Valkyrja\Application\Contract\Application;
+use Valkyrja\Application\Kernel\Contract\Application;
 use Valkyrja\Application\Support\Component;
 use Valkyrja\Auth\Authenticator\Contract\Authenticator;
 use Valkyrja\Auth\Authenticator\SessionAuthenticator;

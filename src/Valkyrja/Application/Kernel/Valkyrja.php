@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Application;
+namespace Valkyrja\Application\Kernel;
 
 use Override;
-use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Exception\RuntimeException;
+use Valkyrja\Application\Kernel\Contract\Application;
 use Valkyrja\Application\Support\Component;
 use Valkyrja\Cli\Routing\Data\Data as CliData;
 use Valkyrja\Container\Data\Data as ContainerData;

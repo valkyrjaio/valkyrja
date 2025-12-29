@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Entry;
 
-use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Exception\RuntimeException;
-use Valkyrja\Application\Valkyrja;
+use Valkyrja\Application\Kernel\Contract\Application;
+use Valkyrja\Application\Kernel\Valkyrja;
 use Valkyrja\Cli\Interaction\Factory\InputFactory;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandler;
