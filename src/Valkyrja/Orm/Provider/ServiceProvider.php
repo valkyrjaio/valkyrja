@@ -15,7 +15,7 @@ namespace Valkyrja\Orm\Provider;
 
 use Override;
 use PDO;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Orm\Entity\Contract\Entity;

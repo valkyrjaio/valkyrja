@@ -17,7 +17,7 @@ use Throwable;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Entry\App;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Exception\RuntimeException;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Output\Output;

@@ -15,7 +15,7 @@ namespace Valkyrja\Api\Provider;
 
 use Override;
 use Valkyrja\Api\Manager\Contract\Api;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;

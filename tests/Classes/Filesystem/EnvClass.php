@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Filesystem;
 
-use Valkyrja\Application\Env as AppEnv;
+use Valkyrja\Application\Env\Env as AppEnv;
 
 /**
  * Class EnvClass.

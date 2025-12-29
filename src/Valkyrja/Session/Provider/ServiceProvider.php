@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Provider;
 
 use Override;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Cache\Manager\Contract\Cache;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;

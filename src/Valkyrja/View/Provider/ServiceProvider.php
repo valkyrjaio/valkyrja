@@ -18,7 +18,7 @@ use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
 use Twig\Loader\FilesystemLoader;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;

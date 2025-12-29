@@ -15,7 +15,7 @@ namespace Valkyrja\Cache\Provider;
 
 use Override;
 use Predis\Client;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Cache\Manager\Contract\Cache;
 use Valkyrja\Cache\Manager\LogCache;
 use Valkyrja\Cache\Manager\NullCache;

@@ -16,7 +16,7 @@ namespace Valkyrja\Application\Entry;
 use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Data;
-use Valkyrja\Application\Env;
+use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Exception\RuntimeException;
 use Valkyrja\Application\Valkyrja;
 use Valkyrja\Cli\Interaction\Factory\InputFactory;
