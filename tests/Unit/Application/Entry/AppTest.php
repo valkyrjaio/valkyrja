@@ -76,7 +76,7 @@ class AppTest extends TestCase
         App::appStart();
 
         self::assertTrue(defined('APP_START'));
-        self::assertSame($time, APP_START);
+        self::assertSame(APP_START, $time);
 
         Microtime::unfreeze();
     }
