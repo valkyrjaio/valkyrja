@@ -166,6 +166,8 @@ class AppTest extends TestCase
 
     /**
      * Test the app method.
+     *
+     * @throws Throwable
      */
     public function testAppWithBadCache(): void
     {
