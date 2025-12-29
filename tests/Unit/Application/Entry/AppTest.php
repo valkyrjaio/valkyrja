@@ -33,7 +33,7 @@ use Valkyrja\Http\Routing\Collection\Contract\Collection as HttpCollection;
 use Valkyrja\Http\Routing\Data\Data as HttpData;
 use Valkyrja\Http\Routing\Data\Route as HttpRoute;
 use Valkyrja\Support\Directory;
-use Valkyrja\Support\Microtime;
+use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Tests\EnvClass;
 use Valkyrja\Tests\Unit\TestCase;
 

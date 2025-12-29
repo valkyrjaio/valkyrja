@@ -24,7 +24,7 @@ use Valkyrja\Http\Middleware\Cache\CacheResponseMiddleware;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Support\Directory;
-use Valkyrja\Support\Time;
+use Valkyrja\Support\Time\Time;
 use Valkyrja\Tests\Unit\TestCase;
 
 use function md5;
