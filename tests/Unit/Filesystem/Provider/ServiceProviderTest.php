@@ -78,6 +78,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
     public function testPublishFlysystemLocalAdapter(): void
     {
+        $this->container->setSingleton(Env::class, new EnvClass());
         ServiceProvider::publishFlysystemLocalAdapter($this->container);
 
         self::assertInstanceOf(FlysystemLocalAdapter::class, $this->container->getSingleton(FlysystemLocalAdapter::class));
