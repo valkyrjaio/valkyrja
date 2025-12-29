@@ -47,7 +47,7 @@ use Valkyrja\Container\Data\Data as ContainerData;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Collection\Contract\Collection as EventCollection;
 use Valkyrja\Event\Collector\Contract\Collector as EventCollector;
-use Valkyrja\Event\Data as EventData;
+use Valkyrja\Event\Data\Data as EventData;
 use Valkyrja\Event\Dispatcher\Contract\Dispatcher as EventDispatcher;
 use Valkyrja\Http\Client\Manager\Contract\Client;
 use Valkyrja\Http\Client\Manager\GuzzleClient;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Event;
 
-use Valkyrja\Event\Data;
+use Valkyrja\Event\Data\Data;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

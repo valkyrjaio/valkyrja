@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Event\Collection;
 
 use Valkyrja\Event\Collection\Collection;
-use Valkyrja\Event\Data;
+use Valkyrja\Event\Data\Data;
 use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Event\EventClass;

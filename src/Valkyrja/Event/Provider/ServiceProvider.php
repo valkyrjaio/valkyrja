@@ -23,7 +23,7 @@ use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\Collection as CollectionContract;
 use Valkyrja\Event\Collector\AttributeCollector;
 use Valkyrja\Event\Collector\Contract\Collector;
-use Valkyrja\Event\Data;
+use Valkyrja\Event\Data\Data;
 use Valkyrja\Event\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Dispatcher\Dispatcher as EventDispatcher;
 use Valkyrja\Reflection\Reflector\Contract\Reflector;
