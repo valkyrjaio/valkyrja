@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Type\BuiltIn\Array;
 
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Array\NonEmptyArray;
-use Valkyrja\Type\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 
 class NonEmptyArrayTest extends TestCase
 {

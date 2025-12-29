@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Request\Psr;
 
 use stdClass;
-use Valkyrja\Http\Message\Exception\RuntimeException;
 use Valkyrja\Http\Message\File\Psr\UploadedFile as PsrUploadedFile;
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Request\Psr\ServerRequest as PsrServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
+use Valkyrja\Http\Message\Throwable\Exception\RuntimeException;
 use Valkyrja\Tests\Unit\TestCase;
 
 class ServerRequestTest extends TestCase

@@ -22,7 +22,7 @@ use Valkyrja\Http\Routing\Constant\Regex;
 use Valkyrja\Http\Routing\Data\Data;
 use Valkyrja\Http\Routing\Data\Parameter;
 use Valkyrja\Http\Routing\Data\Route;
-use Valkyrja\Http\Routing\Exception\InvalidArgumentException;
+use Valkyrja\Http\Routing\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

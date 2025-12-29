@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as Contract;
 use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Routing\Data\Data;
-use Valkyrja\Http\Routing\Exception\InvalidArgumentException;
+use Valkyrja\Http\Routing\Throwable\Exception\InvalidArgumentException;
 
 use function array_map;
 use function is_string;

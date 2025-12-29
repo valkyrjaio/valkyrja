@@ -17,12 +17,12 @@ use Override;
 use Throwable;
 use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Manager\Contract\Api;
-use Valkyrja\Exception\Handler\ExceptionHandler;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
+use Valkyrja\Throwable\Handler\ThrowableHandler;
 
 /**
  * Class ApiExceptionMiddleware.
@@ -44,7 +44,7 @@ class ApiThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
     public function throwableCaught(ServerRequest $request, Response $response, Throwable $exception, ThrowableCaughtHandler $handler): Response
     {
         $json = $this->api->jsonFromArray([
-            'traceCode' => ExceptionHandler::getTraceCode($exception),
+            'traceCode' => ThrowableHandler::getTraceCode($exception),
         ]);
 
         $json->setStatus(Status::ERROR);

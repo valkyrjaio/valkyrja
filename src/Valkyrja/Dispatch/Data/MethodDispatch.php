@@ -15,7 +15,7 @@ namespace Valkyrja\Dispatch\Data;
 
 use Override;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatch as Contract;
-use Valkyrja\Dispatch\Exception\InvalidArgumentException;
+use Valkyrja\Dispatch\Throwable\Exception\InvalidArgumentException;
 
 use function is_array;
 use function is_string;

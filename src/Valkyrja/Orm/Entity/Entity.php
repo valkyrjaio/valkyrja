@@ -15,10 +15,10 @@ namespace Valkyrja\Orm\Entity;
 
 use JsonException;
 use Override;
-use Valkyrja\Exception\InvalidArgumentException;
-use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Orm\Entity\Contract\Entity as Contract;
 use Valkyrja\Orm\Repository\Contract\Repository;
+use Valkyrja\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Throwable\Exception\RuntimeException;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\Contract\Type;
 use Valkyrja\Type\Data\Cast;

@@ -17,8 +17,8 @@ use JsonException;
 use Override;
 use Random\RandomException;
 use SodiumException;
-use Valkyrja\Crypt\Exception\CryptException;
 use Valkyrja\Crypt\Manager\Contract\Crypt;
+use Valkyrja\Crypt\Throwable\Exception\CryptException;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 

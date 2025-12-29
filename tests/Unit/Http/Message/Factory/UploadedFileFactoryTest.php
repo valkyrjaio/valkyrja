@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Factory;
 
-use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Factory\UploadedFileFactory;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\Psr\UploadedFile as PsrUploadedFile;
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Stream\Stream;
+use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\TestCase;
 
 class UploadedFileFactoryTest extends TestCase

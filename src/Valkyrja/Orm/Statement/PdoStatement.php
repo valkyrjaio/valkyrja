@@ -18,9 +18,9 @@ use PDO;
 use PDOStatement as Statement;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\Exception\RuntimeException;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
 use Valkyrja\Orm\Statement\Contract\Statement as Contract;
+use Valkyrja\Orm\Throwable\Exception\RuntimeException;
 
 use function is_array;
 use function is_bool;

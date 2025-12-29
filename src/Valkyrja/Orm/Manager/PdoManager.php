@@ -17,7 +17,6 @@ use Override;
 use PDO;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\Exception\RuntimeException;
 use Valkyrja\Orm\Manager\Contract\Manager as Contract;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactory;
 use Valkyrja\Orm\QueryBuilder\Factory\SqlQueryBuilderFactory;
@@ -25,6 +24,7 @@ use Valkyrja\Orm\Repository\Contract\Repository;
 use Valkyrja\Orm\Repository\Repository as DefaultRepository;
 use Valkyrja\Orm\Statement\Contract\Statement;
 use Valkyrja\Orm\Statement\PdoStatement;
+use Valkyrja\Orm\Throwable\Exception\RuntimeException;
 
 use function is_bool;
 use function is_string;

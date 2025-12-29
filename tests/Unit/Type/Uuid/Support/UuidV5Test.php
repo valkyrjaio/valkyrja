@@ -15,9 +15,9 @@ namespace Valkyrja\Tests\Unit\Type\Uuid\Support;
 
 use Exception;
 use Valkyrja\Type\Uuid\Enum\Version;
-use Valkyrja\Type\Uuid\Exception\InvalidUuidV5Exception;
 use Valkyrja\Type\Uuid\Support\Uuid;
 use Valkyrja\Type\Uuid\Support\UuidV5;
+use Valkyrja\Type\Uuid\Throwable\Exception\InvalidUuidV5Exception;
 
 class UuidV5Test extends AbstractUuidTestCase
 {

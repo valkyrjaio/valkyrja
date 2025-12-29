@@ -17,11 +17,11 @@ use Override;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Exception\HttpException;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Factory\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Throwable\Exception\HttpException;
 use Valkyrja\Http\Middleware;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler;
@@ -31,8 +31,8 @@ use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Routing\Dispatcher\Contract\Router as Contract;
-use Valkyrja\Http\Routing\Exception\InvalidRouteNameException;
 use Valkyrja\Http\Routing\Matcher\Contract\Matcher;
+use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
 
 use function rawurldecode;
 

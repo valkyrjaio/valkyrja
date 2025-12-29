@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Type\BuiltIn\Support;
 
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Type\BuiltIn\Exception\InvalidClassPropertyProvidedException;
-use Valkyrja\Type\BuiltIn\Exception\InvalidClassProvidedException;
+use Valkyrja\Type\BuiltIn\Throwable\Exception\InvalidClassPropertyProvidedException;
+use Valkyrja\Type\BuiltIn\Throwable\Exception\InvalidClassProvidedException;
 
 use function array_unshift;
 use function explode;

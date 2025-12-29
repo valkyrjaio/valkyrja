@@ -16,20 +16,20 @@ namespace Valkyrja\Application\Entry;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Application\Exception\RuntimeException;
 use Valkyrja\Application\Kernel\Contract\Application;
 use Valkyrja\Application\Kernel\Valkyrja;
+use Valkyrja\Application\Throwable\Exception\RuntimeException;
 use Valkyrja\Cli\Interaction\Factory\InputFactory;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandler;
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Exception\Handler\Contract\ExceptionHandler as ErrorHandlerContract;
-use Valkyrja\Exception\Handler\ExceptionHandler;
 use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandler;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Microtime;
+use Valkyrja\Throwable\Handler\Contract\ThrowableHandler as ThrowableHandlerContract;
+use Valkyrja\Throwable\Handler\ThrowableHandler;
 
 use function define;
 use function defined;
@@ -69,7 +69,7 @@ abstract class App
 
         $container = $app->getContainer();
 
-        self::bootstrapExceptionHandler($app, $container);
+        self::bootstrapThrowableHandler($app, $container);
 
         $handler = $container->getSingleton(RequestHandler::class);
         $request = static::getRequest();
@@ -90,7 +90,7 @@ abstract class App
 
         $container = $app->getContainer();
 
-        self::bootstrapExceptionHandler($app, $container);
+        self::bootstrapThrowableHandler($app, $container);
 
         $handler = $container->getSingleton(InputHandler::class);
         $input   = static::getInput();
@@ -180,20 +180,20 @@ abstract class App
      */
     protected static function defaultExceptionHandler(): void
     {
-        ExceptionHandler::enable(
+        ThrowableHandler::enable(
             displayErrors: true
         );
     }
 
     /**
-     * Bootstrap exception handler.
+     * Bootstrap throwable handler.
      */
-    protected static function bootstrapExceptionHandler(Application $app, Container $container): void
+    protected static function bootstrapThrowableHandler(Application $app, Container $container): void
     {
-        $errorHandler = static::getExceptionHandler();
+        $errorHandler = static::getThrowableHandler();
 
         // Set error handler in the service container
-        $container->setSingleton(ErrorHandlerContract::class, $errorHandler);
+        $container->setSingleton(ThrowableHandlerContract::class, $errorHandler);
 
         // If debug is on, enable debug handling
         if ($app->getDebugMode()) {
@@ -205,11 +205,11 @@ abstract class App
     }
 
     /**
-     * Get the exception handler.
+     * Get the throwable handler.
      */
-    protected static function getExceptionHandler(): ErrorHandlerContract
+    protected static function getThrowableHandler(): ThrowableHandlerContract
     {
-        return new ExceptionHandler();
+        return new ThrowableHandler();
     }
 
     /**

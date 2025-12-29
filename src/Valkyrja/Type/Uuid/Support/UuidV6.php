@@ -16,7 +16,7 @@ namespace Valkyrja\Type\Uuid\Support;
 use Override;
 use Random\RandomException;
 use Valkyrja\Type\Uuid\Enum\Version;
-use Valkyrja\Type\Uuid\Exception\InvalidUuidV6Exception;
+use Valkyrja\Type\Uuid\Throwable\Exception\InvalidUuidV6Exception;
 
 use function str_replace;
 use function substr;

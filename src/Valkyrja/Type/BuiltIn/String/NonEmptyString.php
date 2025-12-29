@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\BuiltIn\String;
 
 use Valkyrja\Type\BuiltIn\StringT;
-use Valkyrja\Type\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 
 /**
  * Class NonEmptyString.

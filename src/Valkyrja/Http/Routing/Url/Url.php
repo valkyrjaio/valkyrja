@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Routing\Url;
 
 use Override;
 use Valkyrja\Http\Routing\Collection\Contract\Collection;
-use Valkyrja\Http\Routing\Exception\InvalidRouteNameException;
+use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
 use Valkyrja\Http\Routing\Url\Contract\Url as Contract;
 
 use function str_replace;

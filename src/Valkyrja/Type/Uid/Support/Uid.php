@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Uid\Support;
 
-use Valkyrja\Type\Ulid\Exception\InvalidUlidException;
+use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
 
 /**
  * Abstract class Uid.

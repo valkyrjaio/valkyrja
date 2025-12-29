@@ -16,7 +16,7 @@ namespace Valkyrja\Type\Uuid\Support;
 use Override;
 use RuntimeException;
 use Valkyrja\Type\Uuid\Enum\Version;
-use Valkyrja\Type\Uuid\Exception\InvalidUuidV3Exception;
+use Valkyrja\Type\Uuid\Throwable\Exception\InvalidUuidV3Exception;
 
 use function hexdec;
 use function md5;

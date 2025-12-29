@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Uri;
 
 use Override;
-use Valkyrja\Http\Message\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\Uri as Contract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Exception\InvalidPathException;

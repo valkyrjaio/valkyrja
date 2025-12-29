@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Entity;
 
 use Valkyrja\Auth\Constant\UserField;
-use Valkyrja\Auth\Exception\RuntimeException;
+use Valkyrja\Auth\Throwable\Exception\RuntimeException;
 
 use function is_string;
 

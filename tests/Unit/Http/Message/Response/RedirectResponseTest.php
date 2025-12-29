@@ -16,10 +16,10 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Exception\HttpRedirectException;
-use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\RedirectResponse;
+use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
+use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\TestCase;
 

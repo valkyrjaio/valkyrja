@@ -20,9 +20,9 @@ use Valkyrja\Auth\Data\Attempt\Contract\AuthenticationAttempt;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Data\Retrieval\RetrievalById;
 use Valkyrja\Auth\Entity\Contract\User;
-use Valkyrja\Auth\Exception\InvalidAuthenticationException;
 use Valkyrja\Auth\Hasher\Contract\PasswordHasher;
 use Valkyrja\Auth\Store\Contract\Store;
+use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
 
 /**
  * Abstract Class AbstractAuthenticator.

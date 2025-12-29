@@ -19,10 +19,10 @@ use Valkyrja\Http\Routing\Collection\Collection as RouteCollection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection;
 use Valkyrja\Http\Routing\Data\Contract\Parameter;
 use Valkyrja\Http\Routing\Data\Contract\Route;
-use Valkyrja\Http\Routing\Exception\InvalidRouteParameterException;
-use Valkyrja\Http\Routing\Exception\InvalidRoutePathException;
 use Valkyrja\Http\Routing\Matcher\Contract\Matcher as Contract;
 use Valkyrja\Http\Routing\Support\Helpers;
+use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteParameterException;
+use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
 use Valkyrja\Type\Data\Cast;
 
 use function is_array;

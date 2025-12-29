@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Rule;
 
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Entity\Contract\Entity;
 use Valkyrja\Orm\Manager\Contract\Manager as OrmManager;
-use Valkyrja\Validation\Exception\ValidationException;
+use Valkyrja\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
 use function is_bool;
 use function is_float;

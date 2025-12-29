@@ -16,7 +16,7 @@ namespace Valkyrja\Type\Uuid\Support;
 use Override;
 use Random\RandomException;
 use Valkyrja\Type\Uuid\Enum\Version;
-use Valkyrja\Type\Uuid\Exception\InvalidUuidV4Exception;
+use Valkyrja\Type\Uuid\Throwable\Exception\InvalidUuidV4Exception;
 
 use function chr;
 use function ord;

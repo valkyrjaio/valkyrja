@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Trait;
 
-use Valkyrja\Exception\Exception;
+use Valkyrja\Throwable\Exception\Exception;
 
 use const E_USER_WARNING;
 

@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Dispatch\Data;
 
 use stdClass;
 use Valkyrja\Dispatch\Data\MethodDispatch as Dispatch;
-use Valkyrja\Dispatch\Exception\InvalidArgumentException;
+use Valkyrja\Dispatch\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\TestCase;
 

@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Manager;
 
 use Override;
-use Valkyrja\Crypt\Exception\CryptException;
 use Valkyrja\Crypt\Manager\Contract\Crypt;
+use Valkyrja\Crypt\Throwable\Exception\CryptException;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Session\Data\CookieParams;
-use Valkyrja\Session\Exception\SessionStartFailure;
+use Valkyrja\Session\Throwable\Exception\SessionStartFailure;
 
 use function headers_sent;
 use function session_start;

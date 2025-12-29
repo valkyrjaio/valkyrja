@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Uri\Type;
 
 use Override;
-use Valkyrja\Http\Message\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Type;
 
 use function gettype;

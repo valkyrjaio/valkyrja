@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\BuiltIn\Support;
 use JsonException;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Support\Arr;
-use Valkyrja\Type\Exception\RuntimeException;
+use Valkyrja\Type\Throwable\Exception\RuntimeException;
 
 use function PHPUnit\Framework\assertSame;
 

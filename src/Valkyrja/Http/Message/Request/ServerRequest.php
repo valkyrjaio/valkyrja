@@ -17,12 +17,12 @@ use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\File\Contract\UploadedFile;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest as Contract;
 use Valkyrja\Http\Message\Stream\Contract\Stream;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream as HttpStream;
+use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\Uri;
 use Valkyrja\Http\Message\Uri\Uri as HttpUri;
 

@@ -15,10 +15,10 @@ namespace Valkyrja\Session\Manager;
 
 use Override;
 use Valkyrja\Session\Data\CookieParams;
-use Valkyrja\Session\Exception\InvalidSessionId;
-use Valkyrja\Session\Exception\SessionIdFailure;
-use Valkyrja\Session\Exception\SessionNameFailure;
-use Valkyrja\Session\Exception\SessionStartFailure;
+use Valkyrja\Session\Throwable\Exception\InvalidSessionId;
+use Valkyrja\Session\Throwable\Exception\SessionIdFailure;
+use Valkyrja\Session\Throwable\Exception\SessionNameFailure;
+use Valkyrja\Session\Throwable\Exception\SessionStartFailure;
 
 use function headers_sent;
 use function preg_match;

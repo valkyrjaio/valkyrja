@@ -16,7 +16,6 @@ namespace Valkyrja\Notification\Notifier;
 use Override;
 use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster;
 use Valkyrja\Broadcast\Data\Message as BroadcastMessage;
-use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Mail\Data\Message as MailMessage;
 use Valkyrja\Mail\Mailer\Contract\Mailer;
 use Valkyrja\Notification\Data\Contract\Notify;
@@ -25,6 +24,7 @@ use Valkyrja\Notification\Factory\Contract\Factory;
 use Valkyrja\Notification\Notifier\Contract\Notifier as Contract;
 use Valkyrja\Sms\Data\Message as SmsMessage;
 use Valkyrja\Sms\Messenger\Contract\Messenger;
+use Valkyrja\Throwable\Exception\InvalidArgumentException;
 
 use function is_string;
 

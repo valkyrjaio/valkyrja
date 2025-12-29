@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Header\Exception;
 
-use Valkyrja\Http\Message\Exception\RuntimeException as ParentException;
+use Valkyrja\Http\Message\Throwable\Exception\RuntimeException as ParentException;
 
 /**
  * Class RuntimeException.

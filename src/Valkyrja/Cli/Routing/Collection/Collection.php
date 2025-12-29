@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection as Contract;
 use Valkyrja\Cli\Routing\Data\Contract\Route;
 use Valkyrja\Cli\Routing\Data\Data;
-use Valkyrja\Cli\Routing\Exception\RuntimeException;
+use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
 
 /**
  * Class Collection.

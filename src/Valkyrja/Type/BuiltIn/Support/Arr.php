@@ -16,7 +16,7 @@ namespace Valkyrja\Type\BuiltIn\Support;
 use ArrayAccess;
 use JsonException;
 use Stringable;
-use Valkyrja\Type\Exception\RuntimeException;
+use Valkyrja\Type\Throwable\Exception\RuntimeException;
 
 use function array_filter;
 use function explode;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Uri\Type;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Valkyrja\Http\Message\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Type\Port;
 use Valkyrja\Tests\Unit\TestCase;
 

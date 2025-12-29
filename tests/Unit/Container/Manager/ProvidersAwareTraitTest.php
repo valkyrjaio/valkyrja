@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Container\Manager;
 
-use Valkyrja\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Support\DeferredProviderClass;
 use Valkyrja\Tests\Classes\Support\InvalidDeferredProviderClass;
 use Valkyrja\Tests\Classes\Support\ProvidedClass;
@@ -21,6 +20,7 @@ use Valkyrja\Tests\Classes\Support\ProvidedSecondaryClass;
 use Valkyrja\Tests\Classes\Support\ProviderClass;
 use Valkyrja\Tests\Classes\Support\ProvidersAwareClass;
 use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\Throwable\Exception\InvalidArgumentException;
 
 /**
  * Test the ProvidersAwareTrait support class.

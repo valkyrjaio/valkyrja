@@ -15,7 +15,7 @@ namespace Valkyrja\Orm\Schema;
 
 use Override;
 use Throwable;
-use Valkyrja\Exception\RuntimeException;
+use Valkyrja\Throwable\Exception\RuntimeException;
 
 use function explode;
 use function file_get_contents;

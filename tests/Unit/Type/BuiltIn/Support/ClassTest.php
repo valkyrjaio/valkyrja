@@ -17,9 +17,9 @@ use stdClass;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\BuiltIn\Exception\InvalidClassPropertyProvidedException;
-use Valkyrja\Type\BuiltIn\Exception\InvalidClassProvidedException;
 use Valkyrja\Type\BuiltIn\Support\Cls as Helper;
+use Valkyrja\Type\BuiltIn\Throwable\Exception\InvalidClassPropertyProvidedException;
+use Valkyrja\Type\BuiltIn\Throwable\Exception\InvalidClassProvidedException;
 use Valkyrja\Type\Model\Contract\Model as ModelContract;
 
 class ClassTest extends TestCase

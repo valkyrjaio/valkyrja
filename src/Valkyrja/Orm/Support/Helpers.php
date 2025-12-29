@@ -15,7 +15,7 @@ namespace Valkyrja\Orm\Support;
 
 use DateTime;
 use Valkyrja\Orm\Constant\DateFormat;
-use Valkyrja\Orm\Exception\RuntimeException;
+use Valkyrja\Orm\Throwable\Exception\RuntimeException;
 
 use function microtime;
 use function str_replace;

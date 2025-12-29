@@ -18,8 +18,8 @@ use Valkyrja\Tests\Classes\Enum\Enum as EnumClass;
 use Valkyrja\Tests\Classes\Enum\IntEnum;
 use Valkyrja\Tests\Classes\Enum\StringEnum;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Exception\InvalidArgumentException;
-use Valkyrja\Type\Exception\RuntimeException;
+use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\RuntimeException;
 
 use function json_encode;
 

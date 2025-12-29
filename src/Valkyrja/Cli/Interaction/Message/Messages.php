@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Message;
 
 use Override;
-use Valkyrja\Cli\Interaction\Exception\InvalidArgumentException;
 use Valkyrja\Cli\Interaction\Message\Contract\Message as Contract;
+use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 
 /**
  * Class Messages.

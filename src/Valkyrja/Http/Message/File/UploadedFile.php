@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\File;
 
 use Override;
-use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\File\Contract\UploadedFile as Contract;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\Exception\AlreadyMovedException;
@@ -26,6 +25,7 @@ use Valkyrja\Http\Message\File\Exception\UploadErrorException;
 use Valkyrja\Http\Message\Stream\Contract\Stream;
 use Valkyrja\Http\Message\Stream\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Stream\Stream as HttpStream;
+use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 
 use function dirname;
 use function fclose;

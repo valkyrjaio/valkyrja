@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Struct\Request;
 
 use Valkyrja\Http\Message\Request\Contract\JsonServerRequest;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Struct\Exception\InvalidArgumentException;
+use Valkyrja\Http\Struct\Throwable\Exception\InvalidArgumentException;
 
 /**
  * Trait JsonRequestStruct.

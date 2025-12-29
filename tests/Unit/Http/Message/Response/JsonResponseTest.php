@@ -16,8 +16,8 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response;
 use JsonException;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Response\JsonResponse;
+use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Unit\TestCase;
 
 class JsonResponseTest extends TestCase

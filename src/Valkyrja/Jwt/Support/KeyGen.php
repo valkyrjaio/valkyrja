@@ -15,8 +15,8 @@ namespace Valkyrja\Jwt\Support;
 
 use OpenSSLAsymmetricKey;
 use SodiumException;
-use Valkyrja\Exception\RuntimeException;
 use Valkyrja\Jwt\Data\EdDsaKey;
+use Valkyrja\Throwable\Exception\RuntimeException;
 
 use function file_get_contents;
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Uri;
 
-use Valkyrja\Http\Message\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Exception\InvalidPathException;
 use Valkyrja\Http\Message\Uri\Exception\InvalidPortException;

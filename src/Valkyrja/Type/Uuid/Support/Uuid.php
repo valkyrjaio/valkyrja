@@ -18,7 +18,7 @@ use Random\RandomException;
 use RuntimeException;
 use Valkyrja\Type\Uid\Support\Uid;
 use Valkyrja\Type\Uuid\Enum\Version;
-use Valkyrja\Type\Uuid\Exception\InvalidUuidException;
+use Valkyrja\Type\Uuid\Throwable\Exception\InvalidUuidException;
 
 use function chr;
 use function hexdec;

@@ -15,8 +15,8 @@ namespace Valkyrja\Type\BuiltIn\Enum;
 
 use BackedEnum;
 use UnitEnum;
-use Valkyrja\Type\Exception\InvalidArgumentException;
-use Valkyrja\Type\Exception\RuntimeException;
+use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\RuntimeException;
 
 use function is_int;
 use function is_string;

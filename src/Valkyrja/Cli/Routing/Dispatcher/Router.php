@@ -37,7 +37,7 @@ use Valkyrja\Cli\Routing\Data\Contract\Route;
 use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\Router as Contract;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
-use Valkyrja\Cli\Routing\Exception\RuntimeException;
+use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher;
 

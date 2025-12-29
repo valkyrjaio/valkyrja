@@ -22,7 +22,7 @@ use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\Contract\Type;
 use Valkyrja\Type\Model\Contract\Model as Contract;
-use Valkyrja\Type\Model\Exception\RuntimeException;
+use Valkyrja\Type\Model\Throwable\Exception\RuntimeException;
 
 use function json_encode;
 use function method_exists;

@@ -15,7 +15,7 @@ namespace Valkyrja\Type\BuiltIn\Support;
 
 use BackedEnum;
 use UnitEnum;
-use Valkyrja\Type\Exception\InvalidArgumentException;
+use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 
 use function getType;
 

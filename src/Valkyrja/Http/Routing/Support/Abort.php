@@ -15,9 +15,9 @@ namespace Valkyrja\Http\Routing\Support;
 
 use Valkyrja\Http\Message\Constant\StatusText;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Exception\HttpException;
-use Valkyrja\Http\Message\Exception\HttpRedirectException;
 use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Throwable\Exception\HttpException;
+use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
 use Valkyrja\Http\Message\Uri\Contract\Uri;
 
 /**
