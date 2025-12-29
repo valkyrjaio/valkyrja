@@ -77,7 +77,7 @@ use Valkyrja\Http\Routing\Url\Contract\Url;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandler;
 use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
-use Valkyrja\Reflection\Contract\Reflection;
+use Valkyrja\Reflection\Reflector\Contract\Reflector;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\View\Renderer\Contract\Renderer;
 use Valkyrja\View\Template\Contract\Template;
@@ -310,7 +310,7 @@ class ApplicationTest extends TestCase
         self::assertTrue($container->has(RequestHandler::class));
         self::assertTrue($container->has(LogThrowableCaughtMiddleware::class));
         self::assertTrue($container->has(ViewThrowableCaughtMiddleware::class));
-        self::assertTrue($container->has(Reflection::class));
+        self::assertTrue($container->has(Reflector::class));
 
         self::assertContains(CacheCommand::class, $config->commands);
         self::assertContains(ClearCacheCommand::class, $config->commands);

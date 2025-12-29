@@ -32,7 +32,7 @@ use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
-use Valkyrja\Reflection\Contract\Reflection;
+use Valkyrja\Reflection\Reflector\Contract\Reflector;
 
 /**
  * Class ServiceProvider.
@@ -76,7 +76,7 @@ final class ServiceProvider extends Provider
             Collector::class,
             new AttributeCollector(
                 attributes: $container->getSingleton(AttributeCollectorContract::class),
-                reflection: $container->getSingleton(Reflection::class),
+                reflection: $container->getSingleton(Reflector::class),
             )
         );
     }

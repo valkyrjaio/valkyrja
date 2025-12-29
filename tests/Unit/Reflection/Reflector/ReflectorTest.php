@@ -11,28 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Reflection;
+namespace Valkyrja\Tests\Unit\Reflection\Reflector;
 
 use ReflectionException;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Reflection\Exception\RuntimeException;
-use Valkyrja\Reflection\Reflection;
+use Valkyrja\Reflection\Reflector\Reflector;
 use Valkyrja\Tests\Classes\Reflection\ReflectableClass;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
- * Test the Reflection class.
+ * Test the Reflector class.
  *
  * @author Melech Mizrachi
  */
-class ReflectionTest extends TestCase
+class ReflectorTest extends TestCase
 {
     /**
      * @throws ReflectionException
      */
     public function testForClass(): void
     {
-        $reflector = new Reflection();
+        $reflector = new Reflector();
 
         $reflection  = $reflector->forClass(ReflectableClass::class);
         $reflection2 = $reflector->forClass(ReflectableClass::class);
@@ -45,7 +45,7 @@ class ReflectionTest extends TestCase
      */
     public function testForClassConstant(): void
     {
-        $reflector = new Reflection();
+        $reflector = new Reflector();
 
         $reflection  = $reflector->forClassConstant(ReflectableClass::class, 'STRING');
         $reflection2 = $reflector->forClassConstant(ReflectableClass::class, 'STRING');
@@ -60,7 +60,7 @@ class ReflectionTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
 
-        $reflector = new Reflection();
+        $reflector = new Reflector();
 
         $reflector->forClassConstant(ReflectableClass::class, 'STRING2');
     }
@@ -70,7 +70,7 @@ class ReflectionTest extends TestCase
      */
     public function testForClassProperty(): void
     {
-        $reflector = new Reflection();
+        $reflector = new Reflector();
 
         $reflection  = $reflector->forClassProperty(ReflectableClass::class, 'string');
         $reflection2 = $reflector->forClassProperty(ReflectableClass::class, 'string');
@@ -87,7 +87,7 @@ class ReflectionTest extends TestCase
      */
     public function testForClassMethod(): void
     {
-        $reflector = new Reflection();
+        $reflector = new Reflector();
 
         $reflection  = $reflector->forClassMethod(ReflectableClass::class, 'testStatic');
         $reflection2 = $reflector->forClassMethod(ReflectableClass::class, 'testStatic');
@@ -104,7 +104,7 @@ class ReflectionTest extends TestCase
      */
     public function testForFunction(): void
     {
-        $reflector = new Reflection();
+        $reflector = new Reflector();
 
         $reflection  = $reflector->forFunction('array_merge');
         $reflection2 = $reflector->forFunction('array_merge');
@@ -119,7 +119,7 @@ class ReflectionTest extends TestCase
     {
         $function = static fn (): string => 'string';
 
-        $reflector = new Reflection();
+        $reflector = new Reflector();
 
         $reflection  = $reflector->forClosure($function);
         $reflection2 = $reflector->forClosure($function);
@@ -132,7 +132,7 @@ class ReflectionTest extends TestCase
      */
     public function testgetDependencies(): void
     {
-        $reflector = new Reflection();
+        $reflector = new Reflector();
 
         $reflection   = $reflector->forClassMethod(ReflectableClass::class, 'test');
         $dependencies = $reflector->getDependencies($reflection);

@@ -18,7 +18,7 @@ use Valkyrja\Attribute\Collector\Collector as AttributesAttributes;
 use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
 use Valkyrja\Event\Collector\AttributeCollector;
 use Valkyrja\Event\Data\Contract\Listener;
-use Valkyrja\Reflection\Reflection;
+use Valkyrja\Reflection\Reflector\Reflector;
 use Valkyrja\Tests\Classes\Event\Attribute\Attributed2Class;
 use Valkyrja\Tests\Classes\Event\Attribute\AttributedClass;
 use Valkyrja\Tests\Unit\TestCase;
@@ -60,7 +60,7 @@ class AttributesCollectorTest extends TestCase
 
         $this->class = new AttributeCollector(
             new AttributesAttributes(),
-            new Reflection()
+            new Reflector()
         );
     }
 

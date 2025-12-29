@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Reflection\Contract;
+namespace Valkyrja\Reflection\Reflector\Contract;
 
 use Closure;
 use ReflectionClass;
@@ -28,7 +28,7 @@ use ReflectionProperty;
  *
  * @author Melech Mizrachi
  */
-interface Reflection
+interface Reflector
 {
     /**
      * Get a class's reflection.

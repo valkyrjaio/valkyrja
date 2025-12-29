@@ -16,7 +16,7 @@ namespace Valkyrja\Reflection\Provider;
 use Override;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Reflection\Contract\Reflection;
+use Valkyrja\Reflection\Reflector\Contract\Reflector;
 
 /**
  * Class ServiceProvider.
@@ -32,7 +32,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Reflection::class => [self::class, 'publishReflection'],
+            Reflector::class => [self::class, 'publishReflection'],
         ];
     }
 
@@ -43,7 +43,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Reflection::class,
+            Reflector::class,
         ];
     }
 
@@ -57,8 +57,8 @@ final class ServiceProvider extends Provider
     public static function publishReflection(Container $container): void
     {
         $container->setSingleton(
-            Reflection::class,
-            new \Valkyrja\Reflection\Reflection()
+            Reflector::class,
+            new \Valkyrja\Reflection\Reflector\Reflector()
         );
     }
 }

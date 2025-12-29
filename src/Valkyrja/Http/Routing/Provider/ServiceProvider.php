@@ -40,7 +40,7 @@ use Valkyrja\Http\Routing\Middleware\ResponseStructMiddleware;
 use Valkyrja\Http\Routing\Middleware\ViewRouteNotMatchedMiddleware;
 use Valkyrja\Http\Routing\Processor\Contract\Processor;
 use Valkyrja\Http\Routing\Url\Contract\Url;
-use Valkyrja\Reflection\Contract\Reflection;
+use Valkyrja\Reflection\Reflector\Contract\Reflector;
 use Valkyrja\View\Renderer\Contract\Renderer;
 
 /**
@@ -206,7 +206,7 @@ final class ServiceProvider extends Provider
             Collector::class,
             new AttributeCollector(
                 attributes: $container->getSingleton(AttributeCollectorContract::class),
-                reflection: $container->getSingleton(Reflection::class),
+                reflection: $container->getSingleton(Reflector::class),
                 processor: $container->getSingleton(Processor::class)
             )
         );

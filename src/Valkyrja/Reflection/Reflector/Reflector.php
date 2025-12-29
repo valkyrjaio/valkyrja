@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Reflection;
+namespace Valkyrja\Reflection\Reflector;
 
 use Closure;
 use Override;
@@ -24,8 +24,8 @@ use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionProperty;
 use UnitEnum;
-use Valkyrja\Reflection\Contract\Reflection as Contract;
 use Valkyrja\Reflection\Exception\RuntimeException;
+use Valkyrja\Reflection\Reflector\Contract\Reflector as Contract;
 
 use function class_exists;
 use function interface_exists;
@@ -36,7 +36,7 @@ use function is_callable;
  *
  * @author Melech Mizrachi
  */
-class Reflection implements Contract
+class Reflector implements Contract
 {
     /**
      * Cached reflection classes.
