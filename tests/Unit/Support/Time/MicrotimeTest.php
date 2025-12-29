@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Support;
+namespace Valkyrja\Tests\Unit\Support\Time;
 
-use Valkyrja\Support\Microtime;
+use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

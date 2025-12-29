@@ -18,7 +18,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Response
     use Valkyrja\Http\Message\Header\Value\Cookie;
     use Valkyrja\Http\Message\Response\Response;
     use Valkyrja\Http\Message\Stream\Stream;
-    use Valkyrja\Support\Time;
+    use Valkyrja\Support\Time\Time;
     use Valkyrja\Tests\Unit\TestCase;
 
     use function ob_get_clean;
