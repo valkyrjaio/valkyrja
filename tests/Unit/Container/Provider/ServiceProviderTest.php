@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Application\Config;
+use Valkyrja\Application\Data\Config;
 use Valkyrja\Attribute\Collector\Contract\Collector;
 use Valkyrja\Container\Attribute\Alias;
 use Valkyrja\Container\Attribute\Service;

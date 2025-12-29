@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Provider;
 
 use Override;
-use Valkyrja\Application\Config;
+use Valkyrja\Application\Data\Config;
 use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler;
