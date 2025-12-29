@@ -23,7 +23,7 @@ use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Contract\Parameter;
 use Valkyrja\Cli\Routing\Data\Contract\Route as Contract;
-use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
+use Valkyrja\Dispatch\Data\Contract\MethodDispatch;
 
 /**
  * Class Route.

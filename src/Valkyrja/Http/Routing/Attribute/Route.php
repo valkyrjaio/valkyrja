@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Attribute;
 
 use Attribute;
-use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
+use Valkyrja\Dispatch\Data\Contract\MethodDispatch;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
@@ -51,7 +51,7 @@ class Route extends ParentRoute
     public function __construct(
         protected string $path,
         protected string $name,
-        protected MethodDispatch $dispatch = new \Valkyrja\Dispatcher\Data\MethodDispatch(self::class, 'getPath'),
+        protected MethodDispatch $dispatch = new \Valkyrja\Dispatch\Data\MethodDispatch(self::class, 'getPath'),
         protected array $requestMethods = [RequestMethod::HEAD, RequestMethod::GET],
         protected string|null $regex = null,
         protected array $parameters = [],

@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Event\Collector;
 
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Collector as AttributesAttributes;
-use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
+use Valkyrja\Dispatch\Data\Contract\ClassDispatch;
 use Valkyrja\Event\Collector\AttributeCollector;
 use Valkyrja\Event\Data\Contract\Listener;
 use Valkyrja\Reflection\Reflector\Reflector;

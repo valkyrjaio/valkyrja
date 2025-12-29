@@ -23,7 +23,7 @@ use Valkyrja\Container\Collector\Contract\Collector as CollectorContract;
 use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Exception\InvalidArgumentException;
 use Valkyrja\Container\Provider\ServiceProvider;
-use Valkyrja\Dispatcher\Data\ClassDispatch;
+use Valkyrja\Dispatch\Data\ClassDispatch;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Container\Singleton2Class;
 use Valkyrja\Tests\Classes\Container\SingletonClass;

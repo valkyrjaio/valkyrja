@@ -24,7 +24,7 @@ use Valkyrja\Cli\Middleware\Handler\CommandNotMatchedHandler;
 use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
-use Valkyrja\Dispatcher\Data\MethodDispatch;
+use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Tests\Classes\Cli\Middleware\CommandMatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Classes\Cli\Middleware\CommandNotMatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Unit\TestCase;

@@ -21,8 +21,8 @@ use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
 use Valkyrja\Cli\Routing\Data\Contract\Parameter;
 use Valkyrja\Cli\Routing\Data\Route as Model;
-use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
-use Valkyrja\Dispatcher\Data\MethodDispatch as DefaultDispatch;
+use Valkyrja\Dispatch\Data\Contract\MethodDispatch;
+use Valkyrja\Dispatch\Data\MethodDispatch as DefaultDispatch;
 
 /**
  * Attribute Route.

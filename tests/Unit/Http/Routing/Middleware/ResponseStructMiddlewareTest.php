@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Routing\Middleware;
 
 use JsonException;
-use Valkyrja\Dispatcher\Data\MethodDispatch;
+use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\JsonResponse;
 use Valkyrja\Http\Message\Response\Response;

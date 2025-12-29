@@ -24,7 +24,7 @@ use Valkyrja\Cli\Routing\Provider\ServiceProvider as CliRoutingServiceProvider;
 use Valkyrja\Cli\Server\Provider\ServiceProvider as CliServerServiceProvider;
 use Valkyrja\Container\Provider\ServiceProvider as ContainerServiceProvider;
 use Valkyrja\Crypt\Provider\ServiceProvider as CryptServiceProvider;
-use Valkyrja\Dispatcher\Provider\ServiceProvider as DispatcherServiceProvider;
+use Valkyrja\Dispatch\Provider\ServiceProvider as DispatcherServiceProvider;
 use Valkyrja\Event\Provider\ServiceProvider as EventServiceProvider;
 use Valkyrja\Filesystem\Provider\ServiceProvider as FilesystemServiceProvider;
 use Valkyrja\Http\Client\Provider\ServiceProvider as ClientServiceProvider;

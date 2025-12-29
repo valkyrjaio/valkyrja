@@ -18,7 +18,7 @@ use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
+use Valkyrja\Dispatch\Data\Contract\MethodDispatch;
 
 /**
  * Interface Route.

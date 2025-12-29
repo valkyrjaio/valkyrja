@@ -15,8 +15,8 @@ namespace Valkyrja\Event\Dispatcher;
 
 use Override;
 use Psr\EventDispatcher\StoppableEventInterface;
-use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcherContract;
-use Valkyrja\Dispatcher\Dispatcher as DispatchDispatcher;
+use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher as DispatchDispatcherContract;
+use Valkyrja\Dispatch\Dispatcher\Dispatcher as DispatchDispatcher;
 use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\Collection as CollectionContract;
 use Valkyrja\Event\Contract\DispatchCollectableEvent;

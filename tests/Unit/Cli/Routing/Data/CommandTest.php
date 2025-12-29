@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Data;
 
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Routing\Data\Route;
-use Valkyrja\Dispatcher\Data\MethodDispatch as DefaultDispatch;
+use Valkyrja\Dispatch\Data\MethodDispatch as DefaultDispatch;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**

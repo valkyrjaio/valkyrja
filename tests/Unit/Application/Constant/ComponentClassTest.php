@@ -35,7 +35,7 @@ class ComponentClassTest extends TestCase
         self::assertSame(\Valkyrja\Cli\Component::class, ComponentClass::CLI);
         self::assertSame(\Valkyrja\Container\Component::class, ComponentClass::CONTAINER);
         self::assertSame(\Valkyrja\Crypt\Component::class, ComponentClass::CRYPT);
-        self::assertSame(\Valkyrja\Dispatcher\Component::class, ComponentClass::DISPATCHER);
+        self::assertSame(\Valkyrja\Dispatch\Component::class, ComponentClass::DISPATCHER);
         self::assertSame(\Valkyrja\Event\Component::class, ComponentClass::EVENT);
         self::assertSame(\Valkyrja\Filesystem\Component::class, ComponentClass::FILESYSTEM);
         self::assertSame(\Valkyrja\Http\Component::class, ComponentClass::HTTP);

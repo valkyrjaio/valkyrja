@@ -31,7 +31,7 @@ use Valkyrja\Cli\Routing\Dispatcher\Contract\Router as RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Dispatcher\Contract\Dispatcher;
+use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Reflection\Reflector\Contract\Reflector;
 
 /**

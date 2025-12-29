@@ -44,7 +44,7 @@ use Valkyrja\Cli\Server\Handler\Contract\InputHandler as InputHandlerContract;
 use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware as CliLogThrowableCaughtMiddleware;
 use Valkyrja\Container\Collector\Contract\Collector as ContainerCollector;
 use Valkyrja\Container\Data\Data as ContainerData;
-use Valkyrja\Dispatcher\Contract\Dispatcher;
+use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Collection\Contract\Collection as EventCollection;
 use Valkyrja\Event\Collector\Contract\Collector as EventCollector;
 use Valkyrja\Event\Data\Data as EventData;

@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Data;
 
 use Override;
-use Valkyrja\Dispatcher\Data\ClassDispatch as DefaultDispatch;
-use Valkyrja\Dispatcher\Data\Contract\ClassDispatch;
-use Valkyrja\Dispatcher\Data\Contract\MethodDispatch;
+use Valkyrja\Dispatch\Data\ClassDispatch as DefaultDispatch;
+use Valkyrja\Dispatch\Data\Contract\ClassDispatch;
+use Valkyrja\Dispatch\Data\Contract\MethodDispatch;
 use Valkyrja\Event\Data\Contract\Listener as Contract;
 
 /**
