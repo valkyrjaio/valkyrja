@@ -15,8 +15,8 @@ namespace Valkyrja\Http\Struct\Request\Contract;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Struct\Contract\Struct;
-use Valkyrja\Validation\Contract\Validate;
 use Valkyrja\Validation\Rule\Contract\Rule;
+use Valkyrja\Validation\Validator\Contract\Validator;
 
 /**
  * Interface RequestStruct.
@@ -44,7 +44,7 @@ interface RequestStruct extends Struct
     /**
      * Validate the Struct.
      */
-    public static function validate(ServerRequest $request): Validate;
+    public static function validate(ServerRequest $request): Validator;
 
     /**
      * Get the data from a given request.
