@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Exception;
+namespace Valkyrja\Exception\Handler;
 
 use Override;
 use Throwable;
-use Valkyrja\Exception\Contract\ExceptionHandler as Contract;
+use Valkyrja\Exception\Handler\Contract\ExceptionHandler as Contract;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;

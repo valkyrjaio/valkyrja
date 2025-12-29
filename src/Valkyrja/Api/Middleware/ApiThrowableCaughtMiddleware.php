@@ -17,7 +17,7 @@ use Override;
 use Throwable;
 use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Manager\Contract\Api;
-use Valkyrja\Exception\ExceptionHandler;
+use Valkyrja\Exception\Handler\ExceptionHandler;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
