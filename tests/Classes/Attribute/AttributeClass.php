@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Attribute;
 
 use Attribute;
-use Valkyrja\Reflection\Trait\ReflectionProperty;
+use Valkyrja\Attribute\Trait\ReflectionAwareAttributeTrait;
 
 /**
  * Attribute class used for unit testing.
@@ -24,7 +24,7 @@ use Valkyrja\Reflection\Trait\ReflectionProperty;
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class AttributeClass
 {
-    use ReflectionProperty;
+    use ReflectionAwareAttributeTrait;
 
     public function __construct(
         public int $counter
