@@ -20,7 +20,7 @@ use Override;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Container\Support\Provider;
+use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Mail\Mailer\Contract\Mailer;
 use Valkyrja\Mail\Mailer\LogMailer;

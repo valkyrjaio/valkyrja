@@ -16,7 +16,7 @@ namespace Valkyrja\Attribute\Provider;
 use Override;
 use Valkyrja\Attribute\Collector\Contract\Collector;
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Container\Support\Provider;
+use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Reflection\Contract\Reflection;
 
 /**

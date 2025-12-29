@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Message\Provider;
 
 use Override;
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Container\Support\Provider;
+use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 
 /**

@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Middleware\Provider;
 use Override;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Container\Support\Provider;
+use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Filesystem\Manager\Contract\Filesystem;
 use Valkyrja\Http\Middleware\Cache\CacheResponseMiddleware;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware as HttpRequestReceivedMiddleware;

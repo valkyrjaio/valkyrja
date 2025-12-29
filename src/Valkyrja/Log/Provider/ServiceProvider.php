@@ -20,7 +20,7 @@ use Override;
 use Psr\Log\LoggerInterface;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Container\Support\Provider;
+use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Log\Logger\NullLogger;

@@ -16,7 +16,7 @@ namespace Valkyrja\Crypt\Provider;
 use Override;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Container\Support\Provider;
+use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Crypt\Manager\Contract\Crypt;
 use Valkyrja\Crypt\Manager\NullCrypt;
 use Valkyrja\Crypt\Manager\SodiumCrypt;

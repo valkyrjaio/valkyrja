@@ -23,7 +23,7 @@ use Valkyrja\Broadcast\Broadcaster\LogBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\NullBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\PusherBroadcaster;
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Container\Support\Provider;
+use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Crypt\Manager\Contract\Crypt;
 use Valkyrja\Log\Logger\Contract\Logger;
 

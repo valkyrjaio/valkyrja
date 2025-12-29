@@ -17,7 +17,7 @@ use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Container\Support\Provider;
+use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Tests\Unit\TestCase;
 
 use function array_map;
