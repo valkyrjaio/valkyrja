@@ -33,7 +33,7 @@ use Valkyrja\Cli\Routing\Data\Contract\Route as RouteContract;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Exception\InvalidArgumentException;
-use Valkyrja\Reflection\Contract\Reflection;
+use Valkyrja\Reflection\Reflector\Contract\Reflector;
 
 use function array_column;
 use function array_merge;
@@ -48,7 +48,7 @@ class AttributeCollector implements Contract
 {
     public function __construct(
         protected Collector $attributes,
-        protected Reflection $reflection,
+        protected Reflector $reflection,
     ) {
     }
 

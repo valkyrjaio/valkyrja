@@ -26,7 +26,7 @@ use Valkyrja\Event\Collector\Contract\Collector;
 use Valkyrja\Event\Data;
 use Valkyrja\Event\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Event\Dispatcher\Dispatcher as EventDispatcher;
-use Valkyrja\Reflection\Contract\Reflection;
+use Valkyrja\Reflection\Reflector\Contract\Reflector;
 
 /**
  * Class ServiceProvider.
@@ -70,7 +70,7 @@ final class ServiceProvider extends Provider
             Collector::class,
             new AttributeCollector(
                 $container->getSingleton(AttributeCollectorContract::class),
-                $container->getSingleton(Reflection::class)
+                $container->getSingleton(Reflector::class)
             )
         );
     }

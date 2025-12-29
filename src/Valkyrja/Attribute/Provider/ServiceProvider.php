@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Attribute\Collector\Contract\Collector;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Reflection\Contract\Reflection;
+use Valkyrja\Reflection\Reflector\Contract\Reflector;
 
 /**
  * Class ServiceProvider.
@@ -60,7 +60,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             Collector::class,
             new \Valkyrja\Attribute\Collector\Collector(
-                $container->getSingleton(Reflection::class),
+                $container->getSingleton(Reflector::class),
             )
         );
     }

@@ -33,7 +33,7 @@ use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Routing\Provider\ServiceProvider;
 use Valkyrja\Dispatcher\Contract\Dispatcher;
 use Valkyrja\Dispatcher\Data\MethodDispatch as DefaultDispatch;
-use Valkyrja\Reflection\Contract\Reflection;
+use Valkyrja\Reflection\Reflector\Contract\Reflector;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**
@@ -52,7 +52,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishAttributeCollector(): void
     {
         $this->container->setSingleton(AttributeCollectorContract::class, self::createStub(AttributeCollectorContract::class));
-        $this->container->setSingleton(Reflection::class, self::createStub(Reflection::class));
+        $this->container->setSingleton(Reflector::class, self::createStub(Reflector::class));
 
         ServiceProvider::publishAttributeCollector($this->container);
 

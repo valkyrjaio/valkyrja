@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Collector;
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Collector;
 use Valkyrja\Cli\Routing\Collector\AttributeCollector;
-use Valkyrja\Reflection\Reflection;
+use Valkyrja\Reflection\Reflector\Reflector;
 use Valkyrja\Tests\Classes\Cli\Routing\Command\CommandClass;
 use Valkyrja\Tests\Unit\TestCase;
 
@@ -34,7 +34,7 @@ class AttributeCollectorTest extends TestCase
     {
         $collector = new AttributeCollector(
             attributes: new Collector(),
-            reflection: new Reflection()
+            reflection: new Reflector()
         );
 
         self::assertEmpty($collector->getRoutes(self::class));
@@ -47,7 +47,7 @@ class AttributeCollectorTest extends TestCase
     {
         $collector = new AttributeCollector(
             attributes: new Collector(),
-            reflection: new Reflection()
+            reflection: new Reflector()
         );
 
         $commands = $collector->getRoutes(CommandClass::class);

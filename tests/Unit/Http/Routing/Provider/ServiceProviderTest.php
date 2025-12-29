@@ -51,7 +51,7 @@ use Valkyrja\Http\Routing\Processor\Processor;
 use Valkyrja\Http\Routing\Provider\ServiceProvider;
 use Valkyrja\Http\Routing\Url\Contract\Url as UrlContract;
 use Valkyrja\Http\Routing\Url\Url;
-use Valkyrja\Reflection\Contract\Reflection;
+use Valkyrja\Reflection\Reflector\Contract\Reflector;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 use Valkyrja\View\Renderer\Contract\Renderer;
 
@@ -214,7 +214,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $container = $this->container;
 
         $container->setSingleton(AttributesContract::class, self::createStub(AttributesContract::class));
-        $container->setSingleton(Reflection::class, self::createStub(Reflection::class));
+        $container->setSingleton(Reflector::class, self::createStub(Reflector::class));
         $container->setSingleton(ProcessorContract::class, self::createStub(ProcessorContract::class));
 
         self::assertFalse($container->has(CollectorContract::class));

@@ -25,7 +25,7 @@ use Valkyrja\Event\Data;
 use Valkyrja\Event\Dispatcher\Contract\Dispatcher as Contract;
 use Valkyrja\Event\Dispatcher\Dispatcher;
 use Valkyrja\Event\Provider\ServiceProvider;
-use Valkyrja\Reflection\Contract\Reflection;
+use Valkyrja\Reflection\Reflector\Contract\Reflector;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**
@@ -44,7 +44,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishAttributesCollector(): void
     {
         $this->container->setSingleton(AttributeCollectorContract::class, self::createStub(AttributeCollectorContract::class));
-        $this->container->setSingleton(Reflection::class, self::createStub(Reflection::class));
+        $this->container->setSingleton(Reflector::class, self::createStub(Reflector::class));
 
         ServiceProvider::publishAttributesCollector($this->container);
 

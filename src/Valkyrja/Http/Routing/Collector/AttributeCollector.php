@@ -40,8 +40,8 @@ use Valkyrja\Http\Routing\Processor\Contract\Processor as ProcessorContract;
 use Valkyrja\Http\Routing\Processor\Processor;
 use Valkyrja\Http\Struct\Request\Contract\RequestStruct as RequestStructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStruct as ResponseStructContract;
-use Valkyrja\Reflection\Contract\Reflection as ReflectionContract;
-use Valkyrja\Reflection\Reflection;
+use Valkyrja\Reflection\Reflector\Contract\Reflector as ReflectionContract;
+use Valkyrja\Reflection\Reflector\Reflector;
 
 use function array_column;
 use function is_a;
@@ -55,7 +55,7 @@ class AttributeCollector implements Contract
 {
     public function __construct(
         protected AttributeContract $attributes = new Collector(),
-        protected ReflectionContract $reflection = new Reflection(),
+        protected ReflectionContract $reflection = new Reflector(),
         protected ProcessorContract $processor = new Processor()
     ) {
     }
