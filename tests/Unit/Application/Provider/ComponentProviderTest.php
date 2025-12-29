@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Application;
+namespace Valkyrja\Tests\Unit\Application\Provider;
 
 use Valkyrja\Application\Cli\Command\CacheCommand;
 use Valkyrja\Application\Cli\Command\ClearCacheCommand;
@@ -23,7 +23,7 @@ use Valkyrja\Tests\Unit\TestCase;
  *
  * @author Melech Mizrachi
  */
-class ComponentTest extends TestCase
+class ComponentProviderTest extends TestCase
 {
     public function testGetCliControllers(): void
     {

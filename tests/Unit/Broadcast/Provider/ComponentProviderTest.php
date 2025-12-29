@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Notification;
+namespace Valkyrja\Tests\Unit\Broadcast\Provider;
 
-use Valkyrja\Notification\Provider\ComponentProvider;
-use Valkyrja\Notification\Provider\ServiceProvider;
+use Valkyrja\Broadcast\Provider\ComponentProvider;
+use Valkyrja\Broadcast\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -22,7 +22,7 @@ use Valkyrja\Tests\Unit\TestCase;
  *
  * @author Melech Mizrachi
  */
-class ComponentTest extends TestCase
+class ComponentProviderTest extends TestCase
 {
     public function testGetContainerProvider(): void
     {
