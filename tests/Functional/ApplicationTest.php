@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional;
 
-use Valkyrja\Application\Contract\Application;
+use Valkyrja\Application\Kernel\Contract\Application;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Filesystem\Manager\Contract\Filesystem;
 use Valkyrja\Http\Client\Manager\Contract\Client;

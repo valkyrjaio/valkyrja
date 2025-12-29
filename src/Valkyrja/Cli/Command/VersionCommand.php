@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Command;
 
-use Valkyrja\Application\Contract\Application;
+use Valkyrja\Application\Kernel\Contract\Application;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Interaction\Formatter\Formatter;

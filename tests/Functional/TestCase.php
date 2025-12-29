@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Functional;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Entry\App;
+use Valkyrja\Application\Kernel\Contract\Application;
 use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Support\Directory;

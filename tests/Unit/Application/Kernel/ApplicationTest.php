@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Application;
+namespace Valkyrja\Tests\Unit\Application\Kernel;
 
 use GuzzleHttp\Client as Guzzle;
 use Valkyrja\Application\Cli\Command\CacheCommand;
 use Valkyrja\Application\Cli\Command\ClearCacheCommand;
 use Valkyrja\Application\Component;
-use Valkyrja\Application\Contract\Application;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Exception\RuntimeException;
-use Valkyrja\Application\Valkyrja;
+use Valkyrja\Application\Kernel\Contract\Application;
+use Valkyrja\Application\Kernel\Valkyrja;
 use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
 use Valkyrja\Cli\Command\HelpCommand;
 use Valkyrja\Cli\Command\ListBashCommand;
