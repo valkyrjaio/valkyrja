@@ -15,7 +15,7 @@ namespace Valkyrja\Sms\Provider;
 
 use Override;
 use Valkyrja\Application\Env;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger\Contract\Logger;
 use Valkyrja\Sms\Messenger\Contract\Messenger;

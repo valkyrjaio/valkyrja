@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Dispatcher;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Contract\Application;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Manager\Container;
 use Valkyrja\Dispatcher\Contract\Dispatcher as Contract;
 use Valkyrja\Dispatcher\Data\CallableDispatch;
 use Valkyrja\Dispatcher\Data\ClassDispatch;

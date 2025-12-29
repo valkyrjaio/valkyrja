@@ -34,7 +34,7 @@ use Valkyrja\Cli\Routing\Data\Option\SilentOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\VersionOptionParameter;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\Router;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandler as Contract;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Support\Exiter;
 
 /**
@@ -48,7 +48,7 @@ class InputHandler implements Contract
      * RequestHandler constructor.
      */
     public function __construct(
-        protected Container $container = new \Valkyrja\Container\Container(),
+        protected Container $container = new \Valkyrja\Container\Manager\Container(),
         protected Router $router = new \Valkyrja\Cli\Routing\Dispatcher\Router(),
         protected InputReceivedHandler $inputReceivedHandler = new Middleware\Handler\InputReceivedHandler(),
         protected ThrowableCaughtHandler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),

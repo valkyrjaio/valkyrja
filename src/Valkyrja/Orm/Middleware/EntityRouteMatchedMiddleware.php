@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Middleware;
 
 use Override;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;

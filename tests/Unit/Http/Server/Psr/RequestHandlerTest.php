@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Server\Psr;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Throwable;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Manager\Container;
 use Valkyrja\Http\Message\Request\Psr\ServerRequest as PsrServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response as ResponseContract;

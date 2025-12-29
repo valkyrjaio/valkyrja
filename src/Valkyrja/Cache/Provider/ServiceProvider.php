@@ -20,7 +20,7 @@ use Valkyrja\Cache\Manager\Contract\Cache;
 use Valkyrja\Cache\Manager\LogCache;
 use Valkyrja\Cache\Manager\NullCache;
 use Valkyrja\Cache\Manager\RedisCache;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger\Contract\Logger;
 

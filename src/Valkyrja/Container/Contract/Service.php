@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Contract;
 
+use Valkyrja\Container\Manager\Contract\Container;
+
 /**
  * Interface Service.
  *

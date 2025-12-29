@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Reflection;
 
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 
 /**
  * Class to test reflections.

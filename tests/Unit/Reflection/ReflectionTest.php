@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Reflection;
 
 use ReflectionException;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Reflection\Exception\RuntimeException;
 use Valkyrja\Reflection\Reflection;
 use Valkyrja\Tests\Classes\Reflection\ReflectableClass;

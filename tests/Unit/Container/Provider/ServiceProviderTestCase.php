@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Container\Provider;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Application\Env;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Tests\Unit\TestCase;
 

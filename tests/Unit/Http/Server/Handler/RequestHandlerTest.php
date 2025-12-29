@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Server\Handler;
 
 use Exception;
 use Throwable;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Manager\Container;
 use Valkyrja\Http\Message\Exception\HttpException;
 use Valkyrja\Http\Message\Request\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response as ResponseContract;

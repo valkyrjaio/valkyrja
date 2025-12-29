@@ -11,9 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Support;
+namespace Valkyrja\Container\Manager;
 
 use Valkyrja\Container\Support\Contract\Provides;
+use Valkyrja\Container\Support\Provider;
 use Valkyrja\Exception\InvalidArgumentException;
 
 use function is_callable;

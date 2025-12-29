@@ -25,7 +25,7 @@ use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Routing\Attribute\Route as RouteAttribute;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection as CliCollectionContract;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Event\Collection\Contract\Collection as EventCollection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as HttpCollectionContract;
 

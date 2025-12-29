@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\BuiltIn\Support;
 
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Type\BuiltIn\Exception\InvalidClassPropertyProvidedException;
 use Valkyrja\Type\BuiltIn\Exception\InvalidClassProvidedException;
 

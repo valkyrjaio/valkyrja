@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container\Support;
 
 use ReflectionClass;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\Manager\Container;
 use Valkyrja\Tests\Classes\Container\ProvidesClass;
 use Valkyrja\Tests\Unit\TestCase;
 

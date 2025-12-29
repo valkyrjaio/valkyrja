@@ -19,7 +19,7 @@ use Twig\Error\LoaderError;
 use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
 use Twig\Loader\FilesystemLoader;
 use Valkyrja\Application\Env;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\View\Factory\Contract\ResponseFactory as ResponseFactoryContract;

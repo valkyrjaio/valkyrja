@@ -16,7 +16,7 @@ namespace Valkyrja\Event\Provider;
 use Override;
 use Valkyrja\Application\Config;
 use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
-use Valkyrja\Container\Contract\Container;
+use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
 use Valkyrja\Event\Collection\Collection;
