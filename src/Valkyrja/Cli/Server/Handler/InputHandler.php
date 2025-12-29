@@ -16,7 +16,7 @@ namespace Valkyrja\Cli\Server\Handler;
 use Override;
 use Throwable;
 use Valkyrja\Cli\Command\VersionCommand;
-use Valkyrja\Cli\Interaction\Config as InteractionConfig;
+use Valkyrja\Cli\Interaction\Data\Config as InteractionConfig;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Message\Banner;

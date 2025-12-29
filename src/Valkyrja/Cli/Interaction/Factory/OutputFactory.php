@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Factory;
 
 use Override;
-use Valkyrja\Cli\Interaction\Config;
+use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory as Contract;
 use Valkyrja\Cli\Interaction\Message\Contract\Message;
