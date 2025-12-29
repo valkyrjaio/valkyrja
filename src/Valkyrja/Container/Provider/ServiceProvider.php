@@ -22,7 +22,6 @@ use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Data;
 use Valkyrja\Container\Exception\InvalidArgumentException;
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Container\Support\Provider;
 
 /**
  * Class ServiceProvider.

@@ -17,7 +17,7 @@ use Override;
 use PDO;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Container\Support\Provider;
+use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Orm\Entity\Contract\Entity;
 use Valkyrja\Orm\Manager\Contract\Manager;
 use Valkyrja\Orm\Manager\InMemoryManager;

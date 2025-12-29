@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Constant;
 
-use Valkyrja\Container\Support\Provider as ContainerProvider;
+use Valkyrja\Container\Provider\Provider as ContainerProvider;
 
 /**
  * Constant ConfigValue.

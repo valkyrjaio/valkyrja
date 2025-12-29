@@ -19,7 +19,7 @@ use Valkyrja\Cli\Interaction\Config;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Interaction\Factory\OutputFactory as DefaultOutputFactory;
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Container\Support\Provider;
+use Valkyrja\Container\Provider\Provider;
 
 /**
  * Class ServiceProvider.

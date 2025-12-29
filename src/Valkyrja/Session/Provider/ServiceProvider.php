@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Application\Env;
 use Valkyrja\Cache\Manager\Contract\Cache;
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Container\Support\Provider;
+use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Crypt\Manager\Contract\Crypt;
 use Valkyrja\Http\Message\Enum\SameSite;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;

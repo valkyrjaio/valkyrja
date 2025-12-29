@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Manager\Contract;
 
-use Valkyrja\Container\Support\Provider;
+use Valkyrja\Container\Provider\Provider;
 
 /**
  * Interface ProvidersAware.

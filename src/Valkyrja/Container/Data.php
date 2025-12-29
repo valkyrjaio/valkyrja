@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container;
 
 use Valkyrja\Container\Contract\Service;
-use Valkyrja\Container\Support\Provider;
+use Valkyrja\Container\Provider\Provider;
 
 /**
  * Class Data.

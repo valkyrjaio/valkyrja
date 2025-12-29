@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Container\Support;
+namespace Valkyrja\Tests\Unit\Container\Provider;
 
 use ReflectionClass;
 use Valkyrja\Container\Manager\Container;

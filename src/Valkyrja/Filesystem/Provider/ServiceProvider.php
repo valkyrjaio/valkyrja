@@ -20,7 +20,7 @@ use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
 use Override;
 use Valkyrja\Application\Env;
 use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Container\Support\Provider;
+use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Filesystem\Manager\Contract\Filesystem;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Filesystem\Manager\InMemoryFilesystem;

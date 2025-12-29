@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Container;
 
-use Valkyrja\Container\Support\Provider;
+use Valkyrja\Container\Provider\Provider;
 
 /**
  * Testable Provider/Provides Trait class.
