@@ -27,7 +27,8 @@ use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection as CollectionContract;
 use Valkyrja\Cli\Routing\Collector\AttributeCollector;
 use Valkyrja\Cli\Routing\Collector\Contract\Collector;
-use Valkyrja\Cli\Routing\Data;
+use Valkyrja\Cli\Routing\Data\Data;
+use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\Router as RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Routing\Provider\ServiceProvider;
@@ -95,7 +96,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(Config::class, new Config());
         $this->container->setSingleton(Collector::class, $collector = self::createStub(Collector::class));
 
-        $command = new Data\Route(
+        $command = new Route(
             name: 'test',
             description: 'test',
             helpText: new Message('test'),

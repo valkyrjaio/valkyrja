@@ -26,7 +26,7 @@ use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Collection\Contract\Collection as CollectionContract;
 use Valkyrja\Cli\Routing\Collector\AttributeCollector;
 use Valkyrja\Cli\Routing\Collector\Contract\Collector;
-use Valkyrja\Cli\Routing\Data;
+use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\Router as RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Container\Manager\Contract\Container;

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Collection\Contract;
 
-use Valkyrja\Cli\Routing\Data;
 use Valkyrja\Cli\Routing\Data\Contract\Route;
+use Valkyrja\Cli\Routing\Data\Data;
 
 /**
  * Interface Collection.
