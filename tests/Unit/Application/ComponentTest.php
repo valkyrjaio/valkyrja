@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Application;
 
 use Valkyrja\Application\Cli\Command\CacheCommand;
 use Valkyrja\Application\Cli\Command\ClearCacheCommand;
-use Valkyrja\Application\Component;
+use Valkyrja\Application\Provider\ComponentProvider;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -27,7 +27,7 @@ class ComponentTest extends TestCase
 {
     public function testGetCliControllers(): void
     {
-        self::assertContains(CacheCommand::class, Component::getCliControllers());
-        self::assertContains(ClearCacheCommand::class, Component::getCliControllers());
+        self::assertContains(CacheCommand::class, ComponentProvider::getCliControllers());
+        self::assertContains(ClearCacheCommand::class, ComponentProvider::getCliControllers());
     }
 }

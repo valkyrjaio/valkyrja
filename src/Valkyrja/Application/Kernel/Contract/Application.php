@@ -16,7 +16,7 @@ namespace Valkyrja\Application\Kernel\Contract;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Application\Support\Component;
+use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Container\Manager\Contract\Container;
 
 /**
@@ -68,7 +68,7 @@ interface Application
     /**
      * Add a component to the application.
      *
-     * @param class-string<Component> $component The component class
+     * @param class-string<Provider> $component The component class
      *
      * @return void
      */

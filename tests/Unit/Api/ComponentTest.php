@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Api;
 
-use Valkyrja\Api\Component;
+use Valkyrja\Api\Provider\ComponentProvider;
 use Valkyrja\Api\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\TestCase;
 
@@ -26,6 +26,6 @@ class ComponentTest extends TestCase
 {
     public function testGetContainerProviders(): void
     {
-        self::assertContains(ServiceProvider::class, Component::getContainerProviders());
+        self::assertContains(ServiceProvider::class, ComponentProvider::getContainerProviders());
     }
 }

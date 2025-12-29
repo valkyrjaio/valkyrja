@@ -16,7 +16,7 @@ namespace Valkyrja\Application\Env;
 use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
 use Valkyrja\Application\Constant\ComponentClass;
 use Valkyrja\Application\Kernel\Contract\Application;
-use Valkyrja\Application\Support\Component;
+use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Auth\Authenticator\Contract\Authenticator;
 use Valkyrja\Auth\Authenticator\SessionAuthenticator;
 use Valkyrja\Auth\Constant\RouteName;
@@ -97,7 +97,7 @@ class Env
     public const string APP_VERSION = Application::VERSION;
     /** @var non-empty-string */
     public const string APP_KEY = 'some_secret_app_key';
-    /** @var class-string<Component>[] */
+    /** @var class-string<Provider>[] */
     public const array APP_REQUIRED_COMPONENTS = [
         ComponentClass::CONTAINER,
         ComponentClass::APPLICATION,
@@ -105,13 +105,13 @@ class Env
         ComponentClass::DISPATCHER,
         ComponentClass::REFLECTION,
     ];
-    /** @var class-string<Component>[] */
+    /** @var class-string<Provider>[] */
     public const array APP_CORE_COMPONENTS = [
         ComponentClass::CLI,
         ComponentClass::EVENT,
         ComponentClass::HTTP,
     ];
-    /** @var class-string<Component>[] */
+    /** @var class-string<Provider>[] */
     public const array APP_COMPONENTS = [
         ComponentClass::API,
         ComponentClass::AUTH,
@@ -128,7 +128,7 @@ class Env
         ComponentClass::SMS,
         ComponentClass::VIEW,
     ];
-    /** @var class-string<Component>[] */
+    /** @var class-string<Provider>[] */
     public const array APP_CUSTOM_COMPONENTS = [];
     /** @var bool */
     public const bool APP_ADD_CLI_CONTROLLERS = true;

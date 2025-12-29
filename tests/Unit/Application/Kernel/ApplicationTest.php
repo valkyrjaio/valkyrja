@@ -16,13 +16,13 @@ namespace Valkyrja\Tests\Unit\Application\Kernel;
 use GuzzleHttp\Client as Guzzle;
 use Valkyrja\Application\Cli\Command\CacheCommand;
 use Valkyrja\Application\Cli\Command\ClearCacheCommand;
-use Valkyrja\Application\Component;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Exception\RuntimeException;
 use Valkyrja\Application\Kernel\Contract\Application;
 use Valkyrja\Application\Kernel\Valkyrja;
+use Valkyrja\Application\Provider\ComponentProvider;
 use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
 use Valkyrja\Cli\Command\HelpCommand;
 use Valkyrja\Cli\Command\ListBashCommand;
@@ -239,7 +239,7 @@ class ApplicationTest extends TestCase
             configData: $data
         );
 
-        $application->addComponent(Component::class);
+        $application->addComponent(ComponentProvider::class);
     }
 
     /**
@@ -248,7 +248,7 @@ class ApplicationTest extends TestCase
     public function testEnsureDefaultComponents(): void
     {
         $env    = new class extends Env {
-            /** @var class-string<\Valkyrja\Application\Support\Component>[] */
+            /** @var class-string<\Valkyrja\Application\Provider\Provider>[] */
             public const array APP_COMPONENTS = [];
         };
         $config = new Config();
@@ -352,9 +352,9 @@ class ApplicationTest extends TestCase
     public function testCustomComponents(): void
     {
         $env    = new class extends Env {
-            /** @var class-string<\Valkyrja\Application\Support\Component>[] */
+            /** @var class-string<\Valkyrja\Application\Provider\Provider>[] */
             public const array APP_COMPONENTS = [];
-            /** @var class-string<\Valkyrja\Application\Support\Component>[] */
+            /** @var class-string<\Valkyrja\Application\Provider\Provider>[] */
             public const array APP_CUSTOM_COMPONENTS = [];
         };
         $config = new Config();
@@ -369,11 +369,11 @@ class ApplicationTest extends TestCase
         self::assertFalse($container->has(Template::class));
 
         $env2    = new class extends Env {
-            /** @var class-string<\Valkyrja\Application\Support\Component>[] */
+            /** @var class-string<\Valkyrja\Application\Provider\Provider>[] */
             public const array APP_COMPONENTS = [];
-            /** @var class-string<\Valkyrja\Application\Support\Component>[] */
+            /** @var class-string<\Valkyrja\Application\Provider\Provider>[] */
             public const array APP_CUSTOM_COMPONENTS = [
-                \Valkyrja\View\Component::class,
+                \Valkyrja\View\Provider\ComponentProvider::class,
             ];
         };
         $config2 = new Config();

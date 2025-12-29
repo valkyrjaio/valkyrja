@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth;
+namespace Valkyrja\Crypt\Provider;
 
 use Override;
-use Valkyrja\Application\Support\Component as AppComponent;
+use Valkyrja\Application\Provider\Provider as AppComponent;
 
 /**
- * Final Class Component.
+ * Class Component.
  *
  * @author Melech Mizrachi
  */
-class Component extends AppComponent
+class ComponentProvider extends AppComponent
 {
     /**
      * @inheritDoc
@@ -30,7 +30,7 @@ class Component extends AppComponent
     public static function getContainerProviders(): array
     {
         return [
-            Provider\ServiceProvider::class,
+            ServiceProvider::class,
         ];
     }
 }

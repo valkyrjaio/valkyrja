@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Application\Constant;
 
-use Valkyrja\Application\Component;
 use Valkyrja\Application\Constant\ComponentClass;
+use Valkyrja\Application\Provider\ComponentProvider;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -26,27 +26,27 @@ class ComponentClassTest extends TestCase
 {
     public function testValues(): void
     {
-        self::assertSame(Component::class, ComponentClass::APPLICATION);
-        self::assertSame(\Valkyrja\Api\Component::class, ComponentClass::API);
-        self::assertSame(\Valkyrja\Attribute\Component::class, ComponentClass::ATTRIBUTE);
-        self::assertSame(\Valkyrja\Auth\Component::class, ComponentClass::AUTH);
-        self::assertSame(\Valkyrja\Broadcast\Component::class, ComponentClass::BROADCAST);
-        self::assertSame(\Valkyrja\Cache\Component::class, ComponentClass::CACHE);
-        self::assertSame(\Valkyrja\Cli\Component::class, ComponentClass::CLI);
-        self::assertSame(\Valkyrja\Container\Component::class, ComponentClass::CONTAINER);
-        self::assertSame(\Valkyrja\Crypt\Component::class, ComponentClass::CRYPT);
-        self::assertSame(\Valkyrja\Dispatch\Component::class, ComponentClass::DISPATCHER);
-        self::assertSame(\Valkyrja\Event\Component::class, ComponentClass::EVENT);
-        self::assertSame(\Valkyrja\Filesystem\Component::class, ComponentClass::FILESYSTEM);
-        self::assertSame(\Valkyrja\Http\Component::class, ComponentClass::HTTP);
-        self::assertSame(\Valkyrja\Jwt\Component::class, ComponentClass::JWT);
-        self::assertSame(\Valkyrja\Log\Component::class, ComponentClass::LOG);
-        self::assertSame(\Valkyrja\Mail\Component::class, ComponentClass::MAIL);
-        self::assertSame(\Valkyrja\Notification\Component::class, ComponentClass::NOTIFICATION);
-        self::assertSame(\Valkyrja\Orm\Component::class, ComponentClass::ORM);
-        self::assertSame(\Valkyrja\Reflection\Component::class, ComponentClass::REFLECTION);
-        self::assertSame(\Valkyrja\Session\Component::class, ComponentClass::SESSION);
-        self::assertSame(\Valkyrja\Sms\Component::class, ComponentClass::SMS);
-        self::assertSame(\Valkyrja\View\Component::class, ComponentClass::VIEW);
+        self::assertSame(ComponentProvider::class, ComponentClass::APPLICATION);
+        self::assertSame(\Valkyrja\Api\Provider\ComponentProvider::class, ComponentClass::API);
+        self::assertSame(\Valkyrja\Attribute\Provider\ComponentProvider::class, ComponentClass::ATTRIBUTE);
+        self::assertSame(\Valkyrja\Auth\Provider\ComponentProvider::class, ComponentClass::AUTH);
+        self::assertSame(\Valkyrja\Broadcast\Provider\ComponentProvider::class, ComponentClass::BROADCAST);
+        self::assertSame(\Valkyrja\Cache\Provider\ComponentProvider::class, ComponentClass::CACHE);
+        self::assertSame(\Valkyrja\Cli\ComponentProvider::class, ComponentClass::CLI);
+        self::assertSame(\Valkyrja\Container\Provider\ComponentProvider::class, ComponentClass::CONTAINER);
+        self::assertSame(\Valkyrja\Crypt\Provider\ComponentProvider::class, ComponentClass::CRYPT);
+        self::assertSame(\Valkyrja\Dispatch\Provider\ComponentProvider::class, ComponentClass::DISPATCHER);
+        self::assertSame(\Valkyrja\Event\Provider\ComponentProvider::class, ComponentClass::EVENT);
+        self::assertSame(\Valkyrja\Filesystem\Provider\ComponentProvider::class, ComponentClass::FILESYSTEM);
+        self::assertSame(\Valkyrja\Http\ComponentProvider::class, ComponentClass::HTTP);
+        self::assertSame(\Valkyrja\Jwt\Provider\ComponentProvider::class, ComponentClass::JWT);
+        self::assertSame(\Valkyrja\Log\Provider\ComponentProvider::class, ComponentClass::LOG);
+        self::assertSame(\Valkyrja\Mail\Provider\ComponentProvider::class, ComponentClass::MAIL);
+        self::assertSame(\Valkyrja\Notification\Provider\ComponentProvider::class, ComponentClass::NOTIFICATION);
+        self::assertSame(\Valkyrja\Orm\Provider\ComponentProvider::class, ComponentClass::ORM);
+        self::assertSame(\Valkyrja\Reflection\Provider\ComponentProvider::class, ComponentClass::REFLECTION);
+        self::assertSame(\Valkyrja\Session\Provider\ComponentProvider::class, ComponentClass::SESSION);
+        self::assertSame(\Valkyrja\Sms\Provider\ComponentProvider::class, ComponentClass::SMS);
+        self::assertSame(\Valkyrja\View\Provider\ComponentProvider::class, ComponentClass::VIEW);
     }
 }

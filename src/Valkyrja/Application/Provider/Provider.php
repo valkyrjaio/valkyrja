@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Application\Support;
+namespace Valkyrja\Application\Provider;
 
 use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Provider\Provider as ContainerProvider;
@@ -21,7 +21,7 @@ use Valkyrja\Container\Provider\Provider as ContainerProvider;
  *
  * @author Melech Mizrachi
  */
-abstract class Component
+abstract class Provider
 {
     /**
      * Get the component's container aliases.

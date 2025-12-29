@@ -19,7 +19,7 @@ use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Exception\RuntimeException;
 use Valkyrja\Application\Kernel\Contract\Application;
-use Valkyrja\Application\Support\Component;
+use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Cli\Routing\Data\Data as CliData;
 use Valkyrja\Container\Data\Data as ContainerData;
 use Valkyrja\Container\Manager\Contract\Container;
@@ -218,7 +218,7 @@ class Valkyrja implements Application
      */
     protected function bootstrapRequiredComponents(): void
     {
-        /** @var class-string<Component>[] $components */
+        /** @var class-string<Provider>[] $components */
         $components = $this->env::APP_REQUIRED_COMPONENTS;
 
         foreach ($components as $component) {
@@ -231,7 +231,7 @@ class Valkyrja implements Application
      */
     protected function bootstrapCoreComponents(): void
     {
-        /** @var class-string<Component>[] $components */
+        /** @var class-string<Provider>[] $components */
         $components = $this->env::APP_CORE_COMPONENTS;
 
         foreach ($components as $component) {
@@ -244,7 +244,7 @@ class Valkyrja implements Application
      */
     protected function bootstrapOptionalComponents(): void
     {
-        /** @var class-string<Component>[] $components */
+        /** @var class-string<Provider>[] $components */
         $components = $this->env::APP_COMPONENTS;
 
         foreach ($components as $component) {
@@ -257,7 +257,7 @@ class Valkyrja implements Application
      */
     protected function bootstrapCustomComponents(): void
     {
-        /** @var class-string<Component>[] $components */
+        /** @var class-string<Provider>[] $components */
         $components = $this->env::APP_CUSTOM_COMPONENTS;
 
         foreach ($components as $component) {
@@ -268,7 +268,7 @@ class Valkyrja implements Application
     /**
      * Add a component's container aliases.
      *
-     * @param class-string<Component> $component The component class
+     * @param class-string<Provider> $component The component class
      */
     protected function addComponentContainerAliases(Config $config, string $component): void
     {
@@ -281,7 +281,7 @@ class Valkyrja implements Application
     /**
      * Add a component's container services.
      *
-     * @param class-string<Component> $component The component class
+     * @param class-string<Provider> $component The component class
      */
     protected function addComponentContainerServices(Config $config, string $component): void
     {
@@ -294,7 +294,7 @@ class Valkyrja implements Application
     /**
      * Add a component's container services.
      *
-     * @param class-string<Component> $component The component class
+     * @param class-string<Provider> $component The component class
      */
     protected function addComponentContainerProviders(string $component): void
     {
@@ -307,7 +307,7 @@ class Valkyrja implements Application
     /**
      * Add a component's event listeners.
      *
-     * @param class-string<Component> $component The component class
+     * @param class-string<Provider> $component The component class
      */
     protected function addComponentEventListeners(Config $config, string $component): void
     {
@@ -322,7 +322,7 @@ class Valkyrja implements Application
     /**
      * Add a component's cli controllers.
      *
-     * @param class-string<Component> $component The component class
+     * @param class-string<Provider> $component The component class
      */
     protected function addComponentCliControllers(Config $config, string $component): void
     {
@@ -337,7 +337,7 @@ class Valkyrja implements Application
     /**
      * Add a component's http controllers.
      *
-     * @param class-string<Component> $component The component class
+     * @param class-string<Provider> $component The component class
      */
     protected function addComponentHttpControllers(Config $config, string $component): void
     {
