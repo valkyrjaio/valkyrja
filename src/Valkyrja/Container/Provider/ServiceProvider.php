@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Provider;
 
 use Override;
-use Valkyrja\Application\Config;
+use Valkyrja\Application\Data\Config;
 use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
 use Valkyrja\Container\Collector\AttributeCollector;
 use Valkyrja\Container\Collector\Contract\Collector;

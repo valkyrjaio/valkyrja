@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
-use Valkyrja\Application\Config;
+use Valkyrja\Application\Data\Config;
 use Valkyrja\Attribute\Collector\Contract\Collector as AttributesContract;
 use Valkyrja\Container\Constant\ConfigValue;
 use Valkyrja\Dispatcher\Contract\Dispatcher;

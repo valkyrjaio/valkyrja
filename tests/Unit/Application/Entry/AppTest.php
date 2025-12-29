@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Application\Entry;
 
 use Throwable;
-use Valkyrja\Application\Config;
 use Valkyrja\Application\Data;
+use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Entry\App;
 use Valkyrja\Application\Env;
 use Valkyrja\Application\Exception\RuntimeException;
