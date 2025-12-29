@@ -21,7 +21,8 @@ use Valkyrja\Event\Collection\Collection;
 use Valkyrja\Event\Collection\Contract\Collection as CollectionContract;
 use Valkyrja\Event\Collector\AttributeCollector;
 use Valkyrja\Event\Collector\Contract\Collector;
-use Valkyrja\Event\Data;
+use Valkyrja\Event\Data\Data;
+use Valkyrja\Event\Data\Listener;
 use Valkyrja\Event\Dispatcher\Contract\Dispatcher as Contract;
 use Valkyrja\Event\Dispatcher\Dispatcher;
 use Valkyrja\Event\Provider\ServiceProvider;
@@ -83,7 +84,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         $eventId      = self::class;
         $listenerName = 'listener-name';
-        $listener     = new Data\Listener(eventId: $eventId, name: $listenerName);
+        $listener     = new Listener(eventId: $eventId, name: $listenerName);
 
         $collector->method('getListeners')->willReturn([$listener]);
 

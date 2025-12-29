@@ -15,8 +15,8 @@ namespace Valkyrja\Event\Collection\Contract;
 
 use Override;
 use Psr\EventDispatcher\ListenerProviderInterface;
-use Valkyrja\Event\Data;
 use Valkyrja\Event\Data\Contract\Listener;
+use Valkyrja\Event\Data\Data;
 
 /**
  * Interface Dispatcher.
