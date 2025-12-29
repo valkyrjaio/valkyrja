@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Server\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Cli\Interaction\Config;
+use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;

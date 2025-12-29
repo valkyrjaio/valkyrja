@@ -28,7 +28,7 @@ use Valkyrja\Cli\Command\HelpCommand;
 use Valkyrja\Cli\Command\ListBashCommand;
 use Valkyrja\Cli\Command\ListCommand as CliListCommand;
 use Valkyrja\Cli\Command\VersionCommand;
-use Valkyrja\Cli\Interaction\Config as CliInteractionConfig;
+use Valkyrja\Cli\Interaction\Data\Config as CliInteractionConfig;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
 use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandler;
