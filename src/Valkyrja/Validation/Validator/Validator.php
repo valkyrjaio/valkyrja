@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation;
+namespace Valkyrja\Validation\Validator;
 
 use Override;
-use Valkyrja\Validation\Contract\Validate as Contract;
 use Valkyrja\Validation\Exception\ValidationException;
 use Valkyrja\Validation\Rule\Contract\Rule;
+use Valkyrja\Validation\Validator\Contract\Validator as Contract;
 
 /**
  * Class Validate.
  *
  * @author Melech Mizrachi
  */
-class Validate implements Contract
+class Validator implements Contract
 {
     /**
      * The error messages if validation failed.

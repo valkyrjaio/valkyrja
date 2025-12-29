@@ -22,7 +22,7 @@ use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler;
 use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Struct\Request\Contract\RequestStruct;
-use Valkyrja\Validation\Contract\Validate;
+use Valkyrja\Validation\Validator\Contract\Validator;
 
 use function assert;
 use function is_a;
@@ -144,12 +144,12 @@ class RequestStructMiddleware implements RouteMatchedMiddleware
     /**
      * @param ServerRequest               $request      The request
      * @param Route                       $matchedRoute The matched route
-     * @param Validate                    $validate     The validation object
+     * @param Validator                   $validate     The validation object
      * @param class-string<RequestStruct> $struct       The message class name
      *
      * @return Response
      */
-    protected function getValidationErrorsResponse(ServerRequest $request, Route $matchedRoute, Validate $validate, string $struct): Response
+    protected function getValidationErrorsResponse(ServerRequest $request, Route $matchedRoute, Validator $validate, string $struct): Response
     {
         return new HttpResponse(
             statusCode: StatusCode::BAD_REQUEST,

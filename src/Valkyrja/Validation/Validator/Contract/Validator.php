@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Contract;
+namespace Valkyrja\Validation\Validator\Contract;
 
 use Valkyrja\Validation\Rule\Contract\Rule;
 
@@ -20,7 +20,7 @@ use Valkyrja\Validation\Rule\Contract\Rule;
  *
  * @author Melech Mizrachi
  */
-interface Validate
+interface Validator
 {
     /**
      * Validate a set of rules.

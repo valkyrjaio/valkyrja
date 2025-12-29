@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Struct\Request;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Type\BuiltIn\Enum\Arrayable;
-use Valkyrja\Validation\Contract\Validate;
+use Valkyrja\Validation\Validator\Contract\Validator;
 
 /**
  * Trait RequestStruct.
@@ -53,9 +53,9 @@ trait RequestStruct
     /**
      * @inheritDoc
      */
-    public static function validate(ServerRequest $request): Validate
+    public static function validate(ServerRequest $request): Validator
     {
-        return new \Valkyrja\Validation\Validate(static::getValidationRules($request) ?? []);
+        return new \Valkyrja\Validation\Validator\Validator(static::getValidationRules($request) ?? []);
     }
 
     /**
