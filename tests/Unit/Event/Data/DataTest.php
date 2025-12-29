@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Event;
+namespace Valkyrja\Tests\Unit\Event\Data;
 
 use Valkyrja\Event\Data\Data;
 use Valkyrja\Tests\Unit\TestCase;
