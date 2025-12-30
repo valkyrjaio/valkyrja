@@ -28,6 +28,7 @@ use Valkyrja\Cli\Routing\Collection\Contract\Collection as CliCollectionContract
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Event\Collection\Contract\Collection as EventCollection;
 use Valkyrja\Http\Routing\Collection\Contract\Collection as HttpCollectionContract;
+use Valkyrja\Support\Directory\Directory;
 
 use const LOCK_EX;
 
@@ -53,12 +54,13 @@ class CacheCommand
         Env $env,
         OutputFactory $outputFactory
     ): Output {
-        /** @var non-empty-string $cacheFilePath */
-        $cacheFilePath = $env::APP_CACHE_FILE_PATH;
+        /** @var non-empty-string $cacheFilepath */
+        $cacheFilepath = $env::APP_CACHE_FILE_PATH;
+        $cacheFilename = Directory::basePath($cacheFilepath);
 
         // If the cache file already exists, delete it
-        if (is_file($cacheFilePath)) {
-            @unlink($cacheFilePath);
+        if (is_file($cacheFilename)) {
+            @unlink($cacheFilename);
         }
 
         $data = new Data(
@@ -69,7 +71,7 @@ class CacheCommand
         );
 
         // Get the results of the cache attempt
-        $result = @file_put_contents($cacheFilePath, serialize($data), LOCK_EX);
+        $result = @file_put_contents($cacheFilename, serialize($data), LOCK_EX);
 
         if ($result === false) {
             return $outputFactory

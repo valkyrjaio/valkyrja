@@ -36,11 +36,11 @@ class CacheCommandTest extends TestCase
     {
         $env = new class extends EnvClass {
             /** @var non-empty-string */
-            public const string APP_CACHE_FILE_PATH = EnvClass::APP_DIR . '/storage/CacheCommandTestCache.php';
+            public const string APP_CACHE_FILE_PATH = '/storage/CacheCommandTestCache.php';
         };
 
         /** @var non-empty-string $filepath */
-        $filepath = $env::APP_CACHE_FILE_PATH;
+        $filepath = EnvClass::APP_DIR . $env::APP_CACHE_FILE_PATH;
 
         file_put_contents($filepath, 'test', LOCK_EX);
 
