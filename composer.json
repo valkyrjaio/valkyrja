@@ -93,6 +93,7 @@
     "rector-check"                   : "cd .github/ci/rector && composer check",
     "rector-outdated-check"          : "cd .github/ci/rector && composer install && composer outdated --direct --minor-only",
     "rector-composer-update"         : "cd .github/ci/rector && composer update",
+    "root-outdated-check"            : "composer install && composer outdated --direct --minor-only",
     "suggested-outdated-check"       : "cd .github/ci/suggested && composer install && composer outdated --direct --minor-only",
     "suggested-composer-update"      : "cd .github/ci/suggested && composer update"
   },
