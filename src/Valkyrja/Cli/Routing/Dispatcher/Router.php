@@ -27,7 +27,6 @@ use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Middleware;
 use Valkyrja\Cli\Middleware\Handler\CommandDispatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\CommandMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\CommandNotMatchedHandler;

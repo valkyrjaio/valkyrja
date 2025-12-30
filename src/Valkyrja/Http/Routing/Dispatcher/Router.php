@@ -24,7 +24,6 @@ use Valkyrja\Http\Message\Factory\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
-use Valkyrja\Http\Middleware;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler as RouteDispatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler as RouteMatchedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler as RouteNotMatchedHandlerContract;

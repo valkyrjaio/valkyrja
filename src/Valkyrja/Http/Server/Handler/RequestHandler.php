@@ -23,7 +23,6 @@ use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Message\Response\Response as HttpResponse;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
-use Valkyrja\Http\Middleware;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler as RequestReceivedHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler as SendingResponseHandlerContract;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler as TerminatedHandlerContract;
