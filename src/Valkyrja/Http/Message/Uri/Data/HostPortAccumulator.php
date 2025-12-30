@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Message\Factory\Data;
+namespace Valkyrja\Http\Message\Uri\Data;
 
 /**
  * Class HostPortAccumulator.
