@@ -1,6 +1,90 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.6.1...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.7.0...master)
+
+## [v25.7.0](https://github.com/valkyrjaio/valkyrja/compare/v25.6.1...v25.7.0) - 2025-12-30
+
+* [Type] Explicitly casting to an int before sprintf format to avoid warning by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/194
+* [Sms] Moving Sms classes to a new Messenger namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/196
+* [View] Moving Renderer classes to a new Renderer namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/195
+* [Session] Moving Session classes to a new Manager namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/197
+* [Orm] Moving Manager classes to a new Manager namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/198
+* [Notification] Moving Notification classes to a new Manager namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/199
+* [Mail] Moving Mail classes to a new Manager namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/200
+* [Log] Moving Logger classes to a new Logger namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/201
+* [Jwt] Moving Jwt classes to a new Manager namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/202
+* [Filesystem] Moving Filesystem classes to a new Manager namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/203
+* [Event] Moving Dispatcher classes to a new Dispatcher namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/204
+* [Crypt] Moving Crypt classes to a new Manager namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/205
+* [Event] Deprecate the Event contract and any classes that implement it by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/206
+* [Cache] Moving Cache classes to a new Manager namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/207
+* [Broadcast] Moving Broadcaster classes to a new Manager namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/208
+* [Auth] Moving Authenticator classes to a new Authenticator namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/209
+* [Attribute] Moving Attributes classes to a new Collector namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/210
+* [Event] Update tests to reflect new module namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/212
+* [Attribute] Update tests to reflect new module namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/211
+* [Api] Moving Api classes to a new Manager namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/213
+* [Mail] Update Manager namespace to Mailer by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/214
+* [Http] Moving Client classes to a new Client\Manager namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/215
+* [Http] Moving Router classes to a new Routing\Dispatcher namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/216
+* [Http] Moving RequestHandler classes to a new Server\Handler namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/217
+* [Cli] Moving Router classes to a new Routing\Dispatcher namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/218
+* [Cli] Moving InputHandler classes to a new Server\Handler namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/219
+* [Container] Moving Container classes to a new Manager namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/220
+* [Container] Deprecate support namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/221
+* [Reflection] Moving Reflection classes to a new Reflector namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/222
+* [Reflection] Move ReflectionProperty to Attribute component by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/223
+* [Filesystem] Fix an issue in testing service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/224
+* [Cli] Move Interaction Config class to Data namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/225
+* [Application] Move Config class to Data namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/226
+* [Application] Move Data class to Data namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/227
+* [Cli] Move Routing Data class to Data namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/228
+* [Application] Fix incorrect order for test assertion by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/229
+* [Application] Add missing throws tag in AppTest by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/230
+* [Container] Move Data class to Data namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/231
+* [Event] Move Data class to Data namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/232
+* [Http] Move Routing Data class to Data namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/233
+* [Application] Move Env class to Env namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/234
+* [Filesystem] Fix an issue with testing service provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/235
+* [Application] Move tests to appropriate namespace to match main component by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/236
+* [Container] Move data test to data namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/237
+* [Cli] Move routing data test to data namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/238
+* [Event] Move data test to data namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/239
+* [Http] Move routing data test to data namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/240
+* [Validation] Moving Validate classes to a new Validator namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/241
+* [Dispatch] Change component from Dispatcher to Dispatch by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/242
+* [Notification] Change Manager namespace to Notifier by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/243
+* [Exception] Move ExceptionHandler to new Handler namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/244
+* [Application] Move Application classes to new Kernel namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/245
+* [Application] Rename Component to Provider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/246
+* [Application] Update tests with Component to Provider change by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/247
+* [Type] Move the ExceptionsTest class to a new Exception namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/248
+* [Throwable] Update Exception component to Throwable by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/249
+* [Cli] Move Exiter class from Support component to Cli/Server by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/250
+* [Support] Move time related classes to new Time namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/251
+* [Support] Move Directory class to Directory namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/252
+* [CI] Update Rector to import all FQNs by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/253
+* [CI] Update PhpCodeSniffer to find all FQN usages by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/254
+* [CI] Add new NewMethodCallWithoutParenthesesRector rector rule by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/255
+* [CI] Add new CI directory for StyleCI, moving config by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/256
+* [CI] Add new ExplicitNullableParamTypeRector rector rule by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/257
+* [CI] Add PHP Mess Detector by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/258
+* [CI] Update phparkitect to v0.7.0 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/259
+* [CI] Update psalm to v6.14.3 from v6.14.2 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/260
+* [CI] Update phpcsfixer to v3.92.3 from v3.92.0 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/261
+* [CI] Update phpcsfixer to v8.26.0 from v8.25.1. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/262
+* [CI] Update phpcsfixer composer files by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/263
+* [CI] Update psalm composer files by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/264
+* [CI] Update phpunit to v12.5.4 from v12.5.3 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/265
+* [CI] Update rector to v2.3.0 from v2.2.14. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/266
+* [CI] Update suggested twig/twig to v3.22.2 from v3.22.1 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/267
+* [CI] Update churn composer files by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/268
+* [CI] Fix the composer outdated dependencies check on release by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/269
+* [CI] Fix the release composer check command by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/270
+* [CI] Fix the release composer check command by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/271
+* [CI] Fix the release composer check command by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/272
+* [Composer] Fix the composer checks by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/273
+* [CI] Fix root composer check in the release workflow by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/274
 
 ## [v25.6.1](https://github.com/valkyrjaio/valkyrja/compare/v25.6.0...v25.6.1) - 2025-12-27
 
