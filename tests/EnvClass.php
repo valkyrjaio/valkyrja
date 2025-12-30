@@ -62,9 +62,9 @@ class EnvClass extends AppEnv
      ************************************************************/
 
     /** @var non-empty-string */
-    public const string VIEW_ORKA_DIR = __DIR__ . '/storage';
+    public const string VIEW_ORKA_PATH = '/storage';
     /** @var non-empty-string */
-    public const string VIEW_PHP_DIR = __DIR__ . '/storage';
+    public const string VIEW_PHP_PATH = '/storage';
     /** @var non-empty-string */
-    public const string VIEW_TWIG_COMPILED_DIR = __DIR__ . '/storage';
+    public const string VIEW_TWIG_COMPILED_PATH = '/storage';
 }

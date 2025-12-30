@@ -22,6 +22,7 @@ use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
+use Valkyrja\Support\Directory\Directory;
 use Valkyrja\View\Factory\Contract\ResponseFactory as ResponseFactoryContract;
 use Valkyrja\View\Factory\ResponseFactory;
 use Valkyrja\View\Renderer\Contract\Renderer;
@@ -90,7 +91,7 @@ final class ServiceProvider extends Provider
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $dir */
-        $dir = $env::VIEW_PHP_DIR;
+        $dir = $env::VIEW_PHP_PATH;
         /** @var non-empty-string $fileExtension */
         $fileExtension = $env::VIEW_PHP_FILE_EXTENSION;
         /** @var array<string, string> $paths */
@@ -99,7 +100,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             PhpRenderer::class,
             new PhpRenderer(
-                dir: $dir,
+                dir: Directory::basePath(path: $dir),
                 fileExtension: $fileExtension,
                 paths: $paths
             ),
@@ -115,7 +116,7 @@ final class ServiceProvider extends Provider
         /** @var bool $debug */
         $debug = $env::APP_DEBUG_MODE;
         /** @var non-empty-string $dir */
-        $dir = $env::VIEW_ORKA_DIR;
+        $dir = $env::VIEW_ORKA_PATH;
         /** @var non-empty-string $fileExtension */
         $fileExtension = $env::VIEW_ORKA_FILE_EXTENSION;
         /** @var array<string, string> $paths */
@@ -124,7 +125,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             OrkaRenderer::class,
             new OrkaRenderer(
-                dir: $dir,
+                dir: Directory::basePath(path: $dir),
                 fileExtension: $fileExtension,
                 paths: $paths,
                 debug: $debug
@@ -160,7 +161,7 @@ final class ServiceProvider extends Provider
         /** @var class-string<TwigExtensionInterface>[] $extensions */
         $extensions = $env::VIEW_TWIG_EXTENSIONS;
         /** @var non-empty-string $compiledDir */
-        $compiledDir = $env::VIEW_TWIG_COMPILED_DIR;
+        $compiledDir = $env::VIEW_TWIG_COMPILED_PATH;
 
         // Get the twig filesystem loader
         $loader = new FilesystemLoader();
@@ -174,7 +175,7 @@ final class ServiceProvider extends Provider
         $twig = new Environment(
             $loader,
             [
-                'cache'   => $compiledDir,
+                'cache'   => Directory::basePath(path: $compiledDir),
                 'debug'   => $debug,
                 'charset' => 'utf-8',
             ]
