@@ -209,6 +209,17 @@ return static function (Config $config): void {
                       ->should(new NotResideInTheseNamespaces('*Enum\\'))
                       ->because('All non-enums should be in an appropriate namespace');
 
+    $srcRules[] = Rule::allClasses()
+                      ->that(new IsEnum())
+                      ->should(new NotHaveNameMatching('*Enum'))
+                      ->because('All enums should be appropriately named');
+
+    $srcRules[] = Rule::allClasses()
+                      ->that(new IsNotEnum())
+                      ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Type\\BuiltIn\\Enum'))
+                      ->should(new NotHaveNameMatching('*Enum'))
+                      ->because('All non-enums should not be named with Enum');
+
     $testRules[] = Rule::allClasses()
                        ->that(new ResideInOneOfTheseNamespaces('*Classes\\'))
                        ->andThat(new NotHaveNameMatching('*Enum'))
