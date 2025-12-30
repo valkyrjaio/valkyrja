@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Manager\Trait;
 
-use Valkyrja\Container\Provider\Contract\Provides;
+use Valkyrja\Container\Provider\Contract\Provider as ProviderContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 
 use function is_callable;
 
 /**
- * Trait AllowsProviders.
+ * Trait ProvidersAwareTrait.
  *
  * @author Melech Mizrachi
  */
@@ -84,7 +84,7 @@ trait ProvidersAwareTrait
 
         // Helpers::validateClass($provider, Provides::class);
 
-        /** @var class-string<Provides> $providerClass */
+        /** @var class-string<ProviderContract> $providerClass */
         $providerClass = $provider;
 
         // If the service provider is deferred
@@ -188,7 +188,7 @@ trait ProvidersAwareTrait
      */
     protected function registerDeferred(string $provider, string ...$provides): void
     {
-        /** @var class-string<Provides> $providerClass */
+        /** @var class-string<ProviderContract> $providerClass */
         $providerClass   = $provider;
         $publishCallback = $providerClass::publishers();
 
