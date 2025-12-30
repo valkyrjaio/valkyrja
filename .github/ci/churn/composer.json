@@ -3,7 +3,7 @@
     "php" : ">=8.4"
   },
   "require-dev"       : {
-    "bmitch/churn-php" : "^1.7.1"
+    "bmitch/churn-php" : "^1.7.2"
   },
   "scripts"           : {
     "check" : "vendor/bin/churn run --configuration=churn.yml"
