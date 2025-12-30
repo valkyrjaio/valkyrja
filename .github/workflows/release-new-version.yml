@@ -113,7 +113,7 @@ jobs:
       matrix:
         paths:
           - name: Root
-            path: outdated --direct
+            command: root-outdated-check
           - name: Churn
             command: churn-outdated-check
           - name: PHPArkitect
