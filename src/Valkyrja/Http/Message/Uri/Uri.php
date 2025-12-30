@@ -20,6 +20,7 @@ use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
+use Valkyrja\Http\Message\Uri\Trait\UriHelpers;
 
 use function parse_url;
 use function str_starts_with;

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Entity;
 
 use Valkyrja\Orm\Entity\Contract\DatedEntity as Contract;
+use Valkyrja\Orm\Entity\Trait\DatedFields;
 
 /**
  * Class DatedEntity.

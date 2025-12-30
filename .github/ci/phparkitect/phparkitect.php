@@ -160,6 +160,11 @@ return static function (Config $config): void {
                       ->because('All interfaces are contracts and should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
+                      ->that(new IsTrait())
+                      ->should(new ResideInOneOfTheseNamespaces('*Trait\\'))
+                      ->because('All traits should be in an appropriate namespace');
+
+    $srcRules[] = Rule::allClasses()
                       ->that(new IsEnum())
                       ->should(new ResideInOneOfTheseNamespaces('*Enum\\'))
                       ->because('All enums should be in an appropriate namespace');

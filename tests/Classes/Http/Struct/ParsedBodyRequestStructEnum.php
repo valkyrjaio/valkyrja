@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Classes\Http\Struct;
 use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Struct\Request\Contract\RequestStruct;
-use Valkyrja\Http\Struct\Request\ParsedBodyRequestStruct;
+use Valkyrja\Http\Struct\Request\Trait\ParsedBodyRequestStruct;
 use Valkyrja\Validation\Rule\Is\IsNumeric;
 use Valkyrja\Validation\Rule\Is\IsString;
 use Valkyrja\Validation\Rule\Is\NotEmpty;

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Model;
 
 use Valkyrja\Type\Model\Contract\ExposableModel as Contract;
-use Valkyrja\Type\Model\Exposable;
 use Valkyrja\Type\Model\Model as AbstractModel;
+use Valkyrja\Type\Model\Trait\Exposable;
 
 /**
  * Model class to use to test Exposable trait directly.

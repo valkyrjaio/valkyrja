@@ -16,13 +16,13 @@ namespace Valkyrja\Http\Message\Request;
 use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Message\Message;
 use Valkyrja\Http\Message\Request\Contract\Request as Contract;
 use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidRequestTargetException;
 use Valkyrja\Http\Message\Stream\Contract\Stream;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream as HttpStream;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
+use Valkyrja\Http\Message\Trait\Message;
 use Valkyrja\Http\Message\Uri\Contract\Uri;
 use Valkyrja\Http\Message\Uri\Uri as HttpUri;
 

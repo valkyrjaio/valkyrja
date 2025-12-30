@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Model;
 
 use Valkyrja\Type\Model\Contract\IndexedModel as Contract;
+use Valkyrja\Type\Model\Trait\Indexable;
 
 /**
  * Class IndexedModel.

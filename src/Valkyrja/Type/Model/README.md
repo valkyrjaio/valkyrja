@@ -342,7 +342,7 @@ need to use the `Valkyrja\Model\Models\UnpackingFromArrayModelTrait` trait.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Model;use Valkyrja\Type\Model\UnpackForNewInstance;
+use Valkyrja\Type\Model\Model;use Valkyrja\Type\Model\Trait\UnpackForNewInstance;
 
 class BasicModel extends Model
 {
@@ -607,7 +607,7 @@ the `Valkyrja\Model\Models\CastableModelTrait` trait.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Castable;
+use Valkyrja\Type\Model\Trait\Castable;
 use Valkyrja\Type\Model\Model;
 
 class BasicModel extends Model
@@ -637,7 +637,7 @@ method instead.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Castable;
+use Valkyrja\Type\Model\Trait\Castable;
 use Valkyrja\Type\Model\Model;
 
 class BasicModel extends Model
@@ -817,7 +817,7 @@ If you chose to use the `Valkyrja\Model\Models\CastableModelTrait` trait you mus
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Castable;
+use Valkyrja\Type\Model\Trait\Castable;
 use Valkyrja\Type\Model\Model;
 
 class BasicModel extends Model
@@ -937,7 +937,7 @@ in other modules.
 namespace App\Models;
 
 use Valkyrja\Type\Model\Contract\IndexedModel;
-use Valkyrja\Type\Model\Indexable;
+use Valkyrja\Type\Model\Trait\Indexable;
 use Valkyrja\Type\Model\Model;
 
 class BasicModel extends Model implements IndexedModel
