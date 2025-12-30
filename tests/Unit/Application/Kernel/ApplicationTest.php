@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Application\Kernel;
 
-use GuzzleHttp\Client as Guzzle;
 use Valkyrja\Application\Cli\Command\CacheCommand;
 use Valkyrja\Application\Cli\Command\ClearCacheCommand;
 use Valkyrja\Application\Data\Config;
@@ -50,10 +49,6 @@ use Valkyrja\Event\Collection\Contract\Collection as EventCollection;
 use Valkyrja\Event\Collector\Contract\Collector as EventCollector;
 use Valkyrja\Event\Data\Data as EventData;
 use Valkyrja\Event\Dispatcher\Contract\Dispatcher as EventDispatcher;
-use Valkyrja\Http\Client\Manager\Contract\Client;
-use Valkyrja\Http\Client\Manager\GuzzleClient;
-use Valkyrja\Http\Client\Manager\LogClient;
-use Valkyrja\Http\Client\Manager\NullClient;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Middleware\Cache\CacheResponseMiddleware;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler;
@@ -284,11 +279,6 @@ class ApplicationTest extends TestCase
         self::assertTrue($container->has(EventCollector::class));
         self::assertTrue($container->has(EventDispatcher::class));
         self::assertTrue($container->has(EventCollection::class));
-        self::assertTrue($container->has(Client::class));
-        self::assertTrue($container->has(GuzzleClient::class));
-        self::assertTrue($container->has(Guzzle::class));
-        self::assertTrue($container->has(LogClient::class));
-        self::assertTrue($container->has(NullClient::class));
         self::assertTrue($container->has(ResponseFactory::class));
         self::assertTrue($container->has(RequestReceivedHandler::class));
         self::assertTrue($container->has(HttpThrowableCaughtHandler::class));
