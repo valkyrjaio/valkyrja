@@ -26,7 +26,7 @@ use function substr;
  *
  * @author Melech Mizrachi
  */
-abstract class UuidV8 extends Uuid
+class UuidV8 extends Uuid
 {
     /** @var string */
     public const string REGEX = self::REGEX_PART . '{8}-'

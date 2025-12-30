@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Type\BuiltIn;
 
 use Override;
+use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\BuiltIn\Contract\FloatT as Contract;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Type\Type;
 
 use function is_array;
 use function is_bool;

@@ -16,6 +16,7 @@ use Arkitect\CLI\Config;
 use Arkitect\Expression\ForClasses\Extend;
 use Arkitect\Expression\ForClasses\HaveAttribute;
 use Arkitect\Expression\ForClasses\HaveNameMatching;
+use Arkitect\Expression\ForClasses\IsAbstract;
 use Arkitect\Expression\ForClasses\IsEnum;
 use Arkitect\Expression\ForClasses\IsFinal;
 use Arkitect\Expression\ForClasses\IsInterface;
@@ -30,9 +31,9 @@ use Arkitect\Expression\ForClasses\ResideInOneOfTheseNamespaces;
 use Arkitect\Rules\Rule;
 use Valkyrja\Application\Provider\Provider as ComponentProvider;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Orm\Entity\Entity;
-use Valkyrja\Type\Model\Model;
-use Valkyrja\Type\Type;
+use Valkyrja\Orm\Entity\Abstract\Entity;
+use Valkyrja\Type\Abstract\Type;
+use Valkyrja\Type\Model\Abstract\Model;
 
 return static function (Config $config): void {
     $srcClassSet  = ClassSet::fromDir(__DIR__ . '/../../../src');
@@ -160,14 +161,43 @@ return static function (Config $config): void {
                       ->because('All interfaces are contracts and should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
+                      ->that(new IsNotInterface())
+                      ->should(new NotResideInTheseNamespaces('*Contract\\'))
+                      ->because('All non-interfaces are contracts and should be in an appropriate namespace');
+
+    $srcRules[] = Rule::allClasses()
                       ->that(new IsTrait())
                       ->should(new ResideInOneOfTheseNamespaces('*Trait\\'))
                       ->because('All traits should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
+                      ->that(new IsNotTrait())
+                      ->should(new NotResideInTheseNamespaces('*Trait\\'))
+                      ->because('All non-traits should be in an appropriate namespace');
+
+    $srcRules[] = Rule::allClasses()
+                      ->that(new IsAbstract())
+                      ->andThat(new NotResideInTheseNamespaces('*Factory'))
+                      ->andThat(new NotResideInTheseNamespaces('*Provider'))
+                      ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Cli\\Routing\\Controller'))
+                      ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Http\\Routing\\Controller'))
+                      ->should(new ResideInOneOfTheseNamespaces('*Abstract\\'))
+                      ->because('All abstract classes should be in an appropriate namespace');
+
+    $srcRules[] = Rule::allClasses()
+                      ->that(new IsNotAbstract())
+                      ->should(new NotResideInTheseNamespaces('*Abstract\\'))
+                      ->because('All non-abstract classes should be in an appropriate namespace');
+
+    $srcRules[] = Rule::allClasses()
                       ->that(new IsEnum())
                       ->should(new ResideInOneOfTheseNamespaces('*Enum\\'))
                       ->because('All enums should be in an appropriate namespace');
+
+    $srcRules[] = Rule::allClasses()
+                      ->that(new IsNotEnum())
+                      ->should(new NotResideInTheseNamespaces('*Enum\\'))
+                      ->because('All non-enums should be in an appropriate namespace');
 
     $testRules[] = Rule::allClasses()
                        ->that(new ResideInOneOfTheseNamespaces('*Classes\\'))

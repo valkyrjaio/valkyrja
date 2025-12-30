@@ -24,7 +24,7 @@ use Valkyrja\Sms\Data\Contract\Message as SmsMessage;
  *
  * @author Melech Mizrachi
  */
-abstract class Notify implements Contract
+class Notify implements Contract
 {
     /**
      * The broadcast adapter to use for this notification.

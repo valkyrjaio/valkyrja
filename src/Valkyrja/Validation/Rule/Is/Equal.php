@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Rule\Is;
 
 use Override;
-use Valkyrja\Validation\Rule\Rule;
+use Valkyrja\Validation\Rule\Abstract\Rule;
 
 /**
  * Class Equal.

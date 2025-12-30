@@ -21,7 +21,7 @@ use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Data\OriginalArrayCast;
 use Valkyrja\Type\Data\OriginalCast;
 use Valkyrja\Type\Enum\CastType;
-use Valkyrja\Type\Model\CastableModel as AbstractModel;
+use Valkyrja\Type\Model\Abstract\CastableModel as AbstractModel;
 
 /**
  * Model class to use to test Castable model.

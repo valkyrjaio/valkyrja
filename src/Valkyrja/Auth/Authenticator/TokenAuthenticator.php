@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Authenticator;
 
+use Valkyrja\Auth\Authenticator\Abstract\Authenticator;
 use Valkyrja\Auth\Constant\HeaderValue;
 use Valkyrja\Auth\Data\AuthenticatedUsers as AuthenticatedUsersData;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsers;
@@ -30,9 +31,9 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequest;
  *
  * @template U of User
  *
- * @extends AbstractAuthenticator<U>
+ * @extends Authenticator<U>
  */
-class TokenAuthenticator extends AbstractAuthenticator
+class TokenAuthenticator extends Authenticator
 {
     /**
      * @param Store<U>        $store  The store

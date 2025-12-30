@@ -15,7 +15,7 @@ namespace Valkyrja\Validation\Rule\Int;
 
 use Override;
 use Valkyrja\Type\BuiltIn\Support\Integer;
-use Valkyrja\Validation\Rule\Rule;
+use Valkyrja\Validation\Rule\Abstract\Rule;
 
 use function is_int;
 

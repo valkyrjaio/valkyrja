@@ -17,7 +17,7 @@ use Closure;
 use Override;
 use RuntimeException;
 use Valkyrja\Type\Data\Cast;
-use Valkyrja\Type\Model\CastableModel as AbstractModel;
+use Valkyrja\Type\Model\Abstract\CastableModel as AbstractModel;
 
 use function json_encode;
 

@@ -45,7 +45,7 @@ when using `private` properties.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Abstract\Model;
 
 class BasicModel extends Model
 {
@@ -91,7 +91,7 @@ the `Valkyrja\Model\Models\ExposedProtectedModelTrait` trait.
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Models\ExposedProtectedModelTrait;use Valkyrja\Type\Model\Model;
+use Valkyrja\Model\Models\ExposedProtectedModelTrait;use Valkyrja\Type\Model\Abstract\Model;
 
 class BasicModel extends Model
 {
@@ -121,7 +121,7 @@ If you would like to treat all properties (regardless of visibility) as exposabl
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Models\FullyExposed;use Valkyrja\Type\Model\Model;
+use Valkyrja\Model\Models\FullyExposed;use Valkyrja\Type\Model\Abstract\Model;
 
 class BasicModel extends Model
 {
@@ -152,7 +152,7 @@ the property name in StudlyCase.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Abstract\Model;
 
 class BasicModel extends Model
 {
@@ -192,7 +192,7 @@ to `protected` so they are not publicly accessible.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Abstract\Model;
 
 class BasicModel extends Model
 {
@@ -220,7 +220,7 @@ properties during creation.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Abstract\Model;
 
 class BasicModelPromotion extends Model
 {
@@ -242,7 +242,7 @@ approach that uses the traditional property definitions and a constructor.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Abstract\Model;
 
 class BasicModelConstructor extends Model
 {
@@ -342,7 +342,7 @@ need to use the `Valkyrja\Model\Models\UnpackingFromArrayModelTrait` trait.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Model;use Valkyrja\Type\Model\Trait\UnpackForNewInstance;
+use Valkyrja\Type\Model\Abstract\Model;use Valkyrja\Type\Model\Trait\UnpackForNewInstance;
 
 class BasicModel extends Model
 {
@@ -441,7 +441,7 @@ By default `BackedEnum` is the only supported enum type. If you require support 
 ```php
 namespace App\Models;
 
-use Valkyrja\Model\Models\EnhancedEnumSupport;use Valkyrja\Type\Model\Model;
+use Valkyrja\Model\Models\EnhancedEnumSupport;use Valkyrja\Type\Model\Abstract\Model;
 
 class BasicModel extends Model
 {
@@ -529,7 +529,7 @@ You may also use `asExposedArray` if you predefine exposable properties in your 
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Abstract\Model;
 
 class BasicModel extends Model
 {
@@ -583,7 +583,7 @@ feature off by setting the `setOriginalPropertiesFromArray` static property to `
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Abstract\Model;
 
 class BasicModel extends Model
 {
@@ -608,7 +608,7 @@ the `Valkyrja\Model\Models\CastableModelTrait` trait.
 namespace App\Models;
 
 use Valkyrja\Type\Model\Trait\Castable;
-use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Abstract\Model;
 
 class BasicModel extends Model
 {
@@ -623,7 +623,7 @@ Or extend off of `Valkyrja\Model\Models\CastableModel`.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\CastableModel;
+use Valkyrja\Type\Model\Abstract\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -638,7 +638,7 @@ method instead.
 namespace App\Models;
 
 use Valkyrja\Type\Model\Trait\Castable;
-use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Abstract\Model;
 
 class BasicModel extends Model
 {
@@ -666,7 +666,7 @@ the value to the corresponding `CastType` value you want to cast to.
 namespace App\Models;
 
 use Valkyrja\Type\Enum\CastType;
-use Valkyrja\Type\Model\CastableModel;
+use Valkyrja\Type\Model\Abstract\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -698,7 +698,7 @@ incoming value should be overridden.
 namespace App\Models;
 
 use Valkyrja\Type\Enum\CastType;
-use Valkyrja\Type\Model\CastableModel;
+use Valkyrja\Type\Model\Abstract\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -725,7 +725,7 @@ back to a simple `(object)` cast.
 namespace App\Models;
 
 use Valkyrja\Type\Enum\CastType;
-use Valkyrja\Type\Model\CastableModel;
+use Valkyrja\Type\Model\Abstract\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -748,7 +748,7 @@ back to a simple `(array)` cast.
 namespace App\Models;
 
 use Valkyrja\Type\Enum\CastType;
-use Valkyrja\Type\Model\CastableModel;
+use Valkyrja\Type\Model\Abstract\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -771,7 +771,7 @@ back to a simple `(object)` cast.
 namespace App\Models;
 
 use Valkyrja\Type\Enum\CastType;
-use Valkyrja\Type\Model\CastableModel;
+use Valkyrja\Type\Model\Abstract\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -794,7 +794,7 @@ value is an array of string class names.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\CastableModel;
+use Valkyrja\Type\Model\Abstract\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -818,7 +818,7 @@ If you chose to use the `Valkyrja\Model\Models\CastableModelTrait` trait you mus
 namespace App\Models;
 
 use Valkyrja\Type\Model\Trait\Castable;
-use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Abstract\Model;
 
 class BasicModel extends Model
 {
@@ -850,7 +850,7 @@ value in the array via the `fromArray` static method.
 namespace App\Models;
 
 use Valkyrja\Type\Enum\CastType;
-use Valkyrja\Type\Model\CastableModel;
+use Valkyrja\Type\Model\Abstract\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -878,7 +878,7 @@ name. If the second value is an array then an array of enums will be returned.
 namespace App\Models;
 
 use Valkyrja\Type\Enum\CastType;
-use Valkyrja\Type\Model\CastableModel;
+use Valkyrja\Type\Model\Abstract\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -901,7 +901,7 @@ By default `BackedEnum` is the only supported enum type. If you require support 
 namespace App\Models;
 
 use Valkyrja\Model\Models\EnhancedCastableEnumSupport;
-use Valkyrja\Type\Model\CastableModel;
+use Valkyrja\Type\Model\Abstract\CastableModel;
 
 class BasicModel extends CastableModel
 {
@@ -938,7 +938,7 @@ namespace App\Models;
 
 use Valkyrja\Type\Model\Contract\IndexedModel;
 use Valkyrja\Type\Model\Trait\Indexable;
-use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Abstract\Model;
 
 class BasicModel extends Model implements IndexedModel
 {
@@ -953,7 +953,7 @@ Or extend off of `Valkyrja\Model\Models\IndexedModel` and the interface will be 
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\IndexedModel;
+use Valkyrja\Type\Model\Abstract\IndexedModel;
 
 class BasicModel extends IndexedModel
 {

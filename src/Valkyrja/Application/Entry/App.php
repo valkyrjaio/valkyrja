@@ -35,11 +35,11 @@ use function define;
 use function defined;
 
 /**
- * Abstract Class App.
+ * Class App.
  *
  * @author Melech Mizrachi
  */
-abstract class App
+class App
 {
     /**
      * Start the application.

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Type;
 
-use Valkyrja\Type\Type as AbstractType;
+use Valkyrja\Type\Abstract\Type as AbstractType;
 
 /**
  * Type class to use to test abstract type.

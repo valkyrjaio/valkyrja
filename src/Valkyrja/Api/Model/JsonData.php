@@ -15,7 +15,7 @@ namespace Valkyrja\Api\Model;
 
 use Override;
 use Valkyrja\Api\Model\Contract\JsonData as Contract;
-use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Abstract\Model;
 
 /**
  * Class JsonData.

@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Message\Uri\Type;
 
 use Override;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Type\Type;
+use Valkyrja\Type\Abstract\Type;
 
 use function gettype;
 use function is_int;

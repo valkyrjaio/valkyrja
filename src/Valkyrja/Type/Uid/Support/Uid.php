@@ -16,11 +16,11 @@ namespace Valkyrja\Type\Uid\Support;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
 
 /**
- * Abstract class Uid.
+ * Class Uid.
  *
  * @author Melech Mizrachi
  */
-abstract class Uid
+class Uid
 {
     /** @var string */
     public const string REGEX = '\w+';

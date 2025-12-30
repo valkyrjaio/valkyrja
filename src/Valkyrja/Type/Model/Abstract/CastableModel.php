@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Orm\Entity;
+namespace Valkyrja\Type\Model\Abstract;
 
-use Valkyrja\Orm\Entity\Contract\DatedEntity as Contract;
-use Valkyrja\Orm\Entity\Trait\DatedFields;
+use Valkyrja\Type\Model\Contract\CastableModel as Contract;
+use Valkyrja\Type\Model\Trait\Castable;
 
 /**
- * Class DatedEntity.
+ * Class CastableModel.
  *
  * @author Melech Mizrachi
  */
-abstract class DatedEntity extends Entity implements Contract
+abstract class CastableModel extends Model implements Contract
 {
-    use DatedFields;
+    use Castable;
 }
