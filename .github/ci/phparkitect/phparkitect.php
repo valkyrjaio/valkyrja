@@ -90,6 +90,11 @@ return static function (Config $config): void {
                       ->because('All factories should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
+                      ->that(new ResideInOneOfTheseNamespaces('*Factory\\'))
+                      ->should(new HaveNameMatching('*Factory'))
+                      ->because('All classes in a Factory namespace should be named appropriately');
+
+    $srcRules[] = Rule::allClasses()
                       ->that(new HaveNameMatching('*Command'))
                       ->andThat(new NotResideInTheseNamespaces('*Cli\\Routing\\Attribute\\'))
                       ->andThat(new NotResideInTheseNamespaces('*Cli\\Routing\\Data\\'))
