@@ -185,6 +185,16 @@ return static function (Config $config): void {
                       ->because('All abstract classes should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
+                      ->that(new IsAbstract())
+                      ->should(new NotHaveNameMatching('Abstract*'))
+                      ->because('All abstract classes should not be named with abstract naming convention');
+
+    $srcRules[] = Rule::allClasses()
+                      ->that(new IsNotAbstract())
+                      ->should(new NotHaveNameMatching('Abstract*'))
+                      ->because('All classes should not be named with abstract naming convention');
+
+    $srcRules[] = Rule::allClasses()
                       ->that(new IsNotAbstract())
                       ->should(new NotResideInTheseNamespaces('*Abstract\\'))
                       ->because('All non-abstract classes should be in an appropriate namespace');
