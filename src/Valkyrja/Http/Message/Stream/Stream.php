@@ -21,6 +21,7 @@ use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidLengthException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
+use Valkyrja\Http\Message\Stream\Trait\StreamHelpers;
 
 use function fclose;
 use function feof;

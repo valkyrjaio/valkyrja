@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Support;
 
-use Valkyrja\Container\Manager\ProvidersAwareTrait;
+use Valkyrja\Container\Manager\Trait\ProvidersAwareTrait;
 
 use function array_key_exists;
 

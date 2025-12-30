@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Container\Contract\Service;
 use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Manager\Contract\Container as Contract;
+use Valkyrja\Container\Manager\Trait\ProvidersAwareTrait;
 use Valkyrja\Container\Throwable\Exception\InvalidArgumentException;
 
 use function assert;

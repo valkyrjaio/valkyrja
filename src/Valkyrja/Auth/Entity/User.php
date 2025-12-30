@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Entity;
 
 use Valkyrja\Auth\Entity\Contract\User as Contract;
+use Valkyrja\Auth\Entity\Trait\UserFields;
+use Valkyrja\Auth\Entity\Trait\UserTrait;
 use Valkyrja\Orm\Entity\Entity;
 
 /**

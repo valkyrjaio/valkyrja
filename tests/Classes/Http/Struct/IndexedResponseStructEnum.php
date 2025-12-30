@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Http\Struct;
 
 use Valkyrja\Http\Struct\Response\Contract\ResponseStruct as Contract;
-use Valkyrja\Http\Struct\Response\ResponseStruct;
+use Valkyrja\Http\Struct\Response\Trait\ResponseStruct;
 
 /**
  * Struct TestResponseStruct.

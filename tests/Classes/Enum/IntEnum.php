@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Enum;
 
 use Valkyrja\Type\BuiltIn\Enum\Contract\Enum as Contract;
-use Valkyrja\Type\BuiltIn\Enum\Enum;
+use Valkyrja\Type\BuiltIn\Enum\Trait\Enum;
 
 /**
  * Model class to use to test int BackedEnum.

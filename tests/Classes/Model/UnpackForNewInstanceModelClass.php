@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Classes\Model;
 
 use Valkyrja\Tests\Classes\Model\Trait\PrivatePropertyTrait;
 use Valkyrja\Type\Model\Model as AbstractModel;
-use Valkyrja\Type\Model\UnpackForNewInstance;
+use Valkyrja\Type\Model\Trait\UnpackForNewInstance;
 
 /**
  * Model class to use to test UnpackForNewInstance model.

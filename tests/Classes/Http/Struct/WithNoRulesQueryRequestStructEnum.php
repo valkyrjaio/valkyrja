@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Http\Struct;
 
 use Valkyrja\Http\Struct\Request\Contract\RequestStruct;
-use Valkyrja\Http\Struct\Request\QueryRequestStruct;
+use Valkyrja\Http\Struct\Request\Trait\QueryRequestStruct;
 
 /**
  * Struct TestWithNoRulesQueryRequestStruct.

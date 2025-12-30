@@ -15,8 +15,8 @@ namespace Valkyrja\Tests\Classes\Model;
 
 use Valkyrja\Tests\Classes\Model\Trait\PrivatePropertyTrait;
 use Valkyrja\Type\Model\Contract\ExposableModel as Contract;
-use Valkyrja\Type\Model\Exposable;
 use Valkyrja\Type\Model\Model as AbstractModel;
+use Valkyrja\Type\Model\Trait\Exposable;
 
 /**
  * Model class to use to test Exposable model.

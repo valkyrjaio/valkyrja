@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Http\Message\Request\Contract\JsonServerRequest;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Struct\Request\Contract\RequestStruct;
-use Valkyrja\Http\Struct\Request\JsonRequestStruct;
+use Valkyrja\Http\Struct\Request\Trait\JsonRequestStruct;
 use Valkyrja\Validation\Rule\Is\IsNumeric;
 use Valkyrja\Validation\Rule\Is\IsString;
 use Valkyrja\Validation\Rule\Is\NotEmpty;

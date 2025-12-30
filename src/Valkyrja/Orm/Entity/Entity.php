@@ -22,9 +22,9 @@ use Valkyrja\Throwable\Exception\RuntimeException;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\Contract\Type;
 use Valkyrja\Type\Data\Cast;
-use Valkyrja\Type\Model\Castable;
 use Valkyrja\Type\Model\Model;
-use Valkyrja\Type\Model\ProtectedExposable;
+use Valkyrja\Type\Model\Trait\Castable;
+use Valkyrja\Type\Model\Trait\ProtectedExposable;
 
 use function array_walk;
 use function gettype;

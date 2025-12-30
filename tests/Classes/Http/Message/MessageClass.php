@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Http\Message;
 
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
-use Valkyrja\Http\Message\Message;
 use Valkyrja\Http\Message\Stream\Contract\Stream;
 use Valkyrja\Http\Message\Stream\Stream as HttpStream;
+use Valkyrja\Http\Message\Trait\Message;
 
 /**
  * Class MessageClass.

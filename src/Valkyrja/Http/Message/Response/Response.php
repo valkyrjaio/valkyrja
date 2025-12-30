@@ -18,11 +18,11 @@ use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Header\Value\Contract\Cookie;
-use Valkyrja\Http\Message\Message;
 use Valkyrja\Http\Message\Response\Contract\Response as Contract;
 use Valkyrja\Http\Message\Stream\Contract\Stream;
 use Valkyrja\Http\Message\Stream\Stream as HttpStream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
+use Valkyrja\Http\Message\Trait\Message;
 
 use function sprintf;
 
