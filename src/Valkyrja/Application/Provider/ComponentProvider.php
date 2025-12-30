@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Provider;
 
 use Override;
-use Valkyrja\Application\Cli;
+use Valkyrja\Application\Cli\Command\CacheCommand;
+use Valkyrja\Application\Cli\Command\ClearCacheCommand;
 use Valkyrja\Application\Provider\Provider as AppComponent;
 
 /**
@@ -31,8 +32,8 @@ class ComponentProvider extends AppComponent
     public static function getCliControllers(): array
     {
         return [
-            Cli\Command\CacheCommand::class,
-            Cli\Command\ClearCacheCommand::class,
+            CacheCommand::class,
+            ClearCacheCommand::class,
         ];
     }
 }

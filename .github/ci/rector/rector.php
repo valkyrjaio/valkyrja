@@ -15,18 +15,21 @@ use Rector\Config\RectorConfig;
 use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector;
 
-return RectorConfig::configure()
-                   ->withAutoloadPaths([
-                       __DIR__ . '/../../../vendor/autoload.php',
-                   ])
-                   ->withPaths([
-                       __DIR__ . '/../../../functions',
-                       __DIR__ . '/../../../src',
-                       __DIR__ . '/../../../tests',
-                   ])
+return RectorConfig
+    ::configure()
+    ->withParallel()
+    ->withImportNames(removeUnusedImports: true)
+    ->withAutoloadPaths([
+        __DIR__ . '/../../../vendor/autoload.php',
+    ])
+    ->withPaths([
+        __DIR__ . '/../../../functions',
+        __DIR__ . '/../../../src',
+        __DIR__ . '/../../../tests',
+    ])
     // uncomment to reach your current PHP version
     // ->withPhpSets()
-                   ->withRules([
+    ->withRules([
         AddVoidReturnTypeWhereNoReturnRector::class,
         AddOverrideAttributeToOverriddenMethodsRector::class,
     ]);

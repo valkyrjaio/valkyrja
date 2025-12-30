@@ -14,6 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Provider;
 
 use Valkyrja\Cli\Middleware\Handler;
+use Valkyrja\Cli\Middleware\Handler\CommandDispatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\CommandMatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\CommandNotMatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
+use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
+use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Middleware\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
@@ -32,7 +38,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         ServiceProvider::publishInputReceivedHandler($this->container);
 
         self::assertInstanceOf(
-            Handler\InputReceivedHandler::class,
+            InputReceivedHandler::class,
             $this->container->getSingleton(Handler\Contract\InputReceivedHandler::class)
         );
     }
@@ -42,7 +48,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         ServiceProvider::publishCommandDispatchedHandler($this->container);
 
         self::assertInstanceOf(
-            Handler\CommandDispatchedHandler::class,
+            CommandDispatchedHandler::class,
             $this->container->getSingleton(Handler\Contract\CommandDispatchedHandler::class)
         );
     }
@@ -52,7 +58,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         ServiceProvider::publishThrowableCaughtHandler($this->container);
 
         self::assertInstanceOf(
-            Handler\ThrowableCaughtHandler::class,
+            ThrowableCaughtHandler::class,
             $this->container->getSingleton(Handler\Contract\ThrowableCaughtHandler::class)
         );
     }
@@ -62,7 +68,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         ServiceProvider::publishCommandMatchedHandler($this->container);
 
         self::assertInstanceOf(
-            Handler\CommandMatchedHandler::class,
+            CommandMatchedHandler::class,
             $this->container->getSingleton(Handler\Contract\CommandMatchedHandler::class)
         );
     }
@@ -72,7 +78,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         ServiceProvider::publishCommandNotMatchedHandler($this->container);
 
         self::assertInstanceOf(
-            Handler\CommandNotMatchedHandler::class,
+            CommandNotMatchedHandler::class,
             $this->container->getSingleton(Handler\Contract\CommandNotMatchedHandler::class)
         );
     }
@@ -82,7 +88,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         ServiceProvider::publishExitedHandler($this->container);
 
         self::assertInstanceOf(
-            Handler\ExitedHandler::class,
+            ExitedHandler::class,
             $this->container->getSingleton(Handler\Contract\ExitedHandler::class)
         );
     }
