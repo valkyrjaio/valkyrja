@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Factory;
 
 use Psr\Http\Message\UriInterface;
-use Valkyrja\Http\Message\Uri\Data\HostPortAccumulator;
 use Valkyrja\Http\Message\Uri\Contract\Uri;
+use Valkyrja\Http\Message\Uri\Data\HostPortAccumulator;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
