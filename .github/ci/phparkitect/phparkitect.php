@@ -211,13 +211,14 @@ return static function (Config $config): void {
 
     $srcRules[] = Rule::allClasses()
                       ->that(new IsEnum())
-                      ->should(new NotHaveNameMatching('*Enum'))
+                      ->should(new NotHaveNameMatching('*Enum*'))
                       ->because('All enums should be appropriately named');
 
     $srcRules[] = Rule::allClasses()
                       ->that(new IsNotEnum())
                       ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Type\\BuiltIn\\Enum'))
-                      ->should(new NotHaveNameMatching('*Enum'))
+                      ->andThat(new NotHaveNameMatching('EnhancedEnumSupport'))
+                      ->should(new NotHaveNameMatching('*Enum*'))
                       ->because('All non-enums should not be named with Enum');
 
     $testRules[] = Rule::allClasses()
