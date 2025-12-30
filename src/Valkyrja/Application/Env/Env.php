@@ -109,7 +109,10 @@ class Env
     public const array APP_CORE_COMPONENTS = [
         ComponentClass::CLI,
         ComponentClass::EVENT,
-        ComponentClass::HTTP,
+        ComponentClass::HTTP_MESSAGE,
+        ComponentClass::HTTP_MIDDLEWARE,
+        ComponentClass::HTTP_ROUTING,
+        ComponentClass::HTTP_SERVER,
     ];
     /** @var class-string<Provider>[] */
     public const array APP_COMPONENTS = [
@@ -119,6 +122,7 @@ class Env
         ComponentClass::CACHE,
         ComponentClass::CRYPT,
         ComponentClass::FILESYSTEM,
+        ComponentClass::HTTP_CLIENT,
         ComponentClass::JWT,
         ComponentClass::LOG,
         ComponentClass::MAIL,

@@ -38,7 +38,11 @@ class ComponentClassTest extends TestCase
         self::assertSame(\Valkyrja\Dispatch\Provider\ComponentProvider::class, ComponentClass::DISPATCHER);
         self::assertSame(\Valkyrja\Event\Provider\ComponentProvider::class, ComponentClass::EVENT);
         self::assertSame(\Valkyrja\Filesystem\Provider\ComponentProvider::class, ComponentClass::FILESYSTEM);
-        self::assertSame(\Valkyrja\Http\Provider\ComponentProvider::class, ComponentClass::HTTP);
+        self::assertSame(\Valkyrja\Http\Client\Provider\ComponentProvider::class, ComponentClass::HTTP_CLIENT);
+        self::assertSame(\Valkyrja\Http\Message\Provider\ComponentProvider::class, ComponentClass::HTTP_MESSAGE);
+        self::assertSame(\Valkyrja\Http\Middleware\Provider\ComponentProvider::class, ComponentClass::HTTP_MIDDLEWARE);
+        self::assertSame(\Valkyrja\Http\Routing\Provider\ComponentProvider::class, ComponentClass::HTTP_ROUTING);
+        self::assertSame(\Valkyrja\Http\Server\Provider\ComponentProvider::class, ComponentClass::HTTP_SERVER);
         self::assertSame(\Valkyrja\Jwt\Provider\ComponentProvider::class, ComponentClass::JWT);
         self::assertSame(\Valkyrja\Log\Provider\ComponentProvider::class, ComponentClass::LOG);
         self::assertSame(\Valkyrja\Mail\Provider\ComponentProvider::class, ComponentClass::MAIL);
