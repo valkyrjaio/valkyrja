@@ -1,6 +1,10 @@
 preset: recommended
 
+version: 8.4
+
 risky: true
+
+use-tabs: false
 
 enabled:
   - align_equals
@@ -27,3 +31,8 @@ disabled:
   - no_blank_lines_between_imports
   - alpha_ordered_imports
   - switch_case_space
+  - normalize_nullable_type_declaration
+
+finder:
+  exclude:
+    - "tests"
