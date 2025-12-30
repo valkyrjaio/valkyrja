@@ -1,0 +1,13 @@
+{
+  "require"           : {
+    "php" : ">=8.4"
+  },
+  "require-dev"       : {
+    "phpmd/phpmd" : "^2.15.0"
+  },
+  "scripts"           : {
+    "check" : "vendor/bin/phpmd ../../../src xml rulesets.xml"
+  },
+  "minimum-stability" : "dev",
+  "prefer-stable"     : true
+}
