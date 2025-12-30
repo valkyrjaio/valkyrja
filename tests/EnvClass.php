@@ -32,13 +32,6 @@ class EnvClass extends AppEnv
 
     /** @var bool */
     public const bool APP_DEBUG_MODE = false;
-
-    /************************************************************
-     *
-     * Config component env variables.
-     *
-     ************************************************************/
-
     /** @var non-empty-string */
     public const string APP_DIR = __DIR__;
     /** @var non-empty-string */

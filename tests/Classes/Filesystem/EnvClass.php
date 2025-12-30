@@ -24,10 +24,10 @@ class EnvClass extends AppEnv
 {
     /************************************************************
      *
-     * Filesystem component env variables.
+     * Application component env variables.
      *
      ************************************************************/
 
     /** @var non-empty-string */
-    public const string FILESYSTEM_FLYSYSTEM_LOCAL_DIR = __DIR__ . '/../../storage/app';
+    public const string APP_DIR = __DIR__;
 }
