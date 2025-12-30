@@ -4,7 +4,7 @@
   },
   "require-dev"       : {
     "squizlabs/php_codesniffer" : "^4.0.1",
-    "slevomat/coding-standard"  : "^8.25"
+    "slevomat/coding-standard"  : "^8.26.0"
   },
   "scripts"           : {
     "check"    : "vendor/bin/phpcs --standard=./ruleset.xml ../../../src -n",
