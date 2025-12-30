@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Provider;
+namespace Valkyrja\Cli\Routing\Provider;
 
 use Override;
 use Valkyrja\Application\Provider\Provider as AppComponent;
@@ -19,10 +19,6 @@ use Valkyrja\Cli\Command\HelpCommand;
 use Valkyrja\Cli\Command\ListBashCommand;
 use Valkyrja\Cli\Command\ListCommand;
 use Valkyrja\Cli\Command\VersionCommand;
-use Valkyrja\Cli\Interaction\Provider\ServiceProvider as CliServiceProvider;
-use Valkyrja\Cli\Middleware\Provider\ServiceProvider as MiddlewareServiceProvider;
-use Valkyrja\Cli\Routing\Provider\ServiceProvider as RoutingServiceProvider;
-use Valkyrja\Cli\Server\Provider\ServiceProvider as ServerServiceProvider;
 
 /**
  * Final Class Component.
@@ -38,10 +34,7 @@ class ComponentProvider extends AppComponent
     public static function getContainerProviders(): array
     {
         return [
-            CliServiceProvider::class,
-            MiddlewareServiceProvider::class,
-            RoutingServiceProvider::class,
-            ServerServiceProvider::class,
+            ServiceProvider::class,
         ];
     }
 
