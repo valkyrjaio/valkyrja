@@ -29,7 +29,7 @@ class StreamOutputTest extends TestCase
         $text    = 'text';
         $message = new Message($text);
 
-        $output = (new StreamOutput(fopen(filename: __DIR__ . '/../../../../storage/stream-output-test.txt', mode: 'wrb')))
+        $output = new StreamOutput(fopen(filename: __DIR__ . '/../../../../storage/stream-output-test.txt', mode: 'wrb'))
             ->withAddedMessage($message);
 
         ob_start();

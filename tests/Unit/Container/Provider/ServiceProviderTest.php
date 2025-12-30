@@ -58,11 +58,11 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(Config::class, new Config());
         $this->container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
 
-        $service   = (new Service(serviceId: ServiceClass::class))->withDispatch(new ClassDispatch(ServiceClass::class));
-        $singleton = (new Service(serviceId: SingletonClass::class, isSingleton: true))->withDispatch(new ClassDispatch(SingletonClass::class));
+        $service   = new Service(serviceId: ServiceClass::class)->withDispatch(new ClassDispatch(ServiceClass::class));
+        $singleton = new Service(serviceId: SingletonClass::class, isSingleton: true)->withDispatch(new ClassDispatch(SingletonClass::class));
         $collector->method('getServices')->willReturn([$service, $singleton]);
 
-        $alias = (new Alias(serviceId: Singleton2Class::class))->withDispatch(new ClassDispatch(SingletonClass::class));
+        $alias = new Alias(serviceId: Singleton2Class::class)->withDispatch(new ClassDispatch(SingletonClass::class));
         $collector->method('getAliases')->willReturn([$alias]);
 
         ServiceProvider::publishData($this->container);
@@ -80,7 +80,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         $this->container->setSingleton(Config::class, new Config());
         $this->container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
 
-        $service = (new Service(serviceId: self::class))->withDispatch(new ClassDispatch(self::class));
+        $service = new Service(serviceId: self::class)->withDispatch(new ClassDispatch(self::class));
         $collector->method('getServices')->willReturn([$service]);
 
         ServiceProvider::publishData($this->container);

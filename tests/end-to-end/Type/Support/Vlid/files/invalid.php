@@ -19,7 +19,7 @@ use Valkyrja\Test\Test;
 use Valkyrja\Type\Vlid\Support\Vlid;
 use Valkyrja\Type\Vlid\Throwable\Exception\InvalidVlidException;
 
-(new Test(__FILE__, new EchoOutput()))->run(
+new Test(__FILE__, new EchoOutput())->run(
     static function (Assert $assert): void {
         $vlid = 'test';
 

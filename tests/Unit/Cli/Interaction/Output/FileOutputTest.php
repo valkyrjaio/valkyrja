@@ -29,7 +29,7 @@ class FileOutputTest extends TestCase
         $text    = 'text';
         $message = new Message($text);
 
-        $output = (new FileOutput(__DIR__ . '/../../../../storage/file-output-test.txt'))
+        $output = new FileOutput(__DIR__ . '/../../../../storage/file-output-test.txt')
             ->withAddedMessage($message);
 
         ob_start();

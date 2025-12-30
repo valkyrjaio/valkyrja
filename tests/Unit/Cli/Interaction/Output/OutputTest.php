@@ -172,7 +172,7 @@ class OutputTest extends TestCase
             answer: new Answer('defaultResponse')
         );
 
-        $output = (new Output(isSilent: true))
+        $output = new Output(isSilent: true)
             ->withAddedMessages($question);
 
         self::assertSame([$question], $output->getMessages());
@@ -209,7 +209,7 @@ class OutputTest extends TestCase
             )
         );
 
-        $output = (new EmptyOutput())
+        $output = new EmptyOutput()
             ->withAddedMessages($question);
 
         $outputWritten = $output->writeMessages();

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
+use Rector\Php84\Rector\MethodCall\NewMethodCallWithoutParenthesesRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector;
 
 return RectorConfig
@@ -32,4 +33,5 @@ return RectorConfig
     ->withRules([
         AddVoidReturnTypeWhereNoReturnRector::class,
         AddOverrideAttributeToOverriddenMethodsRector::class,
+        NewMethodCallWithoutParenthesesRector::class,
     ]);

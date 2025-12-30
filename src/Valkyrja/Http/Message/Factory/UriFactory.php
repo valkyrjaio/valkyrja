@@ -272,7 +272,7 @@ abstract class UriFactory
             [$user, $password] = explode(':', $userInfo);
         }
 
-        return (new HttpUri())
+        return new HttpUri()
             ->withScheme(Scheme::from($uri->getScheme()))
             ->withUserInfo($user, $password)
             ->withHost($uri->getHost())
