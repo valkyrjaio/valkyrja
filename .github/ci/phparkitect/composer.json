@@ -8,6 +8,11 @@
   "scripts"           : {
     "check" : "vendor/bin/phparkitect check --config=phparkitect.php"
   },
+  "autoload"          : {
+    "psr-4" : {
+      "Valkyrja\\Arkitect\\" : "Arkitect"
+    }
+  },
   "minimum-stability" : "dev",
   "prefer-stable"     : true
 }
