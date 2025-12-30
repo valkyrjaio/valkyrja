@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
-use Valkyrja\Http\Routing\Provider\ComponentProvider;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
+use Valkyrja\Http\Routing\Provider\ComponentProvider;
 use Valkyrja\Http\Routing\Provider\ServiceProvider as RoutingServiceProvider;
 use Valkyrja\Tests\Unit\TestCase;
 

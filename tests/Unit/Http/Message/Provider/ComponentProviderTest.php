@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Provider;
 
-use Valkyrja\Http\Message\Provider\ServiceProvider;
 use Valkyrja\Http\Message\Provider\ComponentProvider;
+use Valkyrja\Http\Message\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
