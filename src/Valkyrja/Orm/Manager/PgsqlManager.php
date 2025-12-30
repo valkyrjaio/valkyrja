@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Manager;
 
 use Override;
+use Valkyrja\Orm\Manager\Abstract\PdoManager;
 use Valkyrja\Orm\Throwable\Exception\RuntimeException;
 
 use function is_string;

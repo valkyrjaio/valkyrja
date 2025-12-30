@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Model;
 
 use Valkyrja\Tests\Classes\Model\Trait\PrivatePropertyTrait;
-use Valkyrja\Type\Model\Model as AbstractModel;
+use Valkyrja\Type\Model\Abstract\Model as AbstractModel;
 use Valkyrja\Type\Model\Trait\UnpackForNewInstance;
 
 /**

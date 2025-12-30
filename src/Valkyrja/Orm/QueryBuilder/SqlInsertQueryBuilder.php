@@ -16,6 +16,7 @@ namespace Valkyrja\Orm\QueryBuilder;
 use Override;
 use Valkyrja\Orm\Constant\Statement;
 use Valkyrja\Orm\Data\Value;
+use Valkyrja\Orm\QueryBuilder\Abstract\SqlQueryBuilder;
 use Valkyrja\Orm\QueryBuilder\Contract\InsertQueryBuilder as Contract;
 
 /**

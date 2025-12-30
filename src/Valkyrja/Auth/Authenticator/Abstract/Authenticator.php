@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth\Authenticator;
+namespace Valkyrja\Auth\Authenticator\Abstract;
 
 use Override;
 use Valkyrja\Auth\Authenticator\Contract\Authenticator as Contract;
@@ -25,7 +25,7 @@ use Valkyrja\Auth\Store\Contract\Store;
 use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
 
 /**
- * Abstract Class AbstractAuthenticator.
+ * Abstract Class Authenticator.
  *
  * @author Melech Mizrachi
  *
@@ -33,7 +33,7 @@ use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
  *
  * @implements Contract<U>
  */
-abstract class AbstractAuthenticator implements Contract
+abstract class Authenticator implements Contract
 {
     /** @var User|null */
     protected User|null $current = null;

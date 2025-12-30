@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Orm\Entity;
+namespace Valkyrja\Type\Model\Abstract;
 
-use Valkyrja\Orm\Entity\Contract\SoftDeleteEntity as Contract;
-use Valkyrja\Orm\Entity\Trait\SoftDeleteFields;
+use Valkyrja\Type\Model\Contract\IndexedModel as Contract;
+use Valkyrja\Type\Model\Trait\Indexable;
 
 /**
- * Class SoftDeleteEntity.
+ * Class IndexedModel.
  *
  * @author Melech Mizrachi
  */
-abstract class SoftDeleteEntity extends Entity implements Contract
+abstract class IndexedModel extends Model implements Contract
 {
-    use SoftDeleteFields;
+    use Indexable;
 }

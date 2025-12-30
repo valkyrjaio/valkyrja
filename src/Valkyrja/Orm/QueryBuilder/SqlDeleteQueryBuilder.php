@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\QueryBuilder;
 
 use Valkyrja\Orm\Constant\Statement;
+use Valkyrja\Orm\QueryBuilder\Abstract\SqlQueryBuilder;
 use Valkyrja\Orm\QueryBuilder\Contract\DeleteQueryBuilder as Contract;
 
 /**

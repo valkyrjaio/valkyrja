@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Validation\Rule;
+namespace Valkyrja\Validation\Rule\Abstract;
 
 use Override;
 use Valkyrja\Validation\Rule\Contract\Rule as Contract;

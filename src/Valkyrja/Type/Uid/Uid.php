@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Uid;
 
 use Override;
+use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Type\Type;
 use Valkyrja\Type\Uid\Contract\Uid as Contract;
 use Valkyrja\Type\Uid\Support\Uid as Helper;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;

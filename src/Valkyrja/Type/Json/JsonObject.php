@@ -15,9 +15,9 @@ namespace Valkyrja\Type\Json;
 
 use JsonException;
 use Override;
+use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\BuiltIn\Support\Obj as Helper;
 use Valkyrja\Type\Json\Contract\JsonObject as Contract;
-use Valkyrja\Type\Type;
 
 use function is_string;
 

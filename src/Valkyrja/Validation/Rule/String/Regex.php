@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Rule\String;
 
 use Override;
-use Valkyrja\Validation\Rule\Rule;
+use Valkyrja\Validation\Rule\Abstract\Rule;
 
 use function is_string;
 use function preg_match;

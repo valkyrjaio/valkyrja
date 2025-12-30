@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
+use Valkyrja\Cli\Middleware\Handler\Abstract\Handler;
 use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler as Contract;
 
 /**

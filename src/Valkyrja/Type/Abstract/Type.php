@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Type;
+namespace Valkyrja\Type\Abstract;
 
 use Override;
 use Valkyrja\Type\Contract\Type as Contract;

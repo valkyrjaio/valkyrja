@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Authenticator;
 
+use Valkyrja\Auth\Authenticator\Abstract\Authenticator;
 use Valkyrja\Auth\Constant\SessionId;
 use Valkyrja\Auth\Data\AuthenticatedUsers as AuthenticatedUsersData;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsers;
@@ -30,9 +31,9 @@ use function is_string;
  *
  * @template U of User
  *
- * @extends AbstractAuthenticator<U>
+ * @extends Authenticator<U>
  */
-class SessionAuthenticator extends AbstractAuthenticator
+class SessionAuthenticator extends Authenticator
 {
     /**
      * @param Store<U>        $store  The store

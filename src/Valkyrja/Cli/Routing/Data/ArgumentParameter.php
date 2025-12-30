@@ -15,6 +15,7 @@ namespace Valkyrja\Cli\Routing\Data;
 
 use Override;
 use Valkyrja\Cli\Interaction\Argument\Contract\Argument;
+use Valkyrja\Cli\Routing\Data\Abstract\Parameter;
 use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameter as Contract;
 use Valkyrja\Cli\Routing\Enum\ArgumentMode;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;

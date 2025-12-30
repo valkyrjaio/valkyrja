@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Orm\Manager;
+namespace Valkyrja\Orm\Manager\Abstract;
 
 use Override;
 use PDO;

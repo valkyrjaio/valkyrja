@@ -15,7 +15,7 @@ namespace Valkyrja\Validation\Rule\Is;
 
 use Override;
 use Valkyrja\Type\BuiltIn\Support\Str;
-use Valkyrja\Validation\Rule\Rule;
+use Valkyrja\Validation\Rule\Abstract\Rule;
 
 use function is_string;
 

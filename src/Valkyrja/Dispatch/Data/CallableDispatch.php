@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Dispatch\Data;
 
 use Override;
+use Valkyrja\Dispatch\Data\Abstract\Dispatch;
 use Valkyrja\Dispatch\Data\Contract\CallableDispatch as Contract;
 
 /**

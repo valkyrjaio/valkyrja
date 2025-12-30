@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Orm\QueryBuilder;
+namespace Valkyrja\Orm\QueryBuilder\Abstract;
 
 use Override;
 use Valkyrja\Orm\Constant\Statement;

@@ -15,6 +15,7 @@ namespace Valkyrja\Cli\Routing\Data;
 
 use Override;
 use Valkyrja\Cli\Interaction\Option\Contract\Option;
+use Valkyrja\Cli\Routing\Data\Abstract\Parameter;
 use Valkyrja\Cli\Routing\Data\Contract\OptionParameter as Contract;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;

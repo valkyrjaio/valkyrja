@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Manager;
 
+use Valkyrja\Orm\Manager\Abstract\PdoManager;
+
 /**
  * Class SqliteManager.
  *

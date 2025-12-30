@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Type\Model;
+namespace Valkyrja\Type\Model\Abstract;
 
 use Closure;
 use JsonException;

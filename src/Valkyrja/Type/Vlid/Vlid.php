@@ -15,9 +15,9 @@ namespace Valkyrja\Type\Vlid;
 
 use Override;
 use Random\RandomException;
+use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Throwable\Exception\RuntimeException;
-use Valkyrja\Type\Type;
 use Valkyrja\Type\Vlid\Contract\Vlid as Contract;
 use Valkyrja\Type\Vlid\Support\Vlid as Helper;
 

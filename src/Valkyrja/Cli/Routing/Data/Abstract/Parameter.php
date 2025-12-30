@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cli\Routing\Data;
+namespace Valkyrja\Cli\Routing\Data\Abstract;
 
 use Override;
 use Valkyrja\Cli\Routing\Data\Contract\Parameter as Contract;

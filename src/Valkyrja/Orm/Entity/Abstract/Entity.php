@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Orm\Entity;
+namespace Valkyrja\Orm\Entity\Abstract;
 
 use JsonException;
 use Override;
@@ -22,7 +22,7 @@ use Valkyrja\Throwable\Exception\RuntimeException;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\Contract\Type;
 use Valkyrja\Type\Data\Cast;
-use Valkyrja\Type\Model\Model;
+use Valkyrja\Type\Model\Abstract\Model;
 use Valkyrja\Type\Model\Trait\Castable;
 use Valkyrja\Type\Model\Trait\ProtectedExposable;
 
