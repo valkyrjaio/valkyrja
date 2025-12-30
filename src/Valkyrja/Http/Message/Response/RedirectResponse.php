@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponse as Contract;
-use Valkyrja\Http\Message\Stream\Exception\InvalidStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Contract\Uri as UriContract;

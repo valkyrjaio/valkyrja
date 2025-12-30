@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Header\Value;
 
 use Override;
-use Valkyrja\Http\Message\Header\Exception\UnsupportedOffsetSetException;
-use Valkyrja\Http\Message\Header\Exception\UnsupportedOffsetUnsetException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
 use Valkyrja\Http\Message\Header\Value\Component\Component as HeaderPart;
 use Valkyrja\Http\Message\Header\Value\Component\Contract\Component;
 use Valkyrja\Http\Message\Header\Value\Contract\Value as Contract;

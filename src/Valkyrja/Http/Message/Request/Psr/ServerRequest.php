@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\Factory\UploadedFileFactory;
 use Valkyrja\Http\Message\File\Contract\UploadedFile as ValkyrjaUploadedFile;
 use Valkyrja\Http\Message\File\Psr\UploadedFile;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest as ValkyrjaRequest;
-use Valkyrja\Http\Message\Request\Exception\RuntimeException;
+use Valkyrja\Http\Message\Request\Throwable\Exception\RuntimeException;
 
 /**
  * Class ServerRequest.

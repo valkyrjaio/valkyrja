@@ -28,6 +28,7 @@ use Arkitect\Expression\ForClasses\NotHaveNameMatching;
 use Arkitect\Expression\ForClasses\NotResideInTheseNamespaces;
 use Arkitect\Expression\ForClasses\ResideInOneOfTheseNamespaces;
 use Arkitect\Rules\Rule;
+use Valkyrja\Application\Provider\Provider as ComponentProvider;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Orm\Entity\Entity;
 use Valkyrja\Type\Model\Model;
@@ -90,6 +91,16 @@ return static function (Config $config): void {
                       ->because('All service providers should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
+                      ->that(new Extend(ComponentProvider::class))
+                      ->should(new HaveNameMatching('*ComponentProvider'))
+                      ->because('All component providers should be named appropriately');
+
+    $srcRules[] = Rule::allClasses()
+                      ->that(new Extend(ComponentProvider::class))
+                      ->should(new ResideInOneOfTheseNamespaces('*Provider\\'))
+                      ->because('All component providers should exist in an appropriate namespace');
+
+    $srcRules[] = Rule::allClasses()
                       ->that(new HaveNameMatching('*Factory'))
                       ->should(new ResideInOneOfTheseNamespaces('*Factory\\'))
                       ->because('All factories should exist in an appropriate namespace');
@@ -114,8 +125,13 @@ return static function (Config $config): void {
                       ->because('All security classes should be final');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new Extend(Throwable::class))
+                      ->that(new HaveNameMatching('*Exception'))
                       ->should(new ResideInOneOfTheseNamespaces('*Exception\\'))
+                      ->because('All exceptions should exist in an appropriate namespace');
+
+    $srcRules[] = Rule::allClasses()
+                      ->that(new Extend(Throwable::class))
+                      ->should(new ResideInOneOfTheseNamespaces('*Throwable\\'))
                       ->because('All throwable objects or interfaces should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
@@ -140,7 +156,6 @@ return static function (Config $config): void {
 
     $srcRules[] = Rule::allClasses()
                       ->that(new IsInterface())
-                      ->andThat(new NotResideInTheseNamespaces('*Exception\\'))
                       ->should(new ResideInOneOfTheseNamespaces('*Contract\\'))
                       ->because('All interfaces are contracts and should be in an appropriate namespace');
 

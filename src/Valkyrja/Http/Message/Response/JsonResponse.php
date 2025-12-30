@@ -20,8 +20,8 @@ use Valkyrja\Http\Message\Constant\ContentType;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Response\Contract\JsonResponse as Contract;
-use Valkyrja\Http\Message\Stream\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Stream\Stream;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
