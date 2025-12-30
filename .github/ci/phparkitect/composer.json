@@ -3,7 +3,7 @@
     "php" : ">=8.4"
   },
   "require-dev"       : {
-    "phparkitect/phparkitect" : "^0.4.0"
+    "phparkitect/phparkitect" : "^0.7.0"
   },
   "scripts"           : {
     "check" : "vendor/bin/phparkitect check --config=phparkitect.php"

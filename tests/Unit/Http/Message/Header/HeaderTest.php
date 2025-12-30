@@ -15,10 +15,10 @@ namespace Valkyrja\Tests\Unit\Http\Message\Header;
 
 use JsonException;
 use Valkyrja\Http\Message\Constant\HeaderName;
-use Valkyrja\Http\Message\Header\Exception\InvalidNameException;
-use Valkyrja\Http\Message\Header\Exception\InvalidValueException;
-use Valkyrja\Http\Message\Header\Exception\UnsupportedOffsetSetException;
-use Valkyrja\Http\Message\Header\Exception\UnsupportedOffsetUnsetException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidNameException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidValueException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
 use Valkyrja\Http\Message\Header\Header;
 use Valkyrja\Tests\Unit\TestCase;
 

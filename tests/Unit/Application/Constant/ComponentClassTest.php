@@ -32,13 +32,13 @@ class ComponentClassTest extends TestCase
         self::assertSame(\Valkyrja\Auth\Provider\ComponentProvider::class, ComponentClass::AUTH);
         self::assertSame(\Valkyrja\Broadcast\Provider\ComponentProvider::class, ComponentClass::BROADCAST);
         self::assertSame(\Valkyrja\Cache\Provider\ComponentProvider::class, ComponentClass::CACHE);
-        self::assertSame(\Valkyrja\Cli\ComponentProvider::class, ComponentClass::CLI);
+        self::assertSame(\Valkyrja\Cli\Provider\ComponentProvider::class, ComponentClass::CLI);
         self::assertSame(\Valkyrja\Container\Provider\ComponentProvider::class, ComponentClass::CONTAINER);
         self::assertSame(\Valkyrja\Crypt\Provider\ComponentProvider::class, ComponentClass::CRYPT);
         self::assertSame(\Valkyrja\Dispatch\Provider\ComponentProvider::class, ComponentClass::DISPATCHER);
         self::assertSame(\Valkyrja\Event\Provider\ComponentProvider::class, ComponentClass::EVENT);
         self::assertSame(\Valkyrja\Filesystem\Provider\ComponentProvider::class, ComponentClass::FILESYSTEM);
-        self::assertSame(\Valkyrja\Http\ComponentProvider::class, ComponentClass::HTTP);
+        self::assertSame(\Valkyrja\Http\Provider\ComponentProvider::class, ComponentClass::HTTP);
         self::assertSame(\Valkyrja\Jwt\Provider\ComponentProvider::class, ComponentClass::JWT);
         self::assertSame(\Valkyrja\Log\Provider\ComponentProvider::class, ComponentClass::LOG);
         self::assertSame(\Valkyrja\Mail\Provider\ComponentProvider::class, ComponentClass::MAIL);

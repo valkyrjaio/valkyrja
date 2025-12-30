@@ -15,9 +15,9 @@ namespace Valkyrja\Tests\Unit\Http\Message\Uri;
 
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
-use Valkyrja\Http\Message\Uri\Exception\InvalidPathException;
-use Valkyrja\Http\Message\Uri\Exception\InvalidPortException;
-use Valkyrja\Http\Message\Uri\Exception\InvalidQueryException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\TestCase;
 

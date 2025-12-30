@@ -15,9 +15,9 @@ namespace Valkyrja\Http\Message\Uri;
 
 use Valkyrja\Http\Message\Constant\Port;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
-use Valkyrja\Http\Message\Uri\Exception\InvalidPathException;
-use Valkyrja\Http\Message\Uri\Exception\InvalidPortException;
-use Valkyrja\Http\Message\Uri\Exception\InvalidQueryException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
+use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
 
 use function ltrim;
 use function preg_replace;

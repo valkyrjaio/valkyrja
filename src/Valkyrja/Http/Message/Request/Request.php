@@ -18,7 +18,7 @@ use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Message\Message;
 use Valkyrja\Http\Message\Request\Contract\Request as Contract;
-use Valkyrja\Http\Message\Request\Exception\InvalidRequestTargetException;
+use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidRequestTargetException;
 use Valkyrja\Http\Message\Stream\Contract\Stream;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream as HttpStream;

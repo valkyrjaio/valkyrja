@@ -19,8 +19,8 @@ use Valkyrja\Http\Message\Stream\Contract\Stream as Contract;
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
-use Valkyrja\Http\Message\Stream\Exception\InvalidLengthException;
-use Valkyrja\Http\Message\Stream\Exception\InvalidStreamException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidLengthException;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 
 use function fclose;
 use function feof;

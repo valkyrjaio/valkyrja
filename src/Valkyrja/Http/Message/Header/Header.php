@@ -15,8 +15,8 @@ namespace Valkyrja\Http\Message\Header;
 
 use Override;
 use Valkyrja\Http\Message\Header\Contract\Header as Contract;
-use Valkyrja\Http\Message\Header\Exception\UnsupportedOffsetSetException;
-use Valkyrja\Http\Message\Header\Exception\UnsupportedOffsetUnsetException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
 use Valkyrja\Http\Message\Header\Security\HeaderSecurity;
 use Valkyrja\Http\Message\Header\Value\Contract\Value;
 use Valkyrja\Http\Message\Header\Value\Value as HeaderValue;

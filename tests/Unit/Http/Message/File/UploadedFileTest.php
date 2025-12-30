@@ -15,12 +15,12 @@ namespace Valkyrja\Tests\Unit\Http\Message\File;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Valkyrja\Http\Message\File\Enum\UploadError;
-use Valkyrja\Http\Message\File\Exception\AlreadyMovedException;
-use Valkyrja\Http\Message\File\Exception\InvalidDirectoryException;
-use Valkyrja\Http\Message\File\Exception\InvalidUploadedFileException;
-use Valkyrja\Http\Message\File\Exception\MoveFailureException;
-use Valkyrja\Http\Message\File\Exception\UnableToWriteFileException;
-use Valkyrja\Http\Message\File\Exception\UploadErrorException;
+use Valkyrja\Http\Message\File\Throwable\Exception\AlreadyMovedException;
+use Valkyrja\Http\Message\File\Throwable\Exception\InvalidDirectoryException;
+use Valkyrja\Http\Message\File\Throwable\Exception\InvalidUploadedFileException;
+use Valkyrja\Http\Message\File\Throwable\Exception\MoveFailureException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UnableToWriteFileException;
+use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
 use Valkyrja\Http\Message\File\UploadedFile;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Header\Value;
 
 use JsonException;
-use Valkyrja\Http\Message\Header\Exception\UnsupportedOffsetSetException;
-use Valkyrja\Http\Message\Header\Exception\UnsupportedOffsetUnsetException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
+use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
 use Valkyrja\Http\Message\Header\Value\Value;
 use Valkyrja\Tests\Unit\TestCase;
 

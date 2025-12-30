@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Request;
 
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Message\Request\Exception\InvalidRequestTargetException;
+use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidRequestTargetException;
 use Valkyrja\Http\Message\Request\Request;
 use Valkyrja\Http\Message\Uri\Uri;
 use Valkyrja\Tests\Unit\TestCase;
