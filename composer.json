@@ -52,7 +52,7 @@
     "phpmailer/phpmailer"        : "Required to use the default Mail adapter (^6.12.0).",
     "predis/predis"              : "Required to use the Redis Cache store (^2.4.1).",
     "pusher/pusher-php-server"   : "Required to use the Pusher Broadcast adapter (^7.2.7).",
-    "twig/twig"                  : "Required to use the Twig View engine (^3.22.1).",
+    "twig/twig"                  : "Required to use the Twig View engine (^3.22.2).",
     "vonage/client-core"         : "Required to use the default SMS adapter (^4.11.2).",
     "ext-curl"                   : "Required to use the default Client adapter (*)",
     "ext-pdo"                    : "Required to use the default ORM adapter (*)",
