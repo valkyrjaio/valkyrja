@@ -469,13 +469,13 @@ class Env
     /** @var non-empty-string */
     public const string VIEW_ORKA_FILE_EXTENSION = '.orka.phtml';
     /** @var non-empty-string */
-    public const string VIEW_ORKA_DIR = __DIR__ . '/../resources/views';
+    public const string VIEW_ORKA_PATH = '/resources/views';
     /** @var array<string, string> */
     public const array VIEW_ORKA_PATHS = [];
     /** @var non-empty-string */
     public const string VIEW_PHP_FILE_EXTENSION = '.phtml';
     /** @var non-empty-string */
-    public const string VIEW_PHP_DIR = __DIR__ . '/../resources/views';
+    public const string VIEW_PHP_PATH = '/resources/views';
     /** @var array<string, string> */
     public const array VIEW_PHP_PATHS = [];
     /** @var array<string, string> */
@@ -483,5 +483,5 @@ class Env
     /** @var class-string<TwigExtensionInterface>[] */
     public const array VIEW_TWIG_EXTENSIONS = [];
     /** @var non-empty-string */
-    public const string VIEW_TWIG_COMPILED_DIR = __DIR__ . '/../storage/views';
+    public const string VIEW_TWIG_COMPILED_PATH = '/storage/views';
 }
