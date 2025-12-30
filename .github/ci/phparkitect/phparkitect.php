@@ -22,7 +22,6 @@ use Arkitect\Expression\ForClasses\IsFinal;
 use Arkitect\Expression\ForClasses\IsInterface;
 use Arkitect\Expression\ForClasses\IsNotAbstract;
 use Arkitect\Expression\ForClasses\IsNotEnum;
-use Arkitect\Expression\ForClasses\IsNotInterface;
 use Arkitect\Expression\ForClasses\IsNotTrait;
 use Arkitect\Expression\ForClasses\IsTrait;
 use Arkitect\Expression\ForClasses\NotHaveNameMatching;
@@ -42,35 +41,19 @@ return static function (Config $config): void {
     $srcRules  = [];
     $testRules = [];
 
-    // $srcRules[] = Rule::allClasses()
-    //                   ->that(new ResideInOneOfTheseNamespaces('*'))
-    //                   ->should(new ContainDocBlockLike('*@author Melech Mizrachi'))
-    //                   ->because('All classes should have an author');
-
     $srcRules[] = Rule::allClasses()
                       ->that(new HaveAttribute(Attribute::class))
                       ->should(new ResideInOneOfTheseNamespaces('*Attribute\\'))
                       ->because('All attributes should exist in an appropriate namespace');
 
-    // $srcRules[] = Rule::allClasses()
-    //                   ->that(new IsAbstract())
-    //                   ->andThat(new IsNotInterface())
-    //                   ->andThat(new IsNotFinal())
-    //                   ->andThat(new IsNotEnum())
-    //                   ->andThat(new IsNotTrait())
-    //                   ->andThat(new NotHaveNameMatching('*Factory'))
-    //                   ->andThat(new NotHaveNameMatching('*Provider'))
-    //                   ->andThat(new NotHaveNameMatching('*Security'))
-    //                   ->andThat(new NotResideInTheseNamespaces('*Provider'))
-    //                   ->should(new HaveNameMatching('*Abstract'))
-    //                   ->because('All abstract classes should be properly named');
+    $srcRules[] = Rule::allClasses()
+                      ->that(new ResideInOneOfTheseNamespaces('*Attribute\\'))
+                      ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Attribute\\'))
+                      ->should(new HaveAttribute(Attribute::class))
+                      ->because('All non-attributes should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
                       ->that(new IsFinal())
-                      ->andThat(new IsNotEnum())
-                      ->andThat(new IsNotInterface())
-                      ->andThat(new IsNotAbstract())
-                      ->andThat(new IsNotTrait())
                       ->andThat(new NotHaveNameMatching('*Security'))
                       ->andThat(new NotHaveNameMatching('*Provider'))
                       ->should(new ResideInOneOfTheseNamespaces('*Constant\\'))
@@ -161,9 +144,9 @@ return static function (Config $config): void {
                       ->because('All interfaces are contracts and should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new IsNotInterface())
-                      ->should(new NotResideInTheseNamespaces('*Contract\\'))
-                      ->because('All non-interfaces are contracts and should be in an appropriate namespace');
+                      ->that(new ResideInOneOfTheseNamespaces('*Contract\\'))
+                      ->should(new IsInterface())
+                      ->because('All non-interfaces are not contracts and should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
                       ->that(new IsTrait())
@@ -171,8 +154,8 @@ return static function (Config $config): void {
                       ->because('All traits should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new IsNotTrait())
-                      ->should(new NotResideInTheseNamespaces('*Trait\\'))
+                      ->that(new ResideInOneOfTheseNamespaces('*Trait\\'))
+                      ->should(new IsTrait())
                       ->because('All non-traits should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
@@ -185,8 +168,8 @@ return static function (Config $config): void {
                       ->because('All abstract classes should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new IsNotAbstract())
-                      ->should(new NotResideInTheseNamespaces('*Abstract\\'))
+                      ->that(new ResideInOneOfTheseNamespaces('*Abstract\\'))
+                      ->should(new IsAbstract())
                       ->because('All non-abstract classes should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
@@ -205,8 +188,9 @@ return static function (Config $config): void {
                       ->because('All enums should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
-                      ->that(new IsNotEnum())
-                      ->should(new NotResideInTheseNamespaces('*Enum\\'))
+                      ->that(new ResideInOneOfTheseNamespaces('*Enum\\'))
+                      ->andThat(new NotResideInTheseNamespaces('Valkyrja\\Type\\BuiltIn\\Enum'))
+                      ->should(new IsEnum())
                       ->because('All non-enums should be in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
