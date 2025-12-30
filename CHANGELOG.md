@@ -1,6 +1,14 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.7.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.8.0...master)
+
+## [v25.8.0](https://github.com/valkyrjaio/valkyrja/compare/v25.7.0...v25.8.0) - 2025-12-30
+
+* [Filesystem] Use the Directory class to get the local path by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/275
+* [Application] Update cache file path to use Directory class by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/276
+* [View] Update dir envs to use Directory class by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/277
+* [CI] Add new phparkitect rule for traits by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/278
+* [CI] Add new phparkitect rule for abstract classes by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/279
 
 ## [v25.7.0](https://github.com/valkyrjaio/valkyrja/compare/v25.6.1...v25.7.0) - 2025-12-30
 
