@@ -154,7 +154,7 @@ jobs:
           COMPOSER_NAME: ${{ matrix.paths.name }}
           COMPOSER_COMMAND: ${{ matrix.paths.command }}
         run: |
-          output=$(composer "$COMPOSER_COMMAND" 2>&1)
+          output=$("composer $COMPOSER_COMMAND" 2>&1)
           if [[ "$output" == *"All your direct dependencies are up to date"* ]]; then
             echo "$output"
             echo "Proceeding..."
