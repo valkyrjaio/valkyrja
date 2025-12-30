@@ -19,7 +19,10 @@ use Valkyrja\Cli\Command\HelpCommand;
 use Valkyrja\Cli\Command\ListBashCommand;
 use Valkyrja\Cli\Command\ListCommand;
 use Valkyrja\Cli\Command\VersionCommand;
-use Valkyrja\Cli\Interaction\Provider\ServiceProvider;
+use Valkyrja\Cli\Interaction\Provider\ServiceProvider as CliServiceProvider;
+use Valkyrja\Cli\Middleware\Provider\ServiceProvider as MiddlewareServiceProvider;
+use Valkyrja\Cli\Routing\Provider\ServiceProvider as RoutingServiceProvider;
+use Valkyrja\Cli\Server\Provider\ServiceProvider as ServerServiceProvider;
 
 /**
  * Final Class Component.
@@ -35,10 +38,10 @@ class ComponentProvider extends AppComponent
     public static function getContainerProviders(): array
     {
         return [
-            ServiceProvider::class,
-            Middleware\Provider\ServiceProvider::class,
-            Routing\Provider\ServiceProvider::class,
-            Server\Provider\ServiceProvider::class,
+            CliServiceProvider::class,
+            MiddlewareServiceProvider::class,
+            RoutingServiceProvider::class,
+            ServerServiceProvider::class,
         ];
     }
 

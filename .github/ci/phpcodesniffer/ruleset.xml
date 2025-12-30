@@ -4,21 +4,27 @@
         <properties>
             <property name="rootNamespaces" type="array">
                 <!-- Map your source directories to their root namespaces -->
-                <element key="src/Valkyrja" value="Valkyrja"/>
-                <element key="tests" value="Valkyrja\Tests"/>
+                <element key="src/Valkyrja" value="Valkyrja" />
+                <element key="tests" value="Valkyrja\Tests" />
             </property>
             <property name="skipDirs" type="array">
-                <element value=".github"/>
-                <element value="docs"/>
-                <element value="functions"/>
-                <element value="pre-commit-hooks"/>
-                <element value="vendor"/>
+                <element value=".github" />
+                <element value="docs" />
+                <element value="functions" />
+                <element value="pre-commit-hooks" />
+                <element value="vendor" />
             </property>
+        </properties>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
+        <properties>
+            <property name="allowPartialUses" type="bool" value="false" />
+            <property name="allowFullyQualifiedNameForCollidingClasses" type="bool" value="false" />
         </properties>
     </rule>
 
     <!-- You can still include other standards if needed -->
-    <rule ref="PSR12"/>
+    <rule ref="PSR12" />
 
     <exclude-pattern>*/.github/*</exclude-pattern>
     <exclude-pattern>*/.phpunit.cache/*</exclude-pattern>

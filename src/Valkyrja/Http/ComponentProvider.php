@@ -15,8 +15,12 @@ namespace Valkyrja\Http;
 
 use Override;
 use Valkyrja\Application\Provider\Provider as AppComponent;
-use Valkyrja\Http\Client\Provider\ServiceProvider;
+use Valkyrja\Http\Client\Provider\ServiceProvider as ClientServiceProvider;
+use Valkyrja\Http\Message\Provider\ServiceProvider as MessageServiceProvider;
+use Valkyrja\Http\Middleware\Provider\ServiceProvider as MiddlewareServiceProvider;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
+use Valkyrja\Http\Routing\Provider\ServiceProvider as RoutingServiceProvider;
+use Valkyrja\Http\Server\Provider\ServiceProvider as ServerServiceProvider;
 
 /**
  * Final Class Component.
@@ -32,11 +36,11 @@ class ComponentProvider extends AppComponent
     public static function getContainerProviders(): array
     {
         return [
-            ServiceProvider::class,
-            Message\Provider\ServiceProvider::class,
-            Middleware\Provider\ServiceProvider::class,
-            Routing\Provider\ServiceProvider::class,
-            Server\Provider\ServiceProvider::class,
+            ClientServiceProvider::class,
+            MessageServiceProvider::class,
+            MiddlewareServiceProvider::class,
+            RoutingServiceProvider::class,
+            ServerServiceProvider::class,
         ];
     }
 

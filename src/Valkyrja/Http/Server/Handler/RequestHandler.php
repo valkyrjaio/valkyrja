@@ -15,7 +15,8 @@ namespace Valkyrja\Http\Server\Handler;
 
 use Override;
 use Throwable;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Container;
+use Valkyrja\Container\Manager\Contract\Container as ContainerContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
@@ -23,11 +24,16 @@ use Valkyrja\Http\Message\Response\Response as HttpResponse;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
 use Valkyrja\Http\Middleware;
-use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler;
-use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
-use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\Http\Routing\Dispatcher\Contract\Router;
+use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler as RequestReceivedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler as SendingResponseHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler as TerminatedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler as ThrowableCaughtHandlerContract;
+use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
+use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
+use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
+use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
+use Valkyrja\Http\Routing\Dispatcher\Contract\Router as RouterContract;
+use Valkyrja\Http\Routing\Dispatcher\Router;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandler as Contract;
 
 use function count;
@@ -58,12 +64,12 @@ class RequestHandler implements Contract
      * RequestHandler constructor.
      */
     public function __construct(
-        protected Container $container = new \Valkyrja\Container\Manager\Container(),
-        protected Router $router = new \Valkyrja\Http\Routing\Dispatcher\Router(),
-        protected RequestReceivedHandler $requestReceivedHandler = new Middleware\Handler\RequestReceivedHandler(),
-        protected ThrowableCaughtHandler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),
-        protected SendingResponseHandler $sendingResponseHandler = new Middleware\Handler\SendingResponseHandler(),
-        protected TerminatedHandler $terminatedHandler = new Middleware\Handler\TerminatedHandler(),
+        protected ContainerContract $container = new Container(),
+        protected RouterContract $router = new Router(),
+        protected RequestReceivedHandlerContract $requestReceivedHandler = new RequestReceivedHandler(),
+        protected ThrowableCaughtHandlerContract $throwableCaughtHandler = new ThrowableCaughtHandler(),
+        protected SendingResponseHandlerContract $sendingResponseHandler = new SendingResponseHandler(),
+        protected TerminatedHandlerContract $terminatedHandler = new TerminatedHandler(),
         protected bool $debug = false
     ) {
     }

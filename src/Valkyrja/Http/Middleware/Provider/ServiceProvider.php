@@ -26,14 +26,20 @@ use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware as HttpRouteNotM
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware as HttpSendingResponseMiddleware;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware as HttpTerminatedMiddleware;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware as HttpThrowableCaughtMiddleware;
-use Valkyrja\Http\Middleware\Handler;
-use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler;
-use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
-use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
+use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler as RequestReceivedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler as RouteDispatchedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler as RouteMatchedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler as RouteNotMatchedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler as SendingResponseHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler as TerminatedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler as ThrowableCaughtHandlerContract;
+use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
+use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;
+use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
+use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
+use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
+use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
+use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 
 /**
  * Class ServiceProvider.
@@ -49,14 +55,14 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            RequestReceivedHandler::class  => [self::class, 'publishRequestReceivedHandler'],
-            ThrowableCaughtHandler::class  => [self::class, 'publishThrowableCaughtHandler'],
-            RouteMatchedHandler::class     => [self::class, 'publishRouteMatchedHandler'],
-            RouteNotMatchedHandler::class  => [self::class, 'publishRouteNotMatchedHandler'],
-            RouteDispatchedHandler::class  => [self::class, 'publishRouteDispatchedHandler'],
-            SendingResponseHandler::class  => [self::class, 'publishSendingResponseHandler'],
-            TerminatedHandler::class       => [self::class, 'publishTerminatedHandler'],
-            CacheResponseMiddleware::class => [self::class, 'publishCacheResponseMiddleware'],
+            RequestReceivedHandlerContract::class => [self::class, 'publishRequestReceivedHandler'],
+            ThrowableCaughtHandlerContract::class => [self::class, 'publishThrowableCaughtHandler'],
+            RouteMatchedHandlerContract::class    => [self::class, 'publishRouteMatchedHandler'],
+            RouteNotMatchedHandlerContract::class => [self::class, 'publishRouteNotMatchedHandler'],
+            RouteDispatchedHandlerContract::class => [self::class, 'publishRouteDispatchedHandler'],
+            SendingResponseHandlerContract::class => [self::class, 'publishSendingResponseHandler'],
+            TerminatedHandlerContract::class      => [self::class, 'publishTerminatedHandler'],
+            CacheResponseMiddleware::class        => [self::class, 'publishCacheResponseMiddleware'],
         ];
     }
 
@@ -67,13 +73,13 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            RequestReceivedHandler::class,
-            RouteDispatchedHandler::class,
-            ThrowableCaughtHandler::class,
-            RouteMatchedHandler::class,
-            RouteNotMatchedHandler::class,
-            SendingResponseHandler::class,
-            TerminatedHandler::class,
+            RequestReceivedHandlerContract::class,
+            RouteDispatchedHandlerContract::class,
+            ThrowableCaughtHandlerContract::class,
+            RouteMatchedHandlerContract::class,
+            RouteNotMatchedHandlerContract::class,
+            SendingResponseHandlerContract::class,
+            TerminatedHandlerContract::class,
             CacheResponseMiddleware::class,
         ];
     }
@@ -92,8 +98,8 @@ final class ServiceProvider extends Provider
         $middleware = $env::HTTP_MIDDLEWARE_REQUEST_RECEIVED;
 
         $container->setSingleton(
-            RequestReceivedHandler::class,
-            $handler = new Handler\RequestReceivedHandler($container)
+            RequestReceivedHandlerContract::class,
+            $handler = new RequestReceivedHandler($container)
         );
 
         $handler->add(...$middleware);
@@ -113,8 +119,8 @@ final class ServiceProvider extends Provider
         $middleware = $env::HTTP_MIDDLEWARE_ROUTE_DISPATCHED;
 
         $container->setSingleton(
-            RouteDispatchedHandler::class,
-            $handler = new Handler\RouteDispatchedHandler($container)
+            RouteDispatchedHandlerContract::class,
+            $handler = new RouteDispatchedHandler($container)
         );
 
         $handler->add(...$middleware);
@@ -134,8 +140,8 @@ final class ServiceProvider extends Provider
         $middleware = $env::HTTP_MIDDLEWARE_THROWABLE_CAUGHT;
 
         $container->setSingleton(
-            ThrowableCaughtHandler::class,
-            $handler = new Handler\ThrowableCaughtHandler($container)
+            ThrowableCaughtHandlerContract::class,
+            $handler = new ThrowableCaughtHandler($container)
         );
 
         $handler->add(...$middleware);
@@ -155,8 +161,8 @@ final class ServiceProvider extends Provider
         $middleware = $env::HTTP_MIDDLEWARE_ROUTE_MATCHED;
 
         $container->setSingleton(
-            RouteMatchedHandler::class,
-            $handler = new Handler\RouteMatchedHandler($container)
+            RouteMatchedHandlerContract::class,
+            $handler = new RouteMatchedHandler($container)
         );
 
         $handler->add(...$middleware);
@@ -176,8 +182,8 @@ final class ServiceProvider extends Provider
         $middleware = $env::HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED;
 
         $container->setSingleton(
-            RouteNotMatchedHandler::class,
-            $handler = new Handler\RouteNotMatchedHandler($container)
+            RouteNotMatchedHandlerContract::class,
+            $handler = new RouteNotMatchedHandler($container)
         );
 
         $handler->add(...$middleware);
@@ -197,8 +203,8 @@ final class ServiceProvider extends Provider
         $middleware = $env::HTTP_MIDDLEWARE_SENDING_RESPONSE;
 
         $container->setSingleton(
-            SendingResponseHandler::class,
-            $handler = new Handler\SendingResponseHandler($container)
+            SendingResponseHandlerContract::class,
+            $handler = new SendingResponseHandler($container)
         );
 
         $handler->add(...$middleware);
@@ -218,8 +224,8 @@ final class ServiceProvider extends Provider
         $middleware = $env::HTTP_MIDDLEWARE_TERMINATED;
 
         $container->setSingleton(
-            TerminatedHandler::class,
-            $handler = new Handler\TerminatedHandler($container)
+            TerminatedHandlerContract::class,
+            $handler = new TerminatedHandler($container)
         );
 
         $handler->add(...$middleware);

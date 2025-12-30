@@ -18,11 +18,16 @@ use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory as Contract;
 use Valkyrja\Cli\Interaction\Message\Contract\Message;
-use Valkyrja\Cli\Interaction\Output\Contract\EmptyOutput;
-use Valkyrja\Cli\Interaction\Output\Contract\FileOutput;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Interaction\Output\Contract\PlainOutput;
-use Valkyrja\Cli\Interaction\Output\Contract\StreamOutput;
+use Valkyrja\Cli\Interaction\Output\Contract\EmptyOutput as EmptyOutputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\FileOutput as FileOutputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\Output as OutputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\PlainOutput as PlainOutputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\StreamOutput as StreamOutputContract;
+use Valkyrja\Cli\Interaction\Output\EmptyOutput;
+use Valkyrja\Cli\Interaction\Output\FileOutput;
+use Valkyrja\Cli\Interaction\Output\Output;
+use Valkyrja\Cli\Interaction\Output\PlainOutput;
+use Valkyrja\Cli\Interaction\Output\StreamOutput;
 
 /**
  * Class OutputFactory.
@@ -43,8 +48,8 @@ class OutputFactory implements Contract
     public function createOutput(
         ExitCode|int $exitCode = ExitCode::SUCCESS,
         Message ...$messages
-    ): Output {
-        return new \Valkyrja\Cli\Interaction\Output\Output(
+    ): OutputContract {
+        return new Output(
             $this->config->isInteractive,
             $this->config->isQuiet,
             $this->config->isSilent,
@@ -60,8 +65,8 @@ class OutputFactory implements Contract
     public function createEmptyOutput(
         ExitCode|int $exitCode = ExitCode::SUCCESS,
         Message ...$messages
-    ): EmptyOutput {
-        return new \Valkyrja\Cli\Interaction\Output\EmptyOutput(
+    ): EmptyOutputContract {
+        return new EmptyOutput(
             $this->config->isInteractive,
             $this->config->isQuiet,
             $this->config->isSilent,
@@ -77,8 +82,8 @@ class OutputFactory implements Contract
     public function createPlainOutput(
         ExitCode|int $exitCode = ExitCode::SUCCESS,
         Message ...$messages
-    ): PlainOutput {
-        return new \Valkyrja\Cli\Interaction\Output\PlainOutput(
+    ): PlainOutputContract {
+        return new PlainOutput(
             $this->config->isInteractive,
             $this->config->isQuiet,
             $this->config->isSilent,
@@ -95,8 +100,8 @@ class OutputFactory implements Contract
         string $filepath,
         ExitCode|int $exitCode = ExitCode::SUCCESS,
         Message ...$messages
-    ): FileOutput {
-        return new \Valkyrja\Cli\Interaction\Output\FileOutput(
+    ): FileOutputContract {
+        return new FileOutput(
             $filepath,
             $this->config->isInteractive,
             $this->config->isQuiet,
@@ -114,8 +119,8 @@ class OutputFactory implements Contract
         $stream,
         ExitCode|int $exitCode = ExitCode::SUCCESS,
         Message ...$messages
-    ): StreamOutput {
-        return new \Valkyrja\Cli\Interaction\Output\StreamOutput(
+    ): StreamOutputContract {
+        return new StreamOutput(
             $stream,
             $this->config->isInteractive,
             $this->config->isQuiet,

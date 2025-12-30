@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
+use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler as Contract;
 
 /**
  * Class InputReceivedHandler.
@@ -25,7 +26,7 @@ use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
  *
  * @extends Handler<InputReceivedMiddleware>
  */
-class InputReceivedHandler extends Handler implements Contract\InputReceivedHandler
+class InputReceivedHandler extends Handler implements Contract
 {
     /**
      * @inheritDoc

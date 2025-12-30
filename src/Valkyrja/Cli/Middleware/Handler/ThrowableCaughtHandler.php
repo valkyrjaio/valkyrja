@@ -18,6 +18,7 @@ use Throwable;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
+use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler as Contract;
 
 /**
  * Class ExceptionHandler.
@@ -26,7 +27,7 @@ use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
  *
  * @extends Handler<ThrowableCaughtMiddleware>
  */
-class ThrowableCaughtHandler extends Handler implements Contract\ThrowableCaughtHandler
+class ThrowableCaughtHandler extends Handler implements Contract
 {
     /**
      * @inheritDoc

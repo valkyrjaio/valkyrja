@@ -16,7 +16,8 @@ namespace Valkyrja\Cli\Routing\Dispatcher;
 use Override;
 use Valkyrja\Cli\Command\HelpCommand;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
+use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory as OutputFactoryContract;
+use Valkyrja\Cli\Interaction\Factory\OutputFactory;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Message\Banner;
@@ -27,19 +28,27 @@ use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\Cli\Routing\Collection\Contract\Collection;
+use Valkyrja\Cli\Middleware\Handler\CommandDispatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\CommandMatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\CommandNotMatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler as CommandDispatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandler as CommandMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandler as CommandNotMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler as ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler as ThrowableCaughtHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
+use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
+use Valkyrja\Cli\Routing\Collection\Collection;
+use Valkyrja\Cli\Routing\Collection\Contract\Collection as CollectionContract;
 use Valkyrja\Cli\Routing\Data\Contract\Route;
 use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
 use Valkyrja\Cli\Routing\Dispatcher\Contract\Router as Contract;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
-use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher;
+use Valkyrja\Container\Manager\Container;
+use Valkyrja\Container\Manager\Contract\Container as ContainerContract;
+use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher as DispatcherContract;
+use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 
 use function in_array;
 
@@ -51,15 +60,15 @@ use function in_array;
 class Router implements Contract
 {
     public function __construct(
-        protected Container $container = new \Valkyrja\Container\Manager\Container(),
-        protected Dispatcher $dispatcher = new \Valkyrja\Dispatch\Dispatcher\Dispatcher(),
-        protected Collection $collection = new \Valkyrja\Cli\Routing\Collection\Collection(),
-        protected OutputFactory $outputFactory = new \Valkyrja\Cli\Interaction\Factory\OutputFactory(),
-        protected ThrowableCaughtHandler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),
-        protected CommandMatchedHandler $commandMatchedHandler = new Middleware\Handler\CommandMatchedHandler(),
-        protected CommandNotMatchedHandler $commandNotMatchedHandler = new Middleware\Handler\CommandNotMatchedHandler(),
-        protected CommandDispatchedHandler $commandDispatchedHandler = new Middleware\Handler\CommandDispatchedHandler(),
-        protected ExitedHandler $exitedHandler = new Middleware\Handler\ExitedHandler(),
+        protected ContainerContract $container = new Container(),
+        protected DispatcherContract $dispatcher = new Dispatcher(),
+        protected CollectionContract $collection = new Collection(),
+        protected OutputFactoryContract $outputFactory = new OutputFactory(),
+        protected ThrowableCaughtHandlerContract $throwableCaughtHandler = new ThrowableCaughtHandler(),
+        protected CommandMatchedHandlerContract $commandMatchedHandler = new CommandMatchedHandler(),
+        protected CommandNotMatchedHandlerContract $commandNotMatchedHandler = new CommandNotMatchedHandler(),
+        protected CommandDispatchedHandlerContract $commandDispatchedHandler = new CommandDispatchedHandler(),
+        protected ExitedHandlerContract $exitedHandler = new ExitedHandler(),
     ) {
     }
 

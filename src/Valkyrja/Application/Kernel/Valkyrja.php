@@ -22,6 +22,7 @@ use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Application\Throwable\Exception\RuntimeException;
 use Valkyrja\Cli\Routing\Data\Data as CliData;
 use Valkyrja\Container\Data\Data as ContainerData;
+use Valkyrja\Container\Manager\Container as ContainerManager;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Event\Data\Data as EventData;
 use Valkyrja\Http\Routing\Data\Data as HttpData;
@@ -362,7 +363,7 @@ class Valkyrja implements Application
      */
     protected function bootstrapContainer(): void
     {
-        $container = new \Valkyrja\Container\Manager\Container();
+        $container = new ContainerManager();
 
         $this->setContainer($container);
     }

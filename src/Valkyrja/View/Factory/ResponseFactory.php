@@ -15,7 +15,8 @@ namespace Valkyrja\View\Factory;
 
 use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactory;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactoryContract;
+use Valkyrja\Http\Message\Factory\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\View\Factory\Contract\ResponseFactory as Contract;
 use Valkyrja\View\Renderer\Contract\Renderer;
@@ -29,7 +30,7 @@ use Valkyrja\View\Renderer\PhpRenderer;
 class ResponseFactory implements Contract
 {
     public function __construct(
-        protected HttpMessageResponseFactory $responseFactory = new \Valkyrja\Http\Message\Factory\ResponseFactory(),
+        protected HttpMessageResponseFactoryContract $responseFactory = new HttpMessageResponseFactory(),
         protected Renderer $renderer = new PhpRenderer('resources/views')
     ) {
     }

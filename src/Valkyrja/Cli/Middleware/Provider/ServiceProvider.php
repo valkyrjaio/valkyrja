@@ -21,13 +21,18 @@ use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Cli\Middleware\Handler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
+use Valkyrja\Cli\Middleware\Handler\CommandDispatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\CommandMatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\CommandNotMatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler as CommandDispatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandler as CommandMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandler as CommandNotMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler as ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler as InputReceivedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler as ThrowableCaughtHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
+use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
+use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;
 
@@ -45,12 +50,12 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            InputReceivedHandler::class     => [self::class, 'publishInputReceivedHandler'],
-            ThrowableCaughtHandler::class   => [self::class, 'publishThrowableCaughtHandler'],
-            CommandMatchedHandler::class    => [self::class, 'publishCommandMatchedHandler'],
-            CommandNotMatchedHandler::class => [self::class, 'publishCommandNotMatchedHandler'],
-            CommandDispatchedHandler::class => [self::class, 'publishCommandDispatchedHandler'],
-            ExitedHandler::class            => [self::class, 'publishExitedHandler'],
+            InputReceivedHandlerContract::class     => [self::class, 'publishInputReceivedHandler'],
+            ThrowableCaughtHandlerContract::class   => [self::class, 'publishThrowableCaughtHandler'],
+            CommandMatchedHandlerContract::class    => [self::class, 'publishCommandMatchedHandler'],
+            CommandNotMatchedHandlerContract::class => [self::class, 'publishCommandNotMatchedHandler'],
+            CommandDispatchedHandlerContract::class => [self::class, 'publishCommandDispatchedHandler'],
+            ExitedHandlerContract::class            => [self::class, 'publishExitedHandler'],
         ];
     }
 
@@ -61,12 +66,12 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            InputReceivedHandler::class,
-            CommandDispatchedHandler::class,
-            ThrowableCaughtHandler::class,
-            CommandMatchedHandler::class,
-            CommandNotMatchedHandler::class,
-            ExitedHandler::class,
+            InputReceivedHandlerContract::class,
+            CommandDispatchedHandlerContract::class,
+            ThrowableCaughtHandlerContract::class,
+            CommandMatchedHandlerContract::class,
+            CommandNotMatchedHandlerContract::class,
+            ExitedHandlerContract::class,
         ];
     }
 
@@ -84,8 +89,8 @@ final class ServiceProvider extends Provider
         $middleware = $env::CLI_MIDDLEWARE_INPUT_RECEIVED;
 
         $container->setSingleton(
-            InputReceivedHandler::class,
-            $handler = new Handler\InputReceivedHandler($container)
+            InputReceivedHandlerContract::class,
+            $handler = new InputReceivedHandler($container)
         );
 
         $handler->add(...$middleware);
@@ -105,8 +110,8 @@ final class ServiceProvider extends Provider
         $middleware = $env::CLI_MIDDLEWARE_COMMAND_DISPATCHED;
 
         $container->setSingleton(
-            CommandDispatchedHandler::class,
-            $handler = new Handler\CommandDispatchedHandler($container)
+            CommandDispatchedHandlerContract::class,
+            $handler = new CommandDispatchedHandler($container)
         );
 
         $handler->add(...$middleware);
@@ -126,8 +131,8 @@ final class ServiceProvider extends Provider
         $middleware = $env::CLI_MIDDLEWARE_THROWABLE_CAUGHT;
 
         $container->setSingleton(
-            ThrowableCaughtHandler::class,
-            $handler = new Handler\ThrowableCaughtHandler($container)
+            ThrowableCaughtHandlerContract::class,
+            $handler = new ThrowableCaughtHandler($container)
         );
 
         $handler->add(...$middleware);
@@ -147,8 +152,8 @@ final class ServiceProvider extends Provider
         $middleware = $env::CLI_MIDDLEWARE_COMMAND_MATCHED;
 
         $container->setSingleton(
-            CommandMatchedHandler::class,
-            $handler = new Handler\CommandMatchedHandler($container)
+            CommandMatchedHandlerContract::class,
+            $handler = new CommandMatchedHandler($container)
         );
 
         $handler->add(...$middleware);
@@ -168,8 +173,8 @@ final class ServiceProvider extends Provider
         $middleware = $env::CLI_MIDDLEWARE_COMMAND_NOT_MATCHED;
 
         $container->setSingleton(
-            CommandNotMatchedHandler::class,
-            $handler = new Handler\CommandNotMatchedHandler($container)
+            CommandNotMatchedHandlerContract::class,
+            $handler = new CommandNotMatchedHandler($container)
         );
 
         $handler->add(...$middleware);
@@ -189,8 +194,8 @@ final class ServiceProvider extends Provider
         $middleware = $env::CLI_MIDDLEWARE_EXITED;
 
         $container->setSingleton(
-            ExitedHandler::class,
-            $handler = new Handler\ExitedHandler($container)
+            ExitedHandlerContract::class,
+            $handler = new ExitedHandler($container)
         );
 
         $handler->add(...$middleware);

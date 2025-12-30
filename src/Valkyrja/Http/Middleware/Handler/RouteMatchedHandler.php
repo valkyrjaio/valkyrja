@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler as Contract;
 use Valkyrja\Http\Routing\Data\Contract\Route;
 
 /**
@@ -26,7 +27,7 @@ use Valkyrja\Http\Routing\Data\Contract\Route;
  *
  * @extends Handler<RouteMatchedMiddleware>
  */
-class RouteMatchedHandler extends Handler implements Contract\RouteMatchedHandler
+class RouteMatchedHandler extends Handler implements Contract
 {
     /**
      * @inheritDoc

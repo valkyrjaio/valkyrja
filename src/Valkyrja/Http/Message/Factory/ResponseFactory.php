@@ -17,10 +17,14 @@ use JsonException;
 use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as Contract;
-use Valkyrja\Http\Message\Response\Contract\JsonResponse;
-use Valkyrja\Http\Message\Response\Contract\RedirectResponse;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Message\Response\Contract\TextResponse;
+use Valkyrja\Http\Message\Response\Contract\JsonResponse as JsonResponseContract;
+use Valkyrja\Http\Message\Response\Contract\RedirectResponse as RedirectResponseContract;
+use Valkyrja\Http\Message\Response\Contract\Response as ResponseContract;
+use Valkyrja\Http\Message\Response\Contract\TextResponse as TextResponseContract;
+use Valkyrja\Http\Message\Response\JsonResponse;
+use Valkyrja\Http\Message\Response\RedirectResponse;
+use Valkyrja\Http\Message\Response\Response;
+use Valkyrja\Http\Message\Response\TextResponse;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Uri;
 
@@ -39,8 +43,8 @@ class ResponseFactory implements Contract
         string|null $content = null,
         StatusCode|null $statusCode = null,
         array|null $headers = null
-    ): Response {
-        return \Valkyrja\Http\Message\Response\Response::create(
+    ): ResponseContract {
+        return Response::create(
             content: $content,
             statusCode: $statusCode,
             headers: $headers
@@ -55,8 +59,8 @@ class ResponseFactory implements Contract
         string|null $content = null,
         StatusCode|null $statusCode = null,
         array|null $headers = null
-    ): TextResponse {
-        return \Valkyrja\Http\Message\Response\TextResponse::create(
+    ): TextResponseContract {
+        return TextResponse::create(
             content: $content,
             statusCode: $statusCode,
             headers: $headers
@@ -73,8 +77,8 @@ class ResponseFactory implements Contract
         array|null $data = null,
         StatusCode|null $statusCode = null,
         array|null $headers = null
-    ): JsonResponse {
-        return \Valkyrja\Http\Message\Response\JsonResponse::createFromData(
+    ): JsonResponseContract {
+        return JsonResponse::createFromData(
             data: $data,
             statusCode: $statusCode,
             headers: $headers
@@ -93,7 +97,7 @@ class ResponseFactory implements Contract
         array|null $data = null,
         StatusCode|null $statusCode = null,
         array|null $headers = null
-    ): JsonResponse {
+    ): JsonResponseContract {
         return $this->createJsonResponse($data, $statusCode, $headers)->withCallback($callback);
     }
 
@@ -105,8 +109,8 @@ class ResponseFactory implements Contract
         string|null $uri = null,
         StatusCode|null $statusCode = null,
         array|null $headers = null
-    ): RedirectResponse {
-        return \Valkyrja\Http\Message\Response\RedirectResponse::createFromUri(
+    ): RedirectResponseContract {
+        return RedirectResponse::createFromUri(
             uri: Uri::fromString($uri ?? '/'),
             statusCode: $statusCode,
             headers: $headers

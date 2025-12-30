@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Mail\Throwable\Exception;
 
 use Valkyrja\Mail\Throwable\Contract\Throwable;
+use Valkyrja\Throwable\Exception\RuntimeException as ThrowableRuntimeException;
 
 /**
  * Class RuntimeException.
  *
  * @author Melech Mizrachi
  */
-class RuntimeException extends \Valkyrja\Throwable\Exception\RuntimeException implements Throwable
+class RuntimeException extends ThrowableRuntimeException implements Throwable
 {
 }

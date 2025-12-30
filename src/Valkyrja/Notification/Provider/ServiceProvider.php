@@ -20,7 +20,8 @@ use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Mail\Mailer\Contract\Mailer;
 use Valkyrja\Notification\Factory\ContainerFactory;
 use Valkyrja\Notification\Factory\Contract\Factory;
-use Valkyrja\Notification\Notifier\Contract\Notifier;
+use Valkyrja\Notification\Notifier\Contract\Notifier as NotifierContract;
+use Valkyrja\Notification\Notifier\Notifier;
 use Valkyrja\Sms\Messenger\Contract\Messenger;
 
 /**
@@ -37,8 +38,8 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Notifier::class => [self::class, 'publishNotifier'],
-            Factory::class  => [self::class, 'publishFactory'],
+            NotifierContract::class => [self::class, 'publishNotifier'],
+            Factory::class          => [self::class, 'publishFactory'],
         ];
     }
 
@@ -49,7 +50,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Notifier::class,
+            NotifierContract::class,
             Factory::class,
         ];
     }
@@ -64,8 +65,8 @@ final class ServiceProvider extends Provider
     public static function publishNotifier(Container $container): void
     {
         $container->setSingleton(
-            Notifier::class,
-            new \Valkyrja\Notification\Notifier\Notifier(
+            NotifierContract::class,
+            new Notifier(
                 $container->getSingleton(Factory::class),
                 $container->getSingleton(Broadcaster::class),
                 $container->getSingleton(Mailer::class),

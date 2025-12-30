@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
+use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler as Contract;
 
 /**
  * Class ExitedHandler.
@@ -25,7 +26,7 @@ use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
  *
  * @extends Handler<ExitedMiddleware>
  */
-class ExitedHandler extends Handler implements Contract\ExitedHandler
+class ExitedHandler extends Handler implements Contract
 {
     /**
      * @inheritDoc

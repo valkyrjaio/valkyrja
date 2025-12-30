@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler as Contract;
 use Valkyrja\Cli\Routing\Data\Contract\Route;
 
 /**
@@ -26,7 +27,7 @@ use Valkyrja\Cli\Routing\Data\Contract\Route;
  *
  * @extends Handler<CommandDispatchedMiddleware>
  */
-class CommandDispatchedHandler extends Handler implements Contract\CommandDispatchedHandler
+class CommandDispatchedHandler extends Handler implements Contract
 {
     /**
      * @inheritDoc

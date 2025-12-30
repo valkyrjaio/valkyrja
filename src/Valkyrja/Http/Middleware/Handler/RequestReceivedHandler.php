@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
+use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler as Contract;
 
 /**
  * Class RequestReceivedHandler.
@@ -25,7 +26,7 @@ use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
  *
  * @extends Handler<RequestReceivedMiddleware>
  */
-class RequestReceivedHandler extends Handler implements Contract\RequestReceivedHandler
+class RequestReceivedHandler extends Handler implements Contract
 {
     /**
      * @inheritDoc

@@ -20,7 +20,9 @@ use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Cli\Middleware\Handler\Contract\Handler as Contract;
+use Valkyrja\Container\Manager\Container;
+use Valkyrja\Container\Manager\Contract\Container as ContainerContract;
 
 use function array_merge;
 
@@ -34,9 +36,9 @@ use function array_merge;
  *
  * @template Middleware of InputReceivedMiddleware|CommandMatchedMiddleware|CommandNotMatchedMiddleware|CommandDispatchedMiddleware|ThrowableCaughtMiddleware|ExitedMiddleware
  *
- * @implements Contract\Handler<Middleware>
+ * @implements Contract<Middleware>
  */
-abstract class Handler implements Contract\Handler
+abstract class Handler implements Contract
 {
     /** @var array<array-key, class-string<Middleware>> */
     protected array $middleware = [];
@@ -49,7 +51,7 @@ abstract class Handler implements Contract\Handler
      * @param class-string<Middleware> ...$middleware The middleware
      */
     public function __construct(
-        protected Container $container = new \Valkyrja\Container\Manager\Container(),
+        protected ContainerContract $container = new Container(),
         string ...$middleware,
     ) {
         $this->middleware = $middleware;

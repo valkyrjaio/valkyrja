@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Middleware\Handler;
 
 use Override;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Container;
+use Valkyrja\Container\Manager\Contract\Container as ContainerContract;
 use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
@@ -22,6 +23,7 @@ use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
+use Valkyrja\Http\Middleware\Handler\Contract\Handler as Contract;
 
 use function array_merge;
 
@@ -35,9 +37,9 @@ use function array_merge;
  *
  * @template Middleware of RequestReceivedMiddleware|SendingResponseMiddleware|RouteMatchedMiddleware|RouteNotMatchedMiddleware|RouteDispatchedMiddleware|ThrowableCaughtMiddleware|TerminatedMiddleware
  *
- * @implements Contract\Handler<Middleware>
+ * @implements Contract<Middleware>
  */
-abstract class Handler implements Contract\Handler
+abstract class Handler implements Contract
 {
     /** @var array<array-key, class-string<Middleware>> */
     protected array $middleware = [];
@@ -50,7 +52,7 @@ abstract class Handler implements Contract\Handler
      * @param class-string<Middleware> ...$middleware The middleware
      */
     public function __construct(
-        protected Container $container = new \Valkyrja\Container\Manager\Container(),
+        protected ContainerContract $container = new Container(),
         string ...$middleware,
     ) {
         $this->middleware = $middleware;

@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Middleware\Throwable\Exception;
 
 use Valkyrja\Http\Middleware\Throwable\Contract\Throwable;
+use Valkyrja\Http\Throwable\Exception\RuntimeException as HttpRuntimeException;
 
 /**
  * Class RuntimeException.
  *
  * @author Melech Mizrachi
  */
-class RuntimeException extends \Valkyrja\Http\Throwable\Exception\RuntimeException implements Throwable
+class RuntimeException extends HttpRuntimeException implements Throwable
 {
 }

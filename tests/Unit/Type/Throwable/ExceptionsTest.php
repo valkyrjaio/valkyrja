@@ -16,8 +16,8 @@ namespace Valkyrja\Tests\Unit\Type\Throwable;
 use Throwable as PHPThrowable;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Throwable\Contract\Throwable as ValkyrjaThrowable;
-use Valkyrja\Throwable\Exception\InvalidArgumentException as ValkyrjaInvalidArgumentException;
-use Valkyrja\Throwable\Exception\RuntimeException as ValkyrjaRuntimeException;
+use Valkyrja\Throwable\Exception\InvalidArgumentException as ThrowableInvalidArgumentException;
+use Valkyrja\Throwable\Exception\RuntimeException as ThrowableRuntimeException;
 use Valkyrja\Type\BuiltIn\Throwable\Contract\ClassThrowable;
 use Valkyrja\Type\BuiltIn\Throwable\Exception\InvalidClassPropertyProvidedException;
 use Valkyrja\Type\BuiltIn\Throwable\Exception\InvalidClassProvidedException;
@@ -80,13 +80,13 @@ class ExceptionsTest extends TestCase
     public function testInvalidArgumentException(): void
     {
         self::isA(Throwable::class, InvalidArgumentException::class);
-        self::isA(ValkyrjaInvalidArgumentException::class, InvalidArgumentException::class);
+        self::isA(ThrowableInvalidArgumentException::class, InvalidArgumentException::class);
     }
 
     public function testRuntimeException(): void
     {
         self::isA(Throwable::class, RuntimeException::class);
-        self::isA(ValkyrjaRuntimeException::class, RuntimeException::class);
+        self::isA(ThrowableRuntimeException::class, RuntimeException::class);
     }
 
     public function testInvalidClassPropertyProvidedException(): void

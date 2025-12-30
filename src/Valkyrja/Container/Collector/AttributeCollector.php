@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Collector;
 
 use Override;
-use Valkyrja\Attribute\Collector\Contract\Collector;
+use Valkyrja\Attribute\Collector\Collector;
+use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
 use Valkyrja\Container\Attribute\Alias;
 use Valkyrja\Container\Attribute\Service;
-use Valkyrja\Container\Attribute\Service as ServiceAttribute;
 use Valkyrja\Container\Collector\Contract\Collector as Contract;
 
 /**
@@ -31,7 +31,7 @@ class AttributeCollector implements Contract
      * AttributeCollector constructor.
      */
     public function __construct(
-        protected Collector $attributes = new \Valkyrja\Attribute\Collector\Collector()
+        protected AttributeCollectorContract $attributes = new Collector()
     ) {
     }
 
@@ -45,7 +45,7 @@ class AttributeCollector implements Contract
     #[Override]
     public function getServices(string ...$classes): array
     {
-        return $this->getAttributesByType(ServiceAttribute::class, ...$classes);
+        return $this->getAttributesByType(Service::class, ...$classes);
     }
 
     /**
@@ -62,7 +62,7 @@ class AttributeCollector implements Contract
     }
 
     /**
-     * @template T of ServiceAttribute|Alias
+     * @template T of Service|Alias
      *
      * @param class-string<T> $attributeClass The attribute class name
      * @param class-string    ...$classes     The classes

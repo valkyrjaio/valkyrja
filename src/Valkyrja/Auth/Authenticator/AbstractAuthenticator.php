@@ -15,8 +15,8 @@ namespace Valkyrja\Auth\Authenticator;
 
 use Override;
 use Valkyrja\Auth\Authenticator\Contract\Authenticator as Contract;
-use Valkyrja\Auth\Data;
 use Valkyrja\Auth\Data\Attempt\Contract\AuthenticationAttempt;
+use Valkyrja\Auth\Data\AuthenticatedUsers as AuthenticatedUsersData;
 use Valkyrja\Auth\Data\Contract\AuthenticatedUsers;
 use Valkyrja\Auth\Data\Retrieval\RetrievalById;
 use Valkyrja\Auth\Entity\Contract\User;
@@ -48,7 +48,7 @@ abstract class AbstractAuthenticator implements Contract
         protected Store $store,
         protected PasswordHasher $hasher,
         protected string $entity,
-        protected AuthenticatedUsers $authenticatedUsers = new Data\AuthenticatedUsers(),
+        protected AuthenticatedUsers $authenticatedUsers = new AuthenticatedUsersData(),
     ) {
     }
 
