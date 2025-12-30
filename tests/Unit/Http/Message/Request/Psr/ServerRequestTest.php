@@ -69,7 +69,7 @@ class ServerRequestTest extends TestCase
             new UploadedFile(file: 'test'),
             new UploadedFile(file: 'test'),
         ];
-        $request       = (new ServerRequest())->withUploadedFiles($uploadedFiles);
+        $request       = new ServerRequest()->withUploadedFiles($uploadedFiles);
         $psrRequest    = new PsrServerRequest($request);
 
         $uploadedFiles2 = [
@@ -92,7 +92,7 @@ class ServerRequestTest extends TestCase
             new UploadedFile(file: 'test'),
             new stdClass(),
         ];
-        $request       = (new ServerRequest())->withUploadedFiles($uploadedFiles);
+        $request       = new ServerRequest()->withUploadedFiles($uploadedFiles);
         $psrRequest    = new PsrServerRequest($request);
 
         $psrRequest->getUploadedFiles();
@@ -116,7 +116,7 @@ class ServerRequestTest extends TestCase
     public function testAttributes(): void
     {
         $attributes = ['test' => 'value'];
-        $request    = (new ServerRequest())->withAttribute('test', 'value');
+        $request    = new ServerRequest()->withAttribute('test', 'value');
         $psrRequest = new PsrServerRequest($request);
 
         $attributes2 = ['test2' => 'value2'];

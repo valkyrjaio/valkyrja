@@ -24,37 +24,37 @@ class UploadErrorExceptionTest extends TestCase
     {
         self::assertSame(
             UploadErrorException::INI_SIZE_MESSAGE,
-            (new UploadErrorException(UploadError::INI_SIZE))->getMessage()
+            new UploadErrorException(UploadError::INI_SIZE)->getMessage()
         );
 
         self::assertSame(
             UploadErrorException::FORM_SIZE_MESSAGE,
-            (new UploadErrorException(UploadError::FORM_SIZE))->getMessage()
+            new UploadErrorException(UploadError::FORM_SIZE)->getMessage()
         );
 
         self::assertSame(
             UploadErrorException::PARTIAL_MESSAGE,
-            (new UploadErrorException(UploadError::PARTIAL))->getMessage()
+            new UploadErrorException(UploadError::PARTIAL)->getMessage()
         );
 
         self::assertSame(
             UploadErrorException::NO_FILE_MESSAGE,
-            (new UploadErrorException(UploadError::NO_FILE))->getMessage()
+            new UploadErrorException(UploadError::NO_FILE)->getMessage()
         );
 
         self::assertSame(
             UploadErrorException::NO_TMP_DIR_MESSAGE,
-            (new UploadErrorException(UploadError::NO_TMP_DIR))->getMessage()
+            new UploadErrorException(UploadError::NO_TMP_DIR)->getMessage()
         );
 
         self::assertSame(
             UploadErrorException::CANT_WRITE_MESSAGE,
-            (new UploadErrorException(UploadError::CANT_WRITE))->getMessage()
+            new UploadErrorException(UploadError::CANT_WRITE)->getMessage()
         );
 
         self::assertSame(
             UploadErrorException::EXTENSION_MESSAGE,
-            (new UploadErrorException(UploadError::EXTENSION))->getMessage()
+            new UploadErrorException(UploadError::EXTENSION)->getMessage()
         );
     }
 

@@ -29,7 +29,7 @@ class EmptyOutputTest extends TestCase
         $text    = 'text';
         $message = new Message($text);
 
-        $output = (new EmptyOutput())
+        $output = new EmptyOutput()
             ->withAddedMessage($message);
 
         ob_start();

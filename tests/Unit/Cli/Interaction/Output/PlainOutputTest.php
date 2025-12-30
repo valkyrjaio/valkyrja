@@ -29,7 +29,7 @@ class PlainOutputTest extends TestCase
         $text    = 'text';
         $message = new SuccessMessage($text);
 
-        $output = (new PlainOutput())
+        $output = new PlainOutput()
             ->withAddedMessage($message);
 
         ob_start();

@@ -128,7 +128,7 @@ final class ServiceProvider extends Provider
 
         $container->setSingleton(
             HttpClientConfigurator::class,
-            (new HttpClientConfigurator())
+            new HttpClientConfigurator()
                 ->setApiKey($apiKey)
                 ->setHttpClient(new Client())
         );
