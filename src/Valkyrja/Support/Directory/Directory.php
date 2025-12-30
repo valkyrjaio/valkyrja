@@ -23,40 +23,46 @@ class Directory
     /**
      * Directory separator.
      *
-     * @var string
+     * @var non-empty-string
      */
     public const string DIRECTORY_SEPARATOR = '/';
 
     /**
      * Base directory path.
      *
-     * @var string
+     * @var non-empty-string
      */
-    public static string $BASE_PATH = '';
+    public static string $BASE_PATH = __DIR__;
 
-    /**
-     * Various paths for the application.
-     *
-     * @var string
-     */
-    public static string $APP_PATH               = 'app';
-    public static string $CONFIG_PATH            = 'config';
-    public static string $ENV_PATH               = 'env';
-    public static string $PUBLIC_PATH            = 'public';
-    public static string $RESOURCES_PATH         = 'resources';
-    public static string $STORAGE_PATH           = 'storage';
+    /** @var non-empty-string */
+    public static string $APP_PATH = 'app';
+    /** @var non-empty-string */
+    public static string $CONFIG_PATH = 'config';
+    /** @var non-empty-string */
+    public static string $ENV_PATH = 'env';
+    /** @var non-empty-string */
+    public static string $PUBLIC_PATH = 'public';
+    /** @var non-empty-string */
+    public static string $RESOURCES_PATH = 'resources';
+    /** @var non-empty-string */
+    public static string $STORAGE_PATH = 'storage';
+    /** @var non-empty-string */
     public static string $FRAMEWORK_STORAGE_PATH = 'framework';
-    public static string $LOGS_STORAGE_PATH      = 'logs';
-    public static string $CACHE_PATH             = 'cache';
-    public static string $TESTS_PATH             = 'tests';
-    public static string $VENDOR_PATH            = 'vendor';
+    /** @var non-empty-string */
+    public static string $LOGS_STORAGE_PATH = 'logs';
+    /** @var non-empty-string */
+    public static string $CACHE_PATH = 'cache';
+    /** @var non-empty-string */
+    public static string $TESTS_PATH = 'tests';
+    /** @var non-empty-string */
+    public static string $VENDOR_PATH = 'vendor';
 
     /**
      * Get the app directory for the application.
      *
-     * @param string|null $path [optional] The path to append
+     * @param non-empty-string|null $path [optional] The path to append
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function appPath(string|null $path = null): string
     {
@@ -66,9 +72,9 @@ class Directory
     /**
      * Get the base directory for the application.
      *
-     * @param string|null $path [optional] The path to append
+     * @param non-empty-string|null $path [optional] The path to append
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function basePath(string|null $path = null): string
     {
@@ -92,9 +98,9 @@ class Directory
     /**
      * Get the config directory for the application.
      *
-     * @param string|null $path [optional] The path to append
+     * @param non-empty-string|null $path [optional] The path to append
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function configPath(string|null $path = null): string
     {
@@ -104,9 +110,9 @@ class Directory
     /**
      * Get the env directory for the application.
      *
-     * @param string|null $path [optional] The path to append
+     * @param non-empty-string|null $path [optional] The path to append
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function envPath(string|null $path = null): string
     {
@@ -116,9 +122,9 @@ class Directory
     /**
      * Get the public directory for the application.
      *
-     * @param string|null $path [optional] The path to append
+     * @param non-empty-string|null $path [optional] The path to append
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function publicPath(string|null $path = null): string
     {
@@ -128,9 +134,9 @@ class Directory
     /**
      * Get the resources directory for the application.
      *
-     * @param string|null $path [optional] The path to append
+     * @param non-empty-string|null $path [optional] The path to append
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function resourcesPath(string|null $path = null): string
     {
@@ -140,9 +146,9 @@ class Directory
     /**
      * Get the storage directory for the application.
      *
-     * @param string|null $path [optional] The path to append
+     * @param non-empty-string|null $path [optional] The path to append
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function storagePath(string|null $path = null): string
     {
@@ -152,9 +158,9 @@ class Directory
     /**
      * Get the framework storage directory for the application.
      *
-     * @param string|null $path [optional] The path to append
+     * @param non-empty-string|null $path [optional] The path to append
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function frameworkStoragePath(string|null $path = null): string
     {
@@ -164,9 +170,9 @@ class Directory
     /**
      * Get the logs storage directory for the application.
      *
-     * @param string|null $path [optional] The path to append
+     * @param non-empty-string|null $path [optional] The path to append
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function logsStoragePath(string|null $path = null): string
     {
@@ -176,9 +182,9 @@ class Directory
     /**
      * Get the cache directory for the application.
      *
-     * @param string|null $path [optional] The path to append
+     * @param non-empty-string|null $path [optional] The path to append
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function cachePath(string|null $path = null): string
     {
@@ -188,9 +194,9 @@ class Directory
     /**
      * Get the tests directory for the application.
      *
-     * @param string|null $path [optional] The path to append
+     * @param non-empty-string|null $path [optional] The path to append
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function testsPath(string|null $path = null): string
     {
@@ -200,9 +206,9 @@ class Directory
     /**
      * Get the vendor directory for the application.
      *
-     * @param string|null $path [optional] The path to append
+     * @param non-empty-string|null $path [optional] The path to append
      *
-     * @return string
+     * @return non-empty-string
      */
     public static function vendorPath(string|null $path = null): string
     {

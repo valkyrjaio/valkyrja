@@ -21,6 +21,7 @@ use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Routing\Attribute\Route as RouteAttribute;
+use Valkyrja\Support\Directory\Directory;
 
 /**
  * Class ClearCacheCommand.
@@ -36,12 +37,13 @@ class ClearCacheCommand
     )]
     public function run(Env $env, OutputFactory $outputFactory): Output
     {
-        /** @var non-empty-string $cacheFilePath */
-        $cacheFilePath = $env::APP_CACHE_FILE_PATH;
+        /** @var non-empty-string $cacheFilepath */
+        $cacheFilepath = $env::APP_CACHE_FILE_PATH;
+        $cacheFilename = Directory::basePath($cacheFilepath);
 
         // If the cache file already exists, delete it
-        if (is_file($cacheFilePath)) {
-            @unlink($cacheFilePath);
+        if (is_file($cacheFilename)) {
+            @unlink($cacheFilename);
         }
 
         return $outputFactory

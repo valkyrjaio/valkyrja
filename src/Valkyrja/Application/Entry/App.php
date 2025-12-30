@@ -133,9 +133,10 @@ abstract class App
     {
         /** @var non-empty-string $cacheFilepath */
         $cacheFilepath = $env::APP_CACHE_FILE_PATH;
+        $cacheFilename = Directory::basePath($cacheFilepath);
 
-        if (is_file($cacheFilepath)) {
-            $configData = static::getData(cacheFilePath: $cacheFilepath);
+        if (is_file(filename: $cacheFilename)) {
+            $configData = static::getData(cacheFilename: $cacheFilename);
         } else {
             $configData = static::getConfig();
         }
@@ -154,11 +155,11 @@ abstract class App
     /**
      * Get the application data.
      *
-     * @param non-empty-string $cacheFilePath The cache file path
+     * @param non-empty-string $cacheFilename The cache file path
      */
-    protected static function getData(string $cacheFilePath): Data
+    protected static function getData(string $cacheFilename): Data
     {
-        $cache = file_get_contents($cacheFilePath);
+        $cache = file_get_contents(filename: $cacheFilename);
 
         if ($cache === false || $cache === '') {
             throw new RuntimeException('Error occurred when retrieving cache file contents');

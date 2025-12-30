@@ -99,9 +99,11 @@ class AppTest extends TestCase
      */
     public function testApp(): void
     {
+        App::directory(EnvClass::APP_DIR);
+
         $env = new class extends EnvClass {
             /** @var non-empty-string */
-            public const string APP_CACHE_FILE_PATH = EnvClass::APP_DIR . '/storage/AppTestConfigTest.php';
+            public const string APP_CACHE_FILE_PATH = '/storage/AppTestConfigTest.php';
         };
 
         $application = App::app($env);
@@ -119,13 +121,15 @@ class AppTest extends TestCase
      */
     public function testAppWithCache(): void
     {
+        App::directory(EnvClass::APP_DIR);
+
         $env  = new class extends EnvClass {
             /** @var non-empty-string */
-            public const string APP_CACHE_FILE_PATH = EnvClass::APP_DIR . '/storage/AppTestDataTest.php';
+            public const string APP_CACHE_FILE_PATH = '/storage/AppTestDataTest.php';
         };
         $data = new Data();
         /** @var non-empty-string $filepath */
-        $filepath = $env::APP_CACHE_FILE_PATH;
+        $filepath = EnvClass::APP_DIR . $env::APP_CACHE_FILE_PATH;
 
         file_put_contents($filepath, serialize($data), LOCK_EX);
 
@@ -153,12 +157,14 @@ class AppTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Error occurred when retrieving cache file contents');
 
+        App::directory(EnvClass::APP_DIR);
+
         $env = new class extends EnvClass {
             /** @var non-empty-string */
-            public const string APP_CACHE_FILE_PATH = EnvClass::APP_DIR . '/storage/AppTestDataTest.php';
+            public const string APP_CACHE_FILE_PATH = '/storage/AppTestDataTest.php';
         };
         /** @var non-empty-string $filepath */
-        $filepath = $env::APP_CACHE_FILE_PATH;
+        $filepath = EnvClass::APP_DIR . $env::APP_CACHE_FILE_PATH;
 
         file_put_contents($filepath, '', LOCK_EX);
 
@@ -175,12 +181,14 @@ class AppTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Invalid cache');
 
+        App::directory(EnvClass::APP_DIR);
+
         $env = new class extends EnvClass {
             /** @var non-empty-string */
-            public const string APP_CACHE_FILE_PATH = EnvClass::APP_DIR . '/storage/AppTestDataTest.php';
+            public const string APP_CACHE_FILE_PATH = '/storage/AppTestDataTest.php';
         };
         /** @var non-empty-string $filepath */
-        $filepath = $env::APP_CACHE_FILE_PATH;
+        $filepath = EnvClass::APP_DIR . $env::APP_CACHE_FILE_PATH;
 
         file_put_contents($filepath, serialize(new Config()), LOCK_EX);
 
@@ -195,6 +203,8 @@ class AppTest extends TestCase
 
     public function testHttp(): void
     {
+        App::directory(EnvClass::APP_DIR);
+
         self::$httpCalled = false;
 
         $_SERVER['REQUEST_URI'] = '/version';
@@ -203,12 +213,12 @@ class AppTest extends TestCase
             /** @var bool */
             public const bool APP_DEBUG_MODE = true;
             /** @var non-empty-string */
-            public const string APP_CACHE_FILE_PATH = EnvClass::APP_DIR . '/storage/AppTestHttp.php';
+            public const string APP_CACHE_FILE_PATH = '/storage/AppTestHttp.php';
         };
         /** @var non-empty-string $dir */
         $dir = $env::APP_DIR;
         /** @var non-empty-string $filepath */
-        $filepath = $env::APP_CACHE_FILE_PATH;
+        $filepath = EnvClass::APP_DIR . $env::APP_CACHE_FILE_PATH;
 
         $application = App::app($env);
         $container   = $application->getContainer();
@@ -241,6 +251,8 @@ class AppTest extends TestCase
 
     public function testCli(): void
     {
+        App::directory(EnvClass::APP_DIR);
+
         self::$cliCalled = false;
 
         Exiter::freeze();
@@ -252,12 +264,12 @@ class AppTest extends TestCase
 
         $env = new class extends EnvClass {
             /** @var non-empty-string */
-            public const string APP_CACHE_FILE_PATH = EnvClass::APP_DIR . '/storage/AppTestCli.php';
+            public const string APP_CACHE_FILE_PATH = '/storage/AppTestCli.php';
         };
         /** @var non-empty-string $dir */
         $dir = $env::APP_DIR;
         /** @var non-empty-string $filepath */
-        $filepath = $env::APP_CACHE_FILE_PATH;
+        $filepath = EnvClass::APP_DIR . $env::APP_CACHE_FILE_PATH;
 
         $application = App::app($env);
         $container   = $application->getContainer();
