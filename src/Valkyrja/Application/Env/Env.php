@@ -264,7 +264,7 @@ class Env
     /** @var class-string<FlysystemFilesystem> */
     public const string FLYSYSTEM_FILESYSTEM_DEFAULT = LocalFlysystemFilesystem::class;
     /** @var non-empty-string */
-    public const string FILESYSTEM_FLYSYSTEM_LOCAL_DIR = __DIR__ . '/../storage/app';
+    public const string FILESYSTEM_FLYSYSTEM_LOCAL_PATH = '/storage/app';
     /** @var non-empty-string */
     public const string FILESYSTEM_FLYSYSTEM_S3_KEY = 's3-key';
     /** @var non-empty-string */

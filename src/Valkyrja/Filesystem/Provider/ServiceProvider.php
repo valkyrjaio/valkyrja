@@ -27,6 +27,7 @@ use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
 use Valkyrja\Filesystem\Manager\LocalFlysystemFilesystem;
 use Valkyrja\Filesystem\Manager\NullFilesystem;
 use Valkyrja\Filesystem\Manager\S3FlysystemFilesystem;
+use Valkyrja\Support\Directory\Directory;
 
 /**
  * Class ServiceProvider.
@@ -122,13 +123,13 @@ final class ServiceProvider extends Provider
     public static function publishFlysystemLocalAdapter(Container $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var non-empty-string $dir */
-        $dir = $env::FILESYSTEM_FLYSYSTEM_LOCAL_DIR;
+        /** @var non-empty-string $path */
+        $path = $env::FILESYSTEM_FLYSYSTEM_LOCAL_PATH;
 
         $container->setSingleton(
             FlysystemLocalAdapter::class,
             new FlysystemLocalAdapter(
-                $dir
+                location: Directory::basePath(path: $path)
             )
         );
     }
