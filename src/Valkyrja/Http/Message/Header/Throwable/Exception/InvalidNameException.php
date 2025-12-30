@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Header\Throwable\Exception;
 
-use Valkyrja\Http\Message\Header\Throwable\Exception\InvalidArgumentException;
-
 /**
  * Class InvalidNameException.
  *

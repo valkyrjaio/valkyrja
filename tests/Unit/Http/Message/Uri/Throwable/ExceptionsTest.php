@@ -17,12 +17,12 @@ use Throwable as PHPThrowable;
 use Valkyrja\Http\Message\Throwable\Contract\Throwable as MessageThrowable;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException as MessageInvalidArgumentException;
 use Valkyrja\Http\Message\Throwable\Exception\RuntimeException as MessageRuntimeException;
+use Valkyrja\Http\Message\Uri\Throwable\Contract\Throwable;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidQueryException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\RuntimeException;
-use Valkyrja\Http\Message\Uri\Throwable\Contract\Throwable;
 use Valkyrja\Tests\Unit\TestCase;
 
 class ExceptionsTest extends TestCase

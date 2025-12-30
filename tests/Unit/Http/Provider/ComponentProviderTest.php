@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Provider;
 
 use Valkyrja\Http\Client\Provider\ServiceProvider as ClientServiceProvider;
-use Valkyrja\Http\Provider\ComponentProvider;
 use Valkyrja\Http\Message\Provider\ServiceProvider as MessageServiceProvider;
 use Valkyrja\Http\Middleware\Provider\ServiceProvider as MiddlewareServiceProvider;
+use Valkyrja\Http\Provider\ComponentProvider;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 use Valkyrja\Http\Routing\Provider\ServiceProvider as RoutingServiceProvider;
 use Valkyrja\Http\Server\Provider\ServiceProvider as ServerServiceProvider;

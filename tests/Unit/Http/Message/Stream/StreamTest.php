@@ -15,6 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Message\Stream;
 
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
+use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidLengthException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\NoStreamAvailableException;
@@ -25,7 +26,6 @@ use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamWriteException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\UnreadableStreamException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\UnseekableStreamException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\UnwritableStreamException;
-use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Tests\Classes\Http\Message\Stream\FalseFstatStreamClass;
 use Valkyrja\Tests\Classes\Http\Message\Stream\StreamReadExceptionClass;
 use Valkyrja\Tests\Classes\Http\Message\Stream\StreamSeekExceptionClass;

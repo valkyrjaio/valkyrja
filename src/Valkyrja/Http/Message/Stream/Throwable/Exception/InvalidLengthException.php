@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Stream\Throwable\Exception;
 
-use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidArgumentException;
-
 /**
  * Class InvalidLengthException.
  *

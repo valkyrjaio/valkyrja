@@ -23,8 +23,8 @@ use Valkyrja\Http\Message\File\Throwable\Exception\MoveFailureException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UnableToWriteFileException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
 use Valkyrja\Http\Message\Stream\Contract\Stream;
-use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Stream\Stream as HttpStream;
+use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 
 use function dirname;

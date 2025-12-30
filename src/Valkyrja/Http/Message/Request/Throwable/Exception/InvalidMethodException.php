@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Request\Throwable\Exception;
 
-use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidArgumentException;
-
 /**
  * Class InvalidMethodException.
  *

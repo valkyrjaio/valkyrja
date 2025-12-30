@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Stream\Throwable;
 
 use Throwable as PHPThrowable;
+use Valkyrja\Http\Message\Stream\Throwable\Contract\Throwable;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\RuntimeException;
@@ -21,7 +22,6 @@ use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamReadException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamSeekException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamTellException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\StreamWriteException;
-use Valkyrja\Http\Message\Stream\Throwable\Contract\Throwable;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\UnreadableStreamException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\UnseekableStreamException;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\UnwritableStreamException;

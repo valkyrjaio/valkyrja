@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\File\Throwable;
 
 use Throwable as PHPThrowable;
+use Valkyrja\Http\Message\File\Throwable\Contract\Throwable;
 use Valkyrja\Http\Message\File\Throwable\Exception\AlreadyMovedException;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidDirectoryException;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidUploadedFileException;
 use Valkyrja\Http\Message\File\Throwable\Exception\MoveFailureException;
 use Valkyrja\Http\Message\File\Throwable\Exception\RuntimeException;
-use Valkyrja\Http\Message\File\Throwable\Contract\Throwable;
 use Valkyrja\Http\Message\File\Throwable\Exception\UnableToWriteFileException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
 use Valkyrja\Http\Message\Throwable\Contract\Throwable as MessageThrowable;

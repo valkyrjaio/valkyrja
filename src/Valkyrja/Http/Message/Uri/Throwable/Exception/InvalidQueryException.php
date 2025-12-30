@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Uri\Throwable\Exception;
 
-use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidArgumentException;
-
 /**
  * Class InvalidQueryException.
  *

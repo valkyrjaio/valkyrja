@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Message\Request\Throwable;
 
 use Throwable as PHPThrowable;
+use Valkyrja\Http\Message\Request\Throwable\Contract\Throwable;
 use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidMethodException;
 use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidRequestTargetException;
 use Valkyrja\Http\Message\Request\Throwable\Exception\RuntimeException;
-use Valkyrja\Http\Message\Request\Throwable\Contract\Throwable;
 use Valkyrja\Http\Message\Throwable\Contract\Throwable as MessageThrowable;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException as MessageInvalidArgumentException;
 use Valkyrja\Http\Message\Throwable\Exception\RuntimeException as MessageRuntimeException;
