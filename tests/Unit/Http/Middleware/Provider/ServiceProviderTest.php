@@ -16,6 +16,13 @@ namespace Valkyrja\Tests\Unit\Http\Middleware\Provider;
 use Valkyrja\Filesystem\Manager\Contract\Filesystem;
 use Valkyrja\Http\Middleware\Cache\CacheResponseMiddleware;
 use Valkyrja\Http\Middleware\Handler;
+use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
+use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;
+use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
+use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
+use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
+use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
+use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Middleware\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
@@ -34,7 +41,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         ServiceProvider::publishRequestReceivedHandler($this->container);
 
         self::assertInstanceOf(
-            Handler\RequestReceivedHandler::class,
+            RequestReceivedHandler::class,
             $this->container->getSingleton(Handler\Contract\RequestReceivedHandler::class)
         );
     }
@@ -44,7 +51,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         ServiceProvider::publishRouteDispatchedHandler($this->container);
 
         self::assertInstanceOf(
-            Handler\RouteDispatchedHandler::class,
+            RouteDispatchedHandler::class,
             $this->container->getSingleton(Handler\Contract\RouteDispatchedHandler::class)
         );
     }
@@ -54,7 +61,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         ServiceProvider::publishThrowableCaughtHandler($this->container);
 
         self::assertInstanceOf(
-            Handler\ThrowableCaughtHandler::class,
+            ThrowableCaughtHandler::class,
             $this->container->getSingleton(Handler\Contract\ThrowableCaughtHandler::class)
         );
     }
@@ -64,7 +71,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         ServiceProvider::publishRouteMatchedHandler($this->container);
 
         self::assertInstanceOf(
-            Handler\RouteMatchedHandler::class,
+            RouteMatchedHandler::class,
             $this->container->getSingleton(Handler\Contract\RouteMatchedHandler::class)
         );
     }
@@ -74,7 +81,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         ServiceProvider::publishRouteNotMatchedHandler($this->container);
 
         self::assertInstanceOf(
-            Handler\RouteNotMatchedHandler::class,
+            RouteNotMatchedHandler::class,
             $this->container->getSingleton(Handler\Contract\RouteNotMatchedHandler::class)
         );
     }
@@ -84,7 +91,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         ServiceProvider::publishSendingResponseHandler($this->container);
 
         self::assertInstanceOf(
-            Handler\SendingResponseHandler::class,
+            SendingResponseHandler::class,
             $this->container->getSingleton(Handler\Contract\SendingResponseHandler::class)
         );
     }
@@ -94,7 +101,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         ServiceProvider::publishTerminatedHandler($this->container);
 
         self::assertInstanceOf(
-            Handler\TerminatedHandler::class,
+            TerminatedHandler::class,
             $this->container->getSingleton(Handler\Contract\TerminatedHandler::class)
         );
     }

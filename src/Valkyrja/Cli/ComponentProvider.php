@@ -15,6 +15,11 @@ namespace Valkyrja\Cli;
 
 use Override;
 use Valkyrja\Application\Provider\Provider as AppComponent;
+use Valkyrja\Cli\Command\HelpCommand;
+use Valkyrja\Cli\Command\ListBashCommand;
+use Valkyrja\Cli\Command\ListCommand;
+use Valkyrja\Cli\Command\VersionCommand;
+use Valkyrja\Cli\Interaction\Provider\ServiceProvider;
 
 /**
  * Final Class Component.
@@ -30,7 +35,7 @@ class ComponentProvider extends AppComponent
     public static function getContainerProviders(): array
     {
         return [
-            Interaction\Provider\ServiceProvider::class,
+            ServiceProvider::class,
             Middleware\Provider\ServiceProvider::class,
             Routing\Provider\ServiceProvider::class,
             Server\Provider\ServiceProvider::class,
@@ -44,10 +49,10 @@ class ComponentProvider extends AppComponent
     public static function getCliControllers(): array
     {
         return [
-            Command\HelpCommand::class,
-            Command\ListBashCommand::class,
-            Command\ListCommand::class,
-            Command\VersionCommand::class,
+            HelpCommand::class,
+            ListBashCommand::class,
+            ListCommand::class,
+            VersionCommand::class,
         ];
     }
 }
