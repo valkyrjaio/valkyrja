@@ -18,7 +18,7 @@ namespace Valkyrja\Container\Provider\Contract;
  *
  * @author Melech Mizrachi
  */
-interface Provides
+interface Provider
 {
     /**
      * Whether this provider is deferred.

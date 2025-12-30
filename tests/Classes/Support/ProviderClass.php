@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Support;
 
-use Valkyrja\Container\Provider\Contract\Provides;
+use Valkyrja\Container\Provider\Contract\Provider;
 
 /**
  * Class ProviderClass.
  *
  * @author Melech Mizrachi
  */
-class ProviderClass implements Provides
+class ProviderClass implements Provider
 {
     public static bool $publishCalled = false;
 

@@ -85,6 +85,11 @@ return static function (Config $config): void {
                       ->because('All component providers should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
+                      ->that(new ResideInOneOfTheseNamespaces('*Provider\\'))
+                      ->should(new HaveNameMatching('*Provider'))
+                      ->because('All classes in a Provider namespace should be named appropriately');
+
+    $srcRules[] = Rule::allClasses()
                       ->that(new HaveNameMatching('*Factory'))
                       ->should(new ResideInOneOfTheseNamespaces('*Factory\\'))
                       ->because('All factories should exist in an appropriate namespace');
