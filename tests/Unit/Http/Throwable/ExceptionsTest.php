@@ -19,8 +19,8 @@ use Valkyrja\Http\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Throwable\Exception\RuntimeException;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Throwable\Contract\Throwable as ValkyrjaThrowable;
-use Valkyrja\Throwable\Exception\InvalidArgumentException as ValkyrjaInvalidArgumentException;
-use Valkyrja\Throwable\Exception\RuntimeException as ValkyrjaRuntimeException;
+use Valkyrja\Throwable\Exception\InvalidArgumentException as ThrowableInvalidArgumentException;
+use Valkyrja\Throwable\Exception\RuntimeException as ThrowableRuntimeException;
 
 class ExceptionsTest extends TestCase
 {
@@ -33,12 +33,12 @@ class ExceptionsTest extends TestCase
     public function testInvalidArgumentException(): void
     {
         self::isA(Throwable::class, InvalidArgumentException::class);
-        self::isA(ValkyrjaInvalidArgumentException::class, InvalidArgumentException::class);
+        self::isA(ThrowableInvalidArgumentException::class, InvalidArgumentException::class);
     }
 
     public function testRuntimeException(): void
     {
         self::isA(Throwable::class, RuntimeException::class);
-        self::isA(ValkyrjaRuntimeException::class, RuntimeException::class);
+        self::isA(ThrowableRuntimeException::class, RuntimeException::class);
     }
 }

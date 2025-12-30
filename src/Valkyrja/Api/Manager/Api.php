@@ -17,9 +17,10 @@ use Override;
 use Throwable;
 use Valkyrja\Api\Constant\Status;
 use Valkyrja\Api\Manager\Contract\Api as Contract;
-use Valkyrja\Api\Model;
 use Valkyrja\Api\Model\Contract\Json;
 use Valkyrja\Api\Model\Contract\JsonData;
+use Valkyrja\Api\Model\Json as JsonModel;
+use Valkyrja\Api\Model\JsonData as JsonDataModel;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Response\Contract\JsonResponse;
@@ -220,7 +221,7 @@ class Api implements Contract
      */
     protected function getJsonModel(): Json
     {
-        return new Model\Json();
+        return new JsonModel();
     }
 
     /**
@@ -230,7 +231,7 @@ class Api implements Contract
      */
     protected function getJsonDataModel(): JsonData
     {
-        return new Model\JsonData();
+        return new JsonDataModel();
     }
 
     /**

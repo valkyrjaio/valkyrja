@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Throwable\Exception;
 
+use Valkyrja\Throwable\Exception\RuntimeException as ThrowableRuntimeException;
 use Valkyrja\View\Throwable\Contract\Throwable;
 
 /**
@@ -20,6 +21,6 @@ use Valkyrja\View\Throwable\Contract\Throwable;
  *
  * @author Melech Mizrachi
  */
-class RuntimeException extends \Valkyrja\Throwable\Exception\RuntimeException implements Throwable
+class RuntimeException extends ThrowableRuntimeException implements Throwable
 {
 }

@@ -18,6 +18,7 @@ use Valkyrja\Orm\Manager\Contract\Manager as Contract;
 use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactory;
 use Valkyrja\Orm\QueryBuilder\Factory\SqlQueryBuilderFactory;
 use Valkyrja\Orm\Repository\Contract\Repository;
+use Valkyrja\Orm\Repository\Repository as OrmRepository;
 use Valkyrja\Orm\Statement\Contract\Statement;
 use Valkyrja\Orm\Statement\NullStatement;
 
@@ -34,7 +35,7 @@ class InMemoryManager implements Contract
     #[Override]
     public function createRepository(string $entity): Repository
     {
-        return new \Valkyrja\Orm\Repository\Repository($this, $entity);
+        return new OrmRepository($this, $entity);
     }
 
     /**

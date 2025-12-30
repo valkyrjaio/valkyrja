@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Throwable\Exception;
 
+use Valkyrja\Throwable\Exception\InvalidArgumentException as ThrowableInvalidArgumentException;
 use Valkyrja\Validation\Throwable\Contract\Throwable;
 
 /**
@@ -20,6 +21,6 @@ use Valkyrja\Validation\Throwable\Contract\Throwable;
  *
  * @author Melech Mizrachi
  */
-class InvalidArgumentException extends \Valkyrja\Throwable\Exception\InvalidArgumentException implements Throwable
+class InvalidArgumentException extends ThrowableInvalidArgumentException implements Throwable
 {
 }

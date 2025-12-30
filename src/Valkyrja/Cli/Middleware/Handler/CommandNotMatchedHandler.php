@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
 use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandler as Contract;
 
 /**
  * Class CommandNotMatchedHandler.
@@ -25,7 +26,7 @@ use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
  *
  * @extends Handler<CommandNotMatchedMiddleware>
  */
-class CommandNotMatchedHandler extends Handler implements Contract\CommandNotMatchedHandler
+class CommandNotMatchedHandler extends Handler implements Contract
 {
     /**
      * @inheritDoc

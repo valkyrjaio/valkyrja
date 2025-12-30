@@ -17,6 +17,7 @@ use Override;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
+use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler as Contract;
 
 /**
  * Class TerminatedHandler.
@@ -25,7 +26,7 @@ use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
  *
  * @extends Handler<TerminatedMiddleware>
  */
-class TerminatedHandler extends Handler implements Contract\TerminatedHandler
+class TerminatedHandler extends Handler implements Contract
 {
     /**
      * @inheritDoc

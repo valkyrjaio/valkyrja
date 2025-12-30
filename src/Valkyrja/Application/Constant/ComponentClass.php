@@ -13,7 +13,28 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Constant;
 
-use Valkyrja\Application\Provider\ComponentProvider;
+use Valkyrja\Api\Provider\ComponentProvider as ApiComponentProvider;
+use Valkyrja\Application\Provider\ComponentProvider as ApplicationComponentProvider;
+use Valkyrja\Attribute\Provider\ComponentProvider as AttributeComponentProvider;
+use Valkyrja\Auth\Provider\ComponentProvider as AuthComponentProvider;
+use Valkyrja\Broadcast\Provider\ComponentProvider as BroadcastComponentProvider;
+use Valkyrja\Cache\Provider\ComponentProvider as CacheComponentProvider;
+use Valkyrja\Cli\ComponentProvider as CliComponentProvider;
+use Valkyrja\Container\Provider\ComponentProvider as ContainerComponentProvider;
+use Valkyrja\Crypt\Provider\ComponentProvider as CryptComponentProvider;
+use Valkyrja\Dispatch\Provider\ComponentProvider as DispatchComponentProvider;
+use Valkyrja\Event\Provider\ComponentProvider as EventComponentProvider;
+use Valkyrja\Filesystem\Provider\ComponentProvider as FilesystemComponentProvider;
+use Valkyrja\Http\ComponentProvider as HttpComponentProvider;
+use Valkyrja\Jwt\Provider\ComponentProvider as JwtComponentProvider;
+use Valkyrja\Log\Provider\ComponentProvider as LogComponentProvider;
+use Valkyrja\Mail\Provider\ComponentProvider as MailComponentProvider;
+use Valkyrja\Notification\Provider\ComponentProvider as NotificationComponentProvider;
+use Valkyrja\Orm\Provider\ComponentProvider as OrmComponentProvider;
+use Valkyrja\Reflection\Provider\ComponentProvider as ReflectionComponentProvider;
+use Valkyrja\Session\Provider\ComponentProvider as SessionComponentProvider;
+use Valkyrja\Sms\Provider\ComponentProvider as SmsComponentProvider;
+use Valkyrja\View\Provider\ComponentProvider as ViewComponentProvider;
 
 /**
  * Class ComponentClass.
@@ -22,26 +43,26 @@ use Valkyrja\Application\Provider\ComponentProvider;
  */
 final class ComponentClass
 {
-    public const string APPLICATION  = ComponentProvider::class;
-    public const string API          = \Valkyrja\Api\Provider\ComponentProvider::class;
-    public const string ATTRIBUTE    = \Valkyrja\Attribute\Provider\ComponentProvider::class;
-    public const string AUTH         = \Valkyrja\Auth\Provider\ComponentProvider::class;
-    public const string BROADCAST    = \Valkyrja\Broadcast\Provider\ComponentProvider::class;
-    public const string CACHE        = \Valkyrja\Cache\Provider\ComponentProvider::class;
-    public const string CLI          = \Valkyrja\Cli\ComponentProvider::class;
-    public const string CONTAINER    = \Valkyrja\Container\Provider\ComponentProvider::class;
-    public const string CRYPT        = \Valkyrja\Crypt\Provider\ComponentProvider::class;
-    public const string DISPATCHER   = \Valkyrja\Dispatch\Provider\ComponentProvider::class;
-    public const string EVENT        = \Valkyrja\Event\Provider\ComponentProvider::class;
-    public const string FILESYSTEM   = \Valkyrja\Filesystem\Provider\ComponentProvider::class;
-    public const string HTTP         = \Valkyrja\Http\ComponentProvider::class;
-    public const string JWT          = \Valkyrja\Jwt\Provider\ComponentProvider::class;
-    public const string LOG          = \Valkyrja\Log\Provider\ComponentProvider::class;
-    public const string MAIL         = \Valkyrja\Mail\Provider\ComponentProvider::class;
-    public const string NOTIFICATION = \Valkyrja\Notification\Provider\ComponentProvider::class;
-    public const string ORM          = \Valkyrja\Orm\Provider\ComponentProvider::class;
-    public const string REFLECTION   = \Valkyrja\Reflection\Provider\ComponentProvider::class;
-    public const string SESSION      = \Valkyrja\Session\Provider\ComponentProvider::class;
-    public const string SMS          = \Valkyrja\Sms\Provider\ComponentProvider::class;
-    public const string VIEW         = \Valkyrja\View\Provider\ComponentProvider::class;
+    public const string APPLICATION  = ApplicationComponentProvider::class;
+    public const string API          = ApiComponentProvider::class;
+    public const string ATTRIBUTE    = AttributeComponentProvider::class;
+    public const string AUTH         = AuthComponentProvider::class;
+    public const string BROADCAST    = BroadcastComponentProvider::class;
+    public const string CACHE        = CacheComponentProvider::class;
+    public const string CLI          = CliComponentProvider::class;
+    public const string CONTAINER    = ContainerComponentProvider::class;
+    public const string CRYPT        = CryptComponentProvider::class;
+    public const string DISPATCHER   = DispatchComponentProvider::class;
+    public const string EVENT        = EventComponentProvider::class;
+    public const string FILESYSTEM   = FilesystemComponentProvider::class;
+    public const string HTTP         = HttpComponentProvider::class;
+    public const string JWT          = JwtComponentProvider::class;
+    public const string LOG          = LogComponentProvider::class;
+    public const string MAIL         = MailComponentProvider::class;
+    public const string NOTIFICATION = NotificationComponentProvider::class;
+    public const string ORM          = OrmComponentProvider::class;
+    public const string REFLECTION   = ReflectionComponentProvider::class;
+    public const string SESSION      = SessionComponentProvider::class;
+    public const string SMS          = SmsComponentProvider::class;
+    public const string VIEW         = ViewComponentProvider::class;
 }

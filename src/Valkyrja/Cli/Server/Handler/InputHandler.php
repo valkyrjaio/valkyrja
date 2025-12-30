@@ -18,24 +18,30 @@ use Throwable;
 use Valkyrja\Cli\Command\VersionCommand;
 use Valkyrja\Cli\Interaction\Data\Config as InteractionConfig;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
+use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory as OutputFactoryContract;
+use Valkyrja\Cli\Interaction\Factory\OutputFactory;
 use Valkyrja\Cli\Interaction\Input\Contract\Input;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Middleware;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
+use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler as ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler as InputReceivedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler as ThrowableCaughtHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
+use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
+use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Routing\Data\Option\NoInteractionOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\QuietOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\SilentOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\VersionOptionParameter;
-use Valkyrja\Cli\Routing\Dispatcher\Contract\Router;
+use Valkyrja\Cli\Routing\Dispatcher\Contract\Router as RouterContract;
+use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Server\Handler\Contract\InputHandler as Contract;
 use Valkyrja\Cli\Server\Support\Exiter;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Container;
+use Valkyrja\Container\Manager\Contract\Container as ContainerContract;
 
 /**
  * Class InputHandler.
@@ -48,12 +54,13 @@ class InputHandler implements Contract
      * RequestHandler constructor.
      */
     public function __construct(
-        protected Container $container = new \Valkyrja\Container\Manager\Container(),
-        protected Router $router = new \Valkyrja\Cli\Routing\Dispatcher\Router(),
-        protected InputReceivedHandler $inputReceivedHandler = new Middleware\Handler\InputReceivedHandler(),
-        protected ThrowableCaughtHandler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),
-        protected ExitedHandler $exitedHandler = new Middleware\Handler\ExitedHandler(),
+        protected ContainerContract $container = new Container(),
+        protected RouterContract $router = new Router(),
+        protected InputReceivedHandlerContract $inputReceivedHandler = new InputReceivedHandler(),
+        protected ThrowableCaughtHandlerContract $throwableCaughtHandler = new ThrowableCaughtHandler(),
+        protected ExitedHandlerContract $exitedHandler = new ExitedHandler(),
         protected InteractionConfig $interactionConfig = new InteractionConfig(),
+        protected OutputFactoryContract $outputFactory = new OutputFactory(),
     ) {
     }
 
@@ -220,9 +227,8 @@ class InputHandler implements Contract
     {
         $commandName = $input->getCommandName();
 
-        return (new \Valkyrja\Cli\Interaction\Output\Output(
-            exitCode: ExitCode::ERROR
-        ))
+        return $this->outputFactory
+            ->createOutput(exitCode: ExitCode::ERROR)
             ->withMessages(
                 new Banner(new ErrorMessage('Cli Server Error:')),
                 new NewLine(),

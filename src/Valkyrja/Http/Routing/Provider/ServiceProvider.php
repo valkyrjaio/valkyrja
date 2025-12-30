@@ -31,15 +31,19 @@ use Valkyrja\Http\Routing\Collection\Contract\Collection;
 use Valkyrja\Http\Routing\Collector\AttributeCollector;
 use Valkyrja\Http\Routing\Collector\Contract\Collector;
 use Valkyrja\Http\Routing\Data\Data;
-use Valkyrja\Http\Routing\Dispatcher\Contract\Router;
-use Valkyrja\Http\Routing\Dispatcher\Router as HttpRouter;
-use Valkyrja\Http\Routing\Factory\Contract\ResponseFactory;
-use Valkyrja\Http\Routing\Matcher\Contract\Matcher;
+use Valkyrja\Http\Routing\Dispatcher\Contract\Router as RouterContract;
+use Valkyrja\Http\Routing\Dispatcher\Router;
+use Valkyrja\Http\Routing\Factory\Contract\ResponseFactory as ResponseFactoryContract;
+use Valkyrja\Http\Routing\Factory\ResponseFactory;
+use Valkyrja\Http\Routing\Matcher\Contract\Matcher as MatcherContract;
+use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Middleware\RequestStructMiddleware;
 use Valkyrja\Http\Routing\Middleware\ResponseStructMiddleware;
 use Valkyrja\Http\Routing\Middleware\ViewRouteNotMatchedMiddleware;
-use Valkyrja\Http\Routing\Processor\Contract\Processor;
-use Valkyrja\Http\Routing\Url\Contract\Url;
+use Valkyrja\Http\Routing\Processor\Contract\Processor as ProcessorContract;
+use Valkyrja\Http\Routing\Processor\Processor;
+use Valkyrja\Http\Routing\Url\Contract\Url as UrlContract;
+use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Reflection\Reflector\Contract\Reflector;
 use Valkyrja\View\Renderer\Contract\Renderer;
 
@@ -57,13 +61,13 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Router::class                        => [self::class, 'publishRouter'],
+            RouterContract::class                => [self::class, 'publishRouter'],
             Collection::class                    => [self::class, 'publishCollection'],
-            Matcher::class                       => [self::class, 'publishMatcher'],
-            Url::class                           => [self::class, 'publishUrl'],
+            MatcherContract::class               => [self::class, 'publishMatcher'],
+            UrlContract::class                   => [self::class, 'publishUrl'],
             Collector::class                     => [self::class, 'publishAttributesCollector'],
-            Processor::class                     => [self::class, 'publishProcessor'],
-            ResponseFactory::class               => [self::class, 'publishResponseFactory'],
+            ProcessorContract::class             => [self::class, 'publishProcessor'],
+            ResponseFactoryContract::class       => [self::class, 'publishResponseFactory'],
             RequestStructMiddleware::class       => [self::class, 'publishRequestStructMiddleware'],
             ResponseStructMiddleware::class      => [self::class, 'publishResponseStructMiddleware'],
             ViewRouteNotMatchedMiddleware::class => [self::class, 'publishViewRouteNotMatchedMiddleware'],
@@ -77,13 +81,13 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Router::class,
+            RouterContract::class,
             Collection::class,
-            Matcher::class,
-            Url::class,
+            MatcherContract::class,
+            UrlContract::class,
             Collector::class,
-            Processor::class,
-            ResponseFactory::class,
+            ProcessorContract::class,
+            ResponseFactoryContract::class,
             RequestStructMiddleware::class,
             ResponseStructMiddleware::class,
             ViewRouteNotMatchedMiddleware::class,
@@ -107,11 +111,11 @@ final class ServiceProvider extends Provider
         $terminated      = $container->getSingleton(TerminatedHandler::class);
 
         $container->setSingleton(
-            Router::class,
-            new HttpRouter(
+            RouterContract::class,
+            new Router(
                 container: $container,
                 dispatcher: $container->getSingleton(Dispatcher::class),
-                matcher: $container->getSingleton(Matcher::class),
+                matcher: $container->getSingleton(MatcherContract::class),
                 responseFactory: $container->getSingleton(HttpMessageResponseFactory::class),
                 throwableCaughtHandler: $exception,
                 routeMatchedHandler: $routeMatched,
@@ -169,8 +173,8 @@ final class ServiceProvider extends Provider
     public static function publishMatcher(Container $container): void
     {
         $container->setSingleton(
-            Matcher::class,
-            new \Valkyrja\Http\Routing\Matcher\Matcher(
+            MatcherContract::class,
+            new Matcher(
                 collection: $container->getSingleton(Collection::class)
             )
         );
@@ -186,8 +190,8 @@ final class ServiceProvider extends Provider
     public static function publishUrl(Container $container): void
     {
         $container->setSingleton(
-            Url::class,
-            new \Valkyrja\Http\Routing\Url\Url(
+            UrlContract::class,
+            new Url(
                 collection: $container->getSingleton(Collection::class),
             )
         );
@@ -207,7 +211,7 @@ final class ServiceProvider extends Provider
             new AttributeCollector(
                 attributes: $container->getSingleton(AttributeCollectorContract::class),
                 reflection: $container->getSingleton(Reflector::class),
-                processor: $container->getSingleton(Processor::class)
+                processor: $container->getSingleton(ProcessorContract::class)
             )
         );
     }
@@ -222,8 +226,8 @@ final class ServiceProvider extends Provider
     public static function publishProcessor(Container $container): void
     {
         $container->setSingleton(
-            Processor::class,
-            new \Valkyrja\Http\Routing\Processor\Processor()
+            ProcessorContract::class,
+            new Processor()
         );
     }
 
@@ -237,10 +241,10 @@ final class ServiceProvider extends Provider
     public static function publishResponseFactory(Container $container): void
     {
         $container->setSingleton(
-            ResponseFactory::class,
-            new \Valkyrja\Http\Routing\Factory\ResponseFactory(
+            ResponseFactoryContract::class,
+            new ResponseFactory(
                 responseFactory: $container->getSingleton(HttpMessageResponseFactory::class),
-                url: $container->getSingleton(Url::class),
+                url: $container->getSingleton(UrlContract::class),
             )
         );
     }

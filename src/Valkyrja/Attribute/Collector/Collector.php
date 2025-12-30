@@ -32,6 +32,7 @@ use Valkyrja\Dispatch\Data\ConstantDispatch;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Data\PropertyDispatch;
 use Valkyrja\Reflection\Reflector\Contract\Reflector as ReflectorContract;
+use Valkyrja\Reflection\Reflector\Reflector as ReflectorReflector;
 
 use function is_callable;
 
@@ -53,7 +54,7 @@ class Collector implements Contract
      * Attributes constructor.
      */
     public function __construct(
-        protected ReflectorContract $reflection = new \Valkyrja\Reflection\Reflector\Reflector(),
+        protected ReflectorContract $reflection = new ReflectorReflector(),
     ) {
     }
 

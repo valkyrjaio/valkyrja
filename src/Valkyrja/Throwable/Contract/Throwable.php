@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Throwable\Contract;
 
+use Throwable as PhpThrowable;
+
 /**
  * Interface Throwable.
  *
  * @author Melech Mizrachi
  */
-interface Throwable extends \Throwable
+interface Throwable extends PhpThrowable
 {
     /**
      * Get trace code unique to the exception being thrown.

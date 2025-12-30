@@ -14,24 +14,32 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Dispatcher;
 
 use Override;
-use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher;
+use Valkyrja\Container\Manager\Container;
+use Valkyrja\Container\Manager\Contract\Container as ContainerContract;
+use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher as DispatcherContract;
+use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
 use Valkyrja\Http\Message\Factory\ResponseFactory as HttpMessageResponseFactory;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
-use Valkyrja\Http\Middleware;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler;
-use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler;
-use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler as RouteDispatchedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler as RouteMatchedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler as RouteNotMatchedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler as SendingResponseHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler as TerminatedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler as ThrowableCaughtHandlerContract;
+use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;
+use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
+use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
+use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
+use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
+use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Http\Routing\Data\Contract\Route;
 use Valkyrja\Http\Routing\Dispatcher\Contract\Router as Contract;
-use Valkyrja\Http\Routing\Matcher\Contract\Matcher;
+use Valkyrja\Http\Routing\Matcher\Contract\Matcher as MatcherContract;
+use Valkyrja\Http\Routing\Matcher\Matcher;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
 
 use function rawurldecode;
@@ -47,16 +55,16 @@ class Router implements Contract
      * Router constructor.
      */
     public function __construct(
-        protected Container $container = new \Valkyrja\Container\Manager\Container(),
-        protected Dispatcher $dispatcher = new \Valkyrja\Dispatch\Dispatcher\Dispatcher(),
-        protected Matcher $matcher = new \Valkyrja\Http\Routing\Matcher\Matcher(),
+        protected ContainerContract $container = new Container(),
+        protected DispatcherContract $dispatcher = new Dispatcher(),
+        protected MatcherContract $matcher = new Matcher(),
         protected ResponseFactory $responseFactory = new HttpMessageResponseFactory(),
-        protected ThrowableCaughtHandler $throwableCaughtHandler = new Middleware\Handler\ThrowableCaughtHandler(),
-        protected RouteMatchedHandler $routeMatchedHandler = new Middleware\Handler\RouteMatchedHandler(),
-        protected RouteNotMatchedHandler $routeNotMatchedHandler = new Middleware\Handler\RouteNotMatchedHandler(),
-        protected RouteDispatchedHandler $routeDispatchedHandler = new Middleware\Handler\RouteDispatchedHandler(),
-        protected SendingResponseHandler $sendingResponseHandler = new Middleware\Handler\SendingResponseHandler(),
-        protected TerminatedHandler $terminatedHandler = new Middleware\Handler\TerminatedHandler()
+        protected ThrowableCaughtHandlerContract $throwableCaughtHandler = new ThrowableCaughtHandler(),
+        protected RouteMatchedHandlerContract $routeMatchedHandler = new RouteMatchedHandler(),
+        protected RouteNotMatchedHandlerContract $routeNotMatchedHandler = new RouteNotMatchedHandler(),
+        protected RouteDispatchedHandlerContract $routeDispatchedHandler = new RouteDispatchedHandler(),
+        protected SendingResponseHandlerContract $sendingResponseHandler = new SendingResponseHandler(),
+        protected TerminatedHandlerContract $terminatedHandler = new TerminatedHandler()
     ) {
     }
 

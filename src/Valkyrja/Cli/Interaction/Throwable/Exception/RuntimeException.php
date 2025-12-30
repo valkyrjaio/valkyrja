@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Throwable\Exception;
 
 use Valkyrja\Cli\Interaction\Throwable\Contract\Throwable;
+use Valkyrja\Cli\Throwable\Exception\RuntimeException as CliRuntimeException;
 
 /**
  * Class RuntimeException.
  *
  * @author Melech Mizrachi
  */
-class RuntimeException extends \Valkyrja\Cli\Throwable\Exception\RuntimeException implements Throwable
+class RuntimeException extends CliRuntimeException implements Throwable
 {
 }

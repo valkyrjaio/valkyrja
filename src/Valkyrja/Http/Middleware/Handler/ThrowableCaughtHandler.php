@@ -18,6 +18,7 @@ use Throwable;
 use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 use Valkyrja\Http\Message\Response\Contract\Response;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
+use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler as Contract;
 
 /**
  * Class ExceptionHandler.
@@ -26,7 +27,7 @@ use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
  *
  * @extends Handler<ThrowableCaughtMiddleware>
  */
-class ThrowableCaughtHandler extends Handler implements Contract\ThrowableCaughtHandler
+class ThrowableCaughtHandler extends Handler implements Contract
 {
     /**
      * @inheritDoc

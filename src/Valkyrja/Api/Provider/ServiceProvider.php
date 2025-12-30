@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Api\Provider;
 
 use Override;
-use Valkyrja\Api\Manager\Contract\Api;
+use Valkyrja\Api\Manager\Api;
+use Valkyrja\Api\Manager\Contract\Api as ApiContract;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;
@@ -34,7 +35,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Api::class => [self::class, 'publishApi'],
+            ApiContract::class => [self::class, 'publishApi'],
         ];
     }
 
@@ -45,7 +46,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Api::class,
+            ApiContract::class,
         ];
     }
 
@@ -63,8 +64,8 @@ final class ServiceProvider extends Provider
         $debugMode = $env::APP_DEBUG_MODE;
 
         $container->setSingleton(
-            Api::class,
-            new \Valkyrja\Api\Manager\Api(
+            ApiContract::class,
+            new Api(
                 responseFactory: $container->getSingleton(ResponseFactory::class),
                 debug: $debugMode
             )

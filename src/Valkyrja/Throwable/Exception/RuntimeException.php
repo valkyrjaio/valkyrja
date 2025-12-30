@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Throwable\Exception;
 
 use Override;
+use RuntimeException as PhpRuntimeException;
 use Valkyrja\Throwable\Contract\Throwable;
 use Valkyrja\Throwable\Handler\ThrowableHandler;
 
@@ -22,7 +23,7 @@ use Valkyrja\Throwable\Handler\ThrowableHandler;
  *
  * @author Melech Mizrachi
  */
-class RuntimeException extends \RuntimeException implements Throwable
+class RuntimeException extends PhpRuntimeException implements Throwable
 {
     /**
      * @inheritDoc

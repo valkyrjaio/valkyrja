@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Throwable\Exception;
 
 use Valkyrja\Cli\Interaction\Throwable\Contract\Throwable;
+use Valkyrja\Cli\Throwable\Exception\InvalidArgumentException as CliInvalidArgumentException;
 
 /**
  * Class InvalidArgumentException.
  *
  * @author Melech Mizrachi
  */
-class InvalidArgumentException extends \Valkyrja\Cli\Throwable\Exception\InvalidArgumentException implements Throwable
+class InvalidArgumentException extends CliInvalidArgumentException implements Throwable
 {
 }

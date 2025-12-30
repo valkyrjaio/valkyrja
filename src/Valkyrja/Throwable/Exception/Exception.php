@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Throwable\Exception;
 
+use Exception as PhpException;
 use Override;
 use Valkyrja\Throwable\Contract\Throwable;
 use Valkyrja\Throwable\Handler\ThrowableHandler;
@@ -22,7 +23,7 @@ use Valkyrja\Throwable\Handler\ThrowableHandler;
  *
  * @author Melech Mizrachi
  */
-class Exception extends \Exception implements Throwable
+class Exception extends PhpException implements Throwable
 {
     /**
      * @inheritDoc

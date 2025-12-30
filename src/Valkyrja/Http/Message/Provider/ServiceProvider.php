@@ -16,7 +16,8 @@ namespace Valkyrja\Http\Message\Provider;
 use Override;
 use Valkyrja\Container\Manager\Contract\Container;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as ResponseFactoryContract;
+use Valkyrja\Http\Message\Factory\ResponseFactory;
 
 /**
  * Class ServiceProvider.
@@ -32,7 +33,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            ResponseFactory::class => [self::class, 'publishResponseFactory'],
+            ResponseFactoryContract::class => [self::class, 'publishResponseFactory'],
         ];
     }
 
@@ -43,7 +44,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            ResponseFactory::class,
+            ResponseFactoryContract::class,
         ];
     }
 
@@ -57,8 +58,8 @@ final class ServiceProvider extends Provider
     public static function publishResponseFactory(Container $container): void
     {
         $container->setSingleton(
-            ResponseFactory::class,
-            new \Valkyrja\Http\Message\Factory\ResponseFactory()
+            ResponseFactoryContract::class,
+            new ResponseFactory()
         );
     }
 }

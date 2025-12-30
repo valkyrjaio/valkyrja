@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Throwable\Exception;
 
+use InvalidArgumentException as PhpInvalidArgumentException;
 use Override;
 use Valkyrja\Throwable\Contract\Throwable;
 use Valkyrja\Throwable\Handler\ThrowableHandler;
@@ -22,7 +23,7 @@ use Valkyrja\Throwable\Handler\ThrowableHandler;
  *
  * @author Melech Mizrachi
  */
-class InvalidArgumentException extends \InvalidArgumentException implements Throwable
+class InvalidArgumentException extends PhpInvalidArgumentException implements Throwable
 {
     /**
      * @inheritDoc
