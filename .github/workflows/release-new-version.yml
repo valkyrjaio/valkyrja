@@ -154,7 +154,18 @@ jobs:
           COMPOSER_NAME: ${{ matrix.paths.name }}
           COMPOSER_COMMAND: ${{ matrix.paths.command }}
         run: |
-          composer "$COMPOSER_COMMAND"
+          output=$(composer "$COMPOSER_COMMAND" 2>&1)
+          if [[ "$output" == *"All your direct dependencies are up to date"* ]]; then
+            echo "$output"
+            echo "Proceeding..."
+
+            exit 0
+          else
+            echo "Composer dependencies must be updated before releasing. People rely on us to be on latest"
+            echo "$output"
+
+            exit 1
+          fi
 
   release:
     needs: [ check-composer, check-version ]
