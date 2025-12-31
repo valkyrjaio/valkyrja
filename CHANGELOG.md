@@ -1,6 +1,17 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.8.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.9.0...master)
+
+## [v25.9.0](https://github.com/valkyrjaio/valkyrja/compare/v25.8.0...v25.9.0) - 2025-12-30
+
+* [CI] Add new phparkitect rule for abstract class naming by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/280
+* [CI] Add new phparkitect rule for enum naming by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/281
+* [CI] Update the phparkitect abstract rules by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/282
+* [CI] Update and fix phparkitect rules. by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/283
+* [CI] Add a rule in phparkitect for Factory namespace class naming by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/285
+* [CI] Add a rule to phparkitect for Provider namespace class naming by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/286
+* [Http] Splitting up the Http component provider to multiple providers by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/287
+* [Cli] Split up the Cli component provider to multiple providers by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/288
 
 ## [v25.8.0](https://github.com/valkyrjaio/valkyrja/compare/v25.7.0...v25.8.0) - 2025-12-30
 
