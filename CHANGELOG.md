@@ -1,6 +1,10 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.9.0...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.9.1...master)
+
+## [v25.9.1](https://github.com/valkyrjaio/valkyrja/compare/v25.9.0...v25.9.1) - 2025-12-30
+
+* [Http] Add missing test for Middleware ServiceProvider by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/289
 
 ## [v25.9.0](https://github.com/valkyrjaio/valkyrja/compare/v25.8.0...v25.9.0) - 2025-12-30
 
