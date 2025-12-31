@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Message;
+namespace Valkyrja\Tests\Unit\Http\Message\Abstract;
 
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
