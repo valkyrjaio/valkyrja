@@ -11,17 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Cli\Provider;
+namespace Valkyrja\Tests\Unit\Cli\Routing\Provider;
 
 use Valkyrja\Cli\Command\HelpCommand;
 use Valkyrja\Cli\Command\ListBashCommand;
 use Valkyrja\Cli\Command\ListCommand;
 use Valkyrja\Cli\Command\VersionCommand;
-use Valkyrja\Cli\Interaction\Provider\ServiceProvider as InteractionServiceProvider;
-use Valkyrja\Cli\Middleware\Provider\ServiceProvider as MiddlewareServiceProvider;
-use Valkyrja\Cli\Provider\ComponentProvider;
-use Valkyrja\Cli\Routing\Provider\ServiceProvider as RoutingServiceProvider;
-use Valkyrja\Cli\Server\Provider\ServiceProvider as ServerServiceProvider;
+use Valkyrja\Cli\Routing\Provider\ComponentProvider;
+use Valkyrja\Cli\Routing\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -33,10 +30,7 @@ class ComponentProviderTest extends TestCase
 {
     public function testGetContainerProvider(): void
     {
-        self::assertContains(InteractionServiceProvider::class, ComponentProvider::getContainerProviders());
-        self::assertContains(MiddlewareServiceProvider::class, ComponentProvider::getContainerProviders());
-        self::assertContains(RoutingServiceProvider::class, ComponentProvider::getContainerProviders());
-        self::assertContains(ServerServiceProvider::class, ComponentProvider::getContainerProviders());
+        self::assertContains(ServiceProvider::class, ComponentProvider::getContainerProviders());
     }
 
     public function testGetCliControllers(): void

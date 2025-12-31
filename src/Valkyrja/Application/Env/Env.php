@@ -107,7 +107,10 @@ class Env
     ];
     /** @var class-string<Provider>[] */
     public const array APP_CORE_COMPONENTS = [
-        ComponentClass::CLI,
+        ComponentClass::CLI_INTERACTION,
+        ComponentClass::CLI_MIDDLEWARE,
+        ComponentClass::CLI_ROUTING,
+        ComponentClass::CLI_SERVER,
         ComponentClass::EVENT,
         ComponentClass::HTTP_MESSAGE,
         ComponentClass::HTTP_MIDDLEWARE,
