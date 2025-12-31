@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Type;
+namespace Valkyrja\Tests\Unit\Type\Abstract;
 
 use JsonSerializable;
 use Valkyrja\Tests\Classes\Type\TypeClass;
