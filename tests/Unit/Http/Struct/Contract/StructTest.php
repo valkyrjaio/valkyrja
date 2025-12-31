@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Http\Struct;
+namespace Valkyrja\Tests\Unit\Http\Struct\Contract;
 
 use UnitEnum;
 use Valkyrja\Http\Struct\Contract\Struct as Contract;
