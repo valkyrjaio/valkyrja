@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Directory;
 
-/**
- * Class Directory.
- */
 class Directory
 {
     /**
