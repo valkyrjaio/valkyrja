@@ -53,7 +53,7 @@ class ContainerTest extends TestCase
     public function testInvalidBind(): void
     {
         $this->expectException(AssertionError::class);
-        $this->expectExceptionMessage('assert(is_a($service, Service::class, true))');
+        $this->expectExceptionMessage('assert(is_a($service, ServiceContract::class, true))');
 
         $container = $this->container;
 
