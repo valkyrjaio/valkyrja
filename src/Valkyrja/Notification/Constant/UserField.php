@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification\Constant;
 
-/**
- * Constant UserField.
- */
 final class UserField
 {
     public const string NAME         = 'name';

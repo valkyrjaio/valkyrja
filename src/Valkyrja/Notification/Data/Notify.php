@@ -19,9 +19,6 @@ use Valkyrja\Mail\Data\Contract\MessageContract as MailMessage;
 use Valkyrja\Notification\Data\Contract\NotifyContract as Contract;
 use Valkyrja\Sms\Data\Contract\MessageContract as SmsMessage;
 
-/**
- * Abstract Class Notify.
- */
 class Notify implements Contract
 {
     /**

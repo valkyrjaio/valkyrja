@@ -28,9 +28,6 @@ use Valkyrja\Throwable\Exception\InvalidArgumentException;
 
 use function is_string;
 
-/**
- * Class Notification.
- */
 class Notifier implements Contract
 {
     /**
