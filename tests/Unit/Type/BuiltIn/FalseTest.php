@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\BuiltIn;
 
+use JsonException;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\FalseT;
+
+use const JSON_THROW_ON_ERROR;
 
 class FalseTest extends TestCase
 {
@@ -22,7 +25,7 @@ class FalseTest extends TestCase
 
     public function testValue(): void
     {
-        $type = new FalseT(self::VALUE);
+        $type = new FalseT();
 
         self::assertSame(self::VALUE, $type->asValue());
     }
@@ -31,19 +34,19 @@ class FalseTest extends TestCase
     {
         $typeFromValue = FalseT::fromValue(self::VALUE);
 
-        self::assertSame(self::VALUE, $typeFromValue->asValue());
+        self::assertFalse($typeFromValue->asValue());
     }
 
     public function testAsFlatValue(): void
     {
-        $type = new FalseT(self::VALUE);
+        $type = new FalseT();
 
         self::assertSame(self::VALUE, $type->asFlatValue());
     }
 
     public function testModify(): void
     {
-        $type = new FalseT(self::VALUE);
+        $type = new FalseT();
         // The new value
         $newValue = true;
 
@@ -55,10 +58,13 @@ class FalseTest extends TestCase
         self::assertNotSame($newValue, $modified->asValue());
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testJsonSerialize(): void
     {
-        $type = new FalseT(self::VALUE);
+        $type = new FalseT();
 
-        self::assertSame(json_encode(self::VALUE), json_encode($type));
+        self::assertSame(json_encode(self::VALUE, JSON_THROW_ON_ERROR), json_encode($type, JSON_THROW_ON_ERROR));
     }
 }

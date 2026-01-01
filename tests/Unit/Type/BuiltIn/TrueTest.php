@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Type\BuiltIn;
 
+use JsonException;
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\TrueT;
+
+use const JSON_THROW_ON_ERROR;
 
 class TrueTest extends TestCase
 {
@@ -22,7 +25,7 @@ class TrueTest extends TestCase
 
     public function testValue(): void
     {
-        $type = new TrueT(self::VALUE);
+        $type = new TrueT();
 
         self::assertSame(self::VALUE, $type->asValue());
     }
@@ -36,14 +39,14 @@ class TrueTest extends TestCase
 
     public function testAsFlatValue(): void
     {
-        $type = new TrueT(self::VALUE);
+        $type = new TrueT();
 
         self::assertSame(self::VALUE, $type->asFlatValue());
     }
 
     public function testModify(): void
     {
-        $type = new TrueT(self::VALUE);
+        $type = new TrueT();
         // The new value
         $newValue = false;
 
@@ -55,10 +58,13 @@ class TrueTest extends TestCase
         self::assertNotSame($newValue, $modified->asValue());
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testJsonSerialize(): void
     {
-        $type = new TrueT(self::VALUE);
+        $type = new TrueT();
 
-        self::assertSame(json_encode(self::VALUE), json_encode($type));
+        self::assertSame(json_encode(self::VALUE, JSON_THROW_ON_ERROR), json_encode($type, JSON_THROW_ON_ERROR));
     }
 }
