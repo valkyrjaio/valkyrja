@@ -23,8 +23,6 @@ use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 
 /**
- * Class OrmStore.
- *
  * @template U of UserContract
  *
  * @implements Contract<U>

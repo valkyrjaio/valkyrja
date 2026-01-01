@@ -27,9 +27,6 @@ use Valkyrja\Dispatch\Throwable\Exception\RuntimeException;
 
 use function is_callable;
 
-/**
- * Class DispatcherFactory.
- */
 class DispatchFactory
 {
     public static function fromReflection(

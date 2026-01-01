@@ -42,9 +42,6 @@ use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 
 use function is_string;
 
-/**
- * Class HelpCommand.
- */
 class HelpCommand
 {
     public const string NAME = 'help';

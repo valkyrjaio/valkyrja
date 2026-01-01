@@ -21,9 +21,6 @@ use Valkyrja\Http\Message\Factory\RequestFactory;
 use Valkyrja\Http\Message\Response\Psr\Response;
 use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 
-/**
- * Class RequestHandler.
- */
 class RequestHandler implements RequestHandlerInterface
 {
     public function __construct(

@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Model\Contract;
 
-/**
- * Interface IndexedModelContract.
- */
 interface IndexedModelContract extends ModelContract
 {
     /**

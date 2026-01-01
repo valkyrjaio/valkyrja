@@ -22,8 +22,6 @@ use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 
 /**
- * Interface HandlerContract.
- *
  * @template Middleware of RequestReceivedMiddlewareContract|SendingResponseMiddlewareContract|RouteMatchedMiddlewareContract|RouteNotMatchedMiddlewareContract|RouteDispatchedMiddlewareContract|ThrowableCaughtMiddlewareContract|TerminatedMiddlewareContract
  */
 interface HandlerContract

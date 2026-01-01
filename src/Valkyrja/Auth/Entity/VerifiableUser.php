@@ -19,9 +19,6 @@ use Valkyrja\Auth\Entity\Trait\MailableUserTrait;
 use Valkyrja\Auth\Entity\Trait\VerifiableUserFields;
 use Valkyrja\Auth\Entity\Trait\VerifiableUserTrait;
 
-/**
- * Entity VerifiableUser.
- */
 class VerifiableUser extends User implements Contract
 {
     use MailableUserFields;

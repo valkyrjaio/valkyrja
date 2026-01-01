@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Enum;
 
 /**
- * Enum RequestMethod.
- *
- * @see    https://www.rfc-editor.org/rfc/rfc9110.html#name-method-definitions
+ * @see https://www.rfc-editor.org/rfc/rfc9110.html#name-method-definitions
  */
 enum RequestMethod: string
 {

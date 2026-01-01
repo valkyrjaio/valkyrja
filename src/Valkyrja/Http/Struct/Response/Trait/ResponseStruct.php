@@ -17,9 +17,6 @@ use Valkyrja\Type\BuiltIn\Enum\Trait\Arrayable;
 
 use function array_key_exists;
 
-/**
- * Trait ResponseStruct.
- */
 trait ResponseStruct
 {
     use Arrayable;

@@ -35,9 +35,6 @@ use function stream_get_meta_data;
 
 use const SEEK_SET;
 
-/**
- * Class Stream.
- */
 class Stream implements Contract
 {
     use StreamHelpers;

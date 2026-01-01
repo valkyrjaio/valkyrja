@@ -46,9 +46,6 @@ use Valkyrja\Reflection\Reflector\Reflector;
 use function array_column;
 use function is_a;
 
-/**
- * Class AttributeCollector.
- */
 class AttributeCollector implements Contract
 {
     public function __construct(

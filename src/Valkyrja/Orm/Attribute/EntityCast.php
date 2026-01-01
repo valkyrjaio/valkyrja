@@ -16,9 +16,6 @@ namespace Valkyrja\Orm\Attribute;
 use Attribute;
 use Valkyrja\Orm\Data\EntityCast as ParentEntityCast;
 
-/**
- * Attribute EntityCast.
- */
 #[Attribute(Attribute::TARGET_PARAMETER)]
 class EntityCast extends ParentEntityCast
 {

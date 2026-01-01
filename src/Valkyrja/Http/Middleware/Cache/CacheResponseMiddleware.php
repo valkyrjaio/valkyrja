@@ -34,9 +34,6 @@ use function md5;
 use function serialize;
 use function unserialize;
 
-/**
- * Class CacheResponseMiddleware.
- */
 class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, TerminatedMiddlewareContract
 {
     public function __construct(

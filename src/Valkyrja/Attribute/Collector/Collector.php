@@ -36,9 +36,6 @@ use Valkyrja\Reflection\Reflector\Reflector as ReflectorReflector;
 
 use function is_callable;
 
-/**
- * Class Attributes.
- */
 class Collector implements Contract
 {
     /**

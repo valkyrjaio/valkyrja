@@ -19,9 +19,6 @@ use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 
 use function getType;
 
-/**
- * Class ArrayOf.
- */
 class ArrayOf
 {
     /**

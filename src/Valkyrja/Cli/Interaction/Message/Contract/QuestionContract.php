@@ -15,9 +15,6 @@ namespace Valkyrja\Cli\Interaction\Message\Contract;
 
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 
-/**
- * Interface QuestionContract.
- */
 interface QuestionContract extends MessageContract
 {
     /**

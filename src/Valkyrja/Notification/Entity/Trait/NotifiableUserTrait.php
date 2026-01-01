@@ -15,9 +15,6 @@ namespace Valkyrja\Notification\Entity\Trait;
 
 use Valkyrja\Notification\Constant\UserField;
 
-/**
- * Trait NotifiableUserTrait.
- */
 trait NotifiableUserTrait
 {
     /**

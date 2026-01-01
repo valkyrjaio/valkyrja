@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Mail\Data\Contract\MessageContract;
 use Valkyrja\Mail\Mailer\Contract\MailerContract as Contract;
 
-/**
- * Class NullMailer.
- */
 class NullMailer implements Contract
 {
     /**

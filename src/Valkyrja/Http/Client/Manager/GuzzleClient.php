@@ -27,9 +27,6 @@ use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
-/**
- * Class GuzzleClient.
- */
 class GuzzleClient implements Contract
 {
     public function __construct(

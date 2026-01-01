@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Enum;
 
-/**
- * Enum Visibility.
- */
 enum Visibility: string
 {
     case PUBLIC  = 'public';

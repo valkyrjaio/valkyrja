@@ -18,9 +18,6 @@ use Valkyrja\Container\Data\Data as ContainerData;
 use Valkyrja\Event\Data\Data as EventData;
 use Valkyrja\Http\Routing\Data\Data as HttpData;
 
-/**
- * Class AppData.
- */
 readonly class Data
 {
     public function __construct(

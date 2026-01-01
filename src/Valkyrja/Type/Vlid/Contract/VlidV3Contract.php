@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Vlid\Contract;
 
-/**
- * Interface VlidV3Contract.
- */
 interface VlidV3Contract extends VlidContract
 {
 }

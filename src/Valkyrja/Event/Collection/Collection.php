@@ -23,9 +23,6 @@ use Valkyrja\Event\Throwable\Exception\InvalidArgumentException;
 use function array_keys;
 use function is_string;
 
-/**
- * Class Collection.
- */
 class Collection implements Contract
 {
     /**

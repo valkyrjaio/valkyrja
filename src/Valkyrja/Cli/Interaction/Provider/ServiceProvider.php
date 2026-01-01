@@ -21,9 +21,6 @@ use Valkyrja\Cli\Interaction\Factory\OutputFactory as DefaultOutputFactory;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

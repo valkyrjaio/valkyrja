@@ -15,9 +15,6 @@ namespace Valkyrja\Type\BuiltIn\Enum\Trait;
 
 use Valkyrja\Type\BuiltIn\Enum\Support\Enum;
 
-/**
- * Trait Arrayable.
- */
 trait Arrayable
 {
     /**

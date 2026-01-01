@@ -22,9 +22,6 @@ use Valkyrja\Http\Message\Response\EmptyResponse;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Type\BuiltIn\Support\Obj;
 
-/**
- * Class LogClient.
- */
 class LogClient implements Contract
 {
     public function __construct(

@@ -15,9 +15,6 @@ namespace Valkyrja\Http\Message\Header\Value\Contract;
 
 use Valkyrja\Http\Message\Enum\SameSite;
 
-/**
- * Interface CookieContract.
- */
 interface CookieContract extends ValueContract
 {
     /**

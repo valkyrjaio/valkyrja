@@ -18,9 +18,6 @@ use Valkyrja\Api\Model\Contract\JsonContract;
 use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 
-/**
- * Interface ApiContract.
- */
 interface ApiContract
 {
     /**

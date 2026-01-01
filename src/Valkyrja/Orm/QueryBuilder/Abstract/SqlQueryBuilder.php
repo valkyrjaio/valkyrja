@@ -20,9 +20,6 @@ use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Data\WhereGroup;
 use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilderContract as Contract;
 
-/**
- * Class SqlQueryBuilder.
- */
 abstract class SqlQueryBuilder implements Contract
 {
     /** @var string */

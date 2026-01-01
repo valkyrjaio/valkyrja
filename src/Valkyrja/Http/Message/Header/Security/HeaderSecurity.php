@@ -23,9 +23,6 @@ use function preg_match;
 use function sprintf;
 use function strlen;
 
-/**
- * Class HeaderSecurity.
- */
 final class HeaderSecurity
 {
     /**

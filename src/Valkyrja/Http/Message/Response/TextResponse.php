@@ -23,9 +23,6 @@ use Valkyrja\Http\Message\Response\Contract\TextResponseContract as Contract;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 
-/**
- * Class TextResponse.
- */
 class TextResponse extends Response implements Contract
 {
     /**

@@ -19,8 +19,6 @@ use Stringable;
 use Valkyrja\Type\Contract\TypeContract;
 
 /**
- * Interface ModelContract.
- *
  * @extends ArrayAccess<string, mixed>
  * @extends TypeContract<static>
  */

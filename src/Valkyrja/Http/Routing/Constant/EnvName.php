@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Constant;
 
-/**
- * Class EnvName.
- */
 final class EnvName
 {
     public const string CONTROLLERS = 'HTTP_ROUTING_CONTROLLERS';

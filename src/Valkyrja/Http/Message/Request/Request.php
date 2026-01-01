@@ -28,9 +28,6 @@ use Valkyrja\Http\Message\Uri\Uri as HttpUri;
 
 use function preg_match;
 
-/**
- * Class Request.
- */
 class Request implements Contract
 {
     use Message;

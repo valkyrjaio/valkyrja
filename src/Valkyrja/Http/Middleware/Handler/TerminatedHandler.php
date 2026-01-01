@@ -21,8 +21,6 @@ use Valkyrja\Http\Middleware\Handler\Abstract\Handler;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract as Contract;
 
 /**
- * Class TerminatedHandler.
- *
  * @extends Handler<TerminatedMiddlewareContract>
  */
 class TerminatedHandler extends Handler implements Contract

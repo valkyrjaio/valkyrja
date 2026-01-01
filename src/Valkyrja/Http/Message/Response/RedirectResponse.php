@@ -25,9 +25,6 @@ use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Uri;
 
-/**
- * Class RedirectResponse.
- */
 class RedirectResponse extends Response implements Contract
 {
     /**

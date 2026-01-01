@@ -16,9 +16,6 @@ namespace Valkyrja\Validation\Rule\Is;
 use Override;
 use Valkyrja\Validation\Rule\Abstract\Rule;
 
-/**
- * Class IsEmpty.
- */
 class IsEmpty extends Rule
 {
     #[Override]

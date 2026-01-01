@@ -23,9 +23,6 @@ use function implode;
 use function is_array;
 use function strtolower;
 
-/**
- * Trait MessageTrait.
- */
 trait Message
 {
     /**

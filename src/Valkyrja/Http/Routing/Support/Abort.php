@@ -20,9 +20,6 @@ use Valkyrja\Http\Message\Throwable\Exception\HttpException;
 use Valkyrja\Http\Message\Throwable\Exception\HttpRedirectException;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 
-/**
- * Class Abort.
- */
 class Abort
 {
     /**

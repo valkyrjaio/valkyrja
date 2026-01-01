@@ -23,9 +23,6 @@ use function md5;
 use function sprintf;
 use function substr;
 
-/**
- * Class Uuid.
- */
 class UuidV3 extends Uuid
 {
     /** @var string */

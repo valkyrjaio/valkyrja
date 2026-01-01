@@ -24,9 +24,6 @@ use Valkyrja\Cli\Routing\Attribute\Route;
 
 use const PHP_VERSION;
 
-/**
- * Class VersionCommand.
- */
 class VersionCommand
 {
     public const string NAME = 'version';

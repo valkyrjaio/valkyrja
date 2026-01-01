@@ -25,8 +25,6 @@ use function is_int;
 use function is_string;
 
 /**
- * Class FloatT.
- *
  * @extends Type<float>
  */
 class FloatT extends Type implements Contract

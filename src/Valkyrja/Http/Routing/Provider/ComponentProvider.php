@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 
-/**
- * Final Class Component.
- */
 class ComponentProvider extends Provider
 {
     /**

@@ -15,9 +15,6 @@ namespace Valkyrja\Sms\Messenger\Contract;
 
 use Valkyrja\Sms\Data\Contract\MessageContract;
 
-/**
- * Interface MessengerContract.
- */
 interface MessengerContract
 {
     /**

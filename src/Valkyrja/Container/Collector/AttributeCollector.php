@@ -20,9 +20,6 @@ use Valkyrja\Container\Attribute\Alias;
 use Valkyrja\Container\Attribute\Service;
 use Valkyrja\Container\Collector\Contract\CollectorContract as Contract;
 
-/**
- * Class AttributeCollector.
- */
 class AttributeCollector implements Contract
 {
     /**

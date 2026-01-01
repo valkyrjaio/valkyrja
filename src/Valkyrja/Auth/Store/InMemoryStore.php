@@ -21,8 +21,6 @@ use Valkyrja\Auth\Store\Contract\StoreContract as Contract;
 use Valkyrja\Auth\Throwable\Exception\InvalidUserException;
 
 /**
- * Class InMemoryStore.
- *
  * @template U of UserContract
  *
  * @implements Contract<U>

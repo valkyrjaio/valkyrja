@@ -17,9 +17,6 @@ use Valkyrja\Orm\Constant\Statement;
 use Valkyrja\Orm\QueryBuilder\Abstract\SqlQueryBuilder;
 use Valkyrja\Orm\QueryBuilder\Contract\DeleteQueryBuilderContract as Contract;
 
-/**
- * Class SqlDeleteQueryBuilder.
- */
 class SqlDeleteQueryBuilder extends SqlQueryBuilder implements Contract
 {
     /**

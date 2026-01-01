@@ -15,9 +15,6 @@ namespace Valkyrja\Mail\Mailer\Contract;
 
 use Valkyrja\Mail\Data\Contract\MessageContract;
 
-/**
- * Interface MailerContract.
- */
 interface MailerContract
 {
     /**

@@ -51,9 +51,6 @@ use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 
 use function in_array;
 
-/**
- * Class Router.
- */
 class Router implements Contract
 {
     public function __construct(

@@ -22,9 +22,6 @@ use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\View\Factory\Contract\ResponseFactoryContract as ViewResponseFactory;
 use Valkyrja\View\Factory\ResponseFactory as DefaultViewResponseFactory;
 
-/**
- * Class ViewExceptionMiddleware.
- */
 class ViewThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
 {
     /**

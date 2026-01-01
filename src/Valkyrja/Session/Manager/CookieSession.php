@@ -23,9 +23,6 @@ use Valkyrja\Session\Throwable\Exception\SessionStartFailure;
 use function headers_sent;
 use function session_start;
 
-/**
- * Class CookieSession.
- */
 class CookieSession extends PhpSession
 {
     /**

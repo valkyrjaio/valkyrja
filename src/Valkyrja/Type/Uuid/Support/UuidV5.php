@@ -23,9 +23,6 @@ use function sha1;
 use function sprintf;
 use function substr;
 
-/**
- * Class UuidV5.
- */
 class UuidV5 extends Uuid
 {
     /** @var string */

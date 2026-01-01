@@ -19,9 +19,6 @@ use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Reflection\Reflector\Reflector;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

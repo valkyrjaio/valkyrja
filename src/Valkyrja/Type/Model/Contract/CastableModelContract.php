@@ -15,9 +15,6 @@ namespace Valkyrja\Type\Model\Contract;
 
 use Valkyrja\Type\Data\Cast;
 
-/**
- * Interface CastableModelContract.
- */
 interface CastableModelContract extends ModelContract
 {
     /**

@@ -15,9 +15,6 @@ namespace Valkyrja\Validation\Validator\Contract;
 
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 
-/**
- * Interface ValidateContract.
- */
 interface ValidatorContract
 {
     /**

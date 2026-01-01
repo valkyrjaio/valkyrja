@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Header\Throwable\Exception;
 
-/**
- * Class UnsupportedOffsetUnsetException.
- */
 class UnsupportedOffsetUnsetException extends UnsupportedMethodException
 {
 }

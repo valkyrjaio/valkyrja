@@ -16,9 +16,6 @@ namespace Valkyrja\Type\Model\Throwable\Exception;
 use Valkyrja\Type\Model\Throwable\Contract\Throwable;
 use Valkyrja\Type\Throwable\Exception\RuntimeException as Exception;
 
-/**
- * Class RuntimeException.
- */
 class RuntimeException extends Exception implements Throwable
 {
 }

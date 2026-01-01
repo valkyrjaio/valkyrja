@@ -17,9 +17,6 @@ use Valkyrja\Auth\Entity\Contract\MailableUserContract as Contract;
 use Valkyrja\Auth\Entity\Trait\MailableUserFields;
 use Valkyrja\Auth\Entity\Trait\MailableUserTrait;
 
-/**
- * Entity MailableUser.
- */
 class MailableUser extends User implements Contract
 {
     use MailableUserFields;

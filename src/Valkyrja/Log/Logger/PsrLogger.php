@@ -19,9 +19,6 @@ use Throwable;
 use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Log\Logger\Contract\LoggerContract as Contract;
 
-/**
- * Class PsrLogger.
- */
 class PsrLogger implements Contract
 {
     /**

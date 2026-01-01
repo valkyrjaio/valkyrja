@@ -15,9 +15,6 @@ namespace Valkyrja\Filesystem\Manager\Contract;
 
 use Valkyrja\Filesystem\Enum\Visibility;
 
-/**
- * Interface FilesystemContract.
- */
 interface FilesystemContract
 {
     /**

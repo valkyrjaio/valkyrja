@@ -18,9 +18,6 @@ use Valkyrja\Auth\Data\Attempt\Contract\ResetPasswordAttemptContract as Contract
 use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 use Valkyrja\Auth\Data\Retrieval\RetrievalByResetToken;
 
-/**
- * Class ResetPasswordAttempt.
- */
 class ResetPasswordAttempt implements Contract
 {
     public function __construct(

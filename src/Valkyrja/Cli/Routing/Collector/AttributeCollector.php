@@ -39,9 +39,6 @@ use function array_column;
 use function array_merge;
 use function is_a;
 
-/**
- * Class AttributeCollector.
- */
 class AttributeCollector implements Contract
 {
     public function __construct(

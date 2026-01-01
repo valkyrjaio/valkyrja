@@ -27,9 +27,6 @@ use function sprintf;
 use function strlen;
 use function substr;
 
-/**
- * Class UuidV1.
- */
 class UuidV1 extends Uuid
 {
     /** @var string */

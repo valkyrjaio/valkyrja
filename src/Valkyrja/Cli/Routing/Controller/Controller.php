@@ -16,9 +16,6 @@ namespace Valkyrja\Cli\Routing\Controller;
 use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 
-/**
- * Abstract Class Controller.
- */
 abstract class Controller
 {
     public function __construct(

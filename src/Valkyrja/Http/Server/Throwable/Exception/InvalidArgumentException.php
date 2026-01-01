@@ -16,9 +16,6 @@ namespace Valkyrja\Http\Server\Throwable\Exception;
 use Valkyrja\Http\Server\Throwable\Contract\Throwable;
 use Valkyrja\Http\Throwable\Exception\InvalidArgumentException as HttpInvalidArgumentException;
 
-/**
- * Class InvalidArgumentException.
- */
 class InvalidArgumentException extends HttpInvalidArgumentException implements Throwable
 {
 }

@@ -18,9 +18,6 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 
 use function is_string;
 
-/**
- * Class IsString.
- */
 class IsString extends Rule
 {
     #[Override]

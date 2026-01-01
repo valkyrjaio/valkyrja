@@ -19,9 +19,6 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 
 use function is_string;
 
-/**
- * Class Min.
- */
 class Min extends Rule
 {
     public function __construct(

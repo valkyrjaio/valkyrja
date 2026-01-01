@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Schema\Contract\MigrationContract as Contract;
 
-/**
- * Abstract Class Migration.
- */
 abstract class Migration implements Contract
 {
     /**

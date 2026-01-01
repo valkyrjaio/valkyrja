@@ -19,9 +19,6 @@ use function strtolower;
 use function strtoupper;
 use function ucwords;
 
-/**
- * Class StrCase.
- */
 class StrCase
 {
     /**

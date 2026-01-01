@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\QueryBuilder\Contract;
 
-/**
- * Interface DeleteQueryBuilderContract.
- */
 interface DeleteQueryBuilderContract extends QueryBuilderContract
 {
 }

@@ -68,10 +68,8 @@ use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\PhpRenderer;
 
 /**
- * Class Env.
- *
- * @see    https://psalm.dev/r/eb18b4d7ae This one is fine
- * @see    https://psalm.dev/r/36fd31ac0e This on breaks, the moment we use an annotation?!!?!?
+ * @see https://psalm.dev/r/eb18b4d7ae This one is fine
+ * @see https://psalm.dev/r/36fd31ac0e This on breaks, the moment we use an annotation?!!?!?
  */
 class Env
 {

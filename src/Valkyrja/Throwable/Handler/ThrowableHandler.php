@@ -23,9 +23,6 @@ use Whoops\Util\Misc;
 
 use const E_ALL;
 
-/**
- * Class ThrowableHandler.
- */
 class ThrowableHandler implements Contract
 {
     /**

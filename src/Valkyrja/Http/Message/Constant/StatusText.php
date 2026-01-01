@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Constant;
 
 /**
- * Status text constants.
- *
- * @see    http://www.iana.org/assignments/http-status-codes/
+ * @see http://www.iana.org/assignments/http-status-codes/
  * - Hypertext Transfer Protocol (HTTP) Status Code Registry
  */
 final class StatusText

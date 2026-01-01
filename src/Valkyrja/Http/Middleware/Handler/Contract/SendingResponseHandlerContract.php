@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
 
 /**
- * Interface SendingResponseHandlerContract.
- *
  * @extends HandlerContract<SendingResponseMiddlewareContract>
  */
 interface SendingResponseHandlerContract extends HandlerContract

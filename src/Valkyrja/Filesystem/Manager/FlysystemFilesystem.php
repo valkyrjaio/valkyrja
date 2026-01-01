@@ -22,9 +22,6 @@ use Valkyrja\Filesystem\Manager\Contract\FilesystemContract as Contract;
 
 use function array_map;
 
-/**
- * Class FlysystemFilesystem.
- */
 class FlysystemFilesystem implements Contract
 {
     /**

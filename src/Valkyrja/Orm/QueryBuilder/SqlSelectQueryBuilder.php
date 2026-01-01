@@ -19,9 +19,6 @@ use Valkyrja\Orm\Data\OrderBy;
 use Valkyrja\Orm\QueryBuilder\Abstract\SqlQueryBuilder;
 use Valkyrja\Orm\QueryBuilder\Contract\SelectQueryBuilderContract as Contract;
 
-/**
- * Class SqlSelectQueryBuilder.
- */
 class SqlSelectQueryBuilder extends SqlQueryBuilder implements Contract
 {
     /** @var non-empty-string[] */

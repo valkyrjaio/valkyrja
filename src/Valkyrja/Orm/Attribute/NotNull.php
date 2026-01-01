@@ -15,9 +15,6 @@ namespace Valkyrja\Orm\Attribute;
 
 use Attribute;
 
-/**
- * Attribute NotNull.
- */
 #[Attribute]
 class NotNull
 {

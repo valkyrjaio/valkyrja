@@ -17,9 +17,6 @@ use InvalidArgumentException;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 
-/**
- * Interface MessageContract.
- */
 interface MessageContract
 {
     /**

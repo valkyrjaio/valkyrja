@@ -17,9 +17,6 @@ use Attribute;
 use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Enum\CastType;
 
-/**
- * Attribute Cast.
- */
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class OriginalArrayCast extends Cast
 {

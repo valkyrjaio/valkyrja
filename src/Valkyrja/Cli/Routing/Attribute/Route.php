@@ -24,9 +24,6 @@ use Valkyrja\Cli\Routing\Data\Route as Model;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 use Valkyrja\Dispatch\Data\MethodDispatch as DefaultDispatch;
 
-/**
- * Attribute Route.
- */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class Route extends Model
 {

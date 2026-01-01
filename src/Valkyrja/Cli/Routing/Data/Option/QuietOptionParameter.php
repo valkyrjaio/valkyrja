@@ -16,9 +16,6 @@ namespace Valkyrja\Cli\Routing\Data\Option;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 
-/**
- * Class HelpOptionParameter.
- */
 class QuietOptionParameter extends OptionParameter
 {
     public const string NAME       = 'quiet';

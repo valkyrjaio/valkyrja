@@ -21,8 +21,6 @@ use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract as Contract;
 
 /**
- * Class Repository.
- *
  * @template T of EntityContract
  *
  * @implements Contract<T>

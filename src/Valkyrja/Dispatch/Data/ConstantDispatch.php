@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Dispatch\Data\Abstract\Dispatch;
 use Valkyrja\Dispatch\Data\Contract\ConstantDispatchContract as Contract;
 
-/**
- * Class ConstantDispatch.
- */
 class ConstantDispatch extends Dispatch implements Contract
 {
     /**

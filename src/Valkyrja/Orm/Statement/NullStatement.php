@@ -18,9 +18,6 @@ use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 use Valkyrja\Orm\Statement\Contract\StatementContract as Contract;
 
-/**
- * Class NullStatement.
- */
 class NullStatement implements Contract
 {
     /**

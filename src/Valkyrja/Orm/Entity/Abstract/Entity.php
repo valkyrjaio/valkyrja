@@ -33,8 +33,6 @@ use function is_int;
 use function is_string;
 
 /**
- * Class Entity.
- *
  * @psalm-import-type StorableValue from Contract
  *
  * @phpstan-import-type StorableValue from Contract

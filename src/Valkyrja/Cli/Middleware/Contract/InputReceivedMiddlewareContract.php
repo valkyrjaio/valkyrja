@@ -17,9 +17,6 @@ use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 
-/**
- * Interface InputReceivedMiddlewareContract.
- */
 interface InputReceivedMiddlewareContract
 {
     /**

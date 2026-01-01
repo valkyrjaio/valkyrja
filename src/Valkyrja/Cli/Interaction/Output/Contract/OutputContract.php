@@ -16,9 +16,6 @@ namespace Valkyrja\Cli\Interaction\Output\Contract;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 
-/**
- * Interface OutputContract.
- */
 interface OutputContract
 {
     /**

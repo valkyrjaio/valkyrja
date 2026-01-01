@@ -16,9 +16,6 @@ namespace Valkyrja\Cli\Server\Provider;
 use Override;
 use Valkyrja\Application\Provider\Provider;
 
-/**
- * Class ComponentProvider.
- */
 class ComponentProvider extends Provider
 {
     /**

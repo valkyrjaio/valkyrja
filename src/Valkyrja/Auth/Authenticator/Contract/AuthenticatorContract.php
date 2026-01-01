@@ -18,8 +18,6 @@ use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 
 /**
- * Interface AuthenticatorContract.
- *
  * @template U of UserContract
  */
 interface AuthenticatorContract

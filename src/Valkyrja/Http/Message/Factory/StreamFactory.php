@@ -18,9 +18,6 @@ use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream as ValkyrjaStream;
 
-/**
- * Abstract Class StreamFactory.
- */
 abstract class StreamFactory
 {
     public static function fromPsr(StreamInterface $stream): StreamContract

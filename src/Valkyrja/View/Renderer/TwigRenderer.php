@@ -22,9 +22,6 @@ use Valkyrja\View\Renderer\Contract\RendererContract as Contract;
 use Valkyrja\View\Template\Contract\TemplateContract;
 use Valkyrja\View\Template\Template as DefaultTemplate;
 
-/**
- * Class TwigRenderer.
- */
 class TwigRenderer implements Contract
 {
     /**

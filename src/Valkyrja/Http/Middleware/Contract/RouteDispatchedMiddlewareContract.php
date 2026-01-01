@@ -18,9 +18,6 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
-/**
- * Interface RouteDispatchedMiddlewareContract.
- */
 interface RouteDispatchedMiddlewareContract
 {
     /**

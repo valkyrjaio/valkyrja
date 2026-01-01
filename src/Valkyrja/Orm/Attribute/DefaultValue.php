@@ -15,9 +15,6 @@ namespace Valkyrja\Orm\Attribute;
 
 use Attribute;
 
-/**
- * Attribute DefaultValue.
- */
 #[Attribute]
 class DefaultValue
 {

@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Model\Trait;
 
-/**
- * Trait Exposable.
- */
 trait Exposable
 {
     /**

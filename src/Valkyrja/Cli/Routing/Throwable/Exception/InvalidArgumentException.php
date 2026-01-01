@@ -16,9 +16,6 @@ namespace Valkyrja\Cli\Routing\Throwable\Exception;
 use Valkyrja\Cli\Routing\Throwable\Contract\Throwable;
 use Valkyrja\Cli\Throwable\Exception\InvalidArgumentException as CliInvalidArgumentException;
 
-/**
- * Class InvalidArgumentException.
- */
 class InvalidArgumentException extends CliInvalidArgumentException implements Throwable
 {
 }

@@ -18,8 +18,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 
 /**
- * Interface ExitedHandlerContract.
- *
  * @extends HandlerContract<ExitedMiddlewareContract>
  */
 interface ExitedHandlerContract extends HandlerContract

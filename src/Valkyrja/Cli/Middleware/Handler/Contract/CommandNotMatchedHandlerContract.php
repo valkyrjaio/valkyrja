@@ -18,8 +18,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddlewareContract;
 
 /**
- * Interface CommandNotMatchedHandlerContract.
- *
  * @extends HandlerContract<CommandNotMatchedMiddlewareContract>
  */
 interface CommandNotMatchedHandlerContract extends HandlerContract

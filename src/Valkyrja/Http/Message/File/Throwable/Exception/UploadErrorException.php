@@ -16,9 +16,6 @@ namespace Valkyrja\Http\Message\File\Throwable\Exception;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\Throwable\Contract\Throwable;
 
-/**
- * Class UploadErrorException.
- */
 class UploadErrorException extends RuntimeException
 {
     /** @var string */

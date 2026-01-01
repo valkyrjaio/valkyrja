@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Schema\Contract;
 
-/**
- * Interface TableContract.
- */
 interface TableContract
 {
     /**

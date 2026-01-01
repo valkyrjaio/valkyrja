@@ -20,9 +20,6 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function get_object_vars;
 
-/**
- * Abstract Class Dispatch.
- */
 abstract class Dispatch implements Contract
 {
     /**

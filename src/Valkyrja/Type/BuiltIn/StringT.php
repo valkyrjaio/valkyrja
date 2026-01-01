@@ -21,8 +21,6 @@ use Valkyrja\Type\BuiltIn\Support\Str as Helper;
 use Valkyrja\Type\BuiltIn\Support\StrCase;
 
 /**
- * Class Str.
- *
  * @extends Type<string>
  */
 class StringT extends Type implements Contract

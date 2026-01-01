@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 
 /**
- * Interface RouteNotMatchedHandlerContract.
- *
  * @extends HandlerContract<RouteNotMatchedMiddlewareContract>
  */
 interface RouteNotMatchedHandlerContract extends HandlerContract

@@ -21,8 +21,6 @@ use Valkyrja\Http\Middleware\Handler\Abstract\Handler;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract as Contract;
 
 /**
- * Class RouteNotMatchedHandler.
- *
  * @extends Handler<RouteNotMatchedMiddlewareContract>
  */
 class RouteNotMatchedHandler extends Handler implements Contract

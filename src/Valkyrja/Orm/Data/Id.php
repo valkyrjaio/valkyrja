@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Data;
 
-/**
- * Class Id.
- */
 readonly class Id extends Value
 {
     /**

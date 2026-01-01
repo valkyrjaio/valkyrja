@@ -15,9 +15,6 @@ namespace Valkyrja\Throwable\Contract;
 
 use Throwable as PhpThrowable;
 
-/**
- * Interface Throwable.
- */
 interface Throwable extends PhpThrowable
 {
     /**

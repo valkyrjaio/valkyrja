@@ -23,9 +23,6 @@ use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\Listener as Model;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
-/**
- * Class AttributeCollector.
- */
 class AttributeCollector implements Contract
 {
     public function __construct(

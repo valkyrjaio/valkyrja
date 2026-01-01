@@ -18,8 +18,6 @@ use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\BuiltIn\Contract\TrueContract as Contract;
 
 /**
- * Class TrueT.
- *
  * @extends Type<true>
  */
 class TrueT extends Type implements Contract

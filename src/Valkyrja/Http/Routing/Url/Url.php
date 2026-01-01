@@ -20,9 +20,6 @@ use Valkyrja\Http\Routing\Url\Contract\UrlContract as Contract;
 
 use function str_replace;
 
-/**
- * Class Url.
- */
 class Url implements Contract
 {
     /**

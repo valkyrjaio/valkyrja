@@ -25,9 +25,6 @@ use function fread;
 use function str_starts_with;
 use function time;
 
-/**
- * Class InMemoryFilesystem.
- */
 class InMemoryFilesystem implements Contract
 {
     /**

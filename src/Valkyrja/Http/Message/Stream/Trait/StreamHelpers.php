@@ -31,9 +31,6 @@ use function get_resource_type;
 use function is_resource;
 use function str_contains;
 
-/**
- * Trait StreamHelpers.
- */
 trait StreamHelpers
 {
     /**

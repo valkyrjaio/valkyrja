@@ -19,9 +19,6 @@ use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 
 use function strlen;
 
-/**
- * Class OptionFactory.
- */
 abstract class OptionFactory
 {
     /**

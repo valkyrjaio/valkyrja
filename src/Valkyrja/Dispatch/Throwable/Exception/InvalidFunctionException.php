@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatch\Throwable\Exception;
 
-/**
- * Class InvalidFunctionException.
- */
 class InvalidFunctionException extends InvalidArgumentException
 {
 }

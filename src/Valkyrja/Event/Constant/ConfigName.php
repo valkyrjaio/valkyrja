@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Constant;
 
-/**
- * Class ConfigName.
- */
 final class ConfigName
 {
     public const string LISTENERS = 'listeners';

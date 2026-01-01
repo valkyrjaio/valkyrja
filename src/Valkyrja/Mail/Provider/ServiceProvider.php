@@ -28,9 +28,6 @@ use Valkyrja\Mail\Mailer\MailgunMailer;
 use Valkyrja\Mail\Mailer\NullMailer;
 use Valkyrja\Mail\Mailer\PhpMailer;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

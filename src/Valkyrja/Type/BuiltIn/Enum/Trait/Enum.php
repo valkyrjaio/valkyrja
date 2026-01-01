@@ -21,9 +21,6 @@ use Valkyrja\Type\Throwable\Exception\RuntimeException;
 use function is_int;
 use function is_string;
 
-/**
- * Trait Enum.
- */
 trait Enum
 {
     /**

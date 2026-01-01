@@ -16,9 +16,6 @@ namespace Valkyrja\Type\Model\Abstract;
 use Valkyrja\Type\Model\Contract\CastableModelContract as Contract;
 use Valkyrja\Type\Model\Trait\Castable;
 
-/**
- * Class CastableModel.
- */
 abstract class CastableModel extends Model implements Contract
 {
     use Castable;

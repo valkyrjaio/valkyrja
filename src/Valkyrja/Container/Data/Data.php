@@ -16,9 +16,6 @@ namespace Valkyrja\Container\Data;
 use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Provider\Provider;
 
-/**
- * Class Data.
- */
 readonly class Data
 {
     /**

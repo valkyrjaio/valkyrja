@@ -21,9 +21,6 @@ use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 
-/**
- * Class ViewRouteNotMatchedMiddleware.
- */
 class ViewRouteNotMatchedMiddleware implements RouteNotMatchedMiddlewareContract
 {
     /**

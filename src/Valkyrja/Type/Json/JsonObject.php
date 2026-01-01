@@ -22,8 +22,6 @@ use Valkyrja\Type\Json\Contract\JsonObjectContract as Contract;
 use function is_string;
 
 /**
- * Class JsonObject.
- *
  * @extends Type<object>
  */
 class JsonObject extends Type implements Contract

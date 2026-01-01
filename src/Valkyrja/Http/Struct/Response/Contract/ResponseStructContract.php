@@ -15,9 +15,6 @@ namespace Valkyrja\Http\Struct\Response\Contract;
 
 use Valkyrja\Http\Struct\Contract\StructContract;
 
-/**
- * Interface ResponseStructContract.
- */
 interface ResponseStructContract extends StructContract
 {
     /**

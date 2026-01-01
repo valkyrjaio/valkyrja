@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Request\Contract;
 
-/**
- * Class JsonRequestContract.
- */
 interface JsonServerRequestContract extends ServerRequestContract
 {
     /**

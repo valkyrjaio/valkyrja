@@ -17,9 +17,6 @@ use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
-/**
- * Interface RouterContract.
- */
 interface RouterContract
 {
     /**

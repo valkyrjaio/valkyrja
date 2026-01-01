@@ -18,9 +18,6 @@ use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
 use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 
-/**
- * Interface ManagerContract.
- */
 interface ManagerContract
 {
     /**

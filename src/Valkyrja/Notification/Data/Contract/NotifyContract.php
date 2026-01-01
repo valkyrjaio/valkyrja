@@ -17,9 +17,6 @@ use Valkyrja\Broadcast\Data\Contract\MessageContract as BroadcastMessage;
 use Valkyrja\Mail\Data\Contract\MessageContract as MailMessage;
 use Valkyrja\Sms\Data\Contract\MessageContract as SmsMessage;
 
-/**
- * Interface NotifyContract.
- */
 interface NotifyContract
 {
     /**

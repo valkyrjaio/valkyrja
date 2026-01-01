@@ -28,9 +28,6 @@ use Valkyrja\Type\Vlid\Support\VlidV2;
 use Valkyrja\Type\Vlid\Support\VlidV3;
 use Valkyrja\Type\Vlid\Support\VlidV4;
 
-/**
- * Constant Regex.
- */
 final class Regex
 {
     public const string PATH = '\/';

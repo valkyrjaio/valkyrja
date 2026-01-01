@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Enum;
 
-/**
- * Enum Style.
- */
 enum Style: int
 {
     case BOLD       = 1;

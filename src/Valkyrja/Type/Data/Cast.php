@@ -20,9 +20,6 @@ use Valkyrja\Type\Enum\CastType;
 
 use function assert;
 
-/**
- * Data Cast.
- */
 class Cast implements JsonSerializable
 {
     /**

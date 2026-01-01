@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract as Contract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 
-/**
- * Class RetrievalById.
- */
 class RetrievalById implements Contract
 {
     /**

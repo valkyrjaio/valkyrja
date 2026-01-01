@@ -18,9 +18,6 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 
 use function is_bool;
 
-/**
- * Class IsBool.
- */
 class IsBool extends Rule
 {
     #[Override]

@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Enum;
 
-/**
- * Enum OptionValueMode.
- */
 enum OptionValueMode
 {
     case NONE;

@@ -15,9 +15,6 @@ namespace Valkyrja\Container\Provider;
 
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
-/**
- * Abstract Class Provider.
- */
 abstract class Provider
 {
     /**

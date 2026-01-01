@@ -16,9 +16,6 @@ namespace Valkyrja\Http\Struct\Contract;
 use UnitEnum;
 use Valkyrja\Type\BuiltIn\Enum\Contract\ArrayableContract;
 
-/**
- * Interface StructContract.
- */
 interface StructContract extends UnitEnum, ArrayableContract
 {
 }

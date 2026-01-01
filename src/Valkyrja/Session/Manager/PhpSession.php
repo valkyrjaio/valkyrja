@@ -30,9 +30,6 @@ use function session_unset;
 
 use const PHP_SESSION_ACTIVE;
 
-/**
- * Class PhpSession.
- */
 class PhpSession extends NullSession
 {
     public function __construct(

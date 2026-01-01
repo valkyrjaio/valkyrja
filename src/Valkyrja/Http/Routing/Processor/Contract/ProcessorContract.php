@@ -15,9 +15,6 @@ namespace Valkyrja\Http\Routing\Processor\Contract;
 
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
-/**
- * Interface ProcessorContract.
- */
 interface ProcessorContract
 {
     /**

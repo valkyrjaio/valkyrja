@@ -26,8 +26,6 @@ use function is_string;
 use function sprintf;
 
 /**
- * Class Vlid.
- *
  * @extends Type<string>
  */
 class Vlid extends Type implements Contract

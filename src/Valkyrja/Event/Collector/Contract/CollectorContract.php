@@ -15,9 +15,6 @@ namespace Valkyrja\Event\Collector\Contract;
 
 use Valkyrja\Event\Data\Contract\ListenerContract;
 
-/**
- * Interface CollectorContract.
- */
 interface CollectorContract
 {
     /**

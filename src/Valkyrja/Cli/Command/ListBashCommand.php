@@ -23,9 +23,6 @@ use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
 use function is_string;
 
-/**
- * Class ListBashCommand.
- */
 class ListBashCommand
 {
     public const string NAME = 'list:bash';

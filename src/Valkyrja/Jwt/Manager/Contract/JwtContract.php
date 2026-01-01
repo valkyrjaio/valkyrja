@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Manager\Contract;
 
-/**
- * Interface JwtContract.
- */
 interface JwtContract
 {
     /**

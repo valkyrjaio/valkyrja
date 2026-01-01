@@ -33,9 +33,6 @@ use function is_a;
 use function is_int;
 use function is_string;
 
-/**
- * Class EntityRouteMatchedMiddleware.
- */
 class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
 {
     /**

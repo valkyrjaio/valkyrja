@@ -47,9 +47,6 @@ use Valkyrja\Http\Routing\Url\Url;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

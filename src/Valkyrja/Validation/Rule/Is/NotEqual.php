@@ -16,9 +16,6 @@ namespace Valkyrja\Validation\Rule\Is;
 use Override;
 use Valkyrja\Validation\Rule\Abstract\Rule;
 
-/**
- * Class NotEqual.
- */
 class NotEqual extends Rule
 {
     public function __construct(

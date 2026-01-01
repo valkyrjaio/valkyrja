@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Jwt\Enum;
 
-/**
- * Enum Algorithm.
- */
 enum Algorithm
 {
     case HS256;

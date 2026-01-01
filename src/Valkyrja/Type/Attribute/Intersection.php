@@ -16,9 +16,6 @@ namespace Valkyrja\Type\Attribute;
 use Attribute;
 use Valkyrja\Type\Contract\TypeContract;
 
-/**
- * Attribute Intersection.
- */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class Intersection
 {

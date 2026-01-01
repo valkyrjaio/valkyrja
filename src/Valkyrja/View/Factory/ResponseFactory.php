@@ -22,9 +22,6 @@ use Valkyrja\View\Factory\Contract\ResponseFactoryContract as Contract;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\PhpRenderer;
 
-/**
- * Class ResponseFactory.
- */
 class ResponseFactory implements Contract
 {
     public function __construct(

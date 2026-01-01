@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Application\Cli\Command\CacheCommand;
 use Valkyrja\Application\Cli\Command\ClearCacheCommand;
 
-/**
- * Final Class Component.
- */
 class ComponentProvider extends Provider
 {
     /**

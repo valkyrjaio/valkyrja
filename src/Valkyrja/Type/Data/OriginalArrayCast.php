@@ -16,9 +16,6 @@ namespace Valkyrja\Type\Data;
 use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Enum\CastType;
 
-/**
- * Data Cast.
- */
 class OriginalArrayCast extends Cast
 {
     /**

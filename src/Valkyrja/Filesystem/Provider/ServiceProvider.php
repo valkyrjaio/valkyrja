@@ -29,9 +29,6 @@ use Valkyrja\Filesystem\Manager\NullFilesystem;
 use Valkyrja\Filesystem\Manager\S3FlysystemFilesystem;
 use Valkyrja\Support\Directory\Directory;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

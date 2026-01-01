@@ -25,9 +25,6 @@ use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 
 use function trim;
 
-/**
- * Class RedirectTrailingSlashMiddleware.
- */
 class RedirectTrailingSlashMiddleware implements RequestReceivedMiddlewareContract
 {
     /**

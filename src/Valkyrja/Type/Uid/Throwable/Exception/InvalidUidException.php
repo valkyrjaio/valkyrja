@@ -16,9 +16,6 @@ namespace Valkyrja\Type\Uid\Throwable\Exception;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Uid\Throwable\Contract\UidThrowable;
 
-/**
- * Class InvalidUidException.
- */
 class InvalidUidException extends InvalidArgumentException implements UidThrowable
 {
 }

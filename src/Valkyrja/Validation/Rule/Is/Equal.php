@@ -16,9 +16,6 @@ namespace Valkyrja\Validation\Rule\Is;
 use Override;
 use Valkyrja\Validation\Rule\Abstract\Rule;
 
-/**
- * Class Equal.
- */
 class Equal extends Rule
 {
     public function __construct(

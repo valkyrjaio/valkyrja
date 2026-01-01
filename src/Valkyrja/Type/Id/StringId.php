@@ -24,8 +24,6 @@ use function is_int;
 use function is_string;
 
 /**
- * Class StringId.
- *
  * @extends Type<string>
  */
 class StringId extends Type implements Contract

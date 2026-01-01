@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Dispatch\Data\Abstract\Dispatch;
 use Valkyrja\Dispatch\Data\Contract\CallableDispatchContract as Contract;
 
-/**
- * Class CallableDispatch.
- */
 class CallableDispatch extends Dispatch implements Contract
 {
     /** @var callable */

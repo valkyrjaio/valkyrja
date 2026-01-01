@@ -17,8 +17,6 @@ use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 
 /**
- * Interface RepositoryContract.
- *
  * @template T of EntityContract
  */
 interface RepositoryContract

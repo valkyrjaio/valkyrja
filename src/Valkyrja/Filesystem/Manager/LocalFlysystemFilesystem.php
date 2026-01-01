@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Manager;
 
-/**
- * Class LocalFlysystemFilesystem.
- */
 class LocalFlysystemFilesystem extends FlysystemFilesystem
 {
 }

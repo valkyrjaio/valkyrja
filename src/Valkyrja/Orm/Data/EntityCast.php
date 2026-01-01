@@ -18,9 +18,6 @@ use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Data\Cast;
 use Valkyrja\Type\Enum\CastType;
 
-/**
- * Data EntityCast.
- */
 class EntityCast extends Cast
 {
     /**

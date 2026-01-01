@@ -18,9 +18,6 @@ use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Sms\Data\Contract\MessageContract;
 use Valkyrja\Sms\Messenger\Contract\MessengerContract as Contract;
 
-/**
- * Class LogSms.
- */
 class LogMessenger implements Contract
 {
     /**

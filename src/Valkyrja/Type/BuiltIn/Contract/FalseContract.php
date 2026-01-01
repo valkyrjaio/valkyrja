@@ -17,8 +17,6 @@ use Override;
 use Valkyrja\Type\Contract\TypeContract;
 
 /**
- * Interface FalseContract.
- *
  * @extends TypeContract<false>
  */
 interface FalseContract extends TypeContract

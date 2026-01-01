@@ -24,9 +24,6 @@ use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Throwable\Handler\ThrowableHandler;
 
-/**
- * Class ApiExceptionMiddleware.
- */
 class ApiThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
 {
     public function __construct(

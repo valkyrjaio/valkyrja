@@ -30,9 +30,6 @@ use Valkyrja\Cli\Routing\Data\OptionParameter;
 
 use function is_string;
 
-/**
- * Class ListCommand.
- */
 class ListCommand
 {
     public const string NAME = 'list';

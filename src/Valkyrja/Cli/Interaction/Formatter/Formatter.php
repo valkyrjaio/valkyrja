@@ -22,9 +22,6 @@ use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract as Contract;
 use function count;
 use function sprintf;
 
-/**
- * Class Formatter.
- */
 class Formatter implements Contract
 {
     public function __construct(

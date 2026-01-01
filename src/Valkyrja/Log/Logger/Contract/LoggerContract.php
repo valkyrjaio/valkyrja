@@ -16,9 +16,6 @@ namespace Valkyrja\Log\Logger\Contract;
 use Throwable;
 use Valkyrja\Log\Enum\LogLevel;
 
-/**
- * Interface LoggerContract.
- */
 interface LoggerContract
 {
     /**

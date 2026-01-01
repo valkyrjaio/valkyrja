@@ -18,8 +18,6 @@ use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\BuiltIn\Contract\BoolContract as Contract;
 
 /**
- * Class BoolT.
- *
  * @extends Type<bool>
  */
 class BoolT extends Type implements Contract

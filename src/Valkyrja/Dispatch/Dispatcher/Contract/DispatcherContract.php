@@ -15,9 +15,6 @@ namespace Valkyrja\Dispatch\Dispatcher\Contract;
 
 use Valkyrja\Dispatch\Data\Contract\DispatchContract;
 
-/**
- * Interface DispatcherContract.
- */
 interface DispatcherContract
 {
     /**

@@ -21,9 +21,6 @@ use function explode;
 use function file_get_contents;
 use function trim;
 
-/**
- * Class SqlFileMigration.
- */
 abstract class SqlFileMigration extends TransactionalMigration
 {
     /**

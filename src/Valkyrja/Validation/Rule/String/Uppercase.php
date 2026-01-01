@@ -19,9 +19,6 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 
 use function is_string;
 
-/**
- * Class Uppercase.
- */
 class Uppercase extends Rule
 {
     #[Override]

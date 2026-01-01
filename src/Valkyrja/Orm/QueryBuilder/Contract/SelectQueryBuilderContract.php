@@ -15,9 +15,6 @@ namespace Valkyrja\Orm\QueryBuilder\Contract;
 
 use Valkyrja\Orm\Data\OrderBy;
 
-/**
- * Interface SelectQueryBuilderContract.
- */
 interface SelectQueryBuilderContract extends QueryBuilderContract
 {
     /**

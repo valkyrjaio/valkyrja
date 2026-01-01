@@ -22,8 +22,6 @@ use Valkyrja\Type\BuiltIn\Support\Obj as Helper;
 use function is_string;
 
 /**
- * Class ObjectT.
- *
  * @extends Type<object>
  */
 class ObjectT extends Type implements Contract

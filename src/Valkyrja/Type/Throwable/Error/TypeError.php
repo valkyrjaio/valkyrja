@@ -16,9 +16,6 @@ namespace Valkyrja\Type\Throwable\Error;
 use Valkyrja\Throwable\Error\TypeError as Exception;
 use Valkyrja\Type\Throwable\Contract\Throwable;
 
-/**
- * Class TypeError.
- */
 class TypeError extends Exception implements Throwable
 {
 }

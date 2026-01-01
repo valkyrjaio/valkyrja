@@ -23,9 +23,6 @@ use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
-/**
- * Interface RouteContract.
- */
 interface RouteContract
 {
     /**

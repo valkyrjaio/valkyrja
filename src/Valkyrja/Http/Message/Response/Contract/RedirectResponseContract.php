@@ -17,9 +17,6 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 
-/**
- * Interface RedirectResponseContract.
- */
 interface RedirectResponseContract extends ResponseContract
 {
     /**

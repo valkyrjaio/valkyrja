@@ -18,9 +18,6 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Notification\Data\Contract\NotifyContract;
 use Valkyrja\Notification\Factory\Contract\FactoryContract;
 
-/**
- * Class ContainerFactory.
- */
 class ContainerFactory implements FactoryContract
 {
     /**

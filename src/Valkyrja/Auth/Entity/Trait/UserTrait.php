@@ -18,9 +18,6 @@ use Valkyrja\Auth\Throwable\Exception\RuntimeException;
 
 use function is_string;
 
-/**
- * Trait UserTrait.
- */
 trait UserTrait
 {
     /**

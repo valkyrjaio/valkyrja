@@ -32,9 +32,6 @@ use Valkyrja\Support\Directory\Directory;
 
 use const LOCK_EX;
 
-/**
- * Class CacheCommand.
- */
 class CacheCommand
 {
     public const string NAME = 'config:cache';

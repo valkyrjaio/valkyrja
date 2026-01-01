@@ -17,9 +17,6 @@ use Attribute;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Attribute\Route\RequestMethod as ParentAttribute;
 
-/**
- * Attribute Trace.
- */
 #[Attribute(Attribute::TARGET_METHOD)]
 class Trace extends ParentAttribute
 {

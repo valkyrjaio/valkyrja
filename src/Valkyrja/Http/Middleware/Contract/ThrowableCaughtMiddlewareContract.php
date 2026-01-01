@@ -18,9 +18,6 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 
-/**
- * Interface ThrowableCaughtMiddlewareContract.
- */
 interface ThrowableCaughtMiddlewareContract
 {
     /**

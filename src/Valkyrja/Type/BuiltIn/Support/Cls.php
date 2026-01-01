@@ -21,9 +21,6 @@ use function array_unshift;
 use function explode;
 use function is_a;
 
-/**
- * Class Cls.
- */
 class Cls
 {
     /**

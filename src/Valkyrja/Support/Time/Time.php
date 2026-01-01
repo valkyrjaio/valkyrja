@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Time;
 
-/**
- * Class Time.
- */
 class Time
 {
     protected static int|null $frozenTime = null;

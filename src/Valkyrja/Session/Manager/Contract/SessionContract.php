@@ -15,9 +15,6 @@ namespace Valkyrja\Session\Manager\Contract;
 
 use Valkyrja\Session\Throwable\Exception\InvalidCsrfToken;
 
-/**
- * Interface SessionContract.
- */
 interface SessionContract
 {
     /**

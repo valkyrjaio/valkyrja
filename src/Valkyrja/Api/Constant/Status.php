@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api\Constant;
 
-/**
- * Constant Status.
- */
 final class Status
 {
     public const string SUCCESS = 'success';

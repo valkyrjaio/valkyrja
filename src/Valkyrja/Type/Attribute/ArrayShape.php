@@ -16,9 +16,6 @@ namespace Valkyrja\Type\Attribute;
 use Attribute;
 use Valkyrja\Type\Contract\TypeContract;
 
-/**
- * Attribute ArrayShape.
- */
 #[Attribute(Attribute::TARGET_ALL)]
 class ArrayShape
 {

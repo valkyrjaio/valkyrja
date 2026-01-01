@@ -21,8 +21,6 @@ use Valkyrja\Http\Middleware\Handler\Abstract\Handler;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract as Contract;
 
 /**
- * Class SendingResponseHandler.
- *
  * @extends Handler<SendingResponseMiddlewareContract>
  */
 class SendingResponseHandler extends Handler implements Contract

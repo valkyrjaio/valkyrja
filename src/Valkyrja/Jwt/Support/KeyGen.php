@@ -20,9 +20,6 @@ use Valkyrja\Throwable\Exception\RuntimeException;
 
 use function file_get_contents;
 
-/**
- * Class KeyGen.
- */
 class KeyGen
 {
     /**

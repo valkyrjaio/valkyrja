@@ -19,9 +19,6 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 
 use function is_string;
 
-/**
- * Class StartsWith.
- */
 class StartsWith extends Rule
 {
     public function __construct(

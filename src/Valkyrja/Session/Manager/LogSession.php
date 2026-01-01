@@ -16,9 +16,6 @@ namespace Valkyrja\Session\Manager;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Session\Data\CookieParams;
 
-/**
- * Class LogSession.
- */
 class LogSession extends PhpSession
 {
     /**

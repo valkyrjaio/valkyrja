@@ -15,9 +15,6 @@ namespace Valkyrja\Http\Message\Throwable\Contract;
 
 use Valkyrja\Http\Throwable\Contract\Throwable as Contract;
 
-/**
- * Interface Throwable.
- */
 interface Throwable extends Contract
 {
 }

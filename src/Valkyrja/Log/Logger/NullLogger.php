@@ -18,9 +18,6 @@ use Throwable;
 use Valkyrja\Log\Enum\LogLevel;
 use Valkyrja\Log\Logger\Contract\LoggerContract as Contract;
 
-/**
- * Class NullLogger.
- */
 class NullLogger implements Contract
 {
     /**

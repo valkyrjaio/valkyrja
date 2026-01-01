@@ -16,9 +16,6 @@ namespace Valkyrja\Cli\Interaction\Argument;
 use Override;
 use Valkyrja\Cli\Interaction\Argument\Contract\ArgumentContract as Contract;
 
-/**
- * Class Argument.
- */
 class Argument implements Contract
 {
     /**

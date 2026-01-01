@@ -16,9 +16,6 @@ namespace Valkyrja\Cli\Routing\Collection\Contract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\Data;
 
-/**
- * Interface CollectionContract.
- */
 interface CollectionContract
 {
     /**

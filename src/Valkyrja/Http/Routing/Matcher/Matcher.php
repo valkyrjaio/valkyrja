@@ -28,9 +28,6 @@ use Valkyrja\Type\Data\Cast;
 use function is_array;
 use function preg_match;
 
-/**
- * Class Matcher.
- */
 class Matcher implements Contract
 {
     /**

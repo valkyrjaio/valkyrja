@@ -31,9 +31,6 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function array_key_exists;
 
-/**
- * Class JsonServerRequest.
- */
 class JsonServerRequest extends ServerRequest implements Contract
 {
     protected bool $hadParsedBody = true;

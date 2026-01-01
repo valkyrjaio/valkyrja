@@ -16,9 +16,6 @@ namespace Valkyrja\Http\Routing\Attribute\Route;
 use Attribute;
 use Valkyrja\Http\Message\Enum\RequestMethod as RequestMethodEnum;
 
-/**
- * Attribute RequestMethod.
- */
 #[Attribute(Attribute::TARGET_METHOD)]
 class RequestMethod
 {

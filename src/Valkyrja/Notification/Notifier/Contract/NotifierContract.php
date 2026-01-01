@@ -16,9 +16,6 @@ namespace Valkyrja\Notification\Notifier\Contract;
 use Valkyrja\Notification\Data\Contract\NotifyContract;
 use Valkyrja\Notification\Entity\Contract\NotifiableUserContract;
 
-/**
- * Interface NotificationContract.
- */
 interface NotifierContract
 {
     /**

@@ -20,9 +20,6 @@ use Valkyrja\Notification\Entity\Contract\NotifiableUserContract as Contract;
 use Valkyrja\Notification\Entity\Trait\NotifiableUserFields;
 use Valkyrja\Notification\Entity\Trait\NotifiableUserTrait;
 
-/**
- * Entity NotifiableUser.
- */
 class NotifiableUser extends User implements Contract
 {
     use MailableUserFields;

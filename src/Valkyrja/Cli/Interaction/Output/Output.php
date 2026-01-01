@@ -23,9 +23,6 @@ use Valkyrja\Cli\Interaction\Message\Message as MessageMessage;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract as Contract;
 
-/**
- * Class Output.
- */
 class Output implements Contract
 {
     /**

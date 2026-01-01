@@ -23,9 +23,6 @@ use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract as Contract;
 use Valkyrja\Broadcast\Data\Contract\MessageContract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
-/**
- * Class PusherBroadcaster.
- */
 class PusherBroadcaster implements Contract
 {
     /**

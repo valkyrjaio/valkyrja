@@ -15,9 +15,6 @@ namespace Valkyrja\Type\Model\Trait;
 
 use Valkyrja\Type\BuiltIn\Support\Obj;
 
-/**
- * Trait ProtectedExposable.
- */
 trait ProtectedExposable
 {
     use Exposable;

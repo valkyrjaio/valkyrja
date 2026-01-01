@@ -19,9 +19,6 @@ use Valkyrja\Throwable\Exception\InvalidArgumentException;
 
 use function is_callable;
 
-/**
- * Trait ProvidersAwareTrait.
- */
 trait ProvidersAwareTrait
 {
     /**

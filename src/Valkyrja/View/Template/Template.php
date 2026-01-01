@@ -24,9 +24,6 @@ use function is_string;
 
 use const ENT_QUOTES;
 
-/**
- * Class Template.
- */
 class Template implements Contract
 {
     /**

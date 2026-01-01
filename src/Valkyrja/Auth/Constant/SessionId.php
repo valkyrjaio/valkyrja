@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Constant;
 
-/**
- * Constant SessionId.
- */
 final class SessionId
 {
     public const string AUTHENTICATED_USERS          = 'authenticated.users';

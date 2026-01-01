@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Uri\Enum;
 
-/**
- * Enum Scheme.
- */
 enum Scheme: string
 {
     case EMPTY = '';

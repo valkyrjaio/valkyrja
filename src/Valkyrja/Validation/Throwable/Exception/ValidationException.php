@@ -15,9 +15,6 @@ namespace Valkyrja\Validation\Throwable\Exception;
 
 use Valkyrja\Validation\Throwable\Contract\Throwable;
 
-/**
- * Class ValidationException.
- */
 class ValidationException extends RuntimeException implements Throwable
 {
 }

@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log\Enum;
 
-/**
- * Enum LogLevel.
- */
 enum LogLevel: string
 {
     case DEBUG     = 'debug';

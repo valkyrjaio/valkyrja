@@ -29,9 +29,6 @@ use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Interaction\Output\PlainOutput;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
 
-/**
- * Class OutputFactory.
- */
 class OutputFactory implements Contract
 {
     public function __construct(

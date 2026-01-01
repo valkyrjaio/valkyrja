@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Sms\Data\Contract;
 
-/**
- * Interface MessageContract.
- */
 interface MessageContract
 {
     /**

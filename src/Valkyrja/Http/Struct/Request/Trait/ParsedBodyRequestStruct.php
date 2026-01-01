@@ -15,9 +15,6 @@ namespace Valkyrja\Http\Struct\Request\Trait;
 
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 
-/**
- * Trait ParsedBodyRequestStruct.
- */
 trait ParsedBodyRequestStruct
 {
     use RequestStruct;

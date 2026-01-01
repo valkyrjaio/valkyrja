@@ -23,9 +23,6 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 use function headers_sent;
 use function session_start;
 
-/**
- * Class CacheSession.
- */
 class CacheSession extends PhpSession
 {
     /**

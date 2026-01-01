@@ -16,9 +16,6 @@ namespace Valkyrja\Type\BuiltIn\String;
 use Valkyrja\Type\BuiltIn\StringT;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 
-/**
- * Class NonEmptyString.
- */
 class NonEmptyString extends StringT
 {
     public function __construct(string $subject)

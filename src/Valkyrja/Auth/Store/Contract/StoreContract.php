@@ -17,8 +17,6 @@ use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 use Valkyrja\Auth\Entity\Contract\UserContract;
 
 /**
- * Interface StoreContract.
- *
  * @template U of UserContract
  */
 interface StoreContract

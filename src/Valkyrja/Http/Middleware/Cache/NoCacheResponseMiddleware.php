@@ -20,9 +20,6 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
 
-/**
- * Class NoCacheMiddleware.
- */
 class NoCacheResponseMiddleware implements SendingResponseMiddlewareContract
 {
     /** @var non-empty-string[] */

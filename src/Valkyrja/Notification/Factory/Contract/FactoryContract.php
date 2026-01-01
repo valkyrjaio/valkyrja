@@ -15,9 +15,6 @@ namespace Valkyrja\Notification\Factory\Contract;
 
 use Valkyrja\Notification\Data\Contract\NotifyContract;
 
-/**
- * Interface FactoryContract.
- */
 interface FactoryContract
 {
     /**

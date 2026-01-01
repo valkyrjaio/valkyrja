@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Enum;
 
-/**
- * Enum ProtocolVersion.
- */
 enum ProtocolVersion: string
 {
     case V1   = '1.0';

@@ -20,9 +20,6 @@ use Valkyrja\Dispatch\Throwable\Exception\InvalidArgumentException;
 use function is_array;
 use function is_string;
 
-/**
- * Class MethodDispatch.
- */
 class MethodDispatch extends ClassDispatch implements Contract
 {
     /**

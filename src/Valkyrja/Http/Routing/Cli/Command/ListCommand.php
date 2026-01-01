@@ -28,9 +28,6 @@ use Valkyrja\Cli\Routing\Attribute\Route as RouteAttribute;
 use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
-/**
- * Class ListCommand.
- */
 class ListCommand
 {
     public const string NAME = 'http:list';

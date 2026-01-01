@@ -26,9 +26,6 @@ use function parse_url;
 use function str_starts_with;
 use function strtolower;
 
-/**
- * Class Uri.
- */
 class Uri implements Contract
 {
     use UriHelpers;

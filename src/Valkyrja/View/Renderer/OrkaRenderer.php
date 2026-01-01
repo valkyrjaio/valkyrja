@@ -24,9 +24,6 @@ use function is_file;
 use function md5;
 use function preg_replace;
 
-/**
- * Class OrkaRenderer.
- */
 class OrkaRenderer extends PhpRenderer
 {
     /**

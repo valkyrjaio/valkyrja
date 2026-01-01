@@ -17,8 +17,6 @@ use Override;
 use Valkyrja\Type\Contract\TypeContract;
 
 /**
- * Interface UidContract.
- *
  * @extends TypeContract<string>
  */
 interface UidContract extends TypeContract

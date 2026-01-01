@@ -20,9 +20,6 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

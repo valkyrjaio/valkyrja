@@ -22,9 +22,6 @@ use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
-/**
- * Class StructRouteDispatchedMiddleware.
- */
 class ResponseStructMiddleware implements RouteDispatchedMiddlewareContract
 {
     /**

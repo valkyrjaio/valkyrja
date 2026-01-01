@@ -29,9 +29,6 @@ use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

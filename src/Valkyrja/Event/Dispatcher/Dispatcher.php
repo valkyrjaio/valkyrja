@@ -23,9 +23,6 @@ use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Dispatcher\Contract\DispatcherContract as Contract;
 
-/**
- * Class Dispatcher.
- */
 class Dispatcher implements Contract
 {
     public function __construct(

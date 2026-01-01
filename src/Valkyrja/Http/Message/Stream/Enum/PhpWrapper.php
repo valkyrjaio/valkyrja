@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Stream\Enum;
 
 /**
- * Enum PhpWrapper.
- *
- * @see    https://www.php.net/manual/en/function.fopen.php
+ * @see https://www.php.net/manual/en/function.fopen.php
  */
 enum PhpWrapper: string
 {

@@ -18,9 +18,6 @@ use Stringable;
 use Valkyrja\Orm\Enum\Comparison;
 use Valkyrja\Orm\Enum\WhereType;
 
-/**
- * Class Where.
- */
 readonly class Where implements Stringable
 {
     public function __construct(

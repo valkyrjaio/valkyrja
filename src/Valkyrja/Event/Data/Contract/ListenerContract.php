@@ -16,9 +16,6 @@ namespace Valkyrja\Event\Data\Contract;
 use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 
-/**
- * Interface ListenerContract.
- */
 interface ListenerContract
 {
     /**

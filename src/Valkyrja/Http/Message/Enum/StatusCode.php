@@ -16,9 +16,7 @@ namespace Valkyrja\Http\Message\Enum;
 use Valkyrja\Http\Message\Constant\StatusText;
 
 /**
- * Enum Status.
- *
- * @see    http://www.iana.org/assignments/http-status-codes/
+ * @see http://www.iana.org/assignments/http-status-codes/
  * - Hypertext Transfer Protocol (HTTP) Status Code Registry
  */
 enum StatusCode: int

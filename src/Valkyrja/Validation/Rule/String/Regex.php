@@ -19,9 +19,6 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 use function is_string;
 use function preg_match;
 
-/**
- * Class Regex.
- */
 class Regex extends Rule
 {
     public function __construct(

@@ -16,9 +16,6 @@ namespace Valkyrja\Type\Model\Abstract;
 use Valkyrja\Type\Model\Contract\IndexedModelContract as Contract;
 use Valkyrja\Type\Model\Trait\Indexable;
 
-/**
- * Class IndexedModel.
- */
 abstract class IndexedModel extends Model implements Contract
 {
     use Indexable;

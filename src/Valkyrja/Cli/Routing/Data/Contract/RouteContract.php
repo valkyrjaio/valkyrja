@@ -20,9 +20,6 @@ use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 
-/**
- * Interface RouteContract.
- */
 interface RouteContract
 {
     /**

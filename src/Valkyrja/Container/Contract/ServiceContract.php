@@ -15,9 +15,6 @@ namespace Valkyrja\Container\Contract;
 
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
-/**
- * Interface ServiceContract.
- */
 interface ServiceContract
 {
     /**

@@ -24,9 +24,6 @@ use Valkyrja\Notification\Notifier\Contract\NotifierContract;
 use Valkyrja\Notification\Notifier\Notifier;
 use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

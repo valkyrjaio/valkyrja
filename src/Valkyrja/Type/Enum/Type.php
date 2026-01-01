@@ -16,9 +16,6 @@ namespace Valkyrja\Type\Enum;
 use JsonSerializable;
 use Override;
 
-/**
- * Enum Type.
- */
 enum Type implements JsonSerializable
 {
     case array;

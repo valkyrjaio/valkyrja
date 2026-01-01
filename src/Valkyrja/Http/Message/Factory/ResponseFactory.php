@@ -28,9 +28,6 @@ use Valkyrja\Http\Message\Response\TextResponse;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Uri\Uri;
 
-/**
- * Class ResponseFactory.
- */
 class ResponseFactory implements Contract
 {
     /**

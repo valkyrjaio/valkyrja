@@ -21,8 +21,6 @@ use Valkyrja\Cli\Middleware\Handler\Abstract\Handler;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract as Contract;
 
 /**
- * Class InputReceivedHandler.
- *
  * @extends Handler<InputReceivedMiddlewareContract>
  */
 class InputReceivedHandler extends Handler implements Contract

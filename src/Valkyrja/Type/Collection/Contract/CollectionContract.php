@@ -17,8 +17,6 @@ use JsonException;
 use Stringable;
 
 /**
- * Interface CollectionContract.
- *
  * @template K of array-key
  * @template T of string|int|float|bool|array|object|null
  */

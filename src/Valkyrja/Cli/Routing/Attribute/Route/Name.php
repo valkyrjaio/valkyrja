@@ -15,9 +15,6 @@ namespace Valkyrja\Cli\Routing\Attribute\Route;
 
 use Attribute;
 
-/**
- * Attribute Name.
- */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
 class Name
 {

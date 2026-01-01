@@ -19,9 +19,6 @@ use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 use Valkyrja\Event\Data\Contract\ListenerContract as Contract;
 
-/**
- * Class Listener.
- */
 class Listener implements Contract
 {
     /**

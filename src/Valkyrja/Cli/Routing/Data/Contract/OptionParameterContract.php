@@ -17,9 +17,6 @@ use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 
-/**
- * Interface OptionParameterContract.
- */
 interface OptionParameterContract extends ParameterContract
 {
     /**

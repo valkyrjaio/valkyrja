@@ -16,9 +16,6 @@ namespace Valkyrja\Cli\Routing\Attribute;
 use Attribute;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter as Model;
 
-/**
- * Attribute ArgumentParameter.
- */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class ArgumentParameter extends Model
 {

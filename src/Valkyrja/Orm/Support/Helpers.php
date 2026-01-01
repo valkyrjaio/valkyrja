@@ -20,9 +20,6 @@ use Valkyrja\Orm\Throwable\Exception\RuntimeException;
 use function microtime;
 use function str_replace;
 
-/**
- * Class Helpers.
- */
 class Helpers
 {
     /**

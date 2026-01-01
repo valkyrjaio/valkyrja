@@ -15,9 +15,6 @@ namespace Valkyrja\Auth\Data\Attempt\Contract;
 
 use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 
-/**
- * Interface UnlockAttemptContract.
- */
 interface UnlockAttemptContract
 {
     /**

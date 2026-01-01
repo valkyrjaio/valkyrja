@@ -22,9 +22,6 @@ use Valkyrja\Orm\Repository\Repository as OrmRepository;
 use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\NullStatement;
 
-/**
- * Class NullManager.
- */
 class NullManager implements Contract
 {
     /**

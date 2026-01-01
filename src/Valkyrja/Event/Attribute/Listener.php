@@ -16,9 +16,6 @@ namespace Valkyrja\Event\Attribute;
 use Attribute;
 use Valkyrja\Event\Data\Listener as Model;
 
-/**
- * Attribute Listener.
- */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 class Listener extends Model
 {

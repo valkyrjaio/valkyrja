@@ -16,9 +16,6 @@ namespace Valkyrja\Type\Vlid;
 use Valkyrja\Type\Vlid\Contract\VlidV3Contract as Contract;
 use Valkyrja\Type\Vlid\Support\VlidV3 as Helper;
 
-/**
- * Class VlidV3.
- */
 class VlidV3 extends Vlid implements Contract
 {
     public function __construct(string|null $subject = null)

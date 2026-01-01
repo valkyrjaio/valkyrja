@@ -19,9 +19,6 @@ use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
-/**
- * Class Cache.
- */
 class Tagger implements Contract
 {
     /**

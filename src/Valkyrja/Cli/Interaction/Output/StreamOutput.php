@@ -18,9 +18,6 @@ use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\StreamOutputContract as Contract;
 
-/**
- * Class StreamOutput.
- */
 class StreamOutput extends Output implements Contract
 {
     /**

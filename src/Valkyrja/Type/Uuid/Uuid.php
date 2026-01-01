@@ -25,8 +25,6 @@ use function is_string;
 use function sprintf;
 
 /**
- * Class Uuid.
- *
  * @extends Type<string>
  */
 class Uuid extends Type implements Contract

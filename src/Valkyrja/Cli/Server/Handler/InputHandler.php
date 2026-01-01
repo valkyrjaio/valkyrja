@@ -43,9 +43,6 @@ use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
-/**
- * Class InputHandler.
- */
 class InputHandler implements Contract
 {
     /**

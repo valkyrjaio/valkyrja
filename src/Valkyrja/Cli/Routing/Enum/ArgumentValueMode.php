@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Enum;
 
-/**
- * Enum ArgumentValueMode.
- */
 enum ArgumentValueMode
 {
     case DEFAULT;

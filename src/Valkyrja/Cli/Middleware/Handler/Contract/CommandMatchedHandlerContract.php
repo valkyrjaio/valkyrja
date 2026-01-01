@@ -19,8 +19,6 @@ use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
 /**
- * Interface CommandMatchedHandlerContract.
- *
  * @extends HandlerContract<CommandMatchedMiddlewareContract>
  */
 interface CommandMatchedHandlerContract extends HandlerContract

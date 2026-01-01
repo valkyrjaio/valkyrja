@@ -18,9 +18,6 @@ use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract as Contract;
 
 use function in_array;
 
-/**
- * Class AuthenticatedUsers.
- */
 class AuthenticatedUsers implements Contract
 {
     /**

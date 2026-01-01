@@ -21,9 +21,6 @@ use Valkyrja\Type\Uuid\Throwable\Exception\InvalidUuidV4Exception;
 use function chr;
 use function ord;
 
-/**
- * Class UuidV4.
- */
 class UuidV4 extends Uuid
 {
     /** @var string */

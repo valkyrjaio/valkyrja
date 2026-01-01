@@ -15,9 +15,6 @@ namespace Valkyrja\View\Renderer\Contract;
 
 use Valkyrja\View\Template\Contract\TemplateContract;
 
-/**
- * Interface RendererContract.
- */
 interface RendererContract
 {
     /**

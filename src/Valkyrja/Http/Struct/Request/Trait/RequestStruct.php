@@ -18,9 +18,6 @@ use Valkyrja\Type\BuiltIn\Enum\Trait\Arrayable;
 use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 use Valkyrja\Validation\Validator\Validator;
 
-/**
- * Trait RequestStruct.
- */
 trait RequestStruct
 {
     use Arrayable;

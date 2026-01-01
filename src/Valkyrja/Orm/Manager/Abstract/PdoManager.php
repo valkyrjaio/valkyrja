@@ -29,9 +29,6 @@ use Valkyrja\Orm\Throwable\Exception\RuntimeException;
 use function is_bool;
 use function is_string;
 
-/**
- * Abtract Class PdoManager.
- */
 abstract class PdoManager implements Contract
 {
     public function __construct(

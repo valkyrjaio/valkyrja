@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Rule\Contract;
 
-/**
- * Interface RuleContract.
- */
 interface RuleContract
 {
     public function getSubject(): mixed;

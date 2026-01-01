@@ -19,9 +19,6 @@ use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Contract\TextResponseContract;
 
-/**
- * Interface ResponseFactoryContract.
- */
 interface ResponseFactoryContract
 {
     /**

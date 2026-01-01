@@ -21,9 +21,6 @@ use Override;
 use Valkyrja\Jwt\Enum\Algorithm;
 use Valkyrja\Jwt\Manager\Contract\JwtContract as Contract;
 
-/**
- * Class RsFirebaseJwt.
- */
 class FirebaseJwt implements Contract
 {
     /**

@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Vlid\Throwable\Exception;
 
-/**
- * Class InvalidVlidV3Exception.
- */
 class InvalidVlidV3Exception extends InvalidVlidException
 {
 }

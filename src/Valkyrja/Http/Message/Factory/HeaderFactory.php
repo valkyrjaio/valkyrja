@@ -18,9 +18,6 @@ use function str_replace;
 use function strtolower;
 use function substr;
 
-/**
- * Abstract Class HeadersFactory.
- */
 abstract class HeaderFactory
 {
     /**

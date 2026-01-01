@@ -34,9 +34,6 @@ use Valkyrja\Throwable\Handler\ThrowableHandler;
 use function define;
 use function defined;
 
-/**
- * Class App.
- */
 class App
 {
     /**

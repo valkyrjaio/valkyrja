@@ -18,9 +18,6 @@ use TypeError as PhpTypeError;
 use Valkyrja\Throwable\Contract\Throwable;
 use Valkyrja\Throwable\Handler\ThrowableHandler;
 
-/**
- * Class TypeError.
- */
 class TypeError extends PhpTypeError implements Throwable
 {
     /**

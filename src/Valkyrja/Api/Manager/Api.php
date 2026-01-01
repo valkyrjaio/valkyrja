@@ -31,9 +31,6 @@ use function end;
 use function explode;
 use function strtolower;
 
-/**
- * Class Api.
- */
 class Api implements Contract
 {
     /**

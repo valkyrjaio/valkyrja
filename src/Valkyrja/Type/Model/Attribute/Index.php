@@ -15,9 +15,6 @@ namespace Valkyrja\Type\Model\Attribute;
 
 use Attribute;
 
-/**
- * Attribute Index.
- */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class Index
 {

@@ -17,8 +17,6 @@ use Override;
 use Valkyrja\Type\Contract\TypeContract;
 
 /**
- * Interface BoolContract.
- *
  * @extends TypeContract<bool>
  */
 interface BoolContract extends TypeContract

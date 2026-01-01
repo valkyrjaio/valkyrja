@@ -32,9 +32,6 @@ use function sodium_memzero;
 use const SODIUM_CRYPTO_SECRETBOX_MACBYTES;
 use const SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
 
-/**
- * Class SodiumCrypt.
- */
 class SodiumCrypt implements CryptContract
 {
     /**

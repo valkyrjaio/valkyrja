@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Throwable\Exception;
 
-/**
- * Exception WhereException.
- */
 class WhereException extends RuntimeException
 {
 }

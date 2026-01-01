@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract as Contract;
 use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 
-/**
- * Class Messages.
- */
 class Messages extends Message
 {
     /** @var Contract[] */

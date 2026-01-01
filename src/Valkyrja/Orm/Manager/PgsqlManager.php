@@ -19,9 +19,6 @@ use Valkyrja\Orm\Throwable\Exception\RuntimeException;
 
 use function is_string;
 
-/**
- * Class PgsqlManager.
- */
 class PgsqlManager extends PdoManager
 {
     /**

@@ -41,9 +41,6 @@ use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

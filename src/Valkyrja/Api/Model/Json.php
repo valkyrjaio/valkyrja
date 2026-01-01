@@ -19,9 +19,6 @@ use Valkyrja\Api\Model\Contract\JsonContract as Contract;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Type\Model\Abstract\Model;
 
-/**
- * Class Json.
- */
 class Json extends Model implements Contract
 {
     /**

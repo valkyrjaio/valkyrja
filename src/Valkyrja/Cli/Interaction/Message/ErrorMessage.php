@@ -15,9 +15,6 @@ namespace Valkyrja\Cli\Interaction\Message;
 
 use Valkyrja\Cli\Interaction\Formatter\ErrorFormatter;
 
-/**
- * Class ErrorMessage.
- */
 class ErrorMessage extends Message
 {
     /**

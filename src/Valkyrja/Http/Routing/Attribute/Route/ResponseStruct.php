@@ -16,9 +16,6 @@ namespace Valkyrja\Http\Routing\Attribute\Route;
 use Attribute;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract as RoutingResponseStruct;
 
-/**
- * Attribute ResponseStruct.
- */
 #[Attribute(Attribute::TARGET_METHOD)]
 class ResponseStruct
 {

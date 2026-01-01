@@ -15,9 +15,6 @@ namespace Valkyrja\Cli\Interaction\Option\Contract;
 
 use Valkyrja\Cli\Interaction\Enum\OptionType;
 
-/**
- * Interface OptionContract.
- */
 interface OptionContract
 {
     /**

@@ -16,9 +16,6 @@ namespace Valkyrja\Http\Routing\Controller;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 
-/**
- * Abstract Class Controller.
- */
 abstract class Controller
 {
     public function __construct(

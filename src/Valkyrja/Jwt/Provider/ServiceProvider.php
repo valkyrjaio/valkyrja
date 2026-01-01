@@ -24,9 +24,6 @@ use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Jwt\Manager\FirebaseJwt;
 use Valkyrja\Jwt\Manager\NullJwt;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

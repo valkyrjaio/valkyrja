@@ -15,9 +15,6 @@ namespace Valkyrja\Cli\Interaction\Message;
 
 use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
 
-/**
- * Class NewLine.
- */
 class NewLine extends Message
 {
     public function __construct(

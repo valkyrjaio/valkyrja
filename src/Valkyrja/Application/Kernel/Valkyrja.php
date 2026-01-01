@@ -27,9 +27,6 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Event\Data\Data as EventData;
 use Valkyrja\Http\Routing\Data\Data as HttpData;
 
-/**
- * Class Valkyrja.
- */
 class Valkyrja implements ApplicationContract
 {
     /**

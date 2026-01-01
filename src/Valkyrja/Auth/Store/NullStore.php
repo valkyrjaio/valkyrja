@@ -19,8 +19,6 @@ use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Store\Contract\StoreContract as Contract;
 
 /**
- * Class NullStore.
- *
  * @template U of UserContract
  *
  * @implements Contract<U>

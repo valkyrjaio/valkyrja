@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Api\Model\Contract\JsonDataContract as Contract;
 use Valkyrja\Type\Model\Abstract\Model;
 
-/**
- * Class JsonData.
- */
 class JsonData extends Model implements Contract
 {
     /**

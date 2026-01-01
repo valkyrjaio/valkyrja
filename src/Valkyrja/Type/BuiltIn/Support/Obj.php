@@ -27,9 +27,6 @@ use function str_contains;
 
 use const JSON_THROW_ON_ERROR;
 
-/**
- * Class Obj.
- */
 class Obj
 {
     /**

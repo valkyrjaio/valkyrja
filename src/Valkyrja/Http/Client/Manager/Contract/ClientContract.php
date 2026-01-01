@@ -16,9 +16,6 @@ namespace Valkyrja\Http\Client\Manager\Contract;
 use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
-/**
- * Interface ClientContract.
- */
 interface ClientContract
 {
     /**

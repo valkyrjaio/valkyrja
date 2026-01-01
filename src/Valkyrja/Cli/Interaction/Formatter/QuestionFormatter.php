@@ -15,9 +15,6 @@ namespace Valkyrja\Cli\Interaction\Formatter;
 
 use Valkyrja\Cli\Interaction\Enum\TextColor;
 
-/**
- * Class QuestionFormatter.
- */
 class QuestionFormatter extends Formatter
 {
     public function __construct()
