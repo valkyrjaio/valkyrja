@@ -1,6 +1,14 @@
 # Release Notes for 25.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.9.1...master)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v25.10.0...master)
+
+## [v25.10.0](https://github.com/valkyrjaio/valkyrja/compare/v25.9.1...v25.10.0) - 2025-12-31
+
+* [Http] Move tests to correct namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/290
+* [Test] Move tests to correct namespace by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/291
+* [CI] Add phparkitect rule for contracts to require Contract naming covention by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/292
+* [CI] Update churn to 1.7.3 from 1.7.2 by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/293
+* [CI] Fix release workflow after contract naming convention change by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja/pull/294
 
 ## [v25.9.1](https://github.com/valkyrjaio/valkyrja/compare/v25.9.0...v25.9.1) - 2025-12-30
 
