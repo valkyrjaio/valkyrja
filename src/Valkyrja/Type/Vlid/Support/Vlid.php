@@ -25,8 +25,6 @@ use Valkyrja\Type\Vlid\Throwable\Exception\InvalidVlidException;
 use function sprintf;
 
 /**
- * Class Vlid.
- *
  * Valkyrja Universally Unique Lexicographically Sortable Identifier (VLID)
  * A more precise version of a ULID where time must be down to the microsecond, and can sacrifice on randomness a
  * little while remaining 128 bit.

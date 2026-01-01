@@ -26,9 +26,6 @@ use function json_encode;
 
 use const JSON_THROW_ON_ERROR;
 
-/**
- * Class Arr.
- */
 class Arr
 {
     /**

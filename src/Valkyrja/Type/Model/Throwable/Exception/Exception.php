@@ -16,9 +16,6 @@ namespace Valkyrja\Type\Model\Throwable\Exception;
 use Valkyrja\Throwable\Exception\Exception as ExceptionClass;
 use Valkyrja\Type\Model\Throwable\Contract\Throwable;
 
-/**
- * Class Exception.
- */
 class Exception extends ExceptionClass implements Throwable
 {
 }

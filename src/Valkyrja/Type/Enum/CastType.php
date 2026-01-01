@@ -28,9 +28,6 @@ use Valkyrja\Type\BuiltIn\TrueT;
 use Valkyrja\Type\Json\Json;
 use Valkyrja\Type\Json\JsonObject;
 
-/**
- * Enum CastType.
- */
 enum CastType: string implements JsonSerializable
 {
     case string            = StringT::class;

@@ -18,8 +18,6 @@ use Valkyrja\Type\Vlid\Enum\Version;
 use Valkyrja\Type\Vlid\Throwable\Exception\InvalidVlidV4Exception;
 
 /**
- * Class VlidV4.
- *
  * Valkyrja Universally Unique Lexicographically Sortable Identifier (VLID)
  * A more precise version of a ULID where time must be down to the microsecond, and  80 bits of randomness is required.
  * A tiny version of a VLID where much less random bytes is acceptable.

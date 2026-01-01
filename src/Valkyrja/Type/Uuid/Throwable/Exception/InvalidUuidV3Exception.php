@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Uuid\Throwable\Exception;
 
-/**
- * Class InvalidUuidV3Exception.
- */
 class InvalidUuidV3Exception extends InvalidUuidException
 {
 }

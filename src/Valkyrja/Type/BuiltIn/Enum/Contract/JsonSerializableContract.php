@@ -17,9 +17,6 @@ use JsonSerializable as PhpJsonSerializable;
 use Override;
 use UnitEnum;
 
-/**
- * Interface JsonSerializableContract.
- */
 interface JsonSerializableContract extends PhpJsonSerializable, UnitEnum
 {
     /**

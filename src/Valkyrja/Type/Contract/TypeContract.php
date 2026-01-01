@@ -16,8 +16,6 @@ namespace Valkyrja\Type\Contract;
 use JsonSerializable;
 
 /**
- * Interface TypeContract.
- *
  * @template T
  */
 interface TypeContract extends JsonSerializable

@@ -25,9 +25,6 @@ use function hexdec;
 use function str_replace;
 use function strlen;
 
-/**
- * Class Uuid.
- */
 class Uuid extends Uid
 {
     /** @var string */

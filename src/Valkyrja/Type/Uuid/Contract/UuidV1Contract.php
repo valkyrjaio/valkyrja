@@ -15,9 +15,6 @@ namespace Valkyrja\Type\Uuid\Contract;
 
 use Override;
 
-/**
- * Interface UuidV1Contract.
- */
 interface UuidV1Contract extends UuidContract
 {
     /**

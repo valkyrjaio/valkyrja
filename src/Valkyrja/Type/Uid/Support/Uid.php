@@ -15,9 +15,6 @@ namespace Valkyrja\Type\Uid\Support;
 
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
 
-/**
- * Class Uid.
- */
 class Uid
 {
     /** @var string */

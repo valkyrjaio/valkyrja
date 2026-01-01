@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Model\Contract;
 
-/**
- * Interface ExposableModelContract.
- */
 interface ExposableModelContract extends ModelContract
 {
     /**

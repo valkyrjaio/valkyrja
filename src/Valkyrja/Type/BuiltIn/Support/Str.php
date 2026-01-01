@@ -40,9 +40,6 @@ use function trim;
 
 use const FILTER_VALIDATE_EMAIL;
 
-/**
- * Class Str.
- */
 class Str
 {
     /**

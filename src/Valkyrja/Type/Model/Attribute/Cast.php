@@ -16,9 +16,6 @@ namespace Valkyrja\Type\Model\Attribute;
 use Attribute;
 use Valkyrja\Type\Data\Cast as Data;
 
-/**
- * Attribute Cast.
- */
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class Cast extends Data
 {

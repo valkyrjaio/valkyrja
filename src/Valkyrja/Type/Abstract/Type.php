@@ -17,8 +17,6 @@ use Override;
 use Valkyrja\Type\Contract\TypeContract as Contract;
 
 /**
- * Class Type.
- *
  * @implements Contract<T>
  *
  * @template T

@@ -17,8 +17,6 @@ use Override;
 use Valkyrja\Type\Contract\TypeContract;
 
 /**
- * Interface ArrayContract.
- *
  * @extends TypeContract<array<array-key, mixed>>
  */
 interface ArrayContract extends TypeContract

@@ -15,9 +15,6 @@ namespace Valkyrja\Type\BuiltIn\Throwable\Contract;
 
 use Valkyrja\Type\Throwable\Contract\Throwable;
 
-/**
- * Class ClassThrowable.
- */
 interface ClassThrowable extends Throwable
 {
 }

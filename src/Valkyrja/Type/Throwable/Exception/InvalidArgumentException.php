@@ -16,9 +16,6 @@ namespace Valkyrja\Type\Throwable\Exception;
 use Valkyrja\Throwable\Exception\InvalidArgumentException as Exception;
 use Valkyrja\Type\Throwable\Contract\Throwable;
 
-/**
- * Class InvalidArgumentException.
- */
 class InvalidArgumentException extends Exception implements Throwable
 {
 }

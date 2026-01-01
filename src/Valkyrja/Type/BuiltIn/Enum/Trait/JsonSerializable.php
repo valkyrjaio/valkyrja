@@ -15,9 +15,6 @@ namespace Valkyrja\Type\BuiltIn\Enum\Trait;
 
 use BackedEnum;
 
-/**
- * Trait JsonSerializable.
- */
 trait JsonSerializable
 {
     /**

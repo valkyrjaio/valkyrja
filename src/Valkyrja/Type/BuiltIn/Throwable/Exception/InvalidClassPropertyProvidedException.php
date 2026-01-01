@@ -16,9 +16,6 @@ namespace Valkyrja\Type\BuiltIn\Throwable\Exception;
 use Valkyrja\Type\BuiltIn\Throwable\Contract\ClassThrowable;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 
-/**
- * Class InvalidClassPropertyProvidedException.
- */
 class InvalidClassPropertyProvidedException extends InvalidArgumentException implements ClassThrowable
 {
 }

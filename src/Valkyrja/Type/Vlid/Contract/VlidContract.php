@@ -17,8 +17,6 @@ use Override;
 use Valkyrja\Type\Contract\TypeContract;
 
 /**
- * Interface VlidContract.
- *
  * @extends TypeContract<string>
  */
 interface VlidContract extends TypeContract

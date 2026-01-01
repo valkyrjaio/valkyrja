@@ -22,8 +22,6 @@ use function count;
 use function in_array;
 
 /**
- * Class Collection.
- *
  * @template K of array-key
  * @template T of string|int|float|bool|array|object|null
  *

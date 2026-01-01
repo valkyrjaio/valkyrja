@@ -23,8 +23,6 @@ use function is_int;
 use function is_string;
 
 /**
- * Class Id.
- *
  * @extends Type<string|int>
  */
 class Id extends Type implements Contract

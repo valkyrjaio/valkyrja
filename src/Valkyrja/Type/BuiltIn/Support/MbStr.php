@@ -22,9 +22,6 @@ use function mb_substr;
 
 use const MB_CASE_TITLE;
 
-/**
- * Class MbStr.
- */
 class MbStr extends Str
 {
     /**

@@ -19,9 +19,6 @@ use UnitEnum;
 use function assert;
 use function in_array;
 
-/**
- * Class Enum.
- */
 class Enum
 {
     /**

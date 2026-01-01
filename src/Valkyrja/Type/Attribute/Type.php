@@ -16,9 +16,6 @@ namespace Valkyrja\Type\Attribute;
 use Attribute;
 use Valkyrja\Type\Contract\TypeContract;
 
-/**
- * Attribute Type.
- */
 #[Attribute(Attribute::TARGET_ALL | Attribute::IS_REPEATABLE)]
 class Type
 {

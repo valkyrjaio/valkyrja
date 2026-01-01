@@ -22,8 +22,6 @@ use Valkyrja\Type\Json\Contract\JsonContract as Contract;
 use function is_string;
 
 /**
- * Class Json.
- *
  * @extends Type<array<string|int, mixed>>
  */
 class Json extends Type implements Contract

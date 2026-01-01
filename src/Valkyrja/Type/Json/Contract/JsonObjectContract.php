@@ -17,8 +17,6 @@ use Override;
 use Valkyrja\Type\Contract\TypeContract;
 
 /**
- * Interface JsonObjectContract.
- *
  * @extends TypeContract<object>
  */
 interface JsonObjectContract extends TypeContract

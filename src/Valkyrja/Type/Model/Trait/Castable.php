@@ -19,9 +19,6 @@ use Valkyrja\Type\Data\Cast;
 
 use function is_array;
 
-/**
- * Trait Castable.
- */
 trait Castable
 {
     /**

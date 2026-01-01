@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Vlid\Enum;
 
-/**
- * Enum Version.
- */
 enum Version: int
 {
     case V1 = 1;

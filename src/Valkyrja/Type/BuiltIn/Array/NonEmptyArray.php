@@ -16,9 +16,6 @@ namespace Valkyrja\Type\BuiltIn\Array;
 use Valkyrja\Type\BuiltIn\ArrayT;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 
-/**
- * Class NonEmptyArray.
- */
 class NonEmptyArray extends ArrayT
 {
     /**

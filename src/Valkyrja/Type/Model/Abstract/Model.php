@@ -34,8 +34,6 @@ use const ARRAY_FILTER_USE_BOTH;
 use const JSON_THROW_ON_ERROR;
 
 /**
- * Class Model.
- *
  * @phpstan-consistent-constructor
  *  Will be overridden if need be
  */

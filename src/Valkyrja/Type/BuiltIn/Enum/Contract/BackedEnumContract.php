@@ -18,8 +18,6 @@ use Override;
 use Valkyrja\Type\Contract\TypeContract;
 
 /**
- * Interface BackedEnumContract.
- *
  * @extends TypeContract<static>
  */
 interface BackedEnumContract extends TypeContract

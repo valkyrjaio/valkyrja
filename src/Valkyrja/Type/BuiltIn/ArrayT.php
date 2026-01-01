@@ -22,8 +22,6 @@ use Valkyrja\Type\BuiltIn\Support\Arr as Helper;
 use function is_string;
 
 /**
- * Class ArrayT.
- *
  * @extends Type<array<array-key, mixed>>
  */
 class ArrayT extends Type implements Contract

@@ -15,9 +15,6 @@ namespace Valkyrja\Type\Uid\Throwable\Contract;
 
 use Valkyrja\Type\Throwable\Contract\Throwable;
 
-/**
- * Class UidThrowable.
- */
 interface UidThrowable extends Throwable
 {
 }

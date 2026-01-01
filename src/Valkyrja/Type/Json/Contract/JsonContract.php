@@ -17,8 +17,6 @@ use Override;
 use Valkyrja\Type\Contract\TypeContract;
 
 /**
- * Interface JsonContract.
- *
  * @extends TypeContract<array<string|int, mixed>>
  */
 interface JsonContract extends TypeContract

@@ -21,9 +21,6 @@ use Valkyrja\Type\Uuid\Throwable\Exception\InvalidUuidV8Exception;
 use function str_replace;
 use function substr;
 
-/**
- * Class UuidV8.
- */
 class UuidV8 extends Uuid
 {
     /** @var string */

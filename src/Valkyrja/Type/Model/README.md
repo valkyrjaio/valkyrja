@@ -342,7 +342,8 @@ need to use the `Valkyrja\Model\Models\UnpackingFromArrayModelTrait` trait.
 ```php
 namespace App\Models;
 
-use Valkyrja\Type\Model\Abstract\Model;use Valkyrja\Type\Model\Trait\UnpackForNewInstance;
+use Valkyrja\Type\Model\Abstract\Model;
+use Valkyrja\Type\Model\Trait\UnpackForNewInstance;
 
 class BasicModel extends Model
 {

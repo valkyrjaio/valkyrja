@@ -29,9 +29,7 @@ use function substr;
 use function unpack;
 
 /**
- * Class Ulid.
- *
- * @see    https://github.com/ulid/spec
+ * @see https://github.com/ulid/spec
  */
 class Ulid extends Uid
 {

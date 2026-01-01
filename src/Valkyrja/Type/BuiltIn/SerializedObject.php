@@ -22,8 +22,6 @@ use Valkyrja\Type\BuiltIn\Support\Obj as Helper;
 use function is_string;
 
 /**
- * Class SerializedObject.
- *
  * @extends Type<object>
  */
 class SerializedObject extends Type implements Contract
