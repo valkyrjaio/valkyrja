@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Manager;
 
-/**
- * Class S3FlysystemFilesystem.
- */
 class S3FlysystemFilesystem extends FlysystemFilesystem
 {
 }

@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem\Data;
 
 /**
- * Class InMemoryMetadata.
- *
  * @psalm-type InMemoryMetadataAsArray array{mimetype: string|null, size: int|null, visibility: string|null}
  *
  * @phpstan-type InMemoryMetadataAsArray array{mimetype: string|null, size: int|null, visibility: string|null}

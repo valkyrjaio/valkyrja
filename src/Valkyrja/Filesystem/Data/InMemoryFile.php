@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Data;
 
-/**
- * Class InMemoryFile.
- */
 class InMemoryFile
 {
     public function __construct(
