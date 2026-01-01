@@ -72,6 +72,14 @@ jobs:
           custom-cache-suffix: $(date -u "+%Y-%m")
           working-directory: .github/ci/suggested
 
+      - name: Install PHPUnit Packages Composer dependencies
+        if: steps.changes.outputs.files == 'true'
+        uses: ramsey/composer-install@v3
+        with:
+          composer-options: --prefer-dist --no-progress
+          custom-cache-suffix: $(date -u "+%Y-%m")
+          working-directory: .github/ci/phpunit
+
       - name: Run Psalm with Shepherd
         if: steps.changes.outputs.files == 'true'
         run: |
