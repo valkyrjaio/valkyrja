@@ -20,9 +20,6 @@ use Valkyrja\Mail\Data\Contract\MessageContract;
 use Valkyrja\Mail\Mailer\Contract\MailerContract as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
-/**
- * Class LogMailer.
- */
 class LogMailer implements Contract
 {
     /**

@@ -20,9 +20,6 @@ use Override;
 use Valkyrja\Mail\Data\Contract\MessageContract;
 use Valkyrja\Mail\Mailer\Contract\MailerContract as Contract;
 
-/**
- * Class MailgunMailer.
- */
 class MailgunMailer implements Contract
 {
     /**

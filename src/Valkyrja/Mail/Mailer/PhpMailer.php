@@ -19,9 +19,6 @@ use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use Valkyrja\Mail\Data\Contract\MessageContract;
 use Valkyrja\Mail\Mailer\Contract\MailerContract as Contract;
 
-/**
- * Class PhpMailer.
- */
 class PhpMailer implements Contract
 {
     /**

@@ -16,9 +16,6 @@ namespace Valkyrja\Mail\Data;
 use Override;
 use Valkyrja\Mail\Data\Contract\MessageContract as Contract;
 
-/**
- * Class Message.
- */
 class Message implements Contract
 {
     /**
