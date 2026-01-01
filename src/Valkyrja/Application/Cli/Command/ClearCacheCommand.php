@@ -20,7 +20,7 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Routing\Attribute\Route as RouteAttribute;
+use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Support\Directory\Directory;
 
 /**
@@ -28,8 +28,8 @@ use Valkyrja\Support\Directory\Directory;
  */
 class ClearCacheCommand
 {
-    #[RouteAttribute(
-        name: 'config:clear-cache',
+    #[Route(
+        name: 'config:cache:clear',
         description: 'Clear config cache',
         helpText: new Message('A command to clear the config cache.'),
     )]
