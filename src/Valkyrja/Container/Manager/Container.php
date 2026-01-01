@@ -23,9 +23,6 @@ use Valkyrja\Container\Throwable\Exception\InvalidArgumentException;
 use function assert;
 use function class_exists;
 
-/**
- * Class Container.
- */
 class Container implements Contract
 {
     use ProvidersAwareTrait;

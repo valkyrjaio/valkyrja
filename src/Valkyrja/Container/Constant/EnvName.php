@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Constant;
 
-/**
- * Class EnvName.
- */
 final class EnvName
 {
     public const string ALIASES          = 'CONTAINER_ALIASES';

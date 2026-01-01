@@ -15,9 +15,6 @@ namespace Valkyrja\Container\Constant;
 
 use Valkyrja\Container\Provider\Provider as ContainerProvider;
 
-/**
- * Constant ConfigValue.
- */
 final class ConfigValue
 {
     /** @var array<array-key, class-string<ContainerProvider>> */

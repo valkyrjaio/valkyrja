@@ -16,9 +16,6 @@ namespace Valkyrja\Container\Collector\Contract;
 use Valkyrja\Container\Attribute\Alias;
 use Valkyrja\Container\Attribute\Service;
 
-/**
- * Interface CollectorContract.
- */
 interface CollectorContract
 {
     /**

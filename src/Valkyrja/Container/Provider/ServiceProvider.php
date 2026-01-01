@@ -23,9 +23,6 @@ use Valkyrja\Container\Data\Data;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Throwable\Exception\InvalidArgumentException;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

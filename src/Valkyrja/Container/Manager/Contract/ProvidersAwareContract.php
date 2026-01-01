@@ -15,9 +15,6 @@ namespace Valkyrja\Container\Manager\Contract;
 
 use Valkyrja\Container\Provider\Provider;
 
-/**
- * Interface ProvidersAwareContract.
- */
 interface ProvidersAwareContract
 {
     /**

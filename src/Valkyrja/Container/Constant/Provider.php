@@ -42,9 +42,6 @@ use Valkyrja\Session\Provider\ServiceProvider as SessionServiceProvider;
 use Valkyrja\Sms\Provider\ServiceProvider as SMSServiceProvider;
 use Valkyrja\View\Provider\ServiceProvider as ViewServiceProvider;
 
-/**
- * Constant Provider.
- */
 final class Provider
 {
     public const string API             = ApiServiceProvider::class;

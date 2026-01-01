@@ -16,9 +16,6 @@ namespace Valkyrja\Container\Attribute;
 use Attribute;
 use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract;
 
-/**
- * Attribute Service.
- */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 class Service
 {

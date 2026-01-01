@@ -18,9 +18,6 @@ use Psr\Container\ContainerInterface;
 use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Data\Data;
 
-/**
- * Interface ContainerContract.
- */
 interface ContainerContract extends ContainerInterface, ProvidersAwareContract
 {
     /**
