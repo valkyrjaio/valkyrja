@@ -15,12 +15,12 @@ namespace Valkyrja\Tests\Unit\Throwable\Handler;
 
 use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Throwable\Exception\Exception;
-use Valkyrja\Throwable\Handler\ThrowableHandler;
+use Valkyrja\Throwable\Handler\WhoopsThrowableHandler;
 
 /**
- * Test the throwable handler.
+ * Test the whoops throwable handler.
  */
-class ThrowableHandlerTest extends TestCase
+class WhoopsThrowableHandlerTest extends TestCase
 {
     public function testGetTraceCode(): void
     {
@@ -28,9 +28,9 @@ class ThrowableHandlerTest extends TestCase
         $exception2 = new Exception();
         $exception3 = new Exception('Custom message');
 
-        $traceCode  = ThrowableHandler::getTraceCode($exception);
-        $traceCode2 = ThrowableHandler::getTraceCode($exception2);
-        $traceCode3 = ThrowableHandler::getTraceCode($exception3);
+        $traceCode  = WhoopsThrowableHandler::getTraceCode($exception);
+        $traceCode2 = WhoopsThrowableHandler::getTraceCode($exception2);
+        $traceCode3 = WhoopsThrowableHandler::getTraceCode($exception3);
 
         self::assertSame($traceCode, $traceCode2);
         self::assertSame($traceCode, $traceCode3);
@@ -44,21 +44,21 @@ class ThrowableHandlerTest extends TestCase
         restore_exception_handler();
         restore_error_handler();
 
-        ThrowableHandler::$enabled = false;
+        WhoopsThrowableHandler::$enabled = false;
 
-        ThrowableHandler::enable();
+        WhoopsThrowableHandler::enable();
 
         $whoopsExceptionHandler = set_exception_handler(null);
         $whoopsErrorHandler     = set_error_handler(null);
         restore_exception_handler();
         restore_error_handler();
 
-        self::assertTrue(ThrowableHandler::$enabled);
+        self::assertTrue(WhoopsThrowableHandler::$enabled);
         self::assertNotSame($originalExceptionHandler, $whoopsExceptionHandler);
         self::assertNotSame($originalErrorHandler, $whoopsErrorHandler);
 
         // Testing calling enable again, shouldn't remake the handler
-        ThrowableHandler::enable();
+        WhoopsThrowableHandler::enable();
 
         $whoopsExceptionHandler2 = set_exception_handler(null);
         $whoopsErrorHandler2     = set_error_handler(null);
@@ -79,23 +79,23 @@ class ThrowableHandlerTest extends TestCase
         restore_exception_handler();
         restore_error_handler();
 
-        ThrowableHandler::$enabled = false;
+        WhoopsThrowableHandler::$enabled = false;
 
         $_SERVER['HTTP_X_REQUESTED_WITH'] = 'xmlhttprequest';
 
-        ThrowableHandler::enable();
+        WhoopsThrowableHandler::enable();
 
         $whoopsExceptionHandler = set_exception_handler(null);
         $whoopsErrorHandler     = set_error_handler(null);
         restore_exception_handler();
         restore_error_handler();
 
-        self::assertTrue(ThrowableHandler::$enabled);
+        self::assertTrue(WhoopsThrowableHandler::$enabled);
         self::assertNotSame($originalExceptionHandler, $whoopsExceptionHandler);
         self::assertNotSame($originalErrorHandler, $whoopsErrorHandler);
 
         // Testing calling enable again, shouldn't remake the handler
-        ThrowableHandler::enable();
+        WhoopsThrowableHandler::enable();
 
         $whoopsExceptionHandler2 = set_exception_handler(null);
         $whoopsErrorHandler2     = set_error_handler(null);

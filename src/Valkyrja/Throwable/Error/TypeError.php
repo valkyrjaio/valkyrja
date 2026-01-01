@@ -16,7 +16,7 @@ namespace Valkyrja\Throwable\Error;
 use Override;
 use TypeError as PhpTypeError;
 use Valkyrja\Throwable\Contract\Throwable;
-use Valkyrja\Throwable\Handler\ThrowableHandler;
+use Valkyrja\Throwable\Handler\WhoopsThrowableHandler;
 
 class TypeError extends PhpTypeError implements Throwable
 {
@@ -26,6 +26,6 @@ class TypeError extends PhpTypeError implements Throwable
     #[Override]
     public function getTraceCode(): string
     {
-        return ThrowableHandler::getTraceCode($this);
+        return WhoopsThrowableHandler::getTraceCode($this);
     }
 }

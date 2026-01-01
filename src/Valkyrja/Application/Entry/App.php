@@ -29,7 +29,7 @@ use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Support\Time\Microtime;
 use Valkyrja\Throwable\Handler\Contract\ThrowableHandlerContract;
-use Valkyrja\Throwable\Handler\ThrowableHandler;
+use Valkyrja\Throwable\Handler\WhoopsThrowableHandler;
 
 use function define;
 use function defined;
@@ -176,7 +176,7 @@ class App
      */
     protected static function defaultExceptionHandler(): void
     {
-        ThrowableHandler::enable(
+        WhoopsThrowableHandler::enable(
             displayErrors: true
         );
     }
@@ -205,7 +205,7 @@ class App
      */
     protected static function getThrowableHandler(): ThrowableHandlerContract
     {
-        return new ThrowableHandler();
+        return new WhoopsThrowableHandler();
     }
 
     /**

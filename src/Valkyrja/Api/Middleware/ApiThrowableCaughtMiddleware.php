@@ -22,7 +22,7 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
-use Valkyrja\Throwable\Handler\ThrowableHandler;
+use Valkyrja\Throwable\Handler\WhoopsThrowableHandler;
 
 class ApiThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
 {
@@ -43,7 +43,7 @@ class ApiThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
         ThrowableCaughtHandlerContract $handler
     ): ResponseContract {
         $json = $this->api->jsonFromArray([
-            'traceCode' => ThrowableHandler::getTraceCode($exception),
+            'traceCode' => WhoopsThrowableHandler::getTraceCode($exception),
         ]);
 
         $json->setStatus(Status::ERROR);
