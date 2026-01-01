@@ -16,9 +16,6 @@ namespace Valkyrja\Dispatch\Data;
 use Override;
 use Valkyrja\Dispatch\Data\Contract\PropertyDispatchContract as Contract;
 
-/**
- * Class PropertyDispatch.
- */
 class PropertyDispatch extends ClassDispatch implements Contract
 {
     /**

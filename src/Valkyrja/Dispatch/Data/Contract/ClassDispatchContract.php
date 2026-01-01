@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatch\Data\Contract;
 
-/**
- * Interface ClassDispatchContract.
- */
 interface ClassDispatchContract extends DispatchContract
 {
     /**

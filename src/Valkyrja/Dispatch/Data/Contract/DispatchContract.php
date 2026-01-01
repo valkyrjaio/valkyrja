@@ -17,9 +17,6 @@ use JsonSerializable;
 use Override;
 use Stringable;
 
-/**
- * Interface DispatchContract.
- */
 interface DispatchContract extends JsonSerializable, Stringable
 {
     /**

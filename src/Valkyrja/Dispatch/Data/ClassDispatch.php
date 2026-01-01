@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Dispatch\Data\Abstract\Dispatch;
 use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract as Contract;
 
-/**
- * Class ClassDispatch.
- */
 class ClassDispatch extends Dispatch implements Contract
 {
     /**

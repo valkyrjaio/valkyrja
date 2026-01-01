@@ -29,9 +29,6 @@ use Valkyrja\Dispatch\Throwable\Exception\InvalidArgumentException;
 use function array_map;
 use function constant;
 
-/**
- * Class Dispatcher.
- */
 class Dispatcher implements Contract
 {
     /**
