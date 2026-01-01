@@ -23,7 +23,7 @@ use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Routing\Attribute\Route as RouteAttribute;
+use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract as CliCollectionContract;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Event\Collection\Contract\CollectionContract as EventCollection;
@@ -39,7 +39,7 @@ class CacheCommand
 {
     public const string NAME = 'config:cache';
 
-    #[RouteAttribute(
+    #[Route(
         name: self::NAME,
         description: 'Cache the config',
         helpText: new Message('A command to cache the config.'),
