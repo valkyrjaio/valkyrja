@@ -23,7 +23,7 @@ use Whoops\Util\Misc;
 
 use const E_ALL;
 
-class ThrowableHandler implements Contract
+class WhoopsThrowableHandler implements Contract
 {
     /**
      * Whether debug is enabled or not.
