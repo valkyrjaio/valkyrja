@@ -16,13 +16,10 @@ namespace Valkyrja\Tests\Classes\Cli\Middleware\Handler;
 use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Middleware\Handler\CommandDispatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
-/**
- * Class TestCommandDispatchedHandler.
- */
-class CommandDispatchedHandlerClass extends CommandDispatchedHandler
+class RouteMatchedHandlerClass extends RouteMatchedHandler
 {
     protected int $count = 0;
 
@@ -38,10 +35,10 @@ class CommandDispatchedHandlerClass extends CommandDispatchedHandler
      * @inheritDoc
      */
     #[Override]
-    public function commandDispatched(InputContract $input, OutputContract $output, RouteContract $command): OutputContract
+    public function routeMatched(InputContract $input, RouteContract $route): RouteContract|OutputContract
     {
         $this->count++;
 
-        return parent::commandDispatched($input, $output, $command);
+        return parent::routeMatched($input, $route);
     }
 }

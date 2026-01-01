@@ -16,9 +16,9 @@ namespace Valkyrja\Cli\Routing\Collector;
 use Override;
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract;
-use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Cli\Routing\Attribute\ArgumentParameter as ArgumentAttribute;
 use Valkyrja\Cli\Routing\Attribute\OptionParameter as OptionAttribute;
@@ -147,19 +147,19 @@ class AttributeCollector implements Contract
 
         foreach ($middlewareClassNames as $middlewareClass) {
             $route = match (true) {
-                is_a($middlewareClass, CommandMatchedMiddlewareContract::class, true)    => $route->withAddedCommandMatchedMiddleware(
+                is_a($middlewareClass, RouteMatchedMiddlewareContract::class, true)    => $route->withAddedCommandMatchedMiddleware(
                     $middlewareClass
                 ),
-                is_a($middlewareClass, CommandDispatchedMiddlewareContract::class, true) => $route->withAddedCommandDispatchedMiddleware(
+                is_a($middlewareClass, RouteDispatchedMiddlewareContract::class, true) => $route->withAddedCommandDispatchedMiddleware(
                     $middlewareClass
                 ),
-                is_a($middlewareClass, ThrowableCaughtMiddlewareContract::class, true)   => $route->withAddedThrowableCaughtMiddleware(
+                is_a($middlewareClass, ThrowableCaughtMiddlewareContract::class, true) => $route->withAddedThrowableCaughtMiddleware(
                     $middlewareClass
                 ),
-                is_a($middlewareClass, ExitedMiddlewareContract::class, true)            => $route->withAddedExitedMiddleware(
+                is_a($middlewareClass, ExitedMiddlewareContract::class, true)          => $route->withAddedExitedMiddleware(
                     $middlewareClass
                 ),
-                default                                                                  => throw new InvalidArgumentException(
+                default                                                                => throw new InvalidArgumentException(
                     "Unsupported middleware class `$middlewareClass`"
                 ),
             };

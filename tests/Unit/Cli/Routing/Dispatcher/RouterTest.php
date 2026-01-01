@@ -19,14 +19,14 @@ use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Interaction\Output\Output;
-use Valkyrja\Cli\Middleware\Handler\CommandMatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\CommandNotMatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\RouteMatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Cli\Routing\Collection\Collection;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Dispatch\Data\MethodDispatch;
-use Valkyrja\Tests\Classes\Cli\Middleware\CommandMatchedMiddlewareChangedClass;
-use Valkyrja\Tests\Classes\Cli\Middleware\CommandNotMatchedMiddlewareChangedClass;
+use Valkyrja\Tests\Classes\Cli\Middleware\RouteMatchedMiddlewareChangedClass;
+use Valkyrja\Tests\Classes\Cli\Middleware\RouteNotMatchedMiddlewareChangedClass;
 use Valkyrja\Tests\Unit\TestCase;
 
 /**
@@ -56,17 +56,17 @@ class RouterTest extends TestCase
 
     public function testCommandNotFoundWithCommandNotMatchedMiddleware(): void
     {
-        CommandNotMatchedMiddlewareChangedClass::resetCounter();
+        RouteNotMatchedMiddlewareChangedClass::resetCounter();
 
-        $commandNotMatchedHandler = new CommandNotMatchedHandler();
-        $commandNotMatchedHandler->add(CommandNotMatchedMiddlewareChangedClass::class);
+        $commandNotMatchedHandler = new RouteNotMatchedHandler();
+        $commandNotMatchedHandler->add(RouteNotMatchedMiddlewareChangedClass::class);
 
         $router = new Router(commandNotMatchedHandler: $commandNotMatchedHandler);
         $input  = new Input(commandName: 'non-existing-command');
 
         $router->dispatch($input);
 
-        self::assertSame(1, CommandNotMatchedMiddlewareChangedClass::getAndResetCounter());
+        self::assertSame(1, RouteNotMatchedMiddlewareChangedClass::getAndResetCounter());
     }
 
     public function testCommandFound(): void
@@ -90,10 +90,10 @@ class RouterTest extends TestCase
 
     public function testCommandFoundWithCommandMatchedMiddleware(): void
     {
-        CommandMatchedMiddlewareChangedClass::resetCounter();
+        RouteMatchedMiddlewareChangedClass::resetCounter();
 
-        $commandMatchedHandler = new CommandMatchedHandler();
-        $commandMatchedHandler->add(CommandMatchedMiddlewareChangedClass::class);
+        $commandMatchedHandler = new RouteMatchedHandler();
+        $commandMatchedHandler->add(RouteMatchedMiddlewareChangedClass::class);
 
         $collection = new Collection();
         $router     = new Router(
@@ -112,7 +112,7 @@ class RouterTest extends TestCase
 
         $router->dispatch($input);
 
-        self::assertSame(1, CommandMatchedMiddlewareChangedClass::getAndResetCounter());
+        self::assertSame(1, RouteMatchedMiddlewareChangedClass::getAndResetCounter());
     }
 
     public function testDispatchCommand(): void

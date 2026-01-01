@@ -15,22 +15,18 @@ namespace Valkyrja\Tests\Classes\Cli\Middleware;
 
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandlerContract;
-use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
+use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
-/**
- * Class TestCommandMatchedMiddleware.
- */
-class CommandMatchedMiddlewareClass implements CommandMatchedMiddlewareContract
+class RouteNotMatchedMiddlewareClass implements RouteNotMatchedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 
-    public function commandMatched(InputContract $input, RouteContract $command, CommandMatchedHandlerContract $handler): RouteContract|OutputContract
+    public function routeNotMatched(InputContract $input, OutputContract $output, RouteNotMatchedHandlerContract $handler): OutputContract
     {
         $this->updateCounter();
 
-        return $handler->commandMatched($input, $command);
+        return $handler->routeNotMatched($input, $output);
     }
 }

@@ -16,25 +16,25 @@ namespace Valkyrja\Cli\Middleware\Handler;
 use Override;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandlerContract as Contract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract as Contract;
 
 /**
- * @extends Handler<CommandNotMatchedMiddlewareContract>
+ * @extends Handler<RouteNotMatchedMiddlewareContract>
  */
-class CommandNotMatchedHandler extends Handler implements Contract
+class RouteNotMatchedHandler extends Handler implements Contract
 {
     /**
      * @inheritDoc
      */
     #[Override]
-    public function commandNotMatched(InputContract $input, OutputContract $output): OutputContract
+    public function routeNotMatched(InputContract $input, OutputContract $output): OutputContract
     {
         $next = $this->next;
 
         return $next !== null
-            ? $this->getMiddleware($next)->commandNotMatched($input, $output, $this)
+            ? $this->getMiddleware($next)->routeNotMatched($input, $output, $this)
             : $output;
     }
 }

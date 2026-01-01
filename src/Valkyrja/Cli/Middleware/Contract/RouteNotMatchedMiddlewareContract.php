@@ -15,13 +15,12 @@ namespace Valkyrja\Cli\Middleware\Contract;
 
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandlerContract;
-use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 
-interface CommandMatchedMiddlewareContract
+interface RouteNotMatchedMiddlewareContract
 {
     /**
-     * Middleware handler for after a command has been matched but before it has been dispatched.
+     * Middleware handler for after a route has not been matched.
      */
-    public function commandMatched(InputContract $input, RouteContract $command, CommandMatchedHandlerContract $handler): RouteContract|OutputContract;
+    public function routeNotMatched(InputContract $input, OutputContract $output, RouteNotMatchedHandlerContract $handler): OutputContract;
 }

@@ -15,16 +15,16 @@ namespace Valkyrja\Cli\Middleware\Handler\Contract;
 
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
 /**
- * @extends HandlerContract<CommandDispatchedMiddlewareContract>
+ * @extends HandlerContract<RouteMatchedMiddlewareContract>
  */
-interface CommandDispatchedHandlerContract extends HandlerContract
+interface RouteMatchedHandlerContract extends HandlerContract
 {
     /**
-     * Middleware handler for after a command is dispatched.
+     * Middleware handler for after a route has been matched but before it has been dispatched.
      */
-    public function commandDispatched(InputContract $input, OutputContract $output, RouteContract $command): OutputContract;
+    public function routeMatched(InputContract $input, RouteContract $route): RouteContract|OutputContract;
 }

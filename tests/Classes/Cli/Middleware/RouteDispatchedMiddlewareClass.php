@@ -15,24 +15,23 @@ namespace Valkyrja\Tests\Classes\Cli\Middleware;
 
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
-use Valkyrja\Cli\Interaction\Output\Output;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Contract\RouteDispatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
-/**
- * Class TestCommandMatchedMiddlewareChanged.
- */
-class CommandMatchedMiddlewareChangedClass implements CommandMatchedMiddlewareContract
+class RouteDispatchedMiddlewareClass implements RouteDispatchedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 
-    public function commandMatched(InputContract $input, RouteContract $command, CommandMatchedHandlerContract $handler): RouteContract|OutputContract
-    {
+    public function routeDispatched(
+        InputContract $input,
+        OutputContract $output,
+        RouteContract $route,
+        RouteDispatchedHandlerContract $handler
+    ): OutputContract {
         $this->updateCounter();
 
-        // Return an output instead of calling the handler to simulate early exit
-        return new Output();
+        return $handler->routeDispatched($input, $output, $route);
     }
 }
