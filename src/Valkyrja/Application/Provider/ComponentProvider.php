@@ -16,12 +16,11 @@ namespace Valkyrja\Application\Provider;
 use Override;
 use Valkyrja\Application\Cli\Command\CacheCommand;
 use Valkyrja\Application\Cli\Command\ClearCacheCommand;
-use Valkyrja\Application\Provider\Provider as AppComponent;
 
 /**
  * Final Class Component.
  */
-class ComponentProvider extends AppComponent
+class ComponentProvider extends Provider
 {
     /**
      * @inheritDoc

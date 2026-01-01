@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Provider;
 
 use Override;
-use Valkyrja\Application\Provider\Provider as AppComponent;
+use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Cli\Command\HelpCommand;
 use Valkyrja\Cli\Command\ListBashCommand;
 use Valkyrja\Cli\Command\ListCommand;
@@ -23,7 +23,7 @@ use Valkyrja\Cli\Command\VersionCommand;
 /**
  * Final Class Component.
  */
-class ComponentProvider extends AppComponent
+class ComponentProvider extends Provider
 {
     /**
      * @inheritDoc

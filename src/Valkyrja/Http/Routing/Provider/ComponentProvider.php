@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Provider;
 
 use Override;
-use Valkyrja\Application\Provider\Provider as AppComponent;
+use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 
 /**
  * Final Class Component.
  */
-class ComponentProvider extends AppComponent
+class ComponentProvider extends Provider
 {
     /**
      * @inheritDoc
