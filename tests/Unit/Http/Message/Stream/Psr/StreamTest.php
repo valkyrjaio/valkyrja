@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Http\Message\Stream\Psr;
 
-use Valkyrja\Http\Message\Stream;
+use Valkyrja\Http\Message\Stream\Psr\Stream as PsrStream;
+use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Tests\Unit\TestCase;
 
 class StreamTest extends TestCase
@@ -21,8 +22,8 @@ class StreamTest extends TestCase
     public function testPsr(): void
     {
         $content   = 'pie';
-        $psrStream = new Stream\Psr\Stream(
-            $stream = new Stream\Stream()
+        $psrStream = new PsrStream(
+            $stream = new Stream()
         );
 
         $psrStream->write($content);

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Server\Handler;
 
 use Exception;
+use PHPUnit\Framework\MockObject\Exception as MockObjectException;
 use Throwable;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Http\Message\Request\ServerRequest;
@@ -37,7 +38,7 @@ use Valkyrja\Tests\Unit\TestCase;
 class RequestHandlerTest extends TestCase
 {
     /**
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObjectException
      * @throws Throwable
      */
     public function testHandle(): void
@@ -65,7 +66,7 @@ class RequestHandlerTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObjectException
      * @throws Throwable
      */
     public function testHandleWithBeforeMiddleware(): void
@@ -101,7 +102,7 @@ class RequestHandlerTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObjectException
      * @throws Throwable
      */
     public function testHandleException(): void
@@ -130,7 +131,7 @@ class RequestHandlerTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObjectException
      * @throws Throwable
      */
     public function testHandleExceptionWithExceptionMiddleware(): void
@@ -167,7 +168,7 @@ class RequestHandlerTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObjectException
      * @throws Throwable
      */
     public function testHandleExceptionWithDebugOn(): void
@@ -197,7 +198,7 @@ class RequestHandlerTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObjectException
      * @throws Throwable
      */
     public function testHandleExceptionWithHttpExceptionAndNoResponse(): void
@@ -225,7 +226,7 @@ class RequestHandlerTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObjectException
      * @throws Throwable
      */
     public function testHandleExceptionWithRandomException(): void
@@ -253,7 +254,7 @@ class RequestHandlerTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObjectException
      * @throws Throwable
      */
     public function testRun(): void
@@ -280,7 +281,7 @@ class RequestHandlerTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObjectException
      * @throws Throwable
      */
     public function testClosingSession(): void
@@ -310,7 +311,7 @@ class RequestHandlerTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObjectException
      * @throws Throwable
      */
     public function testFinishRequestWithFastCgi(): void
@@ -340,7 +341,7 @@ class RequestHandlerTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObjectException
      * @throws Throwable
      */
     public function testFinishRequestWithLitespeed(): void
@@ -370,7 +371,7 @@ class RequestHandlerTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObjectException
      * @throws Throwable
      */
     public function testFinishRequestByClosingOutputBuffers(): void
@@ -400,7 +401,7 @@ class RequestHandlerTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws MockObjectException
      * @throws Throwable
      */
     public function testFinishRequestByClosingOutputBuffersWithClean(): void
