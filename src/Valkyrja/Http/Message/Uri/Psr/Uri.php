@@ -18,9 +18,6 @@ use Psr\Http\Message\UriInterface;
 use Valkyrja\Http\Message\Uri\Contract\UriContract as ValkyrjaUri;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 
-/**
- * Class Uri.
- */
 class Uri implements UriInterface
 {
     public function __construct(

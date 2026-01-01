@@ -22,9 +22,6 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\JsonResponseContract;
 use Valkyrja\Throwable\Handler\ThrowableHandler;
 
-/**
- * Abstract Class ApiController.
- */
 abstract class ApiController extends Controller
 {
     public function __construct(

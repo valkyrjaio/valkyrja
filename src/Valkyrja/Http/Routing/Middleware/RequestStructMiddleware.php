@@ -27,9 +27,6 @@ use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 use function assert;
 use function is_a;
 
-/**
- * Class RequestStructMiddleware.
- */
 class RequestStructMiddleware implements RouteMatchedMiddlewareContract
 {
     /**

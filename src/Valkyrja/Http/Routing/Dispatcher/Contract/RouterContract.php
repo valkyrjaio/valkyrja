@@ -17,9 +17,6 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
-/**
- * Interface RouterContract.
- */
 interface RouterContract
 {
     /**

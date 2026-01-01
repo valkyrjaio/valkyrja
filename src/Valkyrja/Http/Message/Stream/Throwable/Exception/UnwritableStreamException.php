@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Stream\Throwable\Exception;
 
-/**
- * Class UnwritableStreamException.
- */
 class UnwritableStreamException extends RuntimeException
 {
 }

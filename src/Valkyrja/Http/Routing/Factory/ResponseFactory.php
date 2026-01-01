@@ -20,9 +20,6 @@ use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 use Valkyrja\Http\Routing\Factory\Contract\ResponseFactoryContract as Contract;
 use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 
-/**
- * Class ResponseFactory.
- */
 class ResponseFactory implements Contract
 {
     public function __construct(

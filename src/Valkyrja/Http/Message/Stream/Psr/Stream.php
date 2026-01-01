@@ -20,9 +20,6 @@ use Valkyrja\Http\Message\Stream\Stream as ValkyrjaStream;
 
 use const SEEK_SET;
 
-/**
- * Class Stream.
- */
 class Stream implements StreamInterface
 {
     public function __construct(

@@ -28,10 +28,8 @@ use Valkyrja\Http\Middleware\Handler\Contract\HandlerContract as Contract;
 use function array_merge;
 
 /**
- * Abstract Class Handler.
- *
  * https://psalm.dev/r/7441ba42c3 Weird errors for the template but `of ...` fixes it
- * https://psalm.dev/r/e76d278bf9 __construct gives wrong expects as first of template below instead of correct one from extends. add() is correct, though
+ * https://psalm.dev/r/e76d278bf9 __construct gives wrong expects as first of template below instead of correct one from extends. add() is correct, though.
  *
  * @template Middleware of RequestReceivedMiddlewareContract|SendingResponseMiddlewareContract|RouteMatchedMiddlewareContract|RouteNotMatchedMiddlewareContract|RouteDispatchedMiddlewareContract|ThrowableCaughtMiddlewareContract|TerminatedMiddlewareContract
  *

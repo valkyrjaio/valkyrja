@@ -26,9 +26,6 @@ use Valkyrja\Http\Message\Trait\Message;
 
 use function sprintf;
 
-/**
- * Class Response.
- */
 class Response implements Contract
 {
     use Message;

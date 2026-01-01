@@ -36,9 +36,6 @@ use function strrpos;
 use function strtolower;
 use function substr;
 
-/**
- * Abstract Class UriFactory.
- */
 abstract class UriFactory
 {
     /**

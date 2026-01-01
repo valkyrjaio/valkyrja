@@ -20,9 +20,6 @@ use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 
-/**
- * Class EmptyResponse.
- */
 class EmptyResponse extends Response implements Contract
 {
     /**

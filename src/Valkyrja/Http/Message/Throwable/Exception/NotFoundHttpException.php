@@ -15,9 +15,6 @@ namespace Valkyrja\Http\Message\Throwable\Exception;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
 
-/**
- * Class NotFoundHttpException.
- */
 class NotFoundHttpException extends HttpException
 {
     /**

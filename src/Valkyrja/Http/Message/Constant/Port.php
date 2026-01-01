@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Constant;
 
-/**
- * Constant Port.
- */
 final class Port
 {
     public const int MIN = 1;

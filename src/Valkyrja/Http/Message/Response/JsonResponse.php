@@ -32,9 +32,6 @@ use function sprintf;
 
 use const JSON_THROW_ON_ERROR;
 
-/**
- * Class JsonResponse.
- */
 class JsonResponse extends Response implements Contract
 {
     /**

@@ -19,8 +19,6 @@ use Valkyrja\Http\Message\Header\Value\Component\Contract\ComponentContract as C
 use function explode;
 
 /**
- * Class Component.
- *
  * @phpstan-consistent-constructor
  *  Will be overridden if need be
  */

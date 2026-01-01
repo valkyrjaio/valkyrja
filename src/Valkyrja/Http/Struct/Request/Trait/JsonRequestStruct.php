@@ -17,9 +17,6 @@ use Valkyrja\Http\Message\Request\Contract\JsonServerRequestContract;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Struct\Throwable\Exception\InvalidArgumentException;
 
-/**
- * Trait JsonRequestStruct.
- */
 trait JsonRequestStruct
 {
     use RequestStruct;

@@ -19,9 +19,6 @@ use Valkyrja\Http\Message\Response\RedirectResponse;
 use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Uri as HttpUri;
 
-/**
- * Class HttpRedirectException.
- */
 class HttpRedirectException extends HttpException
 {
     /**

@@ -19,9 +19,6 @@ use Psr\Http\Message\UploadedFileInterface;
 use Valkyrja\Http\Message\File\Contract\UploadedFileContract as ValkyrjaUploadedFile;
 use Valkyrja\Http\Message\Stream\Psr\Stream;
 
-/**
- * Class UploadedFile.
- */
 class UploadedFile implements UploadedFileInterface
 {
     public function __construct(

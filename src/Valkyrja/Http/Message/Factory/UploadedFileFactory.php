@@ -24,9 +24,6 @@ use function array_map;
 use function is_array;
 use function is_string;
 
-/**
- * Abstract Class UploadedFileFactory.
- */
 abstract class UploadedFileFactory
 {
     /**

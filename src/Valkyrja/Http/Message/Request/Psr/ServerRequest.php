@@ -23,8 +23,6 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract as ValkyrjaRequ
 use Valkyrja\Http\Message\Request\Throwable\Exception\RuntimeException;
 
 /**
- * Class ServerRequest.
- *
  * @property ValkyrjaRequest $request
  */
 class ServerRequest extends Request implements ServerRequestInterface

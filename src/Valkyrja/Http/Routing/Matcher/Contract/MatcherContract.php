@@ -16,9 +16,6 @@ namespace Valkyrja\Http\Routing\Matcher\Contract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
-/**
- * Interface MatcherContract.
- */
 interface MatcherContract
 {
     /**

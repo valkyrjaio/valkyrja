@@ -44,9 +44,6 @@ use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
 
 use function rawurldecode;
 
-/**
- * Class Router.
- */
 class Router implements Contract
 {
     /**

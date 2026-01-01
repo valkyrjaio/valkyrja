@@ -27,9 +27,6 @@ use function array_key_exists;
 use function preg_match;
 use function sprintf;
 
-/**
- * Abstract Class RequestFactory.
- */
 abstract class RequestFactory
 {
     /**

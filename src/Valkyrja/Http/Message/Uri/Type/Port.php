@@ -22,8 +22,6 @@ use function is_int;
 use function sprintf;
 
 /**
- * Class Port.
- *
  * @extends Type<int|null>
  */
 class Port extends Type

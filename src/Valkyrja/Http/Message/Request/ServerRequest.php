@@ -32,9 +32,6 @@ use function in_array;
 
 use const ARRAY_FILTER_USE_KEY;
 
-/**
- * Class ServerRequest.
- */
 class ServerRequest extends Request implements Contract
 {
     /**

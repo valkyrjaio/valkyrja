@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\File\Enum;
 
-/**
- * Enum UploadError.
- */
 enum UploadError: int
 {
     case OK         = 0;

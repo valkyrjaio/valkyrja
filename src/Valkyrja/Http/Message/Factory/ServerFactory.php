@@ -15,9 +15,6 @@ namespace Valkyrja\Http\Message\Factory;
 
 use function function_exists;
 
-/**
- * Abstract Class ServerFactory.
- */
 abstract class ServerFactory
 {
     /**

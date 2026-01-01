@@ -27,9 +27,6 @@ use Valkyrja\Http\Message\Uri\Uri as ValkyrjaUri;
 
 use function is_array;
 
-/**
- * Class Request.
- */
 class Request implements RequestInterface
 {
     public function __construct(

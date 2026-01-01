@@ -22,8 +22,6 @@ use Valkyrja\Http\Middleware\Handler\Abstract\Handler;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract as Contract;
 
 /**
- * Class ExceptionHandler.
- *
  * @extends Handler<ThrowableCaughtMiddlewareContract>
  */
 class ThrowableCaughtHandler extends Handler implements Contract

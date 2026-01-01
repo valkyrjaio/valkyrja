@@ -19,9 +19,6 @@ use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Http\Message\Factory\ResponseFactory;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

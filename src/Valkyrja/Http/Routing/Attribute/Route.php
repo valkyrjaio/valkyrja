@@ -27,9 +27,6 @@ use Valkyrja\Http\Routing\Data\Route as ParentRoute;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
 use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
-/**
- * Attribute Route.
- */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class Route extends ParentRoute
 {

@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Middleware\Constant;
 
-/**
- * Class ConfigName.
- */
 final class ConfigName
 {
     public const string REQUEST_RECEIVED  = 'requestReceived';

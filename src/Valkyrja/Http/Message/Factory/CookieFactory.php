@@ -23,9 +23,7 @@ use function urldecode;
 use const PREG_SET_ORDER;
 
 /**
- * Abstract Class CookieFactory.
- *
- * @see    https://www.php.net/manual/en/reserved.variables.cookies.php
+ * @see https://www.php.net/manual/en/reserved.variables.cookies.php
  */
 abstract class CookieFactory
 {

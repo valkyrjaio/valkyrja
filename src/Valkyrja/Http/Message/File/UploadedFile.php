@@ -40,9 +40,6 @@ use function unlink;
 
 use const PHP_SAPI;
 
-/**
- * Class UploadedFile.
- */
 class UploadedFile implements Contract
 {
     /**

@@ -21,9 +21,6 @@ use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract as Contract;
 use Valkyrja\Http\Routing\Support\Helpers;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
 
-/**
- * Class Processor.
- */
 class Processor implements Contract
 {
     /**

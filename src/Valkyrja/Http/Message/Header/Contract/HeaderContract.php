@@ -22,9 +22,7 @@ use Stringable;
 use Valkyrja\Http\Message\Header\Value\Contract\ValueContract;
 
 /**
- * Class HeaderContract.
- *
- * @see    https://datatracker.ietf.org/doc/html/rfc7230#section-3.2
+ * @see https://datatracker.ietf.org/doc/html/rfc7230#section-3.2
  *
  * @extends ArrayAccess<int, ValueContract>
  * @extends Iterator<int, ValueContract>

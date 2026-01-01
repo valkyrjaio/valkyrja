@@ -15,9 +15,6 @@ namespace Valkyrja\Http\Routing\Attribute\Route;
 
 use Attribute;
 
-/**
- * Attribute Path.
- */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
 class Path
 {

@@ -16,9 +16,6 @@ namespace Valkyrja\Http\Routing\Attribute\Route;
 use Attribute;
 use Valkyrja\Http\Struct\Request\Contract\RequestStructContract as RoutingRequestStruct;
 
-/**
- * Attribute RequestStruct.
- */
 #[Attribute(Attribute::TARGET_METHOD)]
 class RequestStruct
 {

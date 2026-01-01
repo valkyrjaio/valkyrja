@@ -17,9 +17,6 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 
-/**
- * Interface TerminatedMiddlewareContract.
- */
 interface TerminatedMiddlewareContract
 {
     /**

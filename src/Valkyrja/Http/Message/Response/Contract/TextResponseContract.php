@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Response\Contract;
 
-/**
- * Interface TextResponseContract.
- */
 interface TextResponseContract extends ResponseContract
 {
 }

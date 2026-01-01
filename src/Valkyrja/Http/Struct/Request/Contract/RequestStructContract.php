@@ -18,9 +18,6 @@ use Valkyrja\Http\Struct\Contract\StructContract;
 use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 
-/**
- * Interface RequestStructContract.
- */
 interface RequestStructContract extends StructContract
 {
     /**

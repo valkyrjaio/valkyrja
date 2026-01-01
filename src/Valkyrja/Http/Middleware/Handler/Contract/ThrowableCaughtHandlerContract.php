@@ -19,8 +19,6 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 
 /**
- * Interface ThrowableCaughtHandlerContract.
- *
  * @extends HandlerContract<ThrowableCaughtMiddlewareContract>
  */
 interface ThrowableCaughtHandlerContract extends HandlerContract

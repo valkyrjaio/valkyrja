@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 
 /**
- * Interface TerminatedHandlerContract.
- *
  * @extends HandlerContract<TerminatedMiddlewareContract>
  */
 interface TerminatedHandlerContract extends HandlerContract

@@ -16,9 +16,6 @@ namespace Valkyrja\Http\Server\Handler\Contract;
 use Throwable;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
-/**
- * Interface ExceptionResponseRequestHandlerContract.
- */
 interface ExceptionResponseRequestHandlerContract extends RequestHandlerContract
 {
     public function createResponseFromException(Throwable $exception): ResponseContract;

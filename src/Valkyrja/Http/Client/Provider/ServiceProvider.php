@@ -25,9 +25,6 @@ use Valkyrja\Http\Client\Manager\NullClient;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

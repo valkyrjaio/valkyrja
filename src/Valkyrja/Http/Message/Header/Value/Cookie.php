@@ -25,9 +25,6 @@ use function gmdate;
 use function implode;
 use function urlencode;
 
-/**
- * Class Cookie.
- */
 class Cookie extends Value implements Contract
 {
     /**

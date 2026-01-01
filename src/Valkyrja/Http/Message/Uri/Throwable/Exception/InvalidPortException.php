@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Uri\Throwable\Exception;
 
-/**
- * Class InvalidPortException.
- */
 class InvalidPortException extends InvalidArgumentException
 {
 }

@@ -28,9 +28,6 @@ use function explode;
 use function implode;
 use function is_string;
 
-/**
- * Class Value.
- */
 class Value implements Contract
 {
     /**

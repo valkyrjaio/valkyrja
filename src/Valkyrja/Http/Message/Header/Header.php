@@ -31,9 +31,6 @@ use function is_string;
 use function str_contains;
 use function strtolower;
 
-/**
- * Class Header.
- */
 class Header implements Contract
 {
     /**

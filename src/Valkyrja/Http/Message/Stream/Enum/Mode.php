@@ -16,9 +16,7 @@ namespace Valkyrja\Http\Message\Stream\Enum;
 use function in_array;
 
 /**
- * Enum Mode.
- *
- * @see    https://www.php.net/manual/en/function.fopen.php
+ * @see https://www.php.net/manual/en/function.fopen.php
  */
 enum Mode: string
 {

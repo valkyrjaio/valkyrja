@@ -16,9 +16,6 @@ namespace Valkyrja\Http\Routing\Factory\Contract;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Response\Contract\RedirectResponseContract;
 
-/**
- * Interface ResponseFactoryContract.
- */
 interface ResponseFactoryContract
 {
     /**

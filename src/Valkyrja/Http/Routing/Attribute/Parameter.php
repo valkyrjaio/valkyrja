@@ -16,9 +16,6 @@ namespace Valkyrja\Http\Routing\Attribute;
 use Attribute;
 use Valkyrja\Http\Routing\Data\Parameter as ParentParameter;
 
-/**
- * Attribute Parameter.
- */
 #[Attribute(Attribute::TARGET_PARAMETER | Attribute::TARGET_METHOD)]
 class Parameter extends ParentParameter
 {

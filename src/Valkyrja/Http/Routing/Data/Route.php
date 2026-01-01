@@ -28,9 +28,6 @@ use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
 use function in_array;
 
-/**
- * Class Route.
- */
 class Route implements Contract
 {
     /**

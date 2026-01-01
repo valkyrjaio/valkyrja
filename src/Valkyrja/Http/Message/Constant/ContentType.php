@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Constant;
 
 /**
- * Constant ContentType.
- *
- * @see    https://www.iana.org/assignments/media-types/media-types.xhtml
+ * @see https://www.iana.org/assignments/media-types/media-types.xhtml
  */
 final class ContentType
 {

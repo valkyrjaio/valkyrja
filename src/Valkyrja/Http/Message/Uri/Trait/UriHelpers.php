@@ -25,8 +25,6 @@ use function str_starts_with;
 use function strtolower;
 
 /**
- * Trait UriHelpers.
- *
  * @property string   $host
  * @property int|null $port
  * @property Scheme   $scheme

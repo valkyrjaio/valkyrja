@@ -21,8 +21,6 @@ use Valkyrja\Http\Middleware\Handler\Abstract\Handler;
 use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract as Contract;
 
 /**
- * Class RequestReceivedHandler.
- *
  * @extends Handler<RequestReceivedMiddlewareContract>
  */
 class RequestReceivedHandler extends Handler implements Contract

@@ -52,9 +52,6 @@ use const PHP_OUTPUT_HANDLER_FLUSHABLE;
 use const PHP_OUTPUT_HANDLER_REMOVABLE;
 use const PHP_SAPI;
 
-/**
- * Class RequestHandler.
- */
 class RequestHandler implements Contract
 {
     /**

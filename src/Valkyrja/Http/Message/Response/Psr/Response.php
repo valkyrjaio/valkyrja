@@ -25,9 +25,6 @@ use Valkyrja\Http\Message\Stream\Psr\Stream;
 
 use function is_array;
 
-/**
- * Class Response.
- */
 class Response implements ResponseInterface
 {
     public function __construct(

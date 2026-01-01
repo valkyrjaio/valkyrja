@@ -16,9 +16,6 @@ namespace Valkyrja\Http\Message\Request\Throwable\Exception;
 use Valkyrja\Http\Message\Request\Throwable\Contract\Throwable;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException as ParentException;
 
-/**
- * Class InvalidArgumentException.
- */
 class InvalidArgumentException extends ParentException implements Throwable
 {
 }

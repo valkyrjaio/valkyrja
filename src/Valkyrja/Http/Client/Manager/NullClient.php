@@ -19,9 +19,6 @@ use Valkyrja\Http\Message\Request\Contract\RequestContract;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\EmptyResponse;
 
-/**
- * Class NullClient.
- */
 class NullClient implements Contract
 {
     /**

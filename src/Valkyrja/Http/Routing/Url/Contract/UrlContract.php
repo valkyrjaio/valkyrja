@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Url\Contract;
 
-/**
- * Interface UrlContract.
- */
 interface UrlContract
 {
     /**

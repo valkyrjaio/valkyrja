@@ -19,8 +19,6 @@ use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
 use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
- * Interface RouteMatchedHandlerContract.
- *
  * @extends HandlerContract<RouteMatchedMiddlewareContract>
  */
 interface RouteMatchedHandlerContract extends HandlerContract

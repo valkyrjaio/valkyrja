@@ -21,9 +21,6 @@ use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 
-/**
- * Class LogExceptionMiddleware.
- */
 class LogThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
 {
     public function __construct(

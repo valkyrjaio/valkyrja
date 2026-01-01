@@ -16,9 +16,6 @@ namespace Valkyrja\Http\Message\Throwable\Exception;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
-/**
- * Class HttpException.
- */
 class HttpException extends RuntimeException
 {
     /**

@@ -24,8 +24,6 @@ use function array_map;
 use function is_string;
 
 /**
- * Class Collection.
- *
  * @phpstan-import-type RequestMethodList from Contract
  * @phpstan-import-type RequestMethodRouteList from Contract
  *

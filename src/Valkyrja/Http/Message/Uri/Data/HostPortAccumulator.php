@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Message\Uri\Data;
 
-/**
- * Class HostPortAccumulator.
- */
 class HostPortAccumulator
 {
     public function __construct(
