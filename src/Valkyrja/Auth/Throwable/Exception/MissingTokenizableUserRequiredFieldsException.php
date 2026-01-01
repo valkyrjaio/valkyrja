@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Throwable\Exception;
 
-/**
- * Exception MissingTokenizableUserRequiredFieldsException.
- */
 class MissingTokenizableUserRequiredFieldsException extends InvalidArgumentException
 {
 }

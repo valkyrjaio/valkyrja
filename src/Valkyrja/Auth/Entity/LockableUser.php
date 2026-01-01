@@ -17,9 +17,6 @@ use Valkyrja\Auth\Entity\Contract\LockableUserContract as Contract;
 use Valkyrja\Auth\Entity\Trait\LockableUserFields;
 use Valkyrja\Auth\Entity\Trait\LockableUserTrait;
 
-/**
- * Entity LockableUser.
- */
 class LockableUser extends User implements Contract
 {
     use LockableUserFields;

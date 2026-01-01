@@ -19,8 +19,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 
 /**
- * Interface ThrowableCaughtHandlerContract.
- *
  * @extends HandlerContract<ThrowableCaughtMiddlewareContract>
  */
 interface ThrowableCaughtHandlerContract extends HandlerContract

@@ -20,9 +20,6 @@ use Valkyrja\Broadcast\Data\Contract\MessageContract;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
-/**
- * Class LogBroadcaster.
- */
 class LogBroadcaster implements Contract
 {
     /**

@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract as Contract;
 
-/**
- * Class Message.
- */
 class Message implements Contract
 {
     /**

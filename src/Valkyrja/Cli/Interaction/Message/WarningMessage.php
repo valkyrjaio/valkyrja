@@ -15,9 +15,6 @@ namespace Valkyrja\Cli\Interaction\Message;
 
 use Valkyrja\Cli\Interaction\Formatter\WarningFormatter;
 
-/**
- * Class WarningMessage.
- */
 class WarningMessage extends Message
 {
     /**

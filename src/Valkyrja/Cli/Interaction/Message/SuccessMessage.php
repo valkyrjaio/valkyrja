@@ -15,9 +15,6 @@ namespace Valkyrja\Cli\Interaction\Message;
 
 use Valkyrja\Cli\Interaction\Formatter\SuccessFormatter;
 
-/**
- * Class SuccessMessage.
- */
 class SuccessMessage extends Message
 {
     /**

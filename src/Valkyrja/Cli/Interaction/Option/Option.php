@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Cli\Interaction\Enum\OptionType;
 use Valkyrja\Cli\Interaction\Option\Contract\OptionContract as Contract;
 
-/**
- * Class Option.
- */
 class Option implements Contract
 {
     /**

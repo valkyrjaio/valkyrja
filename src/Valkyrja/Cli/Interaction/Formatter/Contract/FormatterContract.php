@@ -17,9 +17,6 @@ use Valkyrja\Cli\Interaction\Enum\BackgroundColor;
 use Valkyrja\Cli\Interaction\Enum\Style;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
 
-/**
- * Interface FormatterContract.
- */
 interface FormatterContract
 {
     /**

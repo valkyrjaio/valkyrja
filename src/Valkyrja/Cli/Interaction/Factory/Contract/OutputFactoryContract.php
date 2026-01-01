@@ -21,9 +21,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\PlainOutputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\StreamOutputContract;
 
-/**
- * Interface OutputFactoryContract.
- */
 interface OutputFactoryContract
 {
     /**

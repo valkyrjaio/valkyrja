@@ -18,9 +18,6 @@ use Valkyrja\Cli\Interaction\Argument\Contract\ArgumentContract;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract as Contract;
 use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
 
-/**
- * Class Input.
- */
 class Input implements Contract
 {
     /**

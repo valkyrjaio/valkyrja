@@ -15,9 +15,6 @@ namespace Valkyrja\Auth\Entity\Trait;
 
 use Valkyrja\Auth\Constant\UserField;
 
-/**
- * Trait MailableUserTrait.
- */
 trait MailableUserTrait
 {
     /**

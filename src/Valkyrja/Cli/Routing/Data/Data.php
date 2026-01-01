@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Routing\Data;
 
-/**
- * Class Data.
- */
 readonly class Data
 {
     /**

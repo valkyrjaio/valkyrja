@@ -25,9 +25,6 @@ use Valkyrja\Cli\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract as Contract;
 use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 
-/**
- * Class Route.
- */
 class Route implements Contract
 {
     /** @var ArgumentParameterContract[] */

@@ -19,9 +19,6 @@ use Valkyrja\Application\Env\Env;
 use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
-/**
- * Interface ApplicationContract.
- */
 interface ApplicationContract
 {
     /**

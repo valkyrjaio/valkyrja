@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\PlainOutputContract as Contract;
 
-/**
- * Class PlainOutput.
- */
 class PlainOutput extends Output implements Contract
 {
     /**

@@ -18,9 +18,6 @@ use Valkyrja\Auth\Entity\Trait\UserFields;
 use Valkyrja\Auth\Entity\Trait\UserTrait;
 use Valkyrja\Orm\Entity\Abstract\Entity;
 
-/**
- * Entity User.
- */
 class User extends Entity implements Contract
 {
     use UserFields;

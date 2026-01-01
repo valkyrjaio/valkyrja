@@ -18,9 +18,6 @@ use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract as Contract;
 
 use const PASSWORD_DEFAULT;
 
-/**
- * Class PhpPasswordHasher.
- */
 class PhpPasswordHasher implements Contract
 {
     /**

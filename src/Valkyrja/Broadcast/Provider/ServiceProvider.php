@@ -30,9 +30,6 @@ use Valkyrja\Log\Logger\Contract\LoggerContract;
 use const CURL_IPRESOLVE_V4;
 use const CURLOPT_IPRESOLVE;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

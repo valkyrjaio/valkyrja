@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Data\Contract;
 
-/**
- * Interface AuthenticatedUsersContract.
- */
 interface AuthenticatedUsersContract
 {
     /**

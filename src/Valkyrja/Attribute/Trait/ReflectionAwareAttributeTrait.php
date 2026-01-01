@@ -15,9 +15,6 @@ namespace Valkyrja\Attribute\Trait;
 
 use Reflector;
 
-/**
- * Trait ReflectionAwareAttributeTrait.
- */
 trait ReflectionAwareAttributeTrait
 {
     protected Reflector|null $reflection = null;

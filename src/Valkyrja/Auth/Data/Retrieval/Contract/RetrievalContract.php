@@ -15,9 +15,6 @@ namespace Valkyrja\Auth\Data\Retrieval\Contract;
 
 use Valkyrja\Auth\Entity\Contract\UserContract;
 
-/**
- * Interface RetrievalContract.
- */
 interface RetrievalContract
 {
     /**

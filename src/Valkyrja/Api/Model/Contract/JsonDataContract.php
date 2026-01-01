@@ -15,9 +15,6 @@ namespace Valkyrja\Api\Model\Contract;
 
 use Valkyrja\Type\Model\Contract\ModelContract;
 
-/**
- * Interface JsonDataContract.
- */
 interface JsonDataContract extends ModelContract
 {
     /**

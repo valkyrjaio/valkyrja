@@ -19,9 +19,6 @@ use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
 
-/**
- * Class Collection.
- */
 class Collection implements Contract
 {
     /** @var array<string, RouteContract> */

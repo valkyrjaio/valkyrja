@@ -16,9 +16,6 @@ namespace Valkyrja\Cli\Interaction\Formatter;
 use Valkyrja\Cli\Interaction\Enum\BackgroundColor;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
 
-/**
- * Class ErrorFormatter.
- */
 class WarningFormatter extends Formatter
 {
     public function __construct()

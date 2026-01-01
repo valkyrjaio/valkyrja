@@ -25,8 +25,6 @@ use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Auth\Throwable\Exception\InvalidAuthenticationException;
 
 /**
- * Abstract Class Authenticator.
- *
  * @template U of UserContract
  *
  * @implements Contract<U>

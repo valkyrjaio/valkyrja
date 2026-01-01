@@ -15,9 +15,6 @@ namespace Valkyrja\Cli\Interaction\Formatter;
 
 use Valkyrja\Cli\Interaction\Enum\TextColor;
 
-/**
- * Class HighlightedTextFormatter.
- */
 class HighlightedTextFormatter extends Formatter
 {
     public function __construct()

@@ -16,9 +16,6 @@ namespace Valkyrja\Cli\Interaction\Input\Contract;
 use Valkyrja\Cli\Interaction\Argument\Contract\ArgumentContract;
 use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
 
-/**
- * Interface InputContract.
- */
 interface InputContract
 {
     /**

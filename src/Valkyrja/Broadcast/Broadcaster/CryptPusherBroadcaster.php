@@ -19,9 +19,6 @@ use Valkyrja\Broadcast\Data\Contract\MessageContract;
 use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Throwable\Exception\CryptException;
 
-/**
- * Class CryptPusherBroadcaster.
- */
 class CryptPusherBroadcaster extends PusherBroadcaster
 {
     /**

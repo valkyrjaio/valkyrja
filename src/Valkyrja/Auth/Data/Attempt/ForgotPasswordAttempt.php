@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Auth\Data\Attempt\Contract\ForgotPasswordAttemptContract as Contract;
 use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 
-/**
- * Class ForgotPasswordAttempt.
- */
 class ForgotPasswordAttempt implements Contract
 {
     public function __construct(

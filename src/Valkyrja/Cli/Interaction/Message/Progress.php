@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
 use Valkyrja\Cli\Interaction\Message\Contract\ProgressContract as Contract;
 
-/**
- * Class Progress.
- */
 class Progress extends Message implements Contract
 {
     /**

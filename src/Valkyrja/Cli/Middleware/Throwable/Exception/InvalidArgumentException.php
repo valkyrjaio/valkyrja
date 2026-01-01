@@ -16,9 +16,6 @@ namespace Valkyrja\Cli\Middleware\Throwable\Exception;
 use Valkyrja\Cli\Middleware\Throwable\Contract\Throwable;
 use Valkyrja\Cli\Throwable\Exception\InvalidArgumentException as CliInvalidArgumentException;
 
-/**
- * Class InvalidArgumentException.
- */
 class InvalidArgumentException extends CliInvalidArgumentException implements Throwable
 {
 }

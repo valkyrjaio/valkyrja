@@ -43,9 +43,6 @@ use Valkyrja\Session\Provider\ComponentProvider as SessionComponentProvider;
 use Valkyrja\Sms\Provider\ComponentProvider as SmsComponentProvider;
 use Valkyrja\View\Provider\ComponentProvider as ViewComponentProvider;
 
-/**
- * Class ComponentClass.
- */
 final class ComponentClass
 {
     public const string APPLICATION     = ApplicationComponentProvider::class;

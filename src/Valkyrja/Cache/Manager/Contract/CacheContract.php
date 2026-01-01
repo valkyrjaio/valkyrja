@@ -15,9 +15,6 @@ namespace Valkyrja\Cache\Manager\Contract;
 
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
 
-/**
- * Interface CacheContract.
- */
 interface CacheContract
 {
     /**

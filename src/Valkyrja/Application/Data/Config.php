@@ -16,9 +16,6 @@ namespace Valkyrja\Application\Data;
 use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Provider\Provider;
 
-/**
- * Class AppConfig.
- */
 class Config
 {
     /**

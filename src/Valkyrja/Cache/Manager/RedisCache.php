@@ -19,9 +19,6 @@ use Valkyrja\Cache\Manager\Contract\CacheContract as Contract;
 use Valkyrja\Cache\Tagger\Contract\TaggerContract;
 use Valkyrja\Cache\Tagger\Tagger as TagClass;
 
-/**
- * Class RedisCache.
- */
 class RedisCache implements Contract
 {
     /**

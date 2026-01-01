@@ -15,9 +15,6 @@ namespace Valkyrja\Cli\Routing\Data\Contract;
 
 use Valkyrja\Type\Data\Cast;
 
-/**
- * Interface ParameterContract.
- */
 interface ParameterContract
 {
     /**

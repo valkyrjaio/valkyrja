@@ -23,9 +23,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Support\Directory\Directory;
 
-/**
- * Class ClearCacheCommand.
- */
 class ClearCacheCommand
 {
     #[Route(

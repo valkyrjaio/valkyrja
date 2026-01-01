@@ -15,9 +15,6 @@ namespace Valkyrja\Auth\Entity\Contract;
 
 use Valkyrja\Orm\Entity\Contract\EntityContract;
 
-/**
- * Interface UserDeviceContract.
- */
 interface UserDeviceContract extends EntityContract
 {
     /**

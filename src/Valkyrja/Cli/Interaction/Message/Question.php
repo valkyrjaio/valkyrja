@@ -25,9 +25,6 @@ use function fgets;
 use function fopen;
 use function is_callable;
 
-/**
- * Class Question.
- */
 class Question extends Message implements Contract
 {
     /**

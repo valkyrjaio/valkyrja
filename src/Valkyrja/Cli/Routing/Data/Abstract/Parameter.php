@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Cli\Routing\Data\Contract\ParameterContract as Contract;
 use Valkyrja\Type\Data\Cast;
 
-/**
- * Abstract Class Parameter.
- */
 abstract class Parameter implements Contract
 {
     /**

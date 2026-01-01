@@ -21,9 +21,6 @@ use Valkyrja\Cache\Tagger\Tagger as TagClass;
 use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
-/**
- * Class LogCache.
- */
 class LogCache implements Contract
 {
     /**

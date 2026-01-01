@@ -22,9 +22,6 @@ use function in_array;
 use function is_callable;
 use function sprintf;
 
-/**
- * Class Answer.
- */
 class Answer extends Message implements Contract
 {
     /** @var non-empty-string */

@@ -20,9 +20,6 @@ use Valkyrja\Cli\Command\ListBashCommand;
 use Valkyrja\Cli\Command\ListCommand;
 use Valkyrja\Cli\Command\VersionCommand;
 
-/**
- * Final Class Component.
- */
 class ComponentProvider extends Provider
 {
     /**

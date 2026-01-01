@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract as Contract;
 use Valkyrja\Broadcast\Data\Contract\MessageContract;
 
-/**
- * Class NullBroadcaster.
- */
 class NullBroadcaster implements Contract
 {
     /**

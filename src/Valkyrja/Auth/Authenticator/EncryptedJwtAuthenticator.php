@@ -27,8 +27,6 @@ use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use function is_string;
 
 /**
- * Class EncryptedJwtAuthenticator.
- *
  * @template U of UserContract
  *
  * @extends JwtAuthenticator<U>

@@ -16,9 +16,6 @@ namespace Valkyrja\Api\Model\Contract;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Type\Model\Contract\ModelContract;
 
-/**
- * Interface JsonContract.
- */
 interface JsonContract extends ModelContract
 {
     /**

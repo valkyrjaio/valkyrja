@@ -15,9 +15,6 @@ namespace Valkyrja\Cli\Interaction\Factory;
 
 use Valkyrja\Cli\Interaction\Argument\Argument;
 
-/**
- * Class ArgumentFactory.
- */
 abstract class ArgumentFactory
 {
     /**

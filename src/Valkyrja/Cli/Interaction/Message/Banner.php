@@ -17,9 +17,6 @@ use Override;
 
 use function strlen;
 
-/**
- * Class Banner.
- */
 class Banner extends Message
 {
     protected Messages $messages;

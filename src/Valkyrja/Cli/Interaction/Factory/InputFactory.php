@@ -15,9 +15,6 @@ namespace Valkyrja\Cli\Interaction\Factory;
 
 use Valkyrja\Cli\Interaction\Input\Input;
 
-/**
- * Class InputFactory.
- */
 abstract class InputFactory
 {
     /**

@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Output\Contract;
 
-/**
- * Interface PlainOutputContract.
- */
 interface PlainOutputContract extends OutputContract
 {
 }

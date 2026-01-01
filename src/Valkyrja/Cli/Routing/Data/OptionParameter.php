@@ -25,9 +25,6 @@ use Valkyrja\Type\Data\Cast;
 use function count;
 use function in_array;
 
-/**
- * Class OptionParameter.
- */
 class OptionParameter extends Parameter implements Contract
 {
     /**

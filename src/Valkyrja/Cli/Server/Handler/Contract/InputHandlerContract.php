@@ -16,9 +16,6 @@ namespace Valkyrja\Cli\Server\Handler\Contract;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 
-/**
- * Interface InputHandlerContract.
- */
 interface InputHandlerContract
 {
     /**

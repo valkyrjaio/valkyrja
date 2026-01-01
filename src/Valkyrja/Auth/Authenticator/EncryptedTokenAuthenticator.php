@@ -23,8 +23,6 @@ use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 
 /**
- * Class EncryptedTokenAuthenticator.
- *
  * @template U of UserContract
  *
  * @extends TokenAuthenticator<U>

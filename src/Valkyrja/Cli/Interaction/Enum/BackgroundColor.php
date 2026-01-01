@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Enum;
 
-/**
- * Enum BackgroundColor.
- */
 enum BackgroundColor: int
 {
     case BLACK         = 40;

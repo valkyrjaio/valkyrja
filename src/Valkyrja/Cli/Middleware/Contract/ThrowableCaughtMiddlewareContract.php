@@ -18,13 +18,15 @@ use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 
-/**
- * Interface ThrowableCaughtMiddlewareContract.
- */
 interface ThrowableCaughtMiddlewareContract
 {
     /**
      * Middleware handler for after a throwable has been caught during dispatch.
      */
-    public function throwableCaught(InputContract $input, OutputContract $output, Throwable $exception, ThrowableCaughtHandlerContract $handler): OutputContract;
+    public function throwableCaught(
+        InputContract $input,
+        OutputContract $output,
+        Throwable $exception,
+        ThrowableCaughtHandlerContract $handler
+    ): OutputContract;
 }

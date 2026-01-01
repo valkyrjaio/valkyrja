@@ -24,9 +24,6 @@ use Valkyrja\Type\Data\Cast;
 
 use function count;
 
-/**
- * Class ArgumentParameter.
- */
 class ArgumentParameter extends Parameter implements Contract
 {
     /** @var ArgumentContract[] */

@@ -22,8 +22,6 @@ use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandlerContract as Co
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
 /**
- * Class CommandMatchedHandler.
- *
  * @extends Handler<CommandMatchedMiddlewareContract>
  */
 class CommandMatchedHandler extends Handler implements Contract

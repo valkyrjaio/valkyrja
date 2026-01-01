@@ -18,9 +18,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandlerContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
-/**
- * Interface CommandDispatchedMiddlewareContract.
- */
 interface CommandDispatchedMiddlewareContract
 {
     /**

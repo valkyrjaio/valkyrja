@@ -15,9 +15,6 @@ namespace Valkyrja\Broadcast\Broadcaster\Contract;
 
 use Valkyrja\Broadcast\Data\Contract\MessageContract;
 
-/**
- * Interface BroadcasterContract.
- */
 interface BroadcasterContract
 {
     /**

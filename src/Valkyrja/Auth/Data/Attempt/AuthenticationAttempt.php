@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Auth\Data\Attempt\Contract\AuthenticationAttemptContract as Contract;
 use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 
-/**
- * Class AuthenticationAttempt.
- */
 class AuthenticationAttempt implements Contract
 {
     public function __construct(

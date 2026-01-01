@@ -25,8 +25,6 @@ use Valkyrja\Session\Manager\Contract\SessionContract;
 use function is_string;
 
 /**
- * Class SessionAuthenticator.
- *
  * @template U of UserContract
  *
  * @extends Authenticator<U>

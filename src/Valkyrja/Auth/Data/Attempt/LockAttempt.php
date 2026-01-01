@@ -17,9 +17,6 @@ use Override;
 use Valkyrja\Auth\Data\Attempt\Contract\LockAttemptContract as Contract;
 use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 
-/**
- * Class LockAttempt.
- */
 class LockAttempt implements Contract
 {
     public function __construct(

@@ -28,8 +28,6 @@ use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use function is_string;
 
 /**
- * Class JwtAuthenticator.
- *
  * @template U of UserContract
  *
  * @extends Authenticator<U>

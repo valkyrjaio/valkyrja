@@ -15,9 +15,6 @@ namespace Valkyrja\Attribute\Collector\Contract;
 
 use Closure;
 
-/**
- * Interface CollectorContract.
- */
 interface CollectorContract
 {
     /**

@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Server\Support;
 
-/**
- * Class Exiter.
- */
 class Exiter
 {
     protected static bool $exit = true;

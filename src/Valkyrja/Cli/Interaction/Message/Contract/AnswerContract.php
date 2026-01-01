@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Interaction\Message\Contract;
 
-/**
- * Interface AnswerContract.
- */
 interface AnswerContract extends MessageContract
 {
     /**
