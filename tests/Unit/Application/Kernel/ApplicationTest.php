@@ -75,6 +75,7 @@ use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Tests\Unit\TestCase;
+use Valkyrja\View\Provider\ComponentProvider as ViewComponentProvider;
 use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Template\Contract\TemplateContract;
 
@@ -362,7 +363,7 @@ class ApplicationTest extends TestCase
             public const array APP_COMPONENTS = [];
             /** @var class-string<Provider>[] */
             public const array APP_CUSTOM_COMPONENTS = [
-                \Valkyrja\View\Provider\ComponentProvider::class,
+                ViewComponentProvider::class,
             ];
         };
         $config2 = new Config();
