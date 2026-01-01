@@ -18,9 +18,6 @@ use Override;
 use Valkyrja\Jwt\Manager\Contract\JwtContract as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
-/**
- * Class NullJwt.
- */
 class NullJwt implements Contract
 {
     /**
