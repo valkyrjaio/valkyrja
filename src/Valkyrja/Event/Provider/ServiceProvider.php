@@ -28,9 +28,6 @@ use Valkyrja\Event\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Event\Dispatcher\Dispatcher as EventDispatcher;
 use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**

@@ -18,9 +18,6 @@ use Psr\EventDispatcher\ListenerProviderInterface;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\Data;
 
-/**
- * Interface CollectionContract.
- */
 interface CollectionContract extends ListenerProviderInterface
 {
     /**

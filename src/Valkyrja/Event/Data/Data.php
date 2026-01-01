@@ -15,9 +15,6 @@ namespace Valkyrja\Event\Data;
 
 use Valkyrja\Event\Data\Contract\ListenerContract;
 
-/**
- * Class Data.
- */
 readonly class Data
 {
     /**

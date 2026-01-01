@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Contract;
 
-/**
- * Interface DispatchCollectableEventContract.
- */
 interface DispatchCollectableEventContract
 {
     /**

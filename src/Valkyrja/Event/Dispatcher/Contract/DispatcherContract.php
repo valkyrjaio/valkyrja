@@ -17,9 +17,6 @@ use Override;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Valkyrja\Event\Data\Contract\ListenerContract;
 
-/**
- * Interface DispatcherContract.
- */
 interface DispatcherContract extends EventDispatcherInterface
 {
     /**
