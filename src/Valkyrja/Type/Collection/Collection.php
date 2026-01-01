@@ -37,8 +37,6 @@ class Collection implements Contract
     protected array $collection = [];
 
     /**
-     * Collection constructor.
-     *
      * @param array<K, T> $collection
      */
     public function __construct(array $collection = [])

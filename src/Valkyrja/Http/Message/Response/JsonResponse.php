@@ -49,8 +49,6 @@ class JsonResponse extends Response implements Contract
     protected const int DEFAULT_ENCODING_OPTIONS = 79;
 
     /**
-     * NativeJsonResponse constructor.
-     *
      * @param array<array-key, mixed> $data            [optional] The data
      * @param StatusCode              $statusCode      [optional] The status
      * @param array<string, string[]> $headers         [optional] The headers

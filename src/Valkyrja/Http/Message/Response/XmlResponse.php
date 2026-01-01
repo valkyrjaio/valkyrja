@@ -25,8 +25,6 @@ use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 class XmlResponse extends Response implements Contract
 {
     /**
-     * XmlResponse constructor.
-     *
      * @param string                  $xml        The xml
      * @param StatusCode              $statusCode [optional] The status
      * @param array<string, string[]> $headers    [optional] The headers

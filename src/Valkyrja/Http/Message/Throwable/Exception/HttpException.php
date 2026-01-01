@@ -33,8 +33,6 @@ class HttpException extends RuntimeException
     protected array $headers = [];
 
     /**
-     * HttpException constructor.
-     *
      * @see http://php.net/manual/en/exception.construct.php
      *
      * @param StatusCode|null              $statusCode [optional] The status code to use

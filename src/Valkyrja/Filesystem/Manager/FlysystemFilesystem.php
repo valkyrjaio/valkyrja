@@ -24,11 +24,6 @@ use function array_map;
 
 class FlysystemFilesystem implements Contract
 {
-    /**
-     * FlysystemFilesystem constructor.
-     *
-     * @param FlysystemInterface $flysystem The Flysystem filesystem
-     */
     public function __construct(
         protected FlysystemInterface $flysystem
     ) {

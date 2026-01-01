@@ -20,9 +20,6 @@ use Valkyrja\Sms\Messenger\Contract\MessengerContract as Contract;
 
 class LogMessenger implements Contract
 {
-    /**
-     * LogSms constructor.
-     */
     public function __construct(
         protected LoggerContract $logger,
     ) {

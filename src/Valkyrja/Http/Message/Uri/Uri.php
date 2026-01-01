@@ -43,8 +43,6 @@ class Uri implements Contract
     private string|null $uriString = null;
 
     /**
-     * UriImpl constructor.
-     *
      * @param Scheme   $scheme   [optional] The scheme
      * @param string   $username [optional] The username
      * @param string   $password [optional] The user password

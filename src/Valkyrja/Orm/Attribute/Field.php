@@ -18,12 +18,6 @@ use Attribute;
 #[Attribute]
 class Field
 {
-    /**
-     * Field constructor.
-     *
-     * @param string   $type   The type of field
-     * @param int|null $length [optional] The length of the field data
-     */
     public function __construct(
         public string $type,
         public int|null $length = null

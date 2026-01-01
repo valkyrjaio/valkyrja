@@ -25,11 +25,6 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 
 class PusherBroadcaster implements Contract
 {
-    /**
-     * PusherBroadcaster constructor.
-     *
-     * @param Pusher $pusher The pusher service
-     */
     public function __construct(
         protected Pusher $pusher
     ) {

@@ -30,11 +30,6 @@ use function preg_match;
 
 class Matcher implements Contract
 {
-    /**
-     * Matcher constructor.
-     *
-     * @param CollectionContract $collection The collection
-     */
     public function __construct(
         protected CollectionContract $collection = new RouteCollection()
     ) {

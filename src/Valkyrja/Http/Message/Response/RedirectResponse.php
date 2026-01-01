@@ -42,8 +42,6 @@ class RedirectResponse extends Response implements Contract
     protected const StatusCode DEFAULT_STATUS_CODE = StatusCode::FOUND;
 
     /**
-     * RedirectResponse constructor.
-     *
      * @param UriContract             $uri        [optional] The uri
      * @param StatusCode              $statusCode [optional] The status
      * @param array<string, string[]> $headers    [optional] The headers

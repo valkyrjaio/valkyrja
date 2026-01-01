@@ -23,12 +23,6 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 
 class LogCache implements Contract
 {
-    /**
-     * LogCache constructor.
-     *
-     * @param LoggerContract $logger The logger service
-     * @param string         $prefix [optional] The prefix
-     */
     public function __construct(
         protected LoggerContract $logger,
         protected string $prefix = ''

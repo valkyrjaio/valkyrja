@@ -40,8 +40,6 @@ class Stream implements Contract
     use StreamHelpers;
 
     /**
-     * StreamImpl constructor.
-     *
      * @param PhpWrapper|string $stream          The stream
      * @param Mode              $mode            [optional] The mode
      * @param ModeTranslation   $modeTranslation [optional] The mode translation

@@ -21,9 +21,6 @@ use Valkyrja\Log\Logger\Contract\LoggerContract as Contract;
 
 class PsrLogger implements Contract
 {
-    /**
-     * PsrAdapter constructor.
-     */
     public function __construct(
         protected LoggerInterface $logger
     ) {

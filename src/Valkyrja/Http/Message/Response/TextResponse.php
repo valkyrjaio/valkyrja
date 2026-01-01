@@ -26,8 +26,6 @@ use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 class TextResponse extends Response implements Contract
 {
     /**
-     * NativeTextResponse constructor.
-     *
      * @param string                  $text       The text
      * @param StatusCode              $statusCode [optional] The status
      * @param array<string, string[]> $headers    [optional] The headers

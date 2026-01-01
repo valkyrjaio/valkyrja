@@ -29,11 +29,6 @@ use function is_string;
 
 class PdoStatement implements Contract
 {
-    /**
-     * PdoStatement constructor.
-     *
-     * @param Statement $statement The pdo statement
-     */
     public function __construct(
         protected Statement $statement
     ) {

@@ -23,9 +23,7 @@ use Valkyrja\Mail\Mailer\Contract\MailerContract as Contract;
 class MailgunMailer implements Contract
 {
     /**
-     * MailgunMailer constructor.
-     *
-     * @param non-empty-string $domain
+     * @param non-empty-string $domain The domain
      */
     public function __construct(
         protected Mailgun $mailgun,

@@ -33,9 +33,6 @@ use function strtolower;
 
 class Api implements Contract
 {
-    /**
-     * Api constructor.
-     */
     public function __construct(
         protected ResponseFactoryContract $responseFactory,
         protected bool $debug = false

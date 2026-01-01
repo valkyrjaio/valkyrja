@@ -50,8 +50,6 @@ class UploadedFile implements Contract
     protected bool $hasBeenMoved = false;
 
     /**
-     * UploadedFile constructor.
-     *
      * @param string|null         $file        [optional] The file if not passed stream is required
      * @param StreamContract|null $stream      [optional] The stream if not passed file is required
      * @param UploadError         $uploadError [optional] The upload error

@@ -22,9 +22,6 @@ use function str_replace;
 
 class Url implements Contract
 {
-    /**
-     * Url constructor.
-     */
     public function __construct(
         protected CollectionContract $collection,
     ) {

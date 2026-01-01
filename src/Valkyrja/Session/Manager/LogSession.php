@@ -18,9 +18,6 @@ use Valkyrja\Session\Data\CookieParams;
 
 class LogSession extends PhpSession
 {
-    /**
-     * LogSession constructor.
-     */
     public function __construct(
         protected LoggerContract $logger,
         CookieParams $cookieParams,

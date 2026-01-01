@@ -20,9 +20,6 @@ use Valkyrja\Cache\Tagger\Tagger as TagClass;
 
 class NullCache implements Contract
 {
-    /**
-     * NullCache constructor.
-     */
     public function __construct(
         protected string $prefix = ''
     ) {

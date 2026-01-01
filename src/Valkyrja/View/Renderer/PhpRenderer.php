@@ -33,9 +33,7 @@ use const EXTR_SKIP;
 class PhpRenderer implements Contract
 {
     /**
-     * PhpRenderer constructor.
-     *
-     * @param array<string, string> $paths
+     * @param array<string, string> $paths The paths
      */
     public function __construct(
         protected string $dir,

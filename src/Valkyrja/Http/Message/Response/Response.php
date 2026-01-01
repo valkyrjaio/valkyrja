@@ -59,8 +59,6 @@ class Response implements Contract
     protected string $statusPhrase;
 
     /**
-     * NativeResponse constructor.
-     *
      * @param StreamContract          $body       [optional] The body
      * @param StatusCode              $statusCode [optional] The status
      * @param array<string, string[]> $headers    [optional] The headers

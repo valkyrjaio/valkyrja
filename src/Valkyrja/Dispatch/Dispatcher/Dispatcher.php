@@ -31,9 +31,6 @@ use function constant;
 
 class Dispatcher implements Contract
 {
-    /**
-     * Dispatcher constructor.
-     */
     public function __construct(
         protected ContainerContract $container = new Container()
     ) {

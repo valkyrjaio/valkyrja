@@ -51,9 +51,6 @@ class Notifier implements Contract
      */
     protected array $broadcastEvents = [];
 
-    /**
-     * Notification constructor.
-     */
     public function __construct(
         protected FactoryContract $factory,
         protected BroadcasterContract $broadcaster,

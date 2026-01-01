@@ -25,9 +25,6 @@ use function session_start;
 
 class CacheSession extends PhpSession
 {
-    /**
-     * CacheSession constructor.
-     */
     public function __construct(
         protected CacheContract $cache,
         CookieParams $cookieParams,

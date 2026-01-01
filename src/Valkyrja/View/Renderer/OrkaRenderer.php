@@ -81,9 +81,7 @@ class OrkaRenderer extends PhpRenderer
     ];
 
     /**
-     * OrkaRenderer constructor.
-     *
-     * @param array<string, string> $paths
+     * @param array<string, string> $paths The paths
      */
     public function __construct(
         string $dir,
