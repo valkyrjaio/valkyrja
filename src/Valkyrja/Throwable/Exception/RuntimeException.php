@@ -18,9 +18,6 @@ use RuntimeException as PhpRuntimeException;
 use Valkyrja\Throwable\Contract\Throwable;
 use Valkyrja\Throwable\Handler\ThrowableHandler;
 
-/**
- * Class RuntimeException.
- */
 class RuntimeException extends PhpRuntimeException implements Throwable
 {
     /**

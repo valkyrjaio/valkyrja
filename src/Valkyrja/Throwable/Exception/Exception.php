@@ -18,9 +18,6 @@ use Override;
 use Valkyrja\Throwable\Contract\Throwable;
 use Valkyrja\Throwable\Handler\ThrowableHandler;
 
-/**
- * Class Exception.
- */
 class Exception extends PhpException implements Throwable
 {
     /**

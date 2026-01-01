@@ -17,9 +17,6 @@ use Throwable;
 
 use const E_ALL;
 
-/**
- * Interface ThrowableHandlerContract.
- */
 interface ThrowableHandlerContract
 {
     /**
