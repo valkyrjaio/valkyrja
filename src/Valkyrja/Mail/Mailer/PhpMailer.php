@@ -21,11 +21,6 @@ use Valkyrja\Mail\Mailer\Contract\MailerContract as Contract;
 
 class PhpMailer implements Contract
 {
-    /**
-     * PhpMailer constructor.
-     *
-     * @param PHPMailerClient $phpMailer
-     */
     public function __construct(
         protected PHPMailerClient $phpMailer
     ) {

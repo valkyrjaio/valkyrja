@@ -21,9 +21,6 @@ use Valkyrja\Crypt\Throwable\Exception\CryptException;
 
 class CryptPusherBroadcaster extends PusherBroadcaster
 {
-    /**
-     * CryptPusherBroadcaster constructor.
-     */
     public function __construct(
         Pusher $pusher,
         protected CryptContract $crypt

@@ -22,9 +22,6 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 
 class LogBroadcaster implements Contract
 {
-    /**
-     * LogBroadcaster constructor.
-     */
     public function __construct(
         protected LoggerContract $logger
     ) {

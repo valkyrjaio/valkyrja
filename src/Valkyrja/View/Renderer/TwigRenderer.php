@@ -24,11 +24,6 @@ use Valkyrja\View\Template\Template as DefaultTemplate;
 
 class TwigRenderer implements Contract
 {
-    /**
-     * TwigRenderer constructor.
-     *
-     * @param Environment $twig The Twig environment
-     */
     public function __construct(
         protected Environment $twig
     ) {

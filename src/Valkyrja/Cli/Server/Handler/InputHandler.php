@@ -45,9 +45,6 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 class InputHandler implements Contract
 {
-    /**
-     * RequestHandler constructor.
-     */
     public function __construct(
         protected ContainerContract $container = new Container(),
         protected RouterContract $router = new Router(),

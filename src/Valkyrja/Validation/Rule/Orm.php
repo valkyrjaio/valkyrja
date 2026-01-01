@@ -17,7 +17,7 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
 use Valkyrja\Orm\Entity\Contract\EntityContract;
-use Valkyrja\Orm\Manager\Contract\ManagerContract as OrmManager;
+use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
@@ -28,15 +28,9 @@ use function is_string;
 
 class Orm
 {
-    /**
-     * ORM constructor.
-     *
-     * @param ContainerContract $container
-     * @param OrmManager        $orm
-     */
     public function __construct(
         protected ContainerContract $container,
-        protected OrmManager $orm
+        protected ManagerContract $orm
     ) {
     }
 

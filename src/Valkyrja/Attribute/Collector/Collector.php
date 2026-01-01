@@ -45,9 +45,6 @@ class Collector implements Contract
      */
     protected static int $defaultFlags = ReflectionAttribute::IS_INSTANCEOF;
 
-    /**
-     * Attributes constructor.
-     */
     public function __construct(
         protected ReflectorContract $reflection = new ReflectorReflector(),
     ) {

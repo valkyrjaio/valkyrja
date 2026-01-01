@@ -25,9 +25,6 @@ use function session_start;
 
 class CookieSession extends PhpSession
 {
-    /**
-     * CookieSession constructor.
-     */
     public function __construct(
         protected CryptContract $crypt,
         protected ServerRequestContract $request,

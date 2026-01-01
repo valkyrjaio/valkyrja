@@ -18,12 +18,6 @@ use Attribute;
 #[Attribute]
 class DefaultValue
 {
-    /**
-     * DefaultValue constructor.
-     *
-     * @param mixed $value          The default value
-     * @param bool  $shouldBeQuoted [optional] Whether the value should be quoted
-     */
     public function __construct(
         public mixed $value,
         public bool $shouldBeQuoted = true

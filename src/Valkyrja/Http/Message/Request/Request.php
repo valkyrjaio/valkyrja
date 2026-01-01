@@ -40,8 +40,6 @@ class Request implements Contract
     protected string|null $requestTarget = null;
 
     /**
-     * Request constructor.
-     *
      * @param UriContract             $uri     [optional] The uri
      * @param RequestMethod           $method  [optional] The method
      * @param StreamContract          $body    [optional] The body stream

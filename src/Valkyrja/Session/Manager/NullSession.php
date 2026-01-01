@@ -50,8 +50,6 @@ class NullSession implements Contract
     protected array $data = [];
 
     /**
-     * NullSession constructor.
-     *
      * @throws InvalidSessionId
      * @throws SessionStartFailure
      */

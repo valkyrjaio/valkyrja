@@ -29,8 +29,6 @@ class HttpRedirectException extends HttpException
     protected UriContract $uri;
 
     /**
-     * HttpRedirectException constructor.
-     *
      * @see http://php.net/manual/en/exception.construct.php
      *
      * @param StatusCode|null              $statusCode [optional] The status code to use

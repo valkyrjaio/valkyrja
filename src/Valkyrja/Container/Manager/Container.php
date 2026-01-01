@@ -62,9 +62,6 @@ class Container implements Contract
      */
     protected array $singletons = [];
 
-    /**
-     * Container constructor.
-     */
     public function __construct(
         protected Data $data = new Data()
     ) {

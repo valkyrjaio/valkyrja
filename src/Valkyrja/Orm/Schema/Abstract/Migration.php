@@ -19,9 +19,6 @@ use Valkyrja\Orm\Schema\Contract\MigrationContract as Contract;
 
 abstract class Migration implements Contract
 {
-    /**
-     * Migration constructor.
-     */
     public function __construct(
         protected ManagerContract $orm
     ) {

@@ -22,9 +22,6 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 
 class LogMailer implements Contract
 {
-    /**
-     * LogMailer constructor.
-     */
     public function __construct(
         protected LoggerContract $logger
     ) {

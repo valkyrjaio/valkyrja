@@ -36,8 +36,6 @@ class JsonServerRequest extends ServerRequest implements Contract
     protected bool $hadParsedBody = true;
 
     /**
-     * Request constructor.
-     *
      * @param UriContract                  $uri        [optional] The uri
      * @param RequestMethod                $method     [optional] The method
      * @param StreamContract               $body       [optional] The body stream

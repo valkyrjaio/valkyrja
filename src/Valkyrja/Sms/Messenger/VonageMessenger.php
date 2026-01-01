@@ -23,9 +23,6 @@ use Vonage\SMS\Message\SMS;
 
 class VonageMessenger implements Contract
 {
-    /**
-     * VonageSms constructor.
-     */
     public function __construct(
         protected Vonage $vonage
     ) {

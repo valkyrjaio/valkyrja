@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 class NotFoundHttpException extends HttpException
 {
     /**
-     * NotFoundHttpException constructor.
-     *
      * @param StatusCode|null              $statusCode [optional] The status code to use
      * @param string|null                  $message    [optional] The Exception message to throw
      * @param array<string, string[]>|null $headers    [optional] The headers to send

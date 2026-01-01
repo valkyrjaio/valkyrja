@@ -21,12 +21,6 @@ use Valkyrja\Cache\Tagger\Tagger as TagClass;
 
 class RedisCache implements Contract
 {
-    /**
-     * RedisCache constructor.
-     *
-     * @param Client $client The predis client
-     * @param string $prefix The prefix
-     */
     public function __construct(
         protected Client $client,
         protected string $prefix = ''

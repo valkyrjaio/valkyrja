@@ -28,12 +28,6 @@ class Tagger implements Contract
      */
     protected array $tags;
 
-    /**
-     * Tag constructor.
-     *
-     * @param CacheContract $adapter
-     * @param string        ...$tags
-     */
     public function __construct(
         protected CacheContract $adapter,
         string ...$tags

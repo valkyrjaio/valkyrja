@@ -22,9 +22,6 @@ use Valkyrja\Container\Collector\Contract\CollectorContract as Contract;
 
 class AttributeCollector implements Contract
 {
-    /**
-     * AttributeCollector constructor.
-     */
     public function __construct(
         protected AttributeCollectorContract $attributes = new Collector()
     ) {

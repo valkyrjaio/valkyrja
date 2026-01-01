@@ -28,8 +28,6 @@ use function urlencode;
 class Cookie extends Value implements Contract
 {
     /**
-     * Cookie constructor.
-     *
      * @param string        $name     The cookie's name
      * @param string|null   $value    [optional] The cookie's value
      * @param int           $expire   [optional] The time the cookie should expire

@@ -54,9 +54,6 @@ class Valkyrja implements ApplicationContract
      */
     protected bool $setup = false;
 
-    /**
-     * Application constructor.
-     */
     public function __construct(Env $env, Config|Data $configData = new Config())
     {
         $this->setup(env: $env, configData: $configData);

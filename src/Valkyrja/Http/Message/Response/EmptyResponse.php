@@ -23,8 +23,6 @@ use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 class EmptyResponse extends Response implements Contract
 {
     /**
-     * NativeEmptyResponse constructor.
-     *
      * @param array<string, string[]> $headers [optional] The headers
      *
      * @throws InvalidArgumentException

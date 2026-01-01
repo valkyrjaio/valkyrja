@@ -23,9 +23,6 @@ use Valkyrja\Jwt\Manager\Contract\JwtContract as Contract;
 
 class FirebaseJwt implements Contract
 {
-    /**
-     * RsFirebaseJwt constructor.
-     */
     public function __construct(
         protected OpenSSLAsymmetricKey|OpenSSLCertificate|string $encodeKey,
         protected OpenSSLAsymmetricKey|OpenSSLCertificate|string $decodeKey,

@@ -62,8 +62,6 @@ class Template implements Contract
     protected bool $hasLayoutChanged = false;
 
     /**
-     * Template constructor.
-     *
      * @param array<string, mixed> $variables The variables
      */
     public function __construct(

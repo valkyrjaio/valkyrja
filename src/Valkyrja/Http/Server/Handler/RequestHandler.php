@@ -54,9 +54,6 @@ use const PHP_SAPI;
 
 class RequestHandler implements Contract
 {
-    /**
-     * RequestHandler constructor.
-     */
     public function __construct(
         protected ContainerContract $container = new Container(),
         protected RouterContract $router = new Router(),

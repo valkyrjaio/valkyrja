@@ -20,11 +20,6 @@ use Valkyrja\Notification\Factory\Contract\FactoryContract;
 
 class ContainerFactory implements FactoryContract
 {
-    /**
-     * ContainerFactory constructor.
-     *
-     * @param ContainerContract $container The container
-     */
     public function __construct(
         protected ContainerContract $container
     ) {

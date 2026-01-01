@@ -42,8 +42,6 @@ class ServerRequest extends Request implements Contract
     protected array $attributes = [];
 
     /**
-     * ServerRequest constructor.
-     *
      * @param UriContract                  $uri        [optional] The uri
      * @param RequestMethod                $method     [optional] The method
      * @param StreamContract               $body       [optional] The body stream

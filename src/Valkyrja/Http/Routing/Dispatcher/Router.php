@@ -46,9 +46,6 @@ use function rawurldecode;
 
 class Router implements Contract
 {
-    /**
-     * Router constructor.
-     */
     public function __construct(
         protected ContainerContract $container = new Container(),
         protected DispatcherContract $dispatcher = new Dispatcher(),
