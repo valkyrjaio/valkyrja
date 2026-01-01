@@ -24,8 +24,6 @@ use Valkyrja\View\Template\Template as DefaultTemplate;
 
 /**
  * Class TwigRenderer.
- *
- * @author Melech Mizrachi
  */
 class TwigRenderer implements Contract
 {

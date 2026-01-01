@@ -19,8 +19,6 @@ use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract as Contract;
 
 /**
  * Class ClassDispatch.
- *
- * @author Melech Mizrachi
  */
 class ClassDispatch extends Dispatch implements Contract
 {

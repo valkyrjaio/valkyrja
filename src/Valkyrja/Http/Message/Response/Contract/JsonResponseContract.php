@@ -17,8 +17,6 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 
 /**
  * Interface JsonResponseContract.
- *
- * @author Melech Mizrachi
  */
 interface JsonResponseContract extends ResponseContract
 {

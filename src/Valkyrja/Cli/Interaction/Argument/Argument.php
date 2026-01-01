@@ -18,8 +18,6 @@ use Valkyrja\Cli\Interaction\Argument\Contract\ArgumentContract as Contract;
 
 /**
  * Class Argument.
- *
- * @author Melech Mizrachi
  */
 class Argument implements Contract
 {

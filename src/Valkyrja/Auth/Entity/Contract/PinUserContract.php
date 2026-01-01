@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Entity\Contract;
 
 /**
  * Interface PinUserContract.
- *
- * @author Melech Mizrachi
  */
 interface PinUserContract extends UserContract
 {

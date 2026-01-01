@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Stream\Psr\Stream;
 
 /**
  * Class StreamEmptyModeClass.
- *
- * @author Melech Mizrachi
  */
 class StreamEmptyModeClass extends Stream
 {

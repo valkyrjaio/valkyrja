@@ -20,8 +20,6 @@ use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
 
 /**
  * Class Input.
- *
- * @author Melech Mizrachi
  */
 class Input implements Contract
 {

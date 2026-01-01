@@ -18,8 +18,6 @@ use Override;
 
 /**
  * Enum Type.
- *
- * @author Melech Mizrachi
  */
 enum Type implements JsonSerializable
 {

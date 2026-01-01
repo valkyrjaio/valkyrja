@@ -23,8 +23,6 @@ use function ord;
 
 /**
  * Class UuidV4.
- *
- * @author Melech Mizrachi
  */
 class UuidV4 extends Uuid
 {

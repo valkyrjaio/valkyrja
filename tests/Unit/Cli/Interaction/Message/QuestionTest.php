@@ -26,8 +26,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Question class.
- *
- * @author Melech Mizrachi
  */
 class QuestionTest extends TestCase
 {

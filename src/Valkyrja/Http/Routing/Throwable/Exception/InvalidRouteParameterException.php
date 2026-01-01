@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Routing\Throwable\Exception;
 
 /**
  * Class InvalidRouteParameterException.
- *
- * @author Melech Mizrachi
  */
 class InvalidRouteParameterException extends InvalidArgumentException
 {

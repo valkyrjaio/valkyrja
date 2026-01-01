@@ -24,8 +24,6 @@ use Valkyrja\Throwable\Exception\Exception;
 
 /**
  * Class LogExceptionMiddlewareTest.
- *
- * @author Melech Mizrachi
  */
 class LogExceptionMiddlewareTest extends TestCase
 {

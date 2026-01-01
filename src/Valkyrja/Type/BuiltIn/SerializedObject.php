@@ -24,8 +24,6 @@ use function is_string;
 /**
  * Class SerializedObject.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<object>
  */
 class SerializedObject extends Type implements Contract

@@ -15,8 +15,6 @@ namespace Valkyrja\Type\Model\Contract;
 
 /**
  * Interface ExposableIndexedModelContract.
- *
- * @author Melech Mizrachi
  */
 interface ExposableIndexedModelContract extends IndexedModelContract
 {

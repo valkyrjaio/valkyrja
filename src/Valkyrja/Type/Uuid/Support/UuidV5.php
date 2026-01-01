@@ -25,8 +25,6 @@ use function substr;
 
 /**
  * Class UuidV5.
- *
- * @author Melech Mizrachi
  */
 class UuidV5 extends Uuid
 {

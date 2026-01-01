@@ -15,8 +15,6 @@ namespace Valkyrja\Dispatch\Throwable\Exception;
 
 /**
  * Class InvalidClosureException.
- *
- * @author Melech Mizrachi
  */
 class InvalidClosureException extends InvalidArgumentException
 {

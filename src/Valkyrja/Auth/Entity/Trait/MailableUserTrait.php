@@ -17,8 +17,6 @@ use Valkyrja\Auth\Constant\UserField;
 
 /**
  * Trait MailableUserTrait.
- *
- * @author Melech Mizrachi
  */
 trait MailableUserTrait
 {

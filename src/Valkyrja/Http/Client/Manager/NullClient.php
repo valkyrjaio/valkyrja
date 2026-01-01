@@ -21,8 +21,6 @@ use Valkyrja\Http\Message\Response\EmptyResponse;
 
 /**
  * Class NullClient.
- *
- * @author Melech Mizrachi
  */
 class NullClient implements Contract
 {

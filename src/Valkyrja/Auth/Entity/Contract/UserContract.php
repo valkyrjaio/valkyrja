@@ -17,8 +17,6 @@ use Valkyrja\Orm\Entity\Contract\EntityContract;
 
 /**
  * Interface UserContract.
- *
- * @author Melech Mizrachi
  */
 interface UserContract extends EntityContract
 {

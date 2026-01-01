@@ -41,8 +41,6 @@ use function is_a;
 
 /**
  * Class AttributeCollector.
- *
- * @author Melech Mizrachi
  */
 class AttributeCollector implements Contract
 {

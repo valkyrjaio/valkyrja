@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Stream\Throwable\Exception;
 
 /**
  * Class StreamTellException.
- *
- * @author Melech Mizrachi
  */
 class StreamTellException extends RuntimeException
 {

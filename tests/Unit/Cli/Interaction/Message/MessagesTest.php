@@ -21,8 +21,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Messages class.
- *
- * @author Melech Mizrachi
  */
 class MessagesTest extends TestCase
 {

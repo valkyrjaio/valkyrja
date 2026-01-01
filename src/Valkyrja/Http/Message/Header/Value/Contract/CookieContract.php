@@ -17,8 +17,6 @@ use Valkyrja\Http\Message\Enum\SameSite;
 
 /**
  * Interface CookieContract.
- *
- * @author Melech Mizrachi
  */
 interface CookieContract extends ValueContract
 {

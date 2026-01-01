@@ -24,8 +24,6 @@ use Valkyrja\Orm\Statement\NullStatement;
 
 /**
  * Class NullManager.
- *
- * @author Melech Mizrachi
  */
 class NullManager implements Contract
 {

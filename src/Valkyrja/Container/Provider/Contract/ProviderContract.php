@@ -15,8 +15,6 @@ namespace Valkyrja\Container\Provider\Contract;
 
 /**
  * Interface ProviderContract.
- *
- * @author Melech Mizrachi
  */
 interface ProviderContract
 {

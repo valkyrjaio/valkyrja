@@ -45,8 +45,6 @@ use Valkyrja\View\Provider\ComponentProvider as ViewComponentProvider;
 
 /**
  * Class ComponentClass.
- *
- * @author Melech Mizrachi
  */
 final class ComponentClass
 {

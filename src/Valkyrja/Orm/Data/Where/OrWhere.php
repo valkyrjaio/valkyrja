@@ -20,8 +20,6 @@ use Valkyrja\Orm\Enum\WhereType;
 
 /**
  * Class OrWhere.
- *
- * @author Melech Mizrachi
  */
 readonly class OrWhere extends Where
 {

@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the HighlightedTextFormatter class.
- *
- * @author Melech Mizrachi
  */
 class HighlightedTextFormatterTest extends TestCase
 {

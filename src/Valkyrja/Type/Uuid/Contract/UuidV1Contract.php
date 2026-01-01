@@ -17,8 +17,6 @@ use Override;
 
 /**
  * Interface UuidV1Contract.
- *
- * @author Melech Mizrachi
  */
 interface UuidV1Contract extends UuidContract
 {

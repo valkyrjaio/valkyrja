@@ -38,8 +38,6 @@ use function is_callable;
 
 /**
  * Class Attributes.
- *
- * @author Melech Mizrachi
  */
 class Collector implements Contract
 {

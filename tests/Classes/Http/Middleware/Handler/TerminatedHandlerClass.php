@@ -20,8 +20,6 @@ use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 
 /**
  * Class TestTerminatedHandler.
- *
- * @author Melech Mizrachi
  */
 class TerminatedHandlerClass extends TerminatedHandler
 {

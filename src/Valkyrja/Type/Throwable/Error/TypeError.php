@@ -18,8 +18,6 @@ use Valkyrja\Type\Throwable\Contract\Throwable;
 
 /**
  * Class TypeError.
- *
- * @author Melech Mizrachi
  */
 class TypeError extends Exception implements Throwable
 {

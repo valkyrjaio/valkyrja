@@ -29,8 +29,6 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
 /**
  * Class GuzzleClient.
- *
- * @author Melech Mizrachi
  */
 class GuzzleClient implements Contract
 {

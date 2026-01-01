@@ -20,8 +20,6 @@ use Valkyrja\Auth\Data\Retrieval\RetrievalByResetToken;
 
 /**
  * Class ResetPasswordAttempt.
- *
- * @author Melech Mizrachi
  */
 class ResetPasswordAttempt implements Contract
 {

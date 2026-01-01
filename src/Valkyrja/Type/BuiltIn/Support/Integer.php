@@ -15,8 +15,6 @@ namespace Valkyrja\Type\BuiltIn\Support;
 
 /**
  * Class Integer.
- *
- * @author Melech Mizrachi
  */
 class Integer
 {

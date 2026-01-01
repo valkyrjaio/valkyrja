@@ -15,8 +15,6 @@ namespace Valkyrja\Cli\Routing\Enum;
 
 /**
  * Enum ArgumentValueMode.
- *
- * @author Melech Mizrachi
  */
 enum ArgumentValueMode
 {

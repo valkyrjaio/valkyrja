@@ -20,8 +20,6 @@ use function is_string;
 
 /**
  * Trait UserTrait.
- *
- * @author Melech Mizrachi
  */
 trait UserTrait
 {

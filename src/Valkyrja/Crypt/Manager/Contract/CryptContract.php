@@ -17,8 +17,6 @@ use Valkyrja\Crypt\Throwable\Exception\CryptException;
 
 /**
  * Interface CryptContract.
- *
- * @author Melech Mizrachi
  */
 interface CryptContract
 {

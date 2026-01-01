@@ -19,8 +19,6 @@ use Valkyrja\Mail\Mailer\Contract\MailerContract as Contract;
 
 /**
  * Class NullMailer.
- *
- * @author Melech Mizrachi
  */
 class NullMailer implements Contract
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Response\Contract;
 
 /**
  * Interface EmptyResponseContract.
- *
- * @author Melech Mizrachi
  */
 interface EmptyResponseContract extends ResponseContract
 {

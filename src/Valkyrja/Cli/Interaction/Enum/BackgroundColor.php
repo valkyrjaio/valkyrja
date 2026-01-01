@@ -15,8 +15,6 @@ namespace Valkyrja\Cli\Interaction\Enum;
 
 /**
  * Enum BackgroundColor.
- *
- * @author Melech Mizrachi
  */
 enum BackgroundColor: int
 {

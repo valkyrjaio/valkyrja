@@ -18,8 +18,6 @@ use Valkyrja\Type\BuiltIn\Enum\Trait\Enum;
 
 /**
  * Model class to use to test int BackedEnum.
- *
- * @author Melech Mizrachi
  */
 enum IntEnum: int implements Contract
 {

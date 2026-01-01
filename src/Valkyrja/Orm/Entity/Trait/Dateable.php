@@ -18,8 +18,6 @@ use Valkyrja\Orm\Support\Helpers;
 
 /**
  * Trait Dateable.
- *
- * @author Melech Mizrachi
  */
 trait Dateable
 {

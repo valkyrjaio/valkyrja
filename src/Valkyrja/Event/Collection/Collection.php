@@ -25,8 +25,6 @@ use function is_string;
 
 /**
  * Class Collection.
- *
- * @author Melech Mizrachi
  */
 class Collection implements Contract
 {

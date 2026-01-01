@@ -15,8 +15,6 @@ namespace Valkyrja\Dispatch\Data\Contract;
 
 /**
  * Interface CallableDispatchContract.
- *
- * @author Melech Mizrachi
  */
 interface CallableDispatchContract extends DispatchContract
 {

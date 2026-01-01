@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Constant;
 
 /**
  * Constant Header.
- *
- * @author Melech Mizrachi
  */
 final class HeaderValue
 {

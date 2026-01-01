@@ -30,8 +30,6 @@ use Valkyrja\Type\Enum\CastType;
 
 /**
  * Test the Matcher service.
- *
- * @author Melech Mizrachi
  */
 class MatcherTest extends TestCase
 {

@@ -16,8 +16,6 @@ namespace Valkyrja\Http\Message\Stream\Enum;
 /**
  * Enum ModeTranslation.
  *
- * @author Melech Mizrachi
- *
  * @see    https://www.php.net/manual/en/function.fopen.php
  */
 enum ModeTranslation: string

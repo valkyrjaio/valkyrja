@@ -15,8 +15,6 @@ namespace Valkyrja\Event\Contract;
 
 /**
  * Interface DispatchCollectableEventContract.
- *
- * @author Melech Mizrachi
  */
 interface DispatchCollectableEventContract
 {

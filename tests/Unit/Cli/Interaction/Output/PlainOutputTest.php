@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the PlainOutput class.
- *
- * @author Melech Mizrachi
  */
 class PlainOutputTest extends TestCase
 {

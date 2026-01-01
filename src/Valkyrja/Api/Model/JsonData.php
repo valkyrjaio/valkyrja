@@ -19,8 +19,6 @@ use Valkyrja\Type\Model\Abstract\Model;
 
 /**
  * Class JsonData.
- *
- * @author Melech Mizrachi
  */
 class JsonData extends Model implements Contract
 {

@@ -18,8 +18,6 @@ use Valkyrja\Type\Contract\TypeContract;
 
 /**
  * Attribute ArrayShape.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_ALL)]
 class ArrayShape

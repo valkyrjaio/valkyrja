@@ -17,8 +17,6 @@ use Valkyrja\Type\BuiltIn\Support\Obj;
 
 /**
  * Trait ProtectedExposable.
- *
- * @author Melech Mizrachi
  */
 trait ProtectedExposable
 {

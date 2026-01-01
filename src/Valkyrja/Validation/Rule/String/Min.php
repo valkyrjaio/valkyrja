@@ -21,8 +21,6 @@ use function is_string;
 
 /**
  * Class Min.
- *
- * @author Melech Mizrachi
  */
 class Min extends Rule
 {

@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\File\UploadedFile;
 
 /**
  * Class UnableToWriteFileExceptionClass.
- *
- * @author Melech Mizrachi
  */
 class UnableToWriteFileExceptionClass extends UploadedFile
 {

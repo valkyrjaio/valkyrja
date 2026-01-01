@@ -17,8 +17,6 @@ use Valkyrja\Http\Message\File\UploadedFile;
 
 /**
  * Class InvalidUploadedFileExceptionClass.
- *
- * @author Melech Mizrachi
  */
 class InvalidUploadedFileExceptionClass extends UploadedFile
 {

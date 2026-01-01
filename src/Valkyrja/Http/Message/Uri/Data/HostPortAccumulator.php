@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Uri\Data;
 
 /**
  * Class HostPortAccumulator.
- *
- * @author Melech Mizrachi
  */
 class HostPortAccumulator
 {

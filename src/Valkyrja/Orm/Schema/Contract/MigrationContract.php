@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Schema\Contract;
 
 /**
  * Interface MigrationContract.
- *
- * @author Melech Mizrachi
  */
 interface MigrationContract
 {

@@ -19,8 +19,6 @@ use Stringable;
 /**
  * Interface CollectionContract.
  *
- * @author   Melech Mizrachi
- *
  * @template K of array-key
  * @template T of string|int|float|bool|array|object|null
  */

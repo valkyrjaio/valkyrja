@@ -25,8 +25,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Output class.
- *
- * @author Melech Mizrachi
  */
 class OutputTest extends TestCase
 {

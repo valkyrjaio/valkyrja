@@ -20,8 +20,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Banner class.
- *
- * @author Melech Mizrachi
  */
 class BannerTest extends TestCase
 {

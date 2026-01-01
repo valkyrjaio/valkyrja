@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Listener service.
- *
- * @author Melech Mizrachi
  */
 class ListenerTest extends TestCase
 {

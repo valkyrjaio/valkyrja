@@ -26,8 +26,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the container service.
- *
- * @author Melech Mizrachi
  */
 class ContainerTest extends TestCase
 {

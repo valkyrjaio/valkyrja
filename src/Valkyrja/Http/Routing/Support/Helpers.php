@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Routing\Support;
 
 /**
  * Class Helpers.
- *
- * @author Melech Mizrachi
  */
 class Helpers
 {

@@ -17,8 +17,6 @@ use Valkyrja\Type\Model\Abstract\Model as AbstractModel;
 
 /**
  * Model class to test an invalid isset method.
- *
- * @author Melech Mizrachi
  */
 class ModelInvalidIssetMethodClass extends AbstractModel
 {

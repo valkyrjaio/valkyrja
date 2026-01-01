@@ -20,8 +20,6 @@ use Valkyrja\Sms\Messenger\Contract\MessengerContract as Contract;
 
 /**
  * Class LogSms.
- *
- * @author Melech Mizrachi
  */
 class LogMessenger implements Contract
 {

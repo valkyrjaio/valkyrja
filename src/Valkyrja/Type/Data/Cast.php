@@ -22,8 +22,6 @@ use function assert;
 
 /**
  * Data Cast.
- *
- * @author Melech Mizrachi
  */
 class Cast implements JsonSerializable
 {

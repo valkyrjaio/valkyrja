@@ -22,8 +22,6 @@ use Valkyrja\Cli\Command\VersionCommand;
 
 /**
  * Final Class Component.
- *
- * @author Melech Mizrachi
  */
 class ComponentProvider extends AppComponent
 {

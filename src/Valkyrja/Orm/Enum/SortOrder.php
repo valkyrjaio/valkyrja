@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Enum;
 
 /**
  * Enum SortOrder.
- *
- * @author Melech Mizrachi
  */
 enum SortOrder: string
 {

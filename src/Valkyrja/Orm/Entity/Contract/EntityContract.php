@@ -20,8 +20,6 @@ use Valkyrja\Type\Model\Contract\ExposableModelContract;
 /**
  * Interface EntityContract.
  *
- * @author Melech Mizrachi
- *
  * @psalm-type StorableValue array<array-key, scalar|null>|scalar|null
  *
  * @phpstan-type StorableValue array<array-key, scalar|null>|scalar|null

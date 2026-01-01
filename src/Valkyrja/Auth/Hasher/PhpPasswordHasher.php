@@ -20,8 +20,6 @@ use const PASSWORD_DEFAULT;
 
 /**
  * Class PhpPasswordHasher.
- *
- * @author Melech Mizrachi
  */
 class PhpPasswordHasher implements Contract
 {

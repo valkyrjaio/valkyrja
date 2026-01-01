@@ -19,8 +19,6 @@ use Valkyrja\Throwable\Handler\ThrowableHandler;
 
 /**
  * Test the throwable handler.
- *
- * @author Melech Mizrachi
  */
 class ThrowableHandlerTest extends TestCase
 {

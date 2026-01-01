@@ -15,8 +15,6 @@ namespace Valkyrja\Session\Throwable\Exception;
 
 /**
  * Class InvalidSessionId.
- *
- * @author Melech Mizrachi
  */
 class InvalidSessionId extends InvalidArgumentException
 {

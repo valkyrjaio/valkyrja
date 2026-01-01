@@ -20,8 +20,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the NullClient service.
- *
- * @author Melech Mizrachi
  */
 class NullClientTest extends TestCase
 {

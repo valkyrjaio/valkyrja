@@ -26,8 +26,6 @@ use Valkyrja\Throwable\Handler\ThrowableHandler;
 
 /**
  * Class ApiExceptionMiddleware.
- *
- * @author Melech Mizrachi
  */
 class ApiThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
 {

@@ -17,8 +17,6 @@ use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
 
 /**
  * Class Uid.
- *
- * @author Melech Mizrachi
  */
 class Uid
 {

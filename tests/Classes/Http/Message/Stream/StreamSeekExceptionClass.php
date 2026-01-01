@@ -20,8 +20,6 @@ use const SEEK_SET;
 
 /**
  * Class StreamSeekExceptionClass.
- *
- * @author Melech Mizrachi
  */
 class StreamSeekExceptionClass extends Stream
 {

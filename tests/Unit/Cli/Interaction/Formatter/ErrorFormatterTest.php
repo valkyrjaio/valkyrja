@@ -20,8 +20,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the ErrorFormatter class.
- *
- * @author Melech Mizrachi
  */
 class ErrorFormatterTest extends TestCase
 {

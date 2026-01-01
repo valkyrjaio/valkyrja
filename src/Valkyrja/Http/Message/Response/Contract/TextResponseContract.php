@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Response\Contract;
 
 /**
  * Interface TextResponseContract.
- *
- * @author Melech Mizrachi
  */
 interface TextResponseContract extends ResponseContract
 {

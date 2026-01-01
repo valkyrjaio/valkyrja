@@ -24,8 +24,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Class AbortTest.
- *
- * @author Melech Mizrachi
  */
 class AbortTest extends TestCase
 {

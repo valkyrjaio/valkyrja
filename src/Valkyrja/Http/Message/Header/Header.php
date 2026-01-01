@@ -33,8 +33,6 @@ use function strtolower;
 
 /**
  * Class Header.
- *
- * @author Melech Mizrachi
  */
 class Header implements Contract
 {

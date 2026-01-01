@@ -30,8 +30,6 @@ use Valkyrja\Tests\Classes\Container\SingletonClass;
 
 /**
  * Test the ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 class ServiceProviderTest extends ServiceProviderTestCase
 {

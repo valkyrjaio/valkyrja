@@ -15,8 +15,6 @@ namespace Valkyrja\Cli\Interaction\Argument\Contract;
 
 /**
  * Interface ArgumentContract.
- *
- * @author Melech Mizrachi
  */
 interface ArgumentContract
 {

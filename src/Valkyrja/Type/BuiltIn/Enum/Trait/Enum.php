@@ -23,8 +23,6 @@ use function is_string;
 
 /**
  * Trait Enum.
- *
- * @author Melech Mizrachi
  */
 trait Enum
 {

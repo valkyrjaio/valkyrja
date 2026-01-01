@@ -30,8 +30,6 @@ use Valkyrja\Type\Json\JsonObject;
 
 /**
  * Enum CastType.
- *
- * @author Melech Mizrachi
  */
 enum CastType: string implements JsonSerializable
 {

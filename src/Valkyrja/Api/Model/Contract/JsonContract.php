@@ -18,8 +18,6 @@ use Valkyrja\Type\Model\Contract\ModelContract;
 
 /**
  * Interface JsonContract.
- *
- * @author Melech Mizrachi
  */
 interface JsonContract extends ModelContract
 {

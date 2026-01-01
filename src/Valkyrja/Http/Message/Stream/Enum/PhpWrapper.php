@@ -16,8 +16,6 @@ namespace Valkyrja\Http\Message\Stream\Enum;
 /**
  * Enum PhpWrapper.
  *
- * @author Melech Mizrachi
- *
  * @see    https://www.php.net/manual/en/function.fopen.php
  */
 enum PhpWrapper: string

@@ -19,8 +19,6 @@ use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
 
 /**
  * Interface SendingResponseMiddlewareContract.
- *
- * @author Melech Mizrachi
  */
 interface SendingResponseMiddlewareContract
 {

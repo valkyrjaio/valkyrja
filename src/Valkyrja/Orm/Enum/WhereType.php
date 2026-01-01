@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Enum;
 
 /**
  * Enum WhereType.
- *
- * @author Melech Mizrachi
  */
 enum WhereType: string
 {

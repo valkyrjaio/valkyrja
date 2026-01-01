@@ -17,8 +17,6 @@ use BackedEnum;
 
 /**
  * Trait JsonSerializable.
- *
- * @author Melech Mizrachi
  */
 trait JsonSerializable
 {

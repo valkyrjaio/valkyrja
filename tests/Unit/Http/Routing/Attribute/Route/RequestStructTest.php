@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the RequestStruct attribute.
- *
- * @author Melech Mizrachi
  */
 class RequestStructTest extends TestCase
 {

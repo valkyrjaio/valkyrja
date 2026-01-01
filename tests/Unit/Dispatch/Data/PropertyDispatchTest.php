@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the PropertyDispatch.
- *
- * @author Melech Mizrachi
  */
 class PropertyDispatchTest extends TestCase
 {

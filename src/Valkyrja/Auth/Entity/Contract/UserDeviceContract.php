@@ -17,8 +17,6 @@ use Valkyrja\Orm\Entity\Contract\EntityContract;
 
 /**
  * Interface UserDeviceContract.
- *
- * @author Melech Mizrachi
  */
 interface UserDeviceContract extends EntityContract
 {

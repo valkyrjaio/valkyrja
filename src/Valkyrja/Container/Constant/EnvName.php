@@ -15,8 +15,6 @@ namespace Valkyrja\Container\Constant;
 
 /**
  * Class EnvName.
- *
- * @author Melech Mizrachi
  */
 final class EnvName
 {

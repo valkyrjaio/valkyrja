@@ -20,8 +20,6 @@ use Valkyrja\Application\Provider\Provider as AppComponent;
 
 /**
  * Final Class Component.
- *
- * @author Melech Mizrachi
  */
 class ComponentProvider extends AppComponent
 {

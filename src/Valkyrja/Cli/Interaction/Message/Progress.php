@@ -19,8 +19,6 @@ use Valkyrja\Cli\Interaction\Message\Contract\ProgressContract as Contract;
 
 /**
  * Class Progress.
- *
- * @author Melech Mizrachi
  */
 class Progress extends Message implements Contract
 {

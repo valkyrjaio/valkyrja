@@ -26,8 +26,6 @@ use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 
 /**
  * Test the ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 class ServiceProviderTest extends ServiceProviderTestCase
 {

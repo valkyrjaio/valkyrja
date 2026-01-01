@@ -18,8 +18,6 @@ use Valkyrja\Type\Data\Cast as Data;
 
 /**
  * Attribute Cast.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class Cast extends Data

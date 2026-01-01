@@ -21,8 +21,6 @@ use function is_array;
 
 /**
  * Trait Castable.
- *
- * @author Melech Mizrachi
  */
 trait Castable
 {

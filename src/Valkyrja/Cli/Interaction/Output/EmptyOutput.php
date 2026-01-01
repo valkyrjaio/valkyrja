@@ -19,8 +19,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\EmptyOutputContract as Contract;
 
 /**
  * Class EmptyOutput.
- *
- * @author Melech Mizrachi
  */
 class EmptyOutput extends Output implements Contract
 {

@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
 /**
  * Interface RequestHandlerContract.
- *
- * @author Melech Mizrachi
  */
 interface RequestHandlerContract
 {

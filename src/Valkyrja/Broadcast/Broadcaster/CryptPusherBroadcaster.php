@@ -21,8 +21,6 @@ use Valkyrja\Crypt\Throwable\Exception\CryptException;
 
 /**
  * Class CryptPusherBroadcaster.
- *
- * @author Melech Mizrachi
  */
 class CryptPusherBroadcaster extends PusherBroadcaster
 {

@@ -22,8 +22,6 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
  * Class LogBroadcaster.
- *
- * @author Melech Mizrachi
  */
 class LogBroadcaster implements Contract
 {

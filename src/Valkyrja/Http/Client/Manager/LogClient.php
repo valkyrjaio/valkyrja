@@ -24,8 +24,6 @@ use Valkyrja\Type\BuiltIn\Support\Obj;
 
 /**
  * Class LogClient.
- *
- * @author Melech Mizrachi
  */
 class LogClient implements Contract
 {

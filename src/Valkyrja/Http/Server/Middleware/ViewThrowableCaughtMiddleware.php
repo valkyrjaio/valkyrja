@@ -24,8 +24,6 @@ use Valkyrja\View\Factory\ResponseFactory as DefaultViewResponseFactory;
 
 /**
  * Class ViewExceptionMiddleware.
- *
- * @author Melech Mizrachi
  */
 class ViewThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
 {

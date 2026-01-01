@@ -19,8 +19,6 @@ use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
 
 /**
  * Interface TerminatedMiddlewareContract.
- *
- * @author Melech Mizrachi
  */
 interface TerminatedMiddlewareContract
 {

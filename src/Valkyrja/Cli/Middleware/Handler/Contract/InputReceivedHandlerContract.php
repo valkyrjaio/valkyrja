@@ -20,8 +20,6 @@ use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
 /**
  * Interface InputReceivedHandlerContract.
  *
- * @author Melech Mizrachi
- *
  * @extends HandlerContract<InputReceivedMiddlewareContract>
  */
 interface InputReceivedHandlerContract extends HandlerContract

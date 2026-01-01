@@ -19,8 +19,6 @@ use Valkyrja\Cli\Interaction\Message\Contract\MessageContract as Contract;
 
 /**
  * Class Message.
- *
- * @author Melech Mizrachi
  */
 class Message implements Contract
 {

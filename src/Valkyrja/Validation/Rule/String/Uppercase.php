@@ -21,8 +21,6 @@ use function is_string;
 
 /**
  * Class Uppercase.
- *
- * @author Melech Mizrachi
  */
 class Uppercase extends Rule
 {

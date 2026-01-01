@@ -23,8 +23,6 @@ use Valkyrja\View\Renderer\Contract\RendererContract;
 
 /**
  * Class ViewRouteNotMatchedMiddleware.
- *
- * @author Melech Mizrachi
  */
 class ViewRouteNotMatchedMiddleware implements RouteNotMatchedMiddlewareContract
 {

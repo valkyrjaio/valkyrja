@@ -22,8 +22,6 @@ use function str_replace;
 
 /**
  * Class Helpers.
- *
- * @author Melech Mizrachi
  */
 class Helpers
 {

@@ -24,8 +24,6 @@ use Valkyrja\Throwable\Exception\InvalidArgumentException;
 
 /**
  * Test the ProvidersAwareTrait support class.
- *
- * @author Melech Mizrachi
  */
 class ProvidersAwareTraitTest extends TestCase
 {

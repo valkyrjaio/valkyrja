@@ -15,8 +15,6 @@ namespace Valkyrja\Container\Throwable\Exception;
 
 /**
  * Class EndlessContextLoopException.
- *
- * @author Melech Mizrachi
  */
 class EndlessContextLoopException extends InvalidArgumentException
 {

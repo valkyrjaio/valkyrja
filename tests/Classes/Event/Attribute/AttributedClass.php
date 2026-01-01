@@ -18,8 +18,6 @@ use Valkyrja\Tests\Unit\Event\Collector\AttributesCollectorTest;
 
 /**
  * Class with attributes used for unit testing.
- *
- * @author Melech Mizrachi
  */
 // Testing invalid attributes that have no method attached to them since this class has no constructor
 #[Listener(AttributesCollectorTest::VALUE1, 'AttributedClassValue1')]

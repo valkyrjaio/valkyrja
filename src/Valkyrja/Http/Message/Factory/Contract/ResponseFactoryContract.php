@@ -21,8 +21,6 @@ use Valkyrja\Http\Message\Response\Contract\TextResponseContract;
 
 /**
  * Interface ResponseFactoryContract.
- *
- * @author Melech Mizrachi
  */
 interface ResponseFactoryContract
 {

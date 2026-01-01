@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException as Parent
 
 /**
  * Class InvalidArgumentException.
- *
- * @author Melech Mizrachi
  */
 class InvalidArgumentException extends ParentException implements Throwable
 {

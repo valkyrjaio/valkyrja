@@ -23,8 +23,6 @@ use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 
 /**
  * Class RequestHandler.
- *
- * @author Melech Mizrachi
  */
 class RequestHandler implements RequestHandlerInterface
 {

@@ -23,8 +23,6 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
  * Class TestThrowableCaughtMiddlewareChanged.
- *
- * @author Melech Mizrachi
  */
 class ThrowableCaughtMiddlewareChangedClass implements ThrowableCaughtMiddlewareContract
 {

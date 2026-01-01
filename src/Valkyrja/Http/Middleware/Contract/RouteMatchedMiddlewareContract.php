@@ -20,8 +20,6 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
  * Interface RouteMatchedMiddlewareContract.
- *
- * @author Melech Mizrachi
  */
 interface RouteMatchedMiddlewareContract
 {

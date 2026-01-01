@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\File\Throwable\Exception;
 
 /**
  * Class MoveFailureException.
- *
- * @author Melech Mizrachi
  */
 class MoveFailureException extends RuntimeException
 {

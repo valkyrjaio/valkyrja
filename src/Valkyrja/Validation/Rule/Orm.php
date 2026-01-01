@@ -28,8 +28,6 @@ use function is_string;
 
 /**
  * Class Orm.
- *
- * @author Melech Mizrachi
  */
 class Orm
 {

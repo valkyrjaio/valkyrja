@@ -17,8 +17,6 @@ use Stringable;
 
 /**
  * Interface TemplateContract.
- *
- * @author Melech Mizrachi
  */
 interface TemplateContract extends Stringable
 {

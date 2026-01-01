@@ -18,8 +18,6 @@ use Valkyrja\Type\Vlid\Support\VlidV1 as Helper;
 
 /**
  * Class VlidV1.
- *
- * @author Melech Mizrachi
  */
 class VlidV1 extends Vlid implements Contract
 {

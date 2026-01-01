@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Stream\Stream;
 
 /**
  * Class UnreadableStreamExceptionClass.
- *
- * @author Melech Mizrachi
  */
 class UnreadableStreamExceptionClass extends Stream
 {

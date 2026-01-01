@@ -18,8 +18,6 @@ use Valkyrja\Container\Attribute\Service;
 
 /**
  * Interface CollectorContract.
- *
- * @author Melech Mizrachi
  */
 interface CollectorContract
 {

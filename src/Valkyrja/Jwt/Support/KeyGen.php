@@ -22,8 +22,6 @@ use function file_get_contents;
 
 /**
  * Class KeyGen.
- *
- * @author Melech Mizrachi
  */
 class KeyGen
 {

@@ -22,8 +22,6 @@ use Valkyrja\Notification\Entity\Trait\NotifiableUserTrait;
 
 /**
  * Entity NotifiableUser.
- *
- * @author Melech Mizrachi
  */
 class NotifiableUser extends User implements Contract
 {

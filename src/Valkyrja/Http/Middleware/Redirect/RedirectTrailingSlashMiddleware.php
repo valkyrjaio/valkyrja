@@ -27,8 +27,6 @@ use function trim;
 
 /**
  * Class RedirectTrailingSlashMiddleware.
- *
- * @author Melech Mizrachi
  */
 class RedirectTrailingSlashMiddleware implements RequestReceivedMiddlewareContract
 {

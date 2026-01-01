@@ -17,8 +17,6 @@ use Valkyrja\Type\Abstract\Type as AbstractType;
 
 /**
  * Type class to use to test abstract type.
- *
- * @author Melech Mizrachi
  */
 class TypeClass extends AbstractType
 {

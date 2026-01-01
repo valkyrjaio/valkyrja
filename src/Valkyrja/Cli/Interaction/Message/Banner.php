@@ -19,8 +19,6 @@ use function strlen;
 
 /**
  * Class Banner.
- *
- * @author Melech Mizrachi
  */
 class Banner extends Message
 {

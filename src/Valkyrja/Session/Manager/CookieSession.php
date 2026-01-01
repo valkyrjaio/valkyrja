@@ -25,8 +25,6 @@ use function session_start;
 
 /**
  * Class CookieSession.
- *
- * @author Melech Mizrachi
  */
 class CookieSession extends PhpSession
 {

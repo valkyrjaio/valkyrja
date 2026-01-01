@@ -17,8 +17,6 @@ use Valkyrja\Event\Contract\DispatchCollectableEventContract;
 
 /**
  * Class to test events for unit testing.
- *
- * @author Melech Mizrachi
  */
 class DispatchCollectableEventClass implements DispatchCollectableEventContract
 {

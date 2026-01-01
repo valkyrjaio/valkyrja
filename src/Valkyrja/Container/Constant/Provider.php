@@ -44,8 +44,6 @@ use Valkyrja\View\Provider\ServiceProvider as ViewServiceProvider;
 
 /**
  * Constant Provider.
- *
- * @author Melech Mizrachi
  */
 final class Provider
 {

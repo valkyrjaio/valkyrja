@@ -20,8 +20,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Command class.
- *
- * @author Melech Mizrachi
  */
 class CommandTest extends TestCase
 {

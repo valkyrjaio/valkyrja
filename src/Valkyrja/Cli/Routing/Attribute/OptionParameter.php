@@ -18,8 +18,6 @@ use Valkyrja\Cli\Routing\Data\OptionParameter as Model;
 
 /**
  * Attribute OptionParameter.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class OptionParameter extends Model

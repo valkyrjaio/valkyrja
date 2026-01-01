@@ -21,8 +21,6 @@ use Valkyrja\Type\Model\Trait\ExposableIndexable;
 /**
  * Model class to use to test Indexable model.
  *
- * @author Melech Mizrachi
- *
  * @property string $protected
  */
 class ExposedIndexableModelClass extends AbstractModel implements Contract

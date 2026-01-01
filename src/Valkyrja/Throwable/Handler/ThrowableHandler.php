@@ -25,8 +25,6 @@ use const E_ALL;
 
 /**
  * Class ThrowableHandler.
- *
- * @author Melech Mizrachi
  */
 class ThrowableHandler implements Contract
 {

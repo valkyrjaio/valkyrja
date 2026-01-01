@@ -24,8 +24,6 @@ use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 
 /**
  * Class OutputThrowableCaughtMiddleware.
- *
- * @author Melech Mizrachi
  */
 class OutputThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
 {

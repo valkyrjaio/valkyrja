@@ -15,8 +15,6 @@ namespace Valkyrja\Type\Model\Trait;
 
 /**
  * Trait ExposableIndexable.
- *
- * @author Melech Mizrachi
  */
 trait ExposableIndexable
 {

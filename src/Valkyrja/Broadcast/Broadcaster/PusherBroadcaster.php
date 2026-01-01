@@ -25,8 +25,6 @@ use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
  * Class PusherBroadcaster.
- *
- * @author Melech Mizrachi
  */
 class PusherBroadcaster implements Contract
 {

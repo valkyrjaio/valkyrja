@@ -19,8 +19,6 @@ use Valkyrja\Type\Contract\TypeContract;
 /**
  * Interface StringContract.
  *
- * @author Melech Mizrachi
- *
  * @extends TypeContract<string>
  */
 interface StringContract extends TypeContract

@@ -18,8 +18,6 @@ use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 
 /**
  * Interface ListenerContract.
- *
- * @author Melech Mizrachi
  */
 interface ListenerContract
 {

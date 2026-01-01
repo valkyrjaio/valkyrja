@@ -19,8 +19,6 @@ use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 
 /**
  * Class Messages.
- *
- * @author Melech Mizrachi
  */
 class Messages extends Message
 {

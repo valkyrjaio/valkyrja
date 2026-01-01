@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Uri\Enum;
 
 /**
  * Enum Port.
- *
- * @author Melech Mizrachi
  */
 enum Port: int
 {

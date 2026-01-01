@@ -17,8 +17,6 @@ use Valkyrja\Annotation\Model\Annotation;
 
 /**
  * Annotatable trait class used for unit testing.
- *
- * @author Melech Mizrachi
  */
 class AnnotatableClass extends Annotation
 {

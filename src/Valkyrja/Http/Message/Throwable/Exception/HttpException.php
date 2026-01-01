@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
 /**
  * Class HttpException.
- *
- * @author Melech Mizrachi
  */
 class HttpException extends RuntimeException
 {

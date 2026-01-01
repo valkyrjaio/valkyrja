@@ -18,8 +18,6 @@ use Valkyrja\Container\Provider\Provider as ContainerProvider;
 
 /**
  * Abstract Class Component.
- *
- * @author Melech Mizrachi
  */
 abstract class Provider
 {

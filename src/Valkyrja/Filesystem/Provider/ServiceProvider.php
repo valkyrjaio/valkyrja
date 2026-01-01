@@ -31,8 +31,6 @@ use Valkyrja\Support\Directory\Directory;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

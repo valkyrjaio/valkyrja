@@ -20,8 +20,6 @@ use function is_string;
 
 /**
  * Class IsString.
- *
- * @author Melech Mizrachi
  */
 class IsString extends Rule
 {

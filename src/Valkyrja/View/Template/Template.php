@@ -26,8 +26,6 @@ use const ENT_QUOTES;
 
 /**
  * Class Template.
- *
- * @author Melech Mizrachi
  */
 class Template implements Contract
 {

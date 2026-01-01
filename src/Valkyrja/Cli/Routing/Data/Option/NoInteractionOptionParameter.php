@@ -18,8 +18,6 @@ use Valkyrja\Cli\Routing\Enum\OptionValueMode;
 
 /**
  * Class HelpOptionParameter.
- *
- * @author Melech Mizrachi
  */
 class NoInteractionOptionParameter extends OptionParameter
 {

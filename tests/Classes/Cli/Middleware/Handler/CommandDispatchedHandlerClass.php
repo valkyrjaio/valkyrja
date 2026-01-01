@@ -21,8 +21,6 @@ use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
 /**
  * Class TestCommandDispatchedHandler.
- *
- * @author Melech Mizrachi
  */
 class CommandDispatchedHandlerClass extends CommandDispatchedHandler
 {

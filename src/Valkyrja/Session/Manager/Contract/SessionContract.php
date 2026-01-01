@@ -17,8 +17,6 @@ use Valkyrja\Session\Throwable\Exception\InvalidCsrfToken;
 
 /**
  * Interface SessionContract.
- *
- * @author Melech Mizrachi
  */
 interface SessionContract
 {

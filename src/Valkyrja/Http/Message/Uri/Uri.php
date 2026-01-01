@@ -28,8 +28,6 @@ use function strtolower;
 
 /**
  * Class Uri.
- *
- * @author Melech Mizrachi
  */
 class Uri implements Contract
 {

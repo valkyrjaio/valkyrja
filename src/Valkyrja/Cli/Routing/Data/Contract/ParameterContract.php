@@ -17,8 +17,6 @@ use Valkyrja\Type\Data\Cast;
 
 /**
  * Interface ParameterContract.
- *
- * @author Melech Mizrachi
  */
 interface ParameterContract
 {

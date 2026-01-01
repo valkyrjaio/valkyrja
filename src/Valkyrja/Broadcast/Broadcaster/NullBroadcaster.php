@@ -19,8 +19,6 @@ use Valkyrja\Broadcast\Data\Contract\MessageContract;
 
 /**
  * Class NullBroadcaster.
- *
- * @author Melech Mizrachi
  */
 class NullBroadcaster implements Contract
 {

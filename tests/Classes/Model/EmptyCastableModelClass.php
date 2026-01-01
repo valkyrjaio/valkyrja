@@ -25,8 +25,6 @@ use const JSON_THROW_ON_ERROR;
 
 /**
  * Model class to use to test Castable model.
- *
- * @author Melech Mizrachi
  */
 class EmptyCastableModelClass extends AbstractModel
 {

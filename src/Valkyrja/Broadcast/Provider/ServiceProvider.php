@@ -32,8 +32,6 @@ use const CURLOPT_IPRESOLVE;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

@@ -17,8 +17,6 @@ use Valkyrja\Sms\Data\Contract\MessageContract;
 
 /**
  * Interface MessengerContract.
- *
- * @author Melech Mizrachi
  */
 interface MessengerContract
 {

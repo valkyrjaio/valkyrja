@@ -18,8 +18,6 @@ use Valkyrja\Type\Uid\Throwable\Contract\UidThrowable;
 
 /**
  * Class InvalidUidException.
- *
- * @author Melech Mizrachi
  */
 class InvalidUidException extends InvalidArgumentException implements UidThrowable
 {

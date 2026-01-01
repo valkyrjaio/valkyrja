@@ -19,8 +19,6 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Handler\ExitedHandlerClass;
 
 /**
  * Test the exited handler.
- *
- * @author Melech Mizrachi
  */
 class ExitedHandlerTest extends HandlerTestCase
 {

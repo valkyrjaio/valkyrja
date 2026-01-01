@@ -23,8 +23,6 @@ use Valkyrja\Type\BuiltIn\Support\StrCase;
 /**
  * Class Str.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<string>
  */
 class StringT extends Type implements Contract

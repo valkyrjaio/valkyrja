@@ -19,8 +19,6 @@ use const E_USER_WARNING;
 
 /**
  * Test case for unit tests.
- *
- * @author Melech Mizrachi
  */
 trait ExpectErrorTrait
 {

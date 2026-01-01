@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Entity\Trait;
 
 /**
  * Trait VerifiableUserFields.
- *
- * @author Melech Mizrachi
  */
 trait VerifiableUserFields
 {

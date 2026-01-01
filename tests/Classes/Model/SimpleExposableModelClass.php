@@ -20,8 +20,6 @@ use Valkyrja\Type\Model\Trait\Exposable;
 /**
  * Model class to use to test Exposable trait directly.
  *
- * @author Melech Mizrachi
- *
  * @property string $protected
  */
 class SimpleExposableModelClass extends AbstractModel implements Contract

@@ -25,8 +25,6 @@ use function class_exists;
 
 /**
  * Test the ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 abstract class ServiceProviderTestCase extends TestCase
 {

@@ -20,8 +20,6 @@ use Valkyrja\Orm\Enum\WhereType;
 
 /**
  * Class AndWhere.
- *
- * @author Melech Mizrachi
  */
 readonly class AndWhere extends Where
 {

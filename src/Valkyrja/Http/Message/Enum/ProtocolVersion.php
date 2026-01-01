@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Enum;
 
 /**
  * Enum ProtocolVersion.
- *
- * @author Melech Mizrachi
  */
 enum ProtocolVersion: string
 {

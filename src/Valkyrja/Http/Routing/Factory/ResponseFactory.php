@@ -22,8 +22,6 @@ use Valkyrja\Http\Routing\Url\Contract\UrlContract;
 
 /**
  * Class ResponseFactory.
- *
- * @author Melech Mizrachi
  */
 class ResponseFactory implements Contract
 {

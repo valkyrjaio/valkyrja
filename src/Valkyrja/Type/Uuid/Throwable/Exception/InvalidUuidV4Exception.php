@@ -15,8 +15,6 @@ namespace Valkyrja\Type\Uuid\Throwable\Exception;
 
 /**
  * Class InvalidUuidV4Exception.
- *
- * @author Melech Mizrachi
  */
 class InvalidUuidV4Exception extends InvalidUuidException
 {

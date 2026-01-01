@@ -15,8 +15,6 @@ namespace Valkyrja\Filesystem\Throwable\Exception;
 
 /**
  * Class UnableToReadContentsException.
- *
- * @author Melech Mizrachi
  */
 class UnableToReadContentsException extends RuntimeException
 {

@@ -17,8 +17,6 @@ use Override;
 
 /**
  * Testable Question class.
- *
- * @author Melech Mizrachi
  */
 class QuestionEmptyFgetsClass extends QuestionClass
 {

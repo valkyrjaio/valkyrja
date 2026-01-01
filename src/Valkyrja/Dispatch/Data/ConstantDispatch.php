@@ -19,8 +19,6 @@ use Valkyrja\Dispatch\Data\Contract\ConstantDispatchContract as Contract;
 
 /**
  * Class ConstantDispatch.
- *
- * @author Melech Mizrachi
  */
 class ConstantDispatch extends Dispatch implements Contract
 {

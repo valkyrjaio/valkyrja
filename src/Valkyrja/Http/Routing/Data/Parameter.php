@@ -19,8 +19,6 @@ use Valkyrja\Type\Data\Cast;
 
 /**
  * Class Parameter.
- *
- * @author Melech Mizrachi
  */
 class Parameter implements Contract
 {

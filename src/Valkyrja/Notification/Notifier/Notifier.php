@@ -30,8 +30,6 @@ use function is_string;
 
 /**
  * Class Notification.
- *
- * @author Melech Mizrachi
  */
 class Notifier implements Contract
 {

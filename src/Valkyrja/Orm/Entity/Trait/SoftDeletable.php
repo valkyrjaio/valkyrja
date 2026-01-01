@@ -18,8 +18,6 @@ use Valkyrja\Orm\Support\Helpers;
 
 /**
  * Trait SoftDeletableEntity.
- *
- * @author Melech Mizrachi
  */
 trait SoftDeletable
 {

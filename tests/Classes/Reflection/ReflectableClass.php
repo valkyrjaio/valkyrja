@@ -17,8 +17,6 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
  * Class to test reflections.
- *
- * @author Melech Mizrachi
  */
 class ReflectableClass
 {

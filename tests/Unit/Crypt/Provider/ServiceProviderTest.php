@@ -22,8 +22,6 @@ use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**
  * Test the ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 class ServiceProviderTest extends ServiceProviderTestCase
 {

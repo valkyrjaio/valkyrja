@@ -17,8 +17,6 @@ use Override;
 
 /**
  * Class DeferredProviderClass.
- *
- * @author Melech Mizrachi
  */
 class DeferredProviderClass extends ProviderClass
 {

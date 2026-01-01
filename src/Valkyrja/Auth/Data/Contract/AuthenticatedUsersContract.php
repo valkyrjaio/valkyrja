@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Data\Contract;
 
 /**
  * Interface AuthenticatedUsersContract.
- *
- * @author Melech Mizrachi
  */
 interface AuthenticatedUsersContract
 {

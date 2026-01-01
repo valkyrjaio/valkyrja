@@ -21,8 +21,6 @@ use function explode;
 /**
  * Class Component.
  *
- * @author Melech Mizrachi
- *
  * @phpstan-consistent-constructor
  *  Will be overridden if need be
  */

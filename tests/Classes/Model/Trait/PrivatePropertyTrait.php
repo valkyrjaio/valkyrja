@@ -16,8 +16,6 @@ namespace Valkyrja\Tests\Classes\Model\Trait;
 /**
  * Trait PrivateProperty.
  *
- * @author Melech Mizrachi
- *
  * @property string $private
  */
 trait PrivatePropertyTrait

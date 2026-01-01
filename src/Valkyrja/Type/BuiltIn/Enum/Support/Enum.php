@@ -21,8 +21,6 @@ use function in_array;
 
 /**
  * Class Enum.
- *
- * @author Melech Mizrachi
  */
 class Enum
 {

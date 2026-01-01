@@ -20,8 +20,6 @@ use Valkyrja\Container\Data\Data;
 
 /**
  * Interface ContainerContract.
- *
- * @author Melech Mizrachi
  */
 interface ContainerContract extends ContainerInterface, ProvidersAwareContract
 {

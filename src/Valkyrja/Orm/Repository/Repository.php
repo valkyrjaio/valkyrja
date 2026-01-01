@@ -23,8 +23,6 @@ use Valkyrja\Orm\Repository\Contract\RepositoryContract as Contract;
 /**
  * Class Repository.
  *
- * @author Melech Mizrachi
- *
  * @template T of EntityContract
  *
  * @implements Contract<T>

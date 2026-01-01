@@ -36,8 +36,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Route service.
- *
- * @author Melech Mizrachi
  */
 class RouteTest extends TestCase
 {

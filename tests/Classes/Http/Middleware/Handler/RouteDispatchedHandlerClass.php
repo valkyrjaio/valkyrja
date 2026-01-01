@@ -21,8 +21,6 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
  * Class TestRouteDispatchedHandler.
- *
- * @author Melech Mizrachi
  */
 class RouteDispatchedHandlerClass extends RouteDispatchedHandler
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Jwt\Enum;
 
 /**
  * Enum Algorithm.
- *
- * @author Melech Mizrachi
  */
 enum Algorithm
 {

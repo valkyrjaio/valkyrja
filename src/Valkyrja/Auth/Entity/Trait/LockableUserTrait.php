@@ -17,8 +17,6 @@ use Valkyrja\Auth\Constant\UserField;
 
 /**
  * Trait LockableUserTrait.
- *
- * @author Melech Mizrachi
  */
 trait LockableUserTrait
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Dispatch\Throwable\Exception;
 
 /**
  * Class InvalidClassMethodException.
- *
- * @author Melech Mizrachi
  */
 class InvalidMethodException extends InvalidArgumentException
 {

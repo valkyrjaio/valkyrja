@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Constant;
 
 /**
  * Constant SessionId.
- *
- * @author Melech Mizrachi
  */
 final class SessionId
 {

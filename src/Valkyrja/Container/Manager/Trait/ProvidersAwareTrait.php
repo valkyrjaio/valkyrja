@@ -21,8 +21,6 @@ use function is_callable;
 
 /**
  * Trait ProvidersAwareTrait.
- *
- * @author Melech Mizrachi
  */
 trait ProvidersAwareTrait
 {

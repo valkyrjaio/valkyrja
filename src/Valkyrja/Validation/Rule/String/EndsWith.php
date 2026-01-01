@@ -21,8 +21,6 @@ use function is_string;
 
 /**
  * Class EndsWith.
- *
- * @author Melech Mizrachi
  */
 class EndsWith extends Rule
 {

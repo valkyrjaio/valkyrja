@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Throwable\Exception;
 
 /**
  * Exception TokenizationException.
- *
- * @author Melech Mizrachi
  */
 class TokenizationException extends RuntimeException
 {

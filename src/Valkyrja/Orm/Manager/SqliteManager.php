@@ -17,8 +17,6 @@ use Valkyrja\Orm\Manager\Abstract\PdoManager;
 
 /**
  * Class SqliteManager.
- *
- * @author Melech Mizrachi
  */
 class SqliteManager extends PdoManager
 {

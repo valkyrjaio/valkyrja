@@ -42,8 +42,6 @@ use const PHP_SAPI;
 
 /**
  * Class UploadedFile.
- *
- * @author Melech Mizrachi
  */
 class UploadedFile implements Contract
 {

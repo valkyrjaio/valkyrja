@@ -20,8 +20,6 @@ use Valkyrja\Tests\Classes\Http\Middleware\RequestReceivedMiddlewareClass;
 
 /**
  * Test the request received handler.
- *
- * @author Melech Mizrachi
  */
 class RequestReceivedHandlerTest extends HandlerTestCase
 {

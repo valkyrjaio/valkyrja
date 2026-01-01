@@ -22,8 +22,6 @@ use Valkyrja\Orm\Enum\JoinType;
 
 /**
  * Class Join.
- *
- * @author Melech Mizrachi
  */
 readonly class Join implements Stringable
 {

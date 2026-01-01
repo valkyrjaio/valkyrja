@@ -33,8 +33,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Class RequestHandlerTest.
- *
- * @author Melech Mizrachi
  */
 class RequestHandlerTest extends TestCase
 {

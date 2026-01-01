@@ -24,8 +24,6 @@ use function sprintf;
 /**
  * Class Port.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<int|null>
  */
 class Port extends Type

@@ -21,8 +21,6 @@ use Valkyrja\Http\Message\Factory\ResponseFactory;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

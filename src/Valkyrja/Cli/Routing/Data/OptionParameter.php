@@ -27,8 +27,6 @@ use function in_array;
 
 /**
  * Class OptionParameter.
- *
- * @author Melech Mizrachi
  */
 class OptionParameter extends Parameter implements Contract
 {

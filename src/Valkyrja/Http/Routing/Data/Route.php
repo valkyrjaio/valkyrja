@@ -30,8 +30,6 @@ use function in_array;
 
 /**
  * Class Route.
- *
- * @author Melech Mizrachi
  */
 class Route implements Contract
 {

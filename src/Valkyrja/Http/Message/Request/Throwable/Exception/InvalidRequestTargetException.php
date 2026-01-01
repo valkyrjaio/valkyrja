@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Request\Throwable\Exception;
 
 /**
  * Class InvalidRequestTargetException.
- *
- * @author Melech Mizrachi
  */
 class InvalidRequestTargetException extends InvalidArgumentException
 {

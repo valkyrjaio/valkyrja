@@ -30,8 +30,6 @@ use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

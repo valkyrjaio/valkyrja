@@ -27,8 +27,6 @@ use Valkyrja\Type\Data\Cast;
 
 /**
  * Class ProcessorTest.
- *
- * @author Melech Mizrachi
  */
 class ProcessorTest extends TestCase
 {

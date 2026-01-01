@@ -20,8 +20,6 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Handler\CommandNotMatchedHandlerClass;
 
 /**
  * Test the command not matched handler.
- *
- * @author Melech Mizrachi
  */
 class CommandNotMatchedHandlerTest extends HandlerTestCase
 {

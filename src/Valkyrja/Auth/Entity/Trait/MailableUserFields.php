@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Entity\Trait;
 
 /**
  * Trait MailableUserFields.
- *
- * @author Melech Mizrachi
  */
 trait MailableUserFields
 {

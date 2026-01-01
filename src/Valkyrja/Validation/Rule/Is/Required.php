@@ -18,8 +18,6 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 
 /**
  * Class Required.
- *
- * @author Melech Mizrachi
  */
 class Required extends Rule
 {

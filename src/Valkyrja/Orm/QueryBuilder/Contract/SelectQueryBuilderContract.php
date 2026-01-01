@@ -17,8 +17,6 @@ use Valkyrja\Orm\Data\OrderBy;
 
 /**
  * Interface SelectQueryBuilderContract.
- *
- * @author Melech Mizrachi
  */
 interface SelectQueryBuilderContract extends QueryBuilderContract
 {

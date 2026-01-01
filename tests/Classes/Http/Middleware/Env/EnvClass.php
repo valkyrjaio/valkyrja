@@ -31,8 +31,6 @@ use Valkyrja\Tests\Classes\Http\Middleware\ThrowableCaughtMiddlewareClass;
 
 /**
  * Class Env.
- *
- * @author Melech Mizrachi
  */
 class EnvClass extends Env
 {

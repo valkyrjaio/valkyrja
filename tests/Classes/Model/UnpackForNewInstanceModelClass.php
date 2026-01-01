@@ -20,8 +20,6 @@ use Valkyrja\Type\Model\Trait\UnpackForNewInstance;
 /**
  * Model class to use to test UnpackForNewInstance model.
  *
- * @author Melech Mizrachi
- *
  * @property string $protected
  */
 class UnpackForNewInstanceModelClass extends AbstractModel

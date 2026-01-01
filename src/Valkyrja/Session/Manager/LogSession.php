@@ -18,8 +18,6 @@ use Valkyrja\Session\Data\CookieParams;
 
 /**
  * Class LogSession.
- *
- * @author Melech Mizrachi
  */
 class LogSession extends PhpSession
 {

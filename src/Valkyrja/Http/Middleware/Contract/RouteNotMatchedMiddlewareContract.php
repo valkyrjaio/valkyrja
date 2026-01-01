@@ -19,8 +19,6 @@ use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 
 /**
  * Interface RouteNotMatchedMiddlewareContract.
- *
- * @author Melech Mizrachi
  */
 interface RouteNotMatchedMiddlewareContract
 {

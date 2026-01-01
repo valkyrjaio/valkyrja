@@ -21,8 +21,6 @@ use Valkyrja\Auth\Entity\Trait\VerifiableUserTrait;
 
 /**
  * Entity VerifiableUser.
- *
- * @author Melech Mizrachi
  */
 class VerifiableUser extends User implements Contract
 {

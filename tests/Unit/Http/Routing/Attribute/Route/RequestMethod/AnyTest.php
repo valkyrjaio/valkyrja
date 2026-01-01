@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Any attribute.
- *
- * @author Melech Mizrachi
  */
 class AnyTest extends TestCase
 {

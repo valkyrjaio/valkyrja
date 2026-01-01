@@ -35,8 +35,6 @@ use Valkyrja\Tests\Classes\Http\Struct\ResponseStructEnum;
 
 /**
  * Controller class to test routes.
- *
- * @author Melech Mizrachi
  */
 class ControllerClass
 {

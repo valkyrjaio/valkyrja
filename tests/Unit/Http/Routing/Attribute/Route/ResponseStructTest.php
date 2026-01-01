@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the ResponseStruct attribute.
- *
- * @author Melech Mizrachi
  */
 class ResponseStructTest extends TestCase
 {

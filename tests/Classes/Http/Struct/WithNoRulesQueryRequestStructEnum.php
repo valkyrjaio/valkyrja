@@ -18,8 +18,6 @@ use Valkyrja\Http\Struct\Request\Trait\QueryRequestStruct;
 
 /**
  * Struct TestWithNoRulesQueryRequestStruct.
- *
- * @author Melech Mizrachi
  */
 enum WithNoRulesQueryRequestStructEnum implements RequestStructContract
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Throwable\Exception;
 
 /**
  * Exception NotFoundException.
- *
- * @author Melech Mizrachi
  */
 class NotFoundException extends RuntimeException
 {

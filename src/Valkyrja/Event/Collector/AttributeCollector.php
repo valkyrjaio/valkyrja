@@ -25,8 +25,6 @@ use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
 /**
  * Class AttributeCollector.
- *
- * @author Melech Mizrachi
  */
 class AttributeCollector implements Contract
 {

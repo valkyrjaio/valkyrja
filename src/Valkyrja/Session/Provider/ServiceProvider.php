@@ -32,8 +32,6 @@ use Valkyrja\Session\Manager\PhpSession;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

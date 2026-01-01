@@ -21,8 +21,6 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
  * Class TestExitedMiddleware.
- *
- * @author Melech Mizrachi
  */
 class ExitedMiddlewareClass implements ExitedMiddlewareContract
 {

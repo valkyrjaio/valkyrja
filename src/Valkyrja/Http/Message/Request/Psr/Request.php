@@ -29,8 +29,6 @@ use function is_array;
 
 /**
  * Class Request.
- *
- * @author Melech Mizrachi
  */
 class Request implements RequestInterface
 {

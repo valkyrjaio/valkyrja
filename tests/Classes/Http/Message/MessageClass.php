@@ -20,8 +20,6 @@ use Valkyrja\Http\Message\Trait\Message;
 
 /**
  * Class MessageClass.
- *
- * @author Melech Mizrachi
  */
 class MessageClass
 {

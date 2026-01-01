@@ -17,8 +17,6 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 
 /**
  * Trait ParsedBodyRequestStruct.
- *
- * @author Melech Mizrachi
  */
 trait ParsedBodyRequestStruct
 {

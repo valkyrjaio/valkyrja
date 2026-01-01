@@ -23,8 +23,6 @@ use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract as Contract;
 /**
  * Class ExitedHandler.
  *
- * @author Melech Mizrachi
- *
  * @extends Handler<ExitedMiddlewareContract>
  */
 class ExitedHandler extends Handler implements Contract

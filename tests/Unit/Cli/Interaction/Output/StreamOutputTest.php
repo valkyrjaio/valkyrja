@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the FileOutput class.
- *
- * @author Melech Mizrachi
  */
 class StreamOutputTest extends TestCase
 {

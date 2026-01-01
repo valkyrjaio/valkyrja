@@ -20,8 +20,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the SuccessFormatter class.
- *
- * @author Melech Mizrachi
  */
 class SuccessFormatterTest extends TestCase
 {

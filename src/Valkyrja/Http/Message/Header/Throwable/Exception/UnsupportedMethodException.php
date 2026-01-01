@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Header\Throwable\Exception;
 
 /**
  * Class UnsupportedMethodException.
- *
- * @author Melech Mizrachi
  */
 class UnsupportedMethodException extends RuntimeException
 {

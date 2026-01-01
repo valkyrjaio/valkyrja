@@ -38,8 +38,6 @@ use function substr;
 
 /**
  * Abstract Class UriFactory.
- *
- * @author Melech Mizrachi
  */
 abstract class UriFactory
 {

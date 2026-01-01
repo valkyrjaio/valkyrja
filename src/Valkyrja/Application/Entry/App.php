@@ -36,8 +36,6 @@ use function defined;
 
 /**
  * Class App.
- *
- * @author Melech Mizrachi
  */
 class App
 {

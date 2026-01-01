@@ -24,8 +24,6 @@ use function is_string;
 /**
  * Class ObjectT.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<object>
  */
 class ObjectT extends Type implements Contract

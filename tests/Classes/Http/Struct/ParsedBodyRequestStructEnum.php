@@ -24,8 +24,6 @@ use Valkyrja\Validation\Rule\Is\Required;
 
 /**
  * Struct TestParsedBodyRequestStruct.
- *
- * @author Melech Mizrachi
  */
 enum ParsedBodyRequestStructEnum implements RequestStructContract
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Entity\Trait;
 
 /**
  * Trait LockableUserFields.
- *
- * @author Melech Mizrachi
  */
 trait LockableUserFields
 {

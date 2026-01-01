@@ -17,8 +17,6 @@ use Closure;
 
 /**
  * Interface CollectorContract.
- *
- * @author Melech Mizrachi
  */
 interface CollectorContract
 {

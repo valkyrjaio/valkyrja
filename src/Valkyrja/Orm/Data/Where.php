@@ -20,8 +20,6 @@ use Valkyrja\Orm\Enum\WhereType;
 
 /**
  * Class Where.
- *
- * @author Melech Mizrachi
  */
 readonly class Where implements Stringable
 {

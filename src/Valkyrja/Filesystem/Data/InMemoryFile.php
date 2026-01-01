@@ -15,8 +15,6 @@ namespace Valkyrja\Filesystem\Data;
 
 /**
  * Class InMemoryFile.
- *
- * @author Melech Mizrachi
  */
 class InMemoryFile
 {

@@ -18,8 +18,6 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
  * Interface MatcherContract.
- *
- * @author Melech Mizrachi
  */
 interface MatcherContract
 {

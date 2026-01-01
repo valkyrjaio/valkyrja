@@ -25,8 +25,6 @@ use Valkyrja\Support\Directory\Directory;
 
 /**
  * Class ClearCacheCommand.
- *
- * @author Melech Mizrachi
  */
 class ClearCacheCommand
 {

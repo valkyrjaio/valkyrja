@@ -24,8 +24,6 @@ use Valkyrja\View\Factory\ResponseFactory;
 
 /**
  * Class ViewExceptionMiddlewareTest.
- *
- * @author Melech Mizrachi
  */
 class ViewExceptionMiddlewareTest extends TestCase
 {

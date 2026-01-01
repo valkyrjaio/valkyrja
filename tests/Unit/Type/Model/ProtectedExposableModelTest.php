@@ -21,8 +21,6 @@ use const JSON_THROW_ON_ERROR;
 
 /**
  * Test the FullyExposed model.
- *
- * @author Melech Mizrachi
  */
 class ProtectedExposableModelTest extends TestCase
 {

@@ -25,8 +25,6 @@ use Valkyrja\Event\Dispatcher\Contract\DispatcherContract as Contract;
 
 /**
  * Class Dispatcher.
- *
- * @author Melech Mizrachi
  */
 class Dispatcher implements Contract
 {

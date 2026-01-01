@@ -17,8 +17,6 @@ use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
  * Abstract Class Provider.
- *
- * @author Melech Mizrachi
  */
 abstract class Provider
 {

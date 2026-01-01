@@ -23,8 +23,6 @@ use Valkyrja\Log\Logger\Contract\LoggerContract;
 
 /**
  * Class LogExceptionMiddleware.
- *
- * @author Melech Mizrachi
  */
 class LogThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
 {

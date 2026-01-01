@@ -18,8 +18,6 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 
 /**
  * Class Equal.
- *
- * @author Melech Mizrachi
  */
 class Equal extends Rule
 {

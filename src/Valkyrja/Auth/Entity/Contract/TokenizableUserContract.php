@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Entity\Contract;
 
 /**
  * Interface TokenizableUserContract.
- *
- * @author Melech Mizrachi
  */
 interface TokenizableUserContract extends UserContract
 {

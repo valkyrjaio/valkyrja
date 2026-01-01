@@ -19,8 +19,6 @@ use function array_key_exists;
 
 /**
  * Trait ResponseStruct.
- *
- * @author Melech Mizrachi
  */
 trait ResponseStruct
 {

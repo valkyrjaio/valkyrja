@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Put attribute.
- *
- * @author Melech Mizrachi
  */
 class PutTest extends TestCase
 {

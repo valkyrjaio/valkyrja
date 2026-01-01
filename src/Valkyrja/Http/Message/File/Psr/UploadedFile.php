@@ -21,8 +21,6 @@ use Valkyrja\Http\Message\Stream\Psr\Stream;
 
 /**
  * Class UploadedFile.
- *
- * @author Melech Mizrachi
  */
 class UploadedFile implements UploadedFileInterface
 {

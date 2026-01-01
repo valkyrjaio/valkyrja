@@ -18,8 +18,6 @@ use Valkyrja\Throwable\Error\TypeError;
 
 /**
  * Test the type error class.
- *
- * @author Melech Mizrachi
  */
 class TypeErrorTest extends TestCase
 {

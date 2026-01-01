@@ -25,8 +25,6 @@ use ReflectionProperty;
 
 /**
  * Interface ReflectionContract.
- *
- * @author Melech Mizrachi
  */
 interface ReflectorContract
 {

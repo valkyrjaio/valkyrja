@@ -22,8 +22,6 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
  * Class TestCommandDispatchedMiddleware.
- *
- * @author Melech Mizrachi
  */
 class CommandDispatchedMiddlewareClass implements CommandDispatchedMiddlewareContract
 {

@@ -18,8 +18,6 @@ use Valkyrja\Cli\Interaction\Message\Question;
 
 /**
  * Testable Question class.
- *
- * @author Melech Mizrachi
  */
 class QuestionClass extends Question
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Type\Model\Trait;
 
 /**
  * Trait Exposable.
- *
- * @author Melech Mizrachi
  */
 trait Exposable
 {

@@ -18,8 +18,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the NotFoundHttpException class.
- *
- * @author Melech Mizrachi
  */
 class NotFoundHttpExceptionTest extends TestCase
 {

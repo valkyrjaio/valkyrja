@@ -53,8 +53,6 @@ use function in_array;
 
 /**
  * Class Router.
- *
- * @author Melech Mizrachi
  */
 class Router implements Contract
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Uri\Throwable\Exception;
 
 /**
  * Class InvalidQueryException.
- *
- * @author Melech Mizrachi
  */
 class InvalidQueryException extends InvalidArgumentException
 {

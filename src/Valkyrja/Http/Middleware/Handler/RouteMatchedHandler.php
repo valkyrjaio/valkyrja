@@ -24,8 +24,6 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 /**
  * Class RouteMatchedHandler.
  *
- * @author Melech Mizrachi
- *
  * @extends Handler<RouteMatchedMiddlewareContract>
  */
 class RouteMatchedHandler extends Handler implements Contract

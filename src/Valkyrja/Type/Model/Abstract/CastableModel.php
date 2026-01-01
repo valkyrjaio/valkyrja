@@ -18,8 +18,6 @@ use Valkyrja\Type\Model\Trait\Castable;
 
 /**
  * Class CastableModel.
- *
- * @author Melech Mizrachi
  */
 abstract class CastableModel extends Model implements Contract
 {

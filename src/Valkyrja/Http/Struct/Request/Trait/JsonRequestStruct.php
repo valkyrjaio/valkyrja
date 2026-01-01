@@ -19,8 +19,6 @@ use Valkyrja\Http\Struct\Throwable\Exception\InvalidArgumentException;
 
 /**
  * Trait JsonRequestStruct.
- *
- * @author Melech Mizrachi
  */
 trait JsonRequestStruct
 {

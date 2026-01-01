@@ -15,8 +15,6 @@ namespace Valkyrja\Dispatch\Data\Contract;
 
 /**
  * Interface PropertyDispatchContract.
- *
- * @author Melech Mizrachi
  */
 interface PropertyDispatchContract extends ClassDispatchContract
 {

@@ -17,8 +17,6 @@ use Valkyrja\Http\Message\Enum\StatusCode;
 
 /**
  * Class NotFoundHttpException.
- *
- * @author Melech Mizrachi
  */
 class NotFoundHttpException extends HttpException
 {

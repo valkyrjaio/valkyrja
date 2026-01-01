@@ -26,8 +26,6 @@ use function is_string;
 /**
  * Class IntId.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<int>
  */
 class IntId extends Type implements Contract

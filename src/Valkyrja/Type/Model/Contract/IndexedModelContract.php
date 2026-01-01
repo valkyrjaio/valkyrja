@@ -15,8 +15,6 @@ namespace Valkyrja\Type\Model\Contract;
 
 /**
  * Interface IndexedModelContract.
- *
- * @author Melech Mizrachi
  */
 interface IndexedModelContract extends ModelContract
 {

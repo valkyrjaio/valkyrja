@@ -19,8 +19,6 @@ use Valkyrja\Http\Routing\Attribute\Route\RequestMethod as ParentAttribute;
 
 /**
  * Attribute Any.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_METHOD)]
 class Any extends ParentAttribute

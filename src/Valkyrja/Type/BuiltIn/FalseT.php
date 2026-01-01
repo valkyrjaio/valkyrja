@@ -20,8 +20,6 @@ use Valkyrja\Type\BuiltIn\Contract\FalseContract as Contract;
 /**
  * Class FalseT.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<false>
  */
 class FalseT extends Type implements Contract

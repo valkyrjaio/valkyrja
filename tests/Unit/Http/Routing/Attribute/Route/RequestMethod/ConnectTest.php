@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Connect attribute.
- *
- * @author Melech Mizrachi
  */
 class ConnectTest extends TestCase
 {

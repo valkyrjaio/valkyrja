@@ -17,8 +17,6 @@ use Attribute;
 
 /**
  * Attribute Nullable.
- *
- * @author Melech Mizrachi
  */
 #[Attribute]
 class Nullable

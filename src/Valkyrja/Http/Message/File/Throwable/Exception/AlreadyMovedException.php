@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\File\Throwable\Exception;
 
 /**
  * Class AlreadyMovedException.
- *
- * @author Melech Mizrachi
  */
 class AlreadyMovedException extends RuntimeException
 {

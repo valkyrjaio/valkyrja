@@ -19,8 +19,6 @@ use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandlerContract;
 
 /**
  * Interface CommandNotMatchedMiddlewareContract.
- *
- * @author Melech Mizrachi
  */
 interface CommandNotMatchedMiddlewareContract
 {

@@ -28,8 +28,6 @@ use function random_bytes;
 
 /**
  * Class NullSession.
- *
- * @author Melech Mizrachi
  */
 class NullSession implements Contract
 {

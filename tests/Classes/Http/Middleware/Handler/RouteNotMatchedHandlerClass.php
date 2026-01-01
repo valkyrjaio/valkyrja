@@ -20,8 +20,6 @@ use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 
 /**
  * Class TestRouteNotMatchedHandler.
- *
- * @author Melech Mizrachi
  */
 class RouteNotMatchedHandlerClass extends RouteNotMatchedHandler
 {

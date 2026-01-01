@@ -17,8 +17,6 @@ use Valkyrja\Validation\Throwable\Contract\Throwable;
 
 /**
  * Class ValidationException.
- *
- * @author Melech Mizrachi
  */
 class ValidationException extends RuntimeException implements Throwable
 {

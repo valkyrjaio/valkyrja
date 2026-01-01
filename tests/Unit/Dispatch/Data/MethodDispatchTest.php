@@ -21,8 +21,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the MethodDispatch.
- *
- * @author Melech Mizrachi
  */
 class MethodDispatchTest extends TestCase
 {

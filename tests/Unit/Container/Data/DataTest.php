@@ -18,8 +18,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Data service.
- *
- * @author Melech Mizrachi
  */
 class DataTest extends TestCase
 {

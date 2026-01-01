@@ -20,8 +20,6 @@ use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
 
 /**
  * Class TestExitedHandler.
- *
- * @author Melech Mizrachi
  */
 class ExitedHandlerClass extends ExitedHandler
 {

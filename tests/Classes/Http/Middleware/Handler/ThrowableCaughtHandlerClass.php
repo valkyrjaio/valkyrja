@@ -21,8 +21,6 @@ use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
 
 /**
  * Class TestThrowableCaughtHandler.
- *
- * @author Melech Mizrachi
  */
 class ThrowableCaughtHandlerClass extends ThrowableCaughtHandler
 {

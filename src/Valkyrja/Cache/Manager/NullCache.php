@@ -20,8 +20,6 @@ use Valkyrja\Cache\Tagger\Tagger as TagClass;
 
 /**
  * Class NullCache.
- *
- * @author Melech Mizrachi
  */
 class NullCache implements Contract
 {

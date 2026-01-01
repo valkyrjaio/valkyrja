@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Constant;
 
 /**
  * Constant RouteName.
- *
- * @author Melech Mizrachi
  */
 final class RouteName
 {

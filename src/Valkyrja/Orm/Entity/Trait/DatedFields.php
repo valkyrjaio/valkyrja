@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Entity\Trait;
 
 /**
  * Trait DatedFields.
- *
- * @author Melech Mizrachi
  */
 trait DatedFields
 {

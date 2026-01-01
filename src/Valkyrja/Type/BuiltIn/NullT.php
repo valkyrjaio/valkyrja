@@ -20,8 +20,6 @@ use Valkyrja\Type\BuiltIn\Contract\NullContract as Contract;
 /**
  * Class NullT.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<null>
  */
 class NullT extends Type implements Contract

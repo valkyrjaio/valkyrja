@@ -24,8 +24,6 @@ use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract as C
 /**
  * Class ExceptionHandler.
  *
- * @author Melech Mizrachi
- *
  * @extends Handler<ThrowableCaughtMiddlewareContract>
  */
 class ThrowableCaughtHandler extends Handler implements Contract

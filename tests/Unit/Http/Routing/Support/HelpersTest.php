@@ -18,8 +18,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Class HelpersTest.
- *
- * @author Melech Mizrachi
  */
 class HelpersTest extends TestCase
 {

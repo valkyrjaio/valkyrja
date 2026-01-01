@@ -18,8 +18,6 @@ use Valkyrja\Orm\Entity\Contract\EntityContract;
 
 /**
  * Interface StatementContract.
- *
- * @author Melech Mizrachi
  */
 interface StatementContract
 {

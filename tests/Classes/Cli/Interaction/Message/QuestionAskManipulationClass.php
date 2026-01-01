@@ -19,8 +19,6 @@ use Valkyrja\Cli\Interaction\Message\Question;
 
 /**
  * Testable Question class that manipulates the ask method to return an invalid answer the first time it is called, then subsequent answers are valid.
- *
- * @author Melech Mizrachi
  */
 class QuestionAskManipulationClass extends Question
 {

@@ -20,8 +20,6 @@ use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
 
 /**
  * Class TestInputReceivedHandler.
- *
- * @author Melech Mizrachi
  */
 class InputReceivedHandlerClass extends InputReceivedHandler
 {

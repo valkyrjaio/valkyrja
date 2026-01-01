@@ -29,8 +29,6 @@ use function is_callable;
 
 /**
  * Class DispatcherFactory.
- *
- * @author Melech Mizrachi
  */
 class DispatchFactory
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Support\Directory;
 
 /**
  * Class Directory.
- *
- * @author Melech Mizrachi
  */
 class Directory
 {

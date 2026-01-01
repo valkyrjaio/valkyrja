@@ -21,8 +21,6 @@ use Valkyrja\Type\Model\Trait\Indexable;
 /**
  * Model class to use to test Indexable model.
  *
- * @author Melech Mizrachi
- *
  * @property string $protected
  */
 class IndexableModelClass extends AbstractModel implements Contract

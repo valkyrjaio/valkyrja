@@ -31,8 +31,6 @@ use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

@@ -27,8 +27,6 @@ use function urlencode;
 
 /**
  * Class Cookie.
- *
- * @author Melech Mizrachi
  */
 class Cookie extends Value implements Contract
 {

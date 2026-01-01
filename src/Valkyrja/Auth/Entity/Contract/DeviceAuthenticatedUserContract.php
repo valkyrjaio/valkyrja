@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Entity\Contract;
 
 /**
  * Interface DeviceAuthenticatedUserContract.
- *
- * @author Melech Mizrachi
  */
 interface DeviceAuthenticatedUserContract extends UserContract
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Cli\Interaction\Output\Contract;
 
 /**
  * Interface StreamOutputContract.
- *
- * @author Melech Mizrachi
  */
 interface StreamOutputContract extends OutputContract
 {

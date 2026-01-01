@@ -18,8 +18,6 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 
 /**
  * Interface InputHandlerContract.
- *
- * @author Melech Mizrachi
  */
 interface InputHandlerContract
 {

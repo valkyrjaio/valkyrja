@@ -21,8 +21,6 @@ use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
  * Class TestRequestReceivedMiddleware.
- *
- * @author Melech Mizrachi
  */
 class RequestReceivedMiddlewareClass implements RequestReceivedMiddlewareContract
 {

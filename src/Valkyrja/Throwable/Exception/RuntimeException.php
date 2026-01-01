@@ -20,8 +20,6 @@ use Valkyrja\Throwable\Handler\ThrowableHandler;
 
 /**
  * Class RuntimeException.
- *
- * @author Melech Mizrachi
  */
 class RuntimeException extends PhpRuntimeException implements Throwable
 {

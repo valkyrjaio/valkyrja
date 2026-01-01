@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Entity\Contract;
 
 /**
  * Interface DatedEntityContract.
- *
- * @author Melech Mizrachi
  */
 interface DatedEntityContract extends EntityContract
 {

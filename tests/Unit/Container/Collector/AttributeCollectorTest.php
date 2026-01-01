@@ -22,8 +22,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the attribute collector service.
- *
- * @author Melech Mizrachi
  */
 class AttributeCollectorTest extends TestCase
 {

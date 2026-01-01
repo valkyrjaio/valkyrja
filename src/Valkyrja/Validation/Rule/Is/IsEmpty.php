@@ -18,8 +18,6 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 
 /**
  * Class IsEmpty.
- *
- * @author Melech Mizrachi
  */
 class IsEmpty extends Rule
 {

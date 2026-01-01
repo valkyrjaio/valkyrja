@@ -19,8 +19,6 @@ use Valkyrja\Http\Server\Provider\ServiceProvider as ServerServiceProvider;
 
 /**
  * Final Class Component.
- *
- * @author Melech Mizrachi
  */
 class ComponentProvider extends AppComponent
 {

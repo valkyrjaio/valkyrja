@@ -20,8 +20,6 @@ use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 
 /**
  * Class TestSendingResponseHandler.
- *
- * @author Melech Mizrachi
  */
 class SendingResponseHandlerClass extends SendingResponseHandler
 {

@@ -23,8 +23,6 @@ use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract as Con
 /**
  * Class InputReceivedHandler.
  *
- * @author Melech Mizrachi
- *
  * @extends Handler<InputReceivedMiddlewareContract>
  */
 class InputReceivedHandler extends Handler implements Contract

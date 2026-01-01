@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Schema\Contract;
 
 /**
  * Interface TableContract.
- *
- * @author Melech Mizrachi
  */
 interface TableContract
 {

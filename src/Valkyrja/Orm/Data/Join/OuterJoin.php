@@ -20,8 +20,6 @@ use Valkyrja\Orm\Enum\JoinType;
 
 /**
  * Class OuterJoin.
- *
- * @author Melech Mizrachi
  */
 readonly class OuterJoin extends Join
 {

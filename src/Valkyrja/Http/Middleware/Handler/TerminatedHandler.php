@@ -23,8 +23,6 @@ use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract as Contr
 /**
  * Class TerminatedHandler.
  *
- * @author Melech Mizrachi
- *
  * @extends Handler<TerminatedMiddlewareContract>
  */
 class TerminatedHandler extends Handler implements Contract

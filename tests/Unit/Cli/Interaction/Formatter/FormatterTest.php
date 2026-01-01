@@ -21,8 +21,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Formatter class.
- *
- * @author Melech Mizrachi
  */
 class FormatterTest extends TestCase
 {

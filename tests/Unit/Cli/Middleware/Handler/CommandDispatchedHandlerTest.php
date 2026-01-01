@@ -20,8 +20,6 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Handler\CommandDispatchedHandlerClass;
 
 /**
  * Test the command dispatched handler.
- *
- * @author Melech Mizrachi
  */
 class CommandDispatchedHandlerTest extends HandlerTestCase
 {

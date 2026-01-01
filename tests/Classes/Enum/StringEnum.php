@@ -18,8 +18,6 @@ use Valkyrja\Type\BuiltIn\Enum\Trait\Enum;
 
 /**
  * Model class to use to test string BackedEnum.
- *
- * @author Melech Mizrachi
  */
 enum StringEnum: string implements Contract
 {

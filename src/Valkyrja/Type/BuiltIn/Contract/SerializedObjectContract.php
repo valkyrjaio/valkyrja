@@ -19,8 +19,6 @@ use Valkyrja\Type\Contract\TypeContract;
 /**
  * Interface SerializedObjectContract.
  *
- * @author Melech Mizrachi
- *
  * @extends TypeContract<object>
  */
 interface SerializedObjectContract extends TypeContract

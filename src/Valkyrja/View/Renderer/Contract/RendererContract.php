@@ -17,8 +17,6 @@ use Valkyrja\View\Template\Contract\TemplateContract;
 
 /**
  * Interface RendererContract.
- *
- * @author Melech Mizrachi
  */
 interface RendererContract
 {

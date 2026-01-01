@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Data;
 
 /**
  * Class Id.
- *
- * @author Melech Mizrachi
  */
 readonly class Id extends Value
 {

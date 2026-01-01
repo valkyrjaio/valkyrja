@@ -17,8 +17,6 @@ use Valkyrja\Application\Env\Env;
 
 /**
  * Class Env.
- *
- * @author Melech Mizrachi
  */
 class EmptyEnvClass extends Env
 {

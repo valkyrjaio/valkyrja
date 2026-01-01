@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Entity\Contract;
 
 /**
  * Interface TwoFactorUserContract.
- *
- * @author Melech Mizrachi
  */
 interface TwoFactorUserContract extends UserContract
 {

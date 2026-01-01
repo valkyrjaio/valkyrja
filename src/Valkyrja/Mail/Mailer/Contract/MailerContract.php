@@ -17,8 +17,6 @@ use Valkyrja\Mail\Data\Contract\MessageContract;
 
 /**
  * Interface MailerContract.
- *
- * @author Melech Mizrachi
  */
 interface MailerContract
 {

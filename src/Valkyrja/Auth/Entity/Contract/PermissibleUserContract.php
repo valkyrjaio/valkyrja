@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Entity\Contract;
 
 /**
  * Interface PermissibleUserContract.
- *
- * @author Melech Mizrachi
  */
 interface PermissibleUserContract extends UserContract
 {

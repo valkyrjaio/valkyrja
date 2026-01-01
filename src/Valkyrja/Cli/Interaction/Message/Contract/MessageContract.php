@@ -17,8 +17,6 @@ use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
 
 /**
  * Interface MessageContract.
- *
- * @author Melech Mizrachi
  */
 interface MessageContract
 {

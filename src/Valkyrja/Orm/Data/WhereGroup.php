@@ -18,8 +18,6 @@ use Stringable;
 
 /**
  * Class WhereGroup.
- *
- * @author Melech Mizrachi
  */
 readonly class WhereGroup implements Stringable
 {

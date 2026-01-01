@@ -27,8 +27,6 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 /**
  * Class TokenAuthenticator.
  *
- * @author Melech Mizrachi
- *
  * @template U of UserContract
  *
  * @extends Authenticator<U>

@@ -20,8 +20,6 @@ use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract;
 /**
  * Interface RouteNotMatchedHandlerContract.
  *
- * @author Melech Mizrachi
- *
  * @extends HandlerContract<RouteNotMatchedMiddlewareContract>
  */
 interface RouteNotMatchedHandlerContract extends HandlerContract

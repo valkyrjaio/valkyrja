@@ -24,8 +24,6 @@ use Valkyrja\Validation\Rule\Is\Required;
 
 /**
  * Struct TestIndexedQueryRequestStruct.
- *
- * @author Melech Mizrachi
  */
 enum IndexedQueryRequestStructEnum: int implements RequestStructContract
 {

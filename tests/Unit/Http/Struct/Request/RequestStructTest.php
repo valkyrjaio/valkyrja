@@ -34,8 +34,6 @@ use const ARRAY_FILTER_USE_KEY;
 
 /**
  * Test the RequestStruct.
- *
- * @author Melech Mizrachi
  */
 class RequestStructTest extends TestCase
 {

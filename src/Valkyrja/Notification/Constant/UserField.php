@@ -15,8 +15,6 @@ namespace Valkyrja\Notification\Constant;
 
 /**
  * Constant UserField.
- *
- * @author Melech Mizrachi
  */
 final class UserField
 {

@@ -19,8 +19,6 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
  * Interface RouterContract.
- *
- * @author Melech Mizrachi
  */
 interface RouterContract
 {

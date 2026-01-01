@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Middleware attribute.
- *
- * @author Melech Mizrachi
  */
 class MiddlewareTest extends TestCase
 {

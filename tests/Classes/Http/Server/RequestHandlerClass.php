@@ -17,8 +17,6 @@ use Valkyrja\Http\Server\Handler\RequestHandler;
 
 /**
  * Class RequestHandlerClass.
- *
- * @author Melech Mizrachi
  */
 class RequestHandlerClass extends RequestHandler
 {

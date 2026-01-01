@@ -15,8 +15,6 @@ namespace Valkyrja\Notification\Entity\Trait;
 
 /**
  * Trait NotifiableUserFields.
- *
- * @author Melech Mizrachi
  */
 trait NotifiableUserFields
 {

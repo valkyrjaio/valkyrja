@@ -26,8 +26,6 @@ use function preg_replace;
 
 /**
  * Class OrkaRenderer.
- *
- * @author Melech Mizrachi
  */
 class OrkaRenderer extends PhpRenderer
 {

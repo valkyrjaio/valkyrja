@@ -31,8 +31,6 @@ use Valkyrja\Cli\Interaction\Output\StreamOutput;
 
 /**
  * Class OutputFactory.
- *
- * @author Melech Mizrachi
  */
 class OutputFactory implements Contract
 {

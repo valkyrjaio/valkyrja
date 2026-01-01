@@ -18,8 +18,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the UnpackForNewInstanceModelTest model.
- *
- * @author Melech Mizrachi
  */
 class UnpackForNewInstanceModelTest extends TestCase
 {

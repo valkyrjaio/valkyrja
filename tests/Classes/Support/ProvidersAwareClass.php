@@ -19,8 +19,6 @@ use function array_key_exists;
 
 /**
  * Class ProvidersAwareClass.
- *
- * @author Melech Mizrachi
  */
 class ProvidersAwareClass
 {

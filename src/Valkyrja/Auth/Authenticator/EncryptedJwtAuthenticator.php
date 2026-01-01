@@ -29,8 +29,6 @@ use function is_string;
 /**
  * Class EncryptedJwtAuthenticator.
  *
- * @author Melech Mizrachi
- *
  * @template U of UserContract
  *
  * @extends JwtAuthenticator<U>

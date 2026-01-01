@@ -20,8 +20,6 @@ use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 
 /**
  * Interface ThrowableCaughtMiddlewareContract.
- *
- * @author Melech Mizrachi
  */
 interface ThrowableCaughtMiddlewareContract
 {

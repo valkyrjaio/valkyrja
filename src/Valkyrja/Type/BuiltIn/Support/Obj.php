@@ -29,8 +29,6 @@ use const JSON_THROW_ON_ERROR;
 
 /**
  * Class Obj.
- *
- * @author Melech Mizrachi
  */
 class Obj
 {

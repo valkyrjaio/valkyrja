@@ -17,8 +17,6 @@ use Valkyrja\Auth\Constant\UserField;
 
 /**
  * Trait VerifiableUserTrait.
- *
- * @author Melech Mizrachi
  */
 trait VerifiableUserTrait
 {

@@ -20,8 +20,6 @@ use Valkyrja\Type\BuiltIn\Enum\Contract\ArrayableContract;
 
 /**
  * Test the Struct.
- *
- * @author Melech Mizrachi
  */
 class StructTest extends TestCase
 {

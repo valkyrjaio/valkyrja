@@ -20,8 +20,6 @@ use function in_array;
 
 /**
  * Class AuthenticatedUsers.
- *
- * @author Melech Mizrachi
  */
 class AuthenticatedUsers implements Contract
 {

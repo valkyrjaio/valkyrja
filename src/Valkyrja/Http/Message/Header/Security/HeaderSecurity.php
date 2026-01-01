@@ -25,8 +25,6 @@ use function strlen;
 
 /**
  * Class HeaderSecurity.
- *
- * @author Melech Mizrachi
  */
 final class HeaderSecurity
 {

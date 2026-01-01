@@ -15,8 +15,6 @@ namespace Valkyrja\Dispatch\Throwable\Exception;
 
 /**
  * Class InvalidFunctionException.
- *
- * @author Melech Mizrachi
  */
 class InvalidFunctionException extends InvalidArgumentException
 {

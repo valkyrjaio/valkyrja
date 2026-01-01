@@ -18,8 +18,6 @@ use PDOStatement;
 
 /**
  * PDO test class.
- *
- * @author Melech Mizrachi
  */
 class PdoClass extends PDO
 {

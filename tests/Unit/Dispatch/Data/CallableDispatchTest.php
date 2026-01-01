@@ -22,8 +22,6 @@ use const JSON_THROW_ON_ERROR;
 
 /**
  * Test the CallableDispatch.
- *
- * @author Melech Mizrachi
  */
 class CallableDispatchTest extends TestCase
 {

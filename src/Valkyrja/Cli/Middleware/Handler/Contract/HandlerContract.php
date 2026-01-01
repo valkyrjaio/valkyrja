@@ -23,8 +23,6 @@ use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 /**
  * Interface HandlerContract.
  *
- * @author Melech Mizrachi
- *
  * @template Middleware of InputReceivedMiddlewareContract|CommandMatchedMiddlewareContract|CommandNotMatchedMiddlewareContract|CommandDispatchedMiddlewareContract|ThrowableCaughtMiddlewareContract|ExitedMiddlewareContract
  */
 interface HandlerContract

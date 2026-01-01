@@ -24,8 +24,6 @@ use Valkyrja\View\Renderer\PhpRenderer;
 
 /**
  * Class ResponseFactory.
- *
- * @author Melech Mizrachi
  */
 class ResponseFactory implements Contract
 {

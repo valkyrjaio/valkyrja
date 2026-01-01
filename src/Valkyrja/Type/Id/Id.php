@@ -25,8 +25,6 @@ use function is_string;
 /**
  * Class Id.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<string|int>
  */
 class Id extends Type implements Contract

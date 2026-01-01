@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Schema\Contract;
 
 /**
  * Interface IndexContract.
- *
- * @author Melech Mizrachi
  */
 interface IndexContract
 {

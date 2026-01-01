@@ -23,8 +23,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the ListCommand service.
- *
- * @author Melech Mizrachi
  */
 class ListCommandTest extends TestCase
 {

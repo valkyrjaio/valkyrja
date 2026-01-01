@@ -18,8 +18,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Config service.
- *
- * @author Melech Mizrachi
  */
 class ConfigTest extends TestCase
 {

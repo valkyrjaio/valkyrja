@@ -15,8 +15,6 @@ namespace Valkyrja\Type\Vlid\Throwable\Exception;
 
 /**
  * Class InvalidVlidV1Exception.
- *
- * @author Melech Mizrachi
  */
 class InvalidVlidV1Exception extends InvalidVlidException
 {

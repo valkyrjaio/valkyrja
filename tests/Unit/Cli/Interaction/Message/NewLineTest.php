@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the NewLine class.
- *
- * @author Melech Mizrachi
  */
 class NewLineTest extends TestCase
 {

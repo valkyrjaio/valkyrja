@@ -18,8 +18,6 @@ use Valkyrja\Cli\Routing\Data\Data;
 
 /**
  * Interface CollectionContract.
- *
- * @author Melech Mizrachi
  */
 interface CollectionContract
 {

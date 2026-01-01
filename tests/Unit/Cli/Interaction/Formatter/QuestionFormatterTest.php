@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the QuestionFormatter class.
- *
- * @author Melech Mizrachi
  */
 class QuestionFormatterTest extends TestCase
 {

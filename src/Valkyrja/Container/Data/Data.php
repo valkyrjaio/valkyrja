@@ -18,8 +18,6 @@ use Valkyrja\Container\Provider\Provider;
 
 /**
  * Class Data.
- *
- * @author Melech Mizrachi
  */
 readonly class Data
 {

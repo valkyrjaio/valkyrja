@@ -22,8 +22,6 @@ use function is_array;
 /**
  * Class Value.
  *
- * @author Melech Mizrachi
- *
  * @psalm-type ValueType QueryBuilderContract|array<array-key, scalar|null>|scalar|null
  *
  * @phpstan-type ValueType QueryBuilderContract|array<array-key, scalar|null>|scalar|null

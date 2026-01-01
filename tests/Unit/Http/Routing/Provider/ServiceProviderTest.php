@@ -58,8 +58,6 @@ use Valkyrja\View\Renderer\Contract\RendererContract;
 
 /**
  * Test the ServiceProviderTest.
- *
- * @author Melech Mizrachi
  */
 class ServiceProviderTest extends ServiceProviderTestCase
 {

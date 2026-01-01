@@ -32,8 +32,6 @@ use const EXTR_SKIP;
 
 /**
  * Class PhpRenderer.
- *
- * @author Melech Mizrachi
  */
 class PhpRenderer implements Contract
 {

@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\File\Throwable\Contract\Throwable;
 
 /**
  * Class UploadErrorException.
- *
- * @author Melech Mizrachi
  */
 class UploadErrorException extends RuntimeException
 {

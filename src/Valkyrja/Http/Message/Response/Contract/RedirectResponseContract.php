@@ -19,8 +19,6 @@ use Valkyrja\Http\Message\Uri\Contract\UriContract;
 
 /**
  * Interface RedirectResponseContract.
- *
- * @author Melech Mizrachi
  */
 interface RedirectResponseContract extends ResponseContract
 {

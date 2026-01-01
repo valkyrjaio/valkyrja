@@ -20,8 +20,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Input class.
- *
- * @author Melech Mizrachi
  */
 class InputTest extends TestCase
 {

@@ -19,8 +19,6 @@ use Valkyrja\Dispatch\Data\Contract\GlobalVariableDispatchContract as Contract;
 
 /**
  * Class GlobalVariableDispatch.
- *
- * @author Melech Mizrachi
  */
 class GlobalVariableDispatch extends Dispatch implements Contract
 {

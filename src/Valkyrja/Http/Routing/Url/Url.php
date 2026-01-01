@@ -22,8 +22,6 @@ use function str_replace;
 
 /**
  * Class Url.
- *
- * @author Melech Mizrachi
  */
 class Url implements Contract
 {

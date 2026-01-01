@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Stream\Stream;
 
 /**
  * Class StreamReadExceptionClass.
- *
- * @author Melech Mizrachi
  */
 class StreamReadExceptionClass extends Stream
 {

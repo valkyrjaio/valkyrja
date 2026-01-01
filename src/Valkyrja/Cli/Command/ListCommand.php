@@ -32,8 +32,6 @@ use function is_string;
 
 /**
  * Class ListCommand.
- *
- * @author Melech Mizrachi
  */
 class ListCommand
 {

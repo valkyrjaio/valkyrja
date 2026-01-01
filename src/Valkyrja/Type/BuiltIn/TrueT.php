@@ -20,8 +20,6 @@ use Valkyrja\Type\BuiltIn\Contract\TrueContract as Contract;
 /**
  * Class TrueT.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<true>
  */
 class TrueT extends Type implements Contract

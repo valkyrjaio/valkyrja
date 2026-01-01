@@ -17,8 +17,6 @@ use Valkyrja\Orm\Manager\Abstract\PdoManager;
 
 /**
  * Class MysqlManager.
- *
- * @author Melech Mizrachi
  */
 class MysqlManager extends PdoManager
 {

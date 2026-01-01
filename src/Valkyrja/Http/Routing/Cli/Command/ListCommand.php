@@ -30,8 +30,6 @@ use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
  * Class ListCommand.
- *
- * @author Melech Mizrachi
  */
 class ListCommand
 {

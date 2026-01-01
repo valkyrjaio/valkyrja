@@ -24,8 +24,6 @@ use function is_string;
 /**
  * Class Json.
  *
- * @author Melech Mizrachi
- *
  * @extends Type<array<string|int, mixed>>
  */
 class Json extends Type implements Contract

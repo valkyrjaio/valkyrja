@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Entity\Contract;
 
 /**
  * Interface AntiPhishCodeUserContract.
- *
- * @author Melech Mizrachi
  */
 interface AntiPhishCodeUserContract extends UserContract
 {

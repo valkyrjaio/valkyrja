@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Routing\Url\Contract;
 
 /**
  * Interface UrlContract.
- *
- * @author Melech Mizrachi
  */
 interface UrlContract
 {

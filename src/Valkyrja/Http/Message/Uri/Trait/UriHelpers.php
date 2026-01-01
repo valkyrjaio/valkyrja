@@ -27,8 +27,6 @@ use function strtolower;
 /**
  * Trait UriHelpers.
  *
- * @author Melech Mizrachi
- *
  * @property string   $host
  * @property int|null $port
  * @property Scheme   $scheme

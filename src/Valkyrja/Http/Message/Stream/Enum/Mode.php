@@ -18,8 +18,6 @@ use function in_array;
 /**
  * Enum Mode.
  *
- * @author Melech Mizrachi
- *
  * @see    https://www.php.net/manual/en/function.fopen.php
  */
 enum Mode: string

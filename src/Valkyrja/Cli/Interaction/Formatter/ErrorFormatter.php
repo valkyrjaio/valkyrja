@@ -18,8 +18,6 @@ use Valkyrja\Cli\Interaction\Enum\TextColor;
 
 /**
  * Class ErrorFormatter.
- *
- * @author Melech Mizrachi
  */
 class ErrorFormatter extends Formatter
 {

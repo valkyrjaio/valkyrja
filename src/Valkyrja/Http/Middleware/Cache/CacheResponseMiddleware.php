@@ -36,8 +36,6 @@ use function unserialize;
 
 /**
  * Class CacheResponseMiddleware.
- *
- * @author Melech Mizrachi
  */
 class CacheResponseMiddleware implements RequestReceivedMiddlewareContract, TerminatedMiddlewareContract
 {

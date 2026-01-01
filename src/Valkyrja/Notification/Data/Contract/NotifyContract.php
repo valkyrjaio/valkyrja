@@ -19,8 +19,6 @@ use Valkyrja\Sms\Data\Contract\MessageContract as SmsMessage;
 
 /**
  * Interface NotifyContract.
- *
- * @author Melech Mizrachi
  */
 interface NotifyContract
 {

@@ -19,8 +19,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the WarningMessage class.
- *
- * @author Melech Mizrachi
  */
 class WarningMessageTest extends TestCase
 {

@@ -18,8 +18,6 @@ use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
 
 /**
  * Interface InputContract.
- *
- * @author Melech Mizrachi
  */
 interface InputContract
 {

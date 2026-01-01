@@ -19,8 +19,6 @@ use Valkyrja\Cli\Interaction\Option\Contract\OptionContract as Contract;
 
 /**
  * Class Option.
- *
- * @author Melech Mizrachi
  */
 class Option implements Contract
 {

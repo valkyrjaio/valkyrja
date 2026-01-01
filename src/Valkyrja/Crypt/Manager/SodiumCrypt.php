@@ -34,8 +34,6 @@ use const SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
 
 /**
  * Class SodiumCrypt.
- *
- * @author Melech Mizrachi
  */
 class SodiumCrypt implements CryptContract
 {

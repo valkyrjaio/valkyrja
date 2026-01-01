@@ -27,8 +27,6 @@ use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 
 /**
  * Class Route.
- *
- * @author Melech Mizrachi
  */
 class Route implements Contract
 {

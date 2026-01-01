@@ -30,8 +30,6 @@ use Valkyrja\Type\Vlid\Support\VlidV4;
 
 /**
  * Constant Regex.
- *
- * @author Melech Mizrachi
  */
 final class Regex
 {

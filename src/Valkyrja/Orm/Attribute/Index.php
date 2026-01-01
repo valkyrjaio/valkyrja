@@ -17,8 +17,6 @@ use Attribute;
 
 /**
  * Attribute Index.
- *
- * @author Melech Mizrachi
  */
 #[Attribute]
 class Index

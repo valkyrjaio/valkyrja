@@ -17,8 +17,6 @@ use Valkyrja\Cli\Interaction\Formatter\WarningFormatter;
 
 /**
  * Class WarningMessage.
- *
- * @author Melech Mizrachi
  */
 class WarningMessage extends Message
 {

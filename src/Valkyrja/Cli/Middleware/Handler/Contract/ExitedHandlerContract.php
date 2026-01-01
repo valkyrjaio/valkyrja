@@ -20,8 +20,6 @@ use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
 /**
  * Interface ExitedHandlerContract.
  *
- * @author Melech Mizrachi
- *
  * @extends HandlerContract<ExitedMiddlewareContract>
  */
 interface ExitedHandlerContract extends HandlerContract

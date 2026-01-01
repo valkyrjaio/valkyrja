@@ -17,8 +17,6 @@ use Attribute;
 
 /**
  * Attribute Name.
- *
- * @author Melech Mizrachi
  */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
 class Name

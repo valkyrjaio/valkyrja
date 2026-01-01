@@ -18,8 +18,6 @@ use Valkyrja\Validation\Rule\Abstract\Rule;
 
 /**
  * Class NotEqual.
- *
- * @author Melech Mizrachi
  */
 class NotEqual extends Rule
 {

@@ -19,8 +19,6 @@ use Valkyrja\Http\Routing\Cli\Command\ListCommand;
 
 /**
  * Final Class Component.
- *
- * @author Melech Mizrachi
  */
 class ComponentProvider extends AppComponent
 {

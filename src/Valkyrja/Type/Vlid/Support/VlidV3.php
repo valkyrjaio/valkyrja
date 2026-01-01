@@ -23,8 +23,6 @@ use Valkyrja\Type\Vlid\Throwable\Exception\InvalidVlidV3Exception;
  * Valkyrja Universally Unique Lexicographically Sortable Identifier (VLID)
  * A more precise version of a ULID where time must be down to the microsecond, and  80 bits of randomness is required.
  * A shortened version of a VLID where less random bytes is acceptable.
- *
- * @author Melech Mizrachi
  */
 class VlidV3 extends Vlid
 {

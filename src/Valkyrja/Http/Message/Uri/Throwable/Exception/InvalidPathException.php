@@ -15,8 +15,6 @@ namespace Valkyrja\Http\Message\Uri\Throwable\Exception;
 
 /**
  * Class InvalidPathException.
- *
- * @author Melech Mizrachi
  */
 class InvalidPathException extends InvalidArgumentException
 {

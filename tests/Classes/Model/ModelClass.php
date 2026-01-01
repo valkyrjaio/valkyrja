@@ -19,8 +19,6 @@ use Valkyrja\Type\Model\Abstract\Model as AbstractModel;
 /**
  * Model class to use to test abstract model.
  *
- * @author Melech Mizrachi
- *
  * @property string $protected
  */
 class ModelClass extends AbstractModel

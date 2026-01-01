@@ -24,8 +24,6 @@ use Valkyrja\Throwable\Handler\ThrowableHandler;
 
 /**
  * Abstract Class ApiController.
- *
- * @author Melech Mizrachi
  */
 abstract class ApiController extends Controller
 {

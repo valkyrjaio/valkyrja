@@ -18,8 +18,6 @@ use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
 /**
  * Interface ExceptionResponseRequestHandlerContract.
- *
- * @author Melech Mizrachi
  */
 interface ExceptionResponseRequestHandlerContract extends RequestHandlerContract
 {

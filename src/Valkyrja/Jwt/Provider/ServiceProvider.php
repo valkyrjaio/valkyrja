@@ -26,8 +26,6 @@ use Valkyrja\Jwt\Manager\NullJwt;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

@@ -18,8 +18,6 @@ use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 
 /**
  * Class NonEmptyString.
- *
- * @author Melech Mizrachi
  */
 class NonEmptyString extends StringT
 {

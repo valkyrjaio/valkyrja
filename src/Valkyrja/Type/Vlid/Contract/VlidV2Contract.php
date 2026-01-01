@@ -15,8 +15,6 @@ namespace Valkyrja\Type\Vlid\Contract;
 
 /**
  * Interface VlidV2Contract.
- *
- * @author Melech Mizrachi
  */
 interface VlidV2Contract extends VlidContract
 {

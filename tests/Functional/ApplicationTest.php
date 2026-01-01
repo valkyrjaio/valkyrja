@@ -27,8 +27,6 @@ use Valkyrja\View\Renderer\Contract\RendererContract;
 
 /**
  * Test the functionality of the Application.
- *
- * @author Melech Mizrachi
  */
 class ApplicationTest extends TestCase
 {

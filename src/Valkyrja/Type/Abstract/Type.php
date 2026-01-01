@@ -19,8 +19,6 @@ use Valkyrja\Type\Contract\TypeContract as Contract;
 /**
  * Class Type.
  *
- * @author Melech Mizrachi
- *
  * @implements Contract<T>
  *
  * @template T

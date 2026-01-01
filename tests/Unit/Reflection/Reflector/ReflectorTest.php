@@ -22,8 +22,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Reflector class.
- *
- * @author Melech Mizrachi
  */
 class ReflectorTest extends TestCase
 {

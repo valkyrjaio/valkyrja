@@ -20,8 +20,6 @@ use Valkyrja\Notification\Factory\Contract\FactoryContract;
 
 /**
  * Class ContainerFactory.
- *
- * @author Melech Mizrachi
  */
 class ContainerFactory implements FactoryContract
 {

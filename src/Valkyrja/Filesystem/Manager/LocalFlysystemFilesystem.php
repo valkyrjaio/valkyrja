@@ -15,8 +15,6 @@ namespace Valkyrja\Filesystem\Manager;
 
 /**
  * Class LocalFlysystemFilesystem.
- *
- * @author Melech Mizrachi
  */
 class LocalFlysystemFilesystem extends FlysystemFilesystem
 {

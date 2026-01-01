@@ -19,8 +19,6 @@ use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
 
 /**
  * Class EnvClass.
- *
- * @author Melech Mizrachi
  */
 class EnvClass extends AppEnv
 {

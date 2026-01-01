@@ -16,8 +16,6 @@ namespace Valkyrja\Http\Message\Constant;
 /**
  * Status text constants.
  *
- * @author Melech Mizrachi
- *
  * @see    http://www.iana.org/assignments/http-status-codes/
  * - Hypertext Transfer Protocol (HTTP) Status Code Registry
  */

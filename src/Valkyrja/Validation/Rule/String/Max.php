@@ -21,8 +21,6 @@ use function is_string;
 
 /**
  * Class Max.
- *
- * @author Melech Mizrachi
  */
 class Max extends Rule
 {

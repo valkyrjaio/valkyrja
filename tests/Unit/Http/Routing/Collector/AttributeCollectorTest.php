@@ -31,8 +31,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the AttributeCollector service.
- *
- * @author Melech Mizrachi
  */
 class AttributeCollectorTest extends TestCase
 {

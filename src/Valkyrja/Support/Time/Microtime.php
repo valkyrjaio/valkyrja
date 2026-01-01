@@ -15,8 +15,6 @@ namespace Valkyrja\Support\Time;
 
 /**
  * Class Microtime.
- *
- * @author Melech Mizrachi
  */
 class Microtime
 {

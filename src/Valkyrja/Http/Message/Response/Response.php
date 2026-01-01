@@ -28,8 +28,6 @@ use function sprintf;
 
 /**
  * Class Response.
- *
- * @author Melech Mizrachi
  */
 class Response implements Contract
 {

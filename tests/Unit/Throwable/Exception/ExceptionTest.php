@@ -18,8 +18,6 @@ use Valkyrja\Throwable\Exception\Exception;
 
 /**
  * Test the exception class.
- *
- * @author Melech Mizrachi
  */
 class ExceptionTest extends TestCase
 {

@@ -27,8 +27,6 @@ use function is_array;
 
 /**
  * Class Response.
- *
- * @author Melech Mizrachi
  */
 class Response implements ResponseInterface
 {

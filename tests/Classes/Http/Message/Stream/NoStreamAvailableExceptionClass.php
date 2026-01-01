@@ -17,8 +17,6 @@ use Valkyrja\Http\Message\Stream\Stream;
 
 /**
  * Class NoStreamAvailableExceptionClass.
- *
- * @author Melech Mizrachi
  */
 class NoStreamAvailableExceptionClass extends Stream
 {

@@ -18,8 +18,6 @@ use Valkyrja\Type\BuiltIn\Enum\Trait\Enum as EnumTrait;
 
 /**
  * Enum class to use to test enums.
- *
- * @author Melech Mizrachi
  */
 enum Enum implements Contract
 {

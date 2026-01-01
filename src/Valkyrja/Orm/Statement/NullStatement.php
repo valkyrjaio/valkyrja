@@ -20,8 +20,6 @@ use Valkyrja\Orm\Statement\Contract\StatementContract as Contract;
 
 /**
  * Class NullStatement.
- *
- * @author Melech Mizrachi
  */
 class NullStatement implements Contract
 {

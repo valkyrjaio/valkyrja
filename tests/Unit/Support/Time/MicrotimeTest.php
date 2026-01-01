@@ -18,8 +18,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the Microtime support class.
- *
- * @author Melech Mizrachi
  */
 class MicrotimeTest extends TestCase
 {

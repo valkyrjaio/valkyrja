@@ -19,8 +19,6 @@ use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 
 /**
  * Interface RequestReceivedMiddlewareContract.
- *
- * @author Melech Mizrachi
  */
 interface RequestReceivedMiddlewareContract
 {

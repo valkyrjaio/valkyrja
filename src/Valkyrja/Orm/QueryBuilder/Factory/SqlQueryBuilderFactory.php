@@ -26,8 +26,6 @@ use Valkyrja\Orm\QueryBuilder\SqlUpdateQueryBuilder;
 
 /**
  * Class SqlQueryBuilderFactory.
- *
- * @author Melech Mizrachi
  */
 class SqlQueryBuilderFactory implements Contract
 {

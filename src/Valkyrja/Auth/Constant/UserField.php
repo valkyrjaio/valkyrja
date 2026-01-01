@@ -15,8 +15,6 @@ namespace Valkyrja\Auth\Constant;
 
 /**
  * Constant UserField.
- *
- * @author Melech Mizrachi
  */
 final class UserField
 {

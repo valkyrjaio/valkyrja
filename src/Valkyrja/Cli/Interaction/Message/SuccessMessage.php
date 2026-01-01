@@ -17,8 +17,6 @@ use Valkyrja\Cli\Interaction\Formatter\SuccessFormatter;
 
 /**
  * Class SuccessMessage.
- *
- * @author Melech Mizrachi
  */
 class SuccessMessage extends Message
 {

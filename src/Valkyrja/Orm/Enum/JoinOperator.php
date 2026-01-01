@@ -15,8 +15,6 @@ namespace Valkyrja\Orm\Enum;
 
 /**
  * Enum JoinOperator.
- *
- * @author Melech Mizrachi
  */
 enum JoinOperator: string
 {

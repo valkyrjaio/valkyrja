@@ -21,8 +21,6 @@ use function is_string;
 
 /**
  * Class StartsWith.
- *
- * @author Melech Mizrachi
  */
 class StartsWith extends Rule
 {

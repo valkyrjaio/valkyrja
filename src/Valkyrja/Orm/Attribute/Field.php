@@ -17,8 +17,6 @@ use Attribute;
 
 /**
  * Attribute Field.
- *
- * @author Melech Mizrachi
  */
 #[Attribute]
 class Field

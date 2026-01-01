@@ -25,8 +25,6 @@ use Valkyrja\Container\Throwable\Exception\InvalidArgumentException;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

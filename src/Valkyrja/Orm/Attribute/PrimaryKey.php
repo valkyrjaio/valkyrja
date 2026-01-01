@@ -17,8 +17,6 @@ use Attribute;
 
 /**
  * Attribute PrimaryKey.
- *
- * @author Melech Mizrachi
  */
 #[Attribute]
 class PrimaryKey

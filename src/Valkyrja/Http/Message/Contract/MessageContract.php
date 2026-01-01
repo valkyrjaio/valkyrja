@@ -19,8 +19,6 @@ use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 
 /**
  * Interface MessageContract.
- *
- * @author Melech Mizrachi
  */
 interface MessageContract
 {

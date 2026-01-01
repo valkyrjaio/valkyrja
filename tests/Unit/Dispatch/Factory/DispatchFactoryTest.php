@@ -30,8 +30,6 @@ use Valkyrja\Tests\Unit\TestCase;
 
 /**
  * Test the DispatchFactory.
- *
- * @author Melech Mizrachi
  */
 class DispatchFactoryTest extends TestCase
 {

@@ -15,8 +15,6 @@ namespace Valkyrja\Cli\Interaction\Output\Contract;
 
 /**
  * Interface FileOutputContract.
- *
- * @author Melech Mizrachi
  */
 interface FileOutputContract extends OutputContract
 {

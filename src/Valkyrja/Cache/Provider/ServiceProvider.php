@@ -26,8 +26,6 @@ use Valkyrja\Log\Logger\Contract\LoggerContract;
 
 /**
  * Class ServiceProvider.
- *
- * @author Melech Mizrachi
  */
 final class ServiceProvider extends Provider
 {

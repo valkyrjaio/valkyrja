@@ -24,8 +24,6 @@ use function sprintf;
 
 /**
  * Class Answer.
- *
- * @author Melech Mizrachi
  */
 class Answer extends Message implements Contract
 {

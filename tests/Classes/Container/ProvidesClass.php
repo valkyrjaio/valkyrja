@@ -17,8 +17,6 @@ use Valkyrja\Container\Provider\Provider;
 
 /**
  * Testable Provider/Provides Trait class.
- *
- * @author Melech Mizrachi
  */
 class ProvidesClass extends Provider
 {
