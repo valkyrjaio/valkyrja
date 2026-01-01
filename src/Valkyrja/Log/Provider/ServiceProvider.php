@@ -29,9 +29,6 @@ use Valkyrja\Support\Directory\Directory;
 
 use function date;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**
