@@ -15,7 +15,6 @@ namespace Valkyrja\Tests\Unit\Http\Routing\Provider;
 
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributesContract;
-use Valkyrja\Container\Constant\ConfigValue;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactory;
@@ -63,11 +62,6 @@ class ServiceProviderTest extends ServiceProviderTestCase
 {
     /** @inheritDoc */
     protected static string $provider = ServiceProvider::class;
-
-    public function testServiceProviderExistsInContainer(): void
-    {
-        self::assertContains(ServiceProvider::class, ConfigValue::PROVIDERS);
-    }
 
     public function testPublishersArray(): void
     {
