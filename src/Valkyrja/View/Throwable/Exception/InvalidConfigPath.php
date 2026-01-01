@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Throwable\Exception;
 
-/**
- * Class InvalidConfigPath.
- */
 class InvalidConfigPath extends InvalidArgumentException
 {
 }

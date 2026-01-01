@@ -16,9 +16,6 @@ namespace Valkyrja\View\Factory\Contract;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
-/**
- * Interface ResponseFactoryContract.
- */
 interface ResponseFactoryContract
 {
     /**

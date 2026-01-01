@@ -30,9 +30,6 @@ use function trim;
 use const DIRECTORY_SEPARATOR;
 use const EXTR_SKIP;
 
-/**
- * Class PhpRenderer.
- */
 class PhpRenderer implements Contract
 {
     /**

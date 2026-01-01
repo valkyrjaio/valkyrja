@@ -15,9 +15,6 @@ namespace Valkyrja\View\Template\Contract;
 
 use Stringable;
 
-/**
- * Interface TemplateContract.
- */
 interface TemplateContract extends Stringable
 {
     /**

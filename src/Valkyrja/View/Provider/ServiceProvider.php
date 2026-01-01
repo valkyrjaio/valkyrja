@@ -30,9 +30,6 @@ use Valkyrja\View\Renderer\OrkaRenderer;
 use Valkyrja\View\Renderer\PhpRenderer;
 use Valkyrja\View\Renderer\TwigRenderer;
 
-/**
- * Class ServiceProvider.
- */
 final class ServiceProvider extends Provider
 {
     /**
