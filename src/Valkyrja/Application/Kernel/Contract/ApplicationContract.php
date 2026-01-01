@@ -29,14 +29,14 @@ interface ApplicationContract
      *
      * @var non-empty-string
      */
-    public const string VERSION = '25.10.0';
+    public const string VERSION = '25.11.0';
 
     /**
      * The Application framework version build datetime.
      *
      * @var non-empty-string
      */
-    public const string VERSION_BUILD_DATE_TIME = 'December 31 2025 19:29:34 MST';
+    public const string VERSION_BUILD_DATE_TIME = 'December 31 2025 21:38:24 MST';
 
     /**
      * The valkyrja framework ascii art.
