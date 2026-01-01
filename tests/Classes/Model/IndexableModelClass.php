@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Classes\Model;
 
 use Valkyrja\Tests\Classes\Model\Trait\PrivatePropertyTrait;
 use Valkyrja\Type\Model\Abstract\Model as AbstractModel;
-use Valkyrja\Type\Model\Contract\IndexedModel as Contract;
+use Valkyrja\Type\Model\Contract\IndexedModelContract as Contract;
 use Valkyrja\Type\Model\Trait\Indexable;
 
 /**

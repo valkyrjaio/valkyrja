@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Middleware;
 
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Message\Response\Response;
+use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
 use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
@@ -24,14 +25,14 @@ use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
  *
  * @author Melech Mizrachi
  */
-class RequestReceivedMiddlewareChangedClass implements RequestReceivedMiddleware
+class RequestReceivedMiddlewareChangedClass implements RequestReceivedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 
-    public function requestReceived(ServerRequest $request, RequestReceivedHandler $handler): ServerRequest|Response
+    public function requestReceived(ServerRequestContract $request, RequestReceivedHandlerContract $handler): ServerRequestContract|ResponseContract
     {
         $this->updateCounter();
 
-        return new \Valkyrja\Http\Message\Response\Response();
+        return new Response();
     }
 }

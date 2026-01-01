@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Rule\Abstract;
 
 use Override;
-use Valkyrja\Validation\Rule\Contract\Rule as Contract;
+use Valkyrja\Validation\Rule\Contract\RuleContract as Contract;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
 /**

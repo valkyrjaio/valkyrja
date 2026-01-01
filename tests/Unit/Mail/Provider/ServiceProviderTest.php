@@ -17,8 +17,8 @@ use Mailgun\HttpClient\HttpClientConfigurator;
 use Mailgun\Mailgun;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Log\Logger\Contract\Logger;
-use Valkyrja\Mail\Mailer\Contract\Mailer as Contract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
+use Valkyrja\Mail\Mailer\Contract\MailerContract as Contract;
 use Valkyrja\Mail\Mailer\LogMailer;
 use Valkyrja\Mail\Mailer\MailgunMailer;
 use Valkyrja\Mail\Mailer\NullMailer;
@@ -99,7 +99,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogMailer(): void
     {
-        $this->container->setSingleton(Logger::class, self::createStub(Logger::class));
+        $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
         ServiceProvider::publishLogMailer($this->container);
 

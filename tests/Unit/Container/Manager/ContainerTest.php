@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container\Manager;
 
 use AssertionError;
-use Valkyrja\Application\Kernel\Contract\Application;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Provider\ServiceProvider;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Container\SingletonClass;
@@ -53,7 +53,7 @@ class ContainerTest extends TestCase
     public function testInvalidBind(): void
     {
         $this->expectException(AssertionError::class);
-        $this->expectExceptionMessage('assert(is_a($service, Service::class, true))');
+        $this->expectExceptionMessage('assert(is_a($service, ServiceContract::class, true))');
 
         $container = $this->container;
 
@@ -169,14 +169,14 @@ class ContainerTest extends TestCase
 
         $container->register(ServiceProvider::class);
 
-        self::assertTrue($container->has(Dispatcher::class));
+        self::assertTrue($container->has(DispatcherContract::class));
     }
 
     public function testGetNonExistent(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->container->get(Application::class);
+        $this->container->get(ApplicationContract::class);
     }
 
     public function testGetNonExistentSingleton(): void
@@ -192,20 +192,20 @@ class ContainerTest extends TestCase
 
         $container->register(ServiceProvider::class);
 
-        self::assertTrue($container->has(Dispatcher::class));
+        self::assertTrue($container->has(DispatcherContract::class));
 
         $data = $this->container->getData();
 
         self::assertSame(
             [
-                Dispatcher::class => [ServiceProvider::class, 'publishDispatcher'],
+                DispatcherContract::class => [ServiceProvider::class, 'publishDispatcher'],
             ],
             $data->deferredCallback
         );
 
         self::assertSame(
             [
-                Dispatcher::class => ServiceProvider::class,
+                DispatcherContract::class => ServiceProvider::class,
             ],
             $data->deferred
         );

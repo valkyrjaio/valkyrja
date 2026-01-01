@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Cli\Interaction\Message;
 
 use Override;
-use Valkyrja\Cli\Interaction\Message\Contract\Answer;
+use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
 use Valkyrja\Cli\Interaction\Message\Question;
 
 /**
@@ -27,7 +27,7 @@ class QuestionAskManipulationClass extends Question
     protected int $timesAsked = 0;
 
     #[Override]
-    public function ask(): Answer
+    public function ask(): AnswerContract
     {
         if ($this->timesAsked > 0) {
             $this->timesAsked++;

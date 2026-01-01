@@ -16,16 +16,16 @@ namespace Valkyrja\Orm\Repository;
 use Override;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
-use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\Manager\Contract\Manager;
-use Valkyrja\Orm\Repository\Contract\Repository as Contract;
+use Valkyrja\Orm\Entity\Contract\EntityContract;
+use Valkyrja\Orm\Manager\Contract\ManagerContract;
+use Valkyrja\Orm\Repository\Contract\RepositoryContract as Contract;
 
 /**
  * Class Repository.
  *
  * @author Melech Mizrachi
  *
- * @template T of Entity
+ * @template T of EntityContract
  *
  * @implements Contract<T>
  */
@@ -35,7 +35,7 @@ class Repository implements Contract
      * @param class-string<T> $entity
      */
     public function __construct(
-        protected Manager $manager,
+        protected ManagerContract $manager,
         protected string $entity,
     ) {
     }
@@ -46,7 +46,7 @@ class Repository implements Contract
      * @return T|null
      */
     #[Override]
-    public function find(int|string $id): Entity|null
+    public function find(int|string $id): EntityContract|null
     {
         /** @var class-string<T> $entity */
         $entity = $this->entity;
@@ -66,7 +66,7 @@ class Repository implements Contract
      * @return T|null
      */
     #[Override]
-    public function findBy(Where ...$where): Entity|null
+    public function findBy(Where ...$where): EntityContract|null
     {
         $table  = $this->entity::getTableName();
         $select = $this->manager->createQueryBuilder()->select($table);
@@ -113,7 +113,7 @@ class Repository implements Contract
      * @param T $entity The entity
      */
     #[Override]
-    public function create(Entity $entity): void
+    public function create(EntityContract $entity): void
     {
         $table = $entity::getTableName();
 
@@ -144,7 +144,7 @@ class Repository implements Contract
      * @param T $entity The entity
      */
     #[Override]
-    public function update(Entity $entity): void
+    public function update(EntityContract $entity): void
     {
         $table = $entity::getTableName();
 
@@ -179,7 +179,7 @@ class Repository implements Contract
      * @param T $entity The entity
      */
     #[Override]
-    public function delete(Entity $entity): void
+    public function delete(EntityContract $entity): void
     {
         $table = $entity::getTableName();
 

@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Middleware\Handler;
 
 use Override;
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandler as Contract;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandlerContract as Contract;
 
 /**
  * Class CommandNotMatchedHandler.
  *
  * @author Melech Mizrachi
  *
- * @extends Handler<CommandNotMatchedMiddleware>
+ * @extends Handler<CommandNotMatchedMiddlewareContract>
  */
 class CommandNotMatchedHandler extends Handler implements Contract
 {
@@ -33,7 +33,7 @@ class CommandNotMatchedHandler extends Handler implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function commandNotMatched(Input $input, Output $output): Output
+    public function commandNotMatched(InputContract $input, OutputContract $output): OutputContract
     {
         $next = $this->next;
 

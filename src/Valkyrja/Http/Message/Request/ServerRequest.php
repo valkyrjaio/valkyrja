@@ -17,13 +17,13 @@ use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Message\File\Contract\UploadedFile;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest as Contract;
-use Valkyrja\Http\Message\Stream\Contract\Stream;
+use Valkyrja\Http\Message\File\Contract\UploadedFileContract;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract as Contract;
+use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream as HttpStream;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Http\Message\Uri\Contract\Uri;
+use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Uri as HttpUri;
 
 use function array_filter;
@@ -49,23 +49,23 @@ class ServerRequest extends Request implements Contract
     /**
      * ServerRequest constructor.
      *
-     * @param Uri                        $uri        [optional] The uri
-     * @param RequestMethod              $method     [optional] The method
-     * @param Stream                     $body       [optional] The body stream
-     * @param array<string, string[]>    $headers    [optional] The headers
-     * @param array<string, mixed>       $server     [optional] The server
-     * @param array<string, string|null> $cookies    [optional] The cookies
-     * @param array<array-key, mixed>    $query      [optional] The query string
-     * @param array<array-key, mixed>    $parsedBody [optional] The parsed body
-     * @param ProtocolVersion            $protocol   [optional] The protocol version
-     * @param UploadedFile[]|array       $files      [optional] The files
+     * @param UriContract                  $uri        [optional] The uri
+     * @param RequestMethod                $method     [optional] The method
+     * @param StreamContract               $body       [optional] The body stream
+     * @param array<string, string[]>      $headers    [optional] The headers
+     * @param array<string, mixed>         $server     [optional] The server
+     * @param array<string, string|null>   $cookies    [optional] The cookies
+     * @param array<array-key, mixed>      $query      [optional] The query string
+     * @param array<array-key, mixed>      $parsedBody [optional] The parsed body
+     * @param ProtocolVersion              $protocol   [optional] The protocol version
+     * @param UploadedFileContract[]|array $files      [optional] The files
      *
      * @throws InvalidArgumentException
      */
     public function __construct(
-        Uri $uri = new HttpUri(),
+        UriContract $uri = new HttpUri(),
         RequestMethod $method = RequestMethod::GET,
-        Stream $body = new HttpStream(stream: PhpWrapper::input),
+        StreamContract $body = new HttpStream(stream: PhpWrapper::input),
         array $headers = [],
         protected array $server = [],
         protected array $cookies = [],
@@ -259,7 +259,7 @@ class ServerRequest extends Request implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedUploadedFile(UploadedFile $uploadedFile): static
+    public function withAddedUploadedFile(UploadedFileContract $uploadedFile): static
     {
         $new = clone $this;
 

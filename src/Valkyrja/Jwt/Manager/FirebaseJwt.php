@@ -19,7 +19,7 @@ use OpenSSLAsymmetricKey;
 use OpenSSLCertificate;
 use Override;
 use Valkyrja\Jwt\Enum\Algorithm;
-use Valkyrja\Jwt\Manager\Contract\Jwt as Contract;
+use Valkyrja\Jwt\Manager\Contract\JwtContract as Contract;
 
 /**
  * Class RsFirebaseJwt.

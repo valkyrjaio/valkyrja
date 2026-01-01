@@ -15,21 +15,21 @@ namespace Valkyrja\Cli\Command;
 
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
+use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Formatter\Formatter;
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Banner;
-use Valkyrja\Cli\Interaction\Message\Contract\Message as MessageContract;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\Messages;
 use Valkyrja\Cli\Interaction\Message\NewLine;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Routing\Attribute\Route as RouteAttribute;
-use Valkyrja\Cli\Routing\Collection\Contract\Collection;
-use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameter;
-use Valkyrja\Cli\Routing\Data\Contract\OptionParameter as OptionContract;
-use Valkyrja\Cli\Routing\Data\Contract\Route;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Routing\Attribute\Route;
+use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
+use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract as OptionContract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\NoInteractionOptionParameter;
 use Valkyrja\Cli\Routing\Data\Option\QuietOptionParameter;
@@ -51,7 +51,7 @@ class HelpCommand
 {
     public const string NAME = 'help';
 
-    #[RouteAttribute(
+    #[Route(
         name: self::NAME,
         description: 'Help for a command',
         helpText: new Message('A command to get help for a specific command.'),
@@ -64,7 +64,7 @@ class HelpCommand
             ),
         ]
     )]
-    public function run(VersionCommand $version, Route $route, Collection $collection, OutputFactory $outputFactory): Output
+    public function run(VersionCommand $version, RouteContract $route, CollectionContract $collection, OutputFactoryContract $outputFactory): OutputContract
     {
         $commandName = $route->getOption('command')?->getFirstValue();
 
@@ -96,7 +96,7 @@ class HelpCommand
     /**
      * Get the help text for a given command.
      */
-    protected function getHelpText(Output $output, Route $route): Output
+    protected function getHelpText(OutputContract $output, RouteContract $route): OutputContract
     {
         $argumentMessages = [];
         $optionMessages   = [];
@@ -155,7 +155,7 @@ class HelpCommand
     /**
      * Get name messages.
      */
-    protected function getNameMessages(Route $route): Messages
+    protected function getNameMessages(RouteContract $route): Messages
     {
         return new Messages(
             new Message('Name: ', new HighlightedTextFormatter()),
@@ -166,7 +166,7 @@ class HelpCommand
     /**
      * Get description messages.
      */
-    protected function getDescriptionMessages(Route $route): Messages
+    protected function getDescriptionMessages(RouteContract $route): Messages
     {
         return new Messages(
             new Message('Description:', new HighlightedTextFormatter()),
@@ -178,7 +178,7 @@ class HelpCommand
     /**
      * Get help text messages.
      */
-    protected function getHelpTextMessages(Route $route): Messages
+    protected function getHelpTextMessages(RouteContract $route): Messages
     {
         return new Messages(
             new Message('Help:', new HighlightedTextFormatter()),
@@ -191,7 +191,7 @@ class HelpCommand
     /**
      * Get usage messages.
      */
-    protected function getUsageMessages(Route $route): Messages
+    protected function getUsageMessages(RouteContract $route): Messages
     {
         $usage = $route->getName();
 
@@ -220,7 +220,7 @@ class HelpCommand
     /**
      * Get options heading messages.
      */
-    protected function getOptionsHeadingMessages(Route $route): Messages
+    protected function getOptionsHeadingMessages(RouteContract $route): Messages
     {
         return new Messages(
             new Message('Options:', new HighlightedTextFormatter()),
@@ -230,7 +230,7 @@ class HelpCommand
     /**
      * Get global options heading messages.
      */
-    protected function getGlobalOptionsHeadingMessages(Route $route): Messages
+    protected function getGlobalOptionsHeadingMessages(RouteContract $route): Messages
     {
         return new Messages(
             new Message('Global Options:', new HighlightedTextFormatter()),
@@ -303,7 +303,7 @@ class HelpCommand
     /**
      * Get arguments heading messages.
      */
-    protected function getArgumentsHeadingMessages(Route $route): Messages
+    protected function getArgumentsHeadingMessages(RouteContract $route): Messages
     {
         return new Messages(
             new Message('Arguments:', new HighlightedTextFormatter()),
@@ -313,7 +313,7 @@ class HelpCommand
     /**
      * Get argument messages.
      */
-    protected function getArgumentMessages(ArgumentParameter $argument): Messages
+    protected function getArgumentMessages(ArgumentParameterContract $argument): Messages
     {
         $argumentMessages = [];
 

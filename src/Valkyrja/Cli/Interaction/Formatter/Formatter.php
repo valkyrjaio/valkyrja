@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Cli\Interaction\Enum\BackgroundColor;
 use Valkyrja\Cli\Interaction\Enum\Style;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
-use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter as Contract;
+use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract as Contract;
 
 use function count;
 use function sprintf;

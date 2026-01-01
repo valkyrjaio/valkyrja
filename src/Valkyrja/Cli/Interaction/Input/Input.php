@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Input;
 
 use Override;
-use Valkyrja\Cli\Interaction\Argument\Contract\Argument;
-use Valkyrja\Cli\Interaction\Input\Contract\Input as Contract;
-use Valkyrja\Cli\Interaction\Option\Contract\Option;
+use Valkyrja\Cli\Interaction\Argument\Contract\ArgumentContract;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract as Contract;
+use Valkyrja\Cli\Interaction\Option\Contract\OptionContract;
 
 /**
  * Class Input.
@@ -26,10 +26,10 @@ use Valkyrja\Cli\Interaction\Option\Contract\Option;
 class Input implements Contract
 {
     /**
-     * @param non-empty-string $caller      The caller (application name)
-     * @param non-empty-string $commandName The command name
-     * @param Argument[]       $arguments   The arguments
-     * @param Option[]         $options     The options
+     * @param non-empty-string   $caller      The caller (application name)
+     * @param non-empty-string   $commandName The command name
+     * @param ArgumentContract[] $arguments   The arguments
+     * @param OptionContract[]   $options     The options
      */
     public function __construct(
         protected string $caller = 'valkyrja',
@@ -86,7 +86,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      *
-     * @return Argument[]
+     * @return ArgumentContract[]
      */
     #[Override]
     public function getArguments(): array
@@ -98,7 +98,7 @@ class Input implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withArguments(Argument ...$arguments): static
+    public function withArguments(ArgumentContract ...$arguments): static
     {
         $new = clone $this;
 
@@ -111,7 +111,7 @@ class Input implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedArgument(Argument $argument): static
+    public function withAddedArgument(ArgumentContract $argument): static
     {
         $new = clone $this;
 
@@ -130,7 +130,7 @@ class Input implements Contract
 
         $new->arguments = array_filter(
             $this->arguments,
-            static fn (Argument $argument): bool => $argument->getValue() !== $value,
+            static fn (ArgumentContract $argument): bool => $argument->getValue() !== $value,
         );
 
         return $new;
@@ -152,7 +152,7 @@ class Input implements Contract
     /**
      * @inheritDoc
      *
-     * @return Option[]
+     * @return OptionContract[]
      */
     #[Override]
     public function getOptions(): array
@@ -168,7 +168,7 @@ class Input implements Contract
     {
         return array_filter(
             $this->options,
-            static fn (Option $option): bool => $option->getName() === $name,
+            static fn (OptionContract $option): bool => $option->getName() === $name,
         );
     }
 
@@ -185,7 +185,7 @@ class Input implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withOptions(Option ...$options): static
+    public function withOptions(OptionContract ...$options): static
     {
         $new = clone $this;
 
@@ -198,7 +198,7 @@ class Input implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedOption(Option $option): static
+    public function withAddedOption(OptionContract $option): static
     {
         $new = clone $this;
 
@@ -217,7 +217,7 @@ class Input implements Contract
 
         $new->options = array_filter(
             $this->options,
-            static fn (Option $option): bool => $option->getName() !== $name,
+            static fn (OptionContract $option): bool => $option->getName() !== $name,
         );
 
         return $new;

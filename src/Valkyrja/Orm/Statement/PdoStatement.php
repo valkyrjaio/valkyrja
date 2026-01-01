@@ -17,9 +17,9 @@ use Override;
 use PDO;
 use PDOStatement as Statement;
 use Valkyrja\Orm\Data\Value;
-use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
-use Valkyrja\Orm\Statement\Contract\Statement as Contract;
+use Valkyrja\Orm\Entity\Contract\EntityContract;
+use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilderContract;
+use Valkyrja\Orm\Statement\Contract\StatementContract as Contract;
 use Valkyrja\Orm\Throwable\Exception\RuntimeException;
 
 use function is_array;
@@ -50,7 +50,7 @@ class PdoStatement implements Contract
     #[Override]
     public function bindValue(Value $value): bool
     {
-        if ($value->value instanceof QueryBuilder) {
+        if ($value->value instanceof QueryBuilderContract) {
             return true;
         }
 
@@ -106,14 +106,14 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      *
-     * @template T of Entity
+     * @template T of EntityContract
      *
      * @param class-string<T>|null $entity The entity class name
      *
      * @return ($entity is class-string<T> ? T : array<string, mixed>)
      */
     #[Override]
-    public function fetch(string|null $entity = null): Entity|array
+    public function fetch(string|null $entity = null): EntityContract|array
     {
         /** @var array<string, mixed>|false $fetch */
         $fetch = $this->statement->fetch(PDO::FETCH_ASSOC);
@@ -144,7 +144,7 @@ class PdoStatement implements Contract
     /**
      * @inheritDoc
      *
-     * @template T of Entity
+     * @template T of EntityContract
      *
      * @param class-string<T>|null $entity The entity class name
      *
@@ -251,7 +251,7 @@ class PdoStatement implements Contract
     }
 
     /**
-     * @template T of Entity
+     * @template T of EntityContract
      *
      * @param class-string<T>        $entity  The entity class name
      * @param array<string, mixed>[] $results The results
@@ -261,7 +261,7 @@ class PdoStatement implements Contract
     protected function mapResultsToEntity(string $entity, array $results): array
     {
         return array_map(
-            static fn (array $data): Entity => $entity::fromArray($data),
+            static fn (array $data): EntityContract => $entity::fromArray($data),
             $results
         );
     }

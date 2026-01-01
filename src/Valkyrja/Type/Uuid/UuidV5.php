@@ -17,7 +17,7 @@ use Override;
 use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Type\Ulid\Throwable\Exception\InvalidUlidException;
-use Valkyrja\Type\Uuid\Contract\UuidV5 as Contract;
+use Valkyrja\Type\Uuid\Contract\UuidV5Contract as Contract;
 use Valkyrja\Type\Uuid\Support\UuidV5 as Helper;
 
 use function gettype;

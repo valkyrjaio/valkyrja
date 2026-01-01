@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Middleware;
 
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Message\Response\Response;
+use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
 use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
@@ -24,14 +25,14 @@ use Valkyrja\Tests\Classes\Http\Middleware\Trait\MiddlewareCounterTrait;
  *
  * @author Melech Mizrachi
  */
-class RouteNotMatchedMiddlewareChangedClass implements RouteNotMatchedMiddleware
+class RouteNotMatchedMiddlewareChangedClass implements RouteNotMatchedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 
-    public function routeNotMatched(ServerRequest $request, Response $response, RouteNotMatchedHandler $handler): Response
+    public function routeNotMatched(ServerRequestContract $request, ResponseContract $response, RouteNotMatchedHandlerContract $handler): ResponseContract
     {
         $this->updateCounter();
 
-        return new \Valkyrja\Http\Message\Response\Response();
+        return new Response();
     }
 }

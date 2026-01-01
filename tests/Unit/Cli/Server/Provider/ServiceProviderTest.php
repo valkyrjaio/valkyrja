@@ -15,15 +15,15 @@ namespace Valkyrja\Tests\Unit\Cli\Server\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Cli\Interaction\Data\Config;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\Cli\Routing\Dispatcher\Contract\Router;
-use Valkyrja\Cli\Server\Handler\Contract\InputHandler as InputHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
+use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
+use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Cli\Server\Handler\InputHandler;
 use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Cli\Server\Provider\ServiceProvider;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**
@@ -42,10 +42,10 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishInputHandler(): void
     {
         $this->container->setSingleton(Config::class, self::createStub(Config::class));
-        $this->container->setSingleton(Router::class, self::createStub(Router::class));
-        $this->container->setSingleton(InputReceivedHandler::class, self::createStub(InputReceivedHandler::class));
-        $this->container->setSingleton(ThrowableCaughtHandler::class, self::createStub(ThrowableCaughtHandler::class));
-        $this->container->setSingleton(ExitedHandler::class, self::createStub(ExitedHandler::class));
+        $this->container->setSingleton(RouterContract::class, self::createStub(RouterContract::class));
+        $this->container->setSingleton(InputReceivedHandlerContract::class, self::createStub(InputReceivedHandlerContract::class));
+        $this->container->setSingleton(ThrowableCaughtHandlerContract::class, self::createStub(ThrowableCaughtHandlerContract::class));
+        $this->container->setSingleton(ExitedHandlerContract::class, self::createStub(ExitedHandlerContract::class));
 
         ServiceProvider::publishInputHandler($this->container);
 
@@ -57,7 +57,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogThrowableCaughtMiddleware(): void
     {
-        $this->container->setSingleton(Logger::class, self::createStub(Logger::class));
+        $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
         ServiceProvider::publishLogThrowableCaughtMiddleware($this->container);
 

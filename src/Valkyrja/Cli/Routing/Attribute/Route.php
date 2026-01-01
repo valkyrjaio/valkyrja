@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Attribute;
 
 use Attribute;
-use Valkyrja\Cli\Interaction\Message\Contract\Message;
-use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Cli\Routing\Data\Contract\Parameter;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
+use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
+use Valkyrja\Cli\Routing\Data\Contract\ParameterContract;
 use Valkyrja\Cli\Routing\Data\Route as Model;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatch;
+use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 use Valkyrja\Dispatch\Data\MethodDispatch as DefaultDispatch;
 
 /**
@@ -33,20 +33,20 @@ use Valkyrja\Dispatch\Data\MethodDispatch as DefaultDispatch;
 class Route extends Model
 {
     /**
-     * @param non-empty-string                            $name                        The name
-     * @param non-empty-string                            $description                 The description
-     * @param Message                                     $helpText                    The help text
-     * @param class-string<CommandMatchedMiddleware>[]    $commandMatchedMiddleware    The command matched middleware
-     * @param class-string<CommandDispatchedMiddleware>[] $commandDispatchedMiddleware The command dispatched middleware
-     * @param class-string<ThrowableCaughtMiddleware>[]   $throwableCaughtMiddleware   The throwable caught middleware
-     * @param class-string<ExitedMiddleware>[]            $exitedMiddleware            The exited middleware
-     * @param Parameter[]                                 $parameters                  The parameters
+     * @param non-empty-string                                    $name                        The name
+     * @param non-empty-string                                    $description                 The description
+     * @param MessageContract                                     $helpText                    The help text
+     * @param class-string<CommandMatchedMiddlewareContract>[]    $commandMatchedMiddleware    The command matched middleware
+     * @param class-string<CommandDispatchedMiddlewareContract>[] $commandDispatchedMiddleware The command dispatched middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract>[]   $throwableCaughtMiddleware   The throwable caught middleware
+     * @param class-string<ExitedMiddlewareContract>[]            $exitedMiddleware            The exited middleware
+     * @param ParameterContract[]                                 $parameters                  The parameters
      */
     public function __construct(
         protected string $name,
         protected string $description,
-        protected Message $helpText,
-        protected MethodDispatch $dispatch = new DefaultDispatch(self::class, '__construct'),
+        protected MessageContract $helpText,
+        protected MethodDispatchContract $dispatch = new DefaultDispatch(self::class, '__construct'),
         protected array $commandMatchedMiddleware = [],
         protected array $commandDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],

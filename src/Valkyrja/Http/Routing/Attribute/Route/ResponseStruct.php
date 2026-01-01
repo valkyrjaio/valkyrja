@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Attribute\Route;
 
 use Attribute;
-use Valkyrja\Http\Struct\Response\Contract\ResponseStruct as RoutingResponseStruct;
+use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract as RoutingResponseStruct;
 
 /**
  * Attribute ResponseStruct.

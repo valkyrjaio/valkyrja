@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Manager\Trait;
 
-use Valkyrja\Container\Provider\Contract\Provider as ProviderContract;
+use Valkyrja\Container\Provider\Contract\ProviderContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 

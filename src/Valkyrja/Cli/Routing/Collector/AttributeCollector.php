@@ -15,25 +15,25 @@ namespace Valkyrja\Cli\Routing\Collector;
 
 use Override;
 use ReflectionException;
-use Valkyrja\Attribute\Collector\Contract\Collector;
-use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract;
+use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Cli\Routing\Attribute\ArgumentParameter as ArgumentAttribute;
 use Valkyrja\Cli\Routing\Attribute\OptionParameter as OptionAttribute;
 use Valkyrja\Cli\Routing\Attribute\Route as Attribute;
 use Valkyrja\Cli\Routing\Attribute\Route\Middleware;
 use Valkyrja\Cli\Routing\Attribute\Route\Name;
-use Valkyrja\Cli\Routing\Collector\Contract\Collector as Contract;
+use Valkyrja\Cli\Routing\Collector\Contract\CollectorContract as Contract;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
-use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameter as ArgumentContract;
-use Valkyrja\Cli\Routing\Data\Contract\OptionParameter as OptionContract;
-use Valkyrja\Cli\Routing\Data\Contract\Route as RouteContract;
+use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract as ArgumentContract;
+use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract as OptionContract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
 use Valkyrja\Cli\Routing\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Reflection\Reflector\Contract\Reflector;
+use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
 use function array_column;
 use function array_merge;
@@ -47,8 +47,8 @@ use function is_a;
 class AttributeCollector implements Contract
 {
     public function __construct(
-        protected Collector $attributes,
-        protected Reflector $reflection,
+        protected CollectorContract $attributes,
+        protected ReflectorContract $reflection,
     ) {
     }
 
@@ -152,19 +152,19 @@ class AttributeCollector implements Contract
 
         foreach ($middlewareClassNames as $middlewareClass) {
             $route = match (true) {
-                is_a($middlewareClass, CommandMatchedMiddleware::class, true)    => $route->withAddedCommandMatchedMiddleware(
+                is_a($middlewareClass, CommandMatchedMiddlewareContract::class, true)    => $route->withAddedCommandMatchedMiddleware(
                     $middlewareClass
                 ),
-                is_a($middlewareClass, CommandDispatchedMiddleware::class, true) => $route->withAddedCommandDispatchedMiddleware(
+                is_a($middlewareClass, CommandDispatchedMiddlewareContract::class, true) => $route->withAddedCommandDispatchedMiddleware(
                     $middlewareClass
                 ),
-                is_a($middlewareClass, ThrowableCaughtMiddleware::class, true)   => $route->withAddedThrowableCaughtMiddleware(
+                is_a($middlewareClass, ThrowableCaughtMiddlewareContract::class, true)   => $route->withAddedThrowableCaughtMiddleware(
                     $middlewareClass
                 ),
-                is_a($middlewareClass, ExitedMiddleware::class, true)            => $route->withAddedExitedMiddleware(
+                is_a($middlewareClass, ExitedMiddlewareContract::class, true)            => $route->withAddedExitedMiddleware(
                     $middlewareClass
                 ),
-                default                                                          => throw new InvalidArgumentException(
+                default                                                                  => throw new InvalidArgumentException(
                     "Unsupported middleware class `$middlewareClass`"
                 ),
             };

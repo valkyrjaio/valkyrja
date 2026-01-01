@@ -16,14 +16,14 @@ namespace Valkyrja\Http\Message\Request;
 use Override;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Message\Request\Contract\Request as Contract;
+use Valkyrja\Http\Message\Request\Contract\RequestContract as Contract;
 use Valkyrja\Http\Message\Request\Throwable\Exception\InvalidRequestTargetException;
-use Valkyrja\Http\Message\Stream\Contract\Stream;
+use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;
 use Valkyrja\Http\Message\Stream\Stream as HttpStream;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Http\Message\Trait\Message;
-use Valkyrja\Http\Message\Uri\Contract\Uri;
+use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Uri as HttpUri;
 
 use function preg_match;
@@ -47,17 +47,17 @@ class Request implements Contract
     /**
      * Request constructor.
      *
-     * @param Uri                     $uri     [optional] The uri
+     * @param UriContract             $uri     [optional] The uri
      * @param RequestMethod           $method  [optional] The method
-     * @param Stream                  $body    [optional] The body stream
+     * @param StreamContract          $body    [optional] The body stream
      * @param array<string, string[]> $headers [optional] The headers
      *
      * @throws InvalidArgumentException
      */
     public function __construct(
-        protected Uri $uri = new HttpUri(),
+        protected UriContract $uri = new HttpUri(),
         protected RequestMethod $method = RequestMethod::GET,
-        Stream $body = new HttpStream(PhpWrapper::input),
+        StreamContract $body = new HttpStream(PhpWrapper::input),
         array $headers = []
     ) {
         $this->setBody($body);
@@ -129,7 +129,7 @@ class Request implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getUri(): Uri
+    public function getUri(): UriContract
     {
         return $this->uri;
     }
@@ -138,7 +138,7 @@ class Request implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withUri(Uri $uri, bool $preserveHost = false): static
+    public function withUri(UriContract $uri, bool $preserveHost = false): static
     {
         $new = clone $this;
 

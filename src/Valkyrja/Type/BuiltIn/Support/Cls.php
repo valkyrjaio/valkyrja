@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\BuiltIn\Support;
 
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Type\BuiltIn\Throwable\Exception\InvalidClassPropertyProvidedException;
 use Valkyrja\Type\BuiltIn\Throwable\Exception\InvalidClassProvidedException;
 
@@ -123,14 +123,14 @@ class Cls
      * @template T of object
      * @template D of object
      *
-     * @param Container               $container    The container
+     * @param ContainerContract       $container    The container
      * @param class-string<T>         $class        The class to get
      * @param class-string<D>         $defaultClass The default class to fallback to
      * @param array<array-key, mixed> $arguments    [optional] The arguments
      *
      * @return T|D
      */
-    public static function getDefaultableService(Container $container, string $class, string $defaultClass, array $arguments = []): object
+    public static function getDefaultableService(ContainerContract $container, string $class, string $defaultClass, array $arguments = []): object
     {
         if ($container->has($class)) {
             return $container->get(

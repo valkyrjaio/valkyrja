@@ -13,10 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Middleware\Provider;
 
-use Valkyrja\Cli\Middleware\Handler;
 use Valkyrja\Cli\Middleware\Handler\CommandDispatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\CommandMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\CommandNotMatchedHandler;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
@@ -39,7 +44,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertInstanceOf(
             InputReceivedHandler::class,
-            $this->container->getSingleton(Handler\Contract\InputReceivedHandler::class)
+            $this->container->getSingleton(InputReceivedHandlerContract::class)
         );
     }
 
@@ -49,7 +54,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertInstanceOf(
             CommandDispatchedHandler::class,
-            $this->container->getSingleton(Handler\Contract\CommandDispatchedHandler::class)
+            $this->container->getSingleton(CommandDispatchedHandlerContract::class)
         );
     }
 
@@ -59,7 +64,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertInstanceOf(
             ThrowableCaughtHandler::class,
-            $this->container->getSingleton(Handler\Contract\ThrowableCaughtHandler::class)
+            $this->container->getSingleton(ThrowableCaughtHandlerContract::class)
         );
     }
 
@@ -69,7 +74,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertInstanceOf(
             CommandMatchedHandler::class,
-            $this->container->getSingleton(Handler\Contract\CommandMatchedHandler::class)
+            $this->container->getSingleton(CommandMatchedHandlerContract::class)
         );
     }
 
@@ -79,7 +84,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertInstanceOf(
             CommandNotMatchedHandler::class,
-            $this->container->getSingleton(Handler\Contract\CommandNotMatchedHandler::class)
+            $this->container->getSingleton(CommandNotMatchedHandlerContract::class)
         );
     }
 
@@ -89,7 +94,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
 
         self::assertInstanceOf(
             ExitedHandler::class,
-            $this->container->getSingleton(Handler\Contract\ExitedHandler::class)
+            $this->container->getSingleton(ExitedHandlerContract::class)
         );
     }
 }

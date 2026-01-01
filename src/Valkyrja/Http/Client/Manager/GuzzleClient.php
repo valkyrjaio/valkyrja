@@ -19,13 +19,13 @@ use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
 use Override;
 use Psr\Http\Message\ResponseInterface;
-use Valkyrja\Http\Client\Manager\Contract\Client as Contract;
+use Valkyrja\Http\Client\Manager\Contract\ClientContract as Contract;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
-use Valkyrja\Http\Message\Request\Contract\JsonServerRequest;
-use Valkyrja\Http\Message\Request\Contract\Request;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Message\Request\Contract\JsonServerRequestContract;
+use Valkyrja\Http\Message\Request\Contract\RequestContract;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
 /**
  * Class GuzzleClient.
@@ -36,7 +36,7 @@ class GuzzleClient implements Contract
 {
     public function __construct(
         protected Client $client,
-        protected ResponseFactory $responseFactory,
+        protected ResponseFactoryContract $responseFactory,
     ) {
     }
 
@@ -46,7 +46,7 @@ class GuzzleClient implements Contract
      * @throws GuzzleException
      */
     #[Override]
-    public function sendRequest(Request $request): Response
+    public function sendRequest(RequestContract $request): ResponseContract
     {
         return $this->fromPsr7($this->getGuzzleResponse($request));
     }
@@ -54,13 +54,13 @@ class GuzzleClient implements Contract
     /**
      * Get a Guzzle response from a Valkyrja request.
      *
-     * @param Request $request The request
+     * @param RequestContract $request The request
      *
      * @throws GuzzleException
      *
      * @return ResponseInterface
      */
-    protected function getGuzzleResponse(Request $request): ResponseInterface
+    protected function getGuzzleResponse(RequestContract $request): ResponseInterface
     {
         /** @var array<string, mixed> $options */
         $options = [];
@@ -68,7 +68,7 @@ class GuzzleClient implements Contract
         $this->setGuzzleHeaders($request, $options);
         $this->setGuzzleBody($request, $options);
 
-        if ($request instanceof ServerRequest) {
+        if ($request instanceof ServerRequestContract) {
             $this->setGuzzleCookies($request, $options);
             $this->setGuzzleFormParams($request, $options);
         }
@@ -83,12 +83,12 @@ class GuzzleClient implements Contract
     /**
      * Set the Guzzle headers.
      *
-     * @param Request              $request  The request
+     * @param RequestContract      $request  The request
      * @param array<string, mixed> &$options The options
      *
      * @return void
      */
-    protected function setGuzzleHeaders(Request $request, array &$options): void
+    protected function setGuzzleHeaders(RequestContract $request, array &$options): void
     {
         if ($headers = $request->getHeaders()) {
             $options['headers'] = [];
@@ -102,12 +102,12 @@ class GuzzleClient implements Contract
     /**
      * Set the Guzzle cookies.
      *
-     * @param ServerRequest        $request  The request
-     * @param array<string, mixed> &$options The options
+     * @param ServerRequestContract $request  The request
+     * @param array<string, mixed>  &$options The options
      *
      * @return void
      */
-    protected function setGuzzleCookies(ServerRequest $request, array &$options): void
+    protected function setGuzzleCookies(ServerRequestContract $request, array &$options): void
     {
         if ($cookies = $request->getCookieParams()) {
             $jar = new CookieJar();
@@ -128,16 +128,16 @@ class GuzzleClient implements Contract
     /**
      * Set the Guzzle form params.
      *
-     * @param ServerRequest        $request  The request
-     * @param array<string, mixed> &$options The options
+     * @param ServerRequestContract $request  The request
+     * @param array<string, mixed>  &$options The options
      *
      * @return void
      */
-    protected function setGuzzleFormParams(ServerRequest $request, array &$options): void
+    protected function setGuzzleFormParams(ServerRequestContract $request, array &$options): void
     {
         if (
             ($body = $request->getParsedBody())
-            && ! ($request instanceof JsonServerRequest && $request->getParsedJson())
+            && ! ($request instanceof JsonServerRequestContract && $request->getParsedJson())
         ) {
             $options['form_params'] = $body;
         }
@@ -146,12 +146,12 @@ class GuzzleClient implements Contract
     /**
      * Set the Guzzle body.
      *
-     * @param Request              $request  The request
+     * @param RequestContract      $request  The request
      * @param array<string, mixed> &$options The options
      *
      * @return void
      */
-    protected function setGuzzleBody(Request $request, array &$options): void
+    protected function setGuzzleBody(RequestContract $request, array &$options): void
     {
         $body = $request->getBody();
         $body->rewind();
@@ -166,11 +166,11 @@ class GuzzleClient implements Contract
      *
      * @param ResponseInterface $guzzleResponse The Guzzle Response
      *
-     * @return Response
+     * @return ResponseContract
      *
      * @psalm-suppress MixedArgumentTypeCoercion
      */
-    protected function fromPsr7(ResponseInterface $guzzleResponse): Response
+    protected function fromPsr7(ResponseInterface $guzzleResponse): ResponseContract
     {
         return $this->responseFactory->createResponse(
             content: $guzzleResponse->getBody()->getContents(),

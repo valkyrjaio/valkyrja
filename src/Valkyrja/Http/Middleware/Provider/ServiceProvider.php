@@ -15,24 +15,24 @@ namespace Valkyrja\Http\Middleware\Provider;
 
 use Override;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Filesystem\Manager\Contract\Filesystem;
+use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Http\Middleware\Cache\CacheResponseMiddleware;
-use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware as HttpRequestReceivedMiddleware;
-use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware as HttpRouteDispatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware as HttpRouteMatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware as HttpRouteNotMatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware as HttpSendingResponseMiddleware;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware as HttpTerminatedMiddleware;
-use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware as HttpThrowableCaughtMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler as RequestReceivedHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler as RouteDispatchedHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler as RouteMatchedHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandler as RouteNotMatchedHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler as SendingResponseHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler as TerminatedHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler as ThrowableCaughtHandlerContract;
+use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract as HttpRequestReceivedMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract as HttpRouteDispatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract as HttpRouteMatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract as HttpRouteNotMatchedMiddleware;
+use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract as HttpSendingResponseMiddleware;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract as HttpTerminatedMiddleware;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract as HttpThrowableCaughtMiddleware;
+use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteNotMatchedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;
 use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
@@ -87,11 +87,11 @@ final class ServiceProvider extends Provider
     /**
      * Publish the RequestReceivedHandler service.
      *
-     * @param Container $container The container
+     * @param ContainerContract $container The container
      *
      * @return void
      */
-    public static function publishRequestReceivedHandler(Container $container): void
+    public static function publishRequestReceivedHandler(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<HttpRequestReceivedMiddleware>[] $middleware */
@@ -108,11 +108,11 @@ final class ServiceProvider extends Provider
     /**
      * Publish the RouteDispatchedHandler service.
      *
-     * @param Container $container The container
+     * @param ContainerContract $container The container
      *
      * @return void
      */
-    public static function publishRouteDispatchedHandler(Container $container): void
+    public static function publishRouteDispatchedHandler(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<HttpRouteDispatchedMiddleware>[] $middleware */
@@ -129,11 +129,11 @@ final class ServiceProvider extends Provider
     /**
      * Publish the ThrowableCaughtHandler service.
      *
-     * @param Container $container The container
+     * @param ContainerContract $container The container
      *
      * @return void
      */
-    public static function publishThrowableCaughtHandler(Container $container): void
+    public static function publishThrowableCaughtHandler(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<HttpThrowableCaughtMiddleware>[] $middleware */
@@ -150,11 +150,11 @@ final class ServiceProvider extends Provider
     /**
      * Publish the RouteMatchedHandler service.
      *
-     * @param Container $container The container
+     * @param ContainerContract $container The container
      *
      * @return void
      */
-    public static function publishRouteMatchedHandler(Container $container): void
+    public static function publishRouteMatchedHandler(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<HttpRouteMatchedMiddleware>[] $middleware */
@@ -171,11 +171,11 @@ final class ServiceProvider extends Provider
     /**
      * Publish the RouteNotMatchedHandler service.
      *
-     * @param Container $container The container
+     * @param ContainerContract $container The container
      *
      * @return void
      */
-    public static function publishRouteNotMatchedHandler(Container $container): void
+    public static function publishRouteNotMatchedHandler(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<HttpRouteNotMatchedMiddleware>[] $middleware */
@@ -192,11 +192,11 @@ final class ServiceProvider extends Provider
     /**
      * Publish the SendingResponseHandler service.
      *
-     * @param Container $container The container
+     * @param ContainerContract $container The container
      *
      * @return void
      */
-    public static function publishSendingResponseHandler(Container $container): void
+    public static function publishSendingResponseHandler(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<HttpSendingResponseMiddleware>[] $middleware */
@@ -213,11 +213,11 @@ final class ServiceProvider extends Provider
     /**
      * Publish the TerminatedHandler service.
      *
-     * @param Container $container The container
+     * @param ContainerContract $container The container
      *
      * @return void
      */
-    public static function publishTerminatedHandler(Container $container): void
+    public static function publishTerminatedHandler(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var class-string<HttpTerminatedMiddleware>[] $middleware */
@@ -234,11 +234,11 @@ final class ServiceProvider extends Provider
     /**
      * Publish the CacheResponseMiddleware service.
      *
-     * @param Container $container The container
+     * @param ContainerContract $container The container
      *
      * @return void
      */
-    public static function publishCacheResponseMiddleware(Container $container): void
+    public static function publishCacheResponseMiddleware(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var bool $debugMode */
@@ -247,7 +247,7 @@ final class ServiceProvider extends Provider
         $container->setSingleton(
             CacheResponseMiddleware::class,
             new CacheResponseMiddleware(
-                $container->getSingleton(Filesystem::class),
+                $container->getSingleton(FilesystemContract::class),
                 $debugMode
             )
         );

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Factory;
 
 use Psr\Http\Message\UriInterface;
-use Valkyrja\Http\Message\Uri\Contract\Uri;
+use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Data\HostPortAccumulator;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
@@ -53,9 +53,9 @@ abstract class UriFactory
      * @throws InvalidPortException
      * @throws InvalidPathException
      *
-     * @return Uri
+     * @return UriContract
      */
-    public static function marshalUriFromServer(array $server, array $headers): Uri
+    public static function marshalUriFromServer(array $server, array $headers): UriContract
     {
         $uri = new HttpUri();
 
@@ -260,9 +260,9 @@ abstract class UriFactory
      *
      * @param UriInterface $uri The PSR uri
      *
-     * @return Uri
+     * @return UriContract
      */
-    public static function fromPsr(UriInterface $uri): Uri
+    public static function fromPsr(UriInterface $uri): UriContract
     {
         $userInfo = $uri->getUserInfo();
         $user     = '';

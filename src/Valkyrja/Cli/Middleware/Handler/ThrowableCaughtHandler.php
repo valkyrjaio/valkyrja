@@ -15,18 +15,18 @@ namespace Valkyrja\Cli\Middleware\Handler;
 
 use Override;
 use Throwable;
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler as Contract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract as Contract;
 
 /**
  * Class ExceptionHandler.
  *
  * @author Melech Mizrachi
  *
- * @extends Handler<ThrowableCaughtMiddleware>
+ * @extends Handler<ThrowableCaughtMiddlewareContract>
  */
 class ThrowableCaughtHandler extends Handler implements Contract
 {
@@ -34,7 +34,7 @@ class ThrowableCaughtHandler extends Handler implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function throwableCaught(Input $input, Output $output, Throwable $exception): Output
+    public function throwableCaught(InputContract $input, OutputContract $output, Throwable $exception): OutputContract
     {
         $next = $this->next;
 

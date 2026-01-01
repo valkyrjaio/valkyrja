@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Cli\Middleware;
 
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler;
-use Valkyrja\Cli\Routing\Data\Contract\Route;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandlerContract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
@@ -25,12 +25,16 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
  *
  * @author Melech Mizrachi
  */
-class CommandDispatchedMiddlewareClass implements CommandDispatchedMiddleware
+class CommandDispatchedMiddlewareClass implements CommandDispatchedMiddlewareContract
 {
     use MiddlewareCounterTrait;
 
-    public function commandDispatched(Input $input, Output $output, Route $command, CommandDispatchedHandler $handler): Output
-    {
+    public function commandDispatched(
+        InputContract $input,
+        OutputContract $output,
+        RouteContract $command,
+        CommandDispatchedHandlerContract $handler
+    ): OutputContract {
         $this->updateCounter();
 
         return $handler->commandDispatched($input, $output, $command);

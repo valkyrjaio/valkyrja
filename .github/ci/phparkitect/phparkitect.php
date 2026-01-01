@@ -71,31 +71,37 @@ return static function (Config $config): void {
 
     $srcRules[] = Rule::allClasses()
                       ->that(new Extend(Provider::class))
+                      ->andThat(new NotHaveNameMatching('*Contract'))
                       ->should(new ResideInOneOfTheseNamespaces('*Provider\\'))
                       ->because('All service providers should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
                       ->that(new Extend(ComponentProvider::class))
+                      ->andThat(new NotHaveNameMatching('*Contract'))
                       ->should(new HaveNameMatching('*ComponentProvider'))
                       ->because('All component providers should be named appropriately');
 
     $srcRules[] = Rule::allClasses()
                       ->that(new Extend(ComponentProvider::class))
+                      ->andThat(new NotHaveNameMatching('*Contract'))
                       ->should(new ResideInOneOfTheseNamespaces('*Provider\\'))
                       ->because('All component providers should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
                       ->that(new ResideInOneOfTheseNamespaces('*Provider\\'))
+                      ->andThat(new NotHaveNameMatching('*Contract'))
                       ->should(new HaveNameMatching('*Provider'))
                       ->because('All classes in a Provider namespace should be named appropriately');
 
     $srcRules[] = Rule::allClasses()
                       ->that(new HaveNameMatching('*Factory'))
+                      ->andThat(new NotHaveNameMatching('*Contract'))
                       ->should(new ResideInOneOfTheseNamespaces('*Factory\\'))
                       ->because('All factories should exist in an appropriate namespace');
 
     $srcRules[] = Rule::allClasses()
                       ->that(new ResideInOneOfTheseNamespaces('*Factory\\'))
+                      ->andThat(new NotHaveNameMatching('*Contract'))
                       ->should(new HaveNameMatching('*Factory'))
                       ->because('All classes in a Factory namespace should be named appropriately');
 
@@ -157,6 +163,17 @@ return static function (Config $config): void {
                       ->that(new ResideInOneOfTheseNamespaces('*Contract\\'))
                       ->should(new IsInterface())
                       ->because('All non-interfaces are not contracts and should be in an appropriate namespace');
+
+    $srcRules[] = Rule::allClasses()
+                      ->that(new IsInterface())
+                      ->andThat(new NotHaveNameMatching('*Throwable'))
+                      ->should(new HaveNameMatching('*Contract'))
+                      ->because('All interfaces are contracts and should named appropriately');
+
+    $srcRules[] = Rule::allClasses()
+                      ->that(new HaveNameMatching('*Contract'))
+                      ->should(new IsInterface())
+                      ->because('All classes with name Contract must be interfaces');
 
     $srcRules[] = Rule::allClasses()
                       ->that(new IsTrait())

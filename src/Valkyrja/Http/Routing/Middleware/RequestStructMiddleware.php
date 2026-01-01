@@ -15,14 +15,14 @@ namespace Valkyrja\Http\Routing\Middleware;
 
 use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response as HttpResponse;
-use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler;
-use Valkyrja\Http\Routing\Data\Contract\Route;
-use Valkyrja\Http\Struct\Request\Contract\RequestStruct;
-use Valkyrja\Validation\Validator\Contract\Validator;
+use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
+use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
+use Valkyrja\Validation\Validator\Contract\ValidatorContract;
 
 use function assert;
 use function is_a;
@@ -32,13 +32,13 @@ use function is_a;
  *
  * @author Melech Mizrachi
  */
-class RequestStructMiddleware implements RouteMatchedMiddleware
+class RequestStructMiddleware implements RouteMatchedMiddlewareContract
 {
     /**
      * @inheritDoc
      */
     #[Override]
-    public function routeMatched(ServerRequest $request, Route $route, RouteMatchedHandler $handler): Route|Response
+    public function routeMatched(ServerRequestContract $request, RouteContract $route, RouteMatchedHandlerContract $handler): RouteContract|ResponseContract
     {
         $response = null;
         $message  = $route->getRequestStruct();
@@ -74,17 +74,17 @@ class RequestStructMiddleware implements RouteMatchedMiddleware
      */
     protected function determineIsStruct(string $struct): bool
     {
-        return is_a($struct, RequestStruct::class, true);
+        return is_a($struct, RequestStructContract::class, true);
     }
 
     /**
-     * @param ServerRequest               $request      The request
-     * @param Route                       $matchedRoute The matched route
-     * @param class-string<RequestStruct> $struct       The message class name
+     * @param ServerRequestContract               $request      The request
+     * @param RouteContract                       $matchedRoute The matched route
+     * @param class-string<RequestStructContract> $struct       The message class name
      *
-     * @return Response|null
+     * @return ResponseContract|null
      */
-    protected function ensureRequestConformsToMessage(ServerRequest $request, Route $matchedRoute, string $struct): Response|null
+    protected function ensureRequestConformsToMessage(ServerRequestContract $request, RouteContract $matchedRoute, string $struct): ResponseContract|null
     {
         return $this->ensureRequestHasNoExtraData($request, $matchedRoute, $struct)
             ?? $this->ensureRequestIsValid($request, $matchedRoute, $struct)
@@ -92,13 +92,13 @@ class RequestStructMiddleware implements RouteMatchedMiddleware
     }
 
     /**
-     * @param ServerRequest               $request      The request
-     * @param Route                       $matchedRoute The matched route
-     * @param class-string<RequestStruct> $struct       The message class name
+     * @param ServerRequestContract               $request      The request
+     * @param RouteContract                       $matchedRoute The matched route
+     * @param class-string<RequestStructContract> $struct       The message class name
      *
-     * @return Response|null
+     * @return ResponseContract|null
      */
-    protected function ensureRequestHasNoExtraData(ServerRequest $request, Route $matchedRoute, string $struct): Response|null
+    protected function ensureRequestHasNoExtraData(ServerRequestContract $request, RouteContract $matchedRoute, string $struct): ResponseContract|null
     {
         // If there is extra data
         if ($struct::determineIfRequestContainsExtraData($request)) {
@@ -110,13 +110,13 @@ class RequestStructMiddleware implements RouteMatchedMiddleware
     }
 
     /**
-     * @param ServerRequest               $request      The request
-     * @param Route                       $matchedRoute The matched route
-     * @param class-string<RequestStruct> $struct       The message class name
+     * @param ServerRequestContract               $request      The request
+     * @param RouteContract                       $matchedRoute The matched route
+     * @param class-string<RequestStructContract> $struct       The message class name
      *
-     * @return Response
+     * @return ResponseContract
      */
-    protected function getExtraDataErrorResponse(ServerRequest $request, Route $matchedRoute, string $struct): Response
+    protected function getExtraDataErrorResponse(ServerRequestContract $request, RouteContract $matchedRoute, string $struct): ResponseContract
     {
         return new HttpResponse(
             statusCode: StatusCode::PAYLOAD_TOO_LARGE,
@@ -124,13 +124,13 @@ class RequestStructMiddleware implements RouteMatchedMiddleware
     }
 
     /**
-     * @param ServerRequest               $request      The request
-     * @param Route                       $matchedRoute The matched route
-     * @param class-string<RequestStruct> $struct       The message class name
+     * @param ServerRequestContract               $request      The request
+     * @param RouteContract                       $matchedRoute The matched route
+     * @param class-string<RequestStructContract> $struct       The message class name
      *
-     * @return Response|null
+     * @return ResponseContract|null
      */
-    protected function ensureRequestIsValid(ServerRequest $request, Route $matchedRoute, string $struct): Response|null
+    protected function ensureRequestIsValid(ServerRequestContract $request, RouteContract $matchedRoute, string $struct): ResponseContract|null
     {
         $validate = $struct::validate($request);
 
@@ -142,15 +142,19 @@ class RequestStructMiddleware implements RouteMatchedMiddleware
     }
 
     /**
-     * @param ServerRequest               $request      The request
-     * @param Route                       $matchedRoute The matched route
-     * @param Validator                   $validate     The validation object
-     * @param class-string<RequestStruct> $struct       The message class name
+     * @param ServerRequestContract               $request      The request
+     * @param RouteContract                       $matchedRoute The matched route
+     * @param ValidatorContract                   $validate     The validation object
+     * @param class-string<RequestStructContract> $struct       The message class name
      *
-     * @return Response
+     * @return ResponseContract
      */
-    protected function getValidationErrorsResponse(ServerRequest $request, Route $matchedRoute, Validator $validate, string $struct): Response
-    {
+    protected function getValidationErrorsResponse(
+        ServerRequestContract $request,
+        RouteContract $matchedRoute,
+        ValidatorContract $validate,
+        string $struct
+    ): ResponseContract {
         return new HttpResponse(
             statusCode: StatusCode::BAD_REQUEST,
         );

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Data;
 
-use Valkyrja\Type\Contract\Type;
+use Valkyrja\Type\Contract\TypeContract;
 use Valkyrja\Type\Enum\CastType;
 
 /**
@@ -24,7 +24,7 @@ use Valkyrja\Type\Enum\CastType;
 class OriginalCast extends Cast
 {
     /**
-     * @param CastType|class-string<Type> $type The type
+     * @param CastType|class-string<TypeContract> $type The type
      */
     public function __construct(CastType|string $type, public bool $isArray = false)
     {

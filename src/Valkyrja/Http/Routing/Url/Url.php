@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Url;
 
 use Override;
-use Valkyrja\Http\Routing\Collection\Contract\Collection;
+use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteNameException;
-use Valkyrja\Http\Routing\Url\Contract\Url as Contract;
+use Valkyrja\Http\Routing\Url\Contract\UrlContract as Contract;
 
 use function str_replace;
 
@@ -31,7 +31,7 @@ class Url implements Contract
      * Url constructor.
      */
     public function __construct(
-        protected Collection $collection,
+        protected CollectionContract $collection,
     ) {
     }
 

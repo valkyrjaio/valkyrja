@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Http\Server\Provider;
 
 use Valkyrja\Http\Middleware\Provider\ServiceProvider as MiddlewareServiceProvider;
-use Valkyrja\Http\Routing\Dispatcher\Contract\Router;
-use Valkyrja\Http\Server\Handler\Contract\RequestHandler as RequestHandlerContract;
+use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
+use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
 use Valkyrja\Http\Server\Handler\RequestHandler;
 use Valkyrja\Http\Server\Middleware\LogThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Middleware\ViewThrowableCaughtMiddleware;
 use Valkyrja\Http\Server\Provider\ServiceProvider;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
-use Valkyrja\View\Factory\Contract\ResponseFactory;
+use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 
 /**
  * Test the ServiceProvider.
@@ -65,7 +65,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
         MiddlewareServiceProvider::publishSendingResponseHandler($container);
         MiddlewareServiceProvider::publishTerminatedHandler($container);
 
-        $container->setSingleton(Router::class, self::createStub(Router::class));
+        $container->setSingleton(RouterContract::class, self::createStub(RouterContract::class));
 
         ServiceProvider::publishRequestHandler($container);
 
@@ -79,7 +79,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(Logger::class, self::createStub(Logger::class));
+        $container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
         ServiceProvider::publishLogThrowableCaughtMiddleware($container);
 
@@ -93,7 +93,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     {
         $container = $this->container;
 
-        $container->setSingleton(ResponseFactory::class, self::createStub(ResponseFactory::class));
+        $container->setSingleton(ResponseFactoryContract::class, self::createStub(ResponseFactoryContract::class));
 
         ServiceProvider::publishViewThrowableCaughtMiddleware($container);
 

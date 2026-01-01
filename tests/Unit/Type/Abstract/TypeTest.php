@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Type\Abstract;
 use JsonSerializable;
 use Valkyrja\Tests\Classes\Type\TypeClass;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Contract\Type as Contract;
+use Valkyrja\Type\Contract\TypeContract as Contract;
 
 use function json_encode;
 

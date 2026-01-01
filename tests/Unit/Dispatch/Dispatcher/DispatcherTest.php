@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Dispatch\Dispatcher;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\Exception;
-use Valkyrja\Application\Kernel\Contract\Application;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Dispatch\Data\CallableDispatch;
 use Valkyrja\Dispatch\Data\ClassDispatch;
@@ -23,7 +23,7 @@ use Valkyrja\Dispatch\Data\ConstantDispatch;
 use Valkyrja\Dispatch\Data\GlobalVariableDispatch;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Data\PropertyDispatch;
-use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher as Contract;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as Contract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 use Valkyrja\Tests\Classes\Container\ServiceClass;
 use Valkyrja\Tests\Classes\Dispatch\InvalidDispatchClass;
@@ -269,7 +269,7 @@ class DispatcherTest extends TestCase
     {
         $dispatch = new ClassDispatch(class: InvalidDispatcherClass::class);
 
-        $app = self::createStub(Application::class);
+        $app = self::createStub(ApplicationContract::class);
 
         self::assertInstanceOf(
             InvalidDispatcherClass::class,

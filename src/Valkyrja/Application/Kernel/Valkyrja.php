@@ -17,13 +17,13 @@ use Override;
 use Valkyrja\Application\Data\Config;
 use Valkyrja\Application\Data\Data;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Application\Kernel\Contract\Application;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Provider;
 use Valkyrja\Application\Throwable\Exception\RuntimeException;
 use Valkyrja\Cli\Routing\Data\Data as CliData;
 use Valkyrja\Container\Data\Data as ContainerData;
 use Valkyrja\Container\Manager\Container as ContainerManager;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Event\Data\Data as EventData;
 use Valkyrja\Http\Routing\Data\Data as HttpData;
 
@@ -32,7 +32,7 @@ use Valkyrja\Http\Routing\Data\Data as HttpData;
  *
  * @author Melech Mizrachi
  */
-class Valkyrja implements Application
+class Valkyrja implements ApplicationContract
 {
     /**
      * Application env.
@@ -52,7 +52,7 @@ class Valkyrja implements Application
     /**
      * Get the instance of the container.
      */
-    protected Container $container;
+    protected ContainerContract $container;
 
     /**
      * Whether the application was setup.
@@ -141,7 +141,7 @@ class Valkyrja implements Application
      * @inheritDoc
      */
     #[Override]
-    public function getContainer(): Container
+    public function getContainer(): ContainerContract
     {
         return $this->container;
     }
@@ -150,7 +150,7 @@ class Valkyrja implements Application
      * @inheritDoc
      */
     #[Override]
-    public function setContainer(Container $container): static
+    public function setContainer(ContainerContract $container): static
     {
         $this->container = $container;
 
@@ -375,9 +375,9 @@ class Valkyrja implements Application
     {
         $container = $this->container;
 
-        $container->setSingleton(Application::class, $this);
+        $container->setSingleton(ApplicationContract::class, $this);
         $container->setSingleton(Env::class, $this->env);
-        $container->setSingleton(Container::class, $container);
+        $container->setSingleton(ContainerContract::class, $container);
 
         if ($this->data !== null) {
             $container->setSingleton(ContainerData::class, $this->data->container);

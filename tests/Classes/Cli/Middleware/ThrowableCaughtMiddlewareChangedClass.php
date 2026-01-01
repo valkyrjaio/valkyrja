@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Cli\Middleware;
 
 use Throwable;
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Interaction\Output\Output;
+use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
 
 /**
@@ -25,15 +26,15 @@ use Valkyrja\Tests\Classes\Cli\Middleware\Trait\MiddlewareCounterTrait;
  *
  * @author Melech Mizrachi
  */
-class ThrowableCaughtMiddlewareChangedClass implements ThrowableCaughtMiddleware
+class ThrowableCaughtMiddlewareChangedClass implements ThrowableCaughtMiddlewareContract
 {
     use MiddlewareCounterTrait;
 
-    public function throwableCaught(Input $input, Output $output, Throwable $exception, ThrowableCaughtHandler $handler): Output
+    public function throwableCaught(InputContract $input, OutputContract $output, Throwable $exception, ThrowableCaughtHandlerContract $handler): OutputContract
     {
         $this->updateCounter();
 
         // Return a different output instead of calling the handler to simulate early exit
-        return new \Valkyrja\Cli\Interaction\Output\Output();
+        return new Output();
     }
 }

@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Store;
 
 use Override;
-use Valkyrja\Auth\Data\Retrieval\Contract\Retrieval;
-use Valkyrja\Auth\Entity\Contract\User;
-use Valkyrja\Auth\Store\Contract\Store as Contract;
+use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
+use Valkyrja\Auth\Entity\Contract\UserContract;
+use Valkyrja\Auth\Store\Contract\StoreContract as Contract;
 
 /**
  * Class NullStore.
  *
  * @author Melech Mizrachi
  *
- * @template U of User
+ * @template U of UserContract
  *
  * @implements Contract<U>
  */
@@ -33,7 +33,7 @@ class NullStore implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function retrieve(Retrieval $retrieval, string $user): User|null
+    public function retrieve(RetrievalContract $retrieval, string $user): UserContract|null
     {
         return null;
     }
@@ -42,7 +42,7 @@ class NullStore implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function create(User $user): void
+    public function create(UserContract $user): void
     {
     }
 
@@ -50,7 +50,7 @@ class NullStore implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function update(User $user): void
+    public function update(UserContract $user): void
     {
     }
 }

@@ -17,15 +17,15 @@ use Override;
 use Pusher\Pusher;
 use Pusher\PusherException;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster;
+use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Broadcaster\CryptPusherBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\LogBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\NullBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\PusherBroadcaster;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Crypt\Manager\Contract\Crypt;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Crypt\Manager\Contract\CryptContract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 
 use const CURL_IPRESOLVE_V4;
 use const CURLOPT_IPRESOLVE;
@@ -44,7 +44,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Broadcaster::class            => [self::class, 'publishBroadcaster'],
+            BroadcasterContract::class    => [self::class, 'publishBroadcaster'],
             PusherBroadcaster::class      => [self::class, 'publishPusherBroadcaster'],
             CryptPusherBroadcaster::class => [self::class, 'publishCryptPusherBroadcaster'],
             Pusher::class                 => [self::class, 'publishPusher'],
@@ -60,7 +60,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Broadcaster::class,
+            BroadcasterContract::class,
             PusherBroadcaster::class,
             CryptPusherBroadcaster::class,
             Pusher::class,
@@ -72,14 +72,14 @@ final class ServiceProvider extends Provider
     /**
      * Publish the broadcaster service.
      */
-    public static function publishBroadcaster(Container $container): void
+    public static function publishBroadcaster(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<Broadcaster> $default */
+        /** @var class-string<BroadcasterContract> $default */
         $default = $env::BROADCAST_DEFAULT_BROADCASTER;
 
         $container->setSingleton(
-            Broadcaster::class,
+            BroadcasterContract::class,
             $container->getSingleton($default),
         );
     }
@@ -87,7 +87,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the pusher broadcaster service.
      */
-    public static function publishPusherBroadcaster(Container $container): void
+    public static function publishPusherBroadcaster(ContainerContract $container): void
     {
         $container->setSingleton(
             PusherBroadcaster::class,
@@ -100,13 +100,13 @@ final class ServiceProvider extends Provider
     /**
      * Publish the crypt pusher broadcaster service.
      */
-    public static function publishCryptPusherBroadcaster(Container $container): void
+    public static function publishCryptPusherBroadcaster(ContainerContract $container): void
     {
         $container->setSingleton(
             CryptPusherBroadcaster::class,
             new CryptPusherBroadcaster(
                 $container->getSingleton(Pusher::class),
-                $container->getSingleton(Crypt::class),
+                $container->getSingleton(CryptContract::class),
             )
         );
     }
@@ -116,7 +116,7 @@ final class ServiceProvider extends Provider
      *
      * @throws PusherException
      */
-    public static function publishPusher(Container $container): void
+    public static function publishPusher(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $key */
@@ -150,10 +150,10 @@ final class ServiceProvider extends Provider
     /**
      * Publish the log broadcaster service.
      */
-    public static function publishLogBroadcaster(Container $container): void
+    public static function publishLogBroadcaster(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<Logger> $logger */
+        /** @var class-string<LoggerContract> $logger */
         $logger = $env::BROADCAST_LOG_LOGGER;
 
         $container->setSingleton(
@@ -167,7 +167,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the null broadcaster service.
      */
-    public static function publishNullBroadcaster(Container $container): void
+    public static function publishNullBroadcaster(ContainerContract $container): void
     {
         $container->setSingleton(
             NullBroadcaster::class,

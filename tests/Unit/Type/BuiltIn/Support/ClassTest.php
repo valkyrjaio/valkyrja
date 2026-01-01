@@ -20,7 +20,7 @@ use Valkyrja\Tests\Unit\TestCase;
 use Valkyrja\Type\BuiltIn\Support\Cls as Helper;
 use Valkyrja\Type\BuiltIn\Throwable\Exception\InvalidClassPropertyProvidedException;
 use Valkyrja\Type\BuiltIn\Throwable\Exception\InvalidClassProvidedException;
-use Valkyrja\Type\Model\Contract\Model as ModelContract;
+use Valkyrja\Type\Model\Contract\ModelContract;
 
 class ClassTest extends TestCase
 {

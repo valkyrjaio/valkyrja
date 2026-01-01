@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Http\Middleware\Handler;
 
 use Override;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Handler\RouteDispatchedHandler;
-use Valkyrja\Http\Routing\Data\Contract\Route;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
  * Class TestRouteDispatchedHandler.
@@ -40,7 +40,7 @@ class RouteDispatchedHandlerClass extends RouteDispatchedHandler
      * @inheritDoc
      */
     #[Override]
-    public function routeDispatched(ServerRequest $request, Response $response, Route $route): Response
+    public function routeDispatched(ServerRequestContract $request, ResponseContract $response, RouteContract $route): ResponseContract
     {
         $this->count++;
 

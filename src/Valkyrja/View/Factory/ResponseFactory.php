@@ -15,11 +15,11 @@ namespace Valkyrja\View\Factory;
 
 use Override;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory as HttpMessageResponseFactoryContract;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract as HttpMessageResponseFactoryContract;
 use Valkyrja\Http\Message\Factory\ResponseFactory as HttpMessageResponseFactory;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\View\Factory\Contract\ResponseFactory as Contract;
-use Valkyrja\View\Renderer\Contract\Renderer;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\View\Factory\Contract\ResponseFactoryContract as Contract;
+use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\PhpRenderer;
 
 /**
@@ -31,7 +31,7 @@ class ResponseFactory implements Contract
 {
     public function __construct(
         protected HttpMessageResponseFactoryContract $responseFactory = new HttpMessageResponseFactory(),
-        protected Renderer $renderer = new PhpRenderer('resources/views')
+        protected RendererContract $renderer = new PhpRenderer('resources/views')
     ) {
     }
 
@@ -44,7 +44,7 @@ class ResponseFactory implements Contract
         array|null $data = null,
         StatusCode|null $statusCode = null,
         array|null $headers = null
-    ): Response {
+    ): ResponseContract {
         $content = $this->renderer->createTemplate($template, $data ?? [])->render();
 
         return $this->responseFactory->createResponse($content, $statusCode, $headers);

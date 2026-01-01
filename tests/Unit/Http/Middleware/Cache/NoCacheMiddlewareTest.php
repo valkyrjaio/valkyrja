@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Http\Middleware\Cache;
 
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Request\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\EmptyResponse;
 use Valkyrja\Http\Middleware\Cache\NoCacheResponseMiddleware;
 use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
@@ -55,7 +55,7 @@ class NoCacheMiddlewareTest extends TestCase
         $this->assertions($responseAfterMiddleware);
     }
 
-    protected function assertions(Response $response): void
+    protected function assertions(ResponseContract $response): void
     {
         self::assertTrue($response->hasHeader(HeaderName::EXPIRES));
         self::assertTrue($response->hasHeader(HeaderName::CACHE_CONTROL));

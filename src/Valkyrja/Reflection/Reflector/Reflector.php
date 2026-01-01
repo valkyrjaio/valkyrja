@@ -24,7 +24,7 @@ use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionProperty;
 use UnitEnum;
-use Valkyrja\Reflection\Reflector\Contract\Reflector as Contract;
+use Valkyrja\Reflection\Reflector\Contract\ReflectorContract as Contract;
 use Valkyrja\Reflection\Throwable\Exception\RuntimeException;
 
 use function class_exists;

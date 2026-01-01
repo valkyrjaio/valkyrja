@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Reflection;
 
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
  * Class to test reflections.
@@ -33,7 +33,7 @@ class ReflectableClass
         return 'method-static';
     }
 
-    public function test(Container $container): string
+    public function test(ContainerContract $container): string
     {
         return 'method';
     }

@@ -15,9 +15,9 @@ namespace Valkyrja\Http\Routing\Processor;
 
 use Override;
 use Valkyrja\Http\Routing\Constant\Regex;
-use Valkyrja\Http\Routing\Data\Contract\Parameter;
-use Valkyrja\Http\Routing\Data\Contract\Route;
-use Valkyrja\Http\Routing\Processor\Contract\Processor as Contract;
+use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
+use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract as Contract;
 use Valkyrja\Http\Routing\Support\Helpers;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
 
@@ -31,14 +31,14 @@ class Processor implements Contract
     /**
      * Process a route.
      *
-     * @param Route $route The route
+     * @param RouteContract $route The route
      *
      * @throws InvalidRoutePathException
      *
-     * @return Route
+     * @return RouteContract
      */
     #[Override]
-    public function route(Route $route): Route
+    public function route(RouteContract $route): RouteContract
     {
         // Set the path to the validated cleaned path (/some/path)
         $route = $route->withPath(Helpers::trimPath($route->getPath()));
@@ -54,13 +54,13 @@ class Processor implements Contract
     /**
      * Create the regex for a route.
      *
-     * @param Route $route The route
+     * @param RouteContract $route The route
      *
      * @throws InvalidRoutePathException
      *
-     * @return Route
+     * @return RouteContract
      */
-    protected function modifyRegex(Route $route): Route
+    protected function modifyRegex(RouteContract $route): RouteContract
     {
         // If the regex has already been set then don't do anything
         if ($route->getRegex() !== null) {
@@ -86,12 +86,12 @@ class Processor implements Contract
     /**
      * Validate the parameter name exists in the regex.
      *
-     * @param Parameter $parameter The parameter
-     * @param string    $regex     The regex
+     * @param ParameterContract $parameter The parameter
+     * @param string            $regex     The regex
      *
-     * @return Parameter
+     * @return ParameterContract
      */
-    protected function processParameterInRegex(Parameter $parameter, string $regex): Parameter
+    protected function processParameterInRegex(ParameterContract $parameter, string $regex): ParameterContract
     {
         // If the parameter is optional or the name has a ? affixed to it
         if ($parameter->isOptional() || str_contains($regex, $parameter->getName() . '?')) {
@@ -105,15 +105,15 @@ class Processor implements Contract
     /**
      * Replace the parameter name in the route's regex.
      *
-     * @param Route     $route     The route
-     * @param Parameter $parameter The parameter
-     * @param string    $regex     The regex
+     * @param RouteContract     $route     The route
+     * @param ParameterContract $parameter The parameter
+     * @param string            $regex     The regex
      *
      * @throws InvalidRoutePathException
      *
      * @return string
      */
-    protected function replaceParameterNameInRegex(Route $route, Parameter $parameter, string $regex): string
+    protected function replaceParameterNameInRegex(RouteContract $route, ParameterContract $parameter, string $regex): string
     {
         // Get whether this parameter is optional
         $isOptional = $parameter->isOptional();

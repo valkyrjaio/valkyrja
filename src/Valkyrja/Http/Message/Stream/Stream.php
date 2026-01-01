@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Message\Stream;
 
 use Override;
 use Throwable;
-use Valkyrja\Http\Message\Stream\Contract\Stream as Contract;
+use Valkyrja\Http\Message\Stream\Contract\StreamContract as Contract;
 use Valkyrja\Http\Message\Stream\Enum\Mode;
 use Valkyrja\Http\Message\Stream\Enum\ModeTranslation;
 use Valkyrja\Http\Message\Stream\Enum\PhpWrapper;

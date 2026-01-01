@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Throwable\Exception;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 
 /**
  * Class HttpException.
@@ -45,13 +45,13 @@ class HttpException extends RuntimeException
      * @param StatusCode|null              $statusCode [optional] The status code to use
      * @param string|null                  $message    [optional] The Exception message to throw
      * @param array<string, string[]>|null $headers    [optional] The headers to send
-     * @param Response|null                $response   [optional] The Response to send
+     * @param ResponseContract|null        $response   [optional] The Response to send
      */
     public function __construct(
         StatusCode|null $statusCode = null,
         string|null $message = null,
         array|null $headers = [],
-        protected Response|null $response = null
+        protected ResponseContract|null $response = null
     ) {
         $this->statusCode = $statusCode
             ?? $response?->getStatusCode()
@@ -85,9 +85,9 @@ class HttpException extends RuntimeException
     /**
      * Get the response for this exception.
      *
-     * @return Response|null
+     * @return ResponseContract|null
      */
-    public function getResponse(): Response|null
+    public function getResponse(): ResponseContract|null
     {
         return $this->response;
     }

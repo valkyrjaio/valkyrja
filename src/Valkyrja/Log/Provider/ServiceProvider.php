@@ -19,10 +19,10 @@ use Monolog\Logger as Monolog;
 use Override;
 use Psr\Log\LoggerInterface;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 use Valkyrja\Log\Enum\LogLevel;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Log\Logger\NullLogger;
 use Valkyrja\Log\Logger\PsrLogger;
 use Valkyrja\Support\Directory\Directory;
@@ -43,7 +43,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Logger::class          => [self::class, 'publishLogger'],
+            LoggerContract::class  => [self::class, 'publishLogger'],
             PsrLogger::class       => [self::class, 'publishPsrLogger'],
             NullLogger::class      => [self::class, 'publishNullLogger'],
             LoggerInterface::class => [self::class, 'publishLoggerInterface'],
@@ -58,7 +58,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Logger::class,
+            LoggerContract::class,
             NullLogger::class,
             PsrLogger::class,
             LoggerInterface::class,
@@ -69,14 +69,14 @@ final class ServiceProvider extends Provider
     /**
      * Publish the logger service.
      */
-    public static function publishLogger(Container $container): void
+    public static function publishLogger(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<Logger> $default */
+        /** @var class-string<LoggerContract> $default */
         $default = $env::LOG_DEFAULT_LOGGER;
 
         $container->setSingleton(
-            Logger::class,
+            LoggerContract::class,
             $container->getSingleton($default),
         );
     }
@@ -84,7 +84,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the psr adapter service.
      */
-    public static function publishPsrLogger(Container $container): void
+    public static function publishPsrLogger(ContainerContract $container): void
     {
         $container->setSingleton(
             PsrLogger::class,
@@ -97,11 +97,11 @@ final class ServiceProvider extends Provider
     /**
      * Publish the null adapter service.
      *
-     * @param Container $container The container
+     * @param ContainerContract $container The container
      *
      * @return void
      */
-    public static function publishNullLogger(Container $container): void
+    public static function publishNullLogger(ContainerContract $container): void
     {
         $container->setSingleton(
             NullLogger::class,
@@ -112,7 +112,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the psr logger interface.
      */
-    public static function publishLoggerInterface(Container $container): void
+    public static function publishLoggerInterface(ContainerContract $container): void
     {
         $container->setSingleton(
             LoggerInterface::class,
@@ -123,7 +123,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the Monolog service.
      */
-    public static function publishMonolog(Container $container): void
+    public static function publishMonolog(ContainerContract $container): void
     {
         $filePath = Directory::logsStoragePath();
         $name     = 'valkyrja' . date('-Y-m-d');

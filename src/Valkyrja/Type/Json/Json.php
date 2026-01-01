@@ -17,7 +17,7 @@ use JsonException;
 use Override;
 use Valkyrja\Type\Abstract\Type;
 use Valkyrja\Type\BuiltIn\Support\Arr as Helper;
-use Valkyrja\Type\Json\Contract\Json as Contract;
+use Valkyrja\Type\Json\Contract\JsonContract as Contract;
 
 use function is_string;
 

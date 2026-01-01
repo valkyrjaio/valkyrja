@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Dispatch\Provider;
 
-use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher as Contract;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as Contract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 use Valkyrja\Dispatch\Provider\ServiceProvider;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;

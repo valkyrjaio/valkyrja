@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Dispatch\Provider;
 
 use Override;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher as DispatcherContract;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 
 /**
@@ -51,11 +51,11 @@ final class ServiceProvider extends Provider
     /**
      * Publish the dispatcher service.
      *
-     * @param Container $container The container
+     * @param ContainerContract $container The container
      *
      * @return void
      */
-    public static function publishDispatcher(Container $container): void
+    public static function publishDispatcher(ContainerContract $container): void
     {
         $container->setSingleton(
             DispatcherContract::class,

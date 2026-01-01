@@ -15,9 +15,9 @@ namespace Valkyrja\Tests\Functional;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Valkyrja\Application\Entry\App;
-use Valkyrja\Application\Kernel\Contract\Application;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Http\Message\Factory\RequestFactory;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 use Valkyrja\Support\Directory\Directory;
 use Valkyrja\Tests\EnvClass;
 
@@ -31,9 +31,9 @@ class TestCase extends PHPUnitTestCase
     /**
      * The application.
      *
-     * @var Application
+     * @var ApplicationContract
      */
-    protected Application $app;
+    protected ApplicationContract $app;
 
     /**
      * The env.
@@ -62,6 +62,6 @@ class TestCase extends PHPUnitTestCase
         // $handler = $container->getSingleton(RequestHandler::class);
         // $handler->run(RequestFactory::fromGlobals());
 
-        $container->setSingleton(ServerRequest::class, RequestFactory::fromGlobals());
+        $container->setSingleton(ServerRequestContract::class, RequestFactory::fromGlobals());
     }
 }

@@ -17,7 +17,7 @@ use League\Flysystem\AwsS3V3\AwsS3V3Adapter as FlysystemAwsS3Adapter;
 use League\Flysystem\Local\LocalFilesystemAdapter as FlysystemLocalAdapter;
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Filesystem\Manager\Contract\Filesystem as Contract;
+use Valkyrja\Filesystem\Manager\Contract\FilesystemContract as Contract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Filesystem\Manager\InMemoryFilesystem;
 use Valkyrja\Filesystem\Manager\LocalFlysystemFilesystem;

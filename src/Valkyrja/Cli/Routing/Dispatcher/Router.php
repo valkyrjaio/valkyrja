@@ -16,37 +16,37 @@ namespace Valkyrja\Cli\Routing\Dispatcher;
 use Override;
 use Valkyrja\Cli\Command\HelpCommand;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory as OutputFactoryContract;
+use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Factory\OutputFactory;
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Message\Banner;
-use Valkyrja\Cli\Interaction\Message\Contract\Answer as AnswerContract;
+use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Option\Option;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Handler\CommandDispatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\CommandMatchedHandler;
 use Valkyrja\Cli\Middleware\Handler\CommandNotMatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler as CommandDispatchedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandler as CommandMatchedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandler as CommandNotMatchedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler as ExitedHandlerContract;
-use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler as ThrowableCaughtHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\ExitedHandler;
 use Valkyrja\Cli\Middleware\Handler\ThrowableCaughtHandler;
 use Valkyrja\Cli\Routing\Collection\Collection;
-use Valkyrja\Cli\Routing\Collection\Contract\Collection as CollectionContract;
-use Valkyrja\Cli\Routing\Data\Contract\Route;
+use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\Option\HelpOptionParameter;
-use Valkyrja\Cli\Routing\Dispatcher\Contract\Router as Contract;
+use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract as Contract;
 use Valkyrja\Cli\Routing\Enum\ArgumentValueMode;
 use Valkyrja\Cli\Routing\Throwable\Exception\RuntimeException;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Container\Manager\Contract\Container as ContainerContract;
-use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher as DispatcherContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher;
 
 use function in_array;
@@ -75,13 +75,13 @@ class Router implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function dispatch(Input $input): Output
+    public function dispatch(InputContract $input): OutputContract
     {
         // Attempt to match the command
         $matchedCommand = $this->attemptToMatchCommand($input);
 
         // If the command was not matched an output returned
-        if ($matchedCommand instanceof Output) {
+        if ($matchedCommand instanceof OutputContract) {
             // Dispatch RouteNotMatchedMiddleware
             return $this->commandNotMatchedHandler->commandNotMatched(
                 input: $input,
@@ -99,7 +99,7 @@ class Router implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function dispatchCommand(Input $input, Route $command): Output
+    public function dispatchCommand(InputContract $input, RouteContract $command): OutputContract
     {
         // The command has been matched
         $this->commandMatched($command);
@@ -111,12 +111,12 @@ class Router implements Contract
         );
 
         // If the return value after middleware is an output return it
-        if ($commandAfterMiddleware instanceof Output) {
+        if ($commandAfterMiddleware instanceof OutputContract) {
             return $commandAfterMiddleware;
         }
 
         // Set the command after middleware has potentially modified it in the service container
-        $this->container->setSingleton(Route::class, $commandAfterMiddleware);
+        $this->container->setSingleton(RouteContract::class, $commandAfterMiddleware);
 
         $dispatch  = $commandAfterMiddleware->getDispatch();
         $arguments = $dispatch->getArguments();
@@ -127,7 +127,7 @@ class Router implements Contract
             arguments: $arguments
         );
 
-        if (! $output instanceof Output) {
+        if (! $output instanceof OutputContract) {
             throw new RuntimeException('All commands must return an output');
         }
 
@@ -141,7 +141,7 @@ class Router implements Contract
     /**
      * Match a command, or a response if no command exists, from a given input.
      */
-    protected function attemptToMatchCommand(Input $input): Route|Output
+    protected function attemptToMatchCommand(InputContract $input): RouteContract|OutputContract
     {
         $commandName = $input->getCommandName();
 
@@ -183,7 +183,7 @@ class Router implements Contract
     /**
      * Add the parameters from the input to the command.
      */
-    protected function addParametersToCommand(Input $input, Route $command): Route
+    protected function addParametersToCommand(InputContract $input, RouteContract $command): RouteContract
     {
         $command = $this->addArgumentsToCommand($input, $command);
 
@@ -193,7 +193,7 @@ class Router implements Contract
     /**
      * Add the arguments from the input to the command.
      */
-    protected function addArgumentsToCommand(Input $input, Route $command): Route
+    protected function addArgumentsToCommand(InputContract $input, RouteContract $command): RouteContract
     {
         $arguments          = [...$input->getArguments()];
         $argumentParameters = $command->getArguments();
@@ -225,7 +225,7 @@ class Router implements Contract
     /**
      * Add the options from the input to the command.
      */
-    protected function addOptionsToCommand(Input $input, Route $command): Route
+    protected function addOptionsToCommand(InputContract $input, RouteContract $command): RouteContract
     {
         $options          = $input->getOptions();
         $optionParameters = [...$command->getOptions()];
@@ -255,7 +255,7 @@ class Router implements Contract
     /**
      * Check the command name from the input for a typo.
      */
-    protected function checkCommandNameForTypo(Input $input, Output $output): Route|Output
+    protected function checkCommandNameForTypo(InputContract $input, OutputContract $output): RouteContract|OutputContract
     {
         $name = $input->getCommandName();
 
@@ -279,23 +279,23 @@ class Router implements Contract
     /**
      * Ask the user if they want to run similar commands.
      *
-     * @param Route[] $commands The list of commands
+     * @param RouteContract[] $commands The list of commands
      */
-    protected function askToRunSimilarCommands(Output $output, array $commands): Route|Output
+    protected function askToRunSimilarCommands(OutputContract $output, array $commands): RouteContract|OutputContract
     {
         $command = null;
 
-        $commandNames = array_map(static fn (Route $command) => $command->getName(), $commands);
+        $commandNames = array_map(static fn (RouteContract $command) => $command->getName(), $commands);
 
         $output = $output
             ->withAddedMessages(
                 new NewLine(),
                 new Question(
                     'Did you mean to run one of the following commands?',
-                    static function (Output $output, AnswerContract $answer) use (&$command, $commands): Output {
+                    static function (OutputContract $output, AnswerContract $answer) use (&$command, $commands): OutputContract {
                         $response = $answer->getUserResponse();
                         $command  = $response !== 'no'
-                            ? array_filter($commands, static fn (Route $command): bool => $command->getName() === $response)[0] ?? null
+                            ? array_filter($commands, static fn (RouteContract $command): bool => $command->getName() === $response)[0] ?? null
                             : null;
 
                         return $output;
@@ -315,7 +315,7 @@ class Router implements Contract
     /**
      * Do various stuff after the route has been matched.
      */
-    protected function commandMatched(Route $command): void
+    protected function commandMatched(RouteContract $command): void
     {
         $this->commandMatchedHandler->add(...$command->getCommandMatchedMiddleware());
         $this->commandDispatchedHandler->add(...$command->getCommandDispatchedMiddleware());
@@ -323,6 +323,6 @@ class Router implements Contract
         $this->exitedHandler->add(...$command->getExitedMiddleware());
 
         // Set the found command in the service container
-        $this->container->setSingleton(Route::class, $command);
+        $this->container->setSingleton(RouteContract::class, $command);
     }
 }

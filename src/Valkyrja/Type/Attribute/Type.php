@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Type\Attribute;
 
 use Attribute;
-use Valkyrja\Type\Contract\Type as TypeContract;
+use Valkyrja\Type\Contract\TypeContract;
 
 /**
  * Attribute Type.

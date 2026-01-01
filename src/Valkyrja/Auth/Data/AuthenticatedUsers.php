@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Data;
 
 use Override;
-use Valkyrja\Auth\Data\Contract\AuthenticatedUsers as Contract;
+use Valkyrja\Auth\Data\Contract\AuthenticatedUsersContract as Contract;
 
 use function in_array;
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\File;
 
 use Override;
-use Valkyrja\Http\Message\File\Contract\UploadedFile as Contract;
+use Valkyrja\Http\Message\File\Contract\UploadedFileContract as Contract;
 use Valkyrja\Http\Message\File\Enum\UploadError;
 use Valkyrja\Http\Message\File\Throwable\Exception\AlreadyMovedException;
 use Valkyrja\Http\Message\File\Throwable\Exception\InvalidDirectoryException;
@@ -22,7 +22,7 @@ use Valkyrja\Http\Message\File\Throwable\Exception\InvalidUploadedFileException;
 use Valkyrja\Http\Message\File\Throwable\Exception\MoveFailureException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UnableToWriteFileException;
 use Valkyrja\Http\Message\File\Throwable\Exception\UploadErrorException;
-use Valkyrja\Http\Message\Stream\Contract\Stream;
+use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 use Valkyrja\Http\Message\Stream\Stream as HttpStream;
 use Valkyrja\Http\Message\Stream\Throwable\Exception\InvalidStreamException;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
@@ -57,18 +57,18 @@ class UploadedFile implements Contract
     /**
      * UploadedFile constructor.
      *
-     * @param string|null $file        [optional] The file if not passed stream is required
-     * @param Stream|null $stream      [optional] The stream if not passed file is required
-     * @param UploadError $uploadError [optional] The upload error
-     * @param int|null    $size        [optional] The file size
-     * @param string|null $fileName    [optional] The file name
-     * @param string|null $mediaType   [optional] The file media type
+     * @param string|null         $file        [optional] The file if not passed stream is required
+     * @param StreamContract|null $stream      [optional] The stream if not passed file is required
+     * @param UploadError         $uploadError [optional] The upload error
+     * @param int|null            $size        [optional] The file size
+     * @param string|null         $fileName    [optional] The file name
+     * @param string|null         $mediaType   [optional] The file media type
      *
      * @throws InvalidArgumentException
      */
     public function __construct(
         protected string|null $file = null,
-        protected Stream|null $stream = null,
+        protected StreamContract|null $stream = null,
         protected UploadError $uploadError = UploadError::OK,
         protected int|null $size = null,
         protected string|null $fileName = null,
@@ -85,7 +85,7 @@ class UploadedFile implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getStream(): Stream
+    public function getStream(): StreamContract
     {
         // If the error status is not OK
         if ($this->uploadError !== UploadError::OK) {

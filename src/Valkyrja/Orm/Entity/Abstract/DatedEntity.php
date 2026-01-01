@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Orm\Entity\Abstract;
 
-use Valkyrja\Orm\Entity\Contract\DatedEntity as Contract;
+use Valkyrja\Orm\Entity\Contract\DatedEntityContract as Contract;
 use Valkyrja\Orm\Entity\Trait\DatedFields;
 
 /**

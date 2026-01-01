@@ -15,15 +15,15 @@ namespace Valkyrja\Dispatch\Dispatcher;
 
 use Override;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Container\Manager\Contract\Container as ContainerContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Dispatch\Data\CallableDispatch;
 use Valkyrja\Dispatch\Data\ClassDispatch;
 use Valkyrja\Dispatch\Data\ConstantDispatch;
-use Valkyrja\Dispatch\Data\Contract\Dispatch;
+use Valkyrja\Dispatch\Data\Contract\DispatchContract;
 use Valkyrja\Dispatch\Data\GlobalVariableDispatch;
 use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Dispatch\Data\PropertyDispatch;
-use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher as Contract;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as Contract;
 use Valkyrja\Dispatch\Throwable\Exception\InvalidArgumentException;
 
 use function array_map;
@@ -48,7 +48,7 @@ class Dispatcher implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function dispatch(Dispatch $dispatch, array|null $arguments = null): mixed
+    public function dispatch(DispatchContract $dispatch, array|null $arguments = null): mixed
     {
         return match (true) {
             $dispatch instanceof MethodDispatch         => $this->dispatchClassMethod($dispatch, $arguments),
@@ -266,7 +266,7 @@ class Dispatcher implements Contract
      */
     protected function getArgumentValue(mixed $argument): mixed
     {
-        if ($argument instanceof Dispatch) {
+        if ($argument instanceof DispatchContract) {
             /** @var mixed $argument */
             // Dispatch the argument and set the results to the argument
             $argument = $this->dispatch($argument);

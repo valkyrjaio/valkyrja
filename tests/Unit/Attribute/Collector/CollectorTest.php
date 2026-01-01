@@ -15,9 +15,9 @@ namespace Valkyrja\Tests\Unit\Attribute\Collector;
 
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Collector;
-use Valkyrja\Dispatch\Data\Contract\ConstantDispatch;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatch;
-use Valkyrja\Dispatch\Data\Contract\PropertyDispatch;
+use Valkyrja\Dispatch\Data\Contract\ConstantDispatchContract;
+use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
+use Valkyrja\Dispatch\Data\Contract\PropertyDispatchContract;
 use Valkyrja\Tests\Classes\Attribute\AttributeClass;
 use Valkyrja\Tests\Classes\Attribute\AttributeClassChildClass;
 use Valkyrja\Tests\Classes\Attribute\AttributedClass;
@@ -605,16 +605,16 @@ class CollectorTest extends TestCase
             self::CONST_NAME, self::PROTECTED_CONST_NAME => static function () use ($name, $attribute): void {
                 $dispatch = $attribute->getDispatch();
 
-                self::assertInstanceOf(ConstantDispatch::class, $dispatch);
-                /** @var ConstantDispatch $dispatch */
+                self::assertInstanceOf(ConstantDispatchContract::class, $dispatch);
+                /** @var ConstantDispatchContract $dispatch */
                 self::assertSame($name, $dispatch->getConstant());
                 self::assertSame(AttributedClass::class, $dispatch->getClass());
             },
             self::STATIC_PROPERTY_NAME, self::PROPERTY_NAME => static function () use ($name, $attribute, $isStatic): void {
                 $dispatch = $attribute->getDispatch();
 
-                self::assertInstanceOf(PropertyDispatch::class, $dispatch);
-                /** @var PropertyDispatch $dispatch */
+                self::assertInstanceOf(PropertyDispatchContract::class, $dispatch);
+                /** @var PropertyDispatchContract $dispatch */
                 self::assertSame($isStatic, $dispatch->isStatic());
                 self::assertSame($name, $dispatch->getProperty());
                 self::assertSame(AttributedClass::class, $dispatch->getClass());
@@ -622,8 +622,8 @@ class CollectorTest extends TestCase
             self::STATIC_METHOD_NAME, self::METHOD_NAME => static function () use ($name, $attribute, $isStatic): void {
                 $dispatch = $attribute->getDispatch();
 
-                self::assertInstanceOf(MethodDispatch::class, $dispatch);
-                /** @var MethodDispatch $dispatch */
+                self::assertInstanceOf(MethodDispatchContract::class, $dispatch);
+                /** @var MethodDispatchContract $dispatch */
                 self::assertSame($isStatic, $dispatch->isStatic());
                 self::assertSame($name, $dispatch->getMethod());
                 self::assertSame(AttributedClass::class, $dispatch->getClass());

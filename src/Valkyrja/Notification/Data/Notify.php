@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Notification\Data;
 
 use Override;
-use Valkyrja\Broadcast\Data\Contract\Message as BroadcastMessage;
-use Valkyrja\Mail\Data\Contract\Message as MailMessage;
-use Valkyrja\Notification\Data\Contract\Notify as Contract;
-use Valkyrja\Sms\Data\Contract\Message as SmsMessage;
+use Valkyrja\Broadcast\Data\Contract\MessageContract as BroadcastMessage;
+use Valkyrja\Mail\Data\Contract\MessageContract as MailMessage;
+use Valkyrja\Notification\Data\Contract\NotifyContract as Contract;
+use Valkyrja\Sms\Data\Contract\MessageContract as SmsMessage;
 
 /**
  * Abstract Class Notify.

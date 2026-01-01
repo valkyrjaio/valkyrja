@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Output;
 
 use Override;
-use Valkyrja\Cli\Interaction\Message\Contract\Message;
-use Valkyrja\Cli\Interaction\Output\Contract\PlainOutput as Contract;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
+use Valkyrja\Cli\Interaction\Output\Contract\PlainOutputContract as Contract;
 
 /**
  * Class PlainOutput.
@@ -28,7 +28,7 @@ class PlainOutput extends Output implements Contract
      * @inheritDoc
      */
     #[Override]
-    protected function outputMessage(Message $message): void
+    protected function outputMessage(MessageContract $message): void
     {
         echo strip_tags($message->getText());
     }

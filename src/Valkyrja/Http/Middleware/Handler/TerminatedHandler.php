@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Middleware\Handler;
 
 use Override;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler as Contract;
+use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract as Contract;
 
 /**
  * Class TerminatedHandler.
  *
  * @author Melech Mizrachi
  *
- * @extends Handler<TerminatedMiddleware>
+ * @extends Handler<TerminatedMiddlewareContract>
  */
 class TerminatedHandler extends Handler implements Contract
 {
@@ -33,7 +33,7 @@ class TerminatedHandler extends Handler implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function terminated(ServerRequest $request, Response $response): void
+    public function terminated(ServerRequestContract $request, ResponseContract $response): void
     {
         $next = $this->next;
 

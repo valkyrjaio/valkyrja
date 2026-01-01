@@ -16,17 +16,17 @@ namespace Valkyrja\Http\Routing\Cli\Command;
 use Valkyrja\Cli\Command\VersionCommand;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
+use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Formatter\Formatter;
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Attribute\Route as RouteAttribute;
-use Valkyrja\Http\Routing\Collection\Contract\Collection;
-use Valkyrja\Http\Routing\Data\Contract\Route;
+use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
  * Class ListCommand.
@@ -42,7 +42,7 @@ class ListCommand
         description: 'List all routes',
         helpText: new Message('A command to list all the routes present within the Http component.'),
     )]
-    public function run(VersionCommand $version, Collection $collection, OutputFactory $outputFactory): Output
+    public function run(VersionCommand $version, CollectionContract $collection, OutputFactoryContract $outputFactory): OutputContract
     {
         $output = $outputFactory
             ->createOutput();
@@ -57,7 +57,7 @@ class ListCommand
                 );
         }
 
-        usort($routes, static fn (Route $a, Route $b): int => $a->getPath() <=> $b->getPath());
+        usort($routes, static fn (RouteContract $a, RouteContract $b): int => $a->getPath() <=> $b->getPath());
 
         $output = $version
             ->run($outputFactory)

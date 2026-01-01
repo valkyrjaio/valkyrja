@@ -15,8 +15,8 @@ namespace Valkyrja\Cache\Tagger;
 
 use JsonException;
 use Override;
-use Valkyrja\Cache\Manager\Contract\Cache;
-use Valkyrja\Cache\Tagger\Contract\Tagger as Contract;
+use Valkyrja\Cache\Manager\Contract\CacheContract;
+use Valkyrja\Cache\Tagger\Contract\TaggerContract as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
@@ -36,11 +36,11 @@ class Tagger implements Contract
     /**
      * Tag constructor.
      *
-     * @param Cache  $adapter
-     * @param string ...$tags
+     * @param CacheContract $adapter
+     * @param string        ...$tags
      */
     public function __construct(
-        protected Cache $adapter,
+        protected CacheContract $adapter,
         string ...$tags
     ) {
         $this->tags = $tags;
@@ -50,7 +50,7 @@ class Tagger implements Contract
      * @inheritDoc
      */
     #[Override]
-    public static function make(Cache $store, string ...$tags): static
+    public static function make(CacheContract $store, string ...$tags): static
     {
         return new static($store, ...$tags);
     }

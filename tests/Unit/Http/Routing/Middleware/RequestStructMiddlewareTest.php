@@ -18,7 +18,7 @@ use Valkyrja\Dispatch\Data\MethodDispatch;
 use Valkyrja\Http\Message\Enum\StatusCode;
 use Valkyrja\Http\Message\Request\JsonServerRequest;
 use Valkyrja\Http\Message\Request\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Handler\RouteMatchedHandler;
 use Valkyrja\Http\Routing\Data\Route;
 use Valkyrja\Http\Routing\Middleware\RequestStructMiddleware;
@@ -82,7 +82,7 @@ class RequestStructMiddlewareTest extends TestCase
             handler: $handler
         );
 
-        self::assertInstanceOf(Response::class, $responseAfterMiddleware);
+        self::assertInstanceOf(ResponseContract::class, $responseAfterMiddleware);
         self::assertSame(StatusCode::PAYLOAD_TOO_LARGE, $responseAfterMiddleware->getStatusCode());
     }
 
@@ -114,7 +114,7 @@ class RequestStructMiddlewareTest extends TestCase
             handler: $handler
         );
 
-        self::assertInstanceOf(Response::class, $responseAfterMiddleware);
+        self::assertInstanceOf(ResponseContract::class, $responseAfterMiddleware);
         self::assertSame(StatusCode::BAD_REQUEST, $responseAfterMiddleware->getStatusCode());
     }
 

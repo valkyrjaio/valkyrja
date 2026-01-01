@@ -15,11 +15,11 @@ namespace Valkyrja\Http\Server\Middleware;
 
 use Override;
 use Throwable;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\View\Factory\Contract\ResponseFactory as ViewResponseFactory;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
+use Valkyrja\View\Factory\Contract\ResponseFactoryContract as ViewResponseFactory;
 use Valkyrja\View\Factory\ResponseFactory as DefaultViewResponseFactory;
 
 /**
@@ -27,7 +27,7 @@ use Valkyrja\View\Factory\ResponseFactory as DefaultViewResponseFactory;
  *
  * @author Melech Mizrachi
  */
-class ViewThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
+class ViewThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
 {
     /**
      * The errors template directory.
@@ -45,8 +45,12 @@ class ViewThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
      * @inheritDoc
      */
     #[Override]
-    public function throwableCaught(ServerRequest $request, Response $response, Throwable $exception, ThrowableCaughtHandler $handler): Response
-    {
+    public function throwableCaught(
+        ServerRequestContract $request,
+        ResponseContract $response,
+        Throwable $exception,
+        ThrowableCaughtHandlerContract $handler
+    ): ResponseContract {
         $statusCode = $response->getStatusCode();
 
         return $this->viewResponseFactory->createResponseFromView(

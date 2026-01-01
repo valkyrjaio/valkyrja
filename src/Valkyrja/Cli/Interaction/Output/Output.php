@@ -16,12 +16,12 @@ namespace Valkyrja\Cli\Interaction\Output;
 use Override;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Formatter\HighlightedTextFormatter;
-use Valkyrja\Cli\Interaction\Message\Contract\Answer;
-use Valkyrja\Cli\Interaction\Message\Contract\Message;
-use Valkyrja\Cli\Interaction\Message\Contract\Question;
+use Valkyrja\Cli\Interaction\Message\Contract\AnswerContract;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
+use Valkyrja\Cli\Interaction\Message\Contract\QuestionContract;
 use Valkyrja\Cli\Interaction\Message\Message as MessageMessage;
 use Valkyrja\Cli\Interaction\Message\NewLine;
-use Valkyrja\Cli\Interaction\Output\Contract\Output as Contract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract as Contract;
 
 /**
  * Class Output.
@@ -33,14 +33,14 @@ class Output implements Contract
     /**
      * The unwritten messages.
      *
-     * @var Message[]
+     * @var MessageContract[]
      */
     protected array $unwrittenMessages = [];
 
     /**
      * The written messages.
      *
-     * @var Message[]
+     * @var MessageContract[]
      */
     protected array $writtenMessages = [];
 
@@ -49,7 +49,7 @@ class Output implements Contract
         protected bool $isQuiet = false,
         protected bool $isSilent = false,
         protected ExitCode|int $exitCode = ExitCode::SUCCESS,
-        Message ...$messages,
+        MessageContract ...$messages,
     ) {
         $this->unwrittenMessages = $messages;
     }
@@ -57,7 +57,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      *
-     * @return Message[]
+     * @return MessageContract[]
      */
     #[Override]
     public function getMessages(): array
@@ -71,7 +71,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      *
-     * @return Message[]
+     * @return MessageContract[]
      */
     #[Override]
     public function getWrittenMessages(): array
@@ -91,7 +91,7 @@ class Output implements Contract
     /**
      * @inheritDoc
      *
-     * @return Message[]
+     * @return MessageContract[]
      */
     #[Override]
     public function getUnwrittenMessages(): array
@@ -112,7 +112,7 @@ class Output implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withMessages(Message ...$messages): static
+    public function withMessages(MessageContract ...$messages): static
     {
         $new = clone $this;
 
@@ -125,7 +125,7 @@ class Output implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedMessages(Message ...$messages): static
+    public function withAddedMessages(MessageContract ...$messages): static
     {
         $new = clone $this;
 
@@ -141,7 +141,7 @@ class Output implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedMessage(Message $message): static
+    public function withAddedMessage(MessageContract $message): static
     {
         $new = clone $this;
 
@@ -261,26 +261,26 @@ class Output implements Contract
     /**
      * Determine the type of message and write it.
      *
-     * @param Message $message The message
+     * @param MessageContract $message The message
      *
      * @return void
      */
-    protected function determineQuestionType(Message $message): void
+    protected function determineQuestionType(MessageContract $message): void
     {
         match (true) {
-            $message instanceof Question => $this->askQuestion($message),
-            default                      => $this->writeMessage($message),
+            $message instanceof QuestionContract => $this->askQuestion($message),
+            default                              => $this->writeMessage($message),
         };
     }
 
     /**
      * Write a message.
      *
-     * @param Message $message The message
+     * @param MessageContract $message The message
      *
      * @return void
      */
-    protected function writeMessage(Message $message): void
+    protected function writeMessage(MessageContract $message): void
     {
         $this->setMessageAsWritten($message);
 
@@ -294,11 +294,11 @@ class Output implements Contract
     /**
      * Set a message as written.
      *
-     * @param Message $message The message
+     * @param MessageContract $message The message
      *
      * @return void
      */
-    protected function setMessageAsWritten(Message $message): void
+    protected function setMessageAsWritten(MessageContract $message): void
     {
         $this->writtenMessages[] = $message;
     }
@@ -306,11 +306,11 @@ class Output implements Contract
     /**
      * Output a message.
      *
-     * @param Message $message The message
+     * @param MessageContract $message The message
      *
      * @return void
      */
-    protected function outputMessage(Message $message): void
+    protected function outputMessage(MessageContract $message): void
     {
         echo $message->getFormattedText();
     }
@@ -318,11 +318,11 @@ class Output implements Contract
     /**
      * Ask a question.
      *
-     * @param Question $question The question
+     * @param QuestionContract $question The question
      *
      * @return static
      */
-    protected function askQuestion(Question $question): static
+    protected function askQuestion(QuestionContract $question): static
     {
         $this->writeQuestion($question);
 
@@ -353,11 +353,11 @@ class Output implements Contract
     /**
      * Write a question.
      *
-     * @param Question $question The question
+     * @param QuestionContract $question The question
      *
      * @return void
      */
-    protected function writeQuestion(Question $question): void
+    protected function writeQuestion(QuestionContract $question): void
     {
         // Write the question text
         $this->writeMessage($question);
@@ -388,11 +388,11 @@ class Output implements Contract
     /**
      * Write an answer after it has been answered.
      *
-     * @param Answer $answer The answer
+     * @param AnswerContract $answer The answer
      *
      * @return void
      */
-    protected function writeAnswerAfterResponse(Answer $answer): void
+    protected function writeAnswerAfterResponse(AnswerContract $answer): void
     {
         $this->setMessageAsWritten($answer);
         $this->writeMessage(new NewLine());

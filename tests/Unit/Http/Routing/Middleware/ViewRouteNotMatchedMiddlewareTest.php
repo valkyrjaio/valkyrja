@@ -20,7 +20,7 @@ use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Middleware\Handler\RouteNotMatchedHandler;
 use Valkyrja\Http\Routing\Middleware\ViewRouteNotMatchedMiddleware;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\View\Renderer\Contract\Renderer;
+use Valkyrja\View\Renderer\Contract\RendererContract;
 
 /**
  * Class ViewRouteNotMatchedMiddlewareTest.
@@ -46,7 +46,7 @@ class ViewRouteNotMatchedMiddlewareTest extends TestCase
 
         $templateText = 'Error: 404';
 
-        $view = self::createStub(Renderer::class);
+        $view = self::createStub(RendererContract::class);
         $view->method('render')
              ->with('errors/404', $args)
              ->willReturn($templateText);

@@ -15,18 +15,18 @@ namespace Valkyrja\Event\Provider;
 
 use Override;
 use Valkyrja\Application\Data\Config;
-use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as DispatchDispatcher;
 use Valkyrja\Event\Collection\Collection;
-use Valkyrja\Event\Collection\Contract\Collection as CollectionContract;
+use Valkyrja\Event\Collection\Contract\CollectionContract;
 use Valkyrja\Event\Collector\AttributeCollector;
-use Valkyrja\Event\Collector\Contract\Collector;
+use Valkyrja\Event\Collector\Contract\CollectorContract;
 use Valkyrja\Event\Data\Data;
-use Valkyrja\Event\Dispatcher\Contract\Dispatcher;
+use Valkyrja\Event\Dispatcher\Contract\DispatcherContract;
 use Valkyrja\Event\Dispatcher\Dispatcher as EventDispatcher;
-use Valkyrja\Reflection\Reflector\Contract\Reflector;
+use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 
 /**
  * Class ServiceProvider.
@@ -42,8 +42,8 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Collector::class          => [self::class, 'publishAttributesCollector'],
-            Dispatcher::class         => [self::class, 'publishDispatcher'],
+            CollectorContract::class  => [self::class, 'publishAttributesCollector'],
+            DispatcherContract::class => [self::class, 'publishDispatcher'],
             CollectionContract::class => [self::class, 'publishCollection'],
         ];
     }
@@ -55,8 +55,8 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Collector::class,
-            Dispatcher::class,
+            CollectorContract::class,
+            DispatcherContract::class,
             CollectionContract::class,
         ];
     }
@@ -64,13 +64,13 @@ final class ServiceProvider extends Provider
     /**
      * Publish the attributes service.
      */
-    public static function publishAttributesCollector(Container $container): void
+    public static function publishAttributesCollector(ContainerContract $container): void
     {
         $container->setSingleton(
-            Collector::class,
+            CollectorContract::class,
             new AttributeCollector(
                 $container->getSingleton(AttributeCollectorContract::class),
-                $container->getSingleton(Reflector::class)
+                $container->getSingleton(ReflectorContract::class)
             )
         );
     }
@@ -78,10 +78,10 @@ final class ServiceProvider extends Provider
     /**
      * Publish the dispatcher service.
      */
-    public static function publishDispatcher(Container $container): void
+    public static function publishDispatcher(ContainerContract $container): void
     {
         $container->setSingleton(
-            Dispatcher::class,
+            DispatcherContract::class,
             new EventDispatcher(
                 $container->getSingleton(CollectionContract::class),
                 $container->getSingleton(DispatchDispatcher::class),
@@ -92,7 +92,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the collection service.
      */
-    public static function publishCollection(Container $container): void
+    public static function publishCollection(ContainerContract $container): void
     {
         $container->setSingleton(
             CollectionContract::class,
@@ -108,8 +108,8 @@ final class ServiceProvider extends Provider
         if ($container->isSingleton(Config::class)) {
             $config = $container->getSingleton(Config::class);
 
-            /** @var Collector $listenerAttributes */
-            $listenerAttributes = $container->getSingleton(Collector::class);
+            /** @var CollectorContract $listenerAttributes */
+            $listenerAttributes = $container->getSingleton(CollectorContract::class);
 
             // Get all the annotated listeners from the list of classes
             // Iterate through the listeners

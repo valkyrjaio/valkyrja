@@ -17,7 +17,7 @@ use Override;
 use Psr\Log\LoggerInterface;
 use Throwable;
 use Valkyrja\Log\Enum\LogLevel;
-use Valkyrja\Log\Logger\Contract\Logger as Contract;
+use Valkyrja\Log\Logger\Contract\LoggerContract as Contract;
 
 /**
  * Class PsrLogger.

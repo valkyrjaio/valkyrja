@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Data;
 
 use Override;
-use Valkyrja\Cli\Interaction\Message\Contract\Message;
-use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameter;
-use Valkyrja\Cli\Routing\Data\Contract\OptionParameter;
-use Valkyrja\Cli\Routing\Data\Contract\Parameter;
-use Valkyrja\Cli\Routing\Data\Contract\Route as Contract;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatch;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
+use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
+use Valkyrja\Cli\Routing\Data\Contract\ArgumentParameterContract;
+use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
+use Valkyrja\Cli\Routing\Data\Contract\ParameterContract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract as Contract;
+use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 
 /**
  * Class Route.
@@ -32,27 +32,27 @@ use Valkyrja\Dispatch\Data\Contract\MethodDispatch;
  */
 class Route implements Contract
 {
-    /** @var ArgumentParameter[] */
+    /** @var ArgumentParameterContract[] */
     protected array $arguments = [];
 
-    /** @var OptionParameter[] */
+    /** @var OptionParameterContract[] */
     protected array $options = [];
 
     /**
-     * @param non-empty-string                            $name                        The name
-     * @param non-empty-string                            $description                 The description
-     * @param Message                                     $helpText                    The help text
-     * @param class-string<CommandMatchedMiddleware>[]    $commandMatchedMiddleware    The command matched middleware
-     * @param class-string<CommandDispatchedMiddleware>[] $commandDispatchedMiddleware The command dispatched middleware
-     * @param class-string<ThrowableCaughtMiddleware>[]   $throwableCaughtMiddleware   The throwable caught middleware
-     * @param class-string<ExitedMiddleware>[]            $exitedMiddleware            The exited middleware
-     * @param Parameter[]                                 $parameters                  The parameters
+     * @param non-empty-string                                    $name                        The name
+     * @param non-empty-string                                    $description                 The description
+     * @param MessageContract                                     $helpText                    The help text
+     * @param class-string<CommandMatchedMiddlewareContract>[]    $commandMatchedMiddleware    The command matched middleware
+     * @param class-string<CommandDispatchedMiddlewareContract>[] $commandDispatchedMiddleware The command dispatched middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract>[]   $throwableCaughtMiddleware   The throwable caught middleware
+     * @param class-string<ExitedMiddlewareContract>[]            $exitedMiddleware            The exited middleware
+     * @param ParameterContract[]                                 $parameters                  The parameters
      */
     public function __construct(
         protected string $name,
         protected string $description,
-        protected Message $helpText,
-        protected MethodDispatch $dispatch,
+        protected MessageContract $helpText,
+        protected MethodDispatchContract $dispatch,
         protected array $commandMatchedMiddleware = [],
         protected array $commandDispatchedMiddleware = [],
         protected array $throwableCaughtMiddleware = [],
@@ -60,9 +60,9 @@ class Route implements Contract
         array $parameters = [],
     ) {
         foreach ($parameters as $parameter) {
-            if ($parameter instanceof ArgumentParameter) {
+            if ($parameter instanceof ArgumentParameterContract) {
                 $this->arguments[] = $parameter;
-            } elseif ($parameter instanceof OptionParameter) {
+            } elseif ($parameter instanceof OptionParameterContract) {
                 $this->options[] = $parameter;
             }
         }
@@ -116,7 +116,7 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getHelpText(): Message
+    public function getHelpText(): MessageContract
     {
         return $this->helpText;
     }
@@ -125,7 +125,7 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withHelpText(Message $helpText): static
+    public function withHelpText(MessageContract $helpText): static
     {
         $new = clone $this;
 
@@ -156,9 +156,9 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getArgument(string $name): ArgumentParameter|null
+    public function getArgument(string $name): ArgumentParameterContract|null
     {
-        $arguments = array_filter($this->arguments, static fn (ArgumentParameter $argument) => $argument->getName() === $name);
+        $arguments = array_filter($this->arguments, static fn (ArgumentParameterContract $argument) => $argument->getName() === $name);
 
         return reset($arguments) ?: null;
     }
@@ -167,7 +167,7 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withArguments(ArgumentParameter ...$arguments): static
+    public function withArguments(ArgumentParameterContract ...$arguments): static
     {
         $new = clone $this;
 
@@ -180,7 +180,7 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedArguments(ArgumentParameter ...$arguments): static
+    public function withAddedArguments(ArgumentParameterContract ...$arguments): static
     {
         $new = clone $this;
 
@@ -214,9 +214,9 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getOption(string $name): OptionParameter|null
+    public function getOption(string $name): OptionParameterContract|null
     {
-        $options = array_filter($this->options, static fn (OptionParameter $option) => $option->getName() === $name);
+        $options = array_filter($this->options, static fn (OptionParameterContract $option) => $option->getName() === $name);
 
         return reset($options) ?: null;
     }
@@ -225,7 +225,7 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withOptions(OptionParameter ...$options): static
+    public function withOptions(OptionParameterContract ...$options): static
     {
         $new = clone $this;
 
@@ -238,7 +238,7 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedOptions(OptionParameter ...$options): static
+    public function withAddedOptions(OptionParameterContract ...$options): static
     {
         $new = clone $this;
 
@@ -253,7 +253,7 @@ class Route implements Contract
     /**
      * Get the command matched middleware.
      *
-     * @return class-string<CommandMatchedMiddleware>[]
+     * @return class-string<CommandMatchedMiddlewareContract>[]
      */
     #[Override]
     public function getCommandMatchedMiddleware(): array
@@ -264,7 +264,7 @@ class Route implements Contract
     /**
      * Create a new command with the specified command matched middleware.
      *
-     * @param class-string<CommandMatchedMiddleware> ...$middleware The middleware
+     * @param class-string<CommandMatchedMiddlewareContract> ...$middleware The middleware
      *
      * @return static
      */
@@ -281,7 +281,7 @@ class Route implements Contract
     /**
      * Create a new command with added command matched middleware.
      *
-     * @param class-string<CommandMatchedMiddleware> ...$middleware The middleware
+     * @param class-string<CommandMatchedMiddlewareContract> ...$middleware The middleware
      *
      * @return static
      */
@@ -298,7 +298,7 @@ class Route implements Contract
     /**
      * Get the command dispatched middleware.
      *
-     * @return class-string<CommandDispatchedMiddleware>[]
+     * @return class-string<CommandDispatchedMiddlewareContract>[]
      */
     #[Override]
     public function getCommandDispatchedMiddleware(): array
@@ -309,7 +309,7 @@ class Route implements Contract
     /**
      * Create a new command with the specified command dispatched middleware.
      *
-     * @param class-string<CommandDispatchedMiddleware> ...$middleware The middleware
+     * @param class-string<CommandDispatchedMiddlewareContract> ...$middleware The middleware
      *
      * @return static
      */
@@ -326,7 +326,7 @@ class Route implements Contract
     /**
      * Create a new command with added command dispatched middleware.
      *
-     * @param class-string<CommandDispatchedMiddleware> ...$middleware The middleware
+     * @param class-string<CommandDispatchedMiddlewareContract> ...$middleware The middleware
      *
      * @return static
      */
@@ -343,7 +343,7 @@ class Route implements Contract
     /**
      * Get the throwable caught middleware.
      *
-     * @return class-string<ThrowableCaughtMiddleware>[]
+     * @return class-string<ThrowableCaughtMiddlewareContract>[]
      */
     #[Override]
     public function getThrowableCaughtMiddleware(): array
@@ -354,7 +354,7 @@ class Route implements Contract
     /**
      * Create a new command with the specified throwable caught middleware.
      *
-     * @param class-string<ThrowableCaughtMiddleware> ...$middleware The middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract> ...$middleware The middleware
      *
      * @return static
      */
@@ -371,7 +371,7 @@ class Route implements Contract
     /**
      * Create a new command with added throwable caught middleware.
      *
-     * @param class-string<ThrowableCaughtMiddleware> ...$middleware The middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract> ...$middleware The middleware
      *
      * @return static
      */
@@ -388,7 +388,7 @@ class Route implements Contract
     /**
      * Get the exited middleware.
      *
-     * @return class-string<ExitedMiddleware>[]
+     * @return class-string<ExitedMiddlewareContract>[]
      */
     #[Override]
     public function getExitedMiddleware(): array
@@ -399,7 +399,7 @@ class Route implements Contract
     /**
      * Create a new command with the specified exited middleware.
      *
-     * @param class-string<ExitedMiddleware> ...$middleware The middleware
+     * @param class-string<ExitedMiddlewareContract> ...$middleware The middleware
      *
      * @return static
      */
@@ -416,7 +416,7 @@ class Route implements Contract
     /**
      * Create a new command with added exited middleware.
      *
-     * @param class-string<ExitedMiddleware> ...$middleware The middleware
+     * @param class-string<ExitedMiddlewareContract> ...$middleware The middleware
      *
      * @return static
      */
@@ -434,7 +434,7 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getDispatch(): MethodDispatch
+    public function getDispatch(): MethodDispatchContract
     {
         return $this->dispatch;
     }
@@ -443,7 +443,7 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withDispatch(MethodDispatch $dispatch): static
+    public function withDispatch(MethodDispatchContract $dispatch): static
     {
         $new = clone $this;
 

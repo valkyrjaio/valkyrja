@@ -15,7 +15,7 @@ namespace Valkyrja\Dispatch\Data\Abstract;
 
 use JsonException;
 use Override;
-use Valkyrja\Dispatch\Data\Contract\Dispatch as Contract;
+use Valkyrja\Dispatch\Data\Contract\DispatchContract as Contract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 use function get_object_vars;

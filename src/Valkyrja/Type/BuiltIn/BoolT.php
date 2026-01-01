@@ -15,7 +15,7 @@ namespace Valkyrja\Type\BuiltIn;
 
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\BuiltIn\Contract\BoolT as Contract;
+use Valkyrja\Type\BuiltIn\Contract\BoolContract as Contract;
 
 /**
  * Class BoolT.

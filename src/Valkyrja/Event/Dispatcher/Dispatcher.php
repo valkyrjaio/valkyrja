@@ -15,13 +15,13 @@ namespace Valkyrja\Event\Dispatcher;
 
 use Override;
 use Psr\EventDispatcher\StoppableEventInterface;
-use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher as DispatchDispatcherContract;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as DispatchDispatcherContract;
 use Valkyrja\Dispatch\Dispatcher\Dispatcher as DispatchDispatcher;
 use Valkyrja\Event\Collection\Collection;
-use Valkyrja\Event\Collection\Contract\Collection as CollectionContract;
-use Valkyrja\Event\Contract\DispatchCollectableEvent;
-use Valkyrja\Event\Data\Contract\Listener;
-use Valkyrja\Event\Dispatcher\Contract\Dispatcher as Contract;
+use Valkyrja\Event\Collection\Contract\CollectionContract;
+use Valkyrja\Event\Contract\DispatchCollectableEventContract;
+use Valkyrja\Event\Data\Contract\ListenerContract;
+use Valkyrja\Event\Dispatcher\Contract\DispatcherContract as Contract;
 
 /**
  * Class Dispatcher.
@@ -89,7 +89,7 @@ class Dispatcher implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function dispatchListeners(object $event, Listener ...$listeners): object
+    public function dispatchListeners(object $event, ListenerContract ...$listeners): object
     {
         // Iterate through all the listeners
         foreach ($listeners as $listener) {
@@ -109,14 +109,14 @@ class Dispatcher implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function dispatchListener(object $event, Listener $listener): object
+    public function dispatchListener(object $event, ListenerContract $listener): object
     {
         // Dispatch the listener with the event
         /** @var mixed $dispatch */
         $dispatch = $this->dispatcher->dispatch($listener->getDispatch(), ['event' => $event]);
 
         // If the event is a dispatch collectable event
-        if ($event instanceof DispatchCollectableEvent) {
+        if ($event instanceof DispatchCollectableEventContract) {
             // Add the dispatch result to the event
             $event->addDispatch($dispatch);
         }

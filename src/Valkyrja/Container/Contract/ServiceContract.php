@@ -1,0 +1,34 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Valkyrja Framework package.
+ *
+ * (c) Melech Mizrachi <melechmizrachi@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Valkyrja\Container\Contract;
+
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+
+/**
+ * Interface ServiceContract.
+ *
+ * @author Melech Mizrachi
+ */
+interface ServiceContract
+{
+    /**
+     * Make a new instance of this service.
+     *
+     * @param ContainerContract       $container The container
+     * @param array<array-key, mixed> $arguments [optional] The arguments
+     *
+     * @return static
+     */
+    public static function make(ContainerContract $container, array $arguments = []): static;
+}

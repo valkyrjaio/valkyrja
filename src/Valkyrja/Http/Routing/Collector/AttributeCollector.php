@@ -16,12 +16,12 @@ namespace Valkyrja\Http\Routing\Collector;
 use Override;
 use ReflectionException;
 use Valkyrja\Attribute\Collector\Collector;
-use Valkyrja\Attribute\Collector\Contract\Collector as AttributeContract;
-use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
-use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeContract;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 use Valkyrja\Http\Routing\Attribute\Parameter;
 use Valkyrja\Http\Routing\Attribute\Route as RouteAttribute;
 use Valkyrja\Http\Routing\Attribute\Route\Middleware;
@@ -30,17 +30,17 @@ use Valkyrja\Http\Routing\Attribute\Route\Path;
 use Valkyrja\Http\Routing\Attribute\Route\RequestMethod;
 use Valkyrja\Http\Routing\Attribute\Route\RequestStruct;
 use Valkyrja\Http\Routing\Attribute\Route\ResponseStruct;
-use Valkyrja\Http\Routing\Collector\Contract\Collector as Contract;
-use Valkyrja\Http\Routing\Data\Contract\Parameter as ParameterContract;
-use Valkyrja\Http\Routing\Data\Contract\Route as RouteContract;
+use Valkyrja\Http\Routing\Collector\Contract\CollectorContract as Contract;
+use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Http\Routing\Data\Parameter as DataParameter;
 use Valkyrja\Http\Routing\Data\Route;
-use Valkyrja\Http\Routing\Processor\Contract\Processor as ProcessorContract;
+use Valkyrja\Http\Routing\Processor\Contract\ProcessorContract;
 use Valkyrja\Http\Routing\Processor\Processor;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Http\Struct\Request\Contract\RequestStruct as RequestStructContract;
-use Valkyrja\Http\Struct\Response\Contract\ResponseStruct as ResponseStructContract;
-use Valkyrja\Reflection\Reflector\Contract\Reflector as ReflectionContract;
+use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
+use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
+use Valkyrja\Reflection\Reflector\Contract\ReflectorContract as ReflectionContract;
 use Valkyrja\Reflection\Reflector\Reflector;
 
 use function array_column;
@@ -190,22 +190,22 @@ class AttributeCollector implements Contract
 
         foreach ($middlewareClassNames as $middlewareClass) {
             $route = match (true) {
-                is_a($middlewareClass, RouteMatchedMiddleware::class, true)    => $route->withAddedRouteMatchedMiddleware(
+                is_a($middlewareClass, RouteMatchedMiddlewareContract::class, true)    => $route->withAddedRouteMatchedMiddleware(
                     $middlewareClass
                 ),
-                is_a($middlewareClass, RouteDispatchedMiddleware::class, true) => $route->withAddedRouteDispatchedMiddleware(
+                is_a($middlewareClass, RouteDispatchedMiddlewareContract::class, true) => $route->withAddedRouteDispatchedMiddleware(
                     $middlewareClass
                 ),
-                is_a($middlewareClass, ThrowableCaughtMiddleware::class, true) => $route->withAddedThrowableCaughtMiddleware(
+                is_a($middlewareClass, ThrowableCaughtMiddlewareContract::class, true) => $route->withAddedThrowableCaughtMiddleware(
                     $middlewareClass
                 ),
-                is_a($middlewareClass, SendingResponseMiddleware::class, true) => $route->withAddedSendingResponseMiddleware(
+                is_a($middlewareClass, SendingResponseMiddlewareContract::class, true) => $route->withAddedSendingResponseMiddleware(
                     $middlewareClass
                 ),
-                is_a($middlewareClass, TerminatedMiddleware::class, true)      => $route->withAddedTerminatedMiddleware(
+                is_a($middlewareClass, TerminatedMiddlewareContract::class, true)      => $route->withAddedTerminatedMiddleware(
                     $middlewareClass
                 ),
-                default                                                        => throw new InvalidArgumentException(
+                default                                                                => throw new InvalidArgumentException(
                     "Unsupported middleware class `$middlewareClass`"
                 ),
             };

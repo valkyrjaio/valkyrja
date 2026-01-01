@@ -15,8 +15,8 @@ namespace Valkyrja\Cli\Interaction\Output;
 
 use Override;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
-use Valkyrja\Cli\Interaction\Message\Contract\Message;
-use Valkyrja\Cli\Interaction\Output\Contract\FileOutput as Contract;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
+use Valkyrja\Cli\Interaction\Output\Contract\FileOutputContract as Contract;
 
 /**
  * Class FileOutput.
@@ -34,7 +34,7 @@ class FileOutput extends Output implements Contract
         bool $isQuiet = false,
         bool $isSilent = false,
         ExitCode|int $exitCode = ExitCode::SUCCESS,
-        Message ...$messages
+        MessageContract ...$messages
     ) {
         parent::__construct(
             $isInteractive,
@@ -71,7 +71,7 @@ class FileOutput extends Output implements Contract
      * @inheritDoc
      */
     #[Override]
-    protected function outputMessage(Message $message): void
+    protected function outputMessage(MessageContract $message): void
     {
         // TODO: Implement
     }

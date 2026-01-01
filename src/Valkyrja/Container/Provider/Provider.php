@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Provider;
 
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 
 /**
  * Abstract Class Provider.
@@ -55,11 +55,11 @@ abstract class Provider
     /**
      * Publish the provider.
      *
-     * @param Container $container The container
+     * @param ContainerContract $container The container
      *
      * @return void
      */
-    public static function publish(Container $container): void
+    public static function publish(ContainerContract $container): void
     {
     }
 

@@ -17,8 +17,8 @@ use Override;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetSetException;
 use Valkyrja\Http\Message\Header\Throwable\Exception\UnsupportedOffsetUnsetException;
 use Valkyrja\Http\Message\Header\Value\Component\Component as HeaderPart;
-use Valkyrja\Http\Message\Header\Value\Component\Contract\Component;
-use Valkyrja\Http\Message\Header\Value\Contract\Value as Contract;
+use Valkyrja\Http\Message\Header\Value\Component\Contract\ComponentContract;
+use Valkyrja\Http\Message\Header\Value\Contract\ValueContract as Contract;
 
 use function array_filter;
 use function array_map;
@@ -43,7 +43,7 @@ class Value implements Contract
     protected const string DELIMINATOR = ';';
 
     /**
-     * @var Component[]
+     * @var ComponentContract[]
      */
     protected array $components = [];
 
@@ -55,9 +55,9 @@ class Value implements Contract
     protected int $position = 0;
 
     /**
-     * @param Component|string ...$components
+     * @param ComponentContract|string ...$components
      */
-    public function __construct(Component|string ...$components)
+    public function __construct(ComponentContract|string ...$components)
     {
         $this->components = $this->mapToPart(...$components);
     }
@@ -90,7 +90,7 @@ class Value implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withComponents(Component|string ...$components): static
+    public function withComponents(ComponentContract|string ...$components): static
     {
         $new = clone $this;
 
@@ -103,7 +103,7 @@ class Value implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedComponents(Component|string ...$components): static
+    public function withAddedComponents(ComponentContract|string ...$components): static
     {
         $new = $this->withComponents(...$components);
 
@@ -126,7 +126,7 @@ class Value implements Contract
      */
     public function __toString(): string
     {
-        $filteredParts = array_filter($this->components, static fn (Component $component): bool => $component->__toString() !== '');
+        $filteredParts = array_filter($this->components, static fn (ComponentContract $component): bool => $component->__toString() !== '');
 
         return implode(';', $filteredParts);
     }
@@ -144,7 +144,7 @@ class Value implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function offsetGet(mixed $offset): Component
+    public function offsetGet(mixed $offset): ComponentContract
     {
         return $this->components[$offset];
     }
@@ -180,7 +180,7 @@ class Value implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function current(): Component
+    public function current(): ComponentContract
     {
         return $this->components[$this->position];
     }
@@ -224,14 +224,14 @@ class Value implements Contract
     /**
      * Map string parts to Part objects.
      *
-     * @param Component|string ...$parts
+     * @param ComponentContract|string ...$parts
      *
-     * @return Component[]
+     * @return ComponentContract[]
      */
-    protected function mapToPart(Component|string ...$parts): array
+    protected function mapToPart(ComponentContract|string ...$parts): array
     {
         return array_map(
-            static fn (Component|string $part): Component => is_string($part) ? HeaderPart::fromValue($part) : $part,
+            static fn (ComponentContract|string $part): ComponentContract => is_string($part) ? HeaderPart::fromValue($part) : $part,
             $parts
         );
     }

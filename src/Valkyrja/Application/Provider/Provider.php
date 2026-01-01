@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Provider;
 
-use Valkyrja\Container\Contract\Service;
+use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Provider\Provider as ContainerProvider;
 
 /**
@@ -36,7 +36,7 @@ abstract class Provider
     /**
      * Get the component's container services.
      *
-     * @return class-string<Service>[]
+     * @return class-string<ServiceContract>[]
      */
     public static function getContainerServices(): array
     {

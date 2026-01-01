@@ -16,7 +16,7 @@ namespace Valkyrja\Notification\Entity;
 use Valkyrja\Auth\Entity\Trait\MailableUserFields;
 use Valkyrja\Auth\Entity\Trait\MailableUserTrait;
 use Valkyrja\Auth\Entity\User;
-use Valkyrja\Notification\Entity\Contract\NotifiableUser as Contract;
+use Valkyrja\Notification\Entity\Contract\NotifiableUserContract as Contract;
 use Valkyrja\Notification\Entity\Trait\NotifiableUserFields;
 use Valkyrja\Notification\Entity\Trait\NotifiableUserTrait;
 

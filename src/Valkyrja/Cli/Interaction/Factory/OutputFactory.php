@@ -16,13 +16,13 @@ namespace Valkyrja\Cli\Interaction\Factory;
 use Override;
 use Valkyrja\Cli\Interaction\Data\Config;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory as Contract;
-use Valkyrja\Cli\Interaction\Message\Contract\Message;
-use Valkyrja\Cli\Interaction\Output\Contract\EmptyOutput as EmptyOutputContract;
-use Valkyrja\Cli\Interaction\Output\Contract\FileOutput as FileOutputContract;
-use Valkyrja\Cli\Interaction\Output\Contract\Output as OutputContract;
-use Valkyrja\Cli\Interaction\Output\Contract\PlainOutput as PlainOutputContract;
-use Valkyrja\Cli\Interaction\Output\Contract\StreamOutput as StreamOutputContract;
+use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract as Contract;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
+use Valkyrja\Cli\Interaction\Output\Contract\EmptyOutputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\FileOutputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\PlainOutputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\StreamOutputContract;
 use Valkyrja\Cli\Interaction\Output\EmptyOutput;
 use Valkyrja\Cli\Interaction\Output\FileOutput;
 use Valkyrja\Cli\Interaction\Output\Output;
@@ -47,7 +47,7 @@ class OutputFactory implements Contract
     #[Override]
     public function createOutput(
         ExitCode|int $exitCode = ExitCode::SUCCESS,
-        Message ...$messages
+        MessageContract ...$messages
     ): OutputContract {
         return new Output(
             $this->config->isInteractive,
@@ -64,7 +64,7 @@ class OutputFactory implements Contract
     #[Override]
     public function createEmptyOutput(
         ExitCode|int $exitCode = ExitCode::SUCCESS,
-        Message ...$messages
+        MessageContract ...$messages
     ): EmptyOutputContract {
         return new EmptyOutput(
             $this->config->isInteractive,
@@ -81,7 +81,7 @@ class OutputFactory implements Contract
     #[Override]
     public function createPlainOutput(
         ExitCode|int $exitCode = ExitCode::SUCCESS,
-        Message ...$messages
+        MessageContract ...$messages
     ): PlainOutputContract {
         return new PlainOutput(
             $this->config->isInteractive,
@@ -99,7 +99,7 @@ class OutputFactory implements Contract
     public function createFileOutput(
         string $filepath,
         ExitCode|int $exitCode = ExitCode::SUCCESS,
-        Message ...$messages
+        MessageContract ...$messages
     ): FileOutputContract {
         return new FileOutput(
             $filepath,
@@ -118,7 +118,7 @@ class OutputFactory implements Contract
     public function createStreamOutput(
         $stream,
         ExitCode|int $exitCode = ExitCode::SUCCESS,
-        Message ...$messages
+        MessageContract ...$messages
     ): StreamOutputContract {
         return new StreamOutput(
             $stream,

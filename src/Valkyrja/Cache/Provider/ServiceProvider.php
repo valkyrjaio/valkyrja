@@ -16,13 +16,13 @@ namespace Valkyrja\Cache\Provider;
 use Override;
 use Predis\Client;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Cache\Manager\Contract\Cache;
+use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Manager\LogCache;
 use Valkyrja\Cache\Manager\NullCache;
 use Valkyrja\Cache\Manager\RedisCache;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 
 /**
  * Class ServiceProvider.
@@ -38,11 +38,11 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Cache::class      => [self::class, 'publishCache'],
-            RedisCache::class => [self::class, 'publishRedisCache'],
-            Client::class     => [self::class, 'publishRedisClient'],
-            LogCache::class   => [self::class, 'publishLogCache'],
-            NullCache::class  => [self::class, 'publishNullCache'],
+            CacheContract::class => [self::class, 'publishCache'],
+            RedisCache::class    => [self::class, 'publishRedisCache'],
+            Client::class        => [self::class, 'publishRedisClient'],
+            LogCache::class      => [self::class, 'publishLogCache'],
+            NullCache::class     => [self::class, 'publishNullCache'],
         ];
     }
 
@@ -53,7 +53,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Cache::class,
+            CacheContract::class,
             RedisCache::class,
             Client::class,
             LogCache::class,
@@ -64,14 +64,14 @@ final class ServiceProvider extends Provider
     /**
      * Publish the cache service.
      */
-    public static function publishCache(Container $container): void
+    public static function publishCache(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<Cache> $default */
+        /** @var class-string<CacheContract> $default */
         $default = $env::CACHE_DEFAULT;
 
         $container->setSingleton(
-            Cache::class,
+            CacheContract::class,
             $container->getSingleton($default)
         );
     }
@@ -79,7 +79,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the redis cache service.
      */
-    public static function publishRedisCache(Container $container): void
+    public static function publishRedisCache(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var string $prefix */
@@ -97,7 +97,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the redis client service.
      */
-    public static function publishRedisClient(Container $container): void
+    public static function publishRedisClient(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $host */
@@ -119,12 +119,12 @@ final class ServiceProvider extends Provider
     /**
      * Publish the log cache service.
      */
-    public static function publishLogCache(Container $container): void
+    public static function publishLogCache(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var string $prefix */
         $prefix = $env::CACHE_LOG_PREFIX;
-        /** @var class-string<Logger> $logger */
+        /** @var class-string<LoggerContract> $logger */
         $logger = $env::CACHE_LOG_LOGGER;
 
         $container->setSingleton(
@@ -139,7 +139,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the null cache service.
      */
-    public static function publishNullCache(Container $container): void
+    public static function publishNullCache(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var string $prefix */

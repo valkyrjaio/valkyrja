@@ -14,20 +14,20 @@ declare(strict_types=1);
 namespace Valkyrja\Orm\Middleware;
 
 use Override;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandler;
-use Valkyrja\Http\Routing\Data\Contract\Parameter;
-use Valkyrja\Http\Routing\Data\Contract\Route;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteMatchedHandlerContract;
+use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 use Valkyrja\Orm\Data\EntityCast;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
-use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\Manager\Contract\Manager;
-use Valkyrja\View\Factory\Contract\ResponseFactory;
+use Valkyrja\Orm\Entity\Contract\EntityContract;
+use Valkyrja\Orm\Manager\Contract\ManagerContract;
+use Valkyrja\View\Factory\Contract\ResponseFactoryContract;
 
 use function is_a;
 use function is_int;
@@ -38,7 +38,7 @@ use function is_string;
  *
  * @author Melech Mizrachi
  */
-class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
+class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
 {
     /**
      * The errors template directory.
@@ -48,9 +48,9 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     protected string $errorsTemplateDir = 'errors';
 
     public function __construct(
-        protected Container $container,
-        protected Manager $orm,
-        protected ResponseFactory $responseFactory,
+        protected ContainerContract $container,
+        protected ManagerContract $orm,
+        protected ResponseFactoryContract $responseFactory,
     ) {
     }
 
@@ -58,11 +58,11 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
      * @inheritDoc
      */
     #[Override]
-    public function routeMatched(ServerRequest $request, Route $route, RouteMatchedHandler $handler): Route|Response
+    public function routeMatched(ServerRequestContract $request, RouteContract $route, RouteMatchedHandlerContract $handler): RouteContract|ResponseContract
     {
         $routeOrResponse = $this->checkRouteForEntities($route);
 
-        if ($routeOrResponse instanceof Response) {
+        if ($routeOrResponse instanceof ResponseContract) {
             return $routeOrResponse;
         }
 
@@ -72,11 +72,11 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     /**
      * Check route for entities.
      *
-     * @param Route $route The route
+     * @param RouteContract $route The route
      *
-     * @return Response|Route
+     * @return ResponseContract|RouteContract
      */
-    protected function checkRouteForEntities(Route $route): Response|Route
+    protected function checkRouteForEntities(RouteContract $route): ResponseContract|RouteContract
     {
         $parameters = $route->getParameters();
         $dispatch   = $route->getDispatch();
@@ -92,7 +92,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
                 $value = $arguments[$name];
                 $type  = $parameter->getCast()->type ?? null;
 
-                if ($type === null || ! is_a($type, Entity::class, true)) {
+                if ($type === null || ! is_a($type, EntityContract::class, true)) {
                     continue;
                 }
 
@@ -102,7 +102,7 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
                     value: $value
                 );
 
-                if ($response instanceof Response) {
+                if ($response instanceof ResponseContract) {
                     return $response;
                 }
 
@@ -124,15 +124,15 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     /**
      * Check a route's parameter for valid entity values.
      *
-     * @param Parameter            $parameter The parameter
-     * @param class-string<Entity> $type      The entity type
-     * @param mixed                $value     The argument value
+     * @param ParameterContract            $parameter The parameter
+     * @param class-string<EntityContract> $type      The entity type
+     * @param mixed                        $value     The argument value
      *
-     * @return Entity|Response
+     * @return EntityContract|ResponseContract
      */
-    protected function checkParameterForEntity(Parameter $parameter, string $type, mixed $value): Entity|Response
+    protected function checkParameterForEntity(ParameterContract $parameter, string $type, mixed $value): EntityContract|ResponseContract
     {
-        if ($value instanceof Entity) {
+        if ($value instanceof EntityContract) {
             return $value;
         }
 
@@ -152,17 +152,17 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     /**
      * Try to find a route's entity dependency.
      *
-     * @param Parameter            $parameter  The parameter
-     * @param class-string<Entity> $entityName The entity class name
-     * @param non-empty-string|int $value      The value
+     * @param ParameterContract            $parameter  The parameter
+     * @param class-string<EntityContract> $entityName The entity class name
+     * @param non-empty-string|int         $value      The value
      *
-     * @return Entity|null
+     * @return EntityContract|null
      */
     protected function findEntityFromParameter(
-        Parameter $parameter,
+        ParameterContract $parameter,
         string $entityName,
         string|int $value
-    ): Entity|null {
+    ): EntityContract|null {
         $cast          = $parameter->getCast();
         $repository    = $this->orm->createRepository($entityName);
         $field         = null;
@@ -184,11 +184,11 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     /**
      * Response for when the entity was not found with the given value.
      *
-     * @param Parameter $parameter The parameter
+     * @param ParameterContract $parameter The parameter
      *
-     * @return Response
+     * @return ResponseContract
      */
-    protected function getNotFoundResponse(Parameter $parameter): Response
+    protected function getNotFoundResponse(ParameterContract $parameter): ResponseContract
     {
         return $this->responseFactory
             ->createResponseFromView(
@@ -200,11 +200,11 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddleware
     /**
      * Response for when bad data has been provided to match for the entity.
      *
-     * @param Parameter $parameter The parameter
+     * @param ParameterContract $parameter The parameter
      *
-     * @return Response
+     * @return ResponseContract
      */
-    protected function getBadRequestResponse(Parameter $parameter): Response
+    protected function getBadRequestResponse(ParameterContract $parameter): ResponseContract
     {
         return $this->responseFactory
             ->createResponseFromView(

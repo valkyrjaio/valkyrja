@@ -16,12 +16,12 @@ namespace Valkyrja\Api\Middleware;
 use Override;
 use Throwable;
 use Valkyrja\Api\Constant\Status;
-use Valkyrja\Api\Manager\Contract\Api;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler;
+use Valkyrja\Api\Manager\Contract\ApiContract;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Throwable\Handler\ThrowableHandler;
 
 /**
@@ -29,11 +29,11 @@ use Valkyrja\Throwable\Handler\ThrowableHandler;
  *
  * @author Melech Mizrachi
  */
-class ApiThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
+class ApiThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
 {
     public function __construct(
-        protected Api $api,
-        protected ResponseFactory $responseFactory,
+        protected ApiContract $api,
+        protected ResponseFactoryContract $responseFactory,
     ) {
     }
 
@@ -41,8 +41,12 @@ class ApiThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
      * @inheritDoc
      */
     #[Override]
-    public function throwableCaught(ServerRequest $request, Response $response, Throwable $exception, ThrowableCaughtHandler $handler): Response
-    {
+    public function throwableCaught(
+        ServerRequestContract $request,
+        ResponseContract $response,
+        Throwable $exception,
+        ThrowableCaughtHandlerContract $handler
+    ): ResponseContract {
         $json = $this->api->jsonFromArray([
             'traceCode' => ThrowableHandler::getTraceCode($exception),
         ]);

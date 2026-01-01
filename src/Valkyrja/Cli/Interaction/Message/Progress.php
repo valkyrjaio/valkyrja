@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Message;
 
 use Override;
-use Valkyrja\Cli\Interaction\Formatter\Contract\Formatter;
-use Valkyrja\Cli\Interaction\Message\Contract\Progress as Contract;
+use Valkyrja\Cli\Interaction\Formatter\Contract\FormatterContract;
+use Valkyrja\Cli\Interaction\Message\Contract\ProgressContract as Contract;
 
 /**
  * Class Progress.
@@ -31,7 +31,7 @@ class Progress extends Message implements Contract
         string $text,
         protected bool $isComplete = false,
         protected int $percentage = 0,
-        Formatter|null $formatter = null
+        FormatterContract|null $formatter = null
     ) {
         parent::__construct($text, $formatter);
     }

@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Message\Uri;
 
 use Override;
 use Valkyrja\Http\Message\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\Http\Message\Uri\Contract\Uri as Contract;
+use Valkyrja\Http\Message\Uri\Contract\UriContract as Contract;
 use Valkyrja\Http\Message\Uri\Enum\Scheme;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPathException;
 use Valkyrja\Http\Message\Uri\Throwable\Exception\InvalidPortException;

@@ -15,10 +15,10 @@ namespace Valkyrja\Sms\Provider;
 
 use Override;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Log\Logger\Contract\Logger;
-use Valkyrja\Sms\Messenger\Contract\Messenger;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
+use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 use Valkyrja\Sms\Messenger\LogMessenger;
 use Valkyrja\Sms\Messenger\NullMessenger;
 use Valkyrja\Sms\Messenger\VonageMessenger;
@@ -40,7 +40,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Messenger::class         => [self::class, 'publishSms'],
+            MessengerContract::class => [self::class, 'publishSms'],
             VonageMessenger::class   => [self::class, 'publishVonageSms'],
             Vonage::class            => [self::class, 'publishVonage'],
             VonageCredentials::class => [self::class, 'publishVonageCredentials'],
@@ -56,7 +56,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Messenger::class,
+            MessengerContract::class,
             VonageMessenger::class,
             Vonage::class,
             VonageCredentials::class,
@@ -68,14 +68,14 @@ final class ServiceProvider extends Provider
     /**
      * Publish the sms service.
      */
-    public static function publishSms(Container $container): void
+    public static function publishSms(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<Messenger> $default */
+        /** @var class-string<MessengerContract> $default */
         $default = $env::SMS_DEFAULT_MESSENGER;
 
         $container->setSingleton(
-            Messenger::class,
+            MessengerContract::class,
             $container->getSingleton($default),
         );
     }
@@ -83,7 +83,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the vonage sms service.
      */
-    public static function publishVonageSms(Container $container): void
+    public static function publishVonageSms(ContainerContract $container): void
     {
         $container->setSingleton(
             VonageMessenger::class,
@@ -96,7 +96,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the vonage service.
      */
-    public static function publishVonage(Container $container): void
+    public static function publishVonage(ContainerContract $container): void
     {
         $container->setSingleton(
             Vonage::class,
@@ -109,7 +109,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the vonage credentials service.
      */
-    public static function publishVonageCredentials(Container $container): void
+    public static function publishVonageCredentials(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var string $key */
@@ -129,12 +129,12 @@ final class ServiceProvider extends Provider
     /**
      * Publish the log sms service.
      */
-    public static function publishLogSms(Container $container): void
+    public static function publishLogSms(ContainerContract $container): void
     {
         $container->setSingleton(
             LogMessenger::class,
             new LogMessenger(
-                $container->getSingleton(Logger::class),
+                $container->getSingleton(LoggerContract::class),
             ),
         );
     }
@@ -142,7 +142,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the null sms service.
      */
-    public static function publishNullSms(Container $container): void
+    public static function publishNullSms(ContainerContract $container): void
     {
         $container->setSingleton(
             NullMessenger::class,

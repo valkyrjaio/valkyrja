@@ -15,14 +15,14 @@ namespace Valkyrja\Orm\Manager\Abstract;
 
 use Override;
 use PDO;
-use Valkyrja\Container\Manager\Contract\Container;
-use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\Manager\Contract\Manager as Contract;
-use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactory;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Orm\Entity\Contract\EntityContract;
+use Valkyrja\Orm\Manager\Contract\ManagerContract as Contract;
+use Valkyrja\Orm\QueryBuilder\Factory\Contract\QueryBuilderFactoryContract;
 use Valkyrja\Orm\QueryBuilder\Factory\SqlQueryBuilderFactory;
-use Valkyrja\Orm\Repository\Contract\Repository;
+use Valkyrja\Orm\Repository\Contract\RepositoryContract;
 use Valkyrja\Orm\Repository\Repository as DefaultRepository;
-use Valkyrja\Orm\Statement\Contract\Statement;
+use Valkyrja\Orm\Statement\Contract\StatementContract;
 use Valkyrja\Orm\Statement\PdoStatement;
 use Valkyrja\Orm\Throwable\Exception\RuntimeException;
 
@@ -38,26 +38,26 @@ abstract class PdoManager implements Contract
 {
     public function __construct(
         protected PDO $pdo,
-        protected Container $container,
+        protected ContainerContract $container,
     ) {
     }
 
     /**
      * @inheritDoc
      *
-     * @template T of Entity
+     * @template T of EntityContract
      *
      * @param class-string<T> $entity The entity
      *
-     * @return Repository<T>
+     * @return RepositoryContract<T>
      */
     #[Override]
-    public function createRepository(string $entity): Repository
+    public function createRepository(string $entity): RepositoryContract
     {
         $repositoryClass = $entity::getRepository()
             ?? DefaultRepository::class;
 
-        /** @var Repository<T> $repository */
+        /** @var RepositoryContract<T> $repository */
         $repository = $this->container->get($repositoryClass, [$this, $entity]);
 
         return $repository;
@@ -67,7 +67,7 @@ abstract class PdoManager implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function createQueryBuilder(): QueryBuilderFactory
+    public function createQueryBuilder(): QueryBuilderFactoryContract
     {
         return new SqlQueryBuilderFactory();
     }
@@ -105,7 +105,7 @@ abstract class PdoManager implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function prepare(string $query): Statement
+    public function prepare(string $query): StatementContract
     {
         $statement = $this->pdo->prepare($query);
 
@@ -120,7 +120,7 @@ abstract class PdoManager implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function query(string $query): Statement
+    public function query(string $query): StatementContract
     {
         $statement = $this->pdo->prepare($query);
 

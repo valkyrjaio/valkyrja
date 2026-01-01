@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Http\Middleware\Handler;
 
 use Override;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 
 /**
@@ -39,7 +39,7 @@ class RequestReceivedHandlerClass extends RequestReceivedHandler
      * @inheritDoc
      */
     #[Override]
-    public function requestReceived(ServerRequest $request): Response|ServerRequest
+    public function requestReceived(ServerRequestContract $request): ResponseContract|ServerRequestContract
     {
         $this->count++;
 

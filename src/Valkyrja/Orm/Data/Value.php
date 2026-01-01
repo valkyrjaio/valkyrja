@@ -15,7 +15,7 @@ namespace Valkyrja\Orm\Data;
 
 use Override;
 use Stringable;
-use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilder;
+use Valkyrja\Orm\QueryBuilder\Contract\QueryBuilderContract;
 
 use function is_array;
 
@@ -24,9 +24,9 @@ use function is_array;
  *
  * @author Melech Mizrachi
  *
- * @psalm-type ValueType QueryBuilder|array<array-key, scalar|null>|scalar|null
+ * @psalm-type ValueType QueryBuilderContract|array<array-key, scalar|null>|scalar|null
  *
- * @phpstan-type ValueType QueryBuilder|array<array-key, scalar|null>|scalar|null
+ * @phpstan-type ValueType QueryBuilderContract|array<array-key, scalar|null>|scalar|null
  */
 readonly class Value implements Stringable
 {
@@ -36,7 +36,7 @@ readonly class Value implements Stringable
      */
     public function __construct(
         public string $name,
-        public QueryBuilder|array|string|float|int|bool|null $value = null,
+        public QueryBuilderContract|array|string|float|int|bool|null $value = null,
     ) {
     }
 
@@ -51,7 +51,7 @@ readonly class Value implements Stringable
         $nameBind = ":$this->name";
         $value    = $this->value;
 
-        if ($value instanceof QueryBuilder) {
+        if ($value instanceof QueryBuilderContract) {
             return '(' . ((string) $value) . ')';
         }
 

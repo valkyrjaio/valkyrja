@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Data\Attempt;
 
 use Override;
-use Valkyrja\Auth\Data\Attempt\Contract\UnlockAttempt as Contract;
-use Valkyrja\Auth\Data\Retrieval\Contract\Retrieval;
+use Valkyrja\Auth\Data\Attempt\Contract\UnlockAttemptContract as Contract;
+use Valkyrja\Auth\Data\Retrieval\Contract\RetrievalContract;
 
 /**
  * Class UnlockAttempt.
@@ -25,7 +25,7 @@ use Valkyrja\Auth\Data\Retrieval\Contract\Retrieval;
 class UnlockAttempt implements Contract
 {
     public function __construct(
-        protected Retrieval $retrieval,
+        protected RetrievalContract $retrieval,
     ) {
     }
 
@@ -33,7 +33,7 @@ class UnlockAttempt implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getRetrieval(): Retrieval
+    public function getRetrieval(): RetrievalContract
     {
         return $this->retrieval;
     }

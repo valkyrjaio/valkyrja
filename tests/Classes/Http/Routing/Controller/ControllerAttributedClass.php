@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Classes\Http\Routing\Controller;
 
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Message\Response\Response;
 use Valkyrja\Http\Routing\Attribute\Route;
 use Valkyrja\Http\Routing\Attribute\Route\Name;
 use Valkyrja\Http\Routing\Attribute\Route\Path;
@@ -35,8 +36,8 @@ class ControllerAttributedClass
     #[Path('/path')]
     #[Name('name')]
     #[Route(path: self::WELCOME_PATH, name: self::WELCOME_NAME)]
-    public function welcome(): Response
+    public function welcome(): ResponseContract
     {
-        return \Valkyrja\Http\Message\Response\Response::create('welcome');
+        return Response::create('welcome');
     }
 }

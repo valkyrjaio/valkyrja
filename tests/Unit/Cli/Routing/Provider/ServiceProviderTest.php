@@ -15,26 +15,26 @@ namespace Valkyrja\Tests\Unit\Cli\Routing\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Data\Config;
-use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
+use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Message\Message;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandDispatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandNotMatchedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Cli\Routing\Collection\Collection;
-use Valkyrja\Cli\Routing\Collection\Contract\Collection as CollectionContract;
+use Valkyrja\Cli\Routing\Collection\Contract\CollectionContract;
 use Valkyrja\Cli\Routing\Collector\AttributeCollector;
-use Valkyrja\Cli\Routing\Collector\Contract\Collector;
+use Valkyrja\Cli\Routing\Collector\Contract\CollectorContract;
 use Valkyrja\Cli\Routing\Data\Data;
 use Valkyrja\Cli\Routing\Data\Route;
-use Valkyrja\Cli\Routing\Dispatcher\Contract\Router as RouterContract;
+use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Routing\Provider\ServiceProvider;
 use Valkyrja\Dispatch\Data\MethodDispatch as DefaultDispatch;
-use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher;
-use Valkyrja\Reflection\Reflector\Contract\Reflector;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract;
+use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**
@@ -53,11 +53,11 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishAttributeCollector(): void
     {
         $this->container->setSingleton(AttributeCollectorContract::class, self::createStub(AttributeCollectorContract::class));
-        $this->container->setSingleton(Reflector::class, self::createStub(Reflector::class));
+        $this->container->setSingleton(ReflectorContract::class, self::createStub(ReflectorContract::class));
 
         ServiceProvider::publishAttributeCollector($this->container);
 
-        self::assertInstanceOf(AttributeCollector::class, $this->container->getSingleton(Collector::class));
+        self::assertInstanceOf(AttributeCollector::class, $this->container->getSingleton(CollectorContract::class));
     }
 
     /**
@@ -65,14 +65,14 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishRouter(): void
     {
-        $this->container->setSingleton(ThrowableCaughtHandler::class, self::createStub(ThrowableCaughtHandler::class));
-        $this->container->setSingleton(CommandMatchedHandler::class, self::createStub(CommandMatchedHandler::class));
-        $this->container->setSingleton(CommandNotMatchedHandler::class, self::createStub(CommandNotMatchedHandler::class));
-        $this->container->setSingleton(CommandDispatchedHandler::class, self::createStub(CommandDispatchedHandler::class));
-        $this->container->setSingleton(ExitedHandler::class, self::createStub(ExitedHandler::class));
-        $this->container->setSingleton(Dispatcher::class, self::createStub(Dispatcher::class));
+        $this->container->setSingleton(ThrowableCaughtHandlerContract::class, self::createStub(ThrowableCaughtHandlerContract::class));
+        $this->container->setSingleton(CommandMatchedHandlerContract::class, self::createStub(CommandMatchedHandlerContract::class));
+        $this->container->setSingleton(CommandNotMatchedHandlerContract::class, self::createStub(CommandNotMatchedHandlerContract::class));
+        $this->container->setSingleton(CommandDispatchedHandlerContract::class, self::createStub(CommandDispatchedHandlerContract::class));
+        $this->container->setSingleton(ExitedHandlerContract::class, self::createStub(ExitedHandlerContract::class));
+        $this->container->setSingleton(DispatcherContract::class, self::createStub(DispatcherContract::class));
         $this->container->setSingleton(CollectionContract::class, self::createStub(CollectionContract::class));
-        $this->container->setSingleton(OutputFactory::class, self::createStub(OutputFactory::class));
+        $this->container->setSingleton(OutputFactoryContract::class, self::createStub(OutputFactoryContract::class));
 
         ServiceProvider::publishRouter($this->container);
 
@@ -94,7 +94,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishCollectionWithConfig(): void
     {
         $this->container->setSingleton(Config::class, new Config());
-        $this->container->setSingleton(Collector::class, $collector = self::createStub(Collector::class));
+        $this->container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
 
         $command = new Route(
             name: 'test',

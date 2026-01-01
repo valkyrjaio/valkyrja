@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Type\Model\Abstract;
 
-use Valkyrja\Type\Model\Contract\CastableModel as Contract;
+use Valkyrja\Type\Model\Contract\CastableModelContract as Contract;
 use Valkyrja\Type\Model\Trait\Castable;
 
 /**

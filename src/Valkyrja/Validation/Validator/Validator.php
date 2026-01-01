@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Validator;
 
 use Override;
-use Valkyrja\Validation\Rule\Contract\Rule;
+use Valkyrja\Validation\Rule\Contract\RuleContract;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
-use Valkyrja\Validation\Validator\Contract\Validator as Contract;
+use Valkyrja\Validation\Validator\Contract\ValidatorContract as Contract;
 
 /**
  * Class Validate.
@@ -33,7 +33,7 @@ class Validator implements Contract
     protected array $errorMessages = [];
 
     /**
-     * @param array<string, Rule[]> $rules
+     * @param array<string, RuleContract[]> $rules
      */
     public function __construct(
         protected array $rules = [],
@@ -91,7 +91,7 @@ class Validator implements Contract
     /**
      * Validate a rule for a subject.
      */
-    protected function validateRule(Rule $rule, string $subject): void
+    protected function validateRule(RuleContract $rule, string $subject): void
     {
         try {
             $rule->validate();

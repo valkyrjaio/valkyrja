@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Rule;
 
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Orm\Data\Value;
 use Valkyrja\Orm\Data\Where;
-use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\Manager\Contract\Manager as OrmManager;
+use Valkyrja\Orm\Entity\Contract\EntityContract;
+use Valkyrja\Orm\Manager\Contract\ManagerContract as OrmManager;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Validation\Throwable\Exception\ValidationException;
 
@@ -36,11 +36,11 @@ class Orm
     /**
      * ORM constructor.
      *
-     * @param Container  $container
-     * @param OrmManager $orm
+     * @param ContainerContract $container
+     * @param OrmManager        $orm
      */
     public function __construct(
-        protected Container $container,
+        protected ContainerContract $container,
         protected OrmManager $orm
     ) {
     }
@@ -48,9 +48,9 @@ class Orm
     /**
      * Ensure that a subject is unique in the database for a field.
      *
-     * @param mixed                 $subject The subject
-     * @param class-string<Entity>  $entity  The entity to check for uniqueness
-     * @param non-empty-string|null $field   The field to ensure is unique
+     * @param mixed                        $subject The subject
+     * @param class-string<EntityContract> $entity  The entity to check for uniqueness
+     * @param non-empty-string|null        $field   The field to ensure is unique
      *
      * @return void
      */
@@ -72,9 +72,9 @@ class Orm
     /**
      * Ensure that a subject exists in the database for a field.
      *
-     * @param mixed                 $subject The subject
-     * @param class-string<Entity>  $entity  The entity to check for uniqueness
-     * @param non-empty-string|null $field   The field to ensure is unique
+     * @param mixed                        $subject The subject
+     * @param class-string<EntityContract> $entity  The entity to check for uniqueness
+     * @param non-empty-string|null        $field   The field to ensure is unique
      *
      * @return void
      */

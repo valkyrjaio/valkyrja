@@ -16,10 +16,10 @@ namespace Valkyrja\Orm\Provider;
 use Override;
 use PDO;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Orm\Entity\Contract\Entity;
-use Valkyrja\Orm\Manager\Contract\Manager;
+use Valkyrja\Orm\Entity\Contract\EntityContract;
+use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Manager\InMemoryManager;
 use Valkyrja\Orm\Manager\MysqlManager;
 use Valkyrja\Orm\Manager\NullManager;
@@ -41,7 +41,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Manager::class         => [self::class, 'publishManager'],
+            ManagerContract::class => [self::class, 'publishManager'],
             MysqlManager::class    => [self::class, 'publishMysqlManager'],
             PgsqlManager::class    => [self::class, 'publishPgsqlManager'],
             SqliteManager::class   => [self::class, 'publishSqliteManager'],
@@ -59,7 +59,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Manager::class,
+            ManagerContract::class,
             MysqlManager::class,
             PgsqlManager::class,
             SqliteManager::class,
@@ -73,14 +73,14 @@ final class ServiceProvider extends Provider
     /**
      * Publish the manager service.
      */
-    public static function publishManager(Container $container): void
+    public static function publishManager(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<Manager> $default */
+        /** @var class-string<ManagerContract> $default */
         $default = $env::ORM_DEFAULT_MANAGER;
 
         $container->setSingleton(
-            Manager::class,
+            ManagerContract::class,
             $container->getSingleton($default),
         );
     }
@@ -88,7 +88,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the mysql manager service.
      */
-    public static function publishMysqlManager(Container $container): void
+    public static function publishMysqlManager(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $db */
@@ -140,7 +140,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the pgsql manager service.
      */
-    public static function publishPgsqlManager(Container $container): void
+    public static function publishPgsqlManager(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $db */
@@ -193,7 +193,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the sqlite manager service.
      */
-    public static function publishSqliteManager(Container $container): void
+    public static function publishSqliteManager(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $db */
@@ -239,7 +239,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the PDO service.
      */
-    public static function publishPdo(Container $container): void
+    public static function publishPdo(ContainerContract $container): void
     {
         $container->setCallable(
             PDO::class,
@@ -253,7 +253,7 @@ final class ServiceProvider extends Provider
      * @param non-empty-string     $dsn     The dsn
      * @param array<int, int|bool> $options The options
      */
-    public static function createPdo(Container $container, string $dsn, array $options): PDO
+    public static function createPdo(ContainerContract $container, string $dsn, array $options): PDO
     {
         return new PDO(
             dsn: $dsn,
@@ -264,7 +264,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the in memory manager service.
      */
-    public static function publishInMemoryManager(Container $container): void
+    public static function publishInMemoryManager(ContainerContract $container): void
     {
         $container->setSingleton(
             InMemoryManager::class,
@@ -275,7 +275,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the null manager service.
      */
-    public static function publishNullManager(Container $container): void
+    public static function publishNullManager(ContainerContract $container): void
     {
         $container->setSingleton(
             NullManager::class,
@@ -286,7 +286,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the repository service.
      */
-    public static function publishRepository(Container $container): void
+    public static function publishRepository(ContainerContract $container): void
     {
         $container->setCallable(
             Repository::class,
@@ -297,9 +297,9 @@ final class ServiceProvider extends Provider
     /**
      * Create a repository service.
      *
-     * @param class-string<Entity> $entity The entity
+     * @param class-string<EntityContract> $entity The entity
      */
-    public static function createRepository(Container $container, Manager $manager, string $entity): Repository
+    public static function createRepository(ContainerContract $container, ManagerContract $manager, string $entity): Repository
     {
         return new Repository(
             manager: $manager,

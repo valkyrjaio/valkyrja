@@ -15,13 +15,13 @@ namespace Valkyrja\Tests\Unit\Session\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Cache\Manager\Contract\Cache;
-use Valkyrja\Crypt\Manager\Contract\Crypt;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Cache\Manager\Contract\CacheContract;
+use Valkyrja\Crypt\Manager\Contract\CryptContract;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Manager\CacheSession;
-use Valkyrja\Session\Manager\Contract\Session as Contract;
+use Valkyrja\Session\Manager\Contract\SessionContract as Contract;
 use Valkyrja\Session\Manager\CookieSession;
 use Valkyrja\Session\Manager\LogSession;
 use Valkyrja\Session\Manager\NullSession;
@@ -72,7 +72,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishCacheSession(): void
     {
-        $this->container->setSingleton(Cache::class, self::createStub(Cache::class));
+        $this->container->setSingleton(CacheContract::class, self::createStub(CacheContract::class));
         $this->container->setSingleton(CookieParams::class, new CookieParams());
 
         ServiceProvider::publishCacheSession($this->container);
@@ -85,8 +85,8 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishCookieSession(): void
     {
-        $this->container->setSingleton(Crypt::class, self::createStub(Crypt::class));
-        $this->container->setSingleton(ServerRequest::class, self::createStub(ServerRequest::class));
+        $this->container->setSingleton(CryptContract::class, self::createStub(CryptContract::class));
+        $this->container->setSingleton(ServerRequestContract::class, self::createStub(ServerRequestContract::class));
         $this->container->setSingleton(CookieParams::class, new CookieParams());
 
         ServiceProvider::publishCookieSession($this->container);
@@ -99,7 +99,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogSession(): void
     {
-        $this->container->setSingleton(Logger::class, self::createStub(Logger::class));
+        $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
         $this->container->setSingleton(CookieParams::class, new CookieParams());
 
         ServiceProvider::publishLogSession($this->container);

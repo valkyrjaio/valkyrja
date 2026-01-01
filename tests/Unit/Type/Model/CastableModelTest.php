@@ -34,8 +34,8 @@ use Valkyrja\Type\BuiltIn\StringT;
 use Valkyrja\Type\BuiltIn\TrueT;
 use Valkyrja\Type\Json\Json;
 use Valkyrja\Type\Json\JsonObject;
-use Valkyrja\Type\Model\Contract\CastableModel as Contract;
-use Valkyrja\Type\Model\Contract\Model as ModelContract;
+use Valkyrja\Type\Model\Contract\CastableModelContract as Contract;
+use Valkyrja\Type\Model\Contract\ModelContract;
 
 use function json_decode;
 use function json_encode;

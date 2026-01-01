@@ -16,24 +16,24 @@ namespace Valkyrja\Http\Server\Handler;
 use Override;
 use Throwable;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Container\Manager\Contract\Container as ContainerContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\Response as HttpResponse;
 use Valkyrja\Http\Message\Stream\Stream;
 use Valkyrja\Http\Message\Throwable\Exception\HttpException;
-use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandler as RequestReceivedHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandler as SendingResponseHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandler as TerminatedHandlerContract;
-use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandler as ThrowableCaughtHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\RequestReceivedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\SendingResponseHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\TerminatedHandlerContract;
+use Valkyrja\Http\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 use Valkyrja\Http\Middleware\Handler\RequestReceivedHandler;
 use Valkyrja\Http\Middleware\Handler\SendingResponseHandler;
 use Valkyrja\Http\Middleware\Handler\TerminatedHandler;
 use Valkyrja\Http\Middleware\Handler\ThrowableCaughtHandler;
-use Valkyrja\Http\Routing\Dispatcher\Contract\Router as RouterContract;
+use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
 use Valkyrja\Http\Routing\Dispatcher\Router;
-use Valkyrja\Http\Server\Handler\Contract\RequestHandler as Contract;
+use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract as Contract;
 
 use function count;
 use function defined;
@@ -79,7 +79,7 @@ class RequestHandler implements Contract
      * @throws Throwable
      */
     #[Override]
-    public function handle(ServerRequest $request): Response
+    public function handle(ServerRequestContract $request): ResponseContract
     {
         try {
             $response = $this->dispatchRouter($request);
@@ -89,7 +89,7 @@ class RequestHandler implements Contract
         }
 
         // Set the returned response in the container
-        $this->container->setSingleton(Response::class, $response);
+        $this->container->setSingleton(ResponseContract::class, $response);
 
         return $response;
     }
@@ -98,7 +98,7 @@ class RequestHandler implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function send(Response $response): static
+    public function send(ResponseContract $response): static
     {
         $response->send();
 
@@ -112,7 +112,7 @@ class RequestHandler implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function terminate(ServerRequest $request, Response $response): void
+    public function terminate(ServerRequestContract $request, ResponseContract $response): void
     {
         // Dispatch the terminable middleware
         $this->terminatedHandler->terminated($request, $response);
@@ -124,7 +124,7 @@ class RequestHandler implements Contract
      * @throws Throwable
      */
     #[Override]
-    public function run(ServerRequest $request): void
+    public function run(ServerRequestContract $request): void
     {
         // Handle the request, dispatch the after request middleware
         $response = $this->handle($request);
@@ -132,7 +132,7 @@ class RequestHandler implements Contract
         $response = $this->sendingResponseHandler->sendingResponse($request, $response);
 
         // Set the returned response in the container
-        $this->container->setSingleton(Response::class, $response);
+        $this->container->setSingleton(ResponseContract::class, $response);
 
         // Send the response
         $this->send($response);
@@ -143,25 +143,25 @@ class RequestHandler implements Contract
     /**
      * Dispatch the request via the router.
      *
-     * @param ServerRequest $request The request
+     * @param ServerRequestContract $request The request
      *
-     * @return Response
+     * @return ResponseContract
      */
-    protected function dispatchRouter(ServerRequest $request): Response
+    protected function dispatchRouter(ServerRequestContract $request): ResponseContract
     {
         // Set the request object in the container
-        $this->container->setSingleton(ServerRequest::class, $request);
+        $this->container->setSingleton(ServerRequestContract::class, $request);
 
         // Dispatch the before request handled middleware
         $requestAfterMiddleware = $this->requestReceivedHandler->requestReceived($request);
 
         // If the return value after middleware is a response return it
-        if ($requestAfterMiddleware instanceof Response) {
+        if ($requestAfterMiddleware instanceof ResponseContract) {
             return $requestAfterMiddleware;
         }
 
         // Set the returned request in the container
-        $this->container->setSingleton(ServerRequest::class, $requestAfterMiddleware);
+        $this->container->setSingleton(ServerRequestContract::class, $requestAfterMiddleware);
 
         return $this->router->dispatch($requestAfterMiddleware);
     }
@@ -173,9 +173,9 @@ class RequestHandler implements Contract
      *
      * @throws Throwable
      *
-     * @return Response
+     * @return ResponseContract
      */
-    protected function getResponseFromThrowable(Throwable $throwable): Response
+    protected function getResponseFromThrowable(Throwable $throwable): ResponseContract
     {
         if ($this->debug) {
             throw $throwable;
@@ -195,9 +195,9 @@ class RequestHandler implements Contract
      *
      * @param HttpException|null $httpException [optional] The Http exception
      *
-     * @return Response
+     * @return ResponseContract
      */
-    protected function getDefaultErrorResponse(HttpException|null $httpException = null): Response
+    protected function getDefaultErrorResponse(HttpException|null $httpException = null): ResponseContract
     {
         $statusCode = StatusCode::INTERNAL_SERVER_ERROR;
 

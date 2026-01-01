@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Interaction\Output;
 
 use Override;
-use Valkyrja\Cli\Interaction\Message\Contract\Message;
-use Valkyrja\Cli\Interaction\Output\Contract\EmptyOutput as Contract;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
+use Valkyrja\Cli\Interaction\Output\Contract\EmptyOutputContract as Contract;
 
 /**
  * Class EmptyOutput.
@@ -28,7 +28,7 @@ class EmptyOutput extends Output implements Contract
      * @inheritDoc
      */
     #[Override]
-    protected function outputMessage(Message $message): void
+    protected function outputMessage(MessageContract $message): void
     {
         // Empty on purpose
     }

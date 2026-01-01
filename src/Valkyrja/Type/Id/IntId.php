@@ -15,7 +15,7 @@ namespace Valkyrja\Type\Id;
 
 use Override;
 use Valkyrja\Type\Abstract\Type;
-use Valkyrja\Type\Id\Contract\IntId as Contract;
+use Valkyrja\Type\Id\Contract\IntIdContract as Contract;
 use Valkyrja\Type\Throwable\Exception\InvalidArgumentException;
 
 use function is_bool;

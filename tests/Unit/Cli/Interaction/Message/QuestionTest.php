@@ -16,7 +16,7 @@ namespace Valkyrja\Tests\Unit\Cli\Interaction\Message;
 use Valkyrja\Cli\Interaction\Formatter\QuestionFormatter;
 use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Message\Question;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Throwable\Exception\InvalidArgumentException;
 use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionClass;
 use Valkyrja\Tests\Classes\Cli\Interaction\Message\QuestionEmptyFgetsClass;
@@ -169,12 +169,12 @@ class QuestionTest extends TestCase
         self::assertSame($defaultResponse, $askedAnswer->getUserResponse());
     }
 
-    public function questionCallable(Output $output, Answer $answer): Output
+    public function questionCallable(OutputContract $output, Answer $answer): OutputContract
     {
         return $output;
     }
 
-    public function questionCallable2(Output $output, Answer $answer): Output
+    public function questionCallable2(OutputContract $output, Answer $answer): OutputContract
     {
         return $output;
     }

@@ -18,8 +18,8 @@ use Valkyrja\Tests\Classes\Model\ExposableModelClass;
 use Valkyrja\Tests\Classes\Model\ModelClass;
 use Valkyrja\Tests\Classes\Model\SimpleExposableModelClass;
 use Valkyrja\Tests\Unit\TestCase;
-use Valkyrja\Type\Model\Contract\ExposableModel as Contract;
-use Valkyrja\Type\Model\Contract\Model as ModelContract;
+use Valkyrja\Type\Model\Contract\ExposableModelContract as Contract;
+use Valkyrja\Type\Model\Contract\ModelContract;
 
 use function method_exists;
 

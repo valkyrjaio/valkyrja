@@ -14,19 +14,19 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Middleware\Handler;
 
 use Override;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
-use Valkyrja\Http\Message\Response\Contract\Response;
-use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
 use Valkyrja\Http\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandler as Contract;
-use Valkyrja\Http\Routing\Data\Contract\Route;
+use Valkyrja\Http\Middleware\Handler\Contract\RouteDispatchedHandlerContract as Contract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
 
 /**
  * Class DispatchedHandler.
  *
  * @author Melech Mizrachi
  *
- * @extends Handler<RouteDispatchedMiddleware>
+ * @extends Handler<RouteDispatchedMiddlewareContract>
  */
 class RouteDispatchedHandler extends Handler implements Contract
 {
@@ -34,7 +34,7 @@ class RouteDispatchedHandler extends Handler implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function routeDispatched(ServerRequest $request, Response $response, Route $route): Response
+    public function routeDispatched(ServerRequestContract $request, ResponseContract $response, RouteContract $route): ResponseContract
     {
         $next = $this->next;
 

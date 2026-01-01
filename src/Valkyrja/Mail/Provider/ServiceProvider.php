@@ -19,10 +19,10 @@ use Mailgun\Mailgun;
 use Override;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Log\Logger\Contract\Logger;
-use Valkyrja\Mail\Mailer\Contract\Mailer;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
+use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Mail\Mailer\LogMailer;
 use Valkyrja\Mail\Mailer\MailgunMailer;
 use Valkyrja\Mail\Mailer\NullMailer;
@@ -42,7 +42,7 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Mailer::class                 => [self::class, 'publishMailer'],
+            MailerContract::class         => [self::class, 'publishMailer'],
             MailgunMailer::class          => [self::class, 'publishMailgunMailer'],
             Mailgun::class                => [self::class, 'publishMailgun'],
             HttpClientConfigurator::class => [self::class, 'publishMailgunHttpClientConfigurator'],
@@ -60,7 +60,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Mailer::class,
+            MailerContract::class,
             MailgunMailer::class,
             Mailgun::class,
             HttpClientConfigurator::class,
@@ -74,14 +74,14 @@ final class ServiceProvider extends Provider
     /**
      * Publish the mailer service.
      */
-    public static function publishMailer(Container $container): void
+    public static function publishMailer(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<Mailer> $default */
+        /** @var class-string<MailerContract> $default */
         $default = $env::MAIL_DEFAULT_MAILER;
 
         $container->setSingleton(
-            Mailer::class,
+            MailerContract::class,
             $container->getSingleton($default),
         );
     }
@@ -89,7 +89,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the mailgun mailer service.
      */
-    public static function publishMailgunMailer(Container $container): void
+    public static function publishMailgunMailer(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $domain */
@@ -107,7 +107,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the mailgun service.
      */
-    public static function publishMailgun(Container $container): void
+    public static function publishMailgun(ContainerContract $container): void
     {
         $container->setSingleton(
             Mailgun::class,
@@ -120,7 +120,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the mailgun service.
      */
-    public static function publishMailgunHttpClientConfigurator(Container $container): void
+    public static function publishMailgunHttpClientConfigurator(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var string $apiKey */
@@ -137,7 +137,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the PHPMailer mailer service.
      */
-    public static function publishPhpMailer(Container $container): void
+    public static function publishPhpMailer(ContainerContract $container): void
     {
         $container->setSingleton(
             PhpMailer::class,
@@ -150,7 +150,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the PHPMailer client service.
      */
-    public static function publishPhpMailerClient(Container $container): void
+    public static function publishPhpMailerClient(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var bool $debugMode */
@@ -195,12 +195,12 @@ final class ServiceProvider extends Provider
     /**
      * Publish the log mailer service.
      */
-    public static function publishLogMailer(Container $container): void
+    public static function publishLogMailer(ContainerContract $container): void
     {
         $container->setSingleton(
             LogMailer::class,
             new LogMailer(
-                $container->getSingleton(Logger::class),
+                $container->getSingleton(LoggerContract::class),
             ),
         );
     }
@@ -208,7 +208,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the null mailer service.
      */
-    public static function publishNullMailer(Container $container): void
+    public static function publishNullMailer(ContainerContract $container): void
     {
         $container->setSingleton(
             NullMailer::class,

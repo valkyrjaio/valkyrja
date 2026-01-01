@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional;
 
-use Valkyrja\Application\Kernel\Contract\Application;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Container;
-use Valkyrja\Filesystem\Manager\Contract\Filesystem;
-use Valkyrja\Http\Client\Manager\Contract\Client;
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
-use Valkyrja\Http\Routing\Dispatcher\Contract\Router;
-use Valkyrja\Http\Server\Handler\Contract\RequestHandler;
-use Valkyrja\Log\Logger\Contract\Logger;
-use Valkyrja\Session\Manager\Contract\Session;
+use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
+use Valkyrja\Http\Client\Manager\Contract\ClientContract;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Routing\Dispatcher\Contract\RouterContract;
+use Valkyrja\Http\Server\Handler\Contract\RequestHandlerContract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
+use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Tests\EnvClass;
-use Valkyrja\View\Renderer\Contract\Renderer;
+use Valkyrja\View\Renderer\Contract\RendererContract;
 
 /**
  * Test the functionality of the Application.
@@ -49,7 +49,7 @@ class ApplicationTest extends TestCase
      */
     public function testVersion(): void
     {
-        self::assertSame(Application::VERSION, $this->app->getVersion());
+        self::assertSame(ApplicationContract::VERSION, $this->app->getVersion());
     }
 
     /**
@@ -100,7 +100,7 @@ class ApplicationTest extends TestCase
      */
     public function testClient(): void
     {
-        self::assertInstanceOf(Client::class, $this->app->getContainer()->getSingleton(Client::class));
+        self::assertInstanceOf(ClientContract::class, $this->app->getContainer()->getSingleton(ClientContract::class));
     }
 
     /**
@@ -110,7 +110,7 @@ class ApplicationTest extends TestCase
      */
     public function testFilesystem(): void
     {
-        self::assertInstanceOf(Filesystem::class, $this->app->getContainer()->getSingleton(Filesystem::class));
+        self::assertInstanceOf(FilesystemContract::class, $this->app->getContainer()->getSingleton(FilesystemContract::class));
     }
 
     /**
@@ -120,7 +120,7 @@ class ApplicationTest extends TestCase
      */
     public function testKernel(): void
     {
-        self::assertInstanceOf(RequestHandler::class, $this->app->getContainer()->getSingleton(RequestHandler::class));
+        self::assertInstanceOf(RequestHandlerContract::class, $this->app->getContainer()->getSingleton(RequestHandlerContract::class));
     }
 
     /**
@@ -130,7 +130,7 @@ class ApplicationTest extends TestCase
      */
     public function testLogger(): void
     {
-        self::assertInstanceOf(Logger::class, $this->app->getContainer()->getSingleton(Logger::class));
+        self::assertInstanceOf(LoggerContract::class, $this->app->getContainer()->getSingleton(LoggerContract::class));
     }
 
     /**
@@ -140,7 +140,7 @@ class ApplicationTest extends TestCase
      */
     public function testRouter(): void
     {
-        self::assertInstanceOf(Router::class, $this->app->getContainer()->getSingleton(Router::class));
+        self::assertInstanceOf(RouterContract::class, $this->app->getContainer()->getSingleton(RouterContract::class));
     }
 
     /**
@@ -150,7 +150,7 @@ class ApplicationTest extends TestCase
      */
     public function testResponseBuilder(): void
     {
-        self::assertInstanceOf(ResponseFactory::class, $this->app->getContainer()->getSingleton(ResponseFactory::class));
+        self::assertInstanceOf(ResponseFactoryContract::class, $this->app->getContainer()->getSingleton(ResponseFactoryContract::class));
     }
 
     /**
@@ -160,7 +160,7 @@ class ApplicationTest extends TestCase
      */
     public function testSession(): void
     {
-        self::assertInstanceOf(Session::class, $this->app->getContainer()->getSingleton(Session::class));
+        self::assertInstanceOf(SessionContract::class, $this->app->getContainer()->getSingleton(SessionContract::class));
     }
 
     /**
@@ -170,6 +170,6 @@ class ApplicationTest extends TestCase
      */
     public function testRenderer(): void
     {
-        self::assertInstanceOf(Renderer::class, $this->app->getContainer()->getSingleton(Renderer::class));
+        self::assertInstanceOf(RendererContract::class, $this->app->getContainer()->getSingleton(RendererContract::class));
     }
 }

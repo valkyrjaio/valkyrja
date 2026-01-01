@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Cli\Middleware\Handler;
 
 use Override;
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Handler\InputReceivedHandler;
 
 /**
@@ -39,7 +39,7 @@ class InputReceivedHandlerClass extends InputReceivedHandler
      * @inheritDoc
      */
     #[Override]
-    public function inputReceived(Input $input): Input|Output
+    public function inputReceived(InputContract $input): InputContract|OutputContract
     {
         $this->count++;
 

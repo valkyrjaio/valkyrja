@@ -16,9 +16,9 @@ namespace Valkyrja\Cli\Interaction\Provider;
 use Override;
 use Valkyrja\Application\Env\Env;
 use Valkyrja\Cli\Interaction\Data\Config;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
+use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Factory\OutputFactory as DefaultOutputFactory;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
 
 /**
@@ -35,8 +35,8 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Config::class        => [self::class, 'publishConfig'],
-            OutputFactory::class => [self::class, 'publishOutputFactory'],
+            Config::class                => [self::class, 'publishConfig'],
+            OutputFactoryContract::class => [self::class, 'publishOutputFactory'],
         ];
     }
 
@@ -48,14 +48,14 @@ final class ServiceProvider extends Provider
     {
         return [
             Config::class,
-            OutputFactory::class,
+            OutputFactoryContract::class,
         ];
     }
 
     /**
      * Publish the output factory.
      */
-    public static function publishConfig(Container $container): void
+    public static function publishConfig(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var bool $isQuiet */
@@ -78,12 +78,12 @@ final class ServiceProvider extends Provider
     /**
      * Publish the output factory.
      */
-    public static function publishOutputFactory(Container $container): void
+    public static function publishOutputFactory(ContainerContract $container): void
     {
         $config = $container->getSingleton(Config::class);
 
         $container->setSingleton(
-            OutputFactory::class,
+            OutputFactoryContract::class,
             new DefaultOutputFactory(
                 config: $config
             )

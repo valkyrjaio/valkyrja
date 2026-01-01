@@ -15,10 +15,10 @@ namespace Valkyrja\Cache\Manager;
 
 use JsonException;
 use Override;
-use Valkyrja\Cache\Manager\Contract\Cache as Contract;
-use Valkyrja\Cache\Tagger\Contract\Tagger;
+use Valkyrja\Cache\Manager\Contract\CacheContract as Contract;
+use Valkyrja\Cache\Tagger\Contract\TaggerContract;
 use Valkyrja\Cache\Tagger\Tagger as TagClass;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 
 /**
@@ -31,11 +31,11 @@ class LogCache implements Contract
     /**
      * LogCache constructor.
      *
-     * @param Logger $logger The logger service
-     * @param string $prefix [optional] The prefix
+     * @param LoggerContract $logger The logger service
+     * @param string         $prefix [optional] The prefix
      */
     public function __construct(
-        protected Logger $logger,
+        protected LoggerContract $logger,
         protected string $prefix = ''
     ) {
     }
@@ -165,7 +165,7 @@ class LogCache implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getTagger(string ...$tags): Tagger
+    public function getTagger(string ...$tags): TaggerContract
     {
         return TagClass::make($this, ...$tags);
     }

@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Attribute\Route;
 
 use Attribute;
-use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
+use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
 
 /**
  * Attribute Middleware.
@@ -28,7 +28,7 @@ use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
 class Middleware
 {
     /**
-     * @param class-string<CommandDispatchedMiddleware|CommandMatchedMiddleware|ThrowableCaughtMiddleware|ExitedMiddleware> $name
+     * @param class-string<CommandDispatchedMiddlewareContract|CommandMatchedMiddlewareContract|ThrowableCaughtMiddlewareContract|ExitedMiddlewareContract> $name
      */
     public function __construct(
         public string $name

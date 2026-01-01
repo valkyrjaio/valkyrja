@@ -15,8 +15,8 @@ namespace Valkyrja\View\Template;
 
 use Override;
 use Valkyrja\Throwable\Exception\InvalidArgumentException;
-use Valkyrja\View\Renderer\Contract\Renderer;
-use Valkyrja\View\Template\Contract\Template as Contract;
+use Valkyrja\View\Renderer\Contract\RendererContract;
+use Valkyrja\View\Template\Contract\TemplateContract as Contract;
 
 use function array_merge;
 use function htmlentities;
@@ -72,7 +72,7 @@ class Template implements Contract
      * @param array<string, mixed> $variables The variables
      */
     public function __construct(
-        protected Renderer $renderer,
+        protected RendererContract $renderer,
         protected string $name,
         protected array $variables = []
     ) {

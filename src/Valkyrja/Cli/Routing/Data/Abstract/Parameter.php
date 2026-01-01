@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Routing\Data\Abstract;
 
 use Override;
-use Valkyrja\Cli\Routing\Data\Contract\Parameter as Contract;
+use Valkyrja\Cli\Routing\Data\Contract\ParameterContract as Contract;
 use Valkyrja\Type\Data\Cast;
 
 /**

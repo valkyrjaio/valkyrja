@@ -15,9 +15,9 @@ namespace Valkyrja\Crypt\Provider;
 
 use Override;
 use Valkyrja\Application\Env\Env;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Crypt\Manager\Contract\Crypt;
+use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Manager\NullCrypt;
 use Valkyrja\Crypt\Manager\SodiumCrypt;
 
@@ -35,9 +35,9 @@ final class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Crypt::class       => [self::class, 'publishCrypt'],
-            SodiumCrypt::class => [self::class, 'publishSodiumCrypt'],
-            NullCrypt::class   => [self::class, 'publishNullCrypt'],
+            CryptContract::class => [self::class, 'publishCrypt'],
+            SodiumCrypt::class   => [self::class, 'publishSodiumCrypt'],
+            NullCrypt::class     => [self::class, 'publishNullCrypt'],
         ];
     }
 
@@ -48,7 +48,7 @@ final class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Crypt::class,
+            CryptContract::class,
             SodiumCrypt::class,
             NullCrypt::class,
         ];
@@ -57,14 +57,14 @@ final class ServiceProvider extends Provider
     /**
      * Publish the crypt service.
      */
-    public static function publishCrypt(Container $container): void
+    public static function publishCrypt(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
-        /** @var class-string<Crypt> $default */
+        /** @var class-string<CryptContract> $default */
         $default = $env::CRYPT_DEFAULT;
 
         $container->setSingleton(
-            Crypt::class,
+            CryptContract::class,
             $container->getSingleton($default),
         );
     }
@@ -72,7 +72,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the sodium crypt service.
      */
-    public static function publishSodiumCrypt(Container $container): void
+    public static function publishSodiumCrypt(ContainerContract $container): void
     {
         $env = $container->getSingleton(Env::class);
         /** @var non-empty-string $key */
@@ -89,7 +89,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the null crypt service.
      */
-    public static function publishNullCrypt(Container $container): void
+    public static function publishNullCrypt(ContainerContract $container): void
     {
         $container->setSingleton(
             NullCrypt::class,

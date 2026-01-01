@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Routing\Controller;
 
-use Valkyrja\Http\Message\Factory\Contract\ResponseFactory;
-use Valkyrja\Http\Message\Request\Contract\ServerRequest;
+use Valkyrja\Http\Message\Factory\Contract\ResponseFactoryContract;
+use Valkyrja\Http\Message\Request\Contract\ServerRequestContract;
 
 /**
  * Abstract Class Controller.
@@ -24,8 +24,8 @@ use Valkyrja\Http\Message\Request\Contract\ServerRequest;
 abstract class Controller
 {
     public function __construct(
-        protected ServerRequest $request,
-        protected ResponseFactory $responseFactory,
+        protected ServerRequestContract $request,
+        protected ResponseFactoryContract $responseFactory,
     ) {
     }
 }

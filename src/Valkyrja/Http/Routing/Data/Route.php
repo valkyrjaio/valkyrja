@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Routing\Data;
 
 use Override;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatch;
+use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
 use Valkyrja\Http\Message\Enum\RequestMethod;
-use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware;
-use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Http\Routing\Data\Contract\Parameter;
-use Valkyrja\Http\Routing\Data\Contract\Route as Contract;
-use Valkyrja\Http\Struct\Request\Contract\RequestStruct;
-use Valkyrja\Http\Struct\Response\Contract\ResponseStruct;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract;
+use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract as Contract;
+use Valkyrja\Http\Struct\Request\Contract\RequestStructContract;
+use Valkyrja\Http\Struct\Response\Contract\ResponseStructContract;
 
 use function in_array;
 
@@ -36,23 +36,23 @@ use function in_array;
 class Route implements Contract
 {
     /**
-     * @param non-empty-string                          $path                      The path
-     * @param non-empty-string                          $name                      The name
-     * @param non-empty-string|null                     $regex                     The regex
-     * @param RequestMethod[]                           $requestMethods            The request methods
-     * @param Parameter[]                               $parameters                The parameters
-     * @param class-string<RouteMatchedMiddleware>[]    $routeMatchedMiddleware    The route matched middleware
-     * @param class-string<RouteDispatchedMiddleware>[] $routeDispatchedMiddleware The route dispatched middleware
-     * @param class-string<ThrowableCaughtMiddleware>[] $throwableCaughtMiddleware The throwable caught middleware
-     * @param class-string<SendingResponseMiddleware>[] $sendingResponseMiddleware The sending response middleware
-     * @param class-string<TerminatedMiddleware>[]      $terminatedMiddleware      The terminated middleware
-     * @param class-string<RequestStruct>|null          $requestStruct             The request struct
-     * @param class-string<ResponseStruct>|null         $responseStruct            The response struct
+     * @param non-empty-string                                  $path                      The path
+     * @param non-empty-string                                  $name                      The name
+     * @param non-empty-string|null                             $regex                     The regex
+     * @param RequestMethod[]                                   $requestMethods            The request methods
+     * @param ParameterContract[]                               $parameters                The parameters
+     * @param class-string<RouteMatchedMiddlewareContract>[]    $routeMatchedMiddleware    The route matched middleware
+     * @param class-string<RouteDispatchedMiddlewareContract>[] $routeDispatchedMiddleware The route dispatched middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract>[] $throwableCaughtMiddleware The throwable caught middleware
+     * @param class-string<SendingResponseMiddlewareContract>[] $sendingResponseMiddleware The sending response middleware
+     * @param class-string<TerminatedMiddlewareContract>[]      $terminatedMiddleware      The terminated middleware
+     * @param class-string<RequestStructContract>|null          $requestStruct             The request struct
+     * @param class-string<ResponseStructContract>|null         $responseStruct            The response struct
      */
     public function __construct(
         protected string $path,
         protected string $name,
-        protected MethodDispatch $dispatch,
+        protected MethodDispatchContract $dispatch,
         protected array $requestMethods = [RequestMethod::HEAD, RequestMethod::GET],
         protected string|null $regex = null,
         protected array $parameters = [],
@@ -143,7 +143,7 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getDispatch(): MethodDispatch
+    public function getDispatch(): MethodDispatchContract
     {
         return $this->dispatch;
     }
@@ -152,7 +152,7 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withDispatch(MethodDispatch $dispatch): static
+    public function withDispatch(MethodDispatchContract $dispatch): static
     {
         $new = clone $this;
 
@@ -264,7 +264,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      *
-     * @return array<array-key, Parameter>
+     * @return array<array-key, ParameterContract>
      */
     #[Override]
     public function getParameters(): array
@@ -276,7 +276,7 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withParameter(Parameter $parameter): static
+    public function withParameter(ParameterContract $parameter): static
     {
         $new = clone $this;
 
@@ -289,7 +289,7 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withParameters(Parameter ...$parameters): static
+    public function withParameters(ParameterContract ...$parameters): static
     {
         $new = clone $this;
 
@@ -302,7 +302,7 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedParameter(Parameter $parameter): static
+    public function withAddedParameter(ParameterContract $parameter): static
     {
         $new = clone $this;
 
@@ -315,7 +315,7 @@ class Route implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withAddedParameters(Parameter ...$parameters): static
+    public function withAddedParameters(ParameterContract ...$parameters): static
     {
         $new = clone $this;
 
@@ -327,7 +327,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      *
-     * @return class-string<RouteMatchedMiddleware>[]
+     * @return class-string<RouteMatchedMiddlewareContract>[]
      */
     #[Override]
     public function getRouteMatchedMiddleware(): array
@@ -338,7 +338,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      *
-     * @param class-string<RouteMatchedMiddleware> ...$middleware The middleware
+     * @param class-string<RouteMatchedMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
     public function withRouteMatchedMiddleware(string ...$middleware): static
@@ -353,7 +353,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      *
-     * @param class-string<RouteMatchedMiddleware> ...$middleware The middleware
+     * @param class-string<RouteMatchedMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
     public function withAddedRouteMatchedMiddleware(string ...$middleware): static
@@ -368,7 +368,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      *
-     * @return class-string<RouteDispatchedMiddleware>[]
+     * @return class-string<RouteDispatchedMiddlewareContract>[]
      */
     #[Override]
     public function getRouteDispatchedMiddleware(): array
@@ -379,7 +379,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      *
-     * @param class-string<RouteDispatchedMiddleware> ...$middleware The middleware
+     * @param class-string<RouteDispatchedMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
     public function withRouteDispatchedMiddleware(string ...$middleware): static
@@ -394,7 +394,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      *
-     * @param class-string<RouteDispatchedMiddleware> ...$middleware The middleware
+     * @param class-string<RouteDispatchedMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
     public function withAddedRouteDispatchedMiddleware(string ...$middleware): static
@@ -409,7 +409,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      *
-     * @return class-string<ThrowableCaughtMiddleware>[]
+     * @return class-string<ThrowableCaughtMiddlewareContract>[]
      */
     #[Override]
     public function getThrowableCaughtMiddleware(): array
@@ -420,7 +420,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      *
-     * @param class-string<ThrowableCaughtMiddleware> ...$middleware The middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
     public function withThrowableCaughtMiddleware(string ...$middleware): static
@@ -435,7 +435,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      *
-     * @param class-string<ThrowableCaughtMiddleware> ...$middleware The middleware
+     * @param class-string<ThrowableCaughtMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
     public function withAddedThrowableCaughtMiddleware(string ...$middleware): static
@@ -450,7 +450,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      *
-     * @return class-string<SendingResponseMiddleware>[]
+     * @return class-string<SendingResponseMiddlewareContract>[]
      */
     #[Override]
     public function getSendingResponseMiddleware(): array
@@ -461,7 +461,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      *
-     * @param class-string<SendingResponseMiddleware> ...$middleware The middleware
+     * @param class-string<SendingResponseMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
     public function withSendingResponseMiddleware(string ...$middleware): static
@@ -476,7 +476,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      *
-     * @param class-string<SendingResponseMiddleware> ...$middleware The middleware
+     * @param class-string<SendingResponseMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
     public function withAddedSendingResponseMiddleware(string ...$middleware): static
@@ -491,7 +491,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      *
-     * @return class-string<TerminatedMiddleware>[]
+     * @return class-string<TerminatedMiddlewareContract>[]
      */
     #[Override]
     public function getTerminatedMiddleware(): array
@@ -502,7 +502,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      *
-     * @param class-string<TerminatedMiddleware> ...$middleware The middleware
+     * @param class-string<TerminatedMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
     public function withTerminatedMiddleware(string ...$middleware): static
@@ -517,7 +517,7 @@ class Route implements Contract
     /**
      * @inheritDoc
      *
-     * @param class-string<TerminatedMiddleware> ...$middleware The middleware
+     * @param class-string<TerminatedMiddlewareContract> ...$middleware The middleware
      */
     #[Override]
     public function withAddedTerminatedMiddleware(string ...$middleware): static

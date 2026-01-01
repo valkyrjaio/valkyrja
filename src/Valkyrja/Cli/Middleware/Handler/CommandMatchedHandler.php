@@ -14,19 +14,19 @@ declare(strict_types=1);
 namespace Valkyrja\Cli\Middleware\Handler;
 
 use Override;
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
 use Valkyrja\Cli\Middleware\Handler\Abstract\Handler;
-use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandler as Contract;
-use Valkyrja\Cli\Routing\Data\Contract\Route;
+use Valkyrja\Cli\Middleware\Handler\Contract\CommandMatchedHandlerContract as Contract;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
 /**
  * Class CommandMatchedHandler.
  *
  * @author Melech Mizrachi
  *
- * @extends Handler<CommandMatchedMiddleware>
+ * @extends Handler<CommandMatchedMiddlewareContract>
  */
 class CommandMatchedHandler extends Handler implements Contract
 {
@@ -34,7 +34,7 @@ class CommandMatchedHandler extends Handler implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function commandMatched(Input $input, Route $command): Route|Output
+    public function commandMatched(InputContract $input, RouteContract $command): RouteContract|OutputContract
     {
         $next = $this->next;
 

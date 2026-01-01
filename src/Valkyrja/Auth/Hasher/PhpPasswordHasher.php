@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Hasher;
 
 use Override;
-use Valkyrja\Auth\Hasher\Contract\PasswordHasher as Contract;
+use Valkyrja\Auth\Hasher\Contract\PasswordHasherContract as Contract;
 
 use const PASSWORD_DEFAULT;
 

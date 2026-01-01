@@ -15,9 +15,9 @@ namespace Valkyrja\Event\Data;
 
 use Override;
 use Valkyrja\Dispatch\Data\ClassDispatch as DefaultDispatch;
-use Valkyrja\Dispatch\Data\Contract\ClassDispatch;
-use Valkyrja\Dispatch\Data\Contract\MethodDispatch;
-use Valkyrja\Event\Data\Contract\Listener as Contract;
+use Valkyrja\Dispatch\Data\Contract\ClassDispatchContract;
+use Valkyrja\Dispatch\Data\Contract\MethodDispatchContract;
+use Valkyrja\Event\Data\Contract\ListenerContract as Contract;
 
 /**
  * Class Listener.
@@ -33,7 +33,7 @@ class Listener implements Contract
     public function __construct(
         protected string $eventId,
         protected string $name,
-        protected ClassDispatch|MethodDispatch $dispatch = new DefaultDispatch(self::class),
+        protected ClassDispatchContract|MethodDispatchContract $dispatch = new DefaultDispatch(self::class),
     ) {
     }
 
@@ -85,7 +85,7 @@ class Listener implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function getDispatch(): ClassDispatch|MethodDispatch
+    public function getDispatch(): ClassDispatchContract|MethodDispatchContract
     {
         return $this->dispatch;
     }
@@ -94,7 +94,7 @@ class Listener implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function withDispatch(ClassDispatch|MethodDispatch $dispatch): static
+    public function withDispatch(ClassDispatchContract|MethodDispatchContract $dispatch): static
     {
         $new = clone $this;
 

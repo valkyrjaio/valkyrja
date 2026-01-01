@@ -15,7 +15,7 @@ namespace Valkyrja\Dispatch\Data;
 
 use Override;
 use Valkyrja\Dispatch\Data\Abstract\Dispatch;
-use Valkyrja\Dispatch\Data\Contract\ConstantDispatch as Contract;
+use Valkyrja\Dispatch\Data\Contract\ConstantDispatchContract as Contract;
 
 /**
  * Class ConstantDispatch.

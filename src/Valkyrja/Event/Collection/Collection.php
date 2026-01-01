@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Collection;
 
 use Override;
-use Valkyrja\Event\Collection\Contract\Collection as Contract;
-use Valkyrja\Event\Data\Contract\Listener;
+use Valkyrja\Event\Collection\Contract\CollectionContract as Contract;
+use Valkyrja\Event\Data\Contract\ListenerContract;
 use Valkyrja\Event\Data\Data;
 use Valkyrja\Event\Data\Listener as Model;
 use Valkyrja\Event\Throwable\Exception\InvalidArgumentException;
@@ -40,7 +40,7 @@ class Collection implements Contract
     /**
      * The listeners.
      *
-     * @var array<string, Listener|string>
+     * @var array<string, ListenerContract|string>
      */
     protected array $listeners = [];
 
@@ -53,7 +53,7 @@ class Collection implements Contract
         return new Data(
             events: $this->events,
             listeners: array_map(
-                static fn (Listener|string $listener): string => ! is_string($listener)
+                static fn (ListenerContract|string $listener): string => ! is_string($listener)
                     ? serialize($listener)
                     : $listener,
                 $this->listeners
@@ -75,7 +75,7 @@ class Collection implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function hasListener(Listener $listener): bool
+    public function hasListener(ListenerContract $listener): bool
     {
         return $this->hasListenerById($listener->getName());
     }
@@ -93,7 +93,7 @@ class Collection implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function addListener(Listener $listener): void
+    public function addListener(ListenerContract $listener): void
     {
         $listenerId = $listener->getName();
         $eventId    = $listener->getEventId();
@@ -107,7 +107,7 @@ class Collection implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function removeListener(Listener $listener): void
+    public function removeListener(ListenerContract $listener): void
     {
         $listenerId = $listener->getName();
         $eventId    = $listener->getEventId();
@@ -182,7 +182,7 @@ class Collection implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function setListenersForEvent(object $event, Listener ...$listeners): void
+    public function setListenersForEvent(object $event, ListenerContract ...$listeners): void
     {
         $this->setListenersForEventById($event::class, ...$listeners);
     }
@@ -191,7 +191,7 @@ class Collection implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function setListenersForEventById(string $eventId, Listener ...$listeners): void
+    public function setListenersForEventById(string $eventId, ListenerContract ...$listeners): void
     {
         foreach ($listeners as $listener) {
             $this->addListener(
@@ -264,11 +264,11 @@ class Collection implements Contract
     /**
      * Ensure a listener, or null, is returned.
      *
-     * @param Listener|string $listener The listener
+     * @param ListenerContract|string $listener The listener
      *
-     * @return Listener
+     * @return ListenerContract
      */
-    protected function ensureListener(Listener|string $listener): Listener
+    protected function ensureListener(ListenerContract|string $listener): ListenerContract
     {
         if (is_string($listener)) {
             $unserializedListener = unserialize($listener, ['allowed_classes' => true]);

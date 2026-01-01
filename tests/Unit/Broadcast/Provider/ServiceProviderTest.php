@@ -16,14 +16,14 @@ namespace Valkyrja\Tests\Unit\Broadcast\Provider;
 use PHPUnit\Framework\MockObject\Exception;
 use Pusher\Pusher;
 use Pusher\PusherException;
-use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster as Contract;
+use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract as Contract;
 use Valkyrja\Broadcast\Broadcaster\CryptPusherBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\LogBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\NullBroadcaster;
 use Valkyrja\Broadcast\Broadcaster\PusherBroadcaster;
 use Valkyrja\Broadcast\Provider\ServiceProvider;
-use Valkyrja\Crypt\Manager\Contract\Crypt;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Crypt\Manager\Contract\CryptContract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**
@@ -66,7 +66,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishCryptPusherBroadcaster(): void
     {
         $this->container->setSingleton(Pusher::class, self::createStub(Pusher::class));
-        $this->container->setSingleton(Crypt::class, self::createStub(Crypt::class));
+        $this->container->setSingleton(CryptContract::class, self::createStub(CryptContract::class));
 
         ServiceProvider::publishCryptPusherBroadcaster($this->container);
 
@@ -88,7 +88,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
      */
     public function testPublishLogBroadcaster(): void
     {
-        $this->container->setSingleton(Logger::class, self::createStub(Logger::class));
+        $this->container->setSingleton(LoggerContract::class, self::createStub(LoggerContract::class));
 
         ServiceProvider::publishLogBroadcaster($this->container);
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entity;
 
-use Valkyrja\Auth\Entity\Contract\MailableUser as Contract;
+use Valkyrja\Auth\Entity\Contract\MailableUserContract as Contract;
 use Valkyrja\Auth\Entity\Trait\MailableUserFields;
 use Valkyrja\Auth\Entity\Trait\MailableUserTrait;
 

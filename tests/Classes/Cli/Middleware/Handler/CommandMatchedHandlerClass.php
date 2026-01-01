@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Classes\Cli\Middleware\Handler;
 
 use Override;
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Middleware\Handler\CommandMatchedHandler;
-use Valkyrja\Cli\Routing\Data\Contract\Route;
+use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 
 /**
  * Class TestCommandMatchedHandler.
@@ -40,7 +40,7 @@ class CommandMatchedHandlerClass extends CommandMatchedHandler
      * @inheritDoc
      */
     #[Override]
-    public function commandMatched(Input $input, Route $command): Route|Output
+    public function commandMatched(InputContract $input, RouteContract $command): RouteContract|OutputContract
     {
         $this->count++;
 

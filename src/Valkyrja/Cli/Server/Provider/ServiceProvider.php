@@ -15,16 +15,16 @@ namespace Valkyrja\Cli\Server\Provider;
 
 use Override;
 use Valkyrja\Cli\Interaction\Data\Config;
-use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandler;
-use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
-use Valkyrja\Cli\Routing\Dispatcher\Contract\Router;
-use Valkyrja\Cli\Server\Handler\Contract\InputHandler as InputHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ExitedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
+use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
+use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
 use Valkyrja\Cli\Server\Handler\InputHandler;
 use Valkyrja\Cli\Server\Middleware\LogThrowableCaughtMiddleware;
-use Valkyrja\Container\Manager\Contract\Container;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Provider\Provider;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 
 /**
  * Class ServiceProvider.
@@ -60,7 +60,7 @@ final class ServiceProvider extends Provider
     /**
      * Publish the input handler service.
      */
-    public static function publishInputHandler(Container $container): void
+    public static function publishInputHandler(ContainerContract $container): void
     {
         $config = $container->getSingleton(Config::class);
 
@@ -68,10 +68,10 @@ final class ServiceProvider extends Provider
             InputHandlerContract::class,
             new InputHandler(
                 container: $container,
-                router: $container->getSingleton(Router::class),
-                inputReceivedHandler: $container->getSingleton(InputReceivedHandler::class),
-                throwableCaughtHandler: $container->getSingleton(ThrowableCaughtHandler::class),
-                exitedHandler: $container->getSingleton(ExitedHandler::class),
+                router: $container->getSingleton(RouterContract::class),
+                inputReceivedHandler: $container->getSingleton(InputReceivedHandlerContract::class),
+                throwableCaughtHandler: $container->getSingleton(ThrowableCaughtHandlerContract::class),
+                exitedHandler: $container->getSingleton(ExitedHandlerContract::class),
                 interactionConfig: $config
             ),
         );
@@ -80,12 +80,12 @@ final class ServiceProvider extends Provider
     /**
      * Publish the LogThrowableCaughtMiddleware service.
      */
-    public static function publishLogThrowableCaughtMiddleware(Container $container): void
+    public static function publishLogThrowableCaughtMiddleware(ContainerContract $container): void
     {
         $container->setSingleton(
             LogThrowableCaughtMiddleware::class,
             new LogThrowableCaughtMiddleware(
-                logger: $container->getSingleton(Logger::class),
+                logger: $container->getSingleton(LoggerContract::class),
             )
         );
     }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Data;
 
-use Valkyrja\Container\Contract\Service;
+use Valkyrja\Container\Contract\ServiceContract;
 use Valkyrja\Container\Provider\Provider;
 
 /**
@@ -24,12 +24,12 @@ use Valkyrja\Container\Provider\Provider;
 readonly class Data
 {
     /**
-     * @param array<class-string, class-string>                   $aliases
-     * @param array<class-string, class-string>                   $deferred
-     * @param array<class-string, callable>                       $deferredCallback
-     * @param array<class-string<Service>, class-string<Service>> $services
-     * @param array<class-string, class-string>                   $singletons
-     * @param class-string<Provider>[]                            $providers
+     * @param array<class-string, class-string>                                   $aliases
+     * @param array<class-string, class-string>                                   $deferred
+     * @param array<class-string, callable>                                       $deferredCallback
+     * @param array<class-string<ServiceContract>, class-string<ServiceContract>> $services
+     * @param array<class-string, class-string>                                   $singletons
+     * @param class-string<Provider>[]                                            $providers
      */
     public function __construct(
         public array $aliases = [],

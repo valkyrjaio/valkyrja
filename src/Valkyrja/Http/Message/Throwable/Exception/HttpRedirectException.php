@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Message\Throwable\Exception;
 
 use Valkyrja\Http\Message\Enum\StatusCode;
-use Valkyrja\Http\Message\Response\Contract\Response;
+use Valkyrja\Http\Message\Response\Contract\ResponseContract;
 use Valkyrja\Http\Message\Response\RedirectResponse;
-use Valkyrja\Http\Message\Uri\Contract\Uri;
+use Valkyrja\Http\Message\Uri\Contract\UriContract;
 use Valkyrja\Http\Message\Uri\Uri as HttpUri;
 
 /**
@@ -29,9 +29,9 @@ class HttpRedirectException extends HttpException
     /**
      * The uri to redirect to for this exception.
      *
-     * @var Uri
+     * @var UriContract
      */
-    protected Uri $uri;
+    protected UriContract $uri;
 
     /**
      * HttpRedirectException constructor.
@@ -39,15 +39,15 @@ class HttpRedirectException extends HttpException
      * @see http://php.net/manual/en/exception.construct.php
      *
      * @param StatusCode|null              $statusCode [optional] The status code to use
-     * @param Uri|null                     $uri        [optional] The uri to redirect to
+     * @param UriContract|null             $uri        [optional] The uri to redirect to
      * @param array<string, string[]>|null $headers    [optional] The headers to send
-     * @param Response|null                $response   [optional] The Response
+     * @param ResponseContract|null        $response   [optional] The Response
      */
     public function __construct(
-        Uri|null $uri = null,
+        UriContract|null $uri = null,
         StatusCode|null $statusCode = null,
         array|null $headers = null,
-        Response|null $response = null
+        ResponseContract|null $response = null
     ) {
         $statusCode ??= StatusCode::FOUND;
         $headers ??= [];
@@ -63,9 +63,9 @@ class HttpRedirectException extends HttpException
     /**
      * Get the uri to redirect to for this exception.
      *
-     * @return Uri
+     * @return UriContract
      */
-    public function getUri(): Uri
+    public function getUri(): UriContract
     {
         return $this->uri;
     }

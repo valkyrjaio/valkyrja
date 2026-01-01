@@ -15,56 +15,56 @@ namespace Valkyrja\Application\Env;
 
 use Twig\Extension\ExtensionInterface as TwigExtensionInterface;
 use Valkyrja\Application\Constant\ComponentClass;
-use Valkyrja\Application\Kernel\Contract\Application;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Application\Provider\Provider;
-use Valkyrja\Auth\Authenticator\Contract\Authenticator;
+use Valkyrja\Auth\Authenticator\Contract\AuthenticatorContract;
 use Valkyrja\Auth\Authenticator\SessionAuthenticator;
 use Valkyrja\Auth\Constant\RouteName;
 use Valkyrja\Auth\Constant\SessionId;
-use Valkyrja\Auth\Entity\Contract\User;
+use Valkyrja\Auth\Entity\Contract\UserContract;
 use Valkyrja\Auth\Entity\User as UserEntity;
-use Valkyrja\Auth\Store\Contract\Store;
+use Valkyrja\Auth\Store\Contract\StoreContract;
 use Valkyrja\Auth\Store\OrmStore;
-use Valkyrja\Broadcast\Broadcaster\Contract\Broadcaster;
+use Valkyrja\Broadcast\Broadcaster\Contract\BroadcasterContract;
 use Valkyrja\Broadcast\Broadcaster\PusherBroadcaster;
-use Valkyrja\Cache\Manager\Contract\Cache;
+use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Cache\Manager\RedisCache;
-use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\ExitedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddleware;
-use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Crypt\Manager\Contract\Crypt;
+use Valkyrja\Cli\Middleware\Contract\CommandDispatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\CommandMatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\CommandNotMatchedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ExitedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\InputReceivedMiddlewareContract;
+use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
+use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Manager\SodiumCrypt;
-use Valkyrja\Filesystem\Manager\Contract\Filesystem;
+use Valkyrja\Filesystem\Manager\Contract\FilesystemContract;
 use Valkyrja\Filesystem\Manager\FlysystemFilesystem;
 use Valkyrja\Filesystem\Manager\LocalFlysystemFilesystem;
-use Valkyrja\Http\Client\Manager\Contract\Client;
+use Valkyrja\Http\Client\Manager\Contract\ClientContract;
 use Valkyrja\Http\Client\Manager\GuzzleClient;
 use Valkyrja\Http\Message\Constant\HeaderName;
 use Valkyrja\Http\Message\Enum\SameSite;
-use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddleware as HttpRequestReceivedMiddleware;
-use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddleware as HttpRouteDispatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddleware as HttpRouteMatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddleware as HttpRouteNotMatchedMiddleware;
-use Valkyrja\Http\Middleware\Contract\SendingResponseMiddleware as HttpSendingResponseMiddleware;
-use Valkyrja\Http\Middleware\Contract\TerminatedMiddleware as HttpTerminatedMiddleware;
-use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddleware as HttpThrowableCaughtMiddleware;
+use Valkyrja\Http\Middleware\Contract\RequestReceivedMiddlewareContract as HttpRequestReceivedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\RouteDispatchedMiddlewareContract as HttpRouteDispatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\RouteMatchedMiddlewareContract as HttpRouteMatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\RouteNotMatchedMiddlewareContract as HttpRouteNotMatchedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\SendingResponseMiddlewareContract as HttpSendingResponseMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\TerminatedMiddlewareContract as HttpTerminatedMiddlewareContract;
+use Valkyrja\Http\Middleware\Contract\ThrowableCaughtMiddlewareContract as HttpThrowableCaughtMiddlewareContract;
 use Valkyrja\Jwt\Enum\Algorithm;
-use Valkyrja\Jwt\Manager\Contract\Jwt;
+use Valkyrja\Jwt\Manager\Contract\JwtContract;
 use Valkyrja\Jwt\Manager\FirebaseJwt;
-use Valkyrja\Log\Logger\Contract\Logger;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
 use Valkyrja\Log\Logger\PsrLogger;
-use Valkyrja\Mail\Mailer\Contract\Mailer;
+use Valkyrja\Mail\Mailer\Contract\MailerContract;
 use Valkyrja\Mail\Mailer\MailgunMailer;
-use Valkyrja\Orm\Manager\Contract\Manager;
+use Valkyrja\Orm\Manager\Contract\ManagerContract;
 use Valkyrja\Orm\Manager\MysqlManager;
-use Valkyrja\Session\Manager\Contract\Session;
+use Valkyrja\Session\Manager\Contract\SessionContract;
 use Valkyrja\Session\Manager\PhpSession;
-use Valkyrja\Sms\Messenger\Contract\Messenger;
+use Valkyrja\Sms\Messenger\Contract\MessengerContract;
 use Valkyrja\Sms\Messenger\VonageMessenger;
-use Valkyrja\View\Renderer\Contract\Renderer;
+use Valkyrja\View\Renderer\Contract\RendererContract;
 use Valkyrja\View\Renderer\PhpRenderer;
 
 /**
@@ -94,7 +94,7 @@ class Env
     /** @var non-empty-string */
     public const string APP_TIMEZONE = 'UTC';
     /** @var non-empty-string */
-    public const string APP_VERSION = Application::VERSION;
+    public const string APP_VERSION = ApplicationContract::VERSION;
     /** @var non-empty-string */
     public const string APP_KEY = 'some_secret_app_key';
     /** @var class-string<Provider>[] */
@@ -154,11 +154,11 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<Authenticator> */
+    /** @var class-string<AuthenticatorContract> */
     public const string AUTH_DEFAULT_AUTHENTICATOR = SessionAuthenticator::class;
-    /** @var class-string<Store> */
+    /** @var class-string<StoreContract> */
     public const string AUTH_DEFAULT_STORE = OrmStore::class;
-    /** @var class-string<User> */
+    /** @var class-string<UserContract> */
     public const string AUTH_DEFAULT_USER_ENTITY = UserEntity::class;
     /** @var non-empty-string */
     public const string AUTH_DEFAULT_SESSION_ID = SessionId::AUTHENTICATED_USERS;
@@ -183,7 +183,7 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<Broadcaster> */
+    /** @var class-string<BroadcasterContract> */
     public const string BROADCAST_DEFAULT_BROADCASTER = PusherBroadcaster::class;
     /** @var non-empty-string */
     public const string BROADCAST_PUSHER_KEY = 'pusher-key';
@@ -195,8 +195,8 @@ class Env
     public const string BROADCAST_PUSHER_CLUSTER = 'us1';
     /** @var bool */
     public const bool BROADCAST_PUSHER_USE_TLS = true;
-    /** @var class-string<Logger> */
-    public const string BROADCAST_LOG_LOGGER = Logger::class;
+    /** @var class-string<LoggerContract> */
+    public const string BROADCAST_LOG_LOGGER = LoggerContract::class;
 
     /************************************************************
      *
@@ -204,7 +204,7 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<Cache> */
+    /** @var class-string<CacheContract> */
     public const string CACHE_DEFAULT = RedisCache::class;
     /** @var non-empty-string */
     public const string CACHE_REDIS_HOST = '127.0.0.1';
@@ -214,8 +214,8 @@ class Env
     public const string CACHE_REDIS_PREFIX = '';
     /** @var string */
     public const string CACHE_LOG_PREFIX = '';
-    /** @var class-string<Logger> */
-    public const string CACHE_LOG_LOGGER = Logger::class;
+    /** @var class-string<LoggerContract> */
+    public const string CACHE_LOG_LOGGER = LoggerContract::class;
     /** @var string */
     public const string CACHE_NULL_PREFIX = '';
 
@@ -238,17 +238,17 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<InputReceivedMiddleware>[] */
+    /** @var class-string<InputReceivedMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_INPUT_RECEIVED = [];
-    /** @var class-string<CommandMatchedMiddleware>[] */
+    /** @var class-string<CommandMatchedMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_COMMAND_MATCHED = [];
-    /** @var class-string<CommandNotMatchedMiddleware>[] */
+    /** @var class-string<CommandNotMatchedMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_COMMAND_NOT_MATCHED = [];
-    /** @var class-string<CommandDispatchedMiddleware>[] */
+    /** @var class-string<CommandDispatchedMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_COMMAND_DISPATCHED = [];
-    /** @var class-string<ThrowableCaughtMiddleware>[] */
+    /** @var class-string<ThrowableCaughtMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_THROWABLE_CAUGHT = [];
-    /** @var class-string<ExitedMiddleware>[] */
+    /** @var class-string<ExitedMiddlewareContract>[] */
     public const array CLI_MIDDLEWARE_EXITED = [];
 
     /************************************************************
@@ -257,7 +257,7 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<Crypt> */
+    /** @var class-string<CryptContract> */
     public const string CRYPT_DEFAULT = SodiumCrypt::class;
 
     /************************************************************
@@ -266,7 +266,7 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<Filesystem> */
+    /** @var class-string<FilesystemContract> */
     public const string FILESYSTEM_DEFAULT = FlysystemFilesystem::class;
     /** @var class-string<FlysystemFilesystem> */
     public const string FLYSYSTEM_FILESYSTEM_DEFAULT = LocalFlysystemFilesystem::class;
@@ -293,7 +293,7 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<Client> */
+    /** @var class-string<ClientContract> */
     public const string HTTP_CLIENT_DEFAULT = GuzzleClient::class;
 
     /************************************************************
@@ -302,19 +302,19 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<HttpRequestReceivedMiddleware>[] */
+    /** @var class-string<HttpRequestReceivedMiddlewareContract>[] */
     public const array HTTP_MIDDLEWARE_REQUEST_RECEIVED = [];
-    /** @var class-string<HttpRouteDispatchedMiddleware>[] */
+    /** @var class-string<HttpRouteDispatchedMiddlewareContract>[] */
     public const array HTTP_MIDDLEWARE_ROUTE_DISPATCHED = [];
-    /** @var class-string<HttpThrowableCaughtMiddleware>[] */
+    /** @var class-string<HttpThrowableCaughtMiddlewareContract>[] */
     public const array HTTP_MIDDLEWARE_THROWABLE_CAUGHT = [];
-    /** @var class-string<HttpRouteMatchedMiddleware>[] */
+    /** @var class-string<HttpRouteMatchedMiddlewareContract>[] */
     public const array HTTP_MIDDLEWARE_ROUTE_MATCHED = [];
-    /** @var class-string<HttpRouteNotMatchedMiddleware>[] */
+    /** @var class-string<HttpRouteNotMatchedMiddlewareContract>[] */
     public const array HTTP_MIDDLEWARE_ROUTE_NOT_MATCHED = [];
-    /** @var class-string<HttpSendingResponseMiddleware>[] */
+    /** @var class-string<HttpSendingResponseMiddlewareContract>[] */
     public const array HTTP_MIDDLEWARE_SENDING_RESPONSE = [];
-    /** @var class-string<HttpTerminatedMiddleware>[] */
+    /** @var class-string<HttpTerminatedMiddlewareContract>[] */
     public const array HTTP_MIDDLEWARE_TERMINATED = [];
 
     /************************************************************
@@ -323,7 +323,7 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<Jwt> */
+    /** @var class-string<JwtContract> */
     public const string JWT_DEFAULT = FirebaseJwt::class;
     /** @var Algorithm */
     public const Algorithm JWT_ALGORITHM = Algorithm::HS256;
@@ -344,7 +344,7 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<Logger> */
+    /** @var class-string<LoggerContract> */
     public const string LOG_DEFAULT_LOGGER = PsrLogger::class;
 
     /************************************************************
@@ -353,7 +353,7 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<Mailer> */
+    /** @var class-string<MailerContract> */
     public const string MAIL_DEFAULT_MAILER = MailgunMailer::class;
     /** @var non-empty-string */
     public const string MAIL_MAILGUN_API_KEY = 'api-key';
@@ -376,7 +376,7 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<Manager> */
+    /** @var class-string<ManagerContract> */
     public const string ORM_DEFAULT_MANAGER = MysqlManager::class;
     /** @var non-empty-string */
     public const string ORM_PGSQL_HOST = '127.0.0.1';
@@ -435,7 +435,7 @@ class Env
      *
      ************************************************************/
 
-    /** @var class-string<Session> */
+    /** @var class-string<SessionContract> */
     public const string SESSION_DEFAULT = PhpSession::class;
     /** @var non-empty-string|null */
     public const string|null SESSION_PHP_ID = null;
@@ -459,7 +459,7 @@ class Env
      * SMS component env variables.
      *
      ************************************************************/
-    /** @var class-string<Messenger> */
+    /** @var class-string<MessengerContract> */
     public const string SMS_DEFAULT_MESSENGER = VonageMessenger::class;
     /** @var non-empty-string */
     public const string SMS_VONAGE_KEY = 'vonage-key';
@@ -471,7 +471,7 @@ class Env
      * View component env variables.
      *
      ************************************************************/
-    /** @var class-string<Renderer> */
+    /** @var class-string<RendererContract> */
     public const string VIEW_DEFAULT_RENDERER = PhpRenderer::class;
     /** @var non-empty-string */
     public const string VIEW_ORKA_FILE_EXTENSION = '.orka.phtml';

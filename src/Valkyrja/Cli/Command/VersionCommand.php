@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cli\Command;
 
-use Valkyrja\Application\Kernel\Contract\Application;
+use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Cli\Interaction\Enum\TextColor;
-use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactory;
+use Valkyrja\Cli\Interaction\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Formatter\Formatter;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 
 use const PHP_VERSION;
@@ -38,19 +38,19 @@ class VersionCommand
         description: 'Get the application version',
         helpText: new Message('A command to show the application version and info'),
     )]
-    public function run(OutputFactory $outputFactory): Output
+    public function run(OutputFactoryContract $outputFactory): OutputContract
     {
         return $outputFactory
             ->createOutput()
             ->withMessages(
-                new Message(Application::ASCII),
+                new Message(ApplicationContract::ASCII),
                 new NewLine(),
                 new NewLine(),
                 new Message('Valkyrja Framework', new Formatter(textColor: TextColor::CYAN)),
                 new Message(' version '),
-                new Message(Application::VERSION, new Formatter(textColor: TextColor::MAGENTA)),
+                new Message(ApplicationContract::VERSION, new Formatter(textColor: TextColor::MAGENTA)),
                 new Message(' (built: '),
-                new Message(Application::VERSION_BUILD_DATE_TIME, new Formatter(textColor: TextColor::MAGENTA)),
+                new Message(ApplicationContract::VERSION_BUILD_DATE_TIME, new Formatter(textColor: TextColor::MAGENTA)),
                 new Message(')'),
                 new NewLine(),
                 new Message('Copyright (c) Melech Mizrachi'),

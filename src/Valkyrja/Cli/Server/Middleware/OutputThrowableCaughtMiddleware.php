@@ -15,25 +15,25 @@ namespace Valkyrja\Cli\Server\Middleware;
 
 use Override;
 use Throwable;
-use Valkyrja\Cli\Interaction\Input\Contract\Input;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
-use Valkyrja\Cli\Interaction\Output\Contract\Output;
-use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddleware;
-use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandler;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Middleware\Contract\ThrowableCaughtMiddlewareContract;
+use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
 
 /**
  * Class OutputThrowableCaughtMiddleware.
  *
  * @author Melech Mizrachi
  */
-class OutputThrowableCaughtMiddleware implements ThrowableCaughtMiddleware
+class OutputThrowableCaughtMiddleware implements ThrowableCaughtMiddlewareContract
 {
     /**
      * @inheritDoc
      */
     #[Override]
-    public function throwableCaught(Input $input, Output $output, Throwable $exception, ThrowableCaughtHandler $handler): Output
+    public function throwableCaught(InputContract $input, OutputContract $output, Throwable $exception, ThrowableCaughtHandlerContract $handler): OutputContract
     {
         $commandName = $input->getCommandName();
 

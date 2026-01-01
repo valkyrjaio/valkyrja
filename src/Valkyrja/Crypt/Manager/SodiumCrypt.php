@@ -17,7 +17,7 @@ use JsonException;
 use Override;
 use Random\RandomException;
 use SodiumException;
-use Valkyrja\Crypt\Manager\Contract\Crypt;
+use Valkyrja\Crypt\Manager\Contract\CryptContract;
 use Valkyrja\Crypt\Throwable\Exception\CryptException;
 use Valkyrja\Type\BuiltIn\Support\Arr;
 use Valkyrja\Type\BuiltIn\Support\Obj;
@@ -37,7 +37,7 @@ use const SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
  *
  * @author Melech Mizrachi
  */
-class SodiumCrypt implements Crypt
+class SodiumCrypt implements CryptContract
 {
     /**
      * @param non-empty-string $key The key

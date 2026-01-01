@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entity;
 
-use Valkyrja\Auth\Entity\Contract\LockableUser as Contract;
+use Valkyrja\Auth\Entity\Contract\LockableUserContract as Contract;
 use Valkyrja\Auth\Entity\Trait\LockableUserFields;
 use Valkyrja\Auth\Entity\Trait\LockableUserTrait;
 

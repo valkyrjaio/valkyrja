@@ -16,10 +16,10 @@ namespace Valkyrja\Http\Routing\Matcher;
 use Override;
 use Valkyrja\Http\Message\Enum\RequestMethod;
 use Valkyrja\Http\Routing\Collection\Collection as RouteCollection;
-use Valkyrja\Http\Routing\Collection\Contract\Collection;
-use Valkyrja\Http\Routing\Data\Contract\Parameter;
-use Valkyrja\Http\Routing\Data\Contract\Route;
-use Valkyrja\Http\Routing\Matcher\Contract\Matcher as Contract;
+use Valkyrja\Http\Routing\Collection\Contract\CollectionContract;
+use Valkyrja\Http\Routing\Data\Contract\ParameterContract;
+use Valkyrja\Http\Routing\Data\Contract\RouteContract;
+use Valkyrja\Http\Routing\Matcher\Contract\MatcherContract as Contract;
 use Valkyrja\Http\Routing\Support\Helpers;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRouteParameterException;
 use Valkyrja\Http\Routing\Throwable\Exception\InvalidRoutePathException;
@@ -38,10 +38,10 @@ class Matcher implements Contract
     /**
      * Matcher constructor.
      *
-     * @param Collection $collection The collection
+     * @param CollectionContract $collection The collection
      */
     public function __construct(
-        protected Collection $collection = new RouteCollection()
+        protected CollectionContract $collection = new RouteCollection()
     ) {
     }
 
@@ -52,7 +52,7 @@ class Matcher implements Contract
      * @throws InvalidRouteParameterException
      */
     #[Override]
-    public function match(string $path, RequestMethod|null $requestMethod = null): Route|null
+    public function match(string $path, RequestMethod|null $requestMethod = null): RouteContract|null
     {
         $path  = Helpers::trimPath($path);
         $route = $this->matchStatic($path, $requestMethod);
@@ -65,7 +65,7 @@ class Matcher implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function matchStatic(string $path, RequestMethod|null $requestMethod = null): Route|null
+    public function matchStatic(string $path, RequestMethod|null $requestMethod = null): RouteContract|null
     {
         $route = $this->collection->getStatic($path, $requestMethod);
 
@@ -83,7 +83,7 @@ class Matcher implements Contract
      * @throws InvalidRouteParameterException
      */
     #[Override]
-    public function matchDynamic(string $path, RequestMethod|null $requestMethod = null): Route|null
+    public function matchDynamic(string $path, RequestMethod|null $requestMethod = null): RouteContract|null
     {
         return $this->matchDynamicFromArray($this->collection->allDynamic($requestMethod), $path);
     }
@@ -91,15 +91,15 @@ class Matcher implements Contract
     /**
      * Match a dynamic route by path from a given array.
      *
-     * @param array<string, Route>|array<string, array<string, Route>> $routes The routes
-     * @param string                                                   $path   The path
+     * @param array<string, RouteContract>|array<string, array<string, RouteContract>> $routes The routes
+     * @param string                                                                   $path   The path
      *
      * @throws InvalidRoutePathException
      * @throws InvalidRouteParameterException
      *
-     * @return Route|null
+     * @return RouteContract|null
      */
-    protected function matchDynamicFromArray(array $routes, string $path): Route|null
+    protected function matchDynamicFromArray(array $routes, string $path): RouteContract|null
     {
         // Attempt to find a match using dynamic routes that are set
         foreach ($routes as $regex => $route) {
@@ -114,16 +114,16 @@ class Matcher implements Contract
     /**
      * Match a dynamic route by path from a given route or array.
      *
-     * @param Route|array<string, Route> $route The route
-     * @param string                     $path  The path
-     * @param string                     $regex The regex
+     * @param RouteContract|array<string, RouteContract> $route The route
+     * @param string                                     $path  The path
+     * @param string                                     $regex The regex
      *
      * @throws InvalidRoutePathException
      * @throws InvalidRouteParameterException
      *
-     * @return Route|null
+     * @return RouteContract|null
      */
-    protected function matchDynamicFromRouteOrArray(Route|array $route, string $path, string $regex): Route|null
+    protected function matchDynamicFromRouteOrArray(RouteContract|array $route, string $path, string $regex): RouteContract|null
     {
         if (is_array($route)) {
             return $this->matchDynamicFromArray($route, $path);
@@ -141,14 +141,14 @@ class Matcher implements Contract
     /**
      * Process matches for a dynamic route.
      *
-     * @param Route                               $route   The route
+     * @param RouteContract                       $route   The route
      * @param array<int|non-empty-string, string> $matches The regex matches
      *
      * @throws InvalidRoutePathException
      *
-     * @return Route
+     * @return RouteContract
      */
-    protected function processArguments(Route $route, array $matches): Route
+    protected function processArguments(RouteContract $route, array $matches): RouteContract
     {
         $dispatch = $route->getDispatch();
 
@@ -191,13 +191,13 @@ class Matcher implements Contract
     }
 
     /**
-     * @param Parameter                          $parameter The parameter
+     * @param ParameterContract                  $parameter The parameter
      * @param array<scalar|object>|scalar|object $match     The match
      *
      * @return array<scalar|object>|scalar|object|null
      */
     protected function checkAndCastMatchValue(
-        Parameter $parameter,
+        ParameterContract $parameter,
         array|string|int|bool|float|object $match
     ): array|string|int|bool|float|object|null {
         $cast = $parameter->getCast();

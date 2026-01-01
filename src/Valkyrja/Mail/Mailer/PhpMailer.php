@@ -16,8 +16,8 @@ namespace Valkyrja\Mail\Mailer;
 use Override;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer as PHPMailerClient;
-use Valkyrja\Mail\Data\Contract\Message;
-use Valkyrja\Mail\Mailer\Contract\Mailer as Contract;
+use Valkyrja\Mail\Data\Contract\MessageContract;
+use Valkyrja\Mail\Mailer\Contract\MailerContract as Contract;
 
 /**
  * Class PhpMailer.
@@ -42,7 +42,7 @@ class PhpMailer implements Contract
      * @throws Exception
      */
     #[Override]
-    public function send(Message $message): void
+    public function send(MessageContract $message): void
     {
         $this->phpMailer->setFrom($message->getFromEmail(), $message->getFromName());
 

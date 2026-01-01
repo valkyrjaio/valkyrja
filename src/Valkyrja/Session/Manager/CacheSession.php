@@ -15,7 +15,7 @@ namespace Valkyrja\Session\Manager;
 
 use JsonException;
 use Override;
-use Valkyrja\Cache\Manager\Contract\Cache;
+use Valkyrja\Cache\Manager\Contract\CacheContract;
 use Valkyrja\Session\Data\CookieParams;
 use Valkyrja\Session\Throwable\Exception\SessionStartFailure;
 use Valkyrja\Type\BuiltIn\Support\Arr;
@@ -34,7 +34,7 @@ class CacheSession extends PhpSession
      * CacheSession constructor.
      */
     public function __construct(
-        protected Cache $cache,
+        protected CacheContract $cache,
         CookieParams $cookieParams,
         string|null $sessionId = null,
         string|null $sessionName = null

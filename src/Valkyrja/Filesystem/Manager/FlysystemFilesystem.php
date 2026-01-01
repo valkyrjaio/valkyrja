@@ -18,7 +18,7 @@ use League\Flysystem\FilesystemOperator as FlysystemInterface;
 use League\Flysystem\StorageAttributes;
 use Override;
 use Valkyrja\Filesystem\Enum\Visibility;
-use Valkyrja\Filesystem\Manager\Contract\Filesystem as Contract;
+use Valkyrja\Filesystem\Manager\Contract\FilesystemContract as Contract;
 
 use function array_map;
 

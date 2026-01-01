@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Sms\Messenger;
 
 use Override;
-use Valkyrja\Log\Logger\Contract\Logger;
-use Valkyrja\Sms\Data\Contract\Message;
-use Valkyrja\Sms\Messenger\Contract\Messenger as Contract;
+use Valkyrja\Log\Logger\Contract\LoggerContract;
+use Valkyrja\Sms\Data\Contract\MessageContract;
+use Valkyrja\Sms\Messenger\Contract\MessengerContract as Contract;
 
 /**
  * Class LogSms.
@@ -29,7 +29,7 @@ class LogMessenger implements Contract
      * LogSms constructor.
      */
     public function __construct(
-        protected Logger $logger,
+        protected LoggerContract $logger,
     ) {
     }
 
@@ -37,7 +37,7 @@ class LogMessenger implements Contract
      * @inheritDoc
      */
     #[Override]
-    public function send(Message $message): void
+    public function send(MessageContract $message): void
     {
         $this->logger->info(static::class . ' Send');
         $this->logger->info('From:');

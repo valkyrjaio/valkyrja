@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Message\Trait;
 use InvalidArgumentException;
 use Valkyrja\Http\Message\Enum\ProtocolVersion;
 use Valkyrja\Http\Message\Header\Security\HeaderSecurity;
-use Valkyrja\Http\Message\Stream\Contract\Stream;
+use Valkyrja\Http\Message\Stream\Contract\StreamContract;
 
 use function array_merge;
 use function implode;
@@ -54,9 +54,9 @@ trait Message
     /**
      * The stream.
      *
-     * @var Stream
+     * @var StreamContract
      */
-    protected Stream $stream;
+    protected StreamContract $stream;
 
     /**
      * @inheritDoc
@@ -199,7 +199,7 @@ trait Message
     /**
      * @inheritDoc
      */
-    public function getBody(): Stream
+    public function getBody(): StreamContract
     {
         return $this->stream;
     }
@@ -209,7 +209,7 @@ trait Message
      *
      * @return static
      */
-    public function withBody(Stream $body): static
+    public function withBody(StreamContract $body): static
     {
         $new = clone $this;
 
@@ -228,11 +228,11 @@ trait Message
     /**
      * Set the body.
      *
-     * @param Stream $body The body
+     * @param StreamContract $body The body
      *
      * @return void
      */
-    protected function setBody(Stream $body): void
+    protected function setBody(StreamContract $body): void
     {
         $this->stream = $body;
     }

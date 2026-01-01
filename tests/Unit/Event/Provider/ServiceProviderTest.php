@@ -15,18 +15,18 @@ namespace Valkyrja\Tests\Unit\Event\Provider;
 
 use PHPUnit\Framework\MockObject\Exception;
 use Valkyrja\Application\Data\Config;
-use Valkyrja\Attribute\Collector\Contract\Collector as AttributeCollectorContract;
-use Valkyrja\Dispatch\Dispatcher\Contract\Dispatcher as DispatchDispatcher;
+use Valkyrja\Attribute\Collector\Contract\CollectorContract as AttributeCollectorContract;
+use Valkyrja\Dispatch\Dispatcher\Contract\DispatcherContract as DispatchDispatcher;
 use Valkyrja\Event\Collection\Collection;
-use Valkyrja\Event\Collection\Contract\Collection as CollectionContract;
+use Valkyrja\Event\Collection\Contract\CollectionContract;
 use Valkyrja\Event\Collector\AttributeCollector;
-use Valkyrja\Event\Collector\Contract\Collector;
+use Valkyrja\Event\Collector\Contract\CollectorContract;
 use Valkyrja\Event\Data\Data;
 use Valkyrja\Event\Data\Listener;
-use Valkyrja\Event\Dispatcher\Contract\Dispatcher as Contract;
+use Valkyrja\Event\Dispatcher\Contract\DispatcherContract as Contract;
 use Valkyrja\Event\Dispatcher\Dispatcher;
 use Valkyrja\Event\Provider\ServiceProvider;
-use Valkyrja\Reflection\Reflector\Contract\Reflector;
+use Valkyrja\Reflection\Reflector\Contract\ReflectorContract;
 use Valkyrja\Tests\Unit\Container\Provider\ServiceProviderTestCase;
 
 /**
@@ -45,11 +45,11 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishAttributesCollector(): void
     {
         $this->container->setSingleton(AttributeCollectorContract::class, self::createStub(AttributeCollectorContract::class));
-        $this->container->setSingleton(Reflector::class, self::createStub(Reflector::class));
+        $this->container->setSingleton(ReflectorContract::class, self::createStub(ReflectorContract::class));
 
         ServiceProvider::publishAttributesCollector($this->container);
 
-        self::assertInstanceOf(AttributeCollector::class, $this->container->getSingleton(Collector::class));
+        self::assertInstanceOf(AttributeCollector::class, $this->container->getSingleton(CollectorContract::class));
     }
 
     /**
@@ -80,7 +80,7 @@ class ServiceProviderTest extends ServiceProviderTestCase
     public function testPublishCollectionWithConfig(): void
     {
         $this->container->setSingleton(Config::class, new Config());
-        $this->container->setSingleton(Collector::class, $collector = self::createStub(Collector::class));
+        $this->container->setSingleton(CollectorContract::class, $collector = self::createStub(CollectorContract::class));
 
         $eventId      = self::class;
         $listenerName = 'listener-name';
